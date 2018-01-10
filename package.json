@@ -7,9 +7,13 @@
   "devDependencies": {
     "parcel-bundler": "^1.4.1",
     "parcel-plugin-typescript": "^0.4.1",
+    "prettier": "^1.10.1",
     "typescript": "^2.6.2"
   },
   "scripts": {
-    "start": "parcel app/index.html"
+    "start": "parcel app/index.html",
+    "format": "prettier --list-different '**/*.{ts,json,md, gql}'",
+    "format:fix": "prettier --write '**/*.{ts,json,md,gql}'",
+    "test": "yarn format"
   }
 }

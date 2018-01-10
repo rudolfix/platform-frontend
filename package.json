@@ -1,0 +1,15 @@
+{
+  "name": "platform-frontend",
+  "version": "0.0.1",
+  "repository": "git@github.com:Neufund/platform-frontend.git",
+  "author": "Krzysztof Kaczor <chris@kaczor.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel-bundler": "^1.4.1",
+    "parcel-plugin-typescript": "^0.4.1",
+    "typescript": "^2.6.2"
+  },
+  "scripts": {
+    "start": "parcel app/index.html"
+  }
+}

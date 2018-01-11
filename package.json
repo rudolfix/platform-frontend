@@ -8,12 +8,16 @@
     "parcel-bundler": "^1.4.1",
     "parcel-plugin-typescript": "^0.4.1",
     "prettier": "^1.10.1",
-    "typescript": "^2.6.2"
+    "tslint": "^5.9.1",
+    "tslint-eslint-rules": "^4.1.1",
+    "typescript": "^2.6.2",
+    "typestrict": "^0.0.6"
   },
   "scripts": {
     "start": "parcel app/index.html",
     "format": "prettier --list-different '**/*.{ts,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,json,md,gql}'",
-    "test": "yarn format"
+    "test": "yarn lint && yarn format",
+    "lint": "tslint --project . --format stylish"
   }
 }

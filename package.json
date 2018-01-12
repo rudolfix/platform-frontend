@@ -5,10 +5,17 @@
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.1.0",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^2.2.46",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^4.1.0",
     "parcel-bundler": "^1.4.1",
     "parcel-plugin-typescript": "^0.4.1",
     "prettier": "^1.10.1",
     "sass-lint": "^1.12.1",
+    "ts-mocha": "^1.1.0",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.6.2",
@@ -18,7 +25,8 @@
     "start": "parcel app/index.html",
     "format": "prettier --list-different '**/*.{ts,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,json,md,gql}'",
-    "test": "yarn tslint && yarn format && yarn sasslint",
+    "test":
+      "yarn tslint && yarn format && yarn sasslint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
     "tslint": "tslint --project . --format stylish",
     "sasslint": "sass-lint -c .sasslintrc -v -q"
   }

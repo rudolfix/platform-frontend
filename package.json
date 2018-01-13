@@ -34,7 +34,7 @@
     "typestrict": "^0.0.6"
   },
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack/webpack.config.dev.js",
+    "start": "NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,json,md,gql}'",
     "tslint": "tslint --project . --format stylish",

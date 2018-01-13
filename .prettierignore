@@ -1,4 +1,4 @@
 node_modules
 dist
 .vscode
-package.json # we ignore it because ofter yarn/npm tries to reformat it
+package.json

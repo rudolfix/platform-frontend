@@ -24,7 +24,6 @@
     "triple-equals": true,
     "no-eval": true,
     "no-switch-case-fall-through": true,
-    "no-shadowed-variable": true,
     "no-duplicate-variable": true,
     "no-string-throw": true,
     "no-unused-expression": true,

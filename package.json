@@ -37,10 +37,13 @@
     "start": "webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,json,md,gql}'",
-    "test":
-      "yarn tslint && yarn format && yarn sasslint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
     "tslint": "tslint --project . --format stylish",
-    "sasslint": "sass-lint -c .sasslintrc -v -q"
+    "tslint:fix": "tslint --fix --project . --format stylish",
+    "sasslint": "sass-lint -c .sass-lint.yml -v -q",
+    "lint": "yarn format && yarn tslint && yarn sasslint",
+    "lint:fix": "yarn format:fix && yarn tslint:fix && yarn sasslint",
+    "test":
+      "yarn lint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'"
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta.3",

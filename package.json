@@ -5,33 +5,36 @@
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
   "devDependencies": {
-    "@types/react": "^16.0.34",
-    "@types/react-dom": "^16.0.3",
-    "@types/reactstrap": "^5.0.10",
-    "awesome-typescript-loader": "^3.4.1",
-    "css-loader": "^0.28.8",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "html-webpack-plugin": "^2.30.1",
-    "node-sass": "^4.7.2",
-    "prettier": "^1.10.1",
-    "react-hot-loader": "^3.1.3",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.1",
-    "typescript": "^2.6.2",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.10.1",
-    "webpack-hot-middleware": "^2.21.0",
     "@types/chai": "^4.1.0",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^2.2.46",
+    "@types/react": "^16.0.34",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^5.0.6",
+    "@types/react-router-dom": "^4.2.2",
+    "@types/reactstrap": "^5.0.10",
+    "@types/redux-logger": "^3.0.5",
+    "awesome-typescript-loader": "^3.4.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "css-loader": "^0.28.8",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^2.30.1",
     "mocha": "^4.1.0",
+    "node-sass": "^4.7.2",
+    "prettier": "^1.10.1",
+    "react-hot-loader": "^3.1.3",
     "sass-lint": "^1.12.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.1",
     "ts-mocha": "^1.1.0",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^4.1.1",
-    "typestrict": "^0.0.6"
+    "typescript": "^2.6.2",
+    "typestrict": "^0.0.6",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.10.1",
+    "webpack-hot-middleware": "^2.21.0"
   },
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
@@ -42,13 +45,16 @@
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "lint": "yarn format && yarn tslint && yarn sasslint",
     "lint:fix": "yarn format:fix && yarn tslint:fix && yarn sasslint",
-    "test":
-      "yarn lint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'"
+    "test": "yarn lint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'"
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "reactstrap": "^5.0.0-alpha.4"
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "reactstrap": "^5.0.0-alpha.4",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6"
   }
 }

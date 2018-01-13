@@ -1,20 +1,26 @@
 import * as React from "react";
-import { NavbarBrand, Navbar, Col, Row, Container } from "reactstrap";
+import { NavbarBrand, Navbar } from "reactstrap";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import * as styles from "./App.module.scss";
+import { Home } from "./Home";
+
+// @note: this is done to make HMR work with react router. In production build its gone.
+function forceRerenderInDevMode(): number {
+  if (process.env.NODE_ENV === "development") {
+    return Math.random();
+  } else {
+    return 1;
+  }
+}
 
 export const App = () => (
-  <div>
-    <Navbar color="primary" dark>
-      <NavbarBrand href="/">Neufund Platform</NavbarBrand>
-    </Navbar>
+  <Router key={forceRerenderInDevMode()}>
+    <div>
+      <Navbar color="primary" dark>
+        <NavbarBrand href="/">Neufund Platform</NavbarBrand>
+      </Navbar>
 
-    <Container>
-      <Row>
-        <Col>
-          <h1 className={styles.header}>Hello world!</h1>
-        </Col>
-      </Row>
-    </Container>
-  </div>
+      <Route path="/" component={Home} exact />
+    </div>
+  </Router>
 );

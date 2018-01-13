@@ -3,6 +3,6 @@
 ## Run project
 
 ```sh
-yarn 
+yarn
 yarn start
 ```

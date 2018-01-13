@@ -1,6 +1,8 @@
 import * as React from "react";
 import { NavbarBrand, Navbar, Col, Row, Container } from "reactstrap";
 
+import * as styles from "./App.module.scss";
+
 export const App = () => (
   <div>
     <Navbar color="primary" dark>
@@ -10,7 +12,7 @@ export const App = () => (
     <Container>
       <Row>
         <Col>
-          <h1>Hello world!</h1>
+          <h1 className={styles.header}>Hello world!</h1>
         </Col>
       </Row>
     </Container>

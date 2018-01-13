@@ -28,6 +28,9 @@
     "no-string-throw": true,
     "no-unused-expression": true,
     "radix": true,
-    "no-var-keyword": true
+    "no-var-keyword": true,
+    "no-console": true,
+    "no-debugger": true,
+    "typedef": [true, "call-signature"]
   }
 }

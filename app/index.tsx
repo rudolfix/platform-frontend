@@ -3,7 +3,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { App } from "./components/App";
 
-function renderApp(Component: React.SFC<any>) {
+function renderApp(Component: React.SFC<any>): void {
   const mountNode = document.getElementById("app");
   ReactDOM.render(<Component />, mountNode);
 }

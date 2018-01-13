@@ -3,7 +3,6 @@
   "rulesDirectory": ["./node_modules/tslint-eslint-rules/dist/rules"],
   "rules": {
     "interface-name": [true, "always-prefix"],
-    "mocha-avoid-only": true,
     "no-invalid-template-strings": true,
     "no-sparse-arrays": true,
     "no-object-literal-type-assertion": true,

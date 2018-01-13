@@ -20,13 +20,27 @@
     "typescript": "^2.6.2",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.1",
-    "webpack-hot-middleware": "^2.21.0"
+    "webpack-hot-middleware": "^2.21.0",
+    "@types/chai": "^4.1.0",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^2.2.46",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^4.1.0",
+    "sass-lint": "^1.12.1",
+    "ts-mocha": "^1.1.0",
+    "tslint": "^5.9.1",
+    "tslint-eslint-rules": "^4.1.1",
+    "typestrict": "^0.0.6"
   },
   "scripts": {
     "start": "webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,json,md,gql}'",
-    "test": "yarn format"
+    "test":
+      "yarn tslint && yarn format && yarn sasslint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
+    "tslint": "tslint --project . --format stylish",
+    "sasslint": "sass-lint -c .sasslintrc -v -q"
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta.3",

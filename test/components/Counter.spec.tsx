@@ -1,20 +1,20 @@
-import * as React from "react";
-import { shallow, mount } from "enzyme";
 import { expect } from "chai";
-import { CounterSFC, Counter } from "../../app/components/Counter";
-import { spy } from "sinon";
-import { tid } from "../testUtils";
+import { mount, shallow } from "enzyme";
+import * as React from "react";
 import { Provider } from "react-redux";
+import { applyMiddleware } from "redux";
+import { createStore } from "redux";
+import { spy } from "sinon";
+import { Counter, CounterSFC } from "../../app/components/Counter";
 import {
-  getContainer,
   customizerContainerWithMiddlewareApi,
   Delay,
+  getContainer,
   NavigateTo,
 } from "../../app/getContainer";
-import { applyMiddleware } from "redux";
 import { createInjectMiddleware } from "../../app/redux-injectify";
-import { reducers, IAppState } from "../../app/store";
-import { createStore } from "redux";
+import { IAppState, reducers } from "../../app/store";
+import { tid } from "../testUtils";
 
 describe("<Counter />", () => {
   it("should render", () => {

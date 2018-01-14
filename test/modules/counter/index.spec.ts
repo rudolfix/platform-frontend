@@ -1,14 +1,14 @@
+import { expect } from "chai";
+import { spy } from "sinon";
+import { TDelay, TGetState, TNavigateTo } from "../../../app/getContainer";
 import {
-  ICounterState,
+  counterDecrementAction,
   counterIncrementAction,
   counterReducer,
-  counterDecrementAction,
   explicitCounterAsyncAction,
+  ICounterState,
 } from "../../../app/modules/counter/index";
-import { expect } from "chai";
-import { IAppState, AppDispatch } from "../../../app/store";
-import { TDelay, TGetState, TNavigateTo } from "../../../app/getContainer";
-import { spy } from "sinon";
+import { AppDispatch, IAppState } from "../../../app/store";
 
 describe("counter module", () => {
   describe("reducer", () => {

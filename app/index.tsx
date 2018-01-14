@@ -1,19 +1,19 @@
 import "reflect-metadata";
 import "./styles/bootstrap.scss";
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { createStore, Store, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
-import { logger } from "redux-logger";
 // tslint:disable-next-line
 import createHistory from "history/createBrowserHistory";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { ConnectedRouter, routerMiddleware } from "react-router-redux";
+import { applyMiddleware, createStore, Store } from "redux";
+import { logger } from "redux-logger";
 
 import { App } from "./components/App";
+import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
 import { createInjectMiddleware } from "./redux-injectify";
-import { reducers, IAppState } from "./store";
-import { getContainer, customizerContainerWithMiddlewareApi } from "./getContainer";
-import { routerMiddleware, ConnectedRouter } from "react-router-redux";
+import { IAppState, reducers } from "./store";
 
 // @note: this is done to make HMR work with react router. In production build its gone.
 function forceRerenderInDevMode(): number {

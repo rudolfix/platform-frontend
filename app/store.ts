@@ -1,11 +1,11 @@
-import {
-  ICounterState,
-  counterReducer,
-  ICounterIncrementAction,
-  ICounterDecrementAction,
-} from "./modules/counter/index";
-import { combineReducers } from "redux";
 import { routerReducer } from "react-router-redux";
+import { combineReducers } from "redux";
+import {
+  counterReducer,
+  ICounterDecrementAction,
+  ICounterIncrementAction,
+  ICounterState,
+} from "./modules/counter/index";
 
 export interface IAppAction {
   type: string;

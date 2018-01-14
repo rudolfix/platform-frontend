@@ -1,7 +1,7 @@
+import { expect } from "chai";
+import { shallow } from "enzyme";
 import * as React from "react";
 import { Home } from "../../app/components/Home";
-import { shallow } from "enzyme";
-import { expect } from "chai";
 
 describe("<Home />", () => {
   it("should render", () => {

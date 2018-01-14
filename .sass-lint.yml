@@ -9,15 +9,6 @@ files:
     - 'coverage/**'
     - 'dist/**'
     - 'test/**'
-    - 'page/sass/commit_funds.scss'
-    - 'page/sass/common.scss'
-    - 'page/sass/participating.scss'
-    - 'page/sass/pictures.scss'
-    - 'page/sass/press.scss'
-    - 'page/sass/vex-modal.scss'
-    - 'page/sass/whitepaper.scss'
-    - 'page/sass/product_menu.scss'
-    - 'page/sass/product.scss'
 rules:
   property-sort-order: 0
   quotes:

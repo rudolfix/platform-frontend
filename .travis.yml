@@ -9,4 +9,5 @@ install:
   - yarn --frozen-lockfile
 script:
   - set -e                     # fail fast
-  - yarn test
+  - yarn test:coverage
+  - yarn codecov

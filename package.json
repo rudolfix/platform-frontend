@@ -17,11 +17,13 @@
     "awesome-typescript-loader": "^3.4.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "codecov": "^3.0.0",
     "css-loader": "^0.28.8",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^2.30.1",
     "mocha": "^4.1.0",
     "node-sass": "^4.7.2",
+    "nyc": "^11.4.1",
     "prettier": "^1.10.1",
     "react-hot-loader": "^3.1.3",
     "sass-lint": "^1.12.1",
@@ -45,7 +47,9 @@
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "lint": "yarn format && yarn tslint && yarn sasslint",
     "lint:fix": "yarn format:fix && yarn tslint:fix && yarn sasslint",
-    "test": "yarn lint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'"
+    "test": "yarn lint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
+    "test:coverage": "yarn lint && nyc ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
+    "codecov": "codecov"
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta.3",

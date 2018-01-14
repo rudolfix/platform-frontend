@@ -1,5 +1,11 @@
 import "ignore-styles";
 
+// polyfill request animation frame https://github.com/facebookincubator/create-react-app/issues/3199
+(global as any).requestAnimationFrame = function(callback: any): number {
+  setTimeout(callback, 0);
+  return 0;
+};
+
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import * as sinonChai from "sinon-chai";

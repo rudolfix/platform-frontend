@@ -28,6 +28,8 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^2.30.1",
     "ignore-styles": "^5.0.1",
+    "jsdom": "^11.5.1",
+    "jsdom-global": "^3.0.2",
     "mocha": "^4.1.0",
     "node-sass": "^4.7.2",
     "nyc": "^11.4.1",
@@ -55,8 +57,10 @@
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "lint": "yarn format && yarn tslint && yarn sasslint",
     "lint:fix": "yarn format:fix && yarn tslint:fix && yarn sasslint",
-    "test": "yarn lint && ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
-    "test:coverage": "yarn lint && nyc ts-mocha --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
+    "test:unit": "mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
+    "test:unit-coverage": "nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
+    "test": "yarn lint && yarn test:unit",
+    "test:coverage": "yarn lint && yarn test:unit-coverage",
     "codecov": "codecov"
   },
   "dependencies": {

@@ -24,11 +24,14 @@
     "triple-equals": true,
     "no-eval": true,
     "no-switch-case-fall-through": true,
-    "no-shadowed-variable": true,
     "no-duplicate-variable": true,
     "no-string-throw": true,
     "no-unused-expression": true,
     "radix": true,
-    "no-var-keyword": true
+    "no-var-keyword": true,
+    "no-console": true,
+    "no-debugger": true,
+    "typedef": [true, "call-signature"],
+    "ordered-imports": true
   }
 }

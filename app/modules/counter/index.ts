@@ -1,5 +1,6 @@
-import { AppReducer, IAppAction } from "../../store";
+import { AppReducer, IAppAction, AppDispatch } from "../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../storeHelpers";
+import { injectableFn } from "../../redux-injectify";
 
 export interface ICounterState {
   value: number;
@@ -19,6 +20,7 @@ export interface ICounterDecrementAction extends IAppAction {
 export const counterIncrementAction = makeActionCreator<ICounterIncrementAction>(
   "COUNTER_INCREMENT",
 );
+
 export const counterDecrementAction = makeParameterlessActionCreator<ICounterDecrementAction>(
   "COUNTER_DECREMENT",
 );
@@ -46,3 +48,18 @@ export const counterReducer: AppReducer<ICounterState> = (
 
   return state;
 };
+
+export type Delay = (n: number) => Promise<void>;
+
+export const counterAsyncAction = async (delay: Delay, dispatch: AppDispatch) => {
+  await delay(1000);
+  dispatch(counterIncrementAction({ by: 2 }));
+};
+
+export const explicitCounterAsyncAction = injectableFn(
+  async (a: Delay, b: AppDispatch) => {
+    await a(1000);
+    b(counterIncrementAction({ by: 2 }));
+  },
+  ["Delay", "Dispatch"],
+);

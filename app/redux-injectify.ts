@@ -46,7 +46,7 @@ export function mapParamToDependencyName(param: string): string {
   return param.charAt(0).toUpperCase() + param.slice(1);
 }
 
-export function injectableFn(func: Function, dependencies: string[]): Function {
+export function injectableFn<T extends Function>(func: T, dependencies: string[]): T {
   (func as any)[dependencyInfoSymbol] = dependencies;
 
   return func;

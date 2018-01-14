@@ -23,13 +23,13 @@ export const CounterSFC: React.SFC<ICounterStateProps & ICounterDispatchProps> =
     <Row>
       <Col>
         <h2>{props.value}</h2>
-        <Button color="success" onClick={props.countUp}>
+        <Button color="success" onClick={props.countUp} data-test-id="btn-plus">
           +
         </Button>{" "}
-        <Button color="danger" onClick={props.countDown}>
+        <Button color="danger" onClick={props.countDown} data-test-id="btn-minus">
           -
         </Button>{" "}
-        <Button color="warning" onClick={props.countAsync}>
+        <Button color="warning" onClick={props.countAsync} data-test-id="btn-async">
           ASYNC +-
         </Button>
       </Col>

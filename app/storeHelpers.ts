@@ -1,4 +1,4 @@
-import { IAppAction, ActionType, ActionPayload } from "./store";
+import { ActionPayload, ActionType, IAppAction } from "./store";
 
 export function makeActionCreator<T extends IAppAction>(
   type: ActionType<T>,

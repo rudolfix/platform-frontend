@@ -1,6 +1,6 @@
-import { Middleware, MiddlewareAPI } from "redux";
-import { Container } from "inversify";
 import * as getParams from "get-params";
+import { Container } from "inversify";
+import { Middleware, MiddlewareAPI } from "redux";
 
 export function createInjectMiddleware(
   container: Container,

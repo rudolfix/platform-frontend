@@ -1,6 +1,6 @@
 import { Container } from "inversify";
-import { MiddlewareAPI } from "redux";
 import { push } from "react-router-redux";
+import { MiddlewareAPI } from "redux";
 import { IAppState } from "./store";
 
 export type TDelay = (n: number) => Promise<void>;

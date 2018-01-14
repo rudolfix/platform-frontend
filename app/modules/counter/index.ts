@@ -1,15 +1,15 @@
-import { AppReducer, IAppAction, AppDispatch } from "../../store";
-import { makeActionCreator, makeParameterlessActionCreator } from "../../storeHelpers";
-import { injectableFn } from "../../redux-injectify";
 import {
+  Delay,
+  Dispatch,
+  GetState,
+  NavigateTo,
   TDelay,
   TGetState,
   TNavigateTo,
-  GetState,
-  Delay,
-  NavigateTo,
-  Dispatch,
 } from "../../getContainer";
+import { injectableFn } from "../../redux-injectify";
+import { AppDispatch, AppReducer, IAppAction } from "../../store";
+import { makeActionCreator, makeParameterlessActionCreator } from "../../storeHelpers";
 
 export interface ICounterState {
   value: number;

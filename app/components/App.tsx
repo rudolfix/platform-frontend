@@ -1,6 +1,6 @@
 import * as React from "react";
-import { NavbarBrand, Navbar } from "reactstrap";
 import { Route } from "react-router-dom";
+import { Navbar, NavbarBrand } from "reactstrap";
 
 import { Home } from "./Home";
 import { Success } from "./Success";

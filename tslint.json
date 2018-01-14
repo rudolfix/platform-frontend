@@ -31,6 +31,7 @@
     "no-var-keyword": true,
     "no-console": true,
     "no-debugger": true,
-    "typedef": [true, "call-signature"]
+    "typedef": [true, "call-signature"],
+    "ordered-imports": true
   }
 }

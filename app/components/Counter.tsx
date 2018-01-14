@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Row, Col, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { IAppState } from "../store";
+import { Button, Col, Row } from "reactstrap";
 import {
-  counterIncrementAction,
   counterDecrementAction,
+  counterIncrementAction,
   explicitCounterAsyncAction,
 } from "../modules/counter/index";
+import { IAppState } from "../store";
 
 interface ICounterStateProps {
   value: number;

@@ -5,6 +5,7 @@ import {
   ICounterDecrementAction,
 } from "./modules/counter/index";
 import { combineReducers } from "redux";
+import { routerReducer } from "react-router-redux";
 
 export interface IAppAction {
   type: string;
@@ -25,4 +26,5 @@ export interface IAppState {
 
 export const reducers = combineReducers<IAppState>({
   counterState: counterReducer,
+  router: routerReducer,
 });

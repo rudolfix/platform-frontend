@@ -42,6 +42,6 @@ export const Counter = connect<ICounterStateProps, ICounterDispatchProps, {}, IA
   dispatch => ({
     countUp: () => dispatch(counterIncrementAction({ by: 1 })),
     countDown: () => dispatch(counterDecrementAction()),
-    countAsync: () => dispatch(explicitCounterAsyncAction as any),
+    countAsync: () => dispatch(explicitCounterAsyncAction),
   }),
 )(CounterSFC);

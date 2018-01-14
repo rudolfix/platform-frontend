@@ -6,25 +6,43 @@ import * as ReactDOM from "react-dom";
 import { createStore, Store, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { logger } from "redux-logger";
+// tslint:disable-next-line
+import createHistory from "history/createBrowserHistory";
 
 import { App } from "./components/App";
 import { createInjectMiddleware } from "./redux-injectify";
 import { reducers, IAppState } from "./store";
-import { getContainer } from "./getContainer";
+import { getContainer, customizerContainerWithMiddlewareApi } from "./getContainer";
+import { routerMiddleware, ConnectedRouter } from "react-router-redux";
 
-function renderApp(store: Store<IAppState>, Component: React.SFC<any>): void {
+// @note: this is done to make HMR work with react router. In production build its gone.
+function forceRerenderInDevMode(): number {
+  if (process.env.NODE_ENV === "development") {
+    return Math.random();
+  } else {
+    return 1;
+  }
+}
+
+function renderApp(store: Store<IAppState>, history: any, Component: React.SFC<any>): void {
   const mountNode = document.getElementById("app");
   ReactDOM.render(
     <Provider store={store}>
-      <Component />
+      <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
+        <Component />
+      </ConnectedRouter>
     </Provider>,
     mountNode,
   );
 }
 
-function startupApp(): Store<IAppState> {
+function startupApp(history: any): Store<IAppState> {
   const container = getContainer();
-  const middleware = applyMiddleware(createInjectMiddleware(container), logger);
+  const middleware = applyMiddleware(
+    routerMiddleware(history),
+    createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
+    logger,
+  );
 
   const store = createStore(reducers, middleware);
 
@@ -36,10 +54,11 @@ if (process.env.NODE_ENV === "development") {
     (module as any).hot.accept("./components/App", () => {
       const { App } = require("./components/App");
       // tslint:disable-next-line
-      renderApp(store, App);
+      renderApp(store, history, App);
     });
   }
 }
 
-const store = startupApp();
-renderApp(store, App);
+const history = createHistory();
+const store = startupApp(history);
+renderApp(store, history, App);

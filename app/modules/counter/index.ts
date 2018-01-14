@@ -1,6 +1,15 @@
 import { AppReducer, IAppAction, AppDispatch } from "../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../storeHelpers";
 import { injectableFn } from "../../redux-injectify";
+import {
+  TDelay,
+  TGetState,
+  TNavigateTo,
+  GetState,
+  Delay,
+  NavigateTo,
+  Dispatch,
+} from "../../getContainer";
 
 export interface ICounterState {
   value: number;
@@ -49,17 +58,19 @@ export const counterReducer: AppReducer<ICounterState> = (
   return state;
 };
 
-export type Delay = (n: number) => Promise<void>;
-
-export const counterAsyncAction = async (delay: Delay, dispatch: AppDispatch) => {
+export const counterAsyncAction = async (delay: TDelay, dispatch: AppDispatch) => {
   await delay(1000);
   dispatch(counterIncrementAction({ by: 2 }));
 };
 
 export const explicitCounterAsyncAction = injectableFn(
-  async (a: Delay, b: AppDispatch) => {
-    await a(1000);
-    b(counterIncrementAction({ by: 2 }));
+  async (delay: TDelay, dispatch: AppDispatch, getState: TGetState, navigateTo: TNavigateTo) => {
+    await delay(1000);
+    dispatch(counterIncrementAction({ by: 2 }));
+
+    if (getState().counterState.value >= 10) {
+      navigateTo("/success");
+    }
   },
-  ["Delay", "Dispatch"],
+  [Delay, Dispatch, GetState, NavigateTo],
 );

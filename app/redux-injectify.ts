@@ -1,14 +1,17 @@
-import { Middleware } from "redux";
+import { Middleware, MiddlewareAPI } from "redux";
 import { Container } from "inversify";
 import * as getParams from "get-params";
 
-export const DispatchSymbol = "Dispatch";
-
-export function createInjectMiddleware(container: Container): Middleware {
-  return ({ dispatch, getState }) => {
-    container.bind(DispatchSymbol).toConstantValue(dispatch);
-
-    return next => action => {
+export function createInjectMiddleware(
+  container: Container,
+  customizer?: (container: Container, middlewareApi: MiddlewareAPI<any>) => void,
+): Middleware {
+  return middlewareApi => {
+    // allow caller to customize container with dispatcher
+    if (customizer) {
+      customizer(container, middlewareApi);
+    }
+    return next => (action: any) => {
       if (typeof action === "function") {
         const deps = getDependencies(action);
 
@@ -47,4 +50,12 @@ export function injectableFn(func: Function, dependencies: string[]): Function {
   (func as any)[dependencyInfoSymbol] = dependencies;
 
   return func;
+}
+
+// patch redux dispatch signature to support dispatching functions
+declare module "redux" {
+  // tslint:disable-next-line
+  export interface Dispatch<S> {
+    (asyncAction: Function): void;
+  }
 }

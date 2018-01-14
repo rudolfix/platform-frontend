@@ -38,7 +38,6 @@
     "sass-lint": "^1.12.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
-    "ts-mocha": "^1.1.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^4.1.1",

@@ -10,5 +10,6 @@
   "extension": [
     ".ts",
     ".tsx"
-  ]
+  ],
+  "all": true
 }

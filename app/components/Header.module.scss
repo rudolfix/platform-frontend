@@ -1,0 +1,16 @@
+@import "../styles/neufund-theme";
+
+// this whole file is just placeholder for dev purposes
+$white: #fff;
+
+.link {
+  color: $white;
+
+  &:hover {
+    color: $white;
+  }
+}
+
+.active {
+  font-weight: bold;
+}

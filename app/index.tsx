@@ -14,6 +14,7 @@ import { App } from "./components/App";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
 import { createInjectMiddleware } from "./redux-injectify";
 import { IAppState, reducers } from "./store";
+import { getConfig } from "./getConfig";
 
 // @note: this is done to make HMR work with react router. In production build its gone.
 function forceRerenderInDevMode(): number {
@@ -37,7 +38,8 @@ function renderApp(store: Store<IAppState>, history: any, Component: React.SFC<a
 }
 
 function startupApp(history: any): Store<IAppState> {
-  const container = getContainer();
+  const config = getConfig(process.env);
+  const container = getContainer(config);
   const middleware = applyMiddleware(
     routerMiddleware(history),
     createInjectMiddleware(container, customizerContainerWithMiddlewareApi),

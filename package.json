@@ -43,12 +43,13 @@
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.6.2",
     "typestrict": "^0.0.6",
+    "web3-typescript-typings": "^0.9.3",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.1",
     "webpack-hot-middleware": "^2.21.0"
   },
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
+    "start": "(cp -n .env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,json,md,gql}'",
     "tslint": "tslint --project . --format stylish",

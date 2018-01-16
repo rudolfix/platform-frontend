@@ -11,6 +11,7 @@ module.exports = {
     port: 9090,
     hot: true,
     overlay: true,
+    historyApiFallback: true,
   },
   entry: [
     "react-hot-loader/patch",

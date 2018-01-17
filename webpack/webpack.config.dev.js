@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 const paths = require("./paths");
+const loadAppEnv = require("./loadAppEnv");
+
+const applicationEnv = loadAppEnv(process.env);
 
 module.exports = {
   devServer: {
@@ -90,7 +93,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+      "process.env": applicationEnv,
     }),
   ],
 };

@@ -9,8 +9,15 @@ module.exports = {
     contentBase: paths.dist,
     host: "localhost",
     port: 9090,
+    https: true,
     hot: true,
     overlay: true,
+    proxy: {
+      "/node": {
+        target: "http://localhost:8545",
+        pathRewrite: { "^/node": "" },
+      },
+    },
   },
   entry: [
     "react-hot-loader/patch",

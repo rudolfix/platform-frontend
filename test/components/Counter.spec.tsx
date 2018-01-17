@@ -14,6 +14,7 @@ import {
 } from "../../app/getContainer";
 import { createInjectMiddleware } from "../../app/redux-injectify";
 import { IAppState, reducers } from "../../app/store";
+import { dummyConfig } from "../fixtures";
 import { tid } from "../testUtils";
 
 describe("<Counter />", () => {
@@ -49,7 +50,7 @@ describe("<Counter />", () => {
   describe("integration", () => {
     it("clicking buttons should change counter value and trigger navigation", async () => {
       // get default container
-      const container = getContainer();
+      const container = getContainer(dummyConfig);
 
       //rebind dependencies that cause side effects (could me http client etc)
       container.rebind(Delay).toConstantValue(() => Promise.resolve());

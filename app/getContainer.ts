@@ -1,9 +1,9 @@
 import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
-import { IAppState } from "./store";
 import { IConfig } from "./getConfig";
-import { IEthereumNetworkConfig, EthereumNetworkConfig } from "./modules/web3/LedgerConnector";
+import { EthereumNetworkConfig, IEthereumNetworkConfig } from "./modules/web3/LedgerConnector";
+import { IAppState } from "./store";
 
 export type TDelay = (n: number) => Promise<void>;
 export type TNavigateTo = (path: string) => void;
@@ -20,7 +20,9 @@ export function getContainer(config: IConfig): Container {
   const delay = (time: number) => new Promise<void>(resolve => setTimeout(resolve, time));
 
   container.bind<TDelay>("Delay").toConstantValue(delay);
-  container.bind<IEthereumNetworkConfig>(EthereumNetworkConfig).toConstantValue(config.ethereumNetwork);
+  container
+    .bind<IEthereumNetworkConfig>(EthereumNetworkConfig)
+    .toConstantValue(config.ethereumNetwork);
 
   return container;
 }

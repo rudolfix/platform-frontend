@@ -14,11 +14,12 @@ export interface IAppAction {
 export type ActionType<T extends IAppAction> = T["type"];
 export type ActionPayload<T extends IAppAction> = T["payload"];
 
-export type AppActionTypes = ICounterIncrementAction | ICounterDecrementAction;
-
 export type AppDispatch = (a: AppActionTypes) => void;
 
 export type AppReducer<S> = (state: Readonly<S>, action: AppActionTypes) => S;
+
+// add new actions here
+export type AppActionTypes = ICounterIncrementAction | ICounterDecrementAction;
 
 export interface IAppState {
   counterState: ICounterState;

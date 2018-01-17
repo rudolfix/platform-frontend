@@ -11,10 +11,10 @@ import { applyMiddleware, createStore, Store } from "redux";
 import { logger } from "redux-logger";
 
 import { App } from "./components/App";
+import { getConfig } from "./getConfig";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
 import { createInjectMiddleware } from "./redux-injectify";
 import { IAppState, reducers } from "./store";
-import { getConfig } from "./getConfig";
 
 // @note: this is done to make HMR work with react router. In production build its gone.
 function forceRerenderInDevMode(): number {

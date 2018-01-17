@@ -58,9 +58,18 @@ export const counterReducer: AppReducer<ICounterState> = (
   return state;
 };
 
-export const counterAsyncAction = async (delay: TDelay, dispatch: AppDispatch) => {
+export const counterAsyncAction = async (
+  delay: TDelay,
+  dispatch: AppDispatch,
+  getState: TGetState,
+  navigateTo: TNavigateTo,
+) => {
   await delay(1000);
   dispatch(counterIncrementAction({ by: 2 }));
+
+  if (getState().counterState.value >= 10) {
+    navigateTo("/success");
+  }
 };
 
 export const explicitCounterAsyncAction = injectableFn(

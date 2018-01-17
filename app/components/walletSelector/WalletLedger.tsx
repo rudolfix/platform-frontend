@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { WalletLedgerChooserComponent } from "./WalletLedgerChooserComponent";
+import { WalletLedgerChooser } from "./WalletLedgerChooser";
 import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
 
 export const WalletLedger = () => {
@@ -8,7 +8,7 @@ export const WalletLedger = () => {
   const check = true;
 
   if (check) {
-    return <WalletLedgerChooserComponent />;
+    return <WalletLedgerChooser />;
   } else {
     return <WalletLedgerInitComponent />;
   }

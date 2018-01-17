@@ -1,1 +1,73 @@
 @import "../../styles/bootstrap";
+
+$blue-hover: rgb(224, 242, 255);
+$blue-accent: #d9edf7;
+
+.chooser-table {
+  margin: .9375rem 0;
+  border: .0625rem solid $blue-darker;
+  width: 100%;
+  border-collapse: collapse;
+
+  .address {
+    text-align: left;
+  }
+
+  thead {
+    text-transform: uppercase;
+    color: $gray-almost-dark;
+    font-size: .75rem;
+
+    th {
+      border-bottom: .0625rem solid $blue-darker;
+      text-align: center;
+    }
+  }
+
+  tbody {
+    tr {
+      border-top: .0625rem solid $gray-almost-dark;
+    }
+  }
+
+  tfoot {
+    td {
+      border-top: .0625rem solid $blue-darker;
+      padding: .625rem;
+      border-collapse: separate;
+      border-spacing: 5px 5px;
+    }
+  }
+
+  tbody > tr {
+    &:hover > td {
+      background-color: lighten($blue-hover, 3%);
+    }
+  }
+
+  th,
+  td {
+    padding: 1.25rem;
+    border-collapse: collapse;
+  }
+}
+
+.use-column {
+  cursor: pointer;
+  text-align: center;
+}
+
+.with-ether {
+  background-color: $blue-accent;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+}

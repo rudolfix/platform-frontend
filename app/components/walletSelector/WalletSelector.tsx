@@ -3,9 +3,9 @@ import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import { HiResImage } from "../HiResImage";
-import {Browser} from "./Browser";
-import {Ledger} from "./Ledger";
-import {Light} from "./Light";
+import { WalletBrowser } from "./WalletBrowser";
+import { WalletLedger } from "./WalletLedger";
+import { WalletLight } from "./WalletLight";
 import * as styles from "./WalletSelector.module.scss";
 
 interface IWalletSelectorProps {
@@ -20,10 +20,10 @@ interface IWalletSelectorProps {
 export const WalletSelectorComponent: React.SFC<IWalletSelectorProps> = ({
   walletInBrowserSelected,
   ledgerWalletSelected,
-                                                                           lightWalletSelected,
+  lightWalletSelected,
   walletInBrowserSelectedAction,
   ledgerWalletSelectedAction,
-                                                                           lightWalletSelectedAction,
+  lightWalletSelectedAction,
 }) => (
   <Container>
     <Row>
@@ -63,9 +63,9 @@ export const WalletSelectorComponent: React.SFC<IWalletSelectorProps> = ({
     </Row>
     <Row>
       <Col>
-        {walletInBrowserSelected && <Browser />}
-        {ledgerWalletSelected && <Ledger />}
-        {lightWalletSelected && <Light />}
+        {walletInBrowserSelected && <WalletBrowser />}
+        {ledgerWalletSelected && <WalletLedger />}
+        {lightWalletSelected && <WalletLight />}
       </Col>
     </Row>
   </Container>

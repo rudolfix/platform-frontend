@@ -5,6 +5,8 @@
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
   "devDependencies": {
+    "@types/bignumber.js": "^5.0.0",
+    "@types/bluebird": "^3.5.1",
     "@types/chai": "^4.1.0",
     "@types/chai-as-promised": "^7.1.0",
     "@types/enzyme": "^3.1.6",
@@ -57,9 +59,10 @@
     "format:fix": "prettier --write '**/*.{ts,tsx,js,json,md,gql}'",
     "tslint": "tslint --project . --format stylish",
     "tslint:fix": "tslint --fix --project . --format stylish",
+    "tsc": "tsc --noEmit --project .",
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
-    "lint": "yarn format && yarn tslint && yarn sasslint",
-    "lint:fix": "yarn format:fix && yarn tslint:fix && yarn sasslint",
+    "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc",
+    "lint:fix": "yarn format:fix && yarn tslint:fix && yarn sasslint && yarn tsc",
     "test:unit": "mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
     "test:unit-coverage": "nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/**/*.spec.ts?(x)'",
     "test": "yarn lint && yarn test:unit",
@@ -67,6 +70,8 @@
     "codecov": "codecov"
   },
   "dependencies": {
+    "bignumber.js": "^5.0.0",
+    "bluebird": "^3.5.1",
     "bootstrap": "4.0.0-beta.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

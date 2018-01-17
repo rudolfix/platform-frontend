@@ -1,11 +1,11 @@
 import {
   Delay,
-  Dispatch,
+  DelaySymbol,
+  DispatchSymbol,
   GetState,
+  GetStateSymbol,
   NavigateTo,
-  TDelay,
-  TGetState,
-  TNavigateTo,
+  NavigateToSymbol,
 } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch, AppReducer, IAppAction } from "../../store";
@@ -59,10 +59,10 @@ export const counterReducer: AppReducer<ICounterState> = (
 };
 
 export const counterAsyncAction = async (
-  delay: TDelay,
+  delay: Delay,
   dispatch: AppDispatch,
-  getState: TGetState,
-  navigateTo: TNavigateTo,
+  getState: GetState,
+  navigateTo: NavigateTo,
 ) => {
   await delay(1000);
   dispatch(counterIncrementAction({ by: 2 }));
@@ -73,7 +73,7 @@ export const counterAsyncAction = async (
 };
 
 export const explicitCounterAsyncAction = injectableFn(
-  async (delay: TDelay, dispatch: AppDispatch, getState: TGetState, navigateTo: TNavigateTo) => {
+  async (delay: Delay, dispatch: AppDispatch, getState: GetState, navigateTo: NavigateTo) => {
     await delay(1000);
     dispatch(counterIncrementAction({ by: 2 }));
 
@@ -81,5 +81,5 @@ export const explicitCounterAsyncAction = injectableFn(
       navigateTo("/success");
     }
   },
-  [Delay, Dispatch, GetState, NavigateTo],
+  [DelaySymbol, DispatchSymbol, GetStateSymbol, NavigateToSymbol],
 );

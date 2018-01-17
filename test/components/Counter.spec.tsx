@@ -8,9 +8,9 @@ import { spy } from "sinon";
 import { Counter, CounterSFC } from "../../app/components/Counter";
 import {
   customizerContainerWithMiddlewareApi,
-  Delay,
+  DelaySymbol,
   getContainer,
-  NavigateTo,
+  NavigateToSymbol,
 } from "../../app/getContainer";
 import { createInjectMiddleware } from "../../app/redux-injectify";
 import { IAppState, reducers } from "../../app/store";
@@ -53,7 +53,7 @@ describe("<Counter />", () => {
       const container = getContainer(dummyConfig);
 
       //rebind dependencies that cause side effects (could me http client etc)
-      container.rebind(Delay).toConstantValue(() => Promise.resolve());
+      container.rebind(DelaySymbol).toConstantValue(() => Promise.resolve());
       let navigateToSpy;
 
       // we use partial here since we are interested only in part of the state and this should make tests harder to break
@@ -66,8 +66,8 @@ describe("<Counter />", () => {
       const middleware = applyMiddleware(
         createInjectMiddleware(container, (container, middlewareApi) => {
           customizerContainerWithMiddlewareApi(container, middlewareApi);
-          navigateToSpy = spy(container.get(NavigateTo));
-          container.rebind(NavigateTo).toConstantValue(navigateToSpy);
+          navigateToSpy = spy(container.get(NavigateToSymbol));
+          container.rebind(NavigateToSymbol).toConstantValue(navigateToSpy);
         }),
       );
 

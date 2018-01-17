@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { TDelay, TGetState, TNavigateTo } from "../../../app/getContainer";
+import { Delay, GetState, NavigateTo } from "../../../app/getContainer";
 import {
   counterDecrementAction,
   counterIncrementAction,
@@ -47,10 +47,10 @@ describe("counter module", () => {
         },
       };
 
-      const delayMock: TDelay = spy(() => Promise.resolve());
+      const delayMock: Delay = spy(() => Promise.resolve());
       const dispatchMock: AppDispatch = spy(() => {});
-      const getStateMock: TGetState = spy(() => appState);
-      const navigateToMock: TNavigateTo = spy(() => {});
+      const getStateMock: GetState = spy(() => appState);
+      const navigateToMock: NavigateTo = spy(() => {});
 
       await explicitCounterAsyncAction(delayMock, dispatchMock, getStateMock, navigateToMock);
 
@@ -67,10 +67,10 @@ describe("counter module", () => {
         },
       };
 
-      const delayMock: TDelay = spy(() => Promise.resolve());
+      const delayMock: Delay = spy(() => Promise.resolve());
       const dispatchMock: AppDispatch = spy(() => {});
-      const getStateMock: TGetState = spy(() => appState);
-      const navigateToMock: TNavigateTo = spy(() => {});
+      const getStateMock: GetState = spy(() => appState);
+      const navigateToMock: NavigateTo = spy(() => {});
 
       await explicitCounterAsyncAction(delayMock, dispatchMock, getStateMock, navigateToMock);
 

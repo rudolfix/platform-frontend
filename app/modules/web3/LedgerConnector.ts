@@ -7,12 +7,7 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { inject, injectable } from "inversify";
 import { IPersonalWallet, WalletType } from "./PersonalWeb3";
-
-export const EthereumNetworkConfig = "EthereumNetworkConfig";
-
-export interface IEthereumNetworkConfig {
-  rpcUrl: string;
-}
+import { EthereumNetworkConfig, IEthereumNetworkConfig } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -21,7 +16,7 @@ interface ILedgerConfig {
   arbitraryDataEnabled: boolean;
 }
 
-interface ILedgerAccount {
+export interface IDerivationPathToAddress {
   [derivationPath: string]: string;
 }
 
@@ -29,6 +24,8 @@ export class LedgerLockedError extends Error {}
 export class LedgerNotAvailableError extends Error {}
 export class LedgerNotSupportedVersionError extends Error {}
 export class LedgerInvalidDerivationPathError extends Error {}
+
+export const LedgerConnectorSymbol = "LedgerConnector";
 
 @injectable()
 export class LedgerConnector implements IPersonalWallet {
@@ -60,7 +57,7 @@ export class LedgerConnector implements IPersonalWallet {
     derivationPath: string,
     startingIndex: number,
     numberOfAddresses: number,
-  ): Promise<ILedgerAccount> {
+  ): Promise<IDerivationPathToAddress> {
     return (this.web3 as any).getMultipleAccounts(derivationPath, startingIndex, numberOfAddresses);
   }
 }

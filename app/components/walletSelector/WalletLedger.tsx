@@ -33,14 +33,14 @@ export const WalletLedgerComponent: React.SFC<IWalletLedgerComponent> = ({ error
         </li>
       </ul>
     </div>
-    {errorMessage &&
-    <Alert color="info">
-      <h4>Connection status:</h4>
-      <p>
-        {errorMessage}
-      </p>
-    </Alert>}
+    {errorMessage && (
+      <Alert color="info">
+        <h4>Connection status:</h4>
+        <p>{errorMessage}</p>
+      </Alert>
+    )}
     <LoadingIndicator />
-  </div>);
+  </div>
+);
 
 export const WalletLedger = () => <WalletLedgerComponent />;

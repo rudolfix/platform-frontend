@@ -45,4 +45,4 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({ errorMe
   </div>
 );
 
-export const WalletBrowser = () => <WalletBrowserComponent errorMessage={"msg"}/>;
+export const WalletBrowser = () => <WalletBrowserComponent errorMessage={"msg"} />;

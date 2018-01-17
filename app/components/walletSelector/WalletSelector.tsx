@@ -8,6 +8,19 @@ import { WalletLedger } from "./WalletLedger";
 import { WalletLight } from "./WalletLight";
 import * as styles from "./WalletSelector.module.scss";
 
+interface IWalletTab {
+  active?: boolean;
+  onSelect: () => any;
+}
+
+const WalletTab: React.SFC<IWalletTab> = ({ active, onSelect, children, ...props }) => {
+  return (
+    <div className={cn(styles.walletTab, { active })} onClick={onSelect} {...props}>
+      <div className={styles.walletTabTitle}>{children}</div>
+    </div>
+  );
+};
+
 interface IWalletSelectorProps {
   walletInBrowserSelectedAction: () => any;
   ledgerWalletSelectedAction: () => any;
@@ -70,19 +83,6 @@ export const WalletSelectorComponent: React.SFC<IWalletSelectorProps> = ({
     </Row>
   </Container>
 );
-
-interface IWalletTab {
-  active?: boolean;
-  onSelect: () => any;
-}
-
-const WalletTab: React.SFC<IWalletTab> = ({ active, onSelect, children, ...props }) => {
-  return (
-    <div className={cn(styles.walletTab, { active })} onClick={onSelect} {...props}>
-      <div className={styles.walletTabTitle}>{children}</div>
-    </div>
-  );
-};
 
 export const WalletSelector = () => (
   <WalletSelectorComponent

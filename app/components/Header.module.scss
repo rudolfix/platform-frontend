@@ -1,8 +1,25 @@
 @import "../styles/neufund-theme";
 
 // this whole file is just placeholder for dev purposes
-$white: #fff;
+$white: #ffD;
+$gray: #424A52;
+// $moe: linear-gradient(180.85deg, #2B5569 0%, #2D5669 80%, #2E4B58 100%);;
 
+.bar{
+  background: $white;
+  height: 4rem;  
+}
+
+.brand{
+  border-right: 1px;
+  border-right-style: solid;
+  border-color: gray;
+}
+.text{
+  font-size: 1.5rem;
+  font-family: $font;
+  font-weight: 500;
+}
 .link {
   color: $white;
 

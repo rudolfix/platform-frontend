@@ -10,7 +10,7 @@ import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const App = () => (
   <div>
-    <Header />
+    <Header isAuthorized={false}/>
 
     <Route path="/" component={Home} exact />
     <Route path="/walletselector" component={WalletSelector} exact />

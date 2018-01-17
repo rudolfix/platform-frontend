@@ -95,8 +95,8 @@ export const WalletSelector = () => (
     lightWalletSelectedAction={() => {
       alert("Selected light wallet");
     }}
-    walletInBrowserSelected
-    ledgerWalletSelected={false}
+    walletInBrowserSelected={false}
+    ledgerWalletSelected
     lightWalletSelected={false}
   />
 );

@@ -10,6 +10,7 @@ import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { logger } from "redux-logger";
 
+import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
 import { createInjectMiddleware } from "./redux-injectify";

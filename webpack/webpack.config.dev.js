@@ -71,6 +71,21 @@ module.exports = {
               { loader: "sass-loader" },
             ],
           },
+          {
+            test: /\.(jpg|png|svg)$/,
+            loader: "url-loader",
+            options: {
+              limit: 25000,
+              publicPath: '/'
+            },
+          },
+          {
+            test: /\.(woff2|woff|ttf|eot|otf)$/,
+            loader: "file-loader",
+            options: {
+              name: "fonts/[hash].[ext]",
+            },
+          }
         ],
       },
     ],

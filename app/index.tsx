@@ -1,20 +1,22 @@
-import "reflect-metadata";
-import "./styles/bootstrap.scss";
-
-// tslint:disable-next-line
+// tslint:disable-next-line: no-submodule-imports
 import createHistory from "history/createBrowserHistory";
+// tslint:disable-next-line: no-submodule-imports
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { logger } from "redux-logger";
+import "reflect-metadata";
 
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
+import muiTheme from "./muiTheme";
 import { createInjectMiddleware } from "./redux-injectify";
 import { IAppState, reducers } from "./store";
+import "./styles/bootstrap.scss";
 
 // @note: this is done to make HMR work with react router. In production build its gone.
 function forceRerenderInDevMode(): number {
@@ -28,11 +30,13 @@ function forceRerenderInDevMode(): number {
 function renderApp(store: Store<IAppState>, history: any, Component: React.SFC<any>): void {
   const mountNode = document.getElementById("app");
   ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-        <Component />
-      </ConnectedRouter>
-    </Provider>,
+    <MuiThemeProvider muiTheme={muiTheme}>
+      <Provider store={store}>
+        <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
+          <Component />
+        </ConnectedRouter>
+      </Provider>
+    </MuiThemeProvider>,
     mountNode,
   );
 }

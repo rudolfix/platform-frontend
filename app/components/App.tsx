@@ -6,7 +6,7 @@ import { Header } from "./Header";
 import { Home } from "./Home";
 import { Kyc } from "./Kyc";
 import { Success } from "./Success";
-import { WalletSelector } from "./WalletSelector";
+import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const App = () => (
   <div>

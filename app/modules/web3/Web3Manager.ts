@@ -11,6 +11,12 @@ export interface IEthereumNetworkConfig {
 
 export const Web3ManagerSymbol = "Web3Manager";
 
+export class WalletNotConnectedError extends Error {
+  constructor(public readonly wallet: IPersonalWallet) {
+    super("Wallet not connected");
+  }
+}
+
 // singleton holding all web3 instances
 @injectable()
 export class Web3Manager {
@@ -21,7 +27,12 @@ export class Web3Manager {
     public readonly networkId: string,
   ) {}
 
-  public plugPersonalWallet(personalWallet: IPersonalWallet): void {
+  public async plugPersonalWallet(personalWallet: IPersonalWallet): Promise<void> {
+    const isWalletConnected = await personalWallet.testConnection(this.networkId);
+    if (!isWalletConnected) {
+      throw new WalletNotConnectedError(personalWallet);
+    }
+
     this.personalWallet = personalWallet;
   }
 }

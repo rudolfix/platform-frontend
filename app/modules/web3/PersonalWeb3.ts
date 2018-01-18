@@ -15,5 +15,6 @@ export interface IPersonalWallet {
 
   web3?: Web3;
 
-  isConnected(): Promise<boolean>;
+  // this will be periodically ran by Web3Manager to ensure that wallet connection is still established
+  testConnection(networkId: string): Promise<boolean>;
 }

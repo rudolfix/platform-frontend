@@ -1,11 +1,17 @@
 import { toPairs, zip } from "lodash";
 
 import { pairZip } from "../../../../typings/modifications";
-import { DispatchSymbol, GetState, GetStateSymbol } from "../../../getContainer";
+import {
+  DispatchSymbol,
+  GetState,
+  GetStateSymbol,
+  NavigateTo,
+  NavigateToSymbol,
+} from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../../storeHelpers";
-import { LedgerConnector, LedgerConnectorSymbol } from "../../web3/LedgerConnector";
+import { LedgerConnectorSymbol, LedgerWallet } from "../../web3/LedgerWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { ILedgerAccount } from "./reducer";
 
@@ -45,7 +51,7 @@ export const ledgerWizardAccountsListPreviousPageAction = makeParameterlessActio
 >("LEDGER_WIZARD_ACCOUNTS_LIST_PREVIOUS_PAGE");
 
 export const tryEstablishingConnectionWithLedger = injectableFn(
-  async (dispatch: AppDispatch, ledgerConnector: LedgerConnector, web3Manager: Web3Manager) => {
+  async (dispatch: AppDispatch, ledgerConnector: LedgerWallet, web3Manager: Web3Manager) => {
     await ledgerConnector.connect(web3Manager.networkId);
 
     dispatch(ledgerConnectionEstablishedAction());
@@ -57,7 +63,7 @@ export const loadLedgerAccountsAction = injectableFn(
   async (
     dispatch: AppDispatch,
     getState: GetState,
-    ledgerConnector: LedgerConnector,
+    ledgerConnector: LedgerWallet,
     web3Manager: Web3Manager,
   ) => {
     const { index, numberOfAccountsPerPage, derivationPathPrefix } = getState().ledgerWizardState;
@@ -104,3 +110,13 @@ export const goToPreviousPageAndLoadDataAction = injectableFn(
   },
   [DispatchSymbol],
 );
+
+export const finishSettingUpLedgerConnectorAction = (derivationPath: string) =>
+  injectableFn(
+    async (navigateTo: NavigateTo, ledgerConnector: LedgerWallet, web3Manager: Web3Manager) => {
+      ledgerConnector.setDerivationPath(derivationPath);
+      await web3Manager.plugPersonalWallet(ledgerConnector);
+      navigateTo("/platform");
+    },
+    [NavigateToSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
+  );

@@ -24,25 +24,37 @@ export class LedgerLockedError extends Error {}
 export class LedgerNotAvailableError extends Error {}
 export class LedgerNotSupportedVersionError extends Error {}
 export class LedgerInvalidDerivationPathError extends Error {}
+export class LedgerUnknownError extends Error {}
 
 export const LedgerConnectorSymbol = "LedgerConnector";
 
 @injectable()
-export class LedgerConnector implements IPersonalWallet {
+export class LedgerWallet implements IPersonalWallet {
   public readonly type: WalletType.LEDGER;
   public web3: Web3;
+  protected ledgerInstance: any | undefined;
 
   public constructor(
     @inject(EthereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 
-  public isConnected(): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  public async testConnection(): Promise<boolean> {
+    try {
+      await testIfUnlocked(this.ledgerInstance);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   public async connect(networkId: string): Promise<void> {
-    const ledger = await connectToLedger(networkId, this.web3Config.rpcUrl);
-    this.web3 = ledger.ledgerWeb3;
+    try {
+      const ledger = await connectToLedger(networkId, this.web3Config.rpcUrl);
+      this.web3 = ledger.ledgerWeb3;
+      this.ledgerInstance = ledger.ledgerInstance;
+    } catch (e) {
+      throw new LedgerUnknownError();
+    }
   }
 
   public setDerivationPath(derivationPath: string): void {

@@ -1,4 +1,5 @@
-import { isFunction } from "lodash";
+import { AssertionError, expect } from "chai";
+import { isFunction, omit } from "lodash";
 import { spy } from "sinon";
 
 // helper to generate quickly selector for data-test-ids
@@ -32,4 +33,26 @@ export function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partia
   });
 
   return mock;
+}
+
+export async function expectToBeRejected(
+  functionCallWrapper: () => Promise<any>,
+  expectedError: Error,
+): Promise<any> {
+  let thrown = false;
+  try {
+    await functionCallWrapper();
+  } catch (actualError) {
+    thrown = true;
+    errorEquality(actualError, expectedError);
+  } finally {
+    if (!thrown) {
+      throw new AssertionError("Expected to throw but it did not.");
+    }
+  }
+}
+
+export function errorEquality(actual: Error, expected: Error): void {
+  expect(actual.message).to.be.eq(expected.message);
+  expect(omit(actual, ["stack"])).to.be.deep.eq(omit(expected, ["stack"]));
 }

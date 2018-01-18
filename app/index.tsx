@@ -10,6 +10,7 @@ import { applyMiddleware, createStore, Store } from "redux";
 import { logger } from "redux-logger";
 import "reflect-metadata";
 
+import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
 import muiTheme from "./muiTheme";

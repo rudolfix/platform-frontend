@@ -2,8 +2,7 @@ import { expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { Provider } from "react-redux";
-import { applyMiddleware } from "redux";
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { spy } from "sinon";
 import { Counter, CounterSFC } from "../../app/components/Counter";
 import {

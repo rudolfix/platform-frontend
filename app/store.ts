@@ -10,8 +10,8 @@ import {
   ILedgerConnectionEstablishedAction,
   ILedgerWizardAccountsListNextPage,
   ILedgerWizardAccountsListPreviousPage,
+  ISetLedgerWizardAccountsAction,
 } from "./modules/wallet-selector/ledger-wizard/actions";
-import { ISetLedgerWizardAccountsAction } from "./modules/wallet-selector/ledger-wizard/actions";
 import {
   ILedgerWizardState,
   ledgerWizardReducer,

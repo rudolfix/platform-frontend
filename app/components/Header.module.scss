@@ -1,33 +1,65 @@
 @import "../styles/neufund-theme";
 
 // this whole file is just placeholder for dev purposes
-$white: #ffD;
-$gray: #424A52;
-// $moe: linear-gradient(180.85deg, #2B5569 0%, #2D5669 80%, #2E4B58 100%);;
+// sass-lint:disable no-color-literals
 
-.bar{
+$white: #fff;
+$gray: #424a52;
+$active-background: linear-gradient(180.85deg, #2b5569 0%, #2d5669 80%, #2e4b58 100%);
+$cream: #f7f8f9;
+
+.un-authorized-navbar {
   background: $white;
-  height: 4rem;  
 }
 
-.brand{
-  border-right: 1px;
-  border-right-style: solid;
-  border-color: gray;
-}
-.text{
-  font-size: 1.5rem;
-  font-family: $font;
-  font-weight: 500;
-}
-.link {
-  color: $white;
-
-  &:hover {
-    color: $white;
-  }
+.authorized-navbar {
+  background: $active-background;
+  cursor: default;
 }
 
 .active {
   font-weight: bold;
+}
+
+@include media-breakpoint-up(sm) {
+  .active {
+    padding-bottom: .5rem;
+    border-bottom: 1.1rem;
+    border-bottom-style: solid;
+    border-bottom-color: $white;
+  }
+}
+
+.brand {
+  width: 3.75rem;
+  height: 1.875rem;
+  border-right: .09rem;
+  border-right-style: solid;
+  border-color: $cream;
+}
+
+.separator {
+  border-bottom: .09rem;
+  border-bottom-style: solid;
+  border-bottom-color: $cream;
+}
+
+.text {
+  font-size: .9rem;
+  color: $white;
+
+  &:hover {
+    color: $white;
+    text-decoration: none;
+  }
+}
+
+.mini-header {
+  font-size: .75rem;
+  color: $white;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
 }

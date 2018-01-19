@@ -10,13 +10,11 @@ import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const App = () => (
   <div>
-    <Header isAuthorized={false}/>
-
+    <Header isAuthorized={true} name={"Marcin Rodulfix"} balanceEuro={0} balanceNeu={0} />
     <Route path="/" component={Home} exact />
     <Route path="/walletselector" component={WalletSelector} exact />
     <Route path="/kyc" component={Kyc} exact />
     <Route path="/dashboard" component={Dashboard} exact />
-
     <Route path="/success" component={Success} exact />
   </div>
 );

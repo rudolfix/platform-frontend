@@ -5,8 +5,7 @@ import * as React from "react";
 import { LoadingIndicator } from "../../../app/components/LoadingIndicator";
 import { WalletLedgerChooserComponent } from "../../../app/components/walletSelector/WalletLedgerChooserComponent";
 
-describe.only("<WalletLedgerChooserComponent />", () => {
-
+describe("<WalletLedgerChooserComponent />", () => {
   const defaultProps = {
     loading: false,
     accounts: [
@@ -31,7 +30,7 @@ describe.only("<WalletLedgerChooserComponent />", () => {
         balance: "1.6495ETH",
       },
     ],
-    handleAddressChosen: () => () => {
+    handleAddressChosen: () => {
       alert("address clicked");
     },
     hasPreviousAddress: true,

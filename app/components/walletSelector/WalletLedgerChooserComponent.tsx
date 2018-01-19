@@ -7,9 +7,42 @@ import { ILedgerAccount } from "../../../typings/typings";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
 
+interface IAccountRow {
+  ledgerAccount: ILedgerAccount;
+  handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
+}
+
+export class AccountRow extends React.Component<IAccountRow> {
+  public constructor(props: IAccountRow) {
+    super(props);
+  }
+
+  handleClick = () => {
+    this.props.handleAddressChosen(this.props.ledgerAccount);
+  };
+
+  render(): React.ReactNode {
+    return (
+      <tr
+        onClick={this.handleClick}
+        className={cn(styles.useColumn, {
+          [styles.withEther]: parseInt(this.props.ledgerAccount.balance, 10) > 0,
+        })}
+      >
+        <td>{this.props.ledgerAccount.derivationPath}</td>
+        <td className={styles.address}>{this.props.ledgerAccount.address}</td>
+        <td>{this.props.ledgerAccount.balance}</td>
+        <td>
+          <i className="fa fa-chevron-right" aria-hidden="true" />
+        </td>
+      </tr>
+    );
+  }
+}
+
 interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
-  handleAddressChosen: (account: ILedgerAccount) => () => void;
+  handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
   hasPreviousAddress: boolean;
   showPrevAddresses: () => any;
   showNextAddresses: () => any;
@@ -54,21 +87,11 @@ export const WalletLedgerChooserComponent: React.SFC<IWalletLedgerChooserCompone
         </thead>
         <tbody>
           {accounts.map(a => (
-            <tr
+            <AccountRow
               key={a.derivationPath}
-              onClick={
-                // tslint:disable-next-line
-                () => handleAddressChosen(a)
-              }
-              className={cn(styles.useColumn, { [styles.withEther]: parseInt(a.balance, 10) > 0 })}
-            >
-              <td>{a.derivationPath}</td>
-              <td className={styles.address}>{a.address}</td>
-              <td>{a.balance}</td>
-              <td>
-                <i className="fa fa-chevron-right" aria-hidden="true" />
-              </td>
-            </tr>
+              ledgerAccount={a}
+              handleAddressChosen={handleAddressChosen}
+            />
           ))}
         </tbody>
         <tfoot>

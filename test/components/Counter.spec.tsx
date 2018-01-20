@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { mount, shallow } from "enzyme";
+import { shallow } from "enzyme";
 import * as React from "react";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
@@ -13,6 +13,7 @@ import {
 } from "../../app/getContainer";
 import { createInjectMiddleware } from "../../app/redux-injectify";
 import { IAppState, reducers } from "../../app/store";
+import { createMount } from "../createMount";
 import { dummyConfig } from "../fixtures";
 import { tid } from "../testUtils";
 
@@ -71,7 +72,7 @@ describe("<Counter />", () => {
       );
 
       const store = createStore(reducers, initialState as any, middleware);
-      const component = mount(
+      const component = createMount(
         <Provider store={store}>
           <Counter />
         </Provider>,

@@ -5,6 +5,7 @@ import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
+import { delay } from "bluebird";
 import { inject, injectable } from "inversify";
 import { IPersonalWallet, WalletType } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./Web3Manager";
@@ -41,7 +42,7 @@ export class LedgerWallet implements IPersonalWallet {
 
   public async testConnection(): Promise<boolean> {
     try {
-      await testIfUnlocked(this.ledgerInstance);
+      await getLedgerConfig(this.ledgerInstance);
       return true;
     } catch {
       return false;
@@ -76,11 +77,14 @@ export class LedgerWallet implements IPersonalWallet {
     addressesPerPage: number,
   ): Promise<IDerivationPathToAddress> {
     const derivationPath = derivationPathPrefix + "0";
-    return this.ledgerInstance.getMultipleAccounts(
-      derivationPath,
-      page * addressesPerPage,
-      addressesPerPage,
-    );
+
+    return noSimultaneousConnectionsGuard(this.ledgerInstance, () => {
+      return this.ledgerInstance.getMultipleAccounts(
+        derivationPath,
+        page * addressesPerPage,
+        addressesPerPage,
+      );
+    });
   }
 }
 
@@ -97,18 +101,20 @@ async function testIfUnlocked(ledgerInstance: any): Promise<void> {
 }
 
 async function getLedgerConfig(ledgerInstance: any): Promise<ILedgerConfig> {
-  return new Promise<ILedgerConfig>((resolve, reject) => {
-    ledgerInstance.getAppConfig((error: any, data: ILedgerConfig) => {
-      if (error) {
-        if (error.message === "Timeout") {
-          reject(new LedgerNotAvailableError());
+  return new Promise<ILedgerConfig>(async (resolve, reject) => {
+    noSimultaneousConnectionsGuard(ledgerInstance, () => {
+      ledgerInstance.getAppConfig((error: any, data: ILedgerConfig) => {
+        if (error) {
+          if (error.message === "Timeout") {
+            reject(new LedgerNotAvailableError());
+          } else {
+            reject(error);
+          }
         } else {
-          reject(error);
+          resolve(data);
         }
-      } else {
-        resolve(data);
-      }
-    }, CHECK_INTERVAL / 2);
+      }, CHECK_INTERVAL / 2);
+    }).catch(reject);
   });
 }
 
@@ -151,4 +157,15 @@ async function connectToLedger(networkId: string, rpcUrl: string): Promise<ILedg
   await testIfUnlocked(ledgerInstance);
 
   return { ledgerInstance, ledgerWeb3 };
+}
+
+// right after callback needs to be used instead of awaiting for this function because promise resolving is async
+async function noSimultaneousConnectionsGuard<T>(
+  ledgerInstance: any,
+  callRightAfter: () => T,
+): Promise<T> {
+  while (ledgerInstance.connectionOpened) {
+    await delay(0);
+  }
+  return callRightAfter();
 }

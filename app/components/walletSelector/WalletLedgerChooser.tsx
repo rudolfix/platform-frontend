@@ -6,6 +6,7 @@ import {
   goToNextPageAndLoadDataAction,
   goToPreviousPageAndLoadDataAction,
   loadLedgerAccountsAction,
+  verifyIfLedgerStillConnected,
 } from "../../modules/wallet-selector/ledger-wizard/actions";
 import {
   ILedgerAccount,
@@ -13,6 +14,7 @@ import {
 } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { withActionWatcher } from "../../utils/WatchAction";
 import {
   IWalletLedgerChooserComponent,
   IWalletLedgerChooserComponentDispatchProps,
@@ -39,5 +41,9 @@ export const WalletLedgerChooser = compose<React.SFC>(
   }),
   onEnterAction({
     actionCreator: dispatch => dispatch(loadLedgerAccountsAction),
+  }),
+  withActionWatcher({
+    actionCreator: dispatch => dispatch(verifyIfLedgerStillConnected),
+    interval: 1000,
   }),
 )(WalletLedgerChooserComponent);

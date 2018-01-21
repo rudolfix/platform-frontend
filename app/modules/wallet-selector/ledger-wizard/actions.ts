@@ -11,7 +11,12 @@ import {
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../../storeHelpers";
-import { LedgerConnectorSymbol, LedgerLockedError, LedgerWallet } from "../../web3/LedgerWallet";
+import {
+  LedgerConnectorSymbol,
+  LedgerLockedError,
+  LedgerNotAvailableError,
+  LedgerWallet,
+} from "../../web3/LedgerWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { ILedgerAccount } from "./reducer";
 
@@ -144,3 +149,16 @@ export const finishSettingUpLedgerConnectorAction = (derivationPath: string) =>
     },
     [NavigateToSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
   );
+
+export const verifyIfLedgerStillConnected = injectableFn(
+  async (dispatch: AppDispatch, ledgerConnector: LedgerWallet) => {
+    if (!await ledgerConnector.testConnection()) {
+      dispatch(
+        ledgerConnectionEstablishedErrorAction({
+          errorMsg: mapLedgerErrorToErrorMessage(new LedgerNotAvailableError()),
+        }),
+      );
+    }
+  },
+  [DispatchSymbol, LedgerConnectorSymbol],
+);

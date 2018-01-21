@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import { connect } from "react-redux";
-import { IAppState } from "../../store";
+import { appConnect } from "../../store";
 import { WalletLedgerChooser } from "./WalletLedgerChooser";
 import { WalletLedgerInit } from "./WalletLedgerInitComponent";
 
@@ -21,9 +20,9 @@ export const WalletLedgerComponent: React.SFC<IWalletLedgerStateProps> = ({
   }
 };
 
-export const WalletLedger = connect<IWalletLedgerStateProps, undefined, undefined, IAppState>(
-  state => ({
+export const WalletLedger = appConnect<IWalletLedgerStateProps>({
+  stateToProps: state => ({
     isConnectionEstablished: state.ledgerWizardState.isConnectionEstablished,
     errorMsg: state.ledgerWizardState.errorMsg,
   }),
-)(WalletLedgerComponent);
+})(WalletLedgerComponent);

@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
 import { Web3Adapter } from "../../../app/modules/web3/Web3Adapter";
 import { WalletNotConnectedError, Web3Manager } from "../../../app/modules/web3/Web3Manager";
+import { dummyConfig } from "../../fixtures";
 import { createMock, expectToBeRejected } from "../../testUtils";
 
 describe("Web3Manager", () => {
@@ -13,7 +14,8 @@ describe("Web3Manager", () => {
       testConnection: async () => true,
     });
 
-    const web3Manager = new Web3Manager(web3AdapterMock, expectedNetworkId);
+    const web3Manager = new Web3Manager(dummyConfig.ethereumNetwork);
+    web3Manager.networkId = expectedNetworkId;
 
     await web3Manager.plugPersonalWallet(ledgerWalletMock);
 
@@ -29,7 +31,8 @@ describe("Web3Manager", () => {
       testConnection: async () => false,
     });
 
-    const web3Manager = new Web3Manager(web3AdapterMock, expectedNetworkId);
+    const web3Manager = new Web3Manager(dummyConfig.ethereumNetwork);
+    web3Manager.networkId = expectedNetworkId;
 
     await expectToBeRejected(
       () => web3Manager.plugPersonalWallet(ledgerWalletMock),

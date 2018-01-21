@@ -2,7 +2,8 @@ import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "./getConfig";
-import { EthereumNetworkConfig, IEthereumNetworkConfig } from "./modules/web3/Web3Manager";
+import { LedgerConnectorSymbol, LedgerWallet } from "./modules/web3/LedgerWallet";
+import { IEthereumNetworkConfig, Web3Manager, Web3ManagerSymbol } from "./modules/web3/Web3Manager";
 import { IAppState } from "./store";
 
 export type Delay = (n: number) => Promise<void>;
@@ -21,8 +22,17 @@ export function getContainer(config: IConfig): Container {
 
   container.bind<Delay>("Delay").toConstantValue(delay);
   container
-    .bind<IEthereumNetworkConfig>(EthereumNetworkConfig)
+    .bind<IEthereumNetworkConfig>(IEthereumNetworkConfig)
     .toConstantValue(config.ethereumNetwork);
+
+  container
+    .bind<LedgerWallet>(LedgerConnectorSymbol)
+    .to(LedgerWallet)
+    .inSingletonScope();
+  container
+    .bind<Web3Manager>(Web3ManagerSymbol)
+    .to(Web3Manager)
+    .inSingletonScope();
 
   return container;
 }

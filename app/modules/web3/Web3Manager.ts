@@ -1,9 +1,10 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
+import * as Web3 from "web3";
 
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
-export const EthereumNetworkConfig = "EthereumNetworkConfig";
+export const IEthereumNetworkConfig = "EthereumNetworkConfig";
 
 export interface IEthereumNetworkConfig {
   rpcUrl: string;
@@ -21,11 +22,18 @@ export class WalletNotConnectedError extends Error {
 @injectable()
 export class Web3Manager {
   public personalWallet?: IPersonalWallet;
+  public networkId: string;
+  public internalWeb3Adapter: Web3Adapter;
 
   constructor(
-    public readonly internalWeb3Adapter: Web3Adapter,
-    public readonly networkId: string,
+    @inject(IEthereumNetworkConfig) public readonly ethereumNetworkConfig: IEthereumNetworkConfig,
   ) {}
+
+  public async initialize(): Promise<void> {
+    const rawWeb3 = new Web3(new Web3.providers.HttpProvider(this.ethereumNetworkConfig.rpcUrl));
+    this.internalWeb3Adapter = new Web3Adapter(rawWeb3);
+    this.networkId = await this.internalWeb3Adapter.networkId();
+  }
 
   public async plugPersonalWallet(personalWallet: IPersonalWallet): Promise<void> {
     const isWalletConnected = await personalWallet.testConnection(this.networkId);

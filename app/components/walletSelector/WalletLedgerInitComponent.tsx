@@ -1,15 +1,19 @@
 import * as React from "react";
 import { Alert } from "reactstrap";
+import { compose } from "redux";
 
+import { tryEstablishingConnectionWithLedger } from "../../modules/wallet-selector/ledger-wizard/actions";
+import { appConnect } from "../../store";
+import { withActionWatcher } from "../../utils/WatchAction";
 import { HiResImage } from "../HiResImage";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
-interface IWalletLedgerInitComponent {
+interface IWalletLedgerInitComponentProps {
   errorMessage?: string;
 }
 
-export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponent> = ({
+export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps> = ({
   errorMessage,
 }) => (
   <div className={styles.ledgerInit}>
@@ -44,3 +48,16 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponent> = 
     <LoadingIndicator />
   </div>
 );
+
+// @todo: type inference doesnt work correctly here. Probably because of withActionWatcher signature
+export const WalletLedgerInit = compose<React.SFC>(
+  withActionWatcher({
+    actionCreator: dispatch => dispatch(tryEstablishingConnectionWithLedger),
+    interval: 2000,
+  }),
+  appConnect<IWalletLedgerInitComponentProps>({
+    stateToProps: state => ({
+      errorMessage: state.ledgerWizardState.errorMsg,
+    }),
+  }),
+)(WalletLedgerInitComponent);

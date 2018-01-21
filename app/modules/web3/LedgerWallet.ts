@@ -7,7 +7,7 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { inject, injectable } from "inversify";
 import { IPersonalWallet, WalletType } from "./PersonalWeb3";
-import { EthereumNetworkConfig, IEthereumNetworkConfig } from "./Web3Manager";
+import { IEthereumNetworkConfig } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -20,13 +20,14 @@ export interface IDerivationPathToAddress {
   [derivationPath: string]: string;
 }
 
-export class LedgerLockedError extends Error {}
-export class LedgerNotAvailableError extends Error {}
-export class LedgerNotSupportedVersionError extends Error {}
-export class LedgerInvalidDerivationPathError extends Error {}
-export class LedgerUnknownError extends Error {}
+export class LedgerError extends Error {}
+export class LedgerLockedError extends LedgerError {}
+export class LedgerNotAvailableError extends LedgerError {}
+export class LedgerNotSupportedVersionError extends LedgerError {}
+export class LedgerInvalidDerivationPathError extends LedgerError {}
+export class LedgerUnknownError extends LedgerError {}
 
-export const LedgerConnectorSymbol = "LedgerConnector";
+export const LedgerConnectorSymbol = "LedgerWallet";
 
 @injectable()
 export class LedgerWallet implements IPersonalWallet {
@@ -35,7 +36,7 @@ export class LedgerWallet implements IPersonalWallet {
   protected ledgerInstance: any | undefined;
 
   public constructor(
-    @inject(EthereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
+    @inject(IEthereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 
   public async testConnection(): Promise<boolean> {
@@ -53,7 +54,11 @@ export class LedgerWallet implements IPersonalWallet {
       this.web3 = ledger.ledgerWeb3;
       this.ledgerInstance = ledger.ledgerInstance;
     } catch (e) {
-      throw new LedgerUnknownError();
+      if (e instanceof LedgerError) {
+        throw e;
+      } else {
+        throw new LedgerUnknownError();
+      }
     }
   }
 

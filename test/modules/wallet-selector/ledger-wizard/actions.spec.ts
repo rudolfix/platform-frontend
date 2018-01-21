@@ -5,18 +5,65 @@ import {
   finishSettingUpLedgerConnectorAction,
   goToNextPageAndLoadDataAction,
   goToPreviousPageAndLoadDataAction,
+  ledgerConnectionEstablishedAction,
+  ledgerConnectionEstablishedErrorAction,
   ledgerWizardAccountsListNextPageAction,
   ledgerWizardAccountsListPreviousPageAction,
   loadLedgerAccountsAction,
   setLedgerAccountsAction,
+  tryEstablishingConnectionWithLedger,
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
-import { IDerivationPathToAddress, LedgerWallet } from "../../../../app/modules/web3/LedgerWallet";
+import {
+  IDerivationPathToAddress,
+  LedgerNotAvailableError,
+  LedgerWallet,
+} from "../../../../app/modules/web3/LedgerWallet";
 import { Web3Adapter } from "../../../../app/modules/web3/Web3Adapter";
 import { WalletNotConnectedError, Web3Manager } from "../../../../app/modules/web3/Web3Manager";
 import { IAppState } from "../../../../app/store";
 import { createMock } from "../../../testUtils";
 
 describe("Wallet selector > Ledger wizard > actions", () => {
+  describe("tryEstablishingConnectionWithLedger", () => {
+    it("should try establishing connection", async () => {
+      const expectedNetworkId = "5";
+
+      const mockDispatch = spy();
+      const ledgerWalletMock = createMock(LedgerWallet, {
+        connect: async () => {},
+      });
+      const web3ManagerMock = createMock(Web3Manager, {
+        networkId: expectedNetworkId,
+      });
+
+      await tryEstablishingConnectionWithLedger(mockDispatch, ledgerWalletMock, web3ManagerMock);
+
+      expect(mockDispatch).to.be.calledWithExactly(ledgerConnectionEstablishedAction());
+      expect(ledgerWalletMock.connect).to.be.calledWithExactly(expectedNetworkId);
+    });
+
+    it("should send error action on error", async () => {
+      const expectedNetworkId = "5";
+
+      const mockDispatch = spy();
+      const ledgerWalletMock = createMock(LedgerWallet, {
+        connect: async () => {
+          throw new LedgerNotAvailableError();
+        },
+      });
+      const web3ManagerMock = createMock(Web3Manager, {
+        networkId: expectedNetworkId,
+      });
+
+      await tryEstablishingConnectionWithLedger(mockDispatch, ledgerWalletMock, web3ManagerMock);
+
+      expect(mockDispatch).to.be.calledWithExactly(
+        ledgerConnectionEstablishedErrorAction({ errorMsg: "Nano Ledger S not available" }),
+      );
+      expect(ledgerWalletMock.connect).to.be.calledWithExactly(expectedNetworkId);
+    });
+  });
+
   describe("loadLedgerAccountsAction", () => {
     it("should load accounts from ledger connector", async () => {
       const dummyState: Partial<IAppState> = {
@@ -25,7 +72,8 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           numberOfAccountsPerPage: 10,
           derivationPathPrefix: "44'/60'/0'/",
           accounts: [],
-          isLoading: false,
+          isLoadingAddresses: false,
+          isConnectionEstablished: true,
         },
       };
       const expectedAccounts: IDerivationPathToAddress = {

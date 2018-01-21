@@ -11,12 +11,19 @@ import {
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../../storeHelpers";
-import { LedgerConnectorSymbol, LedgerWallet } from "../../web3/LedgerWallet";
+import { LedgerConnectorSymbol, LedgerLockedError, LedgerWallet } from "../../web3/LedgerWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { ILedgerAccount } from "./reducer";
 
 export interface ILedgerConnectionEstablishedAction extends IAppAction {
   type: "LEDGER_CONNECTION_ESTABLISHED";
+}
+
+export interface ILedgerConnectionEstablishedErrorAction extends IAppAction {
+  type: "LEDGER_CONNECTION_ESTABLISHED_ERROR";
+  payload: {
+    errorMsg: string;
+  };
 }
 
 export interface ISetLedgerWizardAccountsAction extends IAppAction {
@@ -38,6 +45,10 @@ export const ledgerConnectionEstablishedAction = makeParameterlessActionCreator<
   ILedgerConnectionEstablishedAction
 >("LEDGER_CONNECTION_ESTABLISHED");
 
+export const ledgerConnectionEstablishedErrorAction = makeActionCreator<
+  ILedgerConnectionEstablishedErrorAction
+>("LEDGER_CONNECTION_ESTABLISHED_ERROR");
+
 export const setLedgerAccountsAction = makeActionCreator<ISetLedgerWizardAccountsAction>(
   "SET_LEDGER_WIZARD_ACCOUNTS",
 );
@@ -50,11 +61,24 @@ export const ledgerWizardAccountsListPreviousPageAction = makeParameterlessActio
   ILedgerWizardAccountsListPreviousPage
 >("LEDGER_WIZARD_ACCOUNTS_LIST_PREVIOUS_PAGE");
 
+function mapLedgerErrorToErrorMessage(error: Error): string {
+  if (error instanceof LedgerLockedError) {
+    return "Nano Ledger S is locked";
+  }
+  return "Nano Ledger S not available";
+}
+
 export const tryEstablishingConnectionWithLedger = injectableFn(
   async (dispatch: AppDispatch, ledgerConnector: LedgerWallet, web3Manager: Web3Manager) => {
-    await ledgerConnector.connect(web3Manager.networkId);
+    try {
+      await ledgerConnector.connect(web3Manager.networkId);
 
-    dispatch(ledgerConnectionEstablishedAction());
+      dispatch(ledgerConnectionEstablishedAction());
+    } catch (e) {
+      dispatch(
+        ledgerConnectionEstablishedErrorAction({ errorMsg: mapLedgerErrorToErrorMessage(e) }),
+      );
+    }
   },
   [DispatchSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
 );

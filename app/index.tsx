@@ -28,7 +28,7 @@ function forceRerenderInDevMode(): number {
   }
 }
 
-function renderApp(store: Store<IAppState>, history: any, Component: React.SFC<any>): void {
+function renderApp(store: Store<IAppState>, history: any, Component: any): void {
   const mountNode = document.getElementById("app");
   ReactDOM.render(
     <MuiThemeProvider muiTheme={muiTheme}>

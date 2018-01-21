@@ -7,19 +7,24 @@ import { ILedgerAccount } from "../../../typings/typings";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
 
-interface IWalletLedgerChooserComponent {
+export interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
-  handleAddressChosen: (account: ILedgerAccount) => () => void;
   hasPreviousAddress: boolean;
-  showPrevAddresses: () => any;
-  showNextAddresses: () => any;
   loading: boolean;
   derivationPath: string;
   onDerivationPathChange: any;
   invalidDerivationPath: boolean;
 }
 
-export const WalletLedgerChooserComponent: React.SFC<IWalletLedgerChooserComponent> = ({
+export interface IWalletLedgerChooserComponentDispatchProps {
+  handleAddressChosen: (account: ILedgerAccount) => void;
+  showPrevAddresses: () => any;
+  showNextAddresses: () => any;
+}
+
+export const WalletLedgerChooserComponent: React.SFC<
+  IWalletLedgerChooserComponent & IWalletLedgerChooserComponentDispatchProps
+> = ({
   accounts,
   handleAddressChosen,
   hasPreviousAddress,

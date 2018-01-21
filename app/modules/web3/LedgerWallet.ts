@@ -64,18 +64,23 @@ export class LedgerWallet implements IPersonalWallet {
 
   public setDerivationPath(derivationPath: string): void {
     try {
-      (this.web3 as any).setDerivationPath(derivationPath);
+      this.ledgerInstance.setDerivationPath(derivationPath);
     } catch (e) {
       throw new LedgerInvalidDerivationPathError();
     }
   }
 
   public async getMultipleAccounts(
-    derivationPath: string,
-    startingIndex: number,
-    numberOfAddresses: number,
+    derivationPathPrefix: string,
+    page: number,
+    addressesPerPage: number,
   ): Promise<IDerivationPathToAddress> {
-    return (this.web3 as any).getMultipleAccounts(derivationPath, startingIndex, numberOfAddresses);
+    const derivationPath = derivationPathPrefix + "0";
+    return this.ledgerInstance.getMultipleAccounts(
+      derivationPath,
+      page * addressesPerPage,
+      addressesPerPage,
+    );
   }
 }
 

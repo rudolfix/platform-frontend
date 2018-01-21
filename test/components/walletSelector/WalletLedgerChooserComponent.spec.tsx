@@ -1,9 +1,13 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { LoadingIndicator } from "../../../app/components/LoadingIndicator";
-import { WalletLedgerChooserComponent } from "../../../app/components/walletSelector/WalletLedgerChooserComponent";
+import {
+  AccountRow,
+  WalletLedgerChooserComponent,
+} from "../../../app/components/walletSelector/WalletLedgerChooserComponent";
 
 describe("<WalletLedgerChooserComponent />", () => {
   const defaultProps = {
@@ -30,20 +34,12 @@ describe("<WalletLedgerChooserComponent />", () => {
         balance: "1.6495ETH",
       },
     ],
-    handleAddressChosen: () => {
-      alert("address clicked");
-    },
+    handleAddressChosen: spy(),
     hasPreviousAddress: true,
-    showPrevAddresses: () => {
-      alert("prev address clicked");
-    },
-    showNextAddresses: () => {
-      alert("next address clicked");
-    },
+    showPrevAddresses: spy(),
+    showNextAddresses: spy(),
     derivationPath: "44'/60'/0'/0",
-    onDerivationPathChange: () => {
-      alert("derivation path changed");
-    },
+    onDerivationPathChange: spy(),
     invalidDerivationPath: false,
   };
 
@@ -55,5 +51,52 @@ describe("<WalletLedgerChooserComponent />", () => {
     const component = shallow(<WalletLedgerChooserComponent {...props} />);
 
     expect(component.contains(<LoadingIndicator />)).to.be.true;
+  });
+
+  it("should render all provided accounts", () => {
+    const component = shallow(<WalletLedgerChooserComponent {...defaultProps} />);
+    expect(component.find(AccountRow).length).to.be.eq(defaultProps.accounts.length);
+  });
+
+  it("should show correct prev / next buttons regarding hasPreviousAddress property ", () => {
+    const componentWithPrevAddr = shallow(<WalletLedgerChooserComponent {...defaultProps} />);
+
+    const props = {
+      ...defaultProps,
+      hasPreviousAddress: false,
+    };
+    const componentWithoutPrevAddr = shallow(<WalletLedgerChooserComponent {...props} />);
+
+    expect(componentWithPrevAddr.find({ "data-test-id": "btn-previous" }).length).to.be.eq(1);
+    expect(componentWithPrevAddr.find({ "data-test-id": "btn-next" }).length).to.be.eq(1);
+
+    expect(componentWithoutPrevAddr.find({ "data-test-id": "btn-previous" }).length).to.be.eq(0);
+    expect(componentWithoutPrevAddr.find({ "data-test-id": "btn-next" }).length).to.be.eq(1);
+  });
+
+  it("should call correct click handlers for prev / next buttons", () => {
+    const component = shallow(<WalletLedgerChooserComponent {...defaultProps} />);
+
+    component.find({ "data-test-id": "btn-previous" }).simulate("click");
+    component.find({ "data-test-id": "btn-next" }).simulate("click");
+    expect(defaultProps.showPrevAddresses).to.be.calledOnce;
+    expect(defaultProps.showNextAddresses).to.be.calledOnce;
+  });
+
+  it("<AccountRow /> should render correct account data and handle click ", () => {
+    const account = defaultProps.accounts[0];
+    const accountRow = shallow(
+      <AccountRow ledgerAccount={account} handleAddressChosen={defaultProps.handleAddressChosen} />,
+    );
+
+    const renderedDerivationPath = accountRow.find({ "data-test-id": "account-derivation-path" });
+    expect(renderedDerivationPath.text()).to.be.eq(account.derivationPath);
+    const renderedAddress = accountRow.find({ "data-test-id": "account-address" });
+    expect(renderedAddress.text()).to.be.eq(account.address);
+    const renderedBalance = accountRow.find({ "data-test-id": "account-balance" });
+    expect(renderedBalance.text()).to.be.eq(account.balance);
+
+    accountRow.find({ "data-test-id": "account-row" }).simulate("click");
+    expect(defaultProps.handleAddressChosen).to.be.calledOnce;
   });
 });

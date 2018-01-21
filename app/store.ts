@@ -1,12 +1,7 @@
 import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
-import {
-  counterReducer,
-  ICounterDecrementAction,
-  ICounterIncrementAction,
-  ICounterState,
-} from "./modules/counter/index";
+
 import {
   ILedgerConnectionEstablishedAction,
   ILedgerConnectionEstablishedErrorAction,
@@ -32,8 +27,6 @@ export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTy
 
 // add new actions here
 export type AppActionTypes =
-  | ICounterIncrementAction
-  | ICounterDecrementAction
   //ledger
   | ILedgerConnectionEstablishedAction
   | ILedgerConnectionEstablishedErrorAction
@@ -42,12 +35,10 @@ export type AppActionTypes =
   | ILedgerWizardAccountsListPreviousPage;
 
 export interface IAppState {
-  counterState: ICounterState;
   ledgerWizardState: ILedgerWizardState;
 }
 
 export const reducers = combineReducers<IAppState>({
-  counterState: counterReducer,
   ledgerWizardState: ledgerWizardReducer,
   router: routerReducer,
 });

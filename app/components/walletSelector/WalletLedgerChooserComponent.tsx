@@ -57,7 +57,7 @@ export const WalletLedgerChooserComponent: React.SFC<
             <th className={styles.useColumn}>Use this address</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody data-test-id="wallet-ledger-accounts-table-body">
           {accounts.map(a => (
             <tr
               key={a.derivationPath}

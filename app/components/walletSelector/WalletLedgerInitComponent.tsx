@@ -9,6 +9,8 @@ import { HiResImage } from "../HiResImage";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
+export const LEDGER_RECONNECT_INTERVAL = 2000;
+
 interface IWalletLedgerInitComponentProps {
   errorMessage?: string;
 }
@@ -42,7 +44,7 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
     {errorMessage && (
       <Alert color="info">
         <h4>Connection status:</h4>
-        <p>{errorMessage}</p>
+        <p data-test-id="ledger-wallet-error-msg">{errorMessage}</p>
       </Alert>
     )}
     <LoadingIndicator />
@@ -53,7 +55,7 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
 export const WalletLedgerInit = compose<React.SFC>(
   withActionWatcher({
     actionCreator: dispatch => dispatch(tryEstablishingConnectionWithLedger),
-    interval: 2000,
+    interval: LEDGER_RECONNECT_INTERVAL,
   }),
   appConnect<IWalletLedgerInitComponentProps>({
     stateToProps: state => ({

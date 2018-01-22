@@ -7,6 +7,10 @@ interface IHiResImageProps {
 }
 
 export const HiResImage: React.SFC<IHiResImageProps> = ({ partialPath, className, altText }) => {
+  if (process.env.NODE_ENV === "test") {
+    return <div />;
+  }
+
   try {
     // @note: thanks to wonders of static analysis + webpack all images matching these paths will be part of the bundle
     const image = require("!file-loader?publicPath=/!../assets/img/" + partialPath + ".png");

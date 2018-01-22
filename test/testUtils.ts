@@ -1,4 +1,5 @@
 import { AssertionError, expect } from "chai";
+import * as invariant from "invariant";
 import { isFunction, omit } from "lodash";
 import { spy } from "sinon";
 
@@ -7,7 +8,15 @@ export function tid(id: string): string {
   return `[data-test-id="${id}"]`;
 }
 
-export function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): T {
+export interface IMockFns<T> {
+  // updates provided method mocks
+  reMock: (newMock: Partial<T>) => void;
+}
+
+export function createMock<T>(
+  clazz: new (...args: any[]) => T,
+  mockImpl: Partial<T>,
+): T & IMockFns<T> {
   const callGuard = (methodName: string) => (...args: any[]) => {
     throw new Error(`Unexpected call to method: '${methodName}' with args: ${args}`);
   };
@@ -31,6 +40,17 @@ export function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partia
       mock[methodName] = callGuard(methodName);
     }
   });
+
+  invariant(
+    !mock.reMock,
+    "Cannot properly attach mock utils. 'reMock' function already exists on mocked object!",
+  );
+  mock.reMock = (newMock: Partial<T>) => {
+    const methodsToReMock = Object.keys(newMock);
+    methodsToReMock.forEach(methodName => {
+      mock[methodName] = spy((newMock as any)[methodName]);
+    });
+  };
 
   return mock;
 }

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { ILedgerAccount } from "../../../typings/typings";
 import { WalletLedgerChooserComponent } from "./WalletLedgerChooserComponent";
 
 export const WalletLedgerChooser = () => {
@@ -27,8 +28,8 @@ export const WalletLedgerChooser = () => {
       balance: "1.6495ETH",
     },
   ];
-  const handleAddressChosen = () => () => {
-    alert("address clicked");
+  const handleAddressChosen = (ledgerAccount: ILedgerAccount) => {
+    alert(`address ${ledgerAccount.address}`);
   };
   const hasPreviousAddress = true;
   const showPrevAddresses = () => {

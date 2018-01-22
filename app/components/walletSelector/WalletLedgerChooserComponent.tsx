@@ -7,9 +7,45 @@ import { ILedgerAccount } from "../../../typings/typings";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
 
+interface IAccountRow {
+  ledgerAccount: ILedgerAccount;
+  handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
+}
+
+export class AccountRow extends React.Component<IAccountRow> {
+  public constructor(props: IAccountRow) {
+    super(props);
+  }
+
+  handleClick = () => {
+    this.props.handleAddressChosen(this.props.ledgerAccount);
+  };
+
+  render(): React.ReactNode {
+    return (
+      <tr
+        data-test-id="account-row"
+        onClick={this.handleClick}
+        className={cn(styles.accountRow, {
+          [styles.withEther]: parseInt(this.props.ledgerAccount.balance, 10) > 0,
+        })}
+      >
+        <td data-test-id="account-derivation-path">{this.props.ledgerAccount.derivationPath}</td>
+        <td data-test-id="account-address" className={styles.address}>
+          {this.props.ledgerAccount.address}
+        </td>
+        <td data-test-id="account-balance">{this.props.ledgerAccount.balance}</td>
+        <td>
+          <i className="fa fa-chevron-right" aria-hidden="true" />
+        </td>
+      </tr>
+    );
+  }
+}
+
 interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
-  handleAddressChosen: (account: ILedgerAccount) => () => void;
+  handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
   hasPreviousAddress: boolean;
   showPrevAddresses: () => any;
   showNextAddresses: () => any;
@@ -54,21 +90,11 @@ export const WalletLedgerChooserComponent: React.SFC<IWalletLedgerChooserCompone
         </thead>
         <tbody>
           {accounts.map(a => (
-            <tr
+            <AccountRow
               key={a.derivationPath}
-              onClick={
-                // tslint:disable-next-line
-                () => handleAddressChosen(a)
-              }
-              className={cn(styles.useColumn, { [styles.withEther]: parseInt(a.balance, 10) > 0 })}
-            >
-              <td>{a.derivationPath}</td>
-              <td className={styles.address}>{a.address}</td>
-              <td>{a.balance}</td>
-              <td>
-                <i className="fa fa-chevron-right" aria-hidden="true" />
-              </td>
-            </tr>
+              ledgerAccount={a}
+              handleAddressChosen={handleAddressChosen}
+            />
           ))}
         </tbody>
         <tfoot>
@@ -76,7 +102,12 @@ export const WalletLedgerChooserComponent: React.SFC<IWalletLedgerChooserCompone
             <td colSpan={4}>
               <div>
                 {hasPreviousAddress && (
-                  <Button color="primary" disabled={loading} onClick={showPrevAddresses}>
+                  <Button
+                    color="primary"
+                    disabled={loading}
+                    onClick={showPrevAddresses}
+                    data-test-id="btn-previous"
+                  >
                     Show previous addresses
                   </Button>
                 )}
@@ -85,6 +116,7 @@ export const WalletLedgerChooserComponent: React.SFC<IWalletLedgerChooserCompone
                   disabled={loading}
                   onClick={showNextAddresses}
                   className="float-right"
+                  data-test-id="btn-next"
                 >
                   Load more addresses
                 </Button>

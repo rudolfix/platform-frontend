@@ -4,17 +4,17 @@ import * as React from "react";
 import { Alert } from "reactstrap";
 
 import { LoadingIndicator } from "../../../app/components/LoadingIndicator";
-import { WalletBrowserComponent } from "../../../app/components/walletSelector/WalletBrowser";
+import { WalletLedgerInitComponent } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
 
-describe("<WalletBrowser />", () => {
+describe("<WalletLedgerInitComponent />", () => {
   it("should render LoadingIndicator", () => {
-    const component = shallow(<WalletBrowserComponent />);
+    const component = shallow(<WalletLedgerInitComponent />);
     expect(component.find(LoadingIndicator)).to.have.length(1);
   });
 
   it("should render error message", () => {
     const errorMsg = "some error";
-    const component = shallow(<WalletBrowserComponent errorMessage={errorMsg} />);
+    const component = shallow(<WalletLedgerInitComponent errorMessage={errorMsg} />);
     expect(
       component.contains(
         <Alert color="info">

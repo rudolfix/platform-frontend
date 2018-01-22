@@ -1,0 +1,77 @@
+import { expect } from "chai";
+import { shallow } from "enzyme";
+import * as React from "react";
+import { spy } from "sinon";
+
+import { WalletBrowser } from "../../../app/components/walletSelector/WalletBrowser";
+import { WalletLedger } from "../../../app/components/walletSelector/WalletLedger";
+import { WalletLight } from "../../../app/components/walletSelector/WalletLight";
+import { WalletSelectorComponent } from "../../../app/components/walletSelector/WalletSelector";
+import { tid } from "../../testUtils";
+
+const defaultProps = () => ({
+  walletInBrowserSelectedAction: spy(),
+  ledgerWalletSelectedAction: spy(),
+  lightWalletSelectedAction: spy(),
+  walletInBrowserSelected: true,
+  ledgerWalletSelected: false,
+  lightWalletSelected: false,
+});
+
+describe("<WalletSelector />", () => {
+  it("should render all three wallet tabs", () => {
+    const component = shallow(<WalletSelectorComponent {...defaultProps()} />);
+
+    expect(component.find(tid("wallet-selector-ledger")).length).to.be.eq(1);
+    expect(component.find(tid("wallet-selector-browser")).length).to.be.eq(1);
+    expect(component.find(tid("wallet-selector-light")).length).to.be.eq(1);
+  });
+
+  it("should fire correct actions for selected wallets", () => {
+    const propsWalletInBrowser = defaultProps();
+    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...propsWalletInBrowser} />);
+    walletInBrowserSelected.find(tid("wallet-selector-browser")).simulate("select");
+
+    const propsLedger = {
+      ...defaultProps(),
+      walletInBrowserSelected: false,
+      ledgerWalletSelected: true,
+    };
+    const ledgerSelected = shallow(<WalletSelectorComponent {...propsLedger} />);
+    ledgerSelected.find(tid("wallet-selector-ledger")).simulate("select");
+
+    const propsLightWallet = {
+      ...defaultProps(),
+      walletInBrowserSelected: false,
+      lightWalletSelected: true,
+    };
+    const lightWalletSelected = shallow(<WalletSelectorComponent {...propsLightWallet} />);
+    lightWalletSelected.find(tid("wallet-selector-light")).simulate("select");
+
+    expect(propsWalletInBrowser.walletInBrowserSelectedAction).to.be.calledOnce;
+    expect(propsLedger.ledgerWalletSelectedAction).to.be.calledOnce;
+    expect(propsLightWallet.lightWalletSelectedAction).to.be.calledOnce;
+  });
+
+  it("should render correct wallets details for selected tab", () => {
+    const propsWalletInBrowser = defaultProps();
+    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...propsWalletInBrowser} />);
+    expect(walletInBrowserSelected.find(WalletBrowser).length).to.be.eq(1);
+
+    const propsLedger = {
+      ...defaultProps(),
+      walletInBrowserSelected: false,
+      ledgerWalletSelected: true,
+    };
+    const ledgerSelected = shallow(<WalletSelectorComponent {...propsLedger} />);
+    expect(ledgerSelected.find(WalletLedger).length).to.be.eq(1);
+
+    const propsLightWallet = {
+      ...defaultProps(),
+      walletInBrowserSelected: false,
+      lightWalletSelected: true,
+    };
+    const lightWalletSelected = shallow(<WalletSelectorComponent {...propsLightWallet} />);
+    expect(lightWalletSelected.find(WalletLight).length).to.be.eq(1);
+  });
+});

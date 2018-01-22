@@ -12,6 +12,7 @@ import {
   loadLedgerAccountsAction,
   setLedgerAccountsAction,
   tryEstablishingConnectionWithLedger,
+  verifyIfLedgerStillConnected,
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
 import {
   IDerivationPathToAddress,
@@ -198,6 +199,34 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       expect(ledgerWalletMock.setDerivationPath).to.be.calledWithExactly(expectedDerivationPath);
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
       expect(navigateToMock).not.be.called;
+    });
+  });
+
+  describe("verifyIfLedgerStillConnected", () => {
+    it("should do nothing if ledger is connected", async () => {
+      const dispatchMock = spy();
+      const ledgerWalletMock = createMock(LedgerWallet, {
+        testConnection: async () => true,
+      });
+
+      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletMock);
+
+      expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+      expect(dispatchMock).to.not.be.called;
+    });
+
+    it("should issue error action if ledger is not connected", async () => {
+      const dispatchMock = spy();
+      const ledgerWalletMock = createMock(LedgerWallet, {
+        testConnection: async () => false,
+      });
+
+      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletMock);
+
+      expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+      expect(dispatchMock).to.be.calledWithExactly(
+        ledgerConnectionEstablishedErrorAction({ errorMsg: "Nano Ledger S not available" }),
+      );
     });
   });
 });

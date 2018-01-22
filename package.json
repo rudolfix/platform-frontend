@@ -70,8 +70,8 @@
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc",
     "lint:fix": "yarn format:fix && yarn tslint:fix && yarn sasslint && yarn tsc",
-    "test:unit": "mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
-    "test:unit-coverage": "nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
+    "test:unit": "NODE_ENV=test mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
+    "test:unit-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
     "test": "yarn lint && yarn test:unit",
     "test:coverage": "yarn lint && yarn test:unit-coverage",
     "codecov": "codecov"

@@ -19,7 +19,7 @@ import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
 import { Web3Adapter } from "../../../app/modules/web3/Web3Adapter";
 import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { createMount } from "../../createMount";
-import { createIntegrationTestsSetup, waitForTid } from "../../integrationTestUtils";
+import { clickFirstTid, createIntegrationTestsSetup, waitForTid } from "../../integrationTestUtils";
 import { globalFakeClock } from "../../setupTestsHooks";
 import { createMock, tid } from "../../testUtils";
 
@@ -109,9 +109,8 @@ describe("<WalletSelector />", () => {
         </MuiThemeProvider>,
       );
 
-      // ensure that ledger is selected
-      // for now it's mocked so dont do anything
-      // clickFirstTid(mountedComponent, "wallet-selector-ledger");
+      // ensure that ledger tab is selected
+      clickFirstTid(mountedComponent, "wallet-selector-ledger");
 
       expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
         "Nano Ledger S not available",

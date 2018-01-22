@@ -58,6 +58,16 @@ describe("<WalletLedgerChooserComponent />", () => {
     const props = defaultProps();
     const component = shallow(<WalletLedgerChooserComponent {...props} />);
     expect(component.find(AccountRow).length).to.be.eq(props.accounts.length);
+    component.find(AccountRow).forEach((row, index) => {
+      expect(
+        row.equals(
+          <AccountRow
+            ledgerAccount={props.accounts[index]}
+            handleAddressChosen={props.handleAddressChosen}
+          />,
+        ),
+      ).to.be.true;
+    });
   });
 
   it("should show / hide previous address button regarding hasPreviousAddress property", () => {
@@ -67,7 +77,9 @@ describe("<WalletLedgerChooserComponent />", () => {
       ...defaultProps(),
       hasPreviousAddress: false,
     };
-    const componentWithoutPrevAddr = shallow(<WalletLedgerChooserComponent {...propsWithoutPrevAddr} />);
+    const componentWithoutPrevAddr = shallow(
+      <WalletLedgerChooserComponent {...propsWithoutPrevAddr} />,
+    );
     expect(componentWithPrevAddr.find(tid("btn-previous")).length).to.be.eq(1);
     expect(componentWithoutPrevAddr.find(tid("btn-previous")).length).to.be.eq(0);
   });

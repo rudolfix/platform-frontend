@@ -9,18 +9,18 @@ import { WalletLight } from "../../../app/components/walletSelector/WalletLight"
 import { WalletSelectorComponent } from "../../../app/components/walletSelector/WalletSelector";
 import { tid } from "../../testUtils";
 
-const defaultProps = {
+const defaultProps = () => ({
   walletInBrowserSelectedAction: spy(),
   ledgerWalletSelectedAction: spy(),
   lightWalletSelectedAction: spy(),
   walletInBrowserSelected: true,
   ledgerWalletSelected: false,
   lightWalletSelected: false,
-};
+});
 
 describe("<WalletSelector />", () => {
   it("should render all three wallet tabs", () => {
-    const component = shallow(<WalletSelectorComponent {...defaultProps} />);
+    const component = shallow(<WalletSelectorComponent {...defaultProps()} />);
 
     expect(component.find(tid("wallet-selector-ledger")).length).to.be.eq(1);
     expect(component.find(tid("wallet-selector-browser")).length).to.be.eq(1);
@@ -28,11 +28,12 @@ describe("<WalletSelector />", () => {
   });
 
   it("should fire correct actions for selected wallets", () => {
-    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...defaultProps} />);
+    const propsWalletInBrowser = defaultProps();
+    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...propsWalletInBrowser} />);
     walletInBrowserSelected.find(tid("wallet-selector-browser")).simulate("select");
 
     const propsLedger = {
-      ...defaultProps,
+      ...defaultProps(),
       walletInBrowserSelected: false,
       ledgerWalletSelected: true,
     };
@@ -40,24 +41,25 @@ describe("<WalletSelector />", () => {
     ledgerSelected.find(tid("wallet-selector-ledger")).simulate("select");
 
     const propsLightWallet = {
-      ...defaultProps,
+      ...defaultProps(),
       walletInBrowserSelected: false,
       lightWalletSelected: true,
     };
     const lightWalletSelected = shallow(<WalletSelectorComponent {...propsLightWallet} />);
     lightWalletSelected.find(tid("wallet-selector-light")).simulate("select");
 
-    expect(defaultProps.walletInBrowserSelectedAction).to.be.calledOnce;
-    expect(defaultProps.ledgerWalletSelectedAction).to.be.calledOnce;
-    expect(defaultProps.lightWalletSelectedAction).to.be.calledOnce;
+    expect(propsWalletInBrowser.walletInBrowserSelectedAction).to.be.calledOnce;
+    expect(propsLedger.ledgerWalletSelectedAction).to.be.calledOnce;
+    expect(propsLightWallet.lightWalletSelectedAction).to.be.calledOnce;
   });
 
   it("should render correct wallets details for selected tab", () => {
-    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...defaultProps} />);
+    const propsWalletInBrowser = defaultProps();
+    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...propsWalletInBrowser} />);
     expect(walletInBrowserSelected.find(WalletBrowser).length).to.be.eq(1);
 
     const propsLedger = {
-      ...defaultProps,
+      ...defaultProps(),
       walletInBrowserSelected: false,
       ledgerWalletSelected: true,
     };
@@ -65,7 +67,7 @@ describe("<WalletSelector />", () => {
     expect(ledgerSelected.find(WalletLedger).length).to.be.eq(1);
 
     const propsLightWallet = {
-      ...defaultProps,
+      ...defaultProps(),
       walletInBrowserSelected: false,
       lightWalletSelected: true,
     };

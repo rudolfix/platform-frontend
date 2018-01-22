@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import { Alert } from "reactstrap";
+
 import { LoadingIndicator } from "../../../app/components/LoadingIndicator";
 import { WalletLedgerInitComponent } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
 

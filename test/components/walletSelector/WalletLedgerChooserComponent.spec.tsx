@@ -8,6 +8,7 @@ import {
   AccountRow,
   WalletLedgerChooserComponent,
 } from "../../../app/components/walletSelector/WalletLedgerChooserComponent";
+import { tid } from "../../testUtils";
 
 describe("<WalletLedgerChooserComponent />", () => {
   const defaultProps = {
@@ -67,18 +68,18 @@ describe("<WalletLedgerChooserComponent />", () => {
     };
     const componentWithoutPrevAddr = shallow(<WalletLedgerChooserComponent {...props} />);
 
-    expect(componentWithPrevAddr.find({ "data-test-id": "btn-previous" }).length).to.be.eq(1);
-    expect(componentWithPrevAddr.find({ "data-test-id": "btn-next" }).length).to.be.eq(1);
+    expect(componentWithPrevAddr.find(tid("btn-previous")).length).to.be.eq(1);
+    expect(componentWithPrevAddr.find(tid("btn-next")).length).to.be.eq(1);
 
-    expect(componentWithoutPrevAddr.find({ "data-test-id": "btn-previous" }).length).to.be.eq(0);
-    expect(componentWithoutPrevAddr.find({ "data-test-id": "btn-next" }).length).to.be.eq(1);
+    expect(componentWithoutPrevAddr.find(tid("btn-previous")).length).to.be.eq(0);
+    expect(componentWithoutPrevAddr.find(tid("btn-next")).length).to.be.eq(1);
   });
 
   it("should call correct click handlers for prev / next buttons", () => {
     const component = shallow(<WalletLedgerChooserComponent {...defaultProps} />);
 
-    component.find({ "data-test-id": "btn-previous" }).simulate("click");
-    component.find({ "data-test-id": "btn-next" }).simulate("click");
+    component.find(tid("btn-previous")).simulate("click");
+    component.find(tid("btn-next")).simulate("click");
     expect(defaultProps.showPrevAddresses).to.be.calledOnce;
     expect(defaultProps.showNextAddresses).to.be.calledOnce;
   });
@@ -89,14 +90,14 @@ describe("<WalletLedgerChooserComponent />", () => {
       <AccountRow ledgerAccount={account} handleAddressChosen={defaultProps.handleAddressChosen} />,
     );
 
-    const renderedDerivationPath = accountRow.find({ "data-test-id": "account-derivation-path" });
+    const renderedDerivationPath = accountRow.find(tid("account-derivation-path"));
     expect(renderedDerivationPath.text()).to.be.eq(account.derivationPath);
-    const renderedAddress = accountRow.find({ "data-test-id": "account-address" });
+    const renderedAddress = accountRow.find(tid("account-address"));
     expect(renderedAddress.text()).to.be.eq(account.address);
-    const renderedBalance = accountRow.find({ "data-test-id": "account-balance" });
+    const renderedBalance = accountRow.find(tid("account-balance"));
     expect(renderedBalance.text()).to.be.eq(account.balance);
 
-    accountRow.find({ "data-test-id": "account-row" }).simulate("click");
+    accountRow.find(tid("account-row")).simulate("click");
     expect(defaultProps.handleAddressChosen).to.be.calledOnce;
   });
 });

@@ -3,9 +3,9 @@ import { NavLink } from "react-router-dom";
 import { Col, Collapse, Navbar, NavbarBrand, NavbarToggler, Row } from "reactstrap";
 import * as styles from "./Header.module.scss";
 
-type IHeaderProps = IunAuthProps | IAuthProps;
+type IHeaderProps = IUnAuthProps | IAuthProps;
 
-interface IunAuthProps {
+interface IUnAuthProps {
   isAuthorized: false;
 }
 
@@ -20,8 +20,8 @@ interface IHeaderState {
   isOpen: boolean;
 }
 
-interface INeufundBrand {
-  classStyle: string;
+interface IReducedHTML {
+  className?: string;
 }
 
 interface IAuthorized {
@@ -32,11 +32,15 @@ interface IAuthorized {
   isOpen: boolean;
 }
 
-export const NeufundBrand: React.SFC<INeufundBrand> = ({ classStyle }) => {
+export const NeufundBrand: React.SFC<IReducedHTML> = props => {
+  //TODO: change to HiResImage once a three size assets logo is provided
+  const image = require("!file-loader?publicPath=/!../assets/img/" + "header/social_logo" + ".png");
   return (
     <Row>
-      <img src="https://neufund.org/img/social_logo.png" className={styles.brand} alt="" />
-      <div className={`${styles.title} pl-3 align-self-center ${classStyle}`}>Neufund Platform</div>
+      <img src={image} className={styles.brand} alt="" />
+      <div className={`${styles.title} pl-3 align-self-center font-weight-bold ${props.className}`}>
+        Neufund Platform
+      </div>
     </Row>
   );
 };
@@ -63,9 +67,9 @@ export const Authorized: React.SFC<IAuthorized> = ({
       <Navbar expand="sm" dark className={`${styles.authorizedNavbar}`}>
         <Col sm="12" className="mt-2">
           <Row className=" d-flex justify-content-between">
-            <Col sm="5" lg="3">
+            <Col lg="3">
               <NavbarBrand>
-                <NeufundBrand classStyle="text-white" />
+                <NeufundBrand className="text-white" />
               </NavbarBrand>
             </Col>
             <NavbarToggler onClick={toggle} data-test-id="button-toggle" />
@@ -98,23 +102,39 @@ export const Authorized: React.SFC<IAuthorized> = ({
           <Row>
             <Col sm="12" className="mt-2">
               <Collapse isOpen={isOpen} navbar>
-                <Col sm="2" className="offset-sm-1">
-                  <NavLink className={styles.text} to="/dashboard" activeClassName={styles.active}>
+                <Col className="offset-sm-1">
+                  <NavLink
+                    className={styles.text}
+                    to="/dashboard"
+                    activeClassName={`${styles.active} font-weight-bold`}
+                  >
                     Dashboard
                   </NavLink>
                 </Col>
-                <Col sm="2">
-                  <NavLink className={styles.text} to="/accounts" activeClassName={styles.active}>
+                <Col>
+                  <NavLink
+                    className={styles.text}
+                    to="/accounts"
+                    activeClassName={`${styles.active} font-weight-bold`}
+                  >
                     Accounts
                   </NavLink>
                 </Col>
-                <Col sm="2">
-                  <NavLink className={styles.text} to="/portfolio" activeClassName={styles.active}>
+                <Col>
+                  <NavLink
+                    className={styles.text}
+                    to="/portfolio"
+                    activeClassName={`${styles.active} font-weight-bold`}
+                  >
                     Portfolio
                   </NavLink>
                 </Col>
                 <Col sm="3">
-                  <NavLink className={styles.text} to="/info" activeClassName={styles.active}>
+                  <NavLink
+                    className={styles.text}
+                    to="/info"
+                    activeClassName={`${styles.active} font-weight-bold`}
+                  >
                     Public Info
                   </NavLink>
                 </Col>
@@ -142,7 +162,7 @@ export const UnAuthorized: React.SFC<{}> = () => {
     <div>
       <Navbar expand="sm" className={styles.unAuthorizedNavbar}>
         <NavbarBrand>
-          <NeufundBrand classStyle="" />
+          <NeufundBrand />
         </NavbarBrand>
       </Navbar>
     </div>

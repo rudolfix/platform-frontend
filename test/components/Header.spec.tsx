@@ -39,7 +39,7 @@ describe("<Header />", () => {
         />,
       );
       component.find(tid("button-toggle")).simulate("click");
-      expect(toggle.calledOnce).to.equal(true);
+      expect(toggle).to.be.calledOnce;
     });
   });
 });

@@ -17,10 +17,6 @@ $cream: #f7f8f9;
   cursor: default;
 }
 
-.active {
-  font-weight: bold;
-}
-
 @include media-breakpoint-up(sm) {
   .active {
     padding-bottom: .5rem;
@@ -39,7 +35,7 @@ $cream: #f7f8f9;
 }
 
 .separator {
-  border-bottom: .09rem;
+  border-bottom: .0625rem;
   border-bottom-style: solid;
   border-bottom-color: $cream;
 }
@@ -61,5 +57,4 @@ $cream: #f7f8f9;
 
 .title {
   font-size: 1rem;
-  font-weight: 600;
 }

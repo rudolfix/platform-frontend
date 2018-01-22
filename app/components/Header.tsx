@@ -45,16 +45,6 @@ export const NeufundBrand: React.SFC<IReducedHTML> = props => {
   );
 };
 
-export const Separator: React.SFC<{}> = () => {
-  return (
-    <Row>
-      <Col sm="12" className="d-none d-sm-block mt-2 md-2">
-        <div className={styles.separator} />
-      </Col>
-    </Row>
-  );
-};
-
 export const Authorized: React.SFC<IAuthorized> = ({
   name,
   balanceEuro,
@@ -65,44 +55,48 @@ export const Authorized: React.SFC<IAuthorized> = ({
   return (
     <div>
       <Navbar expand="sm" dark className={`${styles.authorizedNavbar}`}>
-        <Col sm="12" className="mt-2">
-          <Row className=" d-flex justify-content-between">
-            <Col lg="3">
+        <Col sm={{ size: 12 }} className="mt-2">
+          <Row className="d-flex justify-content-between mb-md-3">
+            <Col lg={{ size: 3 }}>
               <NavbarBrand>
                 <NeufundBrand className="text-white" />
               </NavbarBrand>
             </Col>
             <NavbarToggler onClick={toggle} data-test-id="button-toggle" />
-            <Col sm="2" className="align-self-center d-none d-lg-block">
+            <Col sm={{ size: 2 }} className="align-self-center d-none d-lg-block">
               <div className={styles.miniHeader}>Account balance</div>
               <div className={styles.text} data-test-id="eur-balance">
                 nEUR {balanceEuro}
               </div>
             </Col>
-            <Col sm="3" lg="2" className="align-self-center d-none d-md-block">
+            <Col sm={{ size: 3 }} lg={{ size: 2 }} className="align-self-center d-none d-md-block">
               <div className={styles.miniHeader}>Neumark balance</div>
               <div className={styles.text} data-test-id="neu-balance">
                 NEU {balanceNeu}
               </div>
             </Col>
-            <Col sm="2" className="align-self-center d-none d-lg-block">
+            <Col sm={{ size: 2 }} className="align-self-center d-none d-lg-block">
               <div className={styles.miniHeader}>Alert</div>
               <div className={styles.text}>Fund your account</div>
             </Col>
-            <Col lg="2" sm="3" className="align-self-center offset-sm-1 d-none d-sm-block">
+            <Col
+              lg={{ size: 2 }}
+              sm={{ size: 3, offset: 1 }}
+              className="align-self-center d-none d-sm-block"
+            >
               <Row className="d-flex justify-content-end">
-                <div className={styles.text}>{name}</div>
-                <Col lg="2" sm="3">
+                <div className={`${styles.text} align-self-center`}>{name}</div>
+                <Col sm={{ size: 3 }}>
                   <i className="fa fa-lg fa-user text-white" aria-hidden="true" />
                 </Col>
               </Row>
             </Col>
           </Row>
-          <Separator />
-          <Row>
-            <Col sm="12" className="mt-2">
+          {/* <Separator /> */}
+          <Row className={`${styles.separator} mt-md-2 pt-md-2`}>
+            <Col sm="12">
               <Collapse isOpen={isOpen} navbar>
-                <Col className="offset-sm-1">
+                <Col sm={{ offset: 1 }}>
                   <NavLink
                     className={styles.text}
                     to="/dashboard"
@@ -138,7 +132,7 @@ export const Authorized: React.SFC<IAuthorized> = ({
                     Public Info
                   </NavLink>
                 </Col>
-                <Col sm="1" className="offset-sm-1">
+                <Col sm={{ size: 1, offset: 1 }}>
                   <div
                     color="link"
                     className="fa fa-lg fa-cog text-white"

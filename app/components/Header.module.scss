@@ -24,6 +24,12 @@ $cream: #f7f8f9;
     border-bottom-style: solid;
     border-bottom-color: $white;
   }
+
+  .separator {
+    border-top: .0625rem;
+    border-top-style: solid;
+    border-top-color: $cream;
+  }
 }
 
 .brand {
@@ -32,12 +38,6 @@ $cream: #f7f8f9;
   border-right: .09rem;
   border-right-style: solid;
   border-color: $cream;
-}
-
-.separator {
-  border-bottom: .0625rem;
-  border-bottom-style: solid;
-  border-bottom-color: $cream;
 }
 
 .text {

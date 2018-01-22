@@ -59,28 +59,26 @@ describe("<WalletLedgerChooserComponent />", () => {
     expect(component.find(AccountRow).length).to.be.eq(defaultProps.accounts.length);
   });
 
-  it("should show correct prev / next buttons regarding hasPreviousAddress property", () => {
+  it("should show / hide previous address button regarding hasPreviousAddress property", () => {
     const componentWithPrevAddr = shallow(<WalletLedgerChooserComponent {...defaultProps} />);
-
     const props = {
       ...defaultProps,
       hasPreviousAddress: false,
     };
     const componentWithoutPrevAddr = shallow(<WalletLedgerChooserComponent {...props} />);
-
     expect(componentWithPrevAddr.find(tid("btn-previous")).length).to.be.eq(1);
-    expect(componentWithPrevAddr.find(tid("btn-next")).length).to.be.eq(1);
-
     expect(componentWithoutPrevAddr.find(tid("btn-previous")).length).to.be.eq(0);
-    expect(componentWithoutPrevAddr.find(tid("btn-next")).length).to.be.eq(1);
   });
 
-  it("should call correct click handlers for prev / next buttons", () => {
+  it("should call correct click handlers for prev button", () => {
     const component = shallow(<WalletLedgerChooserComponent {...defaultProps} />);
-
     component.find(tid("btn-previous")).simulate("click");
-    component.find(tid("btn-next")).simulate("click");
     expect(defaultProps.showPrevAddresses).to.be.calledOnce;
+  });
+
+  it("should call correct click handlers for next button", () => {
+    const component = shallow(<WalletLedgerChooserComponent {...defaultProps} />);
+    component.find(tid("btn-next")).simulate("click");
     expect(defaultProps.showNextAddresses).to.be.calledOnce;
   });
 });

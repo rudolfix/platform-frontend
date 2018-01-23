@@ -32,7 +32,7 @@ export class Web3Manager {
   public async initialize(): Promise<void> {
     const rawWeb3 = new Web3(new Web3.providers.HttpProvider(this.ethereumNetworkConfig.rpcUrl));
     this.internalWeb3Adapter = new Web3Adapter(rawWeb3);
-    this.networkId = await this.internalWeb3Adapter.networkId();
+    this.networkId = await this.internalWeb3Adapter.getNetworkId();
   }
 
   public async plugPersonalWallet(personalWallet: IPersonalWallet): Promise<void> {

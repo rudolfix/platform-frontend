@@ -6306,7 +6306,7 @@ tslint-microsoft-contrib@^5.0.1:
   dependencies:
     tsutils "^1.4.0"
 
-tslint-sonarts@^1.2.0:
+tslint-sonarts@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/tslint-sonarts/-/tslint-sonarts-1.4.0.tgz#90ae06c884b2ba92f81fd7bf76d8aae12313a5f1"
   dependencies:
@@ -6382,12 +6382,12 @@ typescript@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
 
-typestrict@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/typestrict/-/typestrict-0.0.6.tgz#44b2294589c6b00fb5ff9160b84fd646e3b4e870"
+typestrict@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/typestrict/-/typestrict-0.0.7.tgz#f359901c6c2e11ec0c1b472b5cb2ab5126de5289"
   dependencies:
     tslint-microsoft-contrib "^5.0.1"
-    tslint-sonarts "^1.2.0"
+    tslint-sonarts "^1.4.0"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"

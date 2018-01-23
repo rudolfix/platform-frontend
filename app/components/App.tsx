@@ -55,12 +55,12 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
   }
 
   render(): React.ReactNode {
-    if (!this.state.isInitialized) {
-      return <LoadingIndicator />;
-    }
-
     if (this.state.errored) {
       return <h1>Critical error occured: {this.state.errorMsg}</h1>;
+    }
+
+    if (!this.state.isInitialized) {
+      return <LoadingIndicator />;
     }
 
     return (

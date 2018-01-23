@@ -33,6 +33,7 @@
     "no-console": true,
     "no-debugger": true,
     "typedef": [true, "call-signature"],
-    "ordered-imports": true
+    "ordered-imports": true,
+    "no-commented-code": true
   }
 }

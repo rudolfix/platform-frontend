@@ -65,7 +65,7 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
 
     return (
       <div>
-        <Header />
+        <Header isAuthorized={true} name={"Marcin Rodulfix"} balanceEuro={0} balanceNeu={0} />
 
         <Route path="/" component={Home} exact />
         <Route path="/walletselector" component={WalletSelector} exact />

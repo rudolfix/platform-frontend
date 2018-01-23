@@ -92,14 +92,14 @@ describe("<WalletSelector />", () => {
   describe("integration", () => {
     it("should select ledger wallet", async () => {
       const ledgerWalletMock = createMock(LedgerWallet, {});
-      const web3Manager = createMock(Web3Manager, {
+      const web3ManagerMock = createMock(Web3Manager, {
         networkId: "5",
         internalWeb3Adapter: createMock(Web3Adapter, {
           getBalance: async () => new BigNumber(1),
         }),
         plugPersonalWallet: async () => {},
       });
-      const { store } = createIntegrationTestsSetup({ ledgerWalletMock, web3Manager });
+      const { store } = createIntegrationTestsSetup({ ledgerWalletMock, web3ManagerMock });
 
       const mountedComponent = createMount(
         <MuiThemeProvider>
@@ -134,7 +134,7 @@ describe("<WalletSelector />", () => {
       mountedComponent.find(`${tid("account-row")}`).simulate("click");
 
       expect(ledgerWalletMock.setDerivationPath).to.be.calledWithExactly("44'/60'/0'/1");
-      expect(web3Manager.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
+      expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
     });
   });
 });

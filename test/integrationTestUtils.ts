@@ -12,7 +12,7 @@ import { createMock, tid } from "./testUtils";
 interface ICreateIntegrationTestsSetupOptions {
   initialState?: Partial<IAppState>;
   ledgerWalletMock?: LedgerWallet;
-  web3Manager?: Web3Manager;
+  web3ManagerMock?: Web3Manager;
 }
 
 interface ICreateIntegrationTestsSetupOutput {
@@ -24,10 +24,10 @@ export function createIntegrationTestsSetup(
   options: ICreateIntegrationTestsSetupOptions,
 ): ICreateIntegrationTestsSetupOutput {
   const ledgerWalletMock = options.ledgerWalletMock || createMock(LedgerWallet, {});
-  const web3Manager = options.web3Manager || createMock(Web3Manager, {});
+  const web3ManagerMock = options.web3ManagerMock || createMock(Web3Manager, {});
   const container = getContainer(dummyConfig);
   container.rebind(LedgerConnectorSymbol).toConstantValue(ledgerWalletMock);
-  container.rebind(Web3ManagerSymbol).toConstantValue(web3Manager);
+  container.rebind(Web3ManagerSymbol).toConstantValue(web3ManagerMock);
 
   const middleware = applyMiddleware(
     createInjectMiddleware(container, (container, middlewareApi) => {

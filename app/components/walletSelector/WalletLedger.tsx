@@ -1,15 +1,28 @@
 import * as React from "react";
 
+import { appConnect } from "../../store";
 import { WalletLedgerChooser } from "./WalletLedgerChooser";
-import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
+import { WalletLedgerInit } from "./WalletLedgerInitComponent";
 
-export const WalletLedger = () => {
-  // It's just mock-up
-  const check = true;
+interface IWalletLedgerStateProps {
+  isConnectionEstablished: boolean;
+  errorMsg?: string;
+}
 
-  if (check) {
+export const WalletLedgerComponent: React.SFC<IWalletLedgerStateProps> = ({
+  isConnectionEstablished,
+  errorMsg,
+}) => {
+  if (isConnectionEstablished) {
     return <WalletLedgerChooser />;
   } else {
-    return <WalletLedgerInitComponent />;
+    return <WalletLedgerInit />;
   }
 };
+
+export const WalletLedger = appConnect<IWalletLedgerStateProps>({
+  stateToProps: state => ({
+    isConnectionEstablished: state.ledgerWizardState.isConnectionEstablished,
+    errorMsg: state.ledgerWizardState.errorMsg,
+  }),
+})(WalletLedgerComponent);

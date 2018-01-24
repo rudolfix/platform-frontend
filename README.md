@@ -6,7 +6,13 @@
 
 ## Run project
 
+To run project requires an Ethereum node to connect to. For dev purposes, we can use local
+development node [ganache-cli](https://github.com/trufflesuite/ganache-cli) (former `testrpc`).
+Start it by issuing `yarn ganache` command in a separate terminal window so it runs simultaneously
+with webpack dev server.
+
 ```sh
 yarn
+yarn ganache
 yarn start
 ```

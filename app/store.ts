@@ -3,10 +3,7 @@ import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
 
 import { IBrowserWalletConnectionErrorAction } from "./modules/wallet-selector/browser-wizard/actions";
-import {
-  browserWalletWizardReducer,
-  IBrowserWalletWizardState,
-} from "./modules/wallet-selector/browser-wizard/reducer";
+import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 import {
   ILedgerConnectionEstablishedAction,
   ILedgerConnectionEstablishedErrorAction,
@@ -14,10 +11,7 @@ import {
   ILedgerWizardAccountsListPreviousPage,
   ISetLedgerWizardAccountsAction,
 } from "./modules/wallet-selector/ledger-wizard/actions";
-import {
-  ILedgerWizardState,
-  ledgerWizardReducer,
-} from "./modules/wallet-selector/ledger-wizard/reducer";
+import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 
 export interface IAppAction {
   type: string;
@@ -41,22 +35,37 @@ export type AppActionTypes =
   // browser wallet
   | IBrowserWalletConnectionErrorAction;
 
-export interface IAppState {
-  ledgerWizardState: ILedgerWizardState;
-  browserWalletWizardState: IBrowserWalletWizardState;
-}
-
-export const reducers = combineReducers<IAppState>({
+// add new app reducers here. They must be AppReducer<T> type
+const appReducers = {
   ledgerWizardState: ledgerWizardReducer,
   browserWalletWizardState: browserWalletWizardReducer,
+};
+
+// add all custom reducers here
+const allReducers = {
+  ...appReducers,
   router: routerReducer,
-});
+};
+
+// base on reducers we can infer type of app state
+// this is a little bit ugly workaround because of typeof not being flexible enough
+// related: https://github.com/Microsoft/TypeScript/issues/6606
+type Reduced<T> = { [P in keyof T]: AppReducer<T[P]> };
+function reducersToState<T>(o: Reduced<T>): T {
+  return o as any;
+}
+// tslint:disable-next-line
+const appStateInstance = (false ? undefined : reducersToState(appReducers))!;
+export type IAppState = typeof appStateInstance;
+
+export const reducers = combineReducers<IAppState>(allReducers);
 
 interface IAppConnectOptions<S, D> {
   stateToProps?: (state: IAppState) => S;
   dispatchToProps?: (dispatch: AppDispatch) => D;
 }
 
+// helper to use instead of redux connect. It's bound with our app state and it uses dictionary to pass arguments
 export function appConnect<S = {}, D = {}>(
   options: IAppConnectOptions<S, D>,
 ): InferableComponentEnhancerWithProps<S & D, {}> {

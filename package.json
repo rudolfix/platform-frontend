@@ -30,6 +30,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
+    "ganache-cli": "^6.0.3",
     "html-webpack-plugin": "^2.30.1",
     "ignore-styles": "^5.0.1",
     "jsdom": "^11.5.1",
@@ -53,6 +54,7 @@
     "webpack-hot-middleware": "^2.21.0"
   },
   "scripts": {
+    "ganache": "./scripts/ganache-cli.sh",
     "start": "NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,json,md,gql}'",

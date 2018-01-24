@@ -6,12 +6,10 @@ import { WalletLedgerInit } from "./WalletLedgerInitComponent";
 
 interface IWalletLedgerStateProps {
   isConnectionEstablished: boolean;
-  errorMsg?: string;
 }
 
 export const WalletLedgerComponent: React.SFC<IWalletLedgerStateProps> = ({
   isConnectionEstablished,
-  errorMsg,
 }) => {
   if (isConnectionEstablished) {
     return <WalletLedgerChooser />;
@@ -23,6 +21,5 @@ export const WalletLedgerComponent: React.SFC<IWalletLedgerStateProps> = ({
 export const WalletLedger = appConnect<IWalletLedgerStateProps>({
   stateToProps: state => ({
     isConnectionEstablished: state.ledgerWizardState.isConnectionEstablished,
-    errorMsg: state.ledgerWizardState.errorMsg,
   }),
 })(WalletLedgerComponent);

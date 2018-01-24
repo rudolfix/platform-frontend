@@ -1,16 +1,60 @@
 @import "../styles/neufund-theme";
 
 // this whole file is just placeholder for dev purposes
-$white: #fff;
+// sass-lint:disable no-color-literals
 
-.link {
+$white: #fff;
+$gray: #424a52;
+$active-background: linear-gradient(180.85deg, #2b5569 0%, #2d5669 80%, #2e4b58 100%);
+$cream: #f7f8f9;
+
+.un-authorized-navbar {
+  background: $white;
+}
+
+.authorized-navbar {
+  background: $active-background;
+  cursor: default;
+}
+
+@include media-breakpoint-up(sm) {
+  .active {
+    padding-bottom: .5rem;
+    border-bottom: 1.1rem;
+    border-bottom-style: solid;
+    border-bottom-color: $white;
+  }
+
+  .separator {
+    border-top: .0625rem;
+    border-top-style: solid;
+    border-top-color: $cream;
+  }
+}
+
+.brand {
+  width: 3.75rem;
+  height: 1.875rem;
+  border-right: .09rem;
+  border-right-style: solid;
+  border-color: $cream;
+}
+
+.text {
+  font-size: .9rem;
   color: $white;
 
   &:hover {
     color: $white;
+    text-decoration: none;
   }
 }
 
-.active {
-  font-weight: bold;
+.mini-header {
+  font-size: .75rem;
+  color: $white;
+}
+
+.title {
+  font-size: 1rem;
 }

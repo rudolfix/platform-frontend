@@ -2708,6 +2708,12 @@ functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
 
+ganache-cli@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/ganache-cli/-/ganache-cli-6.0.3.tgz#8b9da149707daa29c69da26f0582b89c90113b9c"
+  dependencies:
+    webpack "^3.0.0"
+
 gauge@~2.7.3:
   version "2.7.4"
   resolved "https://registry.yarnpkg.com/gauge/-/gauge-2.7.4.tgz#2c03405c7538c39d7eb37b317022e325fb018bf7"
@@ -6992,7 +6998,7 @@ tslint-microsoft-contrib@^5.0.1:
   dependencies:
     tsutils "^1.4.0"
 
-tslint-sonarts@^1.2.0:
+tslint-sonarts@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/tslint-sonarts/-/tslint-sonarts-1.4.0.tgz#90ae06c884b2ba92f81fd7bf76d8aae12313a5f1"
   dependencies:
@@ -7068,12 +7074,12 @@ typescript@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
 
-typestrict@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/typestrict/-/typestrict-0.0.6.tgz#44b2294589c6b00fb5ff9160b84fd646e3b4e870"
+typestrict@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/typestrict/-/typestrict-0.0.7.tgz#f359901c6c2e11ec0c1b472b5cb2ab5126de5289"
   dependencies:
     tslint-microsoft-contrib "^5.0.1"
-    tslint-sonarts "^1.2.0"
+    tslint-sonarts "^1.4.0"
 
 u2f-api@0.2.7:
   version "0.2.7"
@@ -7411,7 +7417,7 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^3.10.0:
+webpack@^3.0.0, webpack@^3.10.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.10.0.tgz#5291b875078cf2abf42bdd23afe3f8f96c17d725"
   dependencies:

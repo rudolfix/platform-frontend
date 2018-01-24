@@ -90,7 +90,7 @@ export class LedgerWallet implements IPersonalWallet {
 
 async function testIfUnlocked(ledgerInstance: any): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    ledgerInstance.getAccounts((err: Error | undefined, accounts: string) => {
+    ledgerInstance.getAccounts((err: Error | undefined, _accounts: string) => {
       if (!err) {
         resolve();
       } else {

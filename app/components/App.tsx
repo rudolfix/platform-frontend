@@ -55,17 +55,17 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
   }
 
   render(): React.ReactNode {
-    if (!this.state.isInitialized) {
-      return <LoadingIndicator />;
-    }
-
     if (this.state.errored) {
       return <h1>Critical error occured: {this.state.errorMsg}</h1>;
     }
 
+    if (!this.state.isInitialized) {
+      return <LoadingIndicator />;
+    }
+
     return (
       <div>
-        <Header />
+        <Header isAuthorized={true} name={"Marcin Rodulfix"} balanceEuro={0} balanceNeu={0} />
 
         <Route path="/" component={Home} exact />
         <Route path="/walletselector" component={WalletSelector} exact />

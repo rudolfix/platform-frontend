@@ -37,7 +37,7 @@ export const tryConnectingWithBrowserWallet = injectableFn(
       await web3Manager.plugPersonalWallet(browserWallet);
       navigateTo("/platform");
     } catch (e) {
-      logger.warn("Error while trying to connect with ledger: ", e.message);
+      logger.warn("Error while trying to connect with browser wallet: ", e.message);
       dispatch(
         browserWalletConnectionErrorAction({ errorMsg: mapBrowserWalletErrorToErrorMessage(e) }),
       );

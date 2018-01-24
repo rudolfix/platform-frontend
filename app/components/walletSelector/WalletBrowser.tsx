@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Alert, Col, Row } from "reactstrap";
-
 import { compose } from "redux";
+
 import { tryConnectingWithBrowserWallet } from "../../modules/wallet-selector/browser-wizard/actions";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/WatchAction";

@@ -14,10 +14,8 @@ export class Web3Adapter {
     return promisify<BigNumber, string>(this.web3.eth.getBalance)(address);
   }
 
-  public async getAccountAddress(customWeb3?: any): Promise<string> {
-    const getAccounts = promisify<string[]>(
-      customWeb3 ? customWeb3.eth.getAccounts : this.web3.eth.getAccounts,
-    );
+  public async getAccountAddress(): Promise<string> {
+    const getAccounts = promisify<string[]>(this.web3.eth.getAccounts);
     const accounts = await getAccounts();
     return accounts[0];
   }

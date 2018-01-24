@@ -49,6 +49,8 @@ export class BrowserWallet implements IPersonalWallet {
       throw new BrowserWalletLockedError();
     }
 
+    this.subType = await web3Adapter.getNodeType();
+
     this.web3 = newWeb3;
     this.web3Adapter = web3Adapter;
   }

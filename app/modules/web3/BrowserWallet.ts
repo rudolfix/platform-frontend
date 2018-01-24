@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import * as Web3 from "web3";
 import { EthereumNetworkId } from "../../types";
-import { BrowserWalletSubType, IPersonalWallet, WalletType } from "./PersonalWeb3";
+import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
 export class BrowserWalletError extends Error {}
@@ -21,7 +21,7 @@ export const BrowserWalletSymbol = "BrowserWallet";
 @injectable()
 export class BrowserWallet implements IPersonalWallet {
   public readonly type = WalletType.BROWSER;
-  public subType?: BrowserWalletSubType;
+  public subType = WalletSubType.UNKNOWN;
   public web3?: Web3;
   private web3Adapter: Web3Adapter;
 

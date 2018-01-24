@@ -6,15 +6,16 @@ export enum WalletType {
   BROWSER = "BROWSER",
 }
 
-export enum BrowserWalletSubType {
+export enum WalletSubType {
   METAMASK = "METAMASK",
+  UNKNOWN = "UNKNOWN",
 }
 
 // idea: split this interface into PersonalWalletFactory and PersonalWallet
 // this will allow for cleaner, immutable interface for PersonalWallet
 export interface IPersonalWallet {
   type: WalletType;
-  subType?: BrowserWalletSubType;
+  subType: WalletSubType;
 
   web3?: Web3;
 

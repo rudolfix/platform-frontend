@@ -1,7 +1,10 @@
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
+import { DispatchSymbol } from "../../getContainer";
+import { AppDispatch } from "../../store";
 import { EthereumNetworkId } from "../../types";
+import { newPersonalWalletPluggedAction } from "./actions";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
@@ -29,6 +32,7 @@ export class Web3Manager {
   constructor(
     @inject(IEthereumNetworkConfigSymbol)
     public readonly ethereumNetworkConfig: IEthereumNetworkConfig,
+    @inject(DispatchSymbol) public readonly dispatch: AppDispatch,
   ) {}
 
   public async initialize(): Promise<void> {
@@ -44,5 +48,12 @@ export class Web3Manager {
     }
 
     this.personalWallet = personalWallet;
+
+    this.dispatch(
+      newPersonalWalletPluggedAction({
+        type: personalWallet.type,
+        subtype: personalWallet.subType,
+      }),
+    );
   }
 }

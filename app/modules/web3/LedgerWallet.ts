@@ -8,7 +8,7 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { delay } from "bluebird";
 import { inject, injectable } from "inversify";
 import { EthereumNetworkId } from "../../types";
-import { IPersonalWallet, WalletType } from "./PersonalWeb3";
+import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
 import { IEthereumNetworkConfig, IEthereumNetworkConfigSymbol } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
@@ -34,6 +34,7 @@ export const LedgerConnectorSymbol = "LedgerWallet";
 @injectable()
 export class LedgerWallet implements IPersonalWallet {
   public readonly type: WalletType.LEDGER;
+  public readonly subType: WalletSubType.UNKNOWN;
   public web3: Web3;
   protected ledgerInstance: any | undefined;
 

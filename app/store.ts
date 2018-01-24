@@ -12,6 +12,11 @@ import {
   ISetLedgerWizardAccountsAction,
 } from "./modules/wallet-selector/ledger-wizard/actions";
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
+import {
+  INewPersonalWalletPluggedAction,
+  IPersonalWalletDisconnectedAction,
+} from "./modules/web3/actions";
+import { web3Reducer } from "./modules/web3/reducer";
 
 export interface IAppAction {
   type: string;
@@ -33,12 +38,16 @@ export type AppActionTypes =
   | ILedgerWizardAccountsListNextPage
   | ILedgerWizardAccountsListPreviousPage
   // browser wallet
-  | IBrowserWalletConnectionErrorAction;
+  | IBrowserWalletConnectionErrorAction
+  //web3 management
+  | INewPersonalWalletPluggedAction
+  | IPersonalWalletDisconnectedAction;
 
 // add new app reducers here. They must be AppReducer<T> type
 const appReducers = {
   ledgerWizardState: ledgerWizardReducer,
   browserWalletWizardState: browserWalletWizardReducer,
+  web3Reducer: web3Reducer,
 };
 
 // add all custom reducers here

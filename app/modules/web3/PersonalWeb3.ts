@@ -1,4 +1,5 @@
 import * as Web3 from "web3";
+import { EthereumNetworkId } from "../../types";
 
 export enum WalletType {
   LEDGER = "LEDGER",
@@ -18,7 +19,7 @@ export interface IPersonalWallet {
   web3?: Web3;
 
   // this will be periodically ran by Web3Manager to ensure that wallet connection is still established
-  testConnection(networkId: string): Promise<boolean>;
+  testConnection(networkId: EthereumNetworkId): Promise<boolean>;
 
   connect(networkId: string): Promise<void>;
 }

@@ -4,7 +4,12 @@ import { MiddlewareAPI } from "redux";
 import { IConfig } from "./getConfig";
 import { BrowserWallet, BrowserWalletSymbol } from "./modules/web3/BrowserWallet";
 import { LedgerConnectorSymbol, LedgerWallet } from "./modules/web3/LedgerWallet";
-import { IEthereumNetworkConfig, Web3Manager, Web3ManagerSymbol } from "./modules/web3/Web3Manager";
+import {
+  IEthereumNetworkConfig,
+  IEthereumNetworkConfigSymbol,
+  Web3Manager,
+  Web3ManagerSymbol,
+} from "./modules/web3/Web3Manager";
 import { IAppState } from "./store";
 import { DevConsoleLogger, ILogger, LoggerSymbol } from "./utils/Logger";
 
@@ -24,7 +29,7 @@ export function getContainer(config: IConfig): Container {
 
   container.bind<Delay>("Delay").toConstantValue(delay);
   container
-    .bind<IEthereumNetworkConfig>(IEthereumNetworkConfig)
+    .bind<IEthereumNetworkConfig>(IEthereumNetworkConfigSymbol)
     .toConstantValue(config.ethereumNetwork);
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());

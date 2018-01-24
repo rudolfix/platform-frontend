@@ -1,12 +1,13 @@
 import { BigNumber } from "bignumber.js";
 import { promisify } from "bluebird";
 import * as Web3 from "web3";
+import { EthereumNetworkId } from "../../types";
 
 export class Web3Adapter {
   constructor(public readonly web3: Web3) {}
 
-  public async getNetworkId(): Promise<string> {
-    return promisify<string>(this.web3.version.getNetwork)();
+  public async getNetworkId(): Promise<EthereumNetworkId> {
+    return promisify<string>(this.web3.version.getNetwork)() as any;
   }
 
   public async getBalance(address: string): Promise<BigNumber> {

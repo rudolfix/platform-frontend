@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
 import { WalletNotConnectedError, Web3Manager } from "../../../app/modules/web3/Web3Manager";
-import { dummyConfig } from "../../fixtures";
+import { dummyConfig, dummyNetworkId } from "../../fixtures";
 import { createMock, expectToBeRejected } from "../../testUtils";
 
 describe("Web3Manager", () => {
   it("should plug personal wallet when connection works", async () => {
-    const expectedNetworkId = "1";
+    const expectedNetworkId = dummyNetworkId;
 
     const ledgerWalletMock = createMock(LedgerWallet, {
       testConnection: async () => true,
@@ -22,7 +22,7 @@ describe("Web3Manager", () => {
   });
 
   it("should throw when plugging not connected wallet", async () => {
-    const expectedNetworkId = "1";
+    const expectedNetworkId = dummyNetworkId;
 
     const ledgerWalletMock = createMock(LedgerWallet, {
       testConnection: async () => false,

@@ -3,15 +3,25 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 const paths = require("./paths");
+const loadAppEnv = require("./loadAppEnv");
+
+const applicationEnv = loadAppEnv(process.env);
 
 module.exports = {
   devServer: {
     contentBase: paths.dist,
     host: "localhost",
     port: 9090,
+    https: true,
     hot: true,
     overlay: true,
     historyApiFallback: true,
+    proxy: {
+      "/node": {
+        target: "http://localhost:8545",
+        pathRewrite: { "^/node": "" },
+      },
+    },
   },
   entry: [
     "react-hot-loader/patch",
@@ -76,7 +86,7 @@ module.exports = {
             loader: "url-loader",
             options: {
               limit: 25000,
-              publicPath: '/'
+              publicPath: "/",
             },
           },
           {
@@ -85,7 +95,7 @@ module.exports = {
             options: {
               name: "fonts/[hash].[ext]",
             },
-          }
+          },
         ],
       },
     ],
@@ -99,7 +109,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+      "process.env": applicationEnv,
     }),
   ],
 };

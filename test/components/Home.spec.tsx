@@ -7,6 +7,6 @@ describe("<Home />", () => {
   it("should render", () => {
     const component = shallow(<Home />);
 
-    expect(component.find("h1").text()).to.be.eq("Hello world!");
+    expect(component.find("h1").text()).to.be.eq("Neufund Platform!");
   });
 });

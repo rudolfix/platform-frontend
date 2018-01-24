@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 // tslint:disable-next-line: no-submodule-imports
 import createHistory from "history/createBrowserHistory";
 // tslint:disable-next-line: no-submodule-imports
@@ -8,14 +10,15 @@ import { Provider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { logger } from "redux-logger";
-import "reflect-metadata";
 
-import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
+import { getConfig } from "./getConfig";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
 import muiTheme from "./muiTheme";
 import { createInjectMiddleware } from "./redux-injectify";
 import { IAppState, reducers } from "./store";
+
+import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 
 // @note: this is done to make HMR work with react router. In production build its gone.
@@ -27,7 +30,7 @@ function forceRerenderInDevMode(): number {
   }
 }
 
-function renderApp(store: Store<IAppState>, history: any, Component: React.SFC<any>): void {
+function renderApp(store: Store<IAppState>, history: any, Component: React.ComponentClass): void {
   const mountNode = document.getElementById("app");
   ReactDOM.render(
     <MuiThemeProvider muiTheme={muiTheme}>
@@ -42,7 +45,8 @@ function renderApp(store: Store<IAppState>, history: any, Component: React.SFC<a
 }
 
 function startupApp(history: any): Store<IAppState> {
-  const container = getContainer();
+  const config = getConfig(process.env);
+  const container = getContainer(config);
   const middleware = applyMiddleware(
     routerMiddleware(history),
     createInjectMiddleware(container, customizerContainerWithMiddlewareApi),

@@ -1,4 +1,5 @@
 import "ignore-styles";
+import "reflect-metadata";
 
 // polyfill request animation frame https://github.com/facebookincubator/create-react-app/issues/3199
 (global as any).requestAnimationFrame = function(callback: any): number {

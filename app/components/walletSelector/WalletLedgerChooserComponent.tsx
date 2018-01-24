@@ -43,19 +43,24 @@ export class AccountRow extends React.Component<IAccountRow> {
   }
 }
 
-interface IWalletLedgerChooserComponent {
+export interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
-  handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
   hasPreviousAddress: boolean;
-  showPrevAddresses: () => any;
-  showNextAddresses: () => any;
   loading: boolean;
   derivationPath: string;
   onDerivationPathChange: any;
   invalidDerivationPath: boolean;
 }
 
-export const WalletLedgerChooserComponent: React.SFC<IWalletLedgerChooserComponent> = ({
+export interface IWalletLedgerChooserComponentDispatchProps {
+  handleAddressChosen: (account: ILedgerAccount) => void;
+  showPrevAddresses: () => any;
+  showNextAddresses: () => any;
+}
+
+export const WalletLedgerChooserComponent: React.SFC<
+  IWalletLedgerChooserComponent & IWalletLedgerChooserComponentDispatchProps
+> = ({
   accounts,
   handleAddressChosen,
   hasPreviousAddress,
@@ -88,7 +93,7 @@ export const WalletLedgerChooserComponent: React.SFC<IWalletLedgerChooserCompone
             <th className={styles.useColumn}>Use this address</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody data-test-id="wallet-ledger-accounts-table-body">
           {accounts.map(a => (
             <AccountRow
               key={a.derivationPath}

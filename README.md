@@ -18,11 +18,13 @@ yarn start
 ```
 
 ## Running tests
+
 ```
 yarn test # checks formatting, runs linter and tests
 ```
 
 ### Fix all autofixable errors and run tests
+
 ```
 yarn test:fix
 ```

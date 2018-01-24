@@ -15,7 +15,7 @@ export const onEnterAction: (
 ) => (
   WrappedComponent: React.ComponentType,
 ) => React.ComponentClass = options => WrappedComponent =>
-  connect<{}, IOnEnterActionDispatchProps>(undefined, (dispatch, ownProps) => ({
+  connect<{}, IOnEnterActionDispatchProps>(undefined, dispatch => ({
     watchAction: () => options.actionCreator(dispatch),
   }))(
     class OnEnterAction extends React.Component<IOnEnterActionDispatchProps> {

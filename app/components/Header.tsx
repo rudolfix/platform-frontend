@@ -28,7 +28,7 @@ interface IAuthorized {
   balanceEuro: number;
   balanceNeu: number;
   name: string;
-  toggle: () => {};
+  toggle: () => void;
   isOpen: boolean;
 }
 
@@ -172,11 +172,11 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
     };
   }
 
-  toggle(): void {
+  toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen,
     });
-  }
+  };
 
   render(): React.ReactNode {
     return this.props.isAuthorized ? (
@@ -184,7 +184,7 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
         balanceEuro={this.props.balanceEuro}
         balanceNeu={this.props.balanceNeu}
         name={this.props.name}
-        toggle={this.toggle.bind(this)}
+        toggle={this.toggle}
         isOpen={this.state.isOpen}
       />
     ) : (

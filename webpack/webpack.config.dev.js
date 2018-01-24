@@ -40,7 +40,15 @@ module.exports = {
     rules: [
       {
         test: /\.(tsx?)$/,
-        loaders: ["react-hot-loader/webpack", "awesome-typescript-loader"],
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              plugins: ["react-hot-loader/babel"],
+            },
+          },
+          "awesome-typescript-loader",
+        ],
         include: paths.app,
       },
       {

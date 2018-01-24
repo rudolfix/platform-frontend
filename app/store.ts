@@ -1,11 +1,18 @@
+import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
+
 import {
-  counterReducer,
-  ICounterDecrementAction,
-  ICounterIncrementAction,
-  ICounterState,
-} from "./modules/counter/index";
+  ILedgerConnectionEstablishedAction,
+  ILedgerConnectionEstablishedErrorAction,
+  ILedgerWizardAccountsListNextPage,
+  ILedgerWizardAccountsListPreviousPage,
+  ISetLedgerWizardAccountsAction,
+} from "./modules/wallet-selector/ledger-wizard/actions";
+import {
+  ILedgerWizardState,
+  ledgerWizardReducer,
+} from "./modules/wallet-selector/ledger-wizard/reducer";
 
 export interface IAppAction {
   type: string;
@@ -14,17 +21,35 @@ export interface IAppAction {
 export type ActionType<T extends IAppAction> = T["type"];
 export type ActionPayload<T extends IAppAction> = T["payload"];
 
-export type AppActionTypes = ICounterIncrementAction | ICounterDecrementAction;
+export type AppDispatch = (a: AppActionTypes | Function) => void;
 
-export type AppDispatch = (a: AppActionTypes) => void;
+export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTypes) => S;
 
-export type AppReducer<S> = (state: Readonly<S>, action: AppActionTypes) => S;
+// add new actions here
+export type AppActionTypes =
+  //ledger
+  | ILedgerConnectionEstablishedAction
+  | ILedgerConnectionEstablishedErrorAction
+  | ISetLedgerWizardAccountsAction
+  | ILedgerWizardAccountsListNextPage
+  | ILedgerWizardAccountsListPreviousPage;
 
 export interface IAppState {
-  counterState: ICounterState;
+  ledgerWizardState: ILedgerWizardState;
 }
 
 export const reducers = combineReducers<IAppState>({
-  counterState: counterReducer,
+  ledgerWizardState: ledgerWizardReducer,
   router: routerReducer,
 });
+
+interface IAppConnectOptions<S, D> {
+  stateToProps?: (state: IAppState) => S;
+  dispatchToProps?: (dispatch: AppDispatch) => D;
+}
+
+export function appConnect<S = {}, D = {}>(
+  options: IAppConnectOptions<S, D>,
+): InferableComponentEnhancerWithProps<S & D, {}> {
+  return connect<S, D, {}, IAppState>(options.stateToProps!, options.dispatchToProps!);
+}

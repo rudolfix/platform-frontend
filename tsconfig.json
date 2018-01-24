@@ -11,6 +11,12 @@
     "jsx": "react",
     "sourceMap": true
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "./node_modules/web3-typescript-typings/index.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "typings/**/*.ts",
+    "test/**/*.ts",
+    "test/**/*.tsx"
+  ]
 }

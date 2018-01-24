@@ -10,3 +10,5 @@ interface ILoadingIndicatorProps {
 export const LoadingIndicator: React.SFC<ILoadingIndicatorProps> = ({ className }) => (
   <div className={cn(className, styles.spinner)} />
 );
+
+LoadingIndicator.displayName = "LoadingIndicator";

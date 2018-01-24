@@ -6,6 +6,7 @@ import createHistory from "history/createBrowserHistory";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { hot } from "react-hot-loader";
 import { Provider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
@@ -58,16 +59,6 @@ function startupApp(history: any): Store<IAppState> {
   return store;
 }
 
-if (process.env.NODE_ENV === "development") {
-  if ((module as any).hot) {
-    (module as any).hot.accept("./components/App", () => {
-      const { App } = require("./components/App");
-      // tslint:disable-next-line
-      renderApp(store, history, App);
-    });
-  }
-}
-
 const history = createHistory();
 const store = startupApp(history);
-renderApp(store, history, App);
+renderApp(store, history, hot(module)(App));

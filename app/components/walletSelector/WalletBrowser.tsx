@@ -1,9 +1,15 @@
 import * as React from "react";
 import { Alert, Col, Row } from "reactstrap";
+import { compose } from "redux";
 
+import { tryConnectingWithBrowserWallet } from "../../modules/wallet-selector/browser-wizard/actions";
+import { appConnect } from "../../store";
+import { withActionWatcher } from "../../utils/WatchAction";
 import { HiResImage } from "../HiResImage";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletBrowser.module.scss";
+
+export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 
 interface IWalletBrowserProps {
   errorMessage?: string;
@@ -45,4 +51,14 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({ errorMe
   </div>
 );
 
-export const WalletBrowser = () => <WalletBrowserComponent errorMessage={"msg"} />;
+export const WalletBrowser = compose<React.SFC>(
+  appConnect<IWalletBrowserProps>({
+    stateToProps: state => ({
+      errorMessage: state.browserWalletWizardState.errorMsg,
+    }),
+  }),
+  withActionWatcher({
+    actionCreator: dispatch => dispatch(tryConnectingWithBrowserWallet),
+    interval: BROWSER_WALLET_RECONNECT_INTERVAL,
+  }),
+)(WalletBrowserComponent);

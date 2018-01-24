@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
+import { ReactNode } from "react-redux";
 import { HiResImage } from "../HiResImage";
 import { WalletBrowser } from "./WalletBrowser";
 import { WalletLedger } from "./WalletLedger";
@@ -84,19 +85,40 @@ export const WalletSelectorComponent: React.SFC<IWalletSelectorProps> = ({
   </Container>
 );
 
-export const WalletSelector = () => (
-  <WalletSelectorComponent
-    walletInBrowserSelectedAction={() => {
-      alert("Selected wallet in browser");
-    }}
-    ledgerWalletSelectedAction={() => {
-      alert("Selected ledger wallet");
-    }}
-    lightWalletSelectedAction={() => {
-      alert("Selected light wallet");
-    }}
-    walletInBrowserSelected={false}
-    ledgerWalletSelected
-    lightWalletSelected={false}
-  />
-);
+interface IWalletSelectorState {
+  selectedIndex: WalletSelectorTab;
+}
+
+enum WalletSelectorTab {
+  LIGHT_WALLET = "LIGHT_WALLET",
+  WALLET_IN_BROWSER = "WALLET_IN_BROWSER",
+  LEDGER_WALLET = "LEDGER_WALLET",
+}
+
+export class WalletSelector extends React.Component<{}, IWalletSelectorState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      selectedIndex: WalletSelectorTab.LIGHT_WALLET,
+    };
+  }
+
+  onSelectTab = (tab: WalletSelectorTab) => () => {
+    this.setState({
+      selectedIndex: tab,
+    });
+  };
+
+  render(): ReactNode {
+    return (
+      <WalletSelectorComponent
+        lightWalletSelectedAction={this.onSelectTab(WalletSelectorTab.LIGHT_WALLET)}
+        walletInBrowserSelectedAction={this.onSelectTab(WalletSelectorTab.WALLET_IN_BROWSER)}
+        ledgerWalletSelectedAction={this.onSelectTab(WalletSelectorTab.LEDGER_WALLET)}
+        lightWalletSelected={this.state.selectedIndex === WalletSelectorTab.LIGHT_WALLET}
+        walletInBrowserSelected={this.state.selectedIndex === WalletSelectorTab.WALLET_IN_BROWSER}
+        ledgerWalletSelected={this.state.selectedIndex === WalletSelectorTab.LEDGER_WALLET}
+      />
+    );
+  }
+}

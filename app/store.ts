@@ -2,6 +2,11 @@ import { connect, InferableComponentEnhancerWithProps } from "react-redux";
 import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
 
+import { IBrowserWalletConnectionErrorAction } from "./modules/wallet-selector/browser-wizard/actions";
+import {
+  browserWalletWizardReducer,
+  IBrowserWalletWizardState,
+} from "./modules/wallet-selector/browser-wizard/reducer";
 import {
   ILedgerConnectionEstablishedAction,
   ILedgerConnectionEstablishedErrorAction,
@@ -27,19 +32,23 @@ export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTy
 
 // add new actions here
 export type AppActionTypes =
-  //ledger
+  //ledger wallet
   | ILedgerConnectionEstablishedAction
   | ILedgerConnectionEstablishedErrorAction
   | ISetLedgerWizardAccountsAction
   | ILedgerWizardAccountsListNextPage
-  | ILedgerWizardAccountsListPreviousPage;
+  | ILedgerWizardAccountsListPreviousPage
+  // browser wallet
+  | IBrowserWalletConnectionErrorAction;
 
 export interface IAppState {
   ledgerWizardState: ILedgerWizardState;
+  browserWalletWizardState: IBrowserWalletWizardState;
 }
 
 export const reducers = combineReducers<IAppState>({
   ledgerWizardState: ledgerWizardReducer,
+  browserWalletWizardState: browserWalletWizardReducer,
   router: routerReducer,
 });
 

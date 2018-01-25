@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "strict": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "sourceMap": true
+  },
+  "include": [
+    "./node_modules/web3-typescript-typings/index.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "typings/**/*.ts",
+    "test/**/*.ts",
+    "test/**/*.tsx"
+  ]
+}

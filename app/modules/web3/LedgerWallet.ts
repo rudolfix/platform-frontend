@@ -1,3 +1,5 @@
+export const LedgerConnectorSymbol = "LedgerWallet";
+
 import ledgerWalletProvider from "ledger-wallet-provider";
 import * as semver from "semver";
 import * as Web3 from "web3";
@@ -7,8 +9,9 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { delay } from "bluebird";
 import { inject, injectable } from "inversify";
-import { IPersonalWallet, WalletType } from "./PersonalWeb3";
-import { IEthereumNetworkConfig } from "./Web3Manager";
+import { EthereumNetworkId } from "../../types";
+import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
+import { IEthereumNetworkConfig, IEthereumNetworkConfigSymbol } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -28,16 +31,15 @@ export class LedgerNotSupportedVersionError extends LedgerError {}
 export class LedgerInvalidDerivationPathError extends LedgerError {}
 export class LedgerUnknownError extends LedgerError {}
 
-export const LedgerConnectorSymbol = "LedgerWallet";
-
 @injectable()
 export class LedgerWallet implements IPersonalWallet {
   public readonly type: WalletType.LEDGER;
+  public readonly subType: WalletSubType.UNKNOWN;
   public web3: Web3;
   protected ledgerInstance: any | undefined;
 
   public constructor(
-    @inject(IEthereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
+    @inject(IEthereumNetworkConfigSymbol) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 
   public async testConnection(): Promise<boolean> {
@@ -49,7 +51,7 @@ export class LedgerWallet implements IPersonalWallet {
     }
   }
 
-  public async connect(networkId: string): Promise<void> {
+  public async connect(networkId: EthereumNetworkId): Promise<void> {
     try {
       const ledger = await connectToLedger(networkId, this.web3Config.rpcUrl);
       this.web3 = ledger.ledgerWeb3;

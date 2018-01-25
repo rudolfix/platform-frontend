@@ -1,12 +1,16 @@
 import { injectable } from "inversify";
 import * as Web3 from "web3";
-import { BrowserWalletSubType, IPersonalWallet, WalletType } from "./PersonalWeb3";
+import { EthereumNetworkId } from "../../types";
+import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
 export class BrowserWalletError extends Error {}
 export class BrowserWalletMissingError extends BrowserWalletError {}
 export class BrowserWalletMismatchedNetworkError extends BrowserWalletError {
-  constructor(public readonly desiredNetworkId: string, public readonly actualNetworkId: string) {
+  constructor(
+    public readonly desiredNetworkId: EthereumNetworkId,
+    public readonly actualNetworkId: EthereumNetworkId,
+  ) {
     super("MismatchedNetworkError");
   }
 }
@@ -17,7 +21,7 @@ export const BrowserWalletSymbol = "BrowserWallet";
 @injectable()
 export class BrowserWallet implements IPersonalWallet {
   public readonly type = WalletType.BROWSER;
-  public subType?: BrowserWalletSubType;
+  public subType = WalletSubType.UNKNOWN;
   public web3?: Web3;
   private web3Adapter: Web3Adapter;
 
@@ -26,7 +30,7 @@ export class BrowserWallet implements IPersonalWallet {
     return currentNetworkId === networkId;
   }
 
-  public async connect(networkId: string): Promise<void> {
+  public async connect(networkId: EthereumNetworkId): Promise<void> {
     const newInjectedWeb3 = (window as any).web3;
     if (typeof newInjectedWeb3 === "undefined") {
       throw new BrowserWalletMissingError();
@@ -44,6 +48,8 @@ export class BrowserWallet implements IPersonalWallet {
     if (!await web3Adapter.getAccountAddress()) {
       throw new BrowserWalletLockedError();
     }
+
+    this.subType = await web3Adapter.getNodeType();
 
     this.web3 = newWeb3;
     this.web3Adapter = web3Adapter;

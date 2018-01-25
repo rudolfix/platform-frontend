@@ -9,13 +9,13 @@ import {
   BrowserWalletLockedError,
 } from "../../../../app/modules/web3/BrowserWallet";
 import { Web3Manager } from "../../../../app/modules/web3/Web3Manager";
-import { dummyLogger } from "../../../fixtures";
+import { dummyLogger, dummyNetworkId } from "../../../fixtures";
 import { createMock } from "../../../testUtils";
 
 describe("Wallet selector > Browser wizard > actions", () => {
   describe("tryConnectingWithBrowserWallet action", () => {
     it("should plug wallet on successful connection", async () => {
-      const expectedNetworkId = "5";
+      const expectedNetworkId = dummyNetworkId;
 
       const dispatchMock = spy();
       const navigateToMock = spy();
@@ -40,7 +40,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
     });
 
     it("should dispatch error action on error", async () => {
-      const expectedNetworkId = "5";
+      const expectedNetworkId = dummyNetworkId;
 
       const dispatchMock = spy();
       const navigateToMock = spy();

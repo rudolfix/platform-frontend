@@ -22,12 +22,14 @@ import {
 import { Web3Adapter } from "../../../../app/modules/web3/Web3Adapter";
 import { WalletNotConnectedError, Web3Manager } from "../../../../app/modules/web3/Web3Manager";
 import { IAppState } from "../../../../app/store";
+import { Dictionary } from "../../../../app/types";
+import { dummyNetworkId } from "../../../fixtures";
 import { createMock } from "../../../testUtils";
 
 describe("Wallet selector > Ledger wizard > actions", () => {
   describe("tryEstablishingConnectionWithLedger", () => {
     it("should try establishing connection", async () => {
-      const expectedNetworkId = "5";
+      const expectedNetworkId = dummyNetworkId;
 
       const mockDispatch = spy();
       const ledgerWalletMock = createMock(LedgerWallet, {
@@ -44,7 +46,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
     });
 
     it("should send error action on error", async () => {
-      const expectedNetworkId = "5";
+      const expectedNetworkId = dummyNetworkId;
 
       const mockDispatch = spy();
       const ledgerWalletMock = createMock(LedgerWallet, {

@@ -47,7 +47,13 @@ module.exports = {
               plugins: ["react-hot-loader/babel"],
             },
           },
-          "awesome-typescript-loader",
+          {
+            loader: "awesome-typescript-loader",
+            options: {
+              configFileName: "./tsconfig.dev.json",
+              useCache: true,
+            },
+          },
         ],
         include: paths.app,
       },

@@ -1,21 +1,26 @@
+export const DispatchSymbol = "Dispatch";
+export const NavigateToSymbol = "NavigateTo";
+export const DelaySymbol = "Delay";
+export const GetStateSymbol = "GetState";
+
 import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "./getConfig";
 import { BrowserWallet, BrowserWalletSymbol } from "./modules/web3/BrowserWallet";
 import { LedgerConnectorSymbol, LedgerWallet } from "./modules/web3/LedgerWallet";
-import { IEthereumNetworkConfig, Web3Manager, Web3ManagerSymbol } from "./modules/web3/Web3Manager";
+import {
+  IEthereumNetworkConfig,
+  IEthereumNetworkConfigSymbol,
+  Web3Manager,
+  Web3ManagerSymbol,
+} from "./modules/web3/Web3Manager";
 import { IAppState } from "./store";
 import { DevConsoleLogger, ILogger, LoggerSymbol } from "./utils/Logger";
 
 export type Delay = (n: number) => Promise<void>;
 export type NavigateTo = (path: string) => void;
 export type GetState = () => IAppState;
-
-export const DispatchSymbol = "Dispatch";
-export const NavigateToSymbol = "NavigateTo";
-export const DelaySymbol = "Delay";
-export const GetStateSymbol = "GetState";
 
 export function getContainer(config: IConfig): Container {
   const container = new Container();
@@ -24,7 +29,7 @@ export function getContainer(config: IConfig): Container {
 
   container.bind<Delay>("Delay").toConstantValue(delay);
   container
-    .bind<IEthereumNetworkConfig>(IEthereumNetworkConfig)
+    .bind<IEthereumNetworkConfig>(IEthereumNetworkConfigSymbol)
     .toConstantValue(config.ethereumNetwork);
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());

@@ -43,7 +43,7 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({ errorMe
     {errorMessage && (
       <Alert color="info">
         <h4>Connection status:</h4>
-        <p>{errorMessage}</p>
+        <p data-test-id="browser-wallet-error-msg">{errorMessage}</p>
       </Alert>
     )}
 

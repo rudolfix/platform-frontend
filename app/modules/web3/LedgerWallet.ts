@@ -1,3 +1,5 @@
+export const LedgerConnectorSymbol = "LedgerWallet";
+
 import ledgerWalletProvider from "ledger-wallet-provider";
 import * as semver from "semver";
 import * as Web3 from "web3";
@@ -28,8 +30,6 @@ export class LedgerNotAvailableError extends LedgerError {}
 export class LedgerNotSupportedVersionError extends LedgerError {}
 export class LedgerInvalidDerivationPathError extends LedgerError {}
 export class LedgerUnknownError extends LedgerError {}
-
-export const LedgerConnectorSymbol = "LedgerWallet";
 
 @injectable()
 export class LedgerWallet implements IPersonalWallet {

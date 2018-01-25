@@ -1,3 +1,5 @@
+export const IEthereumNetworkConfigSymbol = "EthereumNetworkConfig";
+
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -7,8 +9,6 @@ import { EthereumNetworkId } from "../../types";
 import { newPersonalWalletPluggedAction } from "./actions";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
-
-export const IEthereumNetworkConfigSymbol = "EthereumNetworkConfig";
 
 export interface IEthereumNetworkConfig {
   rpcUrl: string;

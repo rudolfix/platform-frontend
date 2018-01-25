@@ -1,3 +1,8 @@
+export const DispatchSymbol = "Dispatch";
+export const NavigateToSymbol = "NavigateTo";
+export const DelaySymbol = "Delay";
+export const GetStateSymbol = "GetState";
+
 import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
@@ -16,11 +21,6 @@ import { DevConsoleLogger, ILogger, LoggerSymbol } from "./utils/Logger";
 export type Delay = (n: number) => Promise<void>;
 export type NavigateTo = (path: string) => void;
 export type GetState = () => IAppState;
-
-export const DispatchSymbol = "Dispatch";
-export const NavigateToSymbol = "NavigateTo";
-export const DelaySymbol = "Delay";
-export const GetStateSymbol = "GetState";
 
 export function getContainer(config: IConfig): Container {
   const container = new Container();

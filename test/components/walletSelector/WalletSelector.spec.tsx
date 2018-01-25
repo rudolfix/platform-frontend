@@ -152,7 +152,7 @@ describe("<WalletSelector />", () => {
         },
       });
       const web3ManagerMock = createMock(Web3Manager, {
-        networkId: "5",
+        networkId: dummyNetworkId,
         internalWeb3Adapter: createMock(Web3Adapter, {
           getBalance: async () => new BigNumber(1),
         }),

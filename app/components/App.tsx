@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { Web3Manager, Web3ManagerSymbol } from "../modules/web3/Web3Manager";
@@ -9,7 +9,6 @@ import { Header } from "./Header";
 import { Home } from "./Home";
 import { Kyc } from "./Kyc";
 import { LoadingIndicator } from "./LoadingIndicator";
-import { Success } from "./Success";
 import { WalletSelector } from "./walletSelector/WalletSelector";
 
 const appInitAction = injectableFn(
@@ -65,14 +64,15 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
 
     return (
       <div>
-        <Header isAuthorized={true} name={"Marcin Rodulfix"} balanceEuro={0} balanceNeu={0} />
+        <Header />
 
-        <Route path="/" component={Home} exact />
-        <Route path="/walletselector" component={WalletSelector} exact />
-        <Route path="/kyc" component={Kyc} exact />
-        <Route path="/dashboard" component={Dashboard} exact />
-
-        <Route path="/success" component={Success} exact />
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/login" component={WalletSelector} exact />
+          <Route path="/kyc" component={Kyc} exact />
+          <Route path="/dashboard" component={Dashboard} exact />
+          <Redirect to="/" />
+        </Switch>
       </div>
     );
   }

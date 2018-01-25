@@ -1,6 +1,17 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import { Col, Collapse, Navbar, NavbarBrand, NavbarToggler, Row } from "reactstrap";
+import {
+  Col,
+  Collapse,
+  Container,
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  NavItem,
+  Row,
+} from "reactstrap";
+import { appConnect } from "../store";
 import * as styles from "./Header.module.scss";
 
 type IHeaderProps = IUnAuthProps | IAuthProps;
@@ -99,19 +110,20 @@ export const Authorized: React.SFC<IAuthorized> = ({
                 <Col sm={{ offset: 1 }}>
                   <NavLink
                     className={styles.text}
-                    to="/dashboard"
+                    to="/"
+                    exact
                     activeClassName={`${styles.active} font-weight-bold`}
                   >
-                    Dashboard
+                    Homepage
                   </NavLink>
                 </Col>
                 <Col>
                   <NavLink
                     className={styles.text}
-                    to="/accounts"
+                    to="/dashboard"
                     activeClassName={`${styles.active} font-weight-bold`}
                   >
-                    Accounts
+                    Dashboard
                   </NavLink>
                 </Col>
                 <Col>
@@ -154,16 +166,23 @@ export const Authorized: React.SFC<IAuthorized> = ({
 export const UnAuthorized: React.SFC<{}> = () => {
   return (
     <div>
-      <Navbar expand="sm" className={styles.unAuthorizedNavbar}>
-        <NavbarBrand>
-          <NeufundBrand />
-        </NavbarBrand>
-      </Navbar>
+      <Container>
+        <Navbar expand="sm" className={styles.unAuthorizedNavbar}>
+          <NavbarBrand>
+            <NeufundBrand />
+          </NavbarBrand>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <NavLink to="/login">Login</NavLink>
+            </NavItem>
+          </Nav>
+        </Navbar>
+      </Container>
     </div>
   );
 };
 
-export class Header extends React.Component<IHeaderProps, IHeaderState> {
+export class HeaderComponent extends React.Component<IHeaderProps, IHeaderState> {
   constructor(props: IHeaderProps) {
     super(props);
 
@@ -192,3 +211,24 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
     );
   }
 }
+
+export const Header = appConnect<IHeaderProps>({
+  stateToProps: state => {
+    // relying on web3state connected is temporary
+    if (state.web3State.connected) {
+      return {
+        isAuthorized: true,
+        name: "Marcin Rodulfix",
+        balanceEuro: 0,
+        balanceNeu: 0,
+      };
+    } else {
+      return {
+        isAuthorized: false,
+      };
+    }
+  },
+  options: {
+    pure: false,
+  },
+})(HeaderComponent);

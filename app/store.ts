@@ -1,4 +1,4 @@
-import { connect, InferableComponentEnhancerWithProps } from "react-redux";
+import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
 import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
 
@@ -47,7 +47,7 @@ export type AppActionTypes =
 const appReducers = {
   ledgerWizardState: ledgerWizardReducer,
   browserWalletWizardState: browserWalletWizardReducer,
-  web3Reducer: web3Reducer,
+  web3State: web3Reducer,
 };
 
 // add all custom reducers here
@@ -72,11 +72,17 @@ export const reducers = combineReducers<IAppState>(allReducers);
 interface IAppConnectOptions<S, D> {
   stateToProps?: (state: IAppState) => S;
   dispatchToProps?: (dispatch: AppDispatch) => D;
+  options?: Options<IAppState, S, {}>;
 }
 
 // helper to use instead of redux connect. It's bound with our app state and it uses dictionary to pass arguments
 export function appConnect<S = {}, D = {}>(
-  options: IAppConnectOptions<S, D>,
+  config: IAppConnectOptions<S, D>,
 ): InferableComponentEnhancerWithProps<S & D, {}> {
-  return connect<S, D, {}, IAppState>(options.stateToProps!, options.dispatchToProps!);
+  return connect<S, D, {}, IAppState>(
+    config.stateToProps!,
+    config.dispatchToProps!,
+    undefined,
+    config.options as any,
+  );
 }

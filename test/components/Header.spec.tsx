@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
-import { Authorized, Header, UnAuthorized } from "../../app/components/Header";
+import { Authorized, HeaderComponent, UnAuthorized } from "../../app/components/Header";
 import { tid } from "../testUtils";
 
 const defaultProps = () => ({
@@ -14,13 +14,13 @@ const defaultProps = () => ({
 describe("<Header />", () => {
   describe("<Header />", () => {
     it("should render UnAuthorized Navbar", () => {
-      const component = shallow(<Header isAuthorized={false} />);
+      const component = shallow(<HeaderComponent isAuthorized={false} />);
       expect(component.find(UnAuthorized)).to.have.length(1);
       expect(component.contains(<UnAuthorized />));
     });
     it("should render Authorized Navbar", () => {
       const props = { ...defaultProps(), toggle: sinon.spy(), isOpen: false };
-      const component = shallow(<Header isAuthorized={true} {...props} />);
+      const component = shallow(<HeaderComponent isAuthorized={true} {...props} />);
       expect(component.find(Authorized)).to.have.length(1);
       expect(component.contains(<Authorized {...props} />));
     });

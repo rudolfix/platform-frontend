@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
-export const Home = () => (
+export const Home: React.SFC = () => (
   <Container>
     <Row className="mt-3">
       <Col>

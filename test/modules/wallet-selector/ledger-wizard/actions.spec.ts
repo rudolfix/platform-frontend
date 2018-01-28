@@ -1,6 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
+import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
 import {
   finishSettingUpLedgerConnectorAction,
   goToNextPageAndLoadDataAction,
@@ -159,7 +160,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
     it("should work when ledger wallet is connected", async () => {
       const expectedDerivationPath = "44'/60'/0'/2";
 
-      const navigateToMock = spy();
+      const dispatchMock = spy();
       const ledgerWalletMock = createMock(LedgerWallet, {
         setDerivationPath: () => {},
       });
@@ -168,14 +169,14 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       });
 
       await finishSettingUpLedgerConnectorAction(expectedDerivationPath)(
-        navigateToMock,
+        dispatchMock,
         ledgerWalletMock,
         web3ManagerMock,
       );
 
       expect(ledgerWalletMock.setDerivationPath).to.be.calledWithExactly(expectedDerivationPath);
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(navigateToMock).to.be.calledWithExactly("/platform");
+      expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
     });
 
     it("should not navigate when ledger wallet is not connected", async () => {

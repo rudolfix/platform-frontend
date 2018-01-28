@@ -5,19 +5,12 @@ import { shallow } from "enzyme";
 import { MuiThemeProvider } from "material-ui/styles";
 import * as React from "react";
 import { Provider } from "react-redux";
-import { spy } from "sinon";
 
-import {
-  BROWSER_WALLET_RECONNECT_INTERVAL,
-  WalletBrowser,
-} from "../../../app/components/walletSelector/WalletBrowser";
-import { WalletLedger } from "../../../app/components/walletSelector/WalletLedger";
+import { MemoryRouter } from "react-router";
+import { appRoutes } from "../../../app/components/AppRouter";
+import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
-import { WalletLight } from "../../../app/components/walletSelector/WalletLight";
-import {
-  WalletSelector,
-  WalletSelectorComponent,
-} from "../../../app/components/walletSelector/WalletSelector";
+import { WalletSelector } from "../../../app/components/walletSelector/WalletSelector";
 import {
   BrowserWallet,
   BrowserWalletLockedError,
@@ -32,70 +25,13 @@ import { clickFirstTid, createIntegrationTestsSetup, waitForTid } from "../../in
 import { globalFakeClock } from "../../setupTestsHooks";
 import { createMock, tid } from "../../testUtils";
 
-const defaultProps = () => ({
-  walletInBrowserSelectedAction: spy(),
-  ledgerWalletSelectedAction: spy(),
-  lightWalletSelectedAction: spy(),
-  walletInBrowserSelected: true,
-  ledgerWalletSelected: false,
-  lightWalletSelected: false,
-});
-
 describe("<WalletSelector />", () => {
   it("should render all three wallet tabs", () => {
-    const component = shallow(<WalletSelectorComponent {...defaultProps()} />);
+    const component = shallow(<WalletSelector />);
 
     expect(component.find(tid("wallet-selector-ledger")).length).to.be.eq(1);
     expect(component.find(tid("wallet-selector-browser")).length).to.be.eq(1);
     expect(component.find(tid("wallet-selector-light")).length).to.be.eq(1);
-  });
-
-  it("should fire correct actions for selected wallets", () => {
-    const propsWalletInBrowser = defaultProps();
-    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...propsWalletInBrowser} />);
-    walletInBrowserSelected.find(tid("wallet-selector-browser")).simulate("select");
-
-    const propsLedger = {
-      ...defaultProps(),
-      walletInBrowserSelected: false,
-      ledgerWalletSelected: true,
-    };
-    const ledgerSelected = shallow(<WalletSelectorComponent {...propsLedger} />);
-    ledgerSelected.find(tid("wallet-selector-ledger")).simulate("select");
-
-    const propsLightWallet = {
-      ...defaultProps(),
-      walletInBrowserSelected: false,
-      lightWalletSelected: true,
-    };
-    const lightWalletSelected = shallow(<WalletSelectorComponent {...propsLightWallet} />);
-    lightWalletSelected.find(tid("wallet-selector-light")).simulate("select");
-
-    expect(propsWalletInBrowser.walletInBrowserSelectedAction).to.be.calledOnce;
-    expect(propsLedger.ledgerWalletSelectedAction).to.be.calledOnce;
-    expect(propsLightWallet.lightWalletSelectedAction).to.be.calledOnce;
-  });
-
-  it("should render correct wallets details for selected tab", () => {
-    const propsWalletInBrowser = defaultProps();
-    const walletInBrowserSelected = shallow(<WalletSelectorComponent {...propsWalletInBrowser} />);
-    expect(walletInBrowserSelected.find(WalletBrowser).length).to.be.eq(1);
-
-    const propsLedger = {
-      ...defaultProps(),
-      walletInBrowserSelected: false,
-      ledgerWalletSelected: true,
-    };
-    const ledgerSelected = shallow(<WalletSelectorComponent {...propsLedger} />);
-    expect(ledgerSelected.find(WalletLedger).length).to.be.eq(1);
-
-    const propsLightWallet = {
-      ...defaultProps(),
-      walletInBrowserSelected: false,
-      lightWalletSelected: true,
-    };
-    const lightWalletSelected = shallow(<WalletSelectorComponent {...propsLightWallet} />);
-    expect(lightWalletSelected.find(WalletLight).length).to.be.eq(1);
   });
 
   describe("integration", () => {
@@ -112,9 +48,11 @@ describe("<WalletSelector />", () => {
 
       const mountedComponent = createMount(
         <MuiThemeProvider>
-          <Provider store={store}>
-            <WalletSelector />
-          </Provider>
+          <MemoryRouter initialEntries={[appRoutes.login]}>
+            <Provider store={store}>
+              <WalletSelector />
+            </Provider>
+          </MemoryRouter>
         </MuiThemeProvider>,
       );
 
@@ -162,9 +100,11 @@ describe("<WalletSelector />", () => {
 
       const mountedComponent = createMount(
         <MuiThemeProvider>
-          <Provider store={store}>
-            <WalletSelector />
-          </Provider>
+          <MemoryRouter initialEntries={[appRoutes.login]}>
+            <Provider store={store}>
+              <WalletSelector />
+            </Provider>
+          </MemoryRouter>
         </MuiThemeProvider>,
       );
 

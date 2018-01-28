@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
 import {
   browserWalletConnectionErrorAction,
   tryConnectingWithBrowserWallet,
@@ -18,7 +19,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
       const expectedNetworkId = dummyNetworkId;
 
       const dispatchMock = spy();
-      const navigateToMock = spy();
       const browserWalletMock = createMock(BrowserWallet, {
         connect: async () => {},
       });
@@ -29,21 +29,19 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       await tryConnectingWithBrowserWallet(
         dispatchMock,
-        navigateToMock,
         browserWalletMock,
         web3ManagerMock,
         dummyLogger,
       );
 
       expect(browserWalletMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(dispatchMock).to.not.be.called;
+      expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
     });
 
     it("should dispatch error action on error", async () => {
       const expectedNetworkId = dummyNetworkId;
 
       const dispatchMock = spy();
-      const navigateToMock = spy();
       const browserWalletMock = createMock(BrowserWallet, {
         connect: async () => {
           throw new BrowserWalletLockedError();
@@ -56,7 +54,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       await tryConnectingWithBrowserWallet(
         dispatchMock,
-        navigateToMock,
         browserWalletMock,
         web3ManagerMock,
         dummyLogger,

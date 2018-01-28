@@ -35,6 +35,7 @@ module.exports = {
   output: {
     path: paths.dist,
     filename: "[name].js",
+    publicPath: "/",
   },
   module: {
     rules: [

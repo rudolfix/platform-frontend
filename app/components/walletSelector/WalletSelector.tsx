@@ -4,7 +4,8 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
 import { HiResImage } from "../HiResImage";
-import { WalletRouter, walletRoutes } from "./WalletRouter";
+import { WalletRouter } from "./WalletRouter";
+import { walletRoutes } from "./walletRoutes";
 import * as styles from "./WalletSelector.module.scss";
 
 interface IWalletTab {

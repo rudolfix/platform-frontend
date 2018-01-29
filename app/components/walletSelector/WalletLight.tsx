@@ -1,19 +1,17 @@
-import * as wallet from "eth-lightwallet";
 import * as React from "react";
-import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { Link } from "react-router-dom";
+import { Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
 
+import { WalletLightRouter } from "./WalletLightRouter";
+import { walletLightRoutes } from "./walletLightRoutes";
 const passphrase = "test dog cat hello star toad east car food jump picnic beast";
 
-interface ICreateWalletLight {
-  password: string;
+interface ISavePassPhraseLight {
+  seed: string;
 }
 
-const createWallet: any = (props:ICreateWalletLight) => {
-  return ;
-};
-
-export const SavePassPhrase: React.SFC<{}> = () => (
-  <Row className="mt-5 justify-content-md-center">
+export const SavePassPhrase: React.SFC<ISavePassPhraseLight> = () => (
+  <Row className="mt-5  mb-5 justify-content-md-center">
     <Col sm="5">
       <Form className="align-self-end">
         <FormGroup>
@@ -22,7 +20,9 @@ export const SavePassPhrase: React.SFC<{}> = () => (
             <Input type="textarea" name="backup" id="passphrase" placeholder={passphrase} />
           </fieldset>
         </FormGroup>
-        <Button>I saved it</Button>
+        <Link className="btn btn-secondary" to={walletLightRoutes.create}>
+          I saved it
+        </Link>
       </Form>
     </Col>
   </Row>
@@ -53,7 +53,10 @@ export const RecoverWalletLight: React.SFC<{}> = () => {
             <Label for="exampleEmail">Repeat password</Label>
             <Input type="password" name="repeated" id="recov-repeated-pass" />
           </FormGroup>
-          <Button>I saved it</Button>
+          {/*TODO*/}
+          <Link className="btn btn-secondary" to={walletLightRoutes.create}>
+            I saved it
+          </Link>
         </Form>
       </Col>
     </Row>
@@ -61,7 +64,7 @@ export const RecoverWalletLight: React.SFC<{}> = () => {
 };
 export const CreateWallet: React.SFC<{}> = () => {
   return (
-    <Row className="justify-content-md-center mt-5">
+    <Row className="justify-content-md-center mt-3">
       <Col sm="5">
         <Form className="align-self-end">
           <FormGroup>
@@ -76,16 +79,16 @@ export const CreateWallet: React.SFC<{}> = () => {
             <Label for="exampleEmail">Repeat password</Label>
             <Input type="password" name="repeated" id="repeated-pass" />
           </FormGroup>
-          <Button>Create Account</Button>
+          <Link className="btn btn-secondary" to={walletLightRoutes.save}>
+            Create Account
+          </Link>
         </Form>
       </Col>
     </Row>
   );
 };
 export const WalletLight: React.SFC<{}> = () => (
-  <div>
-    <CreateWallet />
-    <RecoverWalletLight />
-    <SavePassPhrase />
-  </div>
+  <Container>
+    <WalletLightRouter />
+  </Container>
 );

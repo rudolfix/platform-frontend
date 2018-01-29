@@ -16,6 +16,11 @@ import {
   Web3ManagerSymbol,
 } from "./modules/web3/Web3Manager";
 import { IAppState } from "./store";
+import {
+  AsyncIntervalSchedulerFactory,
+  AsyncIntervalSchedulerFactorySymbol,
+  AsyncIntervalSchedulerFactoryType,
+} from "./utils/AsyncIntervalScheduler";
 import { DevConsoleLogger, ILogger, LoggerSymbol } from "./utils/Logger";
 
 export type Delay = (n: number) => Promise<void>;
@@ -33,6 +38,10 @@ export function getContainer(config: IConfig): Container {
     .toConstantValue(config.ethereumNetwork);
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());
+
+  container
+    .bind<AsyncIntervalSchedulerFactoryType>(AsyncIntervalSchedulerFactorySymbol)
+    .toFactory(AsyncIntervalSchedulerFactory);
 
   container
     .bind<LedgerWallet>(LedgerConnectorSymbol)

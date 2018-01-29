@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { expect } from "chai";
-import { Provider } from "react-redux";
+import { Provider as ReduxProvider } from "react-redux";
 import { spy } from "sinon";
 import { onEnterAction } from "../../app/utils/OnEnterAction";
 import { createMount } from "../createMount";
@@ -14,9 +14,9 @@ describe("onEnterAction", () => {
     const OnMountActionComponent = onEnterAction({ actionCreator: () => {} })(SomeComponent);
 
     const mountComponent = createMount(
-      <Provider store={createDummyStore()}>
+      <ReduxProvider store={createDummyStore()}>
         <OnMountActionComponent />
-      </Provider>,
+      </ReduxProvider>,
     );
 
     expect(mountComponent.contains(<SomeComponent />)).to.be.true;
@@ -29,9 +29,9 @@ describe("onEnterAction", () => {
     const store = createDummyStore();
 
     createMount(
-      <Provider store={store}>
+      <ReduxProvider store={store}>
         <OnMountActionComponent />
-      </Provider>,
+      </ReduxProvider>,
     );
 
     expect(actionCreator).to.be.calledWithExactly(store.dispatch);

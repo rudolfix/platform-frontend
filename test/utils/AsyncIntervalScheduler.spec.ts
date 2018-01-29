@@ -127,4 +127,20 @@ describe("AsyncIntervalScheduler", () => {
     globalFakeClock.tick(1);
     expect(asyncFunctionMock).to.be.not.calledOnce;
   });
+
+  it("should work with sync functions", () => {
+    const syncFunctionMock = spy(() => {});
+    const asyncInterval = new AsyncIntervalScheduler(
+      dummyLogger,
+      syncFunctionMock,
+      expectedInterval,
+    );
+    asyncInterval.start();
+
+    globalFakeClock.tick(expectedInterval);
+    expect(syncFunctionMock).to.be.calledOnce;
+
+    globalFakeClock.tick(expectedInterval);
+    expect(syncFunctionMock).to.be.calledTwice;
+  });
 });

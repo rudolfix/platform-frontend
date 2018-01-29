@@ -1,8 +1,9 @@
 import { interfaces } from "inversify";
+import { isPromise } from "./isPromise";
 import { ILogger, LoggerSymbol } from "./Logger";
 
 /**
- * Like setInterval but works with async functions returning promises. It makes sure that callback is called exactly interval microseconds after async execution was finished.
+ * Like setInterval but works with both async and sync functions. It makes sure that callback is called exactly interval microseconds after function execution was finished (async functions need to return promise).
  * It can be started, stopped multiple times.
  */
 export class AsyncIntervalScheduler {
@@ -10,7 +11,7 @@ export class AsyncIntervalScheduler {
   private isCanceled: boolean = true;
   constructor(
     private readonly logger: ILogger,
-    private readonly callback: () => Promise<any>,
+    private readonly callback: Function,
     private readonly interval: number,
   ) {}
 
@@ -34,7 +35,10 @@ export class AsyncIntervalScheduler {
 
     this.cancelId = window.setTimeout(async () => {
       try {
-        await this.callback();
+        const response = this.callback();
+        if (isPromise(response)) {
+          await response;
+        }
       } catch (e) {
         this.logger.error("Uncaught error in AsyncIntervalScheduler: ", e);
       }

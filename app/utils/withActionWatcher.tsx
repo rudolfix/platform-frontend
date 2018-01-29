@@ -1,10 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { AppDispatch } from "../store";
-
-interface IActionWatcherState {
-  timerId?: number;
-}
+import { AsyncIntervalScheduler } from "./AsyncIntervalScheduler";
 
 interface IActionWatcherDispatchProps {
   watchAction: Function;
@@ -23,23 +20,25 @@ export const withActionWatcher: (
   connect<{}, IActionWatcherDispatchProps>(undefined, dispatch => ({
     watchAction: () => options.actionCreator(dispatch),
   }))(
-    class ActionWatcher extends React.Component<IActionWatcherDispatchProps, IActionWatcherState> {
+    class ActionWatcher extends React.Component<IActionWatcherDispatchProps> {
+      private asyncIntervalScheduler: AsyncIntervalScheduler;
       constructor(props: any) {
         super(props);
+        this.asyncIntervalScheduler = new AsyncIntervalScheduler(
+          { error: () => {} } as any, // tmp solution we need to put inversify container into react context
+          this.props.watchAction,
+          options.interval,
+        );
       }
 
       public componentDidMount(): void {
         // initial run
         this.props.watchAction();
-        const timerId = window.setInterval(this.props.watchAction, options.interval);
-        this.setState({
-          ...this.state,
-          timerId,
-        });
+        this.asyncIntervalScheduler.start();
       }
 
       public componentWillUnmount(): void {
-        window.clearInterval(this.state.timerId!);
+        this.asyncIntervalScheduler.stop();
       }
 
       public render(): React.ReactNode {

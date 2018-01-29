@@ -2,7 +2,8 @@ import { expect } from "chai";
 import * as React from "react";
 import { Provider } from "react-redux";
 import { spy } from "sinon";
-import { withActionWatcher } from "../../app/utils/WatchAction";
+import { delay } from "../../app/utils/delay";
+import { withActionWatcher } from "../../app/utils/withActionWatcher";
 import { createMount } from "../createMount";
 import { createDummyStore } from "../fixtures";
 import { globalFakeClock } from "../setupTestsHooks";
@@ -59,6 +60,32 @@ describe("withActionWatcher", () => {
     expect(actionCreator).to.be.calledTwice;
     globalFakeClock.tick(1000);
     expect(actionCreator).to.be.calledThrice;
+  });
+
+  it("should not call action again before it finished", async () => {
+    const asyncActionCreator = spy(async () => {
+      return delay(2000);
+    });
+    const WatchComponent = withActionWatcher({
+      actionCreator: asyncActionCreator,
+      interval: 1000,
+    })(SomeComponent);
+
+    createMount(
+      <Provider store={createDummyStore()}>
+        <WatchComponent />
+      </Provider>,
+    );
+
+    expect(asyncActionCreator).to.be.calledOnce;
+    globalFakeClock.tick(1000);
+    await Promise.resolve();
+    expect(asyncActionCreator).to.be.calledTwice;
+
+    // still called just twice
+    globalFakeClock.tick(1500);
+    await Promise.resolve();
+    expect(asyncActionCreator).to.be.calledTwice;
   });
 
   it("should not call action when was unmounted", () => {

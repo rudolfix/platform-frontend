@@ -14,7 +14,7 @@ import {
 } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
-import { withActionWatcher } from "../../utils/WatchAction";
+import { withActionWatcher } from "../../utils/withActionWatcher";
 import {
   IWalletLedgerChooserComponent,
   IWalletLedgerChooserComponentDispatchProps,

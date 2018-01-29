@@ -33,7 +33,11 @@ class WalletTabLink extends React.Component<IWalletTabLink> {
   render(): React.ReactNode {
     const { href, history, location, match, staticContext, ...props } = this.props;
     return (
-      <WalletTabComponent onSelect={this.onClick} active={location.pathname === href} {...props} />
+      <WalletTabComponent
+        onSelect={this.onClick}
+        active={location.pathname.startsWith(href)}
+        {...props}
+      />
     );
   }
 }

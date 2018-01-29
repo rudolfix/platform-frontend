@@ -31,7 +31,7 @@ export const RecoverWallet: React.SFC<{}> = () => {
             <Input type="password" name="repeated" id="recov-repeated-pass" />
           </FormGroup>
           <Link className="btn btn-secondary" to={walletLightRoutes.validate}>
-            I saved it
+            Recover my wallet
           </Link>
         </Form>
       </Col>

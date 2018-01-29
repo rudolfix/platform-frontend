@@ -90,7 +90,7 @@ export class Web3Manager {
 
   private onWeb3ConnectionLost = () => {
     this.logger.info("Web3 connection lost");
-    this.dispatch(personalWalletDisconnectedAction());
+    this.dispatch(personalWalletDisconnectedAction);
 
     this.web3ConnectionWatcher.stop();
   };

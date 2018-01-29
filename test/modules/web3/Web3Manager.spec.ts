@@ -114,6 +114,6 @@ describe("Web3Manager", () => {
     globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     await Promise.resolve();
     expect(ledgerWalletMock.testConnection).to.be.calledOnce;
-    expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction());
+    expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
   });
 });

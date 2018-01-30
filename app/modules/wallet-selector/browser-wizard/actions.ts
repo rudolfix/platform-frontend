@@ -1,4 +1,4 @@
-import { DispatchSymbol, NavigateTo, NavigateToSymbol } from "../../../getContainer";
+import { DispatchSymbol } from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator } from "../../../storeHelpers";
@@ -11,6 +11,7 @@ import {
   BrowserWalletSymbol,
 } from "../../web3/BrowserWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
+import { walletConnectedAction } from "../actions";
 
 export interface IBrowserWalletConnectionErrorAction extends IAppAction {
   type: "BROWSER_WALLET_CONNECTION_ERROR";
@@ -26,7 +27,6 @@ export const browserWalletConnectionErrorAction = makeActionCreator<
 export const tryConnectingWithBrowserWallet = injectableFn(
   async (
     dispatch: AppDispatch,
-    navigateTo: NavigateTo,
     browserWallet: BrowserWallet,
     web3Manager: Web3Manager,
     logger: ILogger,
@@ -35,7 +35,7 @@ export const tryConnectingWithBrowserWallet = injectableFn(
       await browserWallet.connect(web3Manager.networkId);
 
       await web3Manager.plugPersonalWallet(browserWallet);
-      navigateTo("/platform");
+      dispatch(walletConnectedAction);
     } catch (e) {
       logger.warn("Error while trying to connect with browser wallet: ", e.message);
       dispatch(
@@ -43,7 +43,7 @@ export const tryConnectingWithBrowserWallet = injectableFn(
       );
     }
   },
-  [DispatchSymbol, NavigateToSymbol, BrowserWalletSymbol, Web3ManagerSymbol, LoggerSymbol],
+  [DispatchSymbol, BrowserWalletSymbol, Web3ManagerSymbol, LoggerSymbol],
 );
 
 function mapBrowserWalletErrorToErrorMessage(e: Error): string {

@@ -1,16 +1,11 @@
 import * as React from "react";
-import { Route } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { Web3Manager, Web3ManagerSymbol } from "../modules/web3/Web3Manager";
 import { injectableFn } from "../redux-injectify";
-import { Dashboard } from "./Dashboard";
+import { AppRouter } from "./AppRouter";
 import { Header } from "./Header";
-import { Home } from "./Home";
-import { Kyc } from "./Kyc";
 import { LoadingIndicator } from "./LoadingIndicator";
-import { Success } from "./Success";
-import { WalletSelector } from "./walletSelector/WalletSelector";
 
 const appInitAction = injectableFn(
   async (web3Manager: Web3Manager) => {
@@ -65,14 +60,8 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
 
     return (
       <div>
-        <Header isAuthorized={true} name={"Marcin Rodulfix"} balanceEuro={0} balanceNeu={0} />
-
-        <Route path="/" component={Home} exact />
-        <Route path="/walletselector" component={WalletSelector} exact />
-        <Route path="/kyc" component={Kyc} exact />
-        <Route path="/dashboard" component={Dashboard} exact />
-
-        <Route path="/success" component={Success} exact />
+        <Header />
+        <AppRouter />
       </div>
     );
   }

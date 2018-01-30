@@ -1,13 +1,11 @@
 import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
-import * as styles from "./Home.module.scss";
-
-export const Home = () => (
+export const Home: React.SFC = () => (
   <Container>
-    <Row>
+    <Row className="mt-3">
       <Col>
-        <h1 className={styles.header}>Neufund Platform!</h1>
+        <h2 data-test-id="homepage-title">Home</h2>
       </Col>
     </Row>
   </Container>

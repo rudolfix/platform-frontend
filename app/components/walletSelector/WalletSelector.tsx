@@ -1,12 +1,11 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
-import { ReactNode } from "react-redux";
 import { HiResImage } from "../HiResImage";
-import { WalletBrowser } from "./WalletBrowser";
-import { WalletLedger } from "./WalletLedger";
-import { WalletLight } from "./WalletLight";
+import { WalletRouter } from "./WalletRouter";
+import { walletRoutes } from "./walletRoutes";
 import * as styles from "./WalletSelector.module.scss";
 
 interface IWalletTab {
@@ -14,7 +13,7 @@ interface IWalletTab {
   onSelect: () => any;
 }
 
-const WalletTab: React.SFC<IWalletTab> = ({ active, onSelect, children, ...props }) => {
+const WalletTabComponent: React.SFC<IWalletTab> = ({ active, onSelect, children, ...props }) => {
   return (
     <div className={cn(styles.walletTab, { active })} onClick={onSelect} {...props}>
       <div className={styles.walletTabTitle}>{children}</div>
@@ -22,52 +21,47 @@ const WalletTab: React.SFC<IWalletTab> = ({ active, onSelect, children, ...props
   );
 };
 
-interface IWalletSelectorProps {
-  walletInBrowserSelectedAction: () => any;
-  ledgerWalletSelectedAction: () => any;
-  lightWalletSelectedAction: () => any;
-  walletInBrowserSelected: boolean;
-  ledgerWalletSelected: boolean;
-  lightWalletSelected: boolean;
+interface IWalletTabLink extends RouteComponentProps<{}> {
+  href: string;
 }
 
-export const WalletSelectorComponent: React.SFC<IWalletSelectorProps> = ({
-  walletInBrowserSelected,
-  ledgerWalletSelected,
-  lightWalletSelected,
-  walletInBrowserSelectedAction,
-  ledgerWalletSelectedAction,
-  lightWalletSelectedAction,
-}) => (
+class WalletTabLink extends React.Component<IWalletTabLink> {
+  onClick = () => {
+    this.props.history.push(this.props.href);
+  };
+
+  render(): React.ReactNode {
+    const { href, history, location, match, staticContext, ...props } = this.props;
+    return (
+      <WalletTabComponent
+        onSelect={this.onClick}
+        active={location.pathname.startsWith(href)}
+        {...props}
+      />
+    );
+  }
+}
+
+const WalletTab = withRouter<IWalletTabLink>(WalletTabLink);
+
+export const WalletSelector: React.SFC = () => (
   <Container>
     <Row>
       <Col>
         <p>Please select your wallet.</p>
         <div>
           <div className={styles.walletSelector}>
-            <WalletTab
-              active={lightWalletSelected}
-              onSelect={lightWalletSelectedAction}
-              data-test-id="wallet-selector-light"
-            >
+            <WalletTab href={walletRoutes.light} data-test-id="wallet-selector-light">
               <HiResImage
                 partialPath="wallet_selector/icon_light_wallet"
                 className={styles.walletIcon}
               />Light Wallet
             </WalletTab>
-            <WalletTab
-              active={walletInBrowserSelected}
-              onSelect={walletInBrowserSelectedAction}
-              data-test-id="wallet-selector-browser"
-            >
+            <WalletTab href={walletRoutes.browser} data-test-id="wallet-selector-browser">
               <HiResImage partialPath="wallet_selector/icon_wallet" className={styles.walletIcon} />Wallet
               in your browser
             </WalletTab>
-            <WalletTab
-              active={ledgerWalletSelected}
-              onSelect={ledgerWalletSelectedAction}
-              data-test-id="wallet-selector-ledger"
-            >
+            <WalletTab href={walletRoutes.ledger} data-test-id="wallet-selector-ledger">
               <HiResImage partialPath="wallet_selector/icon_ledger" className={styles.walletIcon} />Ledger
               Nano Wallet
             </WalletTab>
@@ -77,48 +71,8 @@ export const WalletSelectorComponent: React.SFC<IWalletSelectorProps> = ({
     </Row>
     <Row>
       <Col>
-        {walletInBrowserSelected && <WalletBrowser />}
-        {ledgerWalletSelected && <WalletLedger />}
-        {lightWalletSelected && <WalletLight />}
+        <WalletRouter />
       </Col>
     </Row>
   </Container>
 );
-
-interface IWalletSelectorState {
-  selectedIndex: WalletSelectorTab;
-}
-
-enum WalletSelectorTab {
-  LIGHT_WALLET = "LIGHT_WALLET",
-  WALLET_IN_BROWSER = "WALLET_IN_BROWSER",
-  LEDGER_WALLET = "LEDGER_WALLET",
-}
-
-export class WalletSelector extends React.Component<{}, IWalletSelectorState> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      selectedIndex: WalletSelectorTab.LIGHT_WALLET,
-    };
-  }
-
-  onSelectTab = (tab: WalletSelectorTab) => () => {
-    this.setState({
-      selectedIndex: tab,
-    });
-  };
-
-  render(): ReactNode {
-    return (
-      <WalletSelectorComponent
-        lightWalletSelectedAction={this.onSelectTab(WalletSelectorTab.LIGHT_WALLET)}
-        walletInBrowserSelectedAction={this.onSelectTab(WalletSelectorTab.WALLET_IN_BROWSER)}
-        ledgerWalletSelectedAction={this.onSelectTab(WalletSelectorTab.LEDGER_WALLET)}
-        lightWalletSelected={this.state.selectedIndex === WalletSelectorTab.LIGHT_WALLET}
-        walletInBrowserSelected={this.state.selectedIndex === WalletSelectorTab.WALLET_IN_BROWSER}
-        ledgerWalletSelected={this.state.selectedIndex === WalletSelectorTab.LEDGER_WALLET}
-      />
-    );
-  }
-}

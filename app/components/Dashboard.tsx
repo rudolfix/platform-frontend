@@ -3,9 +3,9 @@ import { Col, Container, Row } from "reactstrap";
 
 export const Dashboard = () => (
   <Container>
-    <Row>
+    <Row className="mt-3">
       <Col>
-        <p>Dashboard page</p>
+        <h2>Dashboard</h2>
       </Col>
     </Row>
   </Container>

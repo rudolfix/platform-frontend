@@ -1,13 +1,7 @@
 import { toPairs, zip } from "lodash";
 
 import { pairZip } from "../../../../typings/modifications";
-import {
-  DispatchSymbol,
-  GetState,
-  GetStateSymbol,
-  NavigateTo,
-  NavigateToSymbol,
-} from "../../../getContainer";
+import { DispatchSymbol, GetState, GetStateSymbol } from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../../storeHelpers";
@@ -18,6 +12,7 @@ import {
   LedgerWallet,
 } from "../../web3/LedgerWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
+import { walletConnectedAction } from "../actions";
 import { ILedgerAccount } from "./reducer";
 
 export interface ILedgerConnectionEstablishedAction extends IAppAction {
@@ -142,12 +137,12 @@ export const goToPreviousPageAndLoadDataAction = injectableFn(
 
 export const finishSettingUpLedgerConnectorAction = (derivationPath: string) =>
   injectableFn(
-    async (navigateTo: NavigateTo, ledgerConnector: LedgerWallet, web3Manager: Web3Manager) => {
+    async (dispatch: AppDispatch, ledgerConnector: LedgerWallet, web3Manager: Web3Manager) => {
       ledgerConnector.setDerivationPath(derivationPath);
       await web3Manager.plugPersonalWallet(ledgerConnector);
-      navigateTo("/platform");
+      dispatch(walletConnectedAction);
     },
-    [NavigateToSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
+    [DispatchSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
   );
 
 export const verifyIfLedgerStillConnected = injectableFn(

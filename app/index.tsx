@@ -3,7 +3,6 @@ import "reflect-metadata";
 // tslint:disable-next-line: no-submodule-imports
 import createHistory from "history/createBrowserHistory";
 // tslint:disable-next-line: no-submodule-imports
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";
@@ -15,7 +14,6 @@ import { logger } from "redux-logger";
 import { App } from "./components/App";
 import { getConfig } from "./getConfig";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
-import muiTheme from "./muiTheme";
 import { createInjectMiddleware } from "./redux-injectify";
 import { IAppState, reducers } from "./store";
 
@@ -34,13 +32,11 @@ function forceRerenderInDevMode(): number {
 function renderApp(store: Store<IAppState>, history: any, Component: React.ComponentClass): void {
   const mountNode = document.getElementById("app");
   ReactDOM.render(
-    <MuiThemeProvider muiTheme={muiTheme}>
-      <Provider store={store}>
-        <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-          <Component />
-        </ConnectedRouter>
-      </Provider>
-    </MuiThemeProvider>,
+    <Provider store={store}>
+      <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
+        <Component />
+      </ConnectedRouter>
+    </Provider>,
     mountNode,
   );
 }

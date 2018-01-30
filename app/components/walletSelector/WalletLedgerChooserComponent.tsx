@@ -1,8 +1,8 @@
 import * as cn from "classnames";
-import { TextField } from "material-ui";
 import * as React from "react";
 import { Button } from "reactstrap";
 
+import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
 import { ILedgerAccount } from "../../../typings/typings";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
@@ -49,7 +49,6 @@ export interface IWalletLedgerChooserComponent {
   loading: boolean;
   derivationPath: string;
   onDerivationPathChange: any;
-  invalidDerivationPath: boolean;
 }
 
 export interface IWalletLedgerChooserComponentDispatchProps {
@@ -69,18 +68,9 @@ export const WalletLedgerChooserComponent: React.SFC<
   loading,
   derivationPath,
   onDerivationPathChange,
-  invalidDerivationPath,
 }) => (
   <div>
-    <div>
-      <TextField
-        name="derivationPathField"
-        value={derivationPath}
-        onChange={onDerivationPathChange}
-        errorText={invalidDerivationPath && "Invalid derivation path"}
-      />
-      - Change your derivation path, if necessary.
-    </div>
+    <WalletLedgerDPChooser derivationPath={derivationPath} onChange={onDerivationPathChange} />
     {loading ? (
       <LoadingIndicator />
     ) : (

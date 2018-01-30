@@ -28,7 +28,6 @@ export const WalletLedgerChooser = compose<React.SFC>(
       accounts: state.ledgerWizardState.accounts,
       derivationPath: state.ledgerWizardState.derivationPathPrefix,
       hasPreviousAddress: selectHasPreviousPage(state.ledgerWizardState),
-      invalidDerivationPath: false,
       onDerivationPathChange: () => null,
     }),
     dispatchToProps: dispatch => ({

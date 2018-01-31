@@ -126,6 +126,7 @@ describe("<WalletSelector />", () => {
       globalFakeClock.tick(BROWSER_WALLET_RECONNECT_INTERVAL);
       // Here we cannot use waitForTid as error component already exists after reMock it will have different text.
       await Promise.resolve();
+      await Promise.resolve();
       mountedComponent.update();
       expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
         "Your wallet seems to be locked — we can't access any accounts.",

@@ -27,7 +27,11 @@ export class BrowserWallet implements IPersonalWallet {
 
   public async testConnection(networkId: string): Promise<boolean> {
     const currentNetworkId = await this.web3Adapter.getNetworkId();
-    return currentNetworkId === networkId;
+    if (currentNetworkId !== networkId) {
+      return false;
+    }
+
+    return !!await this.web3Adapter.getAccountAddress();
   }
 
   public async connect(networkId: EthereumNetworkId): Promise<void> {

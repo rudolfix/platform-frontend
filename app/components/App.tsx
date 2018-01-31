@@ -1,6 +1,7 @@
 import * as React from "react";
-
 import { connect } from "react-redux";
+import { ToastContainer } from "react-toastify";
+
 import { Web3Manager, Web3ManagerSymbol } from "../modules/web3/Web3Manager";
 import { injectableFn } from "../redux-injectify";
 import { AppRouter } from "./AppRouter";
@@ -60,6 +61,7 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
 
     return (
       <div>
+        <ToastContainer />
         <Header />
         <AppRouter />
       </div>

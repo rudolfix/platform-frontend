@@ -7,6 +7,10 @@ import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "./getConfig";
+import {
+  NotificationCenter,
+  NotificationCenterSymbol,
+} from "./modules/notifications/NotificationCenter";
 import { BrowserWallet, BrowserWalletSymbol } from "./modules/web3/BrowserWallet";
 import { LedgerConnectorSymbol, LedgerWallet } from "./modules/web3/LedgerWallet";
 import {
@@ -16,6 +20,11 @@ import {
   Web3ManagerSymbol,
 } from "./modules/web3/Web3Manager";
 import { IAppState } from "./store";
+import {
+  AsyncIntervalSchedulerFactory,
+  AsyncIntervalSchedulerFactorySymbol,
+  AsyncIntervalSchedulerFactoryType,
+} from "./utils/AsyncIntervalScheduler";
 import { DevConsoleLogger, ILogger, LoggerSymbol } from "./utils/Logger";
 
 export type Delay = (n: number) => Promise<void>;
@@ -33,6 +42,15 @@ export function getContainer(config: IConfig): Container {
     .toConstantValue(config.ethereumNetwork);
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());
+
+  container
+    .bind<NotificationCenter>(NotificationCenterSymbol)
+    .to(NotificationCenter)
+    .inSingletonScope();
+
+  container
+    .bind<AsyncIntervalSchedulerFactoryType>(AsyncIntervalSchedulerFactorySymbol)
+    .toFactory(AsyncIntervalSchedulerFactory);
 
   container
     .bind<LedgerWallet>(LedgerConnectorSymbol)

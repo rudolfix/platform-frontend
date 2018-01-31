@@ -6,6 +6,7 @@ import {
   goToNextPageAndLoadDataAction,
   goToPreviousPageAndLoadDataAction,
   loadLedgerAccountsAction,
+  setDerivationPathPrefixAction,
   verifyIfLedgerStillConnected,
 } from "../../modules/wallet-selector/ledger-wizard/actions";
 import {
@@ -28,9 +29,11 @@ export const WalletLedgerChooser = compose<React.SFC>(
       accounts: state.ledgerWizardState.accounts,
       derivationPath: state.ledgerWizardState.derivationPathPrefix,
       hasPreviousAddress: selectHasPreviousPage(state.ledgerWizardState),
-      onDerivationPathChange: () => null,
     }),
     dispatchToProps: dispatch => ({
+      onDerivationPathPrefixChange: (derivationPathPrefix: string) => {
+        dispatch(setDerivationPathPrefixAction(derivationPathPrefix));
+      },
       handleAddressChosen: (account: ILedgerAccount) => {
         dispatch(finishSettingUpLedgerConnectorAction(account.derivationPath));
       },

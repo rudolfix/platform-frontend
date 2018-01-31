@@ -1,6 +1,6 @@
 import { AppReducer } from "../../../store";
 
-const DEFAULT_DERIVATION_PATH_PREFIX = "44'/60'/0'/";
+export const DEFAULT_DERIVATION_PATH_PREFIX = "44'/60'/0'/";
 const DEFAULT_LEDGER_ACCOUNTS_PER_PAGE = 10;
 
 export interface ILedgerAccount {
@@ -64,6 +64,14 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         ...state,
         accounts: action.payload.accounts,
         isLoadingAddresses: false,
+      };
+    case "SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX":
+      return {
+        ...state,
+        derivationPathPrefix: action.payload.derivationPathPrefix,
+        index: 0,
+        accounts: [],
+        isLoadingAddresses: true,
       };
   }
 

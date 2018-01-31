@@ -11,7 +11,9 @@ import {
   ledgerWizardAccountsListNextPageAction,
   ledgerWizardAccountsListPreviousPageAction,
   loadLedgerAccountsAction,
+  setDerivationPathPrefixAction,
   setLedgerAccountsAction,
+  setLedgerWizardDerivationPathPrefix,
   tryEstablishingConnectionWithLedger,
   verifyIfLedgerStillConnected,
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
@@ -152,6 +154,21 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWith(ledgerWizardAccountsListPreviousPageAction());
+      expect(mockDispatch).to.be.calledWith(loadLedgerAccountsAction);
+    });
+  });
+
+  describe("setDerivationPathPrefixAction", () => {
+    it("should work", async () => {
+      const newDP = "test";
+      const mockDispatch = spy();
+
+      await setDerivationPathPrefixAction(newDP)(mockDispatch);
+
+      expect(mockDispatch).to.be.calledTwice;
+      expect(mockDispatch).to.be.calledWith(
+        setLedgerWizardDerivationPathPrefix({ derivationPathPrefix: newDP }),
+      );
       expect(mockDispatch).to.be.calledWith(loadLedgerAccountsAction);
     });
   });

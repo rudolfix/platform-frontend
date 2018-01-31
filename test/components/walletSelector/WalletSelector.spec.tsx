@@ -1,8 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { shallow } from "enzyme";
-// tslint:disable-next-line
-import { MuiThemeProvider } from "material-ui/styles";
 import * as React from "react";
 import { Provider } from "react-redux";
 
@@ -47,13 +45,11 @@ describe("<WalletSelector />", () => {
       const { store } = createIntegrationTestsSetup({ ledgerWalletMock, web3ManagerMock });
 
       const mountedComponent = createMount(
-        <MuiThemeProvider>
-          <MemoryRouter initialEntries={[appRoutes.login]}>
-            <Provider store={store}>
-              <WalletSelector />
-            </Provider>
-          </MemoryRouter>
-        </MuiThemeProvider>,
+        <MemoryRouter initialEntries={[appRoutes.login]}>
+          <Provider store={store}>
+            <WalletSelector />
+          </Provider>
+        </MemoryRouter>,
       );
 
       // ensure that ledger tab is selected
@@ -99,13 +95,11 @@ describe("<WalletSelector />", () => {
       const { store } = createIntegrationTestsSetup({ browserWalletMock, web3ManagerMock });
 
       const mountedComponent = createMount(
-        <MuiThemeProvider>
-          <MemoryRouter initialEntries={[appRoutes.login]}>
-            <Provider store={store}>
-              <WalletSelector />
-            </Provider>
-          </MemoryRouter>
-        </MuiThemeProvider>,
+        <MemoryRouter initialEntries={[appRoutes.login]}>
+          <Provider store={store}>
+            <WalletSelector />
+          </Provider>
+        </MemoryRouter>,
       );
 
       // select wallet in browser tab is selected

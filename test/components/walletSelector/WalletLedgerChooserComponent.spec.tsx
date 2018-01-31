@@ -38,9 +38,7 @@ const defaultProps = () => ({
   hasPreviousAddress: true,
   showPrevAddresses: spy(),
   showNextAddresses: spy(),
-  derivationPath: "44'/60'/0'/0",
-  onDerivationPathChange: spy(),
-  invalidDerivationPath: false,
+  onDerivationPathPrefixChange: spy(),
 });
 
 describe("<WalletLedgerChooserComponent />", () => {

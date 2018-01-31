@@ -2,10 +2,10 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Button } from "reactstrap";
 
-import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
 import { ILedgerAccount } from "../../../typings/typings";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
+import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
 
 interface IAccountRow {
   ledgerAccount: ILedgerAccount;
@@ -47,11 +47,10 @@ export interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
   hasPreviousAddress: boolean;
   loading: boolean;
-  derivationPath: string;
-  onDerivationPathChange: any;
 }
 
 export interface IWalletLedgerChooserComponentDispatchProps {
+  onDerivationPathPrefixChange: (derivationPathprefix: string) => void;
   handleAddressChosen: (account: ILedgerAccount) => void;
   showPrevAddresses: () => any;
   showNextAddresses: () => any;
@@ -66,11 +65,10 @@ export const WalletLedgerChooserComponent: React.SFC<
   showPrevAddresses,
   showNextAddresses,
   loading,
-  derivationPath,
-  onDerivationPathChange,
+  onDerivationPathPrefixChange,
 }) => (
   <div>
-    <WalletLedgerDPChooser derivationPath={derivationPath} onChange={onDerivationPathChange} />
+    <WalletLedgerDPChooser onChange={onDerivationPathPrefixChange} />
     {loading ? (
       <LoadingIndicator />
     ) : (

@@ -81,7 +81,7 @@ interface ICreateProviderContext {
   store?: Store<any>;
 }
 
-export function createProviders(
+export function wrapWithProviders(
   Component: React.ComponentType,
   context: ICreateProviderContext = {},
 ): React.ReactElement<any> {

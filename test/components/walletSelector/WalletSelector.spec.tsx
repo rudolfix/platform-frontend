@@ -22,8 +22,8 @@ import { dummyNetworkId } from "../../fixtures";
 import {
   clickFirstTid,
   createIntegrationTestsSetup,
-  createProviders,
   waitForTid,
+  wrapWithProviders,
 } from "../../integrationTestUtils";
 import { globalFakeClock } from "../../setupTestsHooks";
 import { createMock, tid } from "../../testUtils";
@@ -53,7 +53,7 @@ describe("<WalletSelector />", () => {
       });
 
       const mountedComponent = createMount(
-        createProviders(WalletSelector, {
+        wrapWithProviders(WalletSelector, {
           container,
           store,
           currentRoute: appRoutes.login,
@@ -106,7 +106,7 @@ describe("<WalletSelector />", () => {
       });
 
       const mountedComponent = createMount(
-        createProviders(WalletSelector, {
+        wrapWithProviders(WalletSelector, {
           container,
           store,
           currentRoute: appRoutes.login,

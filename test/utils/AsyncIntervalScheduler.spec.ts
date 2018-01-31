@@ -24,8 +24,7 @@ describe("AsyncIntervalScheduler", () => {
     expect(asyncFunctionMock).to.be.calledOnce;
 
     // no more calls because async task takes time
-    globalFakeClock.tick(expectedFunctionDelay);
-    await Promise.resolve(); // let async function finish
+    await globalFakeClock.tickAsync(expectedFunctionDelay);
     expect(asyncFunctionMock).to.be.calledOnce;
 
     globalFakeClock.tick(expectedInterval);
@@ -79,8 +78,7 @@ describe("AsyncIntervalScheduler", () => {
     asyncInterval.stop();
 
     // wait for function execution to finish
-    globalFakeClock.tick(expectedFunctionDelay);
-    await Promise.resolve();
+    await globalFakeClock.tickAsync(expectedFunctionDelay);
 
     globalFakeClock.tick(expectedInterval);
     expect(asyncFunctionMock).to.be.calledOnce;

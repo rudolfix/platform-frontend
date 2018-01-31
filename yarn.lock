@@ -55,6 +55,10 @@
   version "4.14.92"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.92.tgz#6e3cb0b71a1e12180a47a42a744e856c3ae99a57"
 
+"@types/lolex@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/lolex/-/lolex-2.1.1.tgz#751bbad838366b3e9a0f7a81e30232ff56eb73dd"
+
 "@types/material-ui@^0.20.3":
   version "0.20.3"
   resolved "https://registry.yarnpkg.com/@types/material-ui/-/material-ui-0.20.3.tgz#dd599009be465bb848ebfe40a7ef1153142a571a"
@@ -4152,6 +4156,10 @@ lolex@^1.6.0:
 lolex@^2.2.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/lolex/-/lolex-2.3.1.tgz#3d2319894471ea0950ef64692ead2a5318cff362"
+
+lolex@kylefleming/lolex#d683851fedb7237b9e5606ee139090ed71378842:
+  version "1.6.0"
+  resolved "https://codeload.github.com/kylefleming/lolex/tar.gz/d683851fedb7237b9e5606ee139090ed71378842"
 
 longest@^1.0.1:
   version "1.0.1"

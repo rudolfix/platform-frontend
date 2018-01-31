@@ -102,18 +102,13 @@ describe("Web3Manager", () => {
 
     expect(ledgerWalletMock.testConnection).to.be.calledOnce;
 
-    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
-    // let testConnection return
-    await Promise.resolve();
-    // let whole watcher function return and set another timeout
-    await Promise.resolve();
+    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledTwice;
 
     ledgerWalletMock.reMock({
       testConnection: async () => false,
     });
-    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
-    await Promise.resolve();
+    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledOnce;
     expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
   });
@@ -140,11 +135,7 @@ describe("Web3Manager", () => {
 
     expect(ledgerWalletMock.testConnection).to.be.calledOnce;
 
-    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
-    // let testConnection return
-    await Promise.resolve();
-    // let whole watcher function return and set another timeout
-    await Promise.resolve();
+    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledTwice;
 
     // make personal wallet timeout
@@ -155,12 +146,10 @@ describe("Web3Manager", () => {
       },
     });
     // run testConnection again
-    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     // wait until timeout
-    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
-    // @todo we really need a way to flush all pending promises
-    await Promise.resolve();
-    await Promise.resolve();
+    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+
     expect(ledgerWalletMock.testConnection).to.be.calledOnce;
     expect(dispatchMock).to.be.calledTwice;
     expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);

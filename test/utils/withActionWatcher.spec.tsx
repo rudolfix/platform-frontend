@@ -61,13 +61,11 @@ describe("withActionWatcher", () => {
     createMount(wrapWithProviders(WatchComponent));
 
     expect(asyncActionCreator).to.be.calledOnce;
-    globalFakeClock.tick(1000);
-    await Promise.resolve();
+    await globalFakeClock.tickAsync(1000);
     expect(asyncActionCreator).to.be.calledTwice;
 
     // still called just twice
-    globalFakeClock.tick(1500);
-    await Promise.resolve();
+    await globalFakeClock.tickAsync(1500);
     expect(asyncActionCreator).to.be.calledTwice;
   });
 

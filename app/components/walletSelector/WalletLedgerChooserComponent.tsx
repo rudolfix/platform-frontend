@@ -3,7 +3,7 @@ import { TextField } from "material-ui";
 import * as React from "react";
 import { Button } from "reactstrap";
 
-import { ILedgerAccount } from "../../../typings/typings";
+import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
 

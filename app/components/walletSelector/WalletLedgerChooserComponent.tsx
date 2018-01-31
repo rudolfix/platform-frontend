@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Button } from "reactstrap";
 
-import { ILedgerAccount } from "../../../typings/typings";
+import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
 import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";

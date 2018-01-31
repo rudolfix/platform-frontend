@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import {
   newPersonalWalletPluggedAction,
-  personalWalletDisconnectedAction,
+  personalWalletDisconnectedPlainAction,
 } from "../../../app/modules/web3/actions";
 import { WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
 import { IWeb3State, web3InitialState, web3Reducer } from "../../../app/modules/web3/reducer";
@@ -27,7 +27,7 @@ describe("Web3 > reducer", () => {
       subtype: WalletSubType.METAMASK,
     };
 
-    const actualNewState = web3Reducer(initialState, personalWalletDisconnectedAction());
+    const actualNewState = web3Reducer(initialState, personalWalletDisconnectedPlainAction());
 
     expect(actualNewState).to.be.deep.eq({
       connected: false,
@@ -38,7 +38,7 @@ describe("Web3 > reducer", () => {
   it("should act on PERSONAL_WALLET_DISCONNECTED action", () => {
     const initialState = web3InitialState;
 
-    const actualNewState = web3Reducer(initialState, personalWalletDisconnectedAction());
+    const actualNewState = web3Reducer(initialState, personalWalletDisconnectedPlainAction());
 
     expect(actualNewState).to.be.deep.eq({
       connected: false,

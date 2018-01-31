@@ -4,7 +4,7 @@ import { compose } from "redux";
 
 import { tryEstablishingConnectionWithLedger } from "../../modules/wallet-selector/ledger-wizard/actions";
 import { appConnect } from "../../store";
-import { withActionWatcher } from "../../utils/WatchAction";
+import { withActionWatcher } from "../../utils/withActionWatcher";
 import { HiResImage } from "../HiResImage";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerInitComponent.module.scss";

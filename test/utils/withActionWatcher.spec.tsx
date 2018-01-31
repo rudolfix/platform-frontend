@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import * as React from "react";
-import { Provider } from "react-redux";
 import { spy } from "sinon";
-import { withActionWatcher } from "../../app/utils/WatchAction";
+import { delay } from "../../app/utils/delay";
+import { withActionWatcher } from "../../app/utils/withActionWatcher";
 import { createMount } from "../createMount";
-import { createDummyStore } from "../fixtures";
+import { wrapWithProviders } from "../integrationTestUtils";
 import { globalFakeClock } from "../setupTestsHooks";
 
 describe("withActionWatcher", () => {
@@ -16,11 +16,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    const mountComponent = createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    const mountComponent = createMount(wrapWithProviders(WatchComponent));
 
     expect(mountComponent.contains(<SomeComponent />)).to.be.true;
   });
@@ -32,11 +28,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    createMount(wrapWithProviders(WatchComponent));
 
     expect(actionCreator).to.be.calledOnce;
   });
@@ -48,17 +40,33 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    createMount(wrapWithProviders(WatchComponent));
 
     expect(actionCreator).to.be.calledOnce;
     globalFakeClock.tick(1000);
     expect(actionCreator).to.be.calledTwice;
     globalFakeClock.tick(1000);
     expect(actionCreator).to.be.calledThrice;
+  });
+
+  it("should not call action again before it finished", async () => {
+    const asyncActionCreator = spy(async () => {
+      return delay(2000);
+    });
+    const WatchComponent = withActionWatcher({
+      actionCreator: asyncActionCreator,
+      interval: 1000,
+    })(SomeComponent);
+
+    createMount(wrapWithProviders(WatchComponent));
+
+    expect(asyncActionCreator).to.be.calledOnce;
+    await globalFakeClock.tickAsync(1000);
+    expect(asyncActionCreator).to.be.calledTwice;
+
+    // still called just twice
+    await globalFakeClock.tickAsync(1500);
+    expect(asyncActionCreator).to.be.calledTwice;
   });
 
   it("should not call action when was unmounted", () => {
@@ -68,11 +76,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    const mountComponent = createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    const mountComponent = createMount(wrapWithProviders(WatchComponent));
 
     expect(actionCreator).to.be.calledOnce;
     mountComponent.unmount();

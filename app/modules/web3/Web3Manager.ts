@@ -4,7 +4,14 @@ import * as Web3 from "web3";
 import { DispatchSymbol } from "../../getContainer";
 import { AppDispatch } from "../../store";
 import { EthereumNetworkId } from "../../types";
-import { newPersonalWalletPluggedAction } from "./actions";
+import {
+  AsyncIntervalScheduler,
+  AsyncIntervalSchedulerFactorySymbol,
+  AsyncIntervalSchedulerFactoryType,
+} from "../../utils/AsyncIntervalScheduler";
+import { ILogger, LoggerSymbol } from "../../utils/Logger";
+import { promiseTimeout } from "../../utils/promiseTimeout";
+import { newPersonalWalletPluggedAction, personalWalletDisconnectedAction } from "./actions";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
@@ -22,6 +29,8 @@ export class WalletNotConnectedError extends Error {
   }
 }
 
+export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 5000;
+
 // singleton holding all web3 instances
 @injectable()
 export class Web3Manager {
@@ -29,11 +38,21 @@ export class Web3Manager {
   public networkId: EthereumNetworkId;
   public internalWeb3Adapter: Web3Adapter;
 
+  private readonly web3ConnectionWatcher: AsyncIntervalScheduler;
+
   constructor(
     @inject(IEthereumNetworkConfigSymbol)
     public readonly ethereumNetworkConfig: IEthereumNetworkConfig,
     @inject(DispatchSymbol) public readonly dispatch: AppDispatch,
-  ) {}
+    @inject(LoggerSymbol) public readonly logger: ILogger,
+    @inject(AsyncIntervalSchedulerFactorySymbol)
+    asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType,
+  ) {
+    this.web3ConnectionWatcher = asyncIntervalSchedulerFactory(
+      this.watchConnection,
+      WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL,
+    );
+  }
 
   public async initialize(): Promise<void> {
     const rawWeb3 = new Web3(new Web3.providers.HttpProvider(this.ethereumNetworkConfig.rpcUrl));
@@ -55,5 +74,32 @@ export class Web3Manager {
         subtype: personalWallet.subType,
       }),
     );
+
+    this.web3ConnectionWatcher.start();
   }
+
+  private watchConnection = async () => {
+    this.logger.verbose("Checking web3 status...");
+    if (!this.personalWallet) {
+      this.logger.error("Web3 watcher started without valid personalWallet instance!");
+      return;
+    }
+
+    const isConnectionWorking = await promiseTimeout({
+      promise: this.personalWallet.testConnection(this.networkId),
+      defaultValue: false,
+      timeout: WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL,
+    });
+
+    if (!isConnectionWorking) {
+      this.onWeb3ConnectionLost();
+    }
+  };
+
+  private onWeb3ConnectionLost = () => {
+    this.logger.info("Web3 connection lost");
+    this.dispatch(personalWalletDisconnectedAction);
+
+    this.web3ConnectionWatcher.stop();
+  };
 }

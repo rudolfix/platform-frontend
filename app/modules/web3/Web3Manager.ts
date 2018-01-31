@@ -10,6 +10,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
 import { ILogger, LoggerSymbol } from "../../utils/Logger";
+import { promiseTimeout } from "../../utils/promiseTimeout";
 import { newPersonalWalletPluggedAction, personalWalletDisconnectedAction } from "./actions";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
@@ -28,7 +29,7 @@ export class WalletNotConnectedError extends Error {
   }
 }
 
-export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 1000;
+export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 5000;
 
 // singleton holding all web3 instances
 @injectable()
@@ -78,12 +79,19 @@ export class Web3Manager {
   }
 
   private watchConnection = async () => {
-    this.logger.debug("Checking web3 status...");
+    this.logger.verbose("Checking web3 status...");
     if (!this.personalWallet) {
       this.logger.error("Web3 watcher started without valid personalWallet instance!");
       return;
     }
-    if (!await this.personalWallet.testConnection(this.networkId)) {
+
+    const isConnectionWorking = await promiseTimeout({
+      promise: this.personalWallet.testConnection(this.networkId),
+      defaultValue: false,
+      timeout: WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL,
+    });
+
+    if (!isConnectionWorking) {
       this.onWeb3ConnectionLost();
     }
   };

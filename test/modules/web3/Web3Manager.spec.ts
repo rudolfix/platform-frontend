@@ -15,6 +15,7 @@ import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,
 } from "../../../app/utils/AsyncIntervalScheduler";
+import { delay } from "../../../app/utils/delay";
 import { dummyConfig, dummyLogger, dummyNetworkId } from "../../fixtures";
 import { globalFakeClock } from "../../setupTestsHooks";
 import { createMock, expectToBeRejected } from "../../testUtils";
@@ -86,14 +87,14 @@ describe("Web3Manager", () => {
       subType: WalletSubType.UNKNOWN,
       testConnection: async () => true,
     });
-    const asyncIntervalSchedulerFactoryMock: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
+    const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
       new AsyncIntervalScheduler(dummyLogger, cb, interval);
 
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       dispatchMock,
       dummyLogger,
-      asyncIntervalSchedulerFactoryMock,
+      asyncIntervalSchedulerFactory,
     );
     web3Manager.networkId = expectedNetworkId;
 
@@ -114,6 +115,54 @@ describe("Web3Manager", () => {
     globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     await Promise.resolve();
     expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+    expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
+  });
+
+  it("should fail on connection timeout", async () => {
+    const dispatchMock = spy();
+    const ledgerWalletMock = createMock(LedgerWallet, {
+      type: WalletType.LEDGER,
+      subType: WalletSubType.UNKNOWN,
+      testConnection: async () => true,
+    });
+    const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
+      new AsyncIntervalScheduler(dummyLogger, cb, interval);
+
+    const web3Manager = new Web3Manager(
+      dummyConfig.ethereumNetwork,
+      dispatchMock,
+      dummyLogger,
+      asyncIntervalSchedulerFactory,
+    );
+    web3Manager.networkId = expectedNetworkId;
+
+    await web3Manager.plugPersonalWallet(ledgerWalletMock);
+
+    expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+
+    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    // let testConnection return
+    await Promise.resolve();
+    // let whole watcher function return and set another timeout
+    await Promise.resolve();
+    expect(ledgerWalletMock.testConnection).to.be.calledTwice;
+
+    // make personal wallet timeout
+    ledgerWalletMock.reMock({
+      testConnection: async () => {
+        await delay(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL * 2);
+        return false;
+      },
+    });
+    // run testConnection again
+    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    // wait until timeout
+    globalFakeClock.tick(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    // @todo we really need a way to flush all pending promises
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+    expect(dispatchMock).to.be.calledTwice;
     expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
   });
 });

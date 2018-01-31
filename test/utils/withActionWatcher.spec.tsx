@@ -1,11 +1,10 @@
 import { expect } from "chai";
 import * as React from "react";
-import { Provider } from "react-redux";
 import { spy } from "sinon";
 import { delay } from "../../app/utils/delay";
 import { withActionWatcher } from "../../app/utils/withActionWatcher";
 import { createMount } from "../createMount";
-import { createDummyStore } from "../fixtures";
+import { wrapWithProviders } from "../integrationTestUtils";
 import { globalFakeClock } from "../setupTestsHooks";
 
 describe("withActionWatcher", () => {
@@ -17,11 +16,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    const mountComponent = createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    const mountComponent = createMount(wrapWithProviders(WatchComponent));
 
     expect(mountComponent.contains(<SomeComponent />)).to.be.true;
   });
@@ -33,11 +28,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    createMount(wrapWithProviders(WatchComponent));
 
     expect(actionCreator).to.be.calledOnce;
   });
@@ -49,11 +40,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    createMount(wrapWithProviders(WatchComponent));
 
     expect(actionCreator).to.be.calledOnce;
     globalFakeClock.tick(1000);
@@ -71,11 +58,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    createMount(wrapWithProviders(WatchComponent));
 
     expect(asyncActionCreator).to.be.calledOnce;
     globalFakeClock.tick(1000);
@@ -95,11 +78,7 @@ describe("withActionWatcher", () => {
       interval: 1000,
     })(SomeComponent);
 
-    const mountComponent = createMount(
-      <Provider store={createDummyStore()}>
-        <WatchComponent />
-      </Provider>,
-    );
+    const mountComponent = createMount(wrapWithProviders(WatchComponent));
 
     expect(actionCreator).to.be.calledOnce;
     mountComponent.unmount();

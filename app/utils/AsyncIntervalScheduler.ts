@@ -51,7 +51,7 @@ export class AsyncIntervalScheduler {
 export const AsyncIntervalSchedulerFactorySymbol = "AsyncIntervalSchedulerFactorySymbol";
 
 export type AsyncIntervalSchedulerFactoryType = (
-  cb: () => Promise<any>,
+  cb: Function,
   interval: number,
 ) => AsyncIntervalScheduler;
 

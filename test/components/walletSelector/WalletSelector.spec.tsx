@@ -4,9 +4,7 @@ import { shallow } from "enzyme";
 // tslint:disable-next-line
 import { MuiThemeProvider } from "material-ui/styles";
 import * as React from "react";
-import { Provider } from "react-redux";
 
-import { MemoryRouter } from "react-router";
 import { appRoutes } from "../../../app/components/AppRouter";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
@@ -21,7 +19,12 @@ import { Web3Adapter } from "../../../app/modules/web3/Web3Adapter";
 import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { createMount } from "../../createMount";
 import { dummyNetworkId } from "../../fixtures";
-import { clickFirstTid, createIntegrationTestsSetup, waitForTid } from "../../integrationTestUtils";
+import {
+  clickFirstTid,
+  createIntegrationTestsSetup,
+  waitForTid,
+  wrapWithProviders,
+} from "../../integrationTestUtils";
 import { globalFakeClock } from "../../setupTestsHooks";
 import { createMock, tid } from "../../testUtils";
 
@@ -44,16 +47,17 @@ describe("<WalletSelector />", () => {
         }),
         plugPersonalWallet: async () => {},
       });
-      const { store } = createIntegrationTestsSetup({ ledgerWalletMock, web3ManagerMock });
+      const { store, container } = createIntegrationTestsSetup({
+        ledgerWalletMock,
+        web3ManagerMock,
+      });
 
       const mountedComponent = createMount(
-        <MuiThemeProvider>
-          <MemoryRouter initialEntries={[appRoutes.login]}>
-            <Provider store={store}>
-              <WalletSelector />
-            </Provider>
-          </MemoryRouter>
-        </MuiThemeProvider>,
+        wrapWithProviders(WalletSelector, {
+          container,
+          store,
+          currentRoute: appRoutes.login,
+        }),
       );
 
       // ensure that ledger tab is selected
@@ -96,16 +100,17 @@ describe("<WalletSelector />", () => {
         }),
         plugPersonalWallet: async () => {},
       });
-      const { store } = createIntegrationTestsSetup({ browserWalletMock, web3ManagerMock });
+      const { store, container } = createIntegrationTestsSetup({
+        browserWalletMock,
+        web3ManagerMock,
+      });
 
       const mountedComponent = createMount(
-        <MuiThemeProvider>
-          <MemoryRouter initialEntries={[appRoutes.login]}>
-            <Provider store={store}>
-              <WalletSelector />
-            </Provider>
-          </MemoryRouter>
-        </MuiThemeProvider>,
+        wrapWithProviders(WalletSelector, {
+          container,
+          store,
+          currentRoute: appRoutes.login,
+        }),
       );
 
       // select wallet in browser tab is selected

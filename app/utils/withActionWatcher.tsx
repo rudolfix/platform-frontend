@@ -1,7 +1,13 @@
+import * as PropTypes from "prop-types";
 import * as React from "react";
 import { connect } from "react-redux";
 import { AppDispatch } from "../store";
-import { AsyncIntervalScheduler } from "./AsyncIntervalScheduler";
+import {
+  AsyncIntervalScheduler,
+  AsyncIntervalSchedulerFactorySymbol,
+  AsyncIntervalSchedulerFactoryType,
+} from "./AsyncIntervalScheduler";
+import { IInversifyProviderContext } from "./InversifyProvider";
 
 interface IActionWatcherDispatchProps {
   watchAction: Function;
@@ -22,10 +28,16 @@ export const withActionWatcher: (
   }))(
     class ActionWatcher extends React.Component<IActionWatcherDispatchProps> {
       private asyncIntervalScheduler: AsyncIntervalScheduler;
-      constructor(props: any) {
-        super(props);
-        this.asyncIntervalScheduler = new AsyncIntervalScheduler(
-          { error: () => {} } as any, // tmp solution we need to put inversify container into react context
+      static contextTypes = {
+        container: PropTypes.object,
+      };
+
+      constructor(props: any, context: IInversifyProviderContext) {
+        super(props, context);
+        const asyncIntervalSchedulerFactory = context.container.get<
+          AsyncIntervalSchedulerFactoryType
+        >(AsyncIntervalSchedulerFactorySymbol);
+        this.asyncIntervalScheduler = asyncIntervalSchedulerFactory(
           this.props.watchAction,
           options.interval,
         );

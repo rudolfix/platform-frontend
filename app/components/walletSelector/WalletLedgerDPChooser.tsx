@@ -1,8 +1,11 @@
+import { debounce } from "lodash";
 import * as React from "react";
 import { Alert, Col, FormGroup, Input, Label, Row } from "reactstrap";
 
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { derivationPathPrefixValidator } from "../../utils/Validators";
+
+const DEBOUNCE_DELAY = 200;
 
 interface IDPChooserComponent {
   derivationPathPrefix: string;
@@ -53,16 +56,22 @@ export class WalletLedgerDPChooser extends React.Component<IDPChooserProps, IDPC
     };
   }
 
-  onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const derivationPathPrefix = event.target.value;
+  debouncedOnChange = debounce((derivationPathPrefix: string): void => {
     const errorMessage = derivationPathPrefixValidator(derivationPathPrefix);
     this.setState({
-      derivationPathPrefix,
       errorMessage,
     });
     if (!errorMessage) {
       this.props.onChange(derivationPathPrefix);
     }
+  }, DEBOUNCE_DELAY);
+
+  onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const derivationPathPrefix = event.target.value;
+    this.setState({
+      derivationPathPrefix,
+    });
+    this.debouncedOnChange(derivationPathPrefix);
   };
 
   render(): React.ReactNode {

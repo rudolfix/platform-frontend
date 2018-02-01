@@ -1,11 +1,13 @@
 import { compact } from "lodash";
 import * as queryString from "query-string";
 import * as urlJoin from "url-join";
+import { Dictionary } from "../../types";
 import {
-  HttpRequestConfig,
+  HttpMethod,
   IHttpClient,
   IHttpGetRequest,
   IHttpPostRequest,
+  IHttpRequestCommon,
   IHttpResponse,
 } from "./IHttpClient";
 
@@ -25,13 +27,42 @@ export class NetworkingError extends HttpClientError {
 
 //supports only JSON apis
 export class JsonHttpClient implements IHttpClient {
+  private readonly defaultHeaders: Dictionary<string> = {
+    Accept: "application/json, text/plain, */*",
+    "Content-Type": "application/json",
+  };
+
   public async get<T>(config: IHttpGetRequest): Promise<IHttpResponse<T>> {
     const qs = config.queryParams ? "?" + queryString.stringify(config.queryParams) : null;
-    const fullUrl = urlJoin(...compact([config.baseUrl, config.url, qs])); // we need to remove falsy values because urlJoin is retarded and ads trailing slashes otherwise
+    // we need to remove falsy values because urlJoin is retarded and ads trailing slashes otherwise
+    const urlParts = compact([config.baseUrl, config.url, qs]);
+    const fullUrl = urlJoin(...urlParts);
 
+    return this.makeFetchRequest<T>(fullUrl, "GET", config);
+  }
+
+  public post<T>(config: IHttpPostRequest): Promise<IHttpResponse<T>> {
+    const urlParts = compact([config.baseUrl, config.url]);
+    const fullUrl = urlJoin(...urlParts);
+
+    return this.makeFetchRequest<T>(fullUrl, "POST", config);
+  }
+
+  private async makeFetchRequest<T>(
+    fullUrl: string,
+    method: HttpMethod,
+    config: IHttpRequestCommon,
+  ): Promise<IHttpResponse<T>> {
     let response;
     try {
-      response = await fetch(fullUrl);
+      response = await fetch(fullUrl, {
+        headers: {
+          ...this.defaultHeaders,
+          ...config.headers,
+        },
+        method: method,
+        body: "body" in config ? JSON.stringify(config.body) : undefined,
+      });
     } catch {
       throw new NetworkingError();
     }
@@ -60,13 +91,5 @@ export class JsonHttpClient implements IHttpClient {
       statusCode: response.status,
       body: finalResponseJson,
     };
-  }
-
-  request<T>(_config: HttpRequestConfig): Promise<IHttpResponse<T>> {
-    throw new Error("Method not implemented.");
-  }
-
-  post<T>(_config: IHttpPostRequest): Promise<IHttpResponse<T>> {
-    throw new Error("Method not implemented.");
   }
 }

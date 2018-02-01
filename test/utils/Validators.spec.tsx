@@ -23,7 +23,7 @@ describe("Validators", () => {
         const validationResult = derivationPathPrefixValidator(dp);
         expect(validationResult).to.be.not.null;
         expect(validationResult).to.be.a("string");
-        expect((validationResult as string).length).to.be.greaterThan(0);
+        expect(validationResult!.length).to.be.greaterThan(0);
       }
     });
   });

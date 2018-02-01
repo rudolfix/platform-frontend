@@ -182,7 +182,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         getStateMock,
       );
 
-      expect(mockDispatch).to.be.callCount(0);
+      expect(mockDispatch).have.not.been.called;
     });
 
     it("should fire when there is change in derivationPathPrefix", async () => {
@@ -192,10 +192,10 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       await setDerivationPathPrefixAction(newDP)(mockDispatch, getStateMock);
 
       expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWith(
+      expect(mockDispatch).to.be.calledWithExactly(
         setLedgerWizardDerivationPathPrefix({ derivationPathPrefix: newDP }),
       );
-      expect(mockDispatch).to.be.calledWith(loadLedgerAccountsAction);
+      expect(mockDispatch).to.be.calledWithExactly(loadLedgerAccountsAction);
     });
   });
 

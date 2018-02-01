@@ -39,7 +39,7 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent> = ({
 );
 
 interface IDPChooserProps {
-  onChange: any;
+  onChange: (derivationPathPrefix: string) => void;
 }
 
 interface IDPChooserState {

@@ -17,3 +17,5 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
 Enzyme.configure({ adapter: new Adapter() });
+//For light-wallet testing
+(self as any) = undefined;

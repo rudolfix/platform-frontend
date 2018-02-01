@@ -1,6 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
+
 import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
 import {
   finishSettingUpLedgerConnectorAction,
@@ -17,6 +18,7 @@ import {
   tryEstablishingConnectionWithLedger,
   verifyIfLedgerStillConnected,
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
+import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../app/modules/wallet-selector/ledger-wizard/reducer";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
@@ -159,11 +161,35 @@ describe("Wallet selector > Ledger wizard > actions", () => {
   });
 
   describe("setDerivationPathPrefixAction", () => {
-    it("should work", async () => {
-      const newDP = "test";
-      const mockDispatch = spy();
+    const newDP = "test";
+    const dummyState: Partial<IAppState> = {
+      ledgerWizardState: {
+        index: 1,
+        numberOfAccountsPerPage: 10,
+        derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
+        accounts: [],
+        isLoadingAddresses: false,
+        isConnectionEstablished: true,
+      },
+    };
 
-      await setDerivationPathPrefixAction(newDP)(mockDispatch);
+    it("should do not fire when there is no change in derivationPathPrefix", async () => {
+      const mockDispatch = spy();
+      const getStateMock = spy(() => dummyState);
+
+      await setDerivationPathPrefixAction(DEFAULT_DERIVATION_PATH_PREFIX)(
+        mockDispatch,
+        getStateMock,
+      );
+
+      expect(mockDispatch).to.be.callCount(0);
+    });
+
+    it("should fire when there is change in derivationPathPrefix", async () => {
+      const mockDispatch = spy();
+      const getStateMock = spy(() => dummyState);
+
+      await setDerivationPathPrefixAction(newDP)(mockDispatch, getStateMock);
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWith(

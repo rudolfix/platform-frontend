@@ -132,11 +132,15 @@ export const loadLedgerAccountsAction = injectableFn(
 
 export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
   injectableFn(
-    async (dispatch: AppDispatch) => {
-      dispatch(setLedgerWizardDerivationPathPrefix({ derivationPathPrefix }));
-      dispatch(loadLedgerAccountsAction);
+    async (dispatch: AppDispatch, getState: GetState) => {
+      const currDp = getState().ledgerWizardState.derivationPathPrefix;
+
+      if (currDp !== derivationPathPrefix) {
+        dispatch(setLedgerWizardDerivationPathPrefix({ derivationPathPrefix }));
+        dispatch(loadLedgerAccountsAction);
+      }
     },
-    [DispatchSymbol],
+    [DispatchSymbol, GetStateSymbol],
   );
 
 export const goToNextPageAndLoadDataAction = injectableFn(

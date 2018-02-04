@@ -7,6 +7,7 @@ import {
   finishSettingUpLedgerConnectorAction,
   goToNextPageAndLoadDataAction,
   goToPreviousPageAndLoadDataAction,
+  handleDerivationPathPrefixErrorAction,
   ledgerConnectionEstablishedAction,
   ledgerConnectionEstablishedErrorAction,
   ledgerWizardAccountsListNextPageAction,
@@ -196,6 +197,15 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         setLedgerWizardDerivationPathPrefix({ derivationPathPrefix: newDP }),
       );
       expect(mockDispatch).to.be.calledWithExactly(loadLedgerAccountsAction);
+    });
+  });
+
+  describe("handleDerivationPathPrefixErrorAction", () => {
+    it("should work", async () => {
+      const mockDispatch = spy();
+
+      await handleDerivationPathPrefixErrorAction(mockDispatch);
+      expect(mockDispatch).be.calledOnce;
     });
   });
 

@@ -33,6 +33,10 @@ export interface ISetLedgerWizardDerivationPathPrefixAction extends IAppAction {
   };
 }
 
+export interface ILedgerWizardDerivationPathPrefixErrorAction extends IAppAction {
+  type: "LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR";
+}
+
 export interface ISetLedgerWizardAccountsAction extends IAppAction {
   type: "SET_LEDGER_WIZARD_ACCOUNTS";
   payload: {
@@ -59,6 +63,10 @@ export const ledgerConnectionEstablishedErrorAction = makeActionCreator<
 export const setLedgerWizardDerivationPathPrefix = makeActionCreator<
   ISetLedgerWizardDerivationPathPrefixAction
 >("SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX");
+
+export const ledgerWizardDerivationPathPrefixAction = makeParameterlessActionCreator<
+  ILedgerWizardDerivationPathPrefixErrorAction
+>("LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR");
 
 export const setLedgerAccountsAction = makeActionCreator<ISetLedgerWizardAccountsAction>(
   "SET_LEDGER_WIZARD_ACCOUNTS",
@@ -142,6 +150,13 @@ export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
     },
     [DispatchSymbol, GetStateSymbol],
   );
+
+export const handleDerivationPathPrefixErrorAction = injectableFn(
+  async (dispatch: AppDispatch) => {
+    dispatch(ledgerWizardDerivationPathPrefixAction());
+  },
+  [DispatchSymbol],
+);
 
 export const goToNextPageAndLoadDataAction = injectableFn(
   (dispatch: AppDispatch) => {

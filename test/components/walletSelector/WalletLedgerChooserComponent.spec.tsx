@@ -39,6 +39,7 @@ const defaultProps = () => ({
   showPrevAddresses: spy(),
   showNextAddresses: spy(),
   onDerivationPathPrefixChange: spy(),
+  onDerivationPathError: spy(),
 });
 
 describe("<WalletLedgerChooserComponent />", () => {
@@ -66,6 +67,13 @@ describe("<WalletLedgerChooserComponent />", () => {
         ),
       ).to.be.true;
     });
+  });
+
+  it("should not render accounts table if there are no accounts to show", () => {
+    const props = defaultProps();
+    props.accounts = [];
+    const component = shallow(<WalletLedgerChooserComponent {...props} />);
+    expect(component.find("table")).to.have.length(0);
   });
 
   it("should show / hide previous address button regarding hasPreviousAddress property", () => {

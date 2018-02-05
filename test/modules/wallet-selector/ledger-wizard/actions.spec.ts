@@ -1,6 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
+
 import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
 import {
   finishSettingUpLedgerConnectorAction,
@@ -11,10 +12,13 @@ import {
   ledgerWizardAccountsListNextPageAction,
   ledgerWizardAccountsListPreviousPageAction,
   loadLedgerAccountsAction,
+  setDerivationPathPrefixAction,
   setLedgerAccountsAction,
+  setLedgerWizardDerivationPathPrefixAction,
   tryEstablishingConnectionWithLedger,
   verifyIfLedgerStillConnected,
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
+import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../app/modules/wallet-selector/ledger-wizard/reducer";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
@@ -115,6 +119,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
       expect(dispatchMock).to.be.calledWithExactly(
         setLedgerAccountsAction({
+          derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
           accounts: [
             {
               address: expectedAccounts["44'/60'/0'/1"],
@@ -153,6 +158,45 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWith(ledgerWizardAccountsListPreviousPageAction());
       expect(mockDispatch).to.be.calledWith(loadLedgerAccountsAction);
+    });
+  });
+
+  describe("setDerivationPathPrefixAction", () => {
+    const newDP = "test";
+    const dummyState: Partial<IAppState> = {
+      ledgerWizardState: {
+        index: 1,
+        numberOfAccountsPerPage: 10,
+        derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
+        accounts: [],
+        isLoadingAddresses: false,
+        isConnectionEstablished: true,
+      },
+    };
+
+    it("should do not fire when there is no change in derivationPathPrefix", async () => {
+      const mockDispatch = spy();
+      const getStateMock = spy(() => dummyState);
+
+      await setDerivationPathPrefixAction(DEFAULT_DERIVATION_PATH_PREFIX)(
+        mockDispatch,
+        getStateMock,
+      );
+
+      expect(mockDispatch).have.not.been.called;
+    });
+
+    it("should fire when there is change in derivationPathPrefix", async () => {
+      const mockDispatch = spy();
+      const getStateMock = spy(() => dummyState);
+
+      await setDerivationPathPrefixAction(newDP)(mockDispatch, getStateMock);
+
+      expect(mockDispatch).to.be.calledTwice;
+      expect(mockDispatch).to.be.calledWithExactly(
+        setLedgerWizardDerivationPathPrefixAction({ derivationPathPrefix: newDP }),
+      );
+      expect(mockDispatch).to.be.calledWithExactly(loadLedgerAccountsAction);
     });
   });
 

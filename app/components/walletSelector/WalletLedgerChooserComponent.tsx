@@ -1,11 +1,11 @@
 import * as cn from "classnames";
-import { TextField } from "material-ui";
 import * as React from "react";
 import { Button } from "reactstrap";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { LoadingIndicator } from "../LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
+import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
 
 interface IAccountRow {
   ledgerAccount: ILedgerAccount;
@@ -47,12 +47,11 @@ export interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
   hasPreviousAddress: boolean;
   loading: boolean;
-  derivationPath: string;
-  onDerivationPathChange: any;
-  invalidDerivationPath: boolean;
 }
 
 export interface IWalletLedgerChooserComponentDispatchProps {
+  onDerivationPathPrefixChange: (derivationPathprefix: string) => void;
+  onDerivationPathError: () => void;
   handleAddressChosen: (account: ILedgerAccount) => void;
   showPrevAddresses: () => any;
   showNextAddresses: () => any;
@@ -67,69 +66,65 @@ export const WalletLedgerChooserComponent: React.SFC<
   showPrevAddresses,
   showNextAddresses,
   loading,
-  derivationPath,
-  onDerivationPathChange,
-  invalidDerivationPath,
+  onDerivationPathPrefixChange,
+  onDerivationPathError,
 }) => (
   <div>
-    <div>
-      <TextField
-        name="derivationPathField"
-        value={derivationPath}
-        onChange={onDerivationPathChange}
-        errorText={invalidDerivationPath && "Invalid derivation path"}
-      />
-      - Change your derivation path, if necessary.
-    </div>
+    <WalletLedgerDPChooser
+      onChange={onDerivationPathPrefixChange}
+      onDerivationPathError={onDerivationPathError}
+    />
     {loading ? (
       <LoadingIndicator />
     ) : (
-      <table className={styles.chooserTable}>
-        <thead>
-          <tr>
-            <th>Derivation path</th>
-            <th className={styles.address}>Address</th>
-            <th>ETH balance</th>
-            <th className={styles.useColumn}>Use this address</th>
-          </tr>
-        </thead>
-        <tbody data-test-id="wallet-ledger-accounts-table-body">
-          {accounts.map(a => (
-            <AccountRow
-              key={a.derivationPath}
-              ledgerAccount={a}
-              handleAddressChosen={handleAddressChosen}
-            />
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={4}>
-              <div>
-                {hasPreviousAddress && (
+      accounts.length > 0 && (
+        <table className={styles.chooserTable}>
+          <thead>
+            <tr>
+              <th>Derivation path</th>
+              <th className={styles.address}>Address</th>
+              <th>ETH balance</th>
+              <th className={styles.useColumn}>Use this address</th>
+            </tr>
+          </thead>
+          <tbody data-test-id="wallet-ledger-accounts-table-body">
+            {accounts.map(a => (
+              <AccountRow
+                key={a.derivationPath}
+                ledgerAccount={a}
+                handleAddressChosen={handleAddressChosen}
+              />
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={4}>
+                <div>
+                  {hasPreviousAddress && (
+                    <Button
+                      color="primary"
+                      disabled={loading}
+                      onClick={showPrevAddresses}
+                      data-test-id="btn-previous"
+                    >
+                      Show previous addresses
+                    </Button>
+                  )}
                   <Button
                     color="primary"
                     disabled={loading}
-                    onClick={showPrevAddresses}
-                    data-test-id="btn-previous"
+                    onClick={showNextAddresses}
+                    className="float-right"
+                    data-test-id="btn-next"
                   >
-                    Show previous addresses
+                    Load more addresses
                   </Button>
-                )}
-                <Button
-                  color="primary"
-                  disabled={loading}
-                  onClick={showNextAddresses}
-                  className="float-right"
-                  data-test-id="btn-next"
-                >
-                  Load more addresses
-                </Button>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      )
     )}
   </div>
 );

@@ -3,8 +3,6 @@ import { Container } from "inversify";
 import * as React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, createStore, Store } from "redux";
-// tslint:disable-next-line
-import { MuiThemeProvider } from "material-ui/styles";
 
 import { MemoryRouter } from "react-router";
 import { customizerContainerWithMiddlewareApi, getContainer } from "../app/getContainer";
@@ -94,14 +92,12 @@ export function wrapWithProviders(
   const { currentRoute = "/", store = setup!.store, container = setup!.container } = context;
 
   return (
-    <MuiThemeProvider>
-      <MemoryRouter initialEntries={[currentRoute]}>
-        <ReduxProvider store={store}>
-          <InversifyProvider container={container}>
-            <Component />
-          </InversifyProvider>
-        </ReduxProvider>
-      </MemoryRouter>
-    </MuiThemeProvider>
+    <MemoryRouter initialEntries={[currentRoute]}>
+      <ReduxProvider store={store}>
+        <InversifyProvider container={container}>
+          <Component />
+        </InversifyProvider>
+      </ReduxProvider>
+    </MemoryRouter>
   );
 }

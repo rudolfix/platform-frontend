@@ -9,7 +9,9 @@ import {
   ILedgerConnectionEstablishedErrorAction,
   ILedgerWizardAccountsListNextPage,
   ILedgerWizardAccountsListPreviousPage,
+  ILedgerWizardDerivationPathPrefixErrorAction,
   ISetLedgerWizardAccountsAction,
+  ISetLedgerWizardDerivationPathPrefixAction,
 } from "./modules/wallet-selector/ledger-wizard/actions";
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import {
@@ -37,6 +39,8 @@ export type AppActionTypes =
   | ISetLedgerWizardAccountsAction
   | ILedgerWizardAccountsListNextPage
   | ILedgerWizardAccountsListPreviousPage
+  | ISetLedgerWizardDerivationPathPrefixAction
+  | ILedgerWizardDerivationPathPrefixErrorAction
   // browser wallet
   | IBrowserWalletConnectionErrorAction
   //web3 management

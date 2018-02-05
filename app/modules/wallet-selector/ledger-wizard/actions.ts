@@ -151,13 +151,6 @@ export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
     [DispatchSymbol, GetStateSymbol],
   );
 
-export const handleDerivationPathPrefixErrorAction = injectableFn(
-  async (dispatch: AppDispatch) => {
-    dispatch(ledgerWizardDerivationPathPrefixAction());
-  },
-  [DispatchSymbol],
-);
-
 export const goToNextPageAndLoadDataAction = injectableFn(
   (dispatch: AppDispatch) => {
     dispatch(ledgerWizardAccountsListNextPageAction());

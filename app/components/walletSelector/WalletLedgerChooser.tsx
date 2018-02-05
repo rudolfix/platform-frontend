@@ -5,7 +5,7 @@ import {
   finishSettingUpLedgerConnectorAction,
   goToNextPageAndLoadDataAction,
   goToPreviousPageAndLoadDataAction,
-  handleDerivationPathPrefixErrorAction,
+  ledgerWizardDerivationPathPrefixAction,
   loadLedgerAccountsAction,
   setDerivationPathPrefixAction,
   verifyIfLedgerStillConnected,
@@ -32,7 +32,7 @@ export const WalletLedgerChooser = compose<React.SFC>(
       hasPreviousAddress: selectHasPreviousPage(state.ledgerWizardState),
     }),
     dispatchToProps: dispatch => ({
-      onDerivationPathError: () => dispatch(handleDerivationPathPrefixErrorAction),
+      onDerivationPathError: () => dispatch(ledgerWizardDerivationPathPrefixAction),
       onDerivationPathPrefixChange: (derivationPathPrefix: string) => {
         dispatch(setDerivationPathPrefixAction(derivationPathPrefix));
       },

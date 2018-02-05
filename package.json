@@ -81,11 +81,13 @@
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc",
     "lint:fix": "yarn tslint:fix && yarn format:fix && yarn sasslint && yarn tsc",
-    "test:unit": "NODE_ENV=test mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
-    "test:unit-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
-    "test": "yarn lint && yarn test:unit",
-    "test:coverage": "yarn lint && yarn test:unit-coverage",
-    "test:fix": "yarn lint:fix && yarn test:unit",
+    "test:browser": "NODE_ENV=test mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
+    "test:browser-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts 'test/setupTestsHooks.ts' 'test/**/*.spec.ts?(x)'",
+    "test:node": "NODE_ENV=test mocha --require ts-node/register --require ./test/setupTests.ts 'test/**/*.spec.node.ts?(x)'",
+    "test:node-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require ./test/setupTests.ts 'test/**/*.spec.node.ts?(x)'",
+    "test": "yarn lint && yarn test:browser && yarn test:node",
+    "test:coverage": "yarn lint && yarn test:browser-coverage && yarn test:node",
+    "test:fix": "yarn lint:fix && yarn test:browser && yarn test:node",
     "codecov": "codecov"
   },
   "dependencies": {

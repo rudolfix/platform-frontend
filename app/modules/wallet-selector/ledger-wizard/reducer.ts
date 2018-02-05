@@ -60,17 +60,17 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         isLoadingAddresses: true,
       };
     case "SET_LEDGER_WIZARD_ACCOUNTS": {
+      // There is a possibility of race condition in the app when we get account lists from ledger which is async
+      // operation. That's why we need to check if list that was received matches derivation path prefix that is
+      // currently set.
       if (state.derivationPathPrefix === action.payload.derivationPathPrefix) {
         return {
           ...state,
           accounts: action.payload.accounts,
           isLoadingAddresses: false,
         };
-      } else {
-        return {
-          ...state,
-        };
       }
+      break;
     }
     case "SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX":
       return {

@@ -14,8 +14,12 @@ module.exports = merge(configCommon, {
     new CleanWebpackPlugin(paths.dist, {
       root: paths.root,
     }),
-    new ExtractTextPlugin("styles.css"), // TODO: its not working
-    new UglifyJsPlugin(),
+    new ExtractTextPlugin("styles.css"), // TODO: its not working created issue 93
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        ecma: 6,
+      },
+    }),
   ],
   module: {
     rules: [

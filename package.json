@@ -74,7 +74,7 @@
     "webpack-merge": "^4.1.1"
   },
   "scripts": {
-    "build-prod": "(cp -n .env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
+    "build:prod": "(cp -n .env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
     "ganache": "./scripts/ganache-cli.sh",
     "start": "(cp -n .env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md, gql}'",

@@ -26,10 +26,22 @@ export interface ILedgerConnectionEstablishedErrorAction extends IAppAction {
   };
 }
 
+export interface ISetLedgerWizardDerivationPathPrefixAction extends IAppAction {
+  type: "SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX";
+  payload: {
+    derivationPathPrefix: string;
+  };
+}
+
+export interface ILedgerWizardDerivationPathPrefixErrorAction extends IAppAction {
+  type: "LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR";
+}
+
 export interface ISetLedgerWizardAccountsAction extends IAppAction {
   type: "SET_LEDGER_WIZARD_ACCOUNTS";
   payload: {
     accounts: ILedgerAccount[];
+    derivationPathPrefix: string;
   };
 }
 
@@ -48,6 +60,14 @@ export const ledgerConnectionEstablishedAction = makeParameterlessActionCreator<
 export const ledgerConnectionEstablishedErrorAction = makeActionCreator<
   ILedgerConnectionEstablishedErrorAction
 >("LEDGER_CONNECTION_ESTABLISHED_ERROR");
+
+export const setLedgerWizardDerivationPathPrefixAction = makeActionCreator<
+  ISetLedgerWizardDerivationPathPrefixAction
+>("SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX");
+
+export const ledgerWizardDerivationPathPrefixErrorAction = makeParameterlessActionCreator<
+  ILedgerWizardDerivationPathPrefixErrorAction
+>("LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR");
 
 export const setLedgerAccountsAction = makeActionCreator<ISetLedgerWizardAccountsAction>(
   "SET_LEDGER_WIZARD_ACCOUNTS",
@@ -114,10 +134,23 @@ export const loadLedgerAccountsAction = injectableFn(
       balance,
     }));
 
-    dispatch(setLedgerAccountsAction({ accounts }));
+    dispatch(setLedgerAccountsAction({ accounts, derivationPathPrefix }));
   },
   [DispatchSymbol, GetStateSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
 );
+
+export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
+  injectableFn(
+    async (dispatch: AppDispatch, getState: GetState) => {
+      const currDp = getState().ledgerWizardState.derivationPathPrefix;
+
+      if (currDp !== derivationPathPrefix) {
+        dispatch(setLedgerWizardDerivationPathPrefixAction({ derivationPathPrefix }));
+        dispatch(loadLedgerAccountsAction);
+      }
+    },
+    [DispatchSymbol, GetStateSymbol],
+  );
 
 export const goToNextPageAndLoadDataAction = injectableFn(
   (dispatch: AppDispatch) => {

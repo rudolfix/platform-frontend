@@ -1,8 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { shallow } from "enzyme";
-// tslint:disable-next-line
-import { MuiThemeProvider } from "material-ui/styles";
 import * as React from "react";
 
 import { appRoutes } from "../../../app/components/AppRouter";

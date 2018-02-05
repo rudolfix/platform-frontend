@@ -1,9 +1,7 @@
-import "reflect-metadata";
-
 // tslint:disable-next-line: no-submodule-imports
 import createHistory from "history/createBrowserHistory";
+import { Container } from "inversify";
 // tslint:disable-next-line: no-submodule-imports
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";
@@ -11,16 +9,14 @@ import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { logger } from "redux-logger";
+import "reflect-metadata";
 
+import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
 import { getConfig } from "./getConfig";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
-import muiTheme from "./muiTheme";
 import { createInjectMiddleware } from "./redux-injectify";
 import { IAppState, reducers } from "./store";
-
-import { Container } from "inversify";
-import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
@@ -41,15 +37,13 @@ function renderApp(
 ): void {
   const mountNode = document.getElementById("app");
   ReactDOM.render(
-    <MuiThemeProvider muiTheme={muiTheme}>
-      <ReduxProvider store={store}>
-        <InversifyProvider container={container}>
-          <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-            <Component />
-          </ConnectedRouter>
-        </InversifyProvider>
-      </ReduxProvider>
-    </MuiThemeProvider>,
+    <ReduxProvider store={store}>
+      <InversifyProvider container={container}>
+        <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
+          <Component />
+        </ConnectedRouter>
+      </InversifyProvider>
+    </ReduxProvider>,
     mountNode,
   );
 }

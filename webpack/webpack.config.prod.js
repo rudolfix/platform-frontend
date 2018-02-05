@@ -1,4 +1,4 @@
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const merge = require("webpack-merge");
@@ -15,7 +15,7 @@ module.exports = merge(configCommon, {
       root: paths.root,
     }),
     new ExtractTextPlugin("styles.css"), // TODO: its not working
-    new UglifyJsPlugin()
+    new UglifyJsPlugin(),
   ],
   module: {
     rules: [

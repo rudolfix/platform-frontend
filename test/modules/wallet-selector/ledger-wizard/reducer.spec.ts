@@ -10,6 +10,7 @@ import {
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
 import {
   DEFAULT_DERIVATION_PATH_PREFIX,
+  DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
   ILedgerWizardState,
   ledgerWizardInitialState,
   ledgerWizardReducer,
@@ -25,7 +26,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 1,
       isLoadingAddresses: true,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     });
   });
 
@@ -36,7 +37,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 1,
       isLoadingAddresses: true,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     };
 
     const newState = ledgerWizardReducer(state, ledgerWizardAccountsListPreviousPageAction());
@@ -47,7 +48,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 0,
       isLoadingAddresses: true,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     });
   });
 
@@ -58,7 +59,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 0,
       isLoadingAddresses: true,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     };
 
     const newState = ledgerWizardReducer(state, ledgerWizardAccountsListPreviousPageAction());
@@ -69,25 +70,41 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 0,
       isLoadingAddresses: true,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     });
   });
 
-  it("should act on SET_LEDGER_WIZARD_ACCOUNTS action", () => {
-    const newState = ledgerWizardReducer(
-      undefined,
-      setLedgerAccountsAction({
-        accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
-      }),
-    );
+  describe("SET_LEDGER_WIZARD_ACCOUNTS", () => {
+    it("should act on SET_LEDGER_WIZARD_ACCOUNTS action", () => {
+      const newState = ledgerWizardReducer(
+        undefined,
+        setLedgerAccountsAction({
+          derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
+          accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
+        }),
+      );
 
-    expect(newState).to.be.deep.eq({
-      isConnectionEstablished: false,
-      accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
-      index: 0,
-      isLoadingAddresses: false,
-      derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-      numberOfAccountsPerPage: 10,
+      expect(newState).to.be.deep.eq({
+        isConnectionEstablished: false,
+        accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
+        index: 0,
+        isLoadingAddresses: false,
+        derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
+        numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
+      });
+    });
+
+    it("should not act when derivation path prefix mismatch", () => {
+      const initialState = ledgerWizardInitialState;
+      const newState = ledgerWizardReducer(
+        initialState,
+        setLedgerAccountsAction({
+          derivationPathPrefix: "",
+          accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
+        }),
+      );
+
+      expect(newState).to.be.deep.eq(initialState);
     });
   });
 
@@ -107,7 +124,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       index: 0,
       isLoadingAddresses: true,
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     });
   });
 
@@ -124,7 +141,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       index: 0,
       isLoadingAddresses: true,
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     });
   });
 
@@ -141,7 +158,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       accounts: [],
       index: 0,
       derivationPathPrefix: newDerivationPath,
-      numberOfAccountsPerPage: 10,
+      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
     });
   });
 

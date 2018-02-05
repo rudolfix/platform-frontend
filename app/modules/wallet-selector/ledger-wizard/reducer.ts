@@ -1,7 +1,7 @@
 import { AppReducer } from "../../../store";
 
 export const DEFAULT_DERIVATION_PATH_PREFIX = "44'/60'/0'/";
-const DEFAULT_LEDGER_ACCOUNTS_PER_PAGE = 10;
+export const DEFAULT_LEDGER_ACCOUNTS_PER_PAGE = 10;
 
 export interface ILedgerAccount {
   address: string;
@@ -59,12 +59,19 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         accounts: [],
         isLoadingAddresses: true,
       };
-    case "SET_LEDGER_WIZARD_ACCOUNTS":
-      return {
-        ...state,
-        accounts: action.payload.accounts,
-        isLoadingAddresses: false,
-      };
+    case "SET_LEDGER_WIZARD_ACCOUNTS": {
+      // There is a possibility of race condition in the app when we get account lists from ledger which is async
+      // operation. That's why we need to check if list that was received matches derivation path prefix that is
+      // currently set.
+      if (state.derivationPathPrefix === action.payload.derivationPathPrefix) {
+        return {
+          ...state,
+          accounts: action.payload.accounts,
+          isLoadingAddresses: false,
+        };
+      }
+      break;
+    }
     case "SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX":
       return {
         ...state,

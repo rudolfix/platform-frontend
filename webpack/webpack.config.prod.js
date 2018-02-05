@@ -8,7 +8,7 @@ const paths = require("./paths");
 
 module.exports = merge(configCommon, {
   output: {
-    filename: "[name].min.js",
+    filename: "[name].[hash].min.js",
   },
   plugins: [
     new CleanWebpackPlugin(paths.dist, {

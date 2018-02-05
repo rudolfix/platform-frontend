@@ -28,3 +28,9 @@ yarn test # checks formatting, runs linter and tests
 ```
 yarn test:fix
 ```
+
+### Production build
+
+```
+yarn build:prod
+```

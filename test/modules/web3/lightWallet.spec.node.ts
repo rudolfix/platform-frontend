@@ -50,7 +50,7 @@ describe("LightWallet", () => {
     expect(walletInstance.addresses[0]).to.equal(nanoAddress);
   });
 
-  it("should de-serialized a lightWallet instance", async () => {
+  it("should deserialize a lightWallet instance", async () => {
     const recoverSeed =
       "author foster awkward faint script unique letter tag meadow garment elite drip";
     const hdPathString = "m/44'/60'/0'";

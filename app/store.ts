@@ -9,6 +9,7 @@ import {
   ILedgerConnectionEstablishedErrorAction,
   ILedgerWizardAccountsListNextPage,
   ILedgerWizardAccountsListPreviousPage,
+  ILedgerWizardDerivationPathPrefixErrorAction,
   ISetLedgerWizardAccountsAction,
   ISetLedgerWizardDerivationPathPrefixAction,
 } from "./modules/wallet-selector/ledger-wizard/actions";
@@ -39,6 +40,7 @@ export type AppActionTypes =
   | ILedgerWizardAccountsListNextPage
   | ILedgerWizardAccountsListPreviousPage
   | ISetLedgerWizardDerivationPathPrefixAction
+  | ILedgerWizardDerivationPathPrefixErrorAction
   // browser wallet
   | IBrowserWalletConnectionErrorAction
   //web3 management

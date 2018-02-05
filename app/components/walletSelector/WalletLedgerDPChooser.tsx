@@ -40,6 +40,7 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent> = ({
 
 interface IDPChooserProps {
   onChange: (derivationPathPrefix: string) => void;
+  onDerivationPathError: () => void;
 }
 
 interface IDPChooserState {
@@ -61,7 +62,9 @@ export class WalletLedgerDPChooser extends React.Component<IDPChooserProps, IDPC
     this.setState({
       errorMessage,
     });
-    if (!errorMessage) {
+    if (errorMessage) {
+      this.props.onDerivationPathError();
+    } else {
       this.props.onChange(derivationPathPrefix);
     }
   }, DEBOUNCE_DELAY);

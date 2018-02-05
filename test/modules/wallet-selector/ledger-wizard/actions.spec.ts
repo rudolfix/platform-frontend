@@ -14,7 +14,7 @@ import {
   loadLedgerAccountsAction,
   setDerivationPathPrefixAction,
   setLedgerAccountsAction,
-  setLedgerWizardDerivationPathPrefix,
+  setLedgerWizardDerivationPathPrefixAction,
   tryEstablishingConnectionWithLedger,
   verifyIfLedgerStillConnected,
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
@@ -194,7 +194,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWithExactly(
-        setLedgerWizardDerivationPathPrefix({ derivationPathPrefix: newDP }),
+        setLedgerWizardDerivationPathPrefixAction({ derivationPathPrefix: newDP }),
       );
       expect(mockDispatch).to.be.calledWithExactly(loadLedgerAccountsAction);
     });

@@ -61,11 +61,11 @@ export const ledgerConnectionEstablishedErrorAction = makeActionCreator<
   ILedgerConnectionEstablishedErrorAction
 >("LEDGER_CONNECTION_ESTABLISHED_ERROR");
 
-export const setLedgerWizardDerivationPathPrefix = makeActionCreator<
+export const setLedgerWizardDerivationPathPrefixAction = makeActionCreator<
   ISetLedgerWizardDerivationPathPrefixAction
 >("SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX");
 
-export const ledgerWizardDerivationPathPrefixAction = makeParameterlessActionCreator<
+export const ledgerWizardDerivationPathPrefixErrorAction = makeParameterlessActionCreator<
   ILedgerWizardDerivationPathPrefixErrorAction
 >("LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR");
 
@@ -145,7 +145,7 @@ export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
       const currDp = getState().ledgerWizardState.derivationPathPrefix;
 
       if (currDp !== derivationPathPrefix) {
-        dispatch(setLedgerWizardDerivationPathPrefix({ derivationPathPrefix }));
+        dispatch(setLedgerWizardDerivationPathPrefixAction({ derivationPathPrefix }));
         dispatch(loadLedgerAccountsAction);
       }
     },

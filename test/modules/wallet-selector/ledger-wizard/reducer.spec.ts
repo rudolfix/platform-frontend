@@ -4,9 +4,9 @@ import {
   ledgerConnectionEstablishedErrorAction,
   ledgerWizardAccountsListNextPageAction,
   ledgerWizardAccountsListPreviousPageAction,
-  ledgerWizardDerivationPathPrefixAction,
+  ledgerWizardDerivationPathPrefixErrorAction,
   setLedgerAccountsAction,
-  setLedgerWizardDerivationPathPrefix,
+  setLedgerWizardDerivationPathPrefixAction,
 } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
 import {
   DEFAULT_DERIVATION_PATH_PREFIX,
@@ -149,7 +149,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     const newDerivationPath = "test";
     const newState = ledgerWizardReducer(
       undefined,
-      setLedgerWizardDerivationPathPrefix({ derivationPathPrefix: newDerivationPath }),
+      setLedgerWizardDerivationPathPrefixAction({ derivationPathPrefix: newDerivationPath }),
     );
 
     expect(newState).to.be.deep.eq({
@@ -163,7 +163,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
   });
 
   it("should act on LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR", () => {
-    const newState = ledgerWizardReducer(undefined, ledgerWizardDerivationPathPrefixAction());
+    const newState = ledgerWizardReducer(undefined, ledgerWizardDerivationPathPrefixErrorAction());
 
     expect(newState).to.be.deep.eq({
       isConnectionEstablished: false,

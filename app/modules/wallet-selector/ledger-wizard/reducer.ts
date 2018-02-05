@@ -73,6 +73,12 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         accounts: [],
         isLoadingAddresses: true,
       };
+    case "LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR":
+      return {
+        ...state,
+        derivationPathPrefix: "",
+        accounts: [],
+      };
   }
 
   return state;

@@ -37,6 +37,7 @@ export interface ISetLedgerWizardAccountsAction extends IAppAction {
   type: "SET_LEDGER_WIZARD_ACCOUNTS";
   payload: {
     accounts: ILedgerAccount[];
+    derivationPathPrefix: string;
   };
 }
 
@@ -125,7 +126,7 @@ export const loadLedgerAccountsAction = injectableFn(
       balance,
     }));
 
-    dispatch(setLedgerAccountsAction({ accounts }));
+    dispatch(setLedgerAccountsAction({ accounts, derivationPathPrefix }));
   },
   [DispatchSymbol, GetStateSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
 );

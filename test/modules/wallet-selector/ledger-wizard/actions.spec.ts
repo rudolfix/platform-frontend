@@ -119,6 +119,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
       expect(dispatchMock).to.be.calledWithExactly(
         setLedgerAccountsAction({
+          derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
           accounts: [
             {
               address: expectedAccounts["44'/60'/0'/1"],

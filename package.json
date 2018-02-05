@@ -38,6 +38,7 @@
     "babel-loader": "^7.1.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "clean-webpack-plugin": "^0.1.18",
     "codecov": "^3.0.0",
     "css-loader": "^0.28.8",
     "dotenv": "^4.0.0",
@@ -68,9 +69,11 @@
     "web3-typescript-typings": "^0.9.3",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.1",
-    "webpack-hot-middleware": "^2.21.0"
+    "webpack-hot-middleware": "^2.21.0",
+    "webpack-merge": "^4.1.1"
   },
   "scripts": {
+    "build-prod": "(cp -n .env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
     "ganache": "./scripts/ganache-cli.sh",
     "start": "(cp -n .env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md, gql}'",

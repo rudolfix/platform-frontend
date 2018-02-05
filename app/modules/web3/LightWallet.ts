@@ -30,7 +30,7 @@ interface ILightWallet {
   __proto__: object;
 }
 export async function deserializeLightWallet(
-  serializedWallet: object,
+  serializedWallet: string,
   salt: string,
 ): Promise<ILightWallet> {
   return await LightWalletProvider.keystore.deserialize(serializedWallet, salt);
@@ -67,3 +67,4 @@ export async function getWalletKey(lightWalletInstance: any, password: string): 
   );
   return await keyFromPassword(password);
 }
+//TODO: wrap all errors generated from library into lightwallet.ts

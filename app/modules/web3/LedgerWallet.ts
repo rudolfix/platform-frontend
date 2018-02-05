@@ -150,16 +150,26 @@ async function createWeb3WithLedgerProvider(
 }
 
 async function connectToLedger(networkId: string, rpcUrl: string): Promise<ILedgerOutput> {
-  const { ledgerInstance, ledgerWeb3 } = await createWeb3WithLedgerProvider(networkId, rpcUrl);
+  let providerEngine: any;
+  try {
+    const { ledgerInstance, ledgerWeb3 } = await createWeb3WithLedgerProvider(networkId, rpcUrl);
+    providerEngine = ledgerWeb3.currentProvider;
 
-  const ledgerConfig = await getLedgerConfig(ledgerInstance);
-  if (semver.lt(ledgerConfig.version, "1.0.8")) {
-    throw new LedgerNotSupportedVersionError(ledgerConfig.version);
+    const ledgerConfig = await getLedgerConfig(ledgerInstance);
+    if (semver.lt(ledgerConfig.version, "1.0.8")) {
+      throw new LedgerNotSupportedVersionError(ledgerConfig.version);
+    }
+
+    await testIfUnlocked(ledgerInstance);
+
+    return { ledgerInstance, ledgerWeb3 };
+  } catch (e) {
+    // we need to explicitly stop Web3 Provider engine
+    if (providerEngine) {
+      providerEngine.stop();
+    }
+    throw e;
   }
-
-  await testIfUnlocked(ledgerInstance);
-
-  return { ledgerInstance, ledgerWeb3 };
 }
 
 // right after callback needs to be used instead of awaiting for this function because promise resolving is async

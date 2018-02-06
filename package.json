@@ -99,6 +99,8 @@
     "bluebird": "^3.5.1",
     "bootstrap": "^4.0.0",
     "classnames": "^2.2.5",
+    "crypto-random-string": "^1.0.0",
+    "eip55": "^1.0.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eth-lightwallet": "https://github.com/Neufund/eth-lightwallet.git",

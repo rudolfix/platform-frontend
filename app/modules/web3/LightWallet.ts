@@ -5,14 +5,14 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
-interface ICreateLightWallet {
+interface ICreateVault {
   password: string;
   hdPathString: string;
   recoverSeed?: string | undefined;
   customSalt?: string | undefined;
 }
 
-interface IVaultInstance {
+interface IVault {
   walletInstance: any;
   salt: string;
 }
@@ -26,22 +26,21 @@ interface ILightWallet {
   hdPathString: string;
   salt: string;
   version: number;
-  getSeed: any;
-  __proto__: object;
+  getSeed: (walletKey: object) => string;
 }
-export async function deserializeLightWallet(
+export async function deserializeLightWalletVault(
   serializedWallet: string,
   salt: string,
 ): Promise<ILightWallet> {
   return await LightWalletProvider.keystore.deserialize(serializedWallet, salt);
 }
 
-export async function createNewLightWallet({
+export async function createLightWalletVault({
   password,
   hdPathString,
   recoverSeed,
   customSalt,
-}: ICreateLightWallet): Promise<IVaultInstance> {
+}: ICreateVault): Promise<IVault> {
   const create = promisify<any, object>(LightWalletProvider.keystore.createVault);
   //256bit strength generates a 24 word mnemonic
   const entropyStrength = 256;
@@ -62,7 +61,7 @@ export async function createNewLightWallet({
 }
 
 export async function getWalletKey(lightWalletInstance: any, password: string): Promise<object> {
-  const keyFromPassword = promisify<any, string>(
+  const keyFromPassword = promisify<ILightWallet, string>(
     lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
   );
   return await keyFromPassword(password);

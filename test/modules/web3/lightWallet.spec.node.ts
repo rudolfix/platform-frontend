@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import {
-  createNewLightWallet,
-  deserializeLightWallet,
+  createLightWalletVault,
+  deserializeLightWalletVault,
   getWalletKey,
 } from "../../../app/modules/web3/LightWallet";
 import { expectToBeRejected } from "../../testUtils";
@@ -15,7 +15,7 @@ describe("LightWallet", () => {
 
   describe("Create LightWallet", () => {
     it("should create a new serialized wallet", async () => {
-      const serializedLightWallet = await createNewLightWallet({
+      const serializedLightWallet = await createLightWalletVault({
         password,
         hdPathString,
         customSalt,
@@ -31,12 +31,11 @@ describe("LightWallet", () => {
     });
 
     it("should deserialize a lightWallet instance", async () => {
-      const walletInstance = (await createNewLightWallet({
+      const walletInstance = (await createLightWalletVault({
         password,
         hdPathString,
       })).walletInstance;
-      const deserializedInstance = await deserializeLightWallet(walletInstance, "salt");
-      //TODO: change test to equal see  https://github.com/Neufund/eth-lightwallet/issues/3
+      const deserializedInstance = await deserializeLightWalletVault(walletInstance, "salt");
       expect(deserializedInstance).to.deep.include(JSON.parse(walletInstance));
     });
   });
@@ -47,7 +46,7 @@ describe("LightWallet", () => {
         "butter clean pledge exist gym busy shove pyramid cereal bird unique bar anger hazard weapon shoe clog possible spider convince object mind beef music";
       const expectedAddress = "07dc3a64a5fd98d23776c54f02c53d0a28b61515";
 
-      const lightWalletObject = await createNewLightWallet({
+      const lightWalletObject = await createLightWalletVault({
         password,
         hdPathString,
         recoverSeed,
@@ -62,7 +61,7 @@ describe("LightWallet", () => {
         "author foster awkward faint script unique letter tag meadow garment elite drip";
       const expectedAddress = "47fde38dc660f9d935c41b4f3a2a6e62d2e823eb";
 
-      const lightWalletObject = await createNewLightWallet({
+      const lightWalletObject = await createLightWalletVault({
         password,
         hdPathString,
         recoverSeed,
@@ -75,13 +74,13 @@ describe("LightWallet", () => {
 
   describe("Unlock/Use LightWallet", () => {
     it("should unlock the lightwallet if salt and password are correct", async () => {
-      const walletInstance = (await createNewLightWallet({
+      const walletInstance = (await createLightWalletVault({
         password,
         hdPathString,
         recoverSeed: expectedSeed,
         customSalt,
       })).walletInstance;
-      const deserializedInstance = await deserializeLightWallet(walletInstance, customSalt);
+      const deserializedInstance = await deserializeLightWalletVault(walletInstance, customSalt);
       const obtainedSeed = deserializedInstance.getSeed(
         await getWalletKey(deserializedInstance, password),
       );
@@ -90,28 +89,29 @@ describe("LightWallet", () => {
     });
 
     it("should throw if salt is not correct", async () => {
-      const walletInstance = (await createNewLightWallet({
+      const walletInstance = (await createLightWalletVault({
         password,
         hdPathString,
         recoverSeed: expectedSeed,
         customSalt,
       })).walletInstance;
-      const deserializedInstance = await deserializeLightWallet(walletInstance, "wrongsalt");
+      const deserializedInstance = await deserializeLightWalletVault(walletInstance, "wrongsalt");
 
       await expectToBeRejected(
-        async () => deserializedInstance.getSeed(await getWalletKey(deserializedInstance, "test")),
+        async () =>
+          deserializedInstance.getSeed(await getWalletKey(deserializedInstance, password)),
         new Error("Incorrect derived key!"),
       );
     });
 
     it("should throw if password is not correct", async () => {
-      const walletInstance = (await createNewLightWallet({
+      const walletInstance = (await createLightWalletVault({
         password,
         hdPathString,
         recoverSeed: expectedSeed,
         customSalt,
       })).walletInstance;
-      const deserializedInstance = await deserializeLightWallet(walletInstance, "salt");
+      const deserializedInstance = await deserializeLightWalletVault(walletInstance, customSalt);
 
       await expectToBeRejected(
         async () =>

@@ -5,11 +5,16 @@ import {
 } from "../../../app/modules/web3/actions";
 import { WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
 import { IWeb3State, web3InitialState, web3Reducer } from "../../../app/modules/web3/reducer";
+import { dummyEthereumAddress } from "../../fixtures";
 
 describe("Web3 > reducer", () => {
   it("should act on NEW_PERSONAL_WALLET_PLUGGED action", () => {
     const initialState = web3InitialState;
-    const actionPayload = { type: WalletType.BROWSER, subtype: WalletSubType.METAMASK };
+    const actionPayload = {
+      type: WalletType.BROWSER,
+      subtype: WalletSubType.METAMASK,
+      ethereumAddress: dummyEthereumAddress,
+    };
 
     const actualNewState = web3Reducer(initialState, newPersonalWalletPluggedAction(actionPayload));
 
@@ -17,6 +22,7 @@ describe("Web3 > reducer", () => {
       connected: true,
       type: actionPayload.type,
       subtype: actionPayload.subtype,
+      ethereumAddress: dummyEthereumAddress,
     });
   });
 
@@ -25,6 +31,7 @@ describe("Web3 > reducer", () => {
       connected: true,
       type: WalletType.BROWSER,
       subtype: WalletSubType.METAMASK,
+      ethereumAddress: dummyEthereumAddress,
     };
 
     const actualNewState = web3Reducer(initialState, personalWalletDisconnectedPlainAction());

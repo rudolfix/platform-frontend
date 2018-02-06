@@ -1,27 +1,26 @@
-import * as Web3 from "web3";
-import { EthereumNetworkId } from "../../types";
+import { EthereumAddress, EthereumNetworkId } from "../../types";
+import { Web3Adapter } from "./Web3Adapter";
 
+// normalized information about all possible types of personal wallets
 export enum WalletType {
   LEDGER = "LEDGER",
   BROWSER = "BROWSER",
 }
-
 export enum WalletSubType {
   METAMASK = "METAMASK",
   PARITY = "PARITY",
   UNKNOWN = "UNKNOWN",
 }
 
-// idea: split this interface into PersonalWalletFactory and PersonalWallet
-// this will allow for cleaner, immutable interface for PersonalWallet
 export interface IPersonalWallet {
-  type: WalletType;
-  subType: WalletSubType;
-
-  web3?: Web3;
+  readonly web3Adapter: Web3Adapter;
+  readonly ethereumAddress: EthereumAddress;
+  readonly walletType: WalletType;
+  readonly walletSubType: WalletSubType;
 
   // this will be periodically ran by Web3Manager to ensure that wallet connection is still established
   testConnection(networkId: EthereumNetworkId): Promise<boolean>;
 
-  connect(networkId: string): Promise<void>;
+  // sign message with the best available method for a given wallet
+  signMessage(data: string): Promise<string>;
 }

@@ -7,6 +7,7 @@ import {
 } from "../../../../app/modules/wallet-selector/browser-wizard/actions";
 import {
   BrowserWallet,
+  BrowserWalletConnector,
   BrowserWalletLockedError,
 } from "../../../../app/modules/web3/BrowserWallet";
 import { Web3Manager } from "../../../../app/modules/web3/Web3Manager";
@@ -19,8 +20,9 @@ describe("Wallet selector > Browser wizard > actions", () => {
       const expectedNetworkId = dummyNetworkId;
 
       const dispatchMock = spy();
-      const browserWalletMock = createMock(BrowserWallet, {
-        connect: async () => {},
+      const browserWalletMock = createMock(BrowserWallet, {});
+      const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
+        connect: async () => browserWalletMock,
       });
       const web3ManagerMock = createMock(Web3Manager, {
         networkId: expectedNetworkId,
@@ -29,12 +31,12 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       await tryConnectingWithBrowserWallet(
         dispatchMock,
-        browserWalletMock,
+        browserWalletConnectorMock,
         web3ManagerMock,
         dummyLogger,
       );
 
-      expect(browserWalletMock.connect).to.be.calledWithExactly(expectedNetworkId);
+      expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
       expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
     });
 
@@ -42,7 +44,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       const expectedNetworkId = dummyNetworkId;
 
       const dispatchMock = spy();
-      const browserWalletMock = createMock(BrowserWallet, {
+      const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
         connect: async () => {
           throw new BrowserWalletLockedError();
         },
@@ -54,12 +56,12 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       await tryConnectingWithBrowserWallet(
         dispatchMock,
-        browserWalletMock,
+        browserWalletConnectorMock,
         web3ManagerMock,
         dummyLogger,
       );
 
-      expect(browserWalletMock.connect).to.be.calledWithExactly(expectedNetworkId);
+      expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
       expect(dispatchMock).to.be.calledWithExactly(
         browserWalletConnectionErrorAction({
           errorMsg: "Your wallet seems to be locked — we can't access any accounts.",

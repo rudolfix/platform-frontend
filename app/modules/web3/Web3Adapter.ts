@@ -1,10 +1,9 @@
 import { BigNumber } from "bignumber.js";
 import { promisify } from "bluebird";
-import * as Web3 from "web3";
 import * as Eip55 from "eip55";
+import * as Web3 from "web3";
 
-import { EthereumNetworkId, EthereumAddress, EthereumAddressWithChecksum } from "../../types";
-import { WalletSubType } from "./PersonalWeb3";
+import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
 
 /**
  * Layer on top of raw Web3js. Simplifies API for common operations. Adds promise support.
@@ -32,23 +31,11 @@ export class Web3Adapter {
     return Eip55.encode(address) as EthereumAddressWithChecksum;
   }
 
-  public async ethSign(address: EthereumAddress | EthereumAddressWithChecksum, data: string): Promise<string> {
+  public async ethSign(
+    address: EthereumAddress | EthereumAddressWithChecksum,
+    data: string,
+  ): Promise<string> {
     const sign = promisify(this.web3.eth.sign);
     return sign(address, data);
-  }
-
-  public async getNodeType(): Promise<WalletSubType> {
-    const nodeIdString = await promisify(this.web3.version.getNode)();
-    const matchNodeIdString = nodeIdString.toLowerCase();
-
-    if (matchNodeIdString.includes("metamask")) {
-      return WalletSubType.METAMASK;
-    }
-    if (matchNodeIdString.includes("parity")) {
-      return WalletSubType.PARITY;
-    }
-    // @todo support for mist
-    // @todo support for ledger / neukey
-    return WalletSubType.UNKNOWN;
   }
 }

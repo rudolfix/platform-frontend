@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { compact } from "lodash";
 import * as queryString from "query-string";
 import * as urlJoin from "url-join";
@@ -25,7 +26,10 @@ export class NetworkingError extends HttpClientError {
   public readonly type = "NetworkingError";
 }
 
+export const JsonHttpClientSymbol = "JsonHttpClient";
+
 //supports only JSON apis
+@injectable()
 export class JsonHttpClient implements IHttpClient {
   private readonly defaultHeaders: Dictionary<string> = {
     Accept: "application/json, text/plain, */*",

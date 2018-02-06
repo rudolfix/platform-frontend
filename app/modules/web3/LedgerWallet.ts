@@ -7,8 +7,9 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { delay } from "bluebird";
 import { inject, injectable, LazyServiceIdentifer } from "inversify";
-import { EthereumNetworkId } from "../../types";
+import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
+import { Web3Adapter } from "./Web3Adapter";
 import { IEthereumNetworkConfig, IEthereumNetworkConfigSymbol } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
@@ -29,28 +30,36 @@ export class LedgerNotSupportedVersionError extends LedgerError {}
 export class LedgerInvalidDerivationPathError extends LedgerError {}
 export class LedgerUnknownError extends LedgerError {}
 
-export const LedgerConnectorSymbol = "LedgerWallet";
+export class LedgerWallet implements IPersonalWallet {
+  public readonly walletType = WalletType.LEDGER;
+  public readonly walletSubType = WalletSubType.UNKNOWN; // in future we may detect if it's pure ledger or Neukey
+
+  public constructor(
+    public readonly web3Adapter: Web3Adapter,
+    public readonly ethereumAddress: EthereumAddress,
+    private readonly ledgerInstance: any | undefined,
+  ) {}
+
+  public async testConnection(): Promise<boolean> {
+    return testConnection(this.ledgerInstance);
+  }
+
+  public async signMessage(data: string): Promise<string> {
+    return await this.web3Adapter.ethSign(this.ethereumAddress, data);
+  }
+}
+
+export const LedgerWalletConnectorSymbol = "LedgerWalletConnector";
 
 @injectable()
-export class LedgerWallet implements IPersonalWallet {
-  public readonly type: WalletType.LEDGER;
-  public readonly subType: WalletSubType.UNKNOWN;
-  public web3: Web3;
-  protected ledgerInstance: any | undefined;
+export class LedgerWalletConnector {
+  private web3?: Web3;
+  private ledgerInstance?: any;
 
   public constructor(
     @inject(new LazyServiceIdentifer(() => IEthereumNetworkConfigSymbol))
     public readonly web3Config: IEthereumNetworkConfig,
   ) {}
-
-  public async testConnection(): Promise<boolean> {
-    try {
-      await getLedgerConfig(this.ledgerInstance);
-      return true;
-    } catch {
-      return false;
-    }
-  }
 
   public async connect(networkId: EthereumNetworkId): Promise<void> {
     try {
@@ -66,12 +75,21 @@ export class LedgerWallet implements IPersonalWallet {
     }
   }
 
-  public setDerivationPath(derivationPath: string): void {
+  public async finishConnecting(derivationPath: string): Promise<LedgerWallet> {
+    if (!this.web3) {
+      throw new Error("Can't finish not started connection");
+    }
+
     try {
       this.ledgerInstance.setDerivationPath(derivationPath);
     } catch (e) {
       throw new LedgerInvalidDerivationPathError();
     }
+
+    const web3Adapter = new Web3Adapter(this.web3);
+
+    const address = await web3Adapter.getAccountAddress();
+    return new LedgerWallet(web3Adapter, address, this.ledgerInstance);
   }
 
   public async getMultipleAccounts(
@@ -88,6 +106,20 @@ export class LedgerWallet implements IPersonalWallet {
         addressesPerPage,
       );
     });
+  }
+
+  public async testConnection(): Promise<boolean> {
+    return testConnection(this.ledgerInstance);
+  }
+}
+
+async function testConnection(ledgerInstance: any): Promise<boolean> {
+  try {
+    // this check will successfully detect if ledger is locked or disconnected
+    await getLedgerConfig(ledgerInstance);
+    return true;
+  } catch {
+    return false;
   }
 }
 

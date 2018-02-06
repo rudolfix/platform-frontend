@@ -6,10 +6,10 @@ import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../../storeHelpers";
 import {
-  LedgerConnectorSymbol,
   LedgerLockedError,
   LedgerNotAvailableError,
-  LedgerWallet,
+  LedgerWalletConnector,
+  LedgerWalletConnectorSymbol,
 } from "../../web3/LedgerWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
@@ -89,9 +89,13 @@ function mapLedgerErrorToErrorMessage(error: Error): string {
 }
 
 export const tryEstablishingConnectionWithLedger = injectableFn(
-  async (dispatch: AppDispatch, ledgerConnector: LedgerWallet, web3Manager: Web3Manager) => {
+  async (
+    dispatch: AppDispatch,
+    ledgerWalletConnector: LedgerWalletConnector,
+    web3Manager: Web3Manager,
+  ) => {
     try {
-      await ledgerConnector.connect(web3Manager.networkId);
+      await ledgerWalletConnector.connect(web3Manager.networkId);
 
       dispatch(ledgerConnectionEstablishedAction());
     } catch (e) {
@@ -100,14 +104,14 @@ export const tryEstablishingConnectionWithLedger = injectableFn(
       );
     }
   },
-  [DispatchSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
+  [DispatchSymbol, LedgerWalletConnectorSymbol, Web3ManagerSymbol],
 );
 
 export const loadLedgerAccountsAction = injectableFn(
   async (
     dispatch: AppDispatch,
     getState: GetState,
-    ledgerConnector: LedgerWallet,
+    ledgerConnector: LedgerWalletConnector,
     web3Manager: Web3Manager,
   ) => {
     const { index, numberOfAccountsPerPage, derivationPathPrefix } = getState().ledgerWizardState;
@@ -136,7 +140,7 @@ export const loadLedgerAccountsAction = injectableFn(
 
     dispatch(setLedgerAccountsAction({ accounts, derivationPathPrefix }));
   },
-  [DispatchSymbol, GetStateSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
+  [DispatchSymbol, GetStateSymbol, LedgerWalletConnectorSymbol, Web3ManagerSymbol],
 );
 
 export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
@@ -170,16 +174,20 @@ export const goToPreviousPageAndLoadDataAction = injectableFn(
 
 export const finishSettingUpLedgerConnectorAction = (derivationPath: string) =>
   injectableFn(
-    async (dispatch: AppDispatch, ledgerConnector: LedgerWallet, web3Manager: Web3Manager) => {
-      ledgerConnector.setDerivationPath(derivationPath);
-      await web3Manager.plugPersonalWallet(ledgerConnector);
+    async (
+      dispatch: AppDispatch,
+      ledgerConnector: LedgerWalletConnector,
+      web3Manager: Web3Manager,
+    ) => {
+      const ledgerWallet = await ledgerConnector.finishConnecting(derivationPath);
+      await web3Manager.plugPersonalWallet(ledgerWallet);
       dispatch(walletConnectedAction);
     },
-    [DispatchSymbol, LedgerConnectorSymbol, Web3ManagerSymbol],
+    [DispatchSymbol, LedgerWalletConnectorSymbol, Web3ManagerSymbol],
   );
 
 export const verifyIfLedgerStillConnected = injectableFn(
-  async (dispatch: AppDispatch, ledgerConnector: LedgerWallet) => {
+  async (dispatch: AppDispatch, ledgerConnector: LedgerWalletConnector) => {
     if (!await ledgerConnector.testConnection()) {
       dispatch(
         ledgerConnectionEstablishedErrorAction({
@@ -188,5 +196,5 @@ export const verifyIfLedgerStillConnected = injectableFn(
       );
     }
   },
-  [DispatchSymbol, LedgerConnectorSymbol],
+  [DispatchSymbol, LedgerWalletConnectorSymbol],
 );

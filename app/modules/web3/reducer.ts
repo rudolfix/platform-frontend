@@ -1,4 +1,5 @@
 import { AppReducer } from "../../store";
+import { EthereumAddress } from "../../types";
 import { WalletSubType, WalletType } from "./PersonalWeb3";
 
 interface IDisconnectedWeb3State {
@@ -10,6 +11,7 @@ interface IConnectedWeb3State {
   connected: true;
   type: WalletType;
   subtype: WalletSubType;
+  ethereumAddress: EthereumAddress;
 }
 
 export type IWeb3State = IDisconnectedWeb3State | IConnectedWeb3State;
@@ -28,6 +30,7 @@ export const web3Reducer: AppReducer<IWeb3State> = (
         connected: true,
         type: action.payload.type,
         subtype: action.payload.subtype,
+        ethereumAddress: action.payload.ethereumAddress,
       };
     case "PERSONAL_WALLET_DISCONNECTED":
       return {
@@ -37,6 +40,13 @@ export const web3Reducer: AppReducer<IWeb3State> = (
           (state as IDisconnectedWeb3State).previousConnectedWalletType ||
           (state as IConnectedWeb3State).type,
       };
+  }
+  return state;
+};
+
+export const getConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {
+  if (!state.connected) {
+    throw Error("Wallet not connected");
   }
   return state;
 };

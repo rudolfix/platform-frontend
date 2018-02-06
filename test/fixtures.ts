@@ -1,6 +1,6 @@
 import { createStore, Store } from "redux";
 import { IConfig } from "../app/getConfig";
-import { EthereumNetworkId } from "../app/types";
+import { EthereumAddress, EthereumNetworkId } from "../app/types";
 import { ILogger } from "../app/utils/Logger";
 
 export const dummyConfig: IConfig = {
@@ -22,3 +22,5 @@ export const dummyLogger: ILogger = {
   warn: () => {},
   error: () => {},
 };
+
+export const dummyEthereumAddress = "0x123f681646d4a755815f9cb19e1acc8565a0c2ac" as EthereumAddress;

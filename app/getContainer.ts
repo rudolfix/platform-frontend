@@ -7,12 +7,14 @@ import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "./getConfig";
+import { IHttpClient } from "./modules/networking/IHttpClient";
+import { JsonHttpClient, JsonHttpClientSymbol } from "./modules/networking/JsonHttpClient";
 import {
   NotificationCenter,
   NotificationCenterSymbol,
 } from "./modules/notifications/NotificationCenter";
-import { BrowserWallet, BrowserWalletSymbol } from "./modules/web3/BrowserWallet";
-import { LedgerConnectorSymbol, LedgerWallet } from "./modules/web3/LedgerWallet";
+import { BrowserWalletConnector, BrowserWalletConnectorSymbol } from "./modules/web3/BrowserWallet";
+import { LedgerWalletConnector, LedgerWalletConnectorSymbol } from "./modules/web3/LedgerWallet";
 import {
   IEthereumNetworkConfig,
   IEthereumNetworkConfigSymbol,
@@ -43,6 +45,8 @@ export function getContainer(config: IConfig): Container {
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());
 
+  container.bind<IHttpClient>(JsonHttpClientSymbol).to(JsonHttpClient);
+
   container
     .bind<NotificationCenter>(NotificationCenterSymbol)
     .to(NotificationCenter)
@@ -53,12 +57,12 @@ export function getContainer(config: IConfig): Container {
     .toFactory(AsyncIntervalSchedulerFactory);
 
   container
-    .bind<LedgerWallet>(LedgerConnectorSymbol)
-    .to(LedgerWallet)
+    .bind<LedgerWalletConnector>(LedgerWalletConnectorSymbol)
+    .to(LedgerWalletConnector)
     .inSingletonScope();
   container
-    .bind<BrowserWallet>(BrowserWalletSymbol)
-    .to(BrowserWallet)
+    .bind<BrowserWalletConnector>(BrowserWalletConnectorSymbol)
+    .to(BrowserWalletConnector)
     .inSingletonScope();
   container
     .bind<Web3Manager>(Web3ManagerSymbol)

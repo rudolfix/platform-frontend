@@ -2,6 +2,7 @@ import { DispatchSymbol } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../storeHelpers";
+import { EthereumAddress } from "../../types";
 import { NotificationCenter, NotificationCenterSymbol } from "../notifications/NotificationCenter";
 import { WalletSubType, WalletType } from "./PersonalWeb3";
 
@@ -10,6 +11,7 @@ export interface INewPersonalWalletPluggedAction extends IAppAction {
   payload: {
     type: WalletType;
     subtype: WalletSubType;
+    ethereumAddress: EthereumAddress;
   };
 }
 export const newPersonalWalletPluggedAction = makeActionCreator<INewPersonalWalletPluggedAction>(

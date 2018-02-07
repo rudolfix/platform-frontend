@@ -1,6 +1,9 @@
+import { createSelector } from "reselect";
+
 import { AppReducer } from "../../store";
 import { EthereumAddress } from "../../types";
 import { WalletSubType, WalletType } from "./PersonalWeb3";
+import { makeEthereumAddressChecksumed } from "./utils";
 
 interface IDisconnectedWeb3State {
   connected: false;
@@ -44,9 +47,16 @@ export const web3Reducer: AppReducer<IWeb3State> = (
   return state;
 };
 
-export const getConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {
+export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {
   if (!state.connected) {
     throw Error("Wallet not connected");
   }
   return state;
 };
+
+export const selectEthereumAddress = (state: IWeb3State) =>
+  selectConnectedWeb3State(state).ethereumAddress;
+
+export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAddress, address => {
+  return makeEthereumAddressChecksumed(address);
+});

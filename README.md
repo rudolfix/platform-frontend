@@ -4,16 +4,16 @@
 [![codecov](https://codecov.io/gh/Neufund/platform-frontend/branch/master/graph/badge.svg)](https://codecov.io/gh/Neufund/platform-frontend)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-## Run project
+## Running project
 
-To run project requires an Ethereum node to connect to. For dev purposes, we can use local
-development node [ganache-cli](https://github.com/trufflesuite/ganache-cli) (former `testrpc`).
-Start it by issuing `yarn ganache` command in a separate terminal window so it runs simultaneously
-with webpack dev server.
+### Prerequisites
+
+* running ethereum node on port `8545`. To start local instance just run `yarn ganache`
+* running `signature_auth_api` on port `5000`
 
 ```sh
 yarn
-yarn ganache
+yarn ganache   # in separate window
 yarn start
 ```
 

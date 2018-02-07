@@ -45,7 +45,10 @@ export class LedgerWallet implements IPersonalWallet {
   }
 
   public async signMessage(data: string): Promise<string> {
-    return await this.web3Adapter.ethSign(this.ethereumAddress, data);
+    // todo: throw with error about not message signed
+    return noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
+      return await this.web3Adapter.ethSign(this.ethereumAddress, data);
+    });
   }
 }
 
@@ -81,14 +84,19 @@ export class LedgerWalletConnector {
     }
 
     try {
-      this.ledgerInstance.setDerivationPath(derivationPath);
+      await noSimultaneousConnectionsGuard(this.ledgerInstance, () =>
+        this.ledgerInstance.setDerivationPath(derivationPath),
+      );
     } catch (e) {
       throw new LedgerInvalidDerivationPathError();
     }
 
     const web3Adapter = new Web3Adapter(this.web3);
 
-    const address = await web3Adapter.getAccountAddress();
+    // note: in future we may want to solve locking issue on a lower level
+    const address = await noSimultaneousConnectionsGuard(this.ledgerInstance, () =>
+      web3Adapter.getAccountAddress(),
+    );
     return new LedgerWallet(web3Adapter, address, this.ledgerInstance);
   }
 

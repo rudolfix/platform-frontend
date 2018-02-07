@@ -1,9 +1,9 @@
 import { BigNumber } from "bignumber.js";
 import { promisify } from "bluebird";
-import * as Eip55 from "eip55";
 import * as Web3 from "web3";
 
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
+import { makeEthereumAddressChecksumed } from "./utils";
 
 /**
  * Layer on top of raw Web3js. Simplifies API for common operations. Adds promise support.
@@ -25,10 +25,10 @@ export class Web3Adapter {
     return accounts[0] as EthereumAddress;
   }
 
-  // returns mixed case checksummed ethereum address according to: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md
+  // returns mixed case checksumed ethereum address according to: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md
   public async getAccountAddressWithChecksum(): Promise<EthereumAddressWithChecksum> {
     const address = await this.getAccountAddress();
-    return Eip55.encode(address) as EthereumAddressWithChecksum;
+    return makeEthereumAddressChecksumed(address);
   }
 
   public async ethSign(

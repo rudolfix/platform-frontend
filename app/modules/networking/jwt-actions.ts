@@ -26,7 +26,7 @@ export const obtainJwt = injectableFn(
 
     logger.info("Sending signed challenge back to api");
     const { body: { jwt } } = await signatureAuthApi.createJwt(challenge, signedChallenge);
-    logger.debug("JWT: ", jwt);
+    logger.info("JWT obtained!", jwt); // get rid of printing jwt in near future
   },
   [
     Web3ManagerSymbol,

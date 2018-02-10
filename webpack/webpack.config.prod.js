@@ -8,13 +8,16 @@ const paths = require("./paths");
 
 module.exports = merge(configCommon, {
   output: {
-    filename: "[name].[hash].min.js",
+    filename: "[hash].[name].min.js",
   },
   plugins: [
     new CleanWebpackPlugin(paths.dist, {
       root: paths.root,
     }),
-    new ExtractTextPlugin("styles.css"), // TODO: its not working created issue 93
+    new ExtractTextPlugin({
+      filename: "[contenthash].[name].css",
+      allChunks: true,
+    }),
     new UglifyJsPlugin({
       uglifyOptions: {
         ecma: 6,
@@ -24,17 +27,76 @@ module.exports = merge(configCommon, {
   module: {
     rules: [
       {
-        test: /\.(tsx?)$/,
-        use: [
+        // there is a lof of duplication with dev config but merge.smart fails
+        // when using oneOf so for now we can leave it like this
+        oneOf: [
           {
-            loader: "awesome-typescript-loader",
+            test: /\.module.scss$/,
+            use: ExtractTextPlugin.extract({
+              fallback: "style-loader",
+              use: [
+                {
+                  loader: "css-loader",
+                  options: {
+                    importLoaders: 1,
+                    modules: true,
+                    localIdentName: "[name]__[local]___[hash:base64:5]",
+                    camelCase: "dashesOnly",
+                    minimize: true,
+                  },
+                },
+                { loader: "sass-loader" },
+              ],
+            }),
+          },
+          {
+            test: /\.scss$/,
+            use: ExtractTextPlugin.extract({
+              fallback: "style-loader",
+              use: [
+                {
+                  loader: "css-loader",
+                  options: {
+                    importLoaders: 1,
+                    modules: false,
+                    localIdentName: "[name]__[local]___[hash:base64:5]",
+                    camelCase: "dashesOnly",
+                    minimize: true,
+                  },
+                },
+                { loader: "sass-loader" },
+              ],
+            }),
+          },
+          {
+            test: /\.(tsx?)$/,
+            use: [
+              {
+                loader: "awesome-typescript-loader",
+                options: {
+                  configFileName: "./tsconfig.json",
+                  useCache: false,
+                },
+              },
+            ],
+            include: paths.app,
+          },
+          {
+            test: /\.(jpg|png|svg)$/,
+            loader: "url-loader",
             options: {
-              configFileName: "./tsconfig.json",
-              useCache: false,
+              limit: 25000,
+              publicPath: "/",
+            },
+          },
+          {
+            test: /\.(woff2|woff|ttf|eot|otf)$/,
+            loader: "file-loader",
+            options: {
+              name: "fonts/[hash].[ext]",
             },
           },
         ],
-        include: paths.app,
       },
     ],
   },

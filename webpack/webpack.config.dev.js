@@ -1,7 +1,7 @@
-const configCommon = require("./webpack.config.common");
 const merge = require("webpack-merge");
 const webpack = require("webpack");
 
+const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
 
 module.exports = merge(configCommon, {
@@ -33,23 +33,80 @@ module.exports = merge(configCommon, {
   module: {
     rules: [
       {
-        test: /\.(tsx?)$/,
-        use: [
+        // there is a lof of duplication with prod config but merge.smart fails
+        // when using oneOf so for now we can leave it like this
+        oneOf: [
           {
-            loader: "babel-loader",
+            test: /\.module.scss$/,
+            use: [
+              {
+                loader: "style-loader",
+              },
+              {
+                loader: "css-loader",
+                options: {
+                  importLoaders: 1,
+                  modules: true,
+                  localIdentName: "[name]__[local]___[hash:base64:5]",
+                  camelCase: "dashesOnly",
+                },
+              },
+              { loader: "sass-loader" },
+            ],
+          },
+          {
+            test: /\.scss$/,
+            use: [
+              {
+                loader: "style-loader",
+              },
+              {
+                loader: "css-loader",
+                options: {
+                  importLoaders: 1,
+                  modules: false,
+                  localIdentName: "[name]__[local]___[hash:base64:5]",
+                  camelCase: "dashesOnly",
+                },
+              },
+              { loader: "sass-loader" },
+            ],
+          },
+          {
+            test: /\.(tsx?)$/,
+            use: [
+              {
+                loader: "babel-loader",
+                options: {
+                  plugins: ["react-hot-loader/babel"],
+                },
+              },
+              {
+                loader: "awesome-typescript-loader",
+                options: {
+                  configFileName: "./tsconfig.dev.json",
+                  useCache: true,
+                },
+              },
+            ],
+            include: paths.app,
+          },
+          {
+            test: /\.(jpg|png|svg)$/,
+            loader: "url-loader",
             options: {
-              plugins: ["react-hot-loader/babel"],
+              limit: 25000,
+              publicPath: "/",
             },
           },
           {
-            loader: "awesome-typescript-loader",
+            test: /\.(woff2|woff|ttf|eot|otf)$/,
+            loader: "file-loader",
             options: {
-              configFileName: "./tsconfig.dev.json",
-              useCache: true,
+              name: "fonts/[hash].[ext]",
             },
           },
         ],
-        include: paths.app,
       },
     ],
   },

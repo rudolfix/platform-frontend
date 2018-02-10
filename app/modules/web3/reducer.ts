@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import { AppReducer } from "../../store";
 import { EthereumAddress } from "../../types";
 import { WalletSubType, WalletType } from "./PersonalWeb3";
-import { makeEthereumAddressChecksumed } from "./utils";
+import { makeEthereumAddressChecksummed } from "./utils";
 
 interface IDisconnectedWeb3State {
   connected: false;
@@ -58,5 +58,5 @@ export const selectEthereumAddress = (state: IWeb3State) =>
   selectConnectedWeb3State(state).ethereumAddress;
 
 export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAddress, address => {
-  return makeEthereumAddressChecksumed(address);
+  return makeEthereumAddressChecksummed(address);
 });

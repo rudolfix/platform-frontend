@@ -1,6 +1,7 @@
+import { promisify } from "bluebird";
 import { injectable } from "inversify";
 import * as Web3 from "web3";
-import { EthereumNetworkId } from "../../types";
+import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
@@ -16,14 +17,14 @@ export class BrowserWalletMismatchedNetworkError extends BrowserWalletError {
 }
 export class BrowserWalletLockedError extends BrowserWalletError {}
 
-export const BrowserWalletSymbol = "BrowserWallet";
-
-@injectable()
 export class BrowserWallet implements IPersonalWallet {
-  public readonly type = WalletType.BROWSER;
-  public subType = WalletSubType.UNKNOWN;
-  public web3?: Web3;
-  private web3Adapter: Web3Adapter;
+  public readonly walletType = WalletType.BROWSER;
+
+  constructor(
+    public readonly web3Adapter: Web3Adapter,
+    public readonly walletSubType: WalletSubType,
+    public readonly ethereumAddress: EthereumAddress,
+  ) {}
 
   public async testConnection(networkId: string): Promise<boolean> {
     const currentNetworkId = await this.web3Adapter.getNetworkId();
@@ -34,7 +35,17 @@ export class BrowserWallet implements IPersonalWallet {
     return !!await this.web3Adapter.getAccountAddress();
   }
 
-  public async connect(networkId: EthereumNetworkId): Promise<void> {
+  public async signMessage(data: string): Promise<string> {
+    // use different sign methods depending on wallet type
+    return this.web3Adapter.ethSign(this.ethereumAddress, data);
+  }
+}
+
+export const BrowserWalletConnectorSymbol = "BrowserWalletConnector";
+
+@injectable()
+export class BrowserWalletConnector {
+  public async connect(networkId: EthereumNetworkId): Promise<BrowserWallet> {
     const newInjectedWeb3 = (window as any).web3;
     if (typeof newInjectedWeb3 === "undefined") {
       throw new BrowserWalletMissingError();
@@ -53,9 +64,23 @@ export class BrowserWallet implements IPersonalWallet {
       throw new BrowserWalletLockedError();
     }
 
-    this.subType = await web3Adapter.getNodeType();
+    const walletType = await this.getBrowserWalletType(web3Adapter.web3);
+    const ethereumAddress = await web3Adapter.getAccountAddress();
 
-    this.web3 = newWeb3;
-    this.web3Adapter = web3Adapter;
+    return new BrowserWallet(web3Adapter, walletType, ethereumAddress);
+  }
+
+  private async getBrowserWalletType(web3: Web3): Promise<WalletSubType> {
+    const nodeIdString = await promisify(web3.version.getNode)();
+    const matchNodeIdString = nodeIdString.toLowerCase();
+
+    if (matchNodeIdString.includes("metamask")) {
+      return WalletSubType.METAMASK;
+    }
+    if (matchNodeIdString.includes("parity")) {
+      return WalletSubType.PARITY;
+    }
+    // @todo support for mist
+    return WalletSubType.UNKNOWN;
   }
 }

@@ -70,8 +70,9 @@ export class Web3Manager {
 
     this.dispatch(
       newPersonalWalletPluggedAction({
-        type: personalWallet.type,
-        subtype: personalWallet.subType,
+        type: personalWallet.walletType,
+        subtype: personalWallet.walletSubType,
+        ethereumAddress: personalWallet.ethereumAddress,
       }),
     );
 

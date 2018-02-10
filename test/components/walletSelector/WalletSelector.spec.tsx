@@ -9,10 +9,11 @@ import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelecto
 import { WalletSelector } from "../../../app/components/walletSelector/WalletSelector";
 import {
   BrowserWallet,
+  BrowserWalletConnector,
   BrowserWalletLockedError,
   BrowserWalletMissingError,
 } from "../../../app/modules/web3/BrowserWallet";
-import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
+import { LedgerWallet, LedgerWalletConnector } from "../../../app/modules/web3/LedgerWallet";
 import { Web3Adapter } from "../../../app/modules/web3/Web3Adapter";
 import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { createMount } from "../../createMount";
@@ -38,6 +39,7 @@ describe("<WalletSelector />", () => {
   describe("integration", () => {
     it("should select ledger wallet", async () => {
       const ledgerWalletMock = createMock(LedgerWallet, {});
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {});
       const web3ManagerMock = createMock(Web3Manager, {
         networkId: dummyNetworkId,
         internalWeb3Adapter: createMock(Web3Adapter, {
@@ -45,8 +47,9 @@ describe("<WalletSelector />", () => {
         }),
         plugPersonalWallet: async () => {},
       });
+
       const { store, container } = createIntegrationTestsSetup({
-        ledgerWalletMock,
+        ledgerWalletConnectorMock,
         web3ManagerMock,
       });
 
@@ -66,13 +69,15 @@ describe("<WalletSelector />", () => {
       );
 
       // simulate successful connection
-      ledgerWalletMock.reMock({
+      ledgerWalletConnectorMock.reMock({
         connect: async () => {},
         testConnection: async () => true,
         getMultipleAccounts: async () => ({
           "44'/60'/0'/1": "0x12345123123",
         }),
-        setDerivationPath: async () => ({}),
+        finishConnecting: async () => {
+          return ledgerWalletMock;
+        },
       });
       globalFakeClock.tick(LEDGER_RECONNECT_INTERVAL);
 
@@ -80,13 +85,15 @@ describe("<WalletSelector />", () => {
 
       // select one of the addresses
       mountedComponent.find(`${tid("account-row")}`).simulate("click");
+      await Promise.resolve(); // we need to give async actions time to finish. Is there a better way to do this?
 
-      expect(ledgerWalletMock.setDerivationPath).to.be.calledWithExactly("44'/60'/0'/1");
+      expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly("44'/60'/0'/1");
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
     });
 
     it("should select browser wallet", async () => {
-      const browserWalletMock = createMock(BrowserWallet, {
+      const browserWalletMock = createMock(BrowserWallet, {});
+      const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
         connect: async () => {
           throw new BrowserWalletMissingError();
         },
@@ -99,7 +106,7 @@ describe("<WalletSelector />", () => {
         plugPersonalWallet: async () => {},
       });
       const { store, container } = createIntegrationTestsSetup({
-        browserWalletMock,
+        browserWalletConnectorMock,
         web3ManagerMock,
       });
 
@@ -121,7 +128,7 @@ describe("<WalletSelector />", () => {
       );
 
       // wallet in browser is locked
-      browserWalletMock.reMock({
+      browserWalletConnectorMock.reMock({
         connect: async () => {
           throw new BrowserWalletLockedError();
         },
@@ -134,8 +141,8 @@ describe("<WalletSelector />", () => {
       );
 
       // connect doesn't throw which means there is web3 in browser
-      browserWalletMock.reMock({
-        connect: async () => {},
+      browserWalletConnectorMock.reMock({
+        connect: async () => browserWalletMock,
       });
       await globalFakeClock.tickAsync(BROWSER_WALLET_RECONNECT_INTERVAL);
 

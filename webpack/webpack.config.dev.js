@@ -18,6 +18,10 @@ module.exports = merge(configCommon, {
         target: "http://localhost:8545",
         pathRewrite: { "^/node": "" },
       },
+      "/api/signature": {
+        target: "http://localhost:5000",
+        pathRewrite: { "^/api/signature": "" },
+      },
     },
   },
   entry: [

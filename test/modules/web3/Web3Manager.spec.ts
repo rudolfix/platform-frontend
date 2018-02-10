@@ -16,7 +16,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../../../app/utils/AsyncIntervalScheduler";
 import { delay } from "../../../app/utils/delay";
-import { dummyConfig, dummyLogger, dummyNetworkId } from "../../fixtures";
+import { dummyConfig, dummyEthereumAddress, dummyLogger, dummyNetworkId } from "../../fixtures";
 import { globalFakeClock } from "../../setupTestsHooks";
 import { createMock, expectToBeRejected } from "../../testUtils";
 
@@ -26,9 +26,10 @@ describe("Web3Manager", () => {
   it("should plug personal wallet when connection works", async () => {
     const dispatchMock = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
-      type: WalletType.LEDGER,
-      subType: WalletSubType.UNKNOWN,
+      ethereumAddress: dummyEthereumAddress,
       testConnection: async () => true,
+      walletType: WalletType.LEDGER,
+      walletSubType: WalletSubType.UNKNOWN,
     });
     const asyncIntervalSchedulerMock = createMock(AsyncIntervalScheduler, {
       start: () => {},
@@ -48,7 +49,11 @@ describe("Web3Manager", () => {
     expect(web3Manager.personalWallet).to.be.eq(ledgerWalletMock);
     expect(ledgerWalletMock.testConnection).to.be.calledWithExactly(expectedNetworkId);
     expect(dispatchMock).to.be.calledWithExactly(
-      newPersonalWalletPluggedAction({ type: WalletType.LEDGER, subtype: WalletSubType.UNKNOWN }),
+      newPersonalWalletPluggedAction({
+        type: WalletType.LEDGER,
+        subtype: WalletSubType.UNKNOWN,
+        ethereumAddress: dummyEthereumAddress,
+      }),
     );
     expect(asyncIntervalSchedulerMock.start).to.be.calledOnce;
   });
@@ -83,8 +88,6 @@ describe("Web3Manager", () => {
   it("should watch connection status", async () => {
     const dispatchMock = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
-      type: WalletType.LEDGER,
-      subType: WalletSubType.UNKNOWN,
       testConnection: async () => true,
     });
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
@@ -109,15 +112,13 @@ describe("Web3Manager", () => {
       testConnection: async () => false,
     });
     await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
-    expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+    expect(ledgerWalletMock.testConnection).to.be.calledOnce; // remocking resets counter
     expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
   });
 
   it("should fail on connection timeout", async () => {
     const dispatchMock = spy();
-    const ledgerWalletMock = createMock(LedgerWallet, {
-      type: WalletType.LEDGER,
-      subType: WalletSubType.UNKNOWN,
+    const ledgerWalletConnectionMock = createMock(LedgerWallet, {
       testConnection: async () => true,
     });
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
@@ -131,15 +132,15 @@ describe("Web3Manager", () => {
     );
     web3Manager.networkId = expectedNetworkId;
 
-    await web3Manager.plugPersonalWallet(ledgerWalletMock);
+    await web3Manager.plugPersonalWallet(ledgerWalletConnectionMock);
 
-    expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+    expect(ledgerWalletConnectionMock.testConnection).to.be.calledOnce;
 
     await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
-    expect(ledgerWalletMock.testConnection).to.be.calledTwice;
+    expect(ledgerWalletConnectionMock.testConnection).to.be.calledTwice;
 
     // make personal wallet timeout
-    ledgerWalletMock.reMock({
+    ledgerWalletConnectionMock.reMock({
       testConnection: async () => {
         await delay(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL * 2);
         return false;
@@ -150,7 +151,7 @@ describe("Web3Manager", () => {
     // wait until timeout
     await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
 
-    expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+    expect(ledgerWalletConnectionMock.testConnection).to.be.calledOnce;
     expect(dispatchMock).to.be.calledTwice;
     expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
   });

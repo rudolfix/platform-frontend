@@ -7,5 +7,7 @@ type AsInterface<T> = { [K in keyof T]: T[K] };
 type Opaque<K, T> = T & { __TYPE__: K };
 
 export type EthereumNetworkId = Opaque<"EthereumNetworkId", string>;
+export type EthereumAddress = Opaque<"EthereumAddress", string>;
+export type EthereumAddressWithChecksum = Opaque<"EthereumAddressWithChecksum", string>;
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };

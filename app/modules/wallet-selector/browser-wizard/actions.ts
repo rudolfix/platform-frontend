@@ -4,11 +4,11 @@ import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator } from "../../../storeHelpers";
 import { ILogger, LoggerSymbol } from "../../../utils/Logger";
 import {
-  BrowserWallet,
+  BrowserWalletConnector,
+  BrowserWalletConnectorSymbol,
   BrowserWalletLockedError,
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
-  BrowserWalletSymbol,
 } from "../../web3/BrowserWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
@@ -27,12 +27,12 @@ export const browserWalletConnectionErrorAction = makeActionCreator<
 export const tryConnectingWithBrowserWallet = injectableFn(
   async (
     dispatch: AppDispatch,
-    browserWallet: BrowserWallet,
+    browserWalletConnector: BrowserWalletConnector,
     web3Manager: Web3Manager,
     logger: ILogger,
   ) => {
     try {
-      await browserWallet.connect(web3Manager.networkId);
+      const browserWallet = await browserWalletConnector.connect(web3Manager.networkId);
 
       await web3Manager.plugPersonalWallet(browserWallet);
       dispatch(walletConnectedAction);
@@ -43,7 +43,7 @@ export const tryConnectingWithBrowserWallet = injectableFn(
       );
     }
   },
-  [DispatchSymbol, BrowserWalletSymbol, Web3ManagerSymbol, LoggerSymbol],
+  [DispatchSymbol, BrowserWalletConnectorSymbol, Web3ManagerSymbol, LoggerSymbol],
 );
 
 function mapBrowserWalletErrorToErrorMessage(e: Error): string {

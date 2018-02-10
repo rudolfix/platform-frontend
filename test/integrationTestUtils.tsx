@@ -6,8 +6,14 @@ import { applyMiddleware, createStore, Store } from "redux";
 
 import { MemoryRouter } from "react-router";
 import { customizerContainerWithMiddlewareApi, getContainer } from "../app/getContainer";
-import { BrowserWallet, BrowserWalletSymbol } from "../app/modules/web3/BrowserWallet";
-import { LedgerConnectorSymbol, LedgerWallet } from "../app/modules/web3/LedgerWallet";
+import {
+  BrowserWalletConnector,
+  BrowserWalletConnectorSymbol,
+} from "../app/modules/web3/BrowserWallet";
+import {
+  LedgerWalletConnector,
+  LedgerWalletConnectorSymbol,
+} from "../app/modules/web3/LedgerWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../app/modules/web3/Web3Manager";
 import { createInjectMiddleware } from "../app/redux-injectify";
 import { IAppState, reducers } from "../app/store";
@@ -18,8 +24,8 @@ import { createMock, tid } from "./testUtils";
 
 interface ICreateIntegrationTestsSetupOptions {
   initialState?: Partial<IAppState>;
-  browserWalletMock?: BrowserWallet;
-  ledgerWalletMock?: LedgerWallet;
+  browserWalletConnectorMock?: BrowserWalletConnector;
+  ledgerWalletConnectorMock?: LedgerWalletConnector;
   web3ManagerMock?: Web3Manager;
 }
 
@@ -31,12 +37,14 @@ interface ICreateIntegrationTestsSetupOutput {
 export function createIntegrationTestsSetup(
   options: ICreateIntegrationTestsSetupOptions = {},
 ): ICreateIntegrationTestsSetupOutput {
-  const browserWalletMock = options.browserWalletMock || createMock(BrowserWallet, {});
-  const ledgerWalletMock = options.ledgerWalletMock || createMock(LedgerWallet, {});
+  const browserWalletMock =
+    options.browserWalletConnectorMock || createMock(BrowserWalletConnector, {});
+  const ledgerWalletMock =
+    options.ledgerWalletConnectorMock || createMock(LedgerWalletConnector, {});
   const web3ManagerMock = options.web3ManagerMock || createMock(Web3Manager, {});
   const container = getContainer(dummyConfig);
-  container.rebind(LedgerConnectorSymbol).toConstantValue(ledgerWalletMock);
-  container.rebind(BrowserWalletSymbol).toConstantValue(browserWalletMock);
+  container.rebind(LedgerWalletConnectorSymbol).toConstantValue(ledgerWalletMock);
+  container.rebind(BrowserWalletConnectorSymbol).toConstantValue(browserWalletMock);
   container.rebind(Web3ManagerSymbol).toConstantValue(web3ManagerMock);
   container.rebind(LoggerSymbol).toConstantValue(dummyLogger);
 
@@ -83,7 +91,7 @@ export function wrapWithProviders(
   Component: React.ComponentType,
   context: ICreateProviderContext = {},
 ): React.ReactElement<any> {
-  // avoid creating store and contianer if they were provided
+  // avoid creating store and container if they were provided
   let setup: ICreateIntegrationTestsSetupOutput | null = null;
   if (!context.store || !context.container) {
     setup = createIntegrationTestsSetup();

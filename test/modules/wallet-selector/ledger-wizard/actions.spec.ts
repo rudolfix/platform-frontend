@@ -23,6 +23,7 @@ import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
   LedgerWallet,
+  LedgerWalletConnector,
 } from "../../../../app/modules/web3/LedgerWallet";
 import { Web3Adapter } from "../../../../app/modules/web3/Web3Adapter";
 import { WalletNotConnectedError, Web3Manager } from "../../../../app/modules/web3/Web3Manager";
@@ -37,24 +38,28 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const expectedNetworkId = dummyNetworkId;
 
       const mockDispatch = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         connect: async () => {},
       });
       const web3ManagerMock = createMock(Web3Manager, {
         networkId: expectedNetworkId,
       });
 
-      await tryEstablishingConnectionWithLedger(mockDispatch, ledgerWalletMock, web3ManagerMock);
+      await tryEstablishingConnectionWithLedger(
+        mockDispatch,
+        ledgerWalletConnectorMock,
+        web3ManagerMock,
+      );
 
       expect(mockDispatch).to.be.calledWithExactly(ledgerConnectionEstablishedAction());
-      expect(ledgerWalletMock.connect).to.be.calledWithExactly(expectedNetworkId);
+      expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
 
     it("should send error action on error", async () => {
       const expectedNetworkId = dummyNetworkId;
 
       const mockDispatch = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         connect: async () => {
           throw new LedgerNotAvailableError();
         },
@@ -63,12 +68,16 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         networkId: expectedNetworkId,
       });
 
-      await tryEstablishingConnectionWithLedger(mockDispatch, ledgerWalletMock, web3ManagerMock);
+      await tryEstablishingConnectionWithLedger(
+        mockDispatch,
+        ledgerWalletConnectorMock,
+        web3ManagerMock,
+      );
 
       expect(mockDispatch).to.be.calledWithExactly(
         ledgerConnectionEstablishedErrorAction({ errorMsg: "Nano Ledger S not available" }),
       );
-      expect(ledgerWalletMock.connect).to.be.calledWithExactly(expectedNetworkId);
+      expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
   });
 
@@ -95,7 +104,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       const dispatchMock = spy();
       const getStateMock = spy(() => dummyState);
-      const ledgerConnectorMock = createMock(LedgerWallet, {
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         getMultipleAccounts: spy(() => expectedAccounts),
       });
       const web3ManagerMock = createMock(Web3Manager, {
@@ -108,11 +117,11 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       await loadLedgerAccountsAction(
         dispatchMock,
         getStateMock,
-        ledgerConnectorMock,
+        ledgerWalletConnectorMock,
         web3ManagerMock,
       );
 
-      expect(ledgerConnectorMock.getMultipleAccounts).to.calledWithExactly(
+      expect(ledgerWalletConnectorMock.getMultipleAccounts).to.calledWithExactly(
         dummyState.ledgerWizardState!.derivationPathPrefix,
         dummyState.ledgerWizardState!.index,
         dummyState.ledgerWizardState!.numberOfAccountsPerPage,
@@ -205,8 +214,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const expectedDerivationPath = "44'/60'/0'/2";
 
       const dispatchMock = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {
-        setDerivationPath: () => {},
+      const ledgerWalletMock = createMock(LedgerWallet, {});
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
+        finishConnecting: async () => ledgerWalletMock,
       });
       const web3ManagerMock = createMock(Web3Manager, {
         plugPersonalWallet: async () => {},
@@ -214,11 +224,13 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       await finishSettingUpLedgerConnectorAction(expectedDerivationPath)(
         dispatchMock,
-        ledgerWalletMock,
+        ledgerWalletConnectorMock,
         web3ManagerMock,
       );
 
-      expect(ledgerWalletMock.setDerivationPath).to.be.calledWithExactly(expectedDerivationPath);
+      expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
+        expectedDerivationPath,
+      );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
       expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
     });
@@ -228,8 +240,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const expectedDerivationPath = "44'/60'/0'/2";
 
       const navigateToMock = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {
-        setDerivationPath: () => {},
+      const ledgerWalletMock = createMock(LedgerWallet, {});
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
+        finishConnecting: async () => ledgerWalletMock,
       });
       const web3ManagerMock = createMock(Web3Manager, {
         plugPersonalWallet: async () => {
@@ -239,11 +252,13 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       await finishSettingUpLedgerConnectorAction(expectedDerivationPath)(
         navigateToMock,
-        ledgerWalletMock,
+        ledgerWalletConnectorMock,
         web3ManagerMock,
       ).catch(() => {});
 
-      expect(ledgerWalletMock.setDerivationPath).to.be.calledWithExactly(expectedDerivationPath);
+      expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
+        expectedDerivationPath,
+      );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
       expect(navigateToMock).not.be.called;
     });
@@ -252,25 +267,25 @@ describe("Wallet selector > Ledger wizard > actions", () => {
   describe("verifyIfLedgerStillConnected", () => {
     it("should do nothing if ledger is connected", async () => {
       const dispatchMock = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         testConnection: async () => true,
       });
 
-      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletMock);
+      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
 
-      expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+      expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.not.be.called;
     });
 
     it("should issue error action if ledger is not connected", async () => {
       const dispatchMock = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         testConnection: async () => false,
       });
 
-      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletMock);
+      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
 
-      expect(ledgerWalletMock.testConnection).to.be.calledOnce;
+      expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.be.calledWithExactly(
         ledgerConnectionEstablishedErrorAction({ errorMsg: "Nano Ledger S not available" }),
       );

@@ -21,7 +21,7 @@ export class DevConsoleLogger implements ILogger {
   }
   debug(...args: (string | object | Error)[]): void {
     // tslint:disable-next-line
-    console.debug(...args);
+    console.log(...args);
   }
   warn(...args: (string | object | Error)[]): void {
     // tslint:disable-next-line

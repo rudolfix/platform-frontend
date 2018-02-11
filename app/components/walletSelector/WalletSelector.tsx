@@ -1,9 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 import { HiResImage } from "../HiResImage";
+import { LayoutRegisterLogin } from "../LayoutRegisterLogin";
 import { WalletRouter } from "./WalletRouter";
 import { walletRoutes } from "./walletRoutes";
 import * as styles from "./WalletSelector.module.scss";
@@ -45,7 +46,7 @@ class WalletTabLink extends React.Component<IWalletTabLink> {
 const WalletTab = withRouter<IWalletTabLink>(WalletTabLink);
 
 export const WalletSelector: React.SFC = () => (
-  <Container>
+  <LayoutRegisterLogin>
     <Row>
       <Col>
         <p>Please select your wallet.</p>
@@ -74,5 +75,5 @@ export const WalletSelector: React.SFC = () => (
         <WalletRouter />
       </Col>
     </Row>
-  </Container>
+  </LayoutRegisterLogin>
 );

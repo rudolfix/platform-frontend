@@ -8,9 +8,9 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { delay } from "bluebird";
 import { inject, injectable, LazyServiceIdentifer } from "inversify";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
-import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
+import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
-import { IEthereumNetworkConfig, IEthereumNetworkConfigSymbol } from "./Web3Manager";
+import { IEthereumNetworkConfig, IEthereumNetworkConfigSymbol, SignerError } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -33,6 +33,7 @@ export class LedgerUnknownError extends LedgerError {}
 export class LedgerWallet implements IPersonalWallet {
   public readonly walletType = WalletType.LEDGER;
   public readonly walletSubType = WalletSubType.UNKNOWN; // in future we may detect if it's pure ledger or Neukey
+  public readonly signerType = SignerType.ETH_SIGN_TYPED_DATA;
 
   public constructor(
     public readonly web3Adapter: Web3Adapter,
@@ -45,10 +46,13 @@ export class LedgerWallet implements IPersonalWallet {
   }
 
   public async signMessage(data: string): Promise<string> {
-    // todo: throw with error about not message signed
-    return noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
-      return await this.web3Adapter.ethSign(this.ethereumAddress, data);
-    });
+    try {
+      return noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
+        return await this.web3Adapter.ethSign(this.ethereumAddress, data);
+      });
+    } catch {
+      throw new SignerError();
+    }
   }
 }
 

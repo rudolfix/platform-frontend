@@ -1,8 +1,10 @@
 import { promisify } from "bluebird";
+import hex2ascii = require("hex2ascii");
 import { injectable } from "inversify";
 import * as Web3 from "web3";
+
 import { EthereumAddress, EthereumNetworkId } from "../../types";
-import { IPersonalWallet, WalletSubType, WalletType } from "./PersonalWeb3";
+import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
 export class BrowserWalletError extends Error {}
@@ -19,6 +21,7 @@ export class BrowserWalletLockedError extends BrowserWalletError {}
 
 export class BrowserWallet implements IPersonalWallet {
   public readonly walletType = WalletType.BROWSER;
+  public readonly signerType = SignerType.ETH_SIGN_TYPED_DATA;
 
   constructor(
     public readonly web3Adapter: Web3Adapter,
@@ -36,8 +39,13 @@ export class BrowserWallet implements IPersonalWallet {
   }
 
   public async signMessage(data: string): Promise<string> {
-    // use different sign methods depending on wallet type
-    return this.web3Adapter.ethSign(this.ethereumAddress, data);
+    if (this.walletSubType === WalletSubType.METAMASK) {
+      const typedDataDecoded = JSON.parse(hex2ascii(data));
+
+      return this.web3Adapter.signTypedData(this.ethereumAddress, typedDataDecoded);
+    } else {
+      return this.web3Adapter.ethSign(this.ethereumAddress, data);
+    }
   }
 }
 

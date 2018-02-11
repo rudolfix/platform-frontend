@@ -3,7 +3,7 @@ import { spy } from "sinon";
 import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
 import { SignatureAuthApi } from "../../../app/modules/networking/SignatureAuthApi";
 import { BrowserWallet } from "../../../app/modules/web3/BrowserWallet";
-import { WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
+import { SignerType, WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
 import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { IAppState } from "../../../app/store";
 import {
@@ -20,6 +20,7 @@ describe("Jwt actions", () => {
       const expectedChallenge = "backend challenge";
       const expectedSignedMessage = "signed message";
       const expectedJwt = "jwt";
+      const expectedSignerType = SignerType.ETH_SIGN_TYPED_DATA;
 
       const mockedState: Partial<IAppState> = {
         web3State: {
@@ -32,6 +33,7 @@ describe("Jwt actions", () => {
 
       const browserWalletMock = createMock(BrowserWallet, {
         signMessage: async () => expectedSignedMessage,
+        signerType: expectedSignerType,
       });
       const web3ManagerMock = createMock(Web3Manager, {
         personalWallet: browserWalletMock,
@@ -55,11 +57,13 @@ describe("Jwt actions", () => {
       expect(signatureAuthApiMock.challenge).to.be.calledWithExactly(
         dummyEthereumAddressWithChecksum,
         expectedSalt,
+        expectedSignerType,
       );
       expect(browserWalletMock.signMessage).to.be.calledWithExactly(expectedChallenge);
       expect(signatureAuthApiMock.createJwt).to.be.calledWithExactly(
         expectedChallenge,
         expectedSignedMessage,
+        expectedSignerType,
       );
     });
   });

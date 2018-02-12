@@ -18,7 +18,6 @@ import { customizerContainerWithMiddlewareApi, getContainer } from "./getContain
 import { createInjectMiddleware } from "./redux-injectify";
 import { IAppState, reducers } from "./store";
 import "./styles/bootstrap.scss";
-import "./styles/global.scss";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
 // @note: this is done to make HMR work with react router. In production build its gone.

@@ -1,12 +1,16 @@
-export interface ILocalStorage {
-  setKey(key: string, value: string): void;
-  getKey(key: string): string;
+import { injectable } from "inversify";
+
+export const StorageSymbol = "StorageSymbol";
+
+@injectable()
+export class Storage {
+  constructor(private localStorage: any) {}
+
+  public setKey = (key: string, value: string): void => {
+    this.localStorage.setItem(key, value);
+  };
+
+  public getKey = (key: string): string => {
+    return this.localStorage.getItem(key);
+  };
 }
-
-export const setKey = (key: string, value: string): void => {
-  (window as any).localStorage.setItem(key, value);
-};
-
-export const getKey = (key: string): string => {
-  return (window as any).localStorage.getItem(key);
-};

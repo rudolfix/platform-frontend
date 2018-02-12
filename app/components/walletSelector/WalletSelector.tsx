@@ -3,7 +3,7 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { LayoutRegisterLogin } from "../LayoutRegisterLogin";
+import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
 import { WalletRouter } from "./WalletRouter";
 import { walletRoutes } from "./walletRoutes";
 import * as styles from "./WalletSelector.module.scss";

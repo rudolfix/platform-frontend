@@ -7,6 +7,7 @@ import { makeEthereumAddressChecksummed } from "./utils";
 
 /**
  * Layer on top of raw Web3js. Simplifies API for common operations. Adds promise support.
+ * Note that some methods may be not supported correctly by exact implementation of your client
  */
 export class Web3Adapter {
   constructor(public readonly web3: Web3) {}
@@ -38,4 +39,27 @@ export class Web3Adapter {
     const sign = promisify(this.web3.eth.sign);
     return sign(address, data);
   }
+
+  public async signTypedData(
+    address: EthereumAddress | EthereumAddressWithChecksum,
+    data: ITypedDataToSign[],
+  ): Promise<string> {
+    const send = promisify<any, any>(
+      this.web3.currentProvider.sendAsync.bind(this.web3.currentProvider),
+    ); // web3 typings are not accurate here
+
+    const resultData = await send({
+      method: "eth_signTypedData",
+      params: [data, address as string],
+      from: address as string,
+    });
+
+    return resultData.result;
+  }
+}
+
+interface ITypedDataToSign {
+  type: string; // todo: here we could use more specific type. Something like "string" | "uint32" etc.
+  name: string;
+  value: string;
 }

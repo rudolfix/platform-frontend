@@ -28,6 +28,7 @@ export class WalletNotConnectedError extends Error {
     super("Wallet not connected");
   }
 }
+export class SignerError extends Error {}
 
 export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 5000;
 

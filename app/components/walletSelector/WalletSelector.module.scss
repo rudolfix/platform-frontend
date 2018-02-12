@@ -8,10 +8,17 @@
 .wallet {
   cursor: pointer;
   text-transform: uppercase;
+  color: $body-color;
+
+  &:hover {
+    text-decoration: none;
+  }
 
   &::before {
     content: "|";
     margin: 0 $spacer;
+    color: $body-color;
+    font-weight: $font-weight-normal;
   }
 
   &:first-of-type {

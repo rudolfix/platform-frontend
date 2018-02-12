@@ -8,5 +8,3 @@ declare module "web3-provider-engine/subproviders/hooked-wallet";
 
 declare module "ledger-wallet-provider";
 declare module "eth-lightwallet";
-
-declare module "node-localstorage";

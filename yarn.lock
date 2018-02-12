@@ -4225,10 +4225,6 @@ loader-utils@^1.0.1, loader-utils@^1.0.2, loader-utils@^1.1.0:
     emojis-list "^2.0.0"
     json5 "^0.5.0"
 
-localstorage-mock@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/localstorage-mock/-/localstorage-mock-1.0.2.tgz#8b73410350babb4323e4ef354fd165e95598c155"
-
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"

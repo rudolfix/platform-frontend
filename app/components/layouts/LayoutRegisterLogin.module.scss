@@ -1,8 +1,11 @@
 @import "../../styles/neufund-theme";
 
-.layout {
-  background: url("../../assets/img/logo.svg") no-repeat center $spacer * 2.5;
-  padding-top: $spacer * 13;
+.logo {
+  background: url("../../assets/img/logo.svg") no-repeat center;
+  height: 133px;
+  width: 112px;
+  display: block;
+  margin: $spacer * 2.5 auto $spacer * 2.125;
 }
 
 .main-container {

@@ -37,20 +37,20 @@ export const WalletSelector: React.SFC = () => (
     <Row>
       <Col
         className={cn(
-          "d-flex flex-column flex-md-row justify-content-center",
+          "d-flex flex-column flex-md-row justify-content-center mt-4 mb-5",
           styles.walletChooser,
         )}
       >
         <WalletTab href={walletRoutes.light} data-test-id="wallet-selector-light">
-          <span className={styles.wallet}>use Neufund wallet</span>
+          <span className={cn("mb-3 mb-md-0", styles.wallet)}>use Neufund wallet</span>
         </WalletTab>
-        <span className={styles.separator} />
+        <span className={cn("mx-3", styles.separator)} />
         <WalletTab href={walletRoutes.browser} data-test-id="wallet-selector-browser">
-          <span className={styles.wallet}>use existing wallet</span>
+          <span className={cn("mb-3 mb-md-0", styles.wallet)}>use existing wallet</span>
         </WalletTab>
-        <span className={styles.separator} />
+        <span className={cn("mx-3", styles.separator)} />
         <WalletTab href={walletRoutes.ledger} data-test-id="wallet-selector-ledger">
-          <span className={styles.wallet}>use nano ledger</span>
+          <span className={cn("mb-3 mb-md-0", styles.wallet)}>use nano ledger</span>
         </WalletTab>
       </Col>
     </Row>

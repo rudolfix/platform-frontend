@@ -3,8 +3,6 @@
 .wallet-chooser {
   font-size: $smaller-font-size;
   letter-spacing: -.2px;
-  margin-top: 1.563rem;
-  margin-bottom: 2.5rem;
 }
 
 .wallet {
@@ -18,13 +16,10 @@
 
   @include media-breakpoint-down(sm) {
     text-align: center;
-    margin-bottom: 1rem;
   }
 }
 
 .separator {
-  margin: 0 .75rem;
-
   &::before {
     content: "|";
   }

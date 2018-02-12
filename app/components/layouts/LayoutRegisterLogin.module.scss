@@ -1,0 +1,11 @@
+@import "../../styles/neufund-theme";
+
+.layout {
+  background: url("../../assets/img/logo.svg") no-repeat center $spacer * 2.5;
+  padding-top: $spacer * 13;
+}
+
+.main-container {
+  background-color: $white;
+  box-shadow: $shadow;
+}

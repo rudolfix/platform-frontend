@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import * as Yup from "yup";
 
 import { EthereumAddressWithChecksum } from "../../types";
+import { SignerType } from "../web3/PersonalWeb3";
 import { IHttpClient, IHttpResponse } from "./IHttpClient";
 import { JsonHttpClientSymbol } from "./JsonHttpClient";
 
@@ -22,6 +23,7 @@ export class SignatureAuthApi {
   public async challenge(
     address: EthereumAddressWithChecksum,
     salt: string,
+    signerType: SignerType,
   ): Promise<IHttpResponse<IChallengeEndpointResponse>> {
     return await this.httpClient.post<IChallengeEndpointResponse>({
       baseUrl: "/api/signature/",
@@ -32,6 +34,7 @@ export class SignatureAuthApi {
       body: {
         address,
         salt,
+        signer_type: signerType,
       },
     });
   }
@@ -39,6 +42,7 @@ export class SignatureAuthApi {
   public async createJwt(
     challenge: string,
     signedChallenge: string,
+    signerType: SignerType,
   ): Promise<IHttpResponse<ICreateJwtEndpointResponse>> {
     return await this.httpClient.post<ICreateJwtEndpointResponse>({
       baseUrl: "/api/signature/",
@@ -49,6 +53,7 @@ export class SignatureAuthApi {
       body: {
         challenge,
         response: signedChallenge,
+        signer_type: signerType,
       },
     });
   }

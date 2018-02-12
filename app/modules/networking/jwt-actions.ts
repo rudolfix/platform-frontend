@@ -18,14 +18,20 @@ export const obtainJwt = injectableFn(
 
     const salt = cryptoRandomString(64);
 
+    const signerType = web3Manager.personalWallet!.signerType;
+
     logger.info("Obtaining auth challenge from api");
-    const { body: { challenge } } = await signatureAuthApi.challenge(address, salt);
+    const { body: { challenge } } = await signatureAuthApi.challenge(address, salt, signerType);
 
     logger.info("Signing challenge");
     const signedChallenge = await web3Manager.personalWallet!.signMessage(challenge);
 
     logger.info("Sending signed challenge back to api");
-    const { body: { jwt } } = await signatureAuthApi.createJwt(challenge, signedChallenge);
+    const { body: { jwt } } = await signatureAuthApi.createJwt(
+      challenge,
+      signedChallenge,
+      signerType,
+    );
     logger.info("JWT obtained!", jwt); // get rid of printing jwt in near future
   },
   [

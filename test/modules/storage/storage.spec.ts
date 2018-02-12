@@ -7,7 +7,6 @@ describe("Browser Storage", () => {
   it("should store an item and retrieve it from local storage", async () => {
     const expectedPhrase = "dummyWallet";
     const key = "lightWallet";
-
     const localStorageMock = {
       setItem: spy(),
       getItem: spy(() => expectedPhrase),

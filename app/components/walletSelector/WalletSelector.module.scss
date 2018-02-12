@@ -9,6 +9,17 @@
   cursor: pointer;
   text-transform: uppercase;
 
+  &::before {
+    content: "|";
+    margin: 0 $spacer;
+  }
+
+  &:first-of-type {
+    &::before {
+      display: none;
+    }
+  }
+
   &:global(.active) {
     color: $blue;
     font-weight: 600;
@@ -16,15 +27,9 @@
 
   @include media-breakpoint-down(sm) {
     text-align: center;
-  }
-}
 
-.separator {
-  &::before {
-    content: "|";
-  }
-
-  @include media-breakpoint-down(sm) {
-    display: none;
+    &::before {
+      display: none;
+    }
   }
 }

@@ -44,11 +44,9 @@ export const WalletSelector: React.SFC = () => (
         <WalletTab href={walletRoutes.light} data-test-id="wallet-selector-light">
           <span className={cn("mb-3 mb-md-0", styles.wallet)}>use Neufund wallet</span>
         </WalletTab>
-        <span className={cn("mx-3", styles.separator)} />
         <WalletTab href={walletRoutes.browser} data-test-id="wallet-selector-browser">
           <span className={cn("mb-3 mb-md-0", styles.wallet)}>use existing wallet</span>
         </WalletTab>
-        <span className={cn("mx-3", styles.separator)} />
         <WalletTab href={walletRoutes.ledger} data-test-id="wallet-selector-ledger">
           <span className={cn("mb-3 mb-md-0", styles.wallet)}>use nano ledger</span>
         </WalletTab>

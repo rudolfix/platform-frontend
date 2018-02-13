@@ -5,6 +5,7 @@ import { Web3Adapter } from "./Web3Adapter";
 export enum WalletType {
   LEDGER = "LEDGER",
   BROWSER = "BROWSER",
+  LIGHT = "LIGHT",
 }
 export enum WalletSubType {
   METAMASK = "METAMASK",

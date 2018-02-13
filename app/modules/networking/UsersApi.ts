@@ -9,7 +9,7 @@ export interface IStoreEndpointResponse {
   vault: string;
 }
 
-export const SignatureAuthApiSymbol = "UsersApiSymbol";
+export const UsersApiSymbol = "UsersApiSymbol";
 
 @injectable()
 export class UsersApi {

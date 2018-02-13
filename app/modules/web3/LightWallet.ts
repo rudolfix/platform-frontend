@@ -1,20 +1,20 @@
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
+import * as ethUtils from "ethereumjs-util";
 import { injectable } from "inversify";
 import * as Web3 from "web3";
-import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
-import { IEthereumNetworkConfig } from "./Web3Manager";
-
 import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hooked-wallet";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
+import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
+import { IEthereumNetworkConfig } from "./Web3Manager";
 
 import { EthereumAddress } from "../../types";
 import { Web3Adapter } from "./Web3Adapter";
 
-interface ICreateVault {
+export interface ICreateVault {
   password: string;
   hdPathString: string;
   recoverSeed?: string | undefined;
@@ -69,15 +69,17 @@ export class LightWallet implements IPersonalWallet {
   public async signMessage(data: string): Promise<string> {
     if (!this.password) {
       //TODO: implement password prompt and password timer
-      //Will only currently if Vault Password is Password
       this.password = "password";
     }
-    return LightWalletProvider.signing.signMsg(
+    const rawSignedMsg = await LightWalletProvider.signing.signMsg(
       this.vault.walletInstance,
       await getWalletKey(this.vault.walletInstance, this.password),
       data,
       this.ethereumAddress,
     );
+    // from signature parameters  to eth_sign RPC
+    // @see https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#torpcsig
+    return await ethUtils.toRpcSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
   }
 }
 
@@ -89,9 +91,12 @@ export class LightWalletConnector {
   private lightWalletWeb3?: any;
   constructor(
     public readonly lightWalletVault: IVault,
-    public readonly walletSubType: WalletSubType,
     public readonly web3Config: IEthereumNetworkConfig,
   ) {}
+  public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;
+  public readonly walletAddress: EthereumAddress = "0x".concat(
+    this.lightWalletVault.walletInstance.addresses[0],
+  ) as EthereumAddress;
   public async connect(): Promise<IPersonalWallet> {
     try {
       this.lightWalletWeb3 = await setWeb3Provider(
@@ -99,11 +104,7 @@ export class LightWalletConnector {
         this.web3Config.rpcUrl,
       );
       this.Web3Adapter = new Web3Adapter(this.lightWalletWeb3);
-      return new LightWallet(
-        this.Web3Adapter,
-        this.lightWalletVault.walletInstance.addresses[0],
-        this.lightWalletVault,
-      );
+      return new LightWallet(this.Web3Adapter, this.walletAddress, this.lightWalletVault);
     } catch (e) {
       if (e instanceof LightWalletError) {
         throw e;

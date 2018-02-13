@@ -10,12 +10,21 @@ import { IConfig } from "./getConfig";
 import { IHttpClient } from "./modules/networking/IHttpClient";
 import { JsonHttpClient, JsonHttpClientSymbol } from "./modules/networking/JsonHttpClient";
 import { SignatureAuthApi, SignatureAuthApiSymbol } from "./modules/networking/SignatureAuthApi";
+import { UsersApi, UsersApiSymbol } from "./modules/networking/UsersApi";
+import { VaultApi, VaultApiSymbol } from "./modules/networking/VaultApi";
 import {
   NotificationCenter,
   NotificationCenterSymbol,
 } from "./modules/notifications/NotificationCenter";
+import { Storage, StorageSymbol } from "./modules/storage/storage";
 import { BrowserWalletConnector, BrowserWalletConnectorSymbol } from "./modules/web3/BrowserWallet";
 import { LedgerWalletConnector, LedgerWalletConnectorSymbol } from "./modules/web3/LedgerWallet";
+import {
+  CreateLightWalletValueSymbol,
+  createLightWalletVault,
+  ICreateVault,
+  IVault,
+} from "./modules/web3/LightWallet";
 import {
   IEthereumNetworkConfig,
   IEthereumNetworkConfigSymbol,
@@ -41,6 +50,7 @@ export type GetState = () => IAppState;
 
 export function getContainer(config: IConfig): Container {
   const container = new Container();
+  const storage = new Storage(window.localStorage);
 
   // functions
   const delay = (time: number) => new Promise<void>(resolve => setTimeout(resolve, time));
@@ -49,6 +59,12 @@ export function getContainer(config: IConfig): Container {
   container
     .bind<IEthereumNetworkConfig>(IEthereumNetworkConfigSymbol)
     .toConstantValue(config.ethereumNetwork);
+  container
+    .bind<({ password, hdPathString, recoverSeed, customSalt }: ICreateVault) => Promise<IVault>>(
+      CreateLightWalletValueSymbol,
+    )
+    .toConstantValue(createLightWalletVault);
+
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());
 
@@ -61,6 +77,17 @@ export function getContainer(config: IConfig): Container {
     .to(SignatureAuthApi)
     .inSingletonScope();
 
+  container
+    .bind<VaultApi>(VaultApiSymbol)
+    .to(VaultApi)
+    .inSingletonScope();
+
+  container
+    .bind<UsersApi>(UsersApiSymbol)
+    .to(UsersApi)
+    .inSingletonScope();
+
+  container.bind<Storage>(StorageSymbol).toConstantValue(storage);
   container
     .bind<NotificationCenter>(NotificationCenterSymbol)
     .to(NotificationCenter)

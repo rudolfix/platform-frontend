@@ -17,7 +17,7 @@ export const AppRouter: React.SFC = () => (
   <Switch>
     <Route path={appRoutes.root} component={Home} exact />
     <Route path={appRoutes.login} component={WalletSelector} />
-    <Route path={appRoutes.kyc} component={Kyc} exact />
+    <Route path={appRoutes.kyc} component={Kyc} />
     <Route path={appRoutes.dashboard} component={Dashboard} exact />
     <Redirect to={appRoutes.root} />
   </Switch>

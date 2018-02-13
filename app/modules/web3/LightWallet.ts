@@ -88,22 +88,17 @@ export const LightWalletConnectorSymbol = "LightWalletConnector";
 @injectable()
 export class LightWalletConnector {
   private Web3Adapter?: any;
-  private lightWalletWeb3?: any;
   constructor(
     public readonly lightWalletVault: IVault,
     public readonly web3Config: IEthereumNetworkConfig,
   ) {}
   public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;
-  public readonly walletAddress: EthereumAddress = "0x".concat(
+  public readonly walletAddress: EthereumAddress = this.addPrefixToAddress(
     this.lightWalletVault.walletInstance.addresses[0],
   ) as EthereumAddress;
   public async connect(): Promise<IPersonalWallet> {
     try {
-      this.lightWalletWeb3 = await setWeb3Provider(
-        this.lightWalletVault.walletInstance,
-        this.web3Config.rpcUrl,
-      );
-      this.Web3Adapter = new Web3Adapter(this.lightWalletWeb3);
+      this.Web3Adapter = new Web3Adapter(await this.setWeb3Provider());
       return new LightWallet(this.Web3Adapter, this.walletAddress, this.lightWalletVault);
     } catch (e) {
       if (e instanceof LightWalletError) {
@@ -113,35 +108,45 @@ export class LightWalletConnector {
       }
     }
   }
-}
+  private addPrefixToAddress(address: string): string {
+    return "0x".concat(address);
+  }
 
-export async function setWeb3Provider(keystore: ILightWallet, rpcUrl: string): Promise<any> {
-  let engine: any;
-  try {
-    // hooked-wallet-subprovider required methods were manually implemented
-    const web3Provider = new HookedWalletSubprovider({
-      signTransaction: keystore.signTransaction.bind(keystore),
-      getAccounts: (cb: any) => {
-        const data = keystore.getAddresses.bind(keystore)();
-        cb(undefined, data);
-      },
-    });
-    engine = new Web3ProviderEngine();
-    engine.addProvider(web3Provider);
-    engine.addProvider(
-      new RpcSubprovider({
-        rpcUrl,
-      }),
-    );
-    engine.start();
-    return new Web3(engine);
-  } catch (e) {
-    if (engine) {
-      engine.stop();
+  private async setWeb3Provider(): Promise<any> {
+    let engine: any;
+    try {
+      // hooked-wallet-subprovider required methods were manually implemented
+      const web3Provider = new HookedWalletSubprovider({
+        signTransaction: this.lightWalletVault.walletInstance.signTransaction.bind(
+          this.lightWalletVault.walletInstance,
+        ),
+        getAccounts: (cb: any) => {
+          const data = this.lightWalletVault.walletInstance.getAddresses.bind(
+            this.lightWalletVault.walletInstance,
+          )();
+          cb(undefined, data);
+        },
+      });
+      engine = new Web3ProviderEngine();
+      engine.addProvider(web3Provider);
+      engine.addProvider(
+        new RpcSubprovider({
+          rpcUrl: this.web3Config.rpcUrl,
+        }),
+      );
+      engine.start();
+      return new Web3(engine);
+    } catch (e) {
+      if (engine) {
+        engine.stop();
+      }
+      throw e;
     }
-    throw e;
   }
 }
+
+export const deserializeLightWalletVaultSymbol = "deserializeLightWalletVault";
+export type deserializeLightWalletVaultType = typeof deserializeLightWalletVault;
 
 export async function deserializeLightWalletVault(
   serializedWallet: string,
@@ -185,4 +190,5 @@ export async function getWalletKey(lightWalletInstance: any, password: string): 
   return await keyFromPassword(password);
 }
 
+//TODO: Wrap individual functions into an abstraction that connects with LightWalletConnector
 //TODO: wrap all errors generated from library into lightwallet class

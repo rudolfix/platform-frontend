@@ -22,7 +22,10 @@ import { LedgerWalletConnector, LedgerWalletConnectorSymbol } from "./modules/we
 import {
   CreateLightWalletValueSymbol,
   createLightWalletVault,
+  deserializeLightWalletVault,
+  deserializeLightWalletVaultSymbol,
   ICreateVault,
+  ILightWallet,
   IVault,
 } from "./modules/web3/LightWallet";
 import {
@@ -59,11 +62,18 @@ export function getContainer(config: IConfig): Container {
   container
     .bind<IEthereumNetworkConfig>(IEthereumNetworkConfigSymbol)
     .toConstantValue(config.ethereumNetwork);
+
   container
     .bind<({ password, hdPathString, recoverSeed, customSalt }: ICreateVault) => Promise<IVault>>(
       CreateLightWalletValueSymbol,
     )
     .toConstantValue(createLightWalletVault);
+
+  container
+    .bind<(serializedWallet: string, salt: string) => Promise<ILightWallet>>(
+      deserializeLightWalletVaultSymbol,
+    )
+    .toConstantValue(deserializeLightWalletVault);
 
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());

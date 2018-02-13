@@ -8,7 +8,7 @@ import { Storage, StorageSymbol } from "../../storage/storage";
 import {
   CreateLightWalletValueSymbol,
   CreateLightWalletVaultType,
-  deserializeLightWalletVault,
+  deserializeLightWalletVaultType,
   IVault,
   LightWalletConnector,
 } from "../../web3/LightWallet";
@@ -34,6 +34,7 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
       dispatch: AppDispatch,
       web3Manager: Web3Manager,
       createLightWalletVault: CreateLightWalletVaultType,
+      deserializeLightWalletVault: deserializeLightWalletVaultType,
       localStorage: Storage,
       vaultApi: VaultApi,
       usersApi: UsersApi,
@@ -43,15 +44,17 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
         hdPathString: "m/44'/60'/0'",
       });
 
+      const walletInstance = await deserializeLightWalletVault(
+        lightWalletVault.walletInstance,
+        lightWalletVault.salt,
+      );
+
       localStorage.setKey(LOCAL_STORAGE_LIGHT_WALLET_KEY, lightWalletVault.walletInstance);
 
       await vaultApi.store(password, lightWalletVault.salt, lightWalletVault.walletInstance);
       const lightWallet = await new LightWalletConnector(
         {
-          walletInstance: await deserializeLightWalletVault(
-            lightWalletVault.walletInstance,
-            lightWalletVault.salt,
-          ),
+          walletInstance,
           salt: lightWalletVault.salt,
         },
         {
@@ -62,8 +65,8 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
       await web3Manager.plugPersonalWallet(lightWallet);
       dispatch(obtainJwt);
       await usersApi.createLightwalletAccount(email, lightWalletVault.salt);
-
-      // redirct user to dashbaord
+      //TODO: add error checking in case of failure
+      // redirect user to dashboard
     },
     [
       DispatchSymbol,

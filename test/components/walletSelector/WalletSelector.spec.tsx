@@ -19,7 +19,6 @@ import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { createMount } from "../../createMount";
 import { dummyNetworkId } from "../../fixtures";
 import {
-  clickFirstTid,
   createIntegrationTestsSetup,
   waitForTid,
   wrapWithProviders,
@@ -62,7 +61,10 @@ describe("<WalletSelector />", () => {
       );
 
       // ensure that ledger tab is selected
-      clickFirstTid(mountedComponent, "wallet-selector-ledger");
+      mountedComponent
+        .find(tid("wallet-selector-ledger"))
+        .find("a")
+        .simulate("click", { button: 0 });
 
       expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
         "Nano Ledger S not available",
@@ -119,7 +121,10 @@ describe("<WalletSelector />", () => {
       );
 
       // select wallet in browser tab is selected
-      clickFirstTid(mountedComponent, "wallet-selector-browser");
+      mountedComponent
+        .find(tid("wallet-selector-browser"))
+        .find("a")
+        .simulate("click", { button: 0 });
       await waitForTid(mountedComponent, "browser-wallet-error-msg");
 
       // there is no wallet in browser (BrowserWallet thrown BrowserWalletMissingError)

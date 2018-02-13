@@ -3,10 +3,13 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
+import { Container } from "inversify";
 import { appRoutes } from "../../../app/components/AppRouter";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
 import { WalletSelector } from "../../../app/components/walletSelector/WalletSelector";
+import { DispatchSymbol } from "../../../app/getContainer";
+import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -19,7 +22,6 @@ import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { createMount } from "../../createMount";
 import { dummyNetworkId } from "../../fixtures";
 import {
-  clickFirstTid,
   createIntegrationTestsSetup,
   waitForTid,
   wrapWithProviders,
@@ -37,6 +39,18 @@ describe("<WalletSelector />", () => {
   });
 
   describe("integration", () => {
+    // @todo: this is rather tmp solution to avoid testing whole obtainJWT flow
+    // this should be gone soon and we should write additional mocks to make obtainJWT work
+    function selectivelyMockDispatcher(container: Container): void {
+      const originalDispatch = container.get<Function>(DispatchSymbol);
+      const mockDispatch = (action: any) => {
+        if (action !== obtainJwt) {
+          originalDispatch(action);
+        }
+      };
+      container.rebind(DispatchSymbol).toConstantValue(mockDispatch);
+    }
+
     it("should select ledger wallet", async () => {
       const ledgerWalletMock = createMock(LedgerWallet, {});
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {});
@@ -52,6 +66,7 @@ describe("<WalletSelector />", () => {
         ledgerWalletConnectorMock,
         web3ManagerMock,
       });
+      selectivelyMockDispatcher(container);
 
       const mountedComponent = createMount(
         wrapWithProviders(WalletSelector, {
@@ -62,7 +77,10 @@ describe("<WalletSelector />", () => {
       );
 
       // ensure that ledger tab is selected
-      clickFirstTid(mountedComponent, "wallet-selector-ledger");
+      mountedComponent
+        .find(tid("wallet-selector-ledger"))
+        .find("a")
+        .simulate("click", { button: 0 });
 
       expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
         "Nano Ledger S not available",
@@ -109,6 +127,7 @@ describe("<WalletSelector />", () => {
         browserWalletConnectorMock,
         web3ManagerMock,
       });
+      selectivelyMockDispatcher(container);
 
       const mountedComponent = createMount(
         wrapWithProviders(WalletSelector, {
@@ -119,7 +138,10 @@ describe("<WalletSelector />", () => {
       );
 
       // select wallet in browser tab is selected
-      clickFirstTid(mountedComponent, "wallet-selector-browser");
+      mountedComponent
+        .find(tid("wallet-selector-browser"))
+        .find("a")
+        .simulate("click", { button: 0 });
       await waitForTid(mountedComponent, "browser-wallet-error-msg");
 
       // there is no wallet in browser (BrowserWallet thrown BrowserWalletMissingError)

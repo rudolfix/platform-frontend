@@ -6,6 +6,7 @@ import { compose } from "redux";
 import { tryEstablishingConnectionWithLedger } from "../../modules/wallet-selector/ledger-wizard/actions";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
+import { WarningAlert } from "../WarningAlert";
 
 import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.svg";
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
@@ -22,7 +23,7 @@ interface IInitStep {
 
 const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
   <Col xs="12" md="4" className={cn("mb-4 mb-md-0 px-4", styles.step)}>
-    <h5 className={styles.header}>{header}</h5>
+    <h4 className={styles.header}>{header}</h4>
     <img className="my-2 my-md-4" src={img} />
     <p>{desc}</p>
   </Col>
@@ -38,18 +39,13 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
   <>
     <Row>
       <Col>
-        <h1>Logging in with Nano Ledger</h1>
+        <h1 className="text-center">Logging in with Nano Ledger</h1>
       </Col>
     </Row>
     {errorMessage && (
-      <Row>
-        <Col>
-          <Alert color="info">
-            <h4>Connection status:</h4>
-            <p data-test-id="ledger-wallet-error-msg">{errorMessage}</p>
-          </Alert>
-        </Col>
-      </Row>
+      <WarningAlert className="my-4">
+        Connection status: <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
+      </WarningAlert>
     )}
     <Row>
       <InitStep

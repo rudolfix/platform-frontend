@@ -10,7 +10,7 @@ export const LayoutRegisterLogin: React.SFC = ({ children }) => (
   <Container>
     <Link to={appRoutes.root} className={styles.logo} />
     <Row>
-      <Col lg="12" xl={{ size: "10", offset: 1 }} className={cn("p-4", styles.mainContainer)}>
+      <Col lg="12" xl={{ size: "10", offset: 1 }} className={cn("p-5", styles.mainContainer)}>
         {children}
       </Col>
     </Row>

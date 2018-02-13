@@ -13,7 +13,7 @@ export const WalletSelector: React.SFC = () => (
     <Row>
       <Col
         className={cn(
-          "d-flex flex-column flex-md-row justify-content-center mt-4 mb-5",
+          "d-flex flex-column flex-md-row justify-content-center mt-3 mb-5",
           styles.walletChooser,
         )}
       >

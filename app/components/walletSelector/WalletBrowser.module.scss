@@ -1,11 +1,7 @@
 @import "../../styles/neufund-theme";
 
-.error-message {
-  text-align: center;
-  color: $red;
-}
-
-.steps {
-  margin-top: .9375rem;
-  margin-bottom: .9375rem;
+.wallet-logos {
+  img {
+    height: rem-to-px(85px);
+  }
 }

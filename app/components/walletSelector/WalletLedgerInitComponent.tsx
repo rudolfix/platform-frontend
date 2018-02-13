@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { Alert, Col, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { tryEstablishingConnectionWithLedger } from "../../modules/wallet-selector/ledger-wizard/actions";

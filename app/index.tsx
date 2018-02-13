@@ -8,6 +8,7 @@ import { hot } from "react-hot-loader";
 import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
 import "reflect-metadata";
 
@@ -57,7 +58,7 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
     logger,
   );
 
-  const store = createStore(reducers, middleware);
+  const store = createStore(reducers, composeWithDevTools(middleware));
 
   return { store, container };
 }

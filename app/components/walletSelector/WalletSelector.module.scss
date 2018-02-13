@@ -18,7 +18,7 @@
     content: "|";
     margin: 0 $spacer;
     color: $body-color;
-    font-weight: $font-weight-normal;
+    text-shadow: none;
   }
 
   &:first-of-type {
@@ -28,8 +28,8 @@
   }
 
   &:global(.active) {
+    text-shadow: -.8px 0 0 $blue;
     color: $blue;
-    font-weight: 600;
   }
 
   @include media-breakpoint-down(sm) {

@@ -10,6 +10,15 @@
   text-transform: uppercase;
   color: $body-color;
 
+  &::after {
+    content: attr(data-text);
+    font-weight: $font-weight-bold;
+    display: block;
+    margin-left: calc(#{$spacer * 2} + 6px); // this makes up for | pipe
+    visibility: hidden;
+    height: 0;
+  }
+
   &:hover {
     text-decoration: none;
   }
@@ -19,16 +28,21 @@
     margin: 0 $spacer;
     color: $body-color;
     text-shadow: none;
+    font-weight: $font-weight-normal;
   }
 
   &:first-of-type {
     &::before {
       display: none;
     }
+
+    &::after {
+      margin: 0;
+    }
   }
 
   &:global(.active) {
-    text-shadow: -.8px 0 0 $blue;
+    font-weight: $font-weight-bold;
     color: $blue;
   }
 

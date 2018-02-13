@@ -3,10 +3,13 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
+import { Container } from "inversify";
 import { appRoutes } from "../../../app/components/AppRouter";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
 import { WalletSelector } from "../../../app/components/walletSelector/WalletSelector";
+import { DispatchSymbol } from "../../../app/getContainer";
+import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -36,6 +39,18 @@ describe("<WalletSelector />", () => {
   });
 
   describe("integration", () => {
+    // @todo: this is rather tmp solution to avoid testing whole obtainJWT flow
+    // this should be gone soon and we should write additional mocks to make obtainJWT work
+    function selectivelyMockDispatcher(container: Container): void {
+      const originalDispatch = container.get<Function>(DispatchSymbol);
+      const mockDispatch = (action: any) => {
+        if (action !== obtainJwt) {
+          originalDispatch(action);
+        }
+      };
+      container.rebind(DispatchSymbol).toConstantValue(mockDispatch);
+    }
+
     it("should select ledger wallet", async () => {
       const ledgerWalletMock = createMock(LedgerWallet, {});
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {});
@@ -51,6 +66,7 @@ describe("<WalletSelector />", () => {
         ledgerWalletConnectorMock,
         web3ManagerMock,
       });
+      selectivelyMockDispatcher(container);
 
       const mountedComponent = createMount(
         wrapWithProviders(WalletSelector, {
@@ -111,6 +127,7 @@ describe("<WalletSelector />", () => {
         browserWalletConnectorMock,
         web3ManagerMock,
       });
+      selectivelyMockDispatcher(container);
 
       const mountedComponent = createMount(
         wrapWithProviders(WalletSelector, {

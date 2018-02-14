@@ -3,6 +3,7 @@ $loading-indicator-color: #333;
 $black-lighter: #262b2f;
 $blue-darker: #315568;
 $blue: #2072d4;
+$blue-gray: #86a0b5;
 $denim: #406483;
 $gray-almost-dark: #7d919b;
 $pale-grey-50: #e3eaf5;
@@ -10,19 +11,23 @@ $off-white: #f5f5f5;
 $white: #fff;
 $bright-orange: #ff6d00;
 
-
 $smaller-font-size: .8125rem;
 
 $shadow:  0 .125rem .25rem 0 rgba(0, 0, 0, .1);
 
 // Bootstrap variable overrides
+
+//colors
+$link-color: $blue;
 $body-color: $denim;
 $body-bg: $pale-grey-50;
+
+// fonts
 $font-family-base: "Open Sans", sans-serif;
 $font-size-base: .9375rem;
-
+$font-size-medium-small: rem-to-px(14px);
+$font-weight-bold: 600;
 $headings-font-family: "Lato", sans-serif;
 $headings-font-weight: 300;
 
-$font-weight-bold: 600;
 

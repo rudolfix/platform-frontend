@@ -12,11 +12,14 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
 import "reflect-metadata";
 
+import createSagaMiddleware from "redux-saga";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
 import { getConfig } from "./getConfig";
 import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
+import { rootSaga } from "./modules/sagas";
 import { createInjectMiddleware } from "./redux-injectify";
+
 import { IAppState, reducers } from "./store";
 import "./styles/bootstrap.scss";
 import { InversifyProvider } from "./utils/InversifyProvider";
@@ -52,13 +55,17 @@ function renderApp(
 function startupApp(history: any): { store: Store<IAppState>; container: Container } {
   const config = getConfig(process.env);
   const container = getContainer(config);
+  const sagaMiddleware = createSagaMiddleware({ context: { container } });
+
   const middleware = applyMiddleware(
     routerMiddleware(history),
     createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
     logger,
+    sagaMiddleware,
   );
 
   const store = createStore(reducers, composeWithDevTools(middleware));
+  sagaMiddleware.run(rootSaga);
 
   return { store, container };
 }

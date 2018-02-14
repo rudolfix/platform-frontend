@@ -28,6 +28,8 @@ import {
 } from "./modules/web3/actions";
 import { web3Reducer } from "./modules/web3/reducer";
 
+import { TAction } from "./modules/actions";
+
 export interface IAppAction {
   type: string;
   payload?: any;
@@ -59,7 +61,8 @@ export type AppActionTypes =
   | INewPersonalWalletPluggedAction
   | IPersonalWalletDisconnectedAction
   // browser
-  | ILoadUserAgentInfoAction;
+  | ILoadUserAgentInfoAction
+  | TAction;
 
 // add new app reducers here. They must be AppReducer<T> type
 const appReducers = {

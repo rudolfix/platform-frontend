@@ -3,10 +3,11 @@ import * as React from "react";
 interface IHiResImageProps {
   partialPath: string;
   className?: string;
-  altText?: string;
+  alt?: string;
+  title?: string;
 }
 
-export const HiResImage: React.SFC<IHiResImageProps> = ({ partialPath, className, altText }) => {
+export const HiResImage: React.SFC<IHiResImageProps> = ({ partialPath, className, alt, title }) => {
   if (process.env.NODE_ENV === "test") {
     return <div />;
   }
@@ -21,7 +22,8 @@ export const HiResImage: React.SFC<IHiResImageProps> = ({ partialPath, className
         src={image}
         srcSet={`${image} 1x, ${image2x} 2x, ${image3x} 3x`}
         className={className}
-        alt={altText}
+        alt={alt}
+        title={title}
       />
     );
   } catch (e) {

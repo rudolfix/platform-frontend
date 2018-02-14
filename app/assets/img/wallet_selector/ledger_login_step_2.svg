@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="123" height="106" viewBox="0 0 123 106">
+    <g fill="none" fill-rule="evenodd">
+        <text fill="#86A0B5" font-family="OpenSans-Semibold, Open Sans" font-size="12" font-weight="500" transform="translate(-3.5 -3)">
+            <tspan x="7.507" y="49">down</tspan>
+        </text>
+        <path fill="#00B7FF" d="M13.625 73.5h14v-6h-14zM95.625 75.5h14v-8h-14z"/>
+        <path fill="#E3EAF5" d="M118.602 72.25H4.398A2.898 2.898 0 0 0 1.5 75.147v26.206a2.898 2.898 0 0 0 2.898 2.897h114.204a2.898 2.898 0 0 0 2.898-2.897V75.147a2.898 2.898 0 0 0-2.898-2.897"/>
+        <path stroke="#406483" stroke-width="2" d="M118.602 72.25H4.398A2.898 2.898 0 0 0 1.5 75.147v26.206a2.898 2.898 0 0 0 2.898 2.897h114.204a2.898 2.898 0 0 0 2.898-2.897V75.147a2.898 2.898 0 0 0-2.898-2.897zM27.125 71.5V67h-13.5v4.5M109.125 71.5V67h-13.5v4.5"/>
+        <path fill="#E3EAF5" d="M12.75 96.75h97.5v-17h-97.5z"/>
+        <path stroke="#406483" stroke-width="2.431" d="M12.75 96.75h97.5v-17h-97.5z"/>
+        <path fill="#00B7FF" d="M36.596 88.735a2.735 2.735 0 1 0-5.47 0 2.735 2.735 0 0 0 5.47 0M45.105 88.735a2.735 2.735 0 1 0-5.47 0 2.735 2.735 0 0 0 5.47 0M53.615 88.735a2.735 2.735 0 1 0-5.47 0 2.735 2.735 0 0 0 5.47 0M62.125 88.735a2.735 2.735 0 1 0-5.47 0 2.735 2.735 0 0 0 5.47 0"/>
+        <path stroke="#406483" d="M18.382 84.871l4.743 6.258 4.742-6.258M104.868 91.129l-4.743-6.258-4.742 6.258M72.125 91.5h9M84.125 91.5h9M65.7 87.661l2.463 3.248 3.374-7.498"/>
+        <path stroke="#86A0B5" stroke-linecap="square" d="M19.5 60.507v-1M22.5 49.707l-3 10.8-3-10.8"/>
+        <text fill="#86A0B5" font-family="OpenSans-Semibold, Open Sans" font-size="12" font-weight="500" transform="translate(-3.5 -3)">
+            <tspan x="98.953" y="49">up</tspan>
+        </text>
+        <path stroke="#86A0B5" stroke-linecap="square" d="M102.5 60.507v-1M105.5 49.707l-3 10.8-3-10.8"/>
+        <g>
+            <text fill="#86A0B5" font-family="OpenSans-Semibold, Open Sans" font-size="12" font-weight="500" transform="translate(38.5 -3)">
+                <tspan x="16.404" y="13">ok</tspan>
+            </text>
+            <path stroke="#86A0B5" stroke-linecap="square" d="M53.5 40.507v-18M56.5 29.707l-3 10.8-3-10.8M69.5 40.507v-18M72.5 29.707l-3 10.8-3-10.8"/>
+            <path stroke="#00B7FF" stroke-linecap="square" stroke-width="2" d="M51 15.5h21.095"/>
+        </g>
+    </g>
+</svg>

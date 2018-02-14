@@ -40,6 +40,8 @@ const defaultProps = () => ({
   showNextAddresses: spy(),
   onDerivationPathPrefixChange: spy(),
   onDerivationPathError: spy(),
+  advanced: true,
+  handleAdvanced: spy(),
 });
 
 describe("<WalletLedgerChooserComponent />", () => {

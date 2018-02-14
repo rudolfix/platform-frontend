@@ -91,6 +91,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           accounts: [],
           isLoadingAddresses: false,
           isConnectionEstablished: true,
+          advanced: true,
         },
       };
       const expectedAccounts: IDerivationPathToAddress = {
@@ -105,7 +106,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const dispatchMock = spy();
       const getStateMock = spy(() => dummyState);
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-        getMultipleAccounts: spy(() => expectedAccounts),
+        getMultipleAccountsFromDerivationPrefix: spy(() => expectedAccounts),
       });
       const web3ManagerMock = createMock(Web3Manager, {
         internalWeb3Adapter: createMock(Web3Adapter, {
@@ -121,7 +122,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         web3ManagerMock,
       );
 
-      expect(ledgerWalletConnectorMock.getMultipleAccounts).to.calledWithExactly(
+      expect(
+        ledgerWalletConnectorMock.getMultipleAccountsFromDerivationPrefix,
+      ).to.calledWithExactly(
         dummyState.ledgerWizardState!.derivationPathPrefix,
         dummyState.ledgerWizardState!.index,
         dummyState.ledgerWizardState!.numberOfAccountsPerPage,
@@ -180,6 +183,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         accounts: [],
         isLoadingAddresses: false,
         isConnectionEstablished: true,
+        advanced: false,
       },
     };
 

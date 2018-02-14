@@ -41,7 +41,7 @@ export interface ISetLedgerWizardAccountsAction extends IAppAction {
   type: "SET_LEDGER_WIZARD_ACCOUNTS";
   payload: {
     accounts: ILedgerAccount[];
-    derivationPathPrefix: string;
+    derivationPathPrefix: string; // TODO: this should be optional as for case of predefined accounts we are not using it
   };
 }
 
@@ -51,6 +51,10 @@ export interface ILedgerWizardAccountsListNextPage extends IAppAction {
 
 export interface ILedgerWizardAccountsListPreviousPage extends IAppAction {
   type: "LEDGER_WIZARD_ACCOUNTS_LIST_PREVIOUS_PAGE";
+}
+
+export interface IToggleLedgerWizardAdvancedAction extends IAppAction {
+  type: "TOGGLE_LEDGER_WIZARD_ADVANCED";
 }
 
 export const ledgerConnectionEstablishedAction = makeParameterlessActionCreator<
@@ -80,6 +84,10 @@ export const ledgerWizardAccountsListNextPageAction = makeParameterlessActionCre
 export const ledgerWizardAccountsListPreviousPageAction = makeParameterlessActionCreator<
   ILedgerWizardAccountsListPreviousPage
 >("LEDGER_WIZARD_ACCOUNTS_LIST_PREVIOUS_PAGE");
+
+export const toggleLedgerAccountsAdvancedAction = makeParameterlessActionCreator<
+  IToggleLedgerWizardAdvancedAction
+>("TOGGLE_LEDGER_WIZARD_ADVANCED");
 
 function mapLedgerErrorToErrorMessage(error: Error): string {
   if (error instanceof LedgerLockedError) {
@@ -114,13 +122,20 @@ export const loadLedgerAccountsAction = injectableFn(
     ledgerConnector: LedgerWalletConnector,
     web3Manager: Web3Manager,
   ) => {
-    const { index, numberOfAccountsPerPage, derivationPathPrefix } = getState().ledgerWizardState;
-
-    const derivationPathToAddressMap = await ledgerConnector.getMultipleAccounts(
-      derivationPathPrefix,
+    const {
+      advanced,
       index,
       numberOfAccountsPerPage,
-    );
+      derivationPathPrefix,
+    } = getState().ledgerWizardState;
+
+    const derivationPathToAddressMap = advanced
+      ? await ledgerConnector.getMultipleAccountsFromDerivationPrefix(
+          derivationPathPrefix,
+          index,
+          numberOfAccountsPerPage,
+        )
+      : await ledgerConnector.getMultipleAccounts(["44'/60'/1'/0", "44'/60'/0'/0"]); // TODO this should be taken from config
 
     const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map(pair => ({
       derivationPath: pair[0],

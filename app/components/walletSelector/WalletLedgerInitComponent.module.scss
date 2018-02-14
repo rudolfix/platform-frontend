@@ -1,15 +1,10 @@
 @import "../../styles/neufund-theme";
 
-.image-wrapper {
+.step {
   text-align: center;
 }
 
-.error-msg {
-  text-align: center;
-  color: $red;
-}
-
-.steps {
-  margin-top: .9375rem;
-  margin-bottom: .9375rem;
+.header {
+  letter-spacing: -.3px;
+  font-size: 1.25rem;
 }

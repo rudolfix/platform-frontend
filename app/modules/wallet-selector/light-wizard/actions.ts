@@ -2,17 +2,19 @@ import { DispatchSymbol } from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator } from "../../../storeHelpers";
+import { EthereumAddress } from "../../../types";
 import { UsersApi, UsersApiSymbol } from "../../networking/UsersApi";
 import { VaultApi, VaultApiSymbol } from "../../networking/VaultApi";
 import { Storage, StorageSymbol } from "../../storage/storage";
 import {
-  CreateLightWalletValueSymbol,
-  CreateLightWalletVaultType,
-  deserializeLightWalletVaultType,
   IVault,
   LightWalletConnector,
+  LightWalletConnectorSymbol,
+  LightWalletUtil,
+  LightWalletUtilSymbol,
 } from "../../web3/LightWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
+import { walletConnectedAction } from "../actions";
 import { obtainJwt } from "./../../networking/jwt-actions";
 
 const LOCAL_STORAGE_LIGHT_WALLET_KEY = "LIGHT_WALLET";
@@ -33,18 +35,18 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
     async (
       dispatch: AppDispatch,
       web3Manager: Web3Manager,
-      createLightWalletVault: CreateLightWalletVaultType,
-      deserializeLightWalletVault: deserializeLightWalletVaultType,
+      LightWalletConnector: LightWalletConnector,
+      LightWalletUtil: LightWalletUtil,
       localStorage: Storage,
       vaultApi: VaultApi,
       usersApi: UsersApi,
     ) => {
-      const lightWalletVault = await createLightWalletVault({
+      const lightWalletVault = await LightWalletUtil.createLightWalletVault({
         password: "password",
         hdPathString: "m/44'/60'/0'",
       });
 
-      const walletInstance = await deserializeLightWalletVault(
+      const walletInstance = await LightWalletUtil.deserializeLightWalletVault(
         lightWalletVault.walletInstance,
         lightWalletVault.salt,
       );
@@ -52,26 +54,25 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
       localStorage.setKey(LOCAL_STORAGE_LIGHT_WALLET_KEY, lightWalletVault.walletInstance);
 
       await vaultApi.store(password, lightWalletVault.salt, lightWalletVault.walletInstance);
-      const lightWallet = await new LightWalletConnector(
+      const lightWallet = await LightWalletConnector.connect(
         {
           walletInstance,
           salt: lightWalletVault.salt,
         },
-        {
-          rpcUrl: "http://localhost:8545",
-        },
-      ).connect();
-
+        LightWalletUtil.addPrefixToAddress(walletInstance.addresses[0]) as EthereumAddress,
+      );
       await web3Manager.plugPersonalWallet(lightWallet);
       dispatch(obtainJwt);
       await usersApi.createLightwalletAccount(email, lightWalletVault.salt);
       //TODO: add error checking in case of failure
       // redirect user to dashboard
+      dispatch(walletConnectedAction);
     },
     [
       DispatchSymbol,
       Web3ManagerSymbol,
-      CreateLightWalletValueSymbol,
+      LightWalletConnectorSymbol,
+      LightWalletUtilSymbol,
       StorageSymbol,
       VaultApiSymbol,
       UsersApiSymbol,

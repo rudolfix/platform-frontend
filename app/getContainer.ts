@@ -20,13 +20,10 @@ import { Storage, StorageSymbol } from "./modules/storage/storage";
 import { BrowserWalletConnector, BrowserWalletConnectorSymbol } from "./modules/web3/BrowserWallet";
 import { LedgerWalletConnector, LedgerWalletConnectorSymbol } from "./modules/web3/LedgerWallet";
 import {
-  CreateLightWalletValueSymbol,
-  createLightWalletVault,
-  deserializeLightWalletVault,
-  deserializeLightWalletVaultSymbol,
-  ICreateVault,
-  ILightWallet,
-  IVault,
+  LightWalletConnector,
+  LightWalletConnectorSymbol,
+  LightWalletUtil,
+  LightWalletUtilSymbol,
 } from "./modules/web3/LightWallet";
 import {
   IEthereumNetworkConfig,
@@ -54,6 +51,7 @@ export type GetState = () => IAppState;
 export function getContainer(config: IConfig): Container {
   const container = new Container();
   const storage = new Storage(window.localStorage);
+  const lightWalletUtil = new LightWalletUtil();
 
   // functions
   const delay = (time: number) => new Promise<void>(resolve => setTimeout(resolve, time));
@@ -63,29 +61,18 @@ export function getContainer(config: IConfig): Container {
     .bind<IEthereumNetworkConfig>(IEthereumNetworkConfigSymbol)
     .toConstantValue(config.ethereumNetwork);
 
-  container
-    .bind<({ password, hdPathString, recoverSeed, customSalt }: ICreateVault) => Promise<IVault>>(
-      CreateLightWalletValueSymbol,
-    )
-    .toConstantValue(createLightWalletVault);
-
-  container
-    .bind<(serializedWallet: string, salt: string) => Promise<ILightWallet>>(
-      deserializeLightWalletVaultSymbol,
-    )
-    .toConstantValue(deserializeLightWalletVault);
-
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());
 
   // classes
   container.bind<IHttpClient>(JsonHttpClientSymbol).to(JsonHttpClient);
-
   // singletons
   container
     .bind<SignatureAuthApi>(SignatureAuthApiSymbol)
     .to(SignatureAuthApi)
     .inSingletonScope();
+
+  container.bind<LightWalletUtil>(LightWalletUtilSymbol).toConstantValue(lightWalletUtil);
 
   container
     .bind<VaultApi>(VaultApiSymbol)
@@ -107,6 +94,12 @@ export function getContainer(config: IConfig): Container {
     .bind<LedgerWalletConnector>(LedgerWalletConnectorSymbol)
     .to(LedgerWalletConnector)
     .inSingletonScope();
+
+  container
+    .bind<LightWalletConnector>(LightWalletConnectorSymbol)
+    .to(LightWalletConnector)
+    .inSingletonScope();
+
   container
     .bind<BrowserWalletConnector>(BrowserWalletConnectorSymbol)
     .to(BrowserWalletConnector)

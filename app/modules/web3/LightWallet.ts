@@ -127,7 +127,7 @@ export class LightWallet implements IPersonalWallet {
     );
     // from signature parameters  to eth_sign RPC
     // @see https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#torpcsig
-    return await ethUtils.toRpcSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
+    return ethUtils.toRpcSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
   }
 }
 

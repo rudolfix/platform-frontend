@@ -18,6 +18,10 @@ interface IWatchActionOptions {
   interval: number;
 }
 
+/**
+ * It runs action on enter and then every defined interval.
+ * It makes sure that action finishes before running it next time.
+ */
 export const withActionWatcher: (
   options: IWatchActionOptions,
 ) => (

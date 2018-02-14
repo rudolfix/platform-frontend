@@ -6,28 +6,35 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
+import { ProgressStepper } from "../../shared/ProgressStepper";
+
 interface IProps {
   goToPerson: () => void;
   goToCompany: () => void;
 }
 
-export const StartKYCComponent: React.SFC<IProps> = props => (
+export const KYCStartComponent: React.SFC<IProps> = props => (
   <div>
-    <h1>Start</h1>
+    <br />
+    <ProgressStepper steps={3} currentStep={1} />
+    <br />
+    <h1>Start your KYC</h1>
+    <br />
     <Button color="primary" onClick={props.goToPerson}>
-      I am a person
+      I represent myself
     </Button>
+    &nbsp;&nbsp;
     <Button color="primary" onClick={props.goToCompany}>
-      I am a company
+      I represent a company
     </Button>
   </div>
 );
 
-export const StartKYC = compose<React.SFC>(
+export const KYCStart = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      goToPerson: () => dispatch(actions.goToKYCStartPrivateFlow()),
-      goToCompany: () => dispatch(actions.goToKYCStartCompanyFlow()),
+      goToPerson: () => dispatch(actions.goToKYCPersonalStart()),
+      goToCompany: () => dispatch(actions.goToKYCCompanyStart()),
     }),
   }),
-)(StartKYCComponent);
+)(KYCStartComponent);

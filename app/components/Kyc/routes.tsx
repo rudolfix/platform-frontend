@@ -6,15 +6,17 @@ export const kycRoutes = {
   start: parentRoutePath + "/start",
 
   // private
-  privateStart: parentRoutePath + "/private/start",
-  privateIDNow: parentRoutePath + "/private/idnow",
-  privateManualData: parentRoutePath + "/private/manual/data",
-  privateManualID: parentRoutePath + "/private/manual/id",
+  personalStart: parentRoutePath + "/personal/start",
+  personalInstantId: parentRoutePath + "/personal/instantid",
+  personalManualVerification: parentRoutePath + "/personal/manual/start",
+  personalIDUpload: parentRoutePath + "/personal/manual/id",
+  personalDone: parentRoutePath + "/personal/done",
 
   // company
   companyStart: parentRoutePath + "/company/start",
-  companyData: parentRoutePath + "/company/data",
+  companyDone: parentRoutePath + "/company/done",
 
+  // other
   pending: parentRoutePath + "/pending",
   rejected: parentRoutePath + "/rejected",
 };

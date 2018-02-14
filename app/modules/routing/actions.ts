@@ -13,8 +13,13 @@ export const routingActions = {
 
   //kyc routes
   goToKYCHome: () => createRoutingAction(kycRoutes.start),
-  goToKYCStartPrivateFlow: () => createRoutingAction(kycRoutes.privateStart),
-  goToKYCStartCompanyFlow: () => createRoutingAction(kycRoutes.companyStart),
+  goToKYCPersonalStart: () => createRoutingAction(kycRoutes.personalStart),
+  goToKYCPersonalInstantId: () => createRoutingAction(kycRoutes.personalInstantId),
+  goToKYCManualVerification: () => createRoutingAction(kycRoutes.personalManualVerification),
+  goToKYCManualVerificationIDUpload: () => createRoutingAction(kycRoutes.personalIDUpload),
+  goToKYCPersonalDone: () => createRoutingAction(kycRoutes.personalDone),
 
+  goToKYCCompanyStart: () => createRoutingAction(kycRoutes.companyStart),
+  goToKYCCompanyDone: () => createRoutingAction(kycRoutes.companyDone),
   // other...
 };

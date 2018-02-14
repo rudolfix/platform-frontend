@@ -1,0 +1,39 @@
+
+@import "../../../styles/neufund-theme";
+
+.progress-stepper {
+  position: relative;
+  height: 20px;
+  min-width: 100px;
+  margin: 0 auto;
+}
+
+.progress-background {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 9px;
+  height: 2px;
+  background-color: $pale-grey-50;
+}
+
+.progress-bar {
+  position: absolute;
+  left: 0;
+  top: 9px;
+  height: 2px;
+  background-color: $denim;
+}
+
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 5px;
+  background-color: $pale-grey-50;
+  border-radius: 5px;
+}
+
+.dot-active {
+  background-color: $denim;
+}

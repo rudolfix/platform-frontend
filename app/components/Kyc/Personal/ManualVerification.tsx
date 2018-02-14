@@ -14,12 +14,12 @@ interface IProps {
   submitForm: () => void;
 }
 
-export const KYCCompanyStartComponent: React.SFC<IProps> = props => (
+export const KYCPersonalManualVerificationComponent: React.SFC<IProps> = props => (
   <div>
     <br />
-    <ProgressStepper steps={3} currentStep={2} />
+    <ProgressStepper steps={5} currentStep={3} />
     <br />
-    <h1>Company KYC</h1>
+    <h1>Manual Verification</h1>
     <br />
     Form goes here
     <br />
@@ -31,10 +31,10 @@ export const KYCCompanyStartComponent: React.SFC<IProps> = props => (
   </div>
 );
 
-export const KYCCompanyStart = compose<React.SFC>(
+export const KYCPersonalManualVerification = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      submitForm: () => dispatch(actions.kycSubmitCompanyForm()),
+      submitForm: () => dispatch(actions.kycSubmitManualVerificationForm()),
     }),
   }),
-)(KYCCompanyStartComponent);
+)(KYCPersonalManualVerificationComponent);

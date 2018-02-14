@@ -11,30 +11,30 @@ import { actions } from "../../../modules/actions";
 import { Button } from "reactstrap";
 
 interface IProps {
-  submitForm: () => void;
+  uploadId: () => void;
 }
 
-export const KYCCompanyStartComponent: React.SFC<IProps> = props => (
+export const KYCPersonalIDUploadComponent: React.SFC<IProps> = props => (
   <div>
     <br />
-    <ProgressStepper steps={3} currentStep={2} />
+    <ProgressStepper steps={5} currentStep={4} />
     <br />
-    <h1>Company KYC</h1>
+    <h1>ID Upload</h1>
     <br />
-    Form goes here
+    ID Upload goes here
     <br />
     <br />
     <br />
-    <Button color="primary" onClick={props.submitForm}>
+    <Button color="primary" onClick={props.uploadId}>
       Submit
     </Button>
   </div>
 );
 
-export const KYCCompanyStart = compose<React.SFC>(
+export const KYCPersonalIDUpload = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      submitForm: () => dispatch(actions.kycSubmitCompanyForm()),
+      uploadId: () => dispatch(actions.kycUploadId()),
     }),
   }),
-)(KYCCompanyStartComponent);
+)(KYCPersonalIDUploadComponent);

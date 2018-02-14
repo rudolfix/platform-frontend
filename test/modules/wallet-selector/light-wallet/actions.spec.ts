@@ -3,7 +3,10 @@ import { spy } from "sinon";
 import { UsersApi } from "../../../../app/modules/networking/UsersApi";
 import { Storage } from "../../../../app/modules/storage/storage";
 import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
-import { tryConnectingWithLightWallet } from "../../../../app/modules/wallet-selector/light-wizard/actions";
+import {
+  lightWalletConnectionErrorAction,
+  tryConnectingWithLightWallet,
+} from "../../../../app/modules/wallet-selector/light-wizard/actions";
 import { IVault } from "../../../../app/modules/web3/LightWallet";
 import { Web3Manager } from "../../../../app/modules/web3/Web3Manager";
 import { dummyNetworkId } from "../../../fixtures";
@@ -14,45 +17,45 @@ import { dummyLogger } from "./../../../fixtures";
 
 describe("Wallet selector > Browser wizard > actions", () => {
   describe("tryConnectingWithLightWallet action", () => {
+    const dispatchMock = spy();
+
+    const localStorageMock = {
+      setKey: spy(),
+      getKey: spy(() => "expectedPhrase"),
+    };
+
+    const storage = createMock(Storage, localStorageMock);
+
+    const web3ManagerMock = createMock(Web3Manager, {
+      networkId: dummyNetworkId,
+      plugPersonalWallet: async () => {},
+    });
+
+    const vaultApi = createMock(VaultApi, {
+      store: (): Promise<void> => {
+        return Promise.resolve();
+      },
+    });
+    const usersApi = createMock(UsersApi, {
+      createLightwalletAccount: (): Promise<void> => {
+        return Promise.resolve();
+      },
+    });
+
+    const lightWalletUtil = createMock(LightWalletUtil, {
+      createLightWalletVault: (): Promise<IVault> => {
+        return Promise.resolve({ walletInstance: "wallet", salt: "salt" });
+      },
+      deserializeLightWalletVault: (): any => {
+        const walletInstance = { addresses: ["dupa"] };
+        return walletInstance;
+      },
+      addPrefixToAddress: (): any => "dupa",
+    });
+
     it("should create new wallet and store", async () => {
-      const dispatchMock = spy();
-
-      const localStorageMock = {
-        setKey: spy(),
-        getKey: spy(() => "expectedPhrase"),
-      };
-
-      const storage = createMock(Storage, localStorageMock);
-
-      const web3ManagerMock = createMock(Web3Manager, {
-        networkId: dummyNetworkId,
-        plugPersonalWallet: async () => {},
-      });
-
-      const vaultApi = createMock(VaultApi, {
-        store: (): Promise<void> => {
-          return Promise.resolve();
-        },
-      });
-      const usersApi = createMock(UsersApi, {
-        createLightwalletAccount: (): Promise<void> => {
-          return Promise.resolve();
-        },
-      });
-
       const lightWalletConnector = createMock(LightWalletConnector, {
         connect: (): any => {},
-      });
-
-      const lightWalletUtil = createMock(LightWalletUtil, {
-        createLightWalletVault: (): Promise<IVault> => {
-          return Promise.resolve({ walletInstance: "wallet", salt: "salt" });
-        },
-        deserializeLightWalletVault: (): any => {
-          const walletInstance = { addresses: ["dupa"] };
-          return walletInstance;
-        },
-        addPrefixToAddress: (): any => "dupa",
       });
 
       await tryConnectingWithLightWallet("test@test.com", "password")(
@@ -66,6 +69,36 @@ describe("Wallet selector > Browser wizard > actions", () => {
         dummyLogger,
       );
       expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
+    });
+    it("should dispatch error action on error", async () => {
+      const expectedNetworkId = dummyNetworkId;
+
+      const lightWalletConnector = createMock(LightWalletConnector, {
+        connect: async () => {
+          throw new Error();
+        },
+      });
+      const web3ManagerMock = createMock(Web3Manager, {
+        networkId: expectedNetworkId,
+        plugPersonalWallet: async () => {},
+      });
+
+      await tryConnectingWithLightWallet("test@test.com", "password")(
+        dispatchMock,
+        web3ManagerMock,
+        lightWalletConnector,
+        lightWalletUtil,
+        storage,
+        vaultApi,
+        usersApi,
+        dummyLogger,
+      );
+
+      expect(dispatchMock).to.be.calledWithExactly(
+        lightWalletConnectionErrorAction({
+          errorMsg: "Something went wrong real wrong",
+        }),
+      );
     });
   });
 });

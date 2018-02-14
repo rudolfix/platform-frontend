@@ -16,11 +16,21 @@ import {
 } from "../../web3/LightWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
-import { browserWalletConnectionErrorAction } from "../browser-wizard/actions";
 import { obtainJwt } from "./../../networking/jwt-actions";
 import { IStorage } from "./../../storage/storage";
 
 const LOCAL_STORAGE_LIGHT_WALLET_KEY = "LIGHT_WALLET";
+
+export interface ILightWalletConnectionErrorAction extends IAppAction {
+  type: "LIGHT_WALLET_CONNECTION_ERROR";
+  payload: {
+    errorMsg: string;
+  };
+}
+
+export const lightWalletConnectionErrorAction = makeActionCreator<
+  ILightWalletConnectionErrorAction
+>("LIGHT_WALLET_CONNECTION_ERROR");
 
 export interface ILightWalletCreatedAction extends IAppAction {
   type: "LIGHT_WALLET_CREATED";
@@ -74,9 +84,7 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
         dispatch(walletConnectedAction);
       } catch (e) {
         logger.warn("Error while trying to connect with light wallet: ", e.message);
-        dispatch(
-          browserWalletConnectionErrorAction({ errorMsg: "Something went wrong real wrong" }),
-        );
+        dispatch(lightWalletConnectionErrorAction({ errorMsg: "Something went wrong real wrong" }));
       }
     },
     [

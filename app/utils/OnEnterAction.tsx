@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { AppDispatch } from "../store";
 
 interface IOnEnterActionDispatchProps {
-  watchAction: Function;
+  enterAction: Function;
 }
 
 interface IOnEnterActionOptions {
@@ -16,7 +16,7 @@ export const onEnterAction: (
   WrappedComponent: React.ComponentType,
 ) => React.ComponentClass = options => WrappedComponent =>
   connect<{}, IOnEnterActionDispatchProps>(undefined, dispatch => ({
-    watchAction: () => options.actionCreator(dispatch),
+    enterAction: () => options.actionCreator(dispatch),
   }))(
     class OnEnterAction extends React.Component<IOnEnterActionDispatchProps> {
       constructor(props: any) {
@@ -24,11 +24,11 @@ export const onEnterAction: (
       }
 
       public componentDidMount(): void {
-        this.props.watchAction();
+        this.props.enterAction();
       }
 
       public render(): React.ReactNode {
-        const { watchAction, ...componentProps } = this.props;
+        const { enterAction, ...componentProps } = this.props;
         return <WrappedComponent {...componentProps} />;
       }
     },

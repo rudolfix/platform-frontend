@@ -9,10 +9,14 @@ import { VaultApi, VaultApiSymbol } from "../../networking/VaultApi";
 import { StorageSymbol } from "../../storage/storage";
 import {
   IVault,
+  LightCreationError,
+  LightDesirializeError,
+  LightSignMessageError,
   LightWalletConnector,
   LightWalletConnectorSymbol,
   LightWalletUtil,
   LightWalletUtilSymbol,
+  LightWrongPasswordSaltError,
 } from "../../web3/LightWallet";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
@@ -84,7 +88,9 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
         dispatch(walletConnectedAction);
       } catch (e) {
         logger.warn("Error while trying to connect with light wallet: ", e.message);
-        dispatch(lightWalletConnectionErrorAction({ errorMsg: "Something went wrong real wrong" }));
+        dispatch(
+          lightWalletConnectionErrorAction({ errorMsg: mapLightWalletErrorToErrorMessage(e) }),
+        );
       }
     },
     [
@@ -98,3 +104,19 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
       LoggerSymbol,
     ],
   );
+
+function mapLightWalletErrorToErrorMessage(e: Error): string {
+  if (e instanceof LightWrongPasswordSaltError) {
+    return "Password is not correct";
+  }
+  if (e instanceof LightSignMessageError) {
+    return `Cannot sign personal message`;
+  }
+  if (e instanceof LightCreationError) {
+    return "Cannot create new Lightwallet";
+  }
+  if (e instanceof LightDesirializeError) {
+    return "Problem with Vault retrieval";
+  }
+  return "Light wallet unavailable";
+}

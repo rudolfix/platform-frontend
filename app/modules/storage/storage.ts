@@ -18,5 +18,3 @@ export class Storage {
     return this.localStorage.getItem(key);
   };
 }
-
-//TODO: Bring back interface for storage

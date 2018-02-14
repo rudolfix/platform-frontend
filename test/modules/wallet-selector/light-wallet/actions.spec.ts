@@ -7,55 +7,45 @@ import {
   lightWalletConnectionErrorAction,
   tryConnectingWithLightWallet,
 } from "../../../../app/modules/wallet-selector/light-wizard/actions";
-import { IVault } from "../../../../app/modules/web3/LightWallet";
+import {
+  ILightWallet,
+  LightWrongPasswordSaltError,
+} from "../../../../app/modules/web3/LightWallet";
 import { Web3Manager } from "../../../../app/modules/web3/Web3Manager";
-import { dummyNetworkId } from "../../../fixtures";
 import { createMock } from "../../../testUtils";
 import { VaultApi } from "./../../../../app/modules/networking/VaultApi";
 import { LightWalletConnector, LightWalletUtil } from "./../../../../app/modules/web3/LightWallet";
-import { dummyLogger } from "./../../../fixtures";
+import { dummyLogger, dummyNetworkId } from "./../../../fixtures";
 
 describe("Wallet selector > Browser wizard > actions", () => {
   describe("tryConnectingWithLightWallet action", () => {
     const dispatchMock = spy();
-
-    const localStorageMock = {
-      setKey: spy(),
-      getKey: spy(() => "expectedPhrase"),
-    };
-
-    const storage = createMock(Storage, localStorageMock);
-
+    const expectedWalletDummy = { addresses: ["mockAddress"] };
+    const storage = createMock(Storage, { setKey: spy() });
     const web3ManagerMock = createMock(Web3Manager, {
       networkId: dummyNetworkId,
       plugPersonalWallet: async () => {},
     });
-
     const vaultApi = createMock(VaultApi, {
-      store: (): Promise<void> => {
-        return Promise.resolve();
-      },
+      store: async () => {},
     });
     const usersApi = createMock(UsersApi, {
-      createLightwalletAccount: (): Promise<void> => {
-        return Promise.resolve();
-      },
+      createLightwalletAccount: async () => {},
     });
-
     const lightWalletUtil = createMock(LightWalletUtil, {
-      createLightWalletVault: (): Promise<IVault> => {
+      createLightWalletVault: () => {
         return Promise.resolve({ walletInstance: "wallet", salt: "salt" });
       },
-      deserializeLightWalletVault: (): any => {
-        const walletInstance = { addresses: ["dupa"] };
-        return walletInstance;
+      deserializeLightWalletVault: (): Promise<ILightWallet> => {
+        const walletInstance = expectedWalletDummy;
+        return Promise.resolve(walletInstance as ILightWallet);
       },
-      addPrefixToAddress: (): any => "dupa",
+      addPrefixToAddress: (): string => "mockAddress",
     });
 
     it("should create new wallet and store", async () => {
       const lightWalletConnector = createMock(LightWalletConnector, {
-        connect: (): any => {},
+        connect: spy(),
       });
 
       await tryConnectingWithLightWallet("test@test.com", "password")(
@@ -68,14 +58,18 @@ describe("Wallet selector > Browser wizard > actions", () => {
         usersApi,
         dummyLogger,
       );
+
       expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
+      expect(lightWalletConnector.connect).to.be.calledWith({
+        walletInstance: expectedWalletDummy,
+        salt: "salt",
+      });
     });
     it("should dispatch error action on error", async () => {
       const expectedNetworkId = dummyNetworkId;
-
       const lightWalletConnector = createMock(LightWalletConnector, {
         connect: async () => {
-          throw new Error();
+          throw new LightWrongPasswordSaltError();
         },
       });
       const web3ManagerMock = createMock(Web3Manager, {
@@ -96,9 +90,11 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       expect(dispatchMock).to.be.calledWithExactly(
         lightWalletConnectionErrorAction({
-          errorMsg: "Something went wrong real wrong",
+          errorMsg: "Password is not correct",
         }),
       );
     });
   });
 });
+
+//TODO: change mocks into dummyObjects and put in /fixtures

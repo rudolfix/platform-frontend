@@ -10,6 +10,7 @@ import { dummyNetworkId } from "../../../fixtures";
 import { createMock } from "../../../testUtils";
 import { VaultApi } from "./../../../../app/modules/networking/VaultApi";
 import { LightWalletConnector, LightWalletUtil } from "./../../../../app/modules/web3/LightWallet";
+import { dummyLogger } from "./../../../fixtures";
 
 describe("Wallet selector > Browser wizard > actions", () => {
   describe("tryConnectingWithLightWallet action", () => {
@@ -62,6 +63,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         storage,
         vaultApi,
         usersApi,
+        dummyLogger,
       );
       expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
     });

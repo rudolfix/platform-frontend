@@ -1,5 +1,9 @@
 import { injectable } from "inversify";
 
+export interface IStorage {
+  setKey: (key: string, value: string) => void;
+  getKey: (key: string) => string;
+}
 export const StorageSymbol = "StorageSymbol";
 
 @injectable()

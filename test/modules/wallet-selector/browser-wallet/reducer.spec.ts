@@ -11,6 +11,6 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       browserWalletConnectionErrorAction({ errorMsg: expectedErrorMsg }),
     );
 
-    expect(actualState).to.be.deep.eq({ errorMsg: expectedErrorMsg });
+    expect(actualState).to.be.deep.eq({ isLoading: false, errorMsg: expectedErrorMsg });
   });
 });

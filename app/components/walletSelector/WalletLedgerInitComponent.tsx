@@ -43,9 +43,11 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
       </Col>
     </Row>
     {errorMessage && (
-      <WarningAlert className="my-4">
-        Connection status: <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
-      </WarningAlert>
+      <Row className="justify-content-center">
+        <WarningAlert className="my-4">
+          Connection status: <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
+        </WarningAlert>
+      </Row>
     )}
     <Row>
       <InitStep

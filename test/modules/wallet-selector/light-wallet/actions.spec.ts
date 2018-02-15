@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import { UsersApi } from "../../../../app/modules/networking/UsersApi";
 import { Storage } from "../../../../app/modules/storage/storage";
-import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
 import {
   lightWalletConnectionErrorAction,
   tryConnectingWithLightWallet,
@@ -40,7 +39,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
         const walletInstance = expectedWalletDummy;
         return Promise.resolve(walletInstance as ILightWallet);
       },
-      addPrefixToAddress: (): string => "mockAddress",
     });
 
     it("should create new wallet and store", async () => {
@@ -59,12 +57,12 @@ describe("Wallet selector > Browser wizard > actions", () => {
         dummyLogger,
       );
 
-      expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
       expect(lightWalletConnector.connect).to.be.calledWith({
         walletInstance: expectedWalletDummy,
         salt: "salt",
       });
     });
+
     it("should dispatch error action on error", async () => {
       const expectedNetworkId = dummyNetworkId;
       const lightWalletConnector = createMock(LightWalletConnector, {

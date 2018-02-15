@@ -6,8 +6,8 @@ export interface ILightWalletWizardState {
   isWalletCreated: boolean;
   isActive: boolean;
   isSeedBacked: boolean;
-  lightWalletInstance?: ILightWallet | undefined;
-  salt?: string | undefined;
+  lightWalletInstance?: ILightWallet;
+  salt?: string;
   isSaltSent: boolean;
 }
 

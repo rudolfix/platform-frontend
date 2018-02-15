@@ -104,10 +104,6 @@ export class LightWalletUtil {
       throw new LightWrongPasswordSaltError();
     }
   }
-
-  public addPrefixToAddress(address: string): string {
-    return "0x".concat(address);
-  }
 }
 
 export class LightWallet implements IPersonalWallet {
@@ -154,7 +150,7 @@ export const LightWalletConnectorSymbol = "LightWalletConnector";
 
 @injectable()
 export class LightWalletConnector {
-  private Web3Adapter?: any;
+  private web3Adapter?: Web3Adapter;
   public constructor(
     @inject(new LazyServiceIdentifer(() => IEthereumNetworkConfigSymbol))
     public readonly web3Config: IEthereumNetworkConfig,
@@ -162,13 +158,14 @@ export class LightWalletConnector {
 
   public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;
 
-  public async connect(
-    lightWalletVault: IVault,
-    walletAddress: EthereumAddress,
-  ): Promise<IPersonalWallet> {
+  public async connect(lightWalletVault: IVault): Promise<IPersonalWallet> {
     try {
-      this.Web3Adapter = new Web3Adapter(await this.setWeb3Provider(lightWalletVault));
-      return new LightWallet(this.Web3Adapter, walletAddress, lightWalletVault);
+      this.web3Adapter = new Web3Adapter(await this.setWeb3Provider(lightWalletVault));
+      return new LightWallet(
+        this.web3Adapter,
+        await this.web3Adapter.getAccountAddress(),
+        lightWalletVault,
+      );
     } catch (e) {
       if (e instanceof LightError) {
         throw e;

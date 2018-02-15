@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { compose } from "redux";
+import { tryConnectingWithLightWallet } from "../../../modules/wallet-selector/light-wizard/actions";
+import { appConnect } from "../../../store";
 
-import { walletLightRoutes } from "./walletLightRoutes";
-
-export const CreateWallet: React.SFC<{}> = () => {
+export const CreateWalletComponent: React.SFC<any> = props => {
   return (
     <Row className="justify-content-sm-center mt-3">
       <Col sm="5">
@@ -21,11 +21,19 @@ export const CreateWallet: React.SFC<{}> = () => {
             <Label>Repeat password</Label>
             <Input type="password" name="repeated" id="repeated-pass" />
           </FormGroup>
-          <Link className="btn btn-secondary" to={walletLightRoutes.validate}>
+          <Button className="btn btn-secondary" onClick={props.create}>
             Create Account
-          </Link>
+          </Button>
         </Form>
       </Col>
     </Row>
   );
 };
+
+export const CreateWallet = compose<React.SFC>(
+  appConnect<any, any>({
+    dispatchToProps: dispatch => ({
+      create: () => dispatch(tryConnectingWithLightWallet("test", "password")),
+    }),
+  }),
+)(CreateWalletComponent);

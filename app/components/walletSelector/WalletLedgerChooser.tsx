@@ -1,6 +1,6 @@
 import * as React from "react";
-
 import { compose } from "redux";
+
 import {
   finishSettingUpLedgerConnectorAction,
   goToNextPageAndLoadDataAction,
@@ -8,6 +8,7 @@ import {
   ledgerWizardDerivationPathPrefixErrorAction,
   loadLedgerAccountsAction,
   setDerivationPathPrefixAction,
+  toggleLedgerAccountsAdvancedAction,
   verifyIfLedgerStillConnected,
 } from "../../modules/wallet-selector/ledger-wizard/actions";
 import {
@@ -30,6 +31,7 @@ export const WalletLedgerChooser = compose<React.SFC>(
       accounts: state.ledgerWizardState.accounts,
       derivationPath: state.ledgerWizardState.derivationPathPrefix,
       hasPreviousAddress: selectHasPreviousPage(state.ledgerWizardState),
+      advanced: state.ledgerWizardState.advanced,
     }),
     dispatchToProps: dispatch => ({
       onDerivationPathError: () => dispatch(ledgerWizardDerivationPathPrefixErrorAction()),
@@ -41,6 +43,10 @@ export const WalletLedgerChooser = compose<React.SFC>(
       },
       showNextAddresses: () => dispatch(goToNextPageAndLoadDataAction),
       showPrevAddresses: () => dispatch(goToPreviousPageAndLoadDataAction),
+      handleAdvanced: () => {
+        dispatch(toggleLedgerAccountsAdvancedAction());
+        dispatch(loadLedgerAccountsAction);
+      },
     }),
   }),
   onEnterAction({

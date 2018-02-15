@@ -8,6 +8,8 @@ import {
   AccountRow,
   WalletLedgerChooserComponent,
 } from "../../../app/components/walletSelector/WalletLedgerChooserComponent";
+import { WalletLedgerDPChooser } from "../../../app/components/walletSelector/WalletLedgerDPChooser";
+
 import { tid } from "../../testUtils";
 
 const defaultProps = () => ({
@@ -16,22 +18,26 @@ const defaultProps = () => ({
     {
       address: "0x6C1086C292a7E1FdF66C68776eA972038467A370",
       derivationPath: "44'/60'/0'/0",
-      balance: "1.6495ETH",
+      balanceETH: "1.6495ETH",
+      balanceNEU: "0",
     },
     {
       address: "0xB2A0e2688c5A82bEEe6818F5a3D206680FdFD75d",
       derivationPath: "44'/60'/0'/1",
-      balance: "0",
+      balanceETH: "0",
+      balanceNEU: "0",
     },
     {
       address: "0xa13D14DA39529761a6C45F4f556700735E0774a8",
       derivationPath: "44'/60'/0'/2",
-      balance: "0",
+      balanceETH: "0",
+      balanceNEU: "0",
     },
     {
       address: "0x3cC2ef578f6Eb7ff63f9CA8f5a54cfe40339256A",
       derivationPath: "44'/60'/0'/3",
-      balance: "1.6495ETH",
+      balanceETH: "1.6495ETH",
+      balanceNEU: "0",
     },
   ],
   handleAddressChosen: spy(),
@@ -40,6 +46,8 @@ const defaultProps = () => ({
   showNextAddresses: spy(),
   onDerivationPathPrefixChange: spy(),
   onDerivationPathError: spy(),
+  advanced: true,
+  handleAdvanced: spy(),
 });
 
 describe("<WalletLedgerChooserComponent />", () => {
@@ -90,6 +98,18 @@ describe("<WalletLedgerChooserComponent />", () => {
     expect(componentWithoutPrevAddr.find(tid("btn-previous")).length).to.be.eq(0);
   });
 
+  it("should show / hide derivation path input regarding advanced property", () => {
+    const propsAdvancedTrue = defaultProps();
+    const propsAdvancedFalse = { ...defaultProps(), advanced: false };
+    const componentAdvancedTrue = shallow(<WalletLedgerChooserComponent {...propsAdvancedTrue} />);
+    const componentAdvancedFalse = shallow(
+      <WalletLedgerChooserComponent {...propsAdvancedFalse} />,
+    );
+
+    expect(componentAdvancedTrue.find(WalletLedgerDPChooser).length).to.be.eq(1);
+    expect(componentAdvancedFalse.find(WalletLedgerDPChooser).length).to.be.eq(0);
+  });
+
   it("should call correct click handlers for prev button", () => {
     const props = defaultProps();
     const component = shallow(<WalletLedgerChooserComponent {...props} />);
@@ -102,6 +122,13 @@ describe("<WalletLedgerChooserComponent />", () => {
     const component = shallow(<WalletLedgerChooserComponent {...props} />);
     component.find(tid("btn-next")).simulate("click");
     expect(props.showNextAddresses).to.be.calledOnce;
+  });
+
+  it("should call correct click handlers for advanced button", () => {
+    const props = defaultProps();
+    const component = shallow(<WalletLedgerChooserComponent {...props} />);
+    component.find(tid("btn-advanced")).simulate("click");
+    expect(props.handleAdvanced).to.be.calledOnce;
   });
 });
 
@@ -118,7 +145,7 @@ describe("<AccountRow />", () => {
     const renderedAddress = accountRow.find(tid("account-address"));
     expect(renderedAddress.text()).to.be.eq(account.address);
     const renderedBalance = accountRow.find(tid("account-balance"));
-    expect(renderedBalance.text()).to.be.eq(account.balance);
+    expect(renderedBalance.text()).to.be.eq(account.balanceETH);
 
     accountRow.find(tid("account-row")).simulate("click");
     expect(props.handleAddressChosen).to.be.calledOnce;

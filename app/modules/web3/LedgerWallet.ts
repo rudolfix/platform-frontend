@@ -111,7 +111,7 @@ export class LedgerWalletConnector {
       const account = await noSimultaneousConnectionsGuard(this.ledgerInstance, () => {
         return this.ledgerInstance.getMultipleAccounts(derivationPath, 0, 1);
       });
-      accounts[derivationPath] = account[derivationPath]; // TODO: use more elegant solution to merge objects
+      Object.assign(accounts, account);
     }
 
     return accounts;

@@ -2,16 +2,20 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
+import { DispatchSymbol } from "../getContainer";
+import { detectUserAgentAction } from "../modules/userAgent/actions";
 import { Web3Manager, Web3ManagerSymbol } from "../modules/web3/Web3Manager";
 import { injectableFn } from "../redux-injectify";
+import { AppDispatch } from "../store";
 import { AppRouter } from "./AppRouter";
 import { LoadingIndicator } from "./LoadingIndicator";
 
 const appInitAction = injectableFn(
-  async (web3Manager: Web3Manager) => {
+  async (web3Manager: Web3Manager, dispatch: AppDispatch) => {
+    dispatch(detectUserAgentAction);
     await web3Manager.initialize();
   },
-  [Web3ManagerSymbol],
+  [Web3ManagerSymbol, DispatchSymbol],
 );
 
 interface IInitializationDispatchProps {

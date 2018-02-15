@@ -104,7 +104,7 @@ export class LedgerWalletConnector {
     return new LedgerWallet(web3Adapter, address, this.ledgerInstance);
   }
 
-  public async getMultipleAccounts(derivationPaths: [string]): Promise<IDerivationPathToAddress> {
+  public async getMultipleAccounts(derivationPaths: string[]): Promise<IDerivationPathToAddress> {
     const accounts: IDerivationPathToAddress = {};
 
     for (const derivationPath of derivationPaths) {

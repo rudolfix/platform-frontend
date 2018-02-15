@@ -15,6 +15,8 @@ import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
 import { ILedgerAccount } from "./reducer";
 
+export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
+
 export interface ILedgerConnectionEstablishedAction extends IAppAction {
   type: "LEDGER_CONNECTION_ESTABLISHED";
 }
@@ -135,7 +137,7 @@ export const loadLedgerAccountsAction = injectableFn(
           index,
           numberOfAccountsPerPage,
         )
-      : await ledgerConnector.getMultipleAccounts(["44'/60'/1'/0", "44'/60'/0'/0"]); // TODO this should be taken from config
+      : await ledgerConnector.getMultipleAccounts(LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS);
 
     const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map(pair => ({
       derivationPath: pair[0],

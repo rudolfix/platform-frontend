@@ -133,7 +133,9 @@ export const WalletLedgerChooserComponent: React.SFC<
               </tfoot>
             )}
           </table>
-          <Button onClick={handleAdvanced}>{advanced ? "Show simple" : "Show advanced"}</Button>
+          <Button onClick={handleAdvanced} data-test-id="btn-advanced">
+            {advanced ? "Show simple" : "Show advanced"}
+          </Button>
         </>
       )
     )}

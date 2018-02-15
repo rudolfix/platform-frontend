@@ -8,6 +8,8 @@ import {
   AccountRow,
   WalletLedgerChooserComponent,
 } from "../../../app/components/walletSelector/WalletLedgerChooserComponent";
+import { WalletLedgerDPChooser } from "../../../app/components/walletSelector/WalletLedgerDPChooser";
+
 import { tid } from "../../testUtils";
 
 const defaultProps = () => ({
@@ -47,8 +49,6 @@ const defaultProps = () => ({
   advanced: true,
   handleAdvanced: spy(),
 });
-
-// TODO: we need to add test for advanced button
 
 describe("<WalletLedgerChooserComponent />", () => {
   it("should render LoadingIndicator for loading attribute", () => {
@@ -98,6 +98,18 @@ describe("<WalletLedgerChooserComponent />", () => {
     expect(componentWithoutPrevAddr.find(tid("btn-previous")).length).to.be.eq(0);
   });
 
+  it("should show / hide derivation path input regarding advanced property", () => {
+    const propsAdvancedTrue = defaultProps();
+    const propsAdvancedFalse = { ...defaultProps(), advanced: false };
+    const componentAdvancedTrue = shallow(<WalletLedgerChooserComponent {...propsAdvancedTrue} />);
+    const componentAdvancedFalse = shallow(
+      <WalletLedgerChooserComponent {...propsAdvancedFalse} />,
+    );
+
+    expect(componentAdvancedTrue.find(WalletLedgerDPChooser).length).to.be.eq(1);
+    expect(componentAdvancedFalse.find(WalletLedgerDPChooser).length).to.be.eq(0);
+  });
+
   it("should call correct click handlers for prev button", () => {
     const props = defaultProps();
     const component = shallow(<WalletLedgerChooserComponent {...props} />);
@@ -110,6 +122,13 @@ describe("<WalletLedgerChooserComponent />", () => {
     const component = shallow(<WalletLedgerChooserComponent {...props} />);
     component.find(tid("btn-next")).simulate("click");
     expect(props.showNextAddresses).to.be.calledOnce;
+  });
+
+  it("should call correct click handlers for advanced button", () => {
+    const props = defaultProps();
+    const component = shallow(<WalletLedgerChooserComponent {...props} />);
+    component.find(tid("btn-advanced")).simulate("click");
+    expect(props.handleAdvanced).to.be.calledOnce;
   });
 });
 

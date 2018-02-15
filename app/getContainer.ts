@@ -44,6 +44,10 @@ import {
 } from "./utils/cryptoRandomString";
 import { DevConsoleLogger, ILogger, LoggerSymbol } from "./utils/Logger";
 
+import { API_KYC_SERVICE } from "./lib";
+
+import { ApiKycService } from "./lib/api/kyc";
+
 export type Delay = (n: number) => Promise<void>;
 export type NavigateTo = (path: string) => void;
 export type GetState = () => IAppState;
@@ -107,6 +111,10 @@ export function getContainer(config: IConfig): Container {
   container
     .bind<Web3Manager>(Web3ManagerSymbol)
     .to(Web3Manager)
+    .inSingletonScope();
+  container
+    .bind<ApiKycService>(API_KYC_SERVICE)
+    .to(ApiKycService)
     .inSingletonScope();
 
   // factories

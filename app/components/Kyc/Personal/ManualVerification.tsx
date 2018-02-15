@@ -20,10 +20,6 @@ interface IProps {
 }
 
 interface IFormValues {
-  companyName?: string;
-  placeOfIncorporation?: string;
-  managingDirector?: string;
-
   street?: string;
   postalCode?: string;
   city?: string;
@@ -97,7 +93,8 @@ export const KYCPersonalManualVerificationComponent: React.SFC<IProps> = props =
 export const KYCPersonalManualVerification = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      submitForm: () => dispatch(actions.kycSubmitManualVerificationForm()),
+      submitForm: (values: IFormValues) =>
+        dispatch(actions.kycSubmitManualVerificationForm(values)),
     }),
   }),
 )(KYCPersonalManualVerificationComponent);

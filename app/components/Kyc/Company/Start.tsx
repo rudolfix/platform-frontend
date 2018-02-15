@@ -134,7 +134,7 @@ export const KYCCompanyStartComponent: React.SFC<IProps> = props => (
 export const KYCCompanyStart = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      submitForm: () => dispatch(actions.kycSubmitCompanyForm()),
+      submitForm: (values: IFormValues) => dispatch(actions.kycSubmitCompanyForm(values)),
     }),
   }),
 )(KYCCompanyStartComponent);

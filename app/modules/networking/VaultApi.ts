@@ -5,7 +5,7 @@ import { JsonHttpClientSymbol } from "./JsonHttpClient";
 
 //This is a mock implementation
 
-export const SignatureAuthApiSymbol = "VaultApiSymbol";
+export const VaultApiSymbol = "VaultApiSymbol";
 
 @injectable()
 export class VaultApi {

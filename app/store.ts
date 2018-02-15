@@ -16,6 +16,11 @@ import {
   ISetLedgerWizardDerivationPathPrefixAction,
   IToggleLedgerWizardAdvancedAction,
 } from "./modules/wallet-selector/ledger-wizard/actions";
+import {
+  ILightWalletConnectionErrorAction,
+  ILightWalletCreatedAction,
+} from "./modules/wallet-selector/light-wizard/actions";
+
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import {
   INewPersonalWalletPluggedAction,
@@ -47,6 +52,9 @@ export type AppActionTypes =
   | IToggleLedgerWizardAdvancedAction
   // browser wallet
   | IBrowserWalletConnectionErrorAction
+  // light wallet
+  | ILightWalletConnectionErrorAction
+  | ILightWalletCreatedAction
   //web3 management
   | INewPersonalWalletPluggedAction
   | IPersonalWalletDisconnectedAction

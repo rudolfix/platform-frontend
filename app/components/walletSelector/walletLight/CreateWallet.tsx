@@ -1,31 +1,89 @@
+import { Form, Formik, FormikProps } from "formik";
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
+import { compose } from "redux";
+import { FormField } from "../../../components/shared/Forms/FormField";
+import { tryConnectingWithLightWallet } from "../../../modules/wallet-selector/light-wizard/actions";
+import { appConnect } from "../../../store";
 
-import { walletLightRoutes } from "./walletLightRoutes";
+import * as Yup from "yup";
 
-export const CreateWallet: React.SFC<{}> = () => {
+const EMAIL = "email";
+const PASSWORD = "password";
+const REPEAT_PASSWORD = "repeatPassword";
+
+interface IFormValues {
+  email?: string;
+  password?: string;
+  repeatPassword?: string;
+}
+
+interface IProps {
+  submitForm: (values: IFormValues) => void;
+  currentValues: IFormValues;
+}
+
+const validate = () => {};
+
+const validationSchema = Yup.object().shape({
+  [EMAIL]: Yup.string()
+    .required("Email")
+    .email("Email"),
+  [PASSWORD]: Yup.string()
+    .required("Password")
+    .min(8, "Must be longer than 3"),
+  [REPEAT_PASSWORD]: Yup.string()
+    .required("Password")
+    .min(8, "Must be longer than 3"),
+});
+
+const CreateLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
+  <Form>
+    <FormField label="Email" touched={formikBag.touched} errors={formikBag.errors} name={EMAIL} />
+    <FormField
+      label="Password"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name={PASSWORD}
+    />
+    <FormField
+      label="RepeatPassword"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name={REPEAT_PASSWORD}
+    />
+    <Button color="primary" type="submit" disabled={!formikBag.isValid}>
+      Submit
+    </Button>
+  </Form>
+);
+const CreateEnhancedLightWalletForm = (props: IProps) => (
+  <Formik
+    initialValues={props.currentValues}
+    onSubmit={props.submitForm}
+    render={CreateLightWalletForm}
+    validate={validate}
+    validationSchema={validationSchema}
+  />
+);
+
+export const CreateWalletComponent: React.SFC<any> = props => {
   return (
     <Row className="justify-content-sm-center mt-3">
-      <Col sm="5">
-        <Form className="align-self-end">
-          <FormGroup>
-            <Label>Email</Label>
-            <Input type="email" name="email" id="email" />
-          </FormGroup>
-          <FormGroup>
-            <Label>Password</Label>
-            <Input type="password" name="password" id="password" />
-          </FormGroup>
-          <FormGroup>
-            <Label>Repeat password</Label>
-            <Input type="password" name="repeated" id="repeated-pass" />
-          </FormGroup>
-          <Link className="btn btn-secondary" to={walletLightRoutes.validate}>
-            Create Account
-          </Link>
-        </Form>
+      <Col sm="5" className="align-self-end">
+        <CreateEnhancedLightWalletForm {...props} />
       </Col>
     </Row>
   );
 };
+
+export const CreateWallet = compose<React.SFC>(
+  appConnect<IProps>({
+    dispatchToProps: dispatch => ({
+      submitForm: (values: IFormValues) =>
+        dispatch(tryConnectingWithLightWallet(values.email as string, values.password as string)),
+    }),
+  }),
+)(CreateWalletComponent);
+
+//Solve IFormValues complain when elements are not optional

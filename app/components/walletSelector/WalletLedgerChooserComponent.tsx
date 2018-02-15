@@ -27,14 +27,14 @@ export class AccountRow extends React.Component<IAccountRow> {
         data-test-id="account-row"
         onClick={this.handleClick}
         className={cn(styles.accountRow, {
-          [styles.withEther]: parseInt(this.props.ledgerAccount.balance, 10) > 0,
+          [styles.withEther]: parseInt(this.props.ledgerAccount.balanceETH, 10) > 0,
         })}
       >
         <td data-test-id="account-derivation-path">{this.props.ledgerAccount.derivationPath}</td>
         <td data-test-id="account-address" className={styles.address}>
           {this.props.ledgerAccount.address}
         </td>
-        <td data-test-id="account-balance">{this.props.ledgerAccount.balance}</td>
+        <td data-test-id="account-balance">{this.props.ledgerAccount.balanceETH}</td>
         <td>
           <i className="fa fa-chevron-right" aria-hidden="true" />
         </td>
@@ -47,6 +47,7 @@ export interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
   hasPreviousAddress: boolean;
   loading: boolean;
+  advanced: boolean;
 }
 
 export interface IWalletLedgerChooserComponentDispatchProps {
@@ -55,6 +56,7 @@ export interface IWalletLedgerChooserComponentDispatchProps {
   handleAddressChosen: (account: ILedgerAccount) => void;
   showPrevAddresses: () => any;
   showNextAddresses: () => any;
+  handleAdvanced: () => void;
 }
 
 export const WalletLedgerChooserComponent: React.SFC<
@@ -66,64 +68,75 @@ export const WalletLedgerChooserComponent: React.SFC<
   showPrevAddresses,
   showNextAddresses,
   loading,
+  advanced,
   onDerivationPathPrefixChange,
   onDerivationPathError,
+  handleAdvanced,
 }) => (
   <div>
-    <WalletLedgerDPChooser
-      onChange={onDerivationPathPrefixChange}
-      onDerivationPathError={onDerivationPathError}
-    />
+    {advanced && (
+      <WalletLedgerDPChooser
+        onChange={onDerivationPathPrefixChange}
+        onDerivationPathError={onDerivationPathError}
+      />
+    )}
     {loading ? (
       <LoadingIndicator />
     ) : (
       accounts.length > 0 && (
-        <table className={styles.chooserTable}>
-          <thead>
-            <tr>
-              <th>Derivation path</th>
-              <th className={styles.address}>Address</th>
-              <th>ETH balance</th>
-              <th className={styles.useColumn}>Use this address</th>
-            </tr>
-          </thead>
-          <tbody data-test-id="wallet-ledger-accounts-table-body">
-            {accounts.map(a => (
-              <AccountRow
-                key={a.derivationPath}
-                ledgerAccount={a}
-                handleAddressChosen={handleAddressChosen}
-              />
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={4}>
-                <div>
-                  {hasPreviousAddress && (
-                    <Button
-                      color="primary"
-                      disabled={loading}
-                      onClick={showPrevAddresses}
-                      data-test-id="btn-previous"
-                    >
-                      Show previous addresses
-                    </Button>
-                  )}
-                  <Button
-                    color="primary"
-                    disabled={loading}
-                    onClick={showNextAddresses}
-                    className="float-right"
-                    data-test-id="btn-next"
-                  >
-                    Load more addresses
-                  </Button>
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+        <>
+          <table className={styles.chooserTable}>
+            <thead>
+              <tr>
+                <th>Derivation path</th>
+                <th className={styles.address}>Address</th>
+                <th>ETH balance</th>
+                <th className={styles.useColumn}>Use this address</th>
+              </tr>
+            </thead>
+            <tbody data-test-id="wallet-ledger-accounts-table-body">
+              {accounts.map(a => (
+                <AccountRow
+                  key={a.derivationPath}
+                  ledgerAccount={a}
+                  handleAddressChosen={handleAddressChosen}
+                />
+              ))}
+            </tbody>
+            {advanced && (
+              <tfoot>
+                <tr>
+                  <td colSpan={4}>
+                    <div>
+                      {hasPreviousAddress && (
+                        <Button
+                          color="primary"
+                          disabled={loading}
+                          onClick={showPrevAddresses}
+                          data-test-id="btn-previous"
+                        >
+                          Show previous addresses
+                        </Button>
+                      )}
+                      <Button
+                        color="primary"
+                        disabled={loading}
+                        onClick={showNextAddresses}
+                        className="float-right"
+                        data-test-id="btn-next"
+                      >
+                        Load more addresses
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            )}
+          </table>
+          <Button onClick={handleAdvanced} data-test-id="btn-advanced">
+            {advanced ? "Show simple" : "Show advanced"}
+          </Button>
+        </>
       )
     )}
   </div>

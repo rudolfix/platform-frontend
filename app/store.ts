@@ -2,6 +2,8 @@ import { connect, InferableComponentEnhancerWithProps, Options } from "react-red
 import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
 
+import { ILoadUserAgentInfoAction } from "./modules/userAgent/actions";
+import { browserReducer } from "./modules/userAgent/reducer";
 import { IBrowserWalletConnectionErrorAction } from "./modules/wallet-selector/browser-wizard/actions";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 import {
@@ -12,6 +14,7 @@ import {
   ILedgerWizardDerivationPathPrefixErrorAction,
   ISetLedgerWizardAccountsAction,
   ISetLedgerWizardDerivationPathPrefixAction,
+  IToggleLedgerWizardAdvancedAction,
 } from "./modules/wallet-selector/ledger-wizard/actions";
 import {
   ILightWalletConnectionErrorAction,
@@ -46,6 +49,7 @@ export type AppActionTypes =
   | ILedgerWizardAccountsListPreviousPage
   | ISetLedgerWizardDerivationPathPrefixAction
   | ILedgerWizardDerivationPathPrefixErrorAction
+  | IToggleLedgerWizardAdvancedAction
   // browser wallet
   | IBrowserWalletConnectionErrorAction
   // light wallet
@@ -53,13 +57,16 @@ export type AppActionTypes =
   | ILightWalletCreatedAction
   //web3 management
   | INewPersonalWalletPluggedAction
-  | IPersonalWalletDisconnectedAction;
+  | IPersonalWalletDisconnectedAction
+  // browser
+  | ILoadUserAgentInfoAction;
 
 // add new app reducers here. They must be AppReducer<T> type
 const appReducers = {
   ledgerWizardState: ledgerWizardReducer,
   browserWalletWizardState: browserWalletWizardReducer,
   web3State: web3Reducer,
+  browser: browserReducer,
 };
 
 // add all custom reducers here

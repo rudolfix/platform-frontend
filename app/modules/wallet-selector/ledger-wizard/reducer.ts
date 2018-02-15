@@ -6,17 +6,19 @@ export const DEFAULT_LEDGER_ACCOUNTS_PER_PAGE = 10;
 export interface ILedgerAccount {
   address: string;
   derivationPath: string;
-  balance: string;
+  balanceETH: string;
+  balanceNEU: string;
 }
 
 export interface ILedgerWizardState {
   isConnectionEstablished: boolean;
   errorMsg?: string;
   isLoadingAddresses: boolean;
-  derivationPathPrefix: string;
-  index: number;
-  numberOfAccountsPerPage: number;
+  derivationPathPrefix: string; // TODO: it can be optional, not required for advanced - false
+  index: number; // TODO: it can be optional, not required for advanced - false
+  numberOfAccountsPerPage: number; // TODO: it can be optional, not required for advanced - false
   accounts: ILedgerAccount[];
+  advanced: boolean;
 }
 
 export const ledgerWizardInitialState: ILedgerWizardState = {
@@ -26,6 +28,7 @@ export const ledgerWizardInitialState: ILedgerWizardState = {
   index: 0,
   numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
   accounts: [],
+  advanced: false,
 };
 
 export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
@@ -63,7 +66,7 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
       // There is a possibility of race condition in the app when we get account lists from ledger which is async
       // operation. That's why we need to check if list that was received matches derivation path prefix that is
       // currently set.
-      if (state.derivationPathPrefix === action.payload.derivationPathPrefix) {
+      if (!state.advanced || state.derivationPathPrefix === action.payload.derivationPathPrefix) {
         return {
           ...state,
           accounts: action.payload.accounts,
@@ -85,6 +88,12 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         ...state,
         derivationPathPrefix: "",
         accounts: [],
+      };
+    case "TOGGLE_LEDGER_WIZARD_ADVANCED":
+      return {
+        ...state,
+        isLoadingAddresses: true,
+        advanced: !state.advanced,
       };
   }
 

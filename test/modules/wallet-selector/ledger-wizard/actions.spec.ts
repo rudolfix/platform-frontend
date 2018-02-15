@@ -91,6 +91,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           accounts: [],
           isLoadingAddresses: false,
           isConnectionEstablished: true,
+          advanced: true,
         },
       };
       const expectedAccounts: IDerivationPathToAddress = {
@@ -105,7 +106,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const dispatchMock = spy();
       const getStateMock = spy(() => dummyState);
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-        getMultipleAccounts: spy(() => expectedAccounts),
+        getMultipleAccountsFromDerivationPrefix: spy(() => expectedAccounts),
       });
       const web3ManagerMock = createMock(Web3Manager, {
         internalWeb3Adapter: createMock(Web3Adapter, {
@@ -121,7 +122,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         web3ManagerMock,
       );
 
-      expect(ledgerWalletConnectorMock.getMultipleAccounts).to.calledWithExactly(
+      expect(
+        ledgerWalletConnectorMock.getMultipleAccountsFromDerivationPrefix,
+      ).to.calledWithExactly(
         dummyState.ledgerWizardState!.derivationPathPrefix,
         dummyState.ledgerWizardState!.index,
         dummyState.ledgerWizardState!.numberOfAccountsPerPage,
@@ -132,12 +135,14 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           accounts: [
             {
               address: expectedAccounts["44'/60'/0'/1"],
-              balance: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/1"]].toString(),
+              balanceETH: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/1"]].toString(),
+              balanceNEU: "0",
               derivationPath: "44'/60'/0'/1",
             },
             {
               address: expectedAccounts["44'/60'/0'/2"],
-              balance: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/2"]].toString(),
+              balanceETH: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/2"]].toString(),
+              balanceNEU: "0",
               derivationPath: "44'/60'/0'/2",
             },
           ],
@@ -180,6 +185,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         accounts: [],
         isLoadingAddresses: false,
         isConnectionEstablished: true,
+        advanced: false,
       },
     };
 

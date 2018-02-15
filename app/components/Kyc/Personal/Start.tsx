@@ -41,7 +41,7 @@ const validationSchema = Yup.object().shape({
   [SECOND_NAME]: Yup.string()
     .required("Your second name is required")
     .min(3, "Must be longer than 3"),
-  [BIRTH_DATE]: Yup.date()
+  [BIRTH_DATE]: Yup.string()
     .typeError("Please add your birth date in the form dd.mm.yyyy")
     .required("Please add your birth date"),
   [PLACE_OF_BIRTH]: Yup.string()

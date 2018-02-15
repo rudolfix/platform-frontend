@@ -21,12 +21,12 @@ export const KYCPersonalIDUploadComponent: React.SFC<IProps> = props => (
     <br />
     <h1>ID Upload</h1>
     <br />
-    ID Upload goes here
+    Please upload a scan of the front and the back of your ID card or passport here
     <br />
     <br />
     <br />
     <Button color="primary" onClick={props.uploadId}>
-      Submit
+      Upload
     </Button>
   </div>
 );

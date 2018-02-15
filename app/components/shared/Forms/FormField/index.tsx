@@ -18,7 +18,9 @@ export const FormField: React.SFC<FieldGroupProps> = ({ name, ...props }) => (
     <Label for={name}>{props.label}</Label>
     <Field
       name={name}
-      render={({ field }: FieldProps) => <Input {...field} placeholder={props.placeholder} />}
+      render={({ field }: FieldProps) => (
+        <Input {...field} value={field.value || ""} placeholder={props.placeholder} />
+      )}
     />
     {props.touched &&
       props.touched[name] &&

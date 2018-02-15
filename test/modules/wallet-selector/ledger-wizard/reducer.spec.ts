@@ -86,13 +86,17 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
         undefined,
         setLedgerAccountsAction({
           derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-          accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
+          accounts: [
+            { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
+          ],
         }),
       );
 
       expect(newState).to.be.deep.eq({
         isConnectionEstablished: false,
-        accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
+        accounts: [
+          { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
+        ],
         index: 0,
         isLoadingAddresses: false,
         derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
@@ -110,7 +114,9 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
         initialState,
         setLedgerAccountsAction({
           derivationPathPrefix: "",
-          accounts: [{ address: "0x67", balance: "123", derivationPath: "44/60" }],
+          accounts: [
+            { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
+          ],
         }),
       );
 
@@ -118,7 +124,9 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     });
 
     it("should act when derivation path prefix mismatch but advanced field is false", () => {
-      const newAccounts = [{ address: "0x67", balance: "123", derivationPath: "44/60" }];
+      const newAccounts = [
+        { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
+      ];
       const initialState = ledgerWizardInitialState;
       const newState = ledgerWizardReducer(
         initialState,

@@ -135,12 +135,14 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           accounts: [
             {
               address: expectedAccounts["44'/60'/0'/1"],
-              balance: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/1"]].toString(),
+              balanceETH: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/1"]].toString(),
+              balanceNEU: "0",
               derivationPath: "44'/60'/0'/1",
             },
             {
               address: expectedAccounts["44'/60'/0'/2"],
-              balance: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/2"]].toString(),
+              balanceETH: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/2"]].toString(),
+              balanceNEU: "0",
               derivationPath: "44'/60'/0'/2",
             },
           ],

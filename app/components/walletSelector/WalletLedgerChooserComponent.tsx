@@ -27,14 +27,14 @@ export class AccountRow extends React.Component<IAccountRow> {
         data-test-id="account-row"
         onClick={this.handleClick}
         className={cn(styles.accountRow, {
-          [styles.withEther]: parseInt(this.props.ledgerAccount.balance, 10) > 0,
+          [styles.withEther]: parseInt(this.props.ledgerAccount.balanceETH, 10) > 0,
         })}
       >
         <td data-test-id="account-derivation-path">{this.props.ledgerAccount.derivationPath}</td>
         <td data-test-id="account-address" className={styles.address}>
           {this.props.ledgerAccount.address}
         </td>
-        <td data-test-id="account-balance">{this.props.ledgerAccount.balance}</td>
+        <td data-test-id="account-balance">{this.props.ledgerAccount.balanceETH}</td>
         <td>
           <i className="fa fa-chevron-right" aria-hidden="true" />
         </td>

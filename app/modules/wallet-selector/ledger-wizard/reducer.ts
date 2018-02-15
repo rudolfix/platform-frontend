@@ -6,7 +6,8 @@ export const DEFAULT_LEDGER_ACCOUNTS_PER_PAGE = 10;
 export interface ILedgerAccount {
   address: string;
   derivationPath: string;
-  balance: string; // TODO: we also need NEU balance. Shape of state should be changed
+  balanceETH: string;
+  balanceNEU: string;
 }
 
 export interface ILedgerWizardState {

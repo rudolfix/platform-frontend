@@ -150,7 +150,8 @@ export const loadLedgerAccountsAction = injectableFn(
 
     const accounts = (zip as pairZip)(derivationPathsArray, balances).map(([dp, balance]) => ({
       ...dp,
-      balance,
+      balanceETH: balance,
+      balanceNEU: "0",
     }));
 
     dispatch(setLedgerAccountsAction({ accounts, derivationPathPrefix }));

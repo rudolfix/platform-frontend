@@ -10,6 +10,7 @@ import {
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
 } from "../../web3/BrowserWallet";
+import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
 import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
 
@@ -52,9 +53,9 @@ function mapBrowserWalletErrorToErrorMessage(e: Error): string {
   }
   if (e instanceof BrowserWalletMismatchedNetworkError) {
     // @todo transform network ids to network names
-    return `Your wallet is connected to the wrong network: ${
-      e.actualNetworkId
-    }. Please change the network.`;
+    return `Your wallet is connected to the wrong network: ${ethereumNetworkIdToNetworkName(
+      e.actualNetworkId,
+    )}. Please change the network.`;
   }
   if (e instanceof BrowserWalletMissingError) {
     return "We did not detect any Web3 wallet.";

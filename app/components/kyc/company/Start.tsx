@@ -7,7 +7,7 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
-import { ProgressStepper } from "../../shared/progressStepper/ProgressStepper";
+import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 

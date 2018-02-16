@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { appConnect } from "../../../store";
 
 import { Form, Formik, FormikProps } from "formik";
-import { ProgressStepper } from "../../shared/progressStepper/ProgressStepper";
+import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 

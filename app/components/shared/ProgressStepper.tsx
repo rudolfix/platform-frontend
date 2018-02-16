@@ -2,7 +2,7 @@ import * as React from "react";
 
 import * as cn from "classnames";
 import { times } from "lodash";
-import * as styles from "./styles.module.scss";
+import * as styles from "./ProgressStepper.module.scss";
 
 const DOT_DISTANCE = 50;
 

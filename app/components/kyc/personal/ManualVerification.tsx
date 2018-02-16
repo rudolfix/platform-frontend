@@ -10,7 +10,7 @@ import { ProgressStepper } from "../../shared/ProgressStepper";
 import { actions } from "../../../modules/actions";
 
 import { Button } from "reactstrap";
-import { FormField } from "../../shared/Forms";
+import { FormField } from "../../shared/forms/forms";
 
 import * as Yup from "yup";
 

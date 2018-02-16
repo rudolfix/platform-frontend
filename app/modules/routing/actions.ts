@@ -1,6 +1,6 @@
 import { createAction } from "../actions";
 
-import { kycRoutes } from "../../components/Kyc/routes";
+import { kycRoutes } from "../../components/kyc/routes";
 
 const createRoutingAction = (path: string) => createAction("GO_TO_ROUTE", { path });
 

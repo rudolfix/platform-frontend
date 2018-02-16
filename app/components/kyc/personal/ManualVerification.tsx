@@ -94,7 +94,7 @@ export const KYCPersonalManualVerification = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>
-        dispatch(actions.kycSubmitManualVerificationForm(values)),
+        dispatch(actions.kyc.kycSubmitManualVerificationForm(values)),
     }),
   }),
 )(KYCPersonalManualVerificationComponent);

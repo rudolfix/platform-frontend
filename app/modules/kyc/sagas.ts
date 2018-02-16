@@ -14,7 +14,7 @@ function* submitCompanyForm(): Iterator<any> {
     }
     const kcyService: IApiKycService = yield effects.call(getDependency, API_KYC_SERVICE_SYMBOL);
     yield effects.call(kcyService.submitCompanyData, action.payload.data);
-    yield effects.put(actions.goToKYCCompanyDone());
+    yield effects.put(actions.routing.goToKYCCompanyDone());
   }
 }
 
@@ -26,7 +26,7 @@ function* submitPersonalForm(): Iterator<any> {
     }
     const kcyService: IApiKycService = yield effects.call(getDependency, API_KYC_SERVICE_SYMBOL);
     yield effects.call(kcyService.submitPersonalData, action.payload.data);
-    yield effects.put(actions.goToKYCPersonalInstantId());
+    yield effects.put(actions.routing.goToKYCPersonalInstantId());
   }
 }
 
@@ -38,7 +38,7 @@ function* startInstantID(): Iterator<any> {
     }
     const kcyService: IApiKycService = yield effects.call(getDependency, API_KYC_SERVICE_SYMBOL);
     yield effects.call(kcyService.startPersonalInstantId);
-    yield effects.put(actions.goToKYCPersonalDone());
+    yield effects.put(actions.routing.goToKYCPersonalDone());
   }
 }
 
@@ -50,7 +50,7 @@ function* submitManualVerificationForm(): Iterator<any> {
     }
     const kcyService: IApiKycService = yield effects.call(getDependency, API_KYC_SERVICE_SYMBOL);
     yield effects.call(kcyService.submitManualVerificationData, action.payload.data);
-    yield effects.put(actions.goToKYCManualVerificationIDUpload());
+    yield effects.put(actions.routing.goToKYCManualVerificationIDUpload());
   }
 }
 
@@ -62,7 +62,7 @@ function* uploadID(): Iterator<any> {
     }
     // simulate some kind of request
     yield delay(1000);
-    yield effects.put(actions.goToKYCPersonalDone());
+    yield effects.put(actions.routing.goToKYCPersonalDone());
   }
 }
 

@@ -44,8 +44,8 @@ export const KYCPersonalInstantIDComponent: React.SFC<IProps> = props => (
 export const KYCPersonalInstantID = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      startInstantId: () => dispatch(actions.kycStartPersonalInstantId()),
-      startManualVerification: () => dispatch(actions.goToKYCManualVerification()),
+      startInstantId: () => dispatch(actions.kyc.kycStartPersonalInstantId()),
+      startManualVerification: () => dispatch(actions.routing.goToKYCManualVerification()),
     }),
   }),
 )(KYCPersonalInstantIDComponent);

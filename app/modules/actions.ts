@@ -3,10 +3,15 @@ import { values } from "lodash";
 import { kycActions } from "./kyc/actions";
 import { routingActions } from "./routing/actions";
 
+export const actions = {
+  kyc: kycActions,
+  routing: routingActions,
+};
+
 /**
  * Merge all actions into main action object
  */
-export const actions = {
+const allActions = {
   ...routingActions,
   ...kycActions,
 };
@@ -18,7 +23,7 @@ export const returnTypeOf = <RT extends {}>(_expression: (...params: any[]) => R
   return ({} as any) as RT;
 };
 
-const actionList = values(actions).map(returnTypeOf);
+const actionList = values(allActions).map(returnTypeOf);
 export type TAction = typeof actionList[number];
 
 /**

@@ -33,7 +33,7 @@ export const KYCCompanyDoneComponent: React.SFC<IProps> = props => (
 export const KYCCompanyDone = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      onDone: () => dispatch(actions.goHome()),
+      onDone: () => dispatch(actions.routing.goHome()),
     }),
   }),
 )(KYCCompanyDoneComponent);

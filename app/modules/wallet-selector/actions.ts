@@ -1,4 +1,4 @@
-import { DispatchSymbol, NavigateTo, NavigateToSymbol } from "../../getContainer";
+import { APP_DISPATCH_SYMBOL, NAVIGATE_TO_SYMBOL, NavigateTo } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch } from "../../store";
 import { obtainJwt } from "../networking/jwt-actions";
@@ -10,5 +10,5 @@ export const walletConnectedAction = injectableFn(
     await dispatch(obtainJwt);
     navigateTo("/");
   },
-  [NavigateToSymbol, DispatchSymbol],
+  [NAVIGATE_TO_SYMBOL, APP_DISPATCH_SYMBOL],
 );

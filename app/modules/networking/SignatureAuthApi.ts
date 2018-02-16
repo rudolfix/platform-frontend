@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { EthereumAddressWithChecksum } from "../../types";
 import { SignerType } from "../web3/PersonalWeb3";
 import { IHttpClient, IHttpResponse } from "./IHttpClient";
-import { JsonHttpClientSymbol } from "./JsonHttpClient";
+import { JSON_HTTP_CLIENT_SYMBOL } from "./JsonHttpClient";
 
 export interface IChallengeEndpointResponse {
   challenge: string;
@@ -14,11 +14,11 @@ export interface ICreateJwtEndpointResponse {
   jwt: string;
 }
 
-export const SignatureAuthApiSymbol = "SignatureAuthApiSymbol";
+export const SIGNATURE_AUTH_API_SYMBOL = Symbol();
 
 @injectable()
 export class SignatureAuthApi {
-  constructor(@inject(JsonHttpClientSymbol) private httpClient: IHttpClient) {}
+  constructor(@inject(JSON_HTTP_CLIENT_SYMBOL) private httpClient: IHttpClient) {}
 
   public async challenge(
     address: EthereumAddressWithChecksum,

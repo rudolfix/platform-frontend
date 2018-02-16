@@ -1,35 +1,37 @@
-export const DispatchSymbol = "Dispatch";
-export const NavigateToSymbol = "NavigateTo";
-export const DelaySymbol = "Delay";
-export const GetStateSymbol = "GetState";
+export const APP_DISPATCH_SYMBOL = Symbol();
+export const NAVIGATE_TO_SYMBOL = Symbol();
+export const GET_STATE_SYMBOL = Symbol();
 
 import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "./getConfig";
 import { IHttpClient } from "./modules/networking/IHttpClient";
-import { JsonHttpClient, JsonHttpClientSymbol } from "./modules/networking/JsonHttpClient";
-import { SignatureAuthApi, SignatureAuthApiSymbol } from "./modules/networking/SignatureAuthApi";
-import { UsersApi, UsersApiSymbol } from "./modules/networking/UsersApi";
-import { VaultApi, VaultApiSymbol } from "./modules/networking/VaultApi";
+import { JSON_HTTP_CLIENT_SYMBOL, JsonHttpClient } from "./modules/networking/JsonHttpClient";
+import { SIGNATURE_AUTH_API_SYMBOL, SignatureAuthApi } from "./modules/networking/SignatureAuthApi";
+import { USERS_API_SYMBOL, UsersApi } from "./modules/networking/UsersApi";
+import { VAULT_API_SYMBOL, VaultApi } from "./modules/networking/VaultApi";
 import {
+  NOTIFICATION_CENTER_SYMBOL,
   NotificationCenter,
-  NotificationCenterSymbol,
 } from "./modules/notifications/NotificationCenter";
-import { Storage, StorageSymbol } from "./modules/storage/storage";
-import { BrowserWalletConnector, BrowserWalletConnectorSymbol } from "./modules/web3/BrowserWallet";
-import { LedgerWalletConnector, LedgerWalletConnectorSymbol } from "./modules/web3/LedgerWallet";
+import { Storage, STORAGE_SYMBOL } from "./modules/storage/storage";
 import {
+  BROWSER_WALLET_CONNECTOR_SYMBOL,
+  BrowserWalletConnector,
+} from "./modules/web3/BrowserWallet";
+import { LEDGER_WALLET_CONNECTOR_SYMBOL, LedgerWalletConnector } from "./modules/web3/LedgerWallet";
+import {
+  LIGHT_WALLET_CONNECTOR_SYMBOL,
+  LIGHT_WALLET_UTIL_SYMBOL,
   LightWalletConnector,
-  LightWalletConnectorSymbol,
   LightWalletUtil,
-  LightWalletUtilSymbol,
 } from "./modules/web3/LightWallet";
 import {
+  ETHEREUM_NETWORK_CONFIG_SYMBOL,
   IEthereumNetworkConfig,
-  IEthereumNetworkConfigSymbol,
+  WEB3_MANAGER_SYMBOL,
   Web3Manager,
-  Web3ManagerSymbol,
 } from "./modules/web3/Web3Manager";
 import { IAppState } from "./store";
 import {
@@ -38,17 +40,16 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "./utils/AsyncIntervalScheduler";
 import {
+  CRYPTO_RANDOM_STRING_SYMBOL,
   cryptoRandomString,
   CryptoRandomString,
-  CryptoRandomStringSymbol,
 } from "./utils/cryptoRandomString";
-import { DevConsoleLogger, ILogger, LoggerSymbol } from "./utils/Logger";
+import { DevConsoleLogger, ILogger, LOGGER_SYMBOL } from "./utils/Logger";
 
-import { API_KYC_SERVICE } from "./lib";
+import { API_KYC_SERVICE_SYMBOL } from "./lib";
 
 import { ApiKycService } from "./lib/api/kyc";
 
-export type Delay = (n: number) => Promise<void>;
 export type NavigateTo = (path: string) => void;
 export type GetState = () => IAppState;
 
@@ -58,62 +59,62 @@ export function getContainer(config: IConfig): Container {
   const lightWalletUtil = new LightWalletUtil();
 
   // functions
-  const delay = (time: number) => new Promise<void>(resolve => setTimeout(resolve, time));
-  container.bind<CryptoRandomString>(CryptoRandomStringSymbol).toConstantValue(cryptoRandomString);
-  container.bind<Delay>("Delay").toConstantValue(delay);
   container
-    .bind<IEthereumNetworkConfig>(IEthereumNetworkConfigSymbol)
+    .bind<CryptoRandomString>(CRYPTO_RANDOM_STRING_SYMBOL)
+    .toConstantValue(cryptoRandomString);
+  container
+    .bind<IEthereumNetworkConfig>(ETHEREUM_NETWORK_CONFIG_SYMBOL)
     .toConstantValue(config.ethereumNetwork);
 
   // @todo different logger could be injected to each class with additional info like name of the file etc.
-  container.bind<ILogger>(LoggerSymbol).toConstantValue(new DevConsoleLogger());
+  container.bind<ILogger>(LOGGER_SYMBOL).toConstantValue(new DevConsoleLogger());
 
   // classes
-  container.bind<IHttpClient>(JsonHttpClientSymbol).to(JsonHttpClient);
+  container.bind<IHttpClient>(JSON_HTTP_CLIENT_SYMBOL).to(JsonHttpClient);
   // singletons
   container
-    .bind<SignatureAuthApi>(SignatureAuthApiSymbol)
+    .bind<SignatureAuthApi>(SIGNATURE_AUTH_API_SYMBOL)
     .to(SignatureAuthApi)
     .inSingletonScope();
 
-  container.bind<LightWalletUtil>(LightWalletUtilSymbol).toConstantValue(lightWalletUtil);
+  container.bind<LightWalletUtil>(LIGHT_WALLET_UTIL_SYMBOL).toConstantValue(lightWalletUtil);
 
   container
-    .bind<VaultApi>(VaultApiSymbol)
+    .bind<VaultApi>(VAULT_API_SYMBOL)
     .to(VaultApi)
     .inSingletonScope();
 
   container
-    .bind<UsersApi>(UsersApiSymbol)
+    .bind<UsersApi>(USERS_API_SYMBOL)
     .to(UsersApi)
     .inSingletonScope();
 
-  container.bind<Storage>(StorageSymbol).toConstantValue(storage);
+  container.bind<Storage>(STORAGE_SYMBOL).toConstantValue(storage);
   container
-    .bind<NotificationCenter>(NotificationCenterSymbol)
+    .bind<NotificationCenter>(NOTIFICATION_CENTER_SYMBOL)
     .to(NotificationCenter)
     .inSingletonScope();
 
   container
-    .bind<LedgerWalletConnector>(LedgerWalletConnectorSymbol)
+    .bind<LedgerWalletConnector>(LEDGER_WALLET_CONNECTOR_SYMBOL)
     .to(LedgerWalletConnector)
     .inSingletonScope();
 
   container
-    .bind<LightWalletConnector>(LightWalletConnectorSymbol)
+    .bind<LightWalletConnector>(LIGHT_WALLET_CONNECTOR_SYMBOL)
     .to(LightWalletConnector)
     .inSingletonScope();
 
   container
-    .bind<BrowserWalletConnector>(BrowserWalletConnectorSymbol)
+    .bind<BrowserWalletConnector>(BROWSER_WALLET_CONNECTOR_SYMBOL)
     .to(BrowserWalletConnector)
     .inSingletonScope();
   container
-    .bind<Web3Manager>(Web3ManagerSymbol)
+    .bind<Web3Manager>(WEB3_MANAGER_SYMBOL)
     .to(Web3Manager)
     .inSingletonScope();
   container
-    .bind<ApiKycService>(API_KYC_SERVICE)
+    .bind<ApiKycService>(API_KYC_SERVICE_SYMBOL)
     .to(ApiKycService)
     .inSingletonScope();
 
@@ -129,9 +130,9 @@ export function customizerContainerWithMiddlewareApi(
   container: Container,
   { dispatch, getState }: MiddlewareAPI<any>,
 ): Container {
-  container.bind(DispatchSymbol).toConstantValue(dispatch);
-  container.bind(GetStateSymbol).toConstantValue(() => getState());
-  container.bind(NavigateToSymbol).toConstantValue((path: string) => dispatch(push(path)));
+  container.bind(APP_DISPATCH_SYMBOL).toConstantValue(dispatch);
+  container.bind(GET_STATE_SYMBOL).toConstantValue(() => getState());
+  container.bind(NAVIGATE_TO_SYMBOL).toConstantValue((path: string) => dispatch(push(path)));
 
   return container;
 }

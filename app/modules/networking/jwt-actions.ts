@@ -1,10 +1,10 @@
-import { GetState, GetStateSymbol } from "../../getContainer";
+import { GET_STATE_SYMBOL, GetState } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
-import { CryptoRandomString, CryptoRandomStringSymbol } from "../../utils/cryptoRandomString";
-import { ILogger, LoggerSymbol } from "../../utils/Logger";
+import { CRYPTO_RANDOM_STRING_SYMBOL, CryptoRandomString } from "../../utils/cryptoRandomString";
+import { ILogger, LOGGER_SYMBOL } from "../../utils/Logger";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
-import { Web3Manager, Web3ManagerSymbol } from "../web3/Web3Manager";
-import { SignatureAuthApi, SignatureAuthApiSymbol } from "./SignatureAuthApi";
+import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../web3/Web3Manager";
+import { SIGNATURE_AUTH_API_SYMBOL, SignatureAuthApi } from "./SignatureAuthApi";
 
 export const obtainJwt = injectableFn(
   async (
@@ -35,10 +35,10 @@ export const obtainJwt = injectableFn(
     logger.info("JWT obtained!", jwt); // get rid of printing jwt in near future
   },
   [
-    Web3ManagerSymbol,
-    GetStateSymbol,
-    SignatureAuthApiSymbol,
-    CryptoRandomStringSymbol,
-    LoggerSymbol,
+    WEB3_MANAGER_SYMBOL,
+    GET_STATE_SYMBOL,
+    SIGNATURE_AUTH_API_SYMBOL,
+    CRYPTO_RANDOM_STRING_SYMBOL,
+    LOGGER_SYMBOL,
   ],
 );

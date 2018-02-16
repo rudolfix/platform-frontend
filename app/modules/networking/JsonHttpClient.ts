@@ -26,7 +26,7 @@ export class NetworkingError extends HttpClientError {
   public readonly type = "NetworkingError";
 }
 
-export const JsonHttpClientSymbol = "JsonHttpClient";
+export const JSON_HTTP_CLIENT_SYMBOL = Symbol();
 
 //supports only JSON apis
 @injectable()

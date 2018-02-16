@@ -1,9 +1,12 @@
-import { DispatchSymbol } from "../../getContainer";
+import { APP_DISPATCH_SYMBOL } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../storeHelpers";
 import { EthereumAddress } from "../../types";
-import { NotificationCenter, NotificationCenterSymbol } from "../notifications/NotificationCenter";
+import {
+  NOTIFICATION_CENTER_SYMBOL,
+  NotificationCenter,
+} from "../notifications/NotificationCenter";
 import { WalletSubType, WalletType } from "./PersonalWeb3";
 
 export interface INewPersonalWalletPluggedAction extends IAppAction {
@@ -30,5 +33,5 @@ export const personalWalletDisconnectedAction = injectableFn(
     dispatch(personalWalletDisconnectedPlainAction());
     notificationCenter.error("Web3 disconnected!");
   },
-  [DispatchSymbol, NotificationCenterSymbol],
+  [APP_DISPATCH_SYMBOL, NOTIFICATION_CENTER_SYMBOL],
 );

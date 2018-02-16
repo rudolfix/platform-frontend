@@ -1,4 +1,4 @@
-export const LoggerSymbol = "LoggerSymbol";
+export const LOGGER_SYMBOL = Symbol();
 
 type LogArg = string | object | Error;
 

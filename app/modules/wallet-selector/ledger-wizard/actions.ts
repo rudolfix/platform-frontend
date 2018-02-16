@@ -1,17 +1,17 @@
 import { toPairs, zip } from "lodash";
 
 import { pairZip } from "../../../../typings/modifications";
-import { DispatchSymbol, GetState, GetStateSymbol } from "../../../getContainer";
+import { APP_DISPATCH_SYMBOL, GET_STATE_SYMBOL, GetState } from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator, makeParameterlessActionCreator } from "../../../storeHelpers";
 import {
+  LEDGER_WALLET_CONNECTOR_SYMBOL,
   LedgerLockedError,
   LedgerNotAvailableError,
   LedgerWalletConnector,
-  LedgerWalletConnectorSymbol,
 } from "../../web3/LedgerWallet";
-import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
+import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
 import { ILedgerAccount } from "./reducer";
 
@@ -114,7 +114,7 @@ export const tryEstablishingConnectionWithLedger = injectableFn(
       );
     }
   },
-  [DispatchSymbol, LedgerWalletConnectorSymbol, Web3ManagerSymbol],
+  [APP_DISPATCH_SYMBOL, LEDGER_WALLET_CONNECTOR_SYMBOL, WEB3_MANAGER_SYMBOL],
 );
 
 export const loadLedgerAccountsAction = injectableFn(
@@ -158,7 +158,7 @@ export const loadLedgerAccountsAction = injectableFn(
 
     dispatch(setLedgerAccountsAction({ accounts, derivationPathPrefix }));
   },
-  [DispatchSymbol, GetStateSymbol, LedgerWalletConnectorSymbol, Web3ManagerSymbol],
+  [APP_DISPATCH_SYMBOL, GET_STATE_SYMBOL, LEDGER_WALLET_CONNECTOR_SYMBOL, WEB3_MANAGER_SYMBOL],
 );
 
 export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
@@ -171,7 +171,7 @@ export const setDerivationPathPrefixAction = (derivationPathPrefix: string) =>
         dispatch(loadLedgerAccountsAction);
       }
     },
-    [DispatchSymbol, GetStateSymbol],
+    [APP_DISPATCH_SYMBOL, GET_STATE_SYMBOL],
   );
 
 export const goToNextPageAndLoadDataAction = injectableFn(
@@ -179,7 +179,7 @@ export const goToNextPageAndLoadDataAction = injectableFn(
     dispatch(ledgerWizardAccountsListNextPageAction());
     return dispatch(loadLedgerAccountsAction);
   },
-  [DispatchSymbol],
+  [APP_DISPATCH_SYMBOL],
 );
 
 export const goToPreviousPageAndLoadDataAction = injectableFn(
@@ -187,7 +187,7 @@ export const goToPreviousPageAndLoadDataAction = injectableFn(
     dispatch(ledgerWizardAccountsListPreviousPageAction());
     return dispatch(loadLedgerAccountsAction);
   },
-  [DispatchSymbol],
+  [APP_DISPATCH_SYMBOL],
 );
 
 export const finishSettingUpLedgerConnectorAction = (derivationPath: string) =>
@@ -201,7 +201,7 @@ export const finishSettingUpLedgerConnectorAction = (derivationPath: string) =>
       await web3Manager.plugPersonalWallet(ledgerWallet);
       dispatch(walletConnectedAction);
     },
-    [DispatchSymbol, LedgerWalletConnectorSymbol, Web3ManagerSymbol],
+    [APP_DISPATCH_SYMBOL, LEDGER_WALLET_CONNECTOR_SYMBOL, WEB3_MANAGER_SYMBOL],
   );
 
 export const verifyIfLedgerStillConnected = injectableFn(
@@ -214,5 +214,5 @@ export const verifyIfLedgerStillConnected = injectableFn(
       );
     }
   },
-  [DispatchSymbol, LedgerWalletConnectorSymbol],
+  [APP_DISPATCH_SYMBOL, LEDGER_WALLET_CONNECTOR_SYMBOL],
 );

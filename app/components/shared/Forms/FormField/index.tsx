@@ -4,22 +4,24 @@ import { Field, FieldAttributes, FieldProps } from "formik";
 
 import { FormGroup, Input, Label } from "reactstrap";
 
+import { InputType } from "../../../../types";
+
 interface IFieldGroup {
   label: string;
   placeholder?: string;
   touched: { [name: string]: boolean };
   errors: { [name: string]: string };
+  type?: InputType;
 }
-
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
-export const FormField: React.SFC<FieldGroupProps> = ({ name, ...props }) => (
+export const FormField: React.SFC<FieldGroupProps> = ({ name, type, ...props }) => (
   <FormGroup>
     <Label for={name}>{props.label}</Label>
     <Field
       name={name}
       render={({ field }: FieldProps) => (
-        <Input {...field} value={field.value || ""} placeholder={props.placeholder} />
+        <Input {...field} type={type} value={field.value || ""} placeholder={props.placeholder} />
       )}
     />
     {props.touched &&

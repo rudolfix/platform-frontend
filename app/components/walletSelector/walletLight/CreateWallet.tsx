@@ -39,14 +39,22 @@ const validationSchema = Yup.object().shape({
 
 const CreateLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
-    <FormField label="Email" touched={formikBag.touched} errors={formikBag.errors} name={EMAIL} />
     <FormField
+      label="Email"
+      type={"email"}
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name={EMAIL}
+    />
+    <FormField
+      type={"password"}
       label="Password"
       touched={formikBag.touched}
       errors={formikBag.errors}
       name={PASSWORD}
     />
     <FormField
+      type={"password"}
       label="RepeatPassword"
       touched={formikBag.touched}
       errors={formikBag.errors}

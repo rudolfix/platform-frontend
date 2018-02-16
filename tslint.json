@@ -14,7 +14,7 @@
     "no-duplicate-switch-case": true,
     "no-duplicate-imports": true,
     "no-implicit-dependencies": true,
-    "no-constant-condition": true,
+    "no-constant-condition": false,
     "no-empty-character-class": true,
     "no-extra-boolean-cast": true,
     "no-extra-semi": true,

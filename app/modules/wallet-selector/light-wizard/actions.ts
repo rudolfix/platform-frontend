@@ -1,23 +1,23 @@
-import { DispatchSymbol } from "../../../getContainer";
+import { APP_DISPATCH_SYMBOL } from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator } from "../../../storeHelpers";
-import { ILogger, LoggerSymbol } from "../../../utils/Logger";
-import { UsersApi, UsersApiSymbol } from "../../networking/UsersApi";
-import { VaultApi, VaultApiSymbol } from "../../networking/VaultApi";
-import { StorageSymbol } from "../../storage/storage";
+import { ILogger, LOGGER_SYMBOL } from "../../../utils/Logger";
+import { USERS_API_SYMBOL, UsersApi } from "../../networking/UsersApi";
+import { VAULT_API_SYMBOL, VaultApi } from "../../networking/VaultApi";
+import { STORAGE_SYMBOL } from "../../storage/storage";
 import {
   IVault,
+  LIGHT_WALLET_CONNECTOR_SYMBOL,
+  LIGHT_WALLET_UTIL_SYMBOL,
   LightCreationError,
   LightDesirializeError,
   LightSignMessageError,
   LightWalletConnector,
-  LightWalletConnectorSymbol,
   LightWalletUtil,
-  LightWalletUtilSymbol,
   LightWrongPasswordSaltError,
 } from "../../web3/LightWallet";
-import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
+import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../../web3/Web3Manager";
 import { obtainJwt } from "./../../networking/jwt-actions";
 import { IStorage } from "./../../storage/storage";
 
@@ -90,14 +90,14 @@ export const tryConnectingWithLightWallet = (email: string, password: string) =>
       }
     },
     [
-      DispatchSymbol,
-      Web3ManagerSymbol,
-      LightWalletConnectorSymbol,
-      LightWalletUtilSymbol,
-      StorageSymbol,
-      VaultApiSymbol,
-      UsersApiSymbol,
-      LoggerSymbol,
+      APP_DISPATCH_SYMBOL,
+      WEB3_MANAGER_SYMBOL,
+      LIGHT_WALLET_CONNECTOR_SYMBOL,
+      LIGHT_WALLET_UTIL_SYMBOL,
+      STORAGE_SYMBOL,
+      VAULT_API_SYMBOL,
+      USERS_API_SYMBOL,
+      LOGGER_SYMBOL,
     ],
   );
 

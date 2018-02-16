@@ -6,8 +6,14 @@ import { compose } from "redux";
 import { tryConnectingWithBrowserWallet } from "../../modules/wallet-selector/browser-wizard/actions";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
-import { HiResImage } from "../HiResImage";
-import { WarningAlert } from "../WarningAlert";
+import { HiResImage } from "../shared/HiResImage";
+import { HorizontalLine } from "../shared/HorizontalLine";
+import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { WarningAlert } from "../shared/WarningAlert";
+
+import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg";
+import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
+import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
 import * as styles from "./WalletBrowser.module.scss";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
@@ -16,12 +22,6 @@ interface IWalletBrowserProps {
   errorMessage?: string;
   isLoading: boolean;
 }
-
-import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg";
-import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
-import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
-import { HorizontalLine } from "../HorizontalLine";
-import { LoadingIndicator } from "../LoadingIndicator";
 
 interface IStepCardProps {
   img: string;

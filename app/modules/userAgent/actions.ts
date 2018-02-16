@@ -1,6 +1,6 @@
 import * as detectBrowser from "detect-browser";
 
-import { DispatchSymbol } from "../../getContainer";
+import { APP_DISPATCH_SYMBOL } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../store";
 import { makeActionCreator } from "../../storeHelpers";
@@ -30,5 +30,5 @@ export const detectUserAgentAction = injectableFn(
       );
     }
   },
-  [DispatchSymbol],
+  [APP_DISPATCH_SYMBOL],
 );

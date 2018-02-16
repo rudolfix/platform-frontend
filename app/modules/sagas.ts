@@ -32,7 +32,7 @@ export const neuTake = (type: TAction["type"]): effects.TakeEffect => {
   return effects.take(type);
 };
 
-export function* getDependency(name: string): Iterator<effects.Effect> {
+export function* getDependency(name: symbol): Iterator<effects.Effect> {
   const context: Container = yield effects.getContext("container");
   return context.get(name);
 }

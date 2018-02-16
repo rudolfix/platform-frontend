@@ -9,7 +9,7 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
-import { IEthereumNetworkConfig, IEthereumNetworkConfigSymbol } from "./Web3Manager";
+import { ETHEREUM_NETWORK_CONFIG_SYMBOL, IEthereumNetworkConfig } from "./Web3Manager";
 
 import { EthereumAddress } from "../../types";
 import { Web3Adapter } from "./Web3Adapter";
@@ -50,7 +50,7 @@ export class LightUnknownError extends LightError {}
 export class LightCreationError extends LightWalletUtilError {}
 export class LightDesirializeError extends LightWalletUtilError {}
 
-export const LightWalletUtilSymbol = "LightWalletUtilSymbol";
+export const LIGHT_WALLET_UTIL_SYMBOL = Symbol();
 
 @injectable()
 export class LightWalletUtil {
@@ -146,13 +146,13 @@ export class LightWallet implements IPersonalWallet {
   }
 }
 
-export const LightWalletConnectorSymbol = "LightWalletConnector";
+export const LIGHT_WALLET_CONNECTOR_SYMBOL = Symbol();
 
 @injectable()
 export class LightWalletConnector {
   private web3Adapter?: Web3Adapter;
   public constructor(
-    @inject(new LazyServiceIdentifer(() => IEthereumNetworkConfigSymbol))
+    @inject(new LazyServiceIdentifer(() => ETHEREUM_NETWORK_CONFIG_SYMBOL))
     public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 

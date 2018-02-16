@@ -8,7 +8,7 @@ import { appRoutes } from "../../../app/components/AppRouter";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
 import { WalletSelector } from "../../../app/components/walletSelector/WalletSelector";
-import { DispatchSymbol } from "../../../app/getContainer";
+import { APP_DISPATCH_SYMBOL } from "../../../app/getContainer";
 import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
 import {
   BrowserWallet,
@@ -42,13 +42,13 @@ describe("<WalletSelector />", () => {
     // @todo: this is rather tmp solution to avoid testing whole obtainJWT flow
     // this should be gone soon and we should write additional mocks to make obtainJWT work
     function selectivelyMockDispatcher(container: Container): void {
-      const originalDispatch = container.get<Function>(DispatchSymbol);
+      const originalDispatch = container.get<Function>(APP_DISPATCH_SYMBOL);
       const mockDispatch = (action: any) => {
         if (action !== obtainJwt) {
           originalDispatch(action);
         }
       };
-      container.rebind(DispatchSymbol).toConstantValue(mockDispatch);
+      container.rebind(APP_DISPATCH_SYMBOL).toConstantValue(mockDispatch);
     }
 
     it("should select ledger wallet", async () => {

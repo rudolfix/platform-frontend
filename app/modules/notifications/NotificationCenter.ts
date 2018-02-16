@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { toast } from "react-toastify";
 
-export const NotificationCenterSymbol = "NotificationCenter";
+export const NOTIFICATION_CENTER_SYMBOL = Symbol();
 
 @injectable()
 export class NotificationCenter {

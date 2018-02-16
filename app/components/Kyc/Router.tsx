@@ -2,7 +2,7 @@ import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { kycRoutes } from "./routes";
 
-import { KYCStart } from "./Start";
+import { KYCStart } from "./Start/Start";
 
 // private
 import { KYCPersonalDone } from "./Personal/Done";

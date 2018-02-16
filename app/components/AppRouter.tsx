@@ -10,7 +10,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import { Dashboard } from "./Dashboard";
 import { Home } from "./Home";
-import { Kyc } from "./Kyc";
+import { Kyc } from "./Kyc/Kyc";
 import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const AppRouter: React.SFC = () => (

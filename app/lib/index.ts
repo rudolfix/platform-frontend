@@ -6,4 +6,4 @@
 export * from "./api/interfaces";
 
 // symbols
-export const API_KYC_SERVICE = "API_KYC_SERVICE";
+export const API_KYC_SERVICE_SYMBOL = Symbol();

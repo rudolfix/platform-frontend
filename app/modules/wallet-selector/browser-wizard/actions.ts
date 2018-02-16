@@ -1,17 +1,17 @@
-import { DispatchSymbol } from "../../../getContainer";
+import { APP_DISPATCH_SYMBOL } from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator } from "../../../storeHelpers";
-import { ILogger, LoggerSymbol } from "../../../utils/Logger";
+import { ILogger, LOGGER_SYMBOL } from "../../../utils/Logger";
 import {
+  BROWSER_WALLET_CONNECTOR_SYMBOL,
   BrowserWalletConnector,
-  BrowserWalletConnectorSymbol,
   BrowserWalletLockedError,
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
 } from "../../web3/BrowserWallet";
 import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
-import { Web3Manager, Web3ManagerSymbol } from "../../web3/Web3Manager";
+import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../../web3/Web3Manager";
 import { walletConnectedAction } from "../actions";
 
 export interface IBrowserWalletConnectionErrorAction extends IAppAction {
@@ -44,7 +44,7 @@ export const tryConnectingWithBrowserWallet = injectableFn(
       );
     }
   },
-  [DispatchSymbol, BrowserWalletConnectorSymbol, Web3ManagerSymbol, LoggerSymbol],
+  [APP_DISPATCH_SYMBOL, BROWSER_WALLET_CONNECTOR_SYMBOL, WEB3_MANAGER_SYMBOL, LOGGER_SYMBOL],
 );
 
 function mapBrowserWalletErrorToErrorMessage(e: Error): string {

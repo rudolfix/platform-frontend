@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
-import { DispatchSymbol } from "../../getContainer";
+import { APP_DISPATCH_SYMBOL } from "../../getContainer";
 import { AppDispatch } from "../../store";
 import { EthereumNetworkId } from "../../types";
 import {
@@ -9,19 +9,19 @@ import {
   AsyncIntervalSchedulerFactorySymbol,
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
-import { ILogger, LoggerSymbol } from "../../utils/Logger";
+import { ILogger, LOGGER_SYMBOL } from "../../utils/Logger";
 import { promiseTimeout } from "../../utils/promiseTimeout";
 import { newPersonalWalletPluggedAction, personalWalletDisconnectedAction } from "./actions";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
-export const IEthereumNetworkConfigSymbol = "EthereumNetworkConfig";
+export const ETHEREUM_NETWORK_CONFIG_SYMBOL = Symbol();
 
 export interface IEthereumNetworkConfig {
   rpcUrl: string;
 }
 
-export const Web3ManagerSymbol = "Web3Manager";
+export const WEB3_MANAGER_SYMBOL = Symbol();
 
 export class WalletNotConnectedError extends Error {
   constructor(public readonly wallet: IPersonalWallet) {
@@ -42,10 +42,10 @@ export class Web3Manager {
   private readonly web3ConnectionWatcher: AsyncIntervalScheduler;
 
   constructor(
-    @inject(IEthereumNetworkConfigSymbol)
+    @inject(ETHEREUM_NETWORK_CONFIG_SYMBOL)
     public readonly ethereumNetworkConfig: IEthereumNetworkConfig,
-    @inject(DispatchSymbol) public readonly dispatch: AppDispatch,
-    @inject(LoggerSymbol) public readonly logger: ILogger,
+    @inject(APP_DISPATCH_SYMBOL) public readonly dispatch: AppDispatch,
+    @inject(LOGGER_SYMBOL) public readonly logger: ILogger,
     @inject(AsyncIntervalSchedulerFactorySymbol)
     asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType,
   ) {

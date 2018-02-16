@@ -7,18 +7,18 @@ import { applyMiddleware, createStore, Store } from "redux";
 import { MemoryRouter } from "react-router";
 import { customizerContainerWithMiddlewareApi, getContainer } from "../app/getContainer";
 import {
+  BROWSER_WALLET_CONNECTOR_SYMBOL,
   BrowserWalletConnector,
-  BrowserWalletConnectorSymbol,
 } from "../app/modules/web3/BrowserWallet";
 import {
+  LEDGER_WALLET_CONNECTOR_SYMBOL,
   LedgerWalletConnector,
-  LedgerWalletConnectorSymbol,
 } from "../app/modules/web3/LedgerWallet";
-import { Web3Manager, Web3ManagerSymbol } from "../app/modules/web3/Web3Manager";
+import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../app/modules/web3/Web3Manager";
 import { createInjectMiddleware } from "../app/redux-injectify";
 import { IAppState, reducers } from "../app/store";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
-import { LoggerSymbol } from "../app/utils/Logger";
+import { LOGGER_SYMBOL } from "../app/utils/Logger";
 import { dummyConfig, dummyLogger } from "./fixtures";
 import { createMock, tid } from "./testUtils";
 
@@ -43,10 +43,10 @@ export function createIntegrationTestsSetup(
     options.ledgerWalletConnectorMock || createMock(LedgerWalletConnector, {});
   const web3ManagerMock = options.web3ManagerMock || createMock(Web3Manager, {});
   const container = getContainer(dummyConfig);
-  container.rebind(LedgerWalletConnectorSymbol).toConstantValue(ledgerWalletMock);
-  container.rebind(BrowserWalletConnectorSymbol).toConstantValue(browserWalletMock);
-  container.rebind(Web3ManagerSymbol).toConstantValue(web3ManagerMock);
-  container.rebind(LoggerSymbol).toConstantValue(dummyLogger);
+  container.rebind(LEDGER_WALLET_CONNECTOR_SYMBOL).toConstantValue(ledgerWalletMock);
+  container.rebind(BROWSER_WALLET_CONNECTOR_SYMBOL).toConstantValue(browserWalletMock);
+  container.rebind(WEB3_MANAGER_SYMBOL).toConstantValue(web3ManagerMock);
+  container.rebind(LOGGER_SYMBOL).toConstantValue(dummyLogger);
 
   const middleware = applyMiddleware(
     createInjectMiddleware(container, (container, middlewareApi) => {

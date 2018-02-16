@@ -10,7 +10,7 @@ import { inject, injectable, LazyServiceIdentifer } from "inversify";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
-import { IEthereumNetworkConfig, IEthereumNetworkConfigSymbol, SignerError } from "./Web3Manager";
+import { ETHEREUM_NETWORK_CONFIG_SYMBOL, IEthereumNetworkConfig, SignerError } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -56,7 +56,7 @@ export class LedgerWallet implements IPersonalWallet {
   }
 }
 
-export const LedgerWalletConnectorSymbol = "LedgerWalletConnector";
+export const LEDGER_WALLET_CONNECTOR_SYMBOL = Symbol();
 
 @injectable()
 export class LedgerWalletConnector {
@@ -64,7 +64,7 @@ export class LedgerWalletConnector {
   private ledgerInstance?: any;
 
   public constructor(
-    @inject(new LazyServiceIdentifer(() => IEthereumNetworkConfigSymbol))
+    @inject(new LazyServiceIdentifer(() => ETHEREUM_NETWORK_CONFIG_SYMBOL))
     public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 

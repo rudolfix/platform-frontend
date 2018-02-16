@@ -4,7 +4,7 @@ export interface IStorage {
   setKey: (key: string, value: string) => void;
   getKey: (key: string) => string;
 }
-export const StorageSymbol = "StorageSymbol";
+export const STORAGE_SYMBOL = Symbol();
 
 @injectable()
 export class Storage {

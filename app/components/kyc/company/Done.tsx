@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { appConnect } from "../../../store";
 
 import { actions } from "../../../modules/actions";
-import { ProgressStepper } from "../../shared/ProgressStepper";
+import { ProgressStepper } from "../../shared/progressStepper/ProgressStepper";
 
 import { Button } from "reactstrap";
 

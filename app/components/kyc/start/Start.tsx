@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
-import { ProgressStepper } from "../../shared/ProgressStepper";
+import { ProgressStepper } from "../../shared/progressStepper/ProgressStepper";
 
 interface IProps {
   goToPerson: () => void;

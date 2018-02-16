@@ -7,11 +7,11 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
-import { ProgressStepper } from "../../shared/ProgressStepper";
+import { ProgressStepper } from "../../shared/progressStepper/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 
-import { FormField } from "../../shared/Forms";
+import { FormField } from "../../shared/forms/forms";
 
 import * as Yup from "yup";
 

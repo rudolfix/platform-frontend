@@ -2,7 +2,7 @@ import { Form, Formik, FormikProps } from "formik";
 import * as React from "react";
 import { Button, Col, Row } from "reactstrap";
 import { compose } from "redux";
-import { FormField } from "../../../components/shared/Forms/FormField";
+import { FormField } from "../../../components/shared/forms/forms";
 import { tryConnectingWithLightWallet } from "../../../modules/wallet-selector/light-wizard/actions";
 import { appConnect } from "../../../store";
 

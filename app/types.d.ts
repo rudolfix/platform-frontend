@@ -11,3 +11,32 @@ export type EthereumAddress = Opaque<"EthereumAddress", string>;
 export type EthereumAddressWithChecksum = Opaque<"EthereumAddressWithChecksum", string>;
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
+
+//Taken from @types/reactstrap
+// @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23700
+export type InputType =
+  | "text"
+  | "email"
+  | "select"
+  | "file"
+  | "radio"
+  | "checkbox"
+  | "textarea"
+  | "button"
+  | "reset"
+  | "submit"
+  | "date"
+  | "datetime-local"
+  | "hidden"
+  | "image"
+  | "month"
+  | "number"
+  | "range"
+  | "search"
+  | "tel"
+  | "url"
+  | "week"
+  | "password"
+  | "datetime"
+  | "time"
+  | "color";

@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import * as warningSign from "../assets/img/warning.svg";
+import * as warningSign from "../../assets/img/warning.svg";
 import * as styles from "./WarningAlert.module.scss";
 
 interface IWarningAlertProps {

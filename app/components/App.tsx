@@ -8,7 +8,7 @@ import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../modules/web3/Web3Manager";
 import { injectableFn } from "../redux-injectify";
 import { AppDispatch } from "../store";
 import { AppRouter } from "./AppRouter";
-import { LoadingIndicator } from "./LoadingIndicator";
+import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 const appInitAction = injectableFn(
   async (web3Manager: Web3Manager, dispatch: AppDispatch) => {

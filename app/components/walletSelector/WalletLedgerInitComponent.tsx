@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { tryEstablishingConnectionWithLedger } from "../../modules/wallet-selector/ledger-wizard/actions";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
-import { WarningAlert } from "../WarningAlert";
+import { WarningAlert } from "../shared/WarningAlert";
 
 import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.svg";
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";

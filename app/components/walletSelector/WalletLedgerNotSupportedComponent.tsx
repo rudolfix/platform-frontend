@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { WarningAlert } from "../WarningAlert";
+import { WarningAlert } from "../shared/WarningAlert";
 
 import * as logoChrome from "../../assets/img/wallet_selector/logo_chrome.svg";
 import * as logoFirefox from "../../assets/img/wallet_selector/logo_firefox.svg";

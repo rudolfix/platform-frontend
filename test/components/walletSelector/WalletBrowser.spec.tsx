@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { LoadingIndicator } from "../../../app/components/LoadingIndicator";
+import { LoadingIndicator } from "../../../app/components/shared/LoadingIndicator";
 import { WalletBrowserComponent } from "../../../app/components/walletSelector/WalletBrowser";
 import { tid } from "../../testUtils";
 

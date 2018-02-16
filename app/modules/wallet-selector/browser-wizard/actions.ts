@@ -3,6 +3,7 @@ import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator } from "../../../storeHelpers";
 import { ILogger, LOGGER_SYMBOL } from "../../../utils/Logger";
+import { flows } from "../../flows";
 import {
   BROWSER_WALLET_CONNECTOR_SYMBOL,
   BrowserWalletConnector,
@@ -12,7 +13,8 @@ import {
 } from "../../web3/BrowserWallet";
 import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
 import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../../web3/Web3Manager";
-import { walletConnectedAction } from "../actions";
+
+export const browserWizzardActions = {};
 
 export interface IBrowserWalletConnectionErrorAction extends IAppAction {
   type: "BROWSER_WALLET_CONNECTION_ERROR";
@@ -36,7 +38,7 @@ export const tryConnectingWithBrowserWallet = injectableFn(
       const browserWallet = await browserWalletConnector.connect(web3Manager.networkId);
 
       await web3Manager.plugPersonalWallet(browserWallet);
-      dispatch(walletConnectedAction);
+      dispatch(flows.wallet.walletConnected);
     } catch (e) {
       logger.warn("Error while trying to connect with browser wallet: ", e.message);
       dispatch(

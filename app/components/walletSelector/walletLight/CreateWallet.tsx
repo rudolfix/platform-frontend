@@ -3,10 +3,10 @@ import * as React from "react";
 import { Button, Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { FormField } from "../../../components/shared/forms/forms";
-import { tryConnectingWithLightWallet } from "../../../modules/wallet-selector/light-wizard/actions";
 import { appConnect } from "../../../store";
 
 import * as Yup from "yup";
+import { flows } from "../../../modules/flows";
 
 const EMAIL = "email";
 const PASSWORD = "password";
@@ -89,7 +89,12 @@ export const CreateWallet = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>
-        dispatch(tryConnectingWithLightWallet(values.email as string, values.password as string)),
+        dispatch(
+          flows.wallet.tryConnectingWithLightWallet(
+            values.email as string,
+            values.password as string,
+          ),
+        ),
     }),
   }),
 )(CreateWalletComponent);

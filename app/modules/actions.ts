@@ -2,10 +2,12 @@ import { values } from "lodash";
 
 import { kycActions } from "./kyc/actions";
 import { routingActions } from "./routing/actions";
+import { walletActions } from "./wallet-selector/actions";
 
 export const actions = {
   kyc: kycActions,
   routing: routingActions,
+  wallet: walletActions,
 };
 
 /**
@@ -14,6 +16,7 @@ export const actions = {
 const allActions = {
   ...routingActions,
   ...kycActions,
+  ...walletActions,
 };
 
 /**

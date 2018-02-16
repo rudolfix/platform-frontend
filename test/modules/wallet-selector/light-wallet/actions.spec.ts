@@ -1,11 +1,9 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+import { actions } from "../../../../app/modules/actions";
+import { flows } from "../../../../app/modules/flows";
 import { UsersApi } from "../../../../app/modules/networking/UsersApi";
 import { Storage } from "../../../../app/modules/storage/storage";
-import {
-  lightWalletConnectionErrorAction,
-  tryConnectingWithLightWallet,
-} from "../../../../app/modules/wallet-selector/light-wizard/actions";
 import {
   ILightWallet,
   LightWrongPasswordSaltError,
@@ -46,7 +44,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         connect: spy(),
       });
 
-      await tryConnectingWithLightWallet("test@test.com", "password")(
+      await flows.wallet.tryConnectingWithLightWallet("test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
@@ -75,7 +73,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await tryConnectingWithLightWallet("test@test.com", "password")(
+      await flows.wallet.tryConnectingWithLightWallet("test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
@@ -87,9 +85,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       );
 
       expect(dispatchMock).to.be.calledWithExactly(
-        lightWalletConnectionErrorAction({
-          errorMsg: "Password is not correct",
-        }),
+        actions.wallet.lightWalletConnectionError("Password is not correct"),
       );
     });
   });

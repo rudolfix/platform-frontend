@@ -6,20 +6,7 @@ import { ILoadUserAgentInfoAction } from "./modules/userAgent/actions";
 import { browserReducer } from "./modules/userAgent/reducer";
 import { IBrowserWalletConnectionErrorAction } from "./modules/wallet-selector/browser-wizard/actions";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
-import {
-  ILedgerConnectionEstablishedAction,
-  ILedgerConnectionEstablishedErrorAction,
-  ILedgerWizardAccountsListNextPage,
-  ILedgerWizardAccountsListPreviousPage,
-  ILedgerWizardDerivationPathPrefixErrorAction,
-  ISetLedgerWizardAccountsAction,
-  ISetLedgerWizardDerivationPathPrefixAction,
-  IToggleLedgerWizardAdvancedAction,
-} from "./modules/wallet-selector/ledger-wizard/actions";
-import {
-  ILightWalletConnectionErrorAction,
-  ILightWalletCreatedAction,
-} from "./modules/wallet-selector/light-wizard/actions";
+import { ISetLedgerWizardAccountsAction } from "./modules/wallet-selector/ledger-wizard/actions";
 
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import {
@@ -44,19 +31,9 @@ export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTy
 // add new actions here
 export type AppActionTypes =
   //ledger wallet
-  | ILedgerConnectionEstablishedAction
-  | ILedgerConnectionEstablishedErrorAction
   | ISetLedgerWizardAccountsAction
-  | ILedgerWizardAccountsListNextPage
-  | ILedgerWizardAccountsListPreviousPage
-  | ISetLedgerWizardDerivationPathPrefixAction
-  | ILedgerWizardDerivationPathPrefixErrorAction
-  | IToggleLedgerWizardAdvancedAction
   // browser wallet
   | IBrowserWalletConnectionErrorAction
-  // light wallet
-  | ILightWalletConnectionErrorAction
-  | ILightWalletCreatedAction
   //web3 management
   | INewPersonalWalletPluggedAction
   | IPersonalWalletDisconnectedAction

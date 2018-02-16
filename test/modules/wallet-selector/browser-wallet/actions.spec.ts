@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
+import { flows } from "../../../../app/modules/flows";
 import {
   browserWalletConnectionErrorAction,
   tryConnectingWithBrowserWallet,
@@ -37,7 +37,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
+      expect(dispatchMock).to.be.calledWithExactly(flows.wallet.walletConnected);
     });
 
     it("should dispatch error action on error", async () => {

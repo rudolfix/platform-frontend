@@ -1,9 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import {
-  newPersonalWalletPluggedAction,
-  personalWalletDisconnectedAction,
-} from "../../../app/modules/web3/actions";
+import { newPersonalWalletPluggedAction } from "../../../app/modules/web3/actions";
+import { web3Flows } from "../../../app/modules/web3/flows";
 import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
 import { WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
 import {
@@ -113,7 +111,7 @@ describe("Web3Manager", () => {
     });
     await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledOnce; // remocking resets counter
-    expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
+    expect(dispatchMock).to.be.calledWithExactly(web3Flows.personalWalletDisconnected);
   });
 
   it("should fail on connection timeout", async () => {
@@ -153,6 +151,6 @@ describe("Web3Manager", () => {
 
     expect(ledgerWalletConnectionMock.testConnection).to.be.calledOnce;
     expect(dispatchMock).to.be.calledTwice;
-    expect(dispatchMock).to.be.calledWithExactly(personalWalletDisconnectedAction);
+    expect(dispatchMock).to.be.calledWithExactly(web3Flows.personalWalletDisconnected);
   });
 });

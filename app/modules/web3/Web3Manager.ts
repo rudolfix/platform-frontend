@@ -11,7 +11,8 @@ import {
 } from "../../utils/AsyncIntervalScheduler";
 import { ILogger, LOGGER_SYMBOL } from "../../utils/Logger";
 import { promiseTimeout } from "../../utils/promiseTimeout";
-import { newPersonalWalletPluggedAction, personalWalletDisconnectedAction } from "./actions";
+import { newPersonalWalletPluggedAction } from "./actions";
+import { web3Flows } from "./flows";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
@@ -100,7 +101,7 @@ export class Web3Manager {
 
   private onWeb3ConnectionLost = () => {
     this.logger.info("Web3 connection lost");
-    this.dispatch(personalWalletDisconnectedAction);
+    this.dispatch(web3Flows.personalWalletDisconnected);
 
     this.web3ConnectionWatcher.stop();
   };

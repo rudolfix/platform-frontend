@@ -1,8 +1,8 @@
 import { IAppAction } from "../../store";
 import { makeActionCreator } from "../../storeHelpers";
 import { EthereumAddress } from "../../types";
-import { createSimpleAction } from "../actions";
-import { WalletSubType, WalletType } from "./PersonalWeb3";
+import { createSimpleAction } from "../actionsUtils";
+import { WalletSubType, WalletType } from "./types";
 
 export const web3Actions = {
   personalWalletDisconnected: () => createSimpleAction("PERSONAL_WALLET_DISCONNECTED"),

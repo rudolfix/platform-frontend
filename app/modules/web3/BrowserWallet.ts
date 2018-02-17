@@ -4,7 +4,8 @@ import { injectable } from "inversify";
 import * as Web3 from "web3";
 
 import { EthereumAddress, EthereumNetworkId } from "../../types";
-import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
+import { IPersonalWallet, SignerType } from "./PersonalWeb3";
+import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 
 export class BrowserWalletError extends Error {}

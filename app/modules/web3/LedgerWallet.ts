@@ -1,3 +1,5 @@
+export const LEDGER_WALLET_CONNECTOR_SYMBOL = Symbol();
+
 import ledgerWalletProvider from "ledger-wallet-provider";
 import * as semver from "semver";
 import * as Web3 from "web3";
@@ -8,7 +10,8 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { delay } from "bluebird";
 import { inject, injectable, LazyServiceIdentifer } from "inversify";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
-import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
+import { IPersonalWallet, SignerType } from "./PersonalWeb3";
+import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 import { ETHEREUM_NETWORK_CONFIG_SYMBOL, IEthereumNetworkConfig, SignerError } from "./Web3Manager";
 
@@ -55,8 +58,6 @@ export class LedgerWallet implements IPersonalWallet {
     }
   }
 }
-
-export const LEDGER_WALLET_CONNECTOR_SYMBOL = Symbol();
 
 @injectable()
 export class LedgerWalletConnector {

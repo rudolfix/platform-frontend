@@ -8,10 +8,11 @@ import * as Web3ProviderEngine from "web3-provider-engine";
 import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hooked-wallet";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
-import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
+import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { ETHEREUM_NETWORK_CONFIG_SYMBOL, IEthereumNetworkConfig } from "./Web3Manager";
 
 import { EthereumAddress } from "../../types";
+import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 
 export interface ICreateVault {

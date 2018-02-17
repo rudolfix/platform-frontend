@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { actions } from "../../../app/modules/actions";
 import { newPersonalWalletPluggedAction } from "../../../app/modules/web3/actions";
-import { WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
 import { IWeb3State, web3InitialState, web3Reducer } from "../../../app/modules/web3/reducer";
+import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
 import { dummyEthereumAddress } from "../../fixtures";
 
 describe("Web3 > reducer", () => {

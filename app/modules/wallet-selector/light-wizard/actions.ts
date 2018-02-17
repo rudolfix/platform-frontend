@@ -1,4 +1,4 @@
-import { createAction } from "../../actions";
+import { createAction } from "../../actionsUtils";
 import { IVault } from "../../web3/LightWallet";
 
 export const lightWizzardActions = {

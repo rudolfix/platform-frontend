@@ -1,3 +1,5 @@
+export const WEB3_MANAGER_SYMBOL = Symbol();
+
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -21,8 +23,6 @@ export const ETHEREUM_NETWORK_CONFIG_SYMBOL = Symbol();
 export interface IEthereumNetworkConfig {
   rpcUrl: string;
 }
-
-export const WEB3_MANAGER_SYMBOL = Symbol();
 
 export class WalletNotConnectedError extends Error {
   constructor(public readonly wallet: IPersonalWallet) {

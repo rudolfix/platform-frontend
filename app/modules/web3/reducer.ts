@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import { AppReducer } from "../../store";
 import { EthereumAddress } from "../../types";
-import { WalletSubType, WalletType } from "./PersonalWeb3";
+import { WalletSubType, WalletType } from "./types";
 import { makeEthereumAddressChecksummed } from "./utils";
 
 interface IDisconnectedWeb3State {

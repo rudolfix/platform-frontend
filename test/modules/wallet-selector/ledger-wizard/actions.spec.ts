@@ -4,16 +4,7 @@ import { spy } from "sinon";
 
 import { actions } from "../../../../app/modules/actions";
 import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
-import {
-  finishSettingUpLedgerConnectorAction,
-  goToNextPageAndLoadDataAction,
-  goToPreviousPageAndLoadDataAction,
-  loadLedgerAccountsAction,
-  setDerivationPathPrefixAction,
-  setLedgerAccountsAction,
-  tryEstablishingConnectionWithLedger,
-  verifyIfLedgerStillConnected,
-} from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
+import { ledgerWizardFlows } from "../../../../app/modules/wallet-selector/ledger-wizard/flows";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../app/modules/wallet-selector/ledger-wizard/reducer";
 import {
   IDerivationPathToAddress,
@@ -41,7 +32,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         networkId: expectedNetworkId,
       });
 
-      await tryEstablishingConnectionWithLedger(
+      await ledgerWizardFlows.tryEstablishingConnectionWithLedger(
         mockDispatch,
         ledgerWalletConnectorMock,
         web3ManagerMock,
@@ -64,7 +55,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         networkId: expectedNetworkId,
       });
 
-      await tryEstablishingConnectionWithLedger(
+      await ledgerWizardFlows.tryEstablishingConnectionWithLedger(
         mockDispatch,
         ledgerWalletConnectorMock,
         web3ManagerMock,
@@ -111,7 +102,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         }),
       });
 
-      await loadLedgerAccountsAction(
+      await ledgerWizardFlows.loadLedgerAccounts(
         dispatchMock,
         getStateMock,
         ledgerWalletConnectorMock,
@@ -126,9 +117,8 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         dummyState.ledgerWizardState!.numberOfAccountsPerPage,
       );
       expect(dispatchMock).to.be.calledWithExactly(
-        setLedgerAccountsAction({
-          derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-          accounts: [
+        actions.wallet.setLedgerAccounts(
+          [
             {
               address: expectedAccounts["44'/60'/0'/1"],
               balanceETH: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/1"]].toString(),
@@ -142,7 +132,8 @@ describe("Wallet selector > Ledger wizard > actions", () => {
               derivationPath: "44'/60'/0'/2",
             },
           ],
-        }),
+          DEFAULT_DERIVATION_PATH_PREFIX,
+        ),
       );
     });
   });
@@ -151,11 +142,11 @@ describe("Wallet selector > Ledger wizard > actions", () => {
     it("should work", async () => {
       const mockDispatch = spy();
 
-      goToNextPageAndLoadDataAction(mockDispatch);
+      ledgerWizardFlows.goToNextPageAndLoadData(mockDispatch);
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWith(actions.wallet.ledgerWizardAccountsListNextPage());
-      expect(mockDispatch).to.be.calledWith(loadLedgerAccountsAction);
+      expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
     });
   });
 
@@ -163,11 +154,11 @@ describe("Wallet selector > Ledger wizard > actions", () => {
     it("should work", () => {
       const mockDispatch = spy();
 
-      goToPreviousPageAndLoadDataAction(mockDispatch);
+      ledgerWizardFlows.goToPreviousPageAndLoadData(mockDispatch);
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWith(actions.wallet.ledgerWizardAccountsListPreviousPage());
-      expect(mockDispatch).to.be.calledWith(loadLedgerAccountsAction);
+      expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
     });
   });
 
@@ -189,7 +180,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const mockDispatch = spy();
       const getStateMock = spy(() => dummyState);
 
-      await setDerivationPathPrefixAction(DEFAULT_DERIVATION_PATH_PREFIX)(
+      await ledgerWizardFlows.setDerivationPathPrefix(DEFAULT_DERIVATION_PATH_PREFIX)(
         mockDispatch,
         getStateMock,
       );
@@ -201,13 +192,13 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const mockDispatch = spy();
       const getStateMock = spy(() => dummyState);
 
-      await setDerivationPathPrefixAction(newDP)(mockDispatch, getStateMock);
+      await ledgerWizardFlows.setDerivationPathPrefix(newDP)(mockDispatch, getStateMock);
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWithExactly(
         actions.wallet.setLedgerWizardDerivationPathPrefix(newDP),
       );
-      expect(mockDispatch).to.be.calledWithExactly(loadLedgerAccountsAction);
+      expect(mockDispatch).to.be.calledWithExactly(ledgerWizardFlows.loadLedgerAccounts);
     });
   });
 
@@ -224,7 +215,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await finishSettingUpLedgerConnectorAction(expectedDerivationPath)(
+      await ledgerWizardFlows.finishSettingUpLedgerConnector(expectedDerivationPath)(
         dispatchMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
@@ -252,11 +243,13 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         },
       });
 
-      await finishSettingUpLedgerConnectorAction(expectedDerivationPath)(
-        navigateToMock,
-        ledgerWalletConnectorMock,
-        web3ManagerMock,
-      ).catch(() => {});
+      await ledgerWizardFlows
+        .finishSettingUpLedgerConnector(expectedDerivationPath)(
+          navigateToMock,
+          ledgerWalletConnectorMock,
+          web3ManagerMock,
+        )
+        .catch(() => {});
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
         expectedDerivationPath,
@@ -273,7 +266,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         testConnection: async () => true,
       });
 
-      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
+      await ledgerWizardFlows.verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
 
       expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.not.be.called;
@@ -285,7 +278,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         testConnection: async () => false,
       });
 
-      await verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
+      await ledgerWizardFlows.verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
 
       expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.be.calledWithExactly(

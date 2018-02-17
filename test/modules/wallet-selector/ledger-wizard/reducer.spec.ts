@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import { actions } from "../../../../app/modules/actions";
-import { setLedgerAccountsAction } from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
 import {
   DEFAULT_DERIVATION_PATH_PREFIX,
   DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
@@ -85,12 +84,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     it("should act on SET_LEDGER_WIZARD_ACCOUNTS action", () => {
       const newState = ledgerWizardReducer(
         undefined,
-        setLedgerAccountsAction({
-          derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-          accounts: [
-            { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
-          ],
-        }),
+        actions.wallet.setLedgerAccounts(
+          [{ address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" }],
+          DEFAULT_DERIVATION_PATH_PREFIX,
+        ),
       );
 
       expect(newState).to.be.deep.eq({
@@ -113,12 +110,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       };
       const newState = ledgerWizardReducer(
         initialState,
-        setLedgerAccountsAction({
-          derivationPathPrefix: "",
-          accounts: [
-            { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
-          ],
-        }),
+        actions.wallet.setLedgerAccounts(
+          [{ address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" }],
+          "",
+        ),
       );
 
       expect(newState).to.be.deep.eq(initialState);
@@ -131,10 +126,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       const initialState = ledgerWizardInitialState;
       const newState = ledgerWizardReducer(
         initialState,
-        setLedgerAccountsAction({
-          derivationPathPrefix: "",
-          accounts: newAccounts,
-        }),
+        actions.wallet.setLedgerAccounts(newAccounts, ""),
       );
 
       expect(newState).to.be.deep.eq({

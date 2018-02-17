@@ -3,7 +3,6 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { tryEstablishingConnectionWithLedger } from "../../modules/wallet-selector/ledger-wizard/actions";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
 import { WarningAlert } from "../shared/WarningAlert";
@@ -11,6 +10,7 @@ import { WarningAlert } from "../shared/WarningAlert";
 import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.svg";
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
 import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
+import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
@@ -77,7 +77,7 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
 // @todo: type inference doesnt work correctly here. Probably because of withActionWatcher signature
 export const WalletLedgerInit = compose<React.SFC>(
   withActionWatcher({
-    actionCreator: dispatch => dispatch(tryEstablishingConnectionWithLedger),
+    actionCreator: dispatch => dispatch(ledgerWizardFlows.tryEstablishingConnectionWithLedger),
     interval: LEDGER_RECONNECT_INTERVAL,
   }),
   appConnect<IWalletLedgerInitComponentProps>({

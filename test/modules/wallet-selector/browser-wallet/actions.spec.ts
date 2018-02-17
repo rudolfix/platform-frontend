@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { browserWalletConnectionErrorAction } from "../../../../app/modules/wallet-selector/browser-wizard/actions";
+import { actions } from "../../../../app/modules/actions";
 import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import {
   BrowserWallet,
@@ -60,9 +60,9 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
       expect(dispatchMock).to.be.calledWithExactly(
-        browserWalletConnectionErrorAction({
-          errorMsg: "Your wallet seems to be locked — we can't access any accounts.",
-        }),
+        actions.wallet.browserWalletConnectionError(
+          "Your wallet seems to be locked — we can't access any accounts.",
+        ),
       );
     });
   });

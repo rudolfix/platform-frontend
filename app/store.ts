@@ -4,9 +4,7 @@ import { combineReducers } from "redux";
 
 import { ILoadUserAgentInfoAction } from "./modules/userAgent/actions";
 import { browserReducer } from "./modules/userAgent/reducer";
-import { IBrowserWalletConnectionErrorAction } from "./modules/wallet-selector/browser-wizard/actions";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
-import { ISetLedgerWizardAccountsAction } from "./modules/wallet-selector/ledger-wizard/actions";
 
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import {
@@ -30,10 +28,6 @@ export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTy
 
 // add new actions here
 export type AppActionTypes =
-  //ledger wallet
-  | ISetLedgerWizardAccountsAction
-  // browser wallet
-  | IBrowserWalletConnectionErrorAction
   //web3 management
   | INewPersonalWalletPluggedAction
   | IPersonalWalletDisconnectedAction

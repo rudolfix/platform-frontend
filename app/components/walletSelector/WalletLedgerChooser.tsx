@@ -2,14 +2,7 @@ import * as React from "react";
 import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
-import {
-  finishSettingUpLedgerConnectorAction,
-  goToNextPageAndLoadDataAction,
-  goToPreviousPageAndLoadDataAction,
-  loadLedgerAccountsAction,
-  setDerivationPathPrefixAction,
-  verifyIfLedgerStillConnected,
-} from "../../modules/wallet-selector/ledger-wizard/actions";
+import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
 import {
   ILedgerAccount,
   selectHasPreviousPage,
@@ -35,24 +28,24 @@ export const WalletLedgerChooser = compose<React.SFC>(
     dispatchToProps: dispatch => ({
       onDerivationPathError: () => dispatch(actions.wallet.ledgerWizardDerivationPathPrefixError()),
       onDerivationPathPrefixChange: (derivationPathPrefix: string) => {
-        dispatch(setDerivationPathPrefixAction(derivationPathPrefix));
+        dispatch(ledgerWizardFlows.setDerivationPathPrefix(derivationPathPrefix));
       },
       handleAddressChosen: (account: ILedgerAccount) => {
-        dispatch(finishSettingUpLedgerConnectorAction(account.derivationPath));
+        dispatch(ledgerWizardFlows.finishSettingUpLedgerConnector(account.derivationPath));
       },
-      showNextAddresses: () => dispatch(goToNextPageAndLoadDataAction),
-      showPrevAddresses: () => dispatch(goToPreviousPageAndLoadDataAction),
+      showNextAddresses: () => dispatch(ledgerWizardFlows.goToNextPageAndLoadData),
+      showPrevAddresses: () => dispatch(ledgerWizardFlows.goToPreviousPageAndLoadData),
       handleAdvanced: () => {
         dispatch(actions.wallet.toggleLedgerAccountsAdvanced());
-        dispatch(loadLedgerAccountsAction);
+        dispatch(ledgerWizardFlows.loadLedgerAccounts);
       },
     }),
   }),
   onEnterAction({
-    actionCreator: dispatch => dispatch(loadLedgerAccountsAction),
+    actionCreator: dispatch => dispatch(ledgerWizardFlows.loadLedgerAccounts),
   }),
   withActionWatcher({
-    actionCreator: dispatch => dispatch(verifyIfLedgerStillConnected),
+    actionCreator: dispatch => dispatch(ledgerWizardFlows.verifyIfLedgerStillConnected),
     interval: 1000,
   }),
 )(WalletLedgerChooserComponent);

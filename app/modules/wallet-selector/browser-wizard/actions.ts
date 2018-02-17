@@ -1,15 +1,6 @@
-import { IAppAction } from "../../../store";
-import { makeActionCreator } from "../../../storeHelpers";
+import { createAction } from "../../actions";
 
-export const browserWizzardActions = {};
-
-export interface IBrowserWalletConnectionErrorAction extends IAppAction {
-  type: "BROWSER_WALLET_CONNECTION_ERROR";
-  payload: {
-    errorMsg: string;
-  };
-}
-
-export const browserWalletConnectionErrorAction = makeActionCreator<
-  IBrowserWalletConnectionErrorAction
->("BROWSER_WALLET_CONNECTION_ERROR");
+export const browserWizzardActions = {
+  browserWalletConnectionError: (errorMsg: string) =>
+    createAction("BROWSER_WALLET_CONNECTION_ERROR", { errorMsg }),
+};

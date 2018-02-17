@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { browserWalletConnectionErrorAction } from "../../../../app/modules/wallet-selector/browser-wizard/actions";
+import { actions } from "../../../../app/modules/actions";
 import { browserWalletWizardReducer } from "../../../../app/modules/wallet-selector/browser-wizard/reducer";
 
 describe("Wallet selector > Ledger wizard > reducer", () => {
@@ -8,7 +8,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
 
     const actualState = browserWalletWizardReducer(
       undefined,
-      browserWalletConnectionErrorAction({ errorMsg: expectedErrorMsg }),
+      actions.wallet.browserWalletConnectionError(expectedErrorMsg),
     );
 
     expect(actualState).to.be.deep.eq({ isLoading: false, errorMsg: expectedErrorMsg });

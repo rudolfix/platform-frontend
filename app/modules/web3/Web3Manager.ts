@@ -13,7 +13,7 @@ import {
 } from "../../utils/AsyncIntervalScheduler";
 import { ILogger, LOGGER_SYMBOL } from "../../utils/Logger";
 import { promiseTimeout } from "../../utils/promiseTimeout";
-import { newPersonalWalletPluggedAction } from "./actions";
+import { web3Actions } from "./actions";
 import { web3Flows } from "./flows";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
@@ -71,11 +71,11 @@ export class Web3Manager {
     this.personalWallet = personalWallet;
 
     this.dispatch(
-      newPersonalWalletPluggedAction({
-        type: personalWallet.walletType,
-        subtype: personalWallet.walletSubType,
-        ethereumAddress: personalWallet.ethereumAddress,
-      }),
+      web3Actions.newPersonalWalletPlugged(
+        personalWallet.walletType,
+        personalWallet.walletSubType,
+        personalWallet.ethereumAddress,
+      ),
     );
 
     this.web3ConnectionWatcher.start();

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { newPersonalWalletPluggedAction } from "../../../app/modules/web3/actions";
+import { web3Actions } from "../../../app/modules/web3/actions";
 import { web3Flows } from "../../../app/modules/web3/flows";
 import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
 import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
@@ -47,11 +47,11 @@ describe("Web3Manager", () => {
     expect(web3Manager.personalWallet).to.be.eq(ledgerWalletMock);
     expect(ledgerWalletMock.testConnection).to.be.calledWithExactly(expectedNetworkId);
     expect(dispatchMock).to.be.calledWithExactly(
-      newPersonalWalletPluggedAction({
-        type: WalletType.LEDGER,
-        subtype: WalletSubType.UNKNOWN,
-        ethereumAddress: dummyEthereumAddress,
-      }),
+      web3Actions.newPersonalWalletPlugged(
+        WalletType.LEDGER,
+        WalletSubType.UNKNOWN,
+        dummyEthereumAddress,
+      ),
     );
     expect(asyncIntervalSchedulerMock.start).to.be.calledOnce;
   });

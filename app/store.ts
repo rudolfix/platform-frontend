@@ -6,7 +6,6 @@ import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
-import { INewPersonalWalletPluggedAction } from "./modules/web3/actions";
 import { web3Reducer } from "./modules/web3/reducer";
 
 import { TAction } from "./modules/actions";
@@ -23,9 +22,7 @@ export type AppDispatch = (a: AppActionTypes | Function) => void;
 export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTypes) => S;
 
 // add new actions here
-export type AppActionTypes =
-  //web3 management
-  INewPersonalWalletPluggedAction | TAction;
+export type AppActionTypes = TAction;
 
 // add new app reducers here. They must be AppReducer<T> type
 const appReducers = {

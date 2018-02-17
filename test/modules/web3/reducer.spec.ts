@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { actions } from "../../../app/modules/actions";
-import { newPersonalWalletPluggedAction } from "../../../app/modules/web3/actions";
+import { web3Actions } from "../../../app/modules/web3/actions";
 import { IWeb3State, web3InitialState, web3Reducer } from "../../../app/modules/web3/reducer";
 import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
 import { dummyEthereumAddress } from "../../fixtures";
@@ -14,7 +14,14 @@ describe("Web3 > reducer", () => {
       ethereumAddress: dummyEthereumAddress,
     };
 
-    const actualNewState = web3Reducer(initialState, newPersonalWalletPluggedAction(actionPayload));
+    const actualNewState = web3Reducer(
+      initialState,
+      web3Actions.newPersonalWalletPlugged(
+        actionPayload.type,
+        actionPayload.subtype,
+        actionPayload.ethereumAddress,
+      ),
+    );
 
     expect(actualNewState).to.be.deep.eq({
       connected: true,

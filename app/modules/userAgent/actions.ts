@@ -1,34 +1,6 @@
-import * as detectBrowser from "detect-browser";
+import { createAction } from "../actions";
 
-import { APP_DISPATCH_SYMBOL } from "../../getContainer";
-import { injectableFn } from "../../redux-injectify";
-import { AppDispatch, IAppAction } from "../../store";
-import { makeActionCreator } from "../../storeHelpers";
-
-export interface ILoadUserAgentInfoAction extends IAppAction {
-  type: "LOAD_USER_AGENT_INFO_ACTION";
-  payload: {
-    name?: string;
-    version?: string;
-  };
-}
-
-export const loadUserAgentInfoAction = makeActionCreator<ILoadUserAgentInfoAction>(
-  "LOAD_USER_AGENT_INFO_ACTION",
-);
-
-export const detectUserAgentAction = injectableFn(
-  (dispatch: AppDispatch) => {
-    const userAgentInfo = detectBrowser.detect();
-
-    if (userAgentInfo) {
-      dispatch(
-        loadUserAgentInfoAction({
-          name: userAgentInfo.name,
-          version: userAgentInfo.version,
-        }),
-      );
-    }
-  },
-  [APP_DISPATCH_SYMBOL],
-);
+export const userAgentActions = {
+  loadUserAgentInfo: (name?: string, version?: string) =>
+    createAction("LOAD_USER_AGENT_INFO_ACTION", { name, version }),
+};

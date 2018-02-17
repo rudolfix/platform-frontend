@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import { APP_DISPATCH_SYMBOL } from "../getContainer";
-import { detectUserAgentAction } from "../modules/userAgent/actions";
+import { flows } from "../modules/flows";
 import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../modules/web3/Web3Manager";
 import { injectableFn } from "../redux-injectify";
 import { AppDispatch } from "../store";
@@ -12,7 +12,7 @@ import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 const appInitAction = injectableFn(
   async (web3Manager: Web3Manager, dispatch: AppDispatch) => {
-    dispatch(detectUserAgentAction);
+    dispatch(flows.userAgent.detectUserAgent);
     await web3Manager.initialize();
   },
   [WEB3_MANAGER_SYMBOL, APP_DISPATCH_SYMBOL],

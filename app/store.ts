@@ -2,7 +2,6 @@ import { connect, InferableComponentEnhancerWithProps, Options } from "react-red
 import { routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
 
-import { ILoadUserAgentInfoAction } from "./modules/userAgent/actions";
 import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 
@@ -29,11 +28,7 @@ export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTy
 // add new actions here
 export type AppActionTypes =
   //web3 management
-  | INewPersonalWalletPluggedAction
-  | IPersonalWalletDisconnectedAction
-  // browser
-  | ILoadUserAgentInfoAction
-  | TAction;
+  INewPersonalWalletPluggedAction | IPersonalWalletDisconnectedAction | TAction;
 
 // add new app reducers here. They must be AppReducer<T> type
 const appReducers = {

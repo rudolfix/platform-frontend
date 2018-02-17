@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { tryConnectingWithBrowserWallet } from "../../modules/wallet-selector/browser-wizard/actions";
+import { walletFlows } from "../../modules/wallet-selector/flows";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
 import { HiResImage } from "../shared/HiResImage";
@@ -98,7 +98,7 @@ export const WalletBrowser = compose<React.SFC>(
     }),
   }),
   withActionWatcher({
-    actionCreator: dispatch => dispatch(tryConnectingWithBrowserWallet),
+    actionCreator: dispatch => dispatch(walletFlows.tryConnectingWithBrowserWallet),
     interval: BROWSER_WALLET_RECONNECT_INTERVAL,
   }),
 )(WalletBrowserComponent);

@@ -22,7 +22,7 @@ import { IStorage } from "./../../storage/storage";
 
 const LOCAL_STORAGE_LIGHT_WALLET_KEY = "LIGHT_WALLET";
 
-export const lightWizzardFlows = {
+export const lightWizardFlows = {
   tryConnectingWithLightWallet: (email: string, password: string) =>
     injectableFn(
       async (

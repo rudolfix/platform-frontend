@@ -1,1 +1,1 @@
-export const ledgerWizzardFlows = {};
+export const ledgerWizardFlows = {};

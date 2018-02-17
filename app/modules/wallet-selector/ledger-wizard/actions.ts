@@ -6,7 +6,6 @@ import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch, IAppAction } from "../../../store";
 import { makeActionCreator } from "../../../storeHelpers";
 import { actions, createAction, createSimpleAction } from "../../actions";
-import { flows } from "../../flows";
 import {
   LEDGER_WALLET_CONNECTOR_SYMBOL,
   LedgerLockedError,
@@ -14,6 +13,7 @@ import {
   LedgerWalletConnector,
 } from "../../web3/LedgerWallet";
 import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../../web3/Web3Manager";
+import { walletFlows } from "../flows";
 import { ILedgerAccount } from "./reducer";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
@@ -157,7 +157,7 @@ export const finishSettingUpLedgerConnectorAction = (derivationPath: string) =>
     ) => {
       const ledgerWallet = await ledgerConnector.finishConnecting(derivationPath);
       await web3Manager.plugPersonalWallet(ledgerWallet);
-      dispatch(flows.wallet.walletConnected);
+      dispatch(walletFlows.walletConnected);
     },
     [APP_DISPATCH_SYMBOL, LEDGER_WALLET_CONNECTOR_SYMBOL, WEB3_MANAGER_SYMBOL],
   );

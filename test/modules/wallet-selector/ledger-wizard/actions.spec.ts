@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { spy } from "sinon";
 
 import { actions } from "../../../../app/modules/actions";
-import { flows } from "../../../../app/modules/flows";
+import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import {
   finishSettingUpLedgerConnectorAction,
   goToNextPageAndLoadDataAction,
@@ -234,7 +234,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         expectedDerivationPath,
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(dispatchMock).to.be.calledWithExactly(flows.wallet.walletConnected);
+      expect(dispatchMock).to.be.calledWithExactly(walletFlows.walletConnected);
     });
 
     it("should not navigate when ledger wallet is not connected", async () => {

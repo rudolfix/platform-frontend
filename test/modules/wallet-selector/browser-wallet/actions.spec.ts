@@ -1,10 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { flows } from "../../../../app/modules/flows";
-import {
-  browserWalletConnectionErrorAction,
-  tryConnectingWithBrowserWallet,
-} from "../../../../app/modules/wallet-selector/browser-wizard/actions";
+import { browserWalletConnectionErrorAction } from "../../../../app/modules/wallet-selector/browser-wizard/actions";
+import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -29,7 +26,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await tryConnectingWithBrowserWallet(
+      await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,
@@ -37,7 +34,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(dispatchMock).to.be.calledWithExactly(flows.wallet.walletConnected);
+      expect(dispatchMock).to.be.calledWithExactly(walletFlows.walletConnected);
     });
 
     it("should dispatch error action on error", async () => {
@@ -54,7 +51,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await tryConnectingWithBrowserWallet(
+      await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { flows } from "../../../app/modules/flows";
 import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
+import { walletFlows } from "../../../app/modules/wallet-selector/flows";
 
 describe("Wallet selector > actions", () => {
   describe("walletConnectedAction", () => {
@@ -9,7 +9,7 @@ describe("Wallet selector > actions", () => {
       const navigateToMock = spy();
       const dispatchMock = spy();
 
-      await flows.wallet.walletConnected(navigateToMock, dispatchMock);
+      await walletFlows.walletConnected(navigateToMock, dispatchMock);
 
       expect(navigateToMock).to.be.calledWithExactly("/");
       expect(dispatchMock).to.be.calledWithExactly(obtainJwt);

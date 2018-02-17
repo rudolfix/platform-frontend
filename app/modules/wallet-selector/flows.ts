@@ -2,9 +2,9 @@ import { APP_DISPATCH_SYMBOL, NAVIGATE_TO_SYMBOL, NavigateTo } from "../../getCo
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch } from "../../store";
 import { obtainJwt } from "../networking/jwt-actions";
-import { browserWizzardFlows } from "./browser-wizard/flows";
-import { ledgerWizzardFlows } from "./ledger-wizard/flows";
-import { lightWizzardFlows } from "./light-wizard/flows";
+import { browserWizardFlows } from "./browser-wizard/flows";
+import { ledgerWizardFlows } from "./ledger-wizard/flows";
+import { lightWizardFlows } from "./light-wizard/flows";
 
 export const walletFlows = {
   walletConnected: injectableFn(
@@ -16,7 +16,7 @@ export const walletFlows = {
     },
     [NAVIGATE_TO_SYMBOL, APP_DISPATCH_SYMBOL],
   ),
-  ...browserWizzardFlows,
-  ...ledgerWizzardFlows,
-  ...lightWizzardFlows,
+  ...browserWizardFlows,
+  ...ledgerWizardFlows,
+  ...lightWizardFlows,
 };

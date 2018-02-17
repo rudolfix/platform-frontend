@@ -2,11 +2,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
-import { APP_DISPATCH_SYMBOL } from "../getContainer";
 import { flows } from "../modules/flows";
-import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../modules/web3/Web3Manager";
+import { Web3Manager } from "../modules/web3/Web3Manager";
 import { injectableFn } from "../redux-injectify";
 import { AppDispatch } from "../store";
+import { symbols } from "../symbols";
 import { AppRouter } from "./AppRouter";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
@@ -15,7 +15,7 @@ const appInitAction = injectableFn(
     dispatch(flows.userAgent.detectUserAgent);
     await web3Manager.initialize();
   },
-  [WEB3_MANAGER_SYMBOL, APP_DISPATCH_SYMBOL],
+  [symbols.web3Manager, symbols.appDispatch],
 );
 
 interface IInitializationDispatchProps {

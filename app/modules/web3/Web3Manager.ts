@@ -1,24 +1,19 @@
-export const WEB3_MANAGER_SYMBOL = Symbol();
-
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
-import { APP_DISPATCH_SYMBOL } from "../../getContainer";
 import { AppDispatch } from "../../store";
+import { symbols } from "../../symbols";
 import { EthereumNetworkId } from "../../types";
 import {
   AsyncIntervalScheduler,
-  AsyncIntervalSchedulerFactorySymbol,
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
-import { ILogger, LOGGER_SYMBOL } from "../../utils/Logger";
+import { ILogger } from "../../utils/Logger";
 import { promiseTimeout } from "../../utils/promiseTimeout";
 import { web3Actions } from "./actions";
 import { web3Flows } from "./flows";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
-
-export const ETHEREUM_NETWORK_CONFIG_SYMBOL = Symbol();
 
 export interface IEthereumNetworkConfig {
   rpcUrl: string;
@@ -43,11 +38,11 @@ export class Web3Manager {
   private readonly web3ConnectionWatcher: AsyncIntervalScheduler;
 
   constructor(
-    @inject(ETHEREUM_NETWORK_CONFIG_SYMBOL)
+    @inject(symbols.ethereumNetworkConfig)
     public readonly ethereumNetworkConfig: IEthereumNetworkConfig,
-    @inject(APP_DISPATCH_SYMBOL) public readonly dispatch: AppDispatch,
-    @inject(LOGGER_SYMBOL) public readonly logger: ILogger,
-    @inject(AsyncIntervalSchedulerFactorySymbol)
+    @inject(symbols.appDispatch) public readonly dispatch: AppDispatch,
+    @inject(symbols.logger) public readonly logger: ILogger,
+    @inject(symbols.asyncIntervalSchedulerFactory)
     asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType,
   ) {
     this.web3ConnectionWatcher = asyncIntervalSchedulerFactory(

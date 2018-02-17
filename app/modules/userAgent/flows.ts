@@ -1,8 +1,8 @@
 import * as detectBrowser from "detect-browser";
 
-import { APP_DISPATCH_SYMBOL } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch } from "../../store";
+import { symbols } from "../../symbols";
 import { actions } from "../actions";
 
 export const userAgentFlows = {
@@ -14,6 +14,6 @@ export const userAgentFlows = {
         dispatch(actions.userAgent.loadUserAgentInfo(userAgentInfo.name, userAgentInfo.version));
       }
     },
-    [APP_DISPATCH_SYMBOL],
+    [symbols.appDispatch],
   ),
 };

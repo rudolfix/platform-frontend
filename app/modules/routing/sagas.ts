@@ -1,7 +1,8 @@
 import { effects } from "redux-saga";
 
-import { NAVIGATE_TO_SYMBOL, NavigateTo } from "../../getContainer";
+import { NavigateTo } from "../../getContainer";
 
+import { symbols } from "../../symbols";
 import { TAction } from "../actions";
 import { getDependency, neuTake } from "../sagas";
 
@@ -21,7 +22,7 @@ function* goToRoute(): Iterator<effects.Effect> {
     if (action.type !== "GO_TO_ROUTE") {
       continue;
     }
-    const navigator: NavigateTo = yield effects.call(getDependency, NAVIGATE_TO_SYMBOL);
+    const navigator: NavigateTo = yield effects.call(getDependency, symbols.navigateTo);
     navigator(action.payload.path);
   }
 }

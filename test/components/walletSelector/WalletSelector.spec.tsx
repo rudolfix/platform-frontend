@@ -8,7 +8,6 @@ import { appRoutes } from "../../../app/components/AppRouter";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
 import { WalletSelector } from "../../../app/components/walletSelector/WalletSelector";
-import { APP_DISPATCH_SYMBOL } from "../../../app/getContainer";
 import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
 import {
   BrowserWallet,
@@ -19,6 +18,7 @@ import {
 import { LedgerWallet, LedgerWalletConnector } from "../../../app/modules/web3/LedgerWallet";
 import { Web3Adapter } from "../../../app/modules/web3/Web3Adapter";
 import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
+import { symbols } from "../../../app/symbols";
 import { createMount } from "../../createMount";
 import { dummyNetworkId } from "../../fixtures";
 import {
@@ -42,13 +42,13 @@ describe("<WalletSelector />", () => {
     // @todo: this is rather tmp solution to avoid testing whole obtainJWT flow
     // this should be gone soon and we should write additional mocks to make obtainJWT work
     function selectivelyMockDispatcher(container: Container): void {
-      const originalDispatch = container.get<Function>(APP_DISPATCH_SYMBOL);
+      const originalDispatch = container.get<Function>(symbols.appDispatch);
       const mockDispatch = (action: any) => {
         if (action !== obtainJwt) {
           originalDispatch(action);
         }
       };
-      container.rebind(APP_DISPATCH_SYMBOL).toConstantValue(mockDispatch);
+      container.rebind(symbols.appDispatch).toConstantValue(mockDispatch);
     }
 
     it("should select ledger wallet", async () => {

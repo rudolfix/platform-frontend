@@ -50,8 +50,6 @@ export class BrowserWallet implements IPersonalWallet {
   }
 }
 
-export const BROWSER_WALLET_CONNECTOR_SYMBOL = Symbol();
-
 @injectable()
 export class BrowserWalletConnector {
   public async connect(networkId: EthereumNetworkId): Promise<BrowserWallet> {

@@ -1,5 +1,3 @@
-export const LEDGER_WALLET_CONNECTOR_SYMBOL = Symbol();
-
 import ledgerWalletProvider from "ledger-wallet-provider";
 import * as semver from "semver";
 import * as Web3 from "web3";
@@ -8,12 +6,13 @@ import * as Web3ProviderEngine from "web3-provider-engine";
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { delay } from "bluebird";
-import { inject, injectable, LazyServiceIdentifer } from "inversify";
+import { inject, injectable } from "inversify";
+import { symbols } from "../../symbols";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
-import { ETHEREUM_NETWORK_CONFIG_SYMBOL, IEthereumNetworkConfig, SignerError } from "./Web3Manager";
+import { IEthereumNetworkConfig, SignerError } from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -65,8 +64,7 @@ export class LedgerWalletConnector {
   private ledgerInstance?: any;
 
   public constructor(
-    @inject(new LazyServiceIdentifer(() => ETHEREUM_NETWORK_CONFIG_SYMBOL))
-    public readonly web3Config: IEthereumNetworkConfig,
+    @inject(symbols.ethereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 
   public async connect(networkId: EthereumNetworkId): Promise<void> {

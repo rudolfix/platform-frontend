@@ -1,7 +1,7 @@
-import { APP_DISPATCH_SYMBOL } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch } from "../../store";
-import { NOTIFICATION_CENTER_SYMBOL, NotificationCenter } from "./NotificationCenter";
+import { symbols } from "../../symbols";
+import { NotificationCenter } from "./NotificationCenter";
 
 export function notifyOnErrorAction(action: Function): Function {
   return injectableFn(
@@ -13,6 +13,6 @@ export function notifyOnErrorAction(action: Function): Function {
         notificationCenter.error(e.message);
       }
     },
-    [NOTIFICATION_CENTER_SYMBOL, APP_DISPATCH_SYMBOL],
+    [symbols.notificationCenter, symbols.appDispatch],
   );
 }

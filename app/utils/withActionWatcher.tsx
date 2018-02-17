@@ -2,9 +2,9 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { connect } from "react-redux";
 import { AppDispatch } from "../store";
+import { symbols } from "../symbols";
 import {
   AsyncIntervalScheduler,
-  AsyncIntervalSchedulerFactorySymbol,
   AsyncIntervalSchedulerFactoryType,
 } from "./AsyncIntervalScheduler";
 import { IInversifyProviderContext } from "./InversifyProvider";
@@ -40,7 +40,7 @@ export const withActionWatcher: (
         super(props, context);
         const asyncIntervalSchedulerFactory = context.container.get<
           AsyncIntervalSchedulerFactoryType
-        >(AsyncIntervalSchedulerFactorySymbol);
+        >(symbols.asyncIntervalSchedulerFactory);
         this.asyncIntervalScheduler = asyncIntervalSchedulerFactory(
           this.props.watchAction,
           options.interval,

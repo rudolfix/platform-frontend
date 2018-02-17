@@ -1,17 +1,16 @@
-import { APP_DISPATCH_SYMBOL } from "../../../getContainer";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch } from "../../../store";
-import { ILogger, LOGGER_SYMBOL } from "../../../utils/Logger";
+import { symbols } from "../../../symbols";
+import { ILogger } from "../../../utils/Logger";
 import { actions } from "../../actions";
 import {
-  BROWSER_WALLET_CONNECTOR_SYMBOL,
   BrowserWalletConnector,
   BrowserWalletLockedError,
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
 } from "../../web3/BrowserWallet";
 import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
-import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../../web3/Web3Manager";
+import { Web3Manager } from "../../web3/Web3Manager";
 import { walletFlows } from "../flows";
 
 export const browserWizardFlows = {
@@ -34,7 +33,7 @@ export const browserWizardFlows = {
         );
       }
     },
-    [APP_DISPATCH_SYMBOL, BROWSER_WALLET_CONNECTOR_SYMBOL, WEB3_MANAGER_SYMBOL, LOGGER_SYMBOL],
+    [symbols.appDispatch, symbols.browserWalletConnector, symbols.web3Manager, symbols.logger],
   ),
 };
 

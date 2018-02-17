@@ -1,11 +1,8 @@
-import { APP_DISPATCH_SYMBOL } from "../../getContainer";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch } from "../../store";
+import { symbols } from "../../symbols";
 import { actions } from "../actions";
-import {
-  NOTIFICATION_CENTER_SYMBOL,
-  NotificationCenter,
-} from "../notifications/NotificationCenter";
+import { NotificationCenter } from "../notifications/NotificationCenter";
 
 export const web3Flows = {
   personalWalletDisconnected: injectableFn(
@@ -13,6 +10,6 @@ export const web3Flows = {
       dispatch(actions.web3.personalWalletDisconnected());
       notificationCenter.error("Web3 disconnected!");
     },
-    [APP_DISPATCH_SYMBOL, NOTIFICATION_CENTER_SYMBOL],
+    [symbols.appDispatch, symbols.notificationCenter],
   ),
 };

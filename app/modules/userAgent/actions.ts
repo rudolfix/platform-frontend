@@ -1,4 +1,4 @@
-import { createAction } from "../actions";
+import { createAction } from "../actionsUtils";
 
 export const userAgentActions = {
   loadUserAgentInfo: (name?: string, version?: string) =>

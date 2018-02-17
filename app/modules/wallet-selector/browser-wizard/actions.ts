@@ -1,4 +1,4 @@
-import { createAction } from "../../actions";
+import { createAction } from "../../actionsUtils";
 
 export const browserWizzardActions = {
   browserWalletConnectionError: (errorMsg: string) =>

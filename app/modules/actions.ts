@@ -34,14 +34,3 @@ export const returnTypeOf = <RT extends {}>(_expression: (...params: any[]) => R
 
 const actionList = values(allActions).map(returnTypeOf);
 export type TAction = typeof actionList[number];
-
-/**
- * action creators
- */
-export const createAction = <T extends string, P extends {}>(type: T, payload: P) => {
-  return { type, payload };
-};
-
-export const createSimpleAction = <T extends string>(type: T) => {
-  return { type };
-};

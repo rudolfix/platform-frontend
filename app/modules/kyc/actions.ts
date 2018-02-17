@@ -1,4 +1,4 @@
-import { createAction } from "../actions";
+import { createAction } from "../actionsUtils";
 
 import { IKycCompanyData, IKycManualVerificationData, IKycPersonalData } from "../../lib";
 

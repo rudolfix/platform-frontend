@@ -1,17 +1,6 @@
 import { EthereumAddress, EthereumNetworkId } from "../../types";
+import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
-
-// normalized information about all possible types of personal wallets
-export enum WalletType {
-  LEDGER = "LEDGER",
-  BROWSER = "BROWSER",
-  LIGHT = "LIGHT",
-}
-export enum WalletSubType {
-  METAMASK = "METAMASK",
-  PARITY = "PARITY",
-  UNKNOWN = "UNKNOWN",
-}
 
 // strings should match signer types on backend
 export enum SignerType {

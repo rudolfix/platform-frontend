@@ -3,7 +3,7 @@ import { spy } from "sinon";
 import { newPersonalWalletPluggedAction } from "../../../app/modules/web3/actions";
 import { web3Flows } from "../../../app/modules/web3/flows";
 import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
-import { WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
+import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
 import {
   WalletNotConnectedError,
   WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL,

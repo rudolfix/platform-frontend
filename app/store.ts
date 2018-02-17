@@ -7,10 +7,7 @@ import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
-import {
-  INewPersonalWalletPluggedAction,
-  IPersonalWalletDisconnectedAction,
-} from "./modules/web3/actions";
+import { INewPersonalWalletPluggedAction } from "./modules/web3/actions";
 import { web3Reducer } from "./modules/web3/reducer";
 
 import { TAction } from "./modules/actions";
@@ -30,7 +27,6 @@ export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTy
 export type AppActionTypes =
   //web3 management
   | INewPersonalWalletPluggedAction
-  | IPersonalWalletDisconnectedAction
   // browser
   | ILoadUserAgentInfoAction
   | TAction;

@@ -2,7 +2,7 @@ import { symbols } from "../../di/symbols";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { AppDispatch } from "../../store";
 import { actions } from "../actions";
-import { NotificationCenter } from "../notifications/NotificationCenter";
+import { NotificationCenter } from "../../lib/dependencies/NotificationCenter";
 
 export const web3Flows = {
   personalWalletDisconnected: injectableFn(

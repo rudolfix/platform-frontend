@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+import { SignatureAuthApi } from "../../../app/lib/api/SignatureAuthApi";
+import { BrowserWallet } from "../../../app/lib/web3/BrowserWallet";
+import { SignerType } from "../../../app/lib/web3/PersonalWeb3";
+import { Web3Manager } from "../../../app/lib/web3/Web3Manager";
 import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
-import { SignatureAuthApi } from "../../../app/modules/networking/SignatureAuthApi";
-import { BrowserWallet } from "../../../app/modules/web3/BrowserWallet";
-import { SignerType } from "../../../app/modules/web3/PersonalWeb3";
 import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
-import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { IAppState } from "../../../app/store";
 import {
   dummyEthereumAddress,

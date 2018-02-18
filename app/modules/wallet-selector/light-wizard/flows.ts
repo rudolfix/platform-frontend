@@ -1,10 +1,8 @@
 import { symbols } from "../../../di/symbols";
-import { injectableFn } from "../../../middlewares/redux-injectify";
-import { AppDispatch } from "../../../store";
-import { ILogger } from "../../../utils/Logger";
-import { actions } from "../../actions";
-import { UsersApi } from "../../networking/UsersApi";
-import { VaultApi } from "../../networking/VaultApi";
+import { UsersApi } from "../../../lib/api/UsersApi";
+import { VaultApi } from "../../../lib/api/VaultApi";
+import { ILogger } from "../../../lib/dependencies/Logger";
+import { IStorage } from "../../../lib/dependencies/storage";
 import {
   LightCreationError,
   LightDesirializeError,
@@ -12,10 +10,12 @@ import {
   LightWalletConnector,
   LightWalletUtil,
   LightWrongPasswordSaltError,
-} from "../../web3/LightWallet";
-import { Web3Manager } from "../../web3/Web3Manager";
+} from "../../../lib/web3/LightWallet";
+import { Web3Manager } from "../../../lib/web3/Web3Manager";
+import { injectableFn } from "../../../middlewares/redux-injectify";
+import { AppDispatch } from "../../../store";
+import { actions } from "../../actions";
 import { obtainJwt } from "./../../networking/jwt-actions";
-import { IStorage } from "./../../storage/storage";
 
 const LOCAL_STORAGE_LIGHT_WALLET_KEY = "LIGHT_WALLET";
 

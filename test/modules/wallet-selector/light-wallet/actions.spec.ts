@@ -1,17 +1,18 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { actions } from "../../../../app/modules/actions";
-import { UsersApi } from "../../../../app/modules/networking/UsersApi";
-import { Storage } from "../../../../app/modules/storage/storage";
-import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
+import { UsersApi } from "../../../../app/lib/api/UsersApi";
+import { VaultApi } from "../../../../app/lib/api/VaultApi";
+import { Storage } from "../../../../app/lib/dependencies/storage";
 import {
   ILightWallet,
+  LightWalletConnector,
+  LightWalletUtil,
   LightWrongPasswordSaltError,
-} from "../../../../app/modules/web3/LightWallet";
-import { Web3Manager } from "../../../../app/modules/web3/Web3Manager";
+} from "../../../../app/lib/web3/LightWallet";
+import { Web3Manager } from "../../../../app/lib/web3/Web3Manager";
+import { actions } from "../../../../app/modules/actions";
+import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import { createMock } from "../../../testUtils";
-import { VaultApi } from "./../../../../app/modules/networking/VaultApi";
-import { LightWalletConnector, LightWalletUtil } from "./../../../../app/modules/web3/LightWallet";
 import { dummyLogger, dummyNetworkId } from "./../../../fixtures";
 
 describe("Wallet selector > Light wallet wizard > actions", () => {

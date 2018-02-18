@@ -2,24 +2,24 @@ import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "../config/getConfig";
-import { IHttpClient } from "../modules/networking/IHttpClient";
-import { JsonHttpClient } from "../modules/networking/JsonHttpClient";
-import { SignatureAuthApi } from "../modules/networking/SignatureAuthApi";
-import { UsersApi } from "../modules/networking/UsersApi";
-import { VaultApi } from "../modules/networking/VaultApi";
-import { NotificationCenter } from "../modules/notifications/NotificationCenter";
-import { Storage } from "../modules/storage/storage";
-import { BrowserWalletConnector } from "../modules/web3/BrowserWallet";
-import { LedgerWalletConnector } from "../modules/web3/LedgerWallet";
-import { LightWalletConnector, LightWalletUtil } from "../modules/web3/LightWallet";
-import { IEthereumNetworkConfig, Web3Manager } from "../modules/web3/Web3Manager";
+import { IHttpClient } from "../lib/api/IHttpClient";
+import { JsonHttpClient } from "../lib/api/JsonHttpClient";
+import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
+import { UsersApi } from "../lib/api/UsersApi";
+import { VaultApi } from "../lib/api/VaultApi";
+import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
+import { DevConsoleLogger, ILogger } from "../lib/dependencies/Logger";
+import { Storage } from "../lib/dependencies/storage";
+import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
+import { LedgerWalletConnector } from "../lib/web3/LedgerWallet";
+import { LightWalletConnector, LightWalletUtil } from "../lib/web3/LightWallet";
+import { IEthereumNetworkConfig, Web3Manager } from "../lib/web3/Web3Manager";
+import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
 import { IAppState } from "../store";
 import {
   AsyncIntervalSchedulerFactory,
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/AsyncIntervalScheduler";
-import { cryptoRandomString, CryptoRandomString } from "../utils/cryptoRandomString";
-import { DevConsoleLogger, ILogger } from "../utils/Logger";
 
 import { ApiKycService } from "../lib/api/kyc/index";
 import { symbols } from "./symbols";

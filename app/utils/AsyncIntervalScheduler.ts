@@ -1,7 +1,7 @@
 import { interfaces } from "inversify";
 import { symbols } from "../di/symbols";
+import { ILogger } from "../lib/dependencies/Logger";
 import { isPromise } from "./isPromise";
-import { ILogger } from "./Logger";
 
 /**
  * Like setInterval but works with both async and sync functions. It makes sure that callback is called exactly interval microseconds after function execution was finished (async functions need to return promise).

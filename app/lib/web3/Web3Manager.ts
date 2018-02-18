@@ -2,16 +2,16 @@ import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
 import { symbols } from "../../di/symbols";
+import { web3Actions } from "../../modules/web3/actions";
+import { web3Flows } from "../../modules/web3/flows";
 import { AppDispatch } from "../../store";
 import { EthereumNetworkId } from "../../types";
 import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
-import { ILogger } from "../../utils/Logger";
 import { promiseTimeout } from "../../utils/promiseTimeout";
-import { web3Actions } from "./actions";
-import { web3Flows } from "./flows";
+import { ILogger } from "../dependencies/Logger";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 

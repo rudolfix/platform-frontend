@@ -1,11 +1,11 @@
 import { GetState } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
+import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
+import { CryptoRandomString } from "../../lib/dependencies/cryptoRandomString";
+import { ILogger } from "../../lib/dependencies/Logger";
+import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
-import { CryptoRandomString } from "../../utils/cryptoRandomString";
-import { ILogger } from "../../utils/Logger";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
-import { Web3Manager } from "../web3/Web3Manager";
-import { SignatureAuthApi } from "./SignatureAuthApi";
 
 export const obtainJwt = injectableFn(
   async (

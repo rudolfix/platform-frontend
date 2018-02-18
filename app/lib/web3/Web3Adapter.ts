@@ -2,8 +2,8 @@ import { BigNumber } from "bignumber.js";
 import { promisify } from "bluebird";
 import * as Web3 from "web3";
 
+import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
-import { makeEthereumAddressChecksummed } from "./utils";
 
 /**
  * Layer on top of raw Web3js. Simplifies API for common operations. Adds promise support.

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { Storage } from "../../../app/modules/storage/storage";
+import { Storage } from "../../../app/lib/dependencies/storage";
 
 describe("Browser Storage", () => {
   const expectedPhrase = "dummyWallet";

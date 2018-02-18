@@ -7,7 +7,7 @@ import {
   NetworkingError,
   ResponseParsingError,
   ResponseStatusError,
-} from "../../../app/modules/networking/JsonHttpClient";
+} from "../../../app/lib/api/JsonHttpClient";
 import { expectToBeRejected } from "../../testUtils";
 import { getSampleMalformedProducts, getSampleProducts, IProduct, productSchema } from "./fixtures";
 

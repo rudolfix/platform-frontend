@@ -2,18 +2,18 @@ import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { actions } from "../../../../app/modules/actions";
-import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
-import { ledgerWizardFlows } from "../../../../app/modules/wallet-selector/ledger-wizard/flows";
-import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../app/modules/wallet-selector/ledger-wizard/reducer";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
   LedgerWallet,
   LedgerWalletConnector,
-} from "../../../../app/modules/web3/LedgerWallet";
-import { Web3Adapter } from "../../../../app/modules/web3/Web3Adapter";
-import { WalletNotConnectedError, Web3Manager } from "../../../../app/modules/web3/Web3Manager";
+} from "../../../../app/lib/web3/LedgerWallet";
+import { Web3Adapter } from "../../../../app/lib/web3/Web3Adapter";
+import { WalletNotConnectedError, Web3Manager } from "../../../../app/lib/web3/Web3Manager";
+import { actions } from "../../../../app/modules/actions";
+import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
+import { ledgerWizardFlows } from "../../../../app/modules/wallet-selector/ledger-wizard/flows";
+import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../app/modules/wallet-selector/ledger-wizard/reducer";
 import { IAppState } from "../../../../app/store";
 import { Dictionary } from "../../../../app/types";
 import { dummyNetworkId } from "../../../fixtures";

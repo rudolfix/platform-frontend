@@ -8,9 +8,9 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { delay } from "bluebird";
 import { inject, injectable } from "inversify";
 import { symbols } from "../../di/symbols";
+import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
-import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 import { IEthereumNetworkConfig, SignerError } from "./Web3Manager";
 

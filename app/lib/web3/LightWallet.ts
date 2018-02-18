@@ -12,8 +12,8 @@ import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./Web3Manager";
 
 import { symbols } from "../../di/symbols";
+import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress } from "../../types";
-import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 
 export interface ICreateVault {

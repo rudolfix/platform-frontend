@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { actions } from "../../../../app/modules/actions";
-import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import {
   BrowserWallet,
   BrowserWalletConnector,
   BrowserWalletLockedError,
-} from "../../../../app/modules/web3/BrowserWallet";
-import { Web3Manager } from "../../../../app/modules/web3/Web3Manager";
+} from "../../../../app/lib/web3/BrowserWallet";
+import { Web3Manager } from "../../../../app/lib/web3/Web3Manager";
+import { actions } from "../../../../app/modules/actions";
+import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import { dummyLogger, dummyNetworkId } from "../../../fixtures";
 import { createMock } from "../../../testUtils";
 

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { LightWalletUtil } from "../../../app/modules/web3/LightWallet";
+import { LightWalletUtil } from "../../../app/lib/web3/LightWallet";
 import { expectToBeRejected } from "../../testUtils";
 
 describe("LightWallet", () => {

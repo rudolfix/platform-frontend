@@ -1,14 +1,14 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { web3Actions } from "../../../app/modules/web3/actions";
-import { web3Flows } from "../../../app/modules/web3/flows";
-import { LedgerWallet } from "../../../app/modules/web3/LedgerWallet";
-import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
+import { LedgerWallet } from "../../../app/lib/web3/LedgerWallet";
 import {
   WalletNotConnectedError,
   WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL,
   Web3Manager,
-} from "../../../app/modules/web3/Web3Manager";
+} from "../../../app/lib/web3/Web3Manager";
+import { web3Actions } from "../../../app/modules/web3/actions";
+import { web3Flows } from "../../../app/modules/web3/flows";
+import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
 import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,

@@ -1,5 +1,5 @@
+import { IVault } from "../../../lib/web3/LightWallet";
 import { createAction } from "../../actionsUtils";
-import { IVault } from "../../web3/LightWallet";
 
 export const lightWizzardActions = {
   lightWalletConnectionError: (errorMsg: string) =>

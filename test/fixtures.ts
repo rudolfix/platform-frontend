@@ -1,7 +1,7 @@
 import { createStore, Store } from "redux";
 import { IConfig } from "../app/config/getConfig";
+import { ILogger } from "../app/lib/dependencies/Logger";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
-import { ILogger } from "../app/utils/Logger";
 
 export const dummyConfig: IConfig = {
   ethereumNetwork: {

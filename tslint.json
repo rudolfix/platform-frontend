@@ -35,5 +35,8 @@
     "typedef": [true, "call-signature"],
     "ordered-imports": true,
     "no-commented-code": true
+  },
+  "linterOptions": {
+    "exclude": ["node_modules/**", "**/*.spec.ts?(x)", "**/*.spec.node.ts?(x)", "test/**"]
   }
 }

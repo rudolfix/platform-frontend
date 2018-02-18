@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../di/symbols";
-import { IHttpClient } from "./IHttpClient";
+import { IHttpClient } from "./client/IHttpClient";
 
 //This is a mock implementation
 

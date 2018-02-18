@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { actions } from "../../../app/modules/actions";
 import { NotificationCenter } from "../../../app/lib/dependencies/NotificationCenter";
+import { actions } from "../../../app/modules/actions";
 import { web3Flows } from "../../../app/modules/web3/flows";
 import { createMock } from "../../testUtils";
 

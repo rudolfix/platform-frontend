@@ -9,12 +9,12 @@ import { UsersApi } from "../lib/api/UsersApi";
 import { VaultApi } from "../lib/api/VaultApi";
 import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
 import { DevConsoleLogger, ILogger } from "../lib/dependencies/Logger";
+import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
 import { Storage } from "../lib/dependencies/storage";
 import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../lib/web3/LightWallet";
 import { IEthereumNetworkConfig, Web3Manager } from "../lib/web3/Web3Manager";
-import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
 import { IAppState } from "../store";
 import {
   AsyncIntervalSchedulerFactory,

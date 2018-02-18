@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>eth_icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="regstration_ledger_choose_wallet" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-591.000000, -480.000000)">
+        <g id="eth_icon" transform="translate(591.000000, 480.000000)">
+            <circle id="Oval" fill="#E3EAF5" cx="15" cy="15" r="15"></circle>
+            <g id="ethereum" transform="translate(10.000000, 6.000000)" fill="#010101" fill-rule="nonzero">
+                <g id="Group" opacity="0.6" transform="translate(0.000000, 6.505556)">
+                    <polygon id="Shape" points="5.82834228 0.00975199754 0.0137137465 2.83051728 5.82834228 6.49483036 11.6406852 2.83051728"></polygon>
+                </g>
+                <g id="Group" opacity="0.45">
+                    <polygon id="Shape" points="0.0121899969 9.58769758 5.18074869 13.0016539 5.18074869 0"></polygon>
+                </g>
+                <g id="Group" opacity="0.8" transform="translate(5.204444, 0.000000)">
+                    <polygon id="Shape" points="0 0 0 13.0016539 5.16652703 9.58769758"></polygon>
+                </g>
+                <g id="Group" opacity="0.45" transform="translate(0.000000, 10.408889)">
+                    <polygon id="Shape" points="0.0121899969 0.0065174241 5.18074869 7.79266674 5.18074869 3.2717469"></polygon>
+                </g>
+                <g id="Group" opacity="0.8" transform="translate(5.204444, 10.408889)">
+                    <polygon id="Shape" points="0 3.2717469 0 7.79266674 5.17059036 0.0065174241"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

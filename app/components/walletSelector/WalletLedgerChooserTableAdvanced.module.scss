@@ -1,0 +1,57 @@
+@import "../../styles/neufund-theme";
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 map-get($spacers, 3);
+
+  thead {
+    text-transform: uppercase;
+    color: $blue-gray;
+    font-size: rem-to-px(14px);
+    font-weight: $font-weight-bold;
+
+    th {
+      border-bottom: rem-to-px(1px) solid $pale-grey-50;
+      padding: map-get($spacers, 2) 0;
+    }
+  }
+
+  td {
+    padding: 0 map-get($spacers, 2);
+  }
+
+  .derivation-path {
+    font-weight: $font-weight-bold;
+  }
+
+  .public-key {
+    border-left: rem-to-px(1px) solid $pale-grey-50;
+    font-weight: $font-weight-bold;
+  }
+
+  $logo-size: 32px;
+
+  .balance {
+    border-left: rem-to-px(1px) solid $pale-grey-50;
+
+    div {
+      min-height: calc(#{$logo-size} + #{map-get($spacers, 2)});
+      padding-left: calc(#{map-get($spacers, 2)} + #{rem-to-px($logo-size)} + #{map-get($spacers, 2)});
+      background-size: #{rem-to-px($logo-size)} #{rem-to-px($logo-size)};
+      background: no-repeat map-get($spacers, 2) center;
+    }
+
+    .eth {
+      background-image: url("../../assets/img/eth_icon.svg");
+    }
+
+    .neu {
+      background-image: url("../../assets/img/neu_icon.svg");
+    }
+
+    span {
+      font-weight: $font-weight-bold;
+    }
+  }
+}

@@ -1,6 +1,6 @@
+import { symbols } from "../../di/symbols";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch } from "../../store";
-import { symbols } from "../../symbols";
 import { actions } from "../actions";
 import { NotificationCenter } from "../notifications/NotificationCenter";
 

@@ -1,33 +1,33 @@
 import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
-import { IConfig } from "./getConfig";
-import { IHttpClient } from "./modules/networking/IHttpClient";
-import { JsonHttpClient } from "./modules/networking/JsonHttpClient";
-import { SignatureAuthApi } from "./modules/networking/SignatureAuthApi";
-import { UsersApi } from "./modules/networking/UsersApi";
-import { VaultApi } from "./modules/networking/VaultApi";
-import { NotificationCenter } from "./modules/notifications/NotificationCenter";
-import { Storage } from "./modules/storage/storage";
-import { BrowserWalletConnector } from "./modules/web3/BrowserWallet";
-import { LedgerWalletConnector } from "./modules/web3/LedgerWallet";
-import { LightWalletConnector, LightWalletUtil } from "./modules/web3/LightWallet";
-import { IEthereumNetworkConfig, Web3Manager } from "./modules/web3/Web3Manager";
-import { IAppState } from "./store";
+import { IConfig } from "../getConfig";
+import { IHttpClient } from "../modules/networking/IHttpClient";
+import { JsonHttpClient } from "../modules/networking/JsonHttpClient";
+import { SignatureAuthApi } from "../modules/networking/SignatureAuthApi";
+import { UsersApi } from "../modules/networking/UsersApi";
+import { VaultApi } from "../modules/networking/VaultApi";
+import { NotificationCenter } from "../modules/notifications/NotificationCenter";
+import { Storage } from "../modules/storage/storage";
+import { BrowserWalletConnector } from "../modules/web3/BrowserWallet";
+import { LedgerWalletConnector } from "../modules/web3/LedgerWallet";
+import { LightWalletConnector, LightWalletUtil } from "../modules/web3/LightWallet";
+import { IEthereumNetworkConfig, Web3Manager } from "../modules/web3/Web3Manager";
+import { IAppState } from "../store";
 import {
   AsyncIntervalSchedulerFactory,
   AsyncIntervalSchedulerFactoryType,
-} from "./utils/AsyncIntervalScheduler";
-import { cryptoRandomString, CryptoRandomString } from "./utils/cryptoRandomString";
-import { DevConsoleLogger, ILogger } from "./utils/Logger";
+} from "../utils/AsyncIntervalScheduler";
+import { cryptoRandomString, CryptoRandomString } from "../utils/cryptoRandomString";
+import { DevConsoleLogger, ILogger } from "../utils/Logger";
 
-import { ApiKycService } from "./lib/api/kyc";
+import { ApiKycService } from "../lib/api/kyc/index";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;
 export type GetState = () => IAppState;
 
-export function getContainer(config: IConfig): Container {
+export function setupBindings(config: IConfig): Container {
   const container = new Container();
   const storage = new Storage(window.localStorage);
   const lightWalletUtil = new LightWalletUtil();

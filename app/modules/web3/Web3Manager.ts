@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
+import { symbols } from "../../di/symbols";
 import { AppDispatch } from "../../store";
-import { symbols } from "../../symbols";
 import { EthereumNetworkId } from "../../types";
 import {
   AsyncIntervalScheduler,

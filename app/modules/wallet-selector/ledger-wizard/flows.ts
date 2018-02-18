@@ -1,10 +1,10 @@
 import { toPairs, zip } from "lodash";
 
 import { pairZip } from "../../../../typings/modifications";
-import { GetState } from "../../../getContainer";
+import { GetState } from "../../../di/setupBindings";
+import { symbols } from "../../../di/symbols";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch } from "../../../store";
-import { symbols } from "../../../symbols";
 import { actions } from "../../actions";
 import {
   LedgerLockedError,

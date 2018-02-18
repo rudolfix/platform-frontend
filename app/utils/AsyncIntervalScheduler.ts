@@ -1,5 +1,5 @@
 import { interfaces } from "inversify";
-import { symbols } from "../symbols";
+import { symbols } from "../di/symbols";
 import { isPromise } from "./isPromise";
 import { ILogger } from "./Logger";
 

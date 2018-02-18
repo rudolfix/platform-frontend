@@ -1,6 +1,6 @@
+import { symbols } from "../../di/symbols";
 import { injectableFn } from "../../redux-injectify";
 import { AppDispatch } from "../../store";
-import { symbols } from "../../symbols";
 import { NotificationCenter } from "./NotificationCenter";
 
 export function notifyOnErrorAction(action: Function): Function {

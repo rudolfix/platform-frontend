@@ -15,8 +15,8 @@ import "reflect-metadata";
 import createSagaMiddleware from "redux-saga";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
+import { customizerContainerWithMiddlewareApi, setupBindings } from "./di/setupBindings";
 import { getConfig } from "./getConfig";
-import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
 import { rootSaga } from "./modules/sagas";
 import { createInjectMiddleware } from "./redux-injectify";
 
@@ -54,7 +54,7 @@ function renderApp(
 
 function startupApp(history: any): { store: Store<IAppState>; container: Container } {
   const config = getConfig(process.env);
-  const container = getContainer(config);
+  const container = setupBindings(config);
   const sagaMiddleware = createSagaMiddleware({ context: { container } });
 
   const middleware = applyMiddleware(

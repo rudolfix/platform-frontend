@@ -1,8 +1,8 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { connect } from "react-redux";
+import { symbols } from "../di/symbols";
 import { AppDispatch } from "../store";
-import { symbols } from "../symbols";
 import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,

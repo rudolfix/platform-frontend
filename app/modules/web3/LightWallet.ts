@@ -11,7 +11,7 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./Web3Manager";
 
-import { symbols } from "../../symbols";
+import { symbols } from "../../di/symbols";
 import { EthereumAddress } from "../../types";
 import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";

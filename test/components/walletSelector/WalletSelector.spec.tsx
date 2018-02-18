@@ -8,6 +8,7 @@ import { appRoutes } from "../../../app/components/AppRouter";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "../../../app/components/walletSelector/WalletLedgerInitComponent";
 import { WalletSelector } from "../../../app/components/walletSelector/WalletSelector";
+import { symbols } from "../../../app/di/symbols";
 import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
 import {
   BrowserWallet,
@@ -18,7 +19,6 @@ import {
 import { LedgerWallet, LedgerWalletConnector } from "../../../app/modules/web3/LedgerWallet";
 import { Web3Adapter } from "../../../app/modules/web3/Web3Adapter";
 import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
-import { symbols } from "../../../app/symbols";
 import { createMount } from "../../createMount";
 import { dummyNetworkId } from "../../fixtures";
 import {

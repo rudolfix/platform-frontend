@@ -1,6 +1,6 @@
+import { symbols } from "../../../di/symbols";
 import { injectableFn } from "../../../redux-injectify";
 import { AppDispatch } from "../../../store";
-import { symbols } from "../../../symbols";
 import { ILogger } from "../../../utils/Logger";
 import { actions } from "../../actions";
 import { UsersApi } from "../../networking/UsersApi";

@@ -38,35 +38,34 @@ export const WalletLedgerChooserComponent: React.SFC<
   onDerivationPathPrefixError,
   handleAdvanced,
 }) => (
-  <div>
+  <>
+    <h1 className="text-center">Select your wallet for registration</h1>
+    {advanced && (
+      <WalletLedgerDPChooser
+        onDerivationPathPrefixChange={onDerivationPathPrefixChange}
+        onDerivationPathPrefixError={onDerivationPathPrefixError}
+      />
+    )}
     {loading ? (
       <LoadingIndicator />
     ) : (
       <>
-        <h1 className="text-center">Select your wallet for registration</h1>
-        {advanced ? (
-          <>
-            <WalletLedgerDPChooser
-              onDerivationPathPrefixChange={onDerivationPathPrefixChange}
-              onDerivationPathPrefixError={onDerivationPathPrefixError}
+        {accounts.length > 0 &&
+          (advanced ? (
+            <WalletLedgerChooserTableAdvanced
+              accounts={accounts}
+              handleAddressChosen={handleAddressChosen}
+              hasPreviousAddress={hasPreviousAddress}
+              showPrevAddresses={showPrevAddresses}
+              showNextAddresses={showNextAddresses}
+              loading={loading}
             />
-            {accounts.length > 0 && (
-              <WalletLedgerChooserTableAdvanced
-                accounts={accounts}
-                handleAddressChosen={handleAddressChosen}
-                hasPreviousAddress={hasPreviousAddress}
-                showPrevAddresses={showPrevAddresses}
-                showNextAddresses={showNextAddresses}
-                loading={loading}
-              />
-            )}
-          </>
-        ) : (
-          <WalletLedgerChooserTableSimple
-            accounts={accounts}
-            handleAddressChosen={handleAddressChosen}
-          />
-        )}
+          ) : (
+            <WalletLedgerChooserTableSimple
+              accounts={accounts}
+              handleAddressChosen={handleAddressChosen}
+            />
+          ))}
         {!advanced && (
           <div className={styles.advanced}>
             <Button outline color="secondary" onClick={handleAdvanced} data-test-id="btn-advanced">
@@ -76,5 +75,5 @@ export const WalletLedgerChooserComponent: React.SFC<
         )}
       </>
     )}
-  </div>
+  </>
 );

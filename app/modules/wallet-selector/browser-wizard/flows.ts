@@ -22,7 +22,7 @@ export const browserWizardFlows = {
       logger: ILogger,
     ) => {
       try {
-        const browserWallet = await browserWalletConnector.connect(web3Manager.networkId);
+        const browserWallet = await browserWalletConnector.connect(web3Manager.networkId!);
 
         await web3Manager.plugPersonalWallet(browserWallet);
         dispatch(walletFlows.walletConnected);

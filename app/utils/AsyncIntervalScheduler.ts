@@ -8,7 +8,7 @@ import { ILogger } from "./Logger";
  * It can be started, stopped multiple times.
  */
 export class AsyncIntervalScheduler {
-  private cancelId: number;
+  private cancelId?: number;
   private isCanceled: boolean = true;
   constructor(
     private readonly logger: ILogger,
@@ -26,7 +26,7 @@ export class AsyncIntervalScheduler {
 
   public stop(): void {
     this.isCanceled = true;
-    window.clearTimeout(this.cancelId);
+    window.clearTimeout(this.cancelId!);
   }
 
   private schedule(): void {

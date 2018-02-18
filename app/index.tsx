@@ -15,8 +15,8 @@ import "reflect-metadata";
 import createSagaMiddleware from "redux-saga";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
+import { getConfig } from "./config/getConfig";
 import { customizerContainerWithMiddlewareApi, setupBindings } from "./di/setupBindings";
-import { getConfig } from "./getConfig";
 import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
 

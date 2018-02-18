@@ -1,7 +1,7 @@
 import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
-import { IConfig } from "../getConfig";
+import { IConfig } from "../config/getConfig";
 import { IHttpClient } from "../modules/networking/IHttpClient";
 import { JsonHttpClient } from "../modules/networking/JsonHttpClient";
 import { SignatureAuthApi } from "../modules/networking/SignatureAuthApi";

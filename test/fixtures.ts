@@ -1,5 +1,5 @@
 import { createStore, Store } from "redux";
-import { IConfig } from "../app/getConfig";
+import { IConfig } from "../app/config/getConfig";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
 import { ILogger } from "../app/utils/Logger";
 

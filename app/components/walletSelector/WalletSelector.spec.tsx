@@ -65,6 +65,12 @@ describe("<WalletSelector />", () => {
       const { store, container } = createIntegrationTestsSetup({
         ledgerWalletConnectorMock,
         web3ManagerMock,
+        initialState: {
+          browser: {
+            name: "chrome",
+            version: "58.0.0",
+          },
+        },
       });
       selectivelyMockDispatcher(container);
 

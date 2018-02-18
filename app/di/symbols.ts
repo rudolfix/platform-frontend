@@ -26,6 +26,7 @@ export const symbols = {
   logger: Symbol(),
   storage: Symbol(),
   asyncIntervalSchedulerFactory: Symbol(),
+  detectBrowser: Symbol(),
 
   // external modules
   cryptoRandomString: Symbol(),

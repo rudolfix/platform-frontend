@@ -17,8 +17,8 @@ import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
 import { customizerContainerWithMiddlewareApi, setupBindings } from "./di/setupBindings";
 import { getConfig } from "./getConfig";
+import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
-import { createInjectMiddleware } from "./redux-injectify";
 
 import { IAppState, reducers } from "./store";
 import "./styles/bootstrap.scss";

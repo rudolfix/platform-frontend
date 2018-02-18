@@ -1,5 +1,5 @@
 import { symbols } from "../../../di/symbols";
-import { injectableFn } from "../../../redux-injectify";
+import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { ILogger } from "../../../utils/Logger";
 import { actions } from "../../actions";

@@ -1,7 +1,7 @@
 import * as detectBrowser from "detect-browser";
 
 import { symbols } from "../../di/symbols";
-import { injectableFn } from "../../redux-injectify";
+import { injectableFn } from "../../middlewares/redux-injectify";
 import { AppDispatch } from "../../store";
 import { actions } from "../actions";
 

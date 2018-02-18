@@ -1,6 +1,6 @@
 import { NavigateTo } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
-import { injectableFn } from "../../redux-injectify";
+import { injectableFn } from "../../middlewares/redux-injectify";
 import { AppDispatch } from "../../store";
 import { obtainJwt } from "../networking/jwt-actions";
 import { browserWizardFlows } from "./browser-wizard/flows";

@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import { symbols } from "../di/symbols";
+import { injectableFn } from "../middlewares/redux-injectify";
 import { flows } from "../modules/flows";
 import { Web3Manager } from "../modules/web3/Web3Manager";
-import { injectableFn } from "../redux-injectify";
 import { AppDispatch } from "../store";
 import { AppRouter } from "./AppRouter";
 import { LoadingIndicator } from "./shared/LoadingIndicator";

@@ -1,6 +1,6 @@
 import { GetState } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
-import { injectableFn } from "../../redux-injectify";
+import { injectableFn } from "../../middlewares/redux-injectify";
 import { CryptoRandomString } from "../../utils/cryptoRandomString";
 import { ILogger } from "../../utils/Logger";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";

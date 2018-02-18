@@ -1,14 +1,5 @@
 import { expect } from "chai";
-import {
-  ledgerConnectionEstablishedAction,
-  ledgerConnectionEstablishedErrorAction,
-  ledgerWizardAccountsListNextPageAction,
-  ledgerWizardAccountsListPreviousPageAction,
-  ledgerWizardDerivationPathPrefixErrorAction,
-  setLedgerAccountsAction,
-  setLedgerWizardDerivationPathPrefixAction,
-  toggleLedgerAccountsAdvancedAction,
-} from "../../../../app/modules/wallet-selector/ledger-wizard/actions";
+import { actions } from "../../../../app/modules/actions";
 import {
   DEFAULT_DERIVATION_PATH_PREFIX,
   DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
@@ -19,7 +10,10 @@ import {
 
 describe("Wallet selector > Ledger wizard > reducer", () => {
   it("should act on LEDGER_WIZARD_ACCOUNTS_LIST_NEXT_PAGE action", () => {
-    const newState = ledgerWizardReducer(undefined, ledgerWizardAccountsListNextPageAction());
+    const newState = ledgerWizardReducer(
+      undefined,
+      actions.wallet.ledgerWizardAccountsListNextPage(),
+    );
 
     expect(newState).to.be.deep.eq({
       isConnectionEstablished: false,
@@ -43,7 +37,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       advanced: false,
     };
 
-    const newState = ledgerWizardReducer(state, ledgerWizardAccountsListPreviousPageAction());
+    const newState = ledgerWizardReducer(
+      state,
+      actions.wallet.ledgerWizardAccountsListPreviousPage(),
+    );
 
     expect(newState).to.be.deep.eq({
       isConnectionEstablished: true,
@@ -67,7 +64,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       advanced: false,
     };
 
-    const newState = ledgerWizardReducer(state, ledgerWizardAccountsListPreviousPageAction());
+    const newState = ledgerWizardReducer(
+      state,
+      actions.wallet.ledgerWizardAccountsListPreviousPage(),
+    );
 
     expect(newState).to.be.deep.eq({
       isConnectionEstablished: true,
@@ -84,12 +84,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     it("should act on SET_LEDGER_WIZARD_ACCOUNTS action", () => {
       const newState = ledgerWizardReducer(
         undefined,
-        setLedgerAccountsAction({
-          derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-          accounts: [
-            { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
-          ],
-        }),
+        actions.wallet.setLedgerAccounts(
+          [{ address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" }],
+          DEFAULT_DERIVATION_PATH_PREFIX,
+        ),
       );
 
       expect(newState).to.be.deep.eq({
@@ -112,12 +110,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       };
       const newState = ledgerWizardReducer(
         initialState,
-        setLedgerAccountsAction({
-          derivationPathPrefix: "",
-          accounts: [
-            { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
-          ],
-        }),
+        actions.wallet.setLedgerAccounts(
+          [{ address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" }],
+          "",
+        ),
       );
 
       expect(newState).to.be.deep.eq(initialState);
@@ -130,10 +126,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       const initialState = ledgerWizardInitialState;
       const newState = ledgerWizardReducer(
         initialState,
-        setLedgerAccountsAction({
-          derivationPathPrefix: "",
-          accounts: newAccounts,
-        }),
+        actions.wallet.setLedgerAccounts(newAccounts, ""),
       );
 
       expect(newState).to.be.deep.eq({
@@ -145,7 +138,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
   });
 
   it("should act on LEDGER_CONNECTION_ESTABLISHED action", () => {
-    const action = ledgerConnectionEstablishedAction();
+    const action = actions.wallet.ledgerConnectionEstablished();
     const initialState = {
       ...ledgerWizardInitialState,
       errorMsg: "some error",
@@ -167,7 +160,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
 
   it("should act on LEDGER_CONNECTION_ESTABLISHED_ERROR action", () => {
     const expectedErrorMsg = "LEDGER ERROR";
-    const action = ledgerConnectionEstablishedErrorAction({ errorMsg: expectedErrorMsg });
+    const action = actions.wallet.ledgerConnectionEstablishedError(expectedErrorMsg);
 
     const newState = ledgerWizardReducer(undefined, action);
 
@@ -187,7 +180,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     const newDerivationPath = "test";
     const newState = ledgerWizardReducer(
       undefined,
-      setLedgerWizardDerivationPathPrefixAction({ derivationPathPrefix: newDerivationPath }),
+      actions.wallet.setLedgerWizardDerivationPathPrefix(newDerivationPath),
     );
 
     expect(newState).to.be.deep.eq({
@@ -202,7 +195,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
   });
 
   it("should act on LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR", () => {
-    const newState = ledgerWizardReducer(undefined, ledgerWizardDerivationPathPrefixErrorAction());
+    const newState = ledgerWizardReducer(
+      undefined,
+      actions.wallet.ledgerWizardDerivationPathPrefixError(),
+    );
 
     expect(newState).to.be.deep.eq({
       isConnectionEstablished: false,
@@ -217,7 +213,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
 
   it("should act on TOGGLE_LEDGER_WIZARD_ADVANCED", () => {
     const state = ledgerWizardInitialState;
-    const newState = ledgerWizardReducer(state, toggleLedgerAccountsAdvancedAction());
+    const newState = ledgerWizardReducer(state, actions.wallet.toggleLedgerAccountsAdvanced());
 
     expect(newState).to.be.deep.eq({
       ...state,

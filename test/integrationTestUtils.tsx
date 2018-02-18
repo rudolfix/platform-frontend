@@ -6,19 +6,13 @@ import { applyMiddleware, createStore, Store } from "redux";
 
 import { MemoryRouter } from "react-router";
 import { customizerContainerWithMiddlewareApi, getContainer } from "../app/getContainer";
-import {
-  BROWSER_WALLET_CONNECTOR_SYMBOL,
-  BrowserWalletConnector,
-} from "../app/modules/web3/BrowserWallet";
-import {
-  LEDGER_WALLET_CONNECTOR_SYMBOL,
-  LedgerWalletConnector,
-} from "../app/modules/web3/LedgerWallet";
-import { WEB3_MANAGER_SYMBOL, Web3Manager } from "../app/modules/web3/Web3Manager";
+import { BrowserWalletConnector } from "../app/modules/web3/BrowserWallet";
+import { LedgerWalletConnector } from "../app/modules/web3/LedgerWallet";
+import { Web3Manager } from "../app/modules/web3/Web3Manager";
 import { createInjectMiddleware } from "../app/redux-injectify";
 import { IAppState, reducers } from "../app/store";
+import { symbols } from "../app/symbols";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
-import { LOGGER_SYMBOL } from "../app/utils/Logger";
 import { dummyConfig, dummyLogger } from "./fixtures";
 import { createMock, tid } from "./testUtils";
 
@@ -43,10 +37,10 @@ export function createIntegrationTestsSetup(
     options.ledgerWalletConnectorMock || createMock(LedgerWalletConnector, {});
   const web3ManagerMock = options.web3ManagerMock || createMock(Web3Manager, {});
   const container = getContainer(dummyConfig);
-  container.rebind(LEDGER_WALLET_CONNECTOR_SYMBOL).toConstantValue(ledgerWalletMock);
-  container.rebind(BROWSER_WALLET_CONNECTOR_SYMBOL).toConstantValue(browserWalletMock);
-  container.rebind(WEB3_MANAGER_SYMBOL).toConstantValue(web3ManagerMock);
-  container.rebind(LOGGER_SYMBOL).toConstantValue(dummyLogger);
+  container.rebind(symbols.ledgerWalletConnector).toConstantValue(ledgerWalletMock);
+  container.rebind(symbols.browserWalletConnector).toConstantValue(browserWalletMock);
+  container.rebind(symbols.web3Manager).toConstantValue(web3ManagerMock);
+  container.rebind(symbols.logger).toConstantValue(dummyLogger);
 
   const middleware = applyMiddleware(
     createInjectMiddleware(container, (container, middlewareApi) => {

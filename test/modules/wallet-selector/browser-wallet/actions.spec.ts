@@ -1,10 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { walletConnectedAction } from "../../../../app/modules/wallet-selector/actions";
-import {
-  browserWalletConnectionErrorAction,
-  tryConnectingWithBrowserWallet,
-} from "../../../../app/modules/wallet-selector/browser-wizard/actions";
+import { actions } from "../../../../app/modules/actions";
+import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -29,7 +26,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await tryConnectingWithBrowserWallet(
+      await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,
@@ -37,7 +34,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(dispatchMock).to.be.calledWithExactly(walletConnectedAction);
+      expect(dispatchMock).to.be.calledWithExactly(walletFlows.walletConnected);
     });
 
     it("should dispatch error action on error", async () => {
@@ -54,7 +51,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await tryConnectingWithBrowserWallet(
+      await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,
@@ -63,9 +60,9 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
       expect(dispatchMock).to.be.calledWithExactly(
-        browserWalletConnectionErrorAction({
-          errorMsg: "Your wallet seems to be locked — we can't access any accounts.",
-        }),
+        actions.wallet.browserWalletConnectionError(
+          "Your wallet seems to be locked — we can't access any accounts.",
+        ),
       );
     });
   });

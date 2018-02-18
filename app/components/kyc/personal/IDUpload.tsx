@@ -34,7 +34,7 @@ export const KYCPersonalIDUploadComponent: React.SFC<IProps> = props => (
 export const KYCPersonalIDUpload = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      uploadId: () => dispatch(actions.kycUploadId()),
+      uploadId: () => dispatch(actions.kyc.kycUploadId()),
     }),
   }),
 )(KYCPersonalIDUploadComponent);

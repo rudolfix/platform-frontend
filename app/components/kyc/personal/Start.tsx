@@ -106,7 +106,7 @@ export const KYCPersonalStartComponent: React.SFC<IProps> = props => (
 export const KYCPersonalStart = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      submitForm: (values: IFormValues) => dispatch(actions.kycSubmitPersonalForm(values)),
+      submitForm: (values: IFormValues) => dispatch(actions.kyc.kycSubmitPersonalForm(values)),
     }),
   }),
 )(KYCPersonalStartComponent);

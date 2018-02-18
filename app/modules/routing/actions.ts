@@ -1,4 +1,4 @@
-import { createAction } from "../actions";
+import { createAction } from "../actionsUtils";
 
 import { kycRoutes } from "../../components/kyc/routes";
 

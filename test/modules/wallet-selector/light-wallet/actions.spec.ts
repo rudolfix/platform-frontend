@@ -1,11 +1,9 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+import { actions } from "../../../../app/modules/actions";
 import { UsersApi } from "../../../../app/modules/networking/UsersApi";
 import { Storage } from "../../../../app/modules/storage/storage";
-import {
-  lightWalletConnectionErrorAction,
-  tryConnectingWithLightWallet,
-} from "../../../../app/modules/wallet-selector/light-wizard/actions";
+import { walletFlows } from "../../../../app/modules/wallet-selector/flows";
 import {
   ILightWallet,
   LightWrongPasswordSaltError,
@@ -16,7 +14,7 @@ import { VaultApi } from "./../../../../app/modules/networking/VaultApi";
 import { LightWalletConnector, LightWalletUtil } from "./../../../../app/modules/web3/LightWallet";
 import { dummyLogger, dummyNetworkId } from "./../../../fixtures";
 
-describe("Wallet selector > Browser wizard > actions", () => {
+describe("Wallet selector > Light wallet wizard > actions", () => {
   describe("tryConnectingWithLightWallet action", () => {
     const dispatchMock = spy();
     const expectedWalletDummy = { addresses: ["mockAddress"] };
@@ -46,7 +44,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         connect: spy(),
       });
 
-      await tryConnectingWithLightWallet("test@test.com", "password")(
+      await walletFlows.tryConnectingWithLightWallet("test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
@@ -75,7 +73,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await tryConnectingWithLightWallet("test@test.com", "password")(
+      await walletFlows.tryConnectingWithLightWallet("test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
@@ -87,9 +85,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       );
 
       expect(dispatchMock).to.be.calledWithExactly(
-        lightWalletConnectionErrorAction({
-          errorMsg: "Password is not correct",
-        }),
+        actions.wallet.lightWalletConnectionError("Password is not correct"),
       );
     });
   });

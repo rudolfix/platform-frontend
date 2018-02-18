@@ -1,16 +1,8 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import {
-  finishSettingUpLedgerConnectorAction,
-  goToNextPageAndLoadDataAction,
-  goToPreviousPageAndLoadDataAction,
-  ledgerWizardDerivationPathPrefixErrorAction,
-  loadLedgerAccountsAction,
-  setDerivationPathPrefixAction,
-  toggleLedgerAccountsAdvancedAction,
-  verifyIfLedgerStillConnected,
-} from "../../modules/wallet-selector/ledger-wizard/actions";
+import { actions } from "../../modules/actions";
+import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
 import {
   ILedgerAccount,
   selectHasPreviousPage,
@@ -34,26 +26,26 @@ export const WalletLedgerChooser = compose<React.SFC>(
       advanced: state.ledgerWizardState.advanced,
     }),
     dispatchToProps: dispatch => ({
-      onDerivationPathError: () => dispatch(ledgerWizardDerivationPathPrefixErrorAction()),
+      onDerivationPathError: () => dispatch(actions.wallet.ledgerWizardDerivationPathPrefixError()),
       onDerivationPathPrefixChange: (derivationPathPrefix: string) => {
-        dispatch(setDerivationPathPrefixAction(derivationPathPrefix));
+        dispatch(ledgerWizardFlows.setDerivationPathPrefix(derivationPathPrefix));
       },
       handleAddressChosen: (account: ILedgerAccount) => {
-        dispatch(finishSettingUpLedgerConnectorAction(account.derivationPath));
+        dispatch(ledgerWizardFlows.finishSettingUpLedgerConnector(account.derivationPath));
       },
-      showNextAddresses: () => dispatch(goToNextPageAndLoadDataAction),
-      showPrevAddresses: () => dispatch(goToPreviousPageAndLoadDataAction),
+      showNextAddresses: () => dispatch(ledgerWizardFlows.goToNextPageAndLoadData),
+      showPrevAddresses: () => dispatch(ledgerWizardFlows.goToPreviousPageAndLoadData),
       handleAdvanced: () => {
-        dispatch(toggleLedgerAccountsAdvancedAction());
-        dispatch(loadLedgerAccountsAction);
+        dispatch(actions.wallet.toggleLedgerAccountsAdvanced());
+        dispatch(ledgerWizardFlows.loadLedgerAccounts);
       },
     }),
   }),
   onEnterAction({
-    actionCreator: dispatch => dispatch(loadLedgerAccountsAction),
+    actionCreator: dispatch => dispatch(ledgerWizardFlows.loadLedgerAccounts),
   }),
   withActionWatcher({
-    actionCreator: dispatch => dispatch(verifyIfLedgerStillConnected),
+    actionCreator: dispatch => dispatch(ledgerWizardFlows.verifyIfLedgerStillConnected),
     interval: 1000,
   }),
 )(WalletLedgerChooserComponent);

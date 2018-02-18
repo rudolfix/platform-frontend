@@ -3,7 +3,8 @@ import { spy } from "sinon";
 import { obtainJwt } from "../../../app/modules/networking/jwt-actions";
 import { SignatureAuthApi } from "../../../app/modules/networking/SignatureAuthApi";
 import { BrowserWallet } from "../../../app/modules/web3/BrowserWallet";
-import { SignerType, WalletSubType, WalletType } from "../../../app/modules/web3/PersonalWeb3";
+import { SignerType } from "../../../app/modules/web3/PersonalWeb3";
+import { WalletSubType, WalletType } from "../../../app/modules/web3/types";
 import { Web3Manager } from "../../../app/modules/web3/Web3Manager";
 import { IAppState } from "../../../app/store";
 import {

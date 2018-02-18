@@ -1,5 +1,3 @@
-export const LOGGER_SYMBOL = Symbol();
-
 type LogArg = string | object | Error;
 
 export interface ILogger {

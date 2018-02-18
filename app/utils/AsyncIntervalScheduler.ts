@@ -1,6 +1,7 @@
 import { interfaces } from "inversify";
+import { symbols } from "../symbols";
 import { isPromise } from "./isPromise";
-import { ILogger, LOGGER_SYMBOL } from "./Logger";
+import { ILogger } from "./Logger";
 
 /**
  * Like setInterval but works with both async and sync functions. It makes sure that callback is called exactly interval microseconds after function execution was finished (async functions need to return promise).
@@ -48,8 +49,6 @@ export class AsyncIntervalScheduler {
   }
 }
 
-export const AsyncIntervalSchedulerFactorySymbol = "AsyncIntervalSchedulerFactorySymbol";
-
 export type AsyncIntervalSchedulerFactoryType = (
   cb: Function,
   interval: number,
@@ -58,6 +57,6 @@ export type AsyncIntervalSchedulerFactoryType = (
 export const AsyncIntervalSchedulerFactory: (
   context: interfaces.Context,
 ) => AsyncIntervalSchedulerFactoryType = context => {
-  const logger = context.container.get<ILogger>(LOGGER_SYMBOL);
+  const logger = context.container.get<ILogger>(symbols.logger);
   return (callback, interval) => new AsyncIntervalScheduler(logger, callback, interval);
 };

@@ -1,17 +1,19 @@
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethUtils from "ethereumjs-util";
-import { inject, injectable, LazyServiceIdentifer } from "inversify";
+import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hooked-wallet";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
-import { IPersonalWallet, SignerType, WalletSubType, WalletType } from "./PersonalWeb3";
-import { ETHEREUM_NETWORK_CONFIG_SYMBOL, IEthereumNetworkConfig } from "./Web3Manager";
+import { IPersonalWallet, SignerType } from "./PersonalWeb3";
+import { IEthereumNetworkConfig } from "./Web3Manager";
 
+import { symbols } from "../../symbols";
 import { EthereumAddress } from "../../types";
+import { WalletSubType, WalletType } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 
 export interface ICreateVault {
@@ -49,8 +51,6 @@ export class LightSignMessageError extends LightWalletError {}
 export class LightUnknownError extends LightError {}
 export class LightCreationError extends LightWalletUtilError {}
 export class LightDesirializeError extends LightWalletUtilError {}
-
-export const LIGHT_WALLET_UTIL_SYMBOL = Symbol();
 
 @injectable()
 export class LightWalletUtil {
@@ -146,14 +146,11 @@ export class LightWallet implements IPersonalWallet {
   }
 }
 
-export const LIGHT_WALLET_CONNECTOR_SYMBOL = Symbol();
-
 @injectable()
 export class LightWalletConnector {
   private web3Adapter?: Web3Adapter;
   public constructor(
-    @inject(new LazyServiceIdentifer(() => ETHEREUM_NETWORK_CONFIG_SYMBOL))
-    public readonly web3Config: IEthereumNetworkConfig,
+    @inject(symbols.ethereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 
   public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;

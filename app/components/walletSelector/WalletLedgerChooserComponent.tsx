@@ -68,7 +68,12 @@ export const WalletLedgerChooserComponent: React.SFC<
           ))}
         {!advanced && (
           <div className={styles.advanced}>
-            <Button outline color="secondary" onClick={handleAdvanced} data-test-id="btn-advanced">
+            <Button
+              outline
+              color="secondary"
+              onClick={handleAdvanced}
+              data-test-id="btn-advanced-simple"
+            >
               Advanced selection
             </Button>
           </div>
@@ -77,11 +82,17 @@ export const WalletLedgerChooserComponent: React.SFC<
     )}
     <div className="mt-5 d-flex flex-row justify-content-between align-items-center">
       <div>
-        {(advanced && !loading) && (
-        <Button outline color="secondary" onClick={handleAdvanced} data-test-id="btn-advanced">
-          Back
-        </Button>
-        )}
+        {advanced &&
+          !loading && (
+            <Button
+              outline
+              color="secondary"
+              onClick={handleAdvanced}
+              data-test-id="btn-advanced-advanced"
+            >
+              Back
+            </Button>
+          )}
       </div>
       <div>
         Have some issues with your NeuKey? <a href="#">Contact for help</a>

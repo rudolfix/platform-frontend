@@ -4,8 +4,8 @@ import { actions, TAction } from "../actions";
 
 import { getDependency, neuTake } from "../sagas";
 
-import { IApiKycService } from "../../lib";
-import { symbols } from "../../symbols";
+import { symbols } from "../../di/symbols";
+import { IApiKycService } from "../../lib/api/kyc/interfaces";
 
 function* submitCompanyForm(): Iterator<any> {
   while (true) {

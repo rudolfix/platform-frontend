@@ -1,8 +1,8 @@
 import { effects } from "redux-saga";
 
-import { NavigateTo } from "../../getContainer";
+import { NavigateTo } from "../../di/setupBindings";
 
-import { symbols } from "../../symbols";
+import { symbols } from "../../di/symbols";
 import { TAction } from "../actions";
 import { getDependency, neuTake } from "../sagas";
 

@@ -1,6 +1,9 @@
+import {
+  IKycCompanyData,
+  IKycManualVerificationData,
+  IKycPersonalData,
+} from "../../lib/api/kyc/interfaces";
 import { createAction } from "../actionsUtils";
-
-import { IKycCompanyData, IKycManualVerificationData, IKycPersonalData } from "../../lib";
 
 export const kycActions = {
   kycSubmitCompanyForm: (data: IKycCompanyData) =>

@@ -1,7 +1,7 @@
-import { NavigateTo } from "../../getContainer";
-import { injectableFn } from "../../redux-injectify";
+import { NavigateTo } from "../../di/setupBindings";
+import { symbols } from "../../di/symbols";
+import { injectableFn } from "../../middlewares/redux-injectify";
 import { AppDispatch } from "../../store";
-import { symbols } from "../../symbols";
 import { obtainJwt } from "../networking/jwt-actions";
 import { browserWizardFlows } from "./browser-wizard/flows";
 import { ledgerWizardFlows } from "./ledger-wizard/flows";

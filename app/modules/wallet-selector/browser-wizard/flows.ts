@@ -1,16 +1,16 @@
-import { injectableFn } from "../../../redux-injectify";
-import { AppDispatch } from "../../../store";
-import { symbols } from "../../../symbols";
-import { ILogger } from "../../../utils/Logger";
-import { actions } from "../../actions";
+import { symbols } from "../../../di/symbols";
+import { ILogger } from "../../../lib/dependencies/Logger";
 import {
   BrowserWalletConnector,
   BrowserWalletLockedError,
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
-} from "../../web3/BrowserWallet";
+} from "../../../lib/web3/BrowserWallet";
+import { Web3Manager } from "../../../lib/web3/Web3Manager";
+import { injectableFn } from "../../../middlewares/redux-injectify";
+import { AppDispatch } from "../../../store";
+import { actions } from "../../actions";
 import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
-import { Web3Manager } from "../../web3/Web3Manager";
 import { walletFlows } from "../flows";
 
 export const browserWizardFlows = {
@@ -22,7 +22,7 @@ export const browserWizardFlows = {
       logger: ILogger,
     ) => {
       try {
-        const browserWallet = await browserWalletConnector.connect(web3Manager.networkId);
+        const browserWallet = await browserWalletConnector.connect(web3Manager.networkId!);
 
         await web3Manager.plugPersonalWallet(browserWallet);
         dispatch(walletFlows.walletConnected);

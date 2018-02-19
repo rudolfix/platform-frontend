@@ -1,11 +1,15 @@
+import { TBrowserName } from "../../lib/dependencies/detectBrowser";
 import { AppReducer } from "../../store";
 
 export interface IUserAgentState {
-  name?: string;
-  version?: string;
+  name: TBrowserName;
+  version: string;
 }
 
-const userAgentInitialState: IUserAgentState = {};
+const userAgentInitialState: IUserAgentState = {
+  name: "unknown",
+  version: "0",
+};
 
 export const browserReducer: AppReducer<IUserAgentState> = (
   state = userAgentInitialState,

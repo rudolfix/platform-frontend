@@ -5,13 +5,13 @@ import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 
 import { MemoryRouter } from "react-router";
-import { customizerContainerWithMiddlewareApi, getContainer } from "../app/getContainer";
-import { BrowserWalletConnector } from "../app/modules/web3/BrowserWallet";
-import { LedgerWalletConnector } from "../app/modules/web3/LedgerWallet";
-import { Web3Manager } from "../app/modules/web3/Web3Manager";
-import { createInjectMiddleware } from "../app/redux-injectify";
+import { customizerContainerWithMiddlewareApi, setupBindings } from "../app/di/setupBindings";
+import { symbols } from "../app/di/symbols";
+import { BrowserWalletConnector } from "../app/lib/web3/BrowserWallet";
+import { LedgerWalletConnector } from "../app/lib/web3/LedgerWallet";
+import { Web3Manager } from "../app/lib/web3/Web3Manager";
+import { createInjectMiddleware } from "../app/middlewares/redux-injectify";
 import { IAppState, reducers } from "../app/store";
-import { symbols } from "../app/symbols";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
 import { dummyConfig, dummyLogger } from "./fixtures";
 import { createMock, tid } from "./testUtils";
@@ -36,7 +36,7 @@ export function createIntegrationTestsSetup(
   const ledgerWalletMock =
     options.ledgerWalletConnectorMock || createMock(LedgerWalletConnector, {});
   const web3ManagerMock = options.web3ManagerMock || createMock(Web3Manager, {});
-  const container = getContainer(dummyConfig);
+  const container = setupBindings(dummyConfig);
   container.rebind(symbols.ledgerWalletConnector).toConstantValue(ledgerWalletMock);
   container.rebind(symbols.browserWalletConnector).toConstantValue(browserWalletMock);
   container.rebind(symbols.web3Manager).toConstantValue(web3ManagerMock);

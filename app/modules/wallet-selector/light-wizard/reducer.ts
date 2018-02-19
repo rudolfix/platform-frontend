@@ -1,4 +1,4 @@
-import { ILightWallet } from "../../../modules/web3/LightWallet";
+import { ILightWallet } from "../../../lib/web3/LightWallet";
 import { AppReducer } from "../../../store";
 
 export interface ILightWalletWizardState {

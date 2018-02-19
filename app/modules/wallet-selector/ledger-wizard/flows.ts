@@ -1,17 +1,17 @@
 import { toPairs, zip } from "lodash";
 
 import { pairZip } from "../../../../typings/modifications";
-import { GetState } from "../../../getContainer";
-import { injectableFn } from "../../../redux-injectify";
-import { AppDispatch } from "../../../store";
-import { symbols } from "../../../symbols";
-import { actions } from "../../actions";
+import { GetState } from "../../../di/setupBindings";
+import { symbols } from "../../../di/symbols";
 import {
   LedgerLockedError,
   LedgerNotAvailableError,
   LedgerWalletConnector,
-} from "../../web3/LedgerWallet";
-import { Web3Manager } from "../../web3/Web3Manager";
+} from "../../../lib/web3/LedgerWallet";
+import { Web3Manager } from "../../../lib/web3/Web3Manager";
+import { injectableFn } from "../../../middlewares/redux-injectify";
+import { AppDispatch } from "../../../store";
+import { actions } from "../../actions";
 import { walletFlows } from "../flows";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
@@ -24,7 +24,7 @@ export const ledgerWizardFlows = {
       web3Manager: Web3Manager,
     ) => {
       try {
-        await ledgerWalletConnector.connect(web3Manager.networkId);
+        await ledgerWalletConnector.connect(web3Manager.networkId!);
 
         dispatch(actions.wallet.ledgerConnectionEstablished());
       } catch (e) {
@@ -63,7 +63,7 @@ export const ledgerWizardFlows = {
 
       const balances = await Promise.all(
         derivationPathsArray.map(dp =>
-          web3Manager.internalWeb3Adapter.getBalance(dp.address).then(bn => bn.toString()),
+          web3Manager.internalWeb3Adapter!.getBalance(dp.address).then(bn => bn.toString()),
         ),
       );
 

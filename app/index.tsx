@@ -15,10 +15,10 @@ import "reflect-metadata";
 import createSagaMiddleware from "redux-saga";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
-import { getConfig } from "./getConfig";
-import { customizerContainerWithMiddlewareApi, getContainer } from "./getContainer";
+import { getConfig } from "./config/getConfig";
+import { customizerContainerWithMiddlewareApi, setupBindings } from "./di/setupBindings";
+import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
-import { createInjectMiddleware } from "./redux-injectify";
 
 import { IAppState, reducers } from "./store";
 import "./styles/bootstrap.scss";
@@ -54,7 +54,7 @@ function renderApp(
 
 function startupApp(history: any): { store: Store<IAppState>; container: Container } {
   const config = getConfig(process.env);
-  const container = getContainer(config);
+  const container = setupBindings(config);
   const sagaMiddleware = createSagaMiddleware({ context: { container } });
 
   const middleware = applyMiddleware(

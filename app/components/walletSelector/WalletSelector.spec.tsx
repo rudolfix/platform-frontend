@@ -108,7 +108,10 @@ describe("<WalletSelector />", () => {
       await waitForTid(mountedComponent, "wallet-ledger-accounts-table-body");
 
       // select one of the addresses
-      mountedComponent.find(`${tid("account-row")}`).simulate("click");
+      mountedComponent
+        .find(`${tid("button-select")}`)
+        .first()
+        .simulate("click");
       await Promise.resolve(); // we need to give async actions time to finish. Is there a better way to do this?
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly("44'/60'/0'/1");

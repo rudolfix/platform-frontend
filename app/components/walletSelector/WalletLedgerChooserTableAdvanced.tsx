@@ -33,16 +33,16 @@ export class AccountRow extends React.Component<IAccountRow> {
         <td data-test-id="account-address" className={styles.publicKey}>
           {this.props.ledgerAccount.address}
         </td>
-        <td data-test-id="account-balance" className={styles.balance}>
-          <div className={styles.eth}>
+        <td className={styles.balance}>
+          <div data-test-id="account-balance-eth" className={styles.eth}>
             {this.props.ledgerAccount.balanceETH} <span>ETH</span>
           </div>
-          <div className={styles.neu}>
+          <div data-test-id="account-balance-neu" className={styles.neu}>
             {this.props.ledgerAccount.balanceNEU} <span>NEU</span>
           </div>
         </td>
         <td className={styles.select}>
-          <Button color="primary" onClick={this.handleClick}>
+          <Button data-test-id="button-select" color="primary" onClick={this.handleClick}>
             Select
           </Button>
         </td>

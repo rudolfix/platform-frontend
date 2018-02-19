@@ -1,8 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
-
-import { walletLightRoutes } from "./walletLightRoutes";
 
 export const RecoverWallet: React.SFC<{}> = () => {
   return (
@@ -30,9 +27,6 @@ export const RecoverWallet: React.SFC<{}> = () => {
             <Label>Repeat password</Label>
             <Input type="password" name="repeated" id="recov-repeated-pass" />
           </FormGroup>
-          <Link className="btn btn-secondary" to={walletLightRoutes.validate}>
-            Recover my wallet
-          </Link>
         </Form>
       </Col>
     </Row>

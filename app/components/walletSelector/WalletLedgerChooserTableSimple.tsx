@@ -54,7 +54,7 @@ export const WalletLedgerChooserTableSimple: React.SFC<IWalletLedgerChooserTable
     <thead>
       <tr>
         <th className="py-3">Public wallet id</th>
-        <th colSpan={2}>Balance</th>
+        <th colSpan={3}>Balance</th>
       </tr>
     </thead>
     <tbody data-test-id="wallet-ledger-accounts-table-body">

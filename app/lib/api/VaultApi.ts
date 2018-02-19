@@ -13,4 +13,8 @@ export class VaultApi {
   public async store(password: string, salt: string, serializedVault: string): Promise<void> {
     return Promise.resolve();
   }
+  // tslint:disable-next-line
+  public async retrieve(hash: string): Promise<string> {
+    return Promise.resolve("Serialized wallet");
+  }
 }

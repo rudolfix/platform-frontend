@@ -1,3 +1,5 @@
+import { injectable } from "inversify";
+
 type LogArg = string | object | Error;
 
 export interface ILogger {
@@ -8,6 +10,7 @@ export interface ILogger {
   error(...args: LogArg[]): void;
 }
 
+@injectable()
 export class DevConsoleLogger implements ILogger {
   info(...args: (string | object | Error)[]): void {
     // tslint:disable-next-line

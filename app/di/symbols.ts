@@ -1,4 +1,6 @@
-export const symbols = {
+import { mapValues } from "lodash";
+
+export const symbols = makeDebugSymbols({
   // redux
   appDispatch: Symbol(),
   navigateTo: Symbol(),
@@ -30,4 +32,11 @@ export const symbols = {
 
   // external modules
   cryptoRandomString: Symbol(),
-};
+});
+
+/**
+ * Adds automatically symbols name values which makes debugging easier
+ */
+export function makeDebugSymbols<T>(symbols: T): T {
+  return mapValues(symbols, (_val, key) => Symbol.for(key)) as any;
+}

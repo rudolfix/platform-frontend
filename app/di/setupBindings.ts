@@ -22,6 +22,7 @@ import {
 } from "../utils/AsyncIntervalScheduler";
 
 import { ApiKycService } from "../lib/api/kyc/index";
+import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;
@@ -36,6 +37,8 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<CryptoRandomString>(symbols.cryptoRandomString)
     .toConstantValue(cryptoRandomString);
+  container.bind<TDetectBrowser>(symbols.detectBrowser).toConstantValue(detectBrowser);
+
   container
     .bind<IEthereumNetworkConfig>(symbols.ethereumNetworkConfig)
     .toConstantValue(config.ethereumNetwork);

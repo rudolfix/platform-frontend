@@ -22,17 +22,17 @@ export class AccountRow extends React.Component<IAccountRow> {
   render(): React.ReactNode {
     return (
       <tr data-test-id="account-row">
-        <td data-test-id="account-derivation-path" className={styles.publicKey}>
+        <td data-test-id="account-address" className={styles.publicKey}>
           {this.props.ledgerAccount.address}
         </td>
-        <td data-test-id="account-address" className={cn(styles.currencyCol, styles.ethCol)}>
+        <td data-test-id="account-balance-eth" className={cn(styles.currencyCol, styles.ethCol)}>
           {this.props.ledgerAccount.balanceETH} <span>ETH</span>
         </td>
-        <td data-test-id="account-balance" className={cn(styles.currencyCol, styles.neuCol)}>
+        <td data-test-id="account-balance-neu" className={cn(styles.currencyCol, styles.neuCol)}>
           {this.props.ledgerAccount.balanceNEU} <span>NEU</span>
         </td>
         <td className={styles.select}>
-          <Button color="primary" onClick={this.handleClick}>
+          <Button data-test-id="button-select" color="primary" onClick={this.handleClick}>
             Select
           </Button>
         </td>

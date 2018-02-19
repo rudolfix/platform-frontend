@@ -75,5 +75,17 @@ export const WalletLedgerChooserComponent: React.SFC<
         )}
       </>
     )}
+    <div className="mt-5 d-flex flex-row justify-content-between align-items-center">
+      <div>
+        {(advanced && !loading) && (
+        <Button outline color="secondary" onClick={handleAdvanced} data-test-id="btn-advanced">
+          Back
+        </Button>
+        )}
+      </div>
+      <div>
+        Have some issues with your NeuKey? <a href="#">Contact for help</a>
+      </div>
+    </div>
   </>
 );

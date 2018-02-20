@@ -11,10 +11,6 @@ interface IAccountRow {
 }
 
 export class AccountRow extends React.Component<IAccountRow> {
-  public constructor(props: IAccountRow) {
-    super(props);
-  }
-
   handleClick = () => {
     this.props.handleAddressChosen(this.props.ledgerAccount);
   };

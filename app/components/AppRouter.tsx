@@ -1,6 +1,6 @@
 export const appRoutes = {
   root: "/",
-  login: "/login",
+  register: "/register",
   kyc: "/kyc",
   dashboard: "/dashboard",
 };
@@ -16,7 +16,7 @@ import { WalletSelector } from "./walletSelector/WalletSelector";
 export const AppRouter: React.SFC = () => (
   <Switch>
     <Route path={appRoutes.root} component={Home} exact />
-    <Route path={appRoutes.login} component={WalletSelector} />
+    <Route path={appRoutes.register} component={WalletSelector} />
     <Route path={appRoutes.kyc} component={Kyc} />
     <Route path={appRoutes.dashboard} component={Dashboard} exact />
     <Redirect to={appRoutes.root} />

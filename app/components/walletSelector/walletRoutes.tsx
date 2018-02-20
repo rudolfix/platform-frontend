@@ -1,6 +1,6 @@
 import { appRoutes } from "../AppRouter";
 
-const parentRoutePath = appRoutes.login;
+const parentRoutePath = appRoutes.register;
 
 export const walletRoutes = {
   light: parentRoutePath + "/light",

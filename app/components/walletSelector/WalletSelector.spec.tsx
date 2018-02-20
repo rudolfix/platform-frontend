@@ -78,7 +78,7 @@ describe("<WalletSelector />", () => {
         wrapWithProviders(WalletSelector, {
           container,
           store,
-          currentRoute: appRoutes.login,
+          currentRoute: appRoutes.register,
         }),
       );
 
@@ -142,7 +142,7 @@ describe("<WalletSelector />", () => {
         wrapWithProviders(WalletSelector, {
           container,
           store,
-          currentRoute: appRoutes.login,
+          currentRoute: appRoutes.register,
         }),
       );
 

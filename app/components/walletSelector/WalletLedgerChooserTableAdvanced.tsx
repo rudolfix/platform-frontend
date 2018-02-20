@@ -96,7 +96,7 @@ export const WalletLedgerChooserTableAdvanced: React.SFC<IWalletLedgerChooserTab
                 onClick={showPrevAddresses}
                 data-test-id="btn-previous"
               >
-                Last
+                Previous
               </Button>
             )}
             <Button

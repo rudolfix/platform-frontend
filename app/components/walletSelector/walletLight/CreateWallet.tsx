@@ -34,7 +34,7 @@ const validationSchema = Yup.object().shape({
     .min(8, "Must be longer than 8"),
   [REPEAT_PASSWORD]: Yup.string()
     .required("Required")
-    .oneOf([Yup.ref(PASSWORD)], "Passwords are not similar"),
+    .oneOf([Yup.ref(PASSWORD)], "Passwords are not equal"),
 });
 
 const CreateLightWalletForm = (formikBag: FormikProps<IFormValues>) => (

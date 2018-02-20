@@ -27,14 +27,14 @@ const validate = () => {};
 
 const validationSchema = Yup.object().shape({
   [EMAIL]: Yup.string()
-    .required("Email")
-    .email("Email"),
+    .required("Required")
+    .email("Wrong email format"),
   [PASSWORD]: Yup.string()
-    .required("Password")
-    .min(8, "Must be longer than 3"),
+    .required("Required")
+    .min(8, "Must be longer than 8"),
   [REPEAT_PASSWORD]: Yup.string()
-    .required("Password")
-    .min(8, "Must be longer than 3"),
+    .required("Required")
+    .oneOf([Yup.ref(PASSWORD)], "Passwords are not equal"),
 });
 
 const CreateLightWalletForm = (formikBag: FormikProps<IFormValues>) => (

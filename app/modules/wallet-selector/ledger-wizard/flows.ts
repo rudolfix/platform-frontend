@@ -3,6 +3,7 @@ import { toPairs, zip } from "lodash";
 import { pairZip } from "../../../../typings/modifications";
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
+import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
 import {
   LedgerLockedError,
   LedgerNotAvailableError,
@@ -12,7 +13,7 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { walletFlows } from "../flows";
+import { WalletType } from "../../web3/types";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
 
@@ -113,12 +114,24 @@ export const ledgerWizardFlows = {
         dispatch: AppDispatch,
         ledgerConnector: LedgerWalletConnector,
         web3Manager: Web3Manager,
+        walletMetadataStorage: WalletMetadataStorage,
       ) => {
         const ledgerWallet = await ledgerConnector.finishConnecting(derivationPath);
         await web3Manager.plugPersonalWallet(ledgerWallet);
-        dispatch(walletFlows.walletConnected);
+
+        // todo move saving metadata to unified connect functions
+        walletMetadataStorage.saveMetadata({
+          walletType: WalletType.LEDGER,
+          derivationPath: derivationPath,
+        });
+        dispatch(actions.wallet.connected());
       },
-      [symbols.appDispatch, symbols.ledgerWalletConnector, symbols.web3Manager],
+      [
+        symbols.appDispatch,
+        symbols.ledgerWalletConnector,
+        symbols.web3Manager,
+        symbols.walletMetadataStorage,
+      ],
     ),
 
   verifyIfLedgerStillConnected: injectableFn(

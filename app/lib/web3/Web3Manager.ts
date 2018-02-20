@@ -76,6 +76,14 @@ export class Web3Manager {
     this.web3ConnectionWatcher.start();
   }
 
+  public async sign(message: string): Promise<string> {
+    if (this.personalWallet) {
+      return this.personalWallet.signMessage(message);
+    } else {
+      throw new Error("No wallet!");
+    }
+  }
+
   private watchConnection = async () => {
     this.logger.verbose("Checking web3 status...");
     if (!this.personalWallet) {

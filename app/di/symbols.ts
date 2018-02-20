@@ -23,6 +23,10 @@ export const symbols = makeDebugSymbols({
   browserWalletConnector: Symbol(),
   web3Manager: Symbol(),
 
+  // storages
+  walletMetadataStorage: Symbol(),
+  jwtStorage: Symbol(),
+
   // utils
   notificationCenter: Symbol(),
   logger: Symbol(),

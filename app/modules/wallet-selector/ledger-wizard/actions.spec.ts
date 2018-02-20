@@ -4,6 +4,7 @@ import { spy } from "sinon";
 
 import { dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
+import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
@@ -15,7 +16,7 @@ import { WalletNotConnectedError, Web3Manager } from "../../../lib/web3/Web3Mana
 import { IAppState } from "../../../store";
 import { Dictionary } from "../../../types";
 import { actions } from "../../actions";
-import { walletFlows } from "../flows";
+import { WalletType } from "../../web3/types";
 import { ledgerWizardFlows } from "./flows";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
 
@@ -214,18 +215,26 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         plugPersonalWallet: async () => {},
       });
+      const walletMetadataStorageMock = createMock(WalletMetadataStorage, {
+        saveMetadata: () => {},
+      });
 
       await ledgerWizardFlows.finishSettingUpLedgerConnector(expectedDerivationPath)(
         dispatchMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
+        walletMetadataStorageMock,
       );
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
         expectedDerivationPath,
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(dispatchMock).to.be.calledWithExactly(walletFlows.walletConnected);
+      expect(walletMetadataStorageMock.saveMetadata).to.be.calledWithExactly({
+        walletType: WalletType.LEDGER,
+        derivationPath: expectedDerivationPath,
+      });
+      expect(dispatchMock).to.be.calledWithExactly(actions.wallet.connected());
     });
 
     it("should not navigate when ledger wallet is not connected", async () => {
@@ -242,18 +251,23 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           throw new WalletNotConnectedError(ledgerWalletMock);
         },
       });
+      const walletMetadataStorageMock = createMock(WalletMetadataStorage, {
+        saveMetadata: () => {},
+      });
 
       await ledgerWizardFlows
         .finishSettingUpLedgerConnector(expectedDerivationPath)(
           navigateToMock,
           ledgerWalletConnectorMock,
           web3ManagerMock,
+          walletMetadataStorageMock,
         )
         .catch(() => {});
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
         expectedDerivationPath,
       );
+      expect(walletMetadataStorageMock.saveMetadata).to.not.be.called;
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
       expect(navigateToMock).not.be.called;
     });

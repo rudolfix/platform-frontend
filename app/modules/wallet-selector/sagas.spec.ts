@@ -12,7 +12,7 @@ import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { WalletSubType, WalletType } from "../web3/types";
-import { obtainJwt } from "./jwt-actions";
+import { obtainJwtPromise } from "./sagas";
 
 describe("Jwt actions", () => {
   describe("obtain-jwt", () => {
@@ -46,7 +46,7 @@ describe("Jwt actions", () => {
       });
       const randomStringMock = spy(() => expectedSalt);
 
-      await obtainJwt(
+      await obtainJwtPromise(
         web3ManagerMock,
         getStateMock,
         signatureAuthApiMock,

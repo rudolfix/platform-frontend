@@ -3,7 +3,6 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Container } from "inversify";
 import { createMount } from "../../../test/createMount";
 import { dummyNetworkId } from "../../../test/fixtures";
 import {
@@ -13,7 +12,6 @@ import {
 } from "../../../test/integrationTestUtils";
 import { globalFakeClock } from "../../../test/setupTestsHooks";
 import { createMock, tid } from "../../../test/testUtils";
-import { symbols } from "../../di/symbols";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -23,34 +21,28 @@ import {
 import { LedgerWallet, LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { Web3Adapter } from "../../lib/web3/Web3Adapter";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
-import { obtainJwt } from "../../modules/networking/jwt-actions";
 import { appRoutes } from "../AppRouter";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "./WalletLedgerInitComponent";
-import { WalletSelector } from "./WalletSelector";
+import { WalletMessageSigner } from "./WalletMessageSigner";
+import { WalletSelector, WalletSelectorComponent } from "./WalletSelector";
 
 describe("<WalletSelector />", () => {
   it("should render all three wallet tabs", () => {
-    const component = shallow(<WalletSelector />);
+    const component = shallow(<WalletSelectorComponent isMessageSigning={false} />);
 
     expect(component.find(tid("wallet-selector-ledger")).length).to.be.eq(1);
     expect(component.find(tid("wallet-selector-browser")).length).to.be.eq(1);
     expect(component.find(tid("wallet-selector-light")).length).to.be.eq(1);
   });
 
-  describe("integration", () => {
-    // @todo: this is rather tmp solution to avoid testing whole obtainJWT flow
-    // this should be gone soon and we should write additional mocks to make obtainJWT work
-    function selectivelyMockDispatcher(container: Container): void {
-      const originalDispatch = container.get<Function>(symbols.appDispatch);
-      const mockDispatch = (action: any) => {
-        if (action !== obtainJwt) {
-          originalDispatch(action);
-        }
-      };
-      container.rebind(symbols.appDispatch).toConstantValue(mockDispatch);
-    }
+  it("should render message signing", () => {
+    const component = shallow(<WalletSelectorComponent isMessageSigning={true} />);
 
+    expect(component.contains(<WalletMessageSigner />)).to.be.true;
+  });
+
+  describe.skip("integration", () => {
     it("should select ledger wallet", async () => {
       const ledgerWalletMock = createMock(LedgerWallet, {});
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {});
@@ -72,7 +64,6 @@ describe("<WalletSelector />", () => {
           },
         },
       });
-      selectivelyMockDispatcher(container);
 
       const mountedComponent = createMount(
         wrapWithProviders(WalletSelector, {
@@ -136,7 +127,6 @@ describe("<WalletSelector />", () => {
         browserWalletConnectorMock,
         web3ManagerMock,
       });
-      selectivelyMockDispatcher(container);
 
       const mountedComponent = createMount(
         wrapWithProviders(WalletSelector, {

@@ -1,6 +1,8 @@
 import { inject, injectable } from "inversify";
 
+import { delay } from "bluebird";
 import { symbols } from "../../di/symbols";
+import { ILogger } from "../dependencies/Logger";
 import { IHttpClient } from "./client/IHttpClient";
 
 //This is a mock implementation
@@ -8,11 +10,18 @@ import { IHttpClient } from "./client/IHttpClient";
 @injectable()
 export class VaultApi {
   // tslint:disable-next-line
-  constructor(@inject(symbols.jsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(
+    // tslint:disable-next-line
+    @inject(symbols.jsonHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.logger) private logger: ILogger,
+  ) {}
+
   // tslint:disable-next-line
-  public async store(password: string, salt: string, serializedVault: string): Promise<void> {
-    return Promise.resolve();
+  public async store(key: string, serializedVault: string): Promise<void> {
+    this.logger.info(`Storing vault at ${key}`);
+    return delay(500);
   }
+
   // tslint:disable-next-line
   public async retrieve(hash: string): Promise<string> {
     return Promise.resolve("Serialized wallet");

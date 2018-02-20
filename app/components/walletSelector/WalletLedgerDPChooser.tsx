@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import * as React from "react";
-import { Alert, Col, FormGroup, Input, Label, Row } from "reactstrap";
+import { Alert, Col, FormGroup, Input, Row } from "reactstrap";
 
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { derivationPathPrefixValidator } from "../../utils/Validators";
@@ -9,24 +9,23 @@ const DEBOUNCE_DELAY = 200;
 
 interface IDPChooserComponent {
   derivationPathPrefix: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onDerivationPathPrefixChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   errorMessage: string | null;
 }
 
 export const DPChooserComponent: React.SFC<IDPChooserComponent> = ({
   derivationPathPrefix,
-  onChange,
+  onDerivationPathPrefixChange,
   errorMessage,
 }) => (
   <Row>
     <Col xs="6">
       <FormGroup>
-        <Label for="derivationPathPrefix">Change your derivation path prefix, if necessary.</Label>
         <Input
           name="derivationPathPrefix"
           value={derivationPathPrefix}
-          onChange={onChange}
-          placeholder={DEFAULT_DERIVATION_PATH_PREFIX}
+          onChange={onDerivationPathPrefixChange}
+          placeholder={"Enter derivation path"}
         />
       </FormGroup>
       {errorMessage && (
@@ -39,8 +38,8 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent> = ({
 );
 
 interface IDPChooserProps {
-  onChange: (derivationPathPrefix: string) => void;
-  onDerivationPathError: () => void;
+  onDerivationPathPrefixChange: (derivationPathPrefix: string) => void;
+  onDerivationPathPrefixError: () => void;
 }
 
 interface IDPChooserState {
@@ -63,13 +62,13 @@ export class WalletLedgerDPChooser extends React.Component<IDPChooserProps, IDPC
       errorMessage,
     });
     if (errorMessage) {
-      this.props.onDerivationPathError();
+      this.props.onDerivationPathPrefixError();
     } else {
-      this.props.onChange(derivationPathPrefix);
+      this.props.onDerivationPathPrefixChange(derivationPathPrefix);
     }
   }, DEBOUNCE_DELAY);
 
-  onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  onDerivationPathPrefixChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const derivationPathPrefix = event.target.value;
     this.setState({
       derivationPathPrefix,
@@ -80,7 +79,7 @@ export class WalletLedgerDPChooser extends React.Component<IDPChooserProps, IDPC
   render(): React.ReactNode {
     return (
       <DPChooserComponent
-        onChange={this.onChange}
+        onDerivationPathPrefixChange={this.onDerivationPathPrefixChange}
         derivationPathPrefix={this.state.derivationPathPrefix}
         errorMessage={this.state.errorMessage}
       />

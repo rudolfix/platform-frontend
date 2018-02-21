@@ -46,10 +46,8 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
   generateSelect = (wordNumber: number): React.ReactNode => (
     <Select
       options={wordsOptions}
-      onBlurResetsInput={false}
-      onSelectResetsInput={false}
       simpleValue
-      clearable
+      clearable={false}
       matchPos="start"
       matchProp="value"
       value={this.state.words[wordNumber]}

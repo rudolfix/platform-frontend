@@ -12,7 +12,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { Dashboard } from "./Dashboard";
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
-import { WalletBrowserComponent } from "./WalletLoginHelp";
+import { WalletLoginHelp } from "./WalletLoginHelp";
 import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const AppRouter: React.SFC = () => (
@@ -21,7 +21,7 @@ export const AppRouter: React.SFC = () => (
     <Route path={appRoutes.register} component={WalletSelector} />
     <Route path={appRoutes.kyc} component={Kyc} />
     <Route path={appRoutes.dashboard} component={Dashboard} exact />
-    <Route path={appRoutes.help} component={WalletBrowserComponent} exact />
+    <Route path={appRoutes.help} component={WalletLoginHelp} exact />
 
     <Redirect to={appRoutes.root} />
   </Switch>

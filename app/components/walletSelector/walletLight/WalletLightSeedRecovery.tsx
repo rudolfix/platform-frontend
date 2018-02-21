@@ -1,9 +1,12 @@
 import * as Mnemonic from "bitcore-mnemonic";
 import { range } from "lodash";
 import * as React from "react";
-import Select from "react-select";
-// tslint:disable-next-line no-submodule-imports
+/* tslint:disable: no-submodule-imports */
 import "react-select/dist/react-select.css";
+import Select from "react-virtualized-select";
+import "react-virtualized-select/styles.css";
+import "react-virtualized/styles.css";
+/* tslint:enable: no-submodule-imports */
 import { Button, Col, Row } from "reactstrap";
 
 const SEED_LENGTH = 24;

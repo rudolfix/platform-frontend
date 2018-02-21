@@ -67,7 +67,7 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
       />
     </Row>
     <Row className="mt-5">
-      <Col className={cn("text-center text-md-right", styles.contact)}>
+      <Col className="text-center text-md-right">
         Have some issues with your NeuKey? <a href="#">Contact for help</a>
       </Col>
     </Row>

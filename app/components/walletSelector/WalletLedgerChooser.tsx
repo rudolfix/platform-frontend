@@ -26,7 +26,8 @@ export const WalletLedgerChooser = compose<React.SFC>(
       advanced: state.ledgerWizardState.advanced,
     }),
     dispatchToProps: dispatch => ({
-      onDerivationPathError: () => dispatch(actions.wallet.ledgerWizardDerivationPathPrefixError()),
+      onDerivationPathPrefixError: () =>
+        dispatch(actions.wallet.ledgerWizardDerivationPathPrefixError()),
       onDerivationPathPrefixChange: (derivationPathPrefix: string) => {
         dispatch(ledgerWizardFlows.setDerivationPathPrefix(derivationPathPrefix));
       },

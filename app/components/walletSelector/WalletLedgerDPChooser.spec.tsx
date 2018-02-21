@@ -12,7 +12,7 @@ describe("<DPChooserComponent />", () => {
 
   const defaultProps = () => ({
     derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-    onChange: spy(),
+    onDerivationPathPrefixChange: spy(),
     errorMessage: errorMessage,
   });
 
@@ -32,6 +32,6 @@ describe("<DPChooserComponent />", () => {
     const component = shallow(<DPChooserComponent {...props} />);
     const inputField = component.find('Input[name="derivationPathPrefix"]');
     inputField.simulate("change", { target: { value: "test" } });
-    expect(props.onChange).to.be.calledOnce;
+    expect(props.onDerivationPathPrefixChange).to.be.calledOnce;
   });
 });

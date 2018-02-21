@@ -3,11 +3,12 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { LoadingIndicator } from "../shared/LoadingIndicator";
-import { AccountRow, WalletLedgerChooserComponent } from "./WalletLedgerChooserComponent";
-import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
-
 import { tid } from "../../../test/testUtils";
+import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { WalletLedgerChooserComponent } from "./WalletLedgerChooserComponent";
+import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
+import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
+import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
 
 const defaultProps = () => ({
   loading: false,
@@ -42,7 +43,7 @@ const defaultProps = () => ({
   showPrevAddresses: spy(),
   showNextAddresses: spy(),
   onDerivationPathPrefixChange: spy(),
-  onDerivationPathError: spy(),
+  onDerivationPathPrefixError: spy(),
   advanced: true,
   handleAdvanced: spy(),
 });
@@ -58,93 +59,97 @@ describe("<WalletLedgerChooserComponent />", () => {
     expect(component.contains(<LoadingIndicator />)).to.be.true;
   });
 
-  it("should render all provided accounts", () => {
-    const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserComponent {...props} />);
-    expect(component.find(AccountRow).length).to.be.eq(props.accounts.length);
-    component.find(AccountRow).forEach((row, index) => {
-      expect(
-        row.equals(
-          <AccountRow
-            ledgerAccount={props.accounts[index]}
-            handleAddressChosen={props.handleAddressChosen}
-          />,
-        ),
-      ).to.be.true;
-    });
+  it("should render WalletLedgerDPChooser for advanced use case", () => {
+    const component = shallow(<WalletLedgerChooserComponent {...defaultProps()} />);
+    expect(
+      component.find(WalletLedgerDPChooser),
+      "doesn't contain WalletLedgerDPChooser",
+    ).to.be.length(1);
+  });
+
+  it("should render correct advanced / simple data table according do advanced parameter ", () => {
+    const propsAdvanced = {
+      ...defaultProps(),
+      advanced: true,
+    };
+
+    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    expect(
+      componentAdvanced.find(WalletLedgerChooserTableAdvanced),
+      "doesn't contain WalletLedgerChooserTableAdvanced",
+    ).to.be.length(1);
+
+    const propsSimple = {
+      ...defaultProps(),
+      advanced: false,
+    };
+
+    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    expect(
+      componentSimple.find(WalletLedgerChooserTableSimple),
+      "doesn't contain WalletLedgerChooserTableSimple",
+    ).to.be.length(1);
   });
 
   it("should not render accounts table if there are no accounts to show", () => {
-    const props = defaultProps();
-    props.accounts = [];
-    const component = shallow(<WalletLedgerChooserComponent {...props} />);
-    expect(component.find("table")).to.have.length(0);
-  });
-
-  it("should show / hide previous address button regarding hasPreviousAddress property", () => {
-    const propsWithPrevAddr = defaultProps();
-    const componentWithPrevAddr = shallow(<WalletLedgerChooserComponent {...propsWithPrevAddr} />);
-    const propsWithoutPrevAddr = {
+    const propsAdvanced = {
       ...defaultProps(),
-      hasPreviousAddress: false,
+      advanced: true,
+      accounts: [],
     };
-    const componentWithoutPrevAddr = shallow(
-      <WalletLedgerChooserComponent {...propsWithoutPrevAddr} />,
-    );
-    expect(componentWithPrevAddr.find(tid("btn-previous")).length).to.be.eq(1);
-    expect(componentWithoutPrevAddr.find(tid("btn-previous")).length).to.be.eq(0);
+    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    expect(componentAdvanced.find(WalletLedgerChooserTableAdvanced)).to.have.length(0);
+
+    const propsSimple = {
+      ...defaultProps(),
+      advanced: false,
+      accounts: [],
+    };
+    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    expect(componentSimple.find(WalletLedgerChooserTableSimple)).to.have.length(0);
   });
 
-  it("should show / hide derivation path input regarding advanced property", () => {
-    const propsAdvancedTrue = defaultProps();
-    const propsAdvancedFalse = { ...defaultProps(), advanced: false };
-    const componentAdvancedTrue = shallow(<WalletLedgerChooserComponent {...propsAdvancedTrue} />);
-    const componentAdvancedFalse = shallow(
-      <WalletLedgerChooserComponent {...propsAdvancedFalse} />,
-    );
+  it("should render correct advanced / back buttons according to advanced parameter", () => {
+    const propsAdvanced = {
+      ...defaultProps(),
+      advanced: true,
+    };
 
-    expect(componentAdvancedTrue.find(WalletLedgerDPChooser).length).to.be.eq(1);
-    expect(componentAdvancedFalse.find(WalletLedgerDPChooser).length).to.be.eq(0);
+    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    expect(
+      componentAdvanced.find(tid("btn-advanced-advanced")),
+      'doesn\'t contain "back" button',
+    ).to.be.length(1);
+
+    const propsSimple = {
+      ...defaultProps(),
+      advanced: false,
+    };
+
+    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    expect(
+      componentSimple.find(tid("btn-advanced-simple")),
+      'doesn\'t contain "advanced selection" button',
+    ).to.be.length(1);
   });
 
-  it("should call correct click handlers for prev button", () => {
-    const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserComponent {...props} />);
-    component.find(tid("btn-previous")).simulate("click");
-    expect(props.showPrevAddresses).to.be.calledOnce;
-  });
+  it('should fire handleAdvanced action when "advanced selection ", "back" buttons are clicked ', () => {
+    const propsAdvanced = {
+      ...defaultProps(),
+      advanced: true,
+    };
 
-  it("should call correct click handlers for next button", () => {
-    const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserComponent {...props} />);
-    component.find(tid("btn-next")).simulate("click");
-    expect(props.showNextAddresses).to.be.calledOnce;
-  });
+    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    componentAdvanced.find(tid("btn-advanced-advanced")).simulate("click");
+    expect(propsAdvanced.handleAdvanced).to.be.calledOnce;
 
-  it("should call correct click handlers for advanced button", () => {
-    const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserComponent {...props} />);
-    component.find(tid("btn-advanced")).simulate("click");
-    expect(props.handleAdvanced).to.be.calledOnce;
-  });
-});
+    const propsSimple = {
+      ...defaultProps(),
+      advanced: false,
+    };
 
-describe("<AccountRow />", () => {
-  it("should render correct account data and handle click", () => {
-    const props = defaultProps();
-    const account = props.accounts[0];
-    const accountRow = shallow(
-      <AccountRow ledgerAccount={account} handleAddressChosen={props.handleAddressChosen} />,
-    );
-
-    const renderedDerivationPath = accountRow.find(tid("account-derivation-path"));
-    expect(renderedDerivationPath.text()).to.be.eq(account.derivationPath);
-    const renderedAddress = accountRow.find(tid("account-address"));
-    expect(renderedAddress.text()).to.be.eq(account.address);
-    const renderedBalance = accountRow.find(tid("account-balance"));
-    expect(renderedBalance.text()).to.be.eq(account.balanceETH);
-
-    accountRow.find(tid("account-row")).simulate("click");
-    expect(props.handleAddressChosen).to.be.calledOnce;
+    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    componentSimple.find(tid("btn-advanced-simple")).simulate("click");
+    expect(propsSimple.handleAdvanced).to.be.calledOnce;
   });
 });

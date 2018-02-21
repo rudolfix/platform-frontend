@@ -98,13 +98,17 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
           currentStep={this.state.page + 1}
           steps={SEED_LENGTH / WORDS_PER_VIEW}
         />
-        <Row className="justify-content-center">
+        <Row className="justify-content-center my-3">
           <div>{this.state.words.filter(word => word !== null).join(" , ")}</div>
         </Row>
         <Row>
-          {range(startIndex, endIndex).map(num => <Col key={num}>{this.generateSelect(num)}</Col>)}
+          {range(startIndex, endIndex).map(num => (
+            <Col xs={{ size: 6, offset: 3 }} sm={{ size: 3, offset: 0 }} key={num} className="my-3">
+              {this.generateSelect(num)}
+            </Col>
+          ))}
         </Row>
-        <Row className="d-flex justify-content-between">
+        <Row className="d-flex justify-content-between my-3">
           <Button disabled={startIndex === 0} onClick={this.handlePreviousView}>
             previous words
           </Button>
@@ -114,7 +118,7 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
             </Button>
           )}
         </Row>
-        <Row className="text-center">
+        <Row className="text-center my-3">
           <Col>
             <Button disabled={!canSubmit} onClick={this.handleSendWords}>
               Send words

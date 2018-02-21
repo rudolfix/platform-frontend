@@ -98,10 +98,8 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
           currentStep={this.state.page + 1}
           steps={SEED_LENGTH / WORDS_PER_VIEW}
         />
-        <Row>
-          <div className="text-center">
-            {this.state.words.filter(word => word !== null).join(" , ")}
-          </div>
+        <Row className="justify-content-center">
+          <div>{this.state.words.filter(word => word !== null).join(" , ")}</div>
         </Row>
         <Row>
           {range(startIndex, endIndex).map(num => <Col key={num}>{this.generateSelect(num)}</Col>)}
@@ -116,13 +114,13 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
             </Button>
           )}
         </Row>
-        {canSubmit && (
-          <Row className="text-center">
-            <Col>
-              <Button onClick={this.handleSendWords}>Send words</Button>
-            </Col>
-          </Row>
-        )}
+        <Row className="text-center">
+          <Col>
+            <Button disabled={!canSubmit} onClick={this.handleSendWords}>
+              Send words
+            </Button>
+          </Col>
+        </Row>
       </>
     );
   }

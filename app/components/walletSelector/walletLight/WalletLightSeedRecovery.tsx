@@ -30,7 +30,7 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
     super(props);
 
     this.state = {
-      words: Array(SEED_LENGTH).fill("_"),
+      words: Array(SEED_LENGTH).fill(null),
       page: 0,
     };
   }
@@ -84,17 +84,19 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
     const canAdvance = this.state.words
       .slice(startIndex, endIndex)
       .reduce((acc: boolean, value: string): boolean => {
-        return acc && value.length > 1;
+        return acc && value !== null;
       }, true);
 
     const canSubmit = this.state.words.reduce((acc: boolean, value: string): boolean => {
-      return acc && value.length > 1;
+      return acc && value !== null;
     }, true);
 
     return (
       <>
         <Row>
-          <div className="text-center">{this.state.words.join(" , ")}</div>
+          <div className="text-center">
+            {this.state.words.filter(word => word !== null).join(" , ")}
+          </div>
         </Row>
         <Row>
           {range(startIndex, endIndex).map(num => <Col key={num}>{this.generateSelect(num)}</Col>)}

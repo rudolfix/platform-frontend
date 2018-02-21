@@ -3,7 +3,7 @@ import { Col, Row } from "reactstrap";
 import { LayoutRegisterLogin } from "./layouts/LayoutRegisterLogin";
 import { StandardButton } from "./shared/StandardButton";
 
-export const WalletBrowserComponent: React.SFC<void> = () => (
+export const WalletLoginHelp: React.SFC<void> = () => (
   <div>
     <LayoutRegisterLogin>
       <Col className="mt-5 mb-5">

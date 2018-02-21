@@ -69,6 +69,23 @@ module.exports = merge(configCommon, {
             }),
           },
           {
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+              fallback: "style-loader",
+              use: [
+                {
+                  loader: "css-loader",
+                  options: {
+                    importLoaders: 1,
+                    modules: false,
+                    localIdentName: "[name]__[local]___[hash:base64:5]",
+                    camelCase: "dashesOnly",
+                  },
+                },
+              ],
+            }),
+          },
+          {
             test: /\.(tsx?)$/,
             use: [
               {

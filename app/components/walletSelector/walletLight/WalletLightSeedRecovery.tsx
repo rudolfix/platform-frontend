@@ -9,6 +9,8 @@ import "react-virtualized/styles.css";
 /* tslint:enable: no-submodule-imports */
 import { Button, Col, Row } from "reactstrap";
 
+import { WalletResetHeader } from "./WalletResetHeader";
+
 const SEED_LENGTH = 24;
 const WORDS_PER_VIEW = 4;
 const wordsOptions = Mnemonic.Words.ENGLISH.map((word: string) => ({ value: word, label: word }));
@@ -91,6 +93,11 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
 
     return (
       <>
+        <WalletResetHeader
+          text={"Use the Recovery Phrase to restore your password."}
+          currentStep={this.state.page + 1}
+          steps={SEED_LENGTH / WORDS_PER_VIEW}
+        />
         <Row>
           <div className="text-center">
             {this.state.words.filter(word => word !== null).join(" , ")}

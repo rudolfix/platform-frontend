@@ -52,6 +52,7 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
       value={this.state.words[wordNumber]}
       onChange={this.updateValueFactory(wordNumber)}
       placeholder={"word " + (wordNumber + 1).toString(10)}
+      noResultsText="No matching word"
     />
   );
 

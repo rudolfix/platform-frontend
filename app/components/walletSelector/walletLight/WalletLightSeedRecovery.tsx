@@ -98,8 +98,8 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
           currentStep={this.state.page + 1}
           steps={SEED_LENGTH / WORDS_PER_VIEW}
         />
-        <Row className="justify-content-center my-3">
-          <div>{this.state.words.filter(word => word !== null).join(" , ")}</div>
+        <Row className="my-3">
+          <Col className="text-center">{this.state.words.filter(word => word !== null).join(" , ")}</Col>
         </Row>
         <Row>
           {range(startIndex, endIndex).map(num => (

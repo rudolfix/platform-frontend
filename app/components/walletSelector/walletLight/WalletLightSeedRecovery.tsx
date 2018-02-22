@@ -16,6 +16,8 @@ const WORDS_PER_VIEW = 4;
 const wordsOptions = Mnemonic.Words.ENGLISH.map((word: string) => ({ value: word, label: word }));
 
 interface ISeedRecoveryProps {
+  startingStep: number,
+  extraSteps: number,
   sendWords: (words: string[]) => void;
 }
 
@@ -95,8 +97,8 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
       <>
         <WalletResetHeader
           text={"Use the Recovery Phrase to restore your password."}
-          currentStep={this.state.page + 1}
-          steps={SEED_LENGTH / WORDS_PER_VIEW}
+          currentStep={this.props.startingStep + this.state.page + 1}
+          steps={this.props.extraSteps + (SEED_LENGTH / WORDS_PER_VIEW)}
         />
         <Row className="my-3">
           <Col className="text-center">{this.state.words.filter(word => word !== null).join(" , ")}</Col>
@@ -136,6 +138,8 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
 
 export const WalletLightSeedRecovery = () => (
   <WalletLightSeedRecoveryComponent
+    startingStep={0}
+    extraSteps={0}
     // tslint:disable-next-line no-console
     sendWords={(words: string[]) => console.log("sending words", words)}
   />

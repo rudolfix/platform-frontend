@@ -1,15 +1,16 @@
 import * as Mnemonic from "bitcore-mnemonic";
 import { range } from "lodash";
 import * as React from "react";
-/* tslint:disable: no-submodule-imports */
-import "react-select/dist/react-select.css";
 import Select from "react-virtualized-select";
-import "react-virtualized-select/styles.css";
-import "react-virtualized/styles.css";
-/* tslint:enable: no-submodule-imports */
 import { Button, Col, Row } from "reactstrap";
 
 import { WalletResetHeader } from "./WalletResetHeader";
+
+/* tslint:disable: no-submodule-imports */
+import "react-select/dist/react-select.css";
+import "react-virtualized-select/styles.css";
+import "react-virtualized/styles.css";
+/* tslint:enable: no-submodule-imports */
 
 export const SEED_LENGTH = 24;
 const WORDS_PER_VIEW = 4;

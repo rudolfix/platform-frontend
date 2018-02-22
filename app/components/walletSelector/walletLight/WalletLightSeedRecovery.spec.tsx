@@ -7,6 +7,8 @@ import { tid } from "../../../../test/testUtils";
 import { SEED_LENGTH, WalletLightSeedRecoveryComponent } from "./WalletLightSeedRecovery";
 
 const defaultProps = () => ({
+  startingStep: 0,
+  extraSteps: 0,
   sendWords: spy(),
 });
 

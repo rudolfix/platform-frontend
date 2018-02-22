@@ -84,6 +84,6 @@ describe("<WalletLightSeedRecoveryComponent />", () => {
     const component = shallow(<WalletLightSeedRecoveryComponent {...props} />);
     component.find(tid("btn-send")).simulate("click");
 
-    expect(props.sendWords).to.be.called;
+    expect(props.sendWords).to.be.calledWith(component.state().words);
   });
 });

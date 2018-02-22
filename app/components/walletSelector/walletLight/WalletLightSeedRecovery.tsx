@@ -11,7 +11,7 @@ import { Button, Col, Row } from "reactstrap";
 
 import { WalletResetHeader } from "./WalletResetHeader";
 
-const SEED_LENGTH = 24;
+export const SEED_LENGTH = 24;
 const WORDS_PER_VIEW = 4;
 const wordsOptions = Mnemonic.Words.ENGLISH.map((word: string) => ({ value: word, label: word }));
 
@@ -109,18 +109,22 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
           ))}
         </Row>
         <Row className="d-flex justify-content-between my-3">
-          <Button disabled={startIndex === 0} onClick={this.handlePreviousView}>
+          <Button
+            data-test-id="btn-previous"
+            disabled={startIndex === 0}
+            onClick={this.handlePreviousView}
+          >
             previous words
           </Button>
           {this.state.page + 1 < SEED_LENGTH / WORDS_PER_VIEW && (
-            <Button disabled={!canAdvance} onClick={this.handleNextView}>
+            <Button data-test-id="btn-next" disabled={!canAdvance} onClick={this.handleNextView}>
               next {`${endIndex} / ${SEED_LENGTH}`}
             </Button>
           )}
         </Row>
         <Row className="text-center my-3">
           <Col>
-            <Button disabled={!canSubmit} onClick={this.handleSendWords}>
+            <Button data-test-id="btn-send" disabled={!canSubmit} onClick={this.handleSendWords}>
               Send words
             </Button>
           </Col>

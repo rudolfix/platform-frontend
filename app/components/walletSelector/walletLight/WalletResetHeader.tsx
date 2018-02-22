@@ -15,7 +15,7 @@ export const WalletResetHeader: React.SFC<IProps> = props => (
     </Col>
     <Col className="mt-4 mb-5 mx-auto text-center">
       <h2 className="font-weight-bold">Reset your Password</h2>
-      <p className="pt-3">{props.children}</p>
+      <p className="pt-3">{props.text}</p>
     </Col>
   </div>
 );

@@ -22,6 +22,18 @@ module.exports = merge(configCommon, {
         target: "http://localhost:5000",
         pathRewrite: { "^/api/signature": "" },
       },
+      "/api/wallet": {
+        target: "http://localhost:5001",
+        pathRewrite: { "^/api/wallet": "" },
+      },
+      "/api/user": {
+        target: "http://localhost:5002",
+        pathRewrite: { "^/api/user": "" },
+      },
+      "/api/kyc": {
+        target: "http://localhost:5003",
+        pathRewrite: { "^/api/kyc": "" },
+      },
     },
   },
   entry: [

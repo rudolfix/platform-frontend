@@ -85,6 +85,23 @@ module.exports = merge(configCommon, {
             ],
           },
           {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+              },
+              {
+                loader: "css-loader",
+                options: {
+                  importLoaders: 1,
+                  modules: false,
+                  localIdentName: "[name]__[local]___[hash:base64:5]",
+                  camelCase: "dashesOnly",
+                },
+              },
+            ],
+          },
+          {
             test: /\.(tsx?)$/,
             use: [
               {

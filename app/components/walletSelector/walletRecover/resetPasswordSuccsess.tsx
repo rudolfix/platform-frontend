@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { LayoutRegisterLogin } from "../../layouts/LayoutRegisterLogin";
 import { StandardButton } from "../../shared/StandardButton";
-import { WalletResetHeader } from "../../walletSelector/walletLight/WalletResetHeader";
+import { WalletResetHeader } from "./WalletResetHeader";
 
 export const WalletLoginHelp: React.SFC<void> = () => (
   <div>

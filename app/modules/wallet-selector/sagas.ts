@@ -4,7 +4,7 @@ import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
 import { CryptoRandomString } from "../../lib/dependencies/cryptoRandomString";
 import { ILogger } from "../../lib/dependencies/Logger";
-import { JwtStorage } from "../../lib/persistence/JwtStorage";
+import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { actions, TAction } from "../actions";
 import { loadUser } from "../auth/sagas";
@@ -76,8 +76,8 @@ export async function obtainJwtPromise(
 }
 
 function* saveJwtToStorage(jwt: string): Iterator<any> {
-  const storage: JwtStorage = yield getDependency(symbols.jwtStorage);
-  storage.save(jwt);
+  const storage: ObjectStorage<string> = yield getDependency(symbols.jwtStorage);
+  storage.set(jwt);
 }
 
 export const walletSelectorSagas = function*(): Iterator<effects.Effect> {

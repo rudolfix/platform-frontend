@@ -3,7 +3,8 @@ import { spy } from "sinon";
 import { dummyLogger, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { VaultApi } from "../../../lib/api/VaultApi";
-import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
+import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
+import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   ILightWallet,
   LightWalletConnector,
@@ -18,7 +19,9 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
   describe("tryConnectingWithLightWallet action", () => {
     const dispatchMock = spy();
     const expectedWalletDummy = { addresses: ["mockAddress"] };
-    const walletMetadataStorage = createMock(WalletMetadataStorage, { saveMetadata: () => {} });
+    const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      set: () => {},
+    }) as any;
     const web3ManagerMock = createMock(Web3Manager, {
       networkId: dummyNetworkId,
       plugPersonalWallet: async () => {},
@@ -46,7 +49,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         web3ManagerMock,
         lightWalletConnector,
         lightWalletUtil,
-        walletMetadataStorage,
+        walletMetadataStorageMock,
         vaultApi,
         dummyLogger,
       );
@@ -74,7 +77,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         web3ManagerMock,
         lightWalletConnector,
         lightWalletUtil,
-        walletMetadataStorage,
+        walletMetadataStorageMock,
         vaultApi,
         dummyLogger,
       );

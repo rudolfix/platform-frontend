@@ -1,6 +1,7 @@
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../../lib/dependencies/Logger";
-import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
+import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
+import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   BrowserWalletConnector,
   BrowserWalletLockedError,
@@ -21,7 +22,7 @@ export const browserWizardFlows = {
       browserWalletConnector: BrowserWalletConnector,
       web3Manager: Web3Manager,
       logger: ILogger,
-      walletMetadataStorage: WalletMetadataStorage,
+      walletMetadataStorage: ObjectStorage<TWalletMetadata>,
     ) => {
       try {
         const browserWallet = await browserWalletConnector.connect(web3Manager.networkId!);
@@ -29,7 +30,7 @@ export const browserWizardFlows = {
         await web3Manager.plugPersonalWallet(browserWallet);
         // todo move saving metadata to unified connect functions
         // todo browser wallet should save and verify address
-        walletMetadataStorage.saveMetadata({
+        walletMetadataStorage.set({
           walletType: WalletType.BROWSER,
         });
         dispatch(actions.wallet.connected());

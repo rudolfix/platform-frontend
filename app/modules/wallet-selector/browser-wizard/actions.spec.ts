@@ -2,7 +2,8 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import { dummyLogger, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
-import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
+import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
+import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -27,9 +28,9 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock = createMock(WalletMetadataStorage, {
-        saveMetadata: () => {},
-      });
+      const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+        set: () => {},
+      }) as any;
 
       await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
@@ -40,7 +41,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletMetadataStorageMock.saveMetadata).to.be.calledWithExactly({
+      expect(walletMetadataStorageMock.set).to.be.calledWithExactly({
         walletType: WalletType.BROWSER,
       });
       expect(dispatchMock).to.be.calledWithExactly(actions.wallet.connected());
@@ -59,9 +60,9 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock = createMock(WalletMetadataStorage, {
-        saveMetadata: () => {},
-      });
+      const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+        set: () => {},
+      }) as any;
 
       await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
@@ -72,7 +73,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletMetadataStorageMock.saveMetadata).to.not.be.called;
+      expect(walletMetadataStorageMock.set).to.not.be.called;
       expect(dispatchMock).to.be.calledWithExactly(
         actions.wallet.browserWalletConnectionError(
           "Your wallet seems to be locked — we can't access any accounts.",

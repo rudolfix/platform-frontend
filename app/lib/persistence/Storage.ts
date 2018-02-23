@@ -1,19 +1,15 @@
 import { injectable } from "inversify";
 
-export interface IStorage {
-  setKey: (key: string, value: string) => void;
-  getKey: (key: string) => string;
-}
-
+/** Simple adapter on local storage */
 @injectable()
 export class Storage {
   constructor(private localStorage: any) {}
 
-  public setKey = (key: string, value: string): void => {
+  public setKey(key: string, value: string): void {
     this.localStorage.setItem(key, value);
-  };
+  }
 
-  public getKey = (key: string): string => {
+  public getKey(key: string): string | undefined {
     return this.localStorage.getItem(key);
-  };
+  }
 }

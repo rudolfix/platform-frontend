@@ -1,12 +1,13 @@
 import { delay } from "bluebird";
 import { effects } from "redux-saga";
 import { symbols } from "../../di/symbols";
+import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
   ILightWalletMetadata,
-  WalletMetadataStorage,
-} from "../../lib/persistence/WalletMetadataStorage";
+  TWalletMetadata,
+} from "../../lib/persistence/WalletMetadataObjectStorage";
 import { BrowserWalletConnector } from "../../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../../lib/web3/LightWallet";
@@ -47,7 +48,7 @@ export function* messageSign(message: string): Iterator<any> {
 }
 
 export async function ensureWalletConnection(
-  walletMetadata: WalletMetadataStorage,
+  walletMetadata: ObjectStorage<TWalletMetadata>,
   web3Manager: Web3Manager,
   ledgerWalletConnector: LedgerWalletConnector,
   browserWalletConnector: BrowserWalletConnector,
@@ -56,7 +57,7 @@ export async function ensureWalletConnection(
   if (web3Manager.personalWallet) {
     return;
   }
-  const metadata = walletMetadata.getMetadata()!;
+  const metadata = walletMetadata.get()!;
 
   invariant(metadata, "User has JWT but doesn't have wallet metadata!");
 

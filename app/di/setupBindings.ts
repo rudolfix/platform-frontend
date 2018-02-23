@@ -23,8 +23,12 @@ import {
 
 import { ApiKycService } from "../lib/api/kyc/index";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
-import { JwtStorage } from "../lib/persistence/JwtStorage";
-import { WalletMetadataStorage } from "../lib/persistence/WalletMetadataStorage";
+import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
+import { ObjectStorage } from "../lib/persistence/ObjectStorage";
+import {
+  STORAGE_WALLET_METADATA_KEY,
+  TWalletMetadata,
+} from "../lib/persistence/WalletMetadataObjectStorage";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;
@@ -54,14 +58,6 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<SignatureAuthApi>(symbols.signatureAuthApi)
     .to(SignatureAuthApi)
-    .inSingletonScope();
-  container
-    .bind<WalletMetadataStorage>(symbols.walletMetadataStorage)
-    .to(WalletMetadataStorage)
-    .inSingletonScope();
-  container
-    .bind<JwtStorage>(symbols.jwtStorage)
-    .to(JwtStorage)
     .inSingletonScope();
 
   container.bind<LightWalletUtil>(symbols.lightWalletUtil).toConstantValue(lightWalletUtil);
@@ -109,6 +105,26 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<AsyncIntervalSchedulerFactoryType>(symbols.asyncIntervalSchedulerFactory)
     .toFactory(AsyncIntervalSchedulerFactory);
+
+  // storages
+  container
+    .bind<ObjectStorage<TWalletMetadata>>(symbols.walletMetadataStorage)
+    .toConstantValue(
+      new ObjectStorage<TWalletMetadata>(
+        container.get(symbols.storage),
+        container.get(symbols.logger),
+        STORAGE_WALLET_METADATA_KEY,
+      ),
+    );
+  container
+    .bind<ObjectStorage<string>>(symbols.jwtStorage)
+    .toConstantValue(
+      new ObjectStorage<string>(
+        container.get(symbols.storage),
+        container.get(symbols.logger),
+        STORAGE_JWT_KEY,
+      ),
+    );
 
   return container;
 }

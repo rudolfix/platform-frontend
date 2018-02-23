@@ -1,7 +1,8 @@
 import { symbols } from "../../../di/symbols";
 import { VaultApi } from "../../../lib/api/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
-import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
+import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
+import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightCreationError,
   LightDesirializeError,
@@ -24,7 +25,7 @@ export const lightWizardFlows = {
         web3Manager: Web3Manager,
         lightWalletConnector: LightWalletConnector,
         lightWalletUtil: LightWalletUtil,
-        walletMetadataStorage: WalletMetadataStorage,
+        walletMetadataStorage: ObjectStorage<TWalletMetadata>,
         vaultApi: VaultApi,
         logger: ILogger,
       ) => {
@@ -39,7 +40,7 @@ export const lightWizardFlows = {
             lightWalletVault.salt,
           );
 
-          walletMetadataStorage.saveMetadata({
+          walletMetadataStorage.set({
             walletType: WalletType.LIGHT,
             vault: lightWalletVault.walletInstance,
             salt: lightWalletVault.salt,

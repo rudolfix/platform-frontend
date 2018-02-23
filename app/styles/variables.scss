@@ -31,14 +31,14 @@ $charcoal-grey: #394651;
 
 $smaller-font-size: .8125rem;
 
-$shadow:  0 .125rem .25rem 0 rgba(0, 0, 0, .1);
+$shadow:  0 rem-to-px(2px) rem-to-px(4px) 0 rgba(0, 0, 0, .1);
 
 // Bootstrap variable overrides
 
 //colors
 $link-color: $blue;
 $body-color: $denim;
-$body-bg: $pale-grey-50;
+$body-bg: $pale-blue;
 
 $dark: $charcoal-grey;
 

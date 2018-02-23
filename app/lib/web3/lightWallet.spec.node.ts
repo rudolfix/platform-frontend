@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { expectToBeRejected } from "../../../test/testUtils";
 import { LightWalletUtil } from "./LightWallet";
 
-describe("LightWallet", () => {
+describe("LightWallet > cryptography", () => {
   const lightWalletUtils = new LightWalletUtil();
   const hdPathString = "m/44'/60'/0'";
   const password = "password";

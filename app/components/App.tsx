@@ -66,11 +66,11 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
     }
 
     return (
-      <div>
+      <>
         <Header />
         <ToastContainer />
         <AppRouter />
-      </div>
+      </>
     );
   }
 }

@@ -8,7 +8,7 @@
 .wallet {
   cursor: pointer;
   text-transform: uppercase;
-  color: $body-color;
+  color: $gray3;
 
   &::after {
     content: attr(data-text);
@@ -26,7 +26,7 @@
   &::before {
     content: "|";
     margin: 0 $spacer;
-    color: $body-color;
+    color: $gray2;
     text-shadow: none;
     font-weight: $font-weight-normal;
   }
@@ -43,7 +43,11 @@
 
   &:global(.active) {
     font-weight: $font-weight-bold;
-    color: $blue;
+    color: $black;
+
+    span {
+      border-bottom: rem-to-px(1px) solid $piss-yellow;
+    }
   }
 
   @include media-breakpoint-down(sm) {

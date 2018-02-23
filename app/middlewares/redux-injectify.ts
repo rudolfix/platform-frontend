@@ -1,5 +1,6 @@
 import { Container } from "inversify";
 import { Middleware, MiddlewareAPI } from "redux";
+import { FunctionWithDeps } from "../types";
 
 export function createInjectMiddleware(
   container: Container,
@@ -46,10 +47,13 @@ export function getDependencies(func: Function): symbol[] {
   }
 }
 
-export function injectableFn<T extends Function>(func: T, dependencies: symbol[]): T {
+export function injectableFn<T extends Function>(
+  func: T,
+  dependencies: symbol[],
+): FunctionWithDeps & T {
   (func as any)[dependencyInfoSymbol] = dependencies;
 
-  return func;
+  return func as any;
 }
 
 // patch redux dispatch signature to support dispatching functions

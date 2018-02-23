@@ -1,3 +1,9 @@
+/**
+ * Wraps fetch with JSON based, injectable wrapper
+ * Converts camel cased body properties to snake case on requests,
+ * and does the reverse on responses
+ */
+
 import { injectable } from "inversify";
 import { compact } from "lodash";
 import * as queryString from "query-string";
@@ -130,7 +136,7 @@ export class JsonHttpClient implements IHttpClient {
     let finalResponseJson: T = toCamelCase(responseJson);
     if (config.responseSchema) {
       try {
-        finalResponseJson = config.responseSchema.validateSync<T>(responseJson, {
+        finalResponseJson = config.responseSchema.validateSync<T>(toCamelCase(responseJson), {
           stripUnknown: true,
           strict: true,
         }) as T;

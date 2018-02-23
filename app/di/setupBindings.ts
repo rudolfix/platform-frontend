@@ -10,7 +10,7 @@ import { VaultApi } from "../lib/api/VaultApi";
 import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
 import { DevConsoleLogger, ILogger } from "../lib/dependencies/Logger";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
-import { Storage } from "../lib/dependencies/storage";
+import { Storage } from "../lib/persistence/Storage";
 import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../lib/web3/LightWallet";
@@ -23,6 +23,8 @@ import {
 
 import { ApiKycService } from "../lib/api/kyc/index";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
+import { JwtStorage } from "../lib/persistence/JwtStorage";
+import { WalletMetadataStorage } from "../lib/persistence/WalletMetadataStorage";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;
@@ -52,6 +54,14 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<SignatureAuthApi>(symbols.signatureAuthApi)
     .to(SignatureAuthApi)
+    .inSingletonScope();
+  container
+    .bind<WalletMetadataStorage>(symbols.walletMetadataStorage)
+    .to(WalletMetadataStorage)
+    .inSingletonScope();
+  container
+    .bind<JwtStorage>(symbols.jwtStorage)
+    .to(JwtStorage)
     .inSingletonScope();
 
   container.bind<LightWalletUtil>(symbols.lightWalletUtil).toConstantValue(lightWalletUtil);

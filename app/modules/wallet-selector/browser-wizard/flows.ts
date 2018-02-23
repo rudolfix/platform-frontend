@@ -1,5 +1,6 @@
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../../lib/dependencies/Logger";
+import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
 import {
   BrowserWalletConnector,
   BrowserWalletLockedError,
@@ -10,8 +11,8 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
+import { WalletType } from "../../web3/types";
 import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
-import { walletFlows } from "../flows";
 
 export const browserWizardFlows = {
   tryConnectingWithBrowserWallet: injectableFn(
@@ -20,12 +21,18 @@ export const browserWizardFlows = {
       browserWalletConnector: BrowserWalletConnector,
       web3Manager: Web3Manager,
       logger: ILogger,
+      walletMetadataStorage: WalletMetadataStorage,
     ) => {
       try {
         const browserWallet = await browserWalletConnector.connect(web3Manager.networkId!);
 
         await web3Manager.plugPersonalWallet(browserWallet);
-        dispatch(walletFlows.walletConnected);
+        // todo move saving metadata to unified connect functions
+        // todo browser wallet should save and verify address
+        walletMetadataStorage.saveMetadata({
+          walletType: WalletType.BROWSER,
+        });
+        dispatch(actions.wallet.connected());
       } catch (e) {
         logger.warn("Error while trying to connect with browser wallet: ", e.message);
         dispatch(
@@ -33,7 +40,13 @@ export const browserWizardFlows = {
         );
       }
     },
-    [symbols.appDispatch, symbols.browserWalletConnector, symbols.web3Manager, symbols.logger],
+    [
+      symbols.appDispatch,
+      symbols.browserWalletConnector,
+      symbols.web3Manager,
+      symbols.logger,
+      symbols.walletMetadataStorage,
+    ],
   ),
 };
 

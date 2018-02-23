@@ -1,5 +1,5 @@
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
-import { routerReducer } from "react-router-redux";
+import { LocationChangeAction, routerReducer } from "react-router-redux";
 import { combineReducers } from "redux";
 
 import { browserReducer } from "./modules/userAgent/reducer";
@@ -8,7 +8,11 @@ import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wi
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import { web3Reducer } from "./modules/web3/reducer";
 
+import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
+
 import { TAction } from "./modules/actions";
+import { authReducer } from "./modules/auth/reducer";
+import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
 
 export interface IAppAction {
   type: string;
@@ -21,8 +25,10 @@ export type AppDispatch = (a: AppActionTypes | Function) => void;
 
 export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTypes) => S;
 
-// add new actions here
-export type AppActionTypes = TAction;
+type TRouterActions = LocationChangeAction;
+
+// add new external actions here
+export type AppActionTypes = TAction | TRouterActions;
 
 // add new app reducers here. They must be AppReducer<T> type
 const appReducers = {
@@ -30,6 +36,9 @@ const appReducers = {
   browserWalletWizardState: browserWalletWizardReducer,
   web3State: web3Reducer,
   browser: browserReducer,
+  walletSelector: walletSelectorReducer,
+  auth: authReducer,
+  signMessageModal: signMessageModalReducer,
 };
 
 // add all custom reducers here

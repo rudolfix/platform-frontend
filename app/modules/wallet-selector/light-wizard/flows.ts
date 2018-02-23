@@ -1,8 +1,7 @@
 import { symbols } from "../../../di/symbols";
-import { UsersApi } from "../../../lib/api/UsersApi";
 import { VaultApi } from "../../../lib/api/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
-import { IStorage } from "../../../lib/dependencies/storage";
+import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
 import {
   LightCreationError,
   LightDesirializeError,
@@ -15,9 +14,7 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { obtainJwt } from "./../../networking/jwt-actions";
-
-const LOCAL_STORAGE_LIGHT_WALLET_KEY = "LIGHT_WALLET";
+import { WalletType } from "../../web3/types";
 
 export const lightWizardFlows = {
   tryConnectingWithLightWallet: (email: string, password: string) =>
@@ -27,14 +24,13 @@ export const lightWizardFlows = {
         web3Manager: Web3Manager,
         lightWalletConnector: LightWalletConnector,
         lightWalletUtil: LightWalletUtil,
-        localStorage: IStorage,
+        walletMetadataStorage: WalletMetadataStorage,
         vaultApi: VaultApi,
-        usersApi: UsersApi,
         logger: ILogger,
       ) => {
         try {
           const lightWalletVault = await lightWalletUtil.createLightWalletVault({
-            password: "password",
+            password,
             hdPathString: "m/44'/60'/0'",
           });
 
@@ -43,20 +39,25 @@ export const lightWizardFlows = {
             lightWalletVault.salt,
           );
 
-          localStorage.setKey(LOCAL_STORAGE_LIGHT_WALLET_KEY, lightWalletVault.walletInstance);
-
-          await vaultApi.store(password, lightWalletVault.salt, lightWalletVault.walletInstance);
-          const lightWallet = await lightWalletConnector.connect({
-            walletInstance,
+          walletMetadataStorage.saveMetadata({
+            walletType: WalletType.LIGHT,
+            vault: lightWalletVault.walletInstance,
             salt: lightWalletVault.salt,
+            email: email,
           });
+
+          // @todo: proper key calc!
+          const vaultKey = password + lightWalletVault.salt;
+          await vaultApi.store(vaultKey, lightWalletVault.walletInstance);
+          const lightWallet = await lightWalletConnector.connect(
+            {
+              walletInstance,
+              salt: lightWalletVault.salt,
+            },
+            password,
+          );
           await web3Manager.plugPersonalWallet(lightWallet);
-          // tslint:disable-next-line
-          await dispatch(obtainJwt);
-          await usersApi.createLightwalletAccount(email, lightWalletVault.salt);
-          //TODO: add error checking in case of failure
-          // redirect user to dashboard
-          logger.info("Should redirect");
+          dispatch(actions.wallet.connected());
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
           dispatch(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
@@ -67,9 +68,8 @@ export const lightWizardFlows = {
         symbols.web3Manager,
         symbols.lightWalletConnector,
         symbols.lightWalletUtil,
-        symbols.storage,
+        symbols.walletMetadataStorage,
         symbols.vaultApi,
-        symbols.usersApi,
         symbols.logger,
       ],
     ),

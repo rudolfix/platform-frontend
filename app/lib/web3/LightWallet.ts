@@ -16,7 +16,7 @@ import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress } from "../../types";
 import { Web3Adapter } from "./Web3Adapter";
 
-const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 60 * 5;
+export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 60 * 5;
 
 export interface ICreateVault {
   password: string;

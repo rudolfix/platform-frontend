@@ -3,6 +3,7 @@ import { compact } from "lodash";
 import * as queryString from "query-string";
 import * as urlJoin from "url-join";
 import { Dictionary } from "../../../types";
+import { toCamelCase, toSnakeCase } from "../../../utils/transformObjectKeys";
 import {
   HttpMethod,
   IHttpClient,
@@ -109,7 +110,7 @@ export class JsonHttpClient implements IHttpClient {
           ...config.headers,
         },
         method: method,
-        body: "body" in config ? JSON.stringify(config.body) : undefined,
+        body: config.body ? JSON.stringify(toSnakeCase(config.body)) : undefined,
       });
     } catch {
       throw new NetworkingError(fullUrl);
@@ -126,7 +127,7 @@ export class JsonHttpClient implements IHttpClient {
       });
     }
 
-    let finalResponseJson: T = responseJson;
+    let finalResponseJson: T = toCamelCase(responseJson);
     if (config.responseSchema) {
       try {
         finalResponseJson = config.responseSchema.validateSync<T>(responseJson, {

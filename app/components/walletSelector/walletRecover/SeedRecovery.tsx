@@ -96,11 +96,13 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
 
     return (
       <>
-        <WalletResetHeader
-          text={"Use the Recovery Phrase to restore your password."}
-          currentStep={this.props.startingStep + this.state.page + 1}
-          steps={this.props.extraSteps + SEED_LENGTH / WORDS_PER_VIEW}
-        />
+        <Col className="mt-4 pb-5">
+          <WalletResetHeader
+            text={"Use the Recovery Phrase to restore your password."}
+            currentStep={this.props.startingStep + this.state.page + 1}
+            steps={this.props.extraSteps + SEED_LENGTH / WORDS_PER_VIEW}
+          />
+        </Col>
         <Row className="my-3">
           <Col className="text-center">
             {this.state.words.filter(word => word !== null).join(" , ")}

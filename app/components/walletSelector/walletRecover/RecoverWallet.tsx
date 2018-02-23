@@ -2,8 +2,11 @@ import * as React from "react";
 import { compose } from "redux";
 import { appConnect } from "../../../store";
 
+import { Link } from "react-router-dom";
+import { Col, Row } from "reactstrap";
 import { flows } from "../../../modules/flows";
 import { RegisterWalletComponent } from "../walletRegister/RegisterWallet";
+import { recoverRoutes } from "./recoverRoutes";
 import { WalletLightSeedRecoveryComponent } from "./SeedRecovery";
 import { WalletResetHeader } from "./WalletResetHeader";
 
@@ -41,22 +44,33 @@ export class RecoveryProcessesComponent extends React.Component<
   }
 
   render(): React.ReactNode {
-    return this.state.seed ? (
+    return (
       <div>
-        <WalletResetHeader text="Lopsum Iprum" currentStep={6} steps={7} />
-        <RegisterWalletComponent
-          submitForm={(values: any) => {
-            this.props.submitForm({ ...values, seed: this.state.seed });
-          }}
-        />
-      </div>
-    ) : (
-      <div>
-        <WalletLightSeedRecoveryComponent
-          startingStep={0}
-          extraSteps={1}
-          sendWords={this.setSeed}
-        />
+        {this.state.seed ? (
+          <div>
+            <WalletResetHeader text="Lopsum Iprum" currentStep={6} steps={7} />
+            <RegisterWalletComponent
+              submitForm={(values: any) => {
+                this.props.submitForm({ ...values, seed: this.state.seed });
+              }}
+            />
+          </div>
+        ) : (
+          <div>
+            <WalletLightSeedRecoveryComponent
+              startingStep={0}
+              extraSteps={1}
+              sendWords={this.setSeed}
+            />
+          </div>
+        )}
+        <Col md={12}>
+          <Row className="mt-5 pt-5 justify-content-end align-items-center">
+            <Link className="" to={recoverRoutes.help}>
+              Contact for help <i className="fa fa-lg fa-angle-right ml-1" />
+            </Link>
+          </Row>
+        </Col>
       </div>
     );
   }

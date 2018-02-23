@@ -22,7 +22,7 @@ const VAULT_NONCE = "thisisnotasimulation1234";
 const VAULT_MSG = "pleaseallowmetoinintroducemyselfimamanofwealthandtasteivebinaround";
 
 export const lightWizardFlows = {
-  tryConnectingWithLightWallet: (email: string, password: string) =>
+  tryConnectingWithLightWallet: (email: string, password: string, seed?: string) =>
     injectableFn(
       async (
         dispatch: AppDispatch,
@@ -34,10 +34,16 @@ export const lightWizardFlows = {
         logger: ILogger,
       ) => {
         try {
-          const lightWalletVault = await lightWalletUtil.createLightWalletVault({
-            password,
-            hdPathString: "m/44'/60'/0'",
-          });
+          const lightWalletVault = seed
+            ? await lightWalletUtil.createLightWalletVault({
+                password,
+                hdPathString: "m/44'/60'/0'",
+                recoverSeed: seed,
+              })
+            : await lightWalletUtil.createLightWalletVault({
+                password,
+                hdPathString: "m/44'/60'/0'",
+              });
 
           const walletInstance = await lightWalletUtil.deserializeLightWalletVault(
             lightWalletVault.walletInstance,
@@ -69,7 +75,8 @@ export const lightWizardFlows = {
             password,
           );
           await web3Manager.plugPersonalWallet(lightWallet);
-          dispatch(actions.wallet.connected());
+          if (seed) dispatch(actions.routing.goToSuccessfulRecovery());
+          else dispatch(actions.wallet.connected());
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
           dispatch(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));

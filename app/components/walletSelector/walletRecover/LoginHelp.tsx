@@ -25,7 +25,7 @@ export const LoginHelp: React.SFC<void> = () => (
           </p>
         </div>
         <Col xs={12} md={4}>
-          <StandardLink text="Recover Wallet" to={recoverRoutes.recover} />
+          <StandardLink text="Recover Wallet" to={recoverRoutes.seed} />
         </Col>
       </Row>
       <div className="border-bottom pb-4" />

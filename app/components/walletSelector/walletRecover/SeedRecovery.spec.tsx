@@ -4,7 +4,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { tid } from "../../../../test/testUtils";
-import { SEED_LENGTH, WalletLightSeedRecoveryComponent } from "./WalletLightSeedRecovery";
+import { SEED_LENGTH, WalletLightSeedRecoveryComponent } from "./SeedRecovery";
 
 const defaultProps = () => ({
   startingStep: 0,
@@ -84,6 +84,6 @@ describe("<WalletLightSeedRecoveryComponent />", () => {
     const component = shallow(<WalletLightSeedRecoveryComponent {...props} />);
     component.find(tid("btn-send")).simulate("click");
 
-    expect(props.sendWords).to.be.calledWith(component.state().words);
+    expect(props.sendWords).to.be.calledWith(component.state().words.join(" "));
   });
 });

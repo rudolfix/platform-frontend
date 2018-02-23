@@ -19,7 +19,7 @@ const wordsOptions = Mnemonic.Words.ENGLISH.map((word: string) => ({ value: word
 interface ISeedRecoveryProps {
   startingStep: number;
   extraSteps: number;
-  sendWords: (words: string[]) => void;
+  sendWords: (words: string) => void;
 }
 
 interface ISeedRecoveryState {
@@ -77,7 +77,7 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
   };
 
   handleSendWords = () => {
-    this.props.sendWords(this.state.words);
+    this.props.sendWords(this.state.words.join(" "));
   };
 
   render(): React.ReactNode {
@@ -138,12 +138,3 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
     );
   }
 }
-
-export const WalletLightSeedRecovery = () => (
-  <WalletLightSeedRecoveryComponent
-    startingStep={0}
-    extraSteps={0}
-    // tslint:disable-next-line no-console
-    sendWords={(words: string[]) => console.log("sending words", words)}
-  />
-);

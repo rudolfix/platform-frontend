@@ -10,7 +10,7 @@ export const RecoverRouter: React.SFC = () => {
   return (
     <Switch>
       <Route path={recoverRoutes.help} component={LoginHelp} />
-      <Route path={recoverRoutes.recover} component={RecoverWallet} />
+      <Route path={recoverRoutes.seed} component={RecoverWallet} />
       <Route path={recoverRoutes.success} component={RecoverySuccess} />
       <Redirect to={recoverRoutes.help} />
     </Switch>

@@ -4,6 +4,6 @@ const parentRoutePath = appRoutes.recover;
 
 export const recoverRoutes = {
   success: parentRoutePath + "/success",
-  recover: parentRoutePath + "/recover",
+  seed: parentRoutePath + "/seed",
   help: parentRoutePath + "/help",
 };

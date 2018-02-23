@@ -3,7 +3,8 @@ import { toPairs, zip } from "lodash";
 import { pairZip } from "../../../../typings/modifications";
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
-import { WalletMetadataStorage } from "../../../lib/persistence/WalletMetadataStorage";
+import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
+import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LedgerLockedError,
   LedgerNotAvailableError,
@@ -114,13 +115,13 @@ export const ledgerWizardFlows = {
         dispatch: AppDispatch,
         ledgerConnector: LedgerWalletConnector,
         web3Manager: Web3Manager,
-        walletMetadataStorage: WalletMetadataStorage,
+        walletMetadataStorage: ObjectStorage<TWalletMetadata>,
       ) => {
         const ledgerWallet = await ledgerConnector.finishConnecting(derivationPath);
         await web3Manager.plugPersonalWallet(ledgerWallet);
 
         // todo move saving metadata to unified connect functions
-        walletMetadataStorage.saveMetadata({
+        walletMetadataStorage.set({
           walletType: WalletType.LEDGER,
           derivationPath: derivationPath,
         });

@@ -1,8 +1,8 @@
 import { effects } from "redux-saga";
 import { symbols } from "../../di/symbols";
 import { IUserData, UsersApi } from "../../lib/api/UsersApi";
-import { JwtStorage } from "../../lib/persistence/JwtStorage";
-import { WalletMetadataStorage } from "../../lib/persistence/WalletMetadataStorage";
+import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
+import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { actions } from "../actions";
 import { getDependency, neuTake } from "../sagas";
 import { WalletType } from "../web3/types";
@@ -16,7 +16,7 @@ function* startup(): Iterator<any> {
 }
 
 function* loadJwtFromStorage(): Iterator<any> {
-  const storage: JwtStorage = yield getDependency(symbols.jwtStorage);
+  const storage: ObjectStorage<string> = yield getDependency(symbols.jwtStorage);
   const jwt = storage.get();
   if (jwt) {
     yield effects.put(actions.auth.loadJWT(jwt));
@@ -26,13 +26,13 @@ function* loadJwtFromStorage(): Iterator<any> {
 
 export function* loadUser(): Iterator<any> {
   const usersApi: UsersApi = yield getDependency(symbols.usersApi);
-  const walletMetadataStorage: WalletMetadataStorage = yield getDependency(
+  const walletMetadataStorage: ObjectStorage<TWalletMetadata> = yield getDependency(
     symbols.walletMetadataStorage,
   );
   let me: IUserData | undefined = yield usersApi.me();
 
   if (!me) {
-    const walletMetadata = walletMetadataStorage.getMetadata();
+    const walletMetadata = walletMetadataStorage.get();
     // tslint:disable-next-line
     if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
       me = yield usersApi.createAccount(walletMetadata.email, walletMetadata.salt);

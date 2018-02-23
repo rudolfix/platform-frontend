@@ -12,7 +12,7 @@ const EMAIL = "email";
 const PASSWORD = "password";
 const REPEAT_PASSWORD = "repeatPassword";
 
-interface IFormValues {
+export interface IFormValues {
   email?: string;
   password?: string;
   repeatPassword?: string;
@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref(PASSWORD)], "Passwords are not equal"),
 });
 
-const CreateLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
+const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
     <FormField
       label="Email"
@@ -65,27 +65,27 @@ const CreateLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
     </Button>
   </Form>
 );
-const CreateEnhancedLightWalletForm = (props: IProps) => (
+const RegisterEnhancedLightWalletForm = (props: IProps) => (
   <Formik
     initialValues={props.currentValues}
     onSubmit={props.submitForm}
-    render={CreateLightWalletForm}
+    render={RegisterLightWalletForm}
     validate={validate}
     validationSchema={validationSchema}
   />
 );
 
-export const CreateWalletComponent: React.SFC<any> = props => {
+export const RegisterWalletComponent: React.SFC<any> = props => {
   return (
     <Row className="justify-content-sm-center mt-3">
       <Col sm="5" className="align-self-end">
-        <CreateEnhancedLightWalletForm {...props} />
+        <RegisterEnhancedLightWalletForm {...props} />
       </Col>
     </Row>
   );
 };
 
-export const CreateWallet = compose<React.SFC>(
+export const RegisterWallet = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>
@@ -97,6 +97,6 @@ export const CreateWallet = compose<React.SFC>(
         ),
     }),
   }),
-)(CreateWalletComponent);
+)(RegisterWalletComponent);
 
-//Solve IFormValues complain when elements are not optional
+//Solve IFormValues complains when elements are not optional

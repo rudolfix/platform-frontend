@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import { WalletBrowser } from "./WalletBrowser";
 import { WalletLedger } from "./WalletLedger";
-import { WalletLight } from "./walletLight/WalletLight";
+import { WalletLight } from "./walletRegister/WalletLight";
 import { walletRoutes } from "./walletRoutes";
 
 export const WalletRouter: React.SFC = () => (

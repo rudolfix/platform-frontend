@@ -1,10 +1,10 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { StandardButton } from "../../shared/StandardButton";
 import { StandardLink } from "../../shared/StandardLink";
-import { recoverRoutes } from "./recoverRoutes";
-import { Link } from "react-router-dom";
 import { walletRoutes } from "../walletRoutes";
+import { recoverRoutes } from "./recoverRoutes";
 
 export const LoginHelp: React.SFC<void> = () => (
   <div>

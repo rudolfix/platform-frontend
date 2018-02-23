@@ -3,7 +3,7 @@ import { compose } from "redux";
 import { appConnect } from "../../../store";
 
 import { flows } from "../../../modules/flows";
-import { RegisterWalletComponent } from "../walletLight/RegisterWallet";
+import { RegisterWalletComponent } from "../walletRegister/RegisterWallet";
 import { WalletLightSeedRecoveryComponent } from "./SeedRecovery";
 import { WalletResetHeader } from "./WalletResetHeader";
 

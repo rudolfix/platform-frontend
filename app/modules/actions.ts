@@ -26,7 +26,7 @@ export const actions = {
 /**
  * Merge all actions into main action object. Add new set of actions here.
  */
-const allActions = {
+export const allActions = {
   ...dashboardActions,
   ...signMessageModalActions,
   ...appActions,

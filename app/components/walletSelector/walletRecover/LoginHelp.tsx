@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
-import { LayoutRegisterLogin } from "../../layouts/LayoutRegisterLogin";
 import { StandardButton } from "../../shared/StandardButton";
+import { StandardLink } from "../../shared/StandardLink";
+import { recoverRoutes } from "./recoverRoutes";
 import { Link } from "react-router-dom";
-import { walletRecoverRoutes } from "./walletRecoverRoutes";
+import { walletRoutes } from "../walletRoutes";
 
-export const WalletLoginHelp: React.SFC<void> = () => (
+export const LoginHelp: React.SFC<void> = () => (
   <div>
     <Col className="mt-5 mb-5">
       <h2 className="font-weight-bold mx-auto text-center">Having some troubles to login?</h2>
@@ -24,7 +25,7 @@ export const WalletLoginHelp: React.SFC<void> = () => (
           </p>
         </div>
         <Col xs={12} md={4}>
-          <Link to={walletRecoverRoutes.seed}> Recover Password </Link>
+          <StandardLink text="Recover Wallet" to={recoverRoutes.recover} />
         </Col>
       </Row>
       <div className="border-bottom pb-4" />
@@ -39,12 +40,12 @@ export const WalletLoginHelp: React.SFC<void> = () => (
     </Col>
     <Col md={12}>
       <Row className="ml-2 mt-5 pt-5 mr-2 justify-content-between align-items-center">
-        <p>
+        <Link className="" to={walletRoutes.light}>
           <i className="fa fa-lg fa-angle-left mr-1" /> BACK
-        </p>
-        <p>
+        </Link>
+        <Link className="" to={recoverRoutes.help}>
           Contact for help <i className="fa fa-lg fa-angle-right ml-1" />
-        </p>
+        </Link>
       </Row>
     </Col>
   </div>

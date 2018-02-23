@@ -22,6 +22,7 @@ export class BrowserWalletLockedError extends BrowserWalletError {}
 
 export class BrowserWallet implements IPersonalWallet {
   public readonly walletType = WalletType.BROWSER;
+  // todo: signerType depends on wallet subtype. parity has eth_sign, metamask one below
   public readonly signerType = SignerType.ETH_SIGN_TYPED_DATA;
 
   constructor(

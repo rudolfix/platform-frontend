@@ -1,5 +1,6 @@
 $loading-indicator-color: #333;
 
+// old color palette it should be removed when we finish restyling
 $black-lighter: #262b2f;
 $blue-darker: #315568;
 $blue: #2072d4;
@@ -8,8 +9,23 @@ $denim: #406483;
 $gray-almost-dark: #7d919b;
 $pale-grey-50: #e3eaf5;
 $off-white: #f5f5f5;
-$white: #fff;
 $bright-orange: #ff6d00;
+// end of old color palette
+
+$white-pure: #fff; // this one was not defined in styleguide but used in designs
+
+// new color palette
+$bright-orange: #ff6d00;
+$white: #efefef;
+$seaweed: #20e06e;
+$piss-yellow: #d5e20f;
+$black: #2b2b2b;
+$slate-grey: #656b72;
+$pale-blue: #f6f9fe;
+$silver: #c4c5c6;
+$pale-grey: #e3eaf5;
+$charcoal-grey: #394651;
+// end of new color palette
 
 $smaller-font-size: .8125rem;
 
@@ -21,6 +37,8 @@ $shadow:  0 .125rem .25rem 0 rgba(0, 0, 0, .1);
 $link-color: $blue;
 $body-color: $denim;
 $body-bg: $pale-grey-50;
+
+$dark: $charcoal-grey;
 
 // fonts
 $font-family-base: "Open Sans", sans-serif;

@@ -13,6 +13,8 @@ import { WarningAlert } from "../shared/WarningAlert";
 
 import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
+import * as logoMetamask from "../../assets/img/wallet_selector/logo_metamask.svg";
+import * as logoMist from "../../assets/img/wallet_selector/logo_mist.svg";
 import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
 import * as styles from "./WalletBrowser.module.scss";
 
@@ -28,7 +30,7 @@ interface IStepCardProps {
   text: string;
 }
 export const StepCard: React.SFC<IStepCardProps> = ({ img, text }) => (
-  <Col sm={4} xs={12} className="mb-4">
+  <Col sm={4} xs={12} className="mb-4 mb-sm-0">
     <Row>
       <Col>
         <img src={img} className="mb-3" />
@@ -51,19 +53,19 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
       <LoadingIndicator />
     ) : (
       <div>
-        <Row className="justify-content-center mb-5">
+        <Row className="justify-content-center mb-4">
           <WarningAlert>
             <span data-test-id="browser-wallet-error-msg">{errorMessage}</span>
           </WarningAlert>
         </Row>
 
-        <Row className="mb-4 text-center">
+        <Row className={cn("mb-4 text-center", styles.stepCards)}>
           <StepCard img={walletIcon} text={"1. Choose existing wallet"} />
           <StepCard img={browserIcon} text={"2. Turn on your browser plugin"} />
           <StepCard img={lockIcon} text={"3. Unlock your wallet to register"} />
         </Row>
 
-        <HorizontalLine className="mb-5" />
+        <HorizontalLine className="mb-4" />
 
         <Row className="text-center mb-4">
           <Col>
@@ -75,14 +77,10 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
             <HiResImage partialPath="wallet_selector/logo_parity" alt="Parity" title="Parity" />
           </Col>
           <Col sm="auto">
-            <HiResImage
-              partialPath="wallet_selector/logo_metamask"
-              alt="Metamask"
-              title="Metamask"
-            />
+            <img src={logoMetamask} alt="Metamask" title="Metamask" />
           </Col>
           <Col sm="auto">
-            <HiResImage partialPath="wallet_selector/logo_mist" alt="Mist" title="Mist" />
+            <img src={logoMist} alt="Mist" title="Mist" />
           </Col>
         </Row>
       </div>

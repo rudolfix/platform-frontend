@@ -69,10 +69,14 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({ isMessageSigni
 export const WalletSelector = compose<React.SFC>(
   onEnterAction({
     actionCreator: dispatch => () => dispatch(actions.wallet.reset()),
+    pure: false,
   }),
   appConnect<IStateProps>({
     stateToProps: s => ({
       isMessageSigning: s.walletSelector.isMessageSigning,
     }),
+    options: {
+      pure: false,
+    },
   }),
 )(WalletSelectorComponent);

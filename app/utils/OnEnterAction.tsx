@@ -8,6 +8,7 @@ interface IOnEnterActionDispatchProps {
 
 interface IOnEnterActionOptions {
   actionCreator: (dispatch: AppDispatch) => void;
+  pure?: boolean;
 }
 
 export const onEnterAction: (
@@ -15,9 +16,16 @@ export const onEnterAction: (
 ) => (
   WrappedComponent: React.ComponentType,
 ) => React.ComponentClass = options => WrappedComponent =>
-  connect<{}, IOnEnterActionDispatchProps>(undefined, dispatch => ({
-    enterAction: () => options.actionCreator(dispatch),
-  }))(
+  connect<{}, IOnEnterActionDispatchProps>(
+    undefined,
+    dispatch => ({
+      enterAction: () => options.actionCreator(dispatch),
+    }),
+    undefined,
+    {
+      pure: "pure" in options ? options.pure : true,
+    },
+  )(
     class OnEnterAction extends React.Component<IOnEnterActionDispatchProps> {
       constructor(props: any) {
         super(props);

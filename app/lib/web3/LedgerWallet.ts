@@ -35,7 +35,7 @@ export class LedgerUnknownError extends LedgerError {}
 export class LedgerWallet implements IPersonalWallet {
   public readonly walletType = WalletType.LEDGER;
   public readonly walletSubType = WalletSubType.UNKNOWN; // in future we may detect if it's pure ledger or Neukey
-  public readonly signerType = SignerType.ETH_SIGN_TYPED_DATA;
+  public readonly signerType = SignerType.ETH_SIGN;
 
   public constructor(
     public readonly web3Adapter: Web3Adapter,

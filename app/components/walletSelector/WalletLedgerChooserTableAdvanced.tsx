@@ -76,7 +76,7 @@ export const WalletLedgerChooserTableAdvanced: React.SFC<IWalletLedgerChooserTab
     </tbody>
     <tfoot>
       <tr>
-        <td colSpan={4}>
+        <td colSpan={4} className={styles.arrows}>
           {hasPreviousAddress && (
             <span onClick={showPrevAddresses} data-test-id="btn-previous">
               <i className={cn("fa fa-chevron-left mr-2", styles.left)} aria-hidden="true" />

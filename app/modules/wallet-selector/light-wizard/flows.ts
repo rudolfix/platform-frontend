@@ -17,6 +17,10 @@ import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { WalletType } from "../../web3/types";
 
+//Vault nonce should be exactly 24 chars
+const VAULT_NONCE = "thisisnotasimulation1234";
+const VAULT_MSG = "pleaseallowmetoinintroducemyselfimamanofwealthandtasteivebinaround";
+
 export const lightWizardFlows = {
   tryConnectingWithLightWallet: (email: string, password: string) =>
     injectableFn(
@@ -47,9 +51,16 @@ export const lightWizardFlows = {
             email: email,
           });
 
-          // @todo: proper key calc!
-          const vaultKey = password + lightWalletVault.salt;
-          await vaultApi.store(vaultKey, lightWalletVault.walletInstance);
+          const walletKey = await lightWalletUtil.getWalletKeyFromSaltAndPassword(
+            password,
+            lightWalletVault.salt,
+          );
+          const vaultKey = lightWalletUtil.encryptString({
+            string: VAULT_MSG,
+            pwDerivedKey: walletKey,
+            nonce: VAULT_NONCE,
+          });
+          await vaultApi.store(vaultKey.encStr, lightWalletVault.walletInstance);
           const lightWallet = await lightWalletConnector.connect(
             {
               walletInstance,

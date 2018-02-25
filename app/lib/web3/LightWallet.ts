@@ -3,6 +3,8 @@ import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import * as ethUtils from "ethereumjs-util";
 import { inject, injectable } from "inversify";
+import * as nacl from "tweetnacl";
+import * as naclUtil from "tweetnacl-util";
 import * as Web3 from "web3";
 import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
@@ -53,6 +55,7 @@ export class LightWrongPasswordSaltError extends LightWalletUtilError {}
 export class LightSignMessageError extends LightWalletError {}
 export class LightUnknownError extends LightError {}
 export class LightCreationError extends LightWalletUtilError {}
+export class LightKeyEncryptError extends LightWalletUtilError {}
 export class LightDesirializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
 
@@ -106,6 +109,45 @@ export class LightWalletUtil {
       return await keyFromPassword(password);
     } catch (e) {
       throw new LightWrongPasswordSaltError();
+    }
+  }
+
+  public async getWalletKeyFromSaltAndPassword(
+    salt: string,
+    password: string,
+  ): Promise<Uint8Array> {
+    try {
+      const keyFromSaltAndPassword = promisify<any, string, string>(
+        LightWalletProvider.keystore.deriveKeyFromPasswordAndSalt,
+      );
+
+      return await keyFromSaltAndPassword(password, salt);
+    } catch (e) {
+      throw new LightWrongPasswordSaltError();
+    }
+  }
+
+  public encryptString({
+    string,
+    pwDerivedKey,
+    nonce,
+  }: {
+    string: string;
+    pwDerivedKey: Uint8Array;
+    nonce: string;
+  }): { encStr: string; nonce: string } {
+    try {
+      const encNonce = nonce
+        ? naclUtil.decodeUTF8(nonce)
+        : nacl.randomBytes(nacl.secretbox.nonceLength);
+      const encObj = nacl.secretbox(naclUtil.decodeUTF8(string), encNonce, pwDerivedKey);
+      const encString = {
+        encStr: naclUtil.encodeBase64(encObj),
+        nonce: naclUtil.encodeBase64(encNonce),
+      };
+      return encString;
+    } catch (e) {
+      throw new LightKeyEncryptError();
     }
   }
 }

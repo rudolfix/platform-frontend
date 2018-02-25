@@ -13,11 +13,19 @@ import { createMock, tid } from "../../../test/testUtils";
 import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
 import { UsersApi } from "../../lib/api/UsersApi";
+import {
+  BrowserWallet,
+  BrowserWalletConnector,
+  BrowserWalletLockedError,
+  BrowserWalletMissingError,
+} from "../../lib/web3/BrowserWallet";
 import { LedgerWallet, LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
+import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Adapter } from "../../lib/web3/Web3Adapter";
 import { Web3ManagerMock } from "../../lib/web3/Web3Manager.mock";
 import { actions } from "../../modules/actions";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
+import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "./WalletLedgerInitComponent";
 import { walletRoutes } from "./walletRoutes";
 import { WalletSelector } from "./WalletSelector";
@@ -29,6 +37,7 @@ describe("integration", () => {
     const ledgerWalletMock = createMock(LedgerWallet, {
       walletType: WalletType.LEDGER,
       walletSubType: WalletSubType.UNKNOWN,
+      signerType: SignerType.ETH_SIGN,
       ethereumAddress: expectedAddress,
       testConnection: async () => false,
     });
@@ -101,7 +110,7 @@ describe("integration", () => {
     });
     ledgerWalletMock.reMock({
       testConnection: async () => true,
-      signMessage: async mess => "SIGNED: " + mess,
+      signMessage: async mess => dummySign(mess),
     });
     globalFakeClock.tick(LEDGER_RECONNECT_INTERVAL);
 
@@ -129,5 +138,124 @@ describe("integration", () => {
     );
     expect(ledgerWalletMock.signMessage).to.be.calledOnce;
     expect(ledgerWalletMock.signMessage).to.be.calledWithExactly(expectedChallenge);
+    expect(signatureAuthApiMock.createJwt).to.be.calledOnce;
+    expect(signatureAuthApiMock.createJwt).to.be.calledWithExactly(
+      expectedChallenge,
+      dummySign(expectedChallenge),
+      SignerType.ETH_SIGN,
+    );
+  });
+
+  it("should select browser wallet", async () => {
+    const expectedAddress = dummyEthereumAddress;
+    const expectedChallenge = "CHALLENGE";
+    const browserWalletMock = createMock(BrowserWallet, {
+      walletType: WalletType.BROWSER,
+      walletSubType: WalletSubType.METAMASK,
+      ethereumAddress: expectedAddress,
+      signerType: SignerType.ETH_SIGN_TYPED_DATA,
+    });
+    const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
+      connect: async () => {
+        throw new BrowserWalletMissingError();
+      },
+    });
+    const internalWeb3AdapterMock = createMock(Web3Adapter, {
+      getBalance: async () => new BigNumber(1),
+    });
+    const signatureAuthApiMock = createMock(SignatureAuthApi, {
+      challenge: async () => ({
+        statusCode: 200,
+        body: {
+          challenge: expectedChallenge,
+        },
+      }),
+      createJwt: async () => ({
+        statusCode: 200,
+        body: {
+          jwt: "JWT",
+        },
+      }),
+    });
+    const usersApiMock = createMock(UsersApi, {
+      me: async () => ({}), // no user
+      createAccount: async () => ({}),
+    });
+
+    const { store, container, dispatchSpy } = createIntegrationTestsSetup({
+      browserWalletConnectorMock,
+      signatureAuthApiMock,
+      usersApiMock,
+    });
+    container
+      .get<Web3ManagerMock>(symbols.web3Manager)
+      .initializeMock(internalWeb3AdapterMock, dummyNetworkId);
+
+    const mountedComponent = createMount(
+      wrapWithProviders(WalletSelector, {
+        container,
+        store,
+      }),
+    );
+
+    // select wallet in browser tab is selected
+    mountedComponent
+      .find(tid("wallet-selector-browser"))
+      .find("a")
+      .simulate("click", { button: 0 });
+    await waitForTid(mountedComponent, "browser-wallet-error-msg");
+
+    // there is no wallet in browser (BrowserWallet thrown BrowserWalletMissingError)
+    expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
+      "We did not detect any Web3 wallet.",
+    );
+
+    // wallet in browser is locked
+    browserWalletConnectorMock.reMock({
+      connect: async () => {
+        throw new BrowserWalletLockedError();
+      },
+    });
+    await globalFakeClock.tickAsync(BROWSER_WALLET_RECONNECT_INTERVAL);
+    mountedComponent.update();
+
+    expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
+      "Your wallet seems to be locked — we can't access any accounts.",
+    );
+
+    // connect doesn't throw which means there is web3 in browser
+    browserWalletMock.reMock({
+      testConnection: async () => true,
+      signMessage: async mess => dummySign(mess),
+    });
+    browserWalletConnectorMock.reMock({
+      connect: async () => browserWalletMock,
+    });
+    await globalFakeClock.tickAsync(BROWSER_WALLET_RECONNECT_INTERVAL);
+
+    await waitForPredicate(
+      () => dispatchSpy.calledWith(actions.routing.goToDashboard()),
+      "Navigation to dashboard action",
+    );
+
+    expect(dispatchSpy).calledWithExactly(
+      actions.web3.newPersonalWalletPlugged(
+        WalletType.BROWSER,
+        WalletSubType.METAMASK,
+        expectedAddress,
+      ),
+    );
+    expect(browserWalletMock.signMessage).to.be.calledOnce;
+    expect(browserWalletMock.signMessage).to.be.calledWithExactly(expectedChallenge);
+    expect(signatureAuthApiMock.createJwt).to.be.calledOnce;
+    expect(signatureAuthApiMock.createJwt).to.be.calledWithExactly(
+      expectedChallenge,
+      dummySign(expectedChallenge),
+      SignerType.ETH_SIGN_TYPED_DATA,
+    );
   });
 });
+
+function dummySign(mess: string): string {
+  return `SIGNED: ${mess}`;
+}

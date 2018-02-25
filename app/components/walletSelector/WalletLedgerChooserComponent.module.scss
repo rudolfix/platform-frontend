@@ -4,7 +4,10 @@
   margin-top: map-get($spacers, 3);
   text-align: center;
 
-  button {
+  span {
+    color: $black;
+    font-weight: bold;
+    cursor: pointer;
     text-transform: uppercase;
   }
 }

@@ -7,6 +7,7 @@ import * as styles from "./WalletLedgerChooserComponent.module.scss";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
+import * as cn from "classnames";
 
 export interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
@@ -68,14 +69,10 @@ export const WalletLedgerChooserComponent: React.SFC<
           ))}
         {!advanced && (
           <div className={styles.advanced}>
-            <Button
-              outline
-              color="secondary"
-              onClick={handleAdvanced}
-              data-test-id="btn-advanced-simple"
-            >
-              Advanced selection
-            </Button>
+            <span onClick={handleAdvanced} data-test-id="btn-advanced-simple">
+              Advanced options
+              <i className="fa fa-chevron-down ml-2" aria-hidden="true" />
+            </span>
           </div>
         )}
       </>

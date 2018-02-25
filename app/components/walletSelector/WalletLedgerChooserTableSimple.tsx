@@ -27,10 +27,8 @@ export class AccountRow extends React.Component<IAccountRow> {
         <td data-test-id="account-balance-neu" className={cn(styles.currencyCol, styles.neuCol)}>
           {this.props.ledgerAccount.balanceNEU} <span>NEU</span>
         </td>
-        <td className={styles.select}>
-          <Button data-test-id="button-select" color="primary" onClick={this.handleClick}>
-            Select
-          </Button>
+        <td data-test-id="button-select" className={styles.select} onClick={this.handleClick}>
+          Select
         </td>
       </tr>
     );

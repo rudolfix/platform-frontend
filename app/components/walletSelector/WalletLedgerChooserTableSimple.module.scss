@@ -3,37 +3,40 @@
 .table {
   margin-left: auto;
   margin-right: auto;
-  border-collapse: separate;
-  border-spacing: 0 map-get($spacers, 3);
 
   thead {
     text-transform: uppercase;
-    color: $blue-gray;
-    font-size: rem-to-px(14px);
     font-weight: $font-weight-bold;
-
-    th {
-      border-bottom: rem-to-px(1px) solid $pale-grey-50;
-      padding: map-get($spacers, 2) 0;
-    }
   }
 
   td {
-    padding: 0 map-get($spacers, 2);
+    padding: map-get($spacers, 3) map-get($spacers, 2);
   }
 
-  .public-key {
-    font-size: rem-to-px(13px);
-    font-weight: $font-weight-bold;
+  tbody {
+    tr {
+      &:nth-of-type(odd) {
+        background-color: $pale-blue;
+      }
+    }
   }
 
-  $logo-size: 32px;
+  $logo-size: 24px;
 
   .currency-col {
-    border-left: rem-to-px(1px) solid $pale-grey-50;
+    position: relative;
     padding-left: calc(#{map-get($spacers, 2)} + #{rem-to-px($logo-size)} + #{map-get($spacers, 2)});
     background-size: #{rem-to-px($logo-size)} #{rem-to-px($logo-size)};
     background: no-repeat map-get($spacers, 2) center;
+
+    &:before {
+      content: " ";
+      border-left: #{rem-to-px(1px)} solid $pale-grey;
+      display: block;
+      height: #{rem-to-px($logo-size)};
+      position: absolute;
+      left: 0;
+    }
 
     span {
       font-weight: $font-weight-bold;
@@ -46,6 +49,13 @@
 
   .neu-col {
     background-image: url("../../assets/img/neu_icon.svg");
+  }
+
+  .select {
+    cursor: pointer;
+    font-weight: $font-weight-bold;
+    color: $black;
+    font-size: $smaller-font-size;
   }
 
   @include media-breakpoint-down(md) {
@@ -70,6 +80,10 @@
       border-left: 0;
       min-height: calc(#{$logo-size} + #{map-get($spacers, 2)});
       line-height: calc(#{$logo-size} + #{map-get($spacers, 2)});
+
+      &:before {
+        display: none;
+      }
     }
 
     td {

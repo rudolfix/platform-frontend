@@ -1,6 +1,5 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { Button } from "reactstrap";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import * as styles from "./WalletLedgerChooserTableSimple.module.scss";

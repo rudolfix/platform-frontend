@@ -38,7 +38,7 @@ $shadow:  0 rem-to-px(2px) rem-to-px(4px) 0 rgba(0, 0, 0, .1);
 // Bootstrap variable overrides
 
 //colors
-$link-color: $blue;
+$link-color: $neu-black;
 $body-color: $neu-slate-grey;
 $body-bg: $neu-pale-blue;
 
@@ -52,3 +52,7 @@ $font-weight-bold: 600;
 $headings-font-family: "Lato", sans-serif;
 $headings-font-weight: 400;
 $headings-color: $neu-black;
+
+a {
+  font-weight: $font-weight-bold;
+}

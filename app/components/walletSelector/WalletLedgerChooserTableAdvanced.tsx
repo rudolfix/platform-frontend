@@ -1,6 +1,5 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { Button } from "reactstrap";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import * as styles from "./WalletLedgerChooserTableAdvanced.module.scss";
@@ -17,30 +16,26 @@ export class AccountRow extends React.Component<IAccountRow> {
 
   render(): React.ReactNode {
     return (
-      <tr
-        data-test-id="account-row"
-        className={cn(styles.accountRow, {
-          [styles.withEther]: parseInt(this.props.ledgerAccount.balanceETH, 10) > 0,
-        })}
-      >
+      <tr data-test-id="account-row" className={styles.accountRow}>
         <td data-test-id="account-derivation-path" className={styles.derivationPath}>
           {this.props.ledgerAccount.derivationPath}
         </td>
-        <td data-test-id="account-address" className={styles.publicKey}>
+        <td
+          data-test-id="account-address"
+          className={cn(styles.publicKey, styles.pseudoBorderLeft)}
+        >
           {this.props.ledgerAccount.address}
         </td>
-        <td className={styles.balance}>
+        <td className={cn(styles.balance, styles.pseudoBorderLeft)}>
           <div data-test-id="account-balance-eth" className={styles.eth}>
-            {this.props.ledgerAccount.balanceETH} <span>ETH</span>
+            {this.props.ledgerAccount.balanceETH} ETH
           </div>
           <div data-test-id="account-balance-neu" className={styles.neu}>
-            {this.props.ledgerAccount.balanceNEU} <span>NEU</span>
+            {this.props.ledgerAccount.balanceNEU} NEU
           </div>
         </td>
-        <td className={styles.select}>
-          <Button data-test-id="button-select" color="primary" onClick={this.handleClick}>
-            Select
-          </Button>
+        <td className={styles.select} data-test-id="button-select" onClick={this.handleClick}>
+          Select
         </td>
       </tr>
     );
@@ -50,7 +45,6 @@ export class AccountRow extends React.Component<IAccountRow> {
 export interface IWalletLedgerChooserTableAdvanced {
   accounts: ILedgerAccount[];
   handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
-  loading: boolean;
   hasPreviousAddress: boolean;
   showPrevAddresses: () => void;
   showNextAddresses: () => void;
@@ -62,7 +56,6 @@ export const WalletLedgerChooserTableAdvanced: React.SFC<IWalletLedgerChooserTab
   hasPreviousAddress,
   showPrevAddresses,
   showNextAddresses,
-  loading,
 }) => (
   <table className={styles.table}>
     <thead>
@@ -84,27 +77,16 @@ export const WalletLedgerChooserTableAdvanced: React.SFC<IWalletLedgerChooserTab
     <tfoot>
       <tr>
         <td colSpan={4}>
-          <div>
-            {hasPreviousAddress && (
-              <Button
-                color="primary"
-                disabled={loading}
-                onClick={showPrevAddresses}
-                data-test-id="btn-previous"
-              >
-                Previous
-              </Button>
-            )}
-            <Button
-              color="primary"
-              disabled={loading}
-              onClick={showNextAddresses}
-              className="float-right"
-              data-test-id="btn-next"
-            >
-              Next
-            </Button>
-          </div>
+          {hasPreviousAddress && (
+            <span onClick={showPrevAddresses} data-test-id="btn-previous">
+              <i className={cn("fa fa-chevron-left mr-2", styles.left)} aria-hidden="true" />
+              Previous
+            </span>
+          )}
+          <span onClick={showNextAddresses} className="float-right" data-test-id="btn-next">
+            Next
+            <i className={cn("fa fa-chevron-right ml-2", styles.right)} aria-hidden="true" />
+          </span>
         </td>
       </tr>
     </tfoot>

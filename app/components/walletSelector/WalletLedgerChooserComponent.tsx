@@ -1,5 +1,5 @@
+import * as cn from "classnames";
 import * as React from "react";
-import { Button } from "reactstrap";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
@@ -7,7 +7,6 @@ import * as styles from "./WalletLedgerChooserComponent.module.scss";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
-import * as cn from "classnames";
 
 export interface IWalletLedgerChooserComponent {
   accounts: ILedgerAccount[];
@@ -59,7 +58,6 @@ export const WalletLedgerChooserComponent: React.SFC<
               hasPreviousAddress={hasPreviousAddress}
               showPrevAddresses={showPrevAddresses}
               showNextAddresses={showNextAddresses}
-              loading={loading}
             />
           ) : (
             <WalletLedgerChooserTableSimple
@@ -81,18 +79,21 @@ export const WalletLedgerChooserComponent: React.SFC<
       <div>
         {advanced &&
           !loading && (
-            <Button
-              outline
-              color="secondary"
+            <span
+              className={styles.back}
               onClick={handleAdvanced}
               data-test-id="btn-advanced-advanced"
             >
+              <i className={cn("fa fa-chevron-left mr-2", styles.left)} aria-hidden="true" />
               Back
-            </Button>
+            </span>
           )}
       </div>
       <div>
-        Have some issues with your NeuKey? <a href="#">Contact for help</a>
+        Have some issues with your NeuKey? Contact for{" "}
+        <a href="#">
+          help <i className="fa fa-chevron-right ml-1" aria-hidden="true" />
+        </a>
       </div>
     </div>
   </>

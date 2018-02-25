@@ -29,7 +29,7 @@
     background-size: #{rem-to-px($logo-size)} #{rem-to-px($logo-size)};
     background: no-repeat map-get($spacers, 2) center;
 
-    &:before {
+    &::before {
       content: " ";
       border-left: #{rem-to-px(1px)} solid $neu-pale-grey;
       display: block;
@@ -81,7 +81,7 @@
       min-height: calc(#{$logo-size} + #{map-get($spacers, 2)});
       line-height: calc(#{$logo-size} + #{map-get($spacers, 2)});
 
-      &:before {
+      &::before {
         display: none;
       }
     }

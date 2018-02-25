@@ -13,8 +13,6 @@ import { WarningAlert } from "../shared/WarningAlert";
 
 import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
-import * as logoMetamask from "../../assets/img/wallet_selector/logo_metamask.svg";
-import * as logoMist from "../../assets/img/wallet_selector/logo_mist.svg";
 import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
 import * as styles from "./WalletBrowser.module.scss";
 
@@ -77,10 +75,14 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
             <HiResImage partialPath="wallet_selector/logo_parity" alt="Parity" title="Parity" />
           </Col>
           <Col sm="auto">
-            <img src={logoMetamask} alt="Metamask" title="Metamask" />
+            <HiResImage
+              partialPath="wallet_selector/logo_metamask"
+              alt="Metamask"
+              title="Metamask"
+            />
           </Col>
           <Col sm="auto">
-            <img src={logoMist} alt="Mist" title="Mist" />
+            <HiResImage partialPath="wallet_selector/logo_mist" alt="Mist" title="Mist" />
           </Col>
         </Row>
       </div>

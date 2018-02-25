@@ -18,23 +18,29 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent> = ({
   onDerivationPathPrefixChange,
   errorMessage,
 }) => (
-  <Row>
-    <Col xs="6">
-      <FormGroup>
-        <Input
-          name="derivationPathPrefix"
-          value={derivationPathPrefix}
-          onChange={onDerivationPathPrefixChange}
-          placeholder={"Enter derivation path"}
-        />
-      </FormGroup>
-      {errorMessage && (
-        <Alert color="danger">
-          <span data-test-id="dpChooser-error-msg">{errorMessage}</span>
-        </Alert>
-      )}
-    </Col>
-  </Row>
+  <>
+    <Row>
+      <Col xs="5" sm="4" md="3">
+        <FormGroup>
+          <Input
+            name="derivationPathPrefix"
+            value={derivationPathPrefix}
+            onChange={onDerivationPathPrefixChange}
+            placeholder={"Enter derivation path"}
+          />
+        </FormGroup>
+      </Col>
+    </Row>
+    {errorMessage && (
+      <Row>
+        <Col xs="12" sm="8" md="6">
+          <Alert color="danger">
+            <span data-test-id="dpChooser-error-msg">{errorMessage}</span>
+          </Alert>
+        </Col>
+      </Row>
+    )}
+  </>
 );
 
 interface IDPChooserProps {

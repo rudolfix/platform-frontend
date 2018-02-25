@@ -57,7 +57,7 @@ export const WalletLedgerChooserTableAdvanced: React.SFC<IWalletLedgerChooserTab
   showPrevAddresses,
   showNextAddresses,
 }) => (
-  <table className={styles.table}>
+  <table className={cn(styles.table, "mt-3")}>
     <thead>
       <tr>
         <th>Derivation path</th>

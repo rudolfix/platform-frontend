@@ -17,6 +17,8 @@ $white-pure: #fff;
 $gray: #d8e0eb;
 $gray2: #85a0b5;
 $gray3: #406483;
+$gray4: #979797;
+$gray5: #aabcca;
 
 // new color palette
 $neu-bright-orange: #ff6d00;
@@ -56,3 +58,27 @@ $headings-color: $neu-black;
 a {
   font-weight: $font-weight-bold;
 }
+
+$enable-rounded: false;
+$enable-shadows: false;
+
+$input-border-width: 2px;
+$input-border-color: $gray4;
+$input-focus-border-color: $gray4;
+$input-color: $gray5;
+$input-placeholder-color: $gray5;
+$input-padding-x: 0;
+$input-padding-y: 3px;
+
+// sass-lint:disable no-important
+.form-control {
+  font-size: rem-to-px(20px) !important;
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-left: 0 !important;
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+// sass-lint:enable no-important

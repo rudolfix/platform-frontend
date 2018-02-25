@@ -39,7 +39,7 @@ export const WalletLedgerChooserComponent: React.SFC<
   handleAdvanced,
 }) => (
   <>
-    <h1 className="text-center">Select your wallet for registration</h1>
+    <h1 className="text-center mb-4">Select your wallet for registration</h1>
     {advanced && (
       <WalletLedgerDPChooser
         onDerivationPathPrefixChange={onDerivationPathPrefixChange}

@@ -43,10 +43,10 @@
 
   &:global(.active) {
     font-weight: $font-weight-bold;
-    color: $black;
+    color: $neu-black;
 
     span {
-      border-bottom: rem-to-px(1px) solid $piss-yellow;
+      border-bottom: rem-to-px(1px) solid $neu-piss-yellow;
     }
   }
 

@@ -19,16 +19,16 @@ $gray2: #85a0b5;
 $gray3: #406483;
 
 // new color palette
-$bright-orange: #ff6d00;
-$white: #efefef;
-$seaweed: #20e06e;
-$piss-yellow: #d5e20f;
-$black: #2b2b2b;
-$slate-grey: #656b72;
-$pale-blue: #f6f9fe;
-$silver: #c4c5c6;
-$pale-grey: #e3eaf5;
-$charcoal-grey: #394651;
+$neu-bright-orange: #ff6d00;
+$neu-white: #efefef;
+$neu-seaweed: #20e06e;
+$neu-piss-yellow: #d5e20f;
+$neu-black: #2b2b2b;
+$neu-slate-grey: #656b72;
+$neu-pale-blue: #f6f9fe;
+$neu-silver: #c4c5c6;
+$neu-pale-grey: #e3eaf5;
+$neu-charcoal-grey: #394651;
 // end of new color palette
 
 $smaller-font-size: rem-to-px(13px);
@@ -39,10 +39,10 @@ $shadow:  0 rem-to-px(2px) rem-to-px(4px) 0 rgba(0, 0, 0, .1);
 
 //colors
 $link-color: $blue;
-$body-color: $slate-grey;
-$body-bg: $pale-blue;
+$body-color: $neu-slate-grey;
+$body-bg: $neu-pale-blue;
 
-$dark: $charcoal-grey;
+$dark: $neu-charcoal-grey;
 
 // fonts
 $font-family-base: "Open Sans", sans-serif;
@@ -51,4 +51,4 @@ $font-size-medium-small: rem-to-px(14px);
 $font-weight-bold: 600;
 $headings-font-family: "Lato", sans-serif;
 $headings-font-weight: 400;
-$headings-color: $black;
+$headings-color: $neu-black;

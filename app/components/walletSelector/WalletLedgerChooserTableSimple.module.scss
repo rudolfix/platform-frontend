@@ -16,7 +16,7 @@
   tbody {
     tr {
       &:nth-of-type(odd) {
-        background-color: $pale-blue;
+        background-color: $neu-pale-blue;
       }
     }
   }
@@ -31,7 +31,7 @@
 
     &:before {
       content: " ";
-      border-left: #{rem-to-px(1px)} solid $pale-grey;
+      border-left: #{rem-to-px(1px)} solid $neu-pale-grey;
       display: block;
       height: #{rem-to-px($logo-size)};
       position: absolute;
@@ -54,7 +54,7 @@
   .select {
     cursor: pointer;
     font-weight: $font-weight-bold;
-    color: $black;
+    color: $neu-black;
     font-size: $smaller-font-size;
   }
 

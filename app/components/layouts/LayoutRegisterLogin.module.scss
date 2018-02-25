@@ -1,14 +1,11 @@
 @import "../../styles/neufund-theme";
 
-.logo {
-  background: url("../../assets/img/logo.svg") no-repeat center;
-  height: 133px;
-  width: 112px;
-  display: block;
-  margin: $spacer * 2.5 auto $spacer * 2.125;
-}
-
 .main-container {
-  background-color: $white;
-  box-shadow: $shadow;
+  @include media-breakpoint-up(sm) {
+    box-shadow: $shadow;
+    border-top: rem-to-px(3px) solid $piss-yellow;
+    margin-top: rem-to-px(100px);
+  }
+
+  background-color: $white-pure;
 }

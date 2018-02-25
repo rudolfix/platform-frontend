@@ -175,7 +175,7 @@ describe("JsonHttpClient", () => {
               .required()
               .of(productSchema),
           }),
-        new ResponseStatusError(500),
+        new ResponseStatusError(API_URL + "products", 500),
       );
     });
 
@@ -195,7 +195,7 @@ describe("JsonHttpClient", () => {
               .required()
               .of(productSchema),
           }),
-        new NetworkingError(),
+        new NetworkingError(API_URL + "products"),
       );
     });
   });
@@ -220,7 +220,7 @@ describe("JsonHttpClient", () => {
         return true;
       };
       fetchMock.postOnce(requestMatcher, {
-        status: 200,
+        status: 201,
         body: mockedResponse,
       });
 
@@ -234,8 +234,112 @@ describe("JsonHttpClient", () => {
           .of(productSchema),
       });
 
+      expect(actualResponse.statusCode).to.be.eq(201);
+      expect(actualResponse.body).to.be.deep.eq(mockedResponse);
+    });
+  });
+
+  describe("put requests", () => {
+    it("should make PUT request", async () => {
+      const body = {
+        name: "productC",
+        quantity: 1,
+      };
+      const mockedResponse = getSampleProducts();
+      const requestMatcher: fetchMock.MockMatcherFunction = (url, opts) => {
+        if (url !== `${API_URL}products`) {
+          return false;
+        }
+        if (opts.method !== "PUT") {
+          return false;
+        }
+        if ((opts as any).body !== JSON.stringify(body)) {
+          return false;
+        }
+        return true;
+      };
+      fetchMock.putOnce(requestMatcher, {
+        status: 200,
+        body: mockedResponse,
+      });
+
+      const httpClient = new JsonHttpClient();
+      const actualResponse = await httpClient.put<IProduct[]>({
+        baseUrl: API_URL,
+        url: "products",
+        body: body,
+        responseSchema: Yup.array()
+          .required()
+          .of(productSchema),
+      });
+
       expect(actualResponse.statusCode).to.be.eq(200);
       expect(actualResponse.body).to.be.deep.eq(mockedResponse);
+    });
+  });
+
+  describe("patch requests", () => {
+    it("should make PATCH request", async () => {
+      const body = {
+        name: "productC",
+        quantity: 1,
+      };
+      const mockedResponse = getSampleProducts();
+      const requestMatcher: fetchMock.MockMatcherFunction = (url, opts) => {
+        if (url !== `${API_URL}products`) {
+          return false;
+        }
+        if (opts.method !== "PATCH") {
+          return false;
+        }
+        if ((opts as any).body !== JSON.stringify(body)) {
+          return false;
+        }
+        return true;
+      };
+      fetchMock.patchOnce(requestMatcher, {
+        status: 200,
+        body: mockedResponse,
+      });
+
+      const httpClient = new JsonHttpClient();
+      const actualResponse = await httpClient.patch<IProduct[]>({
+        baseUrl: API_URL,
+        url: "products",
+        body: body,
+        responseSchema: Yup.array()
+          .required()
+          .of(productSchema),
+      });
+
+      expect(actualResponse.statusCode).to.be.eq(200);
+      expect(actualResponse.body).to.be.deep.eq(mockedResponse);
+    });
+  });
+
+  describe("delete requests", () => {
+    it("should make DELETE request", async () => {
+      const requestMatcher: fetchMock.MockMatcherFunction = (url, opts) => {
+        if (url !== `${API_URL}products`) {
+          return false;
+        }
+        if (opts.method !== "DELETE") {
+          return false;
+        }
+        return true;
+      };
+      fetchMock.deleteOnce(requestMatcher, {
+        status: 204,
+      });
+
+      const httpClient = new JsonHttpClient();
+      const actualResponse = await httpClient.delete({
+        baseUrl: API_URL,
+        url: "products",
+      });
+
+      expect(actualResponse.statusCode).to.be.eq(204);
+      expect(actualResponse.body).to.be.deep.equal({});
     });
   });
 });

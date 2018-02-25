@@ -36,7 +36,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({ isMessageSigni
               data-test-id="wallet-selector-light"
               data-text="use Neufund wallet"
             >
-              use Neufund wallet
+              <span>use Neufund wallet</span>
             </NavLink>
             <NavLink
               className={cn("mb-3 mb-md-0", styles.wallet)}
@@ -44,7 +44,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({ isMessageSigni
               data-test-id="wallet-selector-browser"
               data-text="use existing wallet"
             >
-              use existing wallet
+              <span>use existing wallet</span>
             </NavLink>
             <NavLink
               className={cn("mb-3 mb-md-0", styles.wallet)}
@@ -52,7 +52,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({ isMessageSigni
               data-test-id="wallet-selector-ledger"
               data-text="use nano ledger"
             >
-              use nano ledger
+              <span>use nano ledger</span>
             </NavLink>
           </Col>
         </Row>

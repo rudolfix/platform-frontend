@@ -9,6 +9,7 @@ import { actions } from "../modules/actions";
 import { flows } from "../modules/flows";
 import { AppDispatch } from "../store";
 import { AppRouter } from "./AppRouter";
+import { Header } from "./Header";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 const appInitAction = injectableFn(
@@ -65,10 +66,11 @@ class AppComponent extends React.Component<IInitializationDispatchProps, IInitia
     }
 
     return (
-      <div>
+      <>
+        <Header />
         <ToastContainer />
         <AppRouter />
-      </div>
+      </>
     );
   }
 }

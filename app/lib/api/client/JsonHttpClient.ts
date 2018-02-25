@@ -1,29 +1,61 @@
+/**
+ * Wraps fetch with JSON based, injectable wrapper
+ * Converts camel cased body properties to snake case on requests,
+ * and does the reverse on responses
+ */
+
 import { injectable } from "inversify";
 import { compact } from "lodash";
 import * as queryString from "query-string";
 import * as urlJoin from "url-join";
 import { Dictionary } from "../../../types";
+import { toCamelCase, toSnakeCase } from "../../../utils/transformObjectKeys";
 import {
   HttpMethod,
   IHttpClient,
+  IHttpClientErrorDocument,
   IHttpGetRequest,
   IHttpPostRequest,
   IHttpRequestCommon,
   IHttpResponse,
 } from "./IHttpClient";
 
-export class HttpClientError extends Error {}
-export class ResponseParsingError extends HttpClientError {
-  public readonly type = "ResponseParsingError";
-}
-export class ResponseStatusError extends HttpClientError {
-  public readonly type = "ResponseStatusError";
-  constructor(public readonly statusCode: number) {
+export class HttpClientError extends Error {
+  protected type: string;
+  protected details: IHttpClientErrorDocument;
+  constructor(
+    instance: string,
+    type: string = "HTTPClientError",
+    title: string = "There was an error connecting to the network",
+    status: number = 0,
+  ) {
     super();
+    this.type = type;
+    this.details = {
+      type,
+      status,
+      title,
+      instance,
+    };
   }
 }
+
+export class ResponseParsingError extends HttpClientError {
+  constructor(instance: string) {
+    super(instance, "ResponseParsingError", "There was an error parsing the result of the server");
+  }
+}
+
+export class ResponseStatusError extends HttpClientError {
+  constructor(instance: string, public readonly status: number) {
+    super(instance, "ResponseStatusError", "There was an error connecting to the network", status);
+  }
+}
+
 export class NetworkingError extends HttpClientError {
-  public readonly type = "NetworkingError";
+  constructor(instance: string) {
+    super(instance, "NetworkingError", "There was an error connecting to the network");
+  }
 }
 
 //supports only JSON apis
@@ -50,6 +82,27 @@ export class JsonHttpClient implements IHttpClient {
     return this.makeFetchRequest<T>(fullUrl, "POST", config);
   }
 
+  public put<T>(config: IHttpPostRequest): Promise<IHttpResponse<T>> {
+    const urlParts = compact([config.baseUrl, config.url]);
+    const fullUrl = urlJoin(...urlParts);
+
+    return this.makeFetchRequest<T>(fullUrl, "PUT", config);
+  }
+
+  public patch<T>(config: IHttpPostRequest): Promise<IHttpResponse<T>> {
+    const urlParts = compact([config.baseUrl, config.url]);
+    const fullUrl = urlJoin(...urlParts);
+
+    return this.makeFetchRequest<T>(fullUrl, "PATCH", config);
+  }
+
+  public delete(config: IHttpPostRequest): Promise<IHttpResponse<any>> {
+    const urlParts = compact([config.baseUrl, config.url]);
+    const fullUrl = urlJoin(...urlParts);
+
+    return this.makeFetchRequest<any>(fullUrl, "DELETE", config);
+  }
+
   private async makeFetchRequest<T>(
     fullUrl: string,
     method: HttpMethod,
@@ -63,24 +116,27 @@ export class JsonHttpClient implements IHttpClient {
           ...config.headers,
         },
         method: method,
-        body: "body" in config ? JSON.stringify(config.body) : undefined,
+        body: config.body ? JSON.stringify(toSnakeCase(config.body)) : undefined,
       });
     } catch {
-      throw new NetworkingError();
+      throw new NetworkingError(fullUrl);
     }
 
     if (!response.ok) {
-      throw new ResponseStatusError(response.status);
+      throw new ResponseStatusError(fullUrl, response.status);
     }
 
-    const responseJson = await response.json().catch(() => {
-      throw new ResponseParsingError("Response is not a json");
-    });
+    let responseJson: any = {};
+    if (response.body) {
+      responseJson = await response.json().catch(() => {
+        throw new ResponseParsingError("Response is not a json");
+      });
+    }
 
-    let finalResponseJson: T = responseJson;
+    let finalResponseJson: T = toCamelCase(responseJson);
     if (config.responseSchema) {
       try {
-        finalResponseJson = config.responseSchema.validateSync<T>(responseJson, {
+        finalResponseJson = config.responseSchema.validateSync<T>(toCamelCase(responseJson), {
           stripUnknown: true,
           strict: true,
         }) as T;

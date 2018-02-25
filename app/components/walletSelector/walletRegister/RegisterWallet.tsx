@@ -1,4 +1,4 @@
-import { Form, Formik, FormikProps } from "formik";
+import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { Button, Col, Row } from "reactstrap";
 import { compose } from "redux";
@@ -13,17 +13,15 @@ const PASSWORD = "password";
 const REPEAT_PASSWORD = "repeatPassword";
 
 export interface IFormValues {
-  email?: string;
-  password?: string;
-  repeatPassword?: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
 }
 
 interface IProps {
   submitForm: (values: IFormValues) => void;
-  currentValues: IFormValues;
+  currentValues?: IFormValues;
 }
-
-const validate = () => {};
 
 const validationSchema = Yup.object().shape({
   [EMAIL]: Yup.string()
@@ -65,17 +63,14 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
     </Button>
   </Form>
 );
-const RegisterEnhancedLightWalletForm = (props: IProps) => (
-  <Formik
-    initialValues={props.currentValues}
-    onSubmit={props.submitForm}
-    render={RegisterLightWalletForm}
-    validate={validate}
-    validationSchema={validationSchema}
-  />
-);
 
-export const RegisterWalletComponent: React.SFC<any> = props => {
+const RegisterEnhancedLightWalletForm = withFormik<IProps, IFormValues>({
+  validationSchema: validationSchema,
+  mapPropsToValues: props => props.currentValues as IFormValues,
+  handleSubmit: (values, props) => props.props.submitForm(values),
+})(RegisterLightWalletForm);
+
+export const RegisterWalletComponent: React.SFC<IProps> = props => {
   return (
     <Row className="justify-content-sm-center mt-3">
       <Col sm="5" className="align-self-end">
@@ -89,14 +84,7 @@ export const RegisterWallet = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>
-        dispatch(
-          flows.wallet.tryConnectingWithLightWallet(
-            values.email as string,
-            values.password as string,
-          ),
-        ),
+        dispatch(flows.wallet.tryConnectingWithLightWallet(values.email, values.password)),
     }),
   }),
 )(RegisterWalletComponent);
-
-//Solve IFormValues complains when elements are not optional

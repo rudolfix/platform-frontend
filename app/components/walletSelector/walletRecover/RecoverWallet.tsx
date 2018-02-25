@@ -15,9 +15,9 @@ interface IMainRecoveryState {
 }
 
 interface IFormValues {
-  email?: string;
-  password?: string;
-  repeatPassword?: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
   seed?: string;
 }
 
@@ -36,21 +36,20 @@ export class RecoveryProcessesComponent extends React.Component<
   constructor(props: IMainRecoveryProps) {
     super(props);
     this.state = {};
-    this.setSeed = this.setSeed.bind(this);
   }
 
-  setSeed(words: string): any {
+  setSeed = (words: string): void => {
     this.setState({ seed: words });
-  }
+  };
 
   render(): React.ReactNode {
     return (
       <div>
         {this.state.seed ? (
           <div>
-            <WalletResetHeader text="Lopsum Iprum" currentStep={6} steps={7} />
+            <WalletResetHeader text="Lopsum Iprum" currentStep={7} steps={8} />
             <RegisterWalletComponent
-              submitForm={(values: any) => {
+              submitForm={(values: IFormValues) => {
                 this.props.submitForm({ ...values, seed: this.state.seed });
               }}
             />
@@ -59,7 +58,7 @@ export class RecoveryProcessesComponent extends React.Component<
           <div>
             <WalletLightSeedRecoveryComponent
               startingStep={0}
-              extraSteps={1}
+              extraSteps={2}
               sendWords={this.setSeed}
             />
           </div>
@@ -76,7 +75,7 @@ export class RecoveryProcessesComponent extends React.Component<
   }
 }
 
-export const RecoveryProcesses: React.SFC<any> = props => {
+export const RecoveryProcesses: React.SFC<IProps> = props => {
   return <RecoveryProcessesComponent {...props} />;
 };
 
@@ -85,11 +84,7 @@ export const RecoverWallet = compose<React.SFC>(
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) => {
         dispatch(
-          flows.wallet.tryConnectingWithLightWallet(
-            values.email as string,
-            values.password as string,
-            values.seed as string,
-          ),
+          flows.wallet.tryConnectingWithLightWallet(values.email, values.password, values.seed),
         );
       },
     }),

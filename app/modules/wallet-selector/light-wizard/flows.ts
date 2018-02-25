@@ -34,16 +34,11 @@ export const lightWizardFlows = {
         logger: ILogger,
       ) => {
         try {
-          const lightWalletVault = seed
-            ? await lightWalletUtil.createLightWalletVault({
-                password,
-                hdPathString: "m/44'/60'/0'",
-                recoverSeed: seed,
-              })
-            : await lightWalletUtil.createLightWalletVault({
-                password,
-                hdPathString: "m/44'/60'/0'",
-              });
+          const lightWalletVault = await lightWalletUtil.createLightWalletVault({
+            password,
+            hdPathString: "m/44'/60'/0'",
+            recoverSeed: seed,
+          });
 
           const walletInstance = await lightWalletUtil.deserializeLightWalletVault(
             lightWalletVault.walletInstance,

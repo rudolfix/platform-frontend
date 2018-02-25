@@ -1,15 +1,21 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { StandardButton } from "../../shared/StandardButton";
+import { recoverRoutes } from "./recoverRoutes";
 import { WalletResetHeader } from "./WalletResetHeader";
 
-export const RecoverySuccessComponent: React.SFC<{ submitForm: () => void }> = props => (
+interface IProps {
+  goToDashboard: () => void;
+}
+
+export const RecoverySuccessComponent: React.SFC<IProps> = props => (
   <div>
     <Col className="mt-4 pb-5">
-      <WalletResetHeader steps={7} currentStep={7} text={"Lorem ipsum"} />
+      <WalletResetHeader steps={8} currentStep={8} text={"Lorem ipsum"} />
     </Col>
     <Col className="mt-4 mb-5 mx-auto">
       <h5 className="text-center">
@@ -18,24 +24,23 @@ export const RecoverySuccessComponent: React.SFC<{ submitForm: () => void }> = p
     </Col>
     <Row className="justify-content-center mb-5 mt-5 pt-4">
       <Col xs={6} sm={5} md={4} lg={4}>
-        <StandardButton text="GO TO DASHBOARD" onClick={props.submitForm} />
+        <StandardButton text="GO TO DASHBOARD" onClick={props.goToDashboard} />
       </Col>
     </Row>
     <Row className="justify-content-end mt-4 pt-4 align-bottom" noGutters>
       <Col className="align-bottom text-end">
-        <div className="mt-5 align-bottom font-weight-bold text-right">
+        <Link className="" to={recoverRoutes.help}>
           Contact for help <i className="fa fa-lg fa-angle-right ml-1" />
-        </div>
+        </Link>
       </Col>
     </Row>
   </div>
 );
 
 export const RecoverySuccess = compose<React.SFC>(
-  appConnect<void>({
+  appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      //There must be a guard here if we will continue like this
-      submitForm: () => dispatch(actions.wallet.connected()),
+      goToDashboard: () => dispatch(actions.wallet.connected()),
     }),
   }),
 )(RecoverySuccessComponent);

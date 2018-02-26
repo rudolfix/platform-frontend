@@ -3,6 +3,8 @@ import { Container } from "inversify";
 import * as React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, createStore, Store } from "redux";
+import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
+import { SinonSpy } from "sinon";
 
 import { MemoryRouter } from "react-router";
 import { customizerContainerWithMiddlewareApi, setupBindings } from "../app/di/setupBindings";
@@ -15,17 +17,34 @@ import { IAppState, reducers } from "../app/store";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
 import { dummyConfig, dummyLogger } from "./fixtures";
 import { createMock, tid } from "./testUtils";
+import { Storage } from "../app/lib/persistence/Storage";
+import { ObjectStorage } from "../app/lib/persistence/ObjectStorage";
+import {
+  TWalletMetadata,
+  STORAGE_WALLET_METADATA_KEY,
+} from "../app/lib/persistence/WalletMetadataObjectStorage";
+import { STORAGE_JWT_KEY } from "../app/lib/persistence/JwtObjectStorage";
+import { createMockStorage } from "../app/lib/persistence/Storage.mock";
+import { rootSaga } from "../app/modules/sagas";
+import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
+import { Web3Adapter } from "../app/lib/web3/Web3Adapter";
+import { UsersApi } from "../app/lib/api/UsersApi";
+import { SignatureAuthApi } from "../app/lib/api/SignatureAuthApi";
+import { createSpyMiddleware } from "./reduxSpyMiddleware";
 
 interface ICreateIntegrationTestsSetupOptions {
   initialState?: Partial<IAppState>;
   browserWalletConnectorMock?: BrowserWalletConnector;
   ledgerWalletConnectorMock?: LedgerWalletConnector;
-  web3ManagerMock?: Web3Manager;
+  storageMock?: Storage;
+  usersApiMock?: UsersApi;
+  signatureAuthApiMock?: SignatureAuthApi;
 }
 
 interface ICreateIntegrationTestsSetupOutput {
   store: Store<IAppState>;
   container: Container;
+  dispatchSpy: SinonSpy;
 }
 
 export function createIntegrationTestsSetup(
@@ -35,23 +54,41 @@ export function createIntegrationTestsSetup(
     options.browserWalletConnectorMock || createMock(BrowserWalletConnector, {});
   const ledgerWalletMock =
     options.ledgerWalletConnectorMock || createMock(LedgerWalletConnector, {});
-  const web3ManagerMock = options.web3ManagerMock || createMock(Web3Manager, {});
+  const storageMock = options.storageMock || createMockStorage();
+  const usersApiMock = options.usersApiMock || createMock(UsersApi, {});
+  const signatureAuthApiMock = options.signatureAuthApiMock || createMock(SignatureAuthApi, {});
+
   const container = setupBindings(dummyConfig);
   container.rebind(symbols.ledgerWalletConnector).toConstantValue(ledgerWalletMock);
   container.rebind(symbols.browserWalletConnector).toConstantValue(browserWalletMock);
-  container.rebind(symbols.web3Manager).toConstantValue(web3ManagerMock);
+  container
+    .rebind(symbols.web3Manager)
+    .to(Web3ManagerMock)
+    .inSingletonScope();
   container.rebind(symbols.logger).toConstantValue(dummyLogger);
+  container.rebind(symbols.storage).toConstantValue(storageMock);
+  container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
+  container.rebind(symbols.signatureAuthApi).toConstantValue(signatureAuthApiMock);
+
+  const sagaMiddleware = createSagaMiddleware({ context: { container } });
+
+  const spyMiddleware = createSpyMiddleware();
 
   const middleware = applyMiddleware(
+    spyMiddleware.middleware,
     createInjectMiddleware(container, (container, middlewareApi) => {
       customizerContainerWithMiddlewareApi(container, middlewareApi);
     }),
+    sagaMiddleware,
   );
+
   const store = createStore(reducers, options.initialState as any, middleware);
+  sagaMiddleware.run(rootSaga);
 
   return {
     store,
     container,
+    dispatchSpy: spyMiddleware.dispatchSpy,
   };
 }
 
@@ -72,6 +109,17 @@ export async function waitForTid(component: ReactWrapper, id: string): Promise<v
 
   if (waitTime === 0) {
     throw new Error(`Timeout while waiting for '${id}'`);
+  }
+}
+export async function waitForPredicate(predicate: () => boolean, errorMsg: string): Promise<void> {
+  // wait until event queue is empty :/ currently we don't have a better way to solve it
+  let waitTime = 20;
+  while (--waitTime > 0 && !predicate()) {
+    await Promise.resolve();
+  }
+
+  if (waitTime === 0) {
+    throw new Error(`Timeout while waiting for '${errorMsg}'`);
   }
 }
 

@@ -12,66 +12,46 @@ import { BrowserWalletConnector } from "../../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../../lib/web3/LightWallet";
 import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
+import { injectableFn } from "../../middlewares/redux-injectify";
 import { invariant } from "../../utils/invariant";
 import { actions } from "../actions";
-import { getDependencies } from "../sagas";
+import { callAndInject, getDependency } from "../sagas";
 import { WalletType } from "../web3/types";
 
-export function* messageSign(message: string): Iterator<any> {
-  yield effects.put(actions.signMessageModal.show());
+export const ensureWalletConnection = injectableFn(
+  async function(
+    walletMetadata: ObjectStorage<TWalletMetadata>,
+    web3Manager: Web3Manager,
+    ledgerWalletConnector: LedgerWalletConnector,
+    browserWalletConnector: BrowserWalletConnector,
+    lightWalletConnector: LightWalletConnector,
+  ): Promise<void> {
+    if (web3Manager.personalWallet) {
+      return;
+    }
+    const metadata = walletMetadata.get()!;
 
-  const deps: any = yield getDependencies([
+    invariant(metadata, "User has JWT but doesn't have wallet metadata!");
+
+    switch (metadata.walletType) {
+      case WalletType.LEDGER:
+        return await connectLedger(ledgerWalletConnector, web3Manager, metadata);
+      case WalletType.BROWSER:
+        return await connectBrowser(browserWalletConnector, web3Manager, metadata);
+      case WalletType.LIGHT:
+        return await connectLightWallet(lightWalletConnector, web3Manager, metadata);
+      default:
+        invariant(false, "Wallet type unrecognized");
+    }
+  },
+  [
     symbols.walletMetadataStorage,
     symbols.web3Manager,
     symbols.ledgerWalletConnector,
     symbols.browserWalletConnector,
     symbols.lightWalletConnector,
-  ]);
-  const web3Manager: Web3Manager = deps[1];
-
-  while (true) {
-    try {
-      yield (ensureWalletConnection as any)(...deps);
-
-      const signedMessage = yield web3Manager.sign(message);
-      yield effects.put(actions.signMessageModal.hide());
-      return signedMessage;
-    } catch (e) {
-      yield effects.put(actions.signMessageModal.signingError(e.message)); // todo: better error management
-
-      if (!(e instanceof SignerError)) {
-        yield delay(500);
-      }
-      return;
-    }
-  }
-}
-
-export async function ensureWalletConnection(
-  walletMetadata: ObjectStorage<TWalletMetadata>,
-  web3Manager: Web3Manager,
-  ledgerWalletConnector: LedgerWalletConnector,
-  browserWalletConnector: BrowserWalletConnector,
-  lightWalletConnector: LightWalletConnector,
-): Promise<void> {
-  if (web3Manager.personalWallet) {
-    return;
-  }
-  const metadata = walletMetadata.get()!;
-
-  invariant(metadata, "User has JWT but doesn't have wallet metadata!");
-
-  switch (metadata.walletType) {
-    case WalletType.LEDGER:
-      return await connectLedger(ledgerWalletConnector, web3Manager, metadata);
-    case WalletType.BROWSER:
-      return await connectBrowser(browserWalletConnector, web3Manager, metadata);
-    case WalletType.LIGHT:
-      return await connectLightWallet(lightWalletConnector, web3Manager, metadata);
-    default:
-      invariant(false, "Wallet type unrecognized");
-  }
-}
+  ],
+);
 
 async function connectLedger(
   ledgerWalletConnector: LedgerWalletConnector,
@@ -109,4 +89,27 @@ async function connectLightWallet(
     salt: metadata.salt,
   });
   await web3Manager.plugPersonalWallet(wallet);
+}
+
+export function* messageSign(message: string): Iterator<any> {
+  yield effects.put(actions.signMessageModal.show());
+
+  const web3Manager: Web3Manager = yield getDependency(symbols.web3Manager);
+
+  while (true) {
+    try {
+      yield callAndInject(ensureWalletConnection);
+
+      const signedMessage = yield web3Manager.sign(message);
+      yield effects.put(actions.signMessageModal.hide());
+      return signedMessage;
+    } catch (e) {
+      yield effects.put(actions.signMessageModal.signingError(e.message)); // todo: better error management
+
+      if (!(e instanceof SignerError)) {
+        yield delay(500);
+      }
+      return;
+    }
+  }
 }

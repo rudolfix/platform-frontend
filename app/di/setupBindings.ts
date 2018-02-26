@@ -106,25 +106,29 @@ export function setupBindings(config: IConfig): Container {
     .bind<AsyncIntervalSchedulerFactoryType>(symbols.asyncIntervalSchedulerFactory)
     .toFactory(AsyncIntervalSchedulerFactory);
 
-  // storages
+  // dynamic bindings (with inSingletonScope this works like lazy binding)
   container
     .bind<ObjectStorage<TWalletMetadata>>(symbols.walletMetadataStorage)
-    .toConstantValue(
-      new ObjectStorage<TWalletMetadata>(
-        container.get(symbols.storage),
-        container.get(symbols.logger),
-        STORAGE_WALLET_METADATA_KEY,
-      ),
-    );
+    .toDynamicValue(
+      ctx =>
+        new ObjectStorage<TWalletMetadata>(
+          ctx.container.get(symbols.storage),
+          ctx.container.get(symbols.logger),
+          STORAGE_WALLET_METADATA_KEY,
+        ),
+    )
+    .inSingletonScope();
   container
     .bind<ObjectStorage<string>>(symbols.jwtStorage)
-    .toConstantValue(
-      new ObjectStorage<string>(
-        container.get(symbols.storage),
-        container.get(symbols.logger),
-        STORAGE_JWT_KEY,
-      ),
-    );
+    .toDynamicValue(
+      ctx =>
+        new ObjectStorage<string>(
+          ctx.container.get(symbols.storage),
+          ctx.container.get(symbols.logger),
+          STORAGE_JWT_KEY,
+        ),
+    )
+    .inSingletonScope();
 
   return container;
 }

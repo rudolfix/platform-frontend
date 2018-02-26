@@ -4,7 +4,16 @@
   margin-top: map-get($spacers, 3);
   text-align: center;
 
-  button {
+  span {
+    color: $neu-black;
+    font-weight: bold;
+    cursor: pointer;
     text-transform: uppercase;
   }
+}
+
+.back {
+  font-size: rem-to-px(15px);
+  color: $neu-black;
+  cursor: pointer;
 }

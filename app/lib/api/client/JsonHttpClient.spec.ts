@@ -342,4 +342,69 @@ describe("JsonHttpClient", () => {
       expect(actualResponse.body).to.be.deep.equal({});
     });
   });
+
+  describe("property name transformation", () => {
+    it("should transform request body object props to snake case and vice versa", async () => {
+      const requestBody = {
+        someProperty: "hello",
+        otherProperty: 1,
+      };
+
+      const expectedTransformedBody = {
+        some_property: "hello",
+        other_property: 1,
+      };
+
+      let receivedRequestBody: string = "";
+
+      const requestMatcher: fetchMock.MockMatcherFunction = (_url, opts) => {
+        receivedRequestBody = (opts as any).body;
+        return true;
+      };
+      fetchMock.postOnce(requestMatcher, {
+        status: 201,
+        body: expectedTransformedBody,
+      });
+      const httpClient = new JsonHttpClient();
+      const actualResponse = await httpClient.post<IProduct[]>({
+        baseUrl: "/",
+        url: "products",
+        body: requestBody,
+      });
+
+      expect(JSON.parse(receivedRequestBody)).to.deep.equal(expectedTransformedBody);
+      expect(actualResponse.body).to.deep.equal(requestBody);
+    });
+  });
+
+  describe("Subitting of files as formdata", () => {
+    it("should transform request body object props to snake case and vice versa", async () => {
+      const file = new File(["first line", "second line"], "stuff.txt");
+      const formData = new FormData();
+      formData.append("file", file);
+
+      let receivedHeaders: any;
+      let receivedBody: any;
+      const requestMatcher: fetchMock.MockMatcherFunction = (_url, opts) => {
+        receivedHeaders = opts.headers;
+        receivedBody = (opts as any).body;
+        return true;
+      };
+      fetchMock.postOnce(requestMatcher, {
+        status: 201,
+        body: {},
+      });
+
+      const httpClient = new JsonHttpClient();
+      await httpClient.post<IProduct[]>({
+        baseUrl: "/",
+        url: "file",
+        formData: formData,
+        body: { someProp: "hello" },
+      });
+
+      expect(receivedHeaders["Content-Type"]).to.equal(undefined);
+      expect(receivedBody).to.equal(formData);
+    });
+  });
 });

@@ -9,6 +9,7 @@ import { compact } from "lodash";
 import * as queryString from "query-string";
 import * as urlJoin from "url-join";
 import { Dictionary } from "../../../types";
+import { invariant } from "../../../utils/invariant";
 import { toCamelCase, toSnakeCase } from "../../../utils/transformObjectKeys";
 import {
   HttpMethod,
@@ -61,9 +62,13 @@ export class NetworkingError extends HttpClientError {
 //supports only JSON apis
 @injectable()
 export class JsonHttpClient implements IHttpClient {
-  private readonly defaultHeaders: Dictionary<string> = {
+  private readonly jsonRequestHeaders: Dictionary<string> = {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
+  };
+
+  private readonly formDataRequestHeaders: Dictionary<string> = {
+    Accept: "application/json, text/plain, */*",
   };
 
   public async get<T>(config: IHttpGetRequest): Promise<IHttpResponse<T>> {
@@ -110,13 +115,26 @@ export class JsonHttpClient implements IHttpClient {
   ): Promise<IHttpResponse<T>> {
     let response;
     try {
+      let body: string | FormData | undefined = config.body
+        ? JSON.stringify(toSnakeCase(config.body))
+        : undefined;
+
+      let headers = config.formData ? this.formDataRequestHeaders : this.jsonRequestHeaders;
+
+      headers = {
+        ...headers,
+        ...config.headers,
+      };
+
+      if (config.formData) {
+        body = config.formData;
+        invariant(!headers["Content-Type"], "With form-data you can't set content-type header");
+      }
+
       response = await fetch(fullUrl, {
-        headers: {
-          ...this.defaultHeaders,
-          ...config.headers,
-        },
-        method: method,
-        body: config.body ? JSON.stringify(toSnakeCase(config.body)) : undefined,
+        headers,
+        method,
+        body,
       });
     } catch {
       throw new NetworkingError(fullUrl);

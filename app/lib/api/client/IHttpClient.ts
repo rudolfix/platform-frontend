@@ -9,6 +9,7 @@ export interface IHttpRequestCommon {
   responseSchema?: Yup.Schema;
   headers?: Dictionary<string>;
   body?: any;
+  formData?: FormData;
 }
 
 export interface IHttpGetRequest extends IHttpRequestCommon {

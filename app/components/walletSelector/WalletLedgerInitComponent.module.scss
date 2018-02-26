@@ -2,9 +2,12 @@
 
 .step {
   text-align: center;
+
+  img {
+    display: inline-block;
+  }
 }
 
 .header {
-  letter-spacing: -.3px;
-  font-size: 1.25rem;
+  font-size: $bigger-font-size;
 }

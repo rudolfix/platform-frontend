@@ -342,4 +342,38 @@ describe("JsonHttpClient", () => {
       expect(actualResponse.body).to.be.deep.equal({});
     });
   });
+
+  describe("property name transformation", () => {
+    it("should transform request body object props to snake case and vice versa", async () => {
+      const requestBody = {
+        someProperty: "hello",
+        otherProperty: 1,
+      };
+
+      const expectedTransformedBody = {
+        some_property: "hello",
+        other_property: 1,
+      };
+
+      let receivedRequestBody: string = "";
+
+      const requestMatcher: fetchMock.MockMatcherFunction = (_url, opts) => {
+        receivedRequestBody = (opts as any).body;
+        return true;
+      };
+      fetchMock.postOnce(requestMatcher, {
+        status: 201,
+        body: expectedTransformedBody,
+      });
+      const httpClient = new JsonHttpClient();
+      const actualResponse = await httpClient.post<IProduct[]>({
+        baseUrl: "/",
+        url: "products",
+        body: requestBody,
+      });
+
+      expect(JSON.parse(receivedRequestBody)).to.deep.equal(expectedTransformedBody);
+      expect(actualResponse.body).to.deep.equal(requestBody);
+    });
+  });
 });

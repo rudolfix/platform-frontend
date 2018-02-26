@@ -13,6 +13,7 @@ import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
 import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
 import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
+import { FunctionWithDeps } from "./types";
 
 export interface IAppAction {
   type: string;
@@ -21,7 +22,7 @@ export interface IAppAction {
 export type ActionType<T extends IAppAction> = T["type"];
 export type ActionPayload<T extends IAppAction> = T["payload"];
 
-export type AppDispatch = (a: AppActionTypes | Function) => void;
+export type AppDispatch = (a: AppActionTypes | FunctionWithDeps) => void;
 
 export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTypes) => S;
 

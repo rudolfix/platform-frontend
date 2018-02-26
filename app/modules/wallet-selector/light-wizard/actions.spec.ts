@@ -37,6 +37,12 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         const walletInstance = expectedWalletDummy;
         return Promise.resolve(walletInstance as ILightWallet);
       },
+      getWalletKeyFromSaltAndPassword: (): Promise<Uint8Array> => {
+        return Promise.resolve(new Uint8Array([132, 133]));
+      },
+      encryptString: (): { encStr: string; nonce: string } => {
+        return { encStr: "test", nonce: "test" };
+      },
     });
 
     it("should create new wallet and store", async () => {
@@ -53,7 +59,6 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         vaultApi,
         dummyLogger,
       );
-
       expect(lightWalletConnector.connect).to.be.calledWith({
         walletInstance: expectedWalletDummy,
         salt: "salt",

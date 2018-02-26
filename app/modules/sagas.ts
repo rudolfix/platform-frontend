@@ -3,6 +3,8 @@ import { TAction } from "./actions";
 
 import { Container } from "inversify";
 
+import { getDependencies } from "../middlewares/redux-injectify";
+import { FunctionWithDeps } from "../types";
 import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
 import { kycSagas } from "./kyc/sagas";
@@ -44,9 +46,12 @@ export function* getDependency(name: symbol): Iterator<effects.Effect> {
   return context.get(name);
 }
 
-export function* getDependencies(names: symbol[]): Iterator<effects.Effect> {
-  const context: Container = yield effects.getContext("container");
-  const deps = names.map(n => context.get(n));
+export function* callAndInject(func: FunctionWithDeps): Iterator<effects.Effect> {
+  const container: Container = yield effects.getContext("container");
 
-  return deps;
+  const depSymbols = getDependencies(func);
+
+  const deps = depSymbols.map(s => container.get(s));
+
+  return yield func(...deps);
 }

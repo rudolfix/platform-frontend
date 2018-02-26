@@ -10,13 +10,13 @@ import * as fetchMock from "fetch-mock";
 const TOKEN = "1234ABCD";
 
 describe("AuthorizedHttpClient", () => {
-  const objectStorage: ObjectStorage<string> = createMock(ObjectStorage, {
-    get: () => TOKEN,
-  }) as any;
-
-  const httpClient = new JsonHttpClient();
-
   it(`Should insert correct authorization header on requests`, async () => {
+    const objectStorage: ObjectStorage<string> = createMock(ObjectStorage, {
+      get: () => TOKEN,
+    }) as any;
+
+    const httpClient = new JsonHttpClient();
+
     let receivedHeaders: any;
 
     const requestMatcher: fetchMock.MockMatcherFunction = (_url, opts) => {

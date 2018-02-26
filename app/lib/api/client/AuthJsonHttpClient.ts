@@ -1,7 +1,6 @@
 /**
- * Wraps fetch with JSON based, injectable wrapper
- * Converts camel cased body properties to snake case on requests,
- * and does the reverse on responses
+ * Wraps the json http api with authorization header injection
+ * collected from localstorage
  */
 import { symbols } from "../../../di/symbols";
 

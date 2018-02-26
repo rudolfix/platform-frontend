@@ -23,8 +23,8 @@ interface IInitStep {
 
 const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
   <Col xs="12" md="4" className={cn("mb-4 mb-md-0 px-4", styles.step)}>
-    <h4 className={styles.header}>{header}</h4>
-    <img className="my-2 my-md-4" src={img} />
+    <div className={styles.header}>{header}</div>
+    <img className="my-2 my-md-5" src={img} />
     <p>{desc}</p>
   </Col>
 );
@@ -68,7 +68,10 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
     </Row>
     <Row className="mt-5">
       <Col className="text-center text-md-right">
-        Have some issues with your NeuKey? <a href="#">Contact for help</a>
+        Have some issues with your NeuKey? Contact for{" "}
+        <a href="#">
+          help <i className="fa fa-chevron-right ml-1" aria-hidden="true" />
+        </a>
       </Col>
     </Row>
   </>

@@ -2,18 +2,16 @@
 
 .table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 map-get($spacers, 3);
 
   thead {
     text-transform: uppercase;
-    color: $blue-gray;
-    font-size: rem-to-px(14px);
+    color: $neu-white;
+    background-color: $neu-charcoal-grey;
+    font-size: $smaller-font-size;
     font-weight: $font-weight-bold;
 
     th {
-      border-bottom: rem-to-px(1px) solid $pale-grey-50;
-      padding: map-get($spacers, 2) 0;
+      padding: map-get($spacers, 2);
     }
   }
 
@@ -21,26 +19,44 @@
     padding: 0 map-get($spacers, 2);
   }
 
-  .derivation-path {
-    font-weight: $font-weight-bold;
+  tbody {
+    border-bottom: #{rem-to-px(1px)} solid $neu-pale-grey;
+
+    tr {
+      &:nth-of-type(odd) {
+        background-color: $neu-pale-blue;
+      }
+    }
   }
 
-  .public-key {
-    border-left: rem-to-px(1px) solid $pale-grey-50;
-    font-weight: $font-weight-bold;
+  tfoot {
+    td {
+      padding-top: map-get($spacers, 2);
+    }
   }
 
-  $logo-size: 32px;
+  $logo-size: 24px;
+
+  .pseudo-border-left {
+    position: relative;
+
+    &::before {
+      content: " ";
+      border-left: #{rem-to-px(1px)} solid $neu-pale-grey;
+      display: block;
+      position: absolute;
+      height: calc(1.4 * (#{$logo-size} + #{map-get($spacers, 3)}));
+      left: 0;
+      top: calc(.3 * (#{$logo-size} + #{map-get($spacers, 3)}));
+    }
+  }
 
   .balance {
-    border-left: rem-to-px(1px) solid $pale-grey-50;
-
     div {
-      min-height: calc(#{$logo-size} + #{map-get($spacers, 2)});
-      line-height: calc(#{$logo-size} + #{map-get($spacers, 2)});
-      padding-left: calc(#{map-get($spacers, 2)} + #{rem-to-px($logo-size)} + #{map-get($spacers, 2)});
-      background-size: #{rem-to-px($logo-size)} #{rem-to-px($logo-size)};
-      background: no-repeat map-get($spacers, 2) center;
+      min-height: calc(#{$logo-size} + #{map-get($spacers, 3)});
+      line-height: calc(#{$logo-size} + #{map-get($spacers, 3)});
+      padding-left: calc(2 * #{map-get($spacers, 2)} + #{rem-to-px($logo-size)});
+      background: no-repeat map-get($spacers, 2) center / #{rem-to-px($logo-size)};
     }
 
     .eth {
@@ -50,11 +66,33 @@
     .neu {
       background-image: url("../../assets/img/neu_icon.svg");
     }
+  }
 
+  .select {
+    color: $neu-black;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+  }
+
+  .arrows {
     span {
-      font-weight: $font-weight-bold;
+      cursor: pointer;
+    }
+
+    i {
+      border: 1px solid $neu-black;
+      font-size: .7em;
+    }
+
+    .left {
+      padding: 4px 5px 4px 4px;
+    }
+
+    .right {
+      padding: 4px 4px 4px 5px;
     }
   }
+
 
   @include media-breakpoint-down(md) {
     thead {
@@ -70,13 +108,10 @@
       display: block;
     }
 
-    tr {
-      margin-bottom: map-get($spacers, 3);
-    }
-
-    .balance,
-    .public-key {
-      border-left: 0;
+    .pseudo-border-left {
+      &::before {
+        display: none;
+      }
     }
 
     .balance {
@@ -111,6 +146,7 @@
 
     .select {
       text-align: center;
+      padding-bottom: map-get($spacers, 3);
     }
   }
 }

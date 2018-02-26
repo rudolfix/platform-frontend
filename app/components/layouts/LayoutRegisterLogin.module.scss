@@ -3,7 +3,7 @@
 .main-container {
   @include media-breakpoint-up(sm) {
     box-shadow: $shadow;
-    border-top: rem-to-px(3px) solid $piss-yellow;
+    border-top: rem-to-px(3px) solid $neu-piss-yellow;
     margin-top: rem-to-px(100px);
   }
 

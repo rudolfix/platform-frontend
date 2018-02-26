@@ -28,7 +28,7 @@ interface IStepCardProps {
   text: string;
 }
 export const StepCard: React.SFC<IStepCardProps> = ({ img, text }) => (
-  <Col sm={4} xs={12} className="mb-4">
+  <Col sm={4} xs={12} className="mb-4 mb-sm-0">
     <Row>
       <Col>
         <img src={img} className="mb-3" />
@@ -51,19 +51,19 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
       <LoadingIndicator />
     ) : (
       <div>
-        <Row className="justify-content-center mb-5">
+        <Row className="justify-content-center mb-4">
           <WarningAlert>
             <span data-test-id="browser-wallet-error-msg">{errorMessage}</span>
           </WarningAlert>
         </Row>
 
-        <Row className="mb-4 text-center">
+        <Row className={cn("mb-4 text-center", styles.stepCards)}>
           <StepCard img={walletIcon} text={"1. Choose existing wallet"} />
           <StepCard img={browserIcon} text={"2. Turn on your browser plugin"} />
           <StepCard img={lockIcon} text={"3. Unlock your wallet to register"} />
         </Row>
 
-        <HorizontalLine className="mb-5" />
+        <HorizontalLine className="mb-4" />
 
         <Row className="text-center mb-4">
           <Col>

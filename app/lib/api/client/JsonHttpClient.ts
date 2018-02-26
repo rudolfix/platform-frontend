@@ -5,7 +5,7 @@
  */
 
 import { injectable } from "inversify";
-import { compact } from "lodash";
+import { compact, omit } from "lodash";
 import * as queryString from "query-string";
 import * as urlJoin from "url-join";
 import { Dictionary } from "../../../types";
@@ -110,13 +110,24 @@ export class JsonHttpClient implements IHttpClient {
   ): Promise<IHttpResponse<T>> {
     let response;
     try {
+      let body: string | FormData | undefined = config.body
+        ? JSON.stringify(toSnakeCase(config.body))
+        : undefined;
+
+      let headers = {
+        ...this.defaultHeaders,
+        ...config.headers,
+      };
+
+      if (config.formData) {
+        body = config.formData;
+        headers = omit(headers, "Content-Type"); // when using formdata, content type header can not be set
+      }
+
       response = await fetch(fullUrl, {
-        headers: {
-          ...this.defaultHeaders,
-          ...config.headers,
-        },
-        method: method,
-        body: config.body ? JSON.stringify(toSnakeCase(config.body)) : undefined,
+        headers,
+        method,
+        body,
       });
     } catch {
       throw new NetworkingError(fullUrl);

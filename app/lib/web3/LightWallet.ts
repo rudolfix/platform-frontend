@@ -1,5 +1,6 @@
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
+import * as ethSig from "eth-sig-util";
 import * as ethUtils from "ethereumjs-util";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
@@ -149,17 +150,17 @@ export class LightWallet implements IPersonalWallet {
     if (!password) {
       throw new LightWalletMissingPassword();
     }
-
     try {
-      const rawSignedMsg = await LightWalletProvider.signing.signMsg(
+      const msgHash = ethUtils.hashPersonalMessage(ethUtils.toBuffer(ethUtils.addHexPrefix(data)));
+      const rawSignedMsg = await LightWalletProvider.signing.signMsgHash(
         this.vault.walletInstance,
         await LightWalletUtil.getWalletKey(this.vault.walletInstance, this.password!),
-        data,
+        msgHash.toString("hex"),
         this.ethereumAddress,
       );
       // from signature parameters to eth_sign RPC
       // @see https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#torpcsig
-      return ethUtils.toRpcSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
+      return ethSig.concatSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
     } catch (e) {
       throw new LightSignMessageError();
     }

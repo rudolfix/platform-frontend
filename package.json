@@ -111,6 +111,7 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eth-lightwallet": "https://github.com/Neufund/eth-lightwallet.git",
+    "eth-sig-util": "^1.4.2",
     "ethereumjs-util": "^5.1.4",
     "formik": "^0.10.5",
     "get-params": "^0.1.2",

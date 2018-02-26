@@ -21,6 +21,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/AsyncIntervalScheduler";
 
+import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { ApiKycService } from "../lib/api/kyc/index";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
@@ -54,6 +55,7 @@ export function setupBindings(config: IConfig): Container {
 
   // classes
   container.bind<IHttpClient>(symbols.jsonHttpClient).to(JsonHttpClient);
+  container.bind<IHttpClient>(symbols.authorizedHttpClient).to(AuthorizedJsonHttpClient);
   // singletons
   container
     .bind<SignatureAuthApi>(symbols.signatureAuthApi)

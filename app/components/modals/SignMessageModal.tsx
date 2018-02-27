@@ -1,19 +1,42 @@
 import * as React from "react";
-import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
+import { actions } from "../../modules/actions";
+import { selectIsLightWallet } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { LightWalletSignPrompt } from "./LightWalletSign";
 
-interface IProps {
+interface IStateProps {
   isOpen: boolean;
   errorMsg?: string;
+  isLightWallet: boolean;
 }
 
-const MessageSignModalComponent: React.SFC<IProps> = props => (
-  <Modal isOpen={props.isOpen}>
+interface IDispatchProps {
+  onCancel: () => void;
+  onAccept: (password?: string) => void;
+}
+
+const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
+  <div>
+    <p>Confirm message on your signer!</p>
+    <Button onClick={onCancel}>Reject</Button>
+  </div>
+);
+
+const MessageSignModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
+  <Modal isOpen={props.isOpen} toggle={props.onCancel}>
     <ModalHeader>Message Signing!</ModalHeader>
     <ModalBody>
-      Confirm message on your signer!
+      <h2>We need your password to unlock your wallet</h2>
+
+      {props.isLightWallet ? (
+        <LightWalletSignPrompt onAccept={props.onAccept} onCancel={props.onCancel} />
+      ) : (
+        <GenericSignPrompt onCancel={props.onCancel} />
+      )}
+
       <p>{props.errorMsg}</p>
     </ModalBody>
     <ModalFooter>
@@ -22,9 +45,14 @@ const MessageSignModalComponent: React.SFC<IProps> = props => (
   </Modal>
 );
 
-export const MessageSignModal = appConnect<IProps>({
+export const MessageSignModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isOpen: s.signMessageModal.isOpen,
     errorMsg: s.signMessageModal.errorMsg,
+    isLightWallet: selectIsLightWallet(s.web3State),
+  }),
+  dispatchToProps: dispatch => ({
+    onAccept: (password?: string) => dispatch(actions.signMessageModal.accept(password)),
+    onCancel: () => dispatch(actions.signMessageModal.hide()),
   }),
 })(MessageSignModalComponent);

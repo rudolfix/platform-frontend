@@ -60,3 +60,7 @@ export const selectEthereumAddress = (state: IWeb3State) =>
 export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAddress, address => {
   return makeEthereumAddressChecksummed(address);
 });
+
+export const selectIsLightWallet = (state: IWeb3State) => {
+  return state.connected && state.type === WalletType.LIGHT;
+};

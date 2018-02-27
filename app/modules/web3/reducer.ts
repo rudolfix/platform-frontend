@@ -5,12 +5,12 @@ import { EthereumAddress } from "../../types";
 import { WalletSubType, WalletType } from "./types";
 import { makeEthereumAddressChecksummed } from "./utils";
 
-interface IDisconnectedWeb3State {
+export interface IDisconnectedWeb3State {
   connected: false;
   previousConnectedWalletType?: WalletType;
 }
 
-interface IConnectedWeb3State {
+export interface IConnectedWeb3State {
   connected: true;
   type: WalletType;
   subtype: WalletSubType;

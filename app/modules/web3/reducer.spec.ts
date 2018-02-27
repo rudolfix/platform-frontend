@@ -12,6 +12,7 @@ describe("Web3 > reducer", () => {
       type: WalletType.BROWSER,
       subtype: WalletSubType.METAMASK,
       ethereumAddress: dummyEthereumAddress,
+      isUnlocked: true,
     };
 
     const actualNewState = web3Reducer(
@@ -20,6 +21,7 @@ describe("Web3 > reducer", () => {
         actionPayload.type,
         actionPayload.subtype,
         actionPayload.ethereumAddress,
+        actionPayload.isUnlocked,
       ),
     );
 
@@ -28,6 +30,7 @@ describe("Web3 > reducer", () => {
       type: actionPayload.type,
       subtype: actionPayload.subtype,
       ethereumAddress: dummyEthereumAddress,
+      isUnlocked: true,
     });
   });
 
@@ -37,6 +40,7 @@ describe("Web3 > reducer", () => {
       type: WalletType.BROWSER,
       subtype: WalletSubType.METAMASK,
       ethereumAddress: dummyEthereumAddress,
+      isUnlocked: true,
     };
 
     const actualNewState = web3Reducer(initialState, actions.web3.personalWalletDisconnected());

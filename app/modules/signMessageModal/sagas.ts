@@ -18,7 +18,8 @@ import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
 import { callAndInject, getDependency } from "../sagas";
-import { selectIsLightWallet } from "../web3/reducer";
+import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
+import { unlockWallet } from "../web3/sagas";
 import { WalletType } from "../web3/types";
 
 export const ensureWalletConnection = injectableFn(
@@ -100,6 +101,12 @@ function* messageSignSaga(message: string): Iterator<any> {
   while (true) {
     try {
       yield callAndInject(ensureWalletConnection);
+
+      const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3State));
+      if (isLightWallet) {
+        yield* unlockLightWallet();
+      }
+
       break;
     } catch (e) {
       yield effects.put(actions.signMessageModal.signingError(e.message)); // todo: better error management
@@ -109,11 +116,6 @@ function* messageSignSaga(message: string): Iterator<any> {
 
       yield delay(500);
     }
-  }
-
-  const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3State));
-  if (isLightWallet) {
-    yield* unlockLightWallet(web3Manager);
   }
   const signedMessage = yield web3Manager.sign(message);
   yield put(actions.signMessageModal.signed(signedMessage));
@@ -136,12 +138,14 @@ export function* messageSign(message: string): any {
   }
 }
 
-function* unlockLightWallet(web3Manager: Web3Manager): any {
-  const accept: TAction = yield take("SIGN_MESSAGE_ACCEPT");
-  if (accept.type !== "SIGN_MESSAGE_ACCEPT") {
+function* unlockLightWallet(): any {
+  const acceptAction: TAction = yield take("SIGN_MESSAGE_ACCEPT");
+  if (acceptAction.type !== "SIGN_MESSAGE_ACCEPT") {
     return;
   }
+  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
 
-  //call set password saga instead!
-  (web3Manager.personalWallet! as any).password = accept.payload.password;
+  if (!isUnlocked) {
+    yield callAndInject(unlockWallet, acceptAction.payload.password);
+  }
 }

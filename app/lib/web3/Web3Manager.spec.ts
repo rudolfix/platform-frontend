@@ -56,6 +56,7 @@ describe("Web3Manager", () => {
         WalletType.LEDGER,
         WalletSubType.UNKNOWN,
         dummyEthereumAddress,
+        true,
       ),
     );
     expect(asyncIntervalSchedulerMock.start).to.be.calledOnce;

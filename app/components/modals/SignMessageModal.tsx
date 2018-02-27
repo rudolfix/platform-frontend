@@ -15,7 +15,6 @@ interface IStateProps {
 
 interface IDispatchProps {
   onCancel: () => void;
-  onAccept: (password?: string) => void;
 }
 
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
@@ -32,7 +31,7 @@ const MessageSignModalComponent: React.SFC<IStateProps & IDispatchProps> = props
       <h2>We need your password to unlock your wallet</h2>
 
       {props.isLightWallet ? (
-        <LightWalletSignPrompt onAccept={props.onAccept} onCancel={props.onCancel} />
+        <LightWalletSignPrompt />
       ) : (
         <GenericSignPrompt onCancel={props.onCancel} />
       )}
@@ -52,7 +51,6 @@ export const MessageSignModal = appConnect<IStateProps, IDispatchProps>({
     isLightWallet: selectIsLightWallet(s.web3State),
   }),
   dispatchToProps: dispatch => ({
-    onAccept: (password?: string) => dispatch(actions.signMessageModal.accept(password)),
     onCancel: () => dispatch(actions.signMessageModal.hide()),
   }),
 })(MessageSignModalComponent);

@@ -1,8 +1,15 @@
 import * as React from "react";
 import { Button, Input } from "reactstrap";
+import { actions } from "../../modules/actions";
+import { selectIsUnlocked } from "../../modules/web3/reducer";
+import { appConnect } from "../../store";
 
 interface IState {
   password: string;
+}
+
+interface IStateProps {
+  isUnlocked: boolean;
 }
 
 interface IDispatchProps {
@@ -10,8 +17,11 @@ interface IDispatchProps {
   onAccept: (password?: string) => void;
 }
 
-export class LightWalletSignPrompt extends React.Component<IDispatchProps, IState> {
-  constructor(props: IDispatchProps) {
+export class LightWalletSignPromptComponent extends React.Component<
+  IDispatchProps & IStateProps,
+  IState
+> {
+  constructor(props: IDispatchProps & IStateProps) {
     super(props);
     this.state = {
       password: "",
@@ -31,12 +41,14 @@ export class LightWalletSignPrompt extends React.Component<IDispatchProps, IStat
       <div>
         <p>Light wallet sign!</p>
 
-        <Input
-          placeholder="password"
-          type="password"
-          onChange={this.passwordChange}
-          value={this.state.password}
-        />
+        {!this.props.isUnlocked && (
+          <Input
+            placeholder="password"
+            type="password"
+            onChange={this.passwordChange}
+            value={this.state.password}
+          />
+        )}
 
         <Button onClick={() => onAccept(this.state.password)}>Accept</Button>
         <Button onClick={onCancel}>Reject</Button>
@@ -44,3 +56,13 @@ export class LightWalletSignPrompt extends React.Component<IDispatchProps, IStat
     );
   }
 }
+
+export const LightWalletSignPrompt = appConnect<IStateProps, IDispatchProps>({
+  stateToProps: s => ({
+    isUnlocked: selectIsUnlocked(s.web3State),
+  }),
+  dispatchToProps: dispatch => ({
+    onAccept: (password?: string) => dispatch(actions.signMessageModal.accept(password)),
+    onCancel: () => dispatch(actions.signMessageModal.hide()),
+  }),
+})(LightWalletSignPromptComponent);

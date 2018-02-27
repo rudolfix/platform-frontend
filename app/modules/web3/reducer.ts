@@ -15,6 +15,7 @@ interface IConnectedWeb3State {
   type: WalletType;
   subtype: WalletSubType;
   ethereumAddress: EthereumAddress;
+  isUnlocked: boolean; // this is important only for light wallet
 }
 
 export type IWeb3State = IDisconnectedWeb3State | IConnectedWeb3State;
@@ -34,6 +35,7 @@ export const web3Reducer: AppReducer<IWeb3State> = (
         type: action.payload.type,
         subtype: action.payload.subtype,
         ethereumAddress: action.payload.ethereumAddress,
+        isUnlocked: action.payload.isUnlocked,
       };
     case "PERSONAL_WALLET_DISCONNECTED":
       return {
@@ -43,6 +45,24 @@ export const web3Reducer: AppReducer<IWeb3State> = (
           (state as IDisconnectedWeb3State).previousConnectedWalletType ||
           (state as IConnectedWeb3State).type,
       };
+    case "WEB3_WALLET_UNLOCKED":
+      if (state.connected) {
+        return {
+          ...state,
+          isUnlocked: true,
+        };
+      } else {
+        return state;
+      }
+    case "WEB3_WALLET_LOCKED":
+      if (state.connected) {
+        return {
+          ...state,
+          isUnlocked: false,
+        };
+      } else {
+        return state;
+      }
   }
   return state;
 };
@@ -63,4 +83,8 @@ export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAd
 
 export const selectIsLightWallet = (state: IWeb3State) => {
   return state.connected && state.type === WalletType.LIGHT;
+};
+
+export const selectIsUnlocked = (state: IWeb3State) => {
+  return state.connected && state.isUnlocked;
 };

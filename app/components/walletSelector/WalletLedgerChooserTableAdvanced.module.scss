@@ -74,26 +74,6 @@
     cursor: pointer;
   }
 
-  .arrows {
-    span {
-      cursor: pointer;
-    }
-
-    i {
-      border: 1px solid $neu-black;
-      font-size: .7em;
-    }
-
-    .left {
-      padding: 4px 5px 4px 4px;
-    }
-
-    .right {
-      padding: 4px 4px 4px 5px;
-    }
-  }
-
-
   @include media-breakpoint-down(md) {
     thead {
       display: none !important; // sass-lint:disable-line no-important

@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+
 import { LayoutRegisterLogin } from "../../layouts/LayoutRegisterLogin";
-import { StandardButton } from "../../shared/StandardButton";
-import { WalletResetHeader } from "../../walletSelector/walletLight/WalletResetHeader";
+import { ButtonPrimary } from "../../shared/Buttons";
+import { WalletResetHeader } from "./WalletResetHeader";
 
 export const WalletLoginHelp: React.SFC<void> = () => (
   <div>
@@ -17,7 +18,7 @@ export const WalletLoginHelp: React.SFC<void> = () => (
       </Col>
       <Row className="justify-content-center mb-5 mt-5 pt-4">
         <Col xs={6} sm={5} md={4} lg={3}>
-          <StandardButton text="GO TO DASHBOARD" />
+          <ButtonPrimary>GO TO DASHBOARD</ButtonPrimary>
         </Col>
       </Row>
       <Row className="justify-content-end mt-4 pt-4 align-bottom" noGutters>

@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Button } from "reactstrap";
+
 import { IUserData } from "../../lib/api/UsersApi";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
+import { ButtonPrimary } from "../shared/Buttons";
 
 interface IStateProps {
   user?: IUserData;
@@ -19,9 +20,7 @@ const UserInfoComponent: React.SFC<IStateProps & IDispatchProps> = ({ user, sign
     return (
       <div>
         <h3>User email: {user.email}</h3>
-        <Button color="primary" onClick={sign}>
-          SIGN A MESSAGE
-        </Button>
+        <ButtonPrimary onClick={sign}>SIGN A MESSAGE</ButtonPrimary>
       </div>
     );
   }

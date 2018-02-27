@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Button } from "reactstrap";
 import { compose } from "redux";
+
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
+import { ButtonPrimary } from "../shared/Buttons";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";
 
@@ -21,9 +22,7 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
   <>
     <MessageSignPrompt />
     {errorMsg ? <p>{errorMsg}</p> : <LoadingIndicator />}
-    <Button color="secondary" onClick={cancelSigning}>
-      Cancel
-    </Button>
+    <ButtonPrimary onClick={cancelSigning}>Cancel</ButtonPrimary>
   </>
 );
 

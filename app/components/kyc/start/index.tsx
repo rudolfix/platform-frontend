@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { Button } from "reactstrap";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
+import { ButtonPrimary } from "../../shared/Buttons";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
 interface IProps {
@@ -20,13 +20,9 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
     <br />
     <h1>Start your KYC</h1>
     <br />
-    <Button color="primary" onClick={props.goToPerson}>
-      I represent myself
-    </Button>
+    <ButtonPrimary onClick={props.goToPerson}>I represent myself</ButtonPrimary>
     &nbsp;&nbsp;
-    <Button color="primary" onClick={props.goToCompany}>
-      I represent a company
-    </Button>
+    <ButtonPrimary onClick={props.goToCompany}>I represent a company</ButtonPrimary>
   </div>
 );
 

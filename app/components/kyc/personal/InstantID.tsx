@@ -4,11 +4,10 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
+import { ButtonPrimary } from "../../shared/Buttons";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
-
-import { Button } from "reactstrap";
 
 interface IProps {
   startInstantId: () => void;
@@ -27,9 +26,7 @@ export const KYCPersonalInstantIDComponent: React.SFC<IProps> = props => (
     mmediately invest and deposit funds on the NEUFUND platform.
     <br />
     <br />
-    <Button color="primary" onClick={props.startInstantId}>
-      Go to video verification
-    </Button>
+    <ButtonPrimary onClick={props.startInstantId}>Go to video verification</ButtonPrimary>
     <br />
     <br />
     <br />
@@ -37,7 +34,7 @@ export const KYCPersonalInstantIDComponent: React.SFC<IProps> = props => (
     processing time.
     <br />
     <br />
-    <Button onClick={props.startManualVerification}>Manual Verification</Button>
+    <ButtonPrimary onClick={props.startManualVerification}>Manual Verification</ButtonPrimary>
   </div>
 );
 

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+
 import { LayoutRegisterLogin } from "./layouts/LayoutRegisterLogin";
-import { StandardButton } from "./shared/StandardButton";
+import { ButtonPrimary } from "./shared/Buttons";
 
 export const WalletLoginHelp: React.SFC<void> = () => (
   <div>
@@ -23,7 +24,7 @@ export const WalletLoginHelp: React.SFC<void> = () => (
             </p>
           </div>
           <Col xs={12} md={4}>
-            <StandardButton text="Recover Password" />
+            <ButtonPrimary>Recover Password</ButtonPrimary>
           </Col>
         </Row>
         <div className="border-bottom pb-4" />
@@ -32,7 +33,7 @@ export const WalletLoginHelp: React.SFC<void> = () => (
         <Row className="justify-content-between" noGutters>
           <h5 className="font-weight-bold">I've lost my Nano Ledger device. </h5>
           <Col xs={12} md={4}>
-            <StandardButton text="View Tutorial" />
+            <ButtonPrimary>View Tutorial</ButtonPrimary>
           </Col>
         </Row>
       </Col>

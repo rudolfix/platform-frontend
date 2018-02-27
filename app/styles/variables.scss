@@ -39,10 +39,7 @@ $smaller-font-size: rem-to-px(13px);
 $shadow:  0 rem-to-px(2px) rem-to-px(4px) 0 rgba(0, 0, 0, .1);
 
 // Bootstrap variable overrides
-
 //colors
-$link-color: $neu-black;
-$link-hover-color: $neu-black;
 $body-color: $neu-slate-grey;
 $body-bg: $neu-pale-blue;
 
@@ -57,10 +54,41 @@ $headings-font-family: "Lato", sans-serif;
 $headings-font-weight: 400;
 $headings-color: $neu-black;
 
+$link-color: $neu-black;
+$link-hover-color: $neu-black;
+
 a {
   font-weight: $font-weight-bold;
 }
 
+// buttons and forms
+$input-btn-border-width: 2px;
+
+// buttons
+$btn-font-weight: $font-weight-bold;
+
+// sass-lint:disable no-important
+.btn {
+  font-size: rem-to-px(15px) !important;
+  background-color: transparent !important;
+
+  &.disabled {
+    color: $neu-pale-grey !important;
+    border-color: $neu-pale-grey;
+    opacity: unset !important;
+  }
+
+  &:disabled {
+    opacity: unset !important;
+  }
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+// sass-lint:enable no-important
+
+// forms
 $enable-rounded: false;
 $enable-shadows: false;
 

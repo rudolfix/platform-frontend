@@ -2,7 +2,13 @@ import { expect } from "chai";
 import { dummyEthereumAddress } from "../../../test/fixtures";
 import { actions } from "../actions";
 import { web3Actions } from "./actions";
-import { IWeb3State, web3InitialState, web3Reducer, IConnectedWeb3State, IDisconnectedWeb3State } from "./reducer";
+import {
+  IConnectedWeb3State,
+  IDisconnectedWeb3State,
+  IWeb3State,
+  web3InitialState,
+  web3Reducer,
+} from "./reducer";
 import { WalletSubType, WalletType } from "./types";
 
 describe("Web3 > reducer", () => {
@@ -81,7 +87,7 @@ describe("Web3 > reducer", () => {
         ethereumAddress: dummyEthereumAddress,
         isUnlocked: false,
       });
-    })
+    });
 
     it("should do nothing when not connected", () => {
       const initialState: IDisconnectedWeb3State = {
@@ -91,7 +97,6 @@ describe("Web3 > reducer", () => {
       const actualNewState = web3Reducer(initialState, actions.web3.walletLocked());
 
       expect(actualNewState).to.be.deep.eq(initialState);
-    })
-  })
-
+    });
+  });
 });

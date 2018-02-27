@@ -1,5 +1,5 @@
 import { delay, Task } from "redux-saga";
-import { all, cancel, fork, put, take } from "redux-saga/effects";
+import { all, call, cancel, fork, put, take } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { symbols } from "../../di/symbols";
 import { ILogger } from "../../lib/dependencies/Logger";
@@ -12,7 +12,7 @@ import { forkAndInject } from "../sagas";
 export const clearUnlockedWalletPassword = injectableFn(
   function*(web3Manager: Web3Manager, logger: ILogger): Iterator<any> {
     logger.info(`Resetting light wallet password in ${LIGHT_WALLET_PASSWORD_CACHE_TIME} ms`);
-    yield delay(LIGHT_WALLET_PASSWORD_CACHE_TIME);
+    yield call(delay, LIGHT_WALLET_PASSWORD_CACHE_TIME);
 
     if (web3Manager.personalWallet) {
       logger.info("Resetting light wallet password now");

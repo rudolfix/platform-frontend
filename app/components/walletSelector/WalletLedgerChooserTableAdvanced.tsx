@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
+import { NavigationButton } from "../shared/Navigation";
 import * as styles from "./WalletLedgerChooserTableAdvanced.module.scss";
 
 interface IAccountRow {
@@ -76,17 +77,22 @@ export const WalletLedgerChooserTableAdvanced: React.SFC<IWalletLedgerChooserTab
     </tbody>
     <tfoot>
       <tr>
-        <td colSpan={4} className={styles.arrows}>
-          {hasPreviousAddress && (
-            <span onClick={showPrevAddresses} data-test-id="btn-previous">
-              <i className={cn("fa fa-chevron-left mr-2", styles.left)} aria-hidden="true" />
-              Previous
-            </span>
-          )}
-          <span onClick={showNextAddresses} className="float-right" data-test-id="btn-next">
-            Next
-            <i className={cn("fa fa-chevron-right ml-2", styles.right)} aria-hidden="true" />
-          </span>
+        <td colSpan={4}>
+          <NavigationButton
+            text="Previous"
+            disabled={!hasPreviousAddress}
+            forward={false}
+            onClick={showPrevAddresses}
+            data-test-id="btn-previous"
+          />
+
+          <NavigationButton
+            text="Next"
+            forward
+            onClick={showNextAddresses}
+            className="float-right"
+            data-test-id="btn-next"
+          />
         </td>
       </tr>
     </tfoot>

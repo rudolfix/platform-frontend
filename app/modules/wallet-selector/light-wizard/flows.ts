@@ -5,7 +5,7 @@ import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightCreationError,
-  LightDesirializeError,
+  LightDeserializeError,
   LightSignMessageError,
   LightWalletConnector,
   LightWalletUtil,
@@ -97,7 +97,7 @@ function mapLightWalletErrorToErrorMessage(e: Error): string {
   if (e instanceof LightCreationError) {
     return "Cannot create new Lightwallet";
   }
-  if (e instanceof LightDesirializeError) {
+  if (e instanceof LightDeserializeError) {
     return "Problem with Vault retrieval";
   }
   return "Light wallet unavailable";

@@ -19,8 +19,8 @@ interface IDispatchProps {
 
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
   <div>
-    <p>Confirm message on your signer!</p>
-    <Button onClick={onCancel}>Reject</Button>
+    <h2>We need your password to unlock your wallet</h2>
+    <Button onClick={onCancel}>Cancel</Button>
   </div>
 );
 
@@ -28,8 +28,6 @@ const MessageSignModalComponent: React.SFC<IStateProps & IDispatchProps> = props
   <Modal isOpen={props.isOpen} toggle={props.onCancel}>
     <ModalHeader>Message Signing!</ModalHeader>
     <ModalBody>
-      <h2>We need your password to unlock your wallet</h2>
-
       {props.isLightWallet ? (
         <LightWalletSignPrompt />
       ) : (

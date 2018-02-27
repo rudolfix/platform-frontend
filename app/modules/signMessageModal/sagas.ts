@@ -21,6 +21,7 @@ import { callAndInject, getDependency } from "../sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
 import { unlockWallet } from "../web3/sagas";
 import { WalletType } from "../web3/types";
+import { mapSignMessageErrorToErrorMessage } from "./errors";
 
 export const ensureWalletConnection = injectableFn(
   async function(
@@ -109,7 +110,9 @@ function* messageSignSaga(message: string): Iterator<any> {
 
       break;
     } catch (e) {
-      yield effects.put(actions.signMessageModal.signingError(e.message)); // todo: better error management
+      yield effects.put(
+        actions.signMessageModal.signingError(mapSignMessageErrorToErrorMessage(e)),
+      );
       if (e instanceof SignerError) {
         throw e;
       }

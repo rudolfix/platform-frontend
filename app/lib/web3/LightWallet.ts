@@ -54,8 +54,9 @@ export class LightSignMessageError extends LightWalletError {}
 export class LightUnknownError extends LightError {}
 export class LightCreationError extends LightWalletUtilError {}
 export class LightKeyEncryptError extends LightWalletUtilError {}
-export class LightDesirializeError extends LightWalletUtilError {}
+export class LightDeserializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
+export class LightWalletWrongPassword extends LightWalletError {}
 
 @injectable()
 export class LightWalletUtil {
@@ -66,7 +67,7 @@ export class LightWalletUtil {
     try {
       return await LightWalletProvider.keystore.deserialize(serializedWallet, salt);
     } catch (e) {
-      throw new LightDesirializeError();
+      throw new LightDeserializeError();
     }
   }
 

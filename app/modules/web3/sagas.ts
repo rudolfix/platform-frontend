@@ -3,7 +3,7 @@ import { all, call, cancel, fork, put, take } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { symbols } from "../../di/symbols";
 import { ILogger } from "../../lib/dependencies/Logger";
-import { LightWallet } from "../../lib/web3/LightWallet";
+import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { actions } from "../actions";
@@ -39,7 +39,7 @@ export const unlockWallet = injectableFn(
 
     const isPasswordCorrect = yield lightWallet.testPassword(password);
     if (!isPasswordCorrect) {
-      throw new Error("not correct password!");
+      throw new LightWalletWrongPassword();
     }
 
     lightWallet.password = password;

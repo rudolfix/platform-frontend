@@ -156,6 +156,39 @@ describe("JsonHttpClient", () => {
       );
     });
 
+    it("should throw an error on malformed response totally different objects", async () => {
+      fetchMock.mock(`${API_URL}products`, {
+        status: 200,
+        body: {
+          new_user: {
+            backup_codes_verified: true,
+            salt: "e5GiSRkNa3SA8oFBJtuJfxyqs7YXEtMl4eFn3PNkwAI=",
+            unverified_email: "chris@kaczor.io",
+          },
+        },
+      });
+
+      const httpClient = new JsonHttpClient();
+
+      const res = await httpClient.get<Array<IProduct>>({
+        baseUrl: API_URL,
+        url: "products",
+        responseSchema: Yup.object()
+          .shape({
+            backupCodesVerified: Yup.boolean(),
+            language: Yup.string(),
+            unverifiedEmail: Yup.string(),
+            verifiedEmail: Yup.string(),
+          })
+          .required(),
+      });
+
+      expect(res).to.be.deep.eq({
+        statusCode: 200,
+        body: {},
+      });
+    });
+
     it("should throw an error on non 20x response", async () => {
       const expectedErrorMessage = "error message";
       const expectedStatusCode = 500;

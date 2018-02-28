@@ -159,7 +159,6 @@ export class JsonHttpClient implements IHttpClient {
       try {
         finalResponseJson = config.responseSchema.validateSync<T>(toCamelCase(responseJson), {
           stripUnknown: true,
-          strict: true,
         }) as T;
       } catch (e) {
         throw new ResponseParsingError(e.message);

@@ -5,6 +5,7 @@
   color: $neu-black !important;
   border-color: $neu-black !important;
 
+  &:focus,
   &:hover {
     color: $neu-black;
     background-color: $neu-piss-yellow !important;
@@ -24,6 +25,7 @@
   color: $neu-black !important;
   border-color: transparent !important;
 
+  &:focus,
   &:hover {
     color: $neu-piss-yellow !important;
   }

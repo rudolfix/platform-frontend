@@ -4,6 +4,14 @@
 
 a {
   font-weight: $font-weight-bold;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:focus {
+    text-decoration: underline;
+  }
 }
 
 .form-control {
@@ -11,10 +19,6 @@ a {
   border-top: 0 !important;
   border-right: 0 !important;
   border-left: 0 !important;
-
-  &:focus {
-    box-shadow: none !important;
-  }
 }
 
 .btn {
@@ -24,10 +28,6 @@ a {
   &.disabled {
     color: $neu-pale-grey !important;
     border-color: $neu-pale-grey;
-  }
-
-  &:focus {
-    box-shadow: none !important;
   }
 }
 

@@ -14,8 +14,10 @@
     top: -1px;
   }
 
+  &:focus,
   &:hover {
     text-decoration: underline;
+    outline: 0;
 
     i {
       border-color: $neu-piss-yellow;

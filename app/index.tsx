@@ -10,19 +10,20 @@ import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
+import createSagaMiddleware from "redux-saga";
 import "reflect-metadata";
 
-import createSagaMiddleware from "redux-saga";
-import "../node_modules/font-awesome/scss/font-awesome.scss";
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
 import { customizerContainerWithMiddlewareApi, setupBindings } from "./di/setupBindings";
 import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
-
 import { IAppState, reducers } from "./store";
-import "./styles/bootstrap.scss";
 import { InversifyProvider } from "./utils/InversifyProvider";
+
+import "../node_modules/font-awesome/scss/font-awesome.scss";
+import "./styles/bootstrap.scss";
+import "./styles/overrides.scss";
 
 // @note: this is done to make HMR work with react router. In production build its gone.
 function forceRerenderInDevMode(): number {

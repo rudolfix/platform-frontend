@@ -1,7 +1,7 @@
-import { createSimpleAction } from "../actionsUtils";
+import { createSimpleAction, createAction } from "../actionsUtils";
 
-export const appActions = {
+export const initActions = {
   start: () => createSimpleAction("INIT_START"),
   done: () => createSimpleAction("INIT_DONE"),
-  error: () => createSimpleAction("INIT_ERROR"),
+  error: (errorMsg?: string) => createAction("INIT_ERROR", { errorMsg }),
 };

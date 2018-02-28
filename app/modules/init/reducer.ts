@@ -3,6 +3,7 @@ import { AppReducer } from "../../store";
 export interface IInitState {
   done: boolean;
   error: boolean;
+  errorMsg?: string;
 }
 
 export const initialState: IInitState = {
@@ -22,6 +23,7 @@ export const initReducer: AppReducer<IInitState> = (state = initialState, action
         ...state,
         done: false,
         error: true,
+        errorMsg: action.payload.errorMsg,
       };
   }
 

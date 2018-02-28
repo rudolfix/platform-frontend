@@ -1,4 +1,4 @@
-import { neuTake, callAndInject } from "../sagas";
+import { neuTake, callAndInject, forkAndInject } from "../sagas";
 import { symbols } from "../../di/symbols";
 import { AppDispatch } from "../../store";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
@@ -6,18 +6,24 @@ import { injectableFn } from "../../middlewares/redux-injectify";
 import { flows } from "../flows";
 import { loadJwt, loadUser } from "../auth/sagas";
 import { effects } from "redux-saga";
-import { all, fork } from "redux-saga/effects";
+import { all, fork, put } from "redux-saga/effects";
+import { actions } from "../actions";
 
 export const init = injectableFn(
   function*(dispatch: AppDispatch, web3Manager: Web3Manager): Iterator<any> {
     yield neuTake("INIT_START");
 
-    yield dispatch(flows.userAgent.detectUserAgent);
-    yield web3Manager.initialize();
-    yield callAndInject(loadJwt);
-    yield loadUser();
+    try {
+      yield web3Manager.initialize();
 
-    console.log("AUTH DONE");
+      yield callAndInject(flows.userAgent.detectUserAgent);
+      yield callAndInject(loadJwt);
+      yield loadUser();
+
+      yield put(actions.init.done());
+    } catch (e) {
+      yield put(actions.init.error(e));
+    }
   },
   [symbols.appDispatch, symbols.web3Manager],
 );

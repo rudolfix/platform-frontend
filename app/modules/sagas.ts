@@ -6,11 +6,11 @@ import { Container } from "inversify";
 import { fork } from "redux-saga/effects";
 import { getDependencies } from "../middlewares/redux-injectify";
 import { FunctionWithDeps } from "../types";
-import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { web3Sagas } from "./web3/sagas";
+import { init, initSagas } from "./init/sagas";
 
 /**
  * Restart all sagas on error and report error to sentry
@@ -18,7 +18,7 @@ import { web3Sagas } from "./web3/sagas";
 function* allSagas(): Iterator<effects.Effect> {
   yield effects.all([
     effects.fork(kycSagas),
-    effects.fork(authSagas),
+    effects.fork(initSagas),
     effects.fork(walletSelectorSagas),
     effects.fork(dashboardSagas),
     effects.fork(web3Sagas),

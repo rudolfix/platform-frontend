@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 
-type LogArg = string | object | Error;
+type LogArg = string | object | Error | undefined;
 
 export interface ILogger {
   info(...args: LogArg[]): void;

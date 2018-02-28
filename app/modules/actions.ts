@@ -1,6 +1,6 @@
 import { values } from "lodash";
 
-import { appActions } from "./app/actions";
+import { appActions } from "./init/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
 import { kycActions } from "./kyc/actions";

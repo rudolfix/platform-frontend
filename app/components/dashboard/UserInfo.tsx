@@ -1,24 +1,26 @@
 import * as React from "react";
 import { Button } from "reactstrap";
-import { IUserData } from "../../lib/api/UsersApi";
+import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
+import { selectUserEmail, selectIsAuthorized } from "../../modules/auth/reducer";
 
 interface IStateProps {
-  user?: IUserData;
+  isAuthorized: boolean;
+  email?: string;
 }
 
 interface IDispatchProps {
   sign: () => void;
 }
 
-const UserInfoComponent: React.SFC<IStateProps & IDispatchProps> = ({ user, sign }) => {
-  if (!user) {
+const UserInfoComponent: React.SFC<IStateProps & IDispatchProps> = ({ isAuthorized, email, sign }) => {
+  if (!isAuthorized) {
     return <h3>No user! </h3>;
   } else {
     return (
       <div>
-        <h3>User email: {user.email}</h3>
+        <h3>User email: {email || "<no email>"}</h3>
         <Button color="primary" onClick={sign}>
           SIGN A MESSAGE
         </Button>
@@ -28,7 +30,10 @@ const UserInfoComponent: React.SFC<IStateProps & IDispatchProps> = ({ user, sign
 };
 
 export const UserInfo = appConnect<IStateProps, IDispatchProps>({
-  stateToProps: s => ({ user: s.auth.user }),
+  stateToProps: s => ({
+    isAuthorized: selectIsAuthorized(s.auth),
+    email: selectUserEmail(s.auth)
+   }),
   dispatchToProps: d => ({
     sign: () => {
       d(

@@ -22,6 +22,7 @@ import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
 import { unlockWallet } from "../web3/sagas";
 import { WalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage } from "./errors";
+import { selectIsSigning } from "./reducer";
 
 export const ensureWalletConnection = injectableFn(
   async function(
@@ -125,6 +126,10 @@ function* messageSignSaga(message: string): Iterator<any> {
 }
 
 export function* messageSign(message: string): any {
+  const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.signMessageModal));
+  if (isSigning) {
+    throw new Error("Signing already in progress");
+  }
   yield put(actions.signMessageModal.show());
 
   const spawnedSaga = yield fork(messageSignSaga, message);

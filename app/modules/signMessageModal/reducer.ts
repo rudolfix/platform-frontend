@@ -18,6 +18,7 @@ export const signMessageModalReducer: AppReducer<ISignMessageModalState> = (
       return {
         ...state,
         isOpen: true,
+        errorMsg: undefined,
       };
     case "SIGN_MESSAGE_MODAL_HIDE":
       return {
@@ -29,7 +30,14 @@ export const signMessageModalReducer: AppReducer<ISignMessageModalState> = (
         ...state,
         errorMsg: action.payload.errorMsg,
       };
+    case "SIGN_MESSAGE_ACCEPT":
+      return {
+        ...state,
+        errorMsg: undefined,
+      };
   }
 
   return state;
 };
+
+export const selectIsSigning = (state: ISignMessageModalState): boolean => state.isOpen;

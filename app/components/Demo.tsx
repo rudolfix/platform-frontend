@@ -16,17 +16,18 @@ export const Demo: React.SFC = () => (
     <Row>
       <Col className={styles.demo}>
         <div>
-          <ButtonPrimary>Button primary</ButtonPrimary>
-          <ButtonPrimary disabled>Button primary disabled</ButtonPrimary>
-          <ButtonPrimaryLink to="/">Button primary link</ButtonPrimaryLink>
+          <ButtonPrimary>ButtonPrimary</ButtonPrimary>
+          <ButtonPrimary disabled>ButtonPrimary disabled</ButtonPrimary>
+          <ButtonPrimaryLink to="/">ButtonPrimaryLink</ButtonPrimaryLink>
           <hr />
-          <ButtonSecondary>Button secondary</ButtonSecondary>
-          <ButtonSecondary disabled>Button secondary disabled</ButtonSecondary>
-          <ButtonSecondaryLink to="/">Button secondary link</ButtonSecondaryLink>
+          <ButtonSecondary>ButtonSecondary</ButtonSecondary>
+          <ButtonSecondary disabled>ButtonSecondary disabled</ButtonSecondary>
+          <ButtonSecondaryLink to="/">ButtonSecondary link</ButtonSecondaryLink>
           <hr />
           <a href="/">link</a>
           <hr />
-          <NavigationButton forward text="NavigationButton" onClick={() => {}} />{" "}
+          <NavigationButton forward text="NavigationButton" onClick={() => {}} />
+          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
           <NavigationLink forward to="/" text="NavigationLink" />
         </div>
       </Col>

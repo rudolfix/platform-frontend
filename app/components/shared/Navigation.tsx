@@ -33,6 +33,8 @@ export const NavigationButton: React.SFC<INavigation & INavigationButton> = ({
 
   if (!disabled) {
     props.onClick = onClick;
+  } else {
+    props.tabIndex = -1
   }
 
   return (

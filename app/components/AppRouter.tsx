@@ -4,7 +4,6 @@ export const appRoutes = {
   kyc: "/kyc",
   recover: "/recover",
   dashboard: "/dashboard",
-  help: "/help",
   demo: "/demo",
 };
 

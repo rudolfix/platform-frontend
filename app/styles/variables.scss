@@ -57,36 +57,11 @@ $headings-color: $neu-black;
 $link-color: $neu-black;
 $link-hover-color: $neu-black;
 
-a {
-  font-weight: $font-weight-bold;
-}
-
 // buttons and forms
 $input-btn-border-width: 2px;
 
 // buttons
 $btn-font-weight: $font-weight-bold;
-
-// sass-lint:disable no-important
-.btn {
-  font-size: rem-to-px(15px) !important;
-  background-color: transparent !important;
-
-  &.disabled {
-    color: $neu-pale-grey !important;
-    border-color: $neu-pale-grey;
-    opacity: unset !important;
-  }
-
-  &:disabled {
-    opacity: unset !important;
-  }
-
-  &:focus {
-    box-shadow: none !important;
-  }
-}
-// sass-lint:enable no-important
 
 // forms
 $enable-rounded: false;
@@ -99,16 +74,3 @@ $input-color: $gray5;
 $input-placeholder-color: $gray5;
 $input-padding-x: 0;
 $input-padding-y: 3px;
-
-// sass-lint:disable no-important
-.form-control {
-  font-size: rem-to-px(20px) !important;
-  border-top: 0 !important;
-  border-right: 0 !important;
-  border-left: 0 !important;
-
-  &:focus {
-    box-shadow: none !important;
-  }
-}
-// sass-lint:enable no-important

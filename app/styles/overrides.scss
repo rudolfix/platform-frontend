@@ -1,0 +1,38 @@
+// sass-lint:disable no-important
+@import "./utils";
+@import "./variables";
+
+a {
+  font-weight: $font-weight-bold;
+}
+
+.form-control {
+  font-size: rem-to-px(20px) !important;
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-left: 0 !important;
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+.btn {
+  font-size: rem-to-px(15px) !important;
+  background-color: transparent !important;
+
+  &.disabled {
+    color: $neu-pale-grey !important;
+    border-color: $neu-pale-grey;
+    opacity: unset !important;
+  }
+
+  &:disabled {
+    opacity: unset !important;
+  }
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+

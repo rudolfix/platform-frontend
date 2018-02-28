@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Button } from "reactstrap";
-import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
+import { selectIsAuthorized, selectUserEmail } from "../../modules/auth/reducer";
 import { appConnect } from "../../store";
-import { selectUserEmail, selectIsAuthorized } from "../../modules/auth/reducer";
 
 interface IStateProps {
   isAuthorized: boolean;

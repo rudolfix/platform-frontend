@@ -173,7 +173,7 @@ export class JsonHttpClient implements IHttpClient {
   }
 }
 
-function isAllowedStatusCode(allowedStatusCodes: number[] | undefined, status: number) {
+function isAllowedStatusCode(allowedStatusCodes: number[] | undefined, status: number): boolean {
   if (!allowedStatusCodes) {
     return false;
   }

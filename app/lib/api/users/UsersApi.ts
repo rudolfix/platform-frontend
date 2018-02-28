@@ -1,10 +1,9 @@
 import { inject, injectable } from "inversify";
 
-import { delay } from "bluebird";
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../dependencies/Logger";
 import { IHttpClient } from "../client/IHttpClient";
-import { IUser, UserValidator, INewUser } from "./interfaces";
+import { INewUser, IUser, UserValidator } from "./interfaces";
 
 const USER_API_ROOT = "/api/user";
 

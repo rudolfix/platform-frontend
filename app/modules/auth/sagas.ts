@@ -1,14 +1,14 @@
 import { effects } from "redux-saga";
+import { all, take } from "redux-saga/effects";
 import { symbols } from "../../di/symbols";
 import { IUser } from "../../lib/api/users/interfaces";
+import { UserNotExisting, UsersApi } from "../../lib/api/users/UsersApi";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
-import { actions } from "../actions";
-import { getDependency, neuTake, callAndInject, forkAndInject } from "../sagas";
-import { WalletType } from "../web3/types";
-import { UsersApi, UserNotExisting } from "../../lib/api/users/UsersApi";
 import { injectableFn } from "../../middlewares/redux-injectify";
-import { select, take, all } from "redux-saga/effects";
+import { actions } from "../actions";
+import { callAndInject, forkAndInject } from "../sagas";
+import { WalletType } from "../web3/types";
 
 export const loadJwt = injectableFn(
   function*(storage: ObjectStorage<string>): Iterator<any> {
@@ -21,13 +21,11 @@ export const loadJwt = injectableFn(
   [symbols.jwtStorage],
 );
 
-export function* loadUser(): Iterator<any> {
-  const user: IUser = yield callAndInject(loadUserPromise);
-  yield effects.put(actions.auth.loadUser(user));
-}
-
 export const loadUserPromise = injectableFn(
-  async function(usersApi: UsersApi, walletMetadataStorage: ObjectStorage<TWalletMetadata>) {
+  async function(
+    usersApi: UsersApi,
+    walletMetadataStorage: ObjectStorage<TWalletMetadata>,
+  ): Promise<IUser> {
     try {
       return await usersApi.me();
     } catch (e) {
@@ -51,11 +49,16 @@ export const loadUserPromise = injectableFn(
   [symbols.usersApi, symbols.walletMetadataStorage],
 );
 
+export function* loadUser(): Iterator<any> {
+  const user: IUser = yield callAndInject(loadUserPromise);
+  yield effects.put(actions.auth.loadUser(user));
+}
+
 export const logoutWatcher = injectableFn(
   function*(
     jwtStorage: ObjectStorage<string>,
     walletMetadataStorage: ObjectStorage<TWalletMetadata>,
-  ) {
+  ): Iterator<any> {
     while (true) {
       yield take("AUTH_LOGOUT");
 

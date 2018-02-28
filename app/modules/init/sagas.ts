@@ -1,16 +1,15 @@
-import { neuTake, callAndInject, forkAndInject } from "../sagas";
+import { effects } from "redux-saga";
+import { all, put } from "redux-saga/effects";
 import { symbols } from "../../di/symbols";
-import { AppDispatch } from "../../store";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
-import { flows } from "../flows";
-import { loadJwt, loadUser } from "../auth/sagas";
-import { effects } from "redux-saga";
-import { all, fork, put } from "redux-saga/effects";
 import { actions } from "../actions";
+import { loadJwt, loadUser } from "../auth/sagas";
+import { flows } from "../flows";
+import { callAndInject, forkAndInject, neuTake } from "../sagas";
 
 export const init = injectableFn(
-  function*(dispatch: AppDispatch, web3Manager: Web3Manager): Iterator<any> {
+  function*(web3Manager: Web3Manager): Iterator<any> {
     yield neuTake("INIT_START");
 
     try {
@@ -27,7 +26,7 @@ export const init = injectableFn(
       yield put(actions.init.error(e.message || "Unknown error"));
     }
   },
-  [symbols.appDispatch, symbols.web3Manager],
+  [symbols.web3Manager],
 );
 
 export const initSagas = function*(): Iterator<effects.Effect> {

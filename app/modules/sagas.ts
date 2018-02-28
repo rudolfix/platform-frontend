@@ -6,12 +6,12 @@ import { Container } from "inversify";
 import { fork } from "redux-saga/effects";
 import { getDependencies } from "../middlewares/redux-injectify";
 import { FunctionWithDeps } from "../types";
+import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
+import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { web3Sagas } from "./web3/sagas";
-import { init, initSagas } from "./init/sagas";
-import { authSagas } from "./auth/sagas";
 
 /**
  * Restart all sagas on error and report error to sentry

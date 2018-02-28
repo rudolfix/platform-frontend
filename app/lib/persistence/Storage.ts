@@ -13,7 +13,7 @@ export class Storage {
     return this.localStorage.getItem(key);
   }
 
-  public removeKey(key: string) {
+  public removeKey(key: string): void {
     this.localStorage.removeItem(key);
   }
 }

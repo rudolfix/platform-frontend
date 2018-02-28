@@ -1,18 +1,13 @@
 import * as React from "react";
-import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
-import { symbols } from "../di/symbols";
-import { Web3Manager } from "../lib/web3/Web3Manager";
-import { injectableFn } from "../middlewares/redux-injectify";
+import { compose } from "redux";
 import { actions } from "../modules/actions";
-import { flows } from "../modules/flows";
-import { AppDispatch, appConnect } from "../store";
+import { appConnect } from "../store";
+import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
 import { Header } from "./Header";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
-import { compose } from "redux";
-import { onEnterAction } from "../utils/OnEnterAction";
 
 interface IStateProps {
   done: boolean;

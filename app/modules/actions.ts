@@ -1,8 +1,8 @@
 import { values } from "lodash";
 
-import { initActions } from "./init/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
+import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { routingActions } from "./routing/actions";
 import { signMessageModalActions } from "./signMessageModal/actions";

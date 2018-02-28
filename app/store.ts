@@ -12,9 +12,9 @@ import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
 
 import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
+import { initReducer } from "./modules/init/reducer";
 import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
 import { FunctionWithDeps } from "./types";
-import { initReducer } from "./modules/init/reducer";
 
 export interface IAppAction {
   type: string;

@@ -8,15 +8,15 @@ export const appRoutes = {
 };
 
 import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Switch } from "react-router-dom";
 
 import { Dashboard } from "./dashboard/Dashboard";
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
-import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
-import { WalletSelector } from "./walletSelector/WalletSelector";
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
+import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
+import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const AppRouter: React.SFC = () => (
   <Switch>

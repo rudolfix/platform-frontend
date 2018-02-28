@@ -1,4 +1,4 @@
-import { createSimpleAction, createAction } from "../actionsUtils";
+import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const initActions = {
   start: () => createSimpleAction("INIT_START"),

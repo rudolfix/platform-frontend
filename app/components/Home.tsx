@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Col, Container, Row } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Col, Container, Row } from "reactstrap";
 import { appRoutes } from "./AppRouter";
 
 export const Home: React.SFC = () => (

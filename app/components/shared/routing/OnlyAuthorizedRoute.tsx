@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Route, RouteProps, Redirect } from "react-router-dom";
-import { appConnect } from "../../../store";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 import { selectIsAuthorized } from "../../../modules/auth/reducer";
+import { appConnect } from "../../../store";
 import { appRoutes } from "../../AppRouter";
 
 interface IStateProps {
@@ -17,7 +17,10 @@ export const OnlyAuthorizedRouteComponent: React.SFC<TProps> = ({
 }) => {
   const ComponentAsAny = Component as any;
   return (
-    <Route {...rest} render={() => (isAuthorized ? <ComponentAsAny /> : <Redirect to={appRoutes.root} />)} />
+    <Route
+      {...rest}
+      render={() => (isAuthorized ? <ComponentAsAny /> : <Redirect to={appRoutes.root} />)}
+    />
   );
 };
 

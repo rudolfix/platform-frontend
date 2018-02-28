@@ -7,12 +7,14 @@ export interface IUser {
   verifiedEmail?: string;
 }
 
-export const UserValidator = Yup.object().shape({
-  backupCodesVerified: Yup.boolean(),
-  language: Yup.string(),
-  unverifiedEmail: Yup.string(),
-  verifiedEmail: Yup.string(),
-}).required();
+export const UserValidator = Yup.object()
+  .shape({
+    backupCodesVerified: Yup.boolean(),
+    language: Yup.string(),
+    unverifiedEmail: Yup.string(),
+    verifiedEmail: Yup.string(),
+  })
+  .required();
 
 export interface INewUser extends IUser {
   salt?: string;

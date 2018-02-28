@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { ButtonPrimary } from "../../shared/Buttons";
+import { ButtonPrimaryLink } from "../../shared/Buttons";
 import { walletRoutes } from "../walletRoutes";
 import { recoverRoutes } from "./recoverRoutes";
 
@@ -25,7 +25,7 @@ export const LoginHelp: React.SFC<void> = () => (
           </p>
         </div>
         <Col xs={12} md={4}>
-          <Link to={recoverRoutes.seed}>Recover Wallet</Link>
+          <ButtonPrimaryLink to={recoverRoutes.seed}>Recover Wallet</ButtonPrimaryLink>
         </Col>
       </Row>
       <div className="border-bottom pb-4" />
@@ -34,7 +34,7 @@ export const LoginHelp: React.SFC<void> = () => (
       <Row className="justify-content-between" noGutters>
         <h5 className="font-weight-bold">I've lost my Nano Ledger device. </h5>
         <Col xs={12} md={4}>
-          <ButtonPrimary>View Tutorial</ButtonPrimary>
+          <ButtonPrimaryLink to="/">View Tutorial</ButtonPrimaryLink>
         </Col>
       </Row>
     </Col>

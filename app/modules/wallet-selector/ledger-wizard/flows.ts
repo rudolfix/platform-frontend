@@ -5,16 +5,13 @@ import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
-import {
-  LedgerLockedError,
-  LedgerNotAvailableError,
-  LedgerWalletConnector,
-} from "../../../lib/web3/LedgerWallet";
+import { LedgerNotAvailableError, LedgerWalletConnector } from "../../../lib/web3/LedgerWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { WalletType } from "../../web3/types";
+import { mapLedgerErrorToErrorMessage } from "./errors";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
 
@@ -148,10 +145,3 @@ export const ledgerWizardFlows = {
     [symbols.appDispatch, symbols.ledgerWalletConnector],
   ),
 };
-
-function mapLedgerErrorToErrorMessage(error: Error): string {
-  if (error instanceof LedgerLockedError) {
-    return "Nano Ledger S is locked";
-  }
-  return "Nano Ledger S not available";
-}

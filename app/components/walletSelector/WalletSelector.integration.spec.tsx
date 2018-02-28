@@ -134,6 +134,7 @@ describe("integration", () => {
         WalletType.LEDGER,
         WalletSubType.UNKNOWN,
         expectedAddress,
+        true,
       ),
     );
     expect(ledgerWalletMock.signMessage).to.be.calledOnce;
@@ -243,6 +244,7 @@ describe("integration", () => {
         WalletType.BROWSER,
         WalletSubType.METAMASK,
         expectedAddress,
+        true,
       ),
     );
     expect(browserWalletMock.signMessage).to.be.calledOnce;

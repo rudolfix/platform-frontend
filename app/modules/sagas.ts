@@ -3,12 +3,14 @@ import { TAction } from "./actions";
 
 import { Container } from "inversify";
 
+import { fork } from "redux-saga/effects";
 import { getDependencies } from "../middlewares/redux-injectify";
 import { FunctionWithDeps } from "../types";
 import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
+import { web3Sagas } from "./web3/sagas";
 
 /**
  * Restart all sagas on error and report error to sentry
@@ -19,6 +21,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(authSagas),
     effects.fork(walletSelectorSagas),
     effects.fork(dashboardSagas),
+    effects.fork(web3Sagas),
   ]);
 }
 
@@ -46,12 +49,22 @@ export function* getDependency(name: symbol): Iterator<effects.Effect> {
   return context.get(name);
 }
 
-export function* callAndInject(func: FunctionWithDeps): Iterator<effects.Effect> {
+export function* callAndInject(func: FunctionWithDeps, ...args: any[]): Iterator<effects.Effect> {
   const container: Container = yield effects.getContext("container");
 
   const depSymbols = getDependencies(func);
 
   const deps = depSymbols.map(s => container.get(s));
 
-  return yield func(...deps);
+  return yield func(...deps, ...args);
+}
+
+export function* forkAndInject(func: FunctionWithDeps): any {
+  const container: Container = yield effects.getContext("container");
+
+  const depSymbols = getDependencies(func);
+
+  const deps = depSymbols.map(s => container.get(s));
+
+  return yield (fork as any)(func, ...deps);
 }

@@ -19,8 +19,6 @@ import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress } from "../../types";
 import { Web3Adapter } from "./Web3Adapter";
 
-export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 60 * 5;
-
 export interface ICreateVault {
   password: string;
   hdPathString: string;
@@ -56,8 +54,9 @@ export class LightSignMessageError extends LightWalletError {}
 export class LightUnknownError extends LightError {}
 export class LightCreationError extends LightWalletUtilError {}
 export class LightKeyEncryptError extends LightWalletUtilError {}
-export class LightDesirializeError extends LightWalletUtilError {}
+export class LightDeserializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
+export class LightWalletWrongPassword extends LightWalletError {}
 
 @injectable()
 export class LightWalletUtil {
@@ -68,7 +67,7 @@ export class LightWalletUtil {
     try {
       return await LightWalletProvider.keystore.deserialize(serializedWallet, salt);
     } catch (e) {
-      throw new LightDesirializeError();
+      throw new LightDeserializeError();
     }
   }
 
@@ -110,6 +109,11 @@ export class LightWalletUtil {
     } catch (e) {
       throw new LightWrongPasswordSaltError();
     }
+  }
+
+  static async testWalletPassword(lightWalletInstance: any, password: string): Promise<boolean> {
+    const key = await LightWalletUtil.getWalletKey(lightWalletInstance, password);
+    return lightWalletInstance.isDerivedKeyCorrect(key);
   }
 
   public async getWalletKeyFromSaltAndPassword(
@@ -157,26 +161,11 @@ export class LightWallet implements IPersonalWallet {
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddress,
     private vault: IVault,
-    password?: string,
-  ) {
-    this.password = password;
-  }
+    public password?: string,
+  ) {}
   public readonly walletType = WalletType.LIGHT;
   public readonly walletSubType = WalletSubType.UNKNOWN;
   public readonly signerType = SignerType.ETH_SIGN;
-
-  // autoclear password after some time
-  private _password?: string;
-  set password(newPassword: string | undefined) {
-    this._password = newPassword;
-
-    setTimeout(() => {
-      this._password = undefined;
-    }, LIGHT_WALLET_PASSWORD_CACHE_TIME);
-  }
-  get password(): string | undefined {
-    return this._password;
-  }
 
   public async testConnection(networkId: string): Promise<boolean> {
     const currentNetworkId = await this.web3Adapter.getNetworkId();
@@ -187,16 +176,14 @@ export class LightWallet implements IPersonalWallet {
   }
 
   public async signMessage(data: string): Promise<string> {
-    const password = this._password;
-
-    if (!password) {
+    if (!this.password) {
       throw new LightWalletMissingPassword();
     }
     try {
       const msgHash = ethUtils.hashPersonalMessage(ethUtils.toBuffer(ethUtils.addHexPrefix(data)));
       const rawSignedMsg = await LightWalletProvider.signing.signMsgHash(
         this.vault.walletInstance,
-        await LightWalletUtil.getWalletKey(this.vault.walletInstance, this.password!),
+        await LightWalletUtil.getWalletKey(this.vault.walletInstance, this.password),
         msgHash.toString("hex"),
         this.ethereumAddress,
       );
@@ -206,6 +193,10 @@ export class LightWallet implements IPersonalWallet {
     } catch (e) {
       throw new LightSignMessageError();
     }
+  }
+
+  public async testPassword(newPassword: string): Promise<boolean> {
+    return await LightWalletUtil.testWalletPassword(this.vault.walletInstance, newPassword);
   }
 }
 

@@ -9,5 +9,9 @@ export const web3Actions = {
     type: WalletType,
     subtype: WalletSubType,
     ethereumAddress: EthereumAddress,
-  ) => createAction("NEW_PERSONAL_WALLET_PLUGGED", { type, subtype, ethereumAddress }),
+    isUnlocked: boolean,
+  ) => createAction("NEW_PERSONAL_WALLET_PLUGGED", { type, subtype, ethereumAddress, isUnlocked }),
+
+  walletUnlocked: () => createSimpleAction("WEB3_WALLET_UNLOCKED"),
+  walletLocked: () => createSimpleAction("WEB3_WALLET_LOCKED"),
 };

@@ -1,5 +1,6 @@
 import { delay } from "bluebird";
 import { effects } from "redux-saga";
+import { cancel, fork, put, select, take } from "redux-saga/effects";
 import { symbols } from "../../di/symbols";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import {
@@ -13,10 +14,15 @@ import { LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../../lib/web3/LightWallet";
 import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
+import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
-import { actions } from "../actions";
+import { actions, TAction } from "../actions";
 import { callAndInject, getDependency } from "../sagas";
+import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
+import { unlockWallet } from "../web3/sagas";
 import { WalletType } from "../web3/types";
+import { mapSignMessageErrorToErrorMessage } from "./errors";
+import { selectIsSigning } from "./reducer";
 
 export const ensureWalletConnection = injectableFn(
   async function(
@@ -91,25 +97,63 @@ async function connectLightWallet(
   await web3Manager.plugPersonalWallet(wallet);
 }
 
-export function* messageSign(message: string): Iterator<any> {
-  yield effects.put(actions.signMessageModal.show());
-
+function* messageSignSaga(message: string): Iterator<any> {
   const web3Manager: Web3Manager = yield getDependency(symbols.web3Manager);
 
   while (true) {
     try {
       yield callAndInject(ensureWalletConnection);
 
-      const signedMessage = yield web3Manager.sign(message);
-      yield effects.put(actions.signMessageModal.hide());
-      return signedMessage;
-    } catch (e) {
-      yield effects.put(actions.signMessageModal.signingError(e.message)); // todo: better error management
-
-      if (!(e instanceof SignerError)) {
-        yield delay(500);
+      const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3State));
+      if (isLightWallet) {
+        yield* unlockLightWallet();
       }
-      return;
+
+      break;
+    } catch (e) {
+      yield effects.put(
+        actions.signMessageModal.signingError(mapSignMessageErrorToErrorMessage(e)),
+      );
+      if (e instanceof SignerError) {
+        throw e;
+      }
+
+      yield delay(500);
     }
+  }
+  const signedMessage = yield web3Manager.sign(message);
+  yield put(actions.signMessageModal.signed(signedMessage));
+}
+
+export function* messageSign(message: string): any {
+  const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.signMessageModal));
+  if (isSigning) {
+    throw new Error("Signing already in progress");
+  }
+  yield put(actions.signMessageModal.show());
+
+  const spawnedSaga = yield fork(messageSignSaga, message);
+
+  const a: TAction = yield take(["SIGN_MESSAGE_MODAL_HIDE", "SIGN_MESSAGE_SIGNED"]);
+
+  if (a.type === "SIGN_MESSAGE_MODAL_HIDE") {
+    yield cancel(spawnedSaga);
+    throw new Error("Signing interrupted");
+  }
+  if (a.type === "SIGN_MESSAGE_SIGNED") {
+    yield effects.put(actions.signMessageModal.hide());
+    return a.payload.msg;
+  }
+}
+
+function* unlockLightWallet(): any {
+  const acceptAction: TAction = yield take("SIGN_MESSAGE_ACCEPT");
+  if (acceptAction.type !== "SIGN_MESSAGE_ACCEPT") {
+    return;
+  }
+  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
+
+  if (!isUnlocked) {
+    yield callAndInject(unlockWallet, acceptAction.payload.password);
   }
 }

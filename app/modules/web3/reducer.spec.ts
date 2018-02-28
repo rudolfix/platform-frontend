@@ -2,7 +2,13 @@ import { expect } from "chai";
 import { dummyEthereumAddress } from "../../../test/fixtures";
 import { actions } from "../actions";
 import { web3Actions } from "./actions";
-import { IWeb3State, web3InitialState, web3Reducer } from "./reducer";
+import {
+  IConnectedWeb3State,
+  IDisconnectedWeb3State,
+  IWeb3State,
+  web3InitialState,
+  web3Reducer,
+} from "./reducer";
 import { WalletSubType, WalletType } from "./types";
 
 describe("Web3 > reducer", () => {
@@ -12,6 +18,7 @@ describe("Web3 > reducer", () => {
       type: WalletType.BROWSER,
       subtype: WalletSubType.METAMASK,
       ethereumAddress: dummyEthereumAddress,
+      isUnlocked: true,
     };
 
     const actualNewState = web3Reducer(
@@ -20,6 +27,7 @@ describe("Web3 > reducer", () => {
         actionPayload.type,
         actionPayload.subtype,
         actionPayload.ethereumAddress,
+        actionPayload.isUnlocked,
       ),
     );
 
@@ -28,6 +36,7 @@ describe("Web3 > reducer", () => {
       type: actionPayload.type,
       subtype: actionPayload.subtype,
       ethereumAddress: dummyEthereumAddress,
+      isUnlocked: true,
     });
   });
 
@@ -37,6 +46,7 @@ describe("Web3 > reducer", () => {
       type: WalletType.BROWSER,
       subtype: WalletSubType.METAMASK,
       ethereumAddress: dummyEthereumAddress,
+      isUnlocked: true,
     };
 
     const actualNewState = web3Reducer(initialState, actions.web3.personalWalletDisconnected());
@@ -55,6 +65,38 @@ describe("Web3 > reducer", () => {
     expect(actualNewState).to.be.deep.eq({
       connected: false,
       previousConnectedWalletType: undefined,
+    });
+  });
+
+  describe("WEB3_WALLET_UNLOCKED", () => {
+    it("should act on action when connected", () => {
+      const initialState: IConnectedWeb3State = {
+        connected: true,
+        type: WalletType.BROWSER,
+        subtype: WalletSubType.METAMASK,
+        ethereumAddress: dummyEthereumAddress,
+        isUnlocked: true,
+      };
+
+      const actualNewState = web3Reducer(initialState, actions.web3.walletLocked());
+
+      expect(actualNewState).to.be.deep.eq({
+        connected: true,
+        type: WalletType.BROWSER,
+        subtype: WalletSubType.METAMASK,
+        ethereumAddress: dummyEthereumAddress,
+        isUnlocked: false,
+      });
+    });
+
+    it("should do nothing when not connected", () => {
+      const initialState: IDisconnectedWeb3State = {
+        connected: false,
+      };
+
+      const actualNewState = web3Reducer(initialState, actions.web3.walletLocked());
+
+      expect(actualNewState).to.be.deep.eq(initialState);
     });
   });
 });

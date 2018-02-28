@@ -17,12 +17,14 @@ export const init = injectableFn(
       yield web3Manager.initialize();
 
       yield callAndInject(flows.userAgent.detectUserAgent);
-      yield callAndInject(loadJwt);
-      yield loadUser();
+      const jwt = yield callAndInject(loadJwt);
+      if (jwt) {
+        yield loadUser();
+      }
 
       yield put(actions.init.done());
     } catch (e) {
-      yield put(actions.init.error(e));
+      yield put(actions.init.error(e.message || "Unknown error"));
     }
   },
   [symbols.appDispatch, symbols.web3Manager],

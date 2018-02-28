@@ -25,7 +25,7 @@ export class UsersApi {
       baseUrl: USER_API_ROOT,
       url: "/user/",
       responseSchema: UserValidator,
-      body: newUser,
+      body: newUser || {},
     });
 
     return response.body;

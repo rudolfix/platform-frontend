@@ -8,6 +8,7 @@ import { getDependency, neuTake, callAndInject } from "../sagas";
 import { WalletType } from "../web3/types";
 import { UsersApi, UserNotExisting } from "../../lib/api/users/UsersApi";
 import { injectableFn } from "../../middlewares/redux-injectify";
+import { select } from "redux-saga/effects";
 
 export const loadJwt = injectableFn(
   function* (storage: ObjectStorage<string>): Iterator<any> {

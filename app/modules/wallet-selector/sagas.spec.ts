@@ -29,6 +29,7 @@ describe("Jwt actions", () => {
           ethereumAddress: dummyEthereumAddress,
           type: WalletType.BROWSER,
           subtype: WalletSubType.UNKNOWN,
+          isUnlocked: true,
         },
       };
 

@@ -12,6 +12,7 @@ import {
 } from "../../utils/AsyncIntervalScheduler";
 import { promiseTimeout } from "../../utils/promiseTimeout";
 import { ILogger } from "../dependencies/Logger";
+import { LightWallet } from "./LightWallet";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
@@ -65,11 +66,15 @@ export class Web3Manager {
 
     this.personalWallet = personalWallet;
 
+    const isUnlocked =
+      this.personalWallet instanceof LightWallet ? !!this.personalWallet.password : true;
+
     this.dispatch(
       web3Actions.newPersonalWalletPlugged(
         personalWallet.walletType,
         personalWallet.walletSubType,
         personalWallet.ethereumAddress,
+        isUnlocked,
       ),
     );
 

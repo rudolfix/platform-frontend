@@ -11,11 +11,16 @@ function* signDummyMessage(): Iterator<any> {
     }
     const message = signMessageAction.payload.message;
 
-    const signed = yield messageSign(message);
+    try {
+      const signed = yield* messageSign(message);
 
-    // this is just for demo purposes
-    // tslint:disable-next-line
-    console.log("signed: ", signed);
+      // this is just for demo purposes
+      // tslint:disable-next-line
+      console.log("signed: ", signed);
+    } catch {
+      // tslint:disable-next-line
+      console.log("Error while signing a message :( ");
+    }
   }
 }
 

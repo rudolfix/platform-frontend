@@ -1,0 +1,1 @@
+export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 60 * 5;

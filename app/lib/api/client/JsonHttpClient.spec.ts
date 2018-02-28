@@ -179,6 +179,28 @@ describe("JsonHttpClient", () => {
       );
     });
 
+    it("should not throw when status code is on allowed list", async () => {
+      const expectedErrorMessage = { msg: "not-found!" };
+      const expectedStatusCode = 404;
+      fetchMock.mock(`${API_URL}products`, {
+        status: expectedStatusCode,
+        body: JSON.stringify(expectedErrorMessage),
+      });
+
+      const httpClient = new JsonHttpClient();
+
+      const response = await httpClient.get<Array<IProduct>>({
+        baseUrl: API_URL,
+        url: "products",
+        allowedStatusCodes: [404],
+      });
+
+      expect(response).to.be.deep.eq({
+        statusCode: expectedStatusCode,
+        body: expectedErrorMessage,
+      });
+    });
+
     it("should throw an error on networking problems", async () => {
       fetchMock.mock(`${API_URL}products`, {
         throws: new Error("test"),

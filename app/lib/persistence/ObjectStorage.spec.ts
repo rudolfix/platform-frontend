@@ -42,4 +42,17 @@ describe("Object storage", () => {
 
     expect(actualValue).to.be.undefined;
   });
+
+  it("should clear key from storage", () => {
+    const expectedKey = "SOME_KEY";
+    const storageMock = createMock(Storage, {
+      removeKey: () => undefined,
+    });
+
+    const objectStorage = new ObjectStorage<string>(storageMock, dummyLogger, expectedKey);
+    objectStorage.clear();
+
+    expect(storageMock.removeKey).to.be.calledOnce;
+    expect(storageMock.removeKey).to.be.calledWithExactly(expectedKey);
+  });
 });

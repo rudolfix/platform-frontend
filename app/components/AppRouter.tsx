@@ -2,6 +2,7 @@ export const appRoutes = {
   root: "/",
   register: "/register",
   kyc: "/kyc",
+  recover: "/recover",
   dashboard: "/dashboard",
   help: "/help",
 };
@@ -12,7 +13,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { Dashboard } from "./dashboard/Dashboard";
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
-import { WalletLoginHelp } from "./WalletLoginHelp";
+import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
 import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const AppRouter: React.SFC = () => (
@@ -21,7 +22,7 @@ export const AppRouter: React.SFC = () => (
     <Route path={appRoutes.register} component={WalletSelector} />
     <Route path={appRoutes.kyc} component={Kyc} />
     <Route path={appRoutes.dashboard} component={Dashboard} exact />
-    <Route path={appRoutes.help} component={WalletLoginHelp} exact />
+    <Route path={appRoutes.recover} component={WalletRecoverMain} />
 
     <Redirect to={appRoutes.root} />
   </Switch>

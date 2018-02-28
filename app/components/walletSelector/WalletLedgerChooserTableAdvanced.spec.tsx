@@ -62,7 +62,7 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
     });
   });
 
-  it("should show / hide previous address button regarding hasPreviousAddress property", () => {
+  it("previous address button should be disabled regarding hasPreviousAddress property", () => {
     const propsWithPrevAddr = defaultProps();
     const componentWithPrevAddr = shallow(
       <WalletLedgerChooserTableAdvanced {...propsWithPrevAddr} />,
@@ -74,8 +74,8 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
     const componentWithoutPrevAddr = shallow(
       <WalletLedgerChooserTableAdvanced {...propsWithoutPrevAddr} />,
     );
-    expect(componentWithPrevAddr.find(tid("btn-previous"))).to.be.length(1);
-    expect(componentWithoutPrevAddr.find(tid("btn-previous"))).to.be.length(0);
+    expect(componentWithPrevAddr.find(tid("btn-previous")).prop("disabled")).to.be.false;
+    expect(componentWithoutPrevAddr.find(tid("btn-previous")).prop("disabled")).to.be.true;
   });
 
   it("should call correct click handlers for prev button", () => {

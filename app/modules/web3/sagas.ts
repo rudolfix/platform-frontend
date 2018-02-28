@@ -28,6 +28,9 @@ export function* autoLockLightWalletWatcher(): Iterator<any> {
   while (true) {
     const action: TAction = yield take(["NEW_PERSONAL_WALLET_PLUGGED", "WEB3_WALLET_UNLOCKED"]);
 
+    if (lockWalletTask) {
+      yield cancel(lockWalletTask);
+    }
     if (action.type === "NEW_PERSONAL_WALLET_PLUGGED" && action.payload.type !== WalletType.LIGHT) {
       continue;
     }

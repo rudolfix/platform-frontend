@@ -70,10 +70,14 @@ $btn-focus-box-shadow: none;
 $enable-rounded: false;
 $enable-shadows: false;
 
-$input-border-width: 2px;
+$input-border-width: 1px;
 $input-border-color: $gray4;
 $input-focus-border-color: $gray4;
-$input-color: $gray5;
+$input-color: $neu-charcoal-grey;
 $input-placeholder-color: $gray5;
 $input-padding-x: 0;
 $input-padding-y: 3px;
+$input-focus-width: 0;
+$input-focus-box-shadow: none;
+$form-feedback-font-size: rem-to-px(14px);
+$form-feedback-invalid-color: $neu-bright-orange;

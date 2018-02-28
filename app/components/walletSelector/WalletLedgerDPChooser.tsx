@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import * as React from "react";
-import { Alert, Col, FormGroup, Input, Row } from "reactstrap";
+import { Col, FormFeedback, FormGroup, Input, Row } from "reactstrap";
 
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { derivationPathPrefixValidator } from "../../utils/Validators";
@@ -18,29 +18,20 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent> = ({
   onDerivationPathPrefixChange,
   errorMessage,
 }) => (
-  <>
-    <Row>
-      <Col xs="5" sm="4" md="3">
-        <FormGroup>
-          <Input
-            name="derivationPathPrefix"
-            value={derivationPathPrefix}
-            onChange={onDerivationPathPrefixChange}
-            placeholder={"Enter derivation path"}
-          />
-        </FormGroup>
-      </Col>
-    </Row>
-    {errorMessage && (
-      <Row>
-        <Col xs="12" sm="8" md="6">
-          <Alert color="danger">
-            <span data-test-id="dpChooser-error-msg">{errorMessage}</span>
-          </Alert>
-        </Col>
-      </Row>
-    )}
-  </>
+  <Row>
+    <Col md="5">
+      <FormGroup>
+        <Input
+          name="derivationPathPrefix"
+          value={derivationPathPrefix}
+          onChange={onDerivationPathPrefixChange}
+          placeholder={"Enter derivation path"}
+          valid={errorMessage === null ? undefined : false}
+        />
+        <FormFeedback data-test-id="dpChooser-error-msg">{errorMessage}</FormFeedback>
+      </FormGroup>
+    </Col>
+  </Row>
 );
 
 interface IDPChooserProps {

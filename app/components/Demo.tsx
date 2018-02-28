@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap";
 
 import * as styles from "./Demo.module.scss";
 
@@ -29,6 +29,11 @@ export const Demo: React.SFC = () => (
           <NavigationButton forward text="NavigationButton" onClick={() => {}} />
           <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
           <NavigationLink forward to="/" text="NavigationLink" />
+          <hr />
+          <FormGroup>
+            <Input placeholder={"This form is always invalid"} valid={false} />
+            <FormFeedback>invalid</FormFeedback>
+          </FormGroup>
         </div>
       </Col>
     </Row>

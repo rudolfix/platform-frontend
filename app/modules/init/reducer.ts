@@ -6,16 +6,21 @@ export interface IInitState {
   errorMsg?: string;
 }
 
-export const initialState: IInitState = {
+export const initInitialState: IInitState = {
   done: false,
   error: false,
 };
 
-export const initReducer: AppReducer<IInitState> = (state = initialState, action): IInitState => {
+export const initReducer: AppReducer<IInitState> = (
+  state = initInitialState,
+  action,
+): IInitState => {
   switch (action.type) {
     case "INIT_DONE":
       return {
         ...state,
+        error: false,
+        errorMsg: undefined,
         done: true,
       };
     case "INIT_ERROR":

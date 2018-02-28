@@ -5,7 +5,7 @@ import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { ButtonPrimary } from "../../shared/Buttons"
+import { ButtonPrimary } from "../../shared/Buttons";
 import { recoverRoutes } from "./recoverRoutes";
 import { WalletResetHeader } from "./WalletResetHeader";
 
@@ -25,9 +25,7 @@ export const RecoverySuccessComponent: React.SFC<IProps> = props => (
     </Col>
     <Row className="justify-content-center mb-5 mt-5 pt-4">
       <Col xs={6} sm={5} md={4} lg={4}>
-        <ButtonPrimary onClick={props.goToDashboard}>
-          GO TO DASHBOARD
-        </ButtonPrimary>
+        <ButtonPrimary onClick={props.goToDashboard}>GO TO DASHBOARD</ButtonPrimary>
       </Col>
     </Row>
     <Row className="justify-content-end mt-4 pt-4 align-bottom" noGutters>

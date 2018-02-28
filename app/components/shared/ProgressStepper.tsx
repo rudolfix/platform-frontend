@@ -12,7 +12,7 @@ interface IProps {
 export const ProgressStepper: React.SFC<IProps> = ({ steps, currentStep }) => (
   <div className={styles.progressStepper}>
     {range(steps).map(number => (
-      <div className={cn(styles.step, number < currentStep && styles.active)} />
+      <div key={number} className={cn(styles.step, number < currentStep && styles.active)} />
     ))}
   </div>
 );

@@ -23,6 +23,8 @@ export const authReducer: AppReducer<IAuthState> = (
         ...state,
         jwt: action.payload.jwt,
       };
+    case "AUTH_LOGOUT":
+      return authInitialState;
   }
 
   return state;

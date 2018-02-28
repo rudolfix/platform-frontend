@@ -4,22 +4,22 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { actions } from "../actions";
-import { getDependency, neuTake, callAndInject } from "../sagas";
+import { getDependency, neuTake, callAndInject, forkAndInject } from "../sagas";
 import { WalletType } from "../web3/types";
 import { UsersApi, UserNotExisting } from "../../lib/api/users/UsersApi";
 import { injectableFn } from "../../middlewares/redux-injectify";
-import { select } from "redux-saga/effects";
+import { select, take, all } from "redux-saga/effects";
 
 export const loadJwt = injectableFn(
-  function* (storage: ObjectStorage<string>): Iterator<any> {
+  function*(storage: ObjectStorage<string>): Iterator<any> {
     const jwt = storage.get();
     if (jwt) {
       yield effects.put(actions.auth.loadJWT(jwt));
       return jwt;
     }
   },
-  [symbols.jwtStorage]
-)
+  [symbols.jwtStorage],
+);
 
 export function* loadUser(): Iterator<any> {
   const user: IUser = yield callAndInject(loadUserPromise);
@@ -50,3 +50,22 @@ export const loadUserPromise = injectableFn(
   },
   [symbols.usersApi, symbols.walletMetadataStorage],
 );
+
+export const logoutWatcher = injectableFn(
+  function*(
+    jwtStorage: ObjectStorage<string>,
+    walletMetadataStorage: ObjectStorage<TWalletMetadata>,
+  ) {
+    while (true) {
+      yield take("AUTH_LOGOUT");
+
+      jwtStorage.clear();
+      walletMetadataStorage.clear();
+    }
+  },
+  [symbols.jwtStorage, symbols.walletMetadataStorage],
+);
+
+export const authSagas = function*(): Iterator<effects.Effect> {
+  yield all([forkAndInject(logoutWatcher)]);
+};

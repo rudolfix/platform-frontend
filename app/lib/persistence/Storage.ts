@@ -12,4 +12,8 @@ export class Storage {
   public getKey(key: string): string | undefined {
     return this.localStorage.getItem(key);
   }
+
+  public removeKey(key: string) {
+    this.localStorage.removeItem(key);
+  }
 }

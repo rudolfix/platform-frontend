@@ -1,9 +1,11 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { Button, Col, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
+
 import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
+import { ButtonPrimary } from "../../shared/Buttons";
 
 import * as Yup from "yup";
 import { flows } from "../../../modules/flows";
@@ -58,9 +60,9 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
       errors={formikBag.errors}
       name={REPEAT_PASSWORD}
     />
-    <Button color="primary" type="submit" disabled={!formikBag.isValid}>
+    <ButtonPrimary color="primary" type="submit" disabled={!formikBag.isValid}>
       Submit
-    </Button>
+    </ButtonPrimary>
   </Form>
 );
 

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+
 import { LayoutRegisterLogin } from "../../layouts/LayoutRegisterLogin";
 import { RecoverRouter } from "./RecoverRouter";
 

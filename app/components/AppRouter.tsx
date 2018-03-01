@@ -4,13 +4,14 @@ export const appRoutes = {
   kyc: "/kyc",
   recover: "/recover",
   dashboard: "/dashboard",
-  help: "/help",
+  demo: "/demo",
 };
 
 import * as React from "react";
-import { Redirect, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import { Dashboard } from "./dashboard/Dashboard";
+import { Demo } from "./Demo";
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
@@ -25,6 +26,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyAuthorizedRoute path={appRoutes.kyc} component={Kyc} />
     <OnlyAuthorizedRoute path={appRoutes.dashboard} component={Dashboard} exact />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
+    <Route path={appRoutes.demo} component={Demo} />
 
     <Redirect to={appRoutes.root} />
   </Switch>

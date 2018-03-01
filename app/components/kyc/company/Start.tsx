@@ -1,12 +1,12 @@
 import * as React from "react";
 
 import { Form, Formik, FormikProps } from "formik";
-import { Button } from "reactstrap";
 
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
+import { ButtonPrimary } from "../../shared/Buttons";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
@@ -104,9 +104,9 @@ const KYCForm = (formikBag: FormikProps<IFormValues>) => (
     />
     <br />
     <br />
-    <Button color="primary" type="submit" disabled={!formikBag.isValid}>
+    <ButtonPrimary type="submit" disabled={!formikBag.isValid}>
       Submit
-    </Button>
+    </ButtonPrimary>
   </Form>
 );
 

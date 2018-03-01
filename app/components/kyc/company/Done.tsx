@@ -5,9 +5,8 @@ import { compose } from "redux";
 import { appConnect } from "../../../store";
 
 import { actions } from "../../../modules/actions";
+import { ButtonPrimary } from "../../shared/Buttons";
 import { ProgressStepper } from "../../shared/ProgressStepper";
-
-import { Button } from "reactstrap";
 
 interface IProps {
   onDone: () => void;
@@ -24,9 +23,7 @@ export const KYCCompanyDoneComponent: React.SFC<IProps> = props => (
     <br />
     <br />
     <br />
-    <Button color="primary" onClick={props.onDone}>
-      Close
-    </Button>
+    <ButtonPrimary onClick={props.onDone}>Close</ButtonPrimary>
   </div>
 );
 

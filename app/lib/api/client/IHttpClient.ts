@@ -10,6 +10,7 @@ export interface IHttpRequestCommon {
   headers?: Dictionary<string>;
   body?: any;
   formData?: FormData;
+  allowedStatusCodes?: number[]; // 20x are always allowed
 }
 
 export interface IHttpGetRequest extends IHttpRequestCommon {

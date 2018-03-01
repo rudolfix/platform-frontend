@@ -27,7 +27,7 @@ export class SignatureAuthApi {
       baseUrl: "/api/signature/",
       url: "/jwt/challenge",
       responseSchema: Yup.object().shape({
-        challenge: Yup.string,
+        challenge: Yup.string().required(),
       }),
       body: {
         address,
@@ -46,7 +46,7 @@ export class SignatureAuthApi {
       baseUrl: "/api/signature/",
       url: "/jwt/create",
       responseSchema: Yup.object().shape({
-        jwt: Yup.string,
+        jwt: Yup.string().required(),
       }),
       body: {
         challenge,

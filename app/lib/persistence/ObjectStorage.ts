@@ -25,4 +25,9 @@ export class ObjectStorage<T> {
       return JSON.parse(value);
     }
   }
+
+  public clear(): void {
+    this.logger.info(`Clearing storage for key ${this.key}`);
+    this.storage.removeKey(this.key);
+  }
 }

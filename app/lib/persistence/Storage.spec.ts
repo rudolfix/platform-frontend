@@ -9,6 +9,7 @@ describe("Browser Storage", () => {
   const localStorageMock = {
     setItem: spy(),
     getItem: spy(() => expectedPhrase),
+    removeItem: spy(),
   };
 
   it("should store an item", async () => {
@@ -24,6 +25,15 @@ describe("Browser Storage", () => {
 
     storage.getKey(key);
 
-    expect(localStorageMock.getItem.returned(expectedPhrase)).to.be.true;
+    expect(localStorageMock.getItem).to.be.calledOnce;
+  });
+
+  it("should clear given key", async () => {
+    const storage = new Storage(localStorageMock);
+
+    storage.removeKey(key);
+
+    expect(localStorageMock.removeItem).to.be.calledOnce;
+    expect(localStorageMock.removeItem).to.be.calledWithExactly(key);
   });
 });

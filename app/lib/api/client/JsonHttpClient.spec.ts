@@ -156,6 +156,39 @@ describe("JsonHttpClient", () => {
       );
     });
 
+    it("should throw an error on malformed response totally different objects", async () => {
+      fetchMock.mock(`${API_URL}products`, {
+        status: 200,
+        body: {
+          new_user: {
+            backup_codes_verified: true,
+            salt: "e5GiSRkNa3SA8oFBJtuJfxyqs7YXEtMl4eFn3PNkwAI=",
+            unverified_email: "chris@kaczor.io",
+          },
+        },
+      });
+
+      const httpClient = new JsonHttpClient();
+
+      const res = await httpClient.get<Array<IProduct>>({
+        baseUrl: API_URL,
+        url: "products",
+        responseSchema: Yup.object()
+          .shape({
+            backupCodesVerified: Yup.boolean(),
+            language: Yup.string(),
+            unverifiedEmail: Yup.string(),
+            verifiedEmail: Yup.string(),
+          })
+          .required(),
+      });
+
+      expect(res).to.be.deep.eq({
+        statusCode: 200,
+        body: {},
+      });
+    });
+
     it("should throw an error on non 20x response", async () => {
       const expectedErrorMessage = "error message";
       const expectedStatusCode = 500;
@@ -177,6 +210,28 @@ describe("JsonHttpClient", () => {
           }),
         new ResponseStatusError(API_URL + "products", 500),
       );
+    });
+
+    it("should not throw when status code is on allowed list", async () => {
+      const expectedErrorMessage = { msg: "not-found!" };
+      const expectedStatusCode = 404;
+      fetchMock.mock(`${API_URL}products`, {
+        status: expectedStatusCode,
+        body: JSON.stringify(expectedErrorMessage),
+      });
+
+      const httpClient = new JsonHttpClient();
+
+      const response = await httpClient.get<Array<IProduct>>({
+        baseUrl: API_URL,
+        url: "products",
+        allowedStatusCodes: [404],
+      });
+
+      expect(response).to.be.deep.eq({
+        statusCode: expectedStatusCode,
+        body: expectedErrorMessage,
+      });
     });
 
     it("should throw an error on networking problems", async () => {

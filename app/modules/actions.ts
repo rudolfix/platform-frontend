@@ -1,8 +1,8 @@
 import { values } from "lodash";
 
-import { appActions } from "./app/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
+import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { routingActions } from "./routing/actions";
 import { signMessageModalActions } from "./signMessageModal/actions";
@@ -14,7 +14,7 @@ import { web3Actions } from "./web3/actions";
 export const actions = {
   dashboard: dashboardActions,
   signMessageModal: signMessageModalActions,
-  app: appActions,
+  init: initActions,
   kyc: kycActions,
   routing: routingActions,
   wallet: walletActions,
@@ -29,7 +29,7 @@ export const actions = {
 export const allActions = {
   ...dashboardActions,
   ...signMessageModalActions,
-  ...appActions,
+  ...initActions,
   ...routingActions,
   ...kycActions,
   ...walletActions,

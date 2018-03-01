@@ -27,7 +27,6 @@ export const walletSelectorReducer: AppReducer<IWalletSelectorState> = (
         ...state,
         messageSigningError: action.payload.errorMessage,
       };
-
     case "WALLET_SELECTOR_RESET":
       return {
         ...state,

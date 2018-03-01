@@ -7,17 +7,14 @@ import { ILogger } from "../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
-import { actions, TAction } from "../actions";
+import { actions } from "../actions";
 import { loadUser } from "../auth/sagas";
 import { callAndInject, getDependency, neuTake } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
 
 function* signInUser(): Iterator<any> {
   while (true) {
-    const web3ConnectedAction: TAction = yield neuTake("WALLET_SELECTOR_CONNECTED");
-    if (web3ConnectedAction.type !== "WALLET_SELECTOR_CONNECTED") {
-      continue;
-    }
+    yield neuTake("WALLET_SELECTOR_CONNECTED");
 
     try {
       yield obtainJWT();

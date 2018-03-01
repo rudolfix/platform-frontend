@@ -12,7 +12,7 @@ import { globalFakeClock } from "../../../test/setupTestsHooks";
 import { createMock, tid } from "../../../test/testUtils";
 import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
-import { UsersApi } from "../../lib/api/UsersApi";
+import { UsersApi } from "../../lib/api/users/UsersApi";
 import {
   BrowserWallet,
   BrowserWalletConnector,

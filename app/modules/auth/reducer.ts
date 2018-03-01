@@ -1,8 +1,8 @@
-import { IUserData } from "../../lib/api/UsersApi";
+import { IUser } from "../../lib/api/users/interfaces";
 import { AppReducer } from "../../store";
 
 export interface IAuthState {
-  user?: IUserData;
+  user?: IUser;
   jwt?: string;
 }
 
@@ -23,7 +23,13 @@ export const authReducer: AppReducer<IAuthState> = (
         ...state,
         jwt: action.payload.jwt,
       };
+    case "AUTH_LOGOUT":
+      return authInitialState;
   }
 
   return state;
 };
+
+export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
+export const selectUserEmail = (state: IAuthState): string | undefined =>
+  state.user && (state.user.unverifiedEmail || state.user.verifiedEmail);

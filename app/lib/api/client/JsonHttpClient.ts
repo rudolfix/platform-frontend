@@ -1,7 +1,10 @@
 /**
- * Wraps fetch with JSON based, injectable wrapper
+ * Wraps fetch with JSON based, injectable wrapper.
+ *
  * Converts camel cased body properties to snake case on requests,
- * and does the reverse on responses
+ * and does the reverse on responses.
+ *
+ * It supports validating response shape. Validation happens AFTER camelCasing.
  */
 
 import { injectable } from "inversify";
@@ -140,7 +143,7 @@ export class JsonHttpClient implements IHttpClient {
       throw new NetworkingError(fullUrl);
     }
 
-    if (!response.ok) {
+    if (!response.ok && !isAllowedStatusCode(config.allowedStatusCodes, response.status)) {
       throw new ResponseStatusError(fullUrl, response.status);
     }
 
@@ -156,7 +159,6 @@ export class JsonHttpClient implements IHttpClient {
       try {
         finalResponseJson = config.responseSchema.validateSync<T>(toCamelCase(responseJson), {
           stripUnknown: true,
-          strict: true,
         }) as T;
       } catch (e) {
         throw new ResponseParsingError(e.message);
@@ -168,4 +170,12 @@ export class JsonHttpClient implements IHttpClient {
       body: finalResponseJson,
     };
   }
+}
+
+function isAllowedStatusCode(allowedStatusCodes: number[] | undefined, status: number): boolean {
+  if (!allowedStatusCodes) {
+    return false;
+  }
+
+  return allowedStatusCodes.indexOf(status) !== -1;
 }

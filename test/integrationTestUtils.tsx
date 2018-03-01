@@ -28,7 +28,7 @@ import { createMockStorage } from "../app/lib/persistence/Storage.mock";
 import { rootSaga } from "../app/modules/sagas";
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
 import { Web3Adapter } from "../app/lib/web3/Web3Adapter";
-import { UsersApi } from "../app/lib/api/UsersApi";
+import { UsersApi } from "../app/lib/api/users/UsersApi";
 import { SignatureAuthApi } from "../app/lib/api/SignatureAuthApi";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
 

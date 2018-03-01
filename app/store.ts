@@ -1,5 +1,5 @@
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
-import { LocationChangeAction, routerReducer } from "react-router-redux";
+import { LocationChangeAction, routerReducer, RouterState } from "react-router-redux";
 import { combineReducers } from "redux";
 
 import { browserReducer } from "./modules/userAgent/reducer";
@@ -59,21 +59,23 @@ function reducersToState<T>(o: Reduced<T>): T {
 }
 // tslint:disable-next-line
 const appStateInstance = (false ? undefined : reducersToState(appReducers))!;
-export type IAppState = typeof appStateInstance;
+export type IAppState = typeof appStateInstance & {
+  router: RouterState;
+};
 
 export const reducers = combineReducers<IAppState>(allReducers);
 
-interface IAppConnectOptions<S, D> {
+interface IAppConnectOptions<S, D, O> {
   stateToProps?: (state: IAppState) => S;
-  dispatchToProps?: (dispatch: AppDispatch) => D;
+  dispatchToProps?: (dispatch: AppDispatch, ownProps: O) => D;
   options?: Options<IAppState, S, {}>;
 }
 
 // helper to use instead of redux connect. It's bound with our app state and it uses dictionary to pass arguments
-export function appConnect<S = {}, D = {}>(
-  config: IAppConnectOptions<S, D>,
-): InferableComponentEnhancerWithProps<S & D, {}> {
-  return connect<S, D, {}, IAppState>(
+export function appConnect<S = {}, D = {}, O = {}>(
+  config: IAppConnectOptions<S, D, O>,
+): InferableComponentEnhancerWithProps<S & D, O> {
+  return connect<S, D, O, IAppState>(
     config.stateToProps!,
     config.dispatchToProps!,
     undefined,

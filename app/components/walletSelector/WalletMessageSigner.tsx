@@ -15,6 +15,10 @@ interface IDispatchProps {
   cancelSigning: () => void;
 }
 
+interface IOwnProps {
+  rootPath: string;
+}
+
 export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = ({
   errorMsg,
   cancelSigning,
@@ -27,14 +31,14 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
 );
 
 export const WalletMessageSigner = compose(
-  appConnect<IStateProps, IDispatchProps>({
+  appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: state => ({
       errorMsg: state.walletSelector.messageSigningError,
     }),
-    dispatchToProps: dispatch => ({
+    dispatchToProps: (dispatch, ownProps) => ({
       cancelSigning: () => {
         dispatch(actions.wallet.reset());
-        dispatch(actions.routing.goToRegister());
+        dispatch(actions.routing.goTo(ownProps.rootPath));
       },
     }),
   }),

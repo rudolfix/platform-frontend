@@ -55,12 +55,12 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
     />
     <FormField
       type={"password"}
-      label="RepeatPassword"
+      label="Repeat Password"
       touched={formikBag.touched}
       errors={formikBag.errors}
       name={REPEAT_PASSWORD}
     />
-    <ButtonPrimary color="primary" type="submit" disabled={!formikBag.isValid}>
+    <ButtonPrimary type="submit" disabled={!formikBag.isValid}>
       Submit
     </ButtonPrimary>
   </Form>
@@ -75,7 +75,8 @@ const RegisterEnhancedLightWalletForm = withFormik<IProps, IFormValues>({
 export const RegisterWalletComponent: React.SFC<IProps> = props => {
   return (
     <Row className="justify-content-sm-center mt-3">
-      <Col sm="5" className="align-self-end">
+      <Col className="align-self-end col-sm-auto col-xs-12">
+        <h1 className="mb-4">Create your Neufund wallet</h1>
         <RegisterEnhancedLightWalletForm {...props} />
       </Col>
     </Row>

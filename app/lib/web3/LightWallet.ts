@@ -119,13 +119,13 @@ export class LightWalletUtil {
   public async getWalletKeyFromSaltAndPassword(
     salt: string,
     password: string,
+    keySize: number = 32,
   ): Promise<Uint8Array> {
     try {
-      const keyFromSaltAndPassword = promisify<any, string, string>(
+      const keyFromSaltAndPassword = promisify<any, string, string, number>(
         LightWalletProvider.keystore.deriveKeyFromPasswordAndSalt,
       );
-
-      return await keyFromSaltAndPassword(password, salt);
+      return await keyFromSaltAndPassword(password, salt, keySize);
     } catch (e) {
       throw new LightWrongPasswordSaltError();
     }
@@ -134,21 +134,18 @@ export class LightWalletUtil {
   public encryptString({
     string,
     pwDerivedKey,
-    nonce,
   }: {
     string: string;
     pwDerivedKey: Uint8Array;
-    nonce: string;
-  }): { encStr: string; nonce: string } {
+  }): string {
     try {
-      const encNonce = nonce
-        ? naclUtil.decodeUTF8(nonce)
-        : nacl.randomBytes(nacl.secretbox.nonceLength);
-      const encObj = nacl.secretbox(naclUtil.decodeUTF8(string), encNonce, pwDerivedKey);
-      const encString = {
-        encStr: naclUtil.encodeBase64(encObj),
-        nonce: naclUtil.encodeBase64(encNonce),
-      };
+      // nacl.secretbox nonce must be 24 bytes @see https://github.com/dchest/tweetnacl-js#naclsecretboxnoncelength--24
+      const encObj = nacl.secretbox(
+        naclUtil.decodeUTF8(string),
+        pwDerivedKey.slice(32, 56),
+        pwDerivedKey.slice(0, 32),
+      );
+      const encString = Buffer.from(encObj).toString("hex");
       return encString;
     } catch (e) {
       throw new LightKeyEncryptError();

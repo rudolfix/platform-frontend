@@ -33,10 +33,12 @@ export const NavigationButton: React.SFC<INavigation & INavigationButton> = ({
 
   if (!disabled) {
     props.onClick = onClick;
+  } else {
+    props.tabIndex = -1;
   }
 
   return (
-    <span {...props}>
+    <span tabIndex={0} {...props}>
       {!forward && <i className={"fa fa-chevron-left mr-2"} aria-hidden="true" />}
       {text}
       {forward && <i className={"fa fa-chevron-right ml-2"} aria-hidden="true" />}

@@ -39,10 +39,7 @@ $smaller-font-size: rem-to-px(13px);
 $shadow:  0 rem-to-px(2px) rem-to-px(4px) 0 rgba(0, 0, 0, .1);
 
 // Bootstrap variable overrides
-
 //colors
-$link-color: $neu-black;
-$link-hover-color: $neu-black;
 $body-color: $neu-slate-grey;
 $body-bg: $neu-pale-blue;
 
@@ -57,30 +54,30 @@ $headings-font-family: "Lato", sans-serif;
 $headings-font-weight: 400;
 $headings-color: $neu-black;
 
-a {
-  font-weight: $font-weight-bold;
-}
+$link-color: $neu-black;
+$link-hover-color: $neu-black;
 
+// buttons and forms
+$input-btn-border-width: 2px;
+
+// buttons
+$btn-font-weight: $font-weight-bold;
+$btn-disabled-opacity: 1;
+$btn-focus-width: 0;
+$btn-focus-box-shadow: none;
+
+// forms
 $enable-rounded: false;
 $enable-shadows: false;
 
-$input-border-width: 2px;
+$input-border-width: 1px;
 $input-border-color: $gray4;
 $input-focus-border-color: $gray4;
-$input-color: $gray5;
+$input-color: $neu-charcoal-grey;
 $input-placeholder-color: $gray5;
 $input-padding-x: 0;
 $input-padding-y: 3px;
-
-// sass-lint:disable no-important
-.form-control {
-  font-size: rem-to-px(20px) !important;
-  border-top: 0 !important;
-  border-right: 0 !important;
-  border-left: 0 !important;
-
-  &:focus {
-    box-shadow: none !important;
-  }
-}
-// sass-lint:enable no-important
+$input-focus-width: 0;
+$input-focus-box-shadow: none;
+$form-feedback-font-size: rem-to-px(14px);
+$form-feedback-invalid-color: $neu-bright-orange;

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Col } from "reactstrap";
+
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
 interface IProps {

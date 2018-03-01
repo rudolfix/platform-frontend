@@ -2,8 +2,9 @@ import * as Mnemonic from "bitcore-mnemonic";
 import { range } from "lodash";
 import * as React from "react";
 import Select from "react-virtualized-select";
-import { Button, Col, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
+import { ButtonPrimary } from "../../shared/Buttons";
 import { WalletResetHeader } from "./WalletResetHeader";
 
 /* tslint:disable: no-submodule-imports */
@@ -116,24 +117,32 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
           ))}
         </Row>
         <Row className="d-flex justify-content-between my-3">
-          <Button
+          <ButtonPrimary
             data-test-id="btn-previous"
             disabled={startIndex === 0}
             onClick={this.handlePreviousView}
           >
             previous words
-          </Button>
+          </ButtonPrimary>
           {this.state.page + 1 < SEED_LENGTH / WORDS_PER_VIEW && (
-            <Button data-test-id="btn-next" disabled={!canAdvance} onClick={this.handleNextView}>
+            <ButtonPrimary
+              data-test-id="btn-next"
+              disabled={!canAdvance}
+              onClick={this.handleNextView}
+            >
               next {`${endIndex} / ${SEED_LENGTH}`}
-            </Button>
+            </ButtonPrimary>
           )}
         </Row>
         <Row className="text-center my-3">
           <Col>
-            <Button data-test-id="btn-send" disabled={!canSubmit} onClick={this.handleSendWords}>
+            <ButtonPrimary
+              data-test-id="btn-send"
+              disabled={!canSubmit}
+              onClick={this.handleSendWords}
+            >
               Send words
-            </Button>
+            </ButtonPrimary>
           </Col>
         </Row>
       </>

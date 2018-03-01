@@ -1,0 +1,30 @@
+// sass-lint:disable no-important
+@import "./utils";
+@import "./variables";
+
+a {
+  font-weight: $font-weight-bold;
+
+  &:focus {
+    outline: 0;
+    text-decoration: underline;
+  }
+}
+
+.form-control {
+  font-size: rem-to-px(20px) !important;
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-left: 0 !important;
+}
+
+.btn {
+  font-size: rem-to-px(15px) !important;
+  background-color: transparent !important;
+
+  &.disabled {
+    color: $neu-pale-grey !important;
+    border-color: $neu-pale-grey;
+  }
+}
+

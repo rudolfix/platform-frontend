@@ -7,9 +7,7 @@ import { appConnect } from "../../../store";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
-
-import { Button } from "reactstrap";
-
+import { ButtonPrimary } from "../../shared/Buttons";
 interface IProps {
   uploadId: () => void;
 }
@@ -25,9 +23,7 @@ export const KYCPersonalIDUploadComponent: React.SFC<IProps> = props => (
     <br />
     <br />
     <br />
-    <Button color="primary" onClick={props.uploadId}>
-      Upload
-    </Button>
+    <ButtonPrimary onClick={props.uploadId}>Upload</ButtonPrimary>
   </div>
 );
 

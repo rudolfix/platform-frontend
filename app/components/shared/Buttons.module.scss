@@ -1,0 +1,40 @@
+@import "../../styles/neufund-theme";
+// sass-lint:disable no-important
+
+.button-primary {
+  color: $neu-black !important;
+  border-color: $neu-black !important;
+
+  &:focus,
+  &:hover {
+    color: $neu-black;
+    background-color: $neu-piss-yellow !important;
+    border-color: $neu-piss-yellow !important;
+  }
+
+  &:global(.disabled) {
+    border-color: $neu-pale-grey !important;
+
+    &:hover {
+      background-color: transparent !important;
+    }
+  }
+}
+
+.button-secondary {
+  color: $neu-black !important;
+  border-color: transparent !important;
+
+  &:focus,
+  &:hover {
+    color: $neu-piss-yellow !important;
+  }
+
+  &:global(.disabled) {
+    border-color: transparent !important;
+
+    &:hover {
+      color: $neu-pale-grey !important;
+    }
+  }
+}

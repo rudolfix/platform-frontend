@@ -24,7 +24,12 @@ describe("<DPChooserComponent />", () => {
 
   it("should render error message if its present", () => {
     const component = shallow(<DPChooserComponent {...defaultProps()} />);
-    expect(component.find(tid("dpChooser-error-msg")).text()).to.be.eq(errorMessage);
+    expect(
+      component
+        .find(tid("dpChooser-error-msg"))
+        .children()
+        .text(),
+    ).to.be.eq(errorMessage);
   });
 
   it("should fire onChange function when derivation path is changed", () => {

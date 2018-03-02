@@ -58,6 +58,7 @@ export class LightDeserializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
 export class LightWalletWrongPassword extends LightWalletError {}
 
+// refactor this class. It should be just bunch of functions
 @injectable()
 export class LightWalletUtil {
   public async deserializeLightWalletVault(

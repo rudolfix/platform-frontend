@@ -12,6 +12,7 @@ import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { web3Sagas } from "./web3/sagas";
+import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 
 /**
  * Restart all sagas on error and report error to sentry
@@ -24,6 +25,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(dashboardSagas),
     effects.fork(web3Sagas),
     effects.fork(authSagas),
+    effects.fork(lightWalletSagas),
   ]);
 }
 

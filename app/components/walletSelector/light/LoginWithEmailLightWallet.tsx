@@ -8,6 +8,7 @@ import { appConnect } from "../../../store";
 import { ButtonPrimary } from "../../shared/Buttons";
 
 import { FormConstantField } from "../../shared/forms/formField/FormConstantField";
+import { actions } from "../../../modules/actions";
 
 const PASSWORD = "password";
 
@@ -18,6 +19,7 @@ export interface IFormValues {
 interface IProps {
   submitForm: (values: IFormValues) => void;
   currentValues?: IFormValues;
+  errors?: object;
 }
 
 const LoginLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
@@ -30,7 +32,7 @@ const LoginLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
       name={PASSWORD}
     />
     <div className="text-center">
-      <ButtonPrimary type="submit" disabled={!formikBag.isValid}>
+      <ButtonPrimary type="submit" disabled={!formikBag.values.password}>
         Login
       </ButtonPrimary>
     </div>
@@ -60,10 +62,9 @@ export const LoginWithEmailLightWalletComponent: React.SFC<IProps> = props => {
 
 export const LoginWithEmailLightWallet = compose<React.SFC>(
   appConnect<IProps>({
-    dispatchToProps: _dispatch => ({
+    dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) => {
-        // tslint:disable-next-line
-        console.log("Form dispatched!", values);
+        dispatch(actions.wallet.lightWalletLogin(values.password));
       },
     }),
   }),

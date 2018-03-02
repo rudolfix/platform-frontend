@@ -6,4 +6,5 @@ export const lightWizardActions = {
     createAction("LIGHT_WALLET_CONNECTION_ERROR", { errorMsg }),
   lightWalletCreated: (lightWalletVault: IVault) =>
     createAction("LIGHT_WALLET_CREATED", { lightWalletVault }),
+  lightWalletLogin: (password: string) => createAction("LIGHT_WALLET_LOGIN", { password }),
 };

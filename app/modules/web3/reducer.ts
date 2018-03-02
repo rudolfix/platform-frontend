@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 
+import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { AppReducer } from "../../store";
 import { EthereumAddress } from "../../types";
 import { WalletSubType, WalletType } from "./types";
@@ -7,7 +8,7 @@ import { makeEthereumAddressChecksummed } from "./utils";
 
 export interface IDisconnectedWeb3State {
   connected: false;
-  previousConnectedWalletType?: WalletType;
+  previousConnectedWallet?: TWalletMetadata;
 }
 
 export interface IConnectedWeb3State {
@@ -40,10 +41,6 @@ export const web3Reducer: AppReducer<IWeb3State> = (
     case "PERSONAL_WALLET_DISCONNECTED":
       return {
         connected: false,
-        // try to capture previous wallet type to allow easier reestablishing connection etc.
-        previousConnectedWalletType:
-          (state as IDisconnectedWeb3State).previousConnectedWalletType ||
-          (state as IConnectedWeb3State).type,
       };
     case "WEB3_WALLET_UNLOCKED":
       if (state.connected) {
@@ -59,6 +56,15 @@ export const web3Reducer: AppReducer<IWeb3State> = (
         return {
           ...state,
           isUnlocked: false,
+        };
+      } else {
+        return state;
+      }
+    case "LOAD_PREVIOUS_WALLET":
+      if (!state.connected) {
+        return {
+          ...state,
+          previousConnectedWallet: action.payload,
         };
       } else {
         return state;
@@ -88,3 +94,13 @@ export const selectIsLightWallet = (state: IWeb3State) => {
 export const selectIsUnlocked = (state: IWeb3State) => {
   return state.connected && state.isUnlocked;
 };
+
+export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
+  !!(
+    !state.connected &&
+    state.previousConnectedWallet &&
+    state.previousConnectedWallet.walletType === WalletType.LIGHT &&
+    state.previousConnectedWallet.email &&
+    state.previousConnectedWallet.salt &&
+    state.previousConnectedWallet.vault
+  );

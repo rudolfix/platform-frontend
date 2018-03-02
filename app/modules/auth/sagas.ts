@@ -55,18 +55,15 @@ export function* loadUser(): Iterator<any> {
 }
 
 export const logoutWatcher = injectableFn(
-  function*(
-    jwtStorage: ObjectStorage<string>,
-    walletMetadataStorage: ObjectStorage<TWalletMetadata>,
-  ): Iterator<any> {
+  function*(jwtStorage: ObjectStorage<string>): Iterator<any> {
     while (true) {
       yield take("AUTH_LOGOUT");
 
       jwtStorage.clear();
-      walletMetadataStorage.clear();
+      // do not clear wallet metadata here to allow easy login again
     }
   },
-  [symbols.jwtStorage, symbols.walletMetadataStorage],
+  [symbols.jwtStorage],
 );
 
 export const authSagas = function*(): Iterator<effects.Effect> {

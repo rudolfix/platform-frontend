@@ -60,8 +60,9 @@ export const LoginWithEmailLightWalletComponent: React.SFC<IProps> = props => {
 
 export const LoginWithEmailLightWallet = compose<React.SFC>(
   appConnect<IProps>({
-    dispatchToProps: dispatch => ({
+    dispatchToProps: _dispatch => ({
       submitForm: (values: IFormValues) => {
+        // tslint:disable-next-line
         console.log("Form dispatched!", values);
       },
     }),

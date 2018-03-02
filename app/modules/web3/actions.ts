@@ -1,3 +1,4 @@
+import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { EthereumAddress } from "../../types";
 import { createAction, createSimpleAction } from "../actionsUtils";
 import { WalletSubType, WalletType } from "./types";
@@ -14,4 +15,6 @@ export const web3Actions = {
 
   walletUnlocked: () => createSimpleAction("WEB3_WALLET_UNLOCKED"),
   walletLocked: () => createSimpleAction("WEB3_WALLET_LOCKED"),
+  loadPreviousWallet: (previousWallet: TWalletMetadata) =>
+    createAction("LOAD_PREVIOUS_WALLET", previousWallet),
 };

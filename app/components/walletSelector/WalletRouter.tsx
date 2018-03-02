@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import { WalletLight } from "./light/WalletLight";
 import { WalletBrowser } from "./WalletBrowser";
 import { WalletLedger } from "./WalletLedger";
-import { WalletLight } from "./light/WalletLight";
 
 interface IProps {
   rootPath: string;

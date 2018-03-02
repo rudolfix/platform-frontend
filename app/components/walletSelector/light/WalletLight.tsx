@@ -3,8 +3,8 @@ import { Container } from "reactstrap";
 
 import { isLoginRoute } from "../../../modules/routing/selectors";
 import { appConnect } from "../../../store";
-import { RegisterLightWallet } from "./RegisterLightWallet";
 import { LoginLightWallet } from "./LoginLightWallet";
+import { RegisterLightWallet } from "./RegisterLightWallet";
 
 interface IStateProps {
   isLoginRoute: boolean;

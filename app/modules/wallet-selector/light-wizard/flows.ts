@@ -1,5 +1,5 @@
 import { symbols } from "../../../di/symbols";
-import { VaultApi } from "../../../lib/api/VaultApi";
+import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";

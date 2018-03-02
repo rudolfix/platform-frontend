@@ -6,7 +6,7 @@ import { IHttpClient } from "../lib/api/client/IHttpClient";
 import { JsonHttpClient } from "../lib/api/client/JsonHttpClient";
 import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
 import { UsersApi } from "../lib/api/users/UsersApi";
-import { VaultApi } from "../lib/api/VaultApi";
+import { VaultApi } from "../lib/api/vault/VaultApi";
 import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
 import { DevConsoleLogger, ILogger } from "../lib/dependencies/Logger";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";

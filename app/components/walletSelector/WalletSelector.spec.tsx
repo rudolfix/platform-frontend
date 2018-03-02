@@ -8,7 +8,7 @@ import { WalletSelectorComponent } from "./WalletSelector";
 describe("<WalletSelector />", () => {
   it("should render message signing", () => {
     const component = shallow(
-      <WalletSelectorComponent isMessageSigning={true} rootPath="rootPath" />,
+      <WalletSelectorComponent isMessageSigning={true} rootPath="rootPath" isLoginRoute />,
     );
 
     expect(component.contains(<WalletMessageSigner rootPath="rootPath" />)).to.be.true;

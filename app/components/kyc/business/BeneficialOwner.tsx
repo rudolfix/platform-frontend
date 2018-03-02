@@ -22,6 +22,7 @@ interface IStateProps {
   fileUploading: boolean;
   filesLoading: boolean;
   files: IKycFileInfo[];
+  loading: boolean;
   id: string;
 }
 
@@ -41,75 +42,79 @@ interface IOwnProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner>) => (
-  <Form>
-    <FormField
-      label="First Name"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="firstName"
-    />
-    <FormField
-      label="Last Name"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="lastName"
-    />
-    <FormField
-      label="Birth Date"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="birthdate"
-    />
-
-    <FormField
-      label="Address"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="address"
-    />
-    <FormField
-      label="Zip Code"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="zipCode"
-    />
-    <FormField label="City" touched={formikBag.touched} errors={formikBag.errors} name="city" />
-    <FormField
-      label="Country"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="country"
-    />
-    <FormField
-      label="Percent owned"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="ownership"
-    />
-    <br />
-    <br />
-    <ButtonPrimary color="primary" type="submit" disabled={!formikBag.isValid}>
-      Submit changes
-    </ButtonPrimary>
-  </Form>
-);
-
-const KYCEnhancedForm = withFormik<IProps, IKycBeneficialOwner>({
-  validationSchema: KycBeneficialOwnerSchema,
-  mapPropsToValues: props => props.owner,
-  handleSubmit: (values, props) => {
-    const ownership: any = values.ownership || "";
-    props.props.submitForm({ ...values, ownership: parseInt(ownership, 10) || 0 });
-  },
-})(KYCForm);
-
 export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
   componentDidMount(): void {
     this.props.loadDocumentList();
   }
 
   render(): React.ReactChild {
+    const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner>) => (
+      <Form>
+        <FormField
+          label="First Name"
+          touched={formikBag.touched}
+          errors={formikBag.errors}
+          name="firstName"
+        />
+        <FormField
+          label="Last Name"
+          touched={formikBag.touched}
+          errors={formikBag.errors}
+          name="lastName"
+        />
+        <FormField
+          label="Birth Date"
+          touched={formikBag.touched}
+          errors={formikBag.errors}
+          name="birthdate"
+        />
+
+        <FormField
+          label="Address"
+          touched={formikBag.touched}
+          errors={formikBag.errors}
+          name="address"
+        />
+        <FormField
+          label="Zip Code"
+          touched={formikBag.touched}
+          errors={formikBag.errors}
+          name="zipCode"
+        />
+        <FormField label="City" touched={formikBag.touched} errors={formikBag.errors} name="city" />
+        <FormField
+          label="Country"
+          touched={formikBag.touched}
+          errors={formikBag.errors}
+          name="country"
+        />
+        <FormField
+          label="Percent owned"
+          touched={formikBag.touched}
+          errors={formikBag.errors}
+          name="ownership"
+        />
+        <br />
+        <br />
+        <ButtonPrimary
+          color="primary"
+          type="submit"
+          disabled={!formikBag.isValid || this.props.loading}
+        >
+          Submit changes
+        </ButtonPrimary>
+      </Form>
+    );
+
+    const KYCEnhancedForm = withFormik<IProps, IKycBeneficialOwner>({
+      validationSchema: KycBeneficialOwnerSchema,
+      mapPropsToValues: props => props.owner,
+      handleSubmit: (values, props) => {
+        const ownership: any = values.ownership || "";
+        props.props.submitForm({ ...values, ownership: parseInt(ownership, 10) || 0 });
+      },
+    })(KYCForm);
+
     return (
       <div>
         <h3>Beneficial Owner {this.props.index + 1}</h3>
@@ -146,6 +151,7 @@ export const KYCBeneficialOwner = compose<React.SFC<IOwnProps>>(
       files: state.kyc.beneficialOwnerFiles[ownProps.id] || [],
       filesLoading: !!state.kyc.beneficialOwnerFilesLoading[ownProps.id],
       fileUploading: !!state.kyc.beneficialOwnerFileUploading[ownProps.id],
+      loading: !!state.kyc.loadingBeneficialOwner,
     }),
     dispatchToProps: (dispatch, ownProps) => ({
       onDropFile: (file: File) =>

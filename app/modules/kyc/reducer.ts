@@ -1,4 +1,4 @@
-import { filter, findIndex } from "lodash";
+import { filter, findIndex, isNil, omitBy } from "lodash";
 import { AppReducer } from "../../store";
 
 import {
@@ -41,6 +41,7 @@ export interface IKycState {
 
   // beneficial owners
   loadingBeneficialOwners?: boolean;
+  loadingBeneficialOwner?: boolean;
   beneficialOwners: IKycBeneficialOwner[];
   beneficialOwnerFilesLoading: { [id: string]: boolean };
   beneficialOwnerFileUploading: { [id: string]: boolean };
@@ -76,13 +77,17 @@ function updateArrayItem<T extends { id?: string }>(array: T[], id?: string, ite
   return array;
 }
 
+function omitUndefined<T>(obj: T): { [P in keyof T]?: T[P] } {
+  return omitBy(obj, isNil);
+}
+
 export const kycReducer: AppReducer<IKycState> = (state = kycInitialState, action): IKycState => {
   switch (action.type) {
     // individual
     case "KYC_UPDATE_INDIVIDUAL_REQUEST_STATE":
     case "KYC_UPDATE_INDIVIDUAL_DATA":
     case "KYC_UPDATE_INDIVIDUAL_FILES_INFO":
-      state = { ...state, ...action.payload };
+      state = { ...state, ...omitUndefined(action.payload) };
       break;
     case "KYC_UPDATE_INDIVIDUAL_FILE_INFO":
       state = {
@@ -97,7 +102,7 @@ export const kycReducer: AppReducer<IKycState> = (state = kycInitialState, actio
     case "KYC_UPDATE_LEGAL_REPRESENTATIVE":
     case "KYC_UPDATE_LEGAL_REPRESENTATIVE_FILES_INFO":
     case "KYC_UPDATE_BENEFICIAL_OWNERS":
-      state = { ...state, ...action.payload };
+      state = { ...state, ...omitUndefined(action.payload) };
       break;
     case "KYC_UPDATE_LEGAL_REPRESENTATIVE_FILE_INFO":
       state = {
@@ -119,6 +124,7 @@ export const kycReducer: AppReducer<IKycState> = (state = kycInitialState, actio
     case "KYC_UPDATE_BENEFICIAL_OWNER":
       state = {
         ...state,
+        loadingBeneficialOwner: action.payload.loadingBeneficialOwner,
         beneficialOwners: updateArrayItem(
           state.beneficialOwners,
           action.payload.id,

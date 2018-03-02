@@ -14,6 +14,7 @@ import { KYCBeneficialOwner } from "./BeneficialOwner";
 
 interface IStateProps {
   beneficialOwners: IKycBeneficialOwner[];
+  loading: boolean;
 }
 
 interface IDispatchProps {
@@ -44,12 +45,12 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
     <HorizontalLine />
     <br />
     <br />
-    <ButtonSecondary onClick={props.createBeneficialOwner}>
+    <ButtonSecondary onClick={props.createBeneficialOwner} disabled={props.loading}>
       Add new Beneficial Owner!
     </ButtonSecondary>
     <br />
     <br />
-    <ButtonPrimary color="primary" type="submit" onClick={props.submit}>
+    <ButtonPrimary color="primary" type="submit" onClick={props.submit} disabled={props.loading}>
       Submit Request
     </ButtonPrimary>
   </div>
@@ -59,6 +60,7 @@ export const KYCBeneficialOwners = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       beneficialOwners: state.kyc.beneficialOwners,
+      loading: !!state.kyc.loadingBeneficialOwners || !!state.kyc.loadingBeneficialOwner,
     }),
     dispatchToProps: dispatch => ({
       submit: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),

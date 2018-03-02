@@ -18,7 +18,7 @@ import {
 import { NotificationCenter } from "../../lib/dependencies/NotificationCenter";
 import { injectableFn } from "../../middlewares/redux-injectify";
 
-const notify = injectableFn(
+const notifyError = injectableFn(
   function*(notificationCenter: NotificationCenter, message: string): Iterator<any> {
     notificationCenter.error(message);
   },
@@ -59,7 +59,7 @@ function* submitIndividualData(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateIndividualData(false, result.body));
       yield effects.put(actions.routing.goToKYCIndividualUpload());
     } catch (_e) {
-      yield callAndInject(notify, "There was a problem sending your data. Please try again.");
+      yield callAndInject(notifyError, "There was a problem sending your data. Please try again.");
     }
   }
 }
@@ -78,6 +78,10 @@ function* uploadIndividualFile(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateIndividualDocument(false, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateIndividualDocument(false));
+      yield callAndInject(
+        notifyError,
+        "There was a problem uploading your file. Please try again.",
+      );
     }
   }
 }
@@ -129,7 +133,10 @@ function* submitIndividualRequest(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateIndividualRequestState(false));
-      yield callAndInject(notify, "There was a problem submitting your request. Please try again.");
+      yield callAndInject(
+        notifyError,
+        "There was a problem submitting your request. Please try again.",
+      );
     }
   }
 }
@@ -166,12 +173,14 @@ function* submitLegalRepresentative(): Iterator<any> {
     }
     try {
       const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+      yield effects.put(actions.kyc.kycUpdateLegalRepresentative(true));
       const result: IHttpResponse<
         IKycLegalRepresentative
       > = yield kcyService.putLegalRepresentative(action.payload.data);
       yield effects.put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
     } catch (_e) {
-      yield callAndInject(notify, "There was a problem sending your data. Please try again.");
+      yield effects.put(actions.kyc.kycUpdateLegalRepresentative(false));
+      yield callAndInject(notifyError, "There was a problem sending your data. Please try again.");
     }
   }
 }
@@ -192,6 +201,10 @@ function* uploadLegalRepresentativeFile(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateLegalRepresentativeDocument(false, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateLegalRepresentativeDocument(false));
+      yield callAndInject(
+        notifyError,
+        "There was a problem uploading your file. Please try again.",
+      );
     }
   }
 }
@@ -236,6 +249,7 @@ function* setBusinessType(): Iterator<any> {
       yield effects.put(actions.routing.goToKYCLegalRepresentative());
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateBusinessData(false));
+      yield callAndInject(notifyError, "There was a problem sending your data. Please try again.");
     }
   }
 }
@@ -266,12 +280,14 @@ function* submitBusinessData(): Iterator<any> {
     }
     try {
       const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+      yield effects.put(actions.kyc.kycUpdateBusinessData(true));
       const result: IHttpResponse<IKycBusinessData> = yield kcyService.putBusinessData(
         action.payload.data,
       );
       yield effects.put(actions.kyc.kycUpdateBusinessData(false, result.body));
     } catch (_e) {
-      yield callAndInject(notify, "There was a problem sending your data. Please try again.");
+      yield effects.put(actions.kyc.kycUpdateBusinessData(false));
+      yield callAndInject(notifyError, "There was a problem sending your data. Please try again.");
     }
   }
 }
@@ -290,6 +306,10 @@ function* uploadBusinessFile(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateBusinessDocument(false, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateBusinessDocument(false));
+      yield callAndInject(
+        notifyError,
+        "There was a problem uploading your file. Please try again.",
+      );
     }
   }
 }
@@ -342,6 +362,7 @@ function* createBeneficialOwner(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false));
+      yield callAndInject(notifyError, "There was a problem sending your data. Please try again.");
     }
   }
 }
@@ -361,6 +382,10 @@ function* submitBeneficialOwner(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false));
+      yield callAndInject(
+        notifyError,
+        "There was a problem saving your changes. Please try again.",
+      );
     }
   }
 }
@@ -378,6 +403,7 @@ function* deleteBeneficalOwner(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false, action.payload.id, undefined));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false));
+      yield callAndInject(notifyError, "There was a problem sending your data. Please try again.");
     }
   }
 }
@@ -399,6 +425,10 @@ function* uploadBeneficialOwnerFile(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false));
+      yield callAndInject(
+        notifyError,
+        "There was a problem uploading your file. Please try again.",
+      );
     }
   }
 }
@@ -458,7 +488,10 @@ function* submitBusinessRequest(): Iterator<any> {
       yield effects.put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
     } catch (_e) {
       yield effects.put(actions.kyc.kycUpdateBusinessRequestState(false));
-      yield callAndInject(notify, "There was a problem submitting your request. Please try again.");
+      yield callAndInject(
+        notifyError,
+        "There was a problem submitting your request. Please try again.",
+      );
     }
   }
 }

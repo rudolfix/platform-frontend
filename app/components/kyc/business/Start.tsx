@@ -9,9 +9,15 @@ import { TKycBusinessType } from "../../../lib/api/KycApi.interfaces";
 import { ButtonPrimary } from "../../shared/Buttons";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
-interface IProps {
+interface IStateProps {
+  loading: boolean;
+}
+
+interface IDispatchProps {
   setBusinessType: (type: TKycBusinessType) => void;
 }
+
+type IProps = IStateProps & IDispatchProps;
 
 export const KycBusinessStartComponent: React.SFC<IProps> = props => (
   <div>
@@ -21,11 +27,15 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
     <h1>What type of company are you?</h1>
     <br />
     <br />
-    <ButtonPrimary onClick={() => props.setBusinessType("small")}>Small Business</ButtonPrimary>
+    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("small")}>
+      Small Business
+    </ButtonPrimary>
     &nbsp;&nbsp;
-    <ButtonPrimary onClick={() => props.setBusinessType("corporate")}>Corporation</ButtonPrimary>
+    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("corporate")}>
+      Corporation
+    </ButtonPrimary>
     &nbsp;&nbsp;
-    <ButtonPrimary onClick={() => props.setBusinessType("partnership")}>
+    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("partnership")}>
       Partnership Business
     </ButtonPrimary>
     <br />
@@ -34,7 +44,10 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
 );
 
 export const KycBusinessStart = compose<React.SFC>(
-  appConnect<IProps>({
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => ({
+      loading: !!state.kyc.businessDataLoading,
+    }),
     dispatchToProps: dispatch => ({
       setBusinessType: (type: TKycBusinessType) => dispatch(actions.kyc.kycSetBusinessType(type)),
     }),

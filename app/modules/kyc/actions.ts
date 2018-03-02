@@ -1,4 +1,3 @@
-import { isNil, omitBy } from "lodash";
 import {
   IKycBeneficialOwner,
   IKycBusinessData,
@@ -9,8 +8,6 @@ import {
   TKycBusinessType,
 } from "../../lib/api/KycApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
-
-const stripUndefined = (obj: any) => omitBy(obj, isNil);
 
 export const kycActions = {
   /**
@@ -24,10 +21,7 @@ export const kycActions = {
   kycLoadIndividualData: () => createSimpleAction("KYC_LOAD_INDIVIDUAL_DATA"),
 
   kycUpdateIndividualData: (individualDataLoading?: boolean, individualData?: IKycIndividualData) =>
-    createAction(
-      "KYC_UPDATE_INDIVIDUAL_DATA",
-      stripUndefined({ individualData, individualDataLoading }),
-    ),
+    createAction("KYC_UPDATE_INDIVIDUAL_DATA", { individualData, individualDataLoading }),
 
   // files
   kycLoadIndividualDocumentList: () => createSimpleAction("KYC_LOAD_INDIVIDUAL_FILE_LIST"),
@@ -50,10 +44,10 @@ export const kycActions = {
     individualRequestStateLoading?: boolean,
     individualRequestState?: IKycRequestState,
   ) =>
-    createAction(
-      "KYC_UPDATE_INDIVIDUAL_REQUEST_STATE",
-      stripUndefined({ individualRequestState, individualRequestStateLoading }),
-    ),
+    createAction("KYC_UPDATE_INDIVIDUAL_REQUEST_STATE", {
+      individualRequestState,
+      individualRequestStateLoading,
+    }),
 
   kycSubmitIndividualRequest: () => createSimpleAction("KYC_SUBMIT_INDIVIDUAL_REQUEST"),
 
@@ -69,7 +63,7 @@ export const kycActions = {
   kycLoadBusinessData: () => createSimpleAction("KYC_LOAD_BUSINESS_DATA"),
 
   kycUpdateBusinessData: (businessDataLoading?: boolean, businessData?: IKycBusinessData) =>
-    createAction("KYC_UPDATE_BUSINESS_DATA", stripUndefined({ businessData, businessDataLoading })),
+    createAction("KYC_UPDATE_BUSINESS_DATA", { businessData, businessDataLoading }),
 
   // business documents
   kycLoadBusinessDocumentList: () => createSimpleAction("KYC_LOAD_BUSINESS_FILE_LIST"),
@@ -92,10 +86,10 @@ export const kycActions = {
     legalRepresentativeLoading?: boolean,
     legalRepresentative?: IKycLegalRepresentative,
   ) =>
-    createAction(
-      "KYC_UPDATE_LEGAL_REPRESENTATIVE",
-      stripUndefined({ legalRepresentative, legalRepresentativeLoading }),
-    ),
+    createAction("KYC_UPDATE_LEGAL_REPRESENTATIVE", {
+      legalRepresentative,
+      legalRepresentativeLoading,
+    }),
 
   // legal representative documents
   kycLoadLegalRepresentativeDocumentList: () =>
@@ -105,11 +99,11 @@ export const kycActions = {
     createAction("KYC_UPLOAD_LEGAL_REPRESENTATIVE_FILE", { file }),
 
   kycUpdateLegalRepresentativeDocuments: (
-    legalRepresentativeLoading: boolean,
+    legalRepresentativeFilesLoading: boolean,
     legalRepresentativeFiles: IKycFileInfo[] = [],
   ) =>
     createAction("KYC_UPDATE_LEGAL_REPRESENTATIVE_FILES_INFO", {
-      legalRepresentativeLoading,
+      legalRepresentativeFilesLoading,
       legalRepresentativeFiles,
     }),
 
@@ -173,10 +167,10 @@ export const kycActions = {
     businessRequestStateLoading?: boolean,
     businessRequestState?: IKycRequestState,
   ) =>
-    createAction(
-      "KYC_UPDATE_BUSINESS_REQUEST_STATE",
-      stripUndefined({ businessRequestState, businessRequestStateLoading }),
-    ),
+    createAction("KYC_UPDATE_BUSINESS_REQUEST_STATE", {
+      businessRequestState,
+      businessRequestStateLoading,
+    }),
 
   kycSubmitBusinessRequest: () => createSimpleAction("KYC_SUBMIT_BUSINESS_REQUEST"),
 };

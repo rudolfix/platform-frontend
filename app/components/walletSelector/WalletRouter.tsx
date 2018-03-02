@@ -4,13 +4,16 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { WalletBrowser } from "./WalletBrowser";
 import { WalletLedger } from "./WalletLedger";
 import { WalletLight } from "./walletRegister/WalletLight";
-import { walletRoutes } from "./walletRoutes";
 
-export const WalletRouter: React.SFC = () => (
+interface IProps {
+  rootPath: string;
+}
+
+export const WalletRouter: React.SFC<IProps> = ({ rootPath }) => (
   <Switch>
-    <Route path={walletRoutes.light} component={WalletLight} />
-    <Route path={walletRoutes.browser} component={WalletBrowser} exact />
-    <Route path={walletRoutes.ledger} component={WalletLedger} exact />
-    <Redirect to={walletRoutes.light} />
+    <Route path={`${rootPath}/light`} component={WalletLight} />
+    <Route path={`${rootPath}/browser`} component={WalletBrowser} exact />
+    <Route path={`${rootPath}/ledger`} component={WalletLedger} exact />
+    <Redirect to={`${rootPath}/light`} />
   </Switch>
 );

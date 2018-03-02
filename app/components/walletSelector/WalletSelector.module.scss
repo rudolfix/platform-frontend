@@ -19,7 +19,8 @@
     height: 0;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     text-decoration: none;
   }
 

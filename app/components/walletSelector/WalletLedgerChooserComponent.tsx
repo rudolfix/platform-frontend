@@ -89,12 +89,6 @@ export const WalletLedgerChooserComponent: React.SFC<
             </span>
           )}
       </div>
-      <div>
-        Have some issues with your NeuKey? Contact for{" "}
-        <a href="#">
-          help <i className="fa fa-chevron-right ml-1" aria-hidden="true" />
-        </a>
-      </div>
     </div>
   </>
 );

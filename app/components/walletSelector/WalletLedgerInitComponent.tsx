@@ -66,14 +66,6 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
         desc="Click on arrows to scroll  apps and pick Ethereum icon. Press 2 keys at the same time to confirm"
       />
     </Row>
-    <Row className="mt-5">
-      <Col className="text-center text-md-right">
-        Have some issues with your NeuKey? Contact for{" "}
-        <a href="#">
-          help <i className="fa fa-chevron-right ml-1" aria-hidden="true" />
-        </a>
-      </Col>
-    </Row>
   </>
 );
 

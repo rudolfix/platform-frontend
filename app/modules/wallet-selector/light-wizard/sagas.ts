@@ -1,23 +1,27 @@
-import { take, all, fork, select, put } from "redux-saga/effects";
-import { neuTake, forkAndInject } from "../../sagas";
-import { TAction, actions } from "../../actions";
-import { Web3Manager } from "../../../lib/web3/Web3Manager";
+import { all, put } from "redux-saga/effects";
 import { symbols } from "../../../di/symbols";
-import { LightWalletConnector, LightWalletUtil, ILightWallet } from "../../../lib/web3/LightWallet";
-import { injectableFn } from "../../../middlewares/redux-injectify";
-import { IAppState } from "../../../store";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import {
+  LightWallet,
+  LightWalletConnector,
+  LightWalletUtil,
+  LightWalletWrongPassword,
+} from "../../../lib/web3/LightWallet";
+import { Web3Manager } from "../../../lib/web3/Web3Manager";
+import { injectableFn } from "../../../middlewares/redux-injectify";
+import { actions, TAction } from "../../actions";
+import { forkAndInject, neuTake } from "../../sagas";
+import { connectLightWallet } from "../../signMessageModal/sagas";
 import { WalletType } from "../../web3/types";
-import { IPersonalWallet } from "../../../lib/web3/PersonalWeb3";
+import { mapLightWalletErrorToErrorMessage } from "./errors";
 
 export const lightWalletLoginWatch = injectableFn(
   function*(
     web3Manager: Web3Manager,
     lightWalletConnector: LightWalletConnector,
-    lightWalletUtil: LightWalletUtil,
     walletMetadataStorage: ObjectStorage<TWalletMetadata>,
-  ) {
+  ): any {
     while (true) {
       const action: TAction = yield neuTake("LIGHT_WALLET_LOGIN");
       if (action.type !== "LIGHT_WALLET_LOGIN") {
@@ -27,36 +31,30 @@ export const lightWalletLoginWatch = injectableFn(
       if (!walletMetadata || walletMetadata.walletType !== WalletType.LIGHT) {
         continue;
       }
+      const { password } = action.payload;
 
-      const walletInstance: ILightWallet = yield lightWalletUtil.deserializeLightWalletVault(
-        walletMetadata.vault,
-        walletMetadata.salt,
-      );
+      try {
+        const wallet: LightWallet = yield connectLightWallet(
+          lightWalletConnector,
+          walletMetadata,
+          password,
+        );
+        const isValidPassword: boolean = yield LightWalletUtil.testWalletPassword(
+          wallet.vault.walletInstance,
+          password,
+        );
+        if (!isValidPassword) {
+          throw new LightWalletWrongPassword();
+        }
 
-      const isValidPassword: boolean = yield LightWalletUtil.testWalletPassword(walletInstance, action.payload.password);
-      if (!isValidPassword) {
-        
+        yield web3Manager.plugPersonalWallet(wallet);
+        yield put(actions.wallet.connected());
+      } catch (e) {
+        yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
       }
-      //todo throw here on invalid password
-
-      const lightWallet: IPersonalWallet = yield lightWalletConnector.connect(
-        {
-          walletInstance,
-          salt: walletInstance.salt,
-        },
-        action.payload.password,
-      );
-
-      yield web3Manager.plugPersonalWallet(lightWallet);
-      yield put(actions.wallet.connected());
     }
   },
-  [
-    symbols.web3Manager,
-    symbols.lightWalletConnector,
-    symbols.lightWalletUtil,
-    symbols.walletMetadataStorage,
-  ],
+  [symbols.web3Manager, symbols.lightWalletConnector, symbols.walletMetadataStorage],
 );
 
 export function* lightWalletSagas(): Iterator<any> {

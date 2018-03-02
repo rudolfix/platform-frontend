@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { AppReducer } from "../../store";
 import { EthereumAddress } from "../../types";
-import { WalletSubType, WalletType } from "./types";
+import { WalletType } from "./types";
 import { makeEthereumAddressChecksummed } from "./utils";
 
 export interface IDisconnectedWeb3State {
@@ -13,8 +13,7 @@ export interface IDisconnectedWeb3State {
 
 export interface IConnectedWeb3State {
   connected: true;
-  type: WalletType;
-  subtype: WalletSubType;
+  wallet: TWalletMetadata;
   ethereumAddress: EthereumAddress;
   isUnlocked: boolean; // this is important only for light wallet
 }
@@ -33,14 +32,14 @@ export const web3Reducer: AppReducer<IWeb3State> = (
     case "NEW_PERSONAL_WALLET_PLUGGED":
       return {
         connected: true,
-        type: action.payload.type,
-        subtype: action.payload.subtype,
+        wallet: action.payload.walletMetadata,
         ethereumAddress: action.payload.ethereumAddress,
         isUnlocked: action.payload.isUnlocked,
       };
     case "PERSONAL_WALLET_DISCONNECTED":
       return {
         connected: false,
+        previousConnectedWallet: state.connected ? state.wallet : undefined,
       };
     case "WEB3_WALLET_UNLOCKED":
       if (state.connected) {
@@ -87,11 +86,11 @@ export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAd
   return makeEthereumAddressChecksummed(address);
 });
 
-export const selectIsLightWallet = (state: IWeb3State) => {
-  return state.connected && state.type === WalletType.LIGHT;
+export const selectIsLightWallet = (state: IWeb3State): boolean => {
+  return state.connected && state.wallet.walletType === WalletType.LIGHT;
 };
 
-export const selectIsUnlocked = (state: IWeb3State) => {
+export const selectIsUnlocked = (state: IWeb3State): boolean => {
   return state.connected && state.isUnlocked;
 };
 

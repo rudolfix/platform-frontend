@@ -5,6 +5,7 @@ import * as Web3 from "web3";
 
 import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
+import { IBrowserWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
@@ -48,6 +49,12 @@ export class BrowserWallet implements IPersonalWallet {
     } else {
       return this.web3Adapter.ethSign(this.ethereumAddress, data);
     }
+  }
+
+  public getMetadata(): IBrowserWalletMetadata {
+    return {
+      walletType: WalletType.BROWSER,
+    };
   }
 }
 

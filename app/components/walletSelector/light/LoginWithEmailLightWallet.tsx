@@ -7,8 +7,9 @@ import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
 import { ButtonPrimary } from "../../shared/Buttons";
 
-import { FormConstantField } from "../../shared/forms/formField/FormConstantField";
 import { actions } from "../../../modules/actions";
+import { FormConstantField } from "../../shared/forms/formField/FormConstantField";
+import { WarningAlert } from "../../shared/WarningAlert";
 
 const PASSWORD = "password";
 
@@ -19,7 +20,10 @@ export interface IFormValues {
 interface IProps {
   submitForm: (values: IFormValues) => void;
   currentValues?: IFormValues;
-  errors?: object;
+}
+
+interface IStateProps {
+  errorMsg?: string;
 }
 
 const LoginLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
@@ -44,7 +48,7 @@ const LoginEnhancedLightWalletForm = withFormik<IProps, IFormValues>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(LoginLightWalletForm);
 
-export const LoginWithEmailLightWalletComponent: React.SFC<IProps> = props => {
+export const LoginWithEmailLightWalletComponent: React.SFC<IProps & IStateProps> = props => {
   return (
     <>
       <Row>
@@ -54,6 +58,7 @@ export const LoginWithEmailLightWalletComponent: React.SFC<IProps> = props => {
         <Col xs={12}>
           <FormConstantField value="krzkaczor@gmail.com" className="mb-2" />
           <LoginEnhancedLightWalletForm {...props} />
+          {props.errorMsg && <WarningAlert>{props.errorMsg}</WarningAlert>}
         </Col>
       </Row>
     </>
@@ -61,7 +66,10 @@ export const LoginWithEmailLightWalletComponent: React.SFC<IProps> = props => {
 };
 
 export const LoginWithEmailLightWallet = compose<React.SFC>(
-  appConnect<IProps>({
+  appConnect<IStateProps, IProps>({
+    stateToProps: state => ({
+      errorMsg: state.lightWalletWizard.errorMsg,
+    }),
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) => {
         dispatch(actions.wallet.lightWalletLogin(values.password));

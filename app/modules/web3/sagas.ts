@@ -33,7 +33,10 @@ export function* autoLockLightWalletWatcher(): Iterator<any> {
     if (lockWalletTask) {
       yield cancel(lockWalletTask);
     }
-    if (action.type === "NEW_PERSONAL_WALLET_PLUGGED" && action.payload.type !== WalletType.LIGHT) {
+    if (
+      action.type === "NEW_PERSONAL_WALLET_PLUGGED" &&
+      action.payload.walletMetadata.walletType !== WalletType.LIGHT
+    ) {
       continue;
     }
     lockWalletTask = yield* forkAndInject(autoLockLightWallet);

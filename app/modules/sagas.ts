@@ -10,9 +10,9 @@ import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
+import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { web3Sagas } from "./web3/sagas";
-import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 
 /**
  * Restart all sagas on error and report error to sentry

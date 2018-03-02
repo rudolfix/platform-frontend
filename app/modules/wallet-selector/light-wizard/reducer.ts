@@ -1,34 +1,20 @@
-import { ILightWallet } from "../../../lib/web3/LightWallet";
 import { AppReducer } from "../../../store";
 
 export interface ILightWalletWizardState {
   errorMsg?: string;
-  isWalletCreated: boolean;
-  isActive: boolean;
-  isSeedBacked: boolean;
-  lightWalletInstance?: ILightWallet;
-  salt?: string;
-  isSaltSent: boolean;
 }
 
-export const lightWalletWizardInitialState: ILightWalletWizardState = {
-  isWalletCreated: false,
-  isActive: false,
-  isSeedBacked: false,
-  isSaltSent: false,
-};
+export const lightWalletWizardInitialState: ILightWalletWizardState = {};
 
 export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
   state = lightWalletWizardInitialState,
   action,
 ): ILightWalletWizardState => {
   switch (action.type) {
-    case "LIGHT_WALLET_CREATED":
+    case "LIGHT_WALLET_CONNECTION_ERROR":
       return {
         ...state,
-        isWalletCreated: true,
-        lightWalletInstance: action.payload.lightWalletVault.walletInstance,
-        salt: action.payload.lightWalletVault.salt,
+        errorMsg: action.payload.errorMsg,
       };
   }
   return state;

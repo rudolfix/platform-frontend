@@ -14,6 +14,7 @@ import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
 import { initReducer } from "./modules/init/reducer";
 import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
+import { lightWalletWizardReducer } from "./modules/wallet-selector/light-wizard/reducer";
 import { FunctionWithDeps } from "./types";
 
 export interface IAppAction {
@@ -42,6 +43,7 @@ const appReducers = {
   auth: authReducer,
   signMessageModal: signMessageModalReducer,
   init: initReducer,
+  lightWalletWizard: lightWalletWizardReducer,
 };
 
 // add all custom reducers here

@@ -66,6 +66,7 @@ export const lightWizardFlows = {
               walletInstance,
               salt: lightWalletVault.salt,
             },
+            email,
             password,
           );
           await web3Manager.plugPersonalWallet(lightWallet);

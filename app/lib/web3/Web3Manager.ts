@@ -71,8 +71,7 @@ export class Web3Manager {
 
     this.dispatch(
       web3Actions.newPersonalWalletPlugged(
-        personalWallet.walletType,
-        personalWallet.walletSubType,
+        this.personalWallet.getMetadata(),
         personalWallet.ethereumAddress,
         isUnlocked,
       ),

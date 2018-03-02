@@ -1,13 +1,11 @@
-import * as React from "react";
-
 import { Field, FieldAttributes, FieldProps } from "formik";
-
-import { FormGroup, Input, Label } from "reactstrap";
+import * as React from "react";
+import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
 
 import { InputType } from "../../../../types";
 
 interface IFieldGroup {
-  label: string;
+  label?: string;
   placeholder?: string;
   touched: { [name: string]: boolean };
   errors: { [name: string]: string };
@@ -15,18 +13,35 @@ interface IFieldGroup {
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
-export const FormField: React.SFC<FieldGroupProps> = ({ name, type, ...props }) => (
+/* The function that encapsulates the logic of determining a value for Input field valid property. Note we have to
+   return boolean | undefined value. Undefined should be returned when the field has not been touched by the user. */
+const isValid = (
+  touched: { [name: string]: boolean },
+  errors: { [name: string]: string },
+  name: string,
+): boolean | undefined => {
+  if (touched && touched[name] !== true) {
+    return undefined;
+  }
+
+  return !(errors && errors[name]);
+};
+
+export const FormField: React.SFC<FieldGroupProps> = ({ label, name, type, ...props }) => (
   <FormGroup>
-    <Label for={name}>{props.label}</Label>
+    {label && <Label for={name}>{label}</Label>}
     <Field
       name={name}
       render={({ field }: FieldProps) => (
-        <Input {...field} type={type} value={field.value || ""} placeholder={props.placeholder} />
+        <Input
+          {...field}
+          type={type}
+          value={field.value || ""}
+          placeholder={props.placeholder}
+          valid={isValid(props.touched, props.errors, name)}
+        />
       )}
     />
-    {props.touched &&
-      props.touched[name] &&
-      props.errors &&
-      props.errors[name] && <span className="text-danger">{props.errors[name]}</span>}
+    {props.errors[name] && <FormFeedback>{props.errors[name]}</FormFeedback>}
   </FormGroup>
 );

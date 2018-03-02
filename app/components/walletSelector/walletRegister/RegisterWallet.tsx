@@ -40,7 +40,7 @@ const validationSchema = Yup.object().shape({
 const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
     <FormField
-      label="Email"
+      placeholder="Email"
       type={"email"}
       touched={formikBag.touched}
       errors={formikBag.errors}
@@ -48,14 +48,14 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
     />
     <FormField
       type={"password"}
-      label="Password"
+      placeholder="Password"
       touched={formikBag.touched}
       errors={formikBag.errors}
       name={PASSWORD}
     />
     <FormField
       type={"password"}
-      label="Repeat Password"
+      placeholder="Repeat Password"
       touched={formikBag.touched}
       errors={formikBag.errors}
       name={REPEAT_PASSWORD}

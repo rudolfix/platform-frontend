@@ -1,4 +1,8 @@
 import * as React from "react";
+import { Col, Row } from "reactstrap";
+
+import * as ledgerConfirm from "../../assets/img/wallet_selector/ledger_confirm.svg";
+import * as walletConfirmIcon from "../../assets/img/wallet_selector/wallet_confirm_icon.svg";
 import { selectConnectedWeb3State } from "../../modules/web3/reducer";
 import { WalletType } from "../../modules/web3/types";
 import { appConnect } from "../../store";
@@ -8,39 +12,36 @@ interface IStateProps {
 }
 
 export const BrowserWalletMessageSignPrompt: React.SFC = () => (
-  <div className="text-center">
-    <h1>Confirm your wallet ownership</h1>
-    <p>Please confirm on selected existing wallet that you will be using it for Neufund platform</p>
-  </div>
-);
-
-// this get more complicated when light wallet is locked
-export const LightWalletMessageSignPrompt: React.SFC = () => (
-  <div className="text-center">
-    <h1>Confirm your wallet ownership</h1>
-    <p>Please confirm on selected existing wallet that you will be using it for Neufund platform</p>
-  </div>
+  <Row className="text-center">
+    <Col>
+      <h1>Confirm your wallet ownership</h1>
+      <img className="mt-5 mb-4" src={walletConfirmIcon} />
+      <p className="font-weight-bold">
+        Please confirm on selected existing wallet that you will be using it for Neufund platform
+      </p>
+    </Col>
+  </Row>
 );
 
 export const LedgerWalletMessageSignPrompt: React.SFC = () => (
-  <div className="text-center">
-    <h1>Confirm you Ledger Ownership</h1>
-    <p>
-      Please confirm on your Nano Ledger that you are an owner of the device by clicking on the
-      right button
-    </p>
-  </div>
+  <Row className="text-center">
+    <Col>
+      <h1>Confirm you Ledger Ownership</h1>
+      <img className="mt-5 mb-4" src={ledgerConfirm} />
+      <p className="font-weight-bold">
+        Please confirm on your Nano Ledger that you are an owner of the device by clicking on the
+        right button
+      </p>
+    </Col>
+  </Row>
 );
 
 export const MessageSignPromptComponent: React.SFC<IStateProps> = ({ walletType }) => {
-  switch (walletType) {
-    case WalletType.BROWSER:
-      return <BrowserWalletMessageSignPrompt />;
-    case WalletType.LEDGER:
-      return <LedgerWalletMessageSignPrompt />;
-    default:
-      return <LightWalletMessageSignPrompt />;
-  }
+  return walletType === WalletType.LEDGER ? (
+    <LedgerWalletMessageSignPrompt />
+  ) : (
+    <BrowserWalletMessageSignPrompt />
+  );
 };
 
 export const MessageSignPrompt = appConnect<IStateProps>({

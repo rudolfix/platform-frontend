@@ -9,6 +9,7 @@ export const Home: React.SFC = () => (
       <Col>
         <h2 data-test-id="homepage-title">Home</h2>
         <p>Not logged in</p>
+        <ButtonSecondaryLink to={appRoutes.login}>Login</ButtonSecondaryLink>
         <ButtonSecondaryLink to={appRoutes.register}>Register</ButtonSecondaryLink>
       </Col>
     </Row>

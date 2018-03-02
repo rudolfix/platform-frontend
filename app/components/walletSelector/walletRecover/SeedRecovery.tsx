@@ -58,7 +58,7 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
       matchProp="value"
       value={this.state.words[wordNumber]}
       onChange={this.updateValueFactory(wordNumber)}
-      placeholder={"word " + (wordNumber + 1).toString(10)}
+      placeholder={(wordNumber + 1).toString(10) + ". Word"}
       noResultsText="No matching word"
     />
   );
@@ -97,14 +97,14 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
 
     return (
       <>
-        <Col className="mt-4 pb-5">
+        <Col className="mt-4 pb-4">
           <WalletResetHeader
             text={"Use the Recovery Phrase to restore your password."}
             currentStep={this.props.startingStep + this.state.page + 1}
             steps={this.props.extraSteps + SEED_LENGTH / WORDS_PER_VIEW}
           />
         </Col>
-        <Row className="my-3">
+        <Row className="my-2">
           <Col className="text-center">
             {this.state.words.filter(word => word !== null).join(" , ")}
           </Col>

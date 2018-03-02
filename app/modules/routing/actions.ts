@@ -8,8 +8,9 @@ import { recoverRoutes } from "../../components/walletSelector/walletRecover/rec
 const createRoutingAction = (path: string) => push(path);
 
 export const routingActions = {
-  // navigate back
+  // navigation primitives
   goBack: () => createAction("GO_BACK", {}),
+  goTo: (absolutePath: string) => createRoutingAction(absolutePath),
 
   // default routes
   goHome: () => createRoutingAction("/"),

@@ -40,8 +40,8 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
       getWalletKeyFromSaltAndPassword: (): Promise<Uint8Array> => {
         return Promise.resolve(new Uint8Array([132, 133]));
       },
-      encryptString: (): { encStr: string; nonce: string } => {
-        return { encStr: "test", nonce: "test" };
+      encryptString: (): string => {
+        return "test";
       },
     });
 

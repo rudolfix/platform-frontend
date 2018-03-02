@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container } from "reactstrap";
 
-import { isLoginRoute } from "../../../modules/routing/selectors";
+import { selectIsLoginRoute } from "../../../modules/routing/selectors";
 import { appConnect } from "../../../store";
 import { LoginLightWallet } from "./LoginLightWallet";
 import { RegisterLightWallet } from "./RegisterLightWallet";
@@ -16,6 +16,6 @@ export const WalletLightComponent: React.SFC<IStateProps> = ({ isLoginRoute }) =
 
 export const WalletLight = appConnect<IStateProps>({
   stateToProps: s => ({
-    isLoginRoute: isLoginRoute(s.router),
+    isLoginRoute: selectIsLoginRoute(s.router),
   }),
 })(WalletLightComponent);

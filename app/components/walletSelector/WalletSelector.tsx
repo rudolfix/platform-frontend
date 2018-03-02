@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import { actions } from "../../modules/actions";
-import { isLoginRoute } from "../../modules/routing/selectors";
+import { selectIsLoginRoute } from "../../modules/routing/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { appRoutes } from "../AppRouter";
@@ -68,8 +68,8 @@ export const WalletSelector = compose<React.SFC>(
   appConnect<IStateProps>({
     stateToProps: s => ({
       isMessageSigning: s.walletSelector.isMessageSigning,
-      rootPath: isLoginRoute(s.router) ? appRoutes.login : appRoutes.register,
-      isLoginRoute: isLoginRoute(s.router),
+      rootPath: selectIsLoginRoute(s.router) ? appRoutes.login : appRoutes.register,
+      isLoginRoute: selectIsLoginRoute(s.router),
     }),
     options: {
       pure: false,

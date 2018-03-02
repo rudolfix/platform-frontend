@@ -1,5 +1,6 @@
 import { isNil, omitBy } from "lodash";
 import {
+  IKycBeneficialOwner,
   IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
@@ -122,9 +123,49 @@ export const kycActions = {
     }),
 
   // beneficial owners
+  kycLoadBeneficialOwners: () => createSimpleAction("KYC_LOAD_BENEFICIAL_OWNERS"),
+  kycUpdateBeneficialOwners: (
+    loadingBeneficialOwners: boolean,
+    beneficialOwners: IKycBeneficialOwner[] = [],
+  ) => createAction("KYC_UPDATE_BENEFICIAL_OWNERS", { loadingBeneficialOwners, beneficialOwners }),
+  kycAddBeneficialOwner: () => createSimpleAction("KYC_ADD_BENEFICIAL_OWNER"),
+  kycDeleteBeneficialOwner: (id: string) => createAction("KYC_DELETE_BENEFICIAL_OWNER", { id }),
+  kycSubmitBeneficialOwner: (owner: IKycBeneficialOwner) =>
+    createAction("KYC_SUBMIT_BENEFICIAL_OWNER", { owner }),
+  kycUpdateBeneficialOwner: (
+    loadingBeneficialOwner: boolean,
+    id?: string,
+    beneficialOwner?: IKycBeneficialOwner,
+  ) => createAction("KYC_UPDATE_BENEFICIAL_OWNER", { loadingBeneficialOwner, id, beneficialOwner }),
 
   // beneficial owners documents
+  kycLoadBeneficialOwnerDocumentList: (boid: string) =>
+    createAction("KYC_LOAD_BENEFICIAL_OWNER_FILE_LIST", { boid }),
 
+  kycUploadBeneficialOwnerDocument: (boid: string, file: File) =>
+    createAction("KYC_UPLOAD_BENEFICIAL_OWNER_FILE", { boid, file }),
+
+  kycUpdateBeneficialOwnerDocuments: (
+    boid: string,
+    beneficialOwnerFilesLoading: boolean,
+    beneficialOwnerFiles: IKycFileInfo[] = [],
+  ) =>
+    createAction("KYC_UPDATE_BENEFICIAL_OWNER_FILES_INFO", {
+      boid,
+      beneficialOwnerFilesLoading,
+      beneficialOwnerFiles,
+    }),
+
+  kycUpdateBeneficialOwnerDocument: (
+    boid: string,
+    beneficialOwnerFileUploading: boolean,
+    file?: IKycFileInfo,
+  ) =>
+    createAction("KYC_UPDATE_BENEFICIAL_OWNER_FILE_INFO", {
+      boid,
+      beneficialOwnerFileUploading,
+      file,
+    }),
   // request
   kycLoadBusinessRequest: () => createSimpleAction("KYC_LOAD_BUSINESS_REQUEST_STATE"),
 

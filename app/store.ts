@@ -73,7 +73,7 @@ export type IAppState = typeof appStateInstance & {
 export const reducers = combineReducers<IAppState>(allReducers);
 
 interface IAppConnectOptions<S, D, O> {
-  stateToProps?: (state: IAppState) => S;
+  stateToProps?: (state: IAppState, ownProps: O) => S;
   dispatchToProps?: (dispatch: AppDispatch, ownProps: O) => D;
   options?: Options<IAppState, S, {}>;
 }

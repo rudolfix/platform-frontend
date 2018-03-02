@@ -8,6 +8,7 @@ import { symbols } from "../../di/symbols";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { KycApi } from "../../lib/api/KycApi";
 import {
+  IKycBeneficialOwner,
   IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
@@ -310,6 +311,122 @@ function* loadBusinessFiles(): Iterator<any> {
   }
 }
 
+// beneficial owners
+function* loadBeneficialOwners(): Iterator<any> {
+  while (true) {
+    const action: TAction = yield neuTake("KYC_LOAD_BENEFICIAL_OWNERS");
+    if (action.type !== "KYC_LOAD_BENEFICIAL_OWNERS") {
+      continue;
+    }
+    try {
+      const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwners(true));
+      const result: IHttpResponse<IKycBeneficialOwner[]> = yield kcyService.getBeneficialOwners();
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwners(false, result.body));
+    } catch (_e) {
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwners(false));
+    }
+  }
+}
+
+function* createBeneficialOwner(): Iterator<any> {
+  while (true) {
+    const action: TAction = yield neuTake("KYC_ADD_BENEFICIAL_OWNER");
+    if (action.type !== "KYC_ADD_BENEFICIAL_OWNER") {
+      continue;
+    }
+    try {
+      const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(true));
+      const result: IHttpResponse<IKycBeneficialOwner> = yield kcyService.postBeneficialOwner({});
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
+    } catch (_e) {
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false));
+    }
+  }
+}
+
+function* submitBeneficialOwner(): Iterator<any> {
+  while (true) {
+    const action: TAction = yield neuTake("KYC_SUBMIT_BENEFICIAL_OWNER");
+    if (action.type !== "KYC_SUBMIT_BENEFICIAL_OWNER") {
+      continue;
+    }
+    try {
+      const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(true));
+      const result: IHttpResponse<IKycBeneficialOwner> = yield kcyService.putBeneficialOwner(
+        action.payload.owner,
+      );
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
+    } catch (_e) {
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false));
+    }
+  }
+}
+
+function* deleteBeneficalOwner(): Iterator<any> {
+  while (true) {
+    const action: TAction = yield neuTake("KYC_DELETE_BENEFICIAL_OWNER");
+    if (action.type !== "KYC_DELETE_BENEFICIAL_OWNER") {
+      continue;
+    }
+    try {
+      const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(true));
+      yield kcyService.deleteBeneficialOwner(action.payload.id);
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false, action.payload.id, undefined));
+    } catch (_e) {
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwner(false));
+    }
+  }
+}
+
+function* uploadBeneficialOwnerFile(): Iterator<any> {
+  while (true) {
+    const action: TAction = yield neuTake("KYC_UPLOAD_BENEFICIAL_OWNER_FILE");
+    if (action.type !== "KYC_UPLOAD_BENEFICIAL_OWNER_FILE") {
+      continue;
+    }
+    const { boid, file } = action.payload;
+    try {
+      const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, true));
+      const result: IHttpResponse<IKycFileInfo> = yield kcyService.uploadBeneficialOwnerDocument(
+        boid,
+        file,
+      );
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false, result.body));
+    } catch (_e) {
+      yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false));
+    }
+  }
+}
+
+function* executeLoadBeneficialOwnerFiles(boid: string): Iterator<any> {
+  try {
+    const kcyService: KycApi = yield effects.call(getDependency, symbols.apiKycService);
+    yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocuments(boid, true));
+    const result: IHttpResponse<IKycFileInfo[]> = yield kcyService.getBeneficialOwnerDocuments(
+      boid,
+    );
+    yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocuments(boid, false, result.body));
+  } catch (_e) {
+    yield effects.put(actions.kyc.kycUpdateBeneficialOwnerDocuments(boid, false));
+  }
+}
+
+function* loadBeneficialOwnerFiles(): Iterator<any> {
+  while (true) {
+    const action: TAction = yield neuTake("KYC_LOAD_BENEFICIAL_OWNER_FILE_LIST");
+    if (action.type !== "KYC_LOAD_BENEFICIAL_OWNER_FILE_LIST") {
+      continue;
+    }
+    const { boid } = action.payload;
+    yield effects.fork(executeLoadBeneficialOwnerFiles, boid);
+  }
+}
+
 // request
 function* loadBusinessRequest(): Iterator<any> {
   while (true) {
@@ -368,6 +485,13 @@ export const kycSagas = function* routingSagas(): Iterator<effects.Effect> {
     effects.fork(submitBusinessData),
     effects.fork(uploadBusinessFile),
     effects.fork(loadBusinessFiles),
+
+    effects.fork(loadBeneficialOwners),
+    effects.fork(createBeneficialOwner),
+    effects.fork(deleteBeneficalOwner),
+    effects.fork(submitBeneficialOwner),
+    effects.fork(loadBeneficialOwnerFiles),
+    effects.fork(uploadBeneficialOwnerFile),
 
     effects.fork(submitBusinessRequest),
     effects.fork(loadBusinessRequest),

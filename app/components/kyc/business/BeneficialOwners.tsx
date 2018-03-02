@@ -4,15 +4,21 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
+import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
+import { HorizontalLine } from "../../shared/HorizontalLine";
 import { ProgressStepper } from "../../shared/ProgressStepper";
+import { KYCBeneficialOwner } from "./BeneficialOwner";
 
-interface IStateProps {}
+interface IStateProps {
+  beneficialOwners: IKycBeneficialOwner[];
+}
 
 interface IDispatchProps {
   submit: () => void;
+  createBeneficialOwner: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -27,6 +33,22 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
     Please list and identify all shareholders with a stake of 25% or more in your company.
     <br />
     <br />
+    {props.beneficialOwners.map(
+      (owner, index) =>
+        owner.id ? (
+          <KYCBeneficialOwner key={owner.id} owner={owner} index={index} id={owner.id} />
+        ) : (
+          <div />
+        ),
+    )}
+    <HorizontalLine />
+    <br />
+    <br />
+    <ButtonSecondary onClick={props.createBeneficialOwner}>
+      Add new Beneficial Owner!
+    </ButtonSecondary>
+    <br />
+    <br />
     <ButtonPrimary color="primary" type="submit" onClick={props.submit}>
       Submit Request
     </ButtonPrimary>
@@ -35,14 +57,17 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
 
 export const KYCBeneficialOwners = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: () => ({}),
+    stateToProps: state => ({
+      beneficialOwners: state.kyc.beneficialOwners,
+    }),
     dispatchToProps: dispatch => ({
       submit: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),
+      createBeneficialOwner: () => dispatch(actions.kyc.kycAddBeneficialOwner()),
     }),
   }),
   onEnterAction({
     actionCreator: dispatch => {
-      dispatch(actions.kyc.kycLoadBusinessData());
+      dispatch(actions.kyc.kycLoadBeneficialOwners());
     },
   }),
 )(KYCBeneficialOwnersComponent);

@@ -1,13 +1,13 @@
 import * as Yup from "yup";
 
 export interface IKycPerson {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   address?: string;
   city?: string;
   zipCode?: string;
   country?: string;
-  birthdate: string;
+  birthdate?: string;
 }
 
 export const KycPersonSchema = Yup.object().shape({
@@ -96,8 +96,8 @@ export const KycLegalRepresentativeSchema = KycPersonSchema;
 
 // beneficial owner
 export interface IKycBeneficialOwner extends IKycPerson {
-  ownership: number;
-  id: string;
+  ownership?: number;
+  id?: string;
 }
 export const KycBeneficialOwnerSchema = KycPersonSchema.concat(
   Yup.object().shape({

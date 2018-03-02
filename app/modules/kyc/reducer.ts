@@ -1,6 +1,8 @@
+import { filter, findIndex } from "lodash";
 import { AppReducer } from "../../store";
 
 import {
+  IKycBeneficialOwner,
   IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
@@ -30,18 +32,49 @@ export interface IKycState {
   businessFileUploading?: boolean;
   businessFiles: IKycFileInfo[];
 
+  // legal representatives
   legalRepresentative?: IKycLegalRepresentative;
   legalRepresentativeLoading?: boolean;
   legalRepresentativeFilesLoading?: boolean;
   legalRepresentativeFileUploading?: boolean;
   legalRepresentativeFiles: IKycFileInfo[];
+
+  // beneficial owners
+  loadingBeneficialOwners?: boolean;
+  beneficialOwners: IKycBeneficialOwner[];
+  beneficialOwnerFilesLoading: { [id: string]: boolean };
+  beneficialOwnerFileUploading: { [id: string]: boolean };
+  beneficialOwnerFiles: { [id: string]: IKycFileInfo[] };
 }
 
 const kycInitialState: IKycState = {
   individualFiles: [],
   businessFiles: [],
   legalRepresentativeFiles: [],
+  beneficialOwners: [],
+  beneficialOwnerFiles: {},
+  beneficialOwnerFilesLoading: {},
+  beneficialOwnerFileUploading: {},
 };
+
+function appendIfExists<T>(array: T[], item: T | undefined): T[] {
+  if (!array) array = [];
+  if (item) return [...array, item];
+  return array;
+}
+
+function updateArrayItem<T extends { id?: string }>(array: T[], id?: string, item?: T): T[] {
+  if (!id) return array; // no changes
+  if (id && !item) return filter(array, item => item.id !== id); // delete item
+  if (id && item) {
+    const index = findIndex(array, item => item.id === id);
+    if (index === -1) return [...array, item]; // append
+    array = [...[], ...array];
+    array[index] = item;
+    return array;
+  }
+  return array;
+}
 
 export const kycReducer: AppReducer<IKycState> = (state = kycInitialState, action): IKycState => {
   switch (action.type) {
@@ -55,35 +88,69 @@ export const kycReducer: AppReducer<IKycState> = (state = kycInitialState, actio
       state = {
         ...state,
         individualFileUploading: action.payload.individualFileUploading,
-        individualFiles: action.payload.file
-          ? [...state.individualFiles, action.payload.file]
-          : state.individualFiles,
+        individualFiles: appendIfExists(state.individualFiles, action.payload.file),
       };
       break;
-    // business
     case "KYC_UPDATE_BUSINESS_DATA":
     case "KYC_UPDATE_BUSINESS_REQUEST_STATE":
     case "KYC_UPDATE_BUSINESS_FILES_INFO":
     case "KYC_UPDATE_LEGAL_REPRESENTATIVE":
     case "KYC_UPDATE_LEGAL_REPRESENTATIVE_FILES_INFO":
+    case "KYC_UPDATE_BENEFICIAL_OWNERS":
       state = { ...state, ...action.payload };
       break;
     case "KYC_UPDATE_LEGAL_REPRESENTATIVE_FILE_INFO":
       state = {
         ...state,
         legalRepresentativeFileUploading: action.payload.legalRepresentativeUploading,
-        legalRepresentativeFiles: action.payload.file
-          ? [...state.legalRepresentativeFiles, action.payload.file]
-          : state.legalRepresentativeFiles,
+        legalRepresentativeFiles: appendIfExists(
+          state.legalRepresentativeFiles,
+          action.payload.file,
+        ),
       };
       break;
     case "KYC_UPDATE_BUSINESS_FILE_INFO":
       state = {
         ...state,
         businessFileUploading: action.payload.businessFileUploading,
-        businessFiles: action.payload.file
-          ? [...state.businessFiles, action.payload.file]
-          : state.businessFiles,
+        businessFiles: appendIfExists(state.businessFiles, action.payload.file),
+      };
+      break;
+    case "KYC_UPDATE_BENEFICIAL_OWNER":
+      state = {
+        ...state,
+        beneficialOwners: updateArrayItem(
+          state.beneficialOwners,
+          action.payload.id,
+          action.payload.beneficialOwner,
+        ),
+      };
+      break;
+    case "KYC_UPDATE_BENEFICIAL_OWNER_FILES_INFO":
+      state = {
+        ...state,
+        beneficialOwnerFilesLoading: {
+          ...state.beneficialOwnerFilesLoading,
+          [action.payload.boid]: action.payload.beneficialOwnerFilesLoading,
+        },
+        beneficialOwnerFiles: {
+          ...state.beneficialOwnerFiles,
+          [action.payload.boid]: action.payload.beneficialOwnerFiles,
+        },
+      };
+      break;
+    case "KYC_UPDATE_BENEFICIAL_OWNER_FILE_INFO":
+      const { boid } = action.payload;
+      state = {
+        ...state,
+        beneficialOwnerFileUploading: {
+          ...state.beneficialOwnerFileUploading,
+          [boid]: action.payload.beneficialOwnerFileUploading,
+        },
+        beneficialOwnerFiles: {
+          ...state.beneficialOwnerFiles,
+          [boid]: appendIfExists(state.beneficialOwnerFiles[boid], action.payload.file),
+        },
       };
       break;
   }

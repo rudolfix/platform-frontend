@@ -5,7 +5,7 @@ import { appConnect } from "../../../store";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { flows } from "../../../modules/flows";
-import { RegisterWalletComponent } from "../walletRegister/RegisterWallet";
+import { RegisterWalletComponent } from "../light/RegisterLightWallet";
 import { recoverRoutes } from "./recoverRoutes";
 import { WalletLightSeedRecoveryComponent } from "./SeedRecovery";
 import { WalletResetHeader } from "./WalletResetHeader";

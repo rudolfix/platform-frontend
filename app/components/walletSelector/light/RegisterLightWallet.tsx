@@ -83,7 +83,7 @@ export const RegisterWalletComponent: React.SFC<IProps> = props => {
   );
 };
 
-export const RegisterWallet = compose<React.SFC>(
+export const RegisterLightWallet = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>

@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import { WalletBrowser } from "./WalletBrowser";
 import { WalletLedger } from "./WalletLedger";
-import { WalletLight } from "./walletRegister/WalletLight";
+import { WalletLight } from "./light/WalletLight";
 
 interface IProps {
   rootPath: string;

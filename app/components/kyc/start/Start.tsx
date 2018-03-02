@@ -16,7 +16,7 @@ interface IProps {
 export const KYCStartComponent: React.SFC<IProps> = props => (
   <div>
     <br />
-    <ProgressStepper steps={3} currentStep={1} />
+    <ProgressStepper steps={4} currentStep={1} />
     <br />
     <h1>Start your KYC</h1>
     <br />
@@ -29,8 +29,8 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
 export const KYCStart = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      goToPerson: () => dispatch(actions.routing.goToKYCPersonalStart()),
-      goToCompany: () => dispatch(actions.routing.goToKYCCompanyStart()),
+      goToPerson: () => dispatch(actions.routing.goToKYCIndividualStart()),
+      goToCompany: () => dispatch(actions.routing.goToKYCBusinessStart()),
     }),
   }),
 )(KYCStartComponent);

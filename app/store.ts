@@ -6,6 +6,8 @@ import { genericErrorModalReducer } from "./modules/genericErrorModal/reducer";
 import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 
+import { kycReducer } from "./modules/kyc/reducer";
+
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import { web3Reducer } from "./modules/web3/reducer";
 
@@ -44,6 +46,7 @@ const appReducers = {
   auth: authReducer,
   genericErrorModal: genericErrorModalReducer,
   signMessageModal: signMessageModalReducer,
+  kyc: kycReducer,
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,
 };

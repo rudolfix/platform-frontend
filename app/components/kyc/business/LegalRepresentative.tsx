@@ -12,17 +12,28 @@ import { actions } from "../../../modules/actions";
 
 import { FormField } from "../../shared/forms/forms";
 
-import { IKycIndividualData, KycIndividudalDataSchema } from "../../../lib/api/KycApi.interfaces";
+import {
+  IKycFileInfo,
+  IKycIndividualData,
+  IKycLegalRepresentative,
+  KycIndividudalDataSchema,
+} from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
+import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 interface IStateProps {
-  currentValues?: IKycIndividualData;
+  currentValues?: IKycLegalRepresentative;
   loadingData: boolean;
+  fileUploading: boolean;
+  filesLoading: boolean;
+  files: IKycFileInfo[];
 }
 
 interface IDispatchProps {
   submitForm: (values: IKycIndividualData) => void;
+  onDropFile: (file: File) => void;
+  onContinue: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -68,12 +79,8 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData>) => (
       name="country"
     />
     <br />
-    <br />
-    <div>TODO add checkboxes, please ask dave :)</div>
-    <br />
-    <br />
     <ButtonPrimary color="primary" type="submit" disabled={!formikBag.isValid}>
-      Submit and continue
+      Save
     </ButtonPrimary>
   </Form>
 );
@@ -84,32 +91,63 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(KYCForm);
 
-export const KYCPersonalStartComponent: React.SFC<IProps> = props =>
+export const KycLegalRepresentativeComponent: React.SFC<IProps> = props =>
   props.loadingData ? (
     <div />
   ) : (
     <div>
       <br />
-      <ProgressStepper steps={4} currentStep={2} />
+      <ProgressStepper steps={5} currentStep={3} />
       <br />
-      <h1>Personal Details</h1>
+      <h3>Legal Representative</h3>
+      <br />
+      Please tell us about yourself
+      <br />
       <br />
       <KYCEnhancedForm {...props} />
+      <br />
+      <h3>Supporting Documents</h3>
+      <br />
+      Please upload a scan of your ID here.
+      <br />
+      <KycFileUploadList
+        onDropFile={props.onDropFile}
+        files={props.files}
+        fileUploading={props.fileUploading}
+        filesLoading={props.filesLoading}
+      />
+      <br /> <br />
+      <ButtonPrimary
+        color="primary"
+        type="submit"
+        disabled={!props.currentValues || props.files.length === 0}
+        onClick={props.onContinue}
+      >
+        Continue
+      </ButtonPrimary>
     </div>
   );
 
-export const KYCPersonalStart = compose<React.SFC>(
+export const KycLegalRepresentative = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      currentValues: state.kyc.individualData,
-      loadingData: !!state.kyc.individualDataLoading,
+      currentValues: state.kyc.legalRepresentative,
+      loadingData: !!state.kyc.legalRepresentativeLoading,
+      files: state.kyc.legalRepresentativeFiles,
+      filesLoading: !!state.kyc.legalRepresentativeFilesLoading,
+      fileUploading: !!state.kyc.legalRepresentativeFileUploading,
     }),
     dispatchToProps: dispatch => ({
+      onDropFile: (file: File) => dispatch(actions.kyc.kycUploadLegalRepresentativeDocument(file)),
+      onContinue: () => dispatch(actions.routing.goToKYCBusinessData()),
       submitForm: (values: IKycIndividualData) =>
-        dispatch(actions.kyc.kycSubmitIndividualData(values)),
+        dispatch(actions.kyc.kycSubmitLegalRepresentative(values)),
     }),
   }),
   onEnterAction({
-    actionCreator: dispatch => dispatch(actions.kyc.kycLoadIndividualData()),
+    actionCreator: dispatch => {
+      dispatch(actions.kyc.kycLoadLegalRepresentative());
+      dispatch(actions.kyc.kycLoadLegalRepresentativeDocumentList());
+    },
   }),
-)(KYCPersonalStartComponent);
+)(KycLegalRepresentativeComponent);

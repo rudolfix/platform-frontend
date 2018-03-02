@@ -117,6 +117,7 @@ export class JsonHttpClient implements IHttpClient {
     config: IHttpRequestCommon,
   ): Promise<IHttpResponse<T>> {
     let response;
+
     try {
       let body: string | FormData | undefined = config.body
         ? JSON.stringify(toSnakeCase(config.body))

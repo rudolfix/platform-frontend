@@ -80,6 +80,12 @@ export class Web3Manager {
     this.web3ConnectionWatcher.start();
   }
 
+  public async unplugPersonalWallet(): Promise<void> {
+    this.web3ConnectionWatcher.stop();
+    this.personalWallet = undefined;
+    this.dispatch(web3Actions.personalWalletDisconnected());
+  }
+
   public async sign(message: string): Promise<string> {
     if (this.personalWallet) {
       return this.personalWallet.signMessage(message);

@@ -11,6 +11,11 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
   action,
 ): ILightWalletWizardState => {
   switch (action.type) {
+    case "LIGHT_WALLET_LOGIN":
+      return {
+        ...state,
+        errorMsg: undefined,
+      };
     case "LIGHT_WALLET_CONNECTION_ERROR":
       return {
         ...state,
@@ -19,3 +24,4 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
   }
   return state;
 };
+  

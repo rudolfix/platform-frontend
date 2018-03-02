@@ -39,7 +39,7 @@ export const web3Reducer: AppReducer<IWeb3State> = (
     case "PERSONAL_WALLET_DISCONNECTED":
       return {
         connected: false,
-        previousConnectedWallet: state.connected ? state.wallet : undefined,
+        previousConnectedWallet: state.connected ? state.wallet : state.previousConnectedWallet,
       };
     case "WEB3_WALLET_UNLOCKED":
       if (state.connected) {

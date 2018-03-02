@@ -60,9 +60,11 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
       errors={formikBag.errors}
       name={REPEAT_PASSWORD}
     />
-    <ButtonPrimary type="submit" disabled={!formikBag.isValid}>
-      Submit
-    </ButtonPrimary>
+    <div className="text-center">
+      <ButtonPrimary type="submit" disabled={!formikBag.isValid}>
+        REGISTER
+      </ButtonPrimary>
+    </div>
   </Form>
 );
 

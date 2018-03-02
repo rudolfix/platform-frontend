@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import { dummyLogger, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
-import { VaultApi } from "../../../lib/api/VaultApi";
+import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {

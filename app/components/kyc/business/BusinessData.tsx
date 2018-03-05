@@ -37,64 +37,66 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
+const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
+  <Form>
+    <FormField
+      label="Company Name"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name="name"
+    />
+    <FormField
+      label="Place of incorporation"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name="jurisdictionOfIncorporation"
+    />
+    <FormField
+      label="Legal Form"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name="legalForm"
+    />
+    <br /> <br />
+    <FormField
+      label="Address"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name="address"
+    />
+    <FormField
+      label="Zip Code"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name="zipCode"
+    />
+    <FormField label="City" touched={formikBag.touched} errors={formikBag.errors} name="city" />
+    <FormField
+      label="Country"
+      touched={formikBag.touched}
+      errors={formikBag.errors}
+      name="country"
+    />
+    <br />
+    <ButtonPrimary
+      color="primary"
+      type="submit"
+      disabled={!formikBag.isValid || formikBag.loadingData}
+    >
+      Save
+    </ButtonPrimary>
+  </Form>
+);
+
+const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
+  validationSchema: KycBusinessDataSchema,
+  mapPropsToValues: props => props.currentValues as IKycBusinessData,
+  enableReinitialize: true,
+  isInitialValid: (props: any) => KycBusinessDataSchema.isValidSync(props.currentValues),
+  handleSubmit: (values, props) => props.props.submitForm(values),
+})(KYCForm);
+
 export const KycBusinessDataComponent: React.SFC<IProps> = props => {
-  const KYCForm = (formikBag: FormikProps<IKycBusinessData>) => (
-    <Form>
-      <FormField
-        label="Company Name"
-        touched={formikBag.touched}
-        errors={formikBag.errors}
-        name="name"
-      />
-      <FormField
-        label="Place of incorporation"
-        touched={formikBag.touched}
-        errors={formikBag.errors}
-        name="jurisdictionOfIncorporation"
-      />
-      <FormField
-        label="Legal Form"
-        touched={formikBag.touched}
-        errors={formikBag.errors}
-        name="legalForm"
-      />
-      <br /> <br />
-      <FormField
-        label="Address"
-        touched={formikBag.touched}
-        errors={formikBag.errors}
-        name="address"
-      />
-      <FormField
-        label="Zip Code"
-        touched={formikBag.touched}
-        errors={formikBag.errors}
-        name="zipCode"
-      />
-      <FormField label="City" touched={formikBag.touched} errors={formikBag.errors} name="city" />
-      <FormField
-        label="Country"
-        touched={formikBag.touched}
-        errors={formikBag.errors}
-        name="country"
-      />
-      <br />
-      <ButtonPrimary
-        color="primary"
-        type="submit"
-        disabled={!formikBag.isValid || props.loadingData}
-      >
-        Save
-      </ButtonPrimary>
-    </Form>
-  );
-
-  const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
-    validationSchema: KycBusinessDataSchema,
-    mapPropsToValues: props => props.currentValues as IKycBusinessData,
-    handleSubmit: (values, props) => props.props.submitForm(values),
-  })(KYCForm);
-
   return (
     <div>
       <br />

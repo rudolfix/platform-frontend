@@ -4,6 +4,7 @@ import { Modal, ModalBody, Row } from "reactstrap";
 import { actions } from "../../modules/actions";
 import { IErrorObj } from "../../modules/genericErrorModal/reducer";
 import { appConnect } from "../../store";
+import { ButtonPrimary } from "../shared/Buttons";
 
 interface IStateProps {
   isOpen: boolean;
@@ -22,6 +23,9 @@ const GenericErrorModalComponent: React.SFC<IStateProps & IDispatchProps> = prop
       </Row>
       <Row className="mb-5 justify-content-center">
         <p>{props.errorObj.errorMsg}</p>
+      </Row>
+      <Row className="mb-5 justify-content-center">
+        <ButtonPrimary onClick={props.onCancel}> Cancel </ButtonPrimary>
       </Row>
     </ModalBody>
   </Modal>

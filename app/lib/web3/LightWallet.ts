@@ -59,7 +59,7 @@ export class LightDeserializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
 export class LightWalletWrongPassword extends LightWalletError {}
 
-// refactor this class. It should be just bunch of functions
+// it's useful to have it as a class to allow injection and mocking.Todo: remove static functions and probably move to separate file
 @injectable()
 export class LightWalletUtil {
   public async deserializeLightWalletVault(

@@ -3,7 +3,7 @@ import { TAction } from "./actions";
 
 import { Container } from "inversify";
 
-import { fork } from "redux-saga/effects";
+import { call, fork } from "redux-saga/effects";
 import { getDependencies } from "../middlewares/redux-injectify";
 import { FunctionWithDeps } from "../types";
 import { authSagas } from "./auth/sagas";
@@ -60,7 +60,7 @@ export function* callAndInject(func: FunctionWithDeps, ...args: any[]): Iterator
 
   const deps = depSymbols.map(s => container.get(s));
 
-  return yield func(...deps, ...args);
+  return yield (call as any)(func, ...deps, ...args);
 }
 
 export function* forkAndInject(func: FunctionWithDeps): any {

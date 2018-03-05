@@ -21,6 +21,22 @@ import { WalletType } from "../../web3/types";
 const VAULT_MSG = "pleaseallowmetointroducemyselfim";
 const GENERATED_KEY_SIZE = 56;
 
+export async function getVaultKey(
+  lightWalletUtil: LightWalletUtil,
+  salt: string,
+  password: string,
+): Promise<string> {
+  const walletKey = await lightWalletUtil.getWalletKeyFromSaltAndPassword(
+    password,
+    salt,
+    GENERATED_KEY_SIZE,
+  );
+  return lightWalletUtil.encryptString({
+    string: VAULT_MSG,
+    pwDerivedKey: walletKey,
+  });
+}
+
 export const lightWizardFlows = {
   tryConnectingWithLightWallet: (email: string, password: string, seed?: string) =>
     injectableFn(
@@ -51,15 +67,7 @@ export const lightWizardFlows = {
             salt: lightWalletVault.salt,
             email: email,
           });
-          const walletKey = await lightWalletUtil.getWalletKeyFromSaltAndPassword(
-            password,
-            lightWalletVault.salt,
-            GENERATED_KEY_SIZE,
-          );
-          const vaultKey = lightWalletUtil.encryptString({
-            string: VAULT_MSG,
-            pwDerivedKey: walletKey,
-          });
+          const vaultKey = await getVaultKey(lightWalletUtil, lightWalletVault.salt, password);
           await vaultApi.store(vaultKey, lightWalletVault.walletInstance);
           const lightWallet = await lightWalletConnector.connect(
             {

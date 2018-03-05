@@ -20,7 +20,7 @@ interface IDispatchProps {
 
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
   <div>
-    <h2>We need your password to unlock your wallet</h2>
+    <h2>Sign message on your wallet</h2>
     <ButtonSecondary onClick={onCancel}>Cancel</ButtonSecondary>
   </div>
 );

@@ -24,4 +24,3 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
   }
   return state;
 };
-  

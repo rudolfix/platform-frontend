@@ -2,7 +2,7 @@ import { AppReducer } from "../../store";
 
 export interface IGenericErrorModalState {
   isOpen: boolean;
-  errorObj: IErrorObj;
+  errorObj?: IErrorObj;
 }
 export interface IErrorObj {
   mainError: string;
@@ -10,7 +10,6 @@ export interface IErrorObj {
 }
 const initialState: IGenericErrorModalState = {
   isOpen: false,
-  errorObj: { mainError: "", errorMsg: "" },
 };
 
 export const genericErrorModalReducer: AppReducer<IGenericErrorModalState> = (
@@ -27,6 +26,7 @@ export const genericErrorModalReducer: AppReducer<IGenericErrorModalState> = (
     case "GENERIC_ERROR_MODAL_HIDE":
       return {
         ...state,
+        errorObj: undefined,
         isOpen: false,
       };
   }

@@ -8,7 +8,7 @@ import { ButtonPrimary } from "../shared/Buttons";
 
 interface IStateProps {
   isOpen: boolean;
-  errorObj: IErrorObj;
+  errorObj?: IErrorObj;
 }
 
 interface IDispatchProps {
@@ -19,10 +19,10 @@ const GenericErrorModalComponent: React.SFC<IStateProps & IDispatchProps> = prop
   <Modal isOpen={props.isOpen} toggle={props.onCancel}>
     <ModalBody>
       <Row className="mt-5 justify-content-center">
-        <h5>{props.errorObj.mainError}</h5>
+        <h5>{props.errorObj && props.errorObj.mainError}</h5>
       </Row>
       <Row className="mb-5 justify-content-center">
-        <p>{props.errorObj.errorMsg}</p>
+        <p>{props.errorObj && props.errorObj.errorMsg}</p>
       </Row>
       <Row className="mb-5 justify-content-center">
         <ButtonPrimary onClick={props.onCancel}> Cancel </ButtonPrimary>

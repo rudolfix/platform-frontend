@@ -6,9 +6,11 @@ import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectSt
 import {
   LightCreationError,
   LightDeserializeError,
+  LightKeyEncryptError,
   LightSignMessageError,
   LightWalletConnector,
   LightWalletUtil,
+  LightWalletWrongPassword,
   LightWrongPasswordSaltError,
 } from "../../../lib/web3/LightWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
@@ -73,7 +75,12 @@ export const lightWizardFlows = {
           else dispatch(actions.wallet.connected());
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
-          dispatch(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+          dispatch(
+            actions.genericErrorModal.showError(
+              "LightWallet Error",
+              mapLightWalletErrorToErrorMessage(e),
+            ),
+          );
         }
       },
       [
@@ -100,6 +107,12 @@ function mapLightWalletErrorToErrorMessage(e: Error): string {
   }
   if (e instanceof LightDeserializeError) {
     return "Problem with Vault retrieval";
+  }
+  if (e instanceof LightKeyEncryptError) {
+    return "Problem with lightWallet Encryption";
+  }
+  if (e instanceof LightWalletWrongPassword) {
+    return "Password is not correct";
   }
   return "Light wallet unavailable";
 }

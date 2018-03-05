@@ -16,7 +16,7 @@ import {
   IKycFileInfo,
   IKycIndividualData,
   IKycLegalRepresentative,
-  KycIndividudalDataSchema,
+  KycLegalRepresentativeSchema,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
@@ -90,10 +90,10 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
-  validationSchema: KycIndividudalDataSchema,
+  validationSchema: KycLegalRepresentativeSchema,
   mapPropsToValues: props => props.currentValues as IKycIndividualData,
-  isInitialValid: (props: any) => KycIndividudalDataSchema.isValidSync(props.currentValues),
-
+  isInitialValid: (props: any) => KycLegalRepresentativeSchema.isValidSync(props.currentValues),
+  enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(KYCForm);
 

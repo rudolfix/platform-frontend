@@ -84,6 +84,7 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   validationSchema: KycIndividudalDataSchema,
+
   isInitialValid: (props: any) => KycIndividudalDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues as IKycIndividualData,
   enableReinitialize: true,

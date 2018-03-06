@@ -19,7 +19,7 @@ a {
 }
 
 .btn {
-  font-size: rem-to-px(15px) !important;
+  font-size: px-to-rem(15px) !important;
   background-color: transparent !important;
 
   &.disabled {

@@ -33,12 +33,12 @@ $neu-pale-grey: #e3eaf5;
 $neu-charcoal-grey: #394651;
 // end of new color palette
 
-$bigger-font-size: rem-to-px(16px);
-$smaller-font-size: rem-to-px(13px);
+$bigger-font-size: px-to-rem(16px);
+$smaller-font-size: px-to-rem(13px);
 
-$neu-font-size-lg: rem-to-px(20px);
+$neu-font-size-lg: px-to-rem(20px);
 
-$shadow:  0 rem-to-px(2px) rem-to-px(4px) 0 rgba(0, 0, 0, .1);
+$shadow:  0 px-to-rem(2px) px-to-rem(4px) 0 rgba(0, 0, 0, .1);
 
 // Bootstrap variable overrides
 //colors
@@ -50,7 +50,7 @@ $dark: $neu-charcoal-grey;
 // fonts
 $font-family-base: "Open Sans", sans-serif;
 $font-size-base: .875rem;
-$font-size-medium-small: rem-to-px(14px);
+$font-size-medium-small: px-to-rem(14px);
 $font-weight-bold: 600;
 $headings-font-family: "Lato", sans-serif;
 $headings-font-weight: 400;
@@ -81,5 +81,5 @@ $input-padding-x: 0;
 $input-padding-y: 3px;
 $input-focus-width: 0;
 $input-focus-box-shadow: none;
-$form-feedback-font-size: rem-to-px(14px);
+$form-feedback-font-size: px-to-rem(14px);
 $form-feedback-invalid-color: $neu-bright-orange;

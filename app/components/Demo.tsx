@@ -1,41 +1,28 @@
 import * as React from "react";
-import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 
 import * as styles from "./Demo.module.scss";
 
-import {
-  ButtonPrimary,
-  ButtonPrimaryLink,
-  ButtonSecondary,
-  ButtonSecondaryLink,
-} from "./shared/Buttons";
-import { NavigationButton, NavigationLink } from "./shared/Navigation";
+import { PanelWhite } from "./shared/PanelWhite";
 
 export const Demo: React.SFC = () => (
   <Container>
-    <Row>
-      <Col className={styles.demo}>
-        <div>
-          <ButtonPrimary>ButtonPrimary</ButtonPrimary>
-          <ButtonPrimary disabled>ButtonPrimary disabled</ButtonPrimary>
-          <ButtonPrimaryLink to="/">ButtonPrimaryLink</ButtonPrimaryLink>
-          <hr />
-          <ButtonSecondary>ButtonSecondary</ButtonSecondary>
-          <ButtonSecondary disabled>ButtonSecondary disabled</ButtonSecondary>
-          <ButtonSecondaryLink to="/">ButtonSecondary link</ButtonSecondaryLink>
-          <hr />
-          <a href="/">link</a>
-          <hr />
-          <NavigationButton forward text="NavigationButton" onClick={() => {}} />
-          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
-          <NavigationLink forward to="/" text="NavigationLink" />
-          <hr />
-          <FormGroup>
-            <Input placeholder={"This form is always invalid"} valid={false} />
-            <FormFeedback>invalid</FormFeedback>
-          </FormGroup>
-        </div>
-      </Col>
-    </Row>
+    <Container className={styles.demo}>
+      <Row>
+        <Col>
+          <PanelWhite>
+            <p className="mt-2">
+              So this is our white panel. It can contain React.Nodes as children and no Props:
+            </p>
+            <dl>
+              <dt>headerText: string</dt>
+              <dd>Title of panel it will be rendered in span element</dd>
+              <dt>rightComponent: ReactNode</dt>
+              <dd>Component that will be put in header on right side.</dd>
+            </dl>
+          </PanelWhite>
+        </Col>
+      </Row>
+    </Container>
   </Container>
 );

@@ -25,9 +25,10 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.root} component={Home} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
+    <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
+
     <OnlyAuthorizedRoute path={appRoutes.kyc} component={Kyc} />
     <OnlyAuthorizedRoute path={appRoutes.dashboard} component={Dashboard} exact />
-    <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
 
     <Route path={appRoutes.demo} component={Demo} />
 

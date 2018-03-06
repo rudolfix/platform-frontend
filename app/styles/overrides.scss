@@ -57,3 +57,8 @@ a {
   border-radius: 0;
   border-top-color: #ccc;
 }
+
+// this makes it possible to create full height pages
+html,body,#app {
+  height:100%;
+}

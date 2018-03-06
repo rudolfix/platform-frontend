@@ -3,19 +3,13 @@ import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
-import {
-  LightCreationError,
-  LightDeserializeError,
-  LightSignMessageError,
-  LightWalletConnector,
-  LightWalletUtil,
-  LightWrongPasswordSaltError,
-} from "../../../lib/web3/LightWallet";
+import { LightWalletConnector, LightWalletUtil } from "../../../lib/web3/LightWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { WalletType } from "../../web3/types";
+import { mapLightWalletErrorToErrorMessage } from "./errors";
 
 //Vault nonce should be exactly 24 chars
 const VAULT_MSG = "pleaseallowmetointroducemyselfim";
@@ -73,7 +67,12 @@ export const lightWizardFlows = {
           else dispatch(actions.wallet.connected());
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
-          dispatch(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+          dispatch(
+            actions.genericErrorModal.showError(
+              "Light wallet Error",
+              mapLightWalletErrorToErrorMessage(e),
+            ),
+          );
         }
       },
       [
@@ -87,19 +86,3 @@ export const lightWizardFlows = {
       ],
     ),
 };
-
-function mapLightWalletErrorToErrorMessage(e: Error): string {
-  if (e instanceof LightWrongPasswordSaltError) {
-    return "Password is not correct";
-  }
-  if (e instanceof LightSignMessageError) {
-    return `Cannot sign personal message`;
-  }
-  if (e instanceof LightCreationError) {
-    return "Cannot create new Lightwallet";
-  }
-  if (e instanceof LightDeserializeError) {
-    return "Problem with Vault retrieval";
-  }
-  return "Light wallet unavailable";
-}

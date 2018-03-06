@@ -31,7 +31,7 @@ export const onEnterAction: (
         super(props);
       }
 
-      public componentDidMount(): void {
+      public componentWillMount(): void {
         this.props.enterAction();
       }
 

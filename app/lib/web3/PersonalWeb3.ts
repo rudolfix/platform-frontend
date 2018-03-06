@@ -1,5 +1,6 @@
 import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
+import { TWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { Web3Adapter } from "./Web3Adapter";
 
 // strings should match signer types on backend
@@ -20,4 +21,6 @@ export interface IPersonalWallet {
 
   // sign message with the best available method for a given wallet
   signMessage(data: string): Promise<string>;
+
+  getMetadata(): TWalletMetadata;
 }

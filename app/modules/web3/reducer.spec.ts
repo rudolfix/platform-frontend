@@ -24,8 +24,9 @@ describe("Web3 > reducer", () => {
     const actualNewState = web3Reducer(
       initialState,
       web3Actions.newPersonalWalletPlugged(
-        actionPayload.type,
-        actionPayload.subtype,
+        {
+          walletType: WalletType.BROWSER,
+        },
         actionPayload.ethereumAddress,
         actionPayload.isUnlocked,
       ),
@@ -33,8 +34,9 @@ describe("Web3 > reducer", () => {
 
     expect(actualNewState).to.be.deep.eq({
       connected: true,
-      type: actionPayload.type,
-      subtype: actionPayload.subtype,
+      wallet: {
+        walletType: WalletType.BROWSER,
+      },
       ethereumAddress: dummyEthereumAddress,
       isUnlocked: true,
     });
@@ -43,8 +45,9 @@ describe("Web3 > reducer", () => {
   it("should act on PERSONAL_WALLET_DISCONNECTED when previously it was connected", () => {
     const initialState: IWeb3State = {
       connected: true,
-      type: WalletType.BROWSER,
-      subtype: WalletSubType.METAMASK,
+      wallet: {
+        walletType: WalletType.BROWSER,
+      },
       ethereumAddress: dummyEthereumAddress,
       isUnlocked: true,
     };
@@ -53,7 +56,9 @@ describe("Web3 > reducer", () => {
 
     expect(actualNewState).to.be.deep.eq({
       connected: false,
-      previousConnectedWalletType: WalletType.BROWSER,
+      previousConnectedWallet: {
+        walletType: WalletType.BROWSER,
+      },
     });
   });
 
@@ -64,7 +69,7 @@ describe("Web3 > reducer", () => {
 
     expect(actualNewState).to.be.deep.eq({
       connected: false,
-      previousConnectedWalletType: undefined,
+      previousConnectedWallet: undefined,
     });
   });
 
@@ -72,8 +77,9 @@ describe("Web3 > reducer", () => {
     it("should act on action when connected", () => {
       const initialState: IConnectedWeb3State = {
         connected: true,
-        type: WalletType.BROWSER,
-        subtype: WalletSubType.METAMASK,
+        wallet: {
+          walletType: WalletType.BROWSER,
+        },
         ethereumAddress: dummyEthereumAddress,
         isUnlocked: true,
       };
@@ -82,8 +88,9 @@ describe("Web3 > reducer", () => {
 
       expect(actualNewState).to.be.deep.eq({
         connected: true,
-        type: WalletType.BROWSER,
-        subtype: WalletSubType.METAMASK,
+        wallet: {
+          walletType: WalletType.BROWSER,
+        },
         ethereumAddress: dummyEthereumAddress,
         isUnlocked: false,
       });

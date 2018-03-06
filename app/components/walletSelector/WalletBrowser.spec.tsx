@@ -8,13 +8,15 @@ import { WalletBrowserComponent } from "./WalletBrowser";
 
 describe("<WalletBrowser />", () => {
   it("should render loading indicator", () => {
-    const component = shallow(<WalletBrowserComponent isLoading={true} />);
+    const component = shallow(<WalletBrowserComponent isLoading={true} isLoginRoute />);
     expect(component.contains(<LoadingIndicator />)).to.be.true;
   });
 
   it("should render error message", () => {
     const errorMsg = "some error";
-    const component = shallow(<WalletBrowserComponent isLoading={false} errorMessage={errorMsg} />);
+    const component = shallow(
+      <WalletBrowserComponent isLoading={false} errorMessage={errorMsg} isLoginRoute />,
+    );
     expect(component.find(tid("browser-wallet-error-msg")).text()).to.be.eq(errorMsg);
   });
 });

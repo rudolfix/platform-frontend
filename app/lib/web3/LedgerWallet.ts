@@ -10,6 +10,7 @@ import { inject, injectable } from "inversify";
 import { symbols } from "../../di/symbols";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
+import { ILedgerWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 import { IEthereumNetworkConfig, SignerError } from "./Web3Manager";
@@ -41,6 +42,7 @@ export class LedgerWallet implements IPersonalWallet {
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddress,
     private readonly ledgerInstance: any | undefined,
+    public readonly derivationPath: string,
   ) {}
 
   public async testConnection(): Promise<boolean> {
@@ -55,6 +57,13 @@ export class LedgerWallet implements IPersonalWallet {
     } catch {
       throw new SignerError();
     }
+  }
+
+  public getMetadata(): ILedgerWalletMetadata {
+    return {
+      walletType: WalletType.LEDGER,
+      derivationPath: this.derivationPath,
+    };
   }
 }
 
@@ -100,7 +109,7 @@ export class LedgerWalletConnector {
     const address = await noSimultaneousConnectionsGuard(this.ledgerInstance, () =>
       web3Adapter.getAccountAddress(),
     );
-    return new LedgerWallet(web3Adapter, address, this.ledgerInstance);
+    return new LedgerWallet(web3Adapter, address, this.ledgerInstance, derivationPath);
   }
 
   public async getMultipleAccounts(derivationPaths: string[]): Promise<IDerivationPathToAddress> {

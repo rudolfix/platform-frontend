@@ -11,6 +11,7 @@ export interface ILedgerAccount {
 }
 
 export interface ILedgerWizardState {
+  isInitialConnectionInProgress: boolean;
   isConnectionEstablished: boolean;
   errorMsg?: string;
   isLoadingAddresses: boolean;
@@ -22,6 +23,7 @@ export interface ILedgerWizardState {
 }
 
 export const ledgerWizardInitialState: ILedgerWizardState = {
+  isInitialConnectionInProgress: true,
   isConnectionEstablished: false,
   isLoadingAddresses: true,
   derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
@@ -39,12 +41,14 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
     case "LEDGER_CONNECTION_ESTABLISHED":
       return {
         ...state,
+        isInitialConnectionInProgress: false,
         isConnectionEstablished: true,
         errorMsg: undefined,
       };
     case "LEDGER_CONNECTION_ESTABLISHED_ERROR":
       return {
         ...state,
+        isInitialConnectionInProgress: false,
         isConnectionEstablished: false,
         errorMsg: action.payload.errorMsg,
       };

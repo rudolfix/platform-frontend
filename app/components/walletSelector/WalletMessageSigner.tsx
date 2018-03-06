@@ -42,6 +42,7 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
     </Row>
   </>
 );
+MessageSignerComponent.displayName = "MessageSignerComponent";
 
 export const WalletMessageSigner = compose(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({

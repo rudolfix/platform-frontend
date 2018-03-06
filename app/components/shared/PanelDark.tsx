@@ -6,7 +6,7 @@ import * as styles from "./PanelDark.module.scss";
 
 interface IPanelDarkProps {
   headerText: string;
-  rightComponent: React.ReactNode;
+  rightComponent?: React.ReactNode;
 }
 
 export const PanelDark: React.SFC<IPanelDarkProps & React.HTMLAttributes<HTMLDivElement>> = ({

@@ -24,7 +24,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       <img src={logo} className={styles.logo} />
     </Link>
     {props.isAuthorized && (
-      <ButtonSecondary className="text-white" onClick={props.logout}>
+      <ButtonSecondary className="text-white" onClick={props.logout} data-test-id="Header-logout">
         LOGOUT
       </ButtonSecondary>
     )}

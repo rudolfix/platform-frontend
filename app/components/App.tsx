@@ -7,6 +7,7 @@ import { appConnect } from "../store";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
 import { Header } from "./Header";
+import { GenericErrorModal } from "./modals/GenericErrorModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 interface IStateProps {
@@ -27,6 +28,7 @@ class AppComponent extends React.Component<IStateProps> {
 
     return (
       <>
+        <GenericErrorModal />
         <Header />
         <ToastContainer />
         <AppRouter />

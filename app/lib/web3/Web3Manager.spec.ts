@@ -27,12 +27,19 @@ describe("Web3Manager", () => {
   const expectedNetworkId = dummyNetworkId;
 
   it("should plug personal wallet when connection works", async () => {
+    const expectedDerivationPath = "44'/60'/0'/1";
     const dispatchMock = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
       ethereumAddress: dummyEthereumAddress,
       testConnection: async () => true,
       walletType: WalletType.LEDGER,
       walletSubType: WalletSubType.UNKNOWN,
+      derivationPath: expectedDerivationPath,
+      getMetadata: () =>
+        ({
+          walletType: WalletType.LEDGER,
+          derivationPath: expectedDerivationPath,
+        } as any),
     });
     const asyncIntervalSchedulerMock = createMock(AsyncIntervalScheduler, {
       start: () => {},
@@ -53,8 +60,10 @@ describe("Web3Manager", () => {
     expect(ledgerWalletMock.testConnection).to.be.calledWithExactly(expectedNetworkId);
     expect(dispatchMock).to.be.calledWithExactly(
       web3Actions.newPersonalWalletPlugged(
-        WalletType.LEDGER,
-        WalletSubType.UNKNOWN,
+        {
+          walletType: WalletType.LEDGER,
+          derivationPath: expectedDerivationPath,
+        },
         dummyEthereumAddress,
         true,
       ),
@@ -66,6 +75,10 @@ describe("Web3Manager", () => {
     const dispatchMock = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
       testConnection: async () => false,
+      getMetadata: () =>
+        ({
+          walletType: WalletType.LEDGER,
+        } as any),
     });
     const asyncIntervalSchedulerMock = createMock(AsyncIntervalScheduler, {
       start: () => {},
@@ -93,6 +106,10 @@ describe("Web3Manager", () => {
     const dispatchMock = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
       testConnection: async () => true,
+      getMetadata: () =>
+        ({
+          walletType: WalletType.LEDGER,
+        } as any),
     });
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
       new AsyncIntervalScheduler(dummyLogger, cb, interval);
@@ -124,6 +141,10 @@ describe("Web3Manager", () => {
     const dispatchMock = spy();
     const ledgerWalletConnectionMock = createMock(LedgerWallet, {
       testConnection: async () => true,
+      getMetadata: () =>
+        ({
+          walletType: WalletType.LEDGER,
+        } as any),
     });
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
       new AsyncIntervalScheduler(dummyLogger, cb, interval);

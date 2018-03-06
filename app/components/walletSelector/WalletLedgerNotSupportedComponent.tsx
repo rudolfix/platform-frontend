@@ -9,6 +9,8 @@ import * as logoFirefox from "../../assets/img/wallet_selector/logo_firefox.svg"
 import * as styles from "./WalletLedgerNotSupportedComponent.module.scss";
 
 import * as arrowIcon from "../../assets/img/link_arrow.svg";
+import { selectIsLoginRoute } from "../../modules/routing/selectors";
+import { appConnect } from "../../store";
 
 interface IBrowserCard {
   name: string;
@@ -26,11 +28,17 @@ const BrowserCard: React.SFC<IBrowserCard> = ({ name, img, url }) => (
   </Col>
 );
 
-export const WalletLedgerNotSupportedComponent: React.SFC<{}> = () => (
+interface IStateProps {
+  isLoginRoute: boolean;
+}
+
+export const WalletLedgerNotSupportedComponent: React.SFC<IStateProps> = ({ isLoginRoute }) => (
   <>
     <Row>
       <Col>
-        <h1 className="text-center">Logging in with Nano Ledger</h1>
+        <h1 className="text-center">
+          {isLoginRoute ? "Log in with Nano Ledger" : "Register your Nano Ledger"}
+        </h1>
       </Col>
     </Row>
     <Row className="justify-content-center">
@@ -42,10 +50,11 @@ export const WalletLedgerNotSupportedComponent: React.SFC<{}> = () => (
       <BrowserCard name="Chrome" img={logoChrome} url="https://www.google.pl/chrome/" />
       <BrowserCard name="Firefox" img={logoFirefox} url="https://www.mozilla.org/pl/firefox/new/" />
     </Row>
-    <Row className="mt-5">
-      <Col className={cn("text-center text-md-right", styles.contact)}>
-        Have some issues with your NeuKey? <a href="#">Contact for help</a>
-      </Col>
-    </Row>
   </>
 );
+
+export const WalletLedgerNotSupported = appConnect({
+  stateToProps: s => ({
+    isLoginRoute: selectIsLoginRoute(s.router),
+  }),
+})(WalletLedgerNotSupportedComponent);

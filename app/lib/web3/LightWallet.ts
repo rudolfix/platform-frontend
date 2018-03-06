@@ -17,6 +17,7 @@ import { IEthereumNetworkConfig } from "./Web3Manager";
 import { symbols } from "../../di/symbols";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress } from "../../types";
+import { ILightWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { Web3Adapter } from "./Web3Adapter";
 
 export interface ICreateVault {
@@ -58,6 +59,7 @@ export class LightDeserializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
 export class LightWalletWrongPassword extends LightWalletError {}
 
+// it's useful to have it as a class to allow injection and mocking.Todo: remove static functions and probably move to separate file
 @injectable()
 export class LightWalletUtil {
   public async deserializeLightWalletVault(
@@ -157,7 +159,8 @@ export class LightWallet implements IPersonalWallet {
   constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddress,
-    private vault: IVault,
+    public readonly vault: IVault,
+    public readonly email: string,
     public password?: string,
   ) {}
   public readonly walletType = WalletType.LIGHT;
@@ -195,6 +198,15 @@ export class LightWallet implements IPersonalWallet {
   public async testPassword(newPassword: string): Promise<boolean> {
     return await LightWalletUtil.testWalletPassword(this.vault.walletInstance, newPassword);
   }
+
+  public getMetadata(): ILightWalletMetadata {
+    return {
+      email: this.email,
+      salt: this.vault.salt,
+      vault: this.vault.walletInstance,
+      walletType: WalletType.LIGHT,
+    };
+  }
 }
 
 @injectable()
@@ -206,13 +218,18 @@ export class LightWalletConnector {
 
   public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;
 
-  public async connect(lightWalletVault: IVault, password?: string): Promise<IPersonalWallet> {
+  public async connect(
+    lightWalletVault: IVault,
+    email: string,
+    password?: string,
+  ): Promise<IPersonalWallet> {
     try {
       this.web3Adapter = new Web3Adapter(await this.setWeb3Provider(lightWalletVault));
       return new LightWallet(
         this.web3Adapter,
         await this.web3Adapter.getAccountAddress(),
         lightWalletVault,
+        email,
         password,
       );
     } catch (e) {

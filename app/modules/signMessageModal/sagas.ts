@@ -12,6 +12,7 @@ import {
 import { BrowserWalletConnector } from "../../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../../lib/web3/LightWallet";
+import { IPersonalWallet } from "../../lib/web3/PersonalWeb3";
 import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { IAppState } from "../../store";
@@ -39,16 +40,22 @@ export const ensureWalletConnection = injectableFn(
 
     invariant(metadata, "User has JWT but doesn't have wallet metadata!");
 
+    let wallet: IPersonalWallet;
     switch (metadata.walletType) {
       case WalletType.LEDGER:
-        return await connectLedger(ledgerWalletConnector, web3Manager, metadata);
+        wallet = await connectLedger(ledgerWalletConnector, web3Manager, metadata);
+        break;
       case WalletType.BROWSER:
-        return await connectBrowser(browserWalletConnector, web3Manager, metadata);
+        wallet = await connectBrowser(browserWalletConnector, web3Manager, metadata);
+        break;
       case WalletType.LIGHT:
-        return await connectLightWallet(lightWalletConnector, web3Manager, metadata);
+        wallet = await connectLightWallet(lightWalletConnector, metadata);
+        break;
       default:
-        invariant(false, "Wallet type unrecognized");
+        return invariant(false, "Wallet type unrecognized");
     }
+
+    await web3Manager.plugPersonalWallet(wallet);
   },
   [
     symbols.walletMetadataStorage,
@@ -63,10 +70,9 @@ async function connectLedger(
   ledgerWalletConnector: LedgerWalletConnector,
   web3Manager: Web3Manager,
   metadata: ILedgerWalletMetadata,
-): Promise<void> {
+): Promise<IPersonalWallet> {
   await ledgerWalletConnector.connect(web3Manager.networkId!);
-  const wallet = await ledgerWalletConnector.finishConnecting(metadata.derivationPath);
-  await web3Manager.plugPersonalWallet(wallet);
+  return await ledgerWalletConnector.finishConnecting(metadata.derivationPath);
 }
 
 async function connectBrowser(
@@ -74,27 +80,29 @@ async function connectBrowser(
   web3Manager: Web3Manager,
   // tslint:disable-next-line
   metadata: IBrowserWalletMetadata, // todo browser wallet should verify connected address
-): Promise<void> {
-  const wallet = await browserWalletConnector.connect(web3Manager.networkId!);
-  await web3Manager.plugPersonalWallet(wallet);
+): Promise<IPersonalWallet> {
+  return await browserWalletConnector.connect(web3Manager.networkId!);
 }
 
-async function connectLightWallet(
+export async function connectLightWallet(
   lightWalletConnector: LightWalletConnector,
-  web3Manager: Web3Manager,
   metadata: ILightWalletMetadata,
-): Promise<void> {
+  password?: string,
+): Promise<IPersonalWallet> {
   const lightWalletUtils = new LightWalletUtil();
   const walletInstance = await lightWalletUtils.deserializeLightWalletVault(
     metadata.vault,
     metadata.salt,
   );
 
-  const wallet = await lightWalletConnector.connect({
-    walletInstance,
-    salt: metadata.salt,
-  });
-  await web3Manager.plugPersonalWallet(wallet);
+  return await lightWalletConnector.connect(
+    {
+      walletInstance,
+      salt: metadata.salt,
+    },
+    metadata.email,
+    password,
+  );
 }
 
 function* messageSignSaga(message: string): Iterator<any> {

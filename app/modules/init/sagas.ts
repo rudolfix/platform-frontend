@@ -7,6 +7,7 @@ import { actions } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
 import { flows } from "../flows";
 import { callAndInject, forkAndInject, neuTake } from "../sagas";
+import { loadPreviousWallet } from "../web3/sagas";
 
 export const init = injectableFn(
   function*(web3Manager: Web3Manager): Iterator<any> {
@@ -20,6 +21,7 @@ export const init = injectableFn(
       if (jwt) {
         yield loadUser();
       }
+      yield callAndInject(loadPreviousWallet);
 
       yield put(actions.init.done());
     } catch (e) {

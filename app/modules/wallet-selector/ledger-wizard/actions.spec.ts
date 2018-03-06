@@ -74,6 +74,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
     it("should load accounts from ledger connector", async () => {
       const dummyState: Partial<IAppState> = {
         ledgerWizardState: {
+          isInitialConnectionInProgress: false,
           index: 1,
           numberOfAccountsPerPage: 10,
           derivationPathPrefix: "44'/60'/0'/",
@@ -168,6 +169,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
     const newDP = "test";
     const dummyState: Partial<IAppState> = {
       ledgerWizardState: {
+        isInitialConnectionInProgress: false,
         index: 1,
         numberOfAccountsPerPage: 10,
         derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,

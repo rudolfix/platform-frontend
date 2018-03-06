@@ -10,7 +10,9 @@ import { WarningAlert } from "../shared/WarningAlert";
 import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.svg";
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
 import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
+import { selectIsLoginRoute } from "../../modules/routing/selectors";
 import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
+import { LoadingIndicator } from "../shared/LoadingIndicator";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
@@ -30,46 +32,56 @@ const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
 );
 
 interface IWalletLedgerInitComponentProps {
+  isInitialConnectionInProgress: boolean;
   errorMessage?: string;
+  isLoginRoute: boolean;
 }
 
 export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps> = ({
   errorMessage,
-}) => (
-  <>
-    <Row>
-      <Col>
-        <h1 className="text-center">Logging in with Nano Ledger</h1>
-      </Col>
-    </Row>
-    {errorMessage && (
-      <Row className="justify-content-center">
-        <WarningAlert className="my-4">
-          Connection status: <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
-        </WarningAlert>
+  isLoginRoute,
+  isInitialConnectionInProgress,
+}) => {
+  if (isInitialConnectionInProgress) {
+    return <LoadingIndicator />;
+  }
+  return (
+    <>
+      <Row>
+        <Col>
+          <h1 className="text-center">
+            {isLoginRoute ? "Log in with Nano Ledger" : "Register your Nano Ledger"}
+          </h1>
+        </Col>
       </Row>
-    )}
-    <Row>
-      <InitStep
-        header="1. Connect to USB"
-        img={imgStep1}
-        desc="Connect your Ledger Nano into USB and prepare your PIN Code for the device"
-      />
-      <InitStep
-        header="2. Enter Pin Code"
-        img={imgStep2}
-        desc="Use left and right key to enter numbers and press 2 keys at the same time to confirm the code"
-      />
-      <InitStep
-        header="3. Pick Ethereum"
-        img={imgStep3}
-        desc="Click on arrows to scroll  apps and pick Ethereum icon. Press 2 keys at the same time to confirm"
-      />
-    </Row>
-  </>
-);
+      {errorMessage && (
+        <Row className="justify-content-center">
+          <WarningAlert className="my-4">
+            Connection status: <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
+          </WarningAlert>
+        </Row>
+      )}
+      <Row>
+        <InitStep
+          header="1. Connect to USB"
+          img={imgStep1}
+          desc="Connect your Ledger Nano into USB and prepare your PIN Code for the device"
+        />
+        <InitStep
+          header="2. Enter Pin Code"
+          img={imgStep2}
+          desc="Use left and right key to enter numbers and press 2 keys at the same time to confirm the code"
+        />
+        <InitStep
+          header="3. Pick Ethereum"
+          img={imgStep3}
+          desc="Click on arrows to scroll  apps and pick Ethereum icon. Press 2 keys at the same time to confirm"
+        />
+      </Row>
+    </>
+  );
+};
 
-// @todo: type inference doesnt work correctly here. Probably because of withActionWatcher signature
 export const WalletLedgerInit = compose<React.SFC>(
   withActionWatcher({
     actionCreator: dispatch => dispatch(ledgerWizardFlows.tryEstablishingConnectionWithLedger),
@@ -77,7 +89,9 @@ export const WalletLedgerInit = compose<React.SFC>(
   }),
   appConnect<IWalletLedgerInitComponentProps>({
     stateToProps: state => ({
+      isInitialConnectionInProgress: state.ledgerWizardState.isInitialConnectionInProgress,
       errorMessage: state.ledgerWizardState.errorMsg,
+      isLoginRoute: selectIsLoginRoute(state.router),
     }),
   }),
 )(WalletLedgerInitComponent);

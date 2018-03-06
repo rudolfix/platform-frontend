@@ -20,7 +20,7 @@
   }
 
   tbody {
-    border-bottom: #{rem-to-px(1px)} solid $neu-pale-grey;
+    border-bottom: #{px-to-rem(1px)} solid $neu-pale-grey;
 
     tr {
       &:nth-of-type(odd) {
@@ -42,7 +42,7 @@
 
     &::before {
       content: " ";
-      border-left: #{rem-to-px(1px)} solid $neu-pale-grey;
+      border-left: #{px-to-rem(1px)} solid $neu-pale-grey;
       display: block;
       position: absolute;
       height: calc(1.4 * (#{$logo-size} + #{map-get($spacers, 3)}));
@@ -55,8 +55,8 @@
     div {
       min-height: calc(#{$logo-size} + #{map-get($spacers, 3)});
       line-height: calc(#{$logo-size} + #{map-get($spacers, 3)});
-      padding-left: calc(2 * #{map-get($spacers, 2)} + #{rem-to-px($logo-size)});
-      background: no-repeat map-get($spacers, 2) center / #{rem-to-px($logo-size)};
+      padding-left: calc(2 * #{map-get($spacers, 2)} + #{px-to-rem($logo-size)});
+      background: no-repeat map-get($spacers, 2) center / #{px-to-rem($logo-size)};
     }
 
     .eth {
@@ -94,8 +94,8 @@
 
     .balance {
       div {
-        padding-left: calc(#{rem-to-px($logo-size)} + #{map-get($spacers, 2)});
-        background-size: #{rem-to-px($logo-size)} #{rem-to-px($logo-size)};
+        padding-left: calc(#{px-to-rem($logo-size)} + #{map-get($spacers, 2)});
+        background-size: #{px-to-rem($logo-size)} #{px-to-rem($logo-size)};
         background-position: left center;
       }
     }

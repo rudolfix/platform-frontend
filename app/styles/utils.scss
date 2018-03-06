@@ -6,7 +6,7 @@
   @return $number;
 }
 
-@function rem-to-px($size) {
+@function px-to-rem($size) {
   $rem-size: $size / 16;
   @return #{strip-unit($rem-size)}rem;
  }

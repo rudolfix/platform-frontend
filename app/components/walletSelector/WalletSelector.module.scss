@@ -47,7 +47,7 @@
     color: $neu-black;
 
     span {
-      border-bottom: rem-to-px(1px) solid $neu-piss-yellow;
+      border-bottom: px-to-rem(1px) solid $neu-piss-yellow;
     }
   }
 

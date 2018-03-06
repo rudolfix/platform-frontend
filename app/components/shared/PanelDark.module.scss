@@ -1,0 +1,16 @@
+@import "../../styles/neufund-theme";
+
+.panel {
+  box-shadow: $shadow;
+}
+
+.header {
+  background-color: $neu-charcoal-grey;
+  color: $neu-white;
+}
+
+.header-text {
+  font-size: $smaller-font-size;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}

@@ -25,15 +25,15 @@
 
   .currency-col {
     position: relative;
-    padding-left: calc(#{map-get($spacers, 2)} + #{rem-to-px($logo-size)} + #{map-get($spacers, 2)});
-    background-size: #{rem-to-px($logo-size)} #{rem-to-px($logo-size)};
+    padding-left: calc(#{map-get($spacers, 2)} + #{px-to-rem($logo-size)} + #{map-get($spacers, 2)});
+    background-size: #{px-to-rem($logo-size)} #{px-to-rem($logo-size)};
     background: no-repeat map-get($spacers, 2) center;
 
     &::before {
       content: " ";
-      border-left: #{rem-to-px(1px)} solid $neu-pale-grey;
+      border-left: #{px-to-rem(1px)} solid $neu-pale-grey;
       display: block;
-      height: #{rem-to-px($logo-size)};
+      height: #{px-to-rem($logo-size)};
       position: absolute;
       left: 0;
     }

@@ -1,10 +1,10 @@
 @import "../styles/neufund-theme";
 
 .logo {
-  height: rem-to-px(43px);
-  width: rem-to-px(36px);
+  height: px-to-rem(43px);
+  width: px-to-rem(36px);
 }
 
 .bar {
-  height: rem-to-px(60px);
+  height: px-to-rem(60px);
 }

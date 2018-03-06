@@ -1,16 +1,12 @@
 import * as React from "react";
-import { Col, Container, Row } from "reactstrap";
+import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
 import { UserInfo } from "./UserInfo";
 
 export const Dashboard = () => (
-  <Container>
+  <LayoutAuthorized>
     <MessageSignModal />
-    <Row className="mt-3">
-      <Col>
-        <h2>Dashboard</h2>
-        <UserInfo />
-      </Col>
-    </Row>
-  </Container>
+    <h2>Dashboard</h2>
+    <UserInfo />
+  </LayoutAuthorized>
 );

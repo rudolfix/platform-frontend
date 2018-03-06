@@ -19,7 +19,7 @@ a {
 }
 
 .btn {
-  font-size: rem-to-px(15px) !important;
+  font-size: px-to-rem(15px) !important;
   background-color: transparent !important;
 
   &.disabled {
@@ -56,4 +56,9 @@ a {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   border-radius: 0;
   border-top-color: #ccc;
+}
+
+// this makes it possible to create full height pages
+html,body,#app {
+  height:100%;
 }

@@ -1,11 +1,7 @@
 @import "../styles/neufund-theme";
 
-.demo {
+.demo-wrapper > :global(.container) {
   background-color: $white-pure;
   margin-top: 8rem;
   padding: 2rem;
-}
-
-.spacer {
-  margin: 1rem 0;
 }

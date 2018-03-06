@@ -71,14 +71,19 @@ export class Web3Manager {
 
     this.dispatch(
       web3Actions.newPersonalWalletPlugged(
-        personalWallet.walletType,
-        personalWallet.walletSubType,
+        this.personalWallet.getMetadata(),
         personalWallet.ethereumAddress,
         isUnlocked,
       ),
     );
 
     this.web3ConnectionWatcher.start();
+  }
+
+  public async unplugPersonalWallet(): Promise<void> {
+    this.web3ConnectionWatcher.stop();
+    this.personalWallet = undefined;
+    this.dispatch(web3Actions.personalWalletDisconnected());
   }
 
   public async sign(message: string): Promise<string> {

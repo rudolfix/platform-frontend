@@ -4,7 +4,7 @@ import { isSupportingLedger } from "../../modules/userAgent/reducer";
 import { appConnect } from "../../store";
 import { WalletLedgerChooser } from "./WalletLedgerChooser";
 import { WalletLedgerInit } from "./WalletLedgerInitComponent";
-import { WalletLedgerNotSupportedComponent } from "./WalletLedgerNotSupportedComponent";
+import { WalletLedgerNotSupported } from "./WalletLedgerNotSupportedComponent";
 
 interface IWalletLedgerStateProps {
   isConnectionEstablished: boolean;
@@ -16,7 +16,7 @@ export const WalletLedgerComponent: React.SFC<IWalletLedgerStateProps> = ({
   isSupportingLedger,
 }) => {
   if (!isSupportingLedger) {
-    return <WalletLedgerNotSupportedComponent />;
+    return <WalletLedgerNotSupported />;
   } else if (isConnectionEstablished) {
     return <WalletLedgerChooser />;
   } else {

@@ -3,6 +3,8 @@ import { all, call, cancel, fork, put, take } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { symbols } from "../../di/symbols";
 import { ILogger } from "../../lib/dependencies/Logger";
+import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
+import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
@@ -31,7 +33,10 @@ export function* autoLockLightWalletWatcher(): Iterator<any> {
     if (lockWalletTask) {
       yield cancel(lockWalletTask);
     }
-    if (action.type === "NEW_PERSONAL_WALLET_PLUGGED" && action.payload.type !== WalletType.LIGHT) {
+    if (
+      action.type === "NEW_PERSONAL_WALLET_PLUGGED" &&
+      action.payload.walletMetadata.walletType !== WalletType.LIGHT
+    ) {
       continue;
     }
     lockWalletTask = yield* forkAndInject(autoLockLightWallet);
@@ -60,6 +65,16 @@ export const unlockWallet = injectableFn(
     yield put(actions.web3.walletUnlocked());
   },
   [symbols.web3Manager],
+);
+
+export const loadPreviousWallet = injectableFn(
+  function*(walletStorage: ObjectStorage<TWalletMetadata>): Iterator<any> {
+    const storageData = walletStorage.get();
+    if (storageData) {
+      yield put(actions.web3.loadPreviousWallet(storageData));
+    }
+  },
+  [symbols.walletMetadataStorage],
 );
 
 export const web3Sagas = function*(): Iterator<any> {

@@ -4,6 +4,7 @@
 .button-primary {
   color: $neu-black !important;
   border-color: $neu-black !important;
+  text-transform: uppercase;
 
   &:focus,
   &:hover {

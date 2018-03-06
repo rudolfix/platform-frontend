@@ -3,13 +3,14 @@ import { TAction } from "./actions";
 
 import { Container } from "inversify";
 
-import { fork } from "redux-saga/effects";
+import { call, fork } from "redux-saga/effects";
 import { getDependencies } from "../middlewares/redux-injectify";
 import { FunctionWithDeps } from "../types";
 import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
+import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { web3Sagas } from "./web3/sagas";
 
@@ -24,6 +25,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(dashboardSagas),
     effects.fork(web3Sagas),
     effects.fork(authSagas),
+    effects.fork(lightWalletSagas),
   ]);
 }
 
@@ -58,7 +60,7 @@ export function* callAndInject(func: FunctionWithDeps, ...args: any[]): Iterator
 
   const deps = depSymbols.map(s => container.get(s));
 
-  return yield func(...deps, ...args);
+  return yield (call as any)(func, ...deps, ...args);
 }
 
 export function* forkAndInject(func: FunctionWithDeps): any {

@@ -5,6 +5,7 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { UserNotExisting, UsersApi } from "../../lib/api/users/UsersApi";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
+import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { actions } from "../actions";
 import { callAndInject, forkAndInject } from "../sagas";
@@ -55,18 +56,16 @@ export function* loadUser(): Iterator<any> {
 }
 
 export const logoutWatcher = injectableFn(
-  function*(
-    jwtStorage: ObjectStorage<string>,
-    walletMetadataStorage: ObjectStorage<TWalletMetadata>,
-  ): Iterator<any> {
+  function*(jwtStorage: ObjectStorage<string>, web3Manager: Web3Manager): Iterator<any> {
     while (true) {
       yield take("AUTH_LOGOUT");
 
       jwtStorage.clear();
-      walletMetadataStorage.clear();
+      yield web3Manager.unplugPersonalWallet();
+      // do not clear wallet metadata here to allow easy login again
     }
   },
-  [symbols.jwtStorage, symbols.walletMetadataStorage],
+  [symbols.jwtStorage, symbols.web3Manager],
 );
 
 export const authSagas = function*(): Iterator<effects.Effect> {

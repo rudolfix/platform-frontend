@@ -14,6 +14,7 @@ import { WarningAlert } from "../shared/WarningAlert";
 import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
 import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
+import { selectIsLoginRoute } from "../../modules/routing/selectors";
 import * as styles from "./WalletBrowser.module.scss";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
@@ -21,6 +22,7 @@ export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 interface IWalletBrowserProps {
   errorMessage?: string;
   isLoading: boolean;
+  isLoginRoute: boolean;
 }
 
 interface IStepCardProps {
@@ -43,9 +45,12 @@ export const StepCard: React.SFC<IStepCardProps> = ({ img, text }) => (
 export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
   errorMessage,
   isLoading,
+  isLoginRoute,
 }) => (
   <div>
-    <h1 className="text-center mb-3">Register your existing Wallet on Neufund</h1>
+    <h1 className="text-center mb-3">
+      {isLoginRoute ? "Login with existing wallet" : "Register your existing wallet"}
+    </h1>
 
     {isLoading ? (
       <LoadingIndicator />
@@ -95,6 +100,7 @@ export const WalletBrowser = compose<React.SFC>(
     stateToProps: state => ({
       errorMessage: state.browserWalletWizardState.errorMsg,
       isLoading: state.browserWalletWizardState.isLoading,
+      isLoginRoute: selectIsLoginRoute(state.router),
     }),
   }),
   withActionWatcher({

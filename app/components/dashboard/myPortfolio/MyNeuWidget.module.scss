@@ -1,0 +1,15 @@
+@import "../../../styles/neufund-theme";
+
+.background {
+  background: $neu-charcoal-grey;
+}
+
+.icon {
+  height: px-to-rem(43);
+  width: px-to-rem(43);
+}
+
+.color {
+  color: $neu-seaweed;
+  font-weight: $font-weight-bold;
+}

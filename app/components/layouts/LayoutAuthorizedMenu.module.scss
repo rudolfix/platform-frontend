@@ -1,40 +1,71 @@
 @import "../../styles/neufund-theme";
 
 .menu {
-  padding-top: map-get($spacers, 3);
+  @include media-breakpoint-up(sm) {
+    padding-top: map-get($spacers, 3);
+  }
 }
 
-$icon-width: 20px;
+$icon-width: px-to-rem(20px);
 
 .menu-item {
-  display: block;
-  height: 40px;
-  line-height: 40px;
+  position: relative;
+  display: inline-block;
+  height: px-to-rem(60px);
   color: $neu-silver;
-  padding-left: calc(#{map-get($spacers, 3)} + #{$icon-width} + #{map-get($spacers, 2)});
-  background: no-repeat map-get($spacers, 3) center;
-  border-left: 3px solid transparent;
+  background: no-repeat center;
 
   &:focus,
   &:hover,
   &:global(.active) {
     background-color: $neu-charcoal-grey;
     color: $neu-white-two;
-    border-color:  $neu-piss-yellow;
+    border-color: $neu-piss-yellow;
   }
 
-  &:global(.action-required) {
-    &::after {
-      content: " ";
-      display: inline-block;
-      height: px-to-rem(8px);
-      width: px-to-rem(8px);
-      background-color: $neu-bright-orange;
-      border-radius: 50%;
-      margin-left:  map-get($spacers, 1);
-      vertical-align: text-top;
-    }
+  @include media-breakpoint-down(xs) {
+    width: px-to-rem(60px);
+    border-bottom: 3px solid transparent;
   }
+
+  @include media-breakpoint-up(sm) {
+    display: block;
+    height: px-to-rem(65px);
+    border-left: 3px solid transparent;
+  }
+
+  @include media-breakpoint-up(lg) {
+    height: px-to-rem(40px);
+    line-height: px-to-rem(40px);
+    padding-left: calc(#{map-get($spacers, 3)} + #{$icon-width} + #{map-get($spacers, 2)});
+    background-position: map-get($spacers, 3) center;
+  }
+}
+
+.name {
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
+}
+
+.action-required {
+  @include media-breakpoint-down(md) {
+    display: block;
+    position: absolute;
+    top: calc(50% - (#{$icon-width} / 2));
+    left: calc(50% + (#{$icon-width} / 2) - 3px);
+  }
+
+  @include media-breakpoint-up(lg) {
+    display: inline-block;
+    margin-left: map-get($spacers, 1);
+  }
+
+  height: px-to-rem(8px);
+  width: px-to-rem(8px);
+  background-color: $neu-bright-orange;
+  border-radius: 50%;
+  vertical-align: text-top;
 }
 
 .start {

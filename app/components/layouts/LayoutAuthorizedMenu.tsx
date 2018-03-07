@@ -16,12 +16,9 @@ const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
   children,
 }) => {
   return (
-    <NavLink
-      to={to}
-      className={cn(styles.menuItem, iconClass, actionRequired && "action-required")}
-      exact
-    >
-      {children}
+    <NavLink to={to} className={cn(styles.menuItem, iconClass)} exact>
+      <span className={styles.name}>{children}</span>
+      {actionRequired && <div className={styles.actionRequired} />}
     </NavLink>
   );
 };

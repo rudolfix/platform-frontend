@@ -1,0 +1,78 @@
+@import "../../styles/neufund-theme";
+
+.menu {
+  padding-top: map-get($spacers, 3);
+}
+
+$icon-width: 20px;
+
+.menu-item {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  color: $neu-silver;
+  padding-left: calc(#{map-get($spacers, 3)} + #{$icon-width} + #{map-get($spacers, 2)});
+  background: no-repeat map-get($spacers, 3) center;
+  border-left: 3px solid transparent;
+
+  &:focus,
+  &:hover,
+  &:global(.active) {
+    background-color: $neu-charcoal-grey;
+    color: $neu-white-two;
+    border-color:  $neu-piss-yellow;
+  }
+
+  &:global(.action-required) {
+    &::after {
+      content: " ";
+      display: inline-block;
+      height: px-to-rem(8px);
+      width: px-to-rem(8px);
+      background-color: $neu-bright-orange;
+      border-radius: 50%;
+      margin-left:  map-get($spacers, 1);
+      vertical-align: text-top;
+    }
+  }
+}
+
+.start {
+  background-image: url("../../assets/img/icon_portfolio_inactive.svg");
+
+  &:focus,
+  &:hover,
+  &:global(.active) {
+    background-image: url("../../assets/img/icon_home_active.svg");
+  }
+}
+
+.portfolio {
+  background-image: url("../../assets/img/icon_portfolio_inactive.svg");
+
+  &:focus,
+  &:hover,
+  &:global(.active) {
+    background-image: url("../../assets/img/icon_home_active.svg");
+  }
+}
+
+.wallet {
+  background-image: url("../../assets/img/icon_wallet_inactive.svg");
+
+  &:focus,
+  &:hover,
+  &:global(.active) {
+    background-image: url("../../assets/img/icon_home_active.svg");
+  }
+}
+
+.settings {
+  background-image: url("../../assets/img/icon_settings_inactive.svg");
+
+  &:focus,
+  &:hover,
+  &:global(.active) {
+    background-image: url("../../assets/img/icon_home_active.svg");
+  }
+}

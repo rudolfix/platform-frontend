@@ -1,0 +1,89 @@
+@import "../../../styles/neufund-theme";
+@import "../../../styles/typography";
+
+
+.notification {
+  @include font-default;
+
+  border: 1px solid currentColor;
+  color: $neu-slate-grey;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding: 10px 12px;
+  position: relative;
+
+  @include media-breakpoint-up (md) {
+    flex-direction: row;
+  }
+
+  &:global.info {
+    $_color-bg: rgba($color-blue-light, .15);
+
+    background-color: $_color-bg;
+    border-color: $color-blue-light;
+
+    :local(.icon-notification-type) {
+      background-color: $color-blue-light;
+    }
+  }
+
+  &:global.warning {
+    $_color-bg: rgba($neu-bright-orange, .26);
+
+    background-color: $_color-bg;
+    border-color: $neu-bright-orange;
+
+    :local(.icon-notification-type) {
+      background-color: $neu-bright-orange;
+    }
+  }
+
+
+  .text {
+    flex-grow: 1;
+    padding-right: 20px;
+  }
+
+
+  .icon-notification-type {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 12px;
+    display: none;
+
+    @include media-breakpoint-up (md) {
+      display: block;
+    }
+  }
+
+
+  .link,
+  .close {
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+
+  .link {
+    flex-shrink: 0;
+    text-decoration: underline;
+    margin-left: auto;
+  }
+
+
+  .close {
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $neu-black;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+  }
+}

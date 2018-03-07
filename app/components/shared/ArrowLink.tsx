@@ -1,13 +1,13 @@
 import * as React from "react";
 import { ButtonSecondaryLink } from "./Buttons";
 
-interface IProp {
+interface IProps {
   arrowDirection: "left" | "right";
   to: string;
   className?: string;
 }
 
-export const ArrowLink: React.SFC<IProp> = ({ className, children, ...props }) => (
+export const ArrowLink: React.SFC<IProps> = ({ className, children, ...props }) => (
   <ButtonSecondaryLink to={props.to} className={className}>
     {props.arrowDirection === "left" ? (
       <div>

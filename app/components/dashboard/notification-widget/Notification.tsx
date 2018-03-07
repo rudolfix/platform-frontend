@@ -7,8 +7,8 @@ import * as infoIcon from "../../../assets/img/notfications/info.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
 export enum NotificationType {
-  INFO = 'info',
-  WARNING = 'warning',
+  INFO = "info",
+  WARNING = "warning",
 }
 
 export interface INotification {

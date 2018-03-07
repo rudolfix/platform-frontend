@@ -16,14 +16,12 @@ const defaultProps = () => ({
   actionLinkText: "link text",
 });
 
-
 describe("<Notification />", () => {
   let props: any;
 
   beforeEach(() => {
     props = defaultProps();
   });
-
 
   it("should be of correct type", () => {
     const componentInfo = shallow(<Notification {...props} type={NotificationType.INFO} />);
@@ -34,7 +32,6 @@ describe("<Notification />", () => {
 
     expect(componentWarning.hasClass(NotificationType.WARNING)).to.be.true;
   });
-
 
   it("should call correct click handlers for close button", () => {
     const component = shallow(<Notification {...props} />);

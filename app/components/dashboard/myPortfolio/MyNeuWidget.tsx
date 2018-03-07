@@ -1,9 +1,9 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { Row } from "reactstrap";
 import * as icon from "../../../assets/img/neu_icon.svg";
 import { ArrowLink } from "../../shared/ArrowLink";
 import * as styles from "./MyNeuWidget.module.scss";
-import { Row, Col } from "reactstrap";
 
 interface IProps {
   mode: "broke" | "money";

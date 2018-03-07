@@ -1,11 +1,11 @@
 import * as React from "react";
 import { INotification, Notification } from "./Notification";
 
-interface INotificationWidgetComponentProps {
+interface IProps {
   notifications: INotification[];
 }
 
-export const NotificationWidgetComponent: React.SFC<INotificationWidgetComponentProps> = ({
+export const NotificationWidgetComponent: React.SFC<IProps> = ({
   notifications,
 }) => {
   return (

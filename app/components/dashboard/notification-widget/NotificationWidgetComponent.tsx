@@ -1,10 +1,16 @@
-import * as React from 'react';
-import { INotification, Notification } from './Notification';
+import * as React from "react";
+import { INotification, Notification } from "./Notification";
 
 interface INotificationWidgetComponentProps {
-	notifications: INotification[];
+  notifications: INotification[];
 }
 
-export const NotificationWidgetComponent: React.SFC<INotificationWidgetComponentProps> = ({ notifications }) => {
-	return <div>{notifications.map((notification) => <Notification key={notification.id} {...notification} />)}</div>;
+export const NotificationWidgetComponent: React.SFC<INotificationWidgetComponentProps> = ({
+  notifications,
+}) => {
+  return (
+    <div>
+      {notifications.map(notification => <Notification key={notification.id} {...notification} />)}
+    </div>
+  );
 };

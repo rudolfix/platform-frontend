@@ -5,6 +5,10 @@
 .notification {
   @include font-default;
 
+  @include media-breakpoint-up (md) {
+    flex-direction: row;
+  }
+
   border: 1px solid currentColor;
   color: $neu-slate-grey;
   display: flex;
@@ -13,22 +17,20 @@
   padding: 10px 12px;
   position: relative;
 
-  @include media-breakpoint-up (md) {
-    flex-direction: row;
-  }
+  &:global {
+    &.info {
+      $_color-bg: rgba($color-blue-light, .15);
 
-  &:global.info {
-    $_color-bg: rgba($color-blue-light, .15);
+      background-color: $_color-bg;
+      border-color: $color-blue-light;
+    }
 
-    background-color: $_color-bg;
-    border-color: $color-blue-light;
-  }
+    &.warning {
+      $_color-bg: rgba($neu-bright-orange, .26);
 
-  &:global.warning {
-    $_color-bg: rgba($neu-bright-orange, .26);
-
-    background-color: $_color-bg;
-    border-color: $neu-bright-orange;
+      background-color: $_color-bg;
+      border-color: $neu-bright-orange;
+    }
   }
 
 
@@ -39,16 +41,16 @@
 
 
   .icon-notification-type {
+    @include media-breakpoint-up (md) {
+      display: block;
+    }
+
     flex-shrink: 0;
     width: 24px;
     height: 24px;
     border-radius: 50%;
     margin-right: 12px;
     display: none;
-
-    @include media-breakpoint-up (md) {
-      display: block;
-    }
   }
 
 

@@ -22,10 +22,6 @@
 
     background-color: $_color-bg;
     border-color: $color-blue-light;
-
-    :local(.icon-notification-type) {
-      background-color: $color-blue-light;
-    }
   }
 
   &:global.warning {
@@ -33,10 +29,6 @@
 
     background-color: $_color-bg;
     border-color: $neu-bright-orange;
-
-    :local(.icon-notification-type) {
-      background-color: $neu-bright-orange;
-    }
   }
 
 
@@ -81,7 +73,6 @@
     margin-left: auto;
     width: 20px;
     height: 20px;
-    border: 2px solid $neu-black;
     position: absolute;
     top: 6px;
     right: 6px;

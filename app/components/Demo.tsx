@@ -69,7 +69,7 @@ export const Demo: React.SFC = () => (
           <PanelDark
             headerText="header text"
             rightComponent={
-              <span style={{ height: "60px", backgroundColor: "red" }}>right component</span>
+              <span style={{ height: "40px", backgroundColor: "red" }}>right component</span>
             }
           >
             <p>So this is our dark panel. It can contain React.Nodes as children and two props:</p>

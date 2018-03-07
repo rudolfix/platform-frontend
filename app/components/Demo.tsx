@@ -3,6 +3,8 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 
 import * as styles from "./Demo.module.scss";
 
+import { ArrowLink } from "./shared/ArrowLink";
+
 import {
   ButtonPrimary,
   ButtonPrimaryLink,
@@ -98,6 +100,19 @@ export const Demo: React.SFC = () => (
               <dd>Component that will be put in header on right side.</dd>
             </dl>
           </PanelWhite>
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <ArrowLink arrowDirection="right" to="#">
+            Right arrow link
+          </ArrowLink>
+          <ArrowLink arrowDirection="left" to="#">
+            Left arrow link
+          </ArrowLink>
         </Col>
       </Row>
     </Container>

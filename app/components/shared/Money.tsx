@@ -1,7 +1,8 @@
 import * as React from "react";
-import { selectDecimals, TCurrency } from "../../modules/money/reducer";
-import { appConnect } from "../../store";
+import { MONEY_DECIMALS } from "../../config/constants";
 import { formatMoney, formatThousands } from "./Money.utils";
+
+export type TCurrency = "neu" | "eur" | "eur_token" | "eth";
 
 interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currency: TCurrency;
@@ -11,11 +12,7 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currencyStyle?: React.CSSProperties;
 }
 
-interface IStateProps {
-  decimals: number;
-}
-
-type IProps = IOwnProps & IStateProps;
+type IProps = IOwnProps;
 
 export const selectDecimalPlaces = (currency: TCurrency): number => {
   switch (currency) {
@@ -43,9 +40,8 @@ export const selectCurrencySymbol = (currency: TCurrency): string => {
   }
 };
 
-export const MoneyComponent: React.SFC<IProps> = ({
+export const Money: React.SFC<IProps> = ({
   value,
-  decimals,
   currency,
   currencyClassName,
   currencyStyle,
@@ -56,8 +52,8 @@ export const MoneyComponent: React.SFC<IProps> = ({
   const currencySymbol = selectCurrencySymbol(currency);
 
   const formattedMoney = doNotSeparateThousands
-    ? formatMoney(value, decimals, decimalPlaces)
-    : formatThousands(formatMoney(value, decimals, decimalPlaces));
+    ? formatMoney(value, MONEY_DECIMALS, decimalPlaces)
+    : formatThousands(formatMoney(value, MONEY_DECIMALS, decimalPlaces));
 
   return (
     <span {...props}>
@@ -68,9 +64,3 @@ export const MoneyComponent: React.SFC<IProps> = ({
     </span>
   );
 };
-
-export const Money = appConnect<IStateProps, {}, IOwnProps>({
-  stateToProps: (state, ownProps) => ({
-    decimals: selectDecimals(state.money, ownProps.currency),
-  }),
-})(MoneyComponent);

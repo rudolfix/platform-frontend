@@ -1,7 +1,5 @@
 import { AppReducer } from "../../store";
 
-export type TCurrency = "neu" | "eur" | "eur_token" | "eth";
-
 export interface IMoneyState {
   euroTokenDecimals: number;
   etherTokenDecimals: number;
@@ -21,17 +19,4 @@ export const moneyReducer: AppReducer<IMoneyState> = (
   _action,
 ): IMoneyState => {
   return state;
-};
-
-export const selectDecimals = (state: IMoneyState, currency: TCurrency): number => {
-  switch (currency) {
-    case "eth":
-      return state.etherTokenDecimals;
-    case "eur":
-      return state.eurDecimals;
-    case "eur_token":
-      return state.euroTokenDecimals;
-    case "neu":
-      return state.neumarkTokenDecimals;
-  }
 };

@@ -22,7 +22,7 @@ import {
 } from "../utils/AsyncIntervalScheduler";
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
-import { ApiKycService } from "../lib/api/kyc/index";
+import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
@@ -99,8 +99,8 @@ export function setupBindings(config: IConfig): Container {
     .to(Web3Manager)
     .inSingletonScope();
   container
-    .bind<ApiKycService>(symbols.apiKycService)
-    .to(ApiKycService)
+    .bind<KycApi>(symbols.apiKycService)
+    .to(KycApi)
     .inSingletonScope();
 
   // factories

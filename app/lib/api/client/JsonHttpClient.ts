@@ -108,7 +108,7 @@ export class JsonHttpClient implements IHttpClient {
     const urlParts = compact([config.baseUrl, config.url]);
     const fullUrl = urlJoin(...urlParts);
 
-    return this.makeFetchRequest<any>(fullUrl, "DELETE", config);
+    return this.makeFetchRequest<any>(fullUrl, "DELETE", { ...config, expectsNoResponse: true });
   }
 
   private async makeFetchRequest<T>(
@@ -117,6 +117,7 @@ export class JsonHttpClient implements IHttpClient {
     config: IHttpRequestCommon,
   ): Promise<IHttpResponse<T>> {
     let response;
+
     try {
       let body: string | FormData | undefined = config.body
         ? JSON.stringify(toSnakeCase(config.body))
@@ -148,7 +149,8 @@ export class JsonHttpClient implements IHttpClient {
     }
 
     let responseJson: any = {};
-    if (response.body) {
+
+    if (response.body && !config.expectsNoResponse) {
       responseJson = await response.json().catch(() => {
         throw new ResponseParsingError("Response is not a json");
       });

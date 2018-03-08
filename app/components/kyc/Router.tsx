@@ -5,30 +5,26 @@ import { kycRoutes } from "./routes";
 import { KYCStart } from "./start/Start";
 
 // private
-import { KYCPersonalDone } from "./personal/Done";
-import { KYCPersonalIDUpload } from "./personal/IDUpload";
-import { KYCPersonalInstantID } from "./personal/InstantID";
-import { KYCPersonalManualVerification } from "./personal/ManualVerification";
+import { KYCBeneficialOwners } from "./business/BeneficialOwners";
+import { KycBusinessData } from "./business/BusinessData";
+import { KycLegalRepresentative } from "./business/LegalRepresentative";
+import { KycBusinessStart } from "./business/Start";
 import { KYCPersonalStart } from "./personal/Start";
-
-// company
-import { KYCCompanyDone } from "./company/Done";
-import { KYCCompanyStart } from "./company/Start";
+import { KYCPersonalUpload } from "./personal/Upload";
 
 export const KycRouter: React.SFC = () => (
   <Switch>
     <Route path={kycRoutes.start} component={KYCStart} exact />
 
     {/* Personal */}
-    <Route path={kycRoutes.personalStart} component={KYCPersonalStart} />
-    <Route path={kycRoutes.personalInstantId} component={KYCPersonalInstantID} />
-    <Route path={kycRoutes.personalManualVerification} component={KYCPersonalManualVerification} />
-    <Route path={kycRoutes.personalIDUpload} component={KYCPersonalIDUpload} />
-    <Route path={kycRoutes.personalDone} component={KYCPersonalDone} />
+    <Route path={kycRoutes.individualStart} component={KYCPersonalStart} />
+    <Route path={kycRoutes.individualUpload} component={KYCPersonalUpload} />
 
-    {/* Company */}
-    <Route path={kycRoutes.companyStart} component={KYCCompanyStart} />
-    <Route path={kycRoutes.companyDone} component={KYCCompanyDone} />
+    {/* Business */}
+    <Route path={kycRoutes.businessStart} component={KycBusinessStart} />
+    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
+    <Route path={kycRoutes.businessData} component={KycBusinessData} />
+    <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
 
     <Redirect to={kycRoutes.start} />
   </Switch>

@@ -4,6 +4,7 @@ import {FormSelectField} from './FormSelectField'
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 
 const VALUES = {
+  "-": "-",
   "de": "Germany"
 }
 

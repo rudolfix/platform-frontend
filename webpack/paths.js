@@ -6,4 +6,5 @@ module.exports = {
   appHtml: path.join(__dirname, "../app/index.html"),
   root: path.join(__dirname, ".."),
   favicon: path.join(__dirname, "../app/assets/favicon_neufund.ico"),
+  inlineIcons: path.join(__dirname, "../app/assets/img/inline_icons"),
 };

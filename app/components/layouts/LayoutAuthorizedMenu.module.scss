@@ -1,0 +1,96 @@
+@import "../../styles/neufund-theme";
+
+$_icon-size: px-to-rem(20px);
+
+.menu {
+  @include media-breakpoint-up(sm) {
+    display: block;
+    padding-top: map-get($spacers, 3);
+    justify-content: flex-start;
+  }
+
+  display: flex;
+  border-top: 2px solid $neu-almost-black;
+}
+
+.menu-item {
+  @include media-breakpoint-up (sm) {
+    padding-right: px-to-rem(10px);
+  }
+
+  flex-shrink: 0;
+  position: relative;
+  height: px-to-rem(60px);
+  color: $neu-silver;
+  display: flex;
+  align-items: center;
+
+  .icon {
+    color: $neu-charcoal-grey;
+  }
+
+  &:focus,
+  &:hover,
+  &:global(.active) {
+    background-color: $neu-charcoal-grey;
+    color: $neu-white-two;
+    border-color: $neu-piss-yellow;
+    text-decoration: none;
+
+    .icon {
+      color: inherit;
+    }
+  }
+
+  @include media-breakpoint-down(xs) {
+    width: px-to-rem(60px);
+    border-bottom: 3px solid transparent;
+  }
+
+  @include media-breakpoint-up(sm) {
+    height: px-to-rem(65px);
+    border-left: 3px solid transparent;
+  }
+
+  @include media-breakpoint-up(lg) {
+    display: flex;
+    height: px-to-rem(40px);
+    line-height: px-to-rem(40px);
+    background-position: map-get($spacers, 3) center;
+  }
+}
+
+.icon {
+  @include media-breakpoint-up (sm) {
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+
+  margin: 0 auto;
+  flex-shrink: 0;
+  line-height: px-to-rem(40px);
+  height: $_icon-size;
+  width: $_icon-size;
+  position: relative;
+}
+
+.name {
+  @include media-breakpoint-down (md) {
+    display: none;
+  }
+
+  max-width: calc(100% - (3 * #{$_icon-size}));
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.action-indicator {
+  height: px-to-rem(8px);
+  width: px-to-rem(8px);
+  background-color: $neu-bright-orange;
+  border-radius: 50%;
+  position: absolute;
+  top: px-to-rem(-1px);
+  right: px-to-rem(-2px);
+}

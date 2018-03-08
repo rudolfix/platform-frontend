@@ -11,6 +11,7 @@ import {
   ButtonSecondary,
   ButtonSecondaryLink,
 } from "./shared/Buttons";
+import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
@@ -113,6 +114,35 @@ export const Demo: React.SFC = () => (
           <ArrowLink arrowDirection="left" to="#">
             Left arrow link
           </ArrowLink>
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <Money
+            currency="eth"
+            value={"1234567" + "0".repeat(18)}
+            style={{ fontSize: "25px" }}
+            currencyStyle={{ fontSize: "18px", fontWeight: "bold" }}
+          />
+          <br />
+          <Money
+            currency="eur_token"
+            value={"1234567" + "0".repeat(18)}
+            style={{ fontSize: "25px" }}
+            currencyStyle={{ fontSize: "18px", fontWeight: "bold" }}
+          />
+          <br />
+          <Money
+            currency="neu"
+            value={"1234567" + "0".repeat(18)}
+            style={{ fontSize: "25px" }}
+            currencyStyle={{ fontSize: "18px", fontWeight: "bold" }}
+          />
+          <br />
+          <Money currency="eth" value={"12345678" + "0".repeat(15)} doNotSeparateThousands />
         </Col>
       </Row>
     </Container>

@@ -5,8 +5,15 @@
 }
 
 .icon {
-  height: px-to-rem(43);
-  width: px-to-rem(43);
+  height: px-to-rem(30);
+  width: px-to-rem(30);
+}
+
+@include media-breakpoint-up(md) {
+  .icon {
+    height: px-to-rem(43);
+    width: px-to-rem(43);
+  }
 }
 
 .color {

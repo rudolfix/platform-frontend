@@ -1,35 +1,53 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import * as icon from "../../../assets/img/neu_icon.svg";
 import { ArrowLink } from "../../shared/ArrowLink";
 import * as styles from "./MyNeuWidget.module.scss";
 
 interface IProps {
-  mode: "broke" | "money";
+  balanceNeu: string;
+  balanceEur?: string;
+  ratioNeu?: string;
 }
+
 export const MyNeuWidget: React.SFC<IProps> = props => {
-  return props.mode === "broke" ? (
-    <div className={cn(styles.background, "text-center")}>
-      <h5 className="text-light text-left mb-5 pl-3 pt-1">YOUR NEUMARK</h5>
-      <h3 className="text-light mb-5 align-items-center">
-        <img src={icon} className={cn(styles.icon, "mr-2")} />0.0000 NEU
-      </h3>
-      <ArrowLink arrowDirection="right" to="#" className="text-light">
-        About NEU
-      </ArrowLink>
+  return props.balanceNeu === "0.0000" ? (
+    <div className={cn(styles.background)}>
+      <h5 className="text-light text-left mb-3 mb-md-5 pl-3 pt-1">YOUR NEUMARK</h5>
+      <Row noGutters>
+        <Col md={12}>
+          <h3 className="text-light mb-4 mb-md-5 text-left ml-3 ml-md-0 text-md-center">
+            <img src={icon} className={cn(styles.icon, "mr-2 mb-1")} />
+            {props.balanceNeu} NEU
+          </h3>
+        </Col>
+        <Col md={12} className="text-right text-md-center">
+          <ArrowLink arrowDirection="right" to="#" className="text-light">
+            About NEU
+          </ArrowLink>
+        </Col>
+      </Row>
     </div>
   ) : (
-    <div className={cn(styles.background, "text-center")}>
+    <div className={cn(styles.background)}>
       <h5 className="text-light text-left mb-3 pl-3 pt-1">YOUR NEUMARK</h5>
-      <Row className="justify-content-center" noGutters>
-        <img src={icon} className={cn(styles.icon, "mr-3")} />
-        <div className="text-light text-left">
-          <h3 className="text-light">25.0045 NEU</h3>
-          <p>= 456.678 EUR</p>
-          <p className="mb-1">Outstanding NEU</p>
-          <p className={styles.color}>+ 0.5637 NEU</p>
-        </div>
+      <Row noGutters>
+        <Col>
+          <Row className="text-light justify-content-md-center ml-3 ml-md-0" noGutters>
+            <img src={icon} className={cn(styles.icon, "mr-2")} />
+            <h3 className="text-light">{props.balanceNeu} NEU</h3>
+          </Row>
+          <Col md={12} xs={9} className="text-light text-md-center pl-5 pl-md-0 ml-2">
+            <p>= {props.balanceEur} EUR</p>
+          </Col>
+        </Col>
+        <Col xs={5} md={12}>
+          <div className="text-light text-right pr-2 pr-md-0 text-md-center pl-3">
+            <p className="mb-1">Outstanding NEU</p>
+            <p className={cn(styles.color, "pr-4")}>+ {props.ratioNeu} NEU</p>
+          </div>
+        </Col>
       </Row>
     </div>
   );

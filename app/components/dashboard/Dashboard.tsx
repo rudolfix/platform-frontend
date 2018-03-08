@@ -11,7 +11,7 @@ export const Dashboard = () => (
     <NotificationWidget />
     <MessageSignModal />
     <Row className="p-3">
-      <Col md={9} sm={12}>
+      <Col lg={9} md={12}>
         <MyPortfolio />
       </Col>
     </Row>

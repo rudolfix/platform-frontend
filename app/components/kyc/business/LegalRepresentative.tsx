@@ -42,9 +42,9 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
   <Form>
     <FormField label="First Name" name="firstName" />
     <FormField label="Last Name" name="lastName" />
-    <FormField label="Birth Date" name="birthdate" />
+    <FormField label="Birth Date" name="birthDate" />
 
-    <FormField label="Address" name="address" />
+    <FormField label="Address" name="street" />
     <FormField label="Zip Code" name="zipCode" />
     <FormField label="City" name="city" />
     <FormField label="Country" name="country" />

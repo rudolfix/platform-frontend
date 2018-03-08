@@ -3,35 +3,21 @@ import * as Yup from "yup";
 export interface IKycPerson {
   firstName?: string;
   lastName?: string;
-  address?: string;
+  street?: string;
   city?: string;
   zipCode?: string;
   country?: string;
-  birthdate?: string;
+  birthDate?: string;
 }
 
 export const KycPersonSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .required("This field is required")
-    .min(3, "Must be longer than 3"),
-  lastName: Yup.string()
-    .required("This field is required")
-    .min(3, "Must be longer than 3"),
-  address: Yup.string()
-    .required("This field is required")
-    .min(3, "Must be longer than 3"),
-  city: Yup.string()
-    .required("This field is required")
-    .min(3, "Must be longer than 3"),
-  zipCode: Yup.string()
-    .required("This field is required")
-    .min(3, "Must be longer than 3"),
-  country: Yup.string()
-    .required("This field is required")
-    .min(3, "Must be longer than 3"),
-  birthdate: Yup.string()
-    .required("Your birthdate is required")
-    .min(3, "Must be longer than 3"),
+  firstName:  Yup.string(),
+  lastName:  Yup.string(),
+  street:  Yup.string(),
+  city:  Yup.string(),
+  zipCode:  Yup.string(),
+  country:  Yup.string(),
+  birthDate:  Yup.string(),
 });
 
 // individual data
@@ -54,40 +40,23 @@ export interface IKycBusinessData {
   name?: string;
   legalForm?: string;
   legalFormType?: string;
-  address?: string;
+  street?: string;
   city?: string;
   zipCode?: string;
   country?: string;
-  birthdate?: string;
   email?: string;
-  jurisdictionOfIncorporation?: string;
+  jurisdiction?: string;
 }
 
 export const KycBusinessDataSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Your first name is required")
-    .min(3, "Must be longer than 3"),
-  legalForm: Yup.string()
-    .required("Your last name is required")
-    .min(3, "Must be longer than 3"),
-  legalFormType: Yup.string()
-    .required("Your last name is required")
-    .min(3, "Must be longer than 3"),
-  address: Yup.string()
-    .required("Your address is required")
-    .min(3, "Must be longer than 3"),
-  city: Yup.string()
-    .required("Your city is required")
-    .min(3, "Must be longer than 3"),
-  zipCode: Yup.string()
-    .required("Your zip code is required")
-    .min(3, "Must be longer than 3"),
-  country: Yup.string()
-    .required("Your country is required")
-    .min(3, "Must be longer than 3"),
-  jurisdictionOfIncorporation: Yup.string()
-    .required("Your birthdate is required")
-    .min(3, "Must be longer than 3"),
+  name: Yup.string(),
+  legalForm: Yup.string(),
+  legalFormType: Yup.string(),
+  address:  Yup.string(),
+  city:  Yup.string(),
+  zipCode:  Yup.string(),
+  country:  Yup.string(),
+  jurisdiction:  Yup.string(),
 });
 
 // legal representative (same as base person)
@@ -101,7 +70,7 @@ export interface IKycBeneficialOwner extends IKycPerson {
 }
 export const KycBeneficialOwnerSchema = KycPersonSchema.concat(
   Yup.object().shape({
-    ownership: Yup.number().required("Your percent ownership is required"),
+    ownership: Yup.number(),
     id: Yup.string(),
   }),
 );
@@ -109,18 +78,16 @@ export const KycBeneficialOwnerSchema = KycPersonSchema.concat(
 // file
 export interface IKycFileInfo {
   id: string;
-  name: string;
-  size: number;
+  fileName: string;
 }
 
 export const KycFileInfoShape = Yup.object().shape({
-  id: Yup.string().required(),
-  name: Yup.string().required(),
-  size: Yup.number().required(),
+  id: Yup.string(),
+  fileName: Yup.string(),
 });
 
 // request state
-export type TRequestStatus = "draft" | "pending" | "outsourced" | "rejected" | "approved";
+export type TRequestStatus = "Draft" | "Pending" | "OutSourced" | "Rejected" | "Approved";
 export interface IKycRequestState {
   status: TRequestStatus;
 }

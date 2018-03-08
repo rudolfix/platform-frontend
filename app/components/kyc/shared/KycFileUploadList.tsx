@@ -18,9 +18,9 @@ export const KycFileUploadList: React.SFC<IProps> = props => {
 
   const inner = props.fileUploading ? <div>Uploading a File</div> : <div>Drop a file here</div>;
 
-  const list = props.files.map(f => (
-    <div key={f.id}>
-      Uploaded file: {f.name} || size: {f.size}
+  const list = props.files.map( (f, index) => (
+    <div key={index}>
+      Uploaded file: {f.fileName}
     </div>
   ));
 

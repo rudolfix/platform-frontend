@@ -27,13 +27,13 @@ const RequestStateInfo: React.SFC<{ requestState?: IKycRequestState }> = props =
   if (!props.requestState) {
     return <div>Loading ...</div>;
   }
-  if (props.requestState.status === "pending") {
+  if (props.requestState.status === "Pending") {
     return <div>We have received your request and are currently processing it. </div>;
   }
-  if (props.requestState.status === "approved") {
+  if (props.requestState.status === "Approved") {
     return <div>Your request has been approved!</div>;
   }
-  if (props.requestState.status === "rejected") {
+  if (props.requestState.status === "Rejected") {
     return <div>Your request has been rejected!</div>;
   }
   return <div />;
@@ -41,11 +41,11 @@ const RequestStateInfo: React.SFC<{ requestState?: IKycRequestState }> = props =
 
 export const KycComponent: React.SFC<IProps> = props => {
   const requestState =
-    props.individualRequestState && props.individualRequestState.status === "draft"
+    props.individualRequestState && props.individualRequestState.status === "Draft"
       ? props.businessRequestState
       : props.individualRequestState;
 
-  const router = requestState && requestState.status === "draft" ? <KycRouter /> : <div />;
+  const router = requestState && requestState.status === "Draft" ? <KycRouter /> : <div />;
 
   return (
     <Container>

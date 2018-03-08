@@ -16,7 +16,26 @@
   }
 }
 
-.ratio {
+.neu-ratio {
   color: $neu-seaweed;
   font-weight: $font-weight-bold;
+  font-size: $smaller-font-size;
+  font: $font-family-base;
+}
+
+.title {
+  color: $neu-white;
+  font-size: $smaller-font-size;
+  font-weight: $font-weight-bold;
+  font-family: $font-family-base;
+}
+
+.neu {
+  color: $neu-white;
+  font-size: $extra-bigger-font-size;
+}
+
+.smaller {
+  color: $neu-white;
+  font-size: $smaller-font-size;
 }

@@ -6,8 +6,10 @@ $_icon-size: px-to-rem(20px);
   @include media-breakpoint-up(sm) {
     display: block;
     padding-top: map-get($spacers, 3);
+    justify-content: flex-start;
   }
 
+  justify-content: space-evenly;
   display: flex;
 }
 

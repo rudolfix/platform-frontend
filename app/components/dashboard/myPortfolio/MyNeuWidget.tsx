@@ -18,11 +18,11 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
       <Row noGutters>
         <Col md={12}>
           <h3 className="text-light mb-4 mb-md-5 text-left ml-3 ml-md-0 text-md-center">
-            <img src={icon} className={cn(styles.icon, "mr-2 mb-1")} />
+            <img src={icon} className={cn(styles.icon, "mr-2 mb-1")} data-test-id="simple-neu" />
             {props.balanceNeu} NEU
           </h3>
         </Col>
-        <Col md={12} className="text-right text-md-center">
+        <Col md={12} className="text-right text-md-center" data-test-id="arrow-neu">
           <ArrowLink arrowDirection="right" to="#" className="text-light">
             About NEU
           </ArrowLink>
@@ -36,16 +36,20 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
         <Col>
           <Row className="text-light justify-content-md-center ml-3 ml-md-0" noGutters>
             <img src={icon} className={cn(styles.icon, "mr-2")} />
-            <h3 className="text-light">{props.balanceNeu} NEU</h3>
+            <h3 className="text-light" data-test-id="balance-neu">
+              {props.balanceNeu} NEU
+            </h3>
           </Row>
           <Col md={12} xs={10} className="text-light text-md-center pl-5 pl-md-0 ml-2">
-            <p>= {props.balanceEur} EUR</p>
+            <p data-test-id="balance-eur">= {props.balanceEur} EUR</p>
           </Col>
         </Col>
         <Col xs={5} md={12}>
           <div className="text-light text-right pr-2 pr-md-0 text-md-center pl-3">
             <p className="mb-1">Outstanding NEU</p>
-            <p className={cn(styles.color, "pr-4")}>+ {props.ratioNeu} NEU</p>
+            <p className={cn(styles.color, "pr-4")} data-test-id="ratio-neu">
+              + {props.ratioNeu} NEU
+            </p>
           </div>
         </Col>
       </Row>

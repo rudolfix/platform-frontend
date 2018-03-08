@@ -5,6 +5,7 @@ import * as styles from "./Demo.module.scss";
 
 import { ArrowLink } from "./shared/ArrowLink";
 
+import { MyPortfolio } from "./dashboard/myPortfolio/MyPortoflioWidget";
 import {
   ButtonPrimary,
   ButtonPrimaryLink,
@@ -15,7 +16,6 @@ import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
-import { MyPortfolio } from "./dashboard/myPortfolio/MyPortoflioWidget";
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>

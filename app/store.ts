@@ -6,6 +6,8 @@ import { genericErrorModalReducer } from "./modules/genericErrorModal/reducer";
 import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 
+import { kycReducer } from "./modules/kyc/reducer";
+
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import { web3Reducer } from "./modules/web3/reducer";
 
@@ -14,6 +16,7 @@ import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
 import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
 import { initReducer } from "./modules/init/reducer";
+import { moneyReducer } from "./modules/money/reducer";
 import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
 import { lightWalletWizardReducer } from "./modules/wallet-selector/light-wizard/reducer";
 import { FunctionWithDeps } from "./types";
@@ -44,8 +47,10 @@ const appReducers = {
   auth: authReducer,
   genericErrorModal: genericErrorModalReducer,
   signMessageModal: signMessageModalReducer,
+  kyc: kycReducer,
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,
+  money: moneyReducer,
 };
 
 // add all custom reducers here
@@ -70,7 +75,7 @@ export type IAppState = typeof appStateInstance & {
 export const reducers = combineReducers<IAppState>(allReducers);
 
 interface IAppConnectOptions<S, D, O> {
-  stateToProps?: (state: IAppState) => S;
+  stateToProps?: (state: IAppState, ownProps: O) => S;
   dispatchToProps?: (dispatch: AppDispatch, ownProps: O) => D;
   options?: Options<IAppState, S, {}>;
 }

@@ -48,6 +48,13 @@ export const neuTake = (type: TAction["type"]): effects.TakeEffect => {
   return effects.take(type);
 };
 
+export const neuTakeEvery = (
+  type: TAction["type"],
+  saga: (action: TAction) => any,
+): effects.ForkEffect => {
+  return effects.takeEvery(type, saga);
+};
+
 export function* getDependency(name: symbol): Iterator<effects.Effect> {
   const context: Container = yield effects.getContext("container");
   return context.get(name);

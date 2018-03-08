@@ -17,14 +17,13 @@ export const routingActions = {
 
   //kyc routes
   goToKYCHome: () => createRoutingAction(kycRoutes.start),
-  goToKYCPersonalStart: () => createRoutingAction(kycRoutes.personalStart),
-  goToKYCPersonalInstantId: () => createRoutingAction(kycRoutes.personalInstantId),
-  goToKYCManualVerification: () => createRoutingAction(kycRoutes.personalManualVerification),
-  goToKYCManualVerificationIDUpload: () => createRoutingAction(kycRoutes.personalIDUpload),
-  goToKYCPersonalDone: () => createRoutingAction(kycRoutes.personalDone),
+  goToKYCIndividualStart: () => createRoutingAction(kycRoutes.individualStart),
+  goToKYCIndividualUpload: () => createRoutingAction(kycRoutes.individualUpload),
 
-  goToKYCCompanyStart: () => createRoutingAction(kycRoutes.companyStart),
-  goToKYCCompanyDone: () => createRoutingAction(kycRoutes.companyDone),
+  goToKYCBusinessStart: () => createRoutingAction(kycRoutes.businessStart),
+  goToKYCLegalRepresentative: () => createRoutingAction(kycRoutes.legalRepresentative),
+  goToKYCBusinessData: () => createRoutingAction(kycRoutes.businessData),
+  goToKYCBeneficialOwners: () => createRoutingAction(kycRoutes.beneficialOwners),
 
   // dashboard
   goToDashboard: () => createRoutingAction(appRoutes.dashboard),

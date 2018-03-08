@@ -6,4 +6,7 @@ export class NotificationCenter {
   public error(message: string): void {
     toast.error(message);
   }
+  public info(message: string): void {
+    toast.info(message);
+  }
 }

@@ -1,0 +1,9 @@
+@import "../../styles/neufund-theme";
+
+.panel {
+  box-shadow: $shadow;
+  border-top: px-to-rem(2px);
+  border-top-color: $neu-piss-yellow;
+  border-top-style: solid;
+  background-color: $white-pure;
+}

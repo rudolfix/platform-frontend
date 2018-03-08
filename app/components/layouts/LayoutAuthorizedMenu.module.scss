@@ -1,12 +1,12 @@
 @import "../../styles/neufund-theme";
 
 .menu {
-  display: flex;
-
   @include media-breakpoint-up(sm) {
     display: block;
     padding-top: map-get($spacers, 3);
   }
+
+  display: flex;
 }
 
 .menu-item {
@@ -50,9 +50,8 @@
   margin-left: 20px;
   margin-right: 10px;
   line-height: px-to-rem(40px);
-  height: px-to-rem(40px);
-  width: 20px;
-  height: 20px;
+  height: px-to-rem(20px);
+  width: px-to-rem(20px);
   position: relative;
 }
 

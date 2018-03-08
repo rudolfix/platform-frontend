@@ -130,7 +130,7 @@ module.exports = merge(configCommon, {
           },
           {
             test: /\.(svg)$/,
-            loader: "raw-loader"
+            loader: "raw-loader",
           },
           {
             test: /\.(woff2|woff|ttf|eot|otf)$/,

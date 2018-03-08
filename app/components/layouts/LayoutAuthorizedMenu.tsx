@@ -5,10 +5,10 @@ import { InlineIcon } from "../shared/InlineIcon";
 
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
-import * as iconStart from "../../assets/img/icon_home_active.svg"
-import * as iconPortfolio from "../../assets/img/icon_portfolio_inactive.svg"
-import * as iconSettings from "../../assets/img/icon_settings_inactive.svg"
-import * as iconWallet from "../../assets/img/icon_wallet_inactive.svg"
+import * as iconStart from "../../assets/img/icon_home_active.svg";
+import * as iconPortfolio from "../../assets/img/icon_portfolio_inactive.svg";
+import * as iconSettings from "../../assets/img/icon_settings_inactive.svg";
+import * as iconWallet from "../../assets/img/icon_wallet_inactive.svg";
 
 interface IMenuEntry {
   svgString: string;
@@ -46,5 +46,5 @@ export const LayoutAuthorizedMenu = () => (
     <MenuEntry svgString={iconSettings} to="/" actionRequired>
       Settings
     </MenuEntry>
-  </div >
+  </div>
 );

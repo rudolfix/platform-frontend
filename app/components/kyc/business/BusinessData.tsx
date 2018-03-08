@@ -39,24 +39,9 @@ type IProps = IStateProps & IDispatchProps;
 
 const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
   <Form>
-    <FormField
-      label="Company Name"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="name"
-    />
-    <FormField
-      label="Place of incorporation"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="jurisdictionOfIncorporation"
-    />
-    <FormField
-      label="Legal Form"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="legalForm"
-    />
+    <FormField label="Company Name" name="name" />
+    <FormField label="Place of incorporation" name="jurisdictionOfIncorporation" />
+    <FormField label="Legal Form" name="legalForm" />
     <br /> <br />
     <FormField
       label="Address"
@@ -64,19 +49,9 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
       errors={formikBag.errors}
       name="address"
     />
-    <FormField
-      label="Zip Code"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="zipCode"
-    />
+    <FormField label="Zip Code" name="zipCode" />
     <FormField label="City" touched={formikBag.touched} errors={formikBag.errors} name="city" />
-    <FormField
-      label="Country"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="country"
-    />
+    <FormField label="Country" name="country" />
     <br />
     <ButtonPrimary
       color="primary"

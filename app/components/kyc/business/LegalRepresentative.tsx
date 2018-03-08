@@ -40,44 +40,14 @@ type IProps = IStateProps & IDispatchProps;
 
 const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
   <Form>
-    <FormField
-      label="First Name"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="firstName"
-    />
-    <FormField
-      label="Last Name"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="lastName"
-    />
-    <FormField
-      label="Birth Date"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="birthdate"
-    />
+    <FormField label="First Name" name="firstName" />
+    <FormField label="Last Name" name="lastName" />
+    <FormField label="Birth Date" name="birthdate" />
 
-    <FormField
-      label="Address"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="address"
-    />
-    <FormField
-      label="Zip Code"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="zipCode"
-    />
-    <FormField label="City" touched={formikBag.touched} errors={formikBag.errors} name="city" />
-    <FormField
-      label="Country"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="country"
-    />
+    <FormField label="Address" name="address" />
+    <FormField label="Zip Code" name="zipCode" />
+    <FormField label="City" name="city" />
+    <FormField label="Country" name="country" />
     <br />
     <ButtonPrimary
       color="primary"

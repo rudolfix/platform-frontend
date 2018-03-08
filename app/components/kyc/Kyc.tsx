@@ -9,7 +9,6 @@ import { IKycRequestState } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
-import { ProgressStepper } from "../shared/ProgressStepper";
 import * as styles from "./Kyc.module.scss";
 
 interface IStateProps {
@@ -24,46 +23,36 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-export const KycComponent: React.SFC<IProps> = props => {
-  let requestState = props.individualRequestState;
-  if (requestState && requestState.status === "draft") requestState = props.businessRequestState;
-
-  let content = (
-    <div>
-      <br />
-      <ProgressStepper steps={4} currentStep={4} />
-      <br />
-      <h1>Your KYC request</h1>
-      <br />
-    </div>
-  );
-  let stateContent = <div />;
-
-  if (!requestState) {
-    stateContent = <div>Loading ...</div>;
-  } else if (requestState.status === "pending") {
-    stateContent = (
-      <div>
-        We have received your request and are currently processing it.{" "}
-        <a href="#" onClick={props.reopenRequest}>
-          Click here to re-open your request to add additional data.
-        </a>
-      </div>
-    );
-  } else if (requestState.status === "approved") {
-    stateContent = <div>Your request has been approved!</div>;
-  } else if (requestState.status === "rejected") {
-    stateContent = <div>Your request has been rejected!</div>;
-  } else if (requestState.status === "draft") {
-    content = <KycRouter />;
+const RequestStateInfo: React.SFC<{ requestState?: IKycRequestState }> = props => {
+  if (!props.requestState) {
+    return <div>Loading ...</div>;
   }
+  if (props.requestState.status === "pending") {
+    return <div>We have received your request and are currently processing it. </div>;
+  }
+  if (props.requestState.status === "approved") {
+    return <div>Your request has been approved!</div>;
+  }
+  if (props.requestState.status === "rejected") {
+    return <div>Your request has been rejected!</div>;
+  }
+  return <div />;
+};
+
+export const KycComponent: React.SFC<IProps> = props => {
+  const requestState =
+    props.individualRequestState && props.individualRequestState.status === "draft"
+      ? props.businessRequestState
+      : props.individualRequestState;
+
+  const router = requestState && requestState.status === "draft" ? <KycRouter /> : <div />;
 
   return (
     <Container>
       <Row>
         <Col lg="12" xl={{ size: "10", offset: 1 }} className={cn("p-4", styles.container)}>
-          {content}
-          {stateContent}
+          <RequestStateInfo requestState={requestState} />
+          {router}
         </Col>
       </Row>
     </Container>

@@ -10,7 +10,7 @@ import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 
-import { FormField } from "../../shared/forms/forms";
+import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 
 import {
   IKycBusinessData,
@@ -40,8 +40,8 @@ type IProps = IStateProps & IDispatchProps;
 const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
   <Form>
     <FormField label="Company Name" name="name" />
-    <FormField label="Place of incorporation" name="jurisdiction" />
     <FormField label="Legal Form" name="legalForm" />
+    <FormSelectCountryField label="Place of incorporation" name="jurisdiction" />
     <br /> <br />
     <FormField
       label="Street and number"
@@ -49,7 +49,7 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
     />
     <FormField label="Zip Code" name="zipCode" />
     <FormField label="City" name="city" />
-    <FormField label="Country" name="country" />
+    <FormSelectCountryField label="Country" name="country" />
     <br />
     <ButtonPrimary
       color="primary"

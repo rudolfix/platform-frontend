@@ -10,7 +10,7 @@ import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 
-import { FormField } from "../../shared/forms/forms";
+import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 
 import {
   IKycFileInfo,
@@ -47,7 +47,7 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="Address" name="street" />
     <FormField label="Zip Code" name="zipCode" />
     <FormField label="City" name="city" />
-    <FormField label="Country" name="country" />
+    <FormSelectCountryField label="Country" name="country" />
     <br />
     <ButtonPrimary
       color="primary"

@@ -12,7 +12,7 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/forms";
+import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
@@ -52,7 +52,7 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
       <FormField label="Street and number" name="street" />
       <FormField label="Zip Code" name="zipCode" />
       <FormField label="City" name="city" />
-      <FormField label="Country" name="country" />
+      <FormSelectCountryField label="Country" name="country" />
       <FormField label="Percent owned" name="ownership" />
       <br />
       <br />

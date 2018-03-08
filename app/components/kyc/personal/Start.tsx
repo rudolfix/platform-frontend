@@ -10,7 +10,7 @@ import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 
-import { FormField } from "../../shared/forms/forms";
+import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 
 import { IKycIndividualData, KycIndividudalDataSchema } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -36,7 +36,7 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="Street and number" name="street" />
     <FormField label="Zip Code" name="zipCode" />
     <FormField label="City" name="city" />
-    <FormField label="Country" name="country" />
+    <FormSelectCountryField label="Country" name="country" />
     <br />
     <br />
     <div>TODO add checkboxes, please ask dave :)</div>

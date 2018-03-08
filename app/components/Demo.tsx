@@ -15,6 +15,7 @@ import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
+import { MyPortfolio } from "./dashboard/myPortfolio/MyPortoflioWidget";
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -143,6 +144,14 @@ export const Demo: React.SFC = () => (
           />
           <br />
           <Money currency="eth" value={"12345678" + "0".repeat(15)} doNotSeparateThousands />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <MyPortfolio />
         </Col>
       </Row>
     </Container>

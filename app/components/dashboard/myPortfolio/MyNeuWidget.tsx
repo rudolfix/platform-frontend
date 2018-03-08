@@ -38,7 +38,7 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
             <img src={icon} className={cn(styles.icon, "mr-2")} />
             <h3 className="text-light">{props.balanceNeu} NEU</h3>
           </Row>
-          <Col md={12} xs={9} className="text-light text-md-center pl-5 pl-md-0 ml-2">
+          <Col md={12} xs={10} className="text-light text-md-center pl-5 pl-md-0 ml-2">
             <p>= {props.balanceEur} EUR</p>
           </Col>
         </Col>

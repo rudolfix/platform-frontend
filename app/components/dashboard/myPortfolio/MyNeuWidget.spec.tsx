@@ -12,7 +12,7 @@ const extendedProps = {
   ratioNeu: "0.5637",
 };
 const simpleProps = {
-  balanceNeu: "0.0000",
+  balanceNeu: "0",
 };
 
 describe("<MyNeuWidget />", () => {

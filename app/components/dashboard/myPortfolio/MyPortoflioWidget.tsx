@@ -20,7 +20,11 @@ export const MyPortfolio = () => {
           </ArrowLink>
         </Col>
         <Col xl={4} md={5} xs={12} className="mt-3">
-          <MyNeuWidget balanceNeu="25.0045" balanceEur="456.678" ratioNeu="0.5637" />
+          <MyNeuWidget
+            balanceNeu={"250045" + "0".repeat(14)}
+            balanceEur={"456678" + "0".repeat(15)}
+            ratioNeu={"5637" + "0".repeat(14)}
+          />
         </Col>
       </Row>
     </PanelDark>

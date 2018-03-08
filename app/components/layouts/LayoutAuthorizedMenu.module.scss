@@ -1,5 +1,7 @@
 @import "../../styles/neufund-theme";
 
+$_icon-size: px-to-rem(20px);
+
 .menu {
   @include media-breakpoint-up(sm) {
     display: block;
@@ -15,6 +17,7 @@
   color: $neu-silver;
   display: flex;
   align-items: center;
+  padding-right: px-to-rem(10px);
 
   &:focus,
   &:hover,
@@ -47,11 +50,12 @@
 }
 
 .icon {
+  flex-shrink: 0;
   margin-left: 20px;
   margin-right: 10px;
   line-height: px-to-rem(40px);
-  height: px-to-rem(20px);
-  width: px-to-rem(20px);
+  height: $_icon-size;
+  width: $_icon-size;
   position: relative;
 }
 
@@ -59,6 +63,11 @@
   @include media-breakpoint-down (md) {
     display: none;
   }
+
+  max-width: calc(100% - (3 * #{$_icon-size}));
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .action-indicator {

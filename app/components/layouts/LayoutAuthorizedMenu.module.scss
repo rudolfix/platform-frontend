@@ -1,19 +1,20 @@
 @import "../../styles/neufund-theme";
 
 .menu {
+  display: flex;
+
   @include media-breakpoint-up(sm) {
+    display: block;
     padding-top: map-get($spacers, 3);
   }
 }
 
-$icon-width: px-to-rem(20px);
-
 .menu-item {
   position: relative;
-  display: inline-block;
   height: px-to-rem(60px);
   color: $neu-silver;
-  background: no-repeat center;
+  display: flex;
+  align-items: center;
 
   &:focus,
   &:hover,
@@ -21,6 +22,10 @@ $icon-width: px-to-rem(20px);
     background-color: $neu-charcoal-grey;
     color: $neu-white-two;
     border-color: $neu-piss-yellow;
+
+    .icon {
+      color: inherit;
+    }
   }
 
   @include media-breakpoint-down(xs) {
@@ -29,81 +34,40 @@ $icon-width: px-to-rem(20px);
   }
 
   @include media-breakpoint-up(sm) {
-    display: block;
     height: px-to-rem(65px);
     border-left: 3px solid transparent;
   }
 
   @include media-breakpoint-up(lg) {
+    display: flex;
     height: px-to-rem(40px);
     line-height: px-to-rem(40px);
-    padding-left: calc(#{map-get($spacers, 3)} + #{$icon-width} + #{map-get($spacers, 2)});
     background-position: map-get($spacers, 3) center;
   }
 }
 
+.icon {
+  margin-left: 20px;
+  margin-right: 10px;
+  line-height: px-to-rem(40px);
+  height: px-to-rem(40px);
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
 .name {
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down (md) {
     display: none;
   }
 }
 
-.action-required {
-  @include media-breakpoint-down(md) {
-    display: block;
-    position: absolute;
-    top: calc(50% - (#{$icon-width} / 2));
-    left: calc(50% + (#{$icon-width} / 2) - 3px);
-  }
-
-  @include media-breakpoint-up(lg) {
-    display: inline-block;
-    margin-left: map-get($spacers, 1);
-  }
-
+.action-indicator {
   height: px-to-rem(8px);
   width: px-to-rem(8px);
   background-color: $neu-bright-orange;
   border-radius: 50%;
-  vertical-align: text-top;
-}
-
-.start {
-  background-image: url("../../assets/img/icon_portfolio_inactive.svg");
-
-  &:focus,
-  &:hover,
-  &:global(.active) {
-    background-image: url("../../assets/img/icon_home_active.svg");
-  }
-}
-
-.portfolio {
-  background-image: url("../../assets/img/icon_portfolio_inactive.svg");
-
-  &:focus,
-  &:hover,
-  &:global(.active) {
-    background-image: url("../../assets/img/icon_home_active.svg");
-  }
-}
-
-.wallet {
-  background-image: url("../../assets/img/icon_wallet_inactive.svg");
-
-  &:focus,
-  &:hover,
-  &:global(.active) {
-    background-image: url("../../assets/img/icon_home_active.svg");
-  }
-}
-
-.settings {
-  background-image: url("../../assets/img/icon_settings_inactive.svg");
-
-  &:focus,
-  &:hover,
-  &:global(.active) {
-    background-image: url("../../assets/img/icon_home_active.svg");
-  }
+  position: absolute;
+  top: px-to-rem(-1px);
+  right: px-to-rem(-2px);
 }

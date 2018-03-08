@@ -121,16 +121,12 @@ module.exports = merge(configCommon, {
             include: paths.app,
           },
           {
-            test: /\.(jpg|png)$/,
+            test: /\.(jpg|png|svg)$/,
             loader: "url-loader",
             options: {
               limit: 25000,
               publicPath: "/",
             },
-          },
-          {
-            test: /\.(svg)$/,
-            loader: "raw-loader",
           },
           {
             test: /\.(woff2|woff|ttf|eot|otf)$/,

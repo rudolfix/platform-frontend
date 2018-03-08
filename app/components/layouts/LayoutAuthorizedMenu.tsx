@@ -5,10 +5,14 @@ import { InlineIcon } from "../shared/InlineIcon";
 
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
-import * as iconStart from "../../assets/img/icon_home_active.svg";
-import * as iconPortfolio from "../../assets/img/icon_portfolio_inactive.svg";
-import * as iconSettings from "../../assets/img/icon_settings_inactive.svg";
-import * as iconWallet from "../../assets/img/icon_wallet_inactive.svg";
+// tslint:disable-next-line:no-implicit-dependencies
+import * as iconStart from "!raw-loader!../../assets/img/icon_home_active.svg";
+// tslint:disable-next-line:no-implicit-dependencies
+import * as iconPortfolio from "!raw-loader!../../assets/img/icon_portfolio_inactive.svg";
+// tslint:disable-next-line:no-implicit-dependencies
+import * as iconSettings from "!raw-loader!../../assets/img/icon_settings_inactive.svg";
+// tslint:disable-next-line:no-implicit-dependencies
+import * as iconWallet from "!raw-loader!../../assets/img/icon_wallet_inactive.svg";
 
 interface IMenuEntry {
   svgString: string;
@@ -34,10 +38,10 @@ const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
 
 export const LayoutAuthorizedMenu = () => (
   <div className={styles.menu}>
-    <MenuEntry svgString={iconStart} to="/">
+    <MenuEntry svgString={iconStart} to="/dashboard">
       Start
     </MenuEntry>
-    <MenuEntry svgString={iconPortfolio} to="/dashboard">
+    <MenuEntry svgString={iconPortfolio} to="/">
       Portfolio
     </MenuEntry>
     <MenuEntry svgString={iconWallet} to="/">

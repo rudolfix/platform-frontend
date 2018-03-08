@@ -9,17 +9,25 @@ $_icon-size: px-to-rem(20px);
     justify-content: flex-start;
   }
 
-  justify-content: space-evenly;
   display: flex;
+  border-top: 2px solid $neu-almost-black;
 }
 
 .menu-item {
+  @include media-breakpoint-up (sm) {
+    padding-right: px-to-rem(10px);
+  }
+
+  flex-shrink: 0;
   position: relative;
   height: px-to-rem(60px);
   color: $neu-silver;
   display: flex;
   align-items: center;
-  padding-right: px-to-rem(10px);
+
+  .icon {
+    color: $neu-charcoal-grey;
+  }
 
   &:focus,
   &:hover,
@@ -27,6 +35,7 @@ $_icon-size: px-to-rem(20px);
     background-color: $neu-charcoal-grey;
     color: $neu-white-two;
     border-color: $neu-piss-yellow;
+    text-decoration: none;
 
     .icon {
       color: inherit;
@@ -52,9 +61,13 @@ $_icon-size: px-to-rem(20px);
 }
 
 .icon {
+  @include media-breakpoint-up (sm) {
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+
+  margin: 0 auto;
   flex-shrink: 0;
-  margin-left: 20px;
-  margin-right: 10px;
   line-height: px-to-rem(40px);
   height: $_icon-size;
   width: $_icon-size;

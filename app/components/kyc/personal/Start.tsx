@@ -10,11 +10,29 @@ import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 
-import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
+import { FormField, FormSelectCountryField, FormSelectField, NONE_KEY, BOOL_TRUE_KEY, BOOL_FALSE_KEY, boolify, unboolify } from "../../shared/forms/forms";
 
 import { IKycIndividualData, KycIndividudalDataSchema } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
+
+const PEP_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes I am",
+  [BOOL_FALSE_KEY]: "No I am not"
+}
+
+const US_CITIZEN_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes I am",
+  [BOOL_FALSE_KEY]: "No I am not"
+}
+
+const HIGH_INCOME_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes I have",
+  [BOOL_FALSE_KEY]: "No I have not"
+}
 
 interface IStateProps {
   currentValues?: IKycIndividualData;
@@ -38,6 +56,11 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="City" name="city" />
     <FormSelectCountryField label="Country" name="country" />
     <br />
+    <FormSelectField values={PEP_VALUES} label="Are you politically exposed?" name="isPoliticallyExposed" />
+    <FormSelectField values={US_CITIZEN_VALUES} label="Are you a US citizen?" name="isUsCitizen" />
+    <FormSelectField values={HIGH_INCOME_VALUES} label="Do you have a high income??" name="isHighIncome" />
+
+    <br />
     <br />
     <div>TODO add checkboxes, please ask dave :)</div>
     <br />
@@ -54,11 +77,12 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   validationSchema: KycIndividudalDataSchema,
-
   isInitialValid: (props: any) => KycIndividudalDataSchema.isValidSync(props.currentValues),
-  mapPropsToValues: props => props.currentValues as IKycIndividualData,
+  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
   enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  handleSubmit: (values, props) => {
+    props.props.submitForm(boolify(values))
+  }
 })(KYCForm);
 
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {

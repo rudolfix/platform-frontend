@@ -24,14 +24,14 @@ export const KycPersonSchema = Yup.object().shape({
 export interface IKycIndividualData extends IKycPerson {
   isUsCitizen?: boolean;
   isPoliticallyExposed?: boolean;
-  highIncome?: boolean;
+  isHighIncome?: boolean;
 }
 
 export const KycIndividudalDataSchema = KycPersonSchema.concat(
   Yup.object().shape({
     isUsCitizen: Yup.bool(),
     isPoliticallyExposed: Yup.bool(),
-    highIncome: Yup.bool(),
+    isHighIncome: Yup.bool(),
   }),
 );
 

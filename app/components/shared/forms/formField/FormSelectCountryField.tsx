@@ -1,10 +1,10 @@
 
 import * as React from "react";
-import {FormSelectField} from './FormSelectField'
+import {FormSelectField, NONE_KEY} from './FormSelectField'
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 
 const VALUES = {
-  "-": "-",
+  NONE_KEY: "-Please select-",
   "de": "Germany"
 }
 

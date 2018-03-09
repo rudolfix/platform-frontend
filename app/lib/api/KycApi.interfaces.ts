@@ -8,29 +8,29 @@ export interface IKycPerson {
   zipCode?: string;
   country?: string;
   birthDate?: string;
+  isPoliticallyExposed?: boolean;
 }
 
 export const KycPersonSchema = Yup.object().shape({
-  firstName:  Yup.string(),
-  lastName:  Yup.string(),
-  street:  Yup.string(),
-  city:  Yup.string(),
-  zipCode:  Yup.string(),
-  country:  Yup.string(),
-  birthDate:  Yup.string(),
+  firstName: Yup.string(),
+  lastName: Yup.string(),
+  street: Yup.string(),
+  city: Yup.string(),
+  zipCode: Yup.string(),
+  country: Yup.string(),
+  birthDate: Yup.string(),
+  isPoliticallyExposed: Yup.bool(),
 });
 
 // individual data
 export interface IKycIndividualData extends IKycPerson {
   isUsCitizen?: boolean;
-  isPoliticallyExposed?: boolean;
   isHighIncome?: boolean;
 }
 
 export const KycIndividudalDataSchema = KycPersonSchema.concat(
   Yup.object().shape({
     isUsCitizen: Yup.bool(),
-    isPoliticallyExposed: Yup.bool(),
     isHighIncome: Yup.bool(),
   }),
 );
@@ -52,11 +52,11 @@ export const KycBusinessDataSchema = Yup.object().shape({
   name: Yup.string(),
   legalForm: Yup.string(),
   legalFormType: Yup.string(),
-  address:  Yup.string(),
-  city:  Yup.string(),
-  zipCode:  Yup.string(),
-  country:  Yup.string(),
-  jurisdiction:  Yup.string(),
+  address: Yup.string(),
+  city: Yup.string(),
+  zipCode: Yup.string(),
+  country: Yup.string(),
+  jurisdiction: Yup.string(),
 });
 
 // legal representative (same as base person)

@@ -10,7 +10,16 @@ import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { actions } from "../../../modules/actions";
 
-import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
+import {
+  BOOL_FALSE_KEY,
+  BOOL_TRUE_KEY,
+  boolify,
+  FormField,
+  FormSelectCountryField,
+  FormSelectField,
+  NONE_KEY,
+  unboolify,
+} from "../../shared/forms/forms";
 
 import {
   IKycFileInfo,
@@ -21,6 +30,12 @@ import {
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
+
+const PEP_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes I am",
+  [BOOL_FALSE_KEY]: "No I am not",
+};
 
 interface IStateProps {
   currentValues?: IKycLegalRepresentative;
@@ -48,6 +63,12 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="Zip Code" name="zipCode" />
     <FormField label="City" name="city" />
     <FormSelectCountryField label="Country" name="country" />
+    <FormSelectField
+      values={PEP_VALUES}
+      label="Are you politically exposed?"
+      name="isPoliticallyExposed"
+    />
+
     <br />
     <ButtonPrimary
       color="primary"
@@ -61,10 +82,10 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   validationSchema: KycLegalRepresentativeSchema,
-  mapPropsToValues: props => props.currentValues as IKycIndividualData,
+  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
   isInitialValid: (props: any) => KycLegalRepresentativeSchema.isValidSync(props.currentValues),
   enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  handleSubmit: (values, props) => props.props.submitForm(boolify(values)),
 })(KYCForm);
 
 export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {

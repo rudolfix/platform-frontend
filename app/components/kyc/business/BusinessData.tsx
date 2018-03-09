@@ -43,10 +43,7 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
     <FormField label="Legal Form" name="legalForm" />
     <FormSelectCountryField label="Place of incorporation" name="jurisdiction" />
     <br /> <br />
-    <FormField
-      label="Street and number"
-      name="street"
-    />
+    <FormField label="Street and number" name="street" />
     <FormField label="Zip Code" name="zipCode" />
     <FormField label="City" name="city" />
     <FormSelectCountryField label="Country" name="country" />

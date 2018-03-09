@@ -1,39 +1,38 @@
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
+import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
-import { map, mapValues } from 'lodash'
 
-import { InputType } from "../../../../types";
-import { ChangeEvent } from "react";
+export const NONE_KEY = "__NONE__";
+export const BOOL_TRUE_KEY = "true";
+export const BOOL_FALSE_KEY = "false";
 
-export const NONE_KEY = "__NONE__"
-export const BOOL_TRUE_KEY = "true"
-export const BOOL_FALSE_KEY = "false"
+export const boolify = <T extends {}>(values: T): T => {
+  if (!values) return values;
+  const v: any = values;
+  return mapValues(v, key => {
+    if (key === BOOL_TRUE_KEY) return true;
+    if (key === BOOL_FALSE_KEY) return false;
+    return key;
+  }) as T;
+};
 
-export const boolify = (values: {}): {} => {
-  if ( !values ) return values
-  return mapValues(values, key => {
-    if (key === BOOL_TRUE_KEY ) return true
-    if ( key === BOOL_FALSE_KEY ) return false
-    return key
-  })
-}
-
-export const unboolify = (values: {}): {} => {
-  if ( !values ) return values
-  return mapValues(values, key => {
-    if (key === true ) return BOOL_TRUE_KEY
-    if ( key === false ) return BOOL_FALSE_KEY
-    return key
-  })
-}
+export const unboolify = <T extends {}>(values: T): T => {
+  if (!values) return values;
+  const v: any = values;
+  return mapValues(v, key => {
+    if (key === true) return BOOL_TRUE_KEY;
+    if (key === false) return BOOL_FALSE_KEY;
+    return key;
+  }) as T;
+};
 
 interface IFieldGroup {
   label?: string;
   values: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
@@ -52,18 +51,19 @@ const isValid = (
 };
 
 export class FormSelectField extends React.Component<FieldGroupProps> {
-
   static contextTypes = {
     formik: PropTypes.object,
   };
 
-  renderOptions = () => 
+  renderOptions = () =>
     map(this.props.values, (value, key) => (
-      <option key={key} value={key}>{value}</option>
-    ))
+      <option key={key} value={key}>
+        {value}
+      </option>
+    ));
 
   render(): React.ReactChild {
-    const { label, type, name } = this.props;
+    const { label, name } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
     return (
@@ -76,7 +76,8 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
               {...field}
               type="select"
               value={field.value}
-              valid={isValid(touched, errors, name)}>
+              valid={isValid(touched, errors, name)}
+            >
               {this.renderOptions()}
             </Input>
           )}

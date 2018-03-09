@@ -1,12 +1,11 @@
-
+import { FieldAttributes } from "formik";
 import * as React from "react";
-import {FormSelectField, NONE_KEY} from './FormSelectField'
-import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
+import { FormSelectField } from "./FormSelectField";
 
 const VALUES = {
   NONE_KEY: "-Please select-",
-  "de": "Germany"
-}
+  de: "Germany",
+};
 
 interface IFieldGroup {
   label?: string;
@@ -14,6 +13,6 @@ interface IFieldGroup {
 
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
-
-export const FormSelectCountryField: React.SFC<FieldGroupProps>  = props => 
+export const FormSelectCountryField: React.SFC<FieldGroupProps> = props => (
   <FormSelectField {...props} values={VALUES} />
+);

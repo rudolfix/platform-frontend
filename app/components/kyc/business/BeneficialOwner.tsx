@@ -12,9 +12,25 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
-import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
+
+import {
+  BOOL_FALSE_KEY,
+  BOOL_TRUE_KEY,
+  boolify,
+  FormField,
+  FormSelectCountryField,
+  FormSelectField,
+  NONE_KEY,
+  unboolify,
+} from "../../shared/forms/forms";
+
+const PEP_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes they are",
+  [BOOL_FALSE_KEY]: "No they are not",
+};
 
 interface IStateProps {
   owner: IKycBeneficialOwner;
@@ -54,6 +70,12 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
       <FormField label="City" name="city" />
       <FormSelectCountryField label="Country" name="country" />
       <FormField label="Percent owned" name="ownership" />
+      <FormSelectField
+        values={PEP_VALUES}
+        label="Is this person politically exposed?"
+        name="isPoliticallyExposed"
+      />
+
       <br />
       <br />
       <ButtonPrimary
@@ -69,12 +91,12 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
 
 const KYCEnhancedForm = withFormik<IProps, IKycBeneficialOwner>({
   validationSchema: KycBeneficialOwnerSchema,
-  mapPropsToValues: props => props.owner,
+  mapPropsToValues: props => unboolify(props.owner),
   isInitialValid: (props: any) => KycBeneficialOwnerSchema.isValidSync(props.currentValues),
   enableReinitialize: true,
   handleSubmit: (values, props) => {
     const ownership: any = values.ownership || "";
-    props.props.submitForm({ ...values, ownership: parseInt(ownership, 10) || 0 });
+    props.props.submitForm(boolify({ ...values, ownership: parseInt(ownership, 10) || 0 }));
   },
 })(KYCForm);
 

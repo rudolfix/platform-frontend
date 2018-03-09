@@ -380,7 +380,7 @@ export function* kycSagas(): Iterator<Effect> {
   yield neuTakeEvery("KYC_LOAD_BUSINESS_DATA", loadBusinessData);
   yield neuTakeEvery("KYC_SUBMIT_BUSINESS_DATA", submitBusinessData);
   yield neuTakeEvery("KYC_LOAD_LEGAL_REPRESENTATIVE_FILE_LIST", loadLegalRepresentativeFiles);
-  yield neuTakeEvery("KYC_UPLOAD_BUSINESS_FILE", uploadBusinessFile );
+  yield neuTakeEvery("KYC_UPLOAD_BUSINESS_FILE", uploadBusinessFile);
   yield neuTakeEvery("KYC_LOAD_BUSINESS_FILE_LIST", loadBusinessFiles);
 
   yield neuTakeEvery("KYC_LOAD_BENEFICIAL_OWNERS", loadBeneficialOwners);

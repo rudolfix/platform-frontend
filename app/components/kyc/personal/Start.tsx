@@ -21,7 +21,10 @@ import {
   unboolify,
 } from "../../shared/forms/forms";
 
-import { IKycIndividualData, KycIndividudalDataSchema } from "../../../lib/api/KycApi.interfaces";
+import {
+  IKycIndividualData,
+  KycIndividudalDataSchemaRequired,
+} from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
 
@@ -91,8 +94,8 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
-  validationSchema: KycIndividudalDataSchema,
-  isInitialValid: (props: any) => KycIndividudalDataSchema.isValidSync(props.currentValues),
+  validationSchema: KycIndividudalDataSchemaRequired,
+  isInitialValid: (props: any) => KycIndividudalDataSchemaRequired.isValidSync(props.currentValues),
   mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
   enableReinitialize: true,
   handleSubmit: (values, props) => {

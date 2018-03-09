@@ -21,11 +21,14 @@ import {
   unboolify,
 } from "../../shared/forms/forms";
 
+import { KYCBeneficialOwners } from "./BeneficialOwners";
+
 import {
+  IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
   IKycLegalRepresentative,
-  KycLegalRepresentativeSchema,
+  KycLegalRepresentativeSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
@@ -38,11 +41,12 @@ const PEP_VALUES = {
 };
 
 interface IStateProps {
-  currentValues?: IKycLegalRepresentative;
+  legalRepresentative?: IKycLegalRepresentative;
   loadingData: boolean;
   fileUploading: boolean;
   filesLoading: boolean;
   files: IKycFileInfo[];
+  businessData?: IKycBusinessData;
 }
 
 interface IDispatchProps {
@@ -81,14 +85,41 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
-  validationSchema: KycLegalRepresentativeSchema,
-  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
-  isInitialValid: (props: any) => KycLegalRepresentativeSchema.isValidSync(props.currentValues),
+  validationSchema: KycLegalRepresentativeSchemaRequired,
+  mapPropsToValues: props => unboolify(props.legalRepresentative as IKycIndividualData),
+  isInitialValid: (props: any) =>
+    KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative),
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(boolify(values)),
 })(KYCForm);
 
+const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
+  if (!props.lrDataValid) return <div />;
+  return (
+    <div>
+      <br />
+      <h4>Supporting Documents</h4>
+      <br />
+      Please upload a scan of your ID here.
+      <br />
+      <KycFileUploadList
+        onDropFile={props.onDropFile}
+        files={props.files}
+        fileUploading={props.fileUploading}
+        filesLoading={props.filesLoading}
+      />{" "}
+    </div>
+  );
+};
+
+const BeneficialOwners: React.SFC<IProps & { lrDataValid: boolean }> = props => {
+  if (!props.lrDataValid || props.files.length === 0) return <div />;
+  if (!props.businessData || !(props.businessData.legalFormType === "corporate")) return <div />;
+  return <KYCBeneficialOwners />;
+};
+
 export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
+  const lrDataValid = KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative);
   return (
     <div>
       <br />
@@ -100,22 +131,13 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
       <br />
       <br />
       <KYCEnhancedForm {...props} />
-      <br />
-      <h3>Supporting Documents</h3>
-      <br />
-      Please upload a scan of your ID here.
-      <br />
-      <KycFileUploadList
-        onDropFile={props.onDropFile}
-        files={props.files}
-        fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
-      />
+      <FileUploadList {...props} lrDataValid={lrDataValid} />
+      <BeneficialOwners {...props} lrDataValid={lrDataValid} />
       <br /> <br />
       <ButtonPrimary
         color="primary"
         type="submit"
-        disabled={!props.currentValues || props.files.length === 0}
+        disabled={!props.legalRepresentative || props.files.length === 0}
         onClick={props.onContinue}
       >
         Continue
@@ -127,7 +149,8 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
 export const KycLegalRepresentative = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      currentValues: state.kyc.legalRepresentative,
+      businessData: state.kyc.businessData,
+      legalRepresentative: state.kyc.legalRepresentative,
       loadingData: !!state.kyc.legalRepresentativeLoading,
       files: state.kyc.legalRepresentativeFiles,
       filesLoading: !!state.kyc.legalRepresentativeFilesLoading,
@@ -142,6 +165,7 @@ export const KycLegalRepresentative = compose<React.SFC>(
   }),
   onEnterAction({
     actionCreator: dispatch => {
+      dispatch(actions.kyc.kycLoadBusinessData());
       dispatch(actions.kyc.kycLoadLegalRepresentative());
       dispatch(actions.kyc.kycLoadLegalRepresentativeDocumentList());
     },

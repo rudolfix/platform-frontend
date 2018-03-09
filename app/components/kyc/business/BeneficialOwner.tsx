@@ -8,7 +8,7 @@ import { Form, FormikProps, withFormik } from "formik";
 import {
   IKycBeneficialOwner,
   IKycFileInfo,
-  KycBeneficialOwnerSchema,
+  KycBeneficialOwnerSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
@@ -90,9 +90,9 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
 };
 
 const KYCEnhancedForm = withFormik<IProps, IKycBeneficialOwner>({
-  validationSchema: KycBeneficialOwnerSchema,
+  validationSchema: KycBeneficialOwnerSchemaRequired,
   mapPropsToValues: props => unboolify(props.owner),
-  isInitialValid: (props: any) => KycBeneficialOwnerSchema.isValidSync(props.currentValues),
+  isInitialValid: (props: any) => KycBeneficialOwnerSchemaRequired.isValidSync(props.owner),
   enableReinitialize: true,
   handleSubmit: (values, props) => {
     const ownership: any = values.ownership || "";

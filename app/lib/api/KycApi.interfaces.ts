@@ -1,4 +1,15 @@
+import { mapValues } from "lodash";
 import * as Yup from "yup";
+
+/**
+ * Schema helpers
+ * semi documented.... :)
+ */
+const makeAllRequired = (schema: Yup.ObjectSchema): Yup.ObjectSchema => {
+  const oldFields: { [key: string]: Yup.MixedSchema } = (schema as any).fields;
+  const newFields = mapValues(oldFields, schema => schema.required("This field is required"));
+  return Yup.object().shape(newFields);
+};
 
 export interface IKycPerson {
   firstName?: string;
@@ -35,16 +46,17 @@ export const KycIndividudalDataSchema = KycPersonSchema.concat(
   }),
 );
 
+export const KycIndividudalDataSchemaRequired = makeAllRequired(KycIndividudalDataSchema);
+
 // business data
 export interface IKycBusinessData {
   name?: string;
   legalForm?: string;
-  legalFormType?: string;
+  legalFormType?: TKycBusinessType;
   street?: string;
   city?: string;
   zipCode?: string;
   country?: string;
-  email?: string;
   jurisdiction?: string;
 }
 
@@ -52,16 +64,18 @@ export const KycBusinessDataSchema = Yup.object().shape({
   name: Yup.string(),
   legalForm: Yup.string(),
   legalFormType: Yup.string(),
-  address: Yup.string(),
+  street: Yup.string(),
   city: Yup.string(),
   zipCode: Yup.string(),
   country: Yup.string(),
-  jurisdiction: Yup.string(),
+  jurisdiction: Yup.string().default("de"),
 });
+export const KycBusinessDataSchemaRequired = makeAllRequired(KycBusinessDataSchema);
 
 // legal representative (same as base person)
 export interface IKycLegalRepresentative extends IKycPerson {}
 export const KycLegalRepresentativeSchema = KycPersonSchema;
+export const KycLegalRepresentativeSchemaRequired = makeAllRequired(KycPersonSchema);
 
 // beneficial owner
 export interface IKycBeneficialOwner extends IKycPerson {
@@ -74,6 +88,7 @@ export const KycBeneficialOwnerSchema = KycPersonSchema.concat(
     id: Yup.string(),
   }),
 );
+export const KycBeneficialOwnerSchemaRequired = makeAllRequired(KycBeneficialOwnerSchema);
 
 // file
 export interface IKycFileInfo {

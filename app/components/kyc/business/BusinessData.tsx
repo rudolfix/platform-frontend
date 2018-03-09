@@ -15,7 +15,7 @@ import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 import {
   IKycBusinessData,
   IKycFileInfo,
-  KycBusinessDataSchema,
+  KycBusinessDataSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
@@ -32,7 +32,7 @@ interface IStateProps {
 interface IDispatchProps {
   submitForm: (values: IKycBusinessData) => void;
   onDropFile: (file: File) => void;
-  onContinue: () => void;
+  submit: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -41,7 +41,11 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
   <Form>
     <FormField label="Company Name" name="name" />
     <FormField label="Legal Form" name="legalForm" />
-    <FormSelectCountryField label="Place of incorporation" name="jurisdiction" />
+    {!formikBag.currentValues || !(formikBag.currentValues.legalFormType === "corporate") ? (
+      <div />
+    ) : (
+      <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
+    )}
     <br /> <br />
     <FormField label="Street and number" name="street" />
     <FormField label="Zip Code" name="zipCode" />
@@ -59,14 +63,34 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
-  validationSchema: KycBusinessDataSchema,
+  validationSchema: KycBusinessDataSchemaRequired,
   mapPropsToValues: props => props.currentValues as IKycBusinessData,
   enableReinitialize: true,
-  isInitialValid: (props: any) => KycBusinessDataSchema.isValidSync(props.currentValues),
+  isInitialValid: (props: any) => KycBusinessDataSchemaRequired.isValidSync(props.currentValues),
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(KYCForm);
 
+const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
+  if (!props.dataValid) return <div />;
+  return (
+    <div>
+      <br />
+      <h4>Supporting Documents</h4>
+      <br />
+      Please upload company documents here
+      <br />
+      <KycFileUploadList
+        onDropFile={props.onDropFile}
+        files={props.files}
+        fileUploading={props.fileUploading}
+        filesLoading={props.filesLoading}
+      />{" "}
+    </div>
+  );
+};
+
 export const KycBusinessDataComponent: React.SFC<IProps> = props => {
+  const dataValid = KycBusinessDataSchemaRequired.isValidSync(props.currentValues);
   return (
     <div>
       <br />
@@ -76,27 +100,17 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
       <br />
       Please tell us about your business
       <br />
-      <br />
       <KYCEnhancedForm {...props} />
       <br />
-      <h3>Supporting Documents</h3>
-      <br />
-      Please update documents here
-      <br />
-      <KycFileUploadList
-        onDropFile={props.onDropFile}
-        files={props.files}
-        fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
-      />
+      <FileUploadList {...props} dataValid={dataValid} />
       <br /> <br />
       <ButtonPrimary
         color="primary"
         type="submit"
         disabled={!props.currentValues || props.files.length === 0}
-        onClick={props.onContinue}
+        onClick={props.submit}
       >
-        Continue
+        Submit Request
       </ButtonPrimary>
     </div>
   );
@@ -113,7 +127,7 @@ export const KycBusinessData = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadBusinessDocument(file)),
-      onContinue: () => dispatch(actions.routing.goToKYCBeneficialOwners()),
+      submit: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),
       submitForm: (values: IKycBusinessData) => dispatch(actions.kyc.kycSubmitBusinessData(values)),
     }),
   }),

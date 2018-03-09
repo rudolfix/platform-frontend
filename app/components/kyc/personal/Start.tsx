@@ -79,8 +79,6 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 
     <br />
     <br />
-    <div>TODO add checkboxes, please ask dave :)</div>
-    <br />
     <br />
     <ButtonPrimary
       color="primary"

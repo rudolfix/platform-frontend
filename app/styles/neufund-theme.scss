@@ -1,9 +1,10 @@
 // import this file to get access to all important variables and helpers (bootstrap + our custom ones)
 
 @import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
 @import "./utils";
 @import "./variables";
 @import "./typography";
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/mixins";
+@import "./global";
 

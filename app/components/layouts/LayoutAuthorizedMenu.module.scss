@@ -2,6 +2,9 @@
 
 $_icon-size: px-to-rem(20px);
 
+$sm-width: px-to-rem(65px);
+$lg-width: px-to-rem(133px);
+
 .menu {
   @include media-breakpoint-up(sm) {
     display: block;
@@ -9,8 +12,20 @@ $_icon-size: px-to-rem(20px);
     justify-content: flex-start;
   }
 
-  display: flex;
+  @include media-breakpoint-up(sm) {
+    width: $sm-width;
+    height: 100%;
+  }
+  @include media-breakpoint-up(lg) {
+    width: $lg-width;
+  }
+
+  height: $_HEADER-HEIGHT;
+  background-color: $neu-almost-black;
   border-top: 2px solid $neu-almost-black;
+  display: flex;
+  flex-shrink: 0;
+  width: 100%;
 }
 
 .menu-item {

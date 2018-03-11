@@ -20,14 +20,14 @@ interface IDispatchProps {
 }
 
 export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
-  <Navbar dark className={cn("bg-dark", styles.bar)}>
+  <Navbar dark className={styles.bar}>
     <Link to={appRoutes.root} className="navbar-brand">
       <img src={logo} className={styles.logo} />
     </Link>
     {props.isAuthorized && (
       <ButtonSecondary className="text-white" onClick={props.logout} data-test-id="Header-logout">
         LOGOUT
-      </ButtonSecondary>
+        </ButtonSecondary>
     )}
   </Navbar>
 );

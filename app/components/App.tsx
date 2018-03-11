@@ -28,10 +28,12 @@ class AppComponent extends React.Component<IStateProps> {
 
     return (
       <>
-        <GenericErrorModal />
         <Header />
-        <ToastContainer />
-        <AppRouter />
+        <div className='wrapper'>
+          <GenericErrorModal />
+          <ToastContainer />
+          <AppRouter />
+        </div>
       </>
     );
   }

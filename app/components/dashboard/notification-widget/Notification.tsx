@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { ButtonClose } from "../../shared/Buttons"
+import { ButtonClose } from "../../shared/Buttons";
 import * as styles from "./Notification.module.scss";
 
-import * as closeIcon from "../../../assets/img/close.svg";
 import * as infoIcon from "../../../assets/img/notfications/info.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 

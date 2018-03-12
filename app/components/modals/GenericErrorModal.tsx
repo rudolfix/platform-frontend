@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, ModalBody, Row } from "reactstrap";
+import { Modal, Row } from "reactstrap";
 
 import { actions } from "../../modules/actions";
 import { IErrorObj } from "../../modules/genericErrorModal/reducer";

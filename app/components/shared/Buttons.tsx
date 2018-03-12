@@ -6,7 +6,7 @@ import { InlineIcon } from "./InlineIcon";
 
 import * as styles from "./Buttons.module.scss";
 
-import * as closeIcon from '../../assets/img/inline_icons/close.svg';
+import * as closeIcon from "../../assets/img/inline_icons/close.svg";
 
 export const ButtonPrimary: React.SFC<ButtonProps> = ({ className, children, ...props }) => (
   <Button className={cn(styles.buttonPrimary, className)} {...props}>
@@ -29,11 +29,11 @@ export const ButtonSecondaryLink: React.SFC<LinkProps> = ({ className, ...props 
 );
 
 interface IButtonClose {
-  handleClick?: () => void
+  handleClick?: () => void;
 }
 
 export const ButtonClose: React.SFC<IButtonClose> = ({ handleClick, ...props }) => (
   <div className={styles.buttonClose}>
     <InlineIcon svgIcon={closeIcon} onClick={handleClick} {...props} />
   </div>
-)
+);

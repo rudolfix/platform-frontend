@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, ModalFooter, ModalHeader } from "reactstrap";
+import { Modal } from "reactstrap";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
@@ -31,8 +31,8 @@ const MessageSignModalComponent: React.SFC<IStateProps & IDispatchProps> = props
       {props.isLightWallet ? (
         <LightWalletSignPrompt />
       ) : (
-          <GenericSignPrompt onCancel={props.onCancel} />
-        )}
+        <GenericSignPrompt onCancel={props.onCancel} />
+      )}
 
       <p>{props.errorMsg}</p>
       <LoadingIndicator />

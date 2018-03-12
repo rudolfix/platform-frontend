@@ -47,7 +47,7 @@ export const MyWalletWidget = () => {
           Manage Wallet
         </ArrowLink>
       }
-      className="bg-white"
+      className={styles.background}
     >
       <Row noGutters>
         <Col xs={12} sm={6} lg={12} className="mt-2">

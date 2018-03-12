@@ -5,7 +5,7 @@ import * as styles from "./Demo.module.scss";
 
 import { ArrowLink } from "./shared/ArrowLink";
 
-import { MyPortfolio } from "./dashboard/myPortfolio/MyPortoflioWidget";
+import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import {
   ButtonPrimary,
   ButtonPrimaryLink,

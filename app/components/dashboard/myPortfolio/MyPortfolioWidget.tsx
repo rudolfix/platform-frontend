@@ -6,7 +6,7 @@ import * as cn from "classnames";
 import { ArrowLink } from "../../shared/ArrowLink";
 import { PanelDark } from "../../shared/PanelDark";
 import { MyNeuWidget } from "./MyNeuWidget";
-import * as styles from "./MyPortoflioWidget.module.scss";
+import * as styles from "./MyPortfolioWidget.module.scss";
 
 export const MyPortfolio = () => {
   return (

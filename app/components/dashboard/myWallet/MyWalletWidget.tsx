@@ -18,21 +18,23 @@ interface IMoneySuiteWidgetProps {
 const MoneySuiteWidget: React.SFC<
   IMoneySuiteWidgetProps & React.HTMLAttributes<HTMLDivElement>
 > = ({ icon, currency, largeNo, children, className }) => (
-  <Row className={cn("mt-2 mb-2 justify-content-center", className)} noGutters>
-    <Col className="col-auto">
-      <img className={styles.icon} src={icon} />
-    </Col>
-    <Col className="pl-2 col-sm-auto col-lg">
-      <div className={styles.largeDarkFont}>
-        {selectCurrencySymbol(currency)}{" "}
-        <Money value={largeNo} currency={currency} noCurrencySymbol />
-      </div>
-      <div>{children}</div>
-    </Col>
-    <Col xs={12} className="mt-3">
-      <div className={styles.border} />
-    </Col>
-  </Row>
+  <div className="mt-2 mb-2">
+    <Row className={cn("justify-content-center", className)} noGutters>
+      <Col className="col-auto">
+        <img className={styles.icon} src={icon} />
+      </Col>
+      <Col className="pl-2 col-sm-auto col-lg">
+        <div className={styles.largeDarkFont}>
+          {selectCurrencySymbol(currency)}{" "}
+          <Money value={largeNo} currency={currency} noCurrencySymbol />
+        </div>
+        <div>{children}</div>
+      </Col>
+      <Col xs={12} className="mt-3">
+        <div className={styles.border} />
+      </Col>
+    </Row>
+  </div>
 );
 
 interface IMyWalletWidget {
@@ -73,12 +75,18 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
             largeNo={euroTokenAmount}
             icon={moneyIcom}
             className={styles.borderRight}
+            data-test-id="euro-widget"
           >
             = <Money value={euroTokenEuroAmount} currency="eur" />
           </MoneySuiteWidget>
         </Col>
         <Col xs={12} sm={6} lg={12} className="mt-2">
-          <MoneySuiteWidget currency="eth" largeNo={ethAmount} icon={ethIcom}>
+          <MoneySuiteWidget
+            currency="eth"
+            largeNo={ethAmount}
+            icon={ethIcom}
+            data-test-id="eth-widget"
+          >
             <span>
               = <Money value={ethEuroAmount} currency="eur" />
               <span className={cn(styles.smallRedFont, "ml-2")}> ({percentage}%) </span>
@@ -89,7 +97,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
           <div className={styles.borderS} />
         </Col>
       </Row>
-      <Row className="mb-3 justify-content-between mt-2" noGutters>
+      <Row className="mb-3 justify-content-between mt-2" noGutters data-test-id="total-widget">
         <Col className="d-flex align-items-center">
           <span className={cn(styles.smallFont)}>TOTAL</span>
           <Money

@@ -12,7 +12,7 @@
   color: $neu-slate-grey;
   display: flex;
   flex-direction: column;
-  padding: 10px 12px;
+  padding: px-to-rem(10px) px-to-rem(12px);
   position: relative;
 
   &:global {
@@ -32,13 +32,13 @@
   }
 
   + #{&} {
-    margin-top: 20px;
+    margin-top: px-to-rem(20px);
   }
 
 
   .text {
     flex-grow: 1;
-    padding-right: 20px;
+    padding-right: px-to-rem(20px);
   }
 
 
@@ -48,10 +48,10 @@
     }
 
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: px-to-rem(24px);
+    height: px-to-rem(24px);
     border-radius: 50%;
-    margin-right: 12px;
+    margin-right: px-to-rem(12px);
     display: none;
   }
 
@@ -75,10 +75,10 @@
     cursor: pointer;
     flex-shrink: 0;
     margin-left: auto;
-    width: 20px;
-    height: 20px;
+    width: px-to-rem(20px);
+    height: px-to-rem(20px);
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: px-to-rem(6px);
+    right: px-to-rem(6px);
   }
 }

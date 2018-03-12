@@ -69,13 +69,12 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
       }
       className={cn(styles.background)}
     >
-      <Row>
+      <Row noGutters>
         <Col xs={12} sm={6} lg={12}>
           <MoneySuiteWidget
             currency="eur_token"
             largeNumber={euroTokenAmount}
             icon={moneyIcon}
-            className={cn(styles.borderRight)}
             data-test-id="euro-widget"
           >
             = <Money value={euroTokenEuroAmount} currency="eur" />
@@ -87,6 +86,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
             largeNumber={ethAmount}
             icon={ethIcon}
             data-test-id="eth-widget"
+            className={cn(styles.borderLeft, "pl-sm-2 pl-md-0")}
           >
             <span>
               = <Money value={ethEuroAmount} currency="eur" className="" />
@@ -101,7 +101,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
           <div className={styles.borderS} />
         </Col>
       </Row>
-      <Row noGutters data-test-id="total-widget">
+      <Row data-test-id="total-widget">
         <Col>
           <div className="mt-3 mb-3 d-flex align-items-center">
             <span className={cn(styles.smallFont)}>TOTAL</span>
@@ -115,8 +115,8 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
           </div>
         </Col>
         <Col className="d-block d-sm-none text-right col-auto">
-          <ArrowLink arrowDirection="right" to="#" className={cn(styles.link, "p-0 mt-3 mb-3")}>
-            Manage Wallet
+          <ArrowLink arrowDirection="right" to="#" className={cn(styles.link, "p-0 m-0 mt-3 mb-3")}>
+            Manage
           </ArrowLink>
         </Col>
       </Row>

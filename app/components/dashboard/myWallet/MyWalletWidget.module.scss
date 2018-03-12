@@ -18,10 +18,11 @@
 .small-font {
   font-size: px-to-rem(12px);
   font-weight: $font-weight-bold;
+  padding-top: px-to-rem(1px);
 }
 
 .medium-seaweed-font {
-  font-size: px-to-rem(18px);
+  font-size: px-to-rem(20px);
   font-weight: $font-weight-bold;
   color: $neu-seaweed;
 }

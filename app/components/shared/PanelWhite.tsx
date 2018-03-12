@@ -9,9 +9,7 @@ export const PanelWhite: React.SFC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
   ...props
 }) => (
-  <Container {...props} className={cn(styles.panel, className)}>
-    <Row>
-      <Col>{children}</Col>
-    </Row>
-  </Container>
-);
+    <div {...props} className={cn(styles.panel, className)}>
+      {children}
+    </div>
+  );

@@ -62,3 +62,16 @@ a {
 html,body,#app {
   height:100%;
 }
+
+
+.modal {
+  &.show .modal-dialog {
+    transform: translate(0, 22vh);
+  }
+
+  .modal-dialog {
+    max-width: px-to-rem(600px);
+    display: flex;
+    justify-content: center;
+  }
+}

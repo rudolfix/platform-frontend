@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Col, Row, Container } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 
@@ -12,9 +12,7 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
     </div>
     <div className="layout-container">
       <Row>
-        <Col className={styles.content}>
-          {children}
-        </Col>
+        <Col className={styles.content}>{children}</Col>
       </Row>
     </div>
   </>

@@ -1,12 +1,12 @@
 @import "../styles/neufund-theme";
 
 .logo {
-  height: px-to-rem(43px);
-  width: px-to-rem(36px);
-
   @include media-breakpoint-up (lg) {
     margin-left: px-to-rem(32px);
   }
+
+  height: px-to-rem(43px);
+  width: px-to-rem(36px);
 }
 
 .bar {

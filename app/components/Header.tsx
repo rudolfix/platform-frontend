@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
 
-import * as cn from "classnames";
 import * as logo from "../../app/assets/img/logo_yellow.svg";
 import { actions } from "../modules/actions";
 import { selectIsAuthorized } from "../modules/auth/reducer";
@@ -27,7 +26,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
     {props.isAuthorized && (
       <ButtonSecondary className="text-white" onClick={props.logout} data-test-id="Header-logout">
         LOGOUT
-        </ButtonSecondary>
+      </ButtonSecondary>
     )}
   </Navbar>
 );

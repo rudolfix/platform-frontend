@@ -20,7 +20,7 @@ $lg-width: px-to-rem(133px);
     width: $lg-width;
   }
 
-  height: $_HEADER-HEIGHT;
+  height: $header-height;
   background-color: $neu-almost-black;
   border-top: 2px solid $neu-almost-black;
   display: flex;

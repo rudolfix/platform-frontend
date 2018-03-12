@@ -34,7 +34,24 @@ const MoneySuiteWidget: React.SFC<
     </Col>
   </Row>
 );
-export const MyWalletWidget = () => {
+
+interface IMyWalletWidget {
+  euroTokenAmount: string;
+  euroTokenEuroAmount: string;
+  ethAmount: string;
+  ethEuroAmount: string;
+  percentage: string;
+  totalAmount: string;
+}
+
+export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
+  euroTokenAmount,
+  euroTokenEuroAmount,
+  ethAmount,
+  ethEuroAmount,
+  percentage,
+  totalAmount,
+}) => {
   return (
     <PanelDark
       headerText="My Wallet"
@@ -53,18 +70,18 @@ export const MyWalletWidget = () => {
         <Col xs={12} sm={6} lg={12} className="mt-2">
           <MoneySuiteWidget
             currency="eur_token"
-            largeNo={"36490" + "0".repeat(18)}
+            largeNo={euroTokenAmount}
             icon={moneyIcom}
             className={styles.borderRight}
           >
-            = <Money value={"36490" + "0".repeat(18)} currency="eur" noCurrencySymbol />
+            = <Money value={euroTokenEuroAmount} currency="eur" />
           </MoneySuiteWidget>
         </Col>
         <Col xs={12} sm={6} lg={12} className="mt-2">
-          <MoneySuiteWidget currency="eth" largeNo={"66482" + "0".repeat(14)} icon={ethIcom}>
+          <MoneySuiteWidget currency="eth" largeNo={ethAmount} icon={ethIcom}>
             <span>
-              = <Money value={"6004904646" + "0".repeat(16)} currency="eur" noCurrencySymbol />
-              <span className={cn(styles.smallRedFont, "ml-2")}> (-3.67%) </span>
+              = <Money value={ethEuroAmount} currency="eur" />
+              <span className={cn(styles.smallRedFont, "ml-2")}> ({percentage}%) </span>
             </span>
           </MoneySuiteWidget>
         </Col>
@@ -76,7 +93,7 @@ export const MyWalletWidget = () => {
         <Col className="d-flex align-items-center">
           <span className={cn(styles.smallFont)}>TOTAL</span>
           <Money
-            value={"637238" + "0".repeat(18)}
+            value={totalAmount}
             currency="eur"
             noCurrencySymbol
             className={cn(styles.mediumSeaweedFont, "pl-1 pl-sm-2 m-0")}

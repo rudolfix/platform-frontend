@@ -7,10 +7,8 @@ import { MyWalletWidget } from "./MyWalletWidget";
 import { tid } from "../../../../test/testUtils";
 
 describe("<MyWalletWidget />", () => {
-  let props: any;
-
-  beforeEach(() => {
-    props = {
+  it("should render all important components", () => {
+    const props = {
       euroTokenAmount: "36490" + "0".repeat(18),
       euroTokenEuroAmount: "36490" + "0".repeat(18),
       ethAmount: "66482" + "0".repeat(14),
@@ -19,12 +17,10 @@ describe("<MyWalletWidget />", () => {
       totalAmount: "637238" + "0".repeat(18),
     };
 
-    it("should render all important components", () => {
-      const MyWalletWidgetComponent = shallow(<MyWalletWidget {...props} />);
+    const MyWalletWidgetComponent = shallow(<MyWalletWidget {...props} />);
 
-      expect(MyWalletWidgetComponent.find(tid("euro-widget"))).to.have.length(1);
-      expect(MyWalletWidgetComponent.find(tid("eth-widget"))).to.have.length(1);
-      expect(MyWalletWidgetComponent.find(tid("total-widget"))).to.have.length(1);
-    });
+    expect(MyWalletWidgetComponent.find(tid("euro-widget"))).to.have.length(1);
+    expect(MyWalletWidgetComponent.find(tid("eth-widget"))).to.have.length(1);
+    expect(MyWalletWidgetComponent.find(tid("total-widget"))).to.have.length(1);
   });
 });

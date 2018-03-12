@@ -44,14 +44,14 @@
 
 @include media-breakpoint-up (lg) {
   .border {
-    border-bottom: solid 1px;
+    border-bottom: solid px-to-rem(1px);
     border-bottom-color: $neu-silver;
   }
 }
 
 @include media-breakpoint-down (xs) {
   .border {
-    border-bottom: solid 1px;
+    border-bottom: solid px-to-rem(1px);
     border-bottom-color: $neu-silver;
   }
 }
@@ -59,12 +59,12 @@
 @include media-breakpoint-down (md) {
   @include media-breakpoint-up (sm) {
     .border-s {
-      border-bottom: solid 1px;
+      border-bottom: solid px-to-rem(1px);
       border-bottom-color: $neu-silver;
     }
 
     .border-right {
-      border-right: solid 1px;
+      border-right: solid px-to-rem(1px);
       border-right-color: $neu-silver;
     }
   }

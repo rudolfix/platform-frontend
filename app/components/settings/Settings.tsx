@@ -8,6 +8,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
 import { PanelDark } from "../shared/PanelDark";
 import { ArrowLink } from "../shared/ArrowLink";
+import { VerifyEmailWidget } from "./VerifyEmailWidget";
 
 export const Settings = () => (
   <LayoutAuthorized>

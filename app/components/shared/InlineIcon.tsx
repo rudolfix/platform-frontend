@@ -3,8 +3,9 @@ import * as styles from "./InlineIcon.module.scss";
 
 interface IProps {
   svgIcon: string;
+  onClick?: () => void;
 }
 
-export const InlineIcon: React.SFC<IProps> = ({ svgIcon }) => {
-  return <span className={styles.inlineIcon} dangerouslySetInnerHTML={{ __html: svgIcon }} />;
+export const InlineIcon: React.SFC<IProps> = ({ svgIcon, ...props }) => {
+  return <span className={styles.inlineIcon} {...props} dangerouslySetInnerHTML={{ __html: svgIcon }} />;
 };

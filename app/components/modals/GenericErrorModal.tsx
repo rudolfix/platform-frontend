@@ -5,6 +5,7 @@ import { actions } from "../../modules/actions";
 import { IErrorObj } from "../../modules/genericErrorModal/reducer";
 import { appConnect } from "../../store";
 import { ButtonPrimary } from "../shared/Buttons";
+import { ModalComponentBody } from "./ModalComponentBody";
 
 interface IStateProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ interface IDispatchProps {
 
 const GenericErrorModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Modal isOpen={props.isOpen} toggle={props.onCancel}>
-    <ModalBody>
+    <ModalComponentBody>
       <Row className="mt-5 justify-content-center">
         <h5>{props.errorObj && props.errorObj.mainError}</h5>
       </Row>
@@ -27,7 +28,7 @@ const GenericErrorModalComponent: React.SFC<IStateProps & IDispatchProps> = prop
       <Row className="mb-5 justify-content-center">
         <ButtonPrimary onClick={props.onCancel}> Cancel </ButtonPrimary>
       </Row>
-    </ModalBody>
+    </ModalComponentBody>
   </Modal>
 );
 

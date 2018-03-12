@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-
+import { Modal, ModalFooter, ModalHeader } from "reactstrap";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
 import { ButtonSecondary } from "../shared/Buttons";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { LightWalletSignPrompt } from "./LightWalletSign";
+import { ModalComponentBody } from "./ModalComponentBody";
 
 interface IStateProps {
   isOpen: boolean;
@@ -27,19 +27,16 @@ const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
 
 const MessageSignModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Modal isOpen={props.isOpen} toggle={props.onCancel}>
-    <ModalHeader>Message Signing!</ModalHeader>
-    <ModalBody>
+    <ModalComponentBody onClose={props.onCancel}>
       {props.isLightWallet ? (
         <LightWalletSignPrompt />
       ) : (
-        <GenericSignPrompt onCancel={props.onCancel} />
-      )}
+          <GenericSignPrompt onCancel={props.onCancel} />
+        )}
 
       <p>{props.errorMsg}</p>
-    </ModalBody>
-    <ModalFooter>
       <LoadingIndicator />
-    </ModalFooter>
+    </ModalComponentBody>
   </Modal>
 );
 

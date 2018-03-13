@@ -1,13 +1,10 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { MyPortfolio } from "../dashboard/myPortfolio/MyPortfolioWidget";
-import { NotificationWidget } from "../dashboard/notification-widget/NotificationWidget";
-import { UserInfo } from "../dashboard/UserInfo";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
-import { PanelDark } from "../shared/PanelDark";
 import { ArrowLink } from "../shared/ArrowLink";
+import { PanelDark } from "../shared/PanelDark";
 import { VerifyEmailWidget } from "./VerifyEmailWidget";
 
 export const Settings = () => (

@@ -1,0 +1,15 @@
+@import "../../../styles/neufund-theme";
+
+.content {
+  min-height: px-to-rem(178px);
+  max-height: px-to-rem(178px);
+}
+
+.panel {
+  background-color: $neu-white-two;
+}
+
+.icon {
+  height: px-to-rem(16px);
+  width: px-to-rem(16px);
+}

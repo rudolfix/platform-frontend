@@ -1,4 +1,6 @@
+import * as cn from "classnames";
 import * as React from "react";
+import * as styles from "./VerifyEmailWidget.module.scss";
 
 import { compose } from "redux";
 import { appConnect } from "../../store";
@@ -9,7 +11,7 @@ export const VerifyEmailWidgetComponent: React.SFC<any> = props => {
   return (
     <PanelDark
       headerText="EMAIL VERIFICATION"
-      className="bg-white w-100"
+      className={cn(styles.widget, "bg-white w-100")}
       rightComponent={
         props.unverifiedEmail ? (
           <i className={"fa fa-lg fa-check-circle"} aria-hidden="true" />
@@ -18,13 +20,25 @@ export const VerifyEmailWidgetComponent: React.SFC<any> = props => {
         )
       }
     >
-      <p className="mt-3 mb-5 ml-1 mr-1">
-        You need to verify your email address, which will be used for your wallet link we send you
-      </p>
-      <br />
-      <ArrowLink arrowDirection="right" to="#" className="mb-4 d-flex justify-content-center">
-        Verify
-      </ArrowLink>
+      {props.unverifiedEmail ? (
+        <>
+          <p className="mt-3 mb-5 ml-1 mr-1">Your email is verified. </p>
+          <ArrowLink arrowDirection="right" to="#" className="mb-4 d-flex justify-content-center">
+            Resend Link
+          </ArrowLink>
+        </>
+      ) : (
+        <>
+          <p className="mt-3 mb-5 ml-1 mr-1">
+            You need to verify your email address, which will be used for your wallet link we send
+            you
+          </p>
+          <br />
+          <ArrowLink arrowDirection="right" to="#" className="mb-4 d-flex justify-content-center">
+            Verify
+          </ArrowLink>
+        </>
+      )}
     </PanelDark>
   );
 };
@@ -34,6 +48,5 @@ export const VerifyEmailWidget = compose<React.ComponentClass>(
     stateToProps: s => ({
       user: s.auth.user,
     }),
-    options: { pure: false }, // we need this because of:https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/blocked-updates.md
   }),
 )(VerifyEmailWidgetComponent);

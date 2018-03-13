@@ -1,0 +1,20 @@
+@import "../../../styles/neufund-theme";
+
+.table-header {
+  @include media-breakpoint-up (md) {
+    height: px-to-rem(40px);
+  }
+
+  background-color: $neu-charcoal-grey;
+  color: $neu-white;
+  display: flex;
+  flex-grow: 1;
+  padding-bottom: px-to-rem(8px);
+  padding-top: px-to-rem(8px);
+
+  &:global {
+    &.inline-icon {
+      color: $neu-white;
+    }
+  }
+}

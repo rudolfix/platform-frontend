@@ -1,0 +1,29 @@
+@import "../../../styles/neufund-theme";
+
+.table-cell {
+  @include make-col-ready;
+
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.table-cell-center {
+  justify-content: center;
+}
+
+.table-cell-narrow {
+  @include make-col(12);
+
+  @include media-breakpoint-up (sm) {
+    @include make-col(4);
+  }
+
+  @include media-breakpoint-up (md) {
+    @include make-col(3);
+  }
+
+  @include media-breakpoint-up (lg) {
+    @include make-col(2);
+  }
+}

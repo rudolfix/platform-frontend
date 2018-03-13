@@ -30,7 +30,6 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> 
   return (
     <PanelDark
       headerText="BACKUP RECOVERY PHRASE"
-      className={styles.panel}
       rightComponent={
         backupCodesVerified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />

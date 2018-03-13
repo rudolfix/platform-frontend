@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
-import { tid } from "../../../test/testUtils";
-import { IUser } from "../../lib/api/users/interfaces";
+import { tid } from "../../../../test/testUtils";
+import { IUser } from "../../../lib/api/users/interfaces";
 import { VerifyEmailWidgetComponent } from "./VerifyEmailWidget";
 
 const user: IUser = {

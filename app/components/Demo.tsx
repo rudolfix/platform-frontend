@@ -6,8 +6,8 @@ import * as styles from "./Demo.module.scss";
 import { ArrowLink } from "./shared/ArrowLink";
 
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
-import { VerifyEmailWidgetComponent } from "./settings/VerifyEmailWidget";
 import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
+import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import {
   ButtonPrimary,
   ButtonPrimaryLink,

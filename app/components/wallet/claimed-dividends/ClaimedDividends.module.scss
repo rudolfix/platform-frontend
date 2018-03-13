@@ -1,0 +1,16 @@
+@import "../../../styles/neufund-theme";
+
+.claimed-dividends {
+  background-color: $neu-white-two;
+
+  .title {
+    padding-left: px-to-rem(10px);
+    letter-spacing: px-to-rem(-.02px);
+    font-size: px-to-rem(13px);
+    font-weight: 700;
+    text-transform: uppercase;
+    padding-bottom: px-to-rem(12px);
+    padding-top: px-to-rem(16px);
+    border-bottom: 1px solid $neu-pale-grey;
+  }
+}

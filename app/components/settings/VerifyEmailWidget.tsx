@@ -5,6 +5,7 @@ import * as styles from "./VerifyEmailWidget.module.scss";
 import * as successIcon from "../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../assets/img/notfications/warning.svg";
 
+import { Col } from "reactstrap";
 import { compose } from "redux";
 import { IUser } from "../../lib/api/users/interfaces";
 import { appConnect } from "../../store";
@@ -15,7 +16,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
   return (
     <PanelDark
       headerText="EMAIL VERIFICATION"
-      className={cn(styles.widget, "bg-white w-100")}
+      className={styles.panel}
       rightComponent={
         verifiedEmail ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
@@ -25,22 +26,37 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
       }
     >
       {verifiedEmail ? (
-        <div data-test-id="verified-section">
-          <p className="mt-3 mb-5 ml-1 mr-1">Your email is verified. </p>
-          <ArrowLink arrowDirection="right" to="#" className="mb-4 d-flex justify-content-center">
-            Resend Link
-          </ArrowLink>
+        <div
+          data-test-id="verified-section"
+          className={cn(
+            styles.content,
+            "d-flex flex-wrap align-content-around",
+          )}
+        >
+          <p>Your email is verified. </p>
+          <Col xs={12} className="d-flex justify-content-center">
+            <ArrowLink arrowDirection="right" to="#">
+              Resend Link
+            </ArrowLink>
+          </Col>
         </div>
       ) : (
-        <div data-test-id="unverified-section">
-          <p className="mt-3 mb-5 ml-1 mr-1">
+        <div
+          data-test-id="unverified-section"
+          className={cn(
+            styles.content,
+            "d-flex flex-wrap align-content-around",
+          )}
+        >
+          <p>
             You need to verify your email address, which will be used for your wallet link we send
             you
           </p>
-          <br />
-          <ArrowLink arrowDirection="right" to="#" className="mb-4 d-flex justify-content-center">
-            Verify
-          </ArrowLink>
+          <Col xs={12} className="d-flex justify-content-center">
+            <ArrowLink arrowDirection="right" to="#">
+              Verify
+            </ArrowLink>
+          </Col>
         </div>
       )}
     </PanelDark>

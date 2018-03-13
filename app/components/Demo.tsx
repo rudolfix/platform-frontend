@@ -6,6 +6,7 @@ import * as styles from "./Demo.module.scss";
 import { ArrowLink } from "./shared/ArrowLink";
 
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
+import { VerifyEmailWidgetComponent } from "./settings/VerifyEmailWidget";
 import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import {
   ButtonPrimary,
@@ -168,6 +169,17 @@ export const Demo: React.SFC = () => (
             percentage="-3.67"
             totalAmount={"637238" + "0".repeat(18)}
           />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col lg={6} xs={12}>
+          <VerifyEmailWidgetComponent />
+        </Col>
+        <Col lg={6} xs={12}>
+          <VerifyEmailWidgetComponent verifiedEmail="moe@test.co" />
         </Col>
       </Row>
     </Container>

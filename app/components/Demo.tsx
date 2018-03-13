@@ -7,6 +7,7 @@ import { ArrowLink } from "./shared/ArrowLink";
 
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
+import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import {
   ButtonPrimary,
@@ -180,6 +181,16 @@ export const Demo: React.SFC = () => (
         </Col>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent verifiedEmail="moe@test.co" />
+        </Col>
+      </Row>
+    </Container>
+    <Container>
+      <Row>
+        <Col lg={6} xs={12}>
+          <BackupSeedWidgetComponent />
+        </Col>
+        <Col lg={6} xs={12}>
+          <BackupSeedWidgetComponent backupCodesVerified />
         </Col>
       </Row>
     </Container>

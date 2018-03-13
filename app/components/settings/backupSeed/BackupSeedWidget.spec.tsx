@@ -4,7 +4,7 @@ import * as React from "react";
 import { tid } from "../../../../test/testUtils";
 import { BackupSeedWidgetComponent } from "./BackupSeedWidget";
 
-describe("<VerifyEmailWidgetComponent />", () => {
+describe("<BackupSeedWidgetComponent />", () => {
   it("should render verified section", () => {
     const MyNeuWidgetComponent = shallow(<BackupSeedWidgetComponent backupCodesVerified />);
     expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(0);

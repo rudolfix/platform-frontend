@@ -3,9 +3,8 @@ import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
-import { ArrowLink } from "../shared/ArrowLink";
-import { PanelDark } from "../shared/PanelDark";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
+import { KycStatusWidget } from "./kycStates/KycStatusWidget";
 import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
 
 export const Settings = () => (
@@ -19,15 +18,7 @@ export const Settings = () => (
         <BackupSeedWidget />
       </Col>
       <Col lg={4} xs={12}>
-        <PanelDark headerText="KYC PROCESS" className="bg-white w-100">
-          <p className="mt-3 mb-5 ml-1 mr-1">
-            Write down your recovery phrase and keep it safe and secure. Your recovery Phrase allows
-            you to restore your wallet and access your funds you forgot your password
-          </p>
-          <ArrowLink arrowDirection="right" to="#" className="mb-4 d-flex justify-content-center">
-            Verify KYC
-          </ArrowLink>
-        </PanelDark>
+        <KycStatusWidget />
       </Col>
     </Row>
   </LayoutAuthorized>

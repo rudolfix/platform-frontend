@@ -14,7 +14,7 @@ interface IProps {
   kycDone?: boolean;
 }
 
-export const KycStatusWidgetComponent: React.SFC<IProps> = ({ kycDone }) => {
+export const KycStatusWidget: React.SFC<IProps> = ({ kycDone }) => {
   return (
     <PanelDark
       headerText="KYC PROCESS"
@@ -28,28 +28,18 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({ kycDone }) => {
       }
     >
       {kycDone ? (
-        <div
-          data-test-id="verified-section"
-          className={cn(styles.content, "d-flex flex-wrap align-content-around")}
-        >
-          <p>Your verification is complete. </p>
-          <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
-              View Again
-            </ArrowLink>
-          </Col>
+        <div data-test-id="verified-section" className={cn(styles.content)}>
+          <div className="mt-3">Your verification is complete. </div>
         </div>
       ) : (
         <div
           data-test-id="unverified-section"
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
-          <p>
-            Lorem upsom Kyc who bla once check rep
-          </p>
+          <p>Lorem upsom Kyc who bla once check rep</p>
           <Col xs={12} className="d-flex justify-content-center">
             <ArrowLink arrowDirection="right" to="#">
-              Backup phrase
+              Verify KYC
             </ArrowLink>
           </Col>
         </div>

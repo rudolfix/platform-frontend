@@ -29,14 +29,14 @@ export const KycStatusWidget: React.SFC<IProps> = ({ kycDone }) => {
     >
       {kycDone ? (
         <div data-test-id="verified-section" className={cn(styles.content)}>
-          <div className="mt-3">Your verification is complete. </div>
+          <div className="pt-2">Your verification is complete. </div>
         </div>
       ) : (
         <div
           data-test-id="unverified-section"
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
-          <p>Lorem upsom Kyc who bla once check rep</p>
+          <p className={cn(styles.text, "pt-2")}>Lorem upsom Kyc who bla once check rep</p>
           <Col xs={12} className="d-flex justify-content-center">
             <ArrowLink arrowDirection="right" to="#">
               Verify KYC

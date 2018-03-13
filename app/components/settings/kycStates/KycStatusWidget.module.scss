@@ -13,3 +13,8 @@
   height: px-to-rem(16px);
   width: px-to-rem(16px);
 }
+
+.text {
+  min-height: px-to-rem(108px);
+  max-height: px-to-rem(108px);
+}

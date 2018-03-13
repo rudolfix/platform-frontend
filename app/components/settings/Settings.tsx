@@ -10,7 +10,7 @@ import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
 export const Settings = () => (
   <LayoutAuthorized>
     <MessageSignModal />
-    <Row className="p-3">
+    <Row>
       <Col lg={4} xs={12}>
         <VerifyEmailWidget />
       </Col>

@@ -33,6 +33,18 @@ const categories = [
     onFilter: () => alert("sample category 3"),
   },
 ];
+const tabs = [
+  {
+    isSelected: false,
+    title: "neur transactions",
+    onFilter: () => alert("nEUR"),
+  },
+  {
+    isSelected: true,
+    title: "eth transactions",
+    onFilter: () => alert("eth"),
+  },
+];
 
 export const Wallet = () => (
   <LayoutAuthorized>
@@ -62,7 +74,10 @@ export const Wallet = () => (
         <ClaimedDividends totalEurValue={"1234" + "0".repeat(18)} recentPayouts={transactions} />
       </Col>
       <Col className={styles.transactionList} xs={12}>
-        <TransactionList transactions={transactions} categories={categories} />
+        <TransactionList
+          transactions={transactions}
+          categories={categories}
+          tabs={tabs} />
       </Col>
     </Row>
   </LayoutAuthorized>

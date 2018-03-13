@@ -35,6 +35,60 @@
   &:hover {
     background-color: $neu-cloudy-blue;
     color: $neu-almost-black;
+  }
+
+  &:global(.is-selected) {
     font-weight: 600;
+  }
+}
+
+
+.tabs {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $neu-pale-grey;
+  background-color: $neu-white-two;
+  width: calc(100% + #{px-to-rem(30px)});
+  margin-left: px-to-rem(-15px);
+  margin-right: px-to-rem(-15px);
+}
+
+.tab {
+  padding-left: px-to-rem(11px);
+  padding-right: px-to-rem(11px);
+  height: px-to-rem(46px);
+  font-size: px-to-rem(12px);
+  letter-spacing: px-to-rem(-.2px);
+  color: $neu-slate-grey;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  
+
+  &:after {
+    content : "";
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    height: px-to-rem(2px);
+    background-color: transparent;
+    position: absolute;
+  }
+
+  + #{&} {
+    margin-left: 28px;
+  }
+
+  &:global(.is-selected) {
+    border-bottom: $neu-piss-yellow;
+    font-size: px-to-rem(16px);
+    font-weight: 600;
+    letter-spacing: px-to-rem(-.3px);
+
+    &::after {
+      background-color: $neu-piss-yellow;
+    }
   }
 }

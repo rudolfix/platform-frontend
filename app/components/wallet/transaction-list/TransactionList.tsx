@@ -28,7 +28,7 @@ export interface ITransaction {
   id: any;
 }
 
-interface ICategory {
+interface IFilter {
   title: string;
   isSelected: boolean;
   onFilter: () => void;
@@ -36,11 +36,24 @@ interface ICategory {
 
 interface ITransactionList {
   transactions: ITransaction[];
-  categories: ICategory[];
+  categories: IFilter[];
+  tabs: IFilter[];
 }
 
-export const TransactionList: React.SFC<ITransactionList> = ({ transactions, categories }) => (
+export const TransactionList: React.SFC<ITransactionList> = ({ transactions, categories, tabs }) => (
   <Col className={styles.transactionList}>
+    <Row>
+      <Col>
+        <div className={styles.tabs}>
+          {
+            tabs.map(({ title, onFilter, isSelected }) => (
+              <div
+                className={`${styles.tab} ${isSelected ? 'is-selected' : ''}`} onClick={onFilter}>{title}</div>
+            ))
+          }
+        </div>
+      </Col>
+    </Row>
     <Row>
       <Col>
         <div className={styles.categories}>
@@ -55,9 +68,6 @@ export const TransactionList: React.SFC<ITransactionList> = ({ transactions, cat
           ))}
         </div>
       </Col>
-    </Row>
-    <Row>
-      <Col />
     </Row>
     <Row>
       <TableHeader>

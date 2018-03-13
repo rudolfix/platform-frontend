@@ -1,0 +1,28 @@
+@import "../../styles/neufund-theme";
+
+.money {
+  &:global(.income),
+  &:global(.outcome) {
+    font-size: px-to-rem(14px);
+    font-weight: 600;
+    line-height: 1.43;
+  }
+
+  &:global(.income) {
+    color: $neu-seaweed;
+
+    &::before {
+      content: "+";
+    }
+  }
+
+  &:global(.outcome) {
+    color: $neu-red;
+
+    &::before {
+      content: "-";
+    }
+  }
+}
+
+

@@ -3,18 +3,20 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { selectIsLoginRoute } from "../../modules/routing/selectors";
 import { walletFlows } from "../../modules/wallet-selector/flows";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
 import { HiResImage } from "../shared/HiResImage";
 import { HorizontalLine } from "../shared/HorizontalLine";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { StepCard } from "../shared/StepCard";
 import { WarningAlert } from "../shared/WarningAlert";
 
 import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
 import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
-import { selectIsLoginRoute } from "../../modules/routing/selectors";
+
 import * as styles from "./WalletBrowser.module.scss";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
@@ -24,23 +26,6 @@ interface IWalletBrowserProps {
   isLoading: boolean;
   isLoginRoute: boolean;
 }
-
-interface IStepCardProps {
-  img: string;
-  text: string;
-}
-export const StepCard: React.SFC<IStepCardProps> = ({ img, text }) => (
-  <Col sm={4} xs={12} className="mb-4 mb-sm-0">
-    <Row>
-      <Col>
-        <img src={img} className="mb-3" />
-      </Col>
-    </Row>
-    <Row>
-      <Col>{text}</Col>
-    </Row>
-  </Col>
-);
 
 export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
   errorMessage,
@@ -62,7 +47,7 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
           </WarningAlert>
         </Row>
 
-        <Row className={cn("mb-4 text-center", styles.stepCards)}>
+        <Row className="mb-4 text-center">
           <StepCard img={walletIcon} text={"1. Choose existing wallet"} />
           <StepCard img={browserIcon} text={"2. Turn on your browser plugin"} />
           <StepCard img={lockIcon} text={"3. Unlock your wallet to register"} />

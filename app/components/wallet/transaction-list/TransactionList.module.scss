@@ -1,0 +1,40 @@
+@import "../../../styles/neufund-theme";
+
+.transaction-list {
+  box-shadow: $shadow;
+}
+
+
+.categories {
+  @include media-breakpoint-up (md) {
+    justify-content: flex-start;
+  }
+
+  padding: px-to-rem(18px) px-to-rem(12px);
+  display: flex;
+  justify-content: space-between;
+  background-color: $neu-white-two;
+  width: calc(100% + #{px-to-rem(30px)});
+  margin-left: px-to-rem(-15px);
+  margin-right: px-to-rem(-15px);
+
+}
+
+
+.category {
+  padding: px-to-rem(6px);
+  border-radius: px-to-rem(3px);
+  font-size: px-to-rem(13px);
+  letter-spacing: px-to-rem(-.02px);
+  text-transform: uppercase;
+  color: $neu-slate-grey;
+  cursor: pointer;
+  margin-right: px-to-rem(20px);
+
+  &:global(.is-selected),
+  &:hover {
+    background-color: $neu-cloudy-blue;
+    color: $neu-almost-black;
+    font-weight: 600;
+  }
+}

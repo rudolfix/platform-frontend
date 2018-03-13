@@ -10,8 +10,9 @@ export const Dashboard = () => (
   <LayoutAuthorized>
     <NotificationWidget />
     <MessageSignModal />
-    <Row className="p-3">
-      <Col lg={9} md={12}>
+
+    <Row>
+      <Col md={9}>
         <MyPortfolio />
       </Col>
     </Row>

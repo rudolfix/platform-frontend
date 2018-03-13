@@ -1,0 +1,31 @@
+@import "../../../styles/neufund-theme";
+
+.wallet-balance {
+  &:global {
+    &.t-light {
+      background-color: $neu-white-two;
+    }
+
+    &.t-dark {
+      background-color: $neu-cloudy-blue;
+    }
+  }
+}
+
+.wallet-balance-wrapper {
+  display: flex;
+  padding-bottom: px-to-rem(36px);
+  padding-top: px-to-rem(36px);
+}
+
+.chart {
+  @include media-breakpoint-up (md) {
+    display: block;
+  }
+
+  flex-shrink: 0;
+  display: none;
+  transform: rotate(-90deg);
+  transition: stroke-dasharray .3s ease;
+  width: 38%;
+}

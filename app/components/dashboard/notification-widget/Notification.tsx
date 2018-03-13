@@ -48,8 +48,8 @@ export const Notification: React.SFC<INotification> = ({
         </Link>
       )}
       {onClose && (
-        <i data-test-id="notification-close" className={styles.close}>
-          <ButtonClose handleClick={onClose} />
+        <i className={styles.close} data-test-id="notification-close" onClick={onClose}>
+          <ButtonClose />
         </i>
       )}
     </div>

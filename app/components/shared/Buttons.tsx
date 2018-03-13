@@ -32,8 +32,8 @@ interface IButtonClose {
   handleClick?: () => void;
 }
 
-export const ButtonClose: React.SFC<IButtonClose> = ({ handleClick, ...props }) => (
+export const ButtonClose: React.SFC<IButtonClose> = ({ ...props }) => (
   <div className={styles.buttonClose}>
-    <InlineIcon svgIcon={closeIcon} onClick={handleClick} {...props} />
+    <InlineIcon {...props} svgIcon={closeIcon} />
   </div>
 );

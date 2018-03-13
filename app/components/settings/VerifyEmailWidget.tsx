@@ -2,6 +2,9 @@ import * as cn from "classnames";
 import * as React from "react";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
+import * as successIcon from "../../assets/img/notfications/Success_small.svg";
+import * as warningIcon from "../../assets/img/notfications/warning.svg";
+
 import { compose } from "redux";
 import { IUser } from "../../lib/api/users/interfaces";
 import { appConnect } from "../../store";
@@ -15,12 +18,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
       className={cn(styles.widget, "bg-white w-100")}
       rightComponent={
         verifiedEmail ? (
-          <i className={cn(styles.check, "fa fa-5 fa-check-circle ")} aria-hidden="true" />
+          <img src={successIcon} className={styles.icon} aria-hidden="true" />
         ) : (
-          <i
-            className={cn(styles.exclamation, "fa fa-5 fa-exclamation-circle")}
-            aria-hidden="true"
-          />
+          <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
     >
@@ -54,5 +54,3 @@ export const VerifyEmailWidget = compose<React.ComponentClass>(
     }),
   }),
 )(VerifyEmailWidgetComponent);
-
-//TODO: Change ICON backgrounds

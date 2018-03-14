@@ -81,19 +81,6 @@ export const logoutWatcher = injectableFn(
   [symbols.jwtStorage, symbols.web3Manager],
 );
 
-export const validateWalletWatcher = injectableFn(
-  function*(jwtStorage: ObjectStorage<string>, web3Manager: Web3Manager): Iterator<any> {
-    while (true) {
-      yield take("AUTH_LOGOUT");
-
-      jwtStorage.clear();
-      yield web3Manager.unplugPersonalWallet();
-      // do not clear wallet metadata here to allow easy login again
-    }
-  },
-  [symbols.jwtStorage, symbols.web3Manager],
-);
-
 export const authSagas = function*(): Iterator<effects.Effect> {
   yield all([forkAndInject(logoutWatcher)]);
 };

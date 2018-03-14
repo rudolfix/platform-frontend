@@ -5,6 +5,8 @@ import * as styles from "./Demo.module.scss";
 
 import { ArrowLink } from "./shared/ArrowLink";
 
+import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
+import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import {
   ButtonPrimary,
   ButtonPrimaryLink,
@@ -143,6 +145,29 @@ export const Demo: React.SFC = () => (
           />
           <br />
           <Money currency="eth" value={"12345678" + "0".repeat(15)} doNotSeparateThousands />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <MyPortfolio />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row noGutters>
+        <Col>
+          <MyWalletWidget
+            euroTokenAmount={"36490" + "0".repeat(18)}
+            euroTokenEuroAmount={"36490" + "0".repeat(18)}
+            ethAmount={"66482" + "0".repeat(14)}
+            ethEuroAmount={"6004904646" + "0".repeat(16)}
+            percentage="-3.67"
+            totalAmount={"637238" + "0".repeat(18)}
+          />
         </Col>
       </Row>
     </Container>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="239px" height="196px" viewBox="0 0 239 196" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="325" height="196"></rect>
+    </defs>
+    <g id="Dashboard_first_view" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-180.000000, -195.000000)">
+        <g id="welcome" transform="translate(162.000000, 144.000000)">
+            <g id="Group-3" transform="translate(7.000000, 51.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Mask"></g>
+                <g opacity="0.656476449" mask="url(#mask-2)" fill="#E3EAF5" fill-opacity="0.501245471" id="Fill-1">
+                    <g transform="translate(11.000000, 0.000000)">
+                        <path d="M61.8445543,234.674986 L119.497581,268.72022 L172.178136,237.613246 L61.8445543,63.8770102 L61.8445543,234.674986 Z M51.7517155,53.5183527 L11.441868,77.3158458 L11.441868,204.916925 L51.7517155,228.718552 L51.7517155,53.5183527 Z M175.8776,46.802035 L119.497581,13.5173729 L65.4721434,45.4166093 L63.0553633,46.8433704 L175.8776,224.489938 L175.8776,46.802035 Z M185.970439,229.474301 L227.558132,204.916925 L227.558132,77.3158458 L185.970439,52.7632922 L185.970439,229.474301 Z M239,211.675267 L119.497581,282.232082 L0,211.675267 L0,70.5623263 L119.497581,0 L239,70.5623263 L239,211.675267 Z"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -4,7 +4,7 @@ import { FormSelectField } from "./FormSelectField";
 
 const VALUES = {
   NONE_KEY: "-Please select-",
-  de: "Germany",
+  DE: "Germany",
 };
 
 interface IFieldGroup {

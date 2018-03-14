@@ -46,3 +46,13 @@
     margin-left: px-to-rem(10px);
   }
 }
+
+.button-close {
+  cursor: pointer;
+  height: px-to-rem(20px);
+  width: px-to-rem(20px);
+
+  &:hover {
+    opacity: .8;
+  }
+}

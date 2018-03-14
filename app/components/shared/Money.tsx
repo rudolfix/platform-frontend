@@ -14,6 +14,7 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currency: TCurrency;
   value: string;
   doNotSeparateThousands?: boolean;
+  noCurrencySymbol?: boolean;
   currencyClassName?: string;
   currencyStyle?: React.CSSProperties;
   transfer?: MoneyTransfer;
@@ -54,6 +55,7 @@ export const Money: React.SFC<IProps> = ({
   currencyStyle,
   doNotSeparateThousands,
   transfer,
+  noCurrencySymbol,
   ...props
 }) => {
   const decimalPlaces = selectDecimalPlaces(currency);
@@ -67,7 +69,7 @@ export const Money: React.SFC<IProps> = ({
     <span {...props} className={`${styles.money} ${transfer || ""}`}>
       {formattedMoney}{" "}
       <span className={`${currencyClassName || ""}`} style={currencyStyle}>
-        {currencySymbol}
+        {noCurrencySymbol ? "" : currencySymbol}
       </span>
     </span>
   );

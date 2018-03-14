@@ -41,7 +41,7 @@ export const loadUserPromise = injectableFn(
       return usersApi.createAccount({
         unverifiedEmail: walletMetadata.email,
         salt: walletMetadata.salt,
-        backupCodesVerified: true,
+        backupCodesVerified: false,
       });
     } else {
       return usersApi.createAccount();
@@ -50,12 +50,38 @@ export const loadUserPromise = injectableFn(
   [symbols.usersApi, symbols.walletMetadataStorage],
 );
 
+export const updateUserPromise = injectableFn(
+  async function(usersApi: UsersApi, user: IUser): Promise<IUser> {
+    await usersApi.me();
+    return usersApi.updateUser(user);
+  },
+  [symbols.usersApi],
+);
+
 export function* loadUser(): Iterator<any> {
   const user: IUser = yield callAndInject(loadUserPromise);
   yield effects.put(actions.auth.loadUser(user));
 }
 
+export function* updateUser(updatedUser: IUser): Iterator<any> {
+  const user: IUser = yield callAndInject(updateUserPromise, updatedUser);
+  yield effects.put(actions.auth.loadUser(user));
+}
+
 export const logoutWatcher = injectableFn(
+  function*(jwtStorage: ObjectStorage<string>, web3Manager: Web3Manager): Iterator<any> {
+    while (true) {
+      yield take("AUTH_LOGOUT");
+
+      jwtStorage.clear();
+      yield web3Manager.unplugPersonalWallet();
+      // do not clear wallet metadata here to allow easy login again
+    }
+  },
+  [symbols.jwtStorage, symbols.web3Manager],
+);
+
+export const validateWalletWatcher = injectableFn(
   function*(jwtStorage: ObjectStorage<string>, web3Manager: Web3Manager): Iterator<any> {
     while (true) {
       yield take("AUTH_LOGOUT");

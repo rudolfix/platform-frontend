@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import * as cn from "classnames";
-import { ArrowLink } from "../../shared/ArrowLink";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 import { MyNeuWidget } from "./MyNeuWidget";
 import * as styles from "./MyPortfolioWidget.module.scss";

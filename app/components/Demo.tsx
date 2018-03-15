@@ -8,7 +8,7 @@ import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { KycStatusWidget } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
-import { ArrowLink } from "./shared/ArrowLink";
+import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
 import { BreadCrumb } from "./shared/BreadCrumb";
 import {
   ButtonPrimary,
@@ -46,6 +46,27 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col>
           <a href="/">link</a>
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <ArrowLink arrowDirection="right" to="#">
+            Right arrow link
+          </ArrowLink>
+          <ArrowLink arrowDirection="left" to="#">
+            Left arrow link
+          </ArrowLink>
+
+          <ArrowButton arrowDirection="right">Right arrow button</ArrowButton>
+
+          <ArrowButton arrowDirection="right" disabled>
+            Right arrow button disabled
+          </ArrowButton>
+
+          <ArrowButton arrowDirection="left">Left arrow button</ArrowButton>
         </Col>
       </Row>
     </Container>
@@ -121,19 +142,6 @@ export const Demo: React.SFC = () => (
               So this is our white panel. It can contain React.Nodes as children and no Props.
             </p>
           </PanelWhite>
-        </Col>
-      </Row>
-    </Container>
-
-    <Container>
-      <Row>
-        <Col>
-          <ArrowLink arrowDirection="right" to="#">
-            Right arrow link
-          </ArrowLink>
-          <ArrowLink arrowDirection="left" to="#">
-            Left arrow link
-          </ArrowLink>
         </Col>
       </Row>
     </Container>

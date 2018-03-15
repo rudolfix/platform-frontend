@@ -9,7 +9,7 @@ import { Col } from "reactstrap";
 import { compose } from "redux";
 import { IUser } from "../../../lib/api/users/interfaces";
 import { appConnect } from "../../../store";
-import { ArrowLink } from "../../shared/ArrowLink";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 
 export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) => {

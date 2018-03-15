@@ -9,7 +9,7 @@ import { Col } from "reactstrap";
 import { actions } from "../../../modules/actions";
 import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
 import { appConnect } from "../../../store";
-import { ArrowLink } from "../../shared/ArrowLink";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { ButtonPrimary } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 

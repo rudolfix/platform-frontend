@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import * as cn from "classnames";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
-import { ArrowLink } from "../../shared/ArrowLink";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { Money, selectCurrencySymbol, TCurrency } from "../../shared/Money";
 import { PanelDark } from "../../shared/PanelDark";
 import * as styles from "./MyWalletWidget.module.scss";

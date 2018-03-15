@@ -113,6 +113,17 @@ export class LightWalletUtil {
     }
   }
 
+  static async getWalletSeed(lightWalletInstance: any, password: string): Promise<object> {
+    try {
+      const keyFromPassword = promisify<ILightWallet, string>(
+        lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
+      );
+      return await lightWalletInstance.getSeed(await keyFromPassword(password));
+    } catch (e) {
+      throw new LightWrongPasswordSaltError();
+    }
+  }
+
   static async testWalletPassword(lightWalletInstance: any, password: string): Promise<boolean> {
     const key = await LightWalletUtil.getWalletKey(lightWalletInstance, password);
     return lightWalletInstance.isDerivedKeyCorrect(key);
@@ -193,6 +204,13 @@ export class LightWallet implements IPersonalWallet {
     } catch (e) {
       throw new LightSignMessageError();
     }
+  }
+
+  public async getSeed(): Promise<boolean> {
+    if (!this.password) {
+      throw new LightWalletMissingPassword();
+    }
+    return await LightWalletUtil.testWalletPassword(this.vault.walletInstance, this.password);
   }
 
   public async testPassword(newPassword: string): Promise<boolean> {

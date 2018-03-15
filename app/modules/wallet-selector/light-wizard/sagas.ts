@@ -1,3 +1,4 @@
+import { effects } from "redux-saga";
 import { all, put, select } from "redux-saga/effects";
 import { symbols } from "../../../di/symbols";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
@@ -17,10 +18,12 @@ import { injectableFn } from "../../../middlewares/redux-injectify";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { actions, TAction } from "../../actions";
+import { updateUser } from "../../auth/sagas";
 import { callAndInject, forkAndInject, neuTake } from "../../sagas";
 import { connectLightWallet } from "../../signMessageModal/sagas";
 import { selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
+import { GetState } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getVaultKey } from "./flows";
 
@@ -76,6 +79,23 @@ export const getWalletMetadata = injectableFn(
   [symbols.walletMetadataStorage],
 );
 
+export const lightWalletBackupWatch = injectableFn(
+  function*(getState: GetState): any {
+    while (true) {
+      const action: TAction = yield neuTake("LIGHT_WALLET_BACKUP");
+      if (action.type !== "LIGHT_WALLET_BACKUP") {
+        continue;
+      }
+      try {
+        const user = getState().auth.user;
+        yield effects.call(updateUser, { ...user, backupCodesVerified: true });
+      } catch (e) {
+        yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+      }
+    }
+  },
+  [symbols.getState],
+);
 export const lightWalletLoginWatch = injectableFn(
   function*(
     web3Manager: Web3Manager,
@@ -123,5 +143,5 @@ export const lightWalletLoginWatch = injectableFn(
 );
 
 export function* lightWalletSagas(): Iterator<any> {
-  yield all([forkAndInject(lightWalletLoginWatch)]);
+  yield all([forkAndInject(lightWalletLoginWatch), forkAndInject(lightWalletBackupWatch)]);
 }

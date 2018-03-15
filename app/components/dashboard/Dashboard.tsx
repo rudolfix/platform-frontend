@@ -36,7 +36,7 @@ export const DashboardComponent = (props: IProps) => (
           euroTokenAmount={props.liquidEuroTokenBalance}
           ethAmount={props.liquidEtherBalance}
           ethEuroAmount={props.liquidEtherBalanceEuroAmount}
-          percentage="0"
+          percentage="0" // TODO connect 24h change
           totalAmount={props.liquidEuroTotalAmount}
         />
       </Col>

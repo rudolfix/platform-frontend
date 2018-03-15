@@ -1,6 +1,10 @@
 // sass-lint:disable no-important
-@import "./utils";
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
 @import "./variables";
+@import "./utils";
+@import "./global";
 
 a {
   font-weight: $font-weight-bold;

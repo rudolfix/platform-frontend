@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
-import { ArrowLink } from "../../shared/ArrowLink";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { BreadCrumb } from "../../shared/BreadCrumb";
 import { ButtonPrimary, ButtonPrimaryLink } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";

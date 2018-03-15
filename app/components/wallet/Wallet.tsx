@@ -53,8 +53,8 @@ export const Wallet = () => (
       <Col className={styles.card} lg={6} xs={12}>
         <WalletBalance
           radius={75}
-          moneyValueOne={66482}
-          moneyValueTwo={36490}
+          moneyValueOne={66482000000000000000000}
+          moneyValueTwo={36490000000000000000000}
           headerText="Your wallet balance"
           totalEurValue={"1234567" + "0".repeat(18)}
           theme={WalletBalanceTheme.light}
@@ -74,10 +74,7 @@ export const Wallet = () => (
         <ClaimedDividends totalEurValue={"1234" + "0".repeat(18)} recentPayouts={transactions} />
       </Col>
       <Col className={styles.transactionList} xs={12}>
-        <TransactionList
-          transactions={transactions}
-          categories={categories}
-          tabs={tabs} />
+        <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
       </Col>
     </Row>
   </LayoutAuthorized>

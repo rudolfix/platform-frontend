@@ -5,14 +5,25 @@ export interface ITableCell {
   children?: any;
   narrow?: boolean;
   center?: boolean;
+  decorate?: boolean;
+  mobileDescription?: string;
 }
 
-export const TableCell: React.SFC<ITableCell> = ({ narrow, center, children }) => (
+export const TableCell: React.SFC<ITableCell> = ({
+  narrow,
+  decorate,
+  center,
+  children,
+  mobileDescription,
+  ...props
+}) => (
   <div
-    className={`${styles.tableCell} ${narrow ? styles.tableCellNarrow : ""} ${
+    {...props}
+    className={`table-cell ${styles.tableCell} ${narrow ? styles.tableCellNarrow : ""} ${
       center ? styles.tableCellCenter : ""
-    }`}
+    } ${decorate ? "decorate" : ""}`}
   >
-    {children}
+    {mobileDescription && <span className={styles.mobileDescription}>{mobileDescription}</span>}
+    <span className={styles.content}>{children}</span>
   </div>
 );

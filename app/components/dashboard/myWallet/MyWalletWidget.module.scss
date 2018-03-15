@@ -4,42 +4,30 @@
   background-color: $neu-white-two;
 }
 
-.icon {
-  width: px-to-rem(28px);
-  height: px-to-rem(28px);
-}
-
 .link {
   font-size: px-to-rem(14px);
   font-weight: $font-weight-bold;
-}
-
-.large-dark-font {
-  font-size: px-to-rem(20px);
-  color: $neu-almost-black;
 }
 
 .small-font {
   font-size: px-to-rem(12px);
   font-weight: $font-weight-bold;
   padding-top: px-to-rem(1px);
+  margin-right: px-to-rem(10px);
 }
 
-.medium-seaweed-font {
-  font-size: px-to-rem(20px);
-  font-weight: $font-weight-bold;
+.total {
+  @include headline;
+  display: flex;
+  align-content: center;
   color: $neu-seaweed;
 }
 
-.small-seaweed-font {
-  font-size: px-to-rem(14px);
-  color: $neu-seaweed;
-  padding-top: px-to-rem(2px);
-}
-
-.small-red-font {
-  font-size: px-to-rem(14px);
-  color: $neu-red;
+.money-suite-wrapper {
+  $_border-color: rgba($neu-slate-grey, .1);
+  padding-bottom: px-to-rem(15px);
+  padding-top: px-to-rem(15px);
+  border-bottom: 1px solid $_border-color;
 }
 
 @include media-breakpoint-up (lg) {

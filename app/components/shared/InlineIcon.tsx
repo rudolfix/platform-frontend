@@ -6,7 +6,6 @@ interface IProps {
   onClick?: () => void;
 }
 
-
 export const InlineIcon: React.SFC<IProps> = ({ svgIcon, ...props }) => {
   return (
     <span className={styles.inlineIcon} {...props} dangerouslySetInnerHTML={{ __html: svgIcon }} />

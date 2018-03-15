@@ -12,6 +12,8 @@ import * as styles from "./ClaimedDividends.module.scss";
 
 import * as LinkOutIcon from "../../../assets/img/inline_icons/link_out.svg";
 
+import * as neuIcon from "../../../assets/img/neu_icon.svg";
+
 export interface IDividendPayout {
   timestamp: number;
   amount: string;
@@ -29,13 +31,14 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps> = ({
 }) => (
   <div className={styles.claimedDividends}>
     <PanelDark
+      icon={neuIcon}
       headerText="Dividends claimed from neu"
       rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
     >
       <h3 className={styles.title}>Most rescent</h3>
       <TableBody>
         {recentPayouts.map(({ timestamp, amount, id }) => (
-          <TableRow key={id}>
+          <TableRow key={`table-row-claimed-dividends-${id}`}>
             <TableCell narrow>
               <Date timestamp={timestamp} />
             </TableCell>

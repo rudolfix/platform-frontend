@@ -13,13 +13,16 @@
 }
 
 .wallet-balance-wrapper {
+  @include media-breakpoint-up (lg) {
+    padding-bottom: px-to-rem(36px);
+    padding-top: px-to-rem(36px);
+  }
+
   display: flex;
-  padding-bottom: px-to-rem(36px);
-  padding-top: px-to-rem(36px);
 }
 
 .chart {
-  @include media-breakpoint-up (md) {
+  @include media-breakpoint-up (xl) {
     display: block;
   }
 
@@ -28,4 +31,39 @@
   transform: rotate(-90deg);
   transition: stroke-dasharray .3s ease;
   width: 38%;
+}
+
+.money-suite-wrapper {
+  $_border-color: rgba($neu-slate-grey, .1);
+  display: flex;
+  align-items: center;
+
+  & + #{&} {
+    border-top: 1px solid $_border-color;
+  }
+}
+
+.buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  :global(.btn.btn-secondary) {
+    margin-left: auto;
+    text-align: right;
+  }
+}
+
+.wallet-balance-actions {
+  @include media-breakpoint-up (lg) {
+    margin-left: px-to-rem(20px);
+  }
+
+  flex: 1;
+
+  > * {
+    @include make-col(1, 1);
+
+    padding-bottom: px-to-rem(20px);
+    padding-top: px-to-rem(20px);
+  }
 }

@@ -8,6 +8,7 @@ export interface IPanelDarkProps {
   headerText: string;
   children?: React.ReactNode;
   rightComponent?: React.ReactNode;
+  icon?: string;
 }
 
 export const PanelDark: React.SFC<IPanelDarkProps & React.HTMLAttributes<HTMLDivElement>> = ({
@@ -15,6 +16,7 @@ export const PanelDark: React.SFC<IPanelDarkProps & React.HTMLAttributes<HTMLDiv
   rightComponent,
   className,
   children,
+  icon,
   ...props
 }) => (
   <Col {...props} className={cn(styles.panel, className)}>
@@ -23,6 +25,7 @@ export const PanelDark: React.SFC<IPanelDarkProps & React.HTMLAttributes<HTMLDiv
         className={cn(styles.header, "d-flex flex-wrap justify-content-between align-items-center")}
       >
         <span className={styles.headerText} data-test-id="panelDark-header-text">
+          {icon && <img src={icon} className={styles.icon} />}
           {headerText}
         </span>
         {rightComponent}

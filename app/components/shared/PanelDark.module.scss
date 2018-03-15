@@ -6,6 +6,10 @@ $header-height: px-to-rem(40px);
   box-shadow: $shadow;
 }
 
+.icon {
+  margin-right: px-to-rem(10px);
+}
+
 .header {
   @include media-breakpoint-up (md) {
     height: $header-height;

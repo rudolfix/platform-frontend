@@ -40,17 +40,24 @@ interface ITransactionList {
   tabs: IFilter[];
 }
 
-export const TransactionList: React.SFC<ITransactionList> = ({ transactions, categories, tabs }) => (
+export const TransactionList: React.SFC<ITransactionList> = ({
+  transactions,
+  categories,
+  tabs,
+}) => (
   <Col className={styles.transactionList}>
     <Row>
       <Col>
         <div className={styles.tabs}>
-          {
-            tabs.map(({ title, onFilter, isSelected }) => (
-              <div
-                className={`${styles.tab} ${isSelected ? 'is-selected' : ''}`} onClick={onFilter}>{title}</div>
-            ))
-          }
+          {tabs.map(({ title, onFilter, isSelected }) => (
+            <div
+              className={`${styles.tab} ${isSelected ? "is-selected" : ""}`}
+              onClick={onFilter}
+              key={title}
+            >
+              {title}
+            </div>
+          ))}
         </div>
       </Col>
     </Row>
@@ -70,13 +77,13 @@ export const TransactionList: React.SFC<ITransactionList> = ({ transactions, cat
       </Col>
     </Row>
     <Row>
-      <TableHeader>
+      <TableHeader mobileAction={() => {}} mobileActionName={"Sort"}>
         <TableCell>Date</TableCell>
         <TableCell>Transaction type</TableCell>
         <TableCell>Amount</TableCell>
         <TableCell>From/To</TableCell>
         <TableCell center>TXN</TableCell>
-        <TableCell center />
+        <TableCell center>Details</TableCell>
       </TableHeader>
     </Row>
     <Row>
@@ -84,20 +91,24 @@ export const TransactionList: React.SFC<ITransactionList> = ({ transactions, cat
         <TableBody>
           {transactions.map(({ id, timestamp, type, amount, fromTo, transfer }) => (
             <TableRow key={id}>
-              <TableCell>
+              <TableCell decorate mobileDescription={"Date"}>
                 <Date timestamp={timestamp} />
               </TableCell>
-              <TableCell>{type}</TableCell>
-              <TableCell>
+              <TableCell decorate mobileDescription={"Transaction type"}>
+                {type}
+              </TableCell>
+              <TableCell decorate mobileDescription={"Amount"}>
                 <Money currency="eur_token" value={amount} transfer={transfer} />
               </TableCell>
-              <TableCell>{fromTo}</TableCell>
-              <TableCell center>
+              <TableCell decorate mobileDescription={"From/To"}>
+                {fromTo}
+              </TableCell>
+              <TableCell decorate mobileDescription={"TXN"} center>
                 <ButtonSecondary>
                   <InlineIcon svgIcon={LinkOutIcon} />
                 </ButtonSecondary>
               </TableCell>
-              <TableCell center>
+              <TableCell decorate mobileDescription={"Details"} center>
                 <ButtonSecondary>
                   <InlineIcon svgIcon={AddIcon} />
                 </ButtonSecondary>

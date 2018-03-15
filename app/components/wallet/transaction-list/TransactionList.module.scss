@@ -12,6 +12,7 @@
 
   padding: px-to-rem(18px) px-to-rem(12px);
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   background-color: $neu-white-two;
   width: calc(100% + #{px-to-rem(30px)});
@@ -33,7 +34,7 @@
 
   &:global(.is-selected),
   &:hover {
-    background-color: $neu-cloudy-blue;
+    background-color: darken($neu-pale-blue, 2%);
     color: $neu-almost-black;
   }
 
@@ -65,10 +66,9 @@
   display: flex;
   align-items: center;
   position: relative;
-  
 
-  &:after {
-    content : "";
+  &::after {
+    content: "";
     width: 100%;
     left: 0;
     bottom: 0;

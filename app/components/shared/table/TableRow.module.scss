@@ -6,9 +6,12 @@
     flex-direction: row;
   }
 
+  @include media-breakpoint-up (md) {
+    padding-bottom: px-to-rem(15px);
+    padding-top: px-to-rem(15px);
+  }
+
   flex-direction: column;
-  padding-bottom: px-to-rem(15px);
-  padding-top: px-to-rem(15px);
 
   &:nth-of-type(odd) {
     background-color: $neu-white-two;
@@ -17,4 +20,9 @@
   &:nth-of-type(even) {
     background-color: $neu-pale-blue;
   }
+}
+
+
+.table-row-row {
+  flex-direction: row;
 }

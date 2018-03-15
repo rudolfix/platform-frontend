@@ -6,5 +6,5 @@ export interface ITableRow {
 }
 
 export const TableRow: React.SFC<ITableRow> = ({ children }) => (
-  <div className={styles.tableRow}>{children}</div>
+  <div className={`table-row ${styles.tableRow}`}>{children}</div>
 );

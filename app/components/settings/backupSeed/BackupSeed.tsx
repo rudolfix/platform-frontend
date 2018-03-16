@@ -10,10 +10,6 @@ import { BackupSeedVerify } from "./BackupSeedVerify";
 
 const words = Mnemonic.Words.ENGLISH.slice(0, 24); // TODO: get real words
 
-interface IStateProps {
-  words: string[];
-}
-
 interface IDispatchProps {
   verifyBackupPhrase: () => void;
 }
@@ -22,8 +18,8 @@ interface IComponentState {
   backupStep: number;
 }
 
-class BackupSeedContainer extends React.Component<IStateProps & IDispatchProps, IComponentState> {
-  constructor(props: IStateProps & IDispatchProps) {
+class BackupSeedContainer extends React.Component<IDispatchProps, IComponentState> {
+  constructor(props: IDispatchProps) {
     super(props);
 
     this.state = {
@@ -48,25 +44,20 @@ class BackupSeedContainer extends React.Component<IStateProps & IDispatchProps, 
       case 1:
         return <BackupSeedIntro onBack={appRoutes.settings} onNext={this.onNext} />;
       case 2:
-        return (
-          <BackupSeedDisplay onBack={this.onBack} onNext={this.onNext} words={this.props.words} />
-        );
+        return <BackupSeedDisplay onBack={this.onBack} onNext={this.onNext} words={words} />;
       default:
         return (
           <BackupSeedVerify
             onBack={this.onBack}
             onNext={this.props.verifyBackupPhrase}
-            words={this.props.words}
+            words={words}
           />
         );
     }
   }
 }
 
-export const BackupSeed = appConnect<IStateProps, IDispatchProps>({
-  stateToProps: _s => ({
-    words: words,
-  }),
+export const BackupSeed = appConnect<{}, IDispatchProps>({
   dispatchToProps: dispatch => ({
     verifyBackupPhrase: () => {
       dispatch(actions.wallet.lightWalletBackedUp());

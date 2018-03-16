@@ -65,7 +65,6 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
           Manage Wallet
         </ArrowLink>
       }
-      className={cn(styles.background)}
     >
       <Row noGutters>
         <Col xs={12} sm={6} lg={12}>

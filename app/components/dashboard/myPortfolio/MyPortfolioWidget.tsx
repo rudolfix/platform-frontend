@@ -11,7 +11,7 @@ import * as styles from "./MyPortfolioWidget.module.scss";
 export const MyPortfolio = () => {
   return (
     <PanelDark headerText="My portfolio">
-      <Row className={cn(styles.main, "pb-3 bg-light")}>
+      <Row className={cn(styles.main, "pb-3")}>
         <Col xl={8} md={7} xs={12} className="mt-5 text-center mb-4 ">
           <h3>Welcome to NEUFUND!</h3>
           <p>You have no assets in your portifolio yet.</p>

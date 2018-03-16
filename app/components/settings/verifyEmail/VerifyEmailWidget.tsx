@@ -16,7 +16,6 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
   return (
     <PanelDark
       headerText="EMAIL VERIFICATION"
-      className={styles.panel}
       rightComponent={
         verifiedEmail ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />

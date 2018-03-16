@@ -18,7 +18,6 @@ export const KycStatusWidget: React.SFC<IProps> = ({ kycDone }) => {
   return (
     <PanelDark
       headerText="KYC PROCESS"
-      className={styles.panel}
       rightComponent={
         kycDone ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />

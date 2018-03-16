@@ -6,8 +6,6 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
-import { ProgressStepper } from "../../shared/ProgressStepper";
-
 import { actions } from "../../../modules/actions";
 
 import {
@@ -21,12 +19,14 @@ import {
   unboolify,
 } from "../../shared/forms/forms";
 
+import { Col, Row } from "reactstrap";
 import {
   IKycIndividualData,
   KycIndividudalDataSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
+import { KycPanel } from "../KycPanel";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -64,8 +64,14 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="Birth Date" name="birthDate" />
 
     <FormField label="Street and number" name="street" />
-    <FormField label="Zip Code" name="zipCode" />
-    <FormField label="City" name="city" />
+    <Row>
+      <Col xs={12} md={6} lg={8}>
+        <FormField label="City" name="city" />
+      </Col>
+      <Col xs={12} md={6} lg={4}>
+        <FormField label="Zip Code" name="zipCode" />
+      </Col>
+    </Row>
     <FormSelectCountryField label="Country" name="country" />
     <br />
     <FormSelectField
@@ -80,9 +86,6 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
       name="isHighIncome"
     />
 
-    <br />
-    <br />
-    <br />
     <ButtonPrimary
       color="primary"
       type="submit"
@@ -105,14 +108,9 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
 
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
-    <div>
-      <br />
-      <ProgressStepper steps={4} currentStep={2} />
-      <br />
-      <h1>Personal Details</h1>
-      <br />
+    <KycPanel steps={4} currentStep={2} title={"Personal Details"} hasBackButton={true}>
       <KYCEnhancedForm {...props} />
-    </div>
+    </KycPanel>
   );
 };
 

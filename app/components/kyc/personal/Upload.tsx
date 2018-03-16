@@ -5,11 +5,11 @@ import { compose } from "redux";
 import { appConnect } from "../../../store";
 
 import { actions } from "../../../modules/actions";
-import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
+import { KycPanel } from "../KycPanel";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 interface IStateProps {
@@ -26,15 +26,15 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 export const KYCPersonalUploadComponent: React.SFC<IProps> = props => (
-  <div>
-    <br />
-    <ProgressStepper steps={4} currentStep={3} />
-    <br />
-    <h1>Upload documents</h1>
-    <br />
-    Please submit a scan of the front and back of your identification document.
-    <br />
-    <br />
+  <KycPanel
+    steps={4}
+    currentStep={3}
+    title={"Upload your ID"}
+    description={
+      "Please upload a colored copy of your passport or both sides of ID card for verification. "
+    }
+    hasBackButton={true}
+  >
     <KycFileUploadList
       onDropFile={props.onDropFile}
       files={props.files}
@@ -43,9 +43,9 @@ export const KYCPersonalUploadComponent: React.SFC<IProps> = props => (
     />
     <br />
     <ButtonPrimary color="primary" onClick={props.onDone}>
-      Submit Verification Request
+      Submit
     </ButtonPrimary>
-  </div>
+  </KycPanel>
 );
 
 export const KYCPersonalUpload = compose<React.SFC>(

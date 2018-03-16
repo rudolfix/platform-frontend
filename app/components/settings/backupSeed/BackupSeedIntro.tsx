@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { ArrowLink } from "../../shared/ArrowNavigation";
 import { BreadCrumb } from "../../shared/BreadCrumb";
-import { ButtonPrimaryLink } from "../../shared/Buttons";
+import { ButtonPrimary } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { PanelWhite } from "../../shared/PanelWhite";
 import { StepCard } from "../../shared/StepCard";
@@ -14,11 +14,11 @@ import * as safe from "../../../assets/img/seed_backup/safe.svg";
 import * as write from "../../../assets/img/seed_backup/write.svg";
 
 interface IBackupSeedIntroProps {
-  nextLink: string;
-  backLink: string;
+  onNext: () => void;
+  onBack: string;
 }
 
-export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ backLink, nextLink }) => (
+export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNext }) => (
   <LayoutAuthorized>
     <BreadCrumb
       className="my-4"
@@ -42,12 +42,12 @@ export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ backLink, ne
           </Row>
           <Row className="my-5">
             <Col className="text-center">
-              <ButtonPrimaryLink to={nextLink}>I have read instructions</ButtonPrimaryLink>
+              <ButtonPrimary onClick={onNext}>I have read instructions</ButtonPrimary>
             </Col>
           </Row>
           <Row>
             <Col>
-              <ArrowLink arrowDirection="left" to={backLink}>
+              <ArrowLink arrowDirection="left" to={onBack}>
                 Back
               </ArrowLink>
             </Col>

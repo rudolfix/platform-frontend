@@ -3,9 +3,9 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+import { ArrowButton } from "../../shared/ArrowNavigation";
 import { BreadCrumb } from "../../shared/BreadCrumb";
-import { ButtonPrimary, ButtonPrimaryLink } from "../../shared/Buttons";
+import { ButtonPrimary } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { PanelWhite } from "../../shared/PanelWhite";
 
@@ -14,8 +14,8 @@ import * as styles from "./BackupSeedDisplay.module.scss";
 export const WORDS_PER_PAGE = 12;
 
 interface IBackupSeedDisplayProps {
-  nextLink: string;
-  backLink: string;
+  onNext: () => void;
+  onBack: () => void;
   words: string[];
 }
 
@@ -108,12 +108,12 @@ export class BackupSeedDisplay extends React.Component<
                     </Col>
                     <Col className="mt-2" xs="auto">
                       {showNextButton ? (
-                        <ButtonPrimaryLink
+                        <ButtonPrimary
                           data-test-id="seed-display-next-link"
-                          to={this.props.nextLink}
+                          onClick={this.props.onNext}
                         >
                           Go to next step
-                        </ButtonPrimaryLink>
+                        </ButtonPrimary>
                       ) : (
                         <ButtonPrimary
                           data-test-id="seed-display-next-words"
@@ -128,9 +128,9 @@ export class BackupSeedDisplay extends React.Component<
               </Row>
               <Row>
                 <Col>
-                  <ArrowLink arrowDirection="left" to={this.props.backLink}>
+                  <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
                     Back
-                  </ArrowLink>
+                  </ArrowButton>
                 </Col>
               </Row>
             </PanelWhite>

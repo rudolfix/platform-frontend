@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
+import { noop } from "lodash";
 import * as React from "react";
 
 import { tid } from "../../../../test/testUtils";
@@ -32,14 +33,9 @@ const words = [
   "word24",
 ];
 
-const backLink = "";
-const nextLink = "";
-
 describe("<BackupSeedDisplay />", () => {
   it("should render all words in correct on consecutive pages", () => {
-    const component = shallow(
-      <BackupSeedDisplay nextLink={nextLink} backLink={backLink} words={words} />,
-    );
+    const component = shallow(<BackupSeedDisplay onBack={noop} onNext={noop} words={words} />);
 
     const renderedWords: string[] = [];
     component.find(tid("seed-display-word")).forEach(node => {
@@ -59,26 +55,20 @@ describe("<BackupSeedDisplay />", () => {
   });
 
   it("previous button should be disabled on first page", () => {
-    const component = shallow(
-      <BackupSeedDisplay nextLink={nextLink} backLink={backLink} words={words} />,
-    );
+    const component = shallow(<BackupSeedDisplay onBack={noop} onNext={noop} words={words} />);
 
     expect(component.find(tid("seed-display-prev-words")).prop("disabled")).to.be.true;
   });
 
   it("previous button should not be disabled on next page", () => {
-    const component = shallow(
-      <BackupSeedDisplay nextLink={nextLink} backLink={backLink} words={words} />,
-    );
+    const component = shallow(<BackupSeedDisplay onBack={noop} onNext={noop} words={words} />);
     component.find(tid("seed-display-next-words")).simulate("click");
 
     expect(component.find(tid("seed-display-prev-words")).prop("disabled")).to.be.false;
   });
 
   it("should not render next 12 words button on last page but and show next link", () => {
-    const component = shallow(
-      <BackupSeedDisplay nextLink={nextLink} backLink={backLink} words={words} />,
-    );
+    const component = shallow(<BackupSeedDisplay onBack={noop} onNext={noop} words={words} />);
     component.find(tid("seed-display-next-words")).simulate("click");
 
     expect(component.find(tid("seed-display-next-words"))).to.have.length(0);

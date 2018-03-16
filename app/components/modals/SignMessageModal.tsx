@@ -16,6 +16,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   onCancel: () => void;
+  onAccept: (password?: string) => void;
 }
 
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
@@ -29,7 +30,7 @@ const MessageSignModalComponent: React.SFC<IStateProps & IDispatchProps> = props
   <Modal isOpen={props.isOpen} toggle={props.onCancel}>
     <ModalComponentBody onClose={props.onCancel}>
       {props.isLightWallet ? (
-        <LightWalletSignPrompt />
+        <LightWalletSignPrompt {...props} />
       ) : (
         <GenericSignPrompt onCancel={props.onCancel} />
       )}
@@ -48,5 +49,6 @@ export const MessageSignModal = appConnect<IStateProps, IDispatchProps>({
   }),
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.signMessageModal.hide()),
+    onAccept: (password?: string) => dispatch(actions.signMessageModal.accept(password)),
   }),
 })(MessageSignModalComponent);

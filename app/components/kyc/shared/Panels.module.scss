@@ -1,0 +1,41 @@
+@import "../../../styles/neufund-theme";
+
+.panels {
+  @include make-row;
+  flex: 1;
+}
+
+.panel {
+  flex: 1;
+  min-height: px-to-rem(490px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  + .panel {
+    border-left: 4px solid $neu-white-two;
+  }
+
+  &:global(.t-blue) {
+    background-color: $neu-charcoal-grey;
+  }
+
+  &:global(.t-black) {
+    background-color: $neu-almost-black;
+  }
+
+  &:global(.t-grey) {
+    background-color: $neu-slate-grey;
+  }
+
+  :global {
+    .btn {
+      @include media-breakpoint-up (md) {
+        min-width: px-to-rem(204px);
+      }
+
+      max-height: px-to-rem(38px);
+      color: $neu-white-two;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+// sass-lint:disable no-important
+@import "../../../styles/neufund-theme";
+
+.invalid {
+  :global(.Select-control) {
+    border-color: $neu-bright-orange !important;
+  }
+}
+
+.valid {
+  :global(.Select-control) {
+    border-color: $neu-seaweed !important;
+  }
+}
+
+.placeholder-height {
+  min-height: px-to-rem(38px) !important;
+}

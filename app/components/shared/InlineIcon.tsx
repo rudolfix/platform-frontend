@@ -6,5 +6,10 @@ interface IProps {
 }
 
 export const InlineIcon: React.SFC<IProps> = ({ svgIcon }) => {
-  return <span className={styles.inlineIcon} dangerouslySetInnerHTML={{ __html: svgIcon }} />;
+  return (
+    <span
+      className={`inline-icon ${styles.inlineIcon}`}
+      dangerouslySetInnerHTML={{ __html: svgIcon }}
+    />
+  );
 };

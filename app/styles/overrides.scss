@@ -1,6 +1,7 @@
 // sass-lint:disable no-important
 @import "./utils";
 @import "./variables";
+@import "./elements/ul";
 
 a {
   font-weight: $font-weight-bold;
@@ -61,4 +62,10 @@ a {
 // this makes it possible to create full height pages
 html,body,#app {
   height:100%;
+}
+
+
+.form-control {
+  -webkit-appearance: none; // scss-lint:disable VendorPrefi
+  border-radius: 0;
 }

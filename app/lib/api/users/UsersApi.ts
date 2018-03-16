@@ -44,4 +44,20 @@ export class UsersApi {
 
     return response.body;
   }
+
+  public async updateUser(updatedUser: IUser): Promise<IUser> {
+    const response = await this.httpClient.put<IUser>({
+      baseUrl: USER_API_ROOT,
+      url: "/user/me",
+      responseSchema: UserValidator,
+      allowedStatusCodes: [404],
+      body: updatedUser,
+    });
+
+    if (response.statusCode === 404) {
+      throw new UserNotExisting();
+    }
+
+    return response.body;
+  }
 }

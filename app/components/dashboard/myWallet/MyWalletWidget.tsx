@@ -40,7 +40,6 @@ const MoneySuiteWidget: React.SFC<
 
 interface IMyWalletWidget {
   euroTokenAmount: string;
-  euroTokenEuroAmount: string;
   ethAmount: string;
   ethEuroAmount: string;
   percentage: string;
@@ -49,7 +48,6 @@ interface IMyWalletWidget {
 
 export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
   euroTokenAmount,
-  euroTokenEuroAmount,
   ethAmount,
   ethEuroAmount,
   percentage,
@@ -77,7 +75,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
             icon={moneyIcon}
             data-test-id="euro-widget"
           >
-            = <Money value={euroTokenEuroAmount} currency="eur" />
+            = <Money value={euroTokenAmount} currency="eur" />
           </MoneySuiteWidget>
         </Col>
         <Col xs={12} sm={6} lg={12}>

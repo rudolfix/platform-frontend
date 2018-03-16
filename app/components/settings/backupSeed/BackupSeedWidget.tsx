@@ -6,13 +6,27 @@ import * as successIcon from "../../../assets/img/notfications/Success_small.svg
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
 import { Col } from "reactstrap";
-import { compose } from "redux";
-import { IUser } from "../../../lib/api/users/interfaces";
+import { actions } from "../../../modules/actions";
+import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
 import { appConnect } from "../../../store";
 import { ArrowLink } from "../../shared/ArrowLink";
+import { ButtonPrimary } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
-export const BackupSeedWidgetComponent: React.SFC<IUser> = ({ backupCodesVerified }) => {
+interface IStateProps {
+  backupCodesVerified?: boolean;
+}
+
+interface IDispatchProps {
+  verifyBackupPhrase?: () => void;
+}
+
+//TODO: Remove dispatched props and connect with real component
+
+export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> = ({
+  backupCodesVerified,
+  verifyBackupPhrase,
+}) => {
   return (
     <PanelDark
       headerText="BACKUP RECOVERY PHRASE"
@@ -47,9 +61,7 @@ export const BackupSeedWidgetComponent: React.SFC<IUser> = ({ backupCodesVerifie
             you to restore your wallet and access your funds you forgot your password
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
-              Backup phrase
-            </ArrowLink>
+            <ButtonPrimary onClick={verifyBackupPhrase}>Backup phrase</ButtonPrimary>
           </Col>
         </div>
       )}
@@ -57,10 +69,13 @@ export const BackupSeedWidgetComponent: React.SFC<IUser> = ({ backupCodesVerifie
   );
 };
 
-export const BackupSeedWidget = compose<React.ComponentClass>(
-  appConnect<any>({
-    stateToProps: s => ({
-      user: s.auth.user,
-    }),
+export const BackupSeedWidget = appConnect<IStateProps, IDispatchProps>({
+  stateToProps: s => ({
+    backupCodesVerified: selectBackupCodesVerified(s.auth),
   }),
-)(BackupSeedWidgetComponent);
+  dispatchToProps: dispatch => ({
+    verifyBackupPhrase: () => {
+      dispatch(actions.wallet.lightWalletBackedUp());
+    },
+  }),
+})(BackupSeedWidgetComponent);

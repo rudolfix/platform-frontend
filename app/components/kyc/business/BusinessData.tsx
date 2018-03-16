@@ -6,12 +6,11 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
-import { ProgressStepper } from "../../shared/ProgressStepper";
-
 import { actions } from "../../../modules/actions";
 
 import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 
+import { Col, Row } from "reactstrap";
 import {
   IKycBusinessData,
   IKycFileInfo,
@@ -19,6 +18,7 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
+import { KycPanel } from "../KycPanel";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 interface IStateProps {
@@ -48,8 +48,14 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
     )}
     <br /> <br />
     <FormField label="Street and number" name="street" />
-    <FormField label="Zip Code" name="zipCode" />
-    <FormField label="City" name="city" />
+    <Row>
+      <Col xs={12} md={6} lg={8}>
+        <FormField label="City" name="city" />
+      </Col>
+      <Col xs={12} md={6} lg={4}>
+        <FormField label="Zip Code" name="zipCode" />
+      </Col>
+    </Row>
     <FormSelectCountryField label="Country" name="country" />
     <br />
     <ButtonPrimary
@@ -92,18 +98,15 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
 export const KycBusinessDataComponent: React.SFC<IProps> = props => {
   const dataValid = KycBusinessDataSchemaRequired.isValidSync(props.currentValues);
   return (
-    <div>
-      <br />
-      <ProgressStepper steps={5} currentStep={4} />
-      <br />
-      <h3>Business Information</h3>
-      <br />
-      Please tell us about your business
-      <br />
+    <KycPanel
+      steps={5}
+      currentStep={4}
+      title={"Business Information"}
+      description={"Please tell us about your business"}
+      hasBackButton={false}
+    >
       <KYCEnhancedForm {...props} />
-      <br />
       <FileUploadList {...props} dataValid={dataValid} />
-      <br /> <br />
       <ButtonPrimary
         color="primary"
         type="submit"
@@ -112,7 +115,7 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
       >
         Submit Request
       </ButtonPrimary>
-    </div>
+    </KycPanel>
   );
 };
 

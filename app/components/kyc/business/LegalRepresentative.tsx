@@ -6,8 +6,6 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
-import { ProgressStepper } from "../../shared/ProgressStepper";
-
 import { actions } from "../../../modules/actions";
 
 import {
@@ -23,6 +21,7 @@ import {
 
 import { KYCBeneficialOwners } from "./BeneficialOwners";
 
+import { Col, Row } from "reactstrap";
 import {
   IKycBusinessData,
   IKycFileInfo,
@@ -32,6 +31,7 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
+import { KycPanel } from "../KycPanel";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 const PEP_VALUES = {
@@ -64,8 +64,14 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="Birth Date" name="birthDate" />
 
     <FormField label="Address" name="street" />
-    <FormField label="Zip Code" name="zipCode" />
-    <FormField label="City" name="city" />
+    <Row>
+      <Col xs={12} md={6} lg={8}>
+        <FormField label="City" name="city" />
+      </Col>
+      <Col xs={12} md={6} lg={4}>
+        <FormField label="Zip Code" name="zipCode" />
+      </Col>
+    </Row>
     <FormSelectCountryField label="Country" name="country" />
     <FormSelectField
       values={PEP_VALUES}
@@ -97,11 +103,7 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   if (!props.lrDataValid) return <div />;
   return (
     <div>
-      <br />
       <h4>Supporting Documents</h4>
-      <br />
-      Please upload a scan of your ID here.
-      <br />
       <KycFileUploadList
         onDropFile={props.onDropFile}
         files={props.files}
@@ -121,19 +123,16 @@ const BeneficialOwners: React.SFC<IProps & { lrDataValid: boolean }> = props => 
 export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
   const lrDataValid = KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative);
   return (
-    <div>
-      <br />
-      <ProgressStepper steps={5} currentStep={3} />
-      <br />
-      <h3>Legal Representative</h3>
-      <br />
-      Please tell us about yourself
-      <br />
-      <br />
+    <KycPanel
+      steps={5}
+      currentStep={3}
+      title={"Legal Representative"}
+      description={"Please tell us about yourself"}
+      hasBackButton={false}
+    >
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} lrDataValid={lrDataValid} />
       <BeneficialOwners {...props} lrDataValid={lrDataValid} />
-      <br /> <br />
       <ButtonPrimary
         color="primary"
         type="submit"
@@ -142,7 +141,7 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
       >
         Continue
       </ButtonPrimary>
-    </div>
+    </KycPanel>
   );
 };
 

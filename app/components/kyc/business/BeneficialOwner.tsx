@@ -15,6 +15,7 @@ import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
+import { Col, Row } from "reactstrap";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -66,8 +67,14 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
       <FormField label="Birth Date" name="birthDate" />
 
       <FormField label="Street and number" name="street" />
-      <FormField label="Zip Code" name="zipCode" />
-      <FormField label="City" name="city" />
+      <Row>
+        <Col xs={12} md={6} lg={8}>
+          <FormField label="City" name="city" />
+        </Col>
+        <Col xs={12} md={6} lg={4}>
+          <FormField label="Zip Code" name="zipCode" />
+        </Col>
+      </Row>
       <FormSelectCountryField label="Country" name="country" />
       <FormField label="Percent owned" name="ownership" />
       <FormSelectField
@@ -76,8 +83,6 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
         name="isPoliticallyExposed"
       />
 
-      <br />
-      <br />
       <ButtonPrimary
         color="primary"
         type="submit"

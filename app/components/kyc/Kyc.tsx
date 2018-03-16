@@ -1,16 +1,12 @@
 import * as React from "react";
 import { KycRouter } from "./Router";
 
-import * as cn from "classnames";
-import { Col, Row } from "reactstrap";
-
 import { compose } from "redux";
 import { IKycRequestState } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import * as styles from "./Kyc.module.scss";
 
 interface IStateProps {
   requestLoading?: boolean;
@@ -50,12 +46,8 @@ export const KycComponent: React.SFC<IProps> = props => {
 
   return (
     <LayoutAuthorized>
-      <Row className="p-3">
-        <Col lg="12" xl={{ size: "10", offset: 1 }} className={cn("p-4", styles.container)}>
-          <RequestStateInfo requestState={requestState} />
-          {router}
-        </Col>
-      </Row>
+      <RequestStateInfo requestState={requestState} />
+      {router}
     </LayoutAuthorized>
   );
 };

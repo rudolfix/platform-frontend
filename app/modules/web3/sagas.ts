@@ -1,15 +1,21 @@
 import { delay, Task } from "redux-saga";
-import { all, call, cancel, fork, put, take } from "redux-saga/effects";
+import { all, call, cancel, fork, put, select, take } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { symbols } from "../../di/symbols";
 import { ILogger } from "../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
-import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
+import {
+  LightWallet,
+  LightWalletLocked,
+  LightWalletWrongPassword,
+} from "../../lib/web3/LightWallet";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { actions, TAction } from "../actions";
-import { forkAndInject } from "../sagas";
+import { callAndInject, forkAndInject } from "../sagas";
+import { IAppState } from "./../../store";
+import { selectIsUnlocked } from "./reducer";
 import { WalletType } from "./types";
 
 let lockWalletTask: Task | undefined;
@@ -22,6 +28,7 @@ export const autoLockLightWallet = injectableFn(
       logger.info("Resetting light wallet password now");
       yield put(actions.web3.walletLocked());
       (web3Manager.personalWallet as LightWallet).password = undefined;
+      yield put(actions.web3.clearSeedtoWalletMetadata()); //Better to clear the seed here as well
     }
   },
   [symbols.web3Manager, symbols.logger],
@@ -52,6 +59,24 @@ export function* cancelLocking(): Iterator<any> {
   }
 }
 
+export const loadSeedFromWallet = injectableFn(
+  function*(web3Manager: Web3Manager): Iterator<any> {
+    const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
+    if (!isUnlocked) {
+      throw new LightWalletLocked();
+    }
+    try {
+      const lightWallet = web3Manager.personalWallet as LightWallet;
+      //How should you bind instances when using call?
+      const seed = yield call(lightWallet.getSeed.bind(lightWallet));
+      yield put(actions.web3.loadSeedtoWalletMetadata(seed));
+    } catch (e) {
+      throw new Error("Fetching seed failed");
+    }
+  },
+  [symbols.web3Manager],
+);
+
 export const unlockWallet = injectableFn(
   function*(web3Manager: Web3Manager, password: string): Iterator<any> {
     const lightWallet = web3Manager.personalWallet as LightWallet;
@@ -63,6 +88,7 @@ export const unlockWallet = injectableFn(
 
     lightWallet.password = password;
     yield put(actions.web3.walletUnlocked());
+    yield callAndInject(loadSeedFromWallet);
   },
   [symbols.web3Manager],
 );

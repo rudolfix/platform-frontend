@@ -58,6 +58,7 @@ export class LightKeyEncryptError extends LightWalletUtilError {}
 export class LightDeserializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
 export class LightWalletWrongPassword extends LightWalletError {}
+export class LightWalletLocked extends LightWalletError {}
 
 // it's useful to have it as a class to allow injection and mocking.Todo: remove static functions and probably move to separate file
 @injectable()
@@ -113,7 +114,7 @@ export class LightWalletUtil {
     }
   }
 
-  static async getWalletSeed(lightWalletInstance: any, password: string): Promise<object> {
+  static async getWalletSeed(lightWalletInstance: any, password: string): Promise<string> {
     try {
       const keyFromPassword = promisify<ILightWallet, string>(
         lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
@@ -206,11 +207,11 @@ export class LightWallet implements IPersonalWallet {
     }
   }
 
-  public async getSeed(): Promise<boolean> {
+  public async getSeed(): Promise<string> {
     if (!this.password) {
       throw new LightWalletMissingPassword();
     }
-    return await LightWalletUtil.testWalletPassword(this.vault.walletInstance, this.password);
+    return await LightWalletUtil.getWalletSeed(this.vault.walletInstance, this.password);
   }
 
   public async testPassword(newPassword: string): Promise<boolean> {

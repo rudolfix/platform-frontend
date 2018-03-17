@@ -3,6 +3,7 @@ import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
+import { ViewSeedModal } from "../modals/viewSeedModal";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
 import { KycStatusWidget } from "./kycStates/KycStatusWidget";
 import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
@@ -10,6 +11,7 @@ import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
 export const Settings = () => (
   <LayoutAuthorized>
     <MessageSignModal />
+    <ViewSeedModal />
     <Row>
       <Col lg={4} xs={12}>
         <VerifyEmailWidget />

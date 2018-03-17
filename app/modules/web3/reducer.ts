@@ -115,6 +115,10 @@ export const selectIsUnlocked = (state: IWeb3State): boolean => {
   return state.connected && state.isUnlocked;
 };
 
+export const selectSeed = (state: IWeb3State): string[] | undefined => {
+  return (state.connected && state.seed && state.seed.split(" ")) || undefined;
+};
+
 export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
   !!(
     !state.connected &&

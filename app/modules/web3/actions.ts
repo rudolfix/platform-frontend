@@ -15,6 +15,7 @@ export const web3Actions = {
   walletLocked: () => createSimpleAction("WEB3_WALLET_LOCKED"),
   loadPreviousWallet: (previousWallet: TWalletMetadata) =>
     createAction("LOAD_PREVIOUS_WALLET", previousWallet),
-  loadSeedtoWalletMetadata: (seed: string) => createAction("WEB3_LOAD_SEED", seed),
-  clearSeedtoWalletMetadata: () => createSimpleAction("WEB3_CLEAR_SEED"),
+  loadSeedtoState: (seed: string) => createAction("WEB3_LOAD_SEED", seed),
+  clearSeedFromState: () => createSimpleAction("WEB3_CLEAR_SEED"),
+  fetchSeedFromWallet: () => createSimpleAction("WEB3_FETCH_SEED"),
 };

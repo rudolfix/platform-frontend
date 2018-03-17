@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { all, put, select } from "redux-saga/effects";
+import { all, call, put, select } from "redux-saga/effects";
 import { symbols } from "../../../di/symbols";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
@@ -24,6 +24,8 @@ import { connectLightWallet } from "../../signMessageModal/sagas";
 import { selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
 import { GetState } from "./../../../di/setupBindings";
+import { LightWalletLocked } from "./../../../lib/web3/LightWallet";
+import { selectIsUnlocked } from "./../../web3/reducer";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getVaultKey } from "./flows";
 
@@ -97,6 +99,37 @@ export const lightWalletBackupWatch = injectableFn(
   },
   [symbols.getState],
 );
+export const loadSeedFromWallet = injectableFn(
+  function*(web3Manager: Web3Manager): Iterator<any> {
+    const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
+    if (!isUnlocked) {
+      throw new LightWalletLocked();
+    }
+    try {
+      const lightWallet = web3Manager.personalWallet as LightWallet;
+      //How should you bind instances when using call?
+      const seed = yield call(lightWallet.getSeed.bind(lightWallet));
+      yield put(actions.web3.loadSeedtoState(seed));
+    } catch (e) {
+      throw new Error("Fetching seed failed");
+    }
+  },
+  [symbols.web3Manager],
+);
+
+export const loadSeedFromWalletWatch = injectableFn(function*(): any {
+  while (true) {
+    const action: TAction = yield neuTake("WEB3_FETCH_SEED");
+    if (action.type !== "WEB3_FETCH_SEED") {
+      continue;
+    }
+    try {
+      yield callAndInject(loadSeedFromWallet);
+    } catch (e) {
+      yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+    }
+  }
+}, []);
 export const lightWalletLoginWatch = injectableFn(
   function*(
     web3Manager: Web3Manager,
@@ -144,5 +177,9 @@ export const lightWalletLoginWatch = injectableFn(
 );
 
 export function* lightWalletSagas(): Iterator<any> {
-  yield all([forkAndInject(lightWalletLoginWatch), forkAndInject(lightWalletBackupWatch)]);
+  yield all([
+    forkAndInject(lightWalletLoginWatch),
+    forkAndInject(lightWalletBackupWatch),
+    forkAndInject(loadSeedFromWalletWatch),
+  ]);
 }

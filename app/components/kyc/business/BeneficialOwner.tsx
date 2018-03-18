@@ -26,6 +26,7 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
+import { Accordion, AccordionElement } from "../../shared/Accordion";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -76,19 +77,22 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
         </Col>
       </Row>
       <FormSelectCountryField label="Country" name="country" />
-      <FormField label="Percent owned" name="ownership" />
       <FormSelectField
         values={PEP_VALUES}
         label="Is this person politically exposed?"
         name="isPoliticallyExposed"
       />
-
+      <Row>
+        <Col xs={6} md={4}>
+          <FormField label="Percent owned" name="ownership" />
+        </Col>
+      </Row>
       <ButtonPrimary
         color="primary"
         type="submit"
         disabled={!formikBag.isValid || formikBag.loading}
       >
-        Submit changes
+        Save
       </ButtonPrimary>
     </Form>
   );
@@ -113,27 +117,20 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
   render(): React.ReactChild {
     return (
       <div>
-        <h3>Beneficial Owner {this.props.index + 1}</h3>
-        <br />
-        <KYCEnhancedForm {...this.props} />
-        <br /> <br />
-        <h4>Supporting Documents</h4>
-        <br />
-        Please update documents here
-        <br />
-        <KycFileUploadList
-          onDropFile={this.props.onDropFile}
-          files={this.props.files}
-          fileUploading={this.props.fileUploading}
-          filesLoading={this.props.filesLoading}
-        />
-        <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary>
-        <br />
-        <br />
+        <Accordion>
+          <AccordionElement title={`Beneficial Owner ${this.props.index + 1}`}>
+            <KYCEnhancedForm {...this.props} />
+            <KycFileUploadList
+              onDropFile={this.props.onDropFile}
+              files={this.props.files}
+              fileUploading={this.props.fileUploading}
+              filesLoading={this.props.filesLoading}
+            />
+            <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary>
+          </AccordionElement>
+        </Accordion>
         <HorizontalLine />
-        <br />
-        <br />
-      </div>
+      </div >
     );
   }
 }

@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as styles from "./BeneficialOwners.module.scss";
 
 import { compose } from "redux";
 
@@ -9,7 +10,12 @@ import { actions } from "../../../modules/actions";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonSecondary } from "../../shared/Buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
+import { InlineIcon } from "../../shared/InlineIcon";
 import { KYCBeneficialOwner } from "./BeneficialOwner";
+
+
+import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
+
 
 interface IStateProps {
   beneficialOwners: IKycBeneficialOwner[];
@@ -24,28 +30,18 @@ type IProps = IStateProps & IDispatchProps;
 
 export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   <div>
-    <br />
-    <h3>Beneficial owners of your business</h3>
-    <br />
-    Please list and identify all shareholders with a stake of 25% or more in your company.
-    <br />
-    <br />
+    <h4 className={styles.sectionTitle}>Beneficial owners (which hold more than 25%)</h4>
     {props.beneficialOwners.map(
       (owner, index) =>
         owner.id ? (
           <KYCBeneficialOwner key={owner.id} owner={owner} index={index} id={owner.id} />
         ) : (
-          <div />
-        ),
+            <div />
+          ),
     )}
-    <HorizontalLine />
-    <br />
-    <br />
     <ButtonSecondary onClick={props.createBeneficialOwner} disabled={props.loading}>
-      Add new Beneficial Owner!
+      <InlineIcon svgIcon={plusIcon} /><span>Add Beneficial Owner</span>
     </ButtonSecondary>
-    <br />
-    <br />
   </div>
 );
 

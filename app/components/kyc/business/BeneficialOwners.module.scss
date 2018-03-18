@@ -1,0 +1,14 @@
+@import "../../../styles/neufund-theme";
+
+.section-title {
+  font-size: px-to-rem(18px);
+  font-weight: 600;
+  letter-spacing: px-to-rem(-.3px);
+  margin-bottom: px-to-rem(30px);
+  margin-top: px-to-rem(30px);
+}
+
+
+form {
+  margin-bottom: px-to-rem(60px);
+}

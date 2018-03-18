@@ -79,7 +79,6 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
       name="isPoliticallyExposed"
     />
 
-    <br />
     <ButtonPrimary
       color="primary"
       type="submit"
@@ -103,7 +102,6 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   if (!props.lrDataValid) return <div />;
   return (
     <div>
-      <h4>Supporting Documents</h4>
       <KycFileUploadList
         onDropFile={props.onDropFile}
         files={props.files}

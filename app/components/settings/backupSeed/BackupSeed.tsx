@@ -61,7 +61,6 @@ export const BackupSeed = appConnect<{}, IDispatchProps>({
   dispatchToProps: dispatch => ({
     verifyBackupPhrase: () => {
       dispatch(actions.wallet.lightWalletBackedUp());
-      dispatch(actions.routing.goToSettings());
     },
   }),
 })(BackupSeedContainer);

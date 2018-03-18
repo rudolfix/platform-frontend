@@ -1,0 +1,12 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-element {
+  &:global {
+    &.is-opened {
+      color: red;
+    }
+  }
+}

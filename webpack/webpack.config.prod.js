@@ -101,6 +101,7 @@ module.exports = merge(configCommon, {
           {
             test: /\.(jpg|png|svg)$/,
             loader: "url-loader",
+            exclude: paths.inlineIcons,
             options: {
               limit: 25000,
               publicPath: "/",

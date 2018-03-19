@@ -11,9 +11,10 @@ export const TotalEuro: React.SFC<ITotalEuroProps> = ({ totalEurValue }) => (
   <div className={styles.totalEuro}>
     <span className={styles.label}>TOTAL</span>
     <Money
+      className={styles.money}
       currency={"eur"}
       value={totalEurValue}
-      style={{ fontSize: "20px", color: "#20e06e", fontWeight: 600 }}
+      style={{}}
       currencyStyle={{ fontSize: "16px", fontWeight: 500 }}
     />
   </div>

@@ -67,7 +67,7 @@ export const Money: React.SFC<IProps> = ({
     : formatThousands(formatMoney(value, MONEY_DECIMALS, decimalPlaces));
 
   return (
-    <span {...props} className={`${styles.money} ${transfer || ""}`}>
+    <span {...props} className={`${styles.money} ${transfer || ""} ${props.className}`}>
       {formattedMoney}{" "}
       <span className={cn(currencyClassName)} style={currencyStyle}>
         {noCurrencySymbol ? "" : currencySymbol}

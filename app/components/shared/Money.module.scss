@@ -4,9 +4,9 @@
   &:global(.income),
   &:global(.outcome) {
     font-size: px-to-rem(14px);
-    font-weight: 600;
+    font-weight: $font-weight-bold;
     line-height: 1.43;
-  }
+  } 
 
   &:global(.income) {
     color: $neu-seaweed;

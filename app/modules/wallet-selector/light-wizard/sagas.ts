@@ -89,6 +89,7 @@ export const lightWalletBackupWatch = injectableFn(
       try {
         const user = getState().auth.user;
         yield effects.call(updateUser, { ...user, backupCodesVerified: true });
+        yield effects.put(actions.routing.goToSettings());
       } catch (e) {
         yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
       }

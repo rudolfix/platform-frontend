@@ -6,12 +6,14 @@ import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 import * as styles from "./LayoutAuthorized.module.scss";
 
 export const LayoutAuthorized: React.SFC = ({ children }) => (
-  <Row className="h-100">
-    <Col xs={12} sm="auto">
-      <div className={styles.menu}>
-        <LayoutAuthorizedMenu />
-      </div>
-    </Col>
-    <Col className={styles.content}>{children}</Col>
-  </Row>
+  <>
+    <div>
+      <LayoutAuthorizedMenu />
+    </div>
+    <div className="layout-container">
+      <Row>
+        <Col className={styles.content}>{children}</Col>
+      </Row>
+    </div>
+  </>
 );

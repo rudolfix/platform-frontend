@@ -107,6 +107,11 @@ module.exports = merge(configCommon, {
             },
           },
           {
+            test: /\.(svg)$/,
+            loader: "raw-loader",
+            include: paths.inlineIcons,
+          },
+          {
             test: /\.(woff2|woff|ttf|eot|otf)$/,
             loader: "file-loader",
             options: {

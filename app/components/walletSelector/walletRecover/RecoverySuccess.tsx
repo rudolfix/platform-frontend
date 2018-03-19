@@ -6,8 +6,8 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { ButtonPrimary } from "../../shared/Buttons";
+import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { recoverRoutes } from "./recoverRoutes";
-import { WalletResetHeader } from "./WalletResetHeader";
 
 interface IProps {
   goToDashboard: () => void;
@@ -16,7 +16,12 @@ interface IProps {
 export const RecoverySuccessComponent: React.SFC<IProps> = props => (
   <div>
     <Col className="mt-4 pb-5">
-      <WalletResetHeader steps={8} currentStep={8} text={"Lorem ipsum"} />
+      <HeaderProgressStepper
+        headerText="Reset your Password"
+        descText="Lorem ipsum"
+        steps={8}
+        currentStep={8}
+      />
     </Col>
     <Col className="mt-4 mb-5 mx-auto">
       <h5 className="text-center">

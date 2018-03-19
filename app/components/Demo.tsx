@@ -3,9 +3,13 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 
 import * as styles from "./Demo.module.scss";
 
-import { ArrowLink } from "./shared/ArrowLink";
-
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
+import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
+import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
+import { KycStatusWidget } from "./settings/kycStates/KycStatusWidget";
+import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
+import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
+import { BreadCrumb } from "./shared/BreadCrumb";
 import {
   ButtonPrimary,
   ButtonPrimaryLink,
@@ -49,9 +53,51 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
+          <ArrowLink arrowDirection="right" to="#">
+            Right arrow link
+          </ArrowLink>
+          <ArrowLink arrowDirection="left" to="#">
+            Left arrow link
+          </ArrowLink>
+
+          <ArrowButton arrowDirection="right">Right arrow button</ArrowButton>
+
+          <ArrowButton arrowDirection="right" disabled>
+            Right arrow button disabled
+          </ArrowButton>
+
+          <ArrowButton arrowDirection="left">Left arrow button</ArrowButton>
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
           <NavigationButton forward text="NavigationButton" onClick={() => {}} />
           <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
           <NavigationLink forward to="/" text="NavigationLink" />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>Breadcrumb in different states</Col>
+      </Row>
+      <Row>
+        <Col>
+          <BreadCrumb view={"no path just view name"} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <BreadCrumb path={["Single path"]} view={"view name"} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <BreadCrumb path={["First path", "Second path"]} view={"view name"} />
         </Col>
       </Row>
     </Container>
@@ -93,28 +139,9 @@ export const Demo: React.SFC = () => (
         <Col>
           <PanelWhite>
             <p className="mt-2">
-              So this is our white panel. It can contain React.Nodes as children and no Props:
+              So this is our white panel. It can contain React.Nodes as children and no Props.
             </p>
-            <dl>
-              <dt>headerText: string</dt>
-              <dd>Title of panel it will be rendered in span element</dd>
-              <dt>rightComponent: ReactNode</dt>
-              <dd>Component that will be put in header on right side.</dd>
-            </dl>
           </PanelWhite>
-        </Col>
-      </Row>
-    </Container>
-
-    <Container>
-      <Row>
-        <Col>
-          <ArrowLink arrowDirection="right" to="#">
-            Right arrow link
-          </ArrowLink>
-          <ArrowLink arrowDirection="left" to="#">
-            Left arrow link
-          </ArrowLink>
         </Col>
       </Row>
     </Container>
@@ -152,6 +179,51 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col>
           <MyPortfolio />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row noGutters>
+        <Col>
+          <MyWalletWidget
+            euroTokenAmount={"36490" + "0".repeat(18)}
+            ethAmount={"66482" + "0".repeat(14)}
+            ethEuroAmount={"6004904646" + "0".repeat(16)}
+            percentage="-3.67"
+            totalAmount={"637238" + "0".repeat(18)}
+          />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col lg={6} xs={12}>
+          <VerifyEmailWidgetComponent />
+        </Col>
+        <Col lg={6} xs={12}>
+          <VerifyEmailWidgetComponent verifiedEmail="moe@test.co" />
+        </Col>
+      </Row>
+    </Container>
+    <Container>
+      <Row>
+        <Col lg={6} xs={12}>
+          <BackupSeedWidgetComponent />
+        </Col>
+        <Col lg={6} xs={12}>
+          <BackupSeedWidgetComponent backupCodesVerified />
+        </Col>
+      </Row>
+    </Container>
+    <Container>
+      <Row>
+        <Col lg={6} xs={12}>
+          <KycStatusWidget />
+        </Col>
+        <Col lg={6} xs={12}>
+          <KycStatusWidget kycDone />
         </Col>
       </Row>
     </Container>

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { ButtonClose } from "../../shared/Buttons";
 import * as styles from "./Notification.module.scss";
 
-import * as closeIcon from "../../../assets/img/close.svg";
 import * as infoIcon from "../../../assets/img/notfications/info.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
@@ -48,8 +48,8 @@ export const Notification: React.SFC<INotification> = ({
         </Link>
       )}
       {onClose && (
-        <i data-test-id="notification-close" className={styles.close} onClick={onClose}>
-          <img src={closeIcon} />
+        <i className={styles.close} data-test-id="notification-close" onClick={onClose}>
+          <ButtonClose />
         </i>
       )}
     </div>

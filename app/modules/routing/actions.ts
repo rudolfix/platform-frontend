@@ -1,9 +1,9 @@
-import { createAction } from "../actionsUtils";
-
 import { push } from "react-router-redux";
+
 import { appRoutes } from "../../components/AppRouter";
 import { kycRoutes } from "../../components/kyc/routes";
 import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";
+import { createAction } from "../actionsUtils";
 
 const createRoutingAction = (path: string) => push(path);
 
@@ -27,6 +27,7 @@ export const routingActions = {
 
   // dashboard
   goToDashboard: () => createRoutingAction(appRoutes.dashboard),
+  goToSettings: () => createRoutingAction(appRoutes.settings),
 
   // registration
   goToRegister: () => createRoutingAction(appRoutes.register),

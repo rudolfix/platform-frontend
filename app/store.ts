@@ -7,6 +7,7 @@ import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 
 import { kycReducer } from "./modules/kyc/reducer";
+import { walletReducer } from "./modules/wallet/reducer";
 
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
 import { web3Reducer } from "./modules/web3/reducer";
@@ -51,6 +52,7 @@ const appReducers = {
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,
   money: moneyReducer,
+  wallet: walletReducer,
 };
 
 // add all custom reducers here

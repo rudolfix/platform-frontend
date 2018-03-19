@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./KycPanel.module.scss";
 
-import { ArrowLink } from "../shared/ArrowLink";
+import { ArrowLink } from "../shared/ArrowNavigation";
 import { PanelWhite } from "../shared/PanelWhite";
 import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
 

@@ -11,7 +11,6 @@ import { TotalEuro } from "../TotalEuro";
 import * as styles from "./ClaimedDividends.module.scss";
 
 import * as LinkOutIcon from "../../../assets/img/inline_icons/link_out.svg";
-
 import * as neuIcon from "../../../assets/img/neu_icon.svg";
 
 export interface IDividendPayout {
@@ -29,31 +28,31 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps> = ({
   totalEurValue,
   recentPayouts,
 }) => (
-  <div className={styles.claimedDividends}>
-    <PanelDark
-      icon={neuIcon}
-      headerText="Dividends claimed from neu"
-      rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
-    >
-      <h3 className={styles.title}>Most rescent</h3>
-      <TableBody>
-        {recentPayouts.map(({ timestamp, amount, id }) => (
-          <TableRow key={`table-row-claimed-dividends-${id}`}>
-            <TableCell narrow>
-              <Date timestamp={timestamp} />
-            </TableCell>
-            <TableCell narrow>
-              <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
-            </TableCell>
-            <TableCell narrow>
-              <ButtonSecondary>
-                <span>TXN</span>
-                <InlineIcon svgIcon={LinkOutIcon} />
-              </ButtonSecondary>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </PanelDark>
-  </div>
-);
+    <div className={styles.claimedDividends}>
+      <PanelDark
+        icon={neuIcon}
+        headerText="Dividends claimed from neu"
+        rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
+      >
+        <h3 className={styles.title}>Most rescent</h3>
+        <TableBody>
+          {recentPayouts.map(({ timestamp, amount, id }) => (
+            <TableRow key={`table-row-claimed-dividends-${id}`}>
+              <TableCell narrow>
+                <Date timestamp={timestamp} />
+              </TableCell>
+              <TableCell narrow>
+                <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
+              </TableCell>
+              <TableCell narrow>
+                <ButtonSecondary>
+                  <span>TXN</span>
+                  <InlineIcon svgIcon={LinkOutIcon} />
+                </ButtonSecondary>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </PanelDark>
+    </div>
+  );

@@ -1,70 +1,61 @@
 import { delay } from "bluebird";
 import { effects } from "redux-saga";
-import { cancel, fork, put, select, take } from "redux-saga/effects";
-import { symbols } from "../../di/symbols";
-import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
+import { cancel, put, select, take } from "redux-saga/effects";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
   ILightWalletMetadata,
-  TWalletMetadata,
 } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { BrowserWalletConnector } from "../../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../../lib/web3/LightWallet";
 import { IPersonalWallet } from "../../lib/web3/PersonalWeb3";
 import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
-import { injectableFn } from "../../middlewares/redux-injectify";
 import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
-import { callAndInject, getDependency } from "../sagas";
+import { neuCall, neuFork } from "../sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
 import { unlockWallet } from "../web3/sagas";
 import { WalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage } from "./errors";
 import { selectIsSigning } from "./reducer";
 
-export const ensureWalletConnection = injectableFn(
-  async function(
-    walletMetadata: ObjectStorage<TWalletMetadata>,
-    web3Manager: Web3Manager,
-    ledgerWalletConnector: LedgerWalletConnector,
-    browserWalletConnector: BrowserWalletConnector,
-    lightWalletConnector: LightWalletConnector,
-  ): Promise<void> {
-    if (web3Manager.personalWallet) {
-      return;
-    }
-    const metadata = walletMetadata.get()!;
+export async function ensureWalletConnection({
+  web3Manager,
+  walletMetadataStorage,
+  lightWalletConnector,
+  ledgerWalletConnector,
+  browserWalletConnector,
+}: TGlobalDependencies): Promise<void> {
+  if (web3Manager.personalWallet) {
+    return;
+  }
 
-    invariant(metadata, "User has JWT but doesn't have wallet metadata!");
+  /* tslint:disable: no-useless-cast */
+  const metadata = walletMetadataStorage.get()!;
+  /* tslint:enable: no-useless-cast */
 
-    let wallet: IPersonalWallet;
-    switch (metadata.walletType) {
-      case WalletType.LEDGER:
-        wallet = await connectLedger(ledgerWalletConnector, web3Manager, metadata);
-        break;
-      case WalletType.BROWSER:
-        wallet = await connectBrowser(browserWalletConnector, web3Manager, metadata);
-        break;
-      case WalletType.LIGHT:
-        wallet = await connectLightWallet(lightWalletConnector, metadata);
-        break;
-      default:
-        return invariant(false, "Wallet type unrecognized");
-    }
+  invariant(metadata, "User has JWT but doesn't have wallet metadata!");
 
-    await web3Manager.plugPersonalWallet(wallet);
-  },
-  [
-    symbols.walletMetadataStorage,
-    symbols.web3Manager,
-    symbols.ledgerWalletConnector,
-    symbols.browserWalletConnector,
-    symbols.lightWalletConnector,
-  ],
-);
+  let wallet: IPersonalWallet;
+  switch (metadata.walletType) {
+    case WalletType.LEDGER:
+      wallet = await connectLedger(ledgerWalletConnector, web3Manager, metadata);
+      break;
+    case WalletType.BROWSER:
+      wallet = await connectBrowser(browserWalletConnector, web3Manager, metadata);
+      break;
+    case WalletType.LIGHT:
+      wallet = await connectLightWallet(lightWalletConnector, metadata);
+      break;
+    default:
+      return invariant(false, "Wallet type unrecognized");
+  }
+
+  await web3Manager.plugPersonalWallet(wallet);
+}
 
 async function connectLedger(
   ledgerWalletConnector: LedgerWalletConnector,
@@ -105,12 +96,10 @@ export async function connectLightWallet(
   );
 }
 
-function* messageSignSaga(message: string): Iterator<any> {
-  const web3Manager: Web3Manager = yield getDependency(symbols.web3Manager);
-
+function* messageSignSaga({ web3Manager }: TGlobalDependencies, message: string): Iterator<any> {
   while (true) {
     try {
-      yield callAndInject(ensureWalletConnection);
+      yield neuCall(ensureWalletConnection);
 
       const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3State));
       if (isLightWallet) {
@@ -140,7 +129,7 @@ export function* messageSign(message: string): any {
   }
   yield put(actions.signMessageModal.show());
 
-  const spawnedSaga = yield fork(messageSignSaga, message);
+  const spawnedSaga = yield neuFork(messageSignSaga, message);
 
   const a: TAction = yield take(["SIGN_MESSAGE_MODAL_HIDE", "SIGN_MESSAGE_SIGNED"]);
 
@@ -162,6 +151,6 @@ function* unlockLightWallet(): any {
   const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
 
   if (!isUnlocked) {
-    yield callAndInject(unlockWallet, acceptAction.payload.password);
+    yield neuCall(unlockWallet, acceptAction.payload.password);
   }
 }

@@ -1,15 +1,13 @@
 import { effects } from "redux-saga";
 import { TAction } from "./actions";
 
-import { Container } from "inversify";
 import { call, fork, takeEvery } from "redux-saga/effects";
 import { TGlobalDependencies } from "../di/setupBindings";
-import { getDependencies } from "../middlewares/redux-injectify";
-import { FunctionWithDeps } from "../types";
 import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
+import { userAgentSagas } from "./userAgent/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { web3Sagas } from "./web3/sagas";
@@ -26,6 +24,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(web3Sagas),
     effects.fork(authSagas),
     effects.fork(lightWalletSagas),
+    effects.fork(userAgentSagas),
   ]);
 }
 
@@ -54,42 +53,18 @@ export function* neuTakeEvery(
   yield takeEvery(type, saga, deps);
 }
 
-export function* neuFork(saga: (deps: TGlobalDependencies) => any): Iterator<effects.Effect> {
+export function* neuFork(
+  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
+  ...args: any[]
+): Iterator<effects.Effect> {
   const deps: TGlobalDependencies = yield effects.getContext("deps");
-  yield fork(saga, deps);
+  return yield fork(saga, deps, args && args[0], args && args[1]);
 }
 
-export function* neuCall(saga: (deps: TGlobalDependencies) => any): Iterator<effects.Effect> {
+export function* neuCall(
+  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
+  ...args: any[]
+): Iterator<effects.Effect> {
   const deps: TGlobalDependencies = yield effects.getContext("deps");
-  return yield call(saga, deps);
-}
-
-/**
- *
- * Legacy
- *
- */
-export function* getDependency(name: symbol): Iterator<effects.Effect> {
-  const context: Container = yield effects.getContext("container");
-  return context.get(name);
-}
-
-export function* callAndInject(func: FunctionWithDeps, ...args: any[]): Iterator<effects.Effect> {
-  const container: Container = yield effects.getContext("container");
-
-  const depSymbols = getDependencies(func);
-
-  const deps = depSymbols.map(s => container.get(s));
-
-  return yield (call as any)(func, ...deps, ...args);
-}
-
-export function* forkAndInject(func: FunctionWithDeps): any {
-  const container: Container = yield effects.getContext("container");
-
-  const depSymbols = getDependencies(func);
-
-  const deps = depSymbols.map(s => container.get(s));
-
-  return yield (fork as any)(func, ...deps);
+  return yield call(saga, deps, args && args[0], args && args[1]);
 }

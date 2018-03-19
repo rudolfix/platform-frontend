@@ -160,6 +160,8 @@ export const createGlobalDependencies = (container: Container) => ({
   logger: container.get<ILogger>(symbols.logger),
   notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
   getState: container.get<GetState>(symbols.getState),
+  cryptoRandomString: container.get<CryptoRandomString>(symbols.cryptoRandomString),
+  detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
 
   // blockchain & wallets
   web3Manager: container.get<Web3Manager>(symbols.web3Manager),
@@ -168,13 +170,19 @@ export const createGlobalDependencies = (container: Container) => ({
   ),
   lightWalletConnector: container.get<LightWalletConnector>(symbols.lightWalletConnector),
   jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
+  lightWalletUtil: container.get<LightWalletUtil>(symbols.lightWalletUtil),
+  browserWalletConnector: container.get<BrowserWalletConnector>(symbols.browserWalletConnector),
+  ledgerWalletConnector: container.get<LedgerWalletConnector>(symbols.ledgerWalletConnector),
 
   // network layer
   jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),
   authorizedHttpClient: container.get<AuthorizedJsonHttpClient>(symbols.authorizedHttpClient),
 
   // apis
+  signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),
   apiKycService: container.get<KycApi>(symbols.apiKycService),
+  apiUserSerivce: container.get<UsersApi>(symbols.usersApi),
+  vaultApi: container.get<VaultApi>(symbols.vaultApi),
 });
 
 const globalDependencies = (false as true) && createGlobalDependencies(new Container());

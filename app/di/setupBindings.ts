@@ -155,6 +155,9 @@ export function customizerContainerWithMiddlewareApi(
   return container;
 }
 
+/**
+ * We use plain object for injecting deps into sagas"
+ */
 export const createGlobalDependencies = (container: Container) => ({
   // misc
   logger: container.get<ILogger>(symbols.logger),

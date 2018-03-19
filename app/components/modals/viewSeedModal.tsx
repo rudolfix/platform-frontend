@@ -31,46 +31,40 @@ interface IState {
 export class ViewSeedModalComponent extends React.Component<IStateProps & IDispatchProps, IState> {
   constructor(props: any) {
     super(props);
-
+    this.props.fetchSeed();
     this.state = {
       pageNo: 0,
     };
   }
 
   componentDidUpdate(): void {
-    if (this.props.isOpen && this.props.isUnlocked && !this.props.seed) this.props.fetchSeed();
-    if (!this.props.isOpen && this.props.seed) this.props.clearSeed();
-    if (this.props.seed && !this.state.seed) {
-      this.setState({ ...this.state, seed: this.props.seed });
-    }
+    if (!this.props.isOpen) this.props.clearSeed();
   }
 
   render(): React.ReactNode {
-    const { isOpen, isUnlocked, seed, onCancel, isLightWallet, errorMsg } = this.props;
-
-    return isUnlocked ? (
-      <Modal isOpen={isOpen} toggle={onCancel.bind(this)}>
-        {seed ? (
-          <BackupSeedDisplayComponent totalSteps={2} startingStep={1} words={seed} isModal />
-        ) : (
-          <LoadingIndicator />
-        )}
-        <p>{this.props.errorMsg}</p>
-      </Modal>
+    return this.props.seed ? (
+      <BackupSeedDisplayComponent totalSteps={2} startingStep={1} words={this.props.seed} isModal />
     ) : (
-      <Modal isOpen={isOpen} toggle={onCancel.bind(this)}>
-        <ModalComponentBody onClose={onCancel.bind(this)}>
-          {isLightWallet ? (
-            <LightWalletSignPrompt onAccept={this.props.onAccept} onCancel={this.props.onCancel} />
-          ) : (
-            <></>
-          )}
-          <p>{errorMsg}</p>
-        </ModalComponentBody>
-      </Modal>
+      <LoadingIndicator />
     );
   }
 }
+
+const Test: React.SFC<any> = props => {
+  return props.isUnlocked ? (
+    <Modal isOpen={props.isOpen} toggle={props.onCancel}>
+      <ViewSeedModalComponent {...props} />
+    </Modal>
+  ) : (
+    <Modal isOpen={props.isOpen} toggle={props.onCancel}>
+      <ModalComponentBody onClose={props.onCancel}>
+        <LightWalletSignPrompt onAccept={props.onAccept} onCancel={props.onCancel} />
+        <p>{props.errorMsg}</p>
+      </ModalComponentBody>
+    </Modal>
+  );
+};
+
 export const ViewSeedModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isOpen: s.showSeedModal.isOpen,
@@ -85,4 +79,4 @@ export const ViewSeedModal = appConnect<IStateProps, IDispatchProps>({
     fetchSeed: () => dispatch(actions.web3.fetchSeedFromWallet()),
     clearSeed: () => dispatch(actions.web3.clearSeedFromState()),
   }),
-})(ViewSeedModalComponent);
+})(Test);

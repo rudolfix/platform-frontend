@@ -117,9 +117,9 @@ class BackupSeedContainer extends React.Component<
 
   lockedWalletComponent = (): React.ReactNode => (
     <>
-      <Modal isOpen={true} toggle={this.props.onCancel} className={styles.modal}>
-        <Row className="justify-content-center align-items-center">
-          <Col xs={6} className={cn(styles.modal, "d-flex align-items-center")}>
+      <Modal isOpen={true} toggle={this.props.onCancel}>
+        <Row className="justify-content-center">
+          <Col xs={4} className={cn(styles.content, "d-flex align-items-center")}>
             <Row>
               <Col xs={12}>
                 <LightWalletSignPrompt

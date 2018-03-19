@@ -1,9 +1,10 @@
-import { call, Effect, put } from "redux-saga/effects";
+import { call, fork, put } from "redux-saga/effects";
 
 import { actions, TAction } from "../actions";
 
-import { callAndInject, getDependency, neuTakeEvery } from "../sagas";
+import { callAndInject, getDependency, neuTakeEvery, neuTakeEvery2 } from "../sagas";
 
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { KycApi } from "../../lib/api/KycApi";
@@ -80,12 +81,11 @@ function* loadIndividualFiles(action: TAction): Iterator<any> {
   }
 }
 
-function* loadIndividualRequest(action: TAction): Iterator<any> {
+function* loadIndividualRequest(deps: TGlobalDependencies, action: TAction): Iterator<any> {
   if (action.type !== "KYC_LOAD_INDIVIDUAL_REQUEST_STATE") return;
   try {
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
-    const kcyService: KycApi = yield call(getDependency, symbols.apiKycService);
-    const result: IHttpResponse<IKycRequestState> = yield kcyService.getIndividualRequest();
+    const result: IHttpResponse<IKycRequestState> = yield deps.apiKycService.getIndividualRequest();
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateIndividualRequestState(false));
@@ -362,13 +362,13 @@ function* submitBusinessRequest(action: TAction): Iterator<any> {
   }
 }
 
-export function* kycSagas(): Iterator<Effect> {
+export function* kycSagas(): any {
   yield neuTakeEvery("KYC_LOAD_INDIVIDUAL_DATA", loadIndividualData);
   yield neuTakeEvery("KYC_SUBMIT_INDIVIDUAL_FORM", submitIndividualData);
   yield neuTakeEvery("KYC_UPLOAD_INDIVIDUAL_FILE", uploadIndividualFile);
   yield neuTakeEvery("KYC_LOAD_INDIVIDUAL_FILE_LIST", loadIndividualFiles);
 
-  yield neuTakeEvery("KYC_LOAD_INDIVIDUAL_REQUEST_STATE", loadIndividualRequest);
+  yield fork(neuTakeEvery2, "KYC_LOAD_INDIVIDUAL_REQUEST_STATE", loadIndividualRequest);
   yield neuTakeEvery("KYC_SUBMIT_INDIVIDUAL_REQUEST", submitIndividualRequest);
 
   yield neuTakeEvery("KYC_LOAD_LEGAL_REPRESENTATIVE", loadLegalRepresentative);

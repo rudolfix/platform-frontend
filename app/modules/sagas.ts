@@ -2,8 +2,8 @@ import { effects } from "redux-saga";
 import { TAction } from "./actions";
 
 import { Container } from "inversify";
-
 import { call, fork } from "redux-saga/effects";
+import { TGlobalDependencies } from "../di/setupBindings";
 import { getDependencies } from "../middlewares/redux-injectify";
 import { FunctionWithDeps } from "../types";
 import { authSagas } from "./auth/sagas";
@@ -54,6 +54,14 @@ export const neuTakeEvery = (
 ): effects.ForkEffect => {
   return effects.takeEvery(type, saga);
 };
+
+export function* neuTakeEvery2(
+  type: TAction["type"],
+  saga: (deps: TGlobalDependencies, action: TAction) => any,
+): Iterator<effects.Effect> {
+  const deps: TGlobalDependencies = yield effects.getContext("deps");
+  yield effects.takeEvery(type, saga, deps);
+}
 
 export function* getDependency(name: symbol): Iterator<effects.Effect> {
   const context: Container = yield effects.getContext("container");

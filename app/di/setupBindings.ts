@@ -38,7 +38,6 @@ export type GetState = () => IAppState;
 export function setupBindings(config: IConfig): Container {
   const container = new Container();
   const storage = new Storage(window.localStorage);
-  const lightWalletUtil = new LightWalletUtil();
 
   // functions
   container
@@ -54,15 +53,25 @@ export function setupBindings(config: IConfig): Container {
   container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
 
   // classes
-  container.bind<IHttpClient>(symbols.jsonHttpClient).to(JsonHttpClient);
-  container.bind<IHttpClient>(symbols.authorizedHttpClient).to(AuthorizedJsonHttpClient);
+  container
+    .bind<IHttpClient>(symbols.jsonHttpClient)
+    .to(JsonHttpClient)
+    .inSingletonScope();
+  container
+    .bind<IHttpClient>(symbols.authorizedHttpClient)
+    .to(AuthorizedJsonHttpClient)
+    .inSingletonScope();
+
   // singletons
   container
     .bind<SignatureAuthApi>(symbols.signatureAuthApi)
     .to(SignatureAuthApi)
     .inSingletonScope();
 
-  container.bind<LightWalletUtil>(symbols.lightWalletUtil).toConstantValue(lightWalletUtil);
+  container
+    .bind<LightWalletUtil>(symbols.lightWalletUtil)
+    .to(LightWalletUtil)
+    .inSingletonScope();
 
   container
     .bind<VaultApi>(symbols.vaultApi)
@@ -145,3 +154,18 @@ export function customizerContainerWithMiddlewareApi(
 
   return container;
 }
+
+export const createGlobalDependencies = (container: Container) => ({
+  // misc
+  logger: container.get<ILogger>(symbols.logger),
+
+  // network layer
+  jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),
+  authorizedHttpClient: container.get<AuthorizedJsonHttpClient>(symbols.authorizedHttpClient),
+
+  // apis
+  apiKycService: container.get<KycApi>(symbols.apiKycService),
+});
+
+const globalDependencies = (false as true) && createGlobalDependencies(new Container());
+export type TGlobalDependencies = typeof globalDependencies;

@@ -15,7 +15,11 @@ import "reflect-metadata";
 
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
-import { customizerContainerWithMiddlewareApi, setupBindings } from "./di/setupBindings";
+import {
+  createGlobalDependencies,
+  customizerContainerWithMiddlewareApi,
+  setupBindings,
+} from "./di/setupBindings";
 import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
 import { IAppState, reducers } from "./store";
@@ -56,7 +60,8 @@ function renderApp(
 function startupApp(history: any): { store: Store<IAppState>; container: Container } {
   const config = getConfig(process.env);
   const container = setupBindings(config);
-  const sagaMiddleware = createSagaMiddleware({ context: { container } });
+  const deps = createGlobalDependencies(container);
+  const sagaMiddleware = createSagaMiddleware({ context: { container, deps } });
 
   const middleware = applyMiddleware(
     routerMiddleware(history),

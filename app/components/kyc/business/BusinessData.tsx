@@ -44,8 +44,8 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
     {!formikBag.currentValues || !(formikBag.currentValues.legalFormType === "corporate") ? (
       <div />
     ) : (
-      <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
-    )}
+        <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
+      )}
     <br /> <br />
     <FormField label="Street and number" name="street" />
     <Row>
@@ -86,6 +86,7 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
       Please upload company documents here
       <br />
       <KycFileUploadList
+        layout="business"
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}

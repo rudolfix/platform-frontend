@@ -1,6 +1,7 @@
 import * as React from "react";
 import { KycRouter } from "./Router";
 
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { IKycRequestState } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
@@ -46,8 +47,12 @@ export const KycComponent: React.SFC<IProps> = props => {
 
   return (
     <LayoutAuthorized>
-      <RequestStateInfo requestState={requestState} />
-      {router}
+      <Row>
+        <Col xs={12} lg={{ size: 8, offset: 2 }}>
+          <RequestStateInfo requestState={requestState} />
+          {router}
+        </Col>
+      </Row>
     </LayoutAuthorized>
   );
 };

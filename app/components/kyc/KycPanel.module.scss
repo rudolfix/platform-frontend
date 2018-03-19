@@ -14,12 +14,13 @@
 }
 
 .content {
+  @include make-col-ready;
   @include make-col(1, 1);
   @include media-breakpoint-up (md) {
     @include make-col(10);
     @include make-col-offset(1);
   }
-  @include media-breakpoint-up (lg) {
+  @include media-breakpoint-up (xl) {
     @include make-col(1, 2);
     @include make-col-offset(1, 4);
   }
@@ -42,6 +43,8 @@
 
 .footer {
   min-height: px-to-rem(1px);
+  padding-bottom: px-to-rem(10px);
+  padding-left: px-to-rem(14px);
 }
 
 .kyc-panel-max {

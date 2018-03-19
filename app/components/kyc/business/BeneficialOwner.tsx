@@ -115,9 +115,10 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
 
   render(): React.ReactChild {
     return (
-      <AccordionElement title={`Beneficial Owner ${this.props.index + 1}`}>
+      <AccordionElement title={`Beneficial Owner ${this.props.index + 1}`} isOpened={true}>
         <KYCEnhancedForm {...this.props} />
         <KycFileUploadList
+          layout={"business"}
           onDropFile={this.props.onDropFile}
           files={this.props.files}
           fileUploading={this.props.fileUploading}

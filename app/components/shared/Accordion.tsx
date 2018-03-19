@@ -7,6 +7,7 @@ import * as indicatorIcon from "../../assets/img/inline_icons/accordion_arrow.sv
 interface IAccordionElementProps {
   title: string;
   children: any;
+  isOpened?: boolean;
 }
 
 interface IAccordionElementState {
@@ -16,9 +17,9 @@ interface IAccordionElementState {
 export class AccordionElement extends React.Component<
   IAccordionElementProps,
   IAccordionElementState
-> {
+  > {
   state = {
-    isOpened: false,
+    isOpened: this.props.isOpened || false,
   };
 
   toggleClose = () => {

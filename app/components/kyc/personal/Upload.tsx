@@ -10,7 +10,7 @@ import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
-import { KycFileUploadList } from "../shared/KycFileUploadList";
+import { KycFileUploadList, TUploadListLayout } from "../shared/KycFileUploadList";
 
 interface IStateProps {
   fileUploading: boolean;
@@ -23,15 +23,17 @@ interface IDispatchProps {
   onDropFile: (file: File) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+interface IProps {
+  layout: TUploadListLayout;
+}
 
-export const KYCPersonalUploadComponent: React.SFC<IProps> = props => (
+export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps> = props => (
   <KycPanel
     steps={4}
     currentStep={3}
     title={"Upload your ID"}
     description={
-      "Please upload a colored copy of your passport or both sides of ID card for verification. "
+      "Please upload a colored copy of your passport or both sides of ID card for verification."
     }
     hasBackButton={true}
   >
@@ -40,8 +42,8 @@ export const KYCPersonalUploadComponent: React.SFC<IProps> = props => (
       files={props.files}
       fileUploading={props.fileUploading}
       filesLoading={props.filesLoading}
+      layout="personal"
     />
-    <br />
     <ButtonPrimary color="primary" onClick={props.onDone}>
       Submit
     </ButtonPrimary>
@@ -63,4 +65,4 @@ export const KYCPersonalUpload = compose<React.SFC>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.kyc.kycLoadIndividualDocumentList()),
   }),
-)(KYCPersonalUploadComponent);
+)(KYCUploadComponent);

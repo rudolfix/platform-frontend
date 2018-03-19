@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { MONEY_DECIMALS } from "../../config/constants";
 import * as styles from "./Money.module.scss";
@@ -68,7 +69,7 @@ export const Money: React.SFC<IProps> = ({
   return (
     <span {...props} className={`${styles.money} ${transfer || ""}`}>
       {formattedMoney}{" "}
-      <span className={`${currencyClassName || ""}`} style={currencyStyle}>
+      <span className={cn(currencyClassName)} style={currencyStyle}>
         {noCurrencySymbol ? "" : currencySymbol}
       </span>
     </span>

@@ -5,10 +5,10 @@ import { appConnect } from "../../../store";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { flows } from "../../../modules/flows";
+import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { RegisterWalletComponent } from "../light/RegisterLightWallet";
 import { recoverRoutes } from "./recoverRoutes";
 import { WalletLightSeedRecoveryComponent } from "./SeedRecovery";
-import { WalletResetHeader } from "./WalletResetHeader";
 
 interface IMainRecoveryState {
   seed?: string;
@@ -47,7 +47,12 @@ export class RecoveryProcessesComponent extends React.Component<
       <div>
         {this.state.seed ? (
           <div>
-            <WalletResetHeader text="Lopsum Iprum" currentStep={7} steps={8} />
+            <HeaderProgressStepper
+              headerText="Reset your Password"
+              descText="Lopsum Iprum"
+              currentStep={7}
+              steps={8}
+            />
             <RegisterWalletComponent
               submitForm={(values: IFormValues) => {
                 this.props.submitForm({ ...values, seed: this.state.seed });

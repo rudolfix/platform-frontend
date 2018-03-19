@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import * as icon from "../../../assets/img/neu_icon.svg";
-import { ArrowLink } from "../../shared/ArrowLink";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { Money } from "../../shared/Money";
 import * as styles from "./MyNeuWidget.module.scss";
 

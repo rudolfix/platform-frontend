@@ -6,7 +6,7 @@ import * as successIcon from "../../../assets/img/notfications/Success_small.svg
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
 import { Col } from "reactstrap";
-import { ArrowLink } from "../../shared/ArrowLink";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 
 //This is a mock implementation
@@ -18,7 +18,6 @@ export const KycStatusWidget: React.SFC<IProps> = ({ kycDone }) => {
   return (
     <PanelDark
       headerText="KYC PROCESS"
-      className={styles.panel}
       rightComponent={
         kycDone ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />

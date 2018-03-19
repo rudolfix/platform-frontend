@@ -4,6 +4,11 @@
   background-color: $neu-white-two;
 }
 
+.icon {
+  width: px-to-rem(28px);
+  height: px-to-rem(28px);
+}
+
 .link {
   font-size: px-to-rem(14px);
   font-weight: $font-weight-bold;

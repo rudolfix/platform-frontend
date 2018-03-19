@@ -5,7 +5,7 @@ import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
 import { ButtonPrimary } from "../../shared/Buttons";
-import { WalletResetHeader } from "./WalletResetHeader";
+import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 
 /* tslint:disable: no-submodule-imports */
 import "react-select/dist/react-select.css";
@@ -98,8 +98,9 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
     return (
       <>
         <Col className="mt-4 pb-4">
-          <WalletResetHeader
-            text={"Use the Recovery Phrase to restore your password."}
+          <HeaderProgressStepper
+            headerText="Reset your Password"
+            descText="Use the Recovery Phrase to restore your password."
             currentStep={this.props.startingStep + this.state.page + 1}
             steps={this.props.extraSteps + SEED_LENGTH / WORDS_PER_VIEW}
           />

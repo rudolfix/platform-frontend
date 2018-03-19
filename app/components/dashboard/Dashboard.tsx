@@ -1,5 +1,12 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+import {
+  selectLiquidEtherBalance,
+  selectLiquidEtherBalanceEuroAmount,
+  selectLiquidEuroTokenBalance,
+  selectLiquidEuroTotalAmount,
+} from "../../modules/wallet/selectors";
+import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
 import { MyPortfolio } from "./myPortfolio/MyPortfolioWidget";
@@ -7,7 +14,16 @@ import { MyWalletWidget } from "./myWallet/MyWalletWidget";
 import { NotificationWidget } from "./notification-widget/NotificationWidget";
 import { UserInfo } from "./UserInfo";
 
-export const Dashboard = () => (
+interface IStateProps {
+  liquidEtherBalance: string;
+  liquidEtherBalanceEuroAmount: string;
+  liquidEuroTokenBalance: string;
+  liquidEuroTotalAmount: string;
+}
+
+type IProps = IStateProps;
+
+export const DashboardComponent = (props: IProps) => (
   <LayoutAuthorized>
     <NotificationWidget />
     <MessageSignModal />
@@ -17,12 +33,11 @@ export const Dashboard = () => (
       </Col>
       <Col>
         <MyWalletWidget
-          euroTokenAmount={"36490" + "0".repeat(18)}
-          euroTokenEuroAmount={"36490" + "0".repeat(18)}
-          ethAmount={"66482" + "0".repeat(14)}
-          ethEuroAmount={"6004904646" + "0".repeat(16)}
-          percentage="-3.67"
-          totalAmount={"637238" + "0".repeat(18)}
+          euroTokenAmount={props.liquidEuroTokenBalance}
+          ethAmount={props.liquidEtherBalance}
+          ethEuroAmount={props.liquidEtherBalanceEuroAmount}
+          percentage="0" // TODO connect 24h change
+          totalAmount={props.liquidEuroTotalAmount}
         />
       </Col>
     </Row>
@@ -33,3 +48,12 @@ export const Dashboard = () => (
     <UserInfo />
   </LayoutAuthorized>
 );
+
+export const Dashboard = appConnect<IStateProps, {}>({
+  stateToProps: s => ({
+    liquidEtherBalance: selectLiquidEtherBalance(s.wallet),
+    liquidEuroTokenBalance: selectLiquidEuroTokenBalance(s.wallet),
+    liquidEtherBalanceEuroAmount: selectLiquidEtherBalanceEuroAmount(s.wallet),
+    liquidEuroTotalAmount: selectLiquidEuroTotalAmount(s.wallet),
+  }),
+})(DashboardComponent);

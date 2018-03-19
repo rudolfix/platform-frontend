@@ -1,8 +1,6 @@
 /**
  *  Formats date to dd-mm-yyyy format
  *
- * @param {number} timestamp
- * @returns {string}
  */
 export function formatDate(timestamp: number): string {
   const date = new Date(timestamp);

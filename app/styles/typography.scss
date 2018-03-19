@@ -1,11 +1,3 @@
-// sass-lint:disable no-vendor-prefixes
-// Enable font smoothing on mac
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: antialiased;
-}
-// sass-lint:enable no-vendor-prefixes
-
 @mixin headline-big {
   font-family: "Lato", sans-serif;
   font-weight: 500;

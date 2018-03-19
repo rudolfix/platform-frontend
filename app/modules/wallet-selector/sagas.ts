@@ -1,4 +1,5 @@
 import { effects } from "redux-saga";
+import { fork } from "redux-saga/effects";
 import { GetState } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
@@ -9,21 +10,17 @@ import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { actions } from "../actions";
 import { loadUser } from "../auth/sagas";
-import { callAndInject, getDependency, neuTake } from "../sagas";
+import { callAndInject, getDependency, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
 
 function* signInUser(): Iterator<any> {
-  while (true) {
-    yield neuTake("WALLET_SELECTOR_CONNECTED");
+  try {
+    yield obtainJWT();
+    yield effects.spawn(loadUser);
 
-    try {
-      yield obtainJWT();
-      yield effects.spawn(loadUser);
-
-      yield effects.put(actions.routing.goToDashboard());
-    } catch (e) {
-      yield effects.put(actions.wallet.messageSigningError("Error while signing a message!"));
-    }
+    yield effects.put(actions.routing.goToDashboard());
+  } catch (e) {
+    yield effects.put(actions.wallet.messageSigningError("Error while signing a message!"));
   }
 }
 
@@ -71,7 +68,7 @@ function* saveJwtToStorage(jwt: string): Iterator<any> {
 }
 
 export const walletSelectorSagas = function*(): Iterator<effects.Effect> {
-  yield effects.all([effects.fork(signInUser)]);
+  yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", signInUser);
 };
 
 function* obtainJWT(): Iterator<any> {

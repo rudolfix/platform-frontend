@@ -1,36 +1,29 @@
 import { effects } from "redux-saga";
-import { all, put } from "redux-saga/effects";
-import { symbols } from "../../di/symbols";
-import { Web3Manager } from "../../lib/web3/Web3Manager";
-import { injectableFn } from "../../middlewares/redux-injectify";
+import { fork, put } from "redux-saga/effects";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
 import { flows } from "../flows";
-import { callAndInject, forkAndInject, neuTake } from "../sagas";
+import { callAndInject, neuTakeEvery } from "../sagas";
 import { loadPreviousWallet } from "../web3/sagas";
 
-export const init = injectableFn(
-  function*(web3Manager: Web3Manager): Iterator<any> {
-    yield neuTake("INIT_START");
+function* setup({ web3Manager }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield web3Manager.initialize();
 
-    try {
-      yield web3Manager.initialize();
-
-      yield callAndInject(flows.userAgent.detectUserAgent);
-      const jwt = yield callAndInject(loadJwt);
-      if (jwt) {
-        yield loadUser();
-      }
-      yield callAndInject(loadPreviousWallet);
-
-      yield put(actions.init.done());
-    } catch (e) {
-      yield put(actions.init.error(e.message || "Unknown error"));
+    yield callAndInject(flows.userAgent.detectUserAgent);
+    const jwt = yield callAndInject(loadJwt);
+    if (jwt) {
+      yield loadUser();
     }
-  },
-  [symbols.web3Manager],
-);
+    yield callAndInject(loadPreviousWallet);
+
+    yield put(actions.init.done());
+  } catch (e) {
+    yield put(actions.init.error(e.message || "Unknown error"));
+  }
+}
 
 export const initSagas = function*(): Iterator<effects.Effect> {
-  yield all([forkAndInject(init)]);
+  yield fork(neuTakeEvery, "INIT_START", setup);
 };

@@ -159,6 +159,14 @@ export const createGlobalDependencies = (container: Container) => ({
   // misc
   logger: container.get<ILogger>(symbols.logger),
   notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
+  getState: container.get<GetState>(symbols.getState),
+
+  // blockchain & wallets
+  web3Manager: container.get<Web3Manager>(symbols.web3Manager),
+  walletMetadataStorage: container.get<ObjectStorage<TWalletMetadata>>(
+    symbols.walletMetadataStorage,
+  ),
+  lightWalletConnector: container.get<LightWalletConnector>(symbols.lightWalletConnector),
 
   // network layer
   jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),

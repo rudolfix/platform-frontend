@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { all, put, select } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 import { symbols } from "../../../di/symbols";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
@@ -9,21 +9,19 @@ import {
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightWallet,
-  LightWalletConnector,
   LightWalletUtil,
   LightWalletWrongPassword,
 } from "../../../lib/web3/LightWallet";
-import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { actions, TAction } from "../../actions";
 import { updateUser } from "../../auth/sagas";
-import { callAndInject, forkAndInject, neuTake } from "../../sagas";
+import { callAndInject, neuTakeEvery } from "../../sagas";
 import { connectLightWallet } from "../../signMessageModal/sagas";
 import { selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
-import { GetState } from "./../../../di/setupBindings";
+import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getVaultKey } from "./flows";
 
@@ -79,70 +77,56 @@ export const getWalletMetadata = injectableFn(
   [symbols.walletMetadataStorage],
 );
 
-export const lightWalletBackupWatch = injectableFn(
-  function*(getState: GetState): any {
-    while (true) {
-      const action: TAction = yield neuTake("LIGHT_WALLET_BACKUP");
-      if (action.type !== "LIGHT_WALLET_BACKUP") {
-        continue;
-      }
-      try {
-        const user = getState().auth.user;
-        yield effects.call(updateUser, { ...user, backupCodesVerified: true });
-        yield effects.put(actions.routing.goToSettings());
-      } catch (e) {
-        yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
-      }
-    }
-  },
-  [symbols.getState],
-);
-export const lightWalletLoginWatch = injectableFn(
-  function*(
-    web3Manager: Web3Manager,
-    lightWalletConnector: LightWalletConnector,
-    walletMetadataStorage: ObjectStorage<TWalletMetadata>,
-  ): any {
-    while (true) {
-      const action: TAction = yield neuTake("LIGHT_WALLET_LOGIN");
-      if (action.type !== "LIGHT_WALLET_LOGIN") {
-        continue;
-      }
-      const { password } = action.payload;
-      try {
-        const walletMetadata: ILightWalletMetadata | undefined = yield callAndInject(
-          getWalletMetadata,
-          password,
-        );
+export function* lightWalletBackupWatch({ getState }: TGlobalDependencies): Iterator<any> {
+  try {
+    const user = getState().auth.user;
+    yield effects.call(updateUser, { ...user, backupCodesVerified: true });
+    yield effects.put(actions.routing.goToSettings());
+  } catch (e) {
+    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+  }
+}
 
-        if (!walletMetadata) {
-          invariant(walletMetadata, "Missing metadata");
-          return;
-        }
-        const wallet: LightWallet = yield connectLightWallet(
-          lightWalletConnector,
-          walletMetadata,
-          password,
-        );
-        const isValidPassword: boolean = yield LightWalletUtil.testWalletPassword(
-          wallet.vault.walletInstance,
-          password,
-        );
-        if (!isValidPassword) {
-          throw new LightWalletWrongPassword();
-        }
+export function* lightWalletLoginWatch(
+  { web3Manager, walletMetadataStorage, lightWalletConnector }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
+  if (action.type !== "LIGHT_WALLET_LOGIN") {
+    return;
+  }
+  const { password } = action.payload;
+  try {
+    const walletMetadata: ILightWalletMetadata | undefined = yield callAndInject(
+      getWalletMetadata,
+      password,
+    );
 
-        walletMetadataStorage.set(walletMetadata);
-        yield web3Manager.plugPersonalWallet(wallet);
-        yield put(actions.wallet.connected());
-      } catch (e) {
-        yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
-      }
+    if (!walletMetadata) {
+      invariant(walletMetadata, "Missing metadata");
+      return;
     }
-  },
-  [symbols.web3Manager, symbols.lightWalletConnector, symbols.walletMetadataStorage],
-);
+    const wallet: LightWallet = yield connectLightWallet(
+      lightWalletConnector,
+      walletMetadata,
+      password,
+    );
+    const isValidPassword: boolean = yield LightWalletUtil.testWalletPassword(
+      wallet.vault.walletInstance,
+      password,
+    );
+    if (!isValidPassword) {
+      throw new LightWalletWrongPassword();
+    }
+
+    walletMetadataStorage.set(walletMetadata);
+    yield web3Manager.plugPersonalWallet(wallet);
+    yield put(actions.wallet.connected());
+  } catch (e) {
+    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+  }
+}
 
 export function* lightWalletSagas(): Iterator<any> {
-  yield all([forkAndInject(lightWalletLoginWatch), forkAndInject(lightWalletBackupWatch)]);
+  yield fork(neuTakeEvery, "LIGHT_WALLET_LOGIN", lightWalletLoginWatch);
+  yield fork(neuTakeEvery, "LIGHT_WALLET_BACKUP", lightWalletBackupWatch);
 }

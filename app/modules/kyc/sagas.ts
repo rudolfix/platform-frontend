@@ -1,12 +1,11 @@
-import { call, fork, put } from "redux-saga/effects";
+import { fork, put } from "redux-saga/effects";
 
 import { actions, TAction } from "../actions";
 
-import { callAndInject, neuTakeEvery } from "../sagas";
+import { neuTakeEvery } from "../sagas";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import { KycApi } from "../../lib/api/KycApi";
 import {
   IKycBeneficialOwner,
   IKycBusinessData,
@@ -15,13 +14,14 @@ import {
   IKycLegalRepresentative,
   IKycRequestState,
 } from "../../lib/api/KycApi.interfaces";
-import { NotificationCenter } from "../../lib/dependencies/NotificationCenter";
-import { injectableFn } from "../../middlewares/redux-injectify";
 
 /**
  * Individual Request
  */
-function* loadIndividualData({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadIndividualData(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_INDIVIDUAL_DATA") return;
   try {
     yield put(actions.kyc.kycUpdateIndividualData(true));
@@ -32,7 +32,10 @@ function* loadIndividualData({ apiKycService }: TGlobalDependencies, action: TAc
   }
 }
 
-function* submitIndividualData({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* submitIndividualData(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_FORM") return;
   try {
     const result: IHttpResponse<IKycIndividualData> = yield apiKycService.putIndividualData(
@@ -45,7 +48,10 @@ function* submitIndividualData({ apiKycService, notificationCenter }: TGlobalDep
   }
 }
 
-function* uploadIndividualFile({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* uploadIndividualFile(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_INDIVIDUAL_FILE") return;
   const { file } = action.payload;
   try {
@@ -58,7 +64,10 @@ function* uploadIndividualFile({ apiKycService, notificationCenter }: TGlobalDep
   }
 }
 
-function* loadIndividualFiles({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadIndividualFiles(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_INDIVIDUAL_FILE_LIST") return;
   try {
     yield put(actions.kyc.kycUpdateIndividualDocuments(true));
@@ -69,7 +78,10 @@ function* loadIndividualFiles({ apiKycService }: TGlobalDependencies, action: TA
   }
 }
 
-function* loadIndividualRequest({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadIndividualRequest(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_INDIVIDUAL_REQUEST_STATE") return;
   try {
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
@@ -80,7 +92,10 @@ function* loadIndividualRequest({ apiKycService }: TGlobalDependencies, action: 
   }
 }
 
-function* submitIndividualRequest({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* submitIndividualRequest(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_REQUEST") return;
   try {
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
@@ -88,9 +103,7 @@ function* submitIndividualRequest({ apiKycService, notificationCenter }: TGlobal
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateIndividualRequestState(false));
-    notificationCenter.error(
-      "There was a problem submitting your request. Please try again.",
-    );
+    notificationCenter.error("There was a problem submitting your request. Please try again.");
   }
 }
 
@@ -99,26 +112,32 @@ function* submitIndividualRequest({ apiKycService, notificationCenter }: TGlobal
  */
 
 // legal representative
-function* loadLegalRepresentative({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadLegalRepresentative(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_LEGAL_REPRESENTATIVE") return;
   try {
     yield put(actions.kyc.kycUpdateLegalRepresentative(true));
     const result: IHttpResponse<
       IKycLegalRepresentative
-      > = yield apiKycService.getLegalRepresentative();
+    > = yield apiKycService.getLegalRepresentative();
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
   }
 }
 
-function* submitLegalRepresentative({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* submitLegalRepresentative(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_LEGAL_REPRESENTATIVE") return;
   try {
     yield put(actions.kyc.kycUpdateLegalRepresentative(true));
-    const result: IHttpResponse<IKycLegalRepresentative> = yield apiKycService.putLegalRepresentative(
-      action.payload.data,
-    );
+    const result: IHttpResponse<
+      IKycLegalRepresentative
+    > = yield apiKycService.putLegalRepresentative(action.payload.data);
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
@@ -126,14 +145,17 @@ function* submitLegalRepresentative({ apiKycService, notificationCenter }: TGlob
   }
 }
 
-function* uploadLegalRepresentativeFile({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* uploadLegalRepresentativeFile(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_LEGAL_REPRESENTATIVE_FILE") return;
   const { file } = action.payload;
   try {
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(true));
-    const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadLegalRepresentativeDocument(
-      file,
-    );
+    const result: IHttpResponse<
+      IKycFileInfo
+    > = yield apiKycService.uploadLegalRepresentativeDocument(file);
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false));
@@ -141,13 +163,16 @@ function* uploadLegalRepresentativeFile({ apiKycService, notificationCenter }: T
   }
 }
 
-function* loadLegalRepresentativeFiles({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadLegalRepresentativeFiles(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_LEGAL_REPRESENTATIVE_FILE_LIST") return;
   try {
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocuments(true));
     const result: IHttpResponse<
       IKycFileInfo[]
-      > = yield apiKycService.getLegalRepresentativeDocuments();
+    > = yield apiKycService.getLegalRepresentativeDocuments();
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocuments(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocuments(false));
@@ -155,7 +180,10 @@ function* loadLegalRepresentativeFiles({ apiKycService }: TGlobalDependencies, a
 }
 
 // business data
-function* setBusinessType({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* setBusinessType(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_SET_BUSINESS_TYPE") return;
   try {
     yield put(actions.kyc.kycUpdateBusinessData(true));
@@ -163,7 +191,7 @@ function* setBusinessType({ apiKycService, notificationCenter }: TGlobalDependen
     try {
       const result: IHttpResponse<IKycBusinessData> = yield apiKycService.getBusinessData();
       institutionData = result.body;
-    } catch (_e) { }
+    } catch (_e) {}
     institutionData = { ...institutionData, legalFormType: action.payload.type };
     yield apiKycService.putBusinessData(institutionData);
     yield put(actions.kyc.kycUpdateBusinessData(false, institutionData));
@@ -186,7 +214,10 @@ function* loadBusinessData({ apiKycService }: TGlobalDependencies, action: TActi
   }
 }
 
-function* submitBusinessData({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* submitBusinessData(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_DATA") return;
   try {
     yield put(actions.kyc.kycUpdateBusinessData(true));
@@ -200,7 +231,10 @@ function* submitBusinessData({ apiKycService, notificationCenter }: TGlobalDepen
   }
 }
 
-function* uploadBusinessFile({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* uploadBusinessFile(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_BUSINESS_FILE") return;
   const { file } = action.payload;
   try {
@@ -213,7 +247,10 @@ function* uploadBusinessFile({ apiKycService, notificationCenter }: TGlobalDepen
   }
 }
 
-function* loadBusinessFiles({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadBusinessFiles(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_BUSINESS_FILE_LIST") return;
   try {
     yield put(actions.kyc.kycUpdateBusinessDocuments(true));
@@ -225,7 +262,10 @@ function* loadBusinessFiles({ apiKycService }: TGlobalDependencies, action: TAct
 }
 
 // beneficial owners
-function* loadBeneficialOwners({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadBeneficialOwners(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_BENEFICIAL_OWNERS") return;
   try {
     yield put(actions.kyc.kycUpdateBeneficialOwners(true));
@@ -236,7 +276,10 @@ function* loadBeneficialOwners({ apiKycService }: TGlobalDependencies, action: T
   }
 }
 
-function* createBeneficialOwner({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* createBeneficialOwner(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_ADD_BENEFICIAL_OWNER") return;
   try {
     yield put(actions.kyc.kycUpdateBeneficialOwner(true));
@@ -248,7 +291,10 @@ function* createBeneficialOwner({ apiKycService, notificationCenter }: TGlobalDe
   }
 }
 
-function* submitBeneficialOwner({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* submitBeneficialOwner(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BENEFICIAL_OWNER") return;
   try {
     yield put(actions.kyc.kycUpdateBeneficialOwner(true));
@@ -262,7 +308,10 @@ function* submitBeneficialOwner({ apiKycService, notificationCenter }: TGlobalDe
   }
 }
 
-function* deleteBeneficalOwner({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* deleteBeneficalOwner(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_DELETE_BENEFICIAL_OWNER") return;
   try {
     yield put(actions.kyc.kycUpdateBeneficialOwner(true));
@@ -274,7 +323,10 @@ function* deleteBeneficalOwner({ apiKycService, notificationCenter }: TGlobalDep
   }
 }
 
-function* uploadBeneficialOwnerFile({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* uploadBeneficialOwnerFile(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_BENEFICIAL_OWNER_FILE") return;
   const { boid, file } = action.payload;
   try {
@@ -290,7 +342,10 @@ function* uploadBeneficialOwnerFile({ apiKycService, notificationCenter }: TGlob
   }
 }
 
-function* loadBeneficialOwnerFiles({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadBeneficialOwnerFiles(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_BENEFICIAL_OWNER_FILE_LIST") return;
   const { boid } = action.payload;
   try {
@@ -305,7 +360,10 @@ function* loadBeneficialOwnerFiles({ apiKycService }: TGlobalDependencies, actio
 }
 
 // request
-function* loadBusinessRequest({ apiKycService }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* loadBusinessRequest(
+  { apiKycService }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_LOAD_BUSINESS_REQUEST_STATE") return;
   try {
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
@@ -316,7 +374,10 @@ function* loadBusinessRequest({ apiKycService }: TGlobalDependencies, action: TA
   }
 }
 
-function* submitBusinessRequest({ apiKycService, notificationCenter }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* submitBusinessRequest(
+  { apiKycService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_REQUEST") return;
   try {
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
@@ -324,9 +385,7 @@ function* submitBusinessRequest({ apiKycService, notificationCenter }: TGlobalDe
     yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBusinessRequestState(false));
-    notificationCenter.error(
-      "There was a problem submitting your request. Please try again.",
-    );
+    notificationCenter.error("There was a problem submitting your request. Please try again.");
   }
 }
 

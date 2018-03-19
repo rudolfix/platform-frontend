@@ -25,12 +25,13 @@
   }
 
   :global(.btn) {
-    margin-bottom: px-to-rem(12px);
-    margin-top: px-to-rem(48px);
+    margin-bottom: px-to-rem(30px);
+    margin-top: px-to-rem(30px);
     margin-left: auto;
     margin-right: auto;
-    display: block;
     display: flex;
+    justify-content: center;
+    align-content: center;
 
     :global(.inline-icon) {
       margin-right: px-to-rem(10px);

@@ -44,7 +44,15 @@ class BackupSeedContainer extends React.Component<IDispatchProps, IComponentStat
       case 1:
         return <BackupSeedIntro onBack={appRoutes.settings} onNext={this.onNext} />;
       case 2:
-        return <BackupSeedDisplay onBack={this.onBack} onNext={this.onNext} words={words} />;
+        return (
+          <BackupSeedDisplay
+            totalSteps={4}
+            startingStep={2}
+            onBack={this.onBack}
+            onNext={this.onNext}
+            words={words}
+          />
+        );
       default:
         return (
           <BackupSeedVerify

@@ -4,20 +4,20 @@ import { Col } from "reactstrap";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
 import { appConnect } from "../../../store";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
+import { settingsRoutes } from "../routes";
 
 import * as styles from "./BackupSeedWidget.module.scss";
 
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
-import { actions } from "../../../modules/actions";
-import { ButtonPrimary } from "../../shared/Buttons";
 
-export const BackupSeedWidgetComponent: React.SFC<any> = ({
-  backupCodesVerified,
-  verifyBackupPhrase,
-  showSeed,
-}) => {
+interface IStateProps {
+  backupCodesVerified?: boolean;
+}
+
+export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesVerified }) => {
   return (
     <PanelDark
       headerText="BACKUP RECOVERY PHRASE"
@@ -36,7 +36,9 @@ export const BackupSeedWidgetComponent: React.SFC<any> = ({
         >
           <p className={cn(styles.text, "pt-2")}>You have backed up your SEED. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ButtonPrimary onClick={showSeed}>View</ButtonPrimary>
+            <ArrowLink arrowDirection="right" to="#">
+              View Again
+            </ArrowLink>
           </Col>
         </div>
       ) : (
@@ -49,7 +51,9 @@ export const BackupSeedWidgetComponent: React.SFC<any> = ({
             you to restore your wallet and access your funds you forgot your password
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ButtonPrimary onClick={verifyBackupPhrase}>Backup phrase</ButtonPrimary>
+            <ArrowLink arrowDirection="right" to={settingsRoutes.seedBackup}>
+              Backup phrase
+            </ArrowLink>
           </Col>
         </div>
       )}
@@ -57,17 +61,8 @@ export const BackupSeedWidgetComponent: React.SFC<any> = ({
   );
 };
 
-export const BackupSeedWidget = appConnect<{}, any>({
+export const BackupSeedWidget = appConnect<IStateProps, {}>({
   stateToProps: s => ({
     backupCodesVerified: selectBackupCodesVerified(s.auth),
-  }),
-  dispatchToProps: dispatch => ({
-    verifyBackupPhrase: () => {
-      dispatch(actions.wallet.lightWalletBackedUp());
-      dispatch(actions.routing.goToSettings());
-    },
-    showSeed: () => {
-      dispatch(actions.showSeedModal.seedModelshow());
-    },
   }),
 })(BackupSeedWidgetComponent);

@@ -14,9 +14,12 @@ import * as styles from "./BackupSeedDisplay.module.scss";
 export const WORDS_PER_PAGE = 12;
 
 interface IBackupSeedDisplayProps {
-  onNext: () => void;
-  onBack: () => void;
+  onNext?: () => void;
+  onBack?: () => void;
   words: string[];
+  startingStep: number;
+  totalSteps: number;
+  isModal?: boolean;
 }
 
 interface IBackupSeedDisplayState {
@@ -50,7 +53,7 @@ export class BackupSeedDisplayComponent extends React.Component<
   };
 
   render(): React.ReactNode {
-    const stepNo = 2 + this.state.pageNo;
+    const stepNo = this.props.startingStep + this.state.pageNo;
     const wordsNo = this.props.words.length;
     const startWord = WORDS_PER_PAGE * this.state.pageNo;
     const endWord = startWord + WORDS_PER_PAGE;
@@ -59,7 +62,7 @@ export class BackupSeedDisplayComponent extends React.Component<
     return (
       <PanelWhite className="pt-5">
         <HeaderProgressStepper
-          steps={4}
+          steps={this.props.totalSteps}
           currentStep={stepNo}
           headerText="Write down your Recovery Phrase"
           descText="Your Recovery Phrase allows you to restore your wallet and access your funds if you forgot your password."
@@ -84,7 +87,9 @@ export class BackupSeedDisplayComponent extends React.Component<
                   key={word}
                   data-test-id="seed-display-word"
                 >
-                  {`${this.state.pageNo * WORDS_PER_PAGE + index + 1}. ${word}`}
+                  {`${this.state.pageNo * WORDS_PER_PAGE + index + 1}.${
+                    this.props.isModal ? <div>word</div> : word
+                  }`}
                 </Col>
               ))}
             </Row>
@@ -99,7 +104,7 @@ export class BackupSeedDisplayComponent extends React.Component<
                 </ButtonPrimary>
               </Col>
               <Col className="mt-2" xs="auto">
-                {showNextButton ? (
+                {this.props.onNext && showNextButton ? (
                   <ButtonPrimary data-test-id="seed-display-next-link" onClick={this.props.onNext}>
                     Go to next step
                   </ButtonPrimary>
@@ -115,13 +120,15 @@ export class BackupSeedDisplayComponent extends React.Component<
             </Row>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
-              Back
-            </ArrowButton>
-          </Col>
-        </Row>
+        {this.props.onBack && (
+          <Row>
+            <Col>
+              <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
+                Back
+              </ArrowButton>
+            </Col>
+          </Row>
+        )}
       </PanelWhite>
     );
   }
@@ -136,7 +143,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => (
     />
     <Row>
       <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
-        <BackupSeedDisplayComponent {...props} />
+        <BackupSeedDisplayComponent {...props} startingStep={2} totalSteps={4} />
       </Col>
     </Row>
   </LayoutAuthorized>

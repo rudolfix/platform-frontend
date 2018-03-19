@@ -1,7 +1,7 @@
 import { effects } from "redux-saga";
 import { TAction } from "./actions";
 
-import { call, fork, takeEvery } from "redux-saga/effects";
+import { call, spawn, takeEvery } from "redux-saga/effects";
 import { TGlobalDependencies } from "../di/setupBindings";
 import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
@@ -58,7 +58,7 @@ export function* neuFork(
   ...args: any[]
 ): Iterator<effects.Effect> {
   const deps: TGlobalDependencies = yield effects.getContext("deps");
-  return yield fork(saga, deps, args && args[0], args && args[1]);
+  return yield spawn(saga, deps, args[0], args[1], args[2], args[3], args[4]);
 }
 
 export function* neuCall(
@@ -66,5 +66,5 @@ export function* neuCall(
   ...args: any[]
 ): Iterator<effects.Effect> {
   const deps: TGlobalDependencies = yield effects.getContext("deps");
-  return yield call(saga, deps, args && args[0], args && args[1]);
+  return yield call(saga, deps, args[0], args[1], args[2], args[3], args[4]);
 }

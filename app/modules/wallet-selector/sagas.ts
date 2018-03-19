@@ -1,7 +1,7 @@
 import { effects } from "redux-saga";
 import { fork } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { actions, TAction } from "../actions";
+import { actions } from "../actions";
 import { loadUser } from "../auth/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";

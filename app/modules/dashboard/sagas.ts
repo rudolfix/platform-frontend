@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { fork } from "redux-saga/effects";
+import { call, fork } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TAction } from "../actions";
 import { neuTakeEvery } from "../sagas";
@@ -12,7 +12,7 @@ function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterato
   const message = action.payload.message;
 
   try {
-    const signed = yield* messageSign(message);
+    const signed = yield call(messageSign, message);
 
     // this is just for demo purposes
     // tslint:disable-next-line

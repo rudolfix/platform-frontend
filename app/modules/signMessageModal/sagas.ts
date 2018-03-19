@@ -1,6 +1,6 @@
 import { delay } from "bluebird";
 import { effects } from "redux-saga";
-import { cancel, put, select, take } from "redux-saga/effects";
+import { call, cancel, put, select, take } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
@@ -103,7 +103,7 @@ function* messageSignSaga({ web3Manager }: TGlobalDependencies, message: string)
 
       const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3State));
       if (isLightWallet) {
-        yield* unlockLightWallet();
+        yield call(unlockLightWallet);
       }
 
       break;
@@ -130,7 +130,6 @@ export function* messageSign(message: string): any {
   yield put(actions.signMessageModal.show());
 
   const spawnedSaga = yield neuFork(messageSignSaga, message);
-
   const a: TAction = yield take(["SIGN_MESSAGE_MODAL_HIDE", "SIGN_MESSAGE_SIGNED"]);
 
   if (a.type === "SIGN_MESSAGE_MODAL_HIDE") {

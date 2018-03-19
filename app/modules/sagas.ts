@@ -48,14 +48,7 @@ export const neuTake = (type: TAction["type"]): effects.TakeEffect => {
   return effects.take(type);
 };
 
-export const neuTakeEvery = (
-  type: TAction["type"],
-  saga: (action: TAction) => any,
-): effects.ForkEffect => {
-  return effects.takeEvery(type, saga);
-};
-
-export function* neuTakeEvery2(
+export function* neuTakeEvery(
   type: TAction["type"],
   saga: (deps: TGlobalDependencies, action: TAction) => any,
 ): Iterator<effects.Effect> {

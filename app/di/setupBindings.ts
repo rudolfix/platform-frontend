@@ -158,6 +158,7 @@ export function customizerContainerWithMiddlewareApi(
 export const createGlobalDependencies = (container: Container) => ({
   // misc
   logger: container.get<ILogger>(symbols.logger),
+  notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
 
   // network layer
   jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),

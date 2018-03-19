@@ -1,4 +1,38 @@
+// sass-lint:disable no-vendor-prefixes
+// Enable font smoothing on mac
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+}
+// sass-lint:enable no-vendor-prefixes
+
+@mixin headline-big {
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  font-size: px-to-rem(34px);
+  letter-spacing: px-to-rem(-.05px);
+}
+
+@mixin headline {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  font-size: px-to-rem(20px);
+  letter-spacing: px-to-rem(-.03px);
+}
+
 @mixin font-default {
-  font-size: $font-size-base;
+  font-size: px-to-rem(14px);
   line-height: 1.64;
+}
+
+@mixin tab {
+  font-family: "Open Sans", sans-serif;
+  font-size: px-to-rem(12px);
+  letter-spacing: px-to-rem(-.02px);
+}
+
+@mixin label {
+  font-family: "Open Sans", sans-serif;
+  font-size: px-to-rem(12px);
+  font-weight: 600;
 }

@@ -2,8 +2,6 @@
 
 .panel {
   box-shadow: $shadow;
-  border-top: px-to-rem(2px);
-  border-top-color: $neu-piss-yellow;
-  border-top-style: solid;
+  border-top: px-to-rem(2px) solid $neu-piss-yellow;
   background-color: $neu-white-two;
 }

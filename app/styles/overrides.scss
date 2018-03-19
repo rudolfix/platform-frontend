@@ -6,6 +6,14 @@
 @import "./utils";
 @import "./global";
 
+// sass-lint:disable no-vendor-prefixes
+// Enable font smoothing on mac
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+}
+// sass-lint:enable no-vendor-prefixes
+
 a {
   font-weight: $font-weight-bold;
 

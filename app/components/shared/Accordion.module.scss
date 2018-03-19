@@ -1,12 +1,41 @@
+@import "../../styles/neufund-theme";
+
 .accordion {
   display: flex;
   flex-direction: column;
 }
 
 .accordion-element {
-  &:global {
-    &.is-opened {
-      color: red;
+  cursor: pointer;
+
+  &:global(.is-closed) {
+    .title :global(.inline-icon) {
+      transform: rotate(180deg);
+    }
+
+    .content {
+      height: 0;
     }
   }
+}
+
+.title {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  padding-bottom: px-to-rem(20px);
+  padding-top: px-to-rem(20px);
+  margin: 0;
+
+  :global(.inline-icon) {
+    transition: 200ms ease-in-out transform;
+    will-change: transform;
+  }
+}
+
+.content {
+  $_border-color: rgba($neu-black, .1);
+  border-bottom: 1px solid $_border-color;
+  overflow: hidden;
 }

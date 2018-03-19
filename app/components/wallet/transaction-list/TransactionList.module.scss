@@ -84,7 +84,7 @@
   &:global(.is-selected) {
     border-bottom: $neu-piss-yellow;
     font-size: px-to-rem(16px);
-    font-weight: 600;
+    font-weight: $font-weight-bold;
     letter-spacing: px-to-rem(-.3px);
 
     &::after {

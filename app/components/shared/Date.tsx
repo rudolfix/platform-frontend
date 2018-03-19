@@ -1,6 +1,6 @@
 import * as React from "react";
+import { formatDate } from "../../utils/Date.utils";
 import * as styles from "./Date.module.scss";
-import { formatDate } from "./Date.utils";
 
 interface IProps {
   timestamp: number;

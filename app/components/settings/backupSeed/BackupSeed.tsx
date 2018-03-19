@@ -1,25 +1,36 @@
-import * as Mnemonic from "bitcore-mnemonic";
 import * as React from "react";
 
+import { Col, Modal, Row } from "reactstrap";
 import { actions } from "../../../modules/actions";
+import { selectIsUnlocked, selectSeed } from "../../../modules/web3/reducer";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../AppRouter";
+import { LightWalletSignPrompt } from "../../modals/LightWalletSign";
 import { BackupSeedDisplay } from "./BackupSeedDisplay";
 import { BackupSeedIntro } from "./BackupSeedIntro";
 import { BackupSeedVerify } from "./BackupSeedVerify";
 
-const words = Mnemonic.Words.ENGLISH.slice(0, 24); // TODO: get real words
+import * as cn from "classnames";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
+import * as styles from "./BackupSeed.module.scss";
 
-interface IDispatchProps {
+interface IComponentDisptachProps {
   verifyBackupPhrase: () => void;
+}
+
+interface IComponentProps {
+  seed: string[];
 }
 
 interface IComponentState {
   backupStep: number;
 }
 
-class BackupSeedContainer extends React.Component<IDispatchProps, IComponentState> {
-  constructor(props: IDispatchProps) {
+class BackupSeedContainerComponent extends React.Component<
+  IComponentDisptachProps & IComponentProps,
+  IComponentState
+> {
+  constructor(props: IComponentProps & IComponentDisptachProps) {
     super(props);
 
     this.state = {
@@ -50,7 +61,7 @@ class BackupSeedContainer extends React.Component<IDispatchProps, IComponentStat
             startingStep={2}
             onBack={this.onBack}
             onNext={this.onNext}
-            words={words}
+            words={this.props.seed}
           />
         );
       default:
@@ -58,17 +69,97 @@ class BackupSeedContainer extends React.Component<IDispatchProps, IComponentStat
           <BackupSeedVerify
             onBack={this.onBack}
             onNext={this.props.verifyBackupPhrase}
-            words={words}
+            words={this.props.seed}
           />
         );
     }
   }
 }
 
+interface IDispatchProps {
+  verifyBackupPhrase: () => void;
+  onAccept: (password?: string) => void;
+  onCancel: () => void;
+  fetchSeed: () => void;
+  clearSeed: () => void;
+}
+
+interface IStateProps {
+  seed?: string[];
+  isUnlocked: boolean;
+  errorMsg?: string;
+}
+
+interface IBackupSeedContainerState {
+  seed: string[];
+}
+class BackupSeedContainer extends React.Component<
+  IDispatchProps & IStateProps,
+  IBackupSeedContainerState
+> {
+  constructor(props: IDispatchProps & IStateProps) {
+    super(props);
+  }
+  componentWillUnmount(): void {
+    this.props.clearSeed();
+  }
+  unlockedWalletComponent(): React.ReactNode {
+    if (this.props.seed)
+      return (
+        <BackupSeedContainerComponent
+          verifyBackupPhrase={this.props.verifyBackupPhrase}
+          seed={this.props.seed}
+        />
+      );
+    this.props.fetchSeed();
+    return <LoadingIndicator />;
+  }
+
+  lockedWalletComponent = (): React.ReactNode => (
+    <>
+      <Modal isOpen={true} toggle={this.props.onCancel} className={styles.modal}>
+        <Row className="justify-content-center align-items-center">
+          <Col xs={6} className={cn(styles.modal, "d-flex align-items-center")}>
+            <Row>
+              <Col xs={12}>
+                <LightWalletSignPrompt
+                  onAccept={this.props.onAccept}
+                  onCancel={this.props.onCancel}
+                />
+              </Col>
+              <Col xs={12}>
+                <p>{this.props.errorMsg}</p>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Modal>
+      <BackupSeedIntro onBack={appRoutes.settings} onNext={() => {}} />
+    </>
+  );
+
+  render(): React.ReactNode {
+    return this.props.isUnlocked ? (
+      <>{this.unlockedWalletComponent()}</>
+    ) : (
+      <>{this.lockedWalletComponent()}</>
+    );
+  }
+}
+
 export const BackupSeed = appConnect<{}, IDispatchProps>({
+  stateToProps: s => ({
+    isUnlocked: selectIsUnlocked(s.web3State),
+    seed: selectSeed(s.web3State),
+    errorMsg: s.showSeedModal.errorMsg,
+  }),
   dispatchToProps: dispatch => ({
     verifyBackupPhrase: () => {
       dispatch(actions.wallet.lightWalletBackedUp());
     },
+    onAccept: (password?: string) => dispatch(actions.showSeedModal.seedModelAccept(password)),
+    onCancel: () => dispatch(actions.routing.goToSettings()),
+    fetchSeed: () => dispatch(actions.web3.fetchSeedFromWallet()),
+    clearSeed: () => dispatch(actions.web3.clearSeedFromState()),
   }),
 })(BackupSeedContainer);

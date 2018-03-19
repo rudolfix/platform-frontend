@@ -49,6 +49,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
             data-test-id="euro-widget"
             value={euroTokenEuroAmount}
             percentage={percentage}
+            currencyTotal={"eur"}
           />
         </Col>
         <Col className={styles.moneySuiteWrapper} xs={12} sm={6} lg={12}>
@@ -60,6 +61,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
             className={cn(styles.borderLeft, "pl-sm-2 pl-md-0")}
             value={ethEuroAmount}
             percentage={percentage}
+            currencyTotal={"eur"}
           />
         </Col>
       </Row>

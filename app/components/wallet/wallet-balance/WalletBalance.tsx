@@ -26,41 +26,43 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IDonutChartProps & IWall
   totalEurValue,
   theme,
 }) => (
-  <div className={`${styles.walletBalance} ${theme}`}>
-    <PanelDark headerText={headerText} rightComponent={<TotalEuro totalEurValue={totalEurValue} />}>
-      <div className={styles.walletBalanceWrapper}>
-        <DonutChart radius={radius} moneyValueOne={moneyValueOne} moneyValueTwo={moneyValueTwo} />
-        <div className={`${styles.walletBalanceActions}`}>
-          <div className={styles.moneySuiteWrapper}>
-            <MoneySuiteWidget
-              currency="eur_token"
-              largeNumber={`${moneyValueOne}`}
-              icon={moneyIcon}
-              data-test-id="euro-widget"
-              value={`6004904646${"0".repeat(16)}`}
-              percentage={"0"}
-            />
-            <div className={styles.buttonsWrapper}>
-              <ButtonSecondary>Withdraw funds ></ButtonSecondary>
-              <ButtonSecondary>Deposit funds ></ButtonSecondary>
+    <div className={`${styles.walletBalance} ${theme}`}>
+      <PanelDark headerText={headerText} rightComponent={<TotalEuro totalEurValue={totalEurValue} />}>
+        <div className={styles.walletBalanceWrapper}>
+          <DonutChart radius={radius} moneyValueOne={moneyValueOne} moneyValueTwo={moneyValueTwo} />
+          <div className={`${styles.walletBalanceActions}`}>
+            <div className={styles.moneySuiteWrapper}>
+              <MoneySuiteWidget
+                currency="eur_token"
+                largeNumber={`${moneyValueOne}`}
+                icon={moneyIcon}
+                data-test-id="euro-widget"
+                value={`6004904646${"0".repeat(16)}`}
+                percentage={"0"}
+                currencyTotal={"eur"}
+              />
+              <div className={styles.buttonsWrapper}>
+                <ButtonSecondary>Withdraw funds ></ButtonSecondary>
+                <ButtonSecondary>Deposit funds ></ButtonSecondary>
+              </div>
             </div>
-          </div>
-          <div className={styles.moneySuiteWrapper}>
-            <MoneySuiteWidget
-              currency="eth"
-              largeNumber={`${moneyValueTwo}`}
-              icon={ethIcon}
-              data-test-id="euro-widget"
-              value={"6004904646" + "0".repeat(16)}
-              percentage={"-500"}
-            />
-            <div className={styles.buttonsWrapper}>
-              <ButtonSecondary>Withdraw funds ></ButtonSecondary>
-              <ButtonSecondary>Deposit funds ></ButtonSecondary>
+            <div className={styles.moneySuiteWrapper}>
+              <MoneySuiteWidget
+                currency="eth"
+                largeNumber={`${moneyValueTwo}`}
+                icon={ethIcon}
+                data-test-id="euro-widget"
+                value={"6004904646" + "0".repeat(16)}
+                percentage={"-500"}
+                currencyTotal={"eur"}
+              />
+              <div className={styles.buttonsWrapper}>
+                <ButtonSecondary>Withdraw funds ></ButtonSecondary>
+                <ButtonSecondary>Deposit funds ></ButtonSecondary>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </PanelDark>
-  </div>
-);
+      </PanelDark>
+    </div>
+  );

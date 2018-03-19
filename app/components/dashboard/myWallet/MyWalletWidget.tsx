@@ -6,11 +6,13 @@ import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { ArrowLink } from "../../shared/ArrowNavigation";
 import { Money, selectCurrencySymbol, TCurrency } from "../../shared/Money";
+import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
 import * as styles from "./MyWalletWidget.module.scss";
 
 interface IMyWalletWidget {
   euroTokenAmount: string;
+  euroTokenEuroAmount: string;
   ethAmount: string;
   ethEuroAmount: string;
   percentage: string;
@@ -23,6 +25,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
   ethEuroAmount,
   percentage,
   totalAmount,
+  euroTokenEuroAmount
 }) => {
   return (
     <PanelDark
@@ -70,7 +73,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
               noCurrencySymbol
               className={cn(styles.money, "pl-1 pl-sm-2 m-0")}
             />
-            <span className={cn("pl-1")}>EUR</span>
+            <span className={"pl-1"}>EUR</span>
           </div>
         </Col>
         <Col className="d-block d-sm-none text-right col-auto">

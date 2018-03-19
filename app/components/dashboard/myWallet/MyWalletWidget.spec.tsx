@@ -9,6 +9,7 @@ import { tid } from "../../../../test/testUtils";
 describe("<MyWalletWidget />", () => {
   it("should render all important components", () => {
     const props = {
+      euroTokenEuroAmount: "66482" + "0".repeat(14),
       euroTokenAmount: "36490" + "0".repeat(18),
       ethAmount: "66482" + "0".repeat(14),
       ethEuroAmount: "6004904646" + "0".repeat(16),

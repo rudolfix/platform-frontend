@@ -1,0 +1,35 @@
+@import "../../styles/neufund-theme";
+
+.money-suite-widget {
+  display: flex;
+  width: 100%;
+
+  .icon {
+    width: px-to-rem(28px);
+    height: px-to-rem(28px);
+    margin-right: px-to-rem(10px);
+    margin-top: .2em;
+  }
+
+  .money {
+    @include headline;
+    color: $neu-almost-black;
+  }
+
+  .currency {
+    margin-right: px-to-rem(4px);
+  }
+
+  .total-money {
+    @include tab;
+    margin-left: px-to-rem(10px);
+  }
+
+  .green {
+    color: $neu-seaweed;
+  }
+
+  .red {
+    color: $neu-red;
+  }
+}

@@ -1,0 +1,23 @@
+@import "../../styles/neufund-theme";
+
+.card {
+  + #{&} {
+    @include media-breakpoint-up (lg) {
+      margin-top: 0;
+    }
+
+    margin-top: px-to-rem(20px);
+  }
+}
+
+.transaction-list {
+  margin-top: px-to-rem(20px);
+}
+
+.dividends {
+  @include media-breakpoint-up (lg) {
+    margin-top: 0;
+  }
+
+  margin-top: px-to-rem(20px);
+}

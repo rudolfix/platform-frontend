@@ -9,13 +9,11 @@ import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonSecondary } from "../../shared/Buttons";
-import { HorizontalLine } from "../../shared/HorizontalLine";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { KYCBeneficialOwner } from "./BeneficialOwner";
 
-
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
-
+import { Accordion } from "../../shared/Accordion";
 
 interface IStateProps {
   beneficialOwners: IKycBeneficialOwner[];
@@ -31,17 +29,24 @@ type IProps = IStateProps & IDispatchProps;
 export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   <div>
     <h4 className={styles.sectionTitle}>Beneficial owners (which hold more than 25%)</h4>
-    {props.beneficialOwners.map(
-      (owner, index) =>
-        owner.id ? (
-          <KYCBeneficialOwner key={owner.id} owner={owner} index={index} id={owner.id} />
-        ) : (
+    <Accordion>
+      {props.beneficialOwners.map(
+        (owner, index) =>
+          owner.id ? (
+            <KYCBeneficialOwner key={owner.id} owner={owner} index={index} id={owner.id} />
+          ) : (
             <div />
           ),
-    )}
+      )}
+    </Accordion>
     <ButtonSecondary onClick={props.createBeneficialOwner} disabled={props.loading}>
-      <InlineIcon svgIcon={plusIcon} /><span>Add Beneficial Owner</span>
+      <InlineIcon svgIcon={plusIcon} />
+      <span>Add Beneficial Owner</span>
     </ButtonSecondary>
+    <small className={styles.note}>
+      According to the German anti money laundering act, we are obliged to keep a record of your
+      personal data for five years after account closure.
+    </small>
   </div>
 );
 

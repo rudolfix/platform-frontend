@@ -12,10 +12,10 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
-import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 import { Col, Row } from "reactstrap";
+import { AccordionElement } from "../../shared/Accordion";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -26,7 +26,6 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
-import { Accordion, AccordionElement } from "../../shared/Accordion";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -116,21 +115,16 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
 
   render(): React.ReactChild {
     return (
-      <div>
-        <Accordion>
-          <AccordionElement title={`Beneficial Owner ${this.props.index + 1}`}>
-            <KYCEnhancedForm {...this.props} />
-            <KycFileUploadList
-              onDropFile={this.props.onDropFile}
-              files={this.props.files}
-              fileUploading={this.props.fileUploading}
-              filesLoading={this.props.filesLoading}
-            />
-            <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary>
-          </AccordionElement>
-        </Accordion>
-        <HorizontalLine />
-      </div >
+      <AccordionElement title={`Beneficial Owner ${this.props.index + 1}`}>
+        <KYCEnhancedForm {...this.props} />
+        <KycFileUploadList
+          onDropFile={this.props.onDropFile}
+          files={this.props.files}
+          fileUploading={this.props.fileUploading}
+          filesLoading={this.props.filesLoading}
+        />
+        <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary>
+      </AccordionElement>
     );
   }
 }

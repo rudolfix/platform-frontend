@@ -9,6 +9,7 @@ import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
 import * as styles from "./MyWalletWidget.module.scss";
+import { appRoutes } from "../../AppRouter";
 
 interface IMyWalletWidget {
   euroTokenAmount: string;
@@ -33,7 +34,7 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
       rightComponent={
         <ArrowLink
           arrowDirection="right"
-          to="#"
+          to={appRoutes.manageWallet}
           className={cn(styles.link, "text-light mb-1 pl-0 pr-0 pb-1 d-none d-sm-block text-right")}
         >
           Manage Wallet

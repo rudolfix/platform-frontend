@@ -12,7 +12,7 @@ $header-height: px-to-rem(40px);
 }
 
 .header {
-  @include media-breakpoint-up (md) {
+  @include media-breakpoint-up (xl) {
     height: $header-height;
   }
 

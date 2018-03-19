@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as styles from './DonutChart.module.scss';
+import * as React from "react";
+import * as styles from "./DonutChart.module.scss";
 
 export interface IDonutChartProps {
   radius: number;
@@ -7,7 +7,11 @@ export interface IDonutChartProps {
   moneyValueTwo: number;
 }
 
-export const DonutChart: React.SFC<IDonutChartProps> = ({ radius, moneyValueOne, moneyValueTwo }) => {
+export const DonutChart: React.SFC<IDonutChartProps> = ({
+  radius,
+  moneyValueOne,
+  moneyValueTwo,
+}) => {
   if (moneyValueOne === 0 && moneyValueTwo === 0) {
     moneyValueOne = moneyValueTwo = 1;
   }

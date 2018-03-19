@@ -74,8 +74,8 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <NavigationButton forward text="NavigationButton" onClick={() => { }} />
-          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => { }} />
+          <NavigationButton forward text="NavigationButton" onClick={() => {}} />
+          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
           <NavigationLink forward to="/" text="NavigationLink" />
         </Col>
       </Row>

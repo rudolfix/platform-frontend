@@ -48,23 +48,24 @@ export class ViewSeedModalComponent extends React.Component<IStateProps & IDispa
   render(): React.ReactNode {
     const { isOpen, isUnlocked, seed, onCancel, isLightWallet, errorMsg } = this.props;
 
-    return this.state.seed ? (
-      <Modal isOpen={isOpen} toggle={onCancel}>
-        <BackupSeedDisplayComponent
-          totalSteps={2}
-          startingStep={1}
-          words={seed!}
-          isModal
-          onNext={() => {}}
-          onBack={() => {}}
-        />
+    return isUnlocked ? (
+      <Modal isOpen={isOpen} toggle={onCancel.bind(this)}>
+        {seed ? (
+          <BackupSeedDisplayComponent totalSteps={2} startingStep={1} words={seed} isModal />
+        ) : (
+          <LoadingIndicator />
+        )}
+        <p>{this.props.errorMsg}</p>
       </Modal>
     ) : (
-      <Modal isOpen={isOpen} toggle={onCancel}>
-        <ModalComponentBody onClose={onCancel}>
-          {isLightWallet && !isUnlocked ? <LightWalletSignPrompt {...this.props} /> : <></>}
+      <Modal isOpen={isOpen} toggle={onCancel.bind(this)}>
+        <ModalComponentBody onClose={onCancel.bind(this)}>
+          {isLightWallet ? (
+            <LightWalletSignPrompt onAccept={this.props.onAccept} onCancel={this.props.onCancel} />
+          ) : (
+            <></>
+          )}
           <p>{errorMsg}</p>
-          <LoadingIndicator />
         </ModalComponentBody>
       </Modal>
     );

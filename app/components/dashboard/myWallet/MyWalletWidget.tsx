@@ -4,12 +4,12 @@ import { Col, Row } from "reactstrap";
 import * as cn from "classnames";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
+import { appRoutes } from "../../AppRouter";
 import { ArrowLink } from "../../shared/ArrowNavigation";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
 import * as styles from "./MyWalletWidget.module.scss";
-import { appRoutes } from "../../AppRouter";
 
 interface IMyWalletWidget {
   euroTokenAmount: string;

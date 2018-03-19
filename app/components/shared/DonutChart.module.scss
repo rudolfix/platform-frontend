@@ -1,0 +1,13 @@
+@import "../../styles/neufund-theme.scss";
+
+.donut-chart {
+  @include media-breakpoint-up (xl) {
+    display: block;
+  }
+
+  flex-shrink: 0;
+  display: none;
+  transform: rotate(-90deg);
+  transition: stroke-dasharray .3s ease;
+  width: 38%;
+}

@@ -47,11 +47,11 @@ describe("<BackupSeedDisplayComponent />", () => {
 
     const renderedWords: string[] = [];
     component.find(tid("seed-display-word")).forEach(node => {
-      renderedWords.push(node.children().text());
+      renderedWords.push(node.childAt(1).text());
     });
     component.find(tid("seed-display-next-words")).simulate("click");
     component.find(tid("seed-display-word")).forEach(node => {
-      renderedWords.push(node.children().text());
+      renderedWords.push(node.childAt(1).text());
     });
 
     for (let index = 0; index < words.length; index++) {

@@ -58,7 +58,6 @@ export class BackupSeedDisplayComponent extends React.Component<
     const startWord = WORDS_PER_PAGE * this.state.pageNo;
     const endWord = startWord + WORDS_PER_PAGE;
     const showNextButton = endWord >= wordsNo;
-
     return (
       <PanelWhite className="pt-5">
         <HeaderProgressStepper
@@ -87,9 +86,8 @@ export class BackupSeedDisplayComponent extends React.Component<
                   key={word}
                   data-test-id="seed-display-word"
                 >
-                  {`${this.state.pageNo * WORDS_PER_PAGE + index + 1}.${
-                    this.props.isModal ? <div>word</div> : word
-                  }`}
+                  {`${this.state.pageNo * WORDS_PER_PAGE + index + 1}.`}
+                  {this.props.isModal ? <div>{word}</div> : word}
                 </Col>
               ))}
             </Row>
@@ -111,6 +109,7 @@ export class BackupSeedDisplayComponent extends React.Component<
                 ) : (
                   <ButtonPrimary
                     data-test-id="seed-display-next-words"
+                    disabled={this.state.pageNo === 1}
                     onClick={this.handleNextPage}
                   >
                     {`next ${WORDS_PER_PAGE} words`}

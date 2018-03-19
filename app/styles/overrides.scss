@@ -1,7 +1,19 @@
 // sass-lint:disable no-important
-@import "./utils";
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
 @import "./variables";
 @import "./elements/ul";
+@import "./utils";
+@import "./global";
+
+// sass-lint:disable no-vendor-prefixes
+// Enable font smoothing on mac
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+}
+// sass-lint:enable no-vendor-prefixes
 
 a {
   font-weight: $font-weight-bold;
@@ -59,17 +71,11 @@ a {
   border-top-color: #ccc;
 }
 
-// this makes it possible to create full height pages
-html,body,#app {
-  height:100%;
-}
-
 
 .form-control {
   -webkit-appearance: none; // scss-lint:disable VendorPrefi
   border-radius: 0;
 }
-
 
 .modal {
   &.show .modal-dialog {

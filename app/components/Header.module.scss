@@ -1,10 +1,15 @@
 @import "../styles/neufund-theme";
 
 .logo {
+  @include media-breakpoint-up (lg) {
+    margin-left: px-to-rem(32px);
+  }
+
   height: px-to-rem(43px);
   width: px-to-rem(36px);
 }
 
 .bar {
   height: px-to-rem(60px);
+  background-color: $neu-charcoal-grey;
 }

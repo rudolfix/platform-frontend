@@ -167,6 +167,7 @@ export const createGlobalDependencies = (container: Container) => ({
     symbols.walletMetadataStorage,
   ),
   lightWalletConnector: container.get<LightWalletConnector>(symbols.lightWalletConnector),
+  jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
 
   // network layer
   jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),

@@ -1,14 +1,14 @@
 import { effects } from "redux-saga";
-import { all, take } from "redux-saga/effects";
+import { fork } from "redux-saga/effects";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
 import { IUser } from "../../lib/api/users/interfaces";
 import { UserNotExisting, UsersApi } from "../../lib/api/users/UsersApi";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
-import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { actions } from "../actions";
-import { callAndInject, forkAndInject } from "../sagas";
+import { callAndInject, neuTakeEvery } from "../sagas";
 import { WalletType } from "../web3/types";
 
 export const loadJwt = injectableFn(
@@ -68,19 +68,11 @@ export function* updateUser(updatedUser: IUser): Iterator<any> {
   yield effects.put(actions.auth.loadUser(user));
 }
 
-export const logoutWatcher = injectableFn(
-  function*(jwtStorage: ObjectStorage<string>, web3Manager: Web3Manager): Iterator<any> {
-    while (true) {
-      yield take("AUTH_LOGOUT");
-
-      jwtStorage.clear();
-      yield web3Manager.unplugPersonalWallet();
-      // do not clear wallet metadata here to allow easy login again
-    }
-  },
-  [symbols.jwtStorage, symbols.web3Manager],
-);
+function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Iterator<any> {
+  jwtStorage.clear();
+  yield web3Manager.unplugPersonalWallet();
+}
 
 export const authSagas = function*(): Iterator<effects.Effect> {
-  yield all([forkAndInject(logoutWatcher)]);
+  yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
 };

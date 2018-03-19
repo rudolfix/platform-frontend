@@ -44,8 +44,10 @@ export function* rootSaga(): Iterator<effects.Effect> {
 /**
  * Helpers
  */
+type TActionType = TAction["type"];
+
 export function* neuTakeEvery(
-  type: TAction["type"],
+  type: TActionType | Array<string>,
   saga: (deps: TGlobalDependencies, action: TAction) => any,
 ): Iterator<effects.Effect> {
   const deps: TGlobalDependencies = yield effects.getContext("deps");
@@ -59,7 +61,7 @@ export function* neuFork(saga: (deps: TGlobalDependencies) => any): Iterator<eff
 
 export function* neuCall(saga: (deps: TGlobalDependencies) => any): Iterator<effects.Effect> {
   const deps: TGlobalDependencies = yield effects.getContext("deps");
-  yield call(saga, deps);
+  return yield call(saga, deps);
 }
 
 /**

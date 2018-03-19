@@ -1,6 +1,7 @@
 import { delay, Task } from "redux-saga";
-import { all, call, cancel, fork, put, take } from "redux-saga/effects";
+import { call, cancel, fork, put } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
 import { ILogger } from "../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
@@ -9,7 +10,7 @@ import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWalle
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { actions, TAction } from "../actions";
-import { forkAndInject } from "../sagas";
+import { forkAndInject, neuTakeEvery } from "../sagas";
 import { WalletType } from "./types";
 
 let lockWalletTask: Task | undefined;
@@ -26,29 +27,26 @@ export const autoLockLightWallet = injectableFn(
   },
   [symbols.web3Manager, symbols.logger],
 );
-export function* autoLockLightWalletWatcher(): Iterator<any> {
-  while (true) {
-    const action: TAction = yield take(["NEW_PERSONAL_WALLET_PLUGGED", "WEB3_WALLET_UNLOCKED"]);
 
-    if (lockWalletTask) {
-      yield cancel(lockWalletTask);
-    }
-    if (
-      action.type === "NEW_PERSONAL_WALLET_PLUGGED" &&
-      action.payload.walletMetadata.walletType !== WalletType.LIGHT
-    ) {
-      continue;
-    }
-    lockWalletTask = yield* forkAndInject(autoLockLightWallet);
+export function* autoLockLightWalletWatcher(
+  _deps: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
+  if (lockWalletTask) {
+    yield cancel(lockWalletTask);
   }
+  if (
+    action.type === "NEW_PERSONAL_WALLET_PLUGGED" &&
+    action.payload.walletMetadata.walletType !== WalletType.LIGHT
+  ) {
+    return;
+  }
+  lockWalletTask = yield* forkAndInject(autoLockLightWallet);
 }
-export function* cancelLocking(): Iterator<any> {
-  while (true) {
-    yield take(["PERSONAL_WALLET_DISCONNECTED", "WEB3_WALLET_LOCKED"]);
 
-    if (lockWalletTask) {
-      yield cancel(lockWalletTask);
-    }
+export function* cancelLocking(): Iterator<any> {
+  if (lockWalletTask) {
+    yield cancel(lockWalletTask);
   }
 }
 
@@ -78,5 +76,10 @@ export const loadPreviousWallet = injectableFn(
 );
 
 export const web3Sagas = function*(): Iterator<any> {
-  yield all([fork(autoLockLightWalletWatcher), fork(cancelLocking)]);
+  yield fork(
+    neuTakeEvery,
+    ["NEW_PERSONAL_WALLET_PLUGGED", "WEB3_WALLET_UNLOCKED"],
+    autoLockLightWalletWatcher,
+  );
+  yield fork(neuTakeEvery, ["PERSONAL_WALLET_DISCONNECTED", "WEB3_WALLET_LOCKED"], cancelLocking);
 };

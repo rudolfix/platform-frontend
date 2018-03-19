@@ -34,3 +34,8 @@ yarn test:fix
 ```
 yarn build:prod
 ```
+
+
+### Docs
+
+- [Component Development Guidelines](./docs/component-development-guidelines.md)

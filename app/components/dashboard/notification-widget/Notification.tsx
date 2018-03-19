@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as cn from 'classnames';
 import { Link } from "react-router-dom";
 import { ButtonClose } from "../../shared/Buttons";
 import * as styles from "./Notification.module.scss";
@@ -18,6 +19,7 @@ export interface INotification {
   onClose?: () => void;
   actionLink?: string;
   actionLinkText?: string;
+  className?: string;
 }
 
 const { INFO, WARNING } = NotificationType;
@@ -33,9 +35,10 @@ export const Notification: React.SFC<INotification> = ({
   onClose,
   actionLink,
   actionLinkText,
+  className,
 }) => {
   return (
-    <div data-test-id="notification" className={`${styles.notification} ${type}`}>
+    <div data-test-id="notification" className={cn(styles.notification, type, className)}>
       <i className={`${styles.iconNotificationType}`}>
         <img src={icons[type]} />
       </i>

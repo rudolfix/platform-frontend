@@ -1,0 +1,7 @@
+@import "../../../styles/neufund-theme";
+
+.notification-widget-component {
+  .notification:not(:first-child) {
+    margin-top: map-get($spacers, 4);
+  }
+}

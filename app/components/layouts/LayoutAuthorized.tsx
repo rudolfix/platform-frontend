@@ -7,7 +7,7 @@ import * as styles from "./LayoutAuthorized.module.scss";
 
 export const LayoutAuthorized: React.SFC = ({ children }) => (
   <>
-    <div className={styles.menu}>
+    <div>
       <LayoutAuthorizedMenu />
     </div>
     <div className="layout-container">

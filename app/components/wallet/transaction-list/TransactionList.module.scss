@@ -1,0 +1,94 @@
+@import "../../../styles/neufund-theme";
+
+.transaction-list {
+  box-shadow: $shadow;
+}
+
+
+.categories {
+  @include media-breakpoint-up (md) {
+    justify-content: flex-start;
+  }
+
+  padding: px-to-rem(18px) px-to-rem(12px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: $neu-white-two;
+  width: calc(100% + #{px-to-rem(30px)});
+  margin-left: px-to-rem(-15px);
+  margin-right: px-to-rem(-15px);
+
+}
+
+
+.category {
+  padding: px-to-rem(6px);
+  border-radius: px-to-rem(3px);
+  font-size: px-to-rem(13px);
+  letter-spacing: px-to-rem(-.02px);
+  text-transform: uppercase;
+  color: $neu-slate-grey;
+  cursor: pointer;
+  margin-right: px-to-rem(20px);
+
+  &:global(.is-selected),
+  &:hover {
+    background-color: darken($neu-pale-blue, 2%);
+    color: $neu-almost-black;
+  }
+
+  &:global(.is-selected) {
+    font-weight: 600;
+  }
+}
+
+
+.tabs {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $neu-pale-grey;
+  background-color: $neu-white-two;
+  width: calc(100% + #{px-to-rem(30px)});
+  margin-left: px-to-rem(-15px);
+  margin-right: px-to-rem(-15px);
+}
+
+.tab {
+  padding-left: px-to-rem(11px);
+  padding-right: px-to-rem(11px);
+  height: px-to-rem(46px);
+  font-size: px-to-rem(12px);
+  letter-spacing: px-to-rem(-.2px);
+  color: $neu-slate-grey;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  &::after {
+    content: "";
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    height: px-to-rem(2px);
+    background-color: transparent;
+    position: absolute;
+  }
+
+  + #{&} {
+    margin-left: 28px;
+  }
+
+  &:global(.is-selected) {
+    border-bottom: $neu-piss-yellow;
+    font-size: px-to-rem(16px);
+    font-weight: $font-weight-bold;
+    letter-spacing: px-to-rem(-.3px);
+
+    &::after {
+      background-color: $neu-piss-yellow;
+    }
+  }
+}

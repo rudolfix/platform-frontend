@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
 
-import * as cn from "classnames";
 import * as logo from "../../app/assets/img/logo_yellow.svg";
 import { actions } from "../modules/actions";
 import { selectIsAuthorized } from "../modules/auth/reducer";
@@ -20,7 +19,7 @@ interface IDispatchProps {
 }
 
 export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
-  <Navbar dark className={cn("bg-dark", styles.bar)}>
+  <Navbar dark className={styles.bar}>
     <Link to={appRoutes.root} className="navbar-brand">
       <img src={logo} className={styles.logo} />
     </Link>

@@ -1,0 +1,57 @@
+@import "../../../styles/neufund-theme";
+
+.wallet-balance {
+  &:global {
+    &.t-light {
+      background-color: $neu-white-two;
+    }
+
+    &.t-dark {
+      background-color: $neu-cloudy-blue;
+    }
+  }
+}
+
+.wallet-balance-wrapper {
+  @include media-breakpoint-up (lg) {
+    padding-bottom: px-to-rem(36px);
+    padding-top: px-to-rem(36px);
+  }
+
+  display: flex;
+}
+
+.money-suite-wrapper {
+  $_border-color: rgba($neu-slate-grey, .1);
+  display: flex;
+  align-items: center;
+
+  & + #{&} {
+    border-top: 1px solid $_border-color;
+  }
+}
+
+.buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  :global(.btn.btn-secondary) {
+    margin-left: auto;
+    text-align: right;
+  }
+}
+
+.wallet-balance-actions {
+  @include media-breakpoint-up (lg) {
+    margin-left: px-to-rem(20px);
+  }
+
+  flex: 1;
+
+  > * {
+    @include make-col(1, 1);
+
+    padding-bottom: px-to-rem(20px);
+    padding-top: px-to-rem(20px);
+  }
+}

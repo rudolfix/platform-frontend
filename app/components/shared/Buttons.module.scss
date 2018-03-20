@@ -23,6 +23,9 @@
 }
 
 .button-secondary {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
   color: $neu-black !important;
   border-color: transparent !important;
 
@@ -37,6 +40,10 @@
     &:hover {
       color: $neu-pale-grey !important;
     }
+  }
+
+  span ~ :global(.inline-icon) {
+    margin-left: px-to-rem(10px);
   }
 }
 

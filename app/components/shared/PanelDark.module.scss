@@ -7,10 +7,19 @@ $header-height: px-to-rem(40px);
   background-color: $neu-white-two;
 }
 
+.icon {
+  margin-right: px-to-rem(10px);
+}
+
 .header {
+  @include media-breakpoint-up (xl) {
+    height: $header-height;
+  }
+
   background-color: $neu-charcoal-grey;
   color: $neu-white;
-  height: $header-height;
+  padding-bottom: px-to-rem(8px);
+  padding-top: px-to-rem(8px);
 }
 
 .header-text {

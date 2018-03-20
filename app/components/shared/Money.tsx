@@ -1,8 +1,15 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { MONEY_DECIMALS } from "../../config/constants";
+import * as styles from "./Money.module.scss";
 import { formatMoney, formatThousands } from "./Money.utils";
 
 export type TCurrency = "neu" | "eur" | "eur_token" | "eth";
+
+export enum MoneyTransfer {
+  in = "income",
+  out = "outcome",
+}
 
 interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currency: TCurrency;
@@ -11,6 +18,7 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   noCurrencySymbol?: boolean;
   currencyClassName?: string;
   currencyStyle?: React.CSSProperties;
+  transfer?: MoneyTransfer;
 }
 
 type IProps = IOwnProps;
@@ -47,6 +55,7 @@ export const Money: React.SFC<IProps> = ({
   currencyClassName,
   currencyStyle,
   doNotSeparateThousands,
+  transfer,
   noCurrencySymbol,
   ...props
 }) => {
@@ -58,9 +67,9 @@ export const Money: React.SFC<IProps> = ({
     : formatThousands(formatMoney(value, MONEY_DECIMALS, decimalPlaces));
 
   return (
-    <span {...props}>
+    <span {...props} className={cn(styles.money, transfer, props.className)}>
       {formattedMoney}{" "}
-      <span className={currencyClassName} style={currencyStyle}>
+      <span className={cn(currencyClassName)} style={currencyStyle}>
         {noCurrencySymbol ? "" : currencySymbol}
       </span>
     </span>

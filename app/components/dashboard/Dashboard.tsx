@@ -33,6 +33,7 @@ export const DashboardComponent = (props: IProps) => (
       </Col>
       <Col>
         <MyWalletWidget
+          euroTokenEuroAmount={props.liquidEuroTokenBalance}
           euroTokenAmount={props.liquidEuroTokenBalance}
           ethAmount={props.liquidEtherBalance}
           ethEuroAmount={props.liquidEtherBalanceEuroAmount}

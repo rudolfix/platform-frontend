@@ -6,6 +6,7 @@ import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
+import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { KycStatusWidget } from "./kycStates/KycStatusWidget";
 import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
 
@@ -27,6 +28,11 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
       )}
       <Col lg={4} xs={12}>
         <KycStatusWidget />
+      </Col>
+    </Row>
+    <Row>
+      <Col lg={8} xs={12}>
+        <ChangeEmail />
       </Col>
     </Row>
   </LayoutAuthorized>

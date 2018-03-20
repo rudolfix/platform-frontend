@@ -66,7 +66,7 @@ export const Kyc = compose<React.SFC>(
       businessRequestState: state.kyc.businessRequestState,
     }),
     dispatchToProps: () => ({
-      reopenRequest: () => { },
+      reopenRequest: () => {},
     }),
     options: { pure: false },
   }),

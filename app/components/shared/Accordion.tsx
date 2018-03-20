@@ -17,7 +17,7 @@ interface IAccordionElementState {
 export class AccordionElement extends React.Component<
   IAccordionElementProps,
   IAccordionElementState
-  > {
+> {
   state = {
     isOpened: this.props.isOpened || false,
   };

@@ -21,6 +21,7 @@
     text-align: center;
   }
 
+  // sass-lint:disable no-vendor-prefixes
   ::-webkit-input-placeholder {
     text-align: center;
   }
@@ -36,6 +37,7 @@
   :-ms-input-placeholder {
     text-align: center;
   }
+  // sass-lint:enable no-vendor-prefixes
 
   .label {
     @include media-breakpoint-up (md) {

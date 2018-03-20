@@ -1,15 +1,14 @@
 import { Field } from "formik";
 import * as React from "react";
-import { Col, FormGroup, Input, Row } from "reactstrap";
+import { FormGroup, Input } from "reactstrap";
 import * as styles from "./FormFieldBirthDate.module.scss";
 
 export class FormFieldBirthDate extends React.Component {
   state = {
     birthYear: null,
     birthMonth: null,
-    birthDay: null
-  }
-
+    birthDay: null,
+  };
 
   render(): React.ReactNode {
     return (
@@ -20,11 +19,7 @@ export class FormFieldBirthDate extends React.Component {
             name="birthDay"
             render={({ field }) => (
               <div>
-                <Input
-                  {...field}
-                  type="tel"
-                  placeholder="dd"
-                />
+                <Input {...field} type="tel" placeholder="dd" />
               </div>
             )}
           />
@@ -33,11 +28,7 @@ export class FormFieldBirthDate extends React.Component {
             name="birthMonth"
             render={({ field }) => (
               <div>
-                <Input
-                  {...field}
-                  type="tel"
-                  placeholder="mm"
-                />
+                <Input {...field} type="tel" placeholder="mm" />
               </div>
             )}
           />
@@ -46,11 +37,7 @@ export class FormFieldBirthDate extends React.Component {
             name="birthYear"
             render={({ field }) => (
               <div>
-                <Input
-                  {...field}
-                  type="tel"
-                  placeholder="yyyy"
-                />
+                <Input {...field} type="tel" placeholder="yyyy" />
               </div>
             )}
           />
@@ -69,6 +56,6 @@ export class FormFieldBirthDate extends React.Component {
           />
         </div>
       </FormGroup>
-    )
+    );
   }
 }

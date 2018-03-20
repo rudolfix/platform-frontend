@@ -44,8 +44,8 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
     {!formikBag.currentValues || !(formikBag.currentValues.legalFormType === "corporate") ? (
       <div />
     ) : (
-        <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
-      )}
+      <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
+    )}
     <br /> <br />
     <FormField label="Street and number" name="street" />
     <Row>

@@ -34,13 +34,13 @@ export const KycFileUploadList: React.SFC<IProps> = ({ files, layout, ...props }
       <div>Uploading a File</div>
     </>
   ) : (
-      <>
-        <img src={addFileIcon} />
-        <span>
-          Drag and drop your files here or <strong>upload</strong>
-        </span>
-      </>
-    );
+    <>
+      <img src={addFileIcon} />
+      <span>
+        Drag and drop your files here or <strong>upload</strong>
+      </span>
+    </>
+  );
 
   const dropzoneWithFilesInner = (
     <>
@@ -79,7 +79,7 @@ export const KycFileUploadList: React.SFC<IProps> = ({ files, layout, ...props }
       </div>
       <div className={styles.uploadZone}>
         <h3 className={styles.title}>Upload documents</h3>
-        {!!files.length && <UploadedFiles onRemove={() => { }} files={files} />}
+        {!!files.length && <UploadedFiles onRemove={() => {}} files={files} />}
         <div className={files.length ? styles.dropzoneWithFilesWrapper : styles.dropzoneWrapper}>
           <Dropzone
             accept={ACCEPTED_FILES}

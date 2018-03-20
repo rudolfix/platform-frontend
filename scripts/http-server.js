@@ -15,6 +15,11 @@ const PORT = 9090;
 const app = express();
 
 app.use(
+  "/node",
+  proxy({ target: "http://localhost:8545", pathRewrite: { "^/node": "" }, changeOrigin: true }),
+);
+
+app.use(
   "/api/signature",
   proxy({
     target: "http://localhost:5000/",

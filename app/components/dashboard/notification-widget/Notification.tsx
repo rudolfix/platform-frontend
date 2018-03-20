@@ -1,9 +1,10 @@
+import * as cn from "classnames";
 import * as React from "react";
-import * as cn from 'classnames';
 import { Link } from "react-router-dom";
-import { ButtonClose } from "../../shared/Buttons";
-import * as styles from "./Notification.module.scss";
 
+import { ButtonClose } from "../../shared/Buttons";
+
+import * as styles from "./Notification.module.scss";
 import * as infoIcon from "../../../assets/img/notfications/info.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 

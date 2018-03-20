@@ -16,7 +16,7 @@ import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 import { Col, Row } from "reactstrap";
 import { AccordionElement } from "../../shared/Accordion";
-import { FormFieldBirthDate } from "../../shared/forms/formField/FormFieldBirthDate";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -65,7 +65,7 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
     <Form>
       <FormField label="First Name" name="firstName" />
       <FormField label="Last Name" name="lastName" />
-      <FormFieldBirthDate />
+      <FormFieldDate label="Birthdate" name="birthDate" />
 
       <FormField label="Street and number" name="street" />
       <Row>

@@ -31,7 +31,7 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
-import { FormFieldBirthDate } from "../../shared/forms/formField/FormFieldBirthDate";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { KycPanel } from "../KycPanel";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
@@ -62,7 +62,7 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
   <Form>
     <FormField label="First Name" name="firstName" />
     <FormField label="Last Name" name="lastName" />
-    <FormFieldBirthDate />
+    <FormFieldDate label="Birthdate" name="birthDate" />
 
     <FormField label="Address" name="street" />
     <Row>

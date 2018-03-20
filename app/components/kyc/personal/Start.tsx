@@ -26,6 +26,7 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { ButtonPrimary } from "../../shared/Buttons";
+import { FormFieldBirthDate } from "../../shared/forms/formField/FormFieldBirthDate";
 import { KycPanel } from "../KycPanel";
 
 const PEP_VALUES = {
@@ -61,7 +62,7 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
   <Form>
     <FormField label="First Name" name="firstName" />
     <FormField label="Last Name" name="lastName" />
-    <FormField label="Birth Date" name="birthDate" />
+    <FormFieldBirthDate />
 
     <FormField label="Street and number" name="street" />
     <Row>

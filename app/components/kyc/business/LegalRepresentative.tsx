@@ -63,7 +63,6 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="First Name" name="firstName" />
     <FormField label="Last Name" name="lastName" />
     <FormFieldBirthDate />
-    <FormField label="Birth Date" name="birthDate" />
 
     <FormField label="Address" name="street" />
     <Row>

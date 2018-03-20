@@ -5,6 +5,7 @@ import { call, put } from "redux-saga/effects";
 import { dummyLogger } from "../../../test/fixtures";
 import { createMock } from "../../../test/testUtils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { actions } from "../actions";
 import { autoLockLightWallet } from "./sagas";
@@ -18,7 +19,11 @@ describe("Web3 sagas", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         personalWallet: personalWalletMock,
       });
-      const saga = autoLockLightWallet(web3ManagerMock, dummyLogger);
+      const saga = autoLockLightWallet(({
+        web3Manager: web3ManagerMock,
+        logger: dummyLogger,
+      } as any) as TGlobalDependencies);
+
       expect(saga.next().value).to.be.deep.eq(call(delay, LIGHT_WALLET_PASSWORD_CACHE_TIME));
       expect(saga.next().value).to.be.deep.eq(put(actions.web3.walletLocked()));
       expect(saga.next().value).to.be.deep.eq(put(actions.web3.clearSeedFromState()));

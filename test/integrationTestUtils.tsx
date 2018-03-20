@@ -7,7 +7,12 @@ import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { SinonSpy } from "sinon";
 
 import { MemoryRouter } from "react-router";
-import { customizerContainerWithMiddlewareApi, setupBindings } from "../app/di/setupBindings";
+import {
+  customizerContainerWithMiddlewareApi,
+  setupBindings,
+  TGlobalDependencies,
+  createGlobalDependencies,
+} from "../app/di/setupBindings";
 import { symbols } from "../app/di/symbols";
 import { BrowserWalletConnector } from "../app/lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../app/lib/web3/LedgerWallet";
@@ -70,8 +75,11 @@ export function createIntegrationTestsSetup(
   container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
   container.rebind(symbols.signatureAuthApi).toConstantValue(signatureAuthApiMock);
 
-  const sagaMiddleware = createSagaMiddleware({ context: { container } });
+  const context: { container: Container; deps?: TGlobalDependencies } = {
+    container,
+  };
 
+  const sagaMiddleware = createSagaMiddleware({ context });
   const spyMiddleware = createSpyMiddleware();
 
   const middleware = applyMiddleware(
@@ -83,6 +91,7 @@ export function createIntegrationTestsSetup(
   );
 
   const store = createStore(reducers, options.initialState as any, middleware);
+  context.deps = createGlobalDependencies(container);
   sagaMiddleware.run(rootSaga);
 
   return {

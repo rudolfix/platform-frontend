@@ -1,86 +1,67 @@
 import { effects } from "redux-saga";
-import { all, take } from "redux-saga/effects";
-import { symbols } from "../../di/symbols";
+import { Effect, fork } from "redux-saga/effects";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser } from "../../lib/api/users/interfaces";
-import { UserNotExisting, UsersApi } from "../../lib/api/users/UsersApi";
-import { ObjectStorage } from "../../lib/persistence/ObjectStorage";
-import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
-import { Web3Manager } from "../../lib/web3/Web3Manager";
-import { injectableFn } from "../../middlewares/redux-injectify";
+import { UserNotExisting } from "../../lib/api/users/UsersApi";
 import { actions } from "../actions";
-import { callAndInject, forkAndInject } from "../sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
 import { WalletType } from "../web3/types";
 
-export const loadJwt = injectableFn(
-  function*(storage: ObjectStorage<string>): Iterator<any> {
-    const jwt = storage.get();
-    if (jwt) {
-      yield effects.put(actions.auth.loadJWT(jwt));
-      return jwt;
-    }
-  },
-  [symbols.jwtStorage],
-);
+export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
+  const jwt = jwtStorage.get();
+  if (jwt) {
+    yield effects.put(actions.auth.loadJWT(jwt));
+    return jwt;
+  }
+}
 
-export const loadUserPromise = injectableFn(
-  async function(
-    usersApi: UsersApi,
-    walletMetadataStorage: ObjectStorage<TWalletMetadata>,
-  ): Promise<IUser> {
-    try {
-      return await usersApi.me();
-    } catch (e) {
-      if (!(e instanceof UserNotExisting)) {
-        throw e;
-      }
+export async function loadUserPromise({
+  apiUserSerivce,
+  walletMetadataStorage,
+}: TGlobalDependencies): Promise<IUser> {
+  try {
+    return await apiUserSerivce.me();
+  } catch (e) {
+    if (!(e instanceof UserNotExisting)) {
+      throw e;
     }
+  }
+  // for light wallet we need to send slightly different request
+  const walletMetadata = walletMetadataStorage.get();
+  if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
+    return apiUserSerivce.createAccount({
+      unverifiedEmail: walletMetadata.email,
+      salt: walletMetadata.salt,
+      backupCodesVerified: false,
+    });
+  } else {
+    return apiUserSerivce.createAccount();
+  }
+}
 
-    // for light wallet we need to send slightly different request
-    const walletMetadata = walletMetadataStorage.get();
-    if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
-      return usersApi.createAccount({
-        unverifiedEmail: walletMetadata.email,
-        salt: walletMetadata.salt,
-        backupCodesVerified: false,
-      });
-    } else {
-      return usersApi.createAccount();
-    }
-  },
-  [symbols.usersApi, symbols.walletMetadataStorage],
-);
-
-export const updateUserPromise = injectableFn(
-  async function(usersApi: UsersApi, user: IUser): Promise<IUser> {
-    await usersApi.me();
-    return usersApi.updateUser(user);
-  },
-  [symbols.usersApi],
-);
+export async function updateUserPromise(
+  { apiUserSerivce }: TGlobalDependencies,
+  user: IUser,
+): Promise<IUser> {
+  await apiUserSerivce.me();
+  return apiUserSerivce.updateUser(user);
+}
 
 export function* loadUser(): Iterator<any> {
-  const user: IUser = yield callAndInject(loadUserPromise);
+  const user: IUser = yield neuCall(loadUserPromise);
   yield effects.put(actions.auth.loadUser(user));
 }
 
 export function* updateUser(updatedUser: IUser): Iterator<any> {
-  const user: IUser = yield callAndInject(updateUserPromise, updatedUser);
+  const user: IUser = yield neuCall(updateUserPromise, updatedUser);
   yield effects.put(actions.auth.loadUser(user));
 }
 
-export const logoutWatcher = injectableFn(
-  function*(jwtStorage: ObjectStorage<string>, web3Manager: Web3Manager): Iterator<any> {
-    while (true) {
-      yield take("AUTH_LOGOUT");
-
-      jwtStorage.clear();
-      yield web3Manager.unplugPersonalWallet();
-      // do not clear wallet metadata here to allow easy login again
-    }
-  },
-  [symbols.jwtStorage, symbols.web3Manager],
-);
+function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Iterator<any> {
+  jwtStorage.clear();
+  yield web3Manager.unplugPersonalWallet();
+}
 
 export const authSagas = function*(): Iterator<effects.Effect> {
-  yield all([forkAndInject(logoutWatcher)]);
+  yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
 };

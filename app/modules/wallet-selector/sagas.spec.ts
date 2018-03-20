@@ -6,6 +6,7 @@ import {
   dummyLogger,
 } from "../../../test/fixtures";
 import { createMock } from "../../../test/testUtils";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
 import { BrowserWallet } from "../../lib/web3/BrowserWallet";
 import { SignerType } from "../../lib/web3/PersonalWeb3";
@@ -48,13 +49,13 @@ describe("Jwt actions", () => {
       });
       const randomStringMock = spy(() => expectedSalt);
 
-      await obtainJwtPromise(
-        web3ManagerMock,
-        getStateMock,
-        signatureAuthApiMock,
-        randomStringMock,
-        dummyLogger,
-      );
+      await obtainJwtPromise(({
+        web3Manager: web3ManagerMock,
+        getState: getStateMock,
+        signatureAuthApi: signatureAuthApiMock,
+        cryptoRandomString: randomStringMock,
+        logger: dummyLogger,
+      } as any) as TGlobalDependencies);
 
       expect(randomStringMock).to.be.calledWithExactly(64);
       expect(signatureAuthApiMock.challenge).to.be.calledWithExactly(

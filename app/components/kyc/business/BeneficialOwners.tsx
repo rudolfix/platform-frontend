@@ -14,6 +14,7 @@ import { KYCBeneficialOwner } from "./BeneficialOwner";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 import { Accordion } from "../../shared/Accordion";
+import { HorizontalLine } from "../../shared/HorizontalLine";
 
 interface IStateProps {
   beneficialOwners: IKycBeneficialOwner[];
@@ -28,6 +29,7 @@ type IProps = IStateProps & IDispatchProps;
 
 export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   <div>
+    <HorizontalLine />
     <h4 className={styles.sectionTitle}>Beneficial owners (which hold more than 25%)</h4>
     <Accordion>
       {props.beneficialOwners.map(

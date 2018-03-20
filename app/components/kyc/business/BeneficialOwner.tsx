@@ -115,8 +115,15 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
   }
 
   render(): React.ReactChild {
+    const { owner } = this.props;
+
+    const name =
+      owner && owner.firstName && owner.lastName
+        ? `${owner.firstName} ${owner.lastName}`
+        : `Beneficial Owner ${this.props.index + 1}`;
+
     return (
-      <AccordionElement title={`Beneficial Owner ${this.props.index + 1}`} isOpened={true}>
+      <AccordionElement title={name} isOpened={true}>
         <KYCEnhancedForm {...this.props} />
         <KycFileUploadList
           layout={"business"}
@@ -125,7 +132,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
           fileUploading={this.props.fileUploading}
           filesLoading={this.props.filesLoading}
         />
-        <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary>
+        <ButtonSecondary onClick={this.props.delete}>Delete {name}</ButtonSecondary>
       </AccordionElement>
     );
   }

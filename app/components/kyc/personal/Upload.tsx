@@ -44,7 +44,11 @@ export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps
       filesLoading={props.filesLoading}
       layout="personal"
     />
-    <ButtonPrimary color="primary" onClick={props.onDone}>
+    <ButtonPrimary
+      color="primary"
+      onClick={props.onDone}
+      disabled={!props.files || props.files.length === 0}
+    >
       Submit
     </ButtonPrimary>
   </KycPanel>

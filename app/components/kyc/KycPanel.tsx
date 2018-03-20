@@ -7,7 +7,7 @@ import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
 
 interface IPropsKycPanel {
   title: string;
-  hasBackButton: boolean;
+  hasBackButton?: boolean;
   isMaxWidth?: boolean;
   description?: string;
 }

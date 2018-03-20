@@ -162,6 +162,8 @@ export const createGlobalDependencies = (container: Container) => ({
   // misc
   logger: container.get<ILogger>(symbols.logger),
   notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
+
+  // TODO this should be replace by sagas yield select in the future
   getState: container.get<GetState>(symbols.getState),
   cryptoRandomString: container.get<CryptoRandomString>(symbols.cryptoRandomString),
   detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),

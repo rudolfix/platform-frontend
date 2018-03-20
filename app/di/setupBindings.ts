@@ -38,7 +38,6 @@ export type GetState = () => IAppState;
 export function setupBindings(config: IConfig): Container {
   const container = new Container();
   const storage = new Storage(window.localStorage);
-  const lightWalletUtil = new LightWalletUtil();
 
   // functions
   container
@@ -54,15 +53,25 @@ export function setupBindings(config: IConfig): Container {
   container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
 
   // classes
-  container.bind<IHttpClient>(symbols.jsonHttpClient).to(JsonHttpClient);
-  container.bind<IHttpClient>(symbols.authorizedHttpClient).to(AuthorizedJsonHttpClient);
+  container
+    .bind<IHttpClient>(symbols.jsonHttpClient)
+    .to(JsonHttpClient)
+    .inSingletonScope();
+  container
+    .bind<IHttpClient>(symbols.authorizedHttpClient)
+    .to(AuthorizedJsonHttpClient)
+    .inSingletonScope();
+
   // singletons
   container
     .bind<SignatureAuthApi>(symbols.signatureAuthApi)
     .to(SignatureAuthApi)
     .inSingletonScope();
 
-  container.bind<LightWalletUtil>(symbols.lightWalletUtil).toConstantValue(lightWalletUtil);
+  container
+    .bind<LightWalletUtil>(symbols.lightWalletUtil)
+    .to(LightWalletUtil)
+    .inSingletonScope();
 
   container
     .bind<VaultApi>(symbols.vaultApi)
@@ -145,3 +154,41 @@ export function customizerContainerWithMiddlewareApi(
 
   return container;
 }
+
+/**
+ * We use plain object for injecting deps into sagas"
+ */
+export const createGlobalDependencies = (container: Container) => ({
+  // misc
+  logger: container.get<ILogger>(symbols.logger),
+  notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
+
+  // TODO this should be replace by sagas yield select in the future
+  getState: container.get<GetState>(symbols.getState),
+  cryptoRandomString: container.get<CryptoRandomString>(symbols.cryptoRandomString),
+  detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
+
+  // blockchain & wallets
+  web3Manager: container.get<Web3Manager>(symbols.web3Manager),
+  walletMetadataStorage: container.get<ObjectStorage<TWalletMetadata>>(
+    symbols.walletMetadataStorage,
+  ),
+  lightWalletConnector: container.get<LightWalletConnector>(symbols.lightWalletConnector),
+  jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
+  lightWalletUtil: container.get<LightWalletUtil>(symbols.lightWalletUtil),
+  browserWalletConnector: container.get<BrowserWalletConnector>(symbols.browserWalletConnector),
+  ledgerWalletConnector: container.get<LedgerWalletConnector>(symbols.ledgerWalletConnector),
+
+  // network layer
+  jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),
+  authorizedHttpClient: container.get<AuthorizedJsonHttpClient>(symbols.authorizedHttpClient),
+
+  // apis
+  signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),
+  apiKycService: container.get<KycApi>(symbols.apiKycService),
+  apiUserSerivce: container.get<UsersApi>(symbols.usersApi),
+  vaultApi: container.get<VaultApi>(symbols.vaultApi),
+});
+
+const globalDependencies = (false as true) && createGlobalDependencies(new Container());
+export type TGlobalDependencies = typeof globalDependencies;

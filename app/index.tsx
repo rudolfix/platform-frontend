@@ -15,7 +15,12 @@ import "reflect-metadata";
 
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
-import { customizerContainerWithMiddlewareApi, setupBindings } from "./di/setupBindings";
+import {
+  createGlobalDependencies,
+  customizerContainerWithMiddlewareApi,
+  setupBindings,
+  TGlobalDependencies,
+} from "./di/setupBindings";
 import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
 import { IAppState, reducers } from "./store";
@@ -56,7 +61,11 @@ function renderApp(
 function startupApp(history: any): { store: Store<IAppState>; container: Container } {
   const config = getConfig(process.env);
   const container = setupBindings(config);
-  const sagaMiddleware = createSagaMiddleware({ context: { container } });
+
+  const context: { container: Container; deps?: TGlobalDependencies } = {
+    container,
+  };
+  const sagaMiddleware = createSagaMiddleware({ context });
 
   const middleware = applyMiddleware(
     routerMiddleware(history),
@@ -66,6 +75,9 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
   );
 
   const store = createStore(reducers, composeWithDevTools(middleware));
+  // we have to create the dependencies here, because getState and dispatch get
+  // injected in the middleware step above, maybe change this later
+  context.deps = createGlobalDependencies(container);
   sagaMiddleware.run(rootSaga);
 
   return { store, container };

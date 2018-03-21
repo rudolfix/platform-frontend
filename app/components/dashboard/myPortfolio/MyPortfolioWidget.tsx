@@ -8,7 +8,7 @@ import { PanelDark } from "../../shared/PanelDark";
 import { MyNeuWidget } from "./MyNeuWidget";
 import * as styles from "./MyPortfolioWidget.module.scss";
 
-export const MyPortfolio = () => {
+export const MyPortfolio: React.SFC = () => {
   return (
     <PanelDark headerText="My portfolio">
       <Row className={cn(styles.main, "pb-3")}>

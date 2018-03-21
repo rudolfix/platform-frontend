@@ -1,6 +1,5 @@
 @import "../../../styles/neufund-theme";
 
-
 .notification {
   @include font-default;
 
@@ -30,11 +29,6 @@
       border-color: $neu-bright-orange;
     }
   }
-
-  + #{&} {
-    margin-top: px-to-rem(20px);
-  }
-
 
   .text {
     flex-grow: 1;

@@ -18,6 +18,7 @@ import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
 import { initReducer } from "./modules/init/reducer";
 import { moneyReducer } from "./modules/money/reducer";
+import { notificationsReducer } from "./modules/notifications/reducer";
 import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
 import { lightWalletWizardReducer } from "./modules/wallet-selector/light-wizard/reducer";
 import { FunctionWithDeps } from "./types";
@@ -53,6 +54,7 @@ const appReducers = {
   lightWalletWizard: lightWalletWizardReducer,
   money: moneyReducer,
   wallet: walletReducer,
+  notifications: notificationsReducer,
 };
 
 // add all custom reducers here

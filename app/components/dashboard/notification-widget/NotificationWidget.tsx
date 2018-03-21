@@ -1,29 +1,34 @@
 import * as React from "react";
-import { INotification, NotificationType } from "./Notification";
-import { NotificationWidgetComponent } from "./NotificationWidgetComponent";
 
-// mocked data
-const notificationInfo: INotification = {
-  id: 1,
-  type: NotificationType.INFO,
-  text:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  onClose: () => alert("closing"),
-};
+import { INotification } from "../../../modules/notifications/reducer";
+import { appConnect, AppDispatch } from "../../../store";
+import { Notification } from "./Notification";
 
-const notificationWarning: INotification = {
-  id: 2,
-  type: NotificationType.WARNING,
-  text:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  actionLink: "some/route/1",
-  actionLinkText: "go to Some Route 1",
-};
+interface IStateProps {
+  notifications: INotification[];
+}
 
-const notifications: INotification[] = [notificationInfo, notificationWarning];
+interface IDispatchProps {
+  dispatch: AppDispatch;
+}
 
-export class NotificationWidget extends React.Component {
+export class NotificationWidgetComponent extends React.Component<IStateProps & IDispatchProps> {
   render(): React.ReactNode {
-    return <NotificationWidgetComponent notifications={notifications} />;
+    return this.props.notifications.map((notification, index) => (
+      <Notification
+        key={notification.text + index.toString(10)}
+        type={notification.type}
+        text={notification.text}
+        actionLinkText={notification.actionLinkText}
+        onClick={() => this.props.dispatch(notification.onClickAction)}
+      />
+    ));
   }
 }
+
+export const NotificationWidget = appConnect<IStateProps, IDispatchProps>({
+  stateToProps: s => ({ notifications: s.notifications.notifications }),
+  dispatchToProps: dispatch => ({
+    dispatch,
+  }),
+})(NotificationWidgetComponent);

@@ -1,4 +1,5 @@
 import { values } from "lodash";
+import { settingsActions } from "./settings/actions";
 
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
@@ -14,6 +15,7 @@ import { web3Actions } from "./web3/actions";
 /** You should add new actions also here (with a namespace).*/
 export const actions = {
   dashboard: dashboardActions,
+  settings: settingsActions,
   signMessageModal: signMessageModalActions,
   genericErrorModal: genericErrorModalActions,
   init: initActions,
@@ -30,6 +32,7 @@ export const actions = {
  */
 export const allActions = {
   ...dashboardActions,
+  ...settingsActions,
   ...signMessageModalActions,
   ...genericErrorModalActions,
   ...initActions,

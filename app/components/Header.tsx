@@ -8,7 +8,7 @@ import { selectIsAuthorized } from "../modules/auth/reducer";
 import { appConnect } from "../store";
 import { appRoutes } from "./AppRouter";
 import * as styles from "./Header.module.scss";
-import { ButtonSecondary } from "./shared/Buttons";
+import { Button } from "./shared/Buttons";
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -24,9 +24,9 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       <img src={logo} className={styles.logo} />
     </Link>
     {props.isAuthorized && (
-      <ButtonSecondary className="text-white" onClick={props.logout} data-test-id="Header-logout">
+      <Button layout="secondary" theme="t-white" onClick={props.logout} data-test-id="Header-logout">
         LOGOUT
-      </ButtonSecondary>
+      </Button>
     )}
   </Navbar>
 );

@@ -7,7 +7,7 @@ import { appConnect } from "../../../store";
 import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 import { KYCBeneficialOwner } from "./BeneficialOwner";
@@ -45,14 +45,14 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
     <HorizontalLine />
     <br />
     <br />
-    <ButtonSecondary onClick={props.createBeneficialOwner} disabled={props.loading}>
+    <Button layout="secondary" onClick={props.createBeneficialOwner} disabled={props.loading}>
       Add new Beneficial Owner!
-    </ButtonSecondary>
+    </Button>
     <br />
     <br />
-    <ButtonPrimary color="primary" type="submit" onClick={props.submit} disabled={props.loading}>
+    <Button type="submit" onClick={props.submit} disabled={props.loading}>
       Submit Request
-    </ButtonPrimary>
+    </Button>
   </div>
 );
 

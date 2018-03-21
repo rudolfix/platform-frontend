@@ -9,7 +9,7 @@ import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 interface IStateProps {
@@ -42,9 +42,9 @@ export const KYCPersonalUploadComponent: React.SFC<IProps> = props => (
       filesLoading={props.filesLoading}
     />
     <br />
-    <ButtonPrimary color="primary" onClick={props.onDone}>
+    <Button onClick={props.onDone}>
       Submit Verification Request
-    </ButtonPrimary>
+    </Button>
   </div>
 );
 

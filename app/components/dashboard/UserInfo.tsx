@@ -2,7 +2,7 @@ import * as React from "react";
 import { actions } from "../../modules/actions";
 import { selectIsAuthorized, selectUserEmail } from "../../modules/auth/reducer";
 import { appConnect } from "../../store";
-import { ButtonPrimary } from "../shared/Buttons";
+import { Button } from "../shared/Buttons";
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -24,7 +24,7 @@ const UserInfoComponent: React.SFC<IStateProps & IDispatchProps> = ({
     return (
       <div>
         <h3>User email: {email || "<no email>"}</h3>
-        <ButtonPrimary onClick={sign}>SIGN A MESSAGE</ButtonPrimary>
+        <Button onClick={sign}>SIGN A MESSAGE</Button>
       </div>
     );
   }

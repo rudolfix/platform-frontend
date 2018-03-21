@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
 interface IProps {
@@ -20,9 +20,9 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
     <br />
     <h1>Start your KYC</h1>
     <br />
-    <ButtonPrimary onClick={props.goToPerson}>I represent myself</ButtonPrimary>
+    <Button onClick={props.goToPerson}>I represent myself</Button>
     &nbsp;&nbsp;
-    <ButtonPrimary onClick={props.goToCompany}>I represent a company</ButtonPrimary>
+    <Button onClick={props.goToCompany}>I represent a company</Button>
   </div>
 );
 

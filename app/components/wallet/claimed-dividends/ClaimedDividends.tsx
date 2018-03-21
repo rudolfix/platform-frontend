@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ButtonSecondary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { Money, MoneyTransfer } from "../../shared/Money";
@@ -45,10 +45,10 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps> = ({
               <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
             </TableCell>
             <TableCell narrow>
-              <ButtonSecondary>
+              <Button layout="secondary">
                 <span>TXN</span>
                 <InlineIcon svgIcon={LinkOutIcon} />
-              </ButtonSecondary>
+              </Button>
             </TableCell>
           </TableRow>
         ))}

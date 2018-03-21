@@ -6,7 +6,7 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import { TKycBusinessType } from "../../../lib/api/KycApi.interfaces";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { ProgressStepper } from "../../shared/ProgressStepper";
 
 interface IStateProps {
@@ -27,17 +27,17 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
     <h1>What type of company are you?</h1>
     <br />
     <br />
-    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("small")}>
+    <Button disabled={props.loading} onClick={() => props.setBusinessType("small")}>
       Small Business
-    </ButtonPrimary>
+    </Button>
     &nbsp;&nbsp;
-    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("corporate")}>
+    <Button disabled={props.loading} onClick={() => props.setBusinessType("corporate")}>
       Corporation
-    </ButtonPrimary>
+    </Button>
     &nbsp;&nbsp;
-    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("partnership")}>
+    <Button disabled={props.loading} onClick={() => props.setBusinessType("partnership")}>
       Partnership Business
-    </ButtonPrimary>
+    </Button>
     <br />
     <br />
   </div>

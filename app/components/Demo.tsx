@@ -8,14 +8,9 @@ import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { KycStatusWidget } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
-import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
+// import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
 import { BreadCrumb } from "./shared/BreadCrumb";
-import {
-  ButtonPrimary,
-  ButtonPrimaryLink,
-  ButtonSecondary,
-  ButtonSecondaryLink,
-} from "./shared/Buttons";
+import { Button } from "./shared/Buttons";
 import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
@@ -26,19 +21,13 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <ButtonPrimary>ButtonPrimary</ButtonPrimary>
-          <ButtonPrimary disabled>ButtonPrimary disabled</ButtonPrimary>
-          <ButtonPrimaryLink to="/">ButtonPrimaryLink</ButtonPrimaryLink>
-        </Col>
-      </Row>
-    </Container>
-
-    <Container>
-      <Row>
-        <Col>
-          <ButtonSecondary>ButtonSecondary</ButtonSecondary>
-          <ButtonSecondary disabled>ButtonSecondary disabled</ButtonSecondary>
-          <ButtonSecondaryLink to="/">ButtonSecondary link</ButtonSecondaryLink>
+          <Button>Default Button Primary</Button>
+          <br/>
+          <Button disabled>Default Button Primary Disabled</Button>
+          <br/>
+          <Button type="secondary">Button Secondary</Button>
+          <br/>
+          <Button type="secondary" disabled>Button Secondary Disabled</Button>
         </Col>
       </Row>
     </Container>
@@ -50,7 +39,7 @@ export const Demo: React.SFC = () => (
       </Row>
     </Container>
 
-    <Container>
+    {/* <Container>
       <Row>
         <Col>
           <ArrowLink arrowDirection="right" to="#">
@@ -69,7 +58,7 @@ export const Demo: React.SFC = () => (
           <ArrowButton arrowDirection="left">Left arrow button</ArrowButton>
         </Col>
       </Row>
-    </Container>
+    </Container> */}
 
     <Container>
       <Row>

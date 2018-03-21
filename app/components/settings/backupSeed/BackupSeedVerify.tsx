@@ -5,9 +5,9 @@ import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
-import { ArrowButton } from "../../shared/ArrowNavigation";
+// import { ArrowButton } from "../../shared/ArrowNavigation";
 import { BreadCrumb } from "../../shared/BreadCrumb";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { PanelWhite } from "../../shared/PanelWhite";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -169,12 +169,12 @@ export class BackupSeedVerify extends React.Component<
               {this.allWordsValid() && (
                 <Row className="my-4 text-center">
                   <Col className={styles.placeholderHeight}>
-                    <ButtonPrimary
+                    <Button
                       data-test-id="seed-verify-button-next"
                       onClick={this.props.onNext}
                     >
                       continue
-                    </ButtonPrimary>
+                    </Button>
                   </Col>
                 </Row>
               )}
@@ -186,9 +186,9 @@ export class BackupSeedVerify extends React.Component<
                 )}
               <Row>
                 <Col>
-                  <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
+                  {/* <ArrowButton arrowDirection="left" onClick={this.props.onBack}> */}
                     Back
-                  </ArrowButton>
+                  {/* </ArrowButton> */}
                 </Col>
               </Row>
             </PanelWhite>

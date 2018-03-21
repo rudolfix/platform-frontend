@@ -3,9 +3,9 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
-import { ArrowButton } from "../../shared/ArrowNavigation";
+// import { ArrowButton } from "../../shared/ArrowNavigation";
 import { BreadCrumb } from "../../shared/BreadCrumb";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { PanelWhite } from "../../shared/PanelWhite";
 
@@ -98,29 +98,29 @@ export class BackupSeedDisplay extends React.Component<
                   </Row>
                   <Row className="my-4 justify-content-center justify-content-sm-between">
                     <Col className="mt-2" xs="auto">
-                      <ButtonPrimary
+                      <Button
                         data-test-id="seed-display-prev-words"
                         disabled={this.state.pageNo === 0}
                         onClick={this.handlePrevPage}
                       >
                         {`previous ${WORDS_PER_PAGE} words`}
-                      </ButtonPrimary>
+                      </Button>
                     </Col>
                     <Col className="mt-2" xs="auto">
                       {showNextButton ? (
-                        <ButtonPrimary
+                        <Button
                           data-test-id="seed-display-next-link"
                           onClick={this.props.onNext}
                         >
                           Go to next step
-                        </ButtonPrimary>
+                        </Button>
                       ) : (
-                        <ButtonPrimary
+                        <Button
                           data-test-id="seed-display-next-words"
                           onClick={this.handleNextPage}
                         >
                           {`next ${WORDS_PER_PAGE} words`}
-                        </ButtonPrimary>
+                        </Button>
                       )}
                     </Col>
                   </Row>
@@ -128,9 +128,9 @@ export class BackupSeedDisplay extends React.Component<
               </Row>
               <Row>
                 <Col>
-                  <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
+                  {/* <ArrowButton arrowDirection="left" onClick={this.props.onBack}> */}
                     Back
-                  </ArrowButton>
+                  {/* </ArrowButton> */}
                 </Col>
               </Row>
             </PanelWhite>

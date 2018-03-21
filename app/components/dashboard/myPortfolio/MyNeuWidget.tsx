@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import * as icon from "../../../assets/img/neu_icon.svg";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+// import { ArrowLink } from "../../shared/ArrowNavigation";
 import { Money } from "../../shared/Money";
 import * as styles from "./MyNeuWidget.module.scss";
 
@@ -24,9 +24,9 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
           </h3>
         </Col>
         <Col md={12} className="text-right text-md-center" data-test-id="arrow-neu">
-          <ArrowLink arrowDirection="right" to="#" className="text-light">
+          {/* <ArrowLink arrowDirection="right" to="#" className="text-light"> */}
             About NEU
-          </ArrowLink>
+          {/* </ArrowLink> */}
         </Col>
       </Row>
     </div>

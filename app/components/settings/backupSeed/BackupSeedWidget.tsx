@@ -4,7 +4,7 @@ import { Col } from "reactstrap";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
 import { appConnect } from "../../../store";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+// import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 import { settingsRoutes } from "../routes";
 
@@ -36,9 +36,9 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesV
         >
           <p className={cn(styles.text, "pt-2")}>You have backed up your SEED. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
+            {/* <ArrowLink arrowDirection="right" to="#"> */}
               View Again
-            </ArrowLink>
+            {/* </ArrowLink> */}
           </Col>
         </div>
       ) : (
@@ -51,9 +51,9 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesV
             you to restore your wallet and access your funds you forgot your password
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to={settingsRoutes.seedBackup}>
+            {/* <ArrowLink arrowDirection="right" to={settingsRoutes.seedBackup}> */}
               Backup phrase
-            </ArrowLink>
+            {/* </ArrowLink> */}
           </Col>
         </div>
       )}

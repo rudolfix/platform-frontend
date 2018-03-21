@@ -19,7 +19,7 @@ import {
   KycLegalRepresentativeSchema,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 interface IStateProps {
@@ -49,13 +49,12 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormField label="City" name="city" />
     <FormField label="Country" name="country" />
     <br />
-    <ButtonPrimary
-      color="primary"
+    <Button
       type="submit"
       disabled={!formikBag.isValid || formikBag.loadingData}
     >
       Save
-    </ButtonPrimary>
+    </Button>
   </Form>
 );
 
@@ -91,14 +90,13 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
         filesLoading={props.filesLoading}
       />
       <br /> <br />
-      <ButtonPrimary
-        color="primary"
+      <Button
         type="submit"
         disabled={!props.currentValues || props.files.length === 0}
         onClick={props.onContinue}
       >
         Continue
-      </ButtonPrimary>
+      </Button>
     </div>
   );
 };

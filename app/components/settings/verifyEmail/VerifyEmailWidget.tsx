@@ -9,7 +9,7 @@ import { Col } from "reactstrap";
 import { compose } from "redux";
 import { IUser } from "../../../lib/api/users/interfaces";
 import { appConnect } from "../../../store";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+// import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 
 export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) => {
@@ -31,9 +31,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
         >
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
+            {/* <ArrowLink arrowDirection="right" to="#"> */}
               Resend Link
-            </ArrowLink>
+            {/* </ArrowLink> */}
           </Col>
         </div>
       ) : (
@@ -46,9 +46,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
             you
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
+            {/* <ArrowLink arrowDirection="right" to="#"> */}
               Verify
-            </ArrowLink>
+            {/* </ArrowLink> */}
           </Col>
         </div>
       )}

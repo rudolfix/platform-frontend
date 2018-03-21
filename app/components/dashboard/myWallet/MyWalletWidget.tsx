@@ -5,7 +5,7 @@ import * as cn from "classnames";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { appRoutes } from "../../AppRouter";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+// import { ArrowLink } from "../../shared/ArrowNavigation";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
@@ -32,13 +32,13 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
     <PanelDark
       headerText="My Wallet"
       rightComponent={
-        <ArrowLink
-          arrowDirection="right"
-          to={appRoutes.manageWallet}
-          className={cn(styles.link, "text-light mb-1 pl-0 pr-0 pb-1 d-none d-sm-block text-right")}
-        >
-          Manage Wallet
-        </ArrowLink>
+        // <ArrowLink
+        //   arrowDirection="right"
+        //   to={appRoutes.manageWallet}
+        //   className={cn(styles.link, "text-light mb-1 pl-0 pr-0 pb-1 d-none d-sm-block text-right")}
+        // >
+          <span>Manage Wallet</span>
+        //</ArrowLink>
       }
     >
       <Row noGutters>
@@ -80,9 +80,9 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
           </div>
         </Col>
         <Col className="d-block d-sm-none text-right col-auto">
-          <ArrowLink arrowDirection="right" to="#" className={cn(styles.link, "p-0 m-0 mt-3 mb-3")}>
+          {/* <ArrowLink arrowDirection="right" to="#" className={cn(styles.link, "p-0 m-0 mt-3 mb-3")}> */}
             Manage
-          </ArrowLink>
+          {/* </ArrowLink> */}
         </Col>
       </Row>
     </PanelDark>

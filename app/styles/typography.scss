@@ -21,13 +21,14 @@ body {
 }
 
 @mixin font-default {
+  font-family: $headings-font-family;
   font-size: px-to-rem(14px);
   line-height: 1.64;
 }
 
-@mixin tab {
+@mixin font-tab {
   font-family: $headings-font-family;
-  font-size: px-to-rem(12px);
+  font-size: px-to-rem(13px);
   letter-spacing: px-to-rem(-.02px);
 }
 

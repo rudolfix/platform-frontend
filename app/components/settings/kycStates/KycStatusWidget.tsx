@@ -6,7 +6,7 @@ import * as successIcon from "../../../assets/img/notfications/Success_small.svg
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
 import { Col } from "reactstrap";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+// import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 
 //This is a mock implementation
@@ -37,9 +37,9 @@ export const KycStatusWidget: React.SFC<IProps> = ({ kycDone }) => {
         >
           <p className={cn(styles.text, "pt-2")}>Lorem upsom Kyc who bla once check rep</p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
+            {/* <ArrowLink arrowDirection="right" to="#"> */}
               Verify KYC
-            </ArrowLink>
+            {/* </ArrowLink> */}
           </Col>
         </div>
       )}

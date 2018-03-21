@@ -3,7 +3,7 @@ import { Input } from "reactstrap";
 import { actions } from "../../modules/actions";
 import { selectIsUnlocked } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
-import { ButtonPrimary, ButtonSecondary } from "../shared/Buttons";
+import { Button } from "../shared/Buttons";
 
 interface IState {
   password: string;
@@ -51,8 +51,8 @@ export class LightWalletSignPromptComponent extends React.Component<
           />
         )}
         <div className="mt-3">
-          <ButtonPrimary onClick={() => onAccept(this.state.password)}>Accept</ButtonPrimary>
-          <ButtonSecondary onClick={onCancel}>Reject</ButtonSecondary>
+          <Button onClick={() => onAccept(this.state.password)}>Accept</Button>
+          <Button layout="secondary" onClick={onCancel}>Reject</Button>
         </div>
       </div>
     );

@@ -2,9 +2,9 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+// import { ArrowLink } from "../../shared/ArrowNavigation";
 import { BreadCrumb } from "../../shared/BreadCrumb";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { PanelWhite } from "../../shared/PanelWhite";
 import { StepCard } from "../../shared/StepCard";
@@ -42,14 +42,14 @@ export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNe
           </Row>
           <Row className="my-5">
             <Col className="text-center">
-              <ButtonPrimary onClick={onNext}>I have read instructions</ButtonPrimary>
+              <Button onClick={onNext}>I have read instructions</Button>
             </Col>
           </Row>
           <Row>
             <Col>
-              <ArrowLink arrowDirection="left" to={onBack}>
+              {/* <ArrowLink arrowDirection="left" to={onBack}> */}
                 Back
-              </ArrowLink>
+              {/* </ArrowLink> */}
             </Col>
           </Row>
         </PanelWhite>

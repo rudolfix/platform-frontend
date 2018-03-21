@@ -14,7 +14,7 @@ import { FormField } from "../../shared/forms/forms";
 
 import { IKycIndividualData, KycIndividudalDataSchema } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 
 interface IStateProps {
   currentValues?: IKycIndividualData;
@@ -42,13 +42,12 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <div>TODO add checkboxes, please ask dave :)</div>
     <br />
     <br />
-    <ButtonPrimary
-      color="primary"
+    <Button
       type="submit"
       disabled={!formikBag.isValid || formikBag.loadingData}
     >
       Submit and continue
-    </ButtonPrimary>
+    </Button>
   </Form>
 );
 

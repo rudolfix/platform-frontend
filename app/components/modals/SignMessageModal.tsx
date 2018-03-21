@@ -3,7 +3,7 @@ import { Modal } from "reactstrap";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
-import { ButtonSecondary } from "../shared/Buttons";
+import { Button } from "../shared/Buttons";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { LightWalletSignPrompt } from "./LightWalletSign";
 import { ModalComponentBody } from "./ModalComponentBody";
@@ -21,7 +21,7 @@ interface IDispatchProps {
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
   <div>
     <h2>Sign message on your wallet</h2>
-    <ButtonSecondary onClick={onCancel}>Cancel</ButtonSecondary>
+    <Button layout="secondary" onClick={onCancel}>Cancel</Button>
   </div>
 );
 

@@ -11,7 +11,7 @@ import {
   KycBeneficialOwnerSchema,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
+// import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
 import { FormField } from "../../shared/forms/forms";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
@@ -56,13 +56,13 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
       <FormField label="Percent owned" name="ownership" />
       <br />
       <br />
-      <ButtonPrimary
+      {/* <ButtonPrimary
         color="primary"
         type="submit"
         disabled={!formikBag.isValid || formikBag.loading}
       >
         Submit changes
-      </ButtonPrimary>
+      </ButtonPrimary> */}
     </Form>
   );
 };
@@ -100,7 +100,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
           fileUploading={this.props.fileUploading}
           filesLoading={this.props.filesLoading}
         />
-        <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary>
+        {/* <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary> */}
         <br />
         <br />
         <HorizontalLine />

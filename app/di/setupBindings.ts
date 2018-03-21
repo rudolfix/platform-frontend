@@ -30,8 +30,8 @@ import {
   STORAGE_WALLET_METADATA_KEY,
   TWalletMetadata,
 } from "../lib/persistence/WalletMetadataObjectStorage";
-import { symbols } from "./symbols";
 import { ContractsService } from "../modules/contracts/ContractsService";
+import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;
 export type GetState = () => IAppState;
@@ -50,9 +50,7 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<IEthereumNetworkConfig>(symbols.ethereumNetworkConfig)
     .toConstantValue(config.ethereumNetwork);
-  container
-    .bind<IConfig>(symbols.config)
-    .toConstantValue(config);
+  container.bind<IConfig>(symbols.config).toConstantValue(config);
 
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());

@@ -2,10 +2,13 @@ import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { dummyNetworkId } from "../../../../test/fixtures";
+import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
-import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import {
+  ILedgerWalletMetadata,
+  TWalletMetadata,
+} from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
@@ -209,9 +212,16 @@ describe("Wallet selector > Ledger wizard > actions", () => {
   describe("finishSettingUpLedgerConnectorAction", () => {
     it("should work when ledger wallet is connected", async () => {
       const expectedDerivationPath = "44'/60'/0'/2";
+      const dummyMetadata: ILedgerWalletMetadata = {
+        address: dummyEthereumAddress,
+        derivationPath: expectedDerivationPath,
+        walletType: WalletType.LEDGER,
+      };
 
       const dispatchMock = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {});
+      const ledgerWalletMock = createMock(LedgerWallet, {
+        getMetadata: (): ILedgerWalletMetadata => dummyMetadata,
+      });
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         finishConnecting: async () => ledgerWalletMock,
       });
@@ -233,10 +243,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         expectedDerivationPath,
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(walletMetadataStorageMock.set).to.be.calledWithExactly({
-        walletType: WalletType.LEDGER,
-        derivationPath: expectedDerivationPath,
-      });
+      expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata);
       expect(dispatchMock).to.be.calledWithExactly(actions.wallet.connected());
     });
 

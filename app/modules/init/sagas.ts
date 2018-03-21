@@ -1,13 +1,13 @@
 import { effects } from "redux-saga";
-import { fork, put, call } from "redux-saga/effects";
+import { fork, put } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
 
-import { neuCall, neuTakeEvery } from "../sagas";
-import { loadPreviousWallet } from "../web3/sagas";
-import { detectUserAgent } from "../userAgent/sagas";
 import { initializeContracts } from "../contracts/sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
+import { detectUserAgent } from "../userAgent/sagas";
+import { loadPreviousWallet } from "../web3/sagas";
 
 function* setup({ web3Manager }: TGlobalDependencies): Iterator<any> {
   try {

@@ -1,6 +1,6 @@
 import { effects } from "redux-saga";
 import { fork, put, select } from "redux-saga/effects";
-import { ILightWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { ILightWalletRetrieveMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightWallet,
   LightWalletUtil,
@@ -23,7 +23,7 @@ export async function retrieveMetadataFromVaultAPI(
   password: string,
   salt: string,
   email: string,
-): Promise<ILightWalletMetadata> {
+): Promise<ILightWalletRetrieveMetadata> {
   const vaultKey = await getVaultKey(lightWalletUtil, salt, password);
   try {
     const vault = await vaultApi.retrieve(vaultKey);
@@ -42,7 +42,7 @@ export async function retrieveMetadataFromVaultAPI(
 export function* getWalletMetadata(
   { walletMetadataStorage }: TGlobalDependencies,
   password: string,
-): Iterator<any | ILightWalletMetadata | undefined> {
+): Iterator<any | ILightWalletRetrieveMetadata | undefined> {
   const queryStringWalletInfo: { email: string; salt: string } | undefined = yield select(
     (s: IAppState) => selectLightWalletFromQueryString(s.router),
   );
@@ -82,7 +82,7 @@ export function* lightWalletLoginWatch(
   }
   const { password } = action.payload;
   try {
-    const walletMetadata: ILightWalletMetadata | undefined = yield neuCall(
+    const walletMetadata: ILightWalletRetrieveMetadata | undefined = yield neuCall(
       getWalletMetadata,
       password,
     );
@@ -104,7 +104,7 @@ export function* lightWalletLoginWatch(
       throw new LightWalletWrongPassword();
     }
 
-    walletMetadataStorage.set(walletMetadata);
+    walletMetadataStorage.set(wallet.getMetadata());
     yield web3Manager.plugPersonalWallet(wallet);
     yield put(actions.wallet.connected());
   } catch (e) {

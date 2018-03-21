@@ -1,8 +1,6 @@
-import { effects } from "redux-saga";
-import { fork, put } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
-import { neuTakeEvery } from "../sagas";
 
 export function* detectUserAgent({ detectBrowser }: TGlobalDependencies): any {
   const userAgentInfo = detectBrowser();

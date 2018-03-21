@@ -8,7 +8,6 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { WalletType } from "../../web3/types";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 
 //Vault nonce should be exactly 24 chars
@@ -55,12 +54,6 @@ export const lightWizardFlows = {
             lightWalletVault.salt,
           );
 
-          walletMetadataStorage.set({
-            walletType: WalletType.LIGHT,
-            vault: lightWalletVault.walletInstance,
-            salt: lightWalletVault.salt,
-            email: email,
-          });
           const vaultKey = await getVaultKey(lightWalletUtil, lightWalletVault.salt, password);
           await vaultApi.store(vaultKey, lightWalletVault.walletInstance);
           const lightWallet = await lightWalletConnector.connect(
@@ -71,6 +64,7 @@ export const lightWizardFlows = {
             email,
             password,
           );
+          walletMetadataStorage.set(lightWallet.getMetadata());
           await web3Manager.plugPersonalWallet(lightWallet);
           if (seed) dispatch(actions.routing.goToSuccessfulRecovery());
           else dispatch(actions.wallet.connected());

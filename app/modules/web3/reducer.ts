@@ -16,7 +16,6 @@ export interface IDisconnectedWeb3State {
 export interface IConnectedWeb3State {
   connected: true;
   wallet: TWalletMetadata;
-  ethereumAddress: EthereumAddress;
   isUnlocked: boolean; // this is important only for light wallet
 }
 
@@ -35,7 +34,6 @@ export const web3Reducer: AppReducer<IWeb3State> = (
       return {
         connected: true,
         wallet: action.payload.walletMetadata,
-        ethereumAddress: action.payload.ethereumAddress,
         isUnlocked: action.payload.isUnlocked,
       };
     case "PERSONAL_WALLET_DISCONNECTED":
@@ -81,8 +79,8 @@ export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State
   return state;
 };
 
-export const selectEthereumAddress = (state: IWeb3State) =>
-  selectConnectedWeb3State(state).ethereumAddress;
+export const selectEthereumAddress = (state: IWeb3State): EthereumAddress =>
+  state.connected ? state.wallet.address : state.previousConnectedWallet!.address;
 
 export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAddress, address => {
   return makeEthereumAddressChecksummed(address);

@@ -5,7 +5,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
-  ILightWalletMetadata,
+  ILightWalletRetrieveMetadata,
 } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { BrowserWalletConnector } from "../../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
@@ -77,7 +77,7 @@ async function connectBrowser(
 
 export async function connectLightWallet(
   lightWalletConnector: LightWalletConnector,
-  metadata: ILightWalletMetadata,
+  metadata: ILightWalletRetrieveMetadata,
   password?: string,
 ): Promise<IPersonalWallet> {
   const lightWalletUtils = new LightWalletUtil();

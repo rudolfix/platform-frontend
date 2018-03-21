@@ -1,10 +1,10 @@
-import { injectable, inject } from "inversify";
+import { inject, injectable } from "inversify";
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { Neumark } from "../../lib/contracts/Neumark";
-import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { ILogger } from "../../lib/dependencies/Logger";
+import { Web3Manager } from "../../lib/web3/Web3Manager";
 
 @injectable()
 export class ContractsService {
@@ -22,7 +22,7 @@ export class ContractsService {
     this.neumarkContract = null as any;
   }
 
-  public async init() {
+  public async init(): Promise<void> {
     this.logger.info("Contracts initialized");
 
     this.euroTokenContract = await EuroToken.createAndValidate(

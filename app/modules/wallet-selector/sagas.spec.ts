@@ -27,8 +27,8 @@ describe("Jwt actions", () => {
       const mockedState: Partial<IAppState> = {
         web3State: {
           connected: true,
-          ethereumAddress: dummyEthereumAddress,
           wallet: {
+            address: dummyEthereumAddress,
             walletType: WalletType.BROWSER,
           },
           isUnlocked: true,

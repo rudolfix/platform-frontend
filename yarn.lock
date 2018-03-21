@@ -2086,7 +2086,7 @@ elliptic@=6.4.0, elliptic@^6.0.0, elliptic@^6.2.3:
 
 elliptic@^3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-3.1.0.tgz#c21682ef762769b56a74201609105da11d5f60cc"
+  resolved "http://registry.npmjs.org/elliptic/-/elliptic-3.1.0.tgz#c21682ef762769b56a74201609105da11d5f60cc"
   dependencies:
     bn.js "^2.0.3"
     brorand "^1.0.1"
@@ -2379,7 +2379,7 @@ eth-block-tracker@^2.2.2:
 
 "eth-lightwallet@https://github.com/Neufund/eth-lightwallet.git":
   version "3.0.2"
-  resolved "https://github.com/Neufund/eth-lightwallet.git#231224f38f6192be0d7b4d09979d599756cfd5e9"
+  resolved "https://github.com/Neufund/eth-lightwallet.git#9c16062e95bdf173d2f072eb252dcaeadc6ffb70"
   dependencies:
     bitcore-lib "^0.15.0"
     bitcore-mnemonic "^1.5.0"

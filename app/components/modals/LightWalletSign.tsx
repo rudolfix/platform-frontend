@@ -1,8 +1,5 @@
 import * as React from "react";
 import { Input } from "reactstrap";
-import { actions } from "../../modules/actions";
-import { selectIsUnlocked } from "../../modules/web3/reducer";
-import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
 
 interface IState {
@@ -13,16 +10,15 @@ interface IStateProps {
   isUnlocked: boolean;
 }
 
-interface IDispatchProps {
+interface IOwnProps {
   onCancel: () => void;
   onAccept: (password?: string) => void;
 }
 
-export class LightWalletSignPromptComponent extends React.Component<
-  IDispatchProps & IStateProps,
-  IState
-> {
-  constructor(props: IDispatchProps & IStateProps) {
+type IProps = IStateProps & IOwnProps;
+
+export class LightWalletSignPrompt extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       password: "",
@@ -37,7 +33,6 @@ export class LightWalletSignPromptComponent extends React.Component<
 
   render(): React.ReactNode {
     const { onAccept, onCancel } = this.props;
-
     return (
       <div>
         <p>Light wallet sign!</p>
@@ -60,13 +55,3 @@ export class LightWalletSignPromptComponent extends React.Component<
     );
   }
 }
-
-export const LightWalletSignPrompt = appConnect<IStateProps, IDispatchProps>({
-  stateToProps: s => ({
-    isUnlocked: selectIsUnlocked(s.web3State),
-  }),
-  dispatchToProps: dispatch => ({
-    onAccept: (password?: string) => dispatch(actions.signMessageModal.accept(password)),
-    onCancel: () => dispatch(actions.signMessageModal.hide()),
-  }),
-})(LightWalletSignPromptComponent);

@@ -8,13 +8,31 @@ import { Form, FormikProps, withFormik } from "formik";
 import {
   IKycBeneficialOwner,
   IKycFileInfo,
-  KycBeneficialOwnerSchema,
+  KycBeneficialOwnerSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/forms";
-import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
+
+import { Col, Row } from "reactstrap";
+import { AccordionElement } from "../../shared/Accordion";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
+import {
+  BOOL_FALSE_KEY,
+  BOOL_TRUE_KEY,
+  boolify,
+  FormField,
+  FormSelectCountryField,
+  FormSelectField,
+  NONE_KEY,
+  unboolify,
+} from "../../shared/forms/forms";
+
+const PEP_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes they are",
+  [BOOL_FALSE_KEY]: "No they are not",
+};
 
 interface IStateProps {
   owner: IKycBeneficialOwner;
@@ -47,34 +65,47 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
     <Form>
       <FormField label="First Name" name="firstName" />
       <FormField label="Last Name" name="lastName" />
-      <FormField label="Birth Date" name="birthdate" />
+      <FormFieldDate label="Birthdate" name="birthDate" />
 
-      <FormField label="Address" name="address" />
-      <FormField label="Zip Code" name="zipCode" />
-      <FormField label="City" name="city" />
-      <FormField label="Country" name="country" />
-      <FormField label="Percent owned" name="ownership" />
-      <br />
-      <br />
+      <FormField label="Street and number" name="street" />
+      <Row>
+        <Col xs={12} md={6} lg={8}>
+          <FormField label="City" name="city" />
+        </Col>
+        <Col xs={12} md={6} lg={4}>
+          <FormField label="Zip Code" name="zipCode" />
+        </Col>
+      </Row>
+      <FormSelectCountryField label="Country" name="country" />
+      <FormSelectField
+        values={PEP_VALUES}
+        label="Is this person politically exposed?"
+        name="isPoliticallyExposed"
+      />
+      <Row>
+        <Col xs={6} md={4}>
+          <FormField label="Percent owned" name="ownership" />
+        </Col>
+      </Row>
       <ButtonPrimary
         color="primary"
         type="submit"
         disabled={!formikBag.isValid || formikBag.loading}
       >
-        Submit changes
+        Save
       </ButtonPrimary>
     </Form>
   );
 };
 
 const KYCEnhancedForm = withFormik<IProps, IKycBeneficialOwner>({
-  validationSchema: KycBeneficialOwnerSchema,
-  mapPropsToValues: props => props.owner,
-  isInitialValid: (props: any) => KycBeneficialOwnerSchema.isValidSync(props.currentValues),
+  validationSchema: KycBeneficialOwnerSchemaRequired,
+  mapPropsToValues: props => unboolify(props.owner),
+  isInitialValid: (props: any) => KycBeneficialOwnerSchemaRequired.isValidSync(props.owner),
   enableReinitialize: true,
   handleSubmit: (values, props) => {
     const ownership: any = values.ownership || "";
-    props.props.submitForm({ ...values, ownership: parseInt(ownership, 10) || 0 });
+    props.props.submitForm(boolify({ ...values, ownership: parseInt(ownership, 10) || 0 }));
   },
 })(KYCForm);
 
@@ -84,29 +115,25 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
   }
 
   render(): React.ReactChild {
+    const { owner } = this.props;
+
+    const name =
+      owner && owner.firstName && owner.lastName
+        ? `${owner.firstName} ${owner.lastName}`
+        : `Beneficial Owner ${this.props.index + 1}`;
+
     return (
-      <div>
-        <h3>Beneficial Owner {this.props.index + 1}</h3>
-        <br />
+      <AccordionElement title={name} isOpened={true}>
         <KYCEnhancedForm {...this.props} />
-        <br /> <br />
-        <h4>Supporting Documents</h4>
-        <br />
-        Please update documents here
-        <br />
         <KycFileUploadList
+          layout={"business"}
           onDropFile={this.props.onDropFile}
           files={this.props.files}
           fileUploading={this.props.fileUploading}
           filesLoading={this.props.filesLoading}
         />
-        <ButtonSecondary onClick={this.props.delete}>Delete Beneficial Owner</ButtonSecondary>
-        <br />
-        <br />
-        <HorizontalLine />
-        <br />
-        <br />
-      </div>
+        <ButtonSecondary onClick={this.props.delete}>Delete {name}</ButtonSecondary>
+      </AccordionElement>
     );
   }
 }

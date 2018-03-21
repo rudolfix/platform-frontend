@@ -6,7 +6,7 @@ import * as styles from "./Demo.module.scss";
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
-import { KycStatusWidget } from "./settings/kycStates/KycStatusWidget";
+import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
 import { BreadCrumb } from "./shared/BreadCrumb";
@@ -221,10 +221,10 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <KycStatusWidget />
+          <KycStatusWidgetComponent onStartKyc={() => {}} />
         </Col>
         <Col lg={6} xs={12}>
-          <KycStatusWidget kycDone />
+          <KycStatusWidgetComponent onStartKyc={() => {}} />
         </Col>
       </Row>
     </Container>

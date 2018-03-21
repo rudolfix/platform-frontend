@@ -1,0 +1,57 @@
+@import "../../styles/neufund-theme";
+
+.header {
+  margin-bottom: px-to-rem(72px);
+}
+
+.title {
+  text-align: center;
+}
+
+.description {
+  text-align: center;
+  margin-top: px-to-rem(18px);
+}
+
+.content {
+  @include make-col-ready;
+  @include make-col(1, 1);
+  @include media-breakpoint-up (md) {
+    @include make-col(10);
+    @include make-col-offset(1);
+  }
+  @include media-breakpoint-up (xxl) {
+    @include make-col(1, 2);
+    @include make-col-offset(1, 4);
+  }
+
+  :global(.btn) {
+    margin-bottom: px-to-rem(30px);
+    margin-top: px-to-rem(30px);
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    :global(.inline-icon) {
+      margin-right: px-to-rem(10px);
+    }
+  }
+
+}
+
+.footer {
+  min-height: px-to-rem(1px);
+  padding-bottom: px-to-rem(10px);
+  padding-left: px-to-rem(14px);
+}
+
+.kyc-panel-max {
+  .content {
+    @include media-breakpoint-up (md) {
+      @include make-col(1, 1);
+      @include make-col-offset(0);
+    }
+  }
+}

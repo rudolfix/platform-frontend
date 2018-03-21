@@ -6,7 +6,8 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import { ButtonPrimary } from "../../shared/Buttons";
-import { ProgressStepper } from "../../shared/ProgressStepper";
+import { KycPanel } from "../KycPanel";
+import { Panels, PanelTheme } from "../shared/Panels";
 
 interface IProps {
   goToPerson: () => void;
@@ -14,16 +15,28 @@ interface IProps {
 }
 
 export const KYCStartComponent: React.SFC<IProps> = props => (
-  <div>
-    <br />
-    <ProgressStepper steps={4} currentStep={1} />
-    <br />
-    <h1>Start your KYC</h1>
-    <br />
-    <ButtonPrimary onClick={props.goToPerson}>I represent myself</ButtonPrimary>
-    &nbsp;&nbsp;
-    <ButtonPrimary onClick={props.goToCompany}>I represent a company</ButtonPrimary>
-  </div>
+  <KycPanel
+    steps={4}
+    currentStep={1}
+    title={"Start your KYC"}
+    hasBackButton={false}
+    isMaxWidth={true}
+  >
+    <Panels
+      panels={[
+        {
+          content: <ButtonPrimary onClick={props.goToPerson}>I represent myself</ButtonPrimary>,
+          theme: PanelTheme.black,
+          id: 1,
+        },
+        {
+          content: <ButtonPrimary onClick={props.goToCompany}>I represent a company</ButtonPrimary>,
+          theme: PanelTheme.blue,
+          id: 2,
+        },
+      ]}
+    />
+  </KycPanel>
 );
 
 export const KYCStart = compose<React.SFC>(

@@ -30,21 +30,18 @@ interface IState {
 }
 
 export class ViewSeedComponent extends React.Component<IStateProps & IDispatchProps, IState> {
-  constructor(props: IStateProps & IDispatchProps) {
-    super(props);
-    this.onNext = this.onNext.bind(this);
-    this.onBack = this.onBack.bind(this);
+  public state = {
+    pageNo: 0,
+  };
 
-    this.state = {
-      pageNo: 0,
-    };
-  }
-  private onNext(): void {
+  private onNext = () => {
     this.setState({ pageNo: 1 });
-  }
-  private onBack(): void {
+  };
+
+  private onBack = () => {
     this.setState({ pageNo: 0 });
-  }
+  };
+
   componentWillMount(): void {
     this.props.fetchSeed();
   }
@@ -79,7 +76,7 @@ export class ViewSeedComponent extends React.Component<IStateProps & IDispatchPr
   }
 }
 
-const ViewSeedModalComponent: React.SFC<any> = props => {
+const ViewSeedModalComponent: React.SFC<IStateProps & IDispatchProps> = props => {
   return props.isUnlocked ? (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ViewSeedComponent {...props} />
@@ -87,7 +84,11 @@ const ViewSeedModalComponent: React.SFC<any> = props => {
   ) : (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>
-        <LightWalletSignPrompt onAccept={props.onAccept} onCancel={props.onCancel} />
+        <LightWalletSignPrompt
+          onAccept={props.onAccept}
+          onCancel={props.onCancel}
+          isUnlocked={props.isUnlocked}
+        />
         <p>{props.errorMsg}</p>
       </ModalComponentBody>
     </Modal>

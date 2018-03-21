@@ -1,7 +1,5 @@
 import * as React from "react";
 import { Input } from "reactstrap";
-import { selectIsUnlocked } from "../../modules/web3/reducer";
-import { appConnect } from "../../store";
 import { ButtonPrimary, ButtonSecondary } from "../shared/Buttons";
 
 interface IState {
@@ -12,13 +10,15 @@ interface IStateProps {
   isUnlocked: boolean;
 }
 
-interface IProps {
+interface IOwnProps {
   onCancel: () => void;
   onAccept: (password?: string) => void;
 }
 
-export class LightWalletSignPromptComponent extends React.Component<IStateProps & IProps, IState> {
-  constructor(props: IStateProps & IProps) {
+type IProps = IStateProps & IOwnProps;
+
+export class LightWalletSignPrompt extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       password: "",
@@ -53,9 +53,3 @@ export class LightWalletSignPromptComponent extends React.Component<IStateProps 
     );
   }
 }
-
-export const LightWalletSignPrompt = appConnect<IStateProps>({
-  stateToProps: s => ({
-    isUnlocked: selectIsUnlocked(s.web3State),
-  }),
-})(LightWalletSignPromptComponent);

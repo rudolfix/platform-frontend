@@ -7,7 +7,7 @@ import { ButtonPrimary } from "../../shared/Buttons";
 
 import * as styles from "./BackupSeedDisplay.module.scss";
 
-export const WORDS_PER_PAGE: number = 12;
+export const WORDS_PER_PAGE = 12;
 
 interface IBackupSeedDisplayProps {
   onNext: () => void;
@@ -21,6 +21,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
   const startWord = WORDS_PER_PAGE * props.pageNo;
   const endWord = startWord + WORDS_PER_PAGE;
   const showNextButton = endWord >= wordsNo;
+
   return (
     <>
       <Row>
@@ -30,6 +31,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
               {`${(props.pageNo + 1) * WORDS_PER_PAGE} / ${wordsNo}`}
             </Col>
           </Row>
+
           <Row className="justify-content-around no-gutters">
             {props.words.slice(startWord, endWord).map((word, index) => (
               <Col
@@ -47,6 +49,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
               </Col>
             ))}
           </Row>
+
           <Row className="my-4 justify-content-center justify-content-sm-between">
             <Col className="mt-2" xs="auto">
               <ButtonPrimary
@@ -75,6 +78,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
           </Row>
         </Col>
       </Row>
+
       {!props.isModal && (
         <Row>
           <Col>

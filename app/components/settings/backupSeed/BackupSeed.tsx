@@ -26,10 +26,6 @@ interface IStateProps {
 }
 
 class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> {
-  constructor(props: IDispatchProps & IStateProps) {
-    super(props);
-  }
-
   componentWillUnmount(): void {
     this.props.clearSeed();
   }
@@ -58,6 +54,7 @@ class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> 
                   <LightWalletSignPrompt
                     onAccept={this.props.onAccept}
                     onCancel={this.props.onCancel}
+                    isUnlocked={this.props.isUnlocked}
                   />
                 </Col>
                 <Col xs={12}>
@@ -78,11 +75,9 @@ class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> 
   }
 
   render(): React.ReactNode {
-    return this.props.isUnlocked ? (
-      <>{this.renderUnlockedWalletComponent()}</>
-    ) : (
-      <>{this.renderLockedWalletComponent()}</>
-    );
+    return this.props.isUnlocked
+      ? this.renderUnlockedWalletComponent()
+      : this.renderLockedWalletComponent();
   }
 }
 

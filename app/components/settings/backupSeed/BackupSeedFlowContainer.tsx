@@ -20,26 +20,21 @@ interface IState {
 }
 
 export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.onBack = this.onBack.bind(this);
-    this.onNext = this.onNext.bind(this);
-    this.state = {
-      backupStep: 5,
-    };
-  }
+  public state = {
+    backupStep: 1,
+  };
 
-  private onBack(): void {
+  private onBack = () => {
     this.setState({
       backupStep: this.state.backupStep - 1,
     });
-  }
+  };
 
-  private onNext(): void {
+  private onNext = () => {
     this.setState({
       backupStep: this.state.backupStep + 1,
     });
-  }
+  };
 
   renderBackupPage(): React.ReactNode {
     switch (this.state.backupStep) {
@@ -87,7 +82,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
             <PanelWhite>
               <HeaderProgressStepper
                 steps={4}
-                currentStep={1}
+                currentStep={this.state.backupStep}
                 headerText="The safety phrase is crucial for the safety of your assets"
                 descText="Please make sure you follow the instructions."
                 warning

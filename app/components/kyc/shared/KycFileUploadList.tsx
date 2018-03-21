@@ -64,17 +64,27 @@ export const KycFileUploadList: React.SFC<IProps> = ({ files, layout, ...props }
   return (
     <div className={cn(styles.upload, layout)}>
       <div className={styles.uploadDescription}>
-        <h3 className={styles.title}>Images must include</h3>
-        <img src={idImage} />
+        {layout === "personal" && <h3 className={styles.title}>Images must include</h3>}
+        {layout === "business" && <h3 className={styles.title}>Required documents</h3>}
+        {layout === "personal" && <img src={idImage} />}
         <div>
-          {layout === "business" && <strong>Images must include</strong>}
-          <ul className={styles.documentRequirements}>
-            <li>colored photo</li>
-            <li>Full name</li>
-            <li>Date of birth</li>
-            <li>Valid expiration date</li>
-            <li>Official document number</li>
-          </ul>
+          {layout === "personal" && (
+            <ul className={styles.documentRequirements}>
+              <li>colored photo</li>
+              <li>Full name</li>
+              <li>Date of birth</li>
+              <li>Valid expiration date</li>
+              <li>Official document number</li>
+            </ul>
+          )}
+
+          {layout === "business" && (
+            <ul className={styles.documentRequirements}>
+              <li>trade register scan</li>
+              <li>Article of association</li>
+              <li>Proof od address</li>
+            </ul>
+          )}
         </div>
       </div>
       <div className={styles.uploadZone}>

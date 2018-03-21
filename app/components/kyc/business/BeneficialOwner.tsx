@@ -126,7 +126,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
       <AccordionElement title={name} isOpened={true}>
         <KYCEnhancedForm {...this.props} />
         <KycFileUploadList
-          layout={"business"}
+          layout={"personal"}
           onDropFile={this.props.onDropFile}
           files={this.props.files}
           fileUploading={this.props.fileUploading}

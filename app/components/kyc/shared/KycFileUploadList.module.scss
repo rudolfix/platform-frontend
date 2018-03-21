@@ -2,37 +2,6 @@
 
 .upload {
   @include make-row;
-
-  &:global(.business) {
-    flex-direction: column;
-
-    .upload-description,
-    .upload-zone {
-      @include media-breakpoint-up (md) {
-        @include make-col(1, 1);
-      }
-    }
-
-    .upload-description {
-      border-right: 0;
-      display: flex;
-      flex-wrap: wrap;
-      padding: px-to-rem(15px);
-      background-color: $neu-pale-blue;
-
-      > * {
-        width: 50%;
-      }
-
-      .title {
-        display: none;
-      }
-    }
-
-    .upload-zone {
-      padding-left: px-to-rem(15px);
-    }
-  }
 }
 
 .title {

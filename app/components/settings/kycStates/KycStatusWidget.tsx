@@ -2,11 +2,13 @@ import * as cn from "classnames";
 import * as React from "react";
 import * as styles from "./KycStatusWidget.module.scss";
 
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
+import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
-// import { ArrowLink } from "../../shared/ArrowNavigation";
+import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
 //This is a mock implementation
@@ -37,9 +39,11 @@ export const KycStatusWidget: React.SFC<IProps> = ({ kycDone }) => {
         >
           <p className={cn(styles.text, "pt-2")}>Lorem upsom Kyc who bla once check rep</p>
           <Col xs={12} className="d-flex justify-content-center">
-            {/* <ArrowLink arrowDirection="right" to="#"> */}
-              Verify KYC
-            {/* </ArrowLink> */}
+            <Link to="#">
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                Verify KYC
+              </Button>
+            </Link>
           </Col>
         </div>
       )}

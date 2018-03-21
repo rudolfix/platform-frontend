@@ -2,14 +2,17 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import * as cn from "classnames";
+import { Link } from "react-router-dom";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { appRoutes } from "../../AppRouter";
-// import { ArrowLink } from "../../shared/ArrowNavigation";
+import { Button } from "../../shared/Buttons";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
 import * as styles from "./MyWalletWidget.module.scss";
+
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 
 interface IMyWalletWidget {
   euroTokenAmount: string;
@@ -32,13 +35,11 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
     <PanelDark
       headerText="My Wallet"
       rightComponent={
-        // <ArrowLink
-        //   arrowDirection="right"
-        //   to={appRoutes.manageWallet}
-        //   className={cn(styles.link, "text-light mb-1 pl-0 pr-0 pb-1 d-none d-sm-block text-right")}
-        // >
-          <span>Manage Wallet</span>
-        //</ArrowLink>
+        <Link to={appRoutes.manageWallet}>
+          <Button layout="icon-after" theme="t-white" svgIcon={arrowRight} className={cn(styles.link, "pr-0")}>
+            Manage Wallet
+          </Button>
+        </Link>
       }
     >
       <Row noGutters>
@@ -80,9 +81,11 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
           </div>
         </Col>
         <Col className="d-block d-sm-none text-right col-auto">
-          {/* <ArrowLink arrowDirection="right" to="#" className={cn(styles.link, "p-0 m-0 mt-3 mb-3")}> */}
-            Manage
-          {/* </ArrowLink> */}
+          <Link to={appRoutes.manageWallet}>
+            <Button layout="icon-after" theme="t-white" svgIcon={arrowRight} className={cn(styles.link, "pr-0")}>
+              Manage
+            </Button>
+          </Link>
         </Col>
       </Row>
     </PanelDark>

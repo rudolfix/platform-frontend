@@ -15,6 +15,7 @@ $_active-color: lighten($_hover-color, 20%);
   all: initial;
   cursor: pointer;
   font-weight: $font-weight-bold;
+  text-decoration: none;
 
   &:focus {
     .content {
@@ -35,7 +36,6 @@ $_active-color: lighten($_hover-color, 20%);
     position: relative;
     text-align: center;
     transition: 200ms ease-out all;
-    text-decoration: none;
   }
 
   &:disabled,
@@ -109,16 +109,18 @@ $_active-color: lighten($_hover-color, 20%);
   }
 
   // elements
-  &.icon-before {
-    :global(.inline-icon) {
-      margin-right: px-to-rem(10px);
+  &:global {
+    &.icon-before {
+      :global(.inline-icon) {
+        margin-right: px-to-rem(10px);
+      }
     }
-  }
 
 
-  &.icon-after {
-    :global(.inline-icon) {
-      margin-left: px-to-rem(10px);
+    &.icon-after {
+      :global(.inline-icon) {
+        margin-left: px-to-rem(10px);
+      }
     }
   }
 

@@ -20,13 +20,15 @@ interface IButtonProps {
   svgIcon?: string;
   to?: string;
   type?: string;
+  className?: string;
 }
 
 
-export const Button: React.SFC<IButtonProps> = ({ children, layout, theme, disabled, svgIcon, ...props }) => {
+export const Button: React.SFC<IButtonProps> = ({ children, layout, theme, disabled, svgIcon, className, ...props }) => {
+  const iconLayout = (layout === "icon-before" || layout === "icon-after" ? "secondary" : "");
   return (
-    <button className={cn('button', layout, theme)} disabled={ disabled } tabIndex={0} {...props}>
-      <div className={styles.content} tabIndex={-1}>
+    <button className={cn('button', layout, iconLayout, theme)} disabled={ disabled } tabIndex={0} {...props}>
+      <div className={cn(styles.content, className)} tabIndex={-1}>
         { layout === "icon-before" && <InlineIcon svgIcon={svgIcon || ''} />}
         { children }
         { layout === "icon-after" && <InlineIcon svgIcon={svgIcon || ''} />}

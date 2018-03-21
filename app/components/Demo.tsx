@@ -8,7 +8,6 @@ import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { KycStatusWidget } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
-// import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
 import { BreadCrumb } from "./shared/BreadCrumb";
 import { Button } from "./shared/Buttons";
 import { Money } from "./shared/Money";
@@ -25,9 +24,9 @@ export const Demo: React.SFC = () => (
           <br/>
           <Button disabled>Default Button Primary Disabled</Button>
           <br/>
-          <Button type="secondary">Button Secondary</Button>
+          <Button layout="secondary">Button Secondary</Button>
           <br/>
-          <Button type="secondary" disabled>Button Secondary Disabled</Button>
+          <Button layout="secondary" disabled>Button Secondary Disabled</Button>
         </Col>
       </Row>
     </Container>
@@ -38,27 +37,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
-    {/* <Container>
-      <Row>
-        <Col>
-          <ArrowLink arrowDirection="right" to="#">
-            Right arrow link
-          </ArrowLink>
-          <ArrowLink arrowDirection="left" to="#">
-            Left arrow link
-          </ArrowLink>
-
-          <ArrowButton arrowDirection="right">Right arrow button</ArrowButton>
-
-          <ArrowButton arrowDirection="right" disabled>
-            Right arrow button disabled
-          </ArrowButton>
-
-          <ArrowButton arrowDirection="left">Left arrow button</ArrowButton>
-        </Col>
-      </Row>
-    </Container> */}
 
     <Container>
       <Row>

@@ -2,16 +2,19 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col } from "reactstrap";
 
+import { Link } from "react-router-dom";
 import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
 import { appConnect } from "../../../store";
-// import { ArrowLink } from "../../shared/ArrowNavigation";
+import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 import { settingsRoutes } from "../routes";
 
 import * as styles from "./BackupSeedWidget.module.scss";
 
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
+
 
 interface IStateProps {
   backupCodesVerified?: boolean;
@@ -36,9 +39,11 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesV
         >
           <p className={cn(styles.text, "pt-2")}>You have backed up your SEED. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            {/* <ArrowLink arrowDirection="right" to="#"> */}
-              View Again
-            {/* </ArrowLink> */}
+            <Link to="#">
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                View Again
+              </Button>
+            </Link>
           </Col>
         </div>
       ) : (
@@ -51,9 +56,11 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesV
             you to restore your wallet and access your funds you forgot your password
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            {/* <ArrowLink arrowDirection="right" to={settingsRoutes.seedBackup}> */}
-              Backup phrase
-            {/* </ArrowLink> */}
+            <Link to={settingsRoutes.seedBackup}>
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                Backup phrase
+              </Button>
+            </Link>
           </Col>
         </div>
       )}

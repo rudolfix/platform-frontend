@@ -38,19 +38,19 @@ class BackupSeedContainerComponent extends React.Component<
     };
   }
 
-  onBack = () => {
+  private onBack(): void {
     this.setState({
       backupStep: this.state.backupStep - 1,
     });
-  };
+  }
 
-  onNext = () => {
+  private onNext(): void {
     this.setState({
       backupStep: this.state.backupStep + 1,
     });
-  };
+  }
 
-  render(): React.ReactNode {
+  renderBackupSeed(): React.ReactNode {
     switch (this.state.backupStep) {
       case 1:
         return <BackupSeedIntro onBack={appRoutes.settings} onNext={this.onNext} />;
@@ -73,6 +73,10 @@ class BackupSeedContainerComponent extends React.Component<
           />
         );
     }
+  }
+
+  render(): React.ReactNode {
+    return <>{this.renderBackupSeed()}</>;
   }
 }
 

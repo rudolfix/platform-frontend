@@ -1,4 +1,5 @@
 import { values } from "lodash";
+import { settingsActions } from "./settings/actions";
 
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
@@ -6,7 +7,6 @@ import { genericErrorModalActions } from "./genericErrorModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { routingActions } from "./routing/actions";
-import { settingsActions } from "./settings/actions";
 import { signMessageModalActions } from "./signMessageModal/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { walletActions } from "./wallet-selector/actions";

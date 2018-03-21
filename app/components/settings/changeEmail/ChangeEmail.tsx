@@ -29,7 +29,7 @@ const ChangeEmailForm = (formikBag: FormikProps<IFormValues>) => (
     />
     <div className="text-center">
       <ButtonPrimary type="submit" disabled={!formikBag.values.email}>
-        Login
+        Submit
       </ButtonPrimary>
     </div>
   </Form>

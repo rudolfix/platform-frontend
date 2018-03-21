@@ -4,7 +4,7 @@ import { noop } from "lodash";
 import * as React from "react";
 
 import { tid } from "../../../../test/testUtils";
-import { BackupSeedDisplayComponent } from "./BackupSeedDisplay";
+import { BackupSeedDisplay } from "./BackupSeedDisplay";
 
 const words = [
   "word1",
@@ -33,16 +33,10 @@ const words = [
   "word24",
 ];
 
-describe("<BackupSeedDisplayComponent />", () => {
+describe("<BackupSeedDisplay />", () => {
   it("should render all words in correct on consecutive pages", () => {
     const component = shallow(
-      <BackupSeedDisplayComponent
-        totalSteps={4}
-        startingStep={2}
-        onBack={noop}
-        onNext={noop}
-        words={words}
-      />,
+      <BackupSeedDisplay pageNo={0} onBack={noop} onNext={noop} words={words} />,
     );
 
     const renderedWords: string[] = [];
@@ -64,13 +58,7 @@ describe("<BackupSeedDisplayComponent />", () => {
 
   it("previous button should be disabled on first page", () => {
     const component = shallow(
-      <BackupSeedDisplayComponent
-        totalSteps={4}
-        startingStep={2}
-        onBack={noop}
-        onNext={noop}
-        words={words}
-      />,
+      <BackupSeedDisplay pageNo={0} onBack={noop} onNext={noop} words={words} />,
     );
 
     expect(component.find(tid("seed-display-prev-words")).prop("disabled")).to.be.true;
@@ -78,13 +66,7 @@ describe("<BackupSeedDisplayComponent />", () => {
 
   it("previous button should not be disabled on next page", () => {
     const component = shallow(
-      <BackupSeedDisplayComponent
-        totalSteps={4}
-        startingStep={2}
-        onBack={noop}
-        onNext={noop}
-        words={words}
-      />,
+      <BackupSeedDisplay pageNo={0} onBack={noop} onNext={noop} words={words} />,
     );
     component.find(tid("seed-display-next-words")).simulate("click");
 
@@ -93,13 +75,7 @@ describe("<BackupSeedDisplayComponent />", () => {
 
   it("should not render next 12 words button on last page but and show next link", () => {
     const component = shallow(
-      <BackupSeedDisplayComponent
-        totalSteps={4}
-        startingStep={2}
-        onBack={noop}
-        onNext={noop}
-        words={words}
-      />,
+      <BackupSeedDisplay pageNo={0} onBack={noop} onNext={noop} words={words} />,
     );
     component.find(tid("seed-display-next-words")).simulate("click");
 

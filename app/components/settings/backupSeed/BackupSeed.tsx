@@ -4,81 +4,12 @@ import { Col, Modal, Row } from "reactstrap";
 import { actions } from "../../../modules/actions";
 import { selectIsUnlocked, selectSeed } from "../../../modules/web3/reducer";
 import { appConnect } from "../../../store";
-import { appRoutes } from "../../AppRouter";
 import { LightWalletSignPrompt } from "../../modals/LightWalletSign";
-import { BackupSeedDisplay } from "./BackupSeedDisplay";
-import { BackupSeedIntro } from "./BackupSeedIntro";
-import { BackupSeedVerify } from "./BackupSeedVerify";
 
 import * as cn from "classnames";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import * as styles from "./BackupSeed.module.scss";
-
-interface IComponentDisptachProps {
-  verifyBackupPhrase: () => void;
-}
-
-interface IComponentStateProps {
-  seed: string[];
-}
-
-interface IComponentState {
-  backupStep: number;
-}
-
-class BackupSeedContainerComponent extends React.Component<
-  IComponentDisptachProps & IComponentStateProps,
-  IComponentState
-> {
-  constructor(props: IComponentStateProps & IComponentDisptachProps) {
-    super(props);
-
-    this.state = {
-      backupStep: 1,
-    };
-  }
-
-  private onBack(): void {
-    this.setState({
-      backupStep: this.state.backupStep - 1,
-    });
-  }
-
-  private onNext(): void {
-    this.setState({
-      backupStep: this.state.backupStep + 1,
-    });
-  }
-
-  renderBackupSeed(): React.ReactNode {
-    switch (this.state.backupStep) {
-      case 1:
-        return <BackupSeedIntro onBack={appRoutes.settings} onNext={this.onNext} />;
-      case 2:
-        return (
-          <BackupSeedDisplay
-            totalSteps={4}
-            startingStep={2}
-            onBack={this.onBack}
-            onNext={this.onNext}
-            words={this.props.seed}
-          />
-        );
-      default:
-        return (
-          <BackupSeedVerify
-            onBack={this.onBack}
-            onNext={this.props.verifyBackupPhrase}
-            words={this.props.seed}
-          />
-        );
-    }
-  }
-
-  render(): React.ReactNode {
-    return <>{this.renderBackupSeed()}</>;
-  }
-}
+import { BackupSeedFlowContainer } from "./BackupSeedFlowContainer";
 
 interface IDispatchProps {
   verifyBackupPhrase: () => void;
@@ -94,24 +25,21 @@ interface IStateProps {
   errorMsg?: string;
 }
 
-interface IBackupSeedContainerState {
-  seed: string[];
-}
-class BackupSeedContainer extends React.Component<
-  IDispatchProps & IStateProps,
-  IBackupSeedContainerState
-> {
+class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> {
   constructor(props: IDispatchProps & IStateProps) {
     super(props);
   }
+
   componentWillUnmount(): void {
     this.props.clearSeed();
   }
+
   renderUnlockedWalletComponent(): React.ReactNode {
     if (this.props.seed)
       return (
-        <BackupSeedContainerComponent
+        <BackupSeedFlowContainer
           verifyBackupPhrase={this.props.verifyBackupPhrase}
+          onCancel={this.props.onCancel}
           seed={this.props.seed}
         />
       );
@@ -139,7 +67,12 @@ class BackupSeedContainer extends React.Component<
             </Col>
           </Row>
         </Modal>
-        <BackupSeedIntro onBack={appRoutes.settings} onNext={() => {}} />
+        {/* This is done only for visuals */}
+        <BackupSeedFlowContainer
+          verifyBackupPhrase={this.props.onCancel}
+          onCancel={this.props.onCancel}
+          seed={[]}
+        />
       </>
     );
   }
@@ -160,12 +93,10 @@ export const BackupSeed = appConnect<IStateProps, IDispatchProps>({
     errorMsg: s.showSeedModal.errorMsg,
   }),
   dispatchToProps: dispatch => ({
-    verifyBackupPhrase: () => {
-      dispatch(actions.wallet.lightWalletBackedUp());
-    },
+    verifyBackupPhrase: () => dispatch(actions.wallet.lightWalletBackedUp()),
     onAccept: (password?: string) => dispatch(actions.showSeedModal.seedModelAccept(password)),
     onCancel: () => dispatch(actions.routing.goToSettings()),
     fetchSeed: () => dispatch(actions.web3.fetchSeedFromWallet()),
     clearSeed: () => dispatch(actions.web3.clearSeedFromState()),
   }),
-})(BackupSeedContainer);
+})(BackupSeedComponent);

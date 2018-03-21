@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Modal } from "reactstrap";
+import { Col, Modal, Row } from "reactstrap";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet, selectIsUnlocked, selectSeed } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
-import { BackupSeedDisplayComponent } from "../settings/backupSeed/BackupSeedDisplay";
+import { BackupSeedDisplay } from "../settings/backupSeed/BackupSeedDisplay";
+import { HeaderProgressStepper } from "../shared/HeaderProgressStepper";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { LightWalletSignPrompt } from "./LightWalletSign";
 import { ModalComponentBody } from "./ModalComponentBody";
@@ -31,11 +32,19 @@ interface IState {
 export class ViewSeedComponent extends React.Component<IStateProps & IDispatchProps, IState> {
   constructor(props: IStateProps & IDispatchProps) {
     super(props);
+    this.onNext = this.onNext.bind(this);
+    this.onBack = this.onBack.bind(this);
+
     this.state = {
       pageNo: 0,
     };
   }
-
+  private onNext(): void {
+    this.setState({ pageNo: 1 });
+  }
+  private onBack(): void {
+    this.setState({ pageNo: 0 });
+  }
   componentWillMount(): void {
     this.props.fetchSeed();
   }
@@ -46,7 +55,24 @@ export class ViewSeedComponent extends React.Component<IStateProps & IDispatchPr
 
   render(): React.ReactNode {
     return this.props.seed ? (
-      <BackupSeedDisplayComponent totalSteps={2} startingStep={1} words={this.props.seed} isModal />
+      <Row>
+        <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
+          <HeaderProgressStepper
+            steps={2}
+            currentStep={this.state.pageNo + 1}
+            headerText="The safety phrase is crucial for the safety of your assets"
+            descText="Please make sure you follow the instructions."
+            warning
+          />
+          <BackupSeedDisplay
+            words={this.props.seed}
+            isModal
+            pageNo={this.state.pageNo}
+            onNext={this.onNext}
+            onBack={this.onBack}
+          />
+        </Col>
+      </Row>
     ) : (
       <LoadingIndicator />
     );

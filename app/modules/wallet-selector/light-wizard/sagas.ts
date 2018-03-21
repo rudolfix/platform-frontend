@@ -69,7 +69,9 @@ export function* lightWalletBackupWatch({ getState }: TGlobalDependencies): Iter
     yield effects.call(updateUser, { ...user, backupCodesVerified: true });
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
-    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+    yield put(
+      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
+    );
   }
 }
 
@@ -106,9 +108,11 @@ export function* lightWalletLoginWatch(
 
     walletMetadataStorage.set(wallet.getMetadata());
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.wallet.connected());
+    yield put(actions.walletSelector.connected());
   } catch (e) {
-    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+    yield put(
+      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
+    );
   }
 }
 

@@ -9,7 +9,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { detectUserAgent } from "../userAgent/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
 
-function* setup({ web3Manager }: TGlobalDependencies): Iterator<any> {
+function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(detectUserAgent);
     yield web3Manager.initialize();
@@ -24,6 +24,7 @@ function* setup({ web3Manager }: TGlobalDependencies): Iterator<any> {
     yield put(actions.init.done());
   } catch (e) {
     yield put(actions.init.error(e.message || "Unknown error"));
+    logger.error("Error: ", e);
   }
 }
 

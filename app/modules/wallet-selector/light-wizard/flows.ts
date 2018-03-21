@@ -67,7 +67,7 @@ export const lightWizardFlows = {
           walletMetadataStorage.set(lightWallet.getMetadata());
           await web3Manager.plugPersonalWallet(lightWallet);
           if (seed) dispatch(actions.routing.goToSuccessfulRecovery());
-          else dispatch(actions.wallet.connected());
+          else dispatch(actions.walletSelector.connected());
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
           dispatch(

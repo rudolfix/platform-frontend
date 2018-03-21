@@ -8,8 +8,7 @@ export const dummyConfig: IConfig = {
     rpcUrl: "https://localhost:8080",
   },
   contractsAddresses: {
-    euroTokenAddress: "EURO_TOKEN_ADDRESS",
-    neumarkAddress: "NEUMARK_ADDRESS",
+    universeContractAddress: "UNIVERSE_ADDRESS",
   },
 };
 

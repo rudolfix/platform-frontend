@@ -4,7 +4,6 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 import * as styles from "./Demo.module.scss";
 
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
-import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { KycStatusWidget } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
@@ -20,6 +19,7 @@ import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
+import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -186,7 +186,8 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row noGutters>
         <Col>
-          <MyWalletWidget
+          <MyWalletWidgetComponent
+            isLoading={false}
             euroTokenEuroAmount={"6004904646" + "0".repeat(16)}
             euroTokenAmount={"36490" + "0".repeat(18)}
             ethAmount={"66482" + "0".repeat(14)}

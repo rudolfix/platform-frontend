@@ -46,7 +46,7 @@ export const RecoverySuccessComponent: React.SFC<IProps> = props => (
 export const RecoverySuccess = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
-      goToDashboard: () => dispatch(actions.wallet.connected()),
+      goToDashboard: () => dispatch(actions.walletSelector.connected()),
     }),
   }),
 )(RecoverySuccessComponent);

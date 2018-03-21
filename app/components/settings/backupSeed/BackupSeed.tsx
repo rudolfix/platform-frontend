@@ -60,7 +60,7 @@ class BackupSeedContainer extends React.Component<IDispatchProps, IComponentStat
 export const BackupSeed = appConnect<{}, IDispatchProps>({
   dispatchToProps: dispatch => ({
     verifyBackupPhrase: () => {
-      dispatch(actions.wallet.lightWalletBackedUp());
+      dispatch(actions.walletSelector.lightWalletBackedUp());
     },
   }),
 })(BackupSeedContainer);

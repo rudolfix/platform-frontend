@@ -5770,6 +5770,12 @@ progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
 
+promise-all@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/promise-all/-/promise-all-1.0.0.tgz#96f2c71973c94f1126f000463648e13a2d100b84"
+  dependencies:
+    is-plain-object "^2.0.1"
+
 promise-inflight@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"

@@ -43,7 +43,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         web3ManagerMock,
       );
 
-      expect(mockDispatch).to.be.calledWithExactly(actions.wallet.ledgerConnectionEstablished());
+      expect(mockDispatch).to.be.calledWithExactly(
+        actions.walletSelector.ledgerConnectionEstablished(),
+      );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
 
@@ -67,7 +69,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
 
       expect(mockDispatch).to.be.calledWithExactly(
-        actions.wallet.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
       );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
@@ -123,7 +125,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         dummyState.ledgerWizardState!.numberOfAccountsPerPage,
       );
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.wallet.setLedgerAccounts(
+        actions.walletSelector.setLedgerAccounts(
           [
             {
               address: expectedAccounts["44'/60'/0'/1"],
@@ -151,7 +153,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       ledgerWizardFlows.goToNextPageAndLoadData(mockDispatch);
 
       expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWith(actions.wallet.ledgerWizardAccountsListNextPage());
+      expect(mockDispatch).to.be.calledWith(
+        actions.walletSelector.ledgerWizardAccountsListNextPage(),
+      );
       expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
     });
   });
@@ -163,7 +167,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       ledgerWizardFlows.goToPreviousPageAndLoadData(mockDispatch);
 
       expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWith(actions.wallet.ledgerWizardAccountsListPreviousPage());
+      expect(mockDispatch).to.be.calledWith(
+        actions.walletSelector.ledgerWizardAccountsListPreviousPage(),
+      );
       expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
     });
   });
@@ -203,7 +209,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWithExactly(
-        actions.wallet.setLedgerWizardDerivationPathPrefix(newDP),
+        actions.walletSelector.setLedgerWizardDerivationPathPrefix(newDP),
       );
       expect(mockDispatch).to.be.calledWithExactly(ledgerWizardFlows.loadLedgerAccounts);
     });
@@ -244,7 +250,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
       expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata);
-      expect(dispatchMock).to.be.calledWithExactly(actions.wallet.connected());
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
 
     it("should not navigate when ledger wallet is not connected", async () => {
@@ -306,7 +312,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.wallet.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
       );
     });
   });

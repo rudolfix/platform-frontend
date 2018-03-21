@@ -13,7 +13,7 @@ function* signInUser(): Iterator<any> {
 
     yield effects.put(actions.routing.goToDashboard());
   } catch (e) {
-    yield effects.put(actions.wallet.messageSigningError("Error while signing a message!"));
+    yield effects.put(actions.walletSelector.messageSigningError("Error while signing a message!"));
   }
 }
 
@@ -59,7 +59,7 @@ export const walletSelectorSagas = function*(): Iterator<effects.Effect> {
 };
 
 function* obtainJWT(): Iterator<any> {
-  yield effects.put(actions.wallet.messageSigning());
+  yield effects.put(actions.walletSelector.messageSigning());
 
   const jwt: string = yield neuCall(obtainJwtPromise);
   yield effects.put(actions.auth.loadJWT(jwt));

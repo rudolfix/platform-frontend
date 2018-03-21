@@ -11,7 +11,7 @@ const actions = {
     createAction("WALLET_SELECTOR_MESSAGE_SIGNING_ERROR", { errorMessage }),
 };
 
-export const walletActions = {
+export const walletSelectorActions = {
   ...browserWizardActions,
   ...ledgerWizardActions,
   ...lightWizardActions,

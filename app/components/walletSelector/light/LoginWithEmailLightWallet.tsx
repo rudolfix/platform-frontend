@@ -78,7 +78,7 @@ export const LoginWithEmailLightWallet = compose<React.SFC<IOwnProps>>(
     }),
     dispatchToProps: (dispatch, ownProps) => ({
       submitForm: (values: IFormValues) => {
-        dispatch(actions.wallet.lightWalletLogin(ownProps.email, values.password));
+        dispatch(actions.walletSelector.lightWalletLogin(ownProps.email, values.password));
       },
     }),
   }),

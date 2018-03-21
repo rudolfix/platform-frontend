@@ -1,8 +1,11 @@
-import BigNumber from "bignumber.js";
 import { AppReducer } from "../../store";
 
+interface IWalletStateNotLoaded {
+  loading: true;
+}
+
 // balances of all coins are represented by bignumber.js strings
-export interface IWalletState {
+export interface IWalletStateData {
   euroTokenBalance: string;
   euroTokenLockedBalance: string;
   euroTokenICBMLockedBalance: string;
@@ -19,25 +22,27 @@ export interface IWalletState {
   neuPriceEur: string;
 }
 
+export interface IWalletStateLoaded extends IWalletStateData {
+  loading: false;
+}
+
+export type IWalletState = IWalletStateNotLoaded | IWalletStateLoaded;
+
 const walletInitialState: IWalletState = {
-  euroTokenBalance: new BigNumber("2500e18").toString(),
-  euroTokenLockedBalance: new BigNumber("5000e18").toString(),
-  euroTokenICBMLockedBalance: new BigNumber("7200e18").toString(),
-
-  etherBalance: new BigNumber("14.23e18").toString(),
-  etherTokenBalance: new BigNumber("15.53e18").toString(),
-  etherTokenLockedBalance: new BigNumber("2.23e18").toString(),
-  etherICBMLockedBalance: new BigNumber("12.23e18").toString(),
-
-  neuBalance: new BigNumber("4599.87e18").toString(),
-
-  etherPriceEur: new BigNumber("499").toString(),
-  neuPriceEur: new BigNumber("0.500901").toString(),
+  loading: true,
 };
 
 export const walletReducer: AppReducer<IWalletState> = (
   state = walletInitialState,
-  _action,
+  action,
 ): IWalletState => {
+  switch (action.type) {
+    case "WALLET_LOAD_WALLET_DATA":
+      return {
+        loading: false,
+        ...action.payload.data,
+      };
+  }
+
   return state;
 };

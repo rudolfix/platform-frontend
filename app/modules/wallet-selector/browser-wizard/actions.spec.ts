@@ -51,7 +51,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
       expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata);
-      expect(dispatchMock).to.be.calledWithExactly(actions.wallet.connected());
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
 
     it("should dispatch error action on error", async () => {
@@ -82,7 +82,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
       expect(walletMetadataStorageMock.set).to.not.be.called;
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.wallet.browserWalletConnectionError(
+        actions.walletSelector.browserWalletConnectionError(
           "Your wallet seems to be locked — we can't access any accounts.",
         ),
       );

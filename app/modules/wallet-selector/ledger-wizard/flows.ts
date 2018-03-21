@@ -24,9 +24,11 @@ export const ledgerWizardFlows = {
       try {
         await ledgerWalletConnector.connect(web3Manager.networkId!);
 
-        dispatch(actions.wallet.ledgerConnectionEstablished());
+        dispatch(actions.walletSelector.ledgerConnectionEstablished());
       } catch (e) {
-        dispatch(actions.wallet.ledgerConnectionEstablishedError(mapLedgerErrorToErrorMessage(e)));
+        dispatch(
+          actions.walletSelector.ledgerConnectionEstablishedError(mapLedgerErrorToErrorMessage(e)),
+        );
       }
     },
     [symbols.appDispatch, symbols.ledgerWalletConnector, symbols.web3Manager],
@@ -71,7 +73,7 @@ export const ledgerWizardFlows = {
         balanceNEU: "0",
       }));
 
-      dispatch(actions.wallet.setLedgerAccounts(accounts, derivationPathPrefix));
+      dispatch(actions.walletSelector.setLedgerAccounts(accounts, derivationPathPrefix));
     },
     [symbols.appDispatch, symbols.getState, symbols.ledgerWalletConnector, symbols.web3Manager],
   ),
@@ -82,7 +84,9 @@ export const ledgerWizardFlows = {
         const currDp = getState().ledgerWizardState.derivationPathPrefix;
 
         if (currDp !== derivationPathPrefix) {
-          dispatch(actions.wallet.setLedgerWizardDerivationPathPrefix(derivationPathPrefix));
+          dispatch(
+            actions.walletSelector.setLedgerWizardDerivationPathPrefix(derivationPathPrefix),
+          );
           dispatch(ledgerWizardFlows.loadLedgerAccounts);
         }
       },
@@ -91,7 +95,7 @@ export const ledgerWizardFlows = {
 
   goToNextPageAndLoadData: injectableFn(
     (dispatch: AppDispatch) => {
-      dispatch(actions.wallet.ledgerWizardAccountsListNextPage());
+      dispatch(actions.walletSelector.ledgerWizardAccountsListNextPage());
       return dispatch(ledgerWizardFlows.loadLedgerAccounts);
     },
     [symbols.appDispatch],
@@ -99,7 +103,7 @@ export const ledgerWizardFlows = {
 
   goToPreviousPageAndLoadData: injectableFn(
     (dispatch: AppDispatch) => {
-      dispatch(actions.wallet.ledgerWizardAccountsListPreviousPage());
+      dispatch(actions.walletSelector.ledgerWizardAccountsListPreviousPage());
       return dispatch(ledgerWizardFlows.loadLedgerAccounts);
     },
     [symbols.appDispatch],
@@ -118,7 +122,7 @@ export const ledgerWizardFlows = {
 
         // todo move saving metadata to unified connect functions
         walletMetadataStorage.set(ledgerWallet.getMetadata());
-        dispatch(actions.wallet.connected());
+        dispatch(actions.walletSelector.connected());
       },
       [
         symbols.appDispatch,
@@ -132,7 +136,7 @@ export const ledgerWizardFlows = {
     async (dispatch: AppDispatch, ledgerConnector: LedgerWalletConnector) => {
       if (!await ledgerConnector.testConnection()) {
         dispatch(
-          actions.wallet.ledgerConnectionEstablishedError(
+          actions.walletSelector.ledgerConnectionEstablishedError(
             mapLedgerErrorToErrorMessage(new LedgerNotAvailableError()),
           ),
         );

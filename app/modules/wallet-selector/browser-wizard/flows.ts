@@ -23,11 +23,13 @@ export const browserWizardFlows = {
 
         await web3Manager.plugPersonalWallet(browserWallet);
         walletMetadataStorage.set(browserWallet.getMetadata());
-        dispatch(actions.wallet.connected());
+        dispatch(actions.walletSelector.connected());
       } catch (e) {
         logger.warn("Error while trying to connect with browser wallet: ", e.message);
         dispatch(
-          actions.wallet.browserWalletConnectionError(mapBrowserWalletErrorToErrorMessage(e)),
+          actions.walletSelector.browserWalletConnectionError(
+            mapBrowserWalletErrorToErrorMessage(e),
+          ),
         );
       }
     },

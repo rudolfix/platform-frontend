@@ -8,7 +8,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
 
     const actualState = browserWalletWizardReducer(
       undefined,
-      actions.wallet.browserWalletConnectionError(expectedErrorMsg),
+      actions.walletSelector.browserWalletConnectionError(expectedErrorMsg),
     );
 
     expect(actualState).to.be.deep.eq({ isLoading: false, errorMsg: expectedErrorMsg });

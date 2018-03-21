@@ -42,9 +42,7 @@ export const KYCPersonalUploadComponent: React.SFC<IProps> = props => (
       filesLoading={props.filesLoading}
     />
     <br />
-    <Button onClick={props.onDone}>
-      Submit Verification Request
-    </Button>
+    <Button onClick={props.onDone}>Submit Verification Request</Button>
   </div>
 );
 

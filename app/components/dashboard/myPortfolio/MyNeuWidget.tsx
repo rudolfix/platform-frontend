@@ -29,7 +29,7 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
         <Col md={12} className="text-right text-md-center" data-test-id="arrow-neu">
           <Link to="#">
             <Button layout="icon-after" theme="t-white" svgIcon={arrowRight}>
-            About NEU
+              About NEU
             </Button>
           </Link>
         </Col>

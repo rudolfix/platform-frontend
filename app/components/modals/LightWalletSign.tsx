@@ -52,7 +52,9 @@ export class LightWalletSignPromptComponent extends React.Component<
         )}
         <div className="mt-3">
           <Button onClick={() => onAccept(this.state.password)}>Accept</Button>
-          <Button layout="secondary" onClick={onCancel}>Reject</Button>
+          <Button layout="secondary" onClick={onCancel}>
+            Reject
+          </Button>
         </div>
       </div>
     );

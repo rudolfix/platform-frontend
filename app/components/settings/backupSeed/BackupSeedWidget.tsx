@@ -15,7 +15,6 @@ import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
-
 interface IStateProps {
   backupCodesVerified?: boolean;
 }

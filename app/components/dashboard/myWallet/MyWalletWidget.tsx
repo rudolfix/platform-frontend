@@ -36,7 +36,12 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
       headerText="My Wallet"
       rightComponent={
         <Link to={appRoutes.manageWallet}>
-          <Button layout="icon-after" theme="t-white" svgIcon={arrowRight} className={cn(styles.link, "pr-0")}>
+          <Button
+            layout="icon-after"
+            theme="t-white"
+            svgIcon={arrowRight}
+            className={cn(styles.link, "pr-0")}
+          >
             Manage Wallet
           </Button>
         </Link>
@@ -82,7 +87,12 @@ export const MyWalletWidget: React.SFC<IMyWalletWidget> = ({
         </Col>
         <Col className="d-block d-sm-none text-right col-auto">
           <Link to={appRoutes.manageWallet}>
-            <Button layout="icon-after" theme="t-white" svgIcon={arrowRight} className={cn(styles.link, "pr-0")}>
+            <Button
+              layout="icon-after"
+              theme="t-white"
+              svgIcon={arrowRight}
+              className={cn(styles.link, "pr-0")}
+            >
               Manage
             </Button>
           </Link>

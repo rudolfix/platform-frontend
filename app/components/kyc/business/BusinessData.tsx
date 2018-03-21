@@ -53,10 +53,7 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
     <FormField label="City" touched={formikBag.touched} errors={formikBag.errors} name="city" />
     <FormField label="Country" name="country" />
     <br />
-    <Button
-      type="submit"
-      disabled={!formikBag.isValid || formikBag.loadingData}
-    >
+    <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
       Save
     </Button>
   </Form>

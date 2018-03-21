@@ -21,12 +21,14 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col>
           <Button>Default Button Primary</Button>
-          <br/>
+          <br />
           <Button disabled>Default Button Primary Disabled</Button>
-          <br/>
+          <br />
           <Button layout="secondary">Button Secondary</Button>
-          <br/>
-          <Button layout="secondary" disabled>Button Secondary Disabled</Button>
+          <br />
+          <Button layout="secondary" disabled>
+            Button Secondary Disabled
+          </Button>
         </Col>
       </Row>
     </Container>

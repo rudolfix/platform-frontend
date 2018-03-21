@@ -126,22 +126,14 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
             previous words
           </Button>
           {this.state.page + 1 < SEED_LENGTH / WORDS_PER_VIEW && (
-            <Button
-              data-test-id="btn-next"
-              disabled={!canAdvance}
-              onClick={this.handleNextView}
-            >
+            <Button data-test-id="btn-next" disabled={!canAdvance} onClick={this.handleNextView}>
               next {`${endIndex} / ${SEED_LENGTH}`}
             </Button>
           )}
         </Row>
         <Row className="text-center my-3">
           <Col>
-            <Button
-              data-test-id="btn-send"
-              disabled={!canSubmit}
-              onClick={this.handleSendWords}
-            >
+            <Button data-test-id="btn-send" disabled={!canSubmit} onClick={this.handleSendWords}>
               Send words
             </Button>
           </Col>

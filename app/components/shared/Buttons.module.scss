@@ -5,17 +5,16 @@ $_focus-color: $neu-piss-yellow;
 $_active-color: lighten($_hover-color, 20%);
 
 
-:global(.button):focus,
-.content:focus {
-  outline: none;
-}
-
-
 :global(.button) {
   all: initial;
   cursor: pointer;
   font-weight: $font-weight-bold;
   text-decoration: none;
+
+  &:focus,
+  .content:focus { // sass-lint:disable-line force-pseudo-nesting
+    outline: none;
+  }
 
   &:focus {
     .content {
@@ -35,12 +34,12 @@ $_active-color: lighten($_hover-color, 20%);
     padding-left: px-to-rem(20px);
     position: relative;
     text-align: center;
-    transition: 200ms ease-out all;
+    transition: 200ms ease-out all; // sass-lint:disable-line no-transition-all
   }
 
   &:disabled,
-  &:global(.primary):disabled,
-  &:global(.secondary):disabled {
+  &:global(.primary):disabled, // sass-lint:disable-line force-pseudo-nesting
+  &:global(.secondary):disabled { // sass-lint:disable-line force-pseudo-nesting
     color: $neu-pale-grey;
     cursor: not-allowed;
 
@@ -97,19 +96,17 @@ $_active-color: lighten($_hover-color, 20%);
   }
 
 
-  // themes
   &:global {
+    // themes
     &.t-white {
       color: $neu-white-two;
     }
-  
+
     &.t-dark {
       color: $neu-almost-black;
     }
-  }
 
-  // elements
-  &:global {
+    // elements
     &.icon-before {
       :global(.inline-icon) {
         margin-right: px-to-rem(10px);

@@ -14,8 +14,6 @@ import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
-
-
 export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) => {
   return (
     <PanelDark
@@ -36,7 +34,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
           <Col xs={12} className="d-flex justify-content-center">
             <Link to="#">
-              <Button layout="icon-after" svgIcon={arrowRight}>Resend Link</Button>
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                Resend Link
+              </Button>
             </Link>
           </Col>
         </div>
@@ -51,7 +51,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <Link to="#">
-              <Button layout="icon-after" svgIcon={arrowRight}>Verify</Button>
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                Verify
+              </Button>
             </Link>
           </Col>
         </div>

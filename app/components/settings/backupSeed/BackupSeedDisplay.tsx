@@ -3,13 +3,14 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
-// import { ArrowButton } from "../../shared/ArrowNavigation";
 import { BreadCrumb } from "../../shared/BreadCrumb";
 import { Button } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { PanelWhite } from "../../shared/PanelWhite";
 
 import * as styles from "./BackupSeedDisplay.module.scss";
+
+import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 
 export const WORDS_PER_PAGE = 12;
 
@@ -108,10 +109,7 @@ export class BackupSeedDisplay extends React.Component<
                     </Col>
                     <Col className="mt-2" xs="auto">
                       {showNextButton ? (
-                        <Button
-                          data-test-id="seed-display-next-link"
-                          onClick={this.props.onNext}
-                        >
+                        <Button data-test-id="seed-display-next-link" onClick={this.props.onNext}>
                           Go to next step
                         </Button>
                       ) : (
@@ -128,9 +126,9 @@ export class BackupSeedDisplay extends React.Component<
               </Row>
               <Row>
                 <Col>
-                  {/* <ArrowButton arrowDirection="left" onClick={this.props.onBack}> */}
+                  <Button layout="icon-before" svgIcon={arrowLeft} onClick={this.props.onBack}>
                     Back
-                  {/* </ArrowButton> */}
+                  </Button>
                 </Col>
               </Row>
             </PanelWhite>

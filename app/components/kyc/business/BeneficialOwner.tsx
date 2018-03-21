@@ -11,7 +11,7 @@ import {
   KycBeneficialOwnerSchema,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-// import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { FormField } from "../../shared/forms/forms";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
@@ -56,13 +56,9 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
       <FormField label="Percent owned" name="ownership" />
       <br />
       <br />
-      {/* <ButtonPrimary
-        color="primary"
-        type="submit"
-        disabled={!formikBag.isValid || formikBag.loading}
-      >
+      <Button type="submit" disabled={!formikBag.isValid || formikBag.loading}>
         Submit changes
-      </ButtonPrimary> */}
+      </Button>
     </Form>
   );
 };

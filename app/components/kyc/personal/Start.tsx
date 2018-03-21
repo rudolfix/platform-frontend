@@ -42,10 +42,7 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <div>TODO add checkboxes, please ask dave :)</div>
     <br />
     <br />
-    <Button
-      type="submit"
-      disabled={!formikBag.isValid || formikBag.loadingData}
-    >
+    <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
       Submit and continue
     </Button>
   </Form>

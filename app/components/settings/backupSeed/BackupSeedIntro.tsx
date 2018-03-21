@@ -50,7 +50,7 @@ export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNe
           <Row>
             <Col>
               <Link to="#">
-                <Button layout="icon-before" svgIcon={arrowLeft}>
+                <Button layout="icon-before" svgIcon={arrowLeft} onClick={() => onBack}>
                   Back
                 </Button>
               </Link>

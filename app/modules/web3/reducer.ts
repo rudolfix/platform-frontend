@@ -88,14 +88,6 @@ export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAd
   return makeEthereumAddressChecksummed(address);
 });
 
-export const selectIsLightWallet = (state: IWeb3State): boolean => {
-  return state.connected && state.wallet.walletType === WalletType.LIGHT;
-};
-
-export const selectIsUnlocked = (state: IWeb3State): boolean => {
-  return state.connected && state.isUnlocked;
-};
-
 export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
   !!(
     !state.connected &&
@@ -105,6 +97,17 @@ export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
     state.previousConnectedWallet.salt &&
     state.previousConnectedWallet.vault
   );
+
+export const selectIsLightWallet = (state: IWeb3State): boolean => {
+  return (
+    (state.connected && state.wallet.walletType === WalletType.LIGHT) ||
+    isLightWalletReadyToLogin(state)
+  );
+};
+
+export const selectIsUnlocked = (state: IWeb3State): boolean => {
+  return state.connected && state.isUnlocked;
+};
 
 export const selectPreviousLightWalletEmail = (state: IWeb3State): string | undefined =>
   (!state.connected &&

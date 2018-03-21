@@ -1,0 +1,58 @@
+@import "../../../../styles/neufund-theme";
+
+.birth-date-field {
+  @include media-breakpoint-up (md) {
+    flex-direction: row;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: px-to-rem(20px);
+  flex-direction: column;
+
+  input {
+    @include media-breakpoint-up (md) {
+      width: px-to-rem(80px);
+      margin: 0 px-to-rem(10px);
+    }
+
+    flex: 1;
+    text-align: center;
+  }
+
+  // sass-lint:disable no-vendor-prefixes
+  ::-webkit-input-placeholder {
+    text-align: center;
+  }
+
+  :-moz-placeholder {
+    text-align: center;
+  }
+
+  ::-moz-placeholder {
+    text-align: center;
+  }
+
+  :-ms-input-placeholder {
+    text-align: center;
+  }
+  // sass-lint:enable no-vendor-prefixes
+
+  .label {
+    @include media-breakpoint-up (md) {
+      align-self: flex-end;
+      margin-bottom: 0;
+    }
+
+    align-self: flex-start;
+    flex-shrink: 0;
+    margin-bottom: px-to-rem(10px);
+  }
+
+  .inputs-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

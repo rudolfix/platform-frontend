@@ -35,7 +35,7 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
       const newState = {
         id: state.id + 1,
         notifications: Array.from(state.notifications),
-      } ;
+      };
 
       newState.notifications.push({
         id: newState.id,

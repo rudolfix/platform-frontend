@@ -18,7 +18,7 @@ interface IComponentDisptachProps {
   verifyBackupPhrase: () => void;
 }
 
-interface IComponentProps {
+interface IComponentStateProps {
   seed: string[];
 }
 
@@ -27,10 +27,10 @@ interface IComponentState {
 }
 
 class BackupSeedContainerComponent extends React.Component<
-  IComponentDisptachProps & IComponentProps,
+  IComponentDisptachProps & IComponentStateProps,
   IComponentState
 > {
-  constructor(props: IComponentProps & IComponentDisptachProps) {
+  constructor(props: IComponentStateProps & IComponentDisptachProps) {
     super(props);
 
     this.state = {
@@ -103,7 +103,7 @@ class BackupSeedContainer extends React.Component<
   componentWillUnmount(): void {
     this.props.clearSeed();
   }
-  unlockedWalletComponent(): React.ReactNode {
+  renderUnlockedWalletComponent(): React.ReactNode {
     if (this.props.seed)
       return (
         <BackupSeedContainerComponent
@@ -115,39 +115,41 @@ class BackupSeedContainer extends React.Component<
     return <LoadingIndicator />;
   }
 
-  lockedWalletComponent = (): React.ReactNode => (
-    <>
-      <Modal isOpen={true} toggle={this.props.onCancel}>
-        <Row className="justify-content-center">
-          <Col xs={4} className={cn(styles.content, "d-flex align-items-center")}>
-            <Row>
-              <Col xs={12}>
-                <LightWalletSignPrompt
-                  onAccept={this.props.onAccept}
-                  onCancel={this.props.onCancel}
-                />
-              </Col>
-              <Col xs={12}>
-                <p>{this.props.errorMsg}</p>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Modal>
-      <BackupSeedIntro onBack={appRoutes.settings} onNext={() => {}} />
-    </>
-  );
+  renderLockedWalletComponent(): React.ReactNode {
+    return (
+      <>
+        <Modal isOpen={true} toggle={this.props.onCancel}>
+          <Row className="justify-content-center">
+            <Col xs={4} className={cn(styles.content, "d-flex align-items-center")}>
+              <Row>
+                <Col xs={12}>
+                  <LightWalletSignPrompt
+                    onAccept={this.props.onAccept}
+                    onCancel={this.props.onCancel}
+                  />
+                </Col>
+                <Col xs={12}>
+                  <p>{this.props.errorMsg}</p>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Modal>
+        <BackupSeedIntro onBack={appRoutes.settings} onNext={() => {}} />
+      </>
+    );
+  }
 
   render(): React.ReactNode {
     return this.props.isUnlocked ? (
-      <>{this.unlockedWalletComponent()}</>
+      <>{this.renderUnlockedWalletComponent()}</>
     ) : (
-      <>{this.lockedWalletComponent()}</>
+      <>{this.renderLockedWalletComponent()}</>
     );
   }
 }
 
-export const BackupSeed = appConnect<{}, IDispatchProps>({
+export const BackupSeed = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isUnlocked: selectIsUnlocked(s.web3State),
     seed: selectSeed(s.web3State),

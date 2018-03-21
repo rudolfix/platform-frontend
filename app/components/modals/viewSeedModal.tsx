@@ -28,13 +28,16 @@ interface IState {
   seed?: string[];
 }
 
-export class ViewSeedModalComponent extends React.Component<IStateProps & IDispatchProps, IState> {
-  constructor(props: any) {
+export class ViewSeedComponent extends React.Component<IStateProps & IDispatchProps, IState> {
+  constructor(props: IStateProps & IDispatchProps) {
     super(props);
-    this.props.fetchSeed();
     this.state = {
       pageNo: 0,
     };
+  }
+
+  componentWillMount(): void {
+    this.props.fetchSeed();
   }
 
   componentDidUpdate(): void {
@@ -50,10 +53,10 @@ export class ViewSeedModalComponent extends React.Component<IStateProps & IDispa
   }
 }
 
-const Test: React.SFC<any> = props => {
+const ViewSeedModalComponent: React.SFC<any> = props => {
   return props.isUnlocked ? (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
-      <ViewSeedModalComponent {...props} />
+      <ViewSeedComponent {...props} />
     </Modal>
   ) : (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
@@ -79,4 +82,4 @@ export const ViewSeedModal = appConnect<IStateProps, IDispatchProps>({
     fetchSeed: () => dispatch(actions.web3.fetchSeedFromWallet()),
     clearSeed: () => dispatch(actions.web3.clearSeedFromState()),
   }),
-})(Test);
+})(ViewSeedModalComponent);

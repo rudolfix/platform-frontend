@@ -104,7 +104,7 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   return (
     <div>
       <KycFileUploadList
-        layout="business"
+        layout="personal"
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}

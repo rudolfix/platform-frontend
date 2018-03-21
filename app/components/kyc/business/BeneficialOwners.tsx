@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import * as styles from "./BeneficialOwners.module.scss";
 
@@ -29,7 +30,7 @@ type IProps = IStateProps & IDispatchProps;
 
 export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   <div>
-    <HorizontalLine />
+    <HorizontalLine className={cn("mt-2", "mb-2")} />
     <h4 className={styles.sectionTitle}>Beneficial owners (which hold more than 25%)</h4>
     <Accordion>
       {props.beneficialOwners.map(

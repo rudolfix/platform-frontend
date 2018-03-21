@@ -60,10 +60,10 @@
 
 .upload-description {
   @include media-breakpoint-up (md) {
+    border-right: 1px solid $neu-light-blue-grey;
     padding-right: px-to-rem(60px);
   }
 
-  border-right: 1px solid $neu-light-blue-grey;
 }
 
 .upload-zone {

@@ -38,3 +38,4 @@ yarn build:prod
 ### Docs
 
 * [Component Development Guidelines](./docs/component-development-guidelines.md)
+* [Testing production build](./docs/testing-prod-build.md)

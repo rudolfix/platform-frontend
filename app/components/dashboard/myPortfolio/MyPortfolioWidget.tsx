@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import { Button } from "../../shared/Buttons";
 
-export const MyPortfolio = () => {
+export const MyPortfolio: React.SFC = () => {
   return (
     <PanelDark headerText="My portfolio">
       <Row className={cn(styles.main, "pb-3")}>

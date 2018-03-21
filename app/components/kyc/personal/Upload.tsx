@@ -5,12 +5,12 @@ import { compose } from "redux";
 import { appConnect } from "../../../store";
 
 import { actions } from "../../../modules/actions";
-import { ProgressStepper } from "../../shared/ProgressStepper";
 
 import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
-import { KycFileUploadList } from "../shared/KycFileUploadList";
+import { KycPanel } from "../KycPanel";
+import { KycFileUploadList, TUploadListLayout } from "../shared/KycFileUploadList";
 
 interface IStateProps {
   fileUploading: boolean;
@@ -23,26 +23,30 @@ interface IDispatchProps {
   onDropFile: (file: File) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+interface IProps {
+  layout: TUploadListLayout;
+}
 
-export const KYCPersonalUploadComponent: React.SFC<IProps> = props => (
-  <div>
-    <br />
-    <ProgressStepper steps={4} currentStep={3} />
-    <br />
-    <h1>Upload documents</h1>
-    <br />
-    Please submit a scan of the front and back of your identification document.
-    <br />
-    <br />
+export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps> = props => (
+  <KycPanel
+    steps={4}
+    currentStep={3}
+    title={"Upload your ID"}
+    description={
+      "Please upload a colored copy of your passport or both sides of ID card for verification."
+    }
+    hasBackButton={true}
+  >
     <KycFileUploadList
       onDropFile={props.onDropFile}
       files={props.files}
       fileUploading={props.fileUploading}
       filesLoading={props.filesLoading}
+      layout="personal"
     />
-    <br />
-    <Button onClick={props.onDone}>Submit Verification Request</Button>
+    <Button
+      onClick={props.onDone}
+      disabled={!props.files || props.files.length === 0}>Submit</Button>
   </div>
 );
 
@@ -61,4 +65,4 @@ export const KYCPersonalUpload = compose<React.SFC>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.kyc.kycLoadIndividualDocumentList()),
   }),
-)(KYCPersonalUploadComponent);
+)(KYCUploadComponent);

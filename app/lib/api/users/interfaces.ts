@@ -5,6 +5,7 @@ export interface IUser {
   language?: string;
   unverifiedEmail?: string;
   verifiedEmail?: string;
+  newEmail?: string;
 }
 
 export const UserValidator = Yup.object()

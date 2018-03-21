@@ -6,15 +6,46 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 
-import { ProgressStepper } from "../../shared/ProgressStepper";
-
 import { actions } from "../../../modules/actions";
 
-import { FormField } from "../../shared/forms/forms";
+import {
+  BOOL_FALSE_KEY,
+  BOOL_TRUE_KEY,
+  boolify,
+  FormField,
+  FormSelectCountryField,
+  FormSelectField,
+  NONE_KEY,
+  unboolify,
+} from "../../shared/forms/forms";
 
-import { IKycIndividualData, KycIndividudalDataSchema } from "../../../lib/api/KycApi.interfaces";
+import { Col, Row } from "reactstrap";
+import {
+  IKycIndividualData,
+  KycIndividudalDataSchemaRequired,
+} from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
+import { KycPanel } from "../KycPanel";
+
+const PEP_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes I am",
+  [BOOL_FALSE_KEY]: "No I am not",
+};
+
+const US_CITIZEN_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes I am",
+  [BOOL_FALSE_KEY]: "No I am not",
+};
+
+const HIGH_INCOME_VALUES = {
+  [NONE_KEY]: "-please select-",
+  [BOOL_TRUE_KEY]: "Yes I have",
+  [BOOL_FALSE_KEY]: "No I have not",
+};
 
 interface IStateProps {
   currentValues?: IKycIndividualData;
@@ -31,17 +62,29 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
   <Form>
     <FormField label="First Name" name="firstName" />
     <FormField label="Last Name" name="lastName" />
-    <FormField label="Birth Date" name="birthdate" />
+    <FormFieldDate label="Birthdate" name="birthDate" />
 
-    <FormField label="Address" name="address" />
-    <FormField label="Zip Code" name="zipCode" />
-    <FormField label="City" name="city" />
-    <FormField label="Country" name="country" />
+    <FormField label="Street and number" name="street" />
+    <Row>
+      <Col xs={12} md={6} lg={8}>
+        <FormField label="City" name="city" />
+      </Col>
+      <Col xs={12} md={6} lg={4}>
+        <FormField label="Zip Code" name="zipCode" />
+      </Col>
+    </Row>
+    <FormSelectCountryField label="Country" name="country" />
     <br />
-    <br />
-    <div>TODO add checkboxes, please ask dave :)</div>
-    <br />
-    <br />
+    <FormSelectField
+      values={PEP_VALUES}
+      label="Are you politically exposed?"
+      name="isPoliticallyExposed"
+    />
+    <FormSelectField values={US_CITIZEN_VALUES} label="Are you a US citizen?" name="isUsCitizen" />
+    <FormSelectField
+      values={HIGH_INCOME_VALUES}
+      label="Do you have a high income??"
+      name="isHighIncome"
     <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
       Submit and continue
     </Button>
@@ -49,24 +92,20 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
-  validationSchema: KycIndividudalDataSchema,
-
-  isInitialValid: (props: any) => KycIndividudalDataSchema.isValidSync(props.currentValues),
-  mapPropsToValues: props => props.currentValues as IKycIndividualData,
+  validationSchema: KycIndividudalDataSchemaRequired,
+  isInitialValid: (props: any) => KycIndividudalDataSchemaRequired.isValidSync(props.currentValues),
+  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
   enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  handleSubmit: (values, props) => {
+    props.props.submitForm(boolify(values));
+  },
 })(KYCForm);
 
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
-    <div>
-      <br />
-      <ProgressStepper steps={4} currentStep={2} />
-      <br />
-      <h1>Personal Details</h1>
-      <br />
+    <KycPanel steps={4} currentStep={2} title={"Personal Details"} hasBackButton={true}>
       <KYCEnhancedForm {...props} />
-    </div>
+    </KycPanel>
   );
 };
 

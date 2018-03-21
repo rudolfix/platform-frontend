@@ -3,6 +3,7 @@
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "./variables";
+@import "./elements/ul";
 @import "./utils";
 @import "./global";
 
@@ -68,6 +69,12 @@ a {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   border-radius: 0;
   border-top-color: #ccc;
+}
+
+
+.form-control {
+  -webkit-appearance: none; // scss-lint:disable VendorPrefi
+  border-radius: 0;
 }
 
 .modal {

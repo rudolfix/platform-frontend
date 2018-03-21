@@ -406,8 +406,8 @@ export function* kycSagas(): any {
   yield fork(neuTakeEvery, "KYC_SET_BUSINESS_TYPE", setBusinessType);
   yield fork(neuTakeEvery, "KYC_LOAD_BUSINESS_DATA", loadBusinessData);
   yield fork(neuTakeEvery, "KYC_SUBMIT_BUSINESS_DATA", submitBusinessData);
-  yield fork(neuTakeEvery, "KYC_LOAD_LEGAL_REPRESENTATIVE_FILE_LIST", uploadBusinessFile);
-  yield fork(neuTakeEvery, "KYC_UPLOAD_BUSINESS_FILE", loadLegalRepresentativeFiles);
+  yield fork(neuTakeEvery, "KYC_LOAD_LEGAL_REPRESENTATIVE_FILE_LIST", loadLegalRepresentativeFiles);
+  yield fork(neuTakeEvery, "KYC_UPLOAD_BUSINESS_FILE", uploadBusinessFile);
   yield fork(neuTakeEvery, "KYC_LOAD_BUSINESS_FILE_LIST", loadBusinessFiles);
 
   yield fork(neuTakeEvery, "KYC_LOAD_BENEFICIAL_OWNERS", loadBeneficialOwners);

@@ -3,7 +3,7 @@ import { settingsActions } from "./settings/actions";
 
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
-import { genericErrorModalActions } from "./genericErrorModal/actions";
+import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { routingActions } from "./routing/actions";
@@ -19,7 +19,7 @@ export const actions = {
   settings: settingsActions,
   signMessageModal: signMessageModalActions,
   showSeedModal: showSeedModalActions,
-  genericErrorModal: genericErrorModalActions,
+  genericModal: genericModalActions,
   init: initActions,
   kyc: kycActions,
   routing: routingActions,
@@ -37,7 +37,7 @@ export const allActions = {
   ...settingsActions,
   ...signMessageModalActions,
   ...showSeedModalActions,
-  ...genericErrorModalActions,
+  ...genericModalActions,
   ...initActions,
   ...routingActions,
   ...kycActions,

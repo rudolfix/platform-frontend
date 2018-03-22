@@ -1,7 +1,7 @@
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
 import { LocationChangeAction, routerReducer, RouterState } from "react-router-redux";
 import { combineReducers } from "redux";
-import { genericErrorModalReducer } from "./modules/genericErrorModal/reducer";
+import { genericModalReducer } from "./modules/genericModal/reducer";
 
 import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
@@ -47,7 +47,7 @@ const appReducers = {
   browser: browserReducer,
   walletSelector: walletSelectorReducer,
   auth: authReducer,
-  genericErrorModal: genericErrorModalReducer,
+  genericModal: genericModalReducer,
   signMessageModal: signMessageModalReducer,
   showSeedModal: showSeedModalReducer,
   kyc: kycReducer,

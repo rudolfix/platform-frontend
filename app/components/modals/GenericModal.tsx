@@ -2,7 +2,7 @@ import * as React from "react";
 import { Modal, Row } from "reactstrap";
 
 import { actions } from "../../modules/actions";
-import { IGenericModal, icon } from '../../modules/genericModal/reducer';
+import { IGenericModal } from "../../modules/genericModal/reducer";
 import { appConnect } from "../../store";
 import { ButtonPrimary } from "../shared/Buttons";
 import { ModalComponentBody } from "./ModalComponentBody";
@@ -40,8 +40,7 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
         </Row>
         <Row className="mb-5 justify-content-center">
           <p className="-center">
-              {genericModalObj && genericModalObj.icon && iconDict[genericModalObj.icon]}
-            {" "}
+            {genericModalObj && genericModalObj.icon && iconDict[genericModalObj.icon]}{" "}
             {genericModalObj && genericModalObj.description}
           </p>
         </Row>

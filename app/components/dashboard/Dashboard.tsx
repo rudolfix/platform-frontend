@@ -1,5 +1,7 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+
+import { INotification, seedNotBackedUpNotification } from "../../modules/notifications/reducer";
 import {
   selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
@@ -19,13 +21,14 @@ interface IStateProps {
   liquidEtherBalanceEuroAmount: string;
   liquidEuroTokenBalance: string;
   liquidEuroTotalAmount: string;
+  notifications?: INotification[];
 }
 
 type IProps = IStateProps;
 
 export const DashboardComponent = (props: IProps) => (
   <LayoutAuthorized>
-    <NotificationWidget />
+    <NotificationWidget notifications={props.notifications} />
     <MessageSignModal />
     <Row className="py-4">
       <Col lg={8} xs={12}>
@@ -56,5 +59,7 @@ export const Dashboard = appConnect<IStateProps, {}>({
     liquidEuroTokenBalance: selectLiquidEuroTokenBalance(s.wallet),
     liquidEtherBalanceEuroAmount: selectLiquidEtherBalanceEuroAmount(s.wallet),
     liquidEuroTotalAmount: selectLiquidEuroTotalAmount(s.wallet),
+    notifications:
+      s.auth.user && s.auth.user.backupCodesVerified ? [] : [seedNotBackedUpNotification()],
   }),
 })(DashboardComponent);

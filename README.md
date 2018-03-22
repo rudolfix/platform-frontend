@@ -13,9 +13,16 @@
 
 ```sh
 yarn
-yarn ganache   # in separate window
+yarn ganache   # in separate window. You need to upload neufund contracts. Keep on reading.
 yarn start
 ```
+
+#### Uploading contracts
+
+To upload modified version of Neufund Smartcontract that allows for easier blockchain development
+you need to checkout
+[`kk/frontend-platform-fixtures`](https://github.com/Neufund/platform-contracts/pull/55) branch and
+run `yarn fixture`.
 
 ## Running tests
 

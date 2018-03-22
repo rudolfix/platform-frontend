@@ -69,6 +69,13 @@ export function* lightWalletBackupWatch(): Iterator<any> {
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield effects.put(actions.routing.goToSettings());
+    yield effects.put(
+      actions.genericModal.showGenericModal(
+        "Backup Seed",
+        "you have successfully back up your wallet",
+        "check",
+      ),
+    );
   } catch (e) {
     yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
   }

@@ -80,6 +80,7 @@ export const lightWizardFlows = {
             actions.genericModal.showGenericModal(
               "Light wallet Error",
               mapLightWalletErrorToErrorMessage(e),
+              "exclamation",
             ),
           );
         }

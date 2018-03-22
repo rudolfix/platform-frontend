@@ -108,7 +108,7 @@ function* unlockLightWallet(): any {
   }
 }
 
-export function* connectWalletAndRunEffect(effect: Effect): any {
+export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): any {
   // connect wallet
   while (true) {
     try {
@@ -130,7 +130,7 @@ export function* connectWalletAndRunEffect(effect: Effect): any {
 }
 
 export function* accessWalletAndRunEffect(
-  effect: Effect,
+  effect: Effect | Iterator<Effect>,
   title: string = "",
   message: string = "",
 ): any {

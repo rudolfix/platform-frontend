@@ -4,8 +4,8 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
 import { selectUser } from "../auth/reducer";
-import { updateUser } from "../auth/sagas";
-import { neuTakeEvery } from "../sagas";
+import { ensurePermissionsArePresent, updateUser } from "../auth/sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
 import { actions } from "./../actions";
 
 export function* addNewEmail(
@@ -13,9 +13,16 @@ export function* addNewEmail(
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;
+
   const email = action.payload.email;
   const user = yield select(selectUser);
   try {
+    yield neuCall(
+      ensurePermissionsArePresent,
+      ["change-email"],
+      "Change email",
+      "Confirm changing your email.",
+    );
     yield effects.call(updateUser, { ...user, new_email: email });
     yield effects.put(actions.routing.goToSettings());
     notificationCenter.info("New Email added");

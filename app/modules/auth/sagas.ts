@@ -1,8 +1,10 @@
 import { effects } from "redux-saga";
-import { Effect, fork } from "redux-saga/effects";
+import { call, Effect, fork } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
+import { hasValidPermissions } from "../../utils/JWTUtils";
+import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
@@ -65,7 +67,8 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
 
 function* signInUser(): Iterator<any> {
   try {
-    yield obtainJWT();
+    yield effects.put(actions.wallet.messageSigning());
+    yield neuCall(obtainJWT);
     yield effects.spawn(loadUser);
 
     yield effects.put(actions.routing.goToDashboard());
@@ -74,13 +77,13 @@ function* signInUser(): Iterator<any> {
   }
 }
 
-export async function obtainJwtPromise({
-  getState,
-  web3Manager,
-  signatureAuthApi,
-  cryptoRandomString,
-  logger,
-}: TGlobalDependencies, permissions: Array<string> = []): Promise<string> {
+/**
+ * Saga & Promise to fetch a new jwt from the authentication server
+ */
+export async function obtainJwtPromise(
+  { getState, web3Manager, signatureAuthApi, cryptoRandomString, logger }: TGlobalDependencies,
+  permissions: Array<string> = [],
+): Promise<string> {
   const address = selectEthereumAddressWithChecksum(getState().web3State);
 
   const salt = cryptoRandomString(64);
@@ -90,7 +93,12 @@ export async function obtainJwtPromise({
   /* tslint:enable: no-useless-cast */
 
   logger.info("Obtaining auth challenge from api");
-  const { body: { challenge } } = await signatureAuthApi.challenge(address, salt, signerType, permissions);
+  const { body: { challenge } } = await signatureAuthApi.challenge(
+    address,
+    salt,
+    signerType,
+    permissions,
+  );
 
   logger.info("Signing challenge");
   /* tslint:disable: no-useless-cast */
@@ -107,18 +115,40 @@ export async function obtainJwtPromise({
   return jwt;
 }
 
-function* saveJwtToStorage({ jwtStorage }: TGlobalDependencies, jwt: string): Iterator<any> {
-  jwtStorage.set(jwt);
-}
-
-function* obtainJWT(): Iterator<any> {
-  yield effects.put(actions.wallet.messageSigning());
-
-  const jwt: string = yield neuCall(obtainJwtPromise);
+// see above
+function* obtainJWT(
+  { jwtStorage }: TGlobalDependencies,
+  permissions: Array<string> = [],
+): Iterator<any> {
+  const jwt: string = yield neuCall(obtainJwtPromise, permissions);
   yield effects.put(actions.auth.loadJWT(jwt));
-  yield neuCall(saveJwtToStorage, jwt);
+  jwtStorage.set(jwt);
 
   return jwt;
+}
+
+/**
+ * Saga to ensure all the needed permissions are present and still valid
+ * on the current jwt
+ */
+export function* ensurePermissionsArePresent(
+  { jwtStorage }: TGlobalDependencies,
+  permissions: Array<string> = [],
+  title: string = "",
+  message: string = "",
+): Iterator<any> {
+  // check wether all permissions are present and still valid
+  const jwt = jwtStorage.get();
+  if (jwt && hasValidPermissions(jwt, permissions)) {
+    return;
+  }
+  // obtain a freshly signed token with missing permissions
+  try {
+    const obtainJwtEffect = neuCall(obtainJWT, permissions);
+    yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message);
+  } catch {
+    throw new Error("Message signing failed");
+  }
 }
 
 export const authSagas = function*(): Iterator<effects.Effect> {

@@ -9,6 +9,7 @@ import { tid } from "../../../../test/testUtils";
 describe("<MyWalletWidget />", () => {
   it("should render all important components", () => {
     const props = {
+      // tslint:disable-next-line
       isLoading: false as false, // weird... but without this it doesnt work https://github.com/Microsoft/TypeScript/issues/10432
       euroTokenEuroAmount: "66482" + "0".repeat(14),
       euroTokenAmount: "36490" + "0".repeat(18),

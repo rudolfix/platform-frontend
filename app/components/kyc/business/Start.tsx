@@ -7,7 +7,8 @@ import { appConnect } from "../../../store";
 
 import { TKycBusinessType } from "../../../lib/api/KycApi.interfaces";
 import { ButtonPrimary } from "../../shared/Buttons";
-import { ProgressStepper } from "../../shared/ProgressStepper";
+import { KycPanel } from "../KycPanel";
+import { Panels, PanelTheme } from "../shared/Panels";
 
 interface IStateProps {
   loading: boolean;
@@ -20,27 +21,51 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 export const KycBusinessStartComponent: React.SFC<IProps> = props => (
-  <div>
-    <br />
-    <ProgressStepper steps={5} currentStep={2} />
-    <br />
-    <h1>What type of company are you?</h1>
-    <br />
-    <br />
-    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("small")}>
-      Small Business
-    </ButtonPrimary>
-    &nbsp;&nbsp;
-    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("corporate")}>
-      Corporation
-    </ButtonPrimary>
-    &nbsp;&nbsp;
-    <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("partnership")}>
-      Partnership Business
-    </ButtonPrimary>
-    <br />
-    <br />
-  </div>
+  <KycPanel
+    steps={5}
+    currentStep={2}
+    title={"What type of company are you?"}
+    hasBackButton={false}
+    isMaxWidth={true}
+  >
+    <Panels
+      panels={[
+        {
+          content: (
+            <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("small")}>
+              Small Business
+            </ButtonPrimary>
+          ),
+          theme: PanelTheme.black,
+          id: 1,
+        },
+        {
+          content: (
+            <ButtonPrimary
+              disabled={props.loading}
+              onClick={() => props.setBusinessType("corporate")}
+            >
+              Corporation
+            </ButtonPrimary>
+          ),
+          theme: PanelTheme.grey,
+          id: 2,
+        },
+        {
+          content: (
+            <ButtonPrimary
+              disabled={props.loading}
+              onClick={() => props.setBusinessType("partnership")}
+            >
+              Partnership Business
+            </ButtonPrimary>
+          ),
+          theme: PanelTheme.blue,
+          id: 3,
+        },
+      ]}
+    />
+  </KycPanel>
 );
 
 export const KycBusinessStart = compose<React.SFC>(

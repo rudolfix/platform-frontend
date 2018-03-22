@@ -4,8 +4,10 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 import * as styles from "./Demo.module.scss";
 
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
+import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
-import { KycStatusWidget } from "./settings/kycStates/KycStatusWidget";
+import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
+import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
 import { BreadCrumb } from "./shared/BreadCrumb";
@@ -19,7 +21,6 @@ import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
-import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -222,12 +223,15 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <KycStatusWidget />
+          <KycStatusWidgetComponent onStartKyc={() => {}} />
         </Col>
         <Col lg={6} xs={12}>
-          <KycStatusWidget kycDone />
+          <KycStatusWidgetComponent onStartKyc={() => {}} />
         </Col>
       </Row>
+    </Container>
+    <Container>
+      <ChangeEmailComponent submitForm={() => {}} />
     </Container>
   </div>
 );

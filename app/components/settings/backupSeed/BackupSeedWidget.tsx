@@ -4,7 +4,7 @@ import { Col } from "reactstrap";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
 import { appConnect } from "../../../store";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+import { ArrowButton, ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 import { settingsRoutes } from "../routes";
 
@@ -12,12 +12,20 @@ import * as styles from "./BackupSeedWidget.module.scss";
 
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
+import { actions } from "../../../modules/actions";
 
 interface IStateProps {
   backupCodesVerified?: boolean;
 }
 
-export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesVerified }) => {
+interface IDispatchProps {
+  showSeedModal?: () => void;
+}
+
+export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> = ({
+  backupCodesVerified,
+  showSeedModal,
+}) => {
   return (
     <PanelDark
       headerText="BACKUP RECOVERY PHRASE"
@@ -36,9 +44,9 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesV
         >
           <p className={cn(styles.text, "pt-2")}>You have backed up your SEED. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
+            <ArrowButton arrowDirection="right" onClick={showSeedModal}>
               View Again
-            </ArrowLink>
+            </ArrowButton>
           </Col>
         </div>
       ) : (
@@ -61,8 +69,11 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps> = ({ backupCodesV
   );
 };
 
-export const BackupSeedWidget = appConnect<IStateProps, {}>({
+export const BackupSeedWidget = appConnect<IStateProps & IDispatchProps, {}>({
   stateToProps: s => ({
     backupCodesVerified: selectBackupCodesVerified(s.auth),
+  }),
+  dispatchToProps: dispatch => ({
+    showSeedModal: () => dispatch(actions.showSeedModal.seedModelshow()),
   }),
 })(BackupSeedWidgetComponent);

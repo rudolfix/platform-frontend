@@ -11,7 +11,7 @@ export const Dashboard = () => (
   <LayoutAuthorized>
     <NotificationWidget />
     <MessageSignModal />
-    <Row className="p-3">
+    <Row className="py-4">
       <Col lg={8} xs={12}>
         <MyPortfolio />
       </Col>

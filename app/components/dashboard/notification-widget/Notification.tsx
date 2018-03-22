@@ -1,10 +1,12 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { Link } from "react-router-dom";
+
 import { ButtonClose } from "../../shared/Buttons";
-import * as styles from "./Notification.module.scss";
 
 import * as infoIcon from "../../../assets/img/notfications/info.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
+import * as styles from "./Notification.module.scss";
 
 export enum NotificationType {
   INFO = "info",
@@ -18,6 +20,7 @@ export interface INotification {
   onClose?: () => void;
   actionLink?: string;
   actionLinkText?: string;
+  className?: string;
 }
 
 const { INFO, WARNING } = NotificationType;
@@ -33,9 +36,10 @@ export const Notification: React.SFC<INotification> = ({
   onClose,
   actionLink,
   actionLinkText,
+  className,
 }) => {
   return (
-    <div data-test-id="notification" className={`${styles.notification} ${type}`}>
+    <div data-test-id="notification" className={cn(styles.notification, type, className)}>
       <i className={`${styles.iconNotificationType}`}>
         <img src={icons[type]} />
       </i>

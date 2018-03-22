@@ -17,6 +17,7 @@ export interface IConnectedWeb3State {
   connected: true;
   wallet: TWalletMetadata;
   isUnlocked: boolean; // this is important only for light wallet
+  seed?: string;
 }
 
 export type IWeb3State = IDisconnectedWeb3State | IConnectedWeb3State;
@@ -68,6 +69,24 @@ export const web3Reducer: AppReducer<IWeb3State> = (
       } else {
         return state;
       }
+    case "WEB3_LOAD_SEED":
+      if (state.connected) {
+        return {
+          ...state,
+          seed: action.payload,
+        };
+      } else {
+        return state;
+      }
+    case "WEB3_CLEAR_SEED":
+      if (state.connected) {
+        return {
+          ...state,
+          seed: undefined,
+        };
+      } else {
+        return state;
+      }
   }
   return state;
 };
@@ -86,14 +105,9 @@ export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAd
   return makeEthereumAddressChecksummed(address);
 });
 
-export const selectIsLightWallet = (state: IWeb3State): boolean => {
-  return state.connected && state.wallet.walletType === WalletType.LIGHT;
+export const selectSeed = (state: IWeb3State): string[] | undefined => {
+  return (state.connected && state.seed && state.seed.split(" ")) || undefined;
 };
-
-export const selectIsUnlocked = (state: IWeb3State): boolean => {
-  return state.connected && state.isUnlocked;
-};
-
 export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
   !!(
     !state.connected &&
@@ -103,6 +117,17 @@ export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
     state.previousConnectedWallet.salt &&
     state.previousConnectedWallet.vault
   );
+
+export const selectIsLightWallet = (state: IWeb3State): boolean => {
+  return (
+    (state.connected && state.wallet.walletType === WalletType.LIGHT) ||
+    isLightWalletReadyToLogin(state)
+  );
+};
+
+export const selectIsUnlocked = (state: IWeb3State): boolean => {
+  return state.connected && state.isUnlocked;
+};
 
 export const selectPreviousLightWalletEmail = (state: IWeb3State): string | undefined =>
   (!state.connected &&

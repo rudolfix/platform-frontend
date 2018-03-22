@@ -26,6 +26,7 @@ describe("Web3 sagas", () => {
 
       expect(saga.next().value).to.be.deep.eq(call(delay, LIGHT_WALLET_PASSWORD_CACHE_TIME));
       expect(saga.next().value).to.be.deep.eq(put(actions.web3.walletLocked()));
+      expect(saga.next().value).to.be.deep.eq(put(actions.web3.clearSeedFromState()));
       expect(saga.next().value).to.be.undefined;
       expect(personalWalletMock.password).to.be.undefined;
     });

@@ -3,6 +3,7 @@ import { createAction } from "../actionsUtils";
 import { NotificationType } from "./reducer";
 
 export interface INewNotification {
+  id?: number;
   type: NotificationType;
   text: string;
   actionLinkText?: string;

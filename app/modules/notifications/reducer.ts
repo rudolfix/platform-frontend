@@ -15,12 +15,10 @@ export interface INotification {
 }
 
 export interface INotificationsState {
-  id: number;
   notifications: Array<INotification>;
 }
 
 export const notificationsInitState: INotificationsState = {
-  id: 0,
   notifications: [],
 };
 
@@ -33,18 +31,19 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
       const pNotification = action.payload.notification;
 
       const newState = {
-        id: state.id + 1,
         notifications: Array.from(state.notifications),
       };
 
+      const id = pNotification.id ? pNotification.id : Date.now();
+
       newState.notifications.push({
-        id: newState.id,
+        id: id,
         type: pNotification.type,
         actionLinkText: pNotification.actionLinkText,
         text: pNotification.text,
         onClickAction: pNotification.onClickAction
           ? pNotification.onClickAction
-          : notificationActions.notificationRemove(newState.id),
+          : notificationActions.notificationRemove(id),
       });
       return newState;
     }

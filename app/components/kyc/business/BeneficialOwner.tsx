@@ -12,12 +12,9 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 
-import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/forms";
-import { HorizontalLine } from "../../shared/HorizontalLine";
-import { KycFileUploadList } from "../shared/KycFileUploadList";
 import { Col, Row } from "reactstrap";
 import { AccordionElement } from "../../shared/Accordion";
+import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import {
   BOOL_FALSE_KEY,
@@ -29,6 +26,7 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
+import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -129,7 +127,9 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
           fileUploading={this.props.fileUploading}
           filesLoading={this.props.filesLoading}
         />
-        <Button type="secondary" onClick={this.props.delete}>Delete {name}</Button>
+        <Button layout="secondary" onClick={this.props.delete}>
+          Delete {name}
+        </Button>
       </AccordionElement>
     );
   }

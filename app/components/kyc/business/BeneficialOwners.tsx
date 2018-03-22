@@ -4,19 +4,17 @@ import * as styles from "./BeneficialOwners.module.scss";
 
 import { compose } from "redux";
 
+import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
-import { actions } from "../../../modules/actions";
 import { onEnterAction } from "../../../utils/OnEnterAction";
+import { Accordion } from "../../shared/Accordion";
 import { Button } from "../../shared/Buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { ProgressStepper } from "../../shared/ProgressStepper";
 import { KYCBeneficialOwner } from "./BeneficialOwner";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
-import { Accordion } from "../../shared/Accordion";
-import { HorizontalLine } from "../../shared/HorizontalLine";
 
 interface IStateProps {
   beneficialOwners: IKycBeneficialOwner[];
@@ -43,7 +41,12 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
           ),
       )}
     </Accordion>
-    <Button layout="icon-before" svgIcon={plusIcon} onClick={props.createBeneficialOwner} disabled={props.loading}>
+    <Button
+      layout="icon-before"
+      svgIcon={plusIcon}
+      onClick={props.createBeneficialOwner}
+      disabled={props.loading}
+    >
       Add new Beneficial Owner
     </Button>
     <small className={styles.note}>

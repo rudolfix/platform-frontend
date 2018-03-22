@@ -6,7 +6,6 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import { Button } from "../../shared/Buttons";
-import { ProgressStepper } from "../../shared/ProgressStepper";
 import { KycPanel } from "../KycPanel";
 import { Panels, PanelTheme } from "../shared/Panels";
 

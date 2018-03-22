@@ -7,7 +7,6 @@ import { appConnect } from "../../../store";
 
 import { TKycBusinessType } from "../../../lib/api/KycApi.interfaces";
 import { Button } from "../../shared/Buttons";
-import { ProgressStepper } from "../../shared/ProgressStepper";
 import { KycPanel } from "../KycPanel";
 import { Panels, PanelTheme } from "../shared/Panels";
 
@@ -33,31 +32,25 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
       panels={[
         {
           content: (
-            <ButtonPrimary disabled={props.loading} onClick={() => props.setBusinessType("small")}>
+            <Button disabled={props.loading} onClick={() => props.setBusinessType("small")}>
               Small Business
-            </ButtonPrimary>
+            </Button>
           ),
           theme: PanelTheme.black,
           id: 1,
         },
         {
           content: (
-            <ButtonPrimary
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("corporate")}
-            >
+            <Button disabled={props.loading} onClick={() => props.setBusinessType("corporate")}>
               Corporation
-            </ButtonPrimary>
+            </Button>
           ),
           theme: PanelTheme.grey,
           id: 2,
         },
         {
           content: (
-            <Button
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("partnership")}
-            >
+            <Button disabled={props.loading} onClick={() => props.setBusinessType("partnership")}>
               Partnership Business
             </Button>
           ),
@@ -67,7 +60,6 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
       ]}
     />
   </KycPanel>
-
 );
 
 export const KycBusinessStart = compose<React.SFC>(

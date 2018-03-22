@@ -28,10 +28,7 @@ $_active-color: lighten($_hover-color, 20%);
     display: flex;
     flex-shrink: 0;
     justify-content: center;
-    padding-bottom: px-to-rem(8px);
-    padding-top: px-to-rem(8px);
-    padding-right: px-to-rem(20px);
-    padding-left: px-to-rem(20px);
+    padding: px-to-rem(8px) px-to-rem(20px);
     position: relative;
     text-align: center;
     transition: 200ms ease-out all; // sass-lint:disable-line no-transition-all
@@ -55,7 +52,7 @@ $_active-color: lighten($_hover-color, 20%);
 
   // types
   &:global(.primary) {
-    @include font-default;
+    @include font-button-default;
     text-transform: uppercase;
 
     .content {

@@ -20,6 +20,12 @@ body {
   letter-spacing: px-to-rem(-.03px);
 }
 
+@mixin font-button-default {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(15px);
+  letter-spacing: px-to-rem(-.2px);
+}
+
 @mixin font-default {
   font-family: $headings-font-family;
   font-size: px-to-rem(14px);

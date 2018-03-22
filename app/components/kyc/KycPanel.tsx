@@ -1,9 +1,11 @@
 import * as React from "react";
 import * as styles from "./KycPanel.module.scss";
 
-import { ArrowLink } from "../shared/ArrowNavigation";
+import { Button } from "../shared/Buttons";
 import { PanelWhite } from "../shared/PanelWhite";
 import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
+
+import * as arrowLeft from "../../assets/img/inline_icons/arrow_right.svg";
 
 interface IPropsKycPanel {
   title: string;
@@ -31,9 +33,9 @@ export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
       <div className={styles.content}>{children}</div>
       <footer className={styles.footer}>
         {hasBackButton && (
-          <ArrowLink arrowDirection={"left"} to="">
+          <Button layout="icon-before" svgIcon={arrowLeft} onClick={() => {}}>
             BACK
-          </ArrowLink>
+          </Button>
         )}
       </footer>
     </PanelWhite>

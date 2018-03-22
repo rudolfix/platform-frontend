@@ -8,13 +8,13 @@ import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
 import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
-import { Button } from "../../shared/Buttons";
 import { compose } from "redux";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectKycRequestStatuts } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
+import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
 interface IStateProps {

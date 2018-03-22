@@ -16,7 +16,6 @@ interface IButtonProps {
   disabled?: boolean;
   onClick?: React.MouseEventHandler<any>;
   svgIcon?: string;
-  to?: string;
   type?: string;
   className?: string;
 }

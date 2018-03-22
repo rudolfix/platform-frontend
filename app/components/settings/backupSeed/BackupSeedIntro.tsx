@@ -4,7 +4,6 @@ import { Col, Row } from "reactstrap";
 import { Button } from "../../shared/Buttons";
 import { StepCard } from "../../shared/StepCard";
 
-import { Link } from "react-router-dom";
 import * as noComputer from "../../../assets/img/seed_backup/no_computer.svg";
 import * as safe from "../../../assets/img/seed_backup/safe.svg";
 import * as write from "../../../assets/img/seed_backup/write.svg";
@@ -25,7 +24,7 @@ export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNe
     </Row>
     <Row className="my-5">
       <Col className="text-center">
-        <ButtonPrimary onClick={onNext}>I have read instructions</ButtonPrimary>
+        <Button onClick={onNext}>I have read instructions</Button>
       </Col>
     </Row>
     <Row>

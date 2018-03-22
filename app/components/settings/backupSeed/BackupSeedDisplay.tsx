@@ -4,7 +4,6 @@ import { Col, Row } from "reactstrap";
 
 import { Button } from "../../shared/Buttons";
 
-
 import * as styles from "./BackupSeedDisplay.module.scss";
 
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
@@ -64,9 +63,9 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
             </Col>
             <Col className="mt-2" xs="auto">
               {props.onNext && showNextButton ? (
-                <ButtonPrimary data-test-id="seed-display-next-link" onClick={props.onNext}>
+                <Button data-test-id="seed-display-next-link" onClick={props.onNext}>
                   Go to next step
-                </ButtonPrimary>
+                </Button>
               ) : (
                 <Button
                   data-test-id="seed-display-next-words"
@@ -84,7 +83,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
       {!props.isModal && (
         <Row>
           <Col>
-            <Button layout="icon-before" svgIcon={arrowLeft} onClick={this.props.onBack}>
+            <Button layout="icon-before" svgIcon={arrowLeft} onClick={props.onBack}>
               Back
             </Button>
           </Col>

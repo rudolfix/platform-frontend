@@ -8,13 +8,13 @@ interface IProps {
   height?: string;
 }
 
-export const InlineIcon: React.SFC<IProps> = ({ svgIcon, width, height }) => {
+export const InlineIcon: React.SFC<IProps> = ({ svgIcon, width, height, ...props }) => {
   return (
     <span
       className={cn("inline-icon", styles.inlineIcon)}
       style={{ width, height }}
-      {...props}
       dangerouslySetInnerHTML={{ __html: svgIcon }}
+      {...props}
     />
   );
 };

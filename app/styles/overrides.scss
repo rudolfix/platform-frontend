@@ -31,16 +31,6 @@ a {
   border-left: 0 !important;
 }
 
-.btn {
-  font-size: px-to-rem(15px) !important;
-  background-color: transparent !important;
-
-  &.disabled {
-    color: $neu-pale-grey !important;
-    border-color: $neu-pale-grey;
-  }
-}
-
 // overrides for default styles of libraries for auto complete: react-select, react-virtualized-select, react-virtualized
 // it is bypassing linter rules and our styleguide so code reassembles replaced one.
 // At this point we override rules only from react-select/dist/react-select.css

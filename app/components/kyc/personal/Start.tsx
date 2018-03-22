@@ -85,6 +85,7 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
       values={HIGH_INCOME_VALUES}
       label="Do you have a high income??"
       name="isHighIncome"
+    />
     <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
       Submit and continue
     </Button>

@@ -16,9 +16,15 @@ interface IBackupSeedDisplayProps {
   isModal?: boolean;
   pageNo: number;
 }
-export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
-  const wordsNo = props.words.length;
-  const startWord = WORDS_PER_PAGE * props.pageNo;
+export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
+  words,
+  isModal,
+  pageNo,
+  onNext,
+  onBack,
+}) => {
+  const wordsNo = words.length;
+  const startWord = WORDS_PER_PAGE * pageNo;
   const endWord = startWord + WORDS_PER_PAGE;
   const showNextButton = endWord >= wordsNo;
 
@@ -28,12 +34,12 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
         <Col xs={{ size: 10, offset: 1 }}>
           <Row className="no-gutters">
             <Col className={cn("text-right", styles.pageStatus)}>
-              {`${(props.pageNo + 1) * WORDS_PER_PAGE} / ${wordsNo}`}
+              {`${(pageNo + 1) * WORDS_PER_PAGE} / ${wordsNo}`}
             </Col>
           </Row>
 
           <Row className="justify-content-around no-gutters">
-            {props.words.slice(startWord, endWord).map((word, index) => (
+            {words.slice(startWord, endWord).map((word, index) => (
               <Col
                 className={cn(styles.word, "mt-1 p-2 text-center")}
                 xs={12}
@@ -44,8 +50,8 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
                 key={word}
                 data-test-id="seed-display-word"
               >
-                {`${props.pageNo * WORDS_PER_PAGE + index + 1}.`}
-                {props.isModal ? <div>{word}</div> : word}
+                {`${pageNo * WORDS_PER_PAGE + index + 1}.`}
+                {isModal ? <div>{word}</div> : word}
               </Col>
             ))}
           </Row>
@@ -54,22 +60,22 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
             <Col className="mt-2" xs="auto">
               <ButtonPrimary
                 data-test-id="seed-display-prev-words"
-                disabled={props.pageNo === 0}
-                onClick={props.onBack}
+                disabled={pageNo === 0}
+                onClick={onBack}
               >
                 {`previous ${WORDS_PER_PAGE} words`}
               </ButtonPrimary>
             </Col>
             <Col className="mt-2" xs="auto">
-              {props.onNext && showNextButton ? (
-                <ButtonPrimary data-test-id="seed-display-next-link" onClick={props.onNext}>
+              {!isModal && onNext && showNextButton ? (
+                <ButtonPrimary data-test-id="seed-display-next-link" onClick={onNext}>
                   Go to next step
                 </ButtonPrimary>
               ) : (
                 <ButtonPrimary
                   data-test-id="seed-display-next-words"
-                  disabled={props.pageNo === 1}
-                  onClick={props.onNext}
+                  disabled={pageNo === 1}
+                  onClick={onNext}
                 >
                   {`next ${WORDS_PER_PAGE} words`}
                 </ButtonPrimary>
@@ -79,10 +85,10 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = props => {
         </Col>
       </Row>
 
-      {!props.isModal && (
+      {!isModal && (
         <Row>
           <Col>
-            <ArrowButton arrowDirection="left" onClick={props.onBack}>
+            <ArrowButton arrowDirection="left" onClick={onBack}>
               Back
             </ArrowButton>
           </Col>

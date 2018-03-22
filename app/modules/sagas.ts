@@ -8,7 +8,6 @@ import { dashboardSagas } from "./dashboard/sagas";
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { settingsSagas } from "./settings/sagas";
-import { viewSeedSaga } from "./showSeedModal/sagas";
 import { userAgentSagas } from "./userAgent/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
@@ -19,7 +18,6 @@ import { web3Sagas } from "./web3/sagas";
  */
 function* allSagas(): Iterator<effects.Effect> {
   yield effects.all([
-    effects.fork(viewSeedSaga),
     effects.fork(kycSagas),
     effects.fork(initSagas),
     effects.fork(walletSelectorSagas),

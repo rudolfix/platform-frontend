@@ -1,6 +1,7 @@
 import { effects } from "redux-saga";
-import { fork, select } from "redux-saga/effects";
+import { call, fork, put, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
 import { selectUser } from "../auth/reducer";
 import { updateUser } from "../auth/sagas";
@@ -23,6 +24,22 @@ export function* addNewEmail(
   }
 }
 
+export function* loadSeedOrReturnToSettings(): Iterator<any> {
+  // unlock wallet
+  try {
+    const signEffect = put(actions.web3.fetchSeedFromWallet());
+    return yield call(
+      accessWalletAndRunEffect,
+      signEffect,
+      "Access seed",
+      "Please confirm to access your seed.",
+    );
+  } catch {
+    yield put(actions.routing.goToSettings());
+  }
+}
+
 export const settingsSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "SETTINGS_ADD_NEW_EMAIL", addNewEmail);
+  yield fork(neuTakeEvery, "LOAD_SEED_OR_RETURN_TO_SETTINGS", loadSeedOrReturnToSettings);
 };

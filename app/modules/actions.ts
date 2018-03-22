@@ -8,7 +8,6 @@ import { genericErrorModalActions } from "./genericErrorModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { routingActions } from "./routing/actions";
-import { showSeedModalActions } from "./showSeedModal/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { walletActions } from "./wallet-selector/actions";
 import { web3Actions } from "./web3/actions";
@@ -18,7 +17,6 @@ export const actions = {
   dashboard: dashboardActions,
   settings: settingsActions,
   signMessageModal: accessWalletActions,
-  showSeedModal: showSeedModalActions,
   genericErrorModal: genericErrorModalActions,
   init: initActions,
   kyc: kycActions,
@@ -36,7 +34,6 @@ export const allActions = {
   ...dashboardActions,
   ...settingsActions,
   ...accessWalletActions,
-  ...showSeedModalActions,
   ...genericErrorModalActions,
   ...initActions,
   ...routingActions,

@@ -4,7 +4,7 @@ import { Col } from "reactstrap";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
 import { appConnect } from "../../../store";
-import { ArrowButton, ArrowLink } from "../../shared/ArrowNavigation";
+import { ArrowLink } from "../../shared/ArrowNavigation";
 import { PanelDark } from "../../shared/PanelDark";
 import { settingsRoutes } from "../routes";
 
@@ -12,19 +12,15 @@ import * as styles from "./BackupSeedWidget.module.scss";
 
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
-import { actions } from "../../../modules/actions";
 
 interface IStateProps {
   backupCodesVerified?: boolean;
 }
 
-interface IDispatchProps {
-  showSeedModal?: () => void;
-}
+interface IDispatchProps {}
 
 export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> = ({
   backupCodesVerified,
-  showSeedModal,
 }) => {
   return (
     <PanelDark
@@ -44,9 +40,9 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> 
         >
           <p className={cn(styles.text, "pt-2")}>You have backed up your SEED. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowButton arrowDirection="right" onClick={showSeedModal}>
+            <ArrowLink arrowDirection="right" to={settingsRoutes.seedBackup}>
               View Again
-            </ArrowButton>
+            </ArrowLink>
           </Col>
         </div>
       ) : (
@@ -72,8 +68,5 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> 
 export const BackupSeedWidget = appConnect<IStateProps & IDispatchProps, {}>({
   stateToProps: s => ({
     backupCodesVerified: selectBackupCodesVerified(s.auth),
-  }),
-  dispatchToProps: dispatch => ({
-    showSeedModal: () => dispatch(actions.showSeedModal.seedModelshow()),
   }),
 })(BackupSeedWidgetComponent);

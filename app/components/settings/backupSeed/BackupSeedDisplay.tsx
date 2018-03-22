@@ -47,7 +47,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
                 md={4}
                 lg={3}
                 xl={2}
-                key={word}
+                key={index}
                 data-test-id="seed-display-word"
               >
                 {`${pageNo * WORDS_PER_PAGE + index + 1}.`}
@@ -69,7 +69,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
             <Col className="mt-2" xs="auto">
               {!isModal && onNext && showNextButton ? (
                 <ButtonPrimary data-test-id="seed-display-next-link" onClick={onNext}>
-                  Go to next step
+                  Continue
                 </ButtonPrimary>
               ) : (
                 <ButtonPrimary

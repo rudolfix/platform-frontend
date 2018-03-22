@@ -52,24 +52,26 @@ export class ViewSeedComponent extends React.Component<IStateProps & IDispatchPr
 
   render(): React.ReactNode {
     return this.props.seed ? (
-      <Row>
-        <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
-          <HeaderProgressStepper
-            steps={2}
-            currentStep={this.state.pageNo + 1}
-            headerText="The safety phrase is crucial for the safety of your assets"
-            descText="Please make sure you follow the instructions."
-            warning
-          />
-          <BackupSeedDisplay
-            words={this.props.seed}
-            isModal
-            pageNo={this.state.pageNo}
-            onNext={this.onNext}
-            onBack={this.onBack}
-          />
-        </Col>
-      </Row>
+      <ModalComponentBody onClose={this.props.onCancel}>
+        <Row>
+          <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
+            <HeaderProgressStepper
+              steps={2}
+              currentStep={this.state.pageNo + 1}
+              headerText="The safety phrase is crucial for the safety of your assets"
+              descText="Please make sure you follow the instructions."
+              warning
+            />
+            <BackupSeedDisplay
+              words={this.props.seed}
+              isModal
+              pageNo={this.state.pageNo}
+              onNext={this.onNext}
+              onBack={this.onBack}
+            />
+          </Col>
+        </Row>
+      </ModalComponentBody>
     ) : (
       <LoadingIndicator />
     );

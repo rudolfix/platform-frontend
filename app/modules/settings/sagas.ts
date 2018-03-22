@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
@@ -19,7 +20,7 @@ export function* addNewEmail(
   try {
     yield neuCall(
       ensurePermissionsArePresent,
-      ["change-email"],
+      [CHANGE_EMAIL_PERMISSION],
       "Change email",
       "Confirm changing your email.",
     );

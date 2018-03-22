@@ -1,8 +1,9 @@
 import { effects } from "redux-saga";
-import { fork, put, select } from "redux-saga/effects";
+import { call, fork, put, select } from "redux-saga/effects";
 import { ILightWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightWallet,
+  LightWalletLocked,
   LightWalletUtil,
   LightWalletWrongPassword,
 } from "../../../lib/web3/LightWallet";
@@ -12,7 +13,7 @@ import { actions, TAction } from "../../actions";
 import { updateUser } from "../../auth/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { connectLightWallet } from "../../signMessageModal/sagas";
-import { selectLightWalletFromQueryString } from "../../web3/reducer";
+import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
@@ -73,6 +74,29 @@ export function* lightWalletBackupWatch({ getState }: TGlobalDependencies): Iter
   }
 }
 
+export function* loadSeedFromWallet({ web3Manager }: TGlobalDependencies): Iterator<any> {
+  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
+  if (!isUnlocked) {
+    throw new LightWalletLocked();
+  }
+  try {
+    const lightWallet = web3Manager.personalWallet as LightWallet;
+    //How should you bind instances when using call?
+    const seed = yield call(lightWallet.getSeed.bind(lightWallet));
+    yield put(actions.web3.loadSeedtoState(seed));
+  } catch (e) {
+    throw new Error("Fetching seed failed");
+  }
+}
+
+export function* loadSeedFromWalletWatch(): Iterator<any> {
+  try {
+    yield neuCall(loadSeedFromWallet);
+  } catch (e) {
+    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+  }
+}
+
 export function* lightWalletLoginWatch(
   { web3Manager, walletMetadataStorage, lightWalletConnector }: TGlobalDependencies,
   action: TAction,
@@ -115,4 +139,5 @@ export function* lightWalletLoginWatch(
 export function* lightWalletSagas(): Iterator<any> {
   yield fork(neuTakeEvery, "LIGHT_WALLET_LOGIN", lightWalletLoginWatch);
   yield fork(neuTakeEvery, "LIGHT_WALLET_BACKUP", lightWalletBackupWatch);
+  yield fork(neuTakeEvery, "WEB3_FETCH_SEED", loadSeedFromWalletWatch);
 }

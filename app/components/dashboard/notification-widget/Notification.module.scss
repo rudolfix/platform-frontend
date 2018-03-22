@@ -1,6 +1,5 @@
 @import "../../../styles/neufund-theme";
 
-
 .notification {
   @include font-default;
 
@@ -31,10 +30,9 @@
     }
   }
 
-  + #{&} {
-    margin-top: px-to-rem(20px);
+  :not(:first-child) {
+    margin-top: map-get($spacers, 4);
   }
-
 
   .text {
     flex-grow: 1;

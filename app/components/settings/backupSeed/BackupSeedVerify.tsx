@@ -4,12 +4,8 @@ import * as React from "react";
 import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
-import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { ArrowButton } from "../../shared/ArrowNavigation";
-import { BreadCrumb } from "../../shared/BreadCrumb";
 import { ButtonPrimary } from "../../shared/Buttons";
-import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
-import { PanelWhite } from "../../shared/PanelWhite";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 /* tslint:disable: no-submodule-imports */
@@ -120,81 +116,60 @@ export class BackupSeedVerify extends React.Component<
 
   render(): React.ReactNode {
     return (
-      <LayoutAuthorized>
-        <BreadCrumb
-          className="my-4"
-          path={["Settings", "Security settings"]}
-          view="Backup recovery phase"
-        />
+      <>
         <Row>
-          <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
-            <PanelWhite className="pt-5">
-              <HeaderProgressStepper
-                steps={4}
-                currentStep={4}
-                headerText="Verify your Recovery Phrase"
-                warning
-              />
-              <Row>
-                <Col xs={{ size: 10, offset: 1 }}>
-                  <Row>
-                    {range(0, WORDS_TO_VERIFY).map((num, wordPageNumber) => {
-                      const wordNumber = this.state.verificationWords[wordPageNumber].number;
-                      return (
-                        <Col
-                          xs={{ size: 6, offset: 3 }}
-                          sm={{ size: 3, offset: 0 }}
-                          key={num}
-                          className="my-4"
-                        >
-                          <div data-test-id={`seed-verify-label`}>{`word ${wordNumber + 1}`}</div>
-                          {this.generateSelect(num)}
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </Col>
-              </Row>
-              {this.showInvalidMsg() && (
-                <Row className="my-4 justify-content-center">
-                  <WarningAlert
-                    data-test-id="seed-verify-invalid-msg"
-                    className={styles.placeholderHeight}
+          <Col xs={{ size: 10, offset: 1 }}>
+            <Row>
+              {range(0, WORDS_TO_VERIFY).map((num, wordPageNumber) => {
+                const wordNumber = this.state.verificationWords[wordPageNumber].number;
+                return (
+                  <Col
+                    xs={{ size: 6, offset: 3 }}
+                    sm={{ size: 3, offset: 0 }}
+                    key={num}
+                    className="my-4"
                   >
-                    Some words you entered are not correct. Please re-check ones marked with orange
-                    color.
-                  </WarningAlert>
-                </Row>
-              )}
-              {this.allWordsValid() && (
-                <Row className="my-4 text-center">
-                  <Col className={styles.placeholderHeight}>
-                    <ButtonPrimary
-                      data-test-id="seed-verify-button-next"
-                      onClick={this.props.onNext}
-                    >
-                      continue
-                    </ButtonPrimary>
+                    <div data-test-id={`seed-verify-label`}>{`word ${wordNumber + 1}`}</div>
+                    {this.generateSelect(num)}
                   </Col>
-                </Row>
-              )}
-              {!this.showInvalidMsg() &&
-                !this.allWordsValid() && (
-                  <Row className="my-4 text-center">
-                    <Col className={styles.placeholderHeight} />
-                  </Row>
-                )}
-              <Row>
-                <Col>
-                  <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
-                    Back
-                  </ArrowButton>
-                </Col>
-              </Row>
-            </PanelWhite>
+                );
+              })}
+            </Row>
           </Col>
         </Row>
-      </LayoutAuthorized>
+        {this.showInvalidMsg() && (
+          <Row className="my-4 justify-content-center">
+            <WarningAlert
+              data-test-id="seed-verify-invalid-msg"
+              className={styles.placeholderHeight}
+            >
+              Some words you entered are not correct. Please re-check ones marked with orange color.
+            </WarningAlert>
+          </Row>
+        )}
+        {this.allWordsValid() && (
+          <Row className="my-4 text-center">
+            <Col className={styles.placeholderHeight}>
+              <ButtonPrimary data-test-id="seed-verify-button-next" onClick={this.props.onNext}>
+                continue
+              </ButtonPrimary>
+            </Col>
+          </Row>
+        )}
+        {!this.showInvalidMsg() &&
+          !this.allWordsValid() && (
+            <Row className="my-4 text-center">
+              <Col className={styles.placeholderHeight} />
+            </Row>
+          )}
+        <Row>
+          <Col>
+            <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
+              Back
+            </ArrowButton>
+          </Col>
+        </Row>
+      </>
     );
   }
 }

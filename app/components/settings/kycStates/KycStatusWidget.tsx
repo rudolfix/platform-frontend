@@ -26,9 +26,10 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 const statusTextMap: { [status: string]: string } = {
-  Approved: "Your Kyc request is complete.",
-  Rejected: "Your Kyc request was rejected",
-  Pending: "We are currently reviewing your Kyc request.",
+  Approved: "Your Kyc request is has been approved. Happy investing!",
+  Rejected: "Your Kyc request was rejected. ",
+  Pending:
+    "We are currently reviewing your Kyc request. You will receive and email once your request has been processed.",
   Draft: "Please submit your Kyc request now.",
 };
 
@@ -57,9 +58,13 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
             {props.requestStatus ? statusTextMap[props.requestStatus] : ""}
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#" onClick={props.onStartKyc}>
-              Verify KYC
-            </ArrowLink>
+            {props.requestStatus && props.requestStatus === "Draft" ? (
+              <ArrowLink arrowDirection="right" to="#" onClick={props.onStartKyc}>
+                Verify KYC
+              </ArrowLink>
+            ) : (
+              <div />
+            )}
           </Col>
         </div>
       )}

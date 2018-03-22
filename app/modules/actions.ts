@@ -8,6 +8,7 @@ import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
+import { showSeedModalActions } from "./showSeedModal/actions";
 import { signMessageModalActions } from "./signMessageModal/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { walletActions } from "./wallet-selector/actions";
@@ -18,6 +19,7 @@ export const actions = {
   dashboard: dashboardActions,
   settings: settingsActions,
   signMessageModal: signMessageModalActions,
+  showSeedModal: showSeedModalActions,
   genericErrorModal: genericErrorModalActions,
   init: initActions,
   kyc: kycActions,
@@ -36,6 +38,7 @@ export const allActions = {
   ...dashboardActions,
   ...settingsActions,
   ...signMessageModalActions,
+  ...showSeedModalActions,
   ...genericErrorModalActions,
   ...initActions,
   ...routingActions,

@@ -56,3 +56,9 @@
     align-items: center;
   }
 }
+
+.error-label {
+  color: $neu-red;
+  text-align: right;
+  margin: px-to-rem(5px) px-to-rem(10px);
+}

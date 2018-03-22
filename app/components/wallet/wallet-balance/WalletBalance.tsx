@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { ButtonSecondary } from "../../shared/Buttons";
-import { DonutChart, IDonutChartProps } from "../../shared/DonutChart";
+import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { IPanelDarkProps, PanelDark } from "../../shared/PanelDark";
 import { TotalEuro } from "../TotalEuro";
@@ -16,12 +16,15 @@ export enum WalletBalanceTheme {
 interface IWalletBalance {
   totalEurValue: string;
   theme: WalletBalanceTheme;
+  moneyValueOne: number;
+  moneyValueTwo: number;
+  chartData: any;
 }
 
-export const WalletBalance: React.SFC<IPanelDarkProps & IDonutChartProps & IWalletBalance> = ({
-  radius,
+export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance> = ({
   moneyValueOne,
   moneyValueTwo,
+  chartData,
   headerText,
   totalEurValue,
   theme,
@@ -29,7 +32,9 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IDonutChartProps & IWall
   <div className={`${styles.walletBalance} ${theme}`}>
     <PanelDark headerText={headerText} rightComponent={<TotalEuro totalEurValue={totalEurValue} />}>
       <div className={styles.walletBalanceWrapper}>
-        <DonutChart radius={radius} moneyValueOne={moneyValueOne} moneyValueTwo={moneyValueTwo} />
+        <div className={styles.chartWrapper}>
+          <ChartDoughnut data={chartData} />
+        </div>
         <div className={`${styles.walletBalanceActions}`}>
           <div className={styles.moneySuiteWrapper}>
             <MoneySuiteWidget

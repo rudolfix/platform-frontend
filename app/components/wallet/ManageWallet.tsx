@@ -45,6 +45,15 @@ const tabs = [
     onFilter: () => alert("eth"),
   },
 ];
+const chartDoughnutData = {
+  labels: ["ETH", "nEUR"],
+  datasets: [
+    {
+      data: [100, 50],
+      backgroundColor: ["#e3eaf5", "#394651"],
+    },
+  ],
+};
 
 export const ManageWallet = () => (
   <LayoutAuthorized>
@@ -52,9 +61,9 @@ export const ManageWallet = () => (
     <Row>
       <Col className={styles.card} lg={6} xs={12}>
         <WalletBalance
-          radius={75}
           moneyValueOne={66482000000000000000000}
           moneyValueTwo={36490000000000000000000}
+          chartData={chartDoughnutData}
           headerText="Your wallet balance"
           totalEurValue={"1234567" + "0".repeat(18)}
           theme={WalletBalanceTheme.light}

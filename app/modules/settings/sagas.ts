@@ -1,6 +1,7 @@
 import { effects } from "redux-saga";
 import { fork, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { IAppState } from "../../store";
 import { TAction } from "../actions";
 import { selectUser } from "../auth/reducer";
 import { updateUser } from "../auth/sagas";
@@ -13,9 +14,9 @@ export function* addNewEmail(
 ): Iterator<any> {
   if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;
   const email = action.payload.email;
-  const user = yield select(selectUser);
+  const user = yield select((s: IAppState) => selectUser(s.auth));
   try {
-    yield effects.call(updateUser, { ...user, new_email: email });
+    yield effects.call(updateUser, { ...user, newEmail: email });
     yield effects.put(actions.routing.goToSettings());
     notificationCenter.info("New Email added");
   } catch {

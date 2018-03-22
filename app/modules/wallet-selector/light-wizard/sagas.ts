@@ -9,10 +9,10 @@ import {
 } from "../../../lib/web3/LightWallet";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
+import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
 import { updateUser } from "../../auth/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { connectLightWallet } from "../../signMessageModal/sagas";
 import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
 import { TGlobalDependencies } from "./../../../di/setupBindings";

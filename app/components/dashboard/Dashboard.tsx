@@ -8,7 +8,6 @@ import {
 } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { MessageSignModal } from "../modals/SignMessageModal";
 import { MyPortfolio } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
 import { NotificationWidget } from "./notification-widget/NotificationWidget";
@@ -26,7 +25,6 @@ type IProps = IStateProps;
 export const DashboardComponent = (props: IProps) => (
   <LayoutAuthorized>
     <NotificationWidget />
-    <MessageSignModal />
     <Row className="py-4">
       <Col lg={8} xs={12}>
         <MyPortfolio />

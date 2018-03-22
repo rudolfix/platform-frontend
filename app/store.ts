@@ -14,12 +14,12 @@ import { web3Reducer } from "./modules/web3/reducer";
 
 import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
 
+import { accessWalletReducer } from "./modules/accessWallet/reducer";
 import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
 import { initReducer } from "./modules/init/reducer";
 import { moneyReducer } from "./modules/money/reducer";
 import { showSeedModalReducer } from "./modules/showSeedModal/reducer";
-import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
 import { lightWalletWizardReducer } from "./modules/wallet-selector/light-wizard/reducer";
 import { FunctionWithDeps } from "./types";
 
@@ -48,7 +48,7 @@ const appReducers = {
   walletSelector: walletSelectorReducer,
   auth: authReducer,
   genericErrorModal: genericErrorModalReducer,
-  signMessageModal: signMessageModalReducer,
+  accessWallet: accessWalletReducer,
   showSeedModal: showSeedModalReducer,
   kyc: kycReducer,
   init: initReducer,

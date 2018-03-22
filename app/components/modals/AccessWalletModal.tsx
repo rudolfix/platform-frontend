@@ -1,16 +1,18 @@
 import * as React from "react";
 import { Modal } from "reactstrap";
+import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet, selectIsUnlocked } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
-import { ButtonSecondary } from "../shared/Buttons";
-import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { ButtonPrimary } from "../shared/Buttons";
 import { LightWalletSignPrompt } from "./LightWalletSign";
 import { ModalComponentBody } from "./ModalComponentBody";
 
 interface IStateProps {
   isOpen: boolean;
   errorMsg?: string;
+  title?: string;
+  message?: string;
   isLightWallet: boolean;
   isUnlocked: boolean;
 }
@@ -21,36 +23,40 @@ interface IDispatchProps {
 }
 
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
-  <div>
-    <h2>Sign message on your wallet</h2>
-    <ButtonSecondary onClick={onCancel}>Cancel</ButtonSecondary>
+  <div className="text-md-center">
+    <ButtonPrimary onClick={onCancel}>Cancel</ButtonPrimary>
   </div>
 );
 
-const MessageSignModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
+const AccessWalletModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Modal isOpen={props.isOpen} toggle={props.onCancel}>
     <ModalComponentBody onClose={props.onCancel}>
-      {props.isLightWallet ? (
-        <LightWalletSignPrompt {...props} />
-      ) : (
-        <GenericSignPrompt onCancel={props.onCancel} />
-      )}
-
-      <p>{props.errorMsg}</p>
-      <LoadingIndicator />
+      <div className="text-md-center">
+        <h1>{props.title}</h1>
+        <p>{props.message}</p>
+        <img src={lockIcon} className="mb-3" />
+        {props.isLightWallet ? (
+          <LightWalletSignPrompt {...props} />
+        ) : (
+          <GenericSignPrompt onCancel={props.onCancel} />
+        )}
+        <p>{props.errorMsg}</p>
+      </div>
     </ModalComponentBody>
   </Modal>
 );
 
-export const MessageSignModal = appConnect<IStateProps, IDispatchProps>({
+export const AccessWalletModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
-    isOpen: s.signMessageModal.isOpen,
-    errorMsg: s.signMessageModal.errorMsg,
+    isOpen: s.accessWallet.isModalOpen,
+    errorMsg: s.accessWallet.modalErrorMsg,
+    title: s.accessWallet.modalTitle,
+    message: s.accessWallet.modalMessage,
     isLightWallet: selectIsLightWallet(s.web3State),
     isUnlocked: selectIsUnlocked(s.web3State),
   }),
   dispatchToProps: dispatch => ({
-    onCancel: () => dispatch(actions.signMessageModal.hide()),
+    onCancel: () => dispatch(actions.signMessageModal.hideAccessWalletModal()),
     onAccept: (password?: string) => dispatch(actions.signMessageModal.accept(password)),
   }),
-})(MessageSignModalComponent);
+})(AccessWalletModalComponent);

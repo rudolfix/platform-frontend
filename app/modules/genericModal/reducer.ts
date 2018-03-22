@@ -40,4 +40,6 @@ export const genericModalReducer: AppReducer<IGenericModalState> = (
   return state;
 };
 
-export const selectIsSigning = (state: IGenericModalState): boolean => state.isOpen;
+export const selectIsOpen = (state: IGenericModalState): boolean => state.isOpen;
+export const selectGenericModalObj = (state: IGenericModalState): IGenericModal | undefined =>
+  state.genericModalObj;

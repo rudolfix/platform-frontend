@@ -1,4 +1,5 @@
 import { AppActionTypes, AppReducer } from "../../store";
+import { routingActions } from "../routing/actions";
 import { notificationActions } from "./actions";
 
 export enum NotificationType {
@@ -58,3 +59,11 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
   }
   return state;
 };
+
+export const seedNotBackedUpNotification = () => ({
+  id: Date.now(),
+  type: NotificationType.WARNING,
+  text: "You have to backup your codes",
+  actionLinkText: "go to settings",
+  onClickAction: routingActions.goToSettings(),
+});

@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import * as styles from "./InlineIcon.module.scss";
 
@@ -7,12 +8,13 @@ interface IProps {
   height?: string;
 }
 
-export const InlineIcon: React.SFC<IProps> = ({ svgIcon, width, height }) => {
+export const InlineIcon: React.SFC<IProps> = ({ svgIcon, width, height, ...props }) => {
   return (
     <span
-      className={`inline-icon ${styles.inlineIcon}`}
+      className={cn("inline-icon", styles.inlineIcon)}
       style={{ width, height }}
       dangerouslySetInnerHTML={{ __html: svgIcon }}
+      {...props}
     />
   );
 };

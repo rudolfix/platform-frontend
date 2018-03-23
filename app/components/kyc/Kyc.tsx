@@ -12,7 +12,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Button } from "../shared/Buttons";
 import { KycPanel } from "./KycPanel";
 
-import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
+import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 
 interface IStateProps {
   requestLoading?: boolean;
@@ -28,9 +28,11 @@ type IProps = IStateProps & IDispatchProps;
 
 const RequestStateInfo: React.SFC<IProps> = props => {
   const settingsButton = (
-    <Button layout="icon-after" svgIcon={arrowRight} onClick={props.goToSettings}>
-      Go to settings
-    </Button>
+    <div className="p-4 text-center">
+      <Button layout="icon-before" svgIcon={arrowLeft} onClick={props.goToSettings}>
+        Go to settings
+      </Button>
+    </div>
   );
   if (!props.requestStatus) {
     return (

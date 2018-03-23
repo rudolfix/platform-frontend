@@ -57,10 +57,11 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
       </Col>
     </Row>
     <FormSelectCountryField label="Country" name="country" />
-    <br />
-    <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-      Save
-    </Button>
+    <div className="p-4 text-center">
+      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
+        Save
+      </Button>
+    </div>
   </Form>
 );
 
@@ -104,13 +105,15 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
     >
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} dataValid={dataValid} />
-      <Button
-        type="submit"
-        disabled={!props.currentValues || props.files.length === 0}
-        onClick={props.submit}
-      >
-        Submit Request
-      </Button>
+      <div className="p-4 text-center">
+        <Button
+          type="submit"
+          disabled={!props.currentValues || props.files.length === 0}
+          onClick={props.submit}
+        >
+          Submit Request
+        </Button>
+      </div>
     </KycPanel>
   );
 };

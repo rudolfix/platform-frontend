@@ -79,14 +79,12 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
       label="Are you politically exposed?"
       name="isPoliticallyExposed"
     />
-    <FormField label="Address" name="address" />
-    <FormField label="Zip Code" name="zipCode" />
-    <FormField label="City" name="city" />
-    <FormField label="Country" name="country" />
     <br />
-    <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-      Save
-    </Button>
+    <div className="p-4 text-center">
+      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
+        Save
+      </Button>
+    </div>
   </Form>
 );
 
@@ -133,13 +131,15 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} lrDataValid={lrDataValid} />
       <BeneficialOwners {...props} lrDataValid={lrDataValid} />
-      <Button
-        type="submit"
-        disabled={!props.legalRepresentative || props.files.length === 0}
-        onClick={props.onContinue}
-      >
-        Continue
-      </Button>
+      <div className="p-4 text-center">
+        <Button
+          type="submit"
+          disabled={!props.legalRepresentative || props.files.length === 0}
+          onClick={props.onContinue}
+        >
+          Continue
+        </Button>
+      </div>
     </KycPanel>
   );
 };

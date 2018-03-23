@@ -41,14 +41,16 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
           ),
       )}
     </Accordion>
-    <Button
-      layout="icon-before"
-      svgIcon={plusIcon}
-      onClick={props.createBeneficialOwner}
-      disabled={props.loading}
-    >
-      Add new Beneficial Owner
-    </Button>
+    <div className="p-4 text-center">
+      <Button
+        layout="icon-before"
+        svgIcon={plusIcon}
+        onClick={props.createBeneficialOwner}
+        disabled={props.loading}
+      >
+        Add new Beneficial Owner
+      </Button>
+    </div>
     <small className={styles.note}>
       According to the German anti money laundering act, we are obliged to keep a record of your
       personal data for five years after account closure.

@@ -8,7 +8,7 @@ import { actions } from "../../../modules/actions";
 
 import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { KycFileUploadList, TUploadListLayout } from "../shared/KycFileUploadList";
 
@@ -44,13 +44,9 @@ export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps
       filesLoading={props.filesLoading}
       layout="personal"
     />
-    <ButtonPrimary
-      color="primary"
-      onClick={props.onDone}
-      disabled={!props.files || props.files.length === 0}
-    >
+    <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>
       Submit
-    </ButtonPrimary>
+    </Button>
   </KycPanel>
 );
 

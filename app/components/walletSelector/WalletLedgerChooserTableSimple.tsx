@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
-import { ButtonSecondary } from "../shared/Buttons";
+import { Button } from "../shared/Buttons";
 import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
 
 interface IAccountRow {
@@ -28,9 +28,9 @@ export class AccountRow extends React.Component<IAccountRow> {
           {this.props.ledgerAccount.balanceNEU} <span>NEU</span>
         </td>
         <td className={styles.select}>
-          <ButtonSecondary data-test-id="button-select" onClick={this.handleClick}>
+          <Button layout="secondary" data-test-id="button-select" onClick={this.handleClick}>
             Select
-          </ButtonSecondary>
+          </Button>
         </td>
       </tr>
     );

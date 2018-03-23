@@ -2,6 +2,7 @@ import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
 import { selectUser } from "../auth/reducer";
@@ -16,7 +17,7 @@ export function* addNewEmail(
   if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;
 
   const email = action.payload.email;
-  const user = yield select(selectUser);
+  const user = yield select((s: IAppState) => selectUser(s.auth));
   try {
     yield neuCall(
       ensurePermissionsArePresent,

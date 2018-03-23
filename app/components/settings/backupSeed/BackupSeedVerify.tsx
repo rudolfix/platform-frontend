@@ -4,9 +4,10 @@ import * as React from "react";
 import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
-import { ArrowButton } from "../../shared/ArrowNavigation";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { WarningAlert } from "../../shared/WarningAlert";
+
+import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 
 /* tslint:disable: no-submodule-imports */
 import "react-select/dist/react-select.css";
@@ -150,9 +151,9 @@ export class BackupSeedVerify extends React.Component<
         {this.allWordsValid() && (
           <Row className="my-4 text-center">
             <Col className={styles.placeholderHeight}>
-              <ButtonPrimary data-test-id="seed-verify-button-next" onClick={this.props.onNext}>
+              <Button data-test-id="seed-verify-button-next" onClick={this.props.onNext}>
                 continue
-              </ButtonPrimary>
+              </Button>
             </Col>
           </Row>
         )}
@@ -164,9 +165,9 @@ export class BackupSeedVerify extends React.Component<
           )}
         <Row>
           <Col>
-            <ArrowButton arrowDirection="left" onClick={this.props.onBack}>
+            <Button layout={"icon-before"} svgIcon={arrowLeft} onClick={this.props.onBack}>
               Back
-            </ArrowButton>
+            </Button>
           </Col>
         </Row>
       </>

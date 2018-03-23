@@ -4,7 +4,7 @@ import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet, selectIsUnlocked } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
-import { ButtonPrimary } from "../shared/Buttons";
+import { Button } from "../shared/Buttons";
 import { LightWalletSignPrompt } from "./LightWalletSign";
 import { ModalComponentBody } from "./ModalComponentBody";
 
@@ -24,7 +24,7 @@ interface IDispatchProps {
 
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
   <div className="text-md-center">
-    <ButtonPrimary onClick={onCancel}>Cancel</ButtonPrimary>
+    <Button onClick={onCancel}>Cancel</Button>
   </div>
 );
 

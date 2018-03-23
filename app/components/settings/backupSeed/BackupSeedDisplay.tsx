@@ -2,10 +2,11 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { ArrowButton } from "../../shared/ArrowNavigation";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 
 import * as styles from "./BackupSeedDisplay.module.scss";
+
+import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 
 export const WORDS_PER_PAGE = 12;
 
@@ -58,27 +59,27 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
 
           <Row className="my-4 justify-content-center justify-content-sm-between">
             <Col className="mt-2" xs="auto">
-              <ButtonPrimary
+              <Button
                 data-test-id="seed-display-prev-words"
                 disabled={pageNo === 0}
                 onClick={onBack}
               >
                 {`previous ${WORDS_PER_PAGE} words`}
-              </ButtonPrimary>
+              </Button>
             </Col>
             <Col className="mt-2" xs="auto">
               {!isModal && onNext && showNextButton ? (
-                <ButtonPrimary data-test-id="seed-display-next-link" onClick={onNext}>
+                <Button data-test-id="seed-display-next-link" onClick={onNext}>
                   Continue
-                </ButtonPrimary>
+                </Button>
               ) : (
-                <ButtonPrimary
+                <Button
                   data-test-id="seed-display-next-words"
                   disabled={pageNo === 1}
                   onClick={onNext}
                 >
                   {`next ${WORDS_PER_PAGE} words`}
-                </ButtonPrimary>
+                </Button>
               )}
             </Col>
           </Row>
@@ -88,9 +89,9 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
       {!isModal && (
         <Row>
           <Col>
-            <ArrowButton arrowDirection="left" onClick={onBack}>
+            <Button layout="icon-before" svgIcon={arrowLeft} onClick={onBack}>
               Back
-            </ArrowButton>
+            </Button>
           </Col>
         </Row>
       )}

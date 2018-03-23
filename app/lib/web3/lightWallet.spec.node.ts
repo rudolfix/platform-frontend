@@ -39,6 +39,25 @@ describe("LightWallet > cryptography", () => {
         );
         expect(deserializedInstance).to.deep.include(JSON.parse(walletInstance));
       });
+
+      it("should return correct seed", async () => {
+        const walletInstance = (await lightWalletUtils.createLightWalletVault({
+          password,
+          hdPathString,
+          recoverSeed: expectedSeed,
+          customSalt,
+        })).walletInstance;
+        const deserializedInstance = await lightWalletUtils.deserializeLightWalletVault(
+          walletInstance,
+          customSalt,
+        );
+
+        const fetchedSeed = deserializedInstance.getSeed(
+          await LightWalletUtil.getWalletKey(deserializedInstance, password),
+        );
+
+        expect(fetchedSeed).to.equal(expectedSeed);
+      });
     });
 
     describe("Recover LightWallet", () => {

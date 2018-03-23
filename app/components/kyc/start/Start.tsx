@@ -25,12 +25,20 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
     <Panels
       panels={[
         {
-          content: <Button onClick={props.goToPerson}>I represent myself</Button>,
+          content: (
+            <Button theme="t-white" onClick={props.goToPerson}>
+              I represent myself
+            </Button>
+          ),
           theme: PanelTheme.black,
           id: 1,
         },
         {
-          content: <Button onClick={props.goToCompany}>I represent a company</Button>,
+          content: (
+            <Button theme="t-white" onClick={props.goToCompany}>
+              I represent a company
+            </Button>
+          ),
           theme: PanelTheme.blue,
           id: 2,
         },

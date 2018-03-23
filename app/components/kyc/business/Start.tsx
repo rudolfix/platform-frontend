@@ -32,7 +32,11 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
       panels={[
         {
           content: (
-            <Button disabled={props.loading} onClick={() => props.setBusinessType("small")}>
+            <Button
+              theme="t-white"
+              disabled={props.loading}
+              onClick={() => props.setBusinessType("small")}
+            >
               Small Business
             </Button>
           ),
@@ -41,7 +45,11 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
         },
         {
           content: (
-            <Button disabled={props.loading} onClick={() => props.setBusinessType("corporate")}>
+            <Button
+              theme="t-white"
+              disabled={props.loading}
+              onClick={() => props.setBusinessType("corporate")}
+            >
               Corporation
             </Button>
           ),
@@ -50,7 +58,11 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
         },
         {
           content: (
-            <Button disabled={props.loading} onClick={() => props.setBusinessType("partnership")}>
+            <Button
+              theme="t-white"
+              disabled={props.loading}
+              onClick={() => props.setBusinessType("partnership")}
+            >
               Partnership Business
             </Button>
           ),

@@ -21,7 +21,7 @@
   }
 
   .total-money {
-    @include tab;
+    @include font-tab;
     margin-left: px-to-rem(10px);
   }
 

@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { Panels, PanelTheme } from "../shared/Panels";
 
@@ -25,12 +25,20 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
     <Panels
       panels={[
         {
-          content: <ButtonPrimary onClick={props.goToPerson}>I represent myself</ButtonPrimary>,
+          content: (
+            <Button theme="t-white" onClick={props.goToPerson}>
+              I represent myself
+            </Button>
+          ),
           theme: PanelTheme.black,
           id: 1,
         },
         {
-          content: <ButtonPrimary onClick={props.goToCompany}>I represent a company</ButtonPrimary>,
+          content: (
+            <Button theme="t-white" onClick={props.goToCompany}>
+              I represent a company
+            </Button>
+          ),
           theme: PanelTheme.blue,
           id: 2,
         },

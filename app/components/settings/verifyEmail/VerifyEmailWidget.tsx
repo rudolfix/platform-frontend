@@ -2,14 +2,16 @@ import * as cn from "classnames";
 import * as React from "react";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
+import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 import { IUser } from "../../../lib/api/users/interfaces";
 import { appConnect } from "../../../store";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
 export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) => {
@@ -31,9 +33,11 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
         >
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
-              Resend Link
-            </ArrowLink>
+            <Link to="#">
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                Resend Link
+              </Button>
+            </Link>
           </Col>
         </div>
       ) : (
@@ -46,9 +50,11 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
             you
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <ArrowLink arrowDirection="right" to="#">
-              Verify
-            </ArrowLink>
+            <Link to="#">
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                Verify
+              </Button>
+            </Link>
           </Col>
         </div>
       )}

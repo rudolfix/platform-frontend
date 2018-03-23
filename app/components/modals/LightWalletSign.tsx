@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Input } from "reactstrap";
-import { ButtonPrimary, ButtonSecondary } from "../shared/Buttons";
+import { Button } from "../shared/Buttons";
 
 interface IState {
   password: string;
@@ -46,8 +46,10 @@ export class LightWalletSignPrompt extends React.Component<IProps, IState> {
           />
         )}
         <div className="mt-3">
-          <ButtonPrimary onClick={() => onAccept(this.state.password)}>Accept</ButtonPrimary>
-          <ButtonSecondary onClick={onCancel}>Reject</ButtonSecondary>
+          <Button onClick={() => onAccept(this.state.password)}>Accept</Button>
+          <Button layout="secondary" onClick={onCancel}>
+            Reject
+          </Button>
         </div>
       </div>
     );

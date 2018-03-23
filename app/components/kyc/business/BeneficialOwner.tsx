@@ -86,9 +86,11 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
           <FormField label="Percent owned" name="ownership" />
         </Col>
       </Row>
-      <Button type="submit" disabled={!formikBag.isValid || formikBag.loading}>
-        Submit changes
-      </Button>
+      <div className="p-4 text-center">
+        <Button type="submit" disabled={!formikBag.isValid || formikBag.loading}>
+          Submit changes
+        </Button>
+      </div>
     </Form>
   );
 };
@@ -127,9 +129,11 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
           fileUploading={this.props.fileUploading}
           filesLoading={this.props.filesLoading}
         />
-        <Button layout="secondary" onClick={this.props.delete}>
-          Delete {name}
-        </Button>
+        <div className="p-4 text-center">
+          <Button layout="secondary" onClick={this.props.delete}>
+            Delete {name}
+          </Button>
+        </div>
       </AccordionElement>
     );
   }

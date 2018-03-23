@@ -5,7 +5,7 @@ import { Button } from "../shared/Buttons";
 import { PanelWhite } from "../shared/PanelWhite";
 import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
 
-import * as arrowLeft from "../../assets/img/inline_icons/arrow_right.svg";
+import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 
 interface IPropsKycPanel {
   title: string;

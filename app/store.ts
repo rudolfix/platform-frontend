@@ -2,7 +2,9 @@ import { connect, InferableComponentEnhancerWithProps, Options } from "react-red
 import { LocationChangeAction, routerReducer, RouterState } from "react-router-redux";
 import { combineReducers } from "redux";
 
+import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
+import { genericModalReducer } from "./modules/genericModal/reducer";
 import { initReducer } from "./modules/init/reducer";
 import { kycReducer } from "./modules/kyc/reducer";
 import { moneyReducer } from "./modules/money/reducer";
@@ -16,8 +18,6 @@ import { lightWalletWizardReducer } from "./modules/wallet-selector/light-wizard
 import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
 import { walletReducer } from "./modules/wallet/reducer";
 import { web3Reducer } from "./modules/web3/reducer";
-import { genericModalReducer } from "./modules/genericModal/reducer";
-import { TAction } from "./modules/actions";
 import { FunctionWithDeps } from "./types";
 
 export interface IAppAction {

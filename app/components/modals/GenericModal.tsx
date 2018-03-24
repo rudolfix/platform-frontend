@@ -8,13 +8,13 @@ import {
   selectIsOpen,
 } from "../../modules/genericModal/reducer";
 import { appConnect } from "../../store";
-import { ButtonPrimary } from "../shared/Buttons";
 import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as styles from "./GenericModal.module.scss";
 
 import * as successIcon from "../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../assets/img/notfications/warning.svg";
+import { Button } from "../shared/Buttons";
 
 interface IStateProps {
   isOpen: boolean;
@@ -51,7 +51,7 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
         </Row>
 
         <Row className="mb-5 justify-content-center">
-          <ButtonPrimary onClick={onCancel}> Cancel </ButtonPrimary>
+          <Button onClick={onCancel}> Cancel </Button>
         </Row>
       </ModalComponentBody>
     </Modal>

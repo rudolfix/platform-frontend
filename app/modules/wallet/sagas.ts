@@ -12,7 +12,7 @@ import { selectEthereumAddress } from "../web3/reducer";
 import { IWalletStateData } from "./reducer";
 import { selectIsLoaded } from "./selectors";
 
-function* loadWalletDataSaga({ notificationCenter, logger }: TGlobalDependencies): any {
+function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
   try {
     const isLoaded = yield select((s: IAppState) => selectIsLoaded(s.wallet));
     if (isLoaded) return;
@@ -23,8 +23,8 @@ function* loadWalletDataSaga({ notificationCenter, logger }: TGlobalDependencies
 
     yield put(actions.wallet.loadWalletData(state));
   } catch (e) {
-    notificationCenter.error("Error while loading wallet data.");
-    logger.error("Error while loading user data: ", e);
+    yield put(actions.wallet.loadWalletDataError("Error while loading wallet data."));
+    logger.error("Error while loading wallet data: ", e);
   }
 }
 

@@ -6,7 +6,6 @@ import { compose } from "redux";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { actions } from "../../../modules/actions";
-import { IWalletStateLoaded } from "../../../modules/wallet/reducer";
 import {
   selectLiquidEtherBalanceEuroAmount,
   selectLiquidEuroTokenBalance,
@@ -20,25 +19,27 @@ import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
+import { WarningAlert } from "../../shared/WarningAlert";
 import * as styles from "./MyWalletWidget.module.scss";
 
-type StateProps =
-  | {
-      isLoading: true;
-    }
-  | {
-      isLoading: false;
-      euroTokenAmount: string;
-      euroTokenEuroAmount: string;
-      ethAmount: string;
-      ethEuroAmount: string;
-      percentage: string;
-      totalAmount: string;
-    };
+type StateProps = {
+  isLoading: boolean;
+  error?: string;
+  data?: {
+    euroTokenAmount: string;
+    euroTokenEuroAmount: string;
+    ethAmount: string;
+    ethEuroAmount: string;
+    percentage: string;
+    totalAmount: string;
+  };
+};
 
 export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
   if (props.isLoading) {
     return <LoadingIndicator />;
+  } else if (props.error) {
+    return <WarningAlert>{props.error}</WarningAlert>;
   } else {
     const {
       euroTokenAmount,
@@ -47,7 +48,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
       ethAmount,
       ethEuroAmount,
       totalAmount,
-    } = props;
+    } = props.data!;
 
     return (
       <>
@@ -128,20 +129,26 @@ export const MyWalletWidget = compose<React.SFC>(
   appConnect<StateProps>({
     stateToProps: s => {
       const isLoading = s.wallet.loading;
-      if (!isLoading) {
-        const walletData = s.wallet as IWalletStateLoaded; // TS doesnt realize here that we are sure that its wallet already loaded
+      const error = s.wallet.error;
+
+      if (!isLoading && !error) {
+        const walletData = s.wallet.data!;
         return {
           isLoading,
-          euroTokenEuroAmount: selectLiquidEuroTokenBalance(walletData),
-          euroTokenAmount: selectLiquidEuroTokenBalance(walletData),
-          ethAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-          ethEuroAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-          percentage: "0", // TODO connect 24h change
-          totalAmount: selectLiquidEuroTotalAmount(walletData),
+          error,
+          data: {
+            euroTokenEuroAmount: selectLiquidEuroTokenBalance(walletData),
+            euroTokenAmount: selectLiquidEuroTokenBalance(walletData),
+            ethAmount: selectLiquidEtherBalanceEuroAmount(walletData),
+            ethEuroAmount: selectLiquidEtherBalanceEuroAmount(walletData),
+            percentage: "0", // TODO connect 24h change
+            totalAmount: selectLiquidEuroTotalAmount(walletData),
+          },
         };
       } else {
         return {
           isLoading,
+          error,
         };
       }
     },

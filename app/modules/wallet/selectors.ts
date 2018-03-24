@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { IWalletState, IWalletStateLoaded } from "./reducer";
+import { IWalletState, IWalletStateData } from "./reducer";
 
 /**
  * helper for adding up array of big numbers
@@ -21,24 +21,24 @@ const multiplyBigNumbers = (numbers: string[]): string =>
 /**
  * Liquid Assets
  */
-export const selectLiquidEtherBalance = (state: IWalletStateLoaded) =>
+export const selectLiquidEtherBalance = (state: IWalletStateData) =>
   addBigNumbers([state.etherBalance, state.etherTokenBalance]);
 
-export const selectLiquidEuroTokenBalance = (state: IWalletStateLoaded) => state.euroTokenBalance;
+export const selectLiquidEuroTokenBalance = (state: IWalletStateData) => state.euroTokenBalance;
 
-export const selectLiquidEtherBalanceEuroAmount = (state: IWalletStateLoaded) =>
+export const selectLiquidEtherBalanceEuroAmount = (state: IWalletStateData) =>
   multiplyBigNumbers([state.etherPriceEur, selectLiquidEtherBalance(state)]);
 
-export const selectLiquidEuroTotalAmount = (state: IWalletStateLoaded) =>
+export const selectLiquidEuroTotalAmount = (state: IWalletStateData) =>
   addBigNumbers([selectLiquidEuroTokenBalance(state), selectLiquidEtherBalanceEuroAmount(state)]);
 
 /**
  * Locked Assets
  */
-export const selectLockedEtherBalance = (state: IWalletStateLoaded) =>
+export const selectLockedEtherBalance = (state: IWalletStateData) =>
   addBigNumbers([state.etherTokenLockedBalance, state.etherICBMLockedBalance]);
 
-export const selectLockedEuroTokenBalance = (state: IWalletStateLoaded) =>
+export const selectLockedEuroTokenBalance = (state: IWalletStateData) =>
   addBigNumbers([state.euroTokenLockedBalance, state.euroTokenICBMLockedBalance]);
 
 export const selectIsLoaded = (state: IWalletState): boolean => !state.loading;

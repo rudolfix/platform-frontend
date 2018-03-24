@@ -189,13 +189,23 @@ export const Demo: React.SFC = () => (
         <Col>
           <MyWalletWidgetComponent
             isLoading={false}
-            euroTokenEuroAmount={"6004904646" + "0".repeat(16)}
-            euroTokenAmount={"36490" + "0".repeat(18)}
-            ethAmount={"66482" + "0".repeat(14)}
-            ethEuroAmount={"6004904646" + "0".repeat(16)}
-            percentage="-3.67"
-            totalAmount={"637238" + "0".repeat(18)}
+            data={{
+              euroTokenEuroAmount: "6004904646" + "0".repeat(16),
+              euroTokenAmount: "36490" + "0".repeat(18),
+              ethAmount: "66482" + "0".repeat(14),
+              ethEuroAmount: "6004904646" + "0".repeat(16),
+              percentage: "-3.67",
+              totalAmount: "637238" + "0".repeat(18),
+            }}
           />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row noGutters>
+        <Col>
+          <MyWalletWidgetComponent isLoading={false} error="Error while loading wallet data." />
         </Col>
       </Row>
     </Container>

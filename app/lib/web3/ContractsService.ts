@@ -3,13 +3,13 @@ import promiseAll = require("promise-all");
 
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";
-import { Commitment } from "../../lib/contracts/Commitment";
-import { EtherToken } from "../../lib/contracts/EtherToken";
-import { EuroToken } from "../../lib/contracts/EuroToken";
-import { LockedAccount } from "../../lib/contracts/LockedAccount";
-import { Neumark } from "../../lib/contracts/Neumark";
-import { ILogger } from "../../lib/dependencies/Logger";
-import { Web3Manager } from "../../lib/web3/Web3Manager";
+import { Commitment } from "../contracts/Commitment";
+import { EtherToken } from "../contracts/EtherToken";
+import { EuroToken } from "../contracts/EuroToken";
+import { LockedAccount } from "../contracts/LockedAccount";
+import { Neumark } from "../contracts/Neumark";
+import { ILogger } from "../dependencies/Logger";
+import { Web3Manager } from "./Web3Manager";
 
 @injectable()
 export class ContractsService {

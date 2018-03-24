@@ -1,7 +1,9 @@
 import { AppReducer } from "../../store";
 
-interface IWalletStateNotLoaded {
-  loading: true;
+export interface IWalletState {
+  loading: boolean;
+  error?: string;
+  data?: IWalletStateData;
 }
 
 // balances of all coins are represented by bignumber.js strings
@@ -22,12 +24,6 @@ export interface IWalletStateData {
   neuPriceEur: string;
 }
 
-export interface IWalletStateLoaded extends IWalletStateData {
-  loading: false;
-}
-
-export type IWalletState = IWalletStateNotLoaded | IWalletStateLoaded;
-
 const walletInitialState: IWalletState = {
   loading: true,
 };
@@ -40,7 +36,14 @@ export const walletReducer: AppReducer<IWalletState> = (
     case "WALLET_LOAD_WALLET_DATA":
       return {
         loading: false,
-        ...action.payload.data,
+        error: undefined,
+        data: action.payload.data,
+      };
+    case "WALLET_LOAD_WALLET_DATA_ERROR":
+      return {
+        loading: false,
+        error: action.payload.errorMsg,
+        data: undefined,
       };
   }
 

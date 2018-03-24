@@ -30,7 +30,7 @@ import {
   STORAGE_WALLET_METADATA_KEY,
   TWalletMetadata,
 } from "../lib/persistence/WalletMetadataObjectStorage";
-import { ContractsService } from "../modules/contracts/ContractsService";
+import { ContractsService } from "../lib/web3/ContractsService";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;

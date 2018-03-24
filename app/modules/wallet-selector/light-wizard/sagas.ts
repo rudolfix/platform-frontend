@@ -70,10 +70,9 @@ export function* lightWalletBackupWatch(): Iterator<any> {
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield effects.put(actions.routing.goToSettings());
     yield effects.put(
-      actions.genericModal.showGenericModal(
+      actions.genericModal.showGenericConfirmationModal(
         "Backup Seed",
         "you have successfully back up your wallet",
-        "check",
       ),
     );
   } catch (e) {

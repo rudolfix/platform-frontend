@@ -1,3 +1,4 @@
+import { genericModalIcons } from "../../components/modals/GenericModal";
 import { AppReducer } from "../../store";
 
 export interface IGenericModalState {
@@ -6,12 +7,12 @@ export interface IGenericModalState {
 }
 
 //Add more custom icons here
-export type icon = "check" | "exclamation";
+export type TIconType = keyof typeof genericModalIcons;
 
 export interface IGenericModal {
   title: string;
   description?: string;
-  icon?: icon;
+  icon?: TIconType;
 }
 
 const initialState: IGenericModalState = {

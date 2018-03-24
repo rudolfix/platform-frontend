@@ -22,36 +22,35 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  onCancel: () => void;
+  onDismiss: () => void;
 }
 
-//TODO: Add typing to iconDict
-const iconDict = {
+export const genericModalIcons = {
   check: <img src={successIcon} className={styles.icon} aria-hidden="true" />,
   exclamation: <img src={warningIcon} className={styles.icon} aria-hidden="true" />,
 };
 
 const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
-  onCancel,
+  onDismiss,
   isOpen,
   genericModalObj,
 }) => {
   return (
-    <Modal isOpen={isOpen} toggle={onCancel}>
-      <ModalComponentBody onClose={onCancel}>
+    <Modal isOpen={isOpen} toggle={onDismiss}>
+      <ModalComponentBody onClose={onDismiss}>
         <Row className="mt-5 justify-content-center">
           <h5>{genericModalObj && genericModalObj.title}</h5>
         </Row>
 
         <Row className="mb-5 justify-content-center">
           <p className="-center">
-            {genericModalObj && genericModalObj.icon && iconDict[genericModalObj.icon]}{" "}
+            {genericModalObj && genericModalObj.icon && genericModalIcons[genericModalObj.icon]}{" "}
             {genericModalObj && genericModalObj.description}
           </p>
         </Row>
 
         <Row className="mb-5 justify-content-center">
-          <Button onClick={onCancel}> Cancel </Button>
+          <Button onClick={onDismiss}>OK</Button>
         </Row>
       </ModalComponentBody>
     </Modal>
@@ -64,6 +63,6 @@ export const GenericModal = appConnect<IStateProps, IDispatchProps>({
     genericModalObj: selectGenericModalObj(s.genericModal),
   }),
   dispatchToProps: dispatch => ({
-    onCancel: () => dispatch(actions.genericModal.hideGenericModal()),
+    onDismiss: () => dispatch(actions.genericModal.hideGenericModal()),
   }),
 })(GenericModalComponent);

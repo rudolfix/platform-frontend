@@ -2,9 +2,11 @@ import * as cn from "classnames";
 import * as React from "react";
 import * as styles from "./KycStatusWidget.module.scss";
 
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
+import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
@@ -12,7 +14,7 @@ import { actions } from "../../../modules/actions";
 import { selectKycRequestStatuts } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
 interface IStateProps {
@@ -59,9 +61,11 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             {props.requestStatus && props.requestStatus === "Draft" ? (
-              <ArrowLink arrowDirection="right" to="#" onClick={props.onStartKyc}>
-                Verify KYC
-              </ArrowLink>
+              <Link to="#">
+                <Button layout="icon-after" svgIcon={arrowRight} onClick={props.onStartKyc}>
+                  Verify KYC
+                </Button>
+              </Link>
             ) : (
               <div />
             )}

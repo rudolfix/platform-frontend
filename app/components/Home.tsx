@@ -1,7 +1,8 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 import { appRoutes } from "./AppRouter";
-import { ButtonSecondaryLink } from "./shared/Buttons";
+import { Button } from "./shared/Buttons";
 
 export const Home: React.SFC = () => (
   <Container>
@@ -9,8 +10,12 @@ export const Home: React.SFC = () => (
       <Col>
         <h2 data-test-id="homepage-title">Home</h2>
         <p>Not logged in</p>
-        <ButtonSecondaryLink to={appRoutes.login}>Login</ButtonSecondaryLink>
-        <ButtonSecondaryLink to={appRoutes.register}>Register</ButtonSecondaryLink>
+        <Link to={appRoutes.login}>
+          <Button>Login</Button>
+        </Link>
+        <Link to={appRoutes.register}>
+          <Button>Register</Button>
+        </Link>
       </Col>
     </Row>
   </Container>

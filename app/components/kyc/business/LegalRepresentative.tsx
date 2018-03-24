@@ -30,7 +30,7 @@ import {
   KycLegalRepresentativeSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { KycPanel } from "../KycPanel";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
@@ -79,14 +79,12 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
       label="Are you politically exposed?"
       name="isPoliticallyExposed"
     />
-
-    <ButtonPrimary
-      color="primary"
-      type="submit"
-      disabled={!formikBag.isValid || formikBag.loadingData}
-    >
-      Save
-    </ButtonPrimary>
+    <br />
+    <div className="p-4 text-center">
+      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
+        Save
+      </Button>
+    </div>
   </Form>
 );
 
@@ -109,7 +107,7 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
         files={props.files}
         fileUploading={props.fileUploading}
         filesLoading={props.filesLoading}
-      />{" "}
+      />
     </div>
   );
 };
@@ -133,14 +131,15 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} lrDataValid={lrDataValid} />
       <BeneficialOwners {...props} lrDataValid={lrDataValid} />
-      <ButtonPrimary
-        color="primary"
-        type="submit"
-        disabled={!props.legalRepresentative || props.files.length === 0}
-        onClick={props.onContinue}
-      >
-        Continue
-      </ButtonPrimary>
+      <div className="p-4 text-center">
+        <Button
+          type="submit"
+          disabled={!props.legalRepresentative || props.files.length === 0}
+          onClick={props.onContinue}
+        >
+          Continue
+        </Button>
+      </div>
     </KycPanel>
   );
 };

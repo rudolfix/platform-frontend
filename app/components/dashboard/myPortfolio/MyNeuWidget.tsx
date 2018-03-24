@@ -1,10 +1,13 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import * as icon from "../../../assets/img/neu_icon.svg";
-import { ArrowLink } from "../../shared/ArrowNavigation";
+import { Button } from "../../shared/Buttons";
 import { Money } from "../../shared/Money";
 import * as styles from "./MyNeuWidget.module.scss";
+
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 
 interface IProps {
   balanceNeu: string;
@@ -24,9 +27,11 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
           </h3>
         </Col>
         <Col md={12} className="text-right text-md-center" data-test-id="arrow-neu">
-          <ArrowLink arrowDirection="right" to="#" className="text-light">
-            About NEU
-          </ArrowLink>
+          <Link to="#">
+            <Button layout="icon-after" theme="t-white" svgIcon={arrowRight}>
+              About NEU
+            </Button>
+          </Link>
         </Col>
       </Row>
     </div>

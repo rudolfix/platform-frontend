@@ -64,6 +64,6 @@ export const seedNotBackedUpNotification = () => ({
   id: Date.now(),
   type: NotificationType.WARNING,
   text: "You have to backup your codes",
-  actionLinkText: "go to settings",
+  actionLinkText: "Go to settings",
   onClickAction: routingActions.goToSettings(),
 });

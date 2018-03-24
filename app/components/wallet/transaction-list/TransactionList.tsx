@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
-import { ButtonSecondary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { Money, MoneyTransfer } from "../../shared/Money";
@@ -104,14 +104,14 @@ export const TransactionList: React.SFC<ITransactionList> = ({
                 {fromTo}
               </TableCell>
               <TableCell decorate mobileDescription={"TXN"} center>
-                <ButtonSecondary>
+                <Button layout="secondary">
                   <InlineIcon svgIcon={LinkOutIcon} />
-                </ButtonSecondary>
+                </Button>
               </TableCell>
               <TableCell decorate mobileDescription={"Details"} center>
-                <ButtonSecondary>
+                <Button layout="secondary">
                   <InlineIcon svgIcon={AddIcon} />
-                </ButtonSecondary>
+                </Button>
               </TableCell>
             </TableRow>
           ))}

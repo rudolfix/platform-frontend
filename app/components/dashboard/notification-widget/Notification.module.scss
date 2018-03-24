@@ -30,6 +30,10 @@
     }
   }
 
+  &:not(:first-child) {
+    margin-top: map-get($spacers, 4);
+  }
+
   .text {
     flex-grow: 1;
     padding-right: px-to-rem(20px);
@@ -62,6 +66,7 @@
     flex-shrink: 0;
     text-decoration: underline;
     margin-left: auto;
+    cursor: pointer;
   }
 
 

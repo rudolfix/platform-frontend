@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { FormField } from "../../shared/forms/formField/FormField";
 import { PanelDark } from "../../shared/PanelDark";
 
@@ -28,9 +28,9 @@ const ChangeEmailForm = (formikBag: FormikProps<IFormValues>) => (
       name={EMAIL}
     />
     <div className="text-center">
-      <ButtonPrimary type="submit" disabled={!formikBag.values.email}>
+      <Button type="submit" disabled={!formikBag.values.email}>
         Submit
-      </ButtonPrimary>
+      </Button>
     </div>
   </Form>
 );

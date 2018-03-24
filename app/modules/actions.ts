@@ -6,6 +6,7 @@ import { dashboardActions } from "./dashboard/actions";
 import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
+import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
 import { showSeedModalActions } from "./showSeedModal/actions";
 import { signMessageModalActions } from "./signMessageModal/actions";
@@ -27,6 +28,7 @@ export const actions = {
   web3: web3Actions,
   userAgent: userAgentActions,
   auth: authActions,
+  notifications: notificationActions,
 };
 
 /**
@@ -45,6 +47,7 @@ export const allActions = {
   ...web3Actions,
   ...userAgentActions,
   ...authActions,
+  ...notificationActions,
 };
 
 /**

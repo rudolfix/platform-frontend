@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { ArrowLink } from "../../shared/ArrowNavigation";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { StepCard } from "../../shared/StepCard";
 
 import * as noComputer from "../../../assets/img/seed_backup/no_computer.svg";
 import * as safe from "../../../assets/img/seed_backup/safe.svg";
 import * as write from "../../../assets/img/seed_backup/write.svg";
+
+import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 
 interface IBackupSeedIntroProps {
   onNext: () => void;
@@ -23,14 +24,14 @@ export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNe
     </Row>
     <Row className="my-5">
       <Col className="text-center">
-        <ButtonPrimary onClick={onNext}>I have read instructions</ButtonPrimary>
+        <Button onClick={onNext}>I have read instructions</Button>
       </Col>
     </Row>
     <Row>
       <Col className="col-auto">
-        <ArrowLink arrowDirection="left" to={onBack}>
+        <Button layout="icon-before" svgIcon={arrowLeft} onClick={() => onBack}>
           Back
-        </ArrowLink>
+        </Button>
       </Col>
     </Row>
   </>

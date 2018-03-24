@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+
 import {
   selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
@@ -11,7 +12,6 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
 import { MyPortfolio } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
-import { NotificationWidget } from "./notification-widget/NotificationWidget";
 import { UserInfo } from "./UserInfo";
 
 interface IStateProps {
@@ -25,7 +25,6 @@ type IProps = IStateProps;
 
 export const DashboardComponent = (props: IProps) => (
   <LayoutAuthorized>
-    <NotificationWidget />
     <MessageSignModal />
     <Row className="py-4">
       <Col lg={8} xs={12}>

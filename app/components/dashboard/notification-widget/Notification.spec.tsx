@@ -3,16 +3,15 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Notification, NotificationType } from "./Notification";
+import { NotificationType } from "../../../modules/notifications/reducer";
+import { INotificationProps, Notification } from "./Notification";
 
 import { tid } from "../../../../test/testUtils";
 
-const defaultProps = () => ({
-  id: 1,
+const defaultProps = (): INotificationProps => ({
   type: NotificationType.INFO,
   text: "test notification",
-  onClose: spy(),
-  actionLink: "dashboard",
+  onClick: spy(),
   actionLinkText: "link text",
 });
 
@@ -38,6 +37,6 @@ describe("<Notification />", () => {
 
     component.find(tid("notification-close")).simulate("click");
 
-    expect(props.onClose).to.be.calledOnce;
+    expect(props.onClick).to.be.calledOnce;
   });
 });

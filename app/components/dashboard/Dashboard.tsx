@@ -4,12 +4,10 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MessageSignModal } from "../modals/SignMessageModal";
 import { MyPortfolio } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
-import { NotificationWidget } from "./notification-widget/NotificationWidget";
 import { UserInfo } from "./UserInfo";
 
 export const Dashboard = () => (
   <LayoutAuthorized>
-    <NotificationWidget />
     <MessageSignModal />
     <Row className="py-4">
       <Col lg={8} xs={12}>

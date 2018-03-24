@@ -4,7 +4,7 @@ import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
-import { ButtonPrimary } from "../shared/Buttons";
+import { Button } from "../shared/Buttons";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";
@@ -37,7 +37,7 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
     )}
     <Row>
       <Col className="text-center">
-        <ButtonPrimary onClick={cancelSigning}>Cancel</ButtonPrimary>
+        <Button onClick={cancelSigning}>Cancel</Button>
       </Col>
     </Row>
   </>

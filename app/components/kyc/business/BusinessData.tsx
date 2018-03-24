@@ -17,7 +17,7 @@ import {
   KycBusinessDataSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { KycFileUploadList } from "../shared/KycFileUploadList";
 
@@ -57,14 +57,11 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
       </Col>
     </Row>
     <FormSelectCountryField label="Country" name="country" />
-    <br />
-    <ButtonPrimary
-      color="primary"
-      type="submit"
-      disabled={!formikBag.isValid || formikBag.loadingData}
-    >
-      Save
-    </ButtonPrimary>
+    <div className="p-4 text-center">
+      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
+        Save
+      </Button>
+    </div>
   </Form>
 );
 
@@ -91,7 +88,7 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
         files={props.files}
         fileUploading={props.fileUploading}
         filesLoading={props.filesLoading}
-      />{" "}
+      />
     </div>
   );
 };
@@ -108,14 +105,15 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
     >
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} dataValid={dataValid} />
-      <ButtonPrimary
-        color="primary"
-        type="submit"
-        disabled={!props.currentValues || props.files.length === 0}
-        onClick={props.submit}
-      >
-        Submit Request
-      </ButtonPrimary>
+      <div className="p-4 text-center">
+        <Button
+          type="submit"
+          disabled={!props.currentValues || props.files.length === 0}
+          onClick={props.submit}
+        >
+          Submit Request
+        </Button>
+      </div>
     </KycPanel>
   );
 };

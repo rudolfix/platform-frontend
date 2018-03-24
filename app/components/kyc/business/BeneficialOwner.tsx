@@ -11,11 +11,10 @@ import {
   KycBeneficialOwnerSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { ButtonPrimary, ButtonSecondary } from "../../shared/Buttons";
-import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 import { Col, Row } from "reactstrap";
 import { AccordionElement } from "../../shared/Accordion";
+import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import {
   BOOL_FALSE_KEY,
@@ -27,6 +26,7 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
+import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -66,7 +66,6 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
       <FormField label="First Name" name="firstName" />
       <FormField label="Last Name" name="lastName" />
       <FormFieldDate label="Birthdate" name="birthDate" />
-
       <FormField label="Street and number" name="street" />
       <Row>
         <Col xs={12} md={6} lg={8}>
@@ -87,13 +86,11 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
           <FormField label="Percent owned" name="ownership" />
         </Col>
       </Row>
-      <ButtonPrimary
-        color="primary"
-        type="submit"
-        disabled={!formikBag.isValid || formikBag.loading}
-      >
-        Save
-      </ButtonPrimary>
+      <div className="p-4 text-center">
+        <Button type="submit" disabled={!formikBag.isValid || formikBag.loading}>
+          Submit changes
+        </Button>
+      </div>
     </Form>
   );
 };
@@ -132,7 +129,11 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
           fileUploading={this.props.fileUploading}
           filesLoading={this.props.filesLoading}
         />
-        <ButtonSecondary onClick={this.props.delete}>Delete {name}</ButtonSecondary>
+        <div className="p-4 text-center">
+          <Button layout="secondary" onClick={this.props.delete}>
+            Delete {name}
+          </Button>
+        </div>
       </AccordionElement>
     );
   }

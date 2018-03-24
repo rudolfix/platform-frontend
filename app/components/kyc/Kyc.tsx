@@ -9,8 +9,10 @@ import { selectKycRequestStatuts } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { ArrowLink } from "../shared/ArrowNavigation";
+import { Button } from "../shared/Buttons";
 import { KycPanel } from "./KycPanel";
+
+import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 
 interface IStateProps {
   requestLoading?: boolean;
@@ -26,9 +28,11 @@ type IProps = IStateProps & IDispatchProps;
 
 const RequestStateInfo: React.SFC<IProps> = props => {
   const settingsButton = (
-    <ArrowLink arrowDirection={"left"} to="#" onClick={props.goToSettings}>
-      Go to settings
-    </ArrowLink>
+    <div className="p-4 text-center">
+      <Button layout="icon-before" svgIcon={arrowLeft} onClick={props.goToSettings}>
+        Go to settings
+      </Button>
+    </div>
   );
   if (!props.requestStatus) {
     return (

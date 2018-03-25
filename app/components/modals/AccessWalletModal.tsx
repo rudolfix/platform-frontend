@@ -5,7 +5,7 @@ import { actions } from "../../modules/actions";
 import { selectIsLightWallet, selectIsUnlocked } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
-import { LightWalletSignPrompt } from "./LightWalletSign";
+import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 import { ModalComponentBody } from "./ModalComponentBody";
 
 interface IStateProps {
@@ -36,7 +36,7 @@ const AccessWalletModalComponent: React.SFC<IStateProps & IDispatchProps> = prop
         <p>{props.message}</p>
         <img src={lockIcon} className="mb-3" />
         {props.isLightWallet ? (
-          <LightWalletSignPrompt {...props} />
+          <AccessLightWalletPrompt {...props} />
         ) : (
           <GenericSignPrompt onCancel={props.onCancel} />
         )}

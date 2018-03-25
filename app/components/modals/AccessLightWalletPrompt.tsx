@@ -17,7 +17,7 @@ interface IOwnProps {
 
 type IProps = IStateProps & IOwnProps;
 
-export class LightWalletSignPrompt extends React.Component<IProps, IState> {
+export class AccessLightWalletPrompt extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {

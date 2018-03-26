@@ -46,7 +46,7 @@ export class FormField extends React.Component<FieldGroupProps> {
           name={name}
           render={({ field }: FieldProps) => (
             <InputGroup>
-              {prefix ? <InputGroupAddon>{prefix}</InputGroupAddon> : undefined}
+              {prefix && <InputGroupAddon>{prefix}</InputGroupAddon>}
               <Input
                 {...field}
                 type={type}
@@ -54,7 +54,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 placeholder={placeholder || label}
                 valid={isValid(touched, errors, name)}
               />
-              {suffix ? <InputGroupAddon>{suffix}</InputGroupAddon> : undefined}
+              {suffix && <InputGroupAddon>{suffix}</InputGroupAddon>}
             </InputGroup>
           )}
         />

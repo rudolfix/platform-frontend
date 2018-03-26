@@ -52,11 +52,10 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
       </Col>
     </Row>
     <FormSelectCountryField label="Country" name="country" />
-    {!formikBag.currentValues || !(formikBag.currentValues.legalFormType === "corporate") ? (
-      <div />
-    ) : (
-      <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
-    )}
+    {formikBag.currentValues &&
+      formikBag.currentValues.legalFormType === "corporate" && (
+        <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
+      )}
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
         Save

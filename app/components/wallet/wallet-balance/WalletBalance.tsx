@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { Button } from "../../shared/Buttons";
+import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { IPanelDarkProps, PanelDark } from "../../shared/PanelDark";
 import { TotalEuro } from "../TotalEuro";

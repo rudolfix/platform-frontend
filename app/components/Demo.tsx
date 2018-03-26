@@ -17,6 +17,7 @@ import {
   ButtonSecondary,
   ButtonSecondaryLink,
 } from "./shared/Buttons";
+import { ChartBars } from "./shared/charts/ChartBars";
 import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
 import { ChartPie } from "./shared/charts/ChartPie";
 import { Money } from "./shared/Money";
@@ -35,6 +36,16 @@ const chartDoughnutData = {
 };
 
 const chartPieData = {
+  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
+  datasets: [
+    {
+      data: [100, 50, 20, 40, 50, 12],
+      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
+    },
+  ],
+};
+
+const chartBarData = {
   labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
   datasets: [
     {
@@ -261,6 +272,10 @@ export const Demo: React.SFC = () => (
 
     <Container>
       <ChartPie data={chartPieData} />
+    </Container>
+
+    <Container>
+      <ChartBars data={chartBarData} />
     </Container>
   </div>
 );

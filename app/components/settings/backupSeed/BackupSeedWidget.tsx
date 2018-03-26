@@ -14,19 +14,15 @@ import * as styles from "./BackupSeedWidget.module.scss";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
-import { actions } from "../../../modules/actions";
 
 interface IStateProps {
   backupCodesVerified?: boolean;
 }
 
-interface IDispatchProps {
-  showSeedModal?: () => void;
-}
+interface IDispatchProps {}
 
 export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> = ({
   backupCodesVerified,
-  showSeedModal,
 }) => {
   return (
     <PanelDark
@@ -46,9 +42,11 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> 
         >
           <p className={cn(styles.text, "pt-2")}>You have backed up your SEED. </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <Button layout="icon-after" svgIcon={arrowRight} onClick={showSeedModal}>
-              View Again
-            </Button>
+            <Link to={settingsRoutes.seedBackup}>
+              <Button layout="icon-after" svgIcon={arrowRight}>
+                View Again
+              </Button>
+            </Link>
           </Col>
         </div>
       ) : (
@@ -76,8 +74,5 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> 
 export const BackupSeedWidget = appConnect<IStateProps & IDispatchProps, {}>({
   stateToProps: s => ({
     backupCodesVerified: selectBackupCodesVerified(s.auth),
-  }),
-  dispatchToProps: dispatch => ({
-    showSeedModal: () => dispatch(actions.showSeedModal.seedModelshow()),
   }),
 })(BackupSeedWidgetComponent);

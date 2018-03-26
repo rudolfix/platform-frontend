@@ -71,7 +71,7 @@ export const lightWizardFlows = {
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
           dispatch(
-            actions.genericErrorModal.showError(
+            actions.genericModal.showErrorModal(
               "Light wallet Error",
               mapLightWalletErrorToErrorMessage(e),
             ),

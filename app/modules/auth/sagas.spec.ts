@@ -62,6 +62,7 @@ describe("Jwt actions", () => {
         dummyEthereumAddressWithChecksum,
         expectedSalt,
         expectedSignerType,
+        [],
       );
       expect(browserWalletMock.signMessage).to.be.calledWithExactly(expectedChallenge);
       expect(signatureAuthApiMock.createJwt).to.be.calledWithExactly(

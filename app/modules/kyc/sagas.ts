@@ -1,4 +1,4 @@
-import { fork, put } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { actions, TAction } from "../actions";
 
@@ -15,7 +15,10 @@ import {
   IKycLegalRepresentative,
   IKycRequestState,
 } from "../../lib/api/KycApi.interfaces";
+import { IAppState } from "../../store";
 import { ensurePermissionsArePresent } from "../auth/sagas";
+import { displayErrorModalSaga } from "../genericModal/sagas";
+import { selectCombinedBeneficialOwnerOwnership } from "./selectors";
 
 /**
  * Individual Request
@@ -395,6 +398,16 @@ function* submitBusinessRequest(
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_REQUEST") return;
   try {
+    // check wether combined value of beneficial owners percentages is less or equal 100%
+    const ownerShip = yield select((s: IAppState) => selectCombinedBeneficialOwnerOwnership(s.kyc));
+    if (ownerShip > 100) {
+      yield neuCall(
+        displayErrorModalSaga,
+        "Error",
+        "Your beneficial owners have a combined ownership of more than 100%. Please make sure this is 100% or less.",
+      );
+      return;
+    }
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],

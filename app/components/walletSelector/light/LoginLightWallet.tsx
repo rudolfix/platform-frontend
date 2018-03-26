@@ -25,7 +25,6 @@ export const LoginLightWalletComponent: React.SFC<IStateProps> = ({ email }) => 
 export const LoginLightWallet = appConnect<IStateProps>({
   stateToProps: s => ({
     email:
-      selectLightWalletEmailFromQueryString(s.router) ||
-      selectPreviousLightWalletEmail(s.web3State),
+      selectLightWalletEmailFromQueryString(s.router) || selectPreviousLightWalletEmail(s.web3),
   }),
 })(LoginLightWalletComponent);

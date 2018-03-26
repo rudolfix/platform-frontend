@@ -46,8 +46,8 @@ class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> 
 
 export const BackupSeed = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
-    isUnlocked: selectIsUnlocked(s.web3State),
-    seed: selectSeed(s.web3State),
+    isUnlocked: selectIsUnlocked(s.web3),
+    seed: selectSeed(s.web3),
     backupCodesVerified: !!selectBackupCodesVerified(s.auth),
   }),
   dispatchToProps: dispatch => ({

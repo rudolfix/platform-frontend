@@ -46,6 +46,6 @@ export const MessageSignPromptComponent: React.SFC<IStateProps> = ({ walletType 
 
 export const MessageSignPrompt = appConnect<IStateProps>({
   stateToProps: s => ({
-    walletType: selectConnectedWeb3State(s.web3State).wallet.walletType,
+    walletType: selectConnectedWeb3State(s.web3).wallet.walletType,
   }),
 })(MessageSignPromptComponent);

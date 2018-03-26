@@ -25,7 +25,7 @@ describe("Jwt actions", () => {
       const expectedSignerType = SignerType.ETH_SIGN_TYPED_DATA;
 
       const mockedState: Partial<IAppState> = {
-        web3State: {
+        web3: {
           connected: true,
           wallet: {
             address: dummyEthereumAddress,

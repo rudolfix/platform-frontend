@@ -3,14 +3,13 @@ import { LocationChangeAction, routerReducer, RouterState } from "react-router-r
 import { combineReducers } from "redux";
 
 import { TAction } from "./modules/actions";
+import { accessWalletReducer } from "./modules/accessWallet/reducer";
 import { authReducer } from "./modules/auth/reducer";
 import { genericModalReducer } from "./modules/genericModal/reducer";
 import { initReducer } from "./modules/init/reducer";
 import { kycReducer } from "./modules/kyc/reducer";
 import { moneyReducer } from "./modules/money/reducer";
 import { notificationsReducer } from "./modules/notifications/reducer";
-import { showSeedModalReducer } from "./modules/showSeedModal/reducer";
-import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
 import { browserReducer } from "./modules/userAgent/reducer";
 import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
 import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
@@ -45,8 +44,7 @@ const appReducers = {
   walletSelector: walletSelectorReducer,
   auth: authReducer,
   genericModal: genericModalReducer,
-  signMessageModal: signMessageModalReducer,
-  showSeedModal: showSeedModalReducer,
+  accessWallet: accessWalletReducer,
   kyc: kycReducer,
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,

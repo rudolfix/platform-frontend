@@ -8,6 +8,7 @@ import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
 import { Header } from "./Header";
 import { GenericModal } from "./modals/GenericModal";
+import { AccessWalletModal } from "./modals/AccessWalletModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 interface IStateProps {
@@ -31,6 +32,7 @@ class AppComponent extends React.Component<IStateProps> {
         <Header />
         <div className="wrapper">
           <GenericModal />
+          <AccessWalletModal />
           <ToastContainer />
           <AppRouter />
         </div>

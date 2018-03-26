@@ -7,6 +7,9 @@ export const dummyConfig: IConfig = {
   ethereumNetwork: {
     rpcUrl: "https://localhost:8080",
   },
+  contractsAddresses: {
+    universeContractAddress: "UNIVERSE_ADDRESS",
+  },
 };
 
 export const dummyNetworkId: EthereumNetworkId = "5" as EthereumNetworkId;

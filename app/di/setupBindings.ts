@@ -30,6 +30,7 @@ import {
   STORAGE_WALLET_METADATA_KEY,
   TWalletMetadata,
 } from "../lib/persistence/WalletMetadataObjectStorage";
+import { ContractsService } from "../lib/web3/ContractsService";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;
@@ -45,9 +46,11 @@ export function setupBindings(config: IConfig): Container {
     .toConstantValue(cryptoRandomString);
   container.bind<TDetectBrowser>(symbols.detectBrowser).toConstantValue(detectBrowser);
 
+  // configs
   container
     .bind<IEthereumNetworkConfig>(symbols.ethereumNetworkConfig)
     .toConstantValue(config.ethereumNetwork);
+  container.bind<IConfig>(symbols.config).toConstantValue(config);
 
   // @todo different logger could be injected to each class with additional info like name of the file etc.
   container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
@@ -89,6 +92,11 @@ export function setupBindings(config: IConfig): Container {
     .to(NotificationCenter)
     .inSingletonScope();
 
+  // web3 & blockchain
+  container
+    .bind(symbols.contractsService)
+    .to(ContractsService)
+    .inSingletonScope();
   container
     .bind<LedgerWalletConnector>(symbols.ledgerWalletConnector)
     .to(LedgerWalletConnector)
@@ -169,6 +177,7 @@ export const createGlobalDependencies = (container: Container) => ({
   detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
 
   // blockchain & wallets
+  contractsService: container.get<ContractsService>(symbols.contractsService),
   web3Manager: container.get<Web3Manager>(symbols.web3Manager),
   walletMetadataStorage: container.get<ObjectStorage<TWalletMetadata>>(
     symbols.walletMetadataStorage,

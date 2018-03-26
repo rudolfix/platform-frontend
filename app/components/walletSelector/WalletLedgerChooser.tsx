@@ -27,7 +27,7 @@ export const WalletLedgerChooser = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       onDerivationPathPrefixError: () =>
-        dispatch(actions.wallet.ledgerWizardDerivationPathPrefixError()),
+        dispatch(actions.walletSelector.ledgerWizardDerivationPathPrefixError()),
       onDerivationPathPrefixChange: (derivationPathPrefix: string) => {
         dispatch(ledgerWizardFlows.setDerivationPathPrefix(derivationPathPrefix));
       },
@@ -37,7 +37,7 @@ export const WalletLedgerChooser = compose<React.SFC>(
       showNextAddresses: () => dispatch(ledgerWizardFlows.goToNextPageAndLoadData),
       showPrevAddresses: () => dispatch(ledgerWizardFlows.goToPreviousPageAndLoadData),
       handleAdvanced: () => {
-        dispatch(actions.wallet.toggleLedgerAccountsAdvanced());
+        dispatch(actions.walletSelector.toggleLedgerAccountsAdvanced());
         dispatch(ledgerWizardFlows.loadLedgerAccounts);
       },
     }),

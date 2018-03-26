@@ -26,8 +26,8 @@ describe("Web3 > reducer", () => {
       web3Actions.newPersonalWalletPlugged(
         {
           walletType: WalletType.BROWSER,
+          address: dummyEthereumAddress,
         },
-        actionPayload.ethereumAddress,
         actionPayload.isUnlocked,
       ),
     );
@@ -36,8 +36,8 @@ describe("Web3 > reducer", () => {
       connected: true,
       wallet: {
         walletType: WalletType.BROWSER,
+        address: dummyEthereumAddress,
       },
-      ethereumAddress: dummyEthereumAddress,
       isUnlocked: true,
     });
   });
@@ -47,8 +47,8 @@ describe("Web3 > reducer", () => {
       connected: true,
       wallet: {
         walletType: WalletType.BROWSER,
+        address: dummyEthereumAddress,
       },
-      ethereumAddress: dummyEthereumAddress,
       isUnlocked: true,
     };
 
@@ -58,6 +58,7 @@ describe("Web3 > reducer", () => {
       connected: false,
       previousConnectedWallet: {
         walletType: WalletType.BROWSER,
+        address: dummyEthereumAddress,
       },
     });
   });
@@ -79,8 +80,8 @@ describe("Web3 > reducer", () => {
         connected: true,
         wallet: {
           walletType: WalletType.BROWSER,
+          address: dummyEthereumAddress,
         },
-        ethereumAddress: dummyEthereumAddress,
         isUnlocked: true,
       };
 
@@ -90,8 +91,8 @@ describe("Web3 > reducer", () => {
         connected: true,
         wallet: {
           walletType: WalletType.BROWSER,
+          address: dummyEthereumAddress,
         },
-        ethereumAddress: dummyEthereumAddress,
         isUnlocked: false,
       });
     });

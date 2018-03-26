@@ -53,6 +53,7 @@ export class BrowserWallet implements IPersonalWallet {
 
   public getMetadata(): IBrowserWalletMetadata {
     return {
+      address: this.ethereumAddress,
       walletType: WalletType.BROWSER,
     };
   }

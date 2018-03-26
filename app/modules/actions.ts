@@ -10,7 +10,8 @@ import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
 import { userAgentActions } from "./userAgent/actions";
-import { walletActions } from "./wallet-selector/actions";
+import { walletSelectorActions } from "./wallet-selector/actions";
+import { walletActions } from "./wallet/actions";
 import { web3Actions } from "./web3/actions";
 
 /** You should add new actions also here (with a namespace).*/
@@ -22,10 +23,11 @@ export const actions = {
   init: initActions,
   kyc: kycActions,
   routing: routingActions,
-  wallet: walletActions,
+  walletSelector: walletSelectorActions,
   web3: web3Actions,
   userAgent: userAgentActions,
   auth: authActions,
+  wallet: walletActions,
   notifications: notificationActions,
 };
 
@@ -40,10 +42,11 @@ export const allActions = {
   ...initActions,
   ...routingActions,
   ...kycActions,
-  ...walletActions,
+  ...walletSelectorActions,
   ...web3Actions,
   ...userAgentActions,
   ...authActions,
+  ...walletActions,
   ...notificationActions,
 };
 

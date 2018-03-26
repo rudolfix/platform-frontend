@@ -61,6 +61,7 @@ export class LedgerWallet implements IPersonalWallet {
 
   public getMetadata(): ILedgerWalletMetadata {
     return {
+      address: this.ethereumAddress,
       walletType: WalletType.LEDGER,
       derivationPath: this.derivationPath,
     };

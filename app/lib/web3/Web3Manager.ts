@@ -70,11 +70,7 @@ export class Web3Manager {
       this.personalWallet instanceof LightWallet ? !!this.personalWallet.password : true;
 
     this.dispatch(
-      web3Actions.newPersonalWalletPlugged(
-        this.personalWallet.getMetadata(),
-        personalWallet.ethereumAddress,
-        isUnlocked,
-      ),
+      web3Actions.newPersonalWalletPlugged(this.personalWallet.getMetadata(), isUnlocked),
     );
 
     this.web3ConnectionWatcher.start();

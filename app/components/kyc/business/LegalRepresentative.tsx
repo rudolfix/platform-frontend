@@ -126,7 +126,7 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
       currentStep={3}
       title={"Legal Representative"}
       description={"Please tell us about yourself"}
-      hasBackButton={false}
+      hasBackButton={true}
     >
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} lrDataValid={lrDataValid} />
@@ -137,7 +137,7 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
           disabled={!props.legalRepresentative || props.files.length === 0}
           onClick={props.onContinue}
         >
-          Continue
+          Submit Request
         </Button>
       </div>
     </KycPanel>
@@ -156,7 +156,7 @@ export const KycLegalRepresentative = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadLegalRepresentativeDocument(file)),
-      onContinue: () => dispatch(actions.routing.goToKYCBusinessData()),
+      onContinue: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),
       submitForm: (values: IKycIndividualData) =>
         dispatch(actions.kyc.kycSubmitLegalRepresentative(values)),
     }),

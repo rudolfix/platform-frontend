@@ -70,7 +70,7 @@ export const KycFileUploadList: React.SFC<IProps> = ({ files, layout, ...props }
         <div>
           {layout === "personal" && (
             <ul className={styles.documentRequirements}>
-              <li>colored photo</li>
+              <li>Colored photo</li>
               <li>Full name</li>
               <li>Date of birth</li>
               <li>Valid expiration date</li>
@@ -99,6 +99,9 @@ export const KycFileUploadList: React.SFC<IProps> = ({ files, layout, ...props }
           >
             {files.length ? dropzoneWithFilesInner : dropzoneInner}
           </Dropzone>
+        </div>
+        <div className={styles.documentRequirements}>
+          Please upload .pdf or .jpg files containing colored scans in good quality.
         </div>
       </div>
     </div>

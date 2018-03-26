@@ -11,10 +11,43 @@ import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import { BreadCrumb } from "./shared/BreadCrumb";
 import { Button } from "./shared/Buttons";
+import { ChartBars } from "./shared/charts/ChartBars";
+import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
+import { ChartPie } from "./shared/charts/ChartPie";
 import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
+
+const chartDoughnutData = {
+  labels: ["ETH", "nEUR"],
+  datasets: [
+    {
+      data: [100, 50],
+      backgroundColor: ["#e3eaf5", "#394651"],
+    },
+  ],
+};
+
+const chartPieData = {
+  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
+  datasets: [
+    {
+      data: [100, 50, 20, 40, 50, 12],
+      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
+    },
+  ],
+};
+
+const chartBarData = {
+  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
+  datasets: [
+    {
+      data: [100, 50, 20, 40, 50, 12],
+      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
+    },
+  ],
+};
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -211,6 +244,18 @@ export const Demo: React.SFC = () => (
     </Container>
     <Container>
       <ChangeEmailComponent submitForm={() => {}} />
+    </Container>
+
+    <Container>
+      <ChartDoughnut data={chartDoughnutData} />
+    </Container>
+
+    <Container>
+      <ChartPie data={chartPieData} />
+    </Container>
+
+    <Container>
+      <ChartBars data={chartBarData} />
     </Container>
   </div>
 );

@@ -21,6 +21,16 @@
   display: flex;
 }
 
+.chart-wrapper {
+  @include media-breakpoint-up (xl) {
+    display: block;
+  }
+
+  display: none;
+  flex-shrink: 0;
+  width: 30%;
+}
+
 .money-suite-wrapper {
   $_border-color: rgba($neu-slate-grey, .1);
   display: flex;

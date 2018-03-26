@@ -3,8 +3,9 @@ import { LocationChangeAction, routerReducer, RouterState } from "react-router-r
 import { combineReducers } from "redux";
 
 import { accessWalletReducer } from "./modules/accessWallet/reducer";
+import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
-import { genericErrorModalReducer } from "./modules/genericErrorModal/reducer";
+import { genericModalReducer } from "./modules/genericModal/reducer";
 import { initReducer } from "./modules/init/reducer";
 import { kycReducer } from "./modules/kyc/reducer";
 import { moneyReducer } from "./modules/money/reducer";
@@ -16,8 +17,6 @@ import { lightWalletWizardReducer } from "./modules/wallet-selector/light-wizard
 import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
 import { walletReducer } from "./modules/wallet/reducer";
 import { web3Reducer } from "./modules/web3/reducer";
-
-import { TAction } from "./modules/actions";
 import { FunctionWithDeps } from "./types";
 
 export interface IAppAction {
@@ -44,7 +43,7 @@ const appReducers = {
   browser: browserReducer,
   walletSelector: walletSelectorReducer,
   auth: authReducer,
-  genericErrorModal: genericErrorModalReducer,
+  genericModal: genericModalReducer,
   accessWallet: accessWalletReducer,
   kyc: kycReducer,
   init: initReducer,

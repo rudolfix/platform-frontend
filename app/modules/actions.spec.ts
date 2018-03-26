@@ -14,6 +14,12 @@ describe("modules", () => {
       forEach(allActions, (actionCreator: any, creatorName: string) => {
         const action = actionCreator();
         const type: string = action.type;
+
+        // we have aliases for displaying generic modals
+        if (type === "GENERIC_MODAL_SHOW") {
+          return;
+        }
+
         !ALLOWED_DUPLICATES[type] &&
           expect(
             typeMap[action.type],

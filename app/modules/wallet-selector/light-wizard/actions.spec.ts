@@ -88,7 +88,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
       );
 
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.genericErrorModal.showError("Light wallet Error", "Password is not correct"),
+        actions.genericModal.showErrorModal("Light wallet Error", "Password is not correct"),
       );
     });
   });

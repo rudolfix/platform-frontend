@@ -4,7 +4,7 @@ import { settingsActions } from "./settings/actions";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
-import { genericErrorModalActions } from "./genericErrorModal/actions";
+import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
@@ -17,8 +17,8 @@ import { web3Actions } from "./web3/actions";
 export const actions = {
   dashboard: dashboardActions,
   settings: settingsActions,
+  genericModal: genericModalActions,
   signMessageModal: accessWalletActions,
-  genericErrorModal: genericErrorModalActions,
   init: initActions,
   kyc: kycActions,
   routing: routingActions,
@@ -35,8 +35,8 @@ export const actions = {
 export const allActions = {
   ...dashboardActions,
   ...settingsActions,
+  ...genericModalActions,
   ...accessWalletActions,
-  ...genericErrorModalActions,
   ...initActions,
   ...routingActions,
   ...kycActions,

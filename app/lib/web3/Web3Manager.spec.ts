@@ -16,6 +16,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
 import { delay } from "../../utils/delay";
+import { ILedgerWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { LedgerWallet } from "./LedgerWallet";
 import {
   WalletNotConnectedError,
@@ -35,11 +36,11 @@ describe("Web3Manager", () => {
       walletType: WalletType.LEDGER,
       walletSubType: WalletSubType.UNKNOWN,
       derivationPath: expectedDerivationPath,
-      getMetadata: () =>
-        ({
-          walletType: WalletType.LEDGER,
-          derivationPath: expectedDerivationPath,
-        } as any),
+      getMetadata: (): ILedgerWalletMetadata => ({
+        walletType: WalletType.LEDGER,
+        derivationPath: expectedDerivationPath,
+        address: dummyEthereumAddress,
+      }),
     });
     const asyncIntervalSchedulerMock = createMock(AsyncIntervalScheduler, {
       start: () => {},
@@ -61,10 +62,10 @@ describe("Web3Manager", () => {
     expect(dispatchMock).to.be.calledWithExactly(
       web3Actions.newPersonalWalletPlugged(
         {
+          address: dummyEthereumAddress,
           walletType: WalletType.LEDGER,
           derivationPath: expectedDerivationPath,
         },
-        dummyEthereumAddress,
         true,
       ),
     );

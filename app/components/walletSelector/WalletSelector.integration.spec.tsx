@@ -14,6 +14,10 @@ import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
 import { UsersApi } from "../../lib/api/users/UsersApi";
 import {
+  IBrowserWalletMetadata,
+  ILedgerWalletMetadata,
+} from "../../lib/persistence/WalletMetadataObjectStorage";
+import {
   BrowserWallet,
   BrowserWalletConnector,
   BrowserWalletLockedError,
@@ -41,11 +45,11 @@ describe("Wallet selector integration", () => {
       signerType: SignerType.ETH_SIGN,
       ethereumAddress: expectedAddress,
       testConnection: async () => false,
-      getMetadata: () =>
-        ({
-          walletType: WalletType.LEDGER,
-          derivationPath: expectedDerivationPath,
-        } as any),
+      getMetadata: (): ILedgerWalletMetadata => ({
+        walletType: WalletType.LEDGER,
+        derivationPath: expectedDerivationPath,
+        address: expectedAddress,
+      }),
     });
     const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {});
     const internalWeb3AdapterMock = createMock(Web3Adapter, {
@@ -142,8 +146,8 @@ describe("Wallet selector integration", () => {
         {
           walletType: WalletType.LEDGER,
           derivationPath: expectedDerivationPath,
+          address: expectedAddress,
         },
-        expectedAddress,
         true,
       ),
     );
@@ -165,10 +169,10 @@ describe("Wallet selector integration", () => {
       walletSubType: WalletSubType.METAMASK,
       ethereumAddress: expectedAddress,
       signerType: SignerType.ETH_SIGN_TYPED_DATA,
-      getMetadata: () =>
-        ({
-          walletType: WalletType.BROWSER,
-        } as any),
+      getMetadata: (): IBrowserWalletMetadata => ({
+        walletType: WalletType.BROWSER,
+        address: expectedAddress,
+      }),
     });
     const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
       connect: async () => {
@@ -257,8 +261,8 @@ describe("Wallet selector integration", () => {
       actions.web3.newPersonalWalletPlugged(
         {
           walletType: WalletType.BROWSER,
+          address: expectedAddress,
         },
-        expectedAddress,
         true,
       ),
     );

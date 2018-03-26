@@ -1,29 +1,46 @@
 import * as React from "react";
-import { INotification, NotificationType } from "./Notification";
-import { NotificationWidgetComponent } from "./NotificationWidgetComponent";
 
-// mocked data
-const notificationInfo: INotification = {
-  id: 1,
-  type: NotificationType.INFO,
-  text:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  onClose: () => alert("closing"),
-};
+import { INotification, seedNotBackedUpNotification } from "../../../modules/notifications/reducer";
+import { appConnect, AppDispatch } from "../../../store";
+import { Notification } from "./Notification";
 
-const notificationWarning: INotification = {
-  id: 2,
-  type: NotificationType.WARNING,
-  text:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  actionLink: "some/route/1",
-  actionLinkText: "go to Some Route 1",
-};
-
-const notifications: INotification[] = [notificationInfo, notificationWarning];
-
-export class NotificationWidget extends React.Component {
-  render(): React.ReactNode {
-    return <NotificationWidgetComponent notifications={notifications} />;
-  }
+interface IStateProps {
+  notifications: INotification[];
 }
+
+interface IDispatchProps {
+  dispatch: AppDispatch;
+}
+
+type IProps = IStateProps & IDispatchProps;
+
+const NotificationWidgetComponent: React.SFC<IProps> = ({ notifications, dispatch }) => {
+  return (
+    <>
+      {notifications.map((notification, index) => (
+        <Notification
+          key={notification.text + index.toString(10)}
+          type={notification.type}
+          text={notification.text}
+          actionLinkText={notification.actionLinkText}
+          onClick={() => dispatch(notification.onClickAction)}
+        />
+      ))}
+    </>
+  );
+};
+
+export const NotificationWidget = appConnect<IStateProps, IDispatchProps>({
+  stateToProps: s => {
+    const notifications = s.notifications.notifications;
+    const appStateDerivedNotifications =
+      s.auth.user && s.auth.user.backupCodesVerified ? [] : [seedNotBackedUpNotification()];
+
+    return {
+      notifications: [...notifications, ...appStateDerivedNotifications],
+    };
+  },
+  dispatchToProps: dispatch => ({
+    dispatch,
+  }),
+})(NotificationWidgetComponent);

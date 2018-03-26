@@ -44,8 +44,9 @@
 .buttons-wrapper {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 
-  :global(.btn.btn-secondary) {
+  :global(.button) {
     margin-left: auto;
     text-align: right;
   }

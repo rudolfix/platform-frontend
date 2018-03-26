@@ -9,17 +9,11 @@ import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidge
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
 import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
-import { ArrowButton, ArrowLink } from "./shared/ArrowNavigation";
 import { BreadCrumb } from "./shared/BreadCrumb";
-import {
-  ButtonPrimary,
-  ButtonPrimaryLink,
-  ButtonSecondary,
-  ButtonSecondaryLink,
-} from "./shared/Buttons";
 import { ChartBars } from "./shared/charts/ChartBars";
 import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
 import { ChartPie } from "./shared/charts/ChartPie";
+import { Button } from "./shared/Buttons";
 import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
@@ -60,19 +54,15 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <ButtonPrimary>ButtonPrimary</ButtonPrimary>
-          <ButtonPrimary disabled>ButtonPrimary disabled</ButtonPrimary>
-          <ButtonPrimaryLink to="/">ButtonPrimaryLink</ButtonPrimaryLink>
-        </Col>
-      </Row>
-    </Container>
-
-    <Container>
-      <Row>
-        <Col>
-          <ButtonSecondary>ButtonSecondary</ButtonSecondary>
-          <ButtonSecondary disabled>ButtonSecondary disabled</ButtonSecondary>
-          <ButtonSecondaryLink to="/">ButtonSecondary link</ButtonSecondaryLink>
+          <Button>Default Button Primary</Button>
+          <br />
+          <Button disabled>Default Button Primary Disabled</Button>
+          <br />
+          <Button layout="secondary">Button Secondary</Button>
+          <br />
+          <Button layout="secondary" disabled>
+            Button Secondary Disabled
+          </Button>
         </Col>
       </Row>
     </Container>
@@ -80,27 +70,6 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col>
           <a href="/">link</a>
-        </Col>
-      </Row>
-    </Container>
-
-    <Container>
-      <Row>
-        <Col>
-          <ArrowLink arrowDirection="right" to="#">
-            Right arrow link
-          </ArrowLink>
-          <ArrowLink arrowDirection="left" to="#">
-            Left arrow link
-          </ArrowLink>
-
-          <ArrowButton arrowDirection="right">Right arrow button</ArrowButton>
-
-          <ArrowButton arrowDirection="right" disabled>
-            Right arrow button disabled
-          </ArrowButton>
-
-          <ArrowButton arrowDirection="left">Left arrow button</ArrowButton>
         </Col>
       </Row>
     </Container>

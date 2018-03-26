@@ -9,10 +9,11 @@ import {
 } from "../../../lib/web3/LightWallet";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
+import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { updateUser } from "../../auth/sagas";
+import { updateUserPromise } from "../../auth/sagas";
+import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { connectLightWallet } from "../../signMessageModal/sagas";
 import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
@@ -64,10 +65,11 @@ export function* getWalletMetadata(
   return undefined;
 }
 
-export function* lightWalletBackupWatch({ getState }: TGlobalDependencies): Iterator<any> {
+export function* lightWalletBackupWatch(): Iterator<any> {
   try {
-    const user = getState().auth.user;
-    yield effects.call(updateUser, { ...user, backupCodesVerified: true });
+    const user = yield select((state: IAppState) => state.auth.user);
+    yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
+    yield neuCall(displayInfoModalSaga, "Backup Seed", "you have successfully back up your wallet");
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
     yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));

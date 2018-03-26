@@ -25,7 +25,7 @@ import {
   KycIndividudalDataSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { KycPanel } from "../KycPanel";
 
@@ -86,14 +86,11 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
       label="Do you have a high income??"
       name="isHighIncome"
     />
-
-    <ButtonPrimary
-      color="primary"
-      type="submit"
-      disabled={!formikBag.isValid || formikBag.loadingData}
-    >
-      Submit and continue
-    </ButtonPrimary>
+    <div className="p-4 text-center">
+      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
+        Submit and continue
+      </Button>
+    </div>
   </Form>
 );
 

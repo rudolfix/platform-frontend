@@ -5,7 +5,7 @@ import { compose } from "redux";
 
 import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
-import { ButtonPrimary } from "../../shared/Buttons";
+import { Button } from "../../shared/Buttons";
 
 import * as Yup from "yup";
 import { flows } from "../../../modules/flows";
@@ -61,9 +61,9 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
       name={REPEAT_PASSWORD}
     />
     <div className="text-center">
-      <ButtonPrimary type="submit" disabled={!formikBag.isValid}>
+      <Button type="submit" disabled={!formikBag.isValid}>
         REGISTER
-      </ButtonPrimary>
+      </Button>
     </div>
   </Form>
 );

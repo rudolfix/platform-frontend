@@ -1,14 +1,14 @@
 import { values } from "lodash";
 import { settingsActions } from "./settings/actions";
 
+import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
-import { genericErrorModalActions } from "./genericErrorModal/actions";
+import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
+import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
-import { showSeedModalActions } from "./showSeedModal/actions";
-import { signMessageModalActions } from "./signMessageModal/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { walletActions } from "./wallet-selector/actions";
 import { web3Actions } from "./web3/actions";
@@ -17,9 +17,8 @@ import { web3Actions } from "./web3/actions";
 export const actions = {
   dashboard: dashboardActions,
   settings: settingsActions,
-  signMessageModal: signMessageModalActions,
-  showSeedModal: showSeedModalActions,
-  genericErrorModal: genericErrorModalActions,
+  genericModal: genericModalActions,
+  signMessageModal: accessWalletActions,
   init: initActions,
   kyc: kycActions,
   routing: routingActions,
@@ -27,6 +26,7 @@ export const actions = {
   web3: web3Actions,
   userAgent: userAgentActions,
   auth: authActions,
+  notifications: notificationActions,
 };
 
 /**
@@ -35,9 +35,8 @@ export const actions = {
 export const allActions = {
   ...dashboardActions,
   ...settingsActions,
-  ...signMessageModalActions,
-  ...showSeedModalActions,
-  ...genericErrorModalActions,
+  ...genericModalActions,
+  ...accessWalletActions,
   ...initActions,
   ...routingActions,
   ...kycActions,
@@ -45,6 +44,7 @@ export const allActions = {
   ...web3Actions,
   ...userAgentActions,
   ...authActions,
+  ...notificationActions,
 };
 
 /**

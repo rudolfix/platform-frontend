@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
-import { ButtonSecondary } from "../../shared/Buttons";
-import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
+import { Button } from "../../shared/Buttons";
+import { DonutChart, IDonutChartProps } from "../../shared/DonutChart";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { IPanelDarkProps, PanelDark } from "../../shared/PanelDark";
 import { TotalEuro } from "../TotalEuro";
@@ -47,8 +47,8 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance> = ({
               currencyTotal={"eur"}
             />
             <div className={styles.buttonsWrapper}>
-              <ButtonSecondary>Withdraw funds ></ButtonSecondary>
-              <ButtonSecondary>Deposit funds ></ButtonSecondary>
+              <Button layout="secondary">Withdraw funds ></Button>
+              <Button layout="secondary">Deposit funds ></Button>
             </div>
           </div>
           <div className={styles.moneySuiteWrapper}>
@@ -62,8 +62,8 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance> = ({
               currencyTotal={"eur"}
             />
             <div className={styles.buttonsWrapper}>
-              <ButtonSecondary>Withdraw funds ></ButtonSecondary>
-              <ButtonSecondary>Deposit funds ></ButtonSecondary>
+              <Button layout="secondary">Withdraw funds ></Button>
+              <Button layout="secondary">Deposit funds ></Button>
             </div>
           </div>
         </div>

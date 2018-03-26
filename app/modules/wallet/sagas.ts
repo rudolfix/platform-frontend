@@ -17,7 +17,7 @@ function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
     const isLoaded = yield select((s: IAppState) => selectIsLoaded(s.wallet));
     if (isLoaded) return;
 
-    const ethAddress = yield select((s: IAppState) => selectEthereumAddress(s.web3State));
+    const ethAddress = yield select((s: IAppState) => selectEthereumAddress(s.web3));
 
     const state: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
 

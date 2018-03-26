@@ -52,8 +52,8 @@ export const AccessWalletModal = appConnect<IStateProps, IDispatchProps>({
     errorMsg: s.accessWallet.modalErrorMsg,
     title: s.accessWallet.modalTitle,
     message: s.accessWallet.modalMessage,
-    isLightWallet: selectIsLightWallet(s.web3State),
-    isUnlocked: selectIsUnlocked(s.web3State),
+    isLightWallet: selectIsLightWallet(s.web3),
+    isUnlocked: selectIsUnlocked(s.web3),
   }),
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.signMessageModal.hideAccessWalletModal()),

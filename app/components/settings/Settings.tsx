@@ -38,6 +38,6 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
 
 export const Settings = appConnect<IProps, {}>({
   stateToProps: s => ({
-    isLightWallet: selectIsLightWallet(s.web3State),
+    isLightWallet: selectIsLightWallet(s.web3),
   }),
 })(SettingsComponent);

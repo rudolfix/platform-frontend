@@ -101,7 +101,7 @@ function* unlockLightWallet(): any {
   if (acceptAction.type !== "ACCESS_WALLET_ACCEPT") {
     return;
   }
-  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
+  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3));
 
   if (!isUnlocked) {
     yield neuCall(unlockWallet, acceptAction.payload.password);
@@ -113,7 +113,7 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
   while (true) {
     try {
       yield neuCall(ensureWalletConnection);
-      const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3State));
+      const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3));
       if (isLightWallet) {
         yield call(unlockLightWallet);
       }

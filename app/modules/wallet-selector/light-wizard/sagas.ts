@@ -79,7 +79,7 @@ export function* lightWalletBackupWatch(): Iterator<any> {
 }
 
 export function* loadSeedFromWallet({ web3Manager }: TGlobalDependencies): Iterator<any> {
-  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
+  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3));
   if (!isUnlocked) {
     throw new LightWalletLocked();
   }

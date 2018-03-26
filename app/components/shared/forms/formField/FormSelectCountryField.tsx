@@ -13,8 +13,8 @@ const DISABLED_VALUES = {
   SD: true,
   US: true,
   AL: true,
-  RS: true
-}
+  RS: true,
+};
 
 const VALUES = {
   NONE_KEY: "-Please select-",
@@ -273,5 +273,5 @@ interface IFieldGroup {
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
 export const FormSelectCountryField: React.SFC<FieldGroupProps> = props => (
-  <FormSelectField {...props} values={VALUES} disabledValues={DISABLED_VALUES}/>
+  <FormSelectField {...props} values={VALUES} disabledValues={DISABLED_VALUES} />
 );

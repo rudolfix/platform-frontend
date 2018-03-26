@@ -111,7 +111,7 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
           disabled={!props.currentValues || props.files.length === 0}
           onClick={props.submit}
         >
-          Submit Request
+          Continue
         </Button>
       </div>
     </KycPanel>
@@ -129,7 +129,7 @@ export const KycBusinessData = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadBusinessDocument(file)),
-      submit: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),
+      submit: () => dispatch(actions.routing.goToKYCLegalRepresentative()),
       submitForm: (values: IKycBusinessData) => dispatch(actions.kyc.kycSubmitBusinessData(values)),
     }),
   }),

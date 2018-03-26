@@ -203,7 +203,7 @@ function* setBusinessType(
     institutionData = { ...institutionData, legalFormType: action.payload.type };
     yield apiKycService.putBusinessData(institutionData);
     yield put(actions.kyc.kycUpdateBusinessData(false, institutionData));
-    yield put(actions.routing.goToKYCLegalRepresentative());
+    yield put(actions.routing.goToKYCBusinessData());
   } catch (_e) {
     yield put(actions.kyc.kycUpdateBusinessData(false));
     notificationCenter.error("There was a problem sending your data. Please try again.");

@@ -35,7 +35,7 @@ interface IFieldGroup {
   };
   disabledValues?: {
     [key: string]: boolean;
-  }
+  };
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
@@ -60,7 +60,11 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
 
   renderOptions = () =>
     map(this.props.values, (value, key) => (
-      <option key={key} value={key} disabled={this.props.disabledValues && this.props.disabledValues[key]}>
+      <option
+        key={key}
+        value={key}
+        disabled={this.props.disabledValues && this.props.disabledValues[key]}
+      >
         {value}
       </option>
     ));

@@ -4,7 +4,7 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 import * as styles from "./Demo.module.scss";
 
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
-import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
+import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
 import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
@@ -189,14 +189,25 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row noGutters>
         <Col>
-          <MyWalletWidget
-            euroTokenEuroAmount={"6004904646" + "0".repeat(16)}
-            euroTokenAmount={"36490" + "0".repeat(18)}
-            ethAmount={"66482" + "0".repeat(14)}
-            ethEuroAmount={"6004904646" + "0".repeat(16)}
-            percentage="-3.67"
-            totalAmount={"637238" + "0".repeat(18)}
+          <MyWalletWidgetComponent
+            isLoading={false}
+            data={{
+              euroTokenEuroAmount: "6004904646" + "0".repeat(16),
+              euroTokenAmount: "36490" + "0".repeat(18),
+              ethAmount: "66482" + "0".repeat(14),
+              ethEuroAmount: "6004904646" + "0".repeat(16),
+              percentage: "-3.67",
+              totalAmount: "637238" + "0".repeat(18),
+            }}
           />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row noGutters>
+        <Col>
+          <MyWalletWidgetComponent isLoading={false} error="Error while loading wallet data." />
         </Col>
       </Row>
     </Container>

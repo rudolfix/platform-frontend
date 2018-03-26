@@ -51,7 +51,7 @@ export const WalletMessageSigner = compose(
     }),
     dispatchToProps: (dispatch, ownProps) => ({
       cancelSigning: () => {
-        dispatch(actions.wallet.reset());
+        dispatch(actions.walletSelector.reset());
         dispatch(actions.routing.goTo(ownProps.rootPath));
       },
     }),

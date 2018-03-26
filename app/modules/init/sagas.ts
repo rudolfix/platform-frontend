@@ -4,11 +4,14 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
 
+import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { detectUserAgent } from "../userAgent/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
 
-function* setup({ web3Manager }: TGlobalDependencies): Iterator<any> {
+function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
   try {
+    yield neuCall(detectUserAgent);
     yield web3Manager.initialize();
 
     const jwt = yield neuCall(loadJwt);
@@ -16,10 +19,12 @@ function* setup({ web3Manager }: TGlobalDependencies): Iterator<any> {
       yield loadUser();
     }
     yield neuCall(loadPreviousWallet);
+    yield neuCall(initializeContracts);
 
     yield put(actions.init.done());
   } catch (e) {
     yield put(actions.init.error(e.message || "Unknown error"));
+    logger.error("Error: ", e);
   }
 }
 

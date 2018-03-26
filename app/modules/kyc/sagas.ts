@@ -45,6 +45,7 @@ function* submitIndividualData(
     );
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
     yield put(actions.routing.goToKYCIndividualUpload());
+    notificationCenter.info("Your data was saved successfully.");
   } catch {
     notificationCenter.error("There was a problem sending your data. Please try again.");
   }
@@ -60,6 +61,7 @@ function* uploadIndividualFile(
     yield put(actions.kyc.kycUpdateIndividualDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadIndividualDocument(file);
     yield put(actions.kyc.kycUpdateIndividualDocument(false, result.body));
+    notificationCenter.info("Your file was uploaded successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateIndividualDocument(false));
     notificationCenter.error("There was a problem uploading your file. Please try again.");
@@ -147,6 +149,7 @@ function* submitLegalRepresentative(
       IKycLegalRepresentative
     > = yield apiKycService.putLegalRepresentative(action.payload.data);
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
+    notificationCenter.info("Your data was saved successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
     notificationCenter.error("There was a problem sending your data. Please try again.");
@@ -233,6 +236,7 @@ function* submitBusinessData(
       action.payload.data,
     );
     yield put(actions.kyc.kycUpdateBusinessData(false, result.body));
+    notificationCenter.info("Your data was saved successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateBusinessData(false));
     notificationCenter.error("There was a problem sending your data. Please try again.");
@@ -249,6 +253,7 @@ function* uploadBusinessFile(
     yield put(actions.kyc.kycUpdateBusinessDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadBusinessDocument(file);
     yield put(actions.kyc.kycUpdateBusinessDocument(false, result.body));
+    notificationCenter.info("Your file was uploaded successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateBusinessDocument(false));
     notificationCenter.error("There was a problem uploading your file. Please try again.");
@@ -310,6 +315,7 @@ function* submitBeneficialOwner(
       action.payload.owner,
     );
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
+    notificationCenter.info("Your data was saved successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
     notificationCenter.error("There was a problem saving your changes. Please try again.");
@@ -344,6 +350,7 @@ function* uploadBeneficialOwnerFile(
       file,
     );
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false, result.body));
+    notificationCenter.info("Your file was uploaded successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false));
     notificationCenter.error("There was a problem uploading your file. Please try again.");

@@ -15,6 +15,10 @@ import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
+import { PercentageIndicatorBar } from "./shared/PercentageIndicatorBar";
+import { SectionHeader } from "./shared/SectionHeader";
+import { Tag } from "./shared/Tag";
+import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -178,6 +182,7 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
+
     <Container>
       <Row>
         <Col lg={6} xs={12}>
@@ -188,6 +193,7 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
+
     <Container>
       <Row>
         <Col lg={6} xs={12}>
@@ -198,8 +204,60 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
+
     <Container>
       <ChangeEmailComponent submitForm={() => {}} />
+    </Container>
+
+    <Container>
+      <PercentageIndicatorBar percent={79} />
+    </Container>
+
+    <Container>
+      <Tag to="#0" text="tag" />
+      <Tag layout="ghost" to="#0" text="ghost tag" />
+      <Tag layout="ghost" size="small" to="#0" text="small ghost tag" />
+      <Tag color="green" layout="ghost" size="small" to="#0" text="Small green ghost tag" />
+    </Container>
+
+    <Container>
+      <SectionHeader>
+        Section's Header
+      </SectionHeader>
+    </Container>
+
+    <Container>
+      <InvestmentPreview
+        company={''}
+        detailsLink="#0"
+        preFoundingStatus={
+          {
+            money:"€ 50M",
+            investorsNum: 5,
+            leadInvestors: [
+              'abc',
+              'zxc'
+            ]
+          }
+        }
+        terms={
+          {
+            goal: 20000000,
+            currentValuation: 4000000
+          }
+        }
+        tags={
+          [
+            {
+              text: 'tag 1',
+              to: '#0'
+            },
+            {
+              text: 'tag 2',
+            }
+          ]
+        }
+      />
     </Container>
   </div>
 );

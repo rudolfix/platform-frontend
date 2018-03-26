@@ -24,6 +24,9 @@ you need to checkout
 [`kk/frontend-platform-fixtures`](https://github.com/Neufund/platform-contracts/pull/55) branch and
 run `yarn fixture`.
 
+Typechain (it generates typed wrappers on smartcontracts) runs automatically after doing `yarn` to
+trigger it manually do: `yarn generate:contracts`.
+
 ## Running tests
 
 ```

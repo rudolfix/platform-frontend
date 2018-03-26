@@ -11,7 +11,6 @@ import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MyPortfolio } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
-import { NotificationWidget } from "./notification-widget/NotificationWidget";
 import { UserInfo } from "./UserInfo";
 
 interface IStateProps {
@@ -25,7 +24,6 @@ type IProps = IStateProps;
 
 export const DashboardComponent = (props: IProps) => (
   <LayoutAuthorized>
-    <NotificationWidget />
     <Row className="py-4">
       <Col lg={8} xs={12}>
         <MyPortfolio />

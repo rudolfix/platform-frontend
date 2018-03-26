@@ -7,6 +7,7 @@ import { appConnect } from "../store";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
 import { Header } from "./Header";
+import { AccessWalletModal } from "./modals/AccessWalletModal";
 import { GenericErrorModal } from "./modals/GenericErrorModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
@@ -31,6 +32,7 @@ class AppComponent extends React.Component<IStateProps> {
         <Header />
         <div className="wrapper">
           <GenericErrorModal />
+          <AccessWalletModal />
           <ToastContainer />
           <AppRouter />
         </div>

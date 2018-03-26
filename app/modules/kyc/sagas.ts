@@ -2,8 +2,9 @@ import { fork, put } from "redux-saga/effects";
 
 import { actions, TAction } from "../actions";
 
-import { neuTakeEvery } from "../sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
 
+import { SUBMIT_KYC_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
@@ -14,6 +15,7 @@ import {
   IKycLegalRepresentative,
   IKycRequestState,
 } from "../../lib/api/KycApi.interfaces";
+import { ensurePermissionsArePresent } from "../auth/sagas";
 
 /**
  * Individual Request
@@ -98,6 +100,12 @@ function* submitIndividualRequest(
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_REQUEST") return;
   try {
+    yield neuCall(
+      ensurePermissionsArePresent,
+      [SUBMIT_KYC_PERMISSION],
+      "Submit KYC",
+      "Confirm submitting your KYC request",
+    );
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitIndividualRequest();
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
@@ -380,6 +388,12 @@ function* submitBusinessRequest(
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_REQUEST") return;
   try {
+    yield neuCall(
+      ensurePermissionsArePresent,
+      [SUBMIT_KYC_PERMISSION],
+      "Submit KYC",
+      "Confirm submitting your KYC request",
+    );
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitBusinessRequest();
     yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));

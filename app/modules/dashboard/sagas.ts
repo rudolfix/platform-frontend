@@ -1,9 +1,9 @@
 import { effects } from "redux-saga";
-import { call, fork } from "redux-saga/effects";
+import { fork } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { signMessage } from "../accessWallet/sagas";
 import { TAction } from "../actions";
-import { neuTakeEvery } from "../sagas";
-import { messageSign } from "../signMessageModal/sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
 
 function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterator<any> {
   if (action.type !== "DASHBOARD_SIGN_DUMMY_MESSAGE") {
@@ -12,7 +12,12 @@ function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterato
   const message = action.payload.message;
 
   try {
-    const signed = yield call(messageSign, message);
+    const signed = yield neuCall(
+      signMessage,
+      message,
+      "Test Message",
+      "Please sign this for me :)",
+    );
 
     // this is just for demo purposes
     // tslint:disable-next-line

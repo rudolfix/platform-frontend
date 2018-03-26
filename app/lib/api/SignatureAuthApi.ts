@@ -22,6 +22,7 @@ export class SignatureAuthApi {
     address: EthereumAddressWithChecksum,
     salt: string,
     signerType: SignerType,
+    permissions: Array<string> = [],
   ): Promise<IHttpResponse<IChallengeEndpointResponse>> {
     return await this.httpClient.post<IChallengeEndpointResponse>({
       baseUrl: "/api/signature/",
@@ -33,6 +34,7 @@ export class SignatureAuthApi {
         address,
         salt,
         signer_type: signerType,
+        permissions,
       },
     });
   }

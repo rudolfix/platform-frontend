@@ -5,10 +5,10 @@ export const genericModalActions = {
   showGenericModal: (title: string, description?: string, icon?: TIconType) =>
     createAction("GENERIC_MODAL_SHOW", { title, description, icon }),
 
-  showGenericConfirmationModal: (title: string, description?: string) =>
+  showInfoModal: (title: string, description?: string) =>
     genericModalActions.showGenericModal(title, description, "check"),
 
-  showGenericErrorModal: (title: string, description?: string) =>
+  showErrorModal: (title: string, description?: string) =>
     genericModalActions.showGenericModal(title, description, "exclamation"),
 
   hideGenericModal: () => createSimpleAction("GENERIC_MODAL_HIDE"),

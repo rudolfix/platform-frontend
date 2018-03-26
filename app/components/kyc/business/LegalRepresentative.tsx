@@ -126,7 +126,7 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
       currentStep={3}
       title={"Legal Representative"}
       description={"Please tell us about yourself"}
-      hasBackButton={false}
+      hasBackButton={true}
     >
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} lrDataValid={lrDataValid} />

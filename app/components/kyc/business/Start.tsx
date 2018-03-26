@@ -25,7 +25,7 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
     steps={5}
     currentStep={2}
     title={"What type of company are you?"}
-    hasBackButton={false}
+    hasBackButton={true}
     isMaxWidth={true}
   >
     <Panels

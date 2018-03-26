@@ -2,8 +2,8 @@ import { connect, InferableComponentEnhancerWithProps, Options } from "react-red
 import { LocationChangeAction, routerReducer, RouterState } from "react-router-redux";
 import { combineReducers } from "redux";
 
-import { TAction } from "./modules/actions";
 import { accessWalletReducer } from "./modules/accessWallet/reducer";
+import { TAction } from "./modules/actions";
 import { authReducer } from "./modules/auth/reducer";
 import { genericModalReducer } from "./modules/genericModal/reducer";
 import { initReducer } from "./modules/init/reducer";

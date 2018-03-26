@@ -12,6 +12,7 @@ import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
 import { updateUserPromise } from "../../auth/sagas";
+import { displayConfirmationModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
@@ -68,13 +69,12 @@ export function* lightWalletBackupWatch(): Iterator<any> {
   try {
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
-    yield effects.put(actions.routing.goToSettings());
-    yield effects.put(
-      actions.genericModal.showGenericConfirmationModal(
-        "Backup Seed",
-        "you have successfully back up your wallet",
-      ),
+    yield neuCall(
+      displayConfirmationModalSaga,
+      "Backup Seed",
+      "you have successfully back up your wallet",
     );
+    yield effects.put(actions.routing.goToSettings());
   } catch (e) {
     yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
   }

@@ -7,8 +7,8 @@ import { appConnect } from "../store";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
 import { Header } from "./Header";
-import { GenericModal } from "./modals/GenericModal";
 import { AccessWalletModal } from "./modals/AccessWalletModal";
+import { GenericModal } from "./modals/GenericModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 interface IStateProps {

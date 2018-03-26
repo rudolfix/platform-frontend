@@ -9,3 +9,11 @@ export const selectKycRequestStatuts = (state: IKycState): TRequestStatus | unde
   if (requstState) return requstState.status;
   return undefined;
 };
+
+export const selectCombinedBeneficialOwnerOwnership = (state: IKycState): number => {
+  if (state.beneficialOwners.length === 0) return 0;
+  return state.beneficialOwners.reduce(
+    (all, owner) => all + (owner.ownership ? owner.ownership : 0),
+    0,
+  );
+};

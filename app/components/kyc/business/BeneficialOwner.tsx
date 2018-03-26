@@ -83,7 +83,7 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
       />
       <Row>
         <Col xs={6} md={4}>
-          <FormField label="Percent owned" name="ownership" />
+          <FormField label="Percent owned" name="ownership" suffix="%" />
         </Col>
       </Row>
       <div className="p-4 text-center">

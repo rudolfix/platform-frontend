@@ -1,0 +1,58 @@
+@import "../../styles/neufund-theme";
+
+.tabs {
+  display: inline-flex;
+  text-transform: uppercase;
+}
+
+.tab {
+  opacity: .9;
+  cursor: pointer;
+
+  &:global(.is-selected) {
+    opacity: 1;
+    font-weight: $font-weight-bold;
+    border-bottom: px-to-rem(1px) solid $neu-piss-yellow;
+  }
+
+  // themes
+  &:global(.t-dark) {
+    color: $neu-slate-grey;
+
+    &:hover {
+      color: lighten($neu-slate-grey, 20%);
+    }
+
+    &:global(.is-selected) {
+      color: $neu-black;
+    }
+  }
+
+  &:global(.t-light) {
+    color: $neu-white;
+
+    &:hover {
+      color: darken($neu-white, 20%);
+    }
+
+    &:global(.is-selected) {
+      color: $neu-white-two;
+    }
+  }
+
+  + .tab {
+    margin-left: px-to-rem(21px);
+    position: relative;
+
+    &::before {
+      content: "";
+      background-color: $neu-slate-grey;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: px-to-rem(-10px);
+      width: px-to-rem(1px);
+      height: 80%;
+    }
+  }
+}

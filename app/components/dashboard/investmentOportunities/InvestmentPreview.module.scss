@@ -87,14 +87,14 @@
   }
 
   .terms-and-eto {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 2;
-
     @include media-breakpoint-down (md) {
       flex-basis: 100%;
       margin-top: px-to-rem(20px);
     }
+
+    display: flex;
+    flex-direction: column;
+    flex-grow: 2;
 
     .terms {
       @include make-col(3, 7);
@@ -133,10 +133,10 @@
   }
 
   > a {
-    align-self: center;
-
     @include media-breakpoint-down (md) {
       margin-top: px-to-rem(15px);
     }
+
+    align-self: center;
   }
 }

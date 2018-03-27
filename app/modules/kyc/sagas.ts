@@ -47,7 +47,7 @@ function* submitIndividualData(
       action.payload.data,
     );
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
-    yield put(actions.routing.goToKYCIndividualUpload());
+    yield put(actions.routing.goToKYCIndividualInstantId());
     notificationCenter.info("Your data was saved successfully.");
   } catch {
     notificationCenter.error("There was a problem sending your data. Please try again.");

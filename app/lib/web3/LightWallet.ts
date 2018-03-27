@@ -223,7 +223,7 @@ export class LightWallet implements IPersonalWallet {
       address: this.ethereumAddress,
       email: this.email,
       salt: this.vault.salt,
-      vault: this.vault.walletInstance,
+      vault: JSON.stringify(this.vault.walletInstance),
       walletType: WalletType.LIGHT,
     };
   }

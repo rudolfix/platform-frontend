@@ -78,7 +78,7 @@ function updateArrayItem<T extends { id?: string }>(array: T[], id?: string, ite
 }
 
 function omitUndefined<T>(obj: T): { [P in keyof T]?: T[P] } {
-  return omitBy(obj, isNil);
+  return omitBy(obj, isNil) as any;
 }
 
 export const kycReducer: AppReducer<IKycState> = (state = kycInitialState, action): IKycState => {

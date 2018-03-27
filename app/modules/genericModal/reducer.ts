@@ -1,5 +1,6 @@
 import { genericModalIcons } from "../../components/modals/GenericModal";
 import { AppReducer } from "../../store";
+import { DeepReadonly } from "../../types";
 
 export interface IGenericModalState {
   isOpen: boolean;
@@ -22,7 +23,7 @@ const initialState: IGenericModalState = {
 export const genericModalReducer: AppReducer<IGenericModalState> = (
   state = initialState,
   action,
-): IGenericModalState => {
+): DeepReadonly<IGenericModalState> => {
   switch (action.type) {
     case "GENERIC_MODAL_SHOW":
       return {

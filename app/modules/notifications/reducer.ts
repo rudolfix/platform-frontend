@@ -1,4 +1,5 @@
 import { AppActionTypes, AppReducer } from "../../store";
+import { DeepReadonly } from "../../types";
 import { routingActions } from "../routing/actions";
 import { notificationActions } from "./actions";
 
@@ -26,7 +27,7 @@ export const notificationsInitState: INotificationsState = {
 export const notificationsReducer: AppReducer<INotificationsState> = (
   state = notificationsInitState,
   action,
-): INotificationsState => {
+): DeepReadonly<INotificationsState> => {
   switch (action.type) {
     case "NOTIFICATIONS_ADD": {
       const pNotification = action.payload.notification;

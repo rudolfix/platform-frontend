@@ -11,8 +11,8 @@ export const MethodEuroToken = () => {
       </h2>
       <p className={styles.description}>
         Transfer the amount you wish to deposit to the bank account below, using the exact
-        reference.<br/>You will receive an e-mail notification once your funds have been successfully
-        deposited!
+        reference.<br />You will receive an e-mail notification once your funds have been
+        successfully deposited!
       </p>
       <div className={styles.background}>
         <div className={styles.details}>

@@ -1,3 +1,5 @@
+import { HTMLAttributes, CSSProperties } from "react";
+
 type Dictionary<T> = { [id: string]: T };
 
 type AsInterface<T> = { [K in keyof T]: T[K] };
@@ -13,7 +15,7 @@ export type FunctionWithDeps = Opaque<"FunctionWithDeps", Function>;
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
 
-//Taken from @types/reactstrap
+// Taken from @types/reactstrap
 // @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23700
 export type InputType =
   | "text"
@@ -41,3 +43,9 @@ export type InputType =
   | "datetime"
   | "time"
   | "color";
+
+// we dont use AllHtmlAttributes because they include many more fields which can collide easily with components props (like data)
+export type CommonHtmlProps = {
+  className?: string;
+  style?: CSSProperties;
+};

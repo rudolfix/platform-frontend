@@ -13,10 +13,12 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
     </div>
     <div className="layout-container">
       <Row>
-        <Col className={styles.content}>
+        <Col>
           <NotificationWidget />
-          {children}
         </Col>
+      </Row>
+      <Row className="row-gutter-top">
+        <Col className={styles.content}>{children}</Col>
       </Row>
     </div>
   </>

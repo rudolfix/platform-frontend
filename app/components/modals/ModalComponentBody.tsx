@@ -14,7 +14,7 @@ export const ModalComponentBody: React.SFC<IModalComponentProps> = ({
 }) => (
   <PanelWhite className={styles.modal} {...props}>
     <div className={styles.header}>
-      <ButtonClose handleClick={onClose} />
+      <ButtonClose onClick={onClose} />
     </div>
     <div className={styles.body}>{children}</div>
   </PanelWhite>

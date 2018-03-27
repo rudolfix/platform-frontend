@@ -45,20 +45,18 @@ const SettingsEnhancedChangeEmailForm = withFormik<IDispatchProps, IFormValues>(
 
 export const ChangeEmailComponent: React.SFC<IDispatchProps> = props => {
   return (
-    <>
-      <PanelDark headerText="CHANGE MY E-MAIL ADDRESS">
-        <Row>
-          <Col xs={6} className="mt-3">
-            <p data-test-id="paragraph-section">
-              Lorem ipsum dolor sit amet, consetetur, sadpcsi and then that is how you get the email
-            </p>
-          </Col>
-          <Col className="mt-3 mb-4" data-test-id="form-section">
-            <SettingsEnhancedChangeEmailForm {...props} />
-          </Col>
-        </Row>
-      </PanelDark>
-    </>
+    <PanelDark headerText="CHANGE MY E-MAIL ADDRESS">
+      <Row>
+        <Col xs={6} className="mt-3">
+          <p data-test-id="paragraph-section">
+            Lorem ipsum dolor sit amet, consetetur, sadpcsi and then that is how you get the email
+          </p>
+        </Col>
+        <Col className="mt-3 mb-4" data-test-id="form-section">
+          <SettingsEnhancedChangeEmailForm {...props} />
+        </Col>
+      </Row>
+    </PanelDark>
   );
 };
 

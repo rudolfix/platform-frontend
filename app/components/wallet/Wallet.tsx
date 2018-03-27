@@ -77,10 +77,10 @@ export const Wallet = () => (
           chartData={chartDoughnutData}
         />
       </Col>
-      <Col className={styles.dividends} xs={12}>
+      <Col className="row-gutter-top" xs={12}>
         <ClaimedDividends totalEurValue={"1234" + "0".repeat(18)} recentPayouts={transactions} />
       </Col>
-      <Col className={styles.transactionList} xs={12}>
+      <Col className="row-gutter-top" xs={12}>
         <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
       </Col>
     </Row>

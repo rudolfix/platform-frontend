@@ -28,7 +28,7 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
         <KycStatusWidget />
       </Col>
     </Row>
-    <Row>
+    <Row className="row-gutter-top">
       <Col lg={8} xs={12}>
         <ChangeEmail />
       </Col>

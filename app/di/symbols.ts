@@ -7,6 +7,7 @@ export const symbols = makeDebugSymbols({
   getState: Symbol(),
 
   // configs
+  config: Symbol(),
   ethereumNetworkConfig: Symbol(),
 
   // apis
@@ -16,6 +17,9 @@ export const symbols = makeDebugSymbols({
   vaultApi: Symbol(),
   usersApi: Symbol(),
   apiKycService: Symbol(),
+
+  // contracts
+  contractsService: Symbol(),
 
   // wallets
   lightWalletUtil: Symbol(),

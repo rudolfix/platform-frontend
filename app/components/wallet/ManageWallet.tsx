@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { MessageSignModal } from "../modals/SignMessageModal";
 import { MoneyTransfer } from "../shared/Money";
 import { ClaimedDividends } from "./claimed-dividends/ClaimedDividends";
 import * as styles from "./ManageWallet.module.scss";
@@ -45,16 +44,24 @@ const tabs = [
     onFilter: () => alert("eth"),
   },
 ];
+const chartDoughnutData = {
+  labels: ["ETH", "nEUR"],
+  datasets: [
+    {
+      data: [100, 50],
+      backgroundColor: ["#e3eaf5", "#394651"],
+    },
+  ],
+};
 
 export const ManageWallet = () => (
   <LayoutAuthorized>
-    <MessageSignModal />
     <Row>
       <Col className={styles.card} lg={6} xs={12}>
         <WalletBalance
-          radius={75}
           moneyValueOne={66482000000000000000000}
           moneyValueTwo={36490000000000000000000}
+          chartData={chartDoughnutData}
           headerText="Your wallet balance"
           totalEurValue={"1234567" + "0".repeat(18)}
           theme={WalletBalanceTheme.light}

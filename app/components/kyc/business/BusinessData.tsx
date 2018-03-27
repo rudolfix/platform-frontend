@@ -41,11 +41,6 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
   <Form>
     <FormField label="Company Name" name="name" />
     <FormField label="Legal Form" name="legalForm" />
-    {!formikBag.currentValues || !(formikBag.currentValues.legalFormType === "corporate") ? (
-      <div />
-    ) : (
-      <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
-    )}
     <br /> <br />
     <FormField label="Street and number" name="street" />
     <Row>
@@ -57,6 +52,10 @@ const KYCForm = (formikBag: FormikProps<IKycBusinessData> & IProps) => (
       </Col>
     </Row>
     <FormSelectCountryField label="Country" name="country" />
+    {formikBag.currentValues &&
+      formikBag.currentValues.legalFormType === "corporate" && (
+        <FormSelectCountryField label="Jurisdiction of incorporation" name="jurisdiction" />
+      )}
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
         Save
@@ -101,7 +100,7 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
       currentStep={4}
       title={"Business Information"}
       description={"Please tell us about your business"}
-      hasBackButton={false}
+      hasBackButton={true}
     >
       <KYCEnhancedForm {...props} />
       <FileUploadList {...props} dataValid={dataValid} />
@@ -111,7 +110,7 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
           disabled={!props.currentValues || props.files.length === 0}
           onClick={props.submit}
         >
-          Submit Request
+          Continue
         </Button>
       </div>
     </KycPanel>
@@ -129,7 +128,7 @@ export const KycBusinessData = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadBusinessDocument(file)),
-      submit: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),
+      submit: () => dispatch(actions.routing.goToKYCLegalRepresentative()),
       submitForm: (values: IKycBusinessData) => dispatch(actions.kyc.kycSubmitBusinessData(values)),
     }),
   }),

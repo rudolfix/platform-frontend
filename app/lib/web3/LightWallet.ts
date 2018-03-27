@@ -220,6 +220,7 @@ export class LightWallet implements IPersonalWallet {
 
   public getMetadata(): ILightWalletMetadata {
     return {
+      address: this.ethereumAddress,
       email: this.email,
       salt: this.vault.salt,
       vault: this.vault.walletInstance,

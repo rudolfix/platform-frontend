@@ -2,10 +2,13 @@ import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { dummyNetworkId } from "../../../../test/fixtures";
+import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
-import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import {
+  ILedgerWalletMetadata,
+  TWalletMetadata,
+} from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
@@ -40,7 +43,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         web3ManagerMock,
       );
 
-      expect(mockDispatch).to.be.calledWithExactly(actions.wallet.ledgerConnectionEstablished());
+      expect(mockDispatch).to.be.calledWithExactly(
+        actions.walletSelector.ledgerConnectionEstablished(),
+      );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
 
@@ -64,7 +69,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
 
       expect(mockDispatch).to.be.calledWithExactly(
-        actions.wallet.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
       );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
@@ -120,7 +125,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         dummyState.ledgerWizardState!.numberOfAccountsPerPage,
       );
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.wallet.setLedgerAccounts(
+        actions.walletSelector.setLedgerAccounts(
           [
             {
               address: expectedAccounts["44'/60'/0'/1"],
@@ -148,7 +153,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       ledgerWizardFlows.goToNextPageAndLoadData(mockDispatch);
 
       expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWith(actions.wallet.ledgerWizardAccountsListNextPage());
+      expect(mockDispatch).to.be.calledWith(
+        actions.walletSelector.ledgerWizardAccountsListNextPage(),
+      );
       expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
     });
   });
@@ -160,7 +167,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       ledgerWizardFlows.goToPreviousPageAndLoadData(mockDispatch);
 
       expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWith(actions.wallet.ledgerWizardAccountsListPreviousPage());
+      expect(mockDispatch).to.be.calledWith(
+        actions.walletSelector.ledgerWizardAccountsListPreviousPage(),
+      );
       expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
     });
   });
@@ -200,7 +209,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(mockDispatch).to.be.calledTwice;
       expect(mockDispatch).to.be.calledWithExactly(
-        actions.wallet.setLedgerWizardDerivationPathPrefix(newDP),
+        actions.walletSelector.setLedgerWizardDerivationPathPrefix(newDP),
       );
       expect(mockDispatch).to.be.calledWithExactly(ledgerWizardFlows.loadLedgerAccounts);
     });
@@ -209,9 +218,16 @@ describe("Wallet selector > Ledger wizard > actions", () => {
   describe("finishSettingUpLedgerConnectorAction", () => {
     it("should work when ledger wallet is connected", async () => {
       const expectedDerivationPath = "44'/60'/0'/2";
+      const dummyMetadata: ILedgerWalletMetadata = {
+        address: dummyEthereumAddress,
+        derivationPath: expectedDerivationPath,
+        walletType: WalletType.LEDGER,
+      };
 
       const dispatchMock = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {});
+      const ledgerWalletMock = createMock(LedgerWallet, {
+        getMetadata: (): ILedgerWalletMetadata => dummyMetadata,
+      });
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         finishConnecting: async () => ledgerWalletMock,
       });
@@ -233,11 +249,8 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         expectedDerivationPath,
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(walletMetadataStorageMock.set).to.be.calledWithExactly({
-        walletType: WalletType.LEDGER,
-        derivationPath: expectedDerivationPath,
-      });
-      expect(dispatchMock).to.be.calledWithExactly(actions.wallet.connected());
+      expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata);
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
 
     it("should not navigate when ledger wallet is not connected", async () => {
@@ -299,7 +312,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.wallet.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
       );
     });
   });

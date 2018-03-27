@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { MessageSignModal } from "../modals/SignMessageModal";
 import { MoneyTransfer } from "../shared/Money";
 import { ClaimedDividends } from "./claimed-dividends/ClaimedDividends";
 import { TransactionList, TransactionType } from "./transaction-list/TransactionList";
@@ -45,29 +44,37 @@ const tabs = [
     onFilter: () => alert("eth"),
   },
 ];
+const chartDoughnutData = {
+  labels: ["ETH", "nEUR"],
+  datasets: [
+    {
+      data: [100, 50],
+      backgroundColor: ["#e3eaf5", "#394651"],
+    },
+  ],
+};
 
 export const Wallet = () => (
   <LayoutAuthorized>
-    <MessageSignModal />
     <Row>
       <Col className={styles.card} lg={6} xs={12}>
         <WalletBalance
-          radius={75}
           moneyValueOne={66482000000000000000000}
           moneyValueTwo={36490000000000000000000}
           headerText="Your wallet balance"
           totalEurValue={"1234567" + "0".repeat(18)}
           theme={WalletBalanceTheme.light}
+          chartData={chartDoughnutData}
         />
       </Col>
       <Col className={styles.card} lg={6} xs={12}>
         <WalletBalance
-          radius={75}
           moneyValueOne={0}
           moneyValueTwo={0}
           headerText="ICBM Wallet"
           totalEurValue="0"
           theme={WalletBalanceTheme.dark}
+          chartData={chartDoughnutData}
         />
       </Col>
       <Col className={styles.dividends} xs={12}>

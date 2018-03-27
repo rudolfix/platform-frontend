@@ -1,6 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
-import { ILightWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { ILightWalletRetrieveMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightWallet,
   LightWalletLocked,
@@ -9,10 +9,11 @@ import {
 } from "../../../lib/web3/LightWallet";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
+import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { updateUser } from "../../auth/sagas";
+import { updateUserPromise } from "../../auth/sagas";
+import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { connectLightWallet } from "../../signMessageModal/sagas";
 import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
@@ -24,7 +25,7 @@ export async function retrieveMetadataFromVaultAPI(
   password: string,
   salt: string,
   email: string,
-): Promise<ILightWalletMetadata> {
+): Promise<ILightWalletRetrieveMetadata> {
   const vaultKey = await getVaultKey(lightWalletUtil, salt, password);
   try {
     const vault = await vaultApi.retrieve(vaultKey);
@@ -43,7 +44,7 @@ export async function retrieveMetadataFromVaultAPI(
 export function* getWalletMetadata(
   { walletMetadataStorage }: TGlobalDependencies,
   password: string,
-): Iterator<any | ILightWalletMetadata | undefined> {
+): Iterator<any | ILightWalletRetrieveMetadata | undefined> {
   const queryStringWalletInfo: { email: string; salt: string } | undefined = yield select(
     (s: IAppState) => selectLightWalletFromQueryString(s.router),
   );
@@ -64,18 +65,21 @@ export function* getWalletMetadata(
   return undefined;
 }
 
-export function* lightWalletBackupWatch({ getState }: TGlobalDependencies): Iterator<any> {
+export function* lightWalletBackupWatch(): Iterator<any> {
   try {
-    const user = getState().auth.user;
-    yield effects.call(updateUser, { ...user, backupCodesVerified: true });
+    const user = yield select((state: IAppState) => state.auth.user);
+    yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
+    yield neuCall(displayInfoModalSaga, "Backup Seed", "you have successfully back up your wallet");
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
-    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+    yield put(
+      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
+    );
   }
 }
 
 export function* loadSeedFromWallet({ web3Manager }: TGlobalDependencies): Iterator<any> {
-  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
+  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3));
   if (!isUnlocked) {
     throw new LightWalletLocked();
   }
@@ -93,7 +97,9 @@ export function* loadSeedFromWalletWatch(): Iterator<any> {
   try {
     yield neuCall(loadSeedFromWallet);
   } catch (e) {
-    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+    yield put(
+      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
+    );
   }
 }
 
@@ -106,7 +112,7 @@ export function* lightWalletLoginWatch(
   }
   const { password } = action.payload;
   try {
-    const walletMetadata: ILightWalletMetadata | undefined = yield neuCall(
+    const walletMetadata: ILightWalletRetrieveMetadata | undefined = yield neuCall(
       getWalletMetadata,
       password,
     );
@@ -128,11 +134,13 @@ export function* lightWalletLoginWatch(
       throw new LightWalletWrongPassword();
     }
 
-    walletMetadataStorage.set(walletMetadata);
+    walletMetadataStorage.set(wallet.getMetadata());
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.wallet.connected());
+    yield put(actions.walletSelector.connected());
   } catch (e) {
-    yield put(actions.wallet.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)));
+    yield put(
+      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
+    );
   }
 }
 

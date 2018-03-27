@@ -4,8 +4,6 @@ import { Col, Row } from "reactstrap";
 import { selectIsLightWallet } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { MessageSignModal } from "../modals/SignMessageModal";
-import { ViewSeedModal } from "../modals/viewSeedModal";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { KycStatusWidget } from "./kycStates/KycStatusWidget";
@@ -17,8 +15,6 @@ interface IProps {
 
 export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
   <LayoutAuthorized>
-    <MessageSignModal />
-    <ViewSeedModal />
     <Row>
       <Col lg={4} xs={12}>
         <VerifyEmailWidget />
@@ -42,6 +38,6 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
 
 export const Settings = appConnect<IProps, {}>({
   stateToProps: s => ({
-    isLightWallet: selectIsLightWallet(s.web3State),
+    isLightWallet: selectIsLightWallet(s.web3),
   }),
 })(SettingsComponent);

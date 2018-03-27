@@ -5,13 +5,16 @@ import * as styles from "./Demo.module.scss";
 
 import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
-import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
+import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
 import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import { BreadCrumb } from "./shared/BreadCrumb";
 import { Button } from "./shared/Buttons";
+import { ChartBars } from "./shared/charts/ChartBars";
+import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
+import { ChartPie } from "./shared/charts/ChartPie";
 import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
@@ -19,6 +22,36 @@ import { PanelWhite } from "./shared/PanelWhite";
 import { PercentageIndicatorBar } from "./shared/PercentageIndicatorBar";
 import { SectionHeader } from "./shared/SectionHeader";
 import { Tag } from "./shared/Tag";
+
+const chartDoughnutData = {
+  labels: ["ETH", "nEUR"],
+  datasets: [
+    {
+      data: [100, 50],
+      backgroundColor: ["#e3eaf5", "#394651"],
+    },
+  ],
+};
+
+const chartPieData = {
+  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
+  datasets: [
+    {
+      data: [100, 50, 20, 40, 50, 12],
+      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
+    },
+  ],
+};
+
+const chartBarData = {
+  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
+  datasets: [
+    {
+      data: [100, 50, 20, 40, 50, 12],
+      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
+    },
+  ],
+};
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -160,14 +193,25 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row noGutters>
         <Col>
-          <MyWalletWidget
-            euroTokenEuroAmount={"6004904646" + "0".repeat(16)}
-            euroTokenAmount={"36490" + "0".repeat(18)}
-            ethAmount={"66482" + "0".repeat(14)}
-            ethEuroAmount={"6004904646" + "0".repeat(16)}
-            percentage="-3.67"
-            totalAmount={"637238" + "0".repeat(18)}
+          <MyWalletWidgetComponent
+            isLoading={false}
+            data={{
+              euroTokenEuroAmount: "6004904646" + "0".repeat(16),
+              euroTokenAmount: "36490" + "0".repeat(18),
+              ethAmount: "66482" + "0".repeat(14),
+              ethEuroAmount: "6004904646" + "0".repeat(16),
+              percentage: "-3.67",
+              totalAmount: "637238" + "0".repeat(18),
+            }}
           />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row noGutters>
+        <Col>
+          <MyWalletWidgetComponent isLoading={false} error="Error while loading wallet data." />
         </Col>
       </Row>
     </Container>
@@ -279,6 +323,17 @@ export const Demo: React.SFC = () => (
           },
         ]}
       />
+    </Container>
+    <Container>
+      <ChartDoughnut data={chartDoughnutData} />
+    </Container>
+
+    <Container>
+      <ChartPie data={chartPieData} />
+    </Container>
+
+    <Container>
+      <ChartBars data={chartBarData} />
     </Container>
   </div>
 );

@@ -13,6 +13,7 @@ interface IProps {
   seed: string[];
   verifyBackupPhrase: () => void;
   onCancel: () => void;
+  backupCodesVerified: boolean;
 }
 
 interface IState {
@@ -37,6 +38,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
   };
 
   renderBackupPage(): React.ReactNode {
+    const { backupCodesVerified } = this.props;
     switch (this.state.backupStep) {
       case 1:
         return <BackupSeedIntro onBack={appRoutes.settings} onNext={this.onNext} />;
@@ -53,7 +55,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
         return (
           <BackupSeedDisplay
             onBack={this.onBack}
-            onNext={this.onNext}
+            onNext={() => (backupCodesVerified ? this.props.onCancel() : this.onNext())}
             words={this.props.seed}
             pageNo={1}
           />
@@ -70,6 +72,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
   }
 
   render(): React.ReactNode {
+    const steps = this.props.backupCodesVerified ? 3 : 4;
     return (
       <LayoutAuthorized>
         <BreadCrumb
@@ -81,7 +84,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
           <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
             <PanelWhite>
               <HeaderProgressStepper
-                steps={4}
+                steps={steps}
                 currentStep={this.state.backupStep}
                 headerText="The safety phrase is crucial for the safety of your assets"
                 descText="Please make sure you follow the instructions."

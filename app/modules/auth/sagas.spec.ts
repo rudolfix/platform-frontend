@@ -25,10 +25,10 @@ describe("Jwt actions", () => {
       const expectedSignerType = SignerType.ETH_SIGN_TYPED_DATA;
 
       const mockedState: Partial<IAppState> = {
-        web3State: {
+        web3: {
           connected: true,
-          ethereumAddress: dummyEthereumAddress,
           wallet: {
+            address: dummyEthereumAddress,
             walletType: WalletType.BROWSER,
           },
           isUnlocked: true,
@@ -62,6 +62,7 @@ describe("Jwt actions", () => {
         dummyEthereumAddressWithChecksum,
         expectedSalt,
         expectedSignerType,
+        [],
       );
       expect(browserWalletMock.signMessage).to.be.calledWithExactly(expectedChallenge);
       expect(signatureAuthApiMock.createJwt).to.be.calledWithExactly(

@@ -1,11 +1,11 @@
 import { delay } from "bluebird";
-import { effects } from "redux-saga";
-import { call, cancel, put, select, take } from "redux-saga/effects";
+import { Effect, effects } from "redux-saga";
+import { call, put, race, select, take } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
-  ILightWalletMetadata,
+  ILightWalletRetrieveMetadata,
 } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { BrowserWalletConnector } from "../../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
@@ -15,7 +15,7 @@ import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
-import { neuCall, neuFork } from "../sagas";
+import { neuCall } from "../sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
 import { unlockWallet } from "../web3/sagas";
 import { WalletType } from "../web3/types";
@@ -77,7 +77,7 @@ async function connectBrowser(
 
 export async function connectLightWallet(
   lightWalletConnector: LightWalletConnector,
-  metadata: ILightWalletMetadata,
+  metadata: ILightWalletRetrieveMetadata,
   password?: string,
 ): Promise<IPersonalWallet> {
   const lightWalletUtils = new LightWalletUtil();
@@ -96,60 +96,83 @@ export async function connectLightWallet(
   );
 }
 
-function* messageSignSaga({ web3Manager }: TGlobalDependencies, message: string): Iterator<any> {
+function* unlockLightWallet(): any {
+  const acceptAction: TAction = yield take("ACCESS_WALLET_ACCEPT");
+  if (acceptAction.type !== "ACCESS_WALLET_ACCEPT") {
+    return;
+  }
+  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3));
+
+  if (!isUnlocked) {
+    yield neuCall(unlockWallet, acceptAction.payload.password);
+  }
+}
+
+export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): any {
+  // connect wallet
   while (true) {
     try {
       yield neuCall(ensureWalletConnection);
-
-      const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3State));
+      const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3));
       if (isLightWallet) {
         yield call(unlockLightWallet);
       }
-
       break;
     } catch (e) {
       yield effects.put(
         actions.signMessageModal.signingError(mapSignMessageErrorToErrorMessage(e)),
       );
-      if (e instanceof SignerError) {
-        throw e;
-      }
-
+      if (e instanceof SignerError) throw e;
       yield delay(500);
     }
   }
-  const signedMessage = yield web3Manager.sign(message);
-  yield put(actions.signMessageModal.signed(signedMessage));
+  return yield effect;
 }
 
-export function* messageSign(message: string): any {
-  const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.signMessageModal));
+export function* accessWalletAndRunEffect(
+  effect: Effect | Iterator<Effect>,
+  title: string = "",
+  message: string = "",
+): any {
+  // guard against multple modals
+  const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.accessWallet));
   if (isSigning) {
     throw new Error("Signing already in progress");
   }
-  yield put(actions.signMessageModal.show());
+  yield put(actions.signMessageModal.showAccessWalletModal(title, message));
 
-  const spawnedSaga = yield neuFork(messageSignSaga, message);
-  const a: TAction = yield take(["SIGN_MESSAGE_MODAL_HIDE", "SIGN_MESSAGE_SIGNED"]);
+  // do required operation, or finish in case cancel button was hit
+  const { result, cancel } = yield race({
+    result: call(connectWalletAndRunEffect, effect),
+    cancel: take("HIDE_ACCESS_WALLET_MODAL"),
+  });
 
-  if (a.type === "SIGN_MESSAGE_MODAL_HIDE") {
-    yield cancel(spawnedSaga);
-    throw new Error("Signing interrupted");
+  // always hide the current modal
+  yield effects.put(actions.signMessageModal.hideAccessWalletModal());
+
+  // if the cancel action was called
+  // throw here
+  if (cancel) {
+    throw new Error("Cancelled");
   }
-  if (a.type === "SIGN_MESSAGE_SIGNED") {
-    yield effects.put(actions.signMessageModal.hide());
-    return a.payload.msg;
-  }
+
+  return result;
 }
 
-function* unlockLightWallet(): any {
-  const acceptAction: TAction = yield take("SIGN_MESSAGE_ACCEPT");
-  if (acceptAction.type !== "SIGN_MESSAGE_ACCEPT") {
-    return;
-  }
-  const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3State));
-
-  if (!isUnlocked) {
-    yield neuCall(unlockWallet, acceptAction.payload.password);
+/**
+ * Main Message signing entry point
+ * Can be moved elsewhere later
+ */
+export function* signMessage(
+  { web3Manager }: TGlobalDependencies,
+  messageToSign: string,
+  title: string = "",
+  message: string = "",
+): any {
+  try {
+    const signEffect = call(web3Manager.sign.bind(web3Manager), messageToSign);
+    return yield call(accessWalletAndRunEffect, signEffect, title, message);
+  } catch {
+    throw new Error("Message signing failed");
   }
 }

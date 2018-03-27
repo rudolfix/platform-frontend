@@ -2,23 +2,8 @@ import { connect, InferableComponentEnhancerWithProps, Options } from "react-red
 import { LocationChangeAction, routerReducer, RouterState } from "react-router-redux";
 import { combineReducers } from "redux";
 
-import { authReducer } from "./modules/auth/reducer";
-import { genericErrorModalReducer } from "./modules/genericErrorModal/reducer";
-import { initReducer } from "./modules/init/reducer";
-import { kycReducer } from "./modules/kyc/reducer";
-import { moneyReducer } from "./modules/money/reducer";
-import { notificationsReducer } from "./modules/notifications/reducer";
-import { showSeedModalReducer } from "./modules/showSeedModal/reducer";
-import { signMessageModalReducer } from "./modules/signMessageModal/reducer";
-import { browserReducer } from "./modules/userAgent/reducer";
-import { browserWalletWizardReducer } from "./modules/wallet-selector/browser-wizard/reducer";
-import { ledgerWizardReducer } from "./modules/wallet-selector/ledger-wizard/reducer";
-import { lightWalletWizardReducer } from "./modules/wallet-selector/light-wizard/reducer";
-import { walletSelectorReducer } from "./modules/wallet-selector/reducer";
-import { walletReducer } from "./modules/wallet/reducer";
-import { web3Reducer } from "./modules/web3/reducer";
-
 import { TAction } from "./modules/actions";
+import { appReducers } from "./modules/reducer";
 import { FunctionWithDeps } from "./types";
 
 export interface IAppAction {
@@ -36,25 +21,6 @@ type TRouterActions = LocationChangeAction;
 
 // add new external actions here
 export type AppActionTypes = TAction | TRouterActions;
-
-// add new app reducers here. They must be AppReducer<T> type
-const appReducers = {
-  ledgerWizardState: ledgerWizardReducer,
-  browserWalletWizardState: browserWalletWizardReducer,
-  web3State: web3Reducer,
-  browser: browserReducer,
-  walletSelector: walletSelectorReducer,
-  auth: authReducer,
-  genericErrorModal: genericErrorModalReducer,
-  signMessageModal: signMessageModalReducer,
-  showSeedModal: showSeedModalReducer,
-  kyc: kycReducer,
-  init: initReducer,
-  lightWalletWizard: lightWalletWizardReducer,
-  money: moneyReducer,
-  wallet: walletReducer,
-  notifications: notificationsReducer,
-};
 
 // add all custom reducers here
 const allReducers = {

@@ -49,7 +49,7 @@ export const InvestmentPreview: React.SFC<IProps> = ({
       </div>
       <div className={styles.companyDetails}>
         <h4 className={styles.companyName}>{company}</h4>
-        <div>{tags.map(tag => <Tag {...tag} />)}</div>
+        <div>{tags.map((tag, i) => <Tag key={i} {...tag} />)}</div>
       </div>
       <div className={styles.preFundingStatus}>
         <h5 className={styles.label}>Pre funding status</h5>
@@ -63,8 +63,8 @@ export const InvestmentPreview: React.SFC<IProps> = ({
             <strong className={styles.hilight}> {preFoundingStatus.investorsNum}</strong>
           </p>
           <p>Lead invsetors</p>
-          {preFoundingStatus.leadInvestors.map(investor => (
-            <strong className={styles.lead}>{investor}</strong>
+          {preFoundingStatus.leadInvestors.map((investor, i) => (
+            <strong key={i} className={styles.lead}>{investor}</strong>
           ))}
         </div>
       </div>

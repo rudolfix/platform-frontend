@@ -64,7 +64,9 @@ export const InvestmentPreview: React.SFC<IProps> = ({
           </p>
           <p>Lead invsetors</p>
           {preFoundingStatus.leadInvestors.map((investor, i) => (
-            <strong key={i} className={styles.lead}>{investor}</strong>
+            <strong key={i} className={styles.lead}>
+              {investor}
+            </strong>
           ))}
         </div>
       </div>

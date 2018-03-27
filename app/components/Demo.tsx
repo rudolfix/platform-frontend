@@ -3,6 +3,7 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 
 import * as styles from "./Demo.module.scss";
 
+import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
@@ -18,7 +19,6 @@ import { PanelWhite } from "./shared/PanelWhite";
 import { PercentageIndicatorBar } from "./shared/PercentageIndicatorBar";
 import { SectionHeader } from "./shared/SectionHeader";
 import { Tag } from "./shared/Tag";
-import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -221,42 +221,63 @@ export const Demo: React.SFC = () => (
     </Container>
 
     <Container>
-      <SectionHeader>
-        Section's Header
-      </SectionHeader>
+      <SectionHeader>Section's Header</SectionHeader>
     </Container>
 
     <Container>
       <InvestmentPreview
-        company={''}
+        linkToDetails="#0"
+        moneyGoal={"400€"}
+        currentValuation={"4000€"}
+        tokenPrice={"2€"}
+        neuInvestorsNum={500}
+        startingOn="22.12.2019"
+        handleEmailSend={() => {}}
+        endInDays={25}
+        company={"Superawesome startup two"}
+        hasStarted={true}
         detailsLink="#0"
-        preFoundingStatus={
+        preFoundingStatus={{
+          money: "€ 50M",
+          investorsNum: 5,
+          leadInvestors: ["abc", "zxc"],
+        }}
+        tags={[
           {
-            money:"€ 50M",
-            investorsNum: 5,
-            leadInvestors: [
-              'abc',
-              'zxc'
-            ]
-          }
-        }
-        terms={
+            text: "tag 1",
+            to: "#0",
+          },
           {
-            goal: 20000000,
-            currentValuation: 4000000
-          }
-        }
-        tags={
-          [
-            {
-              text: 'tag 1',
-              to: '#0'
-            },
-            {
-              text: 'tag 2',
-            }
-          ]
-        }
+            text: "tag 2",
+          },
+        ]}
+      />
+      <InvestmentPreview
+        linkToDetails="#0"
+        moneyGoal={"400€"}
+        currentValuation={"4000€"}
+        tokenPrice={"2€"}
+        neuInvestorsNum={500}
+        startingOn="22.12.2019"
+        handleEmailSend={() => {}}
+        endInDays={25}
+        company={"Superawesome startup one"}
+        hasStarted={true}
+        detailsLink="#0"
+        preFoundingStatus={{
+          money: "€ 50M",
+          investorsNum: 5,
+          leadInvestors: ["abc", "zxc"],
+        }}
+        tags={[
+          {
+            text: "tag 1",
+            to: "#0",
+          },
+          {
+            text: "tag 2",
+          },
+        ]}
       />
     </Container>
   </div>

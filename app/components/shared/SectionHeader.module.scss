@@ -6,10 +6,11 @@
   text-transform: uppercase;
   padding-left: px-to-rem(10px);
   position: relative;
+  font-weight: $font-weight-bold;
 
-  &:before {
+  &::before {
     position: absolute;
-    content: '';
+    content: "";
     background-color: $neu-piss-yellow;
     height: 100%;
     width: 2px;

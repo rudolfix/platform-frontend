@@ -3,12 +3,12 @@
 .tag {
   @include font-default;
 
-  $_color_tag_base: rgb(196, 213, 236);
-  $_color_tag_bg: rgba($_color_tag_base, .14);
-  $_color_tag_bg_hover: rgba($_color_tag_base, .36);
+  $color-tag-base: rgb(196, 213, 236);
+  $color-tag-bg: rgba($color-tag-base, .14);
+  $color-tag-bg-hover: rgba($color-tag-base, .36);
 
   color: $neu-black;
-  background-color: $_color_tag_bg;
+  background-color: $color-tag-bg;
   border-radius: px-to-rem(3px);
   font-weight: $font-weight-bold;
   padding: px-to-rem(6px) px-to-rem(10px);
@@ -18,7 +18,7 @@
   }
 
   &:hover {
-    background-color: $_color_tag_bg_hover;
+    background-color: $color-tag-bg-hover;
   }
 
   &:global(.ghost) {

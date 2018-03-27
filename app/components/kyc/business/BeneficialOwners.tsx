@@ -43,7 +43,8 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
     </Accordion>
     <div className="p-4 text-center">
       <Button
-        layout="icon-before"
+        layout="secondary"
+        iconPosition="icon-before"
         svgIcon={plusIcon}
         onClick={props.createBeneficialOwner}
         disabled={props.loading}

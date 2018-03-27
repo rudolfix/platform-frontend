@@ -165,7 +165,7 @@ export class BackupSeedVerify extends React.Component<
           )}
         <Row>
           <Col>
-            <Button layout={"icon-before"} svgIcon={arrowLeft} onClick={this.props.onBack}>
+            <Button layout="secondary" iconPosition="icon-before" svgIcon={arrowLeft} onClick={this.props.onBack}>
               Back
             </Button>
           </Col>

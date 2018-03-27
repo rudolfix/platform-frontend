@@ -62,7 +62,7 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
           <Col xs={12} className="d-flex justify-content-center">
             {props.requestStatus && props.requestStatus === "Draft" ? (
               <Link to="#">
-                <Button layout="icon-after" svgIcon={arrowRight} onClick={props.onStartKyc}>
+                <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight} onClick={props.onStartKyc}>
                   Verify KYC
                 </Button>
               </Link>

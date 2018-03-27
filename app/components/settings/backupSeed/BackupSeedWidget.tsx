@@ -43,7 +43,7 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> 
           <p className={cn(styles.text, "pt-2")}>You have backed up your SEED. </p>
           <Col xs={12} className="d-flex justify-content-center">
             <Link to={settingsRoutes.seedBackup}>
-              <Button layout="icon-after" svgIcon={arrowRight}>
+              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
                 View Again
               </Button>
             </Link>
@@ -60,7 +60,7 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps> 
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <Link to={settingsRoutes.seedBackup}>
-              <Button layout="icon-after" svgIcon={arrowRight}>
+              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
                 Backup phrase
               </Button>
             </Link>

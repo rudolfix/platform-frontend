@@ -30,7 +30,7 @@ type IProps = IStateProps & IDispatchProps;
 const RequestStateInfo: React.SFC<IProps> = props => {
   const settingsButton = (
     <div className="p-4 text-center">
-      <Button layout="icon-before" svgIcon={arrowLeft} onClick={props.goToSettings}>
+      <Button layout="secondary" iconPosition="icon-before" svgIcon={arrowLeft} onClick={props.goToSettings}>
         Go to settings
       </Button>
     </div>

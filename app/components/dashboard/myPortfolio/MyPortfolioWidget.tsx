@@ -20,7 +20,7 @@ export const MyPortfolio: React.SFC<CommonHtmlProps> = ({ className, style }) =>
           <h3>Welcome to NEUFUND!</h3>
           <p>You have no assets in your portifolio yet.</p>
           <Link to="#">
-            <Button layout="icon-after" svgIcon={arrowRight}>
+            <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
               Investment Opportunities
             </Button>
           </Link>

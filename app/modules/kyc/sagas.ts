@@ -120,6 +120,19 @@ function* submitIndividualRequest(
   }
 }
 
+function* startIndividualInstantId({
+  apiKycService,
+  notificationCenter,
+}: TGlobalDependencies): Iterator<any> {
+  try {
+    const result: IHttpResponse<IKycRequestState> = yield apiKycService.startInstantId();
+    if (result.body.redirectUrl) window.location.replace(result.body.redirectUrl);
+    yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
+  } catch {
+    notificationCenter.error("There was a problem submitting your request. Please try again.");
+  }
+}
+
 /**
  * Company Request
  */
@@ -428,6 +441,7 @@ export function* kycSagas(): any {
   yield fork(neuTakeEvery, "KYC_SUBMIT_INDIVIDUAL_FORM", submitIndividualData);
   yield fork(neuTakeEvery, "KYC_UPLOAD_INDIVIDUAL_FILE", uploadIndividualFile);
   yield fork(neuTakeEvery, "KYC_LOAD_INDIVIDUAL_FILE_LIST", loadIndividualFiles);
+  yield fork(neuTakeEvery, "KYC_START_INSTANT_ID", startIndividualInstantId);
 
   yield fork(neuTakeEvery, "KYC_LOAD_INDIVIDUAL_REQUEST_STATE", loadIndividualRequest);
   yield fork(neuTakeEvery, "KYC_SUBMIT_INDIVIDUAL_REQUEST", submitIndividualRequest);

@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectKycRequestStatuts } from "../../modules/kyc/selectors";
+import { selectKycOutourcedURL, selectKycRequestStatuts } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
@@ -17,6 +17,7 @@ import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 interface IStateProps {
   requestLoading?: boolean;
   requestStatus?: TRequestStatus;
+  redirectUrl: string;
 }
 
 interface IDispatchProps {
@@ -77,6 +78,21 @@ const RequestStateInfo: React.SFC<IProps> = props => {
       </KycPanel>
     );
   }
+  if (props.requestStatus === "Outsourced") {
+    return (
+      <KycPanel
+        title="Instant identification started"
+        steps={5}
+        currentStep={5}
+        description="If you're not automatically forwarded to idNow, please click the link below to continue."
+      >
+        {" "}
+        <div className="p-4 text-center">
+          <a href={props.redirectUrl}>Click here to continue</a>
+        </div>
+      </KycPanel>
+    );
+  }
   return <div />;
 };
 
@@ -101,6 +117,7 @@ export const Kyc = compose<React.SFC>(
       requestLoading:
         state.kyc.individualRequestStateLoading || state.kyc.businessRequestStateLoading,
       requestStatus: selectKycRequestStatuts(state.kyc),
+      redirectUrl: selectKycOutourcedURL(state.kyc),
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},

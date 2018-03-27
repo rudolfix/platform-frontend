@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as styles from "./InstantId.module.scss";
 
 import { compose } from "redux";
 
@@ -9,6 +10,10 @@ import { actions } from "../../../modules/actions";
 import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { TUploadListLayout } from "../shared/KycFileUploadList";
+
+import * as idImage from "../../../assets/img/ID_now.svg";
+import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as linkOutIcon from "../../../assets/img/inline_icons/link_out_small.svg";
 
 interface IStateProps {}
 
@@ -33,12 +38,18 @@ export const KycPersonalInstantIdComponent: React.SFC<
     }
     hasBackButton={true}
   >
-    <div className="p-4 text-center">
-      <Button onClick={props.onStartInstantId}>Go to video verification</Button>
+    <img className={styles.image} src={idImage} alt="id now" />
+    <div className="mb-5 text-center">
+      <Button onClick={props.onStartInstantId} svgIcon={linkOutIcon} iconPosition="icon-after">Go to video verification</Button>
     </div>
-    <div className="p-4 text-center">
-      <Button layout="secondary" onClick={props.onContinue}>
-        Upload Documents
+    <p className="text-center">Optionally, fill out the form and upload your documents.<br/>This verfcation method will a take 24h processing time.</p>
+    <div className="text-center">
+      <Button
+        layout="secondary"
+        onClick={props.onContinue}
+        svgIcon={arrowRightIcon}
+        iconPosition="icon-after">
+        Manual veryfication
       </Button>
     </div>
   </KycPanel>

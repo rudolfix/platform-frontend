@@ -1,4 +1,5 @@
 export const appRoutes = {
+  depositFunds: "/deposit-funds",
   wallet: "/wallet",
   manageWallet: "/manage-wallet",
   root: "/",
@@ -16,6 +17,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
+import { DepositFunds } from "./depositFunds/DepositFunds";
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
@@ -37,6 +39,7 @@ export const AppRouter: React.SFC = () => (
 
     <OnlyAuthorizedRoute path={appRoutes.wallet} component={Wallet} />
     <OnlyAuthorizedRoute path={appRoutes.manageWallet} component={ManageWallet} />
+    <OnlyAuthorizedRoute path={appRoutes.depositFunds} component={DepositFunds} />
     <OnlyAuthorizedRoute path={appRoutes.kyc} component={Kyc} />
     <OnlyAuthorizedRoute path={appRoutes.dashboard} component={Dashboard} exact />
     <OnlyAuthorizedRoute path={appRoutes.settings} component={Settings} exact />

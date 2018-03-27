@@ -18,6 +18,7 @@ import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
+import { Tabs } from "./shared/Tabs";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -256,6 +257,26 @@ export const Demo: React.SFC = () => (
 
     <Container>
       <ChartBars data={chartBarData} />
+    </Container>
+
+    <Container>
+      <Tabs
+        theme="t-dark"
+        tabs={[
+          { text: "tab 1", isSelected: false },
+          { text: "tab 2", isSelected: true },
+          { text: "tab 3", isSelected: false },
+        ]}
+      />
+      <Tabs
+        style={{ background: "black" }}
+        theme="t-light"
+        tabs={[
+          { text: "tab 1", isSelected: false },
+          { text: "tab 2", isSelected: true },
+          { text: "tab 3", isSelected: false },
+        ]}
+      />
     </Container>
   </div>
 );

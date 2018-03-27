@@ -3,11 +3,11 @@
 .investment-preview {
   background-color: $neu-white-two;
   display: flex;
+  flex-wrap: wrap;
   padding: px-to-rem(15px);
 
   &:global(.has-started) {
     :local(.background) {
-      // display: block;
       justify-content: flex-start;
       align-items: flex-start;
       flex-direction: row;
@@ -37,6 +37,7 @@
   .pre-funding-status {
     flex-basis: 20%;
     flex-shrink: 0;
+    flex-grow: 1;
     padding-right: px-to-rem(20px);
   }
 
@@ -47,6 +48,11 @@
   }
 
   .pre-funding-status {
+    @include media-breakpoint-down (md) {
+      flex-basis: 100%;
+      margin-top: px-to-rem(20px);
+    }
+
     .lead {
       display: block;
       color: $neu-black;
@@ -84,6 +90,11 @@
     display: flex;
     flex-direction: column;
     flex-grow: 2;
+
+    @include media-breakpoint-down (md) {
+      flex-basis: 100%;
+      margin-top: px-to-rem(20px);
+    }
 
     .terms {
       @include make-col(3, 7);
@@ -123,5 +134,9 @@
 
   > a {
     align-self: center;
+
+    @include media-breakpoint-down (md) {
+      margin-top: px-to-rem(15px);
+    }
   }
 }

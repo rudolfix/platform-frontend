@@ -7579,15 +7579,15 @@ tslint-eslint-rules@^4.1.1:
     tslib "^1.0.0"
     tsutils "^1.4.0"
 
-tslint-microsoft-contrib@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/tslint-microsoft-contrib/-/tslint-microsoft-contrib-5.0.1.tgz#328ee9c28d07cdf793293204c96e2ffab9221994"
+tslint-microsoft-contrib@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/tslint-microsoft-contrib/-/tslint-microsoft-contrib-5.0.3.tgz#6fc3e238179cd72045c2b422e4d655f4183a8d5c"
   dependencies:
-    tsutils "^1.4.0"
+    tsutils "^2.12.1"
 
-tslint-sonarts@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/tslint-sonarts/-/tslint-sonarts-1.4.0.tgz#90ae06c884b2ba92f81fd7bf76d8aae12313a5f1"
+tslint-sonarts@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/tslint-sonarts/-/tslint-sonarts-1.6.0.tgz#b21366029d83e2426d207174255bb2e09525e162"
   dependencies:
     immutable "^3.8.2"
 
@@ -7704,12 +7704,12 @@ typescript@2.8.0-rc:
   version "2.8.0-rc"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.0-rc.tgz#a0256b7d1d39fb7493ba0403f55e95d31e8bc374"
 
-typestrict@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/typestrict/-/typestrict-0.0.7.tgz#f359901c6c2e11ec0c1b472b5cb2ab5126de5289"
+typestrict@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/typestrict/-/typestrict-0.0.8.tgz#9607e58b3bb20a9ba0a2e149d3fca348c068bf99"
   dependencies:
-    tslint-microsoft-contrib "^5.0.1"
-    tslint-sonarts "^1.4.0"
+    tslint-microsoft-contrib "^5.0.3"
+    tslint-sonarts "^1.6.0"
 
 typical@^2.6.0, typical@^2.6.1:
   version "2.6.1"

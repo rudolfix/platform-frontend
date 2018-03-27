@@ -76,7 +76,7 @@
     "types-bn": "^0.0.1",
     "types-ethereumjs-util": "^0.0.5",
     "typescript": "2.8.0-rc",
-    "typestrict": "^0.0.7",
+    "typestrict": "^0.0.8",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "url-loader": "^0.6.2",
     "web3-typescript-typings": "^0.9.3",

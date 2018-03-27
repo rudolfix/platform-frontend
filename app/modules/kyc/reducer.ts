@@ -9,6 +9,7 @@ import {
   IKycLegalRepresentative,
   IKycRequestState,
 } from "../../lib/api/KycApi.interfaces";
+import { DeepReadonly } from "../../types";
 
 export interface IKycState {
   // individual
@@ -58,21 +59,24 @@ const kycInitialState: IKycState = {
   beneficialOwnerFileUploading: {},
 };
 
-function appendIfExists<T>(array: T[], item: T | undefined): T[] {
+function appendIfExists<T>(array: ReadonlyArray<T>, item: T | undefined): ReadonlyArray<T> {
   if (!array) array = [];
   if (item) return [...array, item];
   return array;
 }
 
-function updateArrayItem<T extends { id?: string }>(array: T[], id?: string, item?: T): T[] {
+export function updateArrayItem<T extends { id?: string }>(
+  array: ReadonlyArray<T>,
+  id?: string,
+  item?: T,
+): ReadonlyArray<T> {
   if (!id) return array; // no changes
   if (id && !item) return filter(array, item => item.id !== id); // delete item
   if (id && item) {
     const index = findIndex(array, item => item.id === id);
     if (index === -1) return [...array, item]; // append
-    array = [...[], ...array];
-    array[index] = item;
-    return array;
+
+    return [...array.slice(0, index), item, ...array.slice(index + 1)];
   }
   return array;
 }
@@ -81,7 +85,10 @@ function omitUndefined<T>(obj: T): { [P in keyof T]?: T[P] } {
   return omitBy(obj, isNil) as any;
 }
 
-export const kycReducer: AppReducer<IKycState> = (state = kycInitialState, action): IKycState => {
+export const kycReducer: AppReducer<IKycState> = (
+  state = kycInitialState,
+  action,
+): DeepReadonly<IKycState> => {
   switch (action.type) {
     // individual
     case "KYC_UPDATE_INDIVIDUAL_REQUEST_STATE":

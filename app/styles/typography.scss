@@ -11,13 +11,19 @@ body {
 @mixin headline-big {
   font-family: $headings-font-family;
   font-size: px-to-rem(34px);
-  letter-spacing: px-to-rem(-.05px);
+  letter-spacing: px-to-rem(-.5px);
 }
 
-@mixin headline {
+@mixin font-headline {
   font-family: $headings-font-family;
   font-size: px-to-rem(20px);
-  letter-spacing: px-to-rem(-.03px);
+  letter-spacing: px-to-rem(-.3px);
+}
+
+@mixin font-headline-small {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(18px);
+  letter-spacing: px-to-rem(-.3px);
 }
 
 @mixin font-button-default {
@@ -38,7 +44,7 @@ body {
   letter-spacing: px-to-rem(-.02px);
 }
 
-@mixin label {
+@mixin font-label {
   font-family: $headings-font-family;
   font-size: px-to-rem(12px);
   font-weight: $font-weight-bold;

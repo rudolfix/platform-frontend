@@ -1,4 +1,5 @@
 import { AppReducer } from "../../store";
+import { DeepReadonly } from "../../types";
 
 export interface ISignMessageModalState {
   isModalOpen: boolean;
@@ -14,7 +15,7 @@ const initialState: ISignMessageModalState = {
 export const accessWalletReducer: AppReducer<ISignMessageModalState> = (
   state = initialState,
   action,
-): ISignMessageModalState => {
+): DeepReadonly<ISignMessageModalState> => {
   switch (action.type) {
     case "SHOW_ACCESS_WALLET_MODAL":
       return {

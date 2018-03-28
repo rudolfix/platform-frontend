@@ -19,7 +19,7 @@ interface IStateProps {}
 
 interface IDispatchProps {
   onStartInstantId: () => void;
-  onContinue: () => void;
+  onManualVerification: () => void;
 }
 
 interface IProps {
@@ -51,7 +51,7 @@ export const KycPersonalInstantIdComponent: React.SFC<
     <div className="text-center">
       <Button
         layout="secondary"
-        onClick={props.onContinue}
+        onClick={props.onManualVerification}
         svgIcon={arrowRightIcon}
         iconPosition="icon-after"
       >
@@ -65,7 +65,7 @@ export const KycPersonalInstantId = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: dispatch => ({
       onStartInstantId: () => dispatch(actions.kyc.kycStartInstantId()),
-      onContinue: () => dispatch(actions.routing.goToKYCIndividualUpload()),
+      onManualVerification: () => dispatch(actions.routing.goToKYCIndividualUpload()),
     }),
   }),
 )(KycPersonalInstantIdComponent);

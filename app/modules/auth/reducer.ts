@@ -1,5 +1,6 @@
 import { IUser } from "../../lib/api/users/interfaces";
 import { AppReducer } from "../../store";
+import { DeepReadonly } from "../../types";
 
 export interface IAuthState {
   user?: IUser;
@@ -11,7 +12,7 @@ const authInitialState: IAuthState = {};
 export const authReducer: AppReducer<IAuthState> = (
   state = authInitialState,
   action,
-): IAuthState => {
+): DeepReadonly<IAuthState> => {
   switch (action.type) {
     case "AUTH_LOAD_USER":
       return {

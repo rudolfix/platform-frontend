@@ -1,6 +1,6 @@
-import { values } from "lodash";
 import { settingsActions } from "./settings/actions";
 
+import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
@@ -53,9 +53,5 @@ export const allActions = {
 /**
  * Build action union type
  */
-export const returnTypeOf = <RT extends {}>(_expression: (...params: any[]) => RT): RT => {
-  return ({} as any) as RT;
-};
-
-const actionList = values(allActions).map(returnTypeOf);
-export type TAction = typeof actionList[number];
+type TActionCreatorsUnionType = TDictionaryValues<typeof allActions>;
+export type TAction = ReturnType<TActionCreatorsUnionType>;

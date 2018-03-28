@@ -11,7 +11,7 @@ import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { TUploadListLayout } from "../shared/KycFileUploadList";
 
-import * as idImage from "../../../assets/img/ID_now.svg";
+import * as idImage from "../../../assets/img/id_now.svg";
 import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as linkOutIcon from "../../../assets/img/inline_icons/link_out_small.svg";
 

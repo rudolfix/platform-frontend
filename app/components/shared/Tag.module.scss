@@ -1,0 +1,46 @@
+@import "../../styles/neufund-theme";
+
+.tag {
+  @include font-default;
+
+  $color-tag-base: rgb(196, 213, 236);
+  $color-tag-bg: rgba($color-tag-base, .14);
+  $color-tag-bg-hover: rgba($color-tag-base, .36);
+
+  color: $neu-black;
+  background-color: $color-tag-bg;
+  border-radius: px-to-rem(3px);
+  font-weight: $font-weight-bold;
+  padding: px-to-rem(6px) px-to-rem(10px);
+
+  & + .tag {
+    margin-left: px-to-rem(10px);
+  }
+
+  &:hover {
+    background-color: $color-tag-bg-hover;
+  }
+
+  &:global(.ghost) {
+    border: 1px solid currentColor;
+    border-radius: 0;
+
+    &,
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  &:global(.small) {
+    padding-bottom: px-to-rem(2px);
+    padding-top: px-to-rem(2px);
+  }
+
+  &:global(.green) {
+    color: $neu-seaweed;
+  }
+}

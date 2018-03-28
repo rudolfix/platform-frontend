@@ -1,13 +1,5 @@
 @import "./variables";
 
-// sass-lint:disable no-vendor-prefixes
-// Enable font smoothing on mac
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: antialiased;
-}
-// sass-lint:enable no-vendor-prefixes
-
 @mixin headline-big {
   font-family: $headings-font-family;
   font-size: px-to-rem(34px);
@@ -17,7 +9,13 @@ body {
 @mixin headline {
   font-family: $headings-font-family;
   font-size: px-to-rem(20px);
-  letter-spacing: px-to-rem(-.03px);
+  letter-spacing: px-to-rem(-.3px);
+}
+
+@mixin headline-small {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(16px);
+  letter-spacing: px-to-rem(-.3px);
 }
 
 @mixin font-button-default {
@@ -38,7 +36,7 @@ body {
   letter-spacing: px-to-rem(-.02px);
 }
 
-@mixin label {
+@mixin font-label {
   font-family: $headings-font-family;
   font-size: px-to-rem(12px);
   font-weight: $font-weight-bold;

@@ -4,8 +4,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { MoneyTransfer } from "../shared/Money";
 import { ClaimedDividends } from "./claimed-dividends/ClaimedDividends";
 import { TransactionList, TransactionType } from "./transaction-list/TransactionList";
-import { WalletBalance, WalletBalanceTheme } from "./wallet-balance/WalletBalance";
-import * as styles from "./Wallet.module.scss";
+import { WalletBalance } from "./wallet-balance/WalletBalance";
 
 const timestamp = Date.now();
 const amount = "1234" + "0".repeat(18);
@@ -56,31 +55,34 @@ const chartDoughnutData = {
 
 export const Wallet = () => (
   <LayoutAuthorized>
-    <Row>
-      <Col className={styles.card} lg={6} xs={12}>
+    <Row className="row-gutter-top">
+      <Col lg={6} xs={12}>
         <WalletBalance
+          className="h-100"
           moneyValueOne={66482000000000000000000}
           moneyValueTwo={36490000000000000000000}
           headerText="Your wallet balance"
           totalEurValue={"1234567" + "0".repeat(18)}
-          theme={WalletBalanceTheme.light}
           chartData={chartDoughnutData}
         />
       </Col>
-      <Col className={styles.card} lg={6} xs={12}>
+
+      <Col lg={6} xs={12}>
         <WalletBalance
+          className="h-100"
           moneyValueOne={0}
           moneyValueTwo={0}
           headerText="ICBM Wallet"
           totalEurValue="0"
-          theme={WalletBalanceTheme.dark}
           chartData={chartDoughnutData}
         />
       </Col>
-      <Col className="row-gutter-top" xs={12}>
+
+      <Col xs={12}>
         <ClaimedDividends totalEurValue={"1234" + "0".repeat(18)} recentPayouts={transactions} />
       </Col>
-      <Col className="row-gutter-top" xs={12}>
+
+      <Col xs={12}>
         <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
       </Col>
     </Row>

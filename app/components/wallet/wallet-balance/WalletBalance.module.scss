@@ -1,17 +1,5 @@
 @import "../../../styles/neufund-theme";
 
-.wallet-balance {
-  &:global {
-    &.t-light {
-      background-color: $neu-white-two;
-    }
-
-    &.t-dark {
-      background-color: $neu-cloudy-blue;
-    }
-  }
-}
-
 .wallet-balance-wrapper {
   @include media-breakpoint-up (lg) {
     padding-bottom: px-to-rem(36px);

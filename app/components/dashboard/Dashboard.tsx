@@ -7,7 +7,7 @@ import { UserInfo } from "./UserInfo";
 
 export const Dashboard = () => (
   <LayoutAuthorized>
-    <Row>
+    <Row className="row-gutter-top">
       <Col lg={8} xs={12}>
         <MyPortfolio className="h-100" />
       </Col>

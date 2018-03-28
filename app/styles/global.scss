@@ -35,5 +35,7 @@ body,
 }
 
 .row-gutter-top {
-  margin-top: $grid-gutter-width;
+  & > div {
+    margin-top: $grid-gutter-width;
+  }
 }

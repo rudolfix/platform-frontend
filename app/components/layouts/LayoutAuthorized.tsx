@@ -17,7 +17,7 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
           <NotificationWidget />
         </Col>
       </Row>
-      <Row className="row-gutter-top">
+      <Row>
         <Col className={styles.content}>{children}</Col>
       </Row>
     </div>

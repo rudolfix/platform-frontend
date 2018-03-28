@@ -76,7 +76,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
     return (
       <LayoutAuthorized>
         <BreadCrumb
-          className="my-4"
+          className="mb-4"
           path={["Settings", "Security settings"]}
           view="Backup recovery phase"
         />

@@ -5,7 +5,7 @@ import { MoneyTransfer } from "../shared/Money";
 import { ClaimedDividends } from "./claimed-dividends/ClaimedDividends";
 import * as styles from "./ManageWallet.module.scss";
 import { TransactionList, TransactionType } from "./transaction-list/TransactionList";
-import { WalletBalance, WalletBalanceTheme } from "./wallet-balance/WalletBalance";
+import { WalletBalance } from "./wallet-balance/WalletBalance";
 
 const timestamp = Date.now();
 const amount = "1234" + "0".repeat(18);
@@ -56,7 +56,7 @@ const chartDoughnutData = {
 
 export const ManageWallet = () => (
   <LayoutAuthorized>
-    <Row>
+    <Row className="row-gutter-top">
       <Col className={styles.card} lg={6} xs={12}>
         <WalletBalance
           moneyValueOne={66482000000000000000000}
@@ -64,7 +64,6 @@ export const ManageWallet = () => (
           chartData={chartDoughnutData}
           headerText="Your wallet balance"
           totalEurValue={"1234567" + "0".repeat(18)}
-          theme={WalletBalanceTheme.light}
         />
       </Col>
       <Col className={styles.dividends} lg={6} xs={12}>

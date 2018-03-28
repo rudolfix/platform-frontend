@@ -23,6 +23,7 @@ import { PanelDark } from "../../shared/PanelDark";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import { CommonHtmlProps } from "../../../types";
 import * as styles from "./MyWalletWidget.module.scss";
 
 type StateProps = {
@@ -111,7 +112,11 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
   }
 };
 
-export const MyWalletWidgetComponent: React.SFC<StateProps> = props => {
+export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = ({
+  className,
+  style,
+  ...props
+}) => {
   return (
     <PanelDark
       headerText="My Wallet"
@@ -127,13 +132,15 @@ export const MyWalletWidgetComponent: React.SFC<StateProps> = props => {
           </Button>
         </Link>
       }
+      className={className}
+      style={style}
     >
       <MyWalletWidgetComponentBody {...props} />
     </PanelDark>
   );
 };
 
-export const MyWalletWidget = compose<React.SFC>(
+export const MyWalletWidget = compose<React.SFC<CommonHtmlProps>>(
   onEnterAction({ actionCreator: d => d(actions.wallet.startLoadingWalletData()) }),
   appConnect<StateProps>({
     stateToProps: s => {

@@ -4,7 +4,7 @@ import { combineReducers } from "redux";
 
 import { TAction } from "./modules/actions";
 import { appReducers } from "./modules/reducer";
-import { FunctionWithDeps } from "./types";
+import { DeepReadonly, FunctionWithDeps } from "./types";
 
 export interface IAppAction {
   type: string;
@@ -15,7 +15,10 @@ export type ActionPayload<T extends IAppAction> = T["payload"];
 
 export type AppDispatch = (a: AppActionTypes | FunctionWithDeps) => void;
 
-export type AppReducer<S> = (state: Readonly<S> | undefined, action: AppActionTypes) => S;
+export type AppReducer<S> = (
+  state: DeepReadonly<S> | undefined,
+  action: AppActionTypes,
+) => DeepReadonly<S>;
 
 type TRouterActions = LocationChangeAction;
 
@@ -29,15 +32,9 @@ const allReducers = {
 };
 
 // base on reducers we can infer type of app state
-// this is a little bit ugly workaround because of typeof not being flexible enough
-// related: https://github.com/Microsoft/TypeScript/issues/6606
-type Reduced<T> = { [P in keyof T]: AppReducer<T[P]> };
-function reducersToState<T>(o: Reduced<T>): T {
-  return o as any;
-}
-// tslint:disable-next-line
-const appStateInstance = (false ? undefined : reducersToState(appReducers))!;
-export type IAppState = typeof appStateInstance & {
+type TReducersMap<T> = { [P in keyof T]: AppReducer<T[P]> };
+type TReducersMapToReturnTypes<T> = T extends TReducersMap<infer U> ? U : never;
+export type IAppState = TReducersMapToReturnTypes<typeof appReducers> & {
   router: RouterState;
 };
 

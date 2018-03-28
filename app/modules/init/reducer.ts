@@ -1,4 +1,5 @@
 import { AppReducer } from "../../store";
+import { DeepReadonly } from "../../types";
 
 export interface IInitState {
   done: boolean;
@@ -14,7 +15,7 @@ export const initInitialState: IInitState = {
 export const initReducer: AppReducer<IInitState> = (
   state = initInitialState,
   action,
-): IInitState => {
+): DeepReadonly<IInitState> => {
   switch (action.type) {
     case "INIT_DONE":
       return {

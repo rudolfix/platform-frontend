@@ -1,4 +1,5 @@
 import { AppReducer } from "../../../store";
+import { DeepReadonly } from "../../../types";
 
 export const DEFAULT_DERIVATION_PATH_PREFIX = "44'/60'/0'/";
 export const DEFAULT_LEDGER_ACCOUNTS_PER_PAGE = 10;
@@ -36,7 +37,7 @@ export const ledgerWizardInitialState: ILedgerWizardState = {
 export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
   state = ledgerWizardInitialState,
   action,
-): ILedgerWizardState => {
+): DeepReadonly<ILedgerWizardState> => {
   switch (action.type) {
     case "LEDGER_CONNECTION_ESTABLISHED":
       return {

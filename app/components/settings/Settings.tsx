@@ -15,20 +15,21 @@ interface IProps {
 
 export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
   <LayoutAuthorized>
-    <Row>
+    <Row className="row-gutter-top">
       <Col lg={4} xs={12}>
         <VerifyEmailWidget />
       </Col>
+
       {isLightWallet && (
         <Col lg={4} xs={12}>
           <BackupSeedWidget />
         </Col>
       )}
+
       <Col lg={4} xs={12}>
         <KycStatusWidget />
       </Col>
-    </Row>
-    <Row>
+
       <Col lg={8} xs={12}>
         <ChangeEmail />
       </Col>

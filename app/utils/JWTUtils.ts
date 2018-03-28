@@ -1,7 +1,27 @@
+import * as Moment from "moment";
+
 interface IJwt {
+  exp: number;
   permissions?: {
     [name: string]: number;
   };
+}
+
+const MAX_EXPIRATION_DIFF_MINUTES = 10;
+
+/**
+ * Checks if JWT expiration date is further in past than MAX_EXPIRATION_DIFF_MINUTES minutes
+ */
+export function isJwtExpiringLateEnough(token: string): boolean {
+  try {
+    const parsedJwt = parseJwt(token);
+    const expirationDate = Moment.unix(parsedJwt.exp);
+    const expirationDiff = expirationDate.diff(Moment(), "minutes");
+
+    return expirationDiff >= MAX_EXPIRATION_DIFF_MINUTES;
+  } catch (e) {
+    throw new Error(`Cannot parse JWT token: ${token}`);
+  }
 }
 
 /**

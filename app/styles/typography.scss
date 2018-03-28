@@ -9,7 +9,13 @@
 @mixin headline {
   font-family: $headings-font-family;
   font-size: px-to-rem(20px);
-  letter-spacing: px-to-rem(-.03px);
+  letter-spacing: px-to-rem(-.3px);
+}
+
+@mixin headline-small {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(16px);
+  letter-spacing: px-to-rem(-.3px);
 }
 
 @mixin font-button-default {
@@ -30,7 +36,7 @@
   letter-spacing: px-to-rem(-.02px);
 }
 
-@mixin label {
+@mixin font-label {
   font-family: $headings-font-family;
   font-size: px-to-rem(12px);
   font-weight: $font-weight-bold;

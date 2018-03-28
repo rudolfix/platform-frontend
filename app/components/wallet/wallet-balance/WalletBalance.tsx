@@ -1,4 +1,6 @@
+import * as cn from "classnames";
 import * as React from "react";
+
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { CommonHtmlProps } from "../../../types";
@@ -9,11 +11,14 @@ import { IPanelDarkProps, PanelDark } from "../../shared/PanelDark";
 import { TotalEuro } from "../TotalEuro";
 import * as styles from "./WalletBalance.module.scss";
 
+export type TWalletBalance = "light" | "dark";
+
 interface IWalletBalance {
   totalEurValue: string;
   moneyValueOne: number;
   moneyValueTwo: number;
   chartData: any;
+  theme?: TWalletBalance;
 }
 
 export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonHtmlProps> = ({
@@ -24,9 +29,10 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
   totalEurValue,
   className,
   style,
+  theme = "light",
 }) => (
   <PanelDark
-    className={className}
+    className={cn(className, styles.walletBalance, `t-${theme}`)}
     style={style}
     headerText={headerText}
     rightComponent={<TotalEuro totalEurValue={totalEurValue} />}

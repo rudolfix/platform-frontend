@@ -75,6 +75,7 @@ export const Wallet = () => (
           headerText="ICBM Wallet"
           totalEurValue="0"
           chartData={chartDoughnutData}
+          theme="dark"
         />
       </Col>
 

@@ -23,4 +23,8 @@
       content: "-";
     }
   }
+
+  &:global(.t-green) {
+    color: $neu-seaweed;
+  }
 }

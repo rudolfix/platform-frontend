@@ -3,6 +3,7 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 
 import * as styles from "./Demo.module.scss";
 
+import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
@@ -18,7 +19,10 @@ import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
+import { PercentageIndicatorBar } from "./shared/PercentageIndicatorBar";
+import { SectionHeader } from "./shared/SectionHeader";
 import { Tabs } from "./shared/Tabs";
+import { Tag } from "./shared/Tag";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -223,6 +227,7 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
+
     <Container>
       <Row>
         <Col lg={6} xs={12}>
@@ -233,6 +238,7 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
+
     <Container>
       <Row>
         <Col lg={6} xs={12}>
@@ -243,10 +249,82 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
+
     <Container>
       <ChangeEmailComponent submitForm={() => {}} />
     </Container>
 
+    <Container>
+      <PercentageIndicatorBar percent={79} />
+    </Container>
+
+    <Container>
+      <Tag to="#0" text="tag" />
+      <Tag layout="ghost" to="#0" text="ghost tag" />
+      <Tag layout="ghost" size="small" to="#0" text="small ghost tag" />
+      <Tag color="green" layout="ghost" size="small" to="#0" text="Small green ghost tag" />
+    </Container>
+
+    <Container>
+      <SectionHeader>Section's Header</SectionHeader>
+    </Container>
+
+    <Container>
+      <InvestmentPreview
+        linkToDetails="#0"
+        moneyGoal={"400€"}
+        currentValuation={"4000€"}
+        tokenPrice={"2€"}
+        neuInvestorsNum={500}
+        startingOn="22.12.2019"
+        handleEmailSend={() => {}}
+        endInDays={25}
+        company={"Superawesome startup two"}
+        hasStarted={true}
+        detailsLink="#0"
+        preFoundingStatus={{
+          money: "€ 50M",
+          investorsNum: 5,
+          leadInvestors: ["abc", "zxc"],
+        }}
+        tags={[
+          {
+            text: "tag 1",
+            to: "#0",
+          },
+          {
+            text: "tag 2",
+          },
+        ]}
+      />
+      <InvestmentPreview
+        linkToDetails="#0"
+        moneyGoal={"400€"}
+        currentValuation={"4000€"}
+        tokenPrice={"2€"}
+        neuInvestorsNum={500}
+        startingOn="22.12.2019"
+        handleEmailSend={() => {}}
+        endInDays={25}
+        company={"Superawesome startup one"}
+        hasStarted={true}
+        detailsLink="#0"
+        preFoundingStatus={{
+          money: "€ 50M",
+          investorsNum: 5,
+          leadInvestors: ["abc", "zxc"],
+        }}
+        tags={[
+          {
+            text: "tag 1",
+            to: "#0",
+          },
+          {
+            text: "tag 2",
+          },
+        ]}
+      />
+    </Container>
     <Container>
       <ChartDoughnut data={chartDoughnutData} />
     </Container>

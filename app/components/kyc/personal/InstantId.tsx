@@ -40,15 +40,21 @@ export const KycPersonalInstantIdComponent: React.SFC<
   >
     <img className={styles.image} src={idImage} alt="id now" />
     <div className="mb-5 text-center">
-      <Button onClick={props.onStartInstantId} svgIcon={linkOutIcon} iconPosition="icon-after">Go to video verification</Button>
+      <Button onClick={props.onStartInstantId} svgIcon={linkOutIcon} iconPosition="icon-after">
+        Go to video verification
+      </Button>
     </div>
-    <p className="text-center">Optionally, fill out the form and upload your documents.<br/>This verfcation method will a take 24h processing time.</p>
+    <p className="text-center">
+      Optionally, fill out the form and upload your documents.<br />This verfcation method will a
+      take 24h processing time.
+    </p>
     <div className="text-center">
       <Button
         layout="secondary"
         onClick={props.onContinue}
         svgIcon={arrowRightIcon}
-        iconPosition="icon-after">
+        iconPosition="icon-after"
+      >
         Manual veryfication
       </Button>
     </div>

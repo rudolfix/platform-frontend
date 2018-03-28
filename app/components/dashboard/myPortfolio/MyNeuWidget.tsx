@@ -28,7 +28,12 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
         </Col>
         <Col md={12} className="text-right text-md-center" data-test-id="arrow-neu">
           <Link to="#">
-            <Button layout="secondary" iconPosition="icon-after" theme="t-white" svgIcon={arrowRight}>
+            <Button
+              layout="secondary"
+              iconPosition="icon-after"
+              theme="t-white"
+              svgIcon={arrowRight}
+            >
               About NEU
             </Button>
           </Link>

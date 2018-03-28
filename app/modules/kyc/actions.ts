@@ -51,6 +51,7 @@ export const kycActions = {
 
   kycSubmitIndividualRequest: () => createSimpleAction("KYC_SUBMIT_INDIVIDUAL_REQUEST"),
 
+  kycStartInstantId: () => createSimpleAction("KYC_START_INSTANT_ID"),
   /*
     Business...
    */

@@ -33,6 +33,8 @@ const statusTextMap: { [status: string]: string } = {
   Pending:
     "We are currently reviewing your Kyc request. You will receive and email once your request has been processed.",
   Draft: "Please submit your Kyc request now.",
+  Outsourced:
+    "Your instant identification is being processed. You will be notified by e-mail once this is completed.",
 };
 
 export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
@@ -62,7 +64,12 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
           <Col xs={12} className="d-flex justify-content-center">
             {props.requestStatus && props.requestStatus === "Draft" ? (
               <Link to="#">
-                <Button layout="icon-after" svgIcon={arrowRight} onClick={props.onStartKyc}>
+                <Button
+                  layout="secondary"
+                  iconPosition="icon-after"
+                  svgIcon={arrowRight}
+                  onClick={props.onStartKyc}
+                >
                   Verify KYC
                 </Button>
               </Link>

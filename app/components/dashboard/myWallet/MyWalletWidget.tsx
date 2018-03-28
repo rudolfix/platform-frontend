@@ -97,7 +97,8 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
           <Col className="d-block d-sm-none text-right col-auto">
             <Link to={appRoutes.manageWallet}>
               <Button
-                layout="icon-after"
+                layout="secondary"
+                iconPosition="icon-after"
                 theme="t-white"
                 svgIcon={arrowRight}
                 className={cn(styles.link, "pr-0")}
@@ -123,7 +124,8 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
       rightComponent={
         <Link to={appRoutes.manageWallet}>
           <Button
-            layout="icon-after"
+            layout="secondary"
+            iconPosition="icon-after"
             theme="t-white"
             svgIcon={arrowRight}
             className={cn(styles.link, "pr-0")}

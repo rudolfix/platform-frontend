@@ -19,6 +19,7 @@ import {
 const BASE_PATH = "/api/kyc/";
 const INDIVIDUAL_DATA_PATH = "/individual/data";
 const INDIVIDUAL_REQUEST_PATH = "/individual/request";
+const INSTANT_ID_REQUEST_PATH = "/individual/request/instant-id";
 const INDIVIDUAL_DOCUMENT_PATH = "/individual/document";
 
 const BUSINESS_REQUEST_PATH = "/business/request";
@@ -99,6 +100,14 @@ export class KycApi {
     return await this.httpClient.put<IKycRequestState>({
       baseUrl: BASE_PATH,
       url: INDIVIDUAL_REQUEST_PATH,
+      responseSchema: KycRequestStateSchema,
+    });
+  }
+
+  public async startInstantId(): Promise<IHttpResponse<IKycRequestState>> {
+    return await this.httpClient.put<IKycRequestState>({
+      baseUrl: BASE_PATH,
+      url: INSTANT_ID_REQUEST_PATH,
       responseSchema: KycRequestStateSchema,
     });
   }

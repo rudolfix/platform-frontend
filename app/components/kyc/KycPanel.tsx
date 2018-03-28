@@ -33,7 +33,12 @@ export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
       <div className={styles.content}>{children}</div>
       <footer className={styles.footer}>
         {hasBackButton && (
-          <Button layout="icon-before" svgIcon={arrowLeft} onClick={() => {}}>
+          <Button
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={arrowLeft}
+            onClick={() => {}}
+          >
             BACK
           </Button>
         )}

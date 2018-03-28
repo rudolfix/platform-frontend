@@ -56,7 +56,7 @@ const chartDoughnutData = {
 
 export const ManageWallet = () => (
   <LayoutAuthorized>
-    <Row>
+    <Row className="row-gutter-top">
       <Col className={styles.card} lg={6} xs={12}>
         <WalletBalance
           moneyValueOne={66482000000000000000000}

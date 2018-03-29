@@ -10,6 +10,12 @@ export const selectKycRequestStatuts = (state: IKycState): TRequestStatus | unde
   return undefined;
 };
 
+export const selectKycOutourcedURL = (state: IKycState): string => {
+  if (state.individualRequestState && state.individualRequestState.redirectUrl)
+    return state.individualRequestState.redirectUrl;
+  return "";
+};
+
 export const selectCombinedBeneficialOwnerOwnership = (state: IKycState): number => {
   if (state.beneficialOwners.length === 0) return 0;
   return state.beneficialOwners.reduce(

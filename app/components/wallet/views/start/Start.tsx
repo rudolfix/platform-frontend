@@ -6,8 +6,7 @@ import { appConnect } from "../../../../store";
 import { MoneyTransfer } from "../../../shared/Money";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
 import { TransactionList, TransactionType } from "../../transaction-list/TransactionList";
-import { WalletBalance, WalletBalanceTheme } from "../../wallet-balance/WalletBalance";
-import * as styles from "./Start.module.scss";
+import { WalletBalance } from "../../wallet-balance/WalletBalance";
 
 const timestamp = Date.now();
 const amount = "1234" + "0".repeat(18);
@@ -62,35 +61,39 @@ interface IProps {
 }
 
 const WalletStartComponent: React.SFC<IProps> = props => (
-  <Row>
-    <Col className={styles.card} lg={6} xs={12}>
+  <Row className="row-gutter-top">
+    <Col lg={6} xs={12}>
       <WalletBalance
+        className="h-100"
         moneyValueOne={66482000000000000000000}
         moneyValueTwo={36490000000000000000000}
         headerText="Your wallet balance"
         totalEurValue={"1234567" + "0".repeat(18)}
-        theme={WalletBalanceTheme.light}
         chartData={chartDoughnutData}
         depositEuroTokenFunds={props.goToDepositEuroToken}
         depositEthFunds={props.goToDepositEth}
       />
     </Col>
-    <Col className={styles.card} lg={6} xs={12}>
+
+    <Col lg={6} xs={12}>
       <WalletBalance
+        className="h-100"
         moneyValueOne={0}
         moneyValueTwo={0}
         headerText="ICBM Wallet"
         totalEurValue="0"
-        theme={WalletBalanceTheme.dark}
         chartData={chartDoughnutData}
+        theme="dark"
         depositEuroTokenFunds={props.goToDepositEuroToken}
         depositEthFunds={props.goToDepositEth}
       />
     </Col>
-    <Col className={styles.dividends} xs={12}>
+
+    <Col xs={12}>
       <ClaimedDividends totalEurValue={"1234" + "0".repeat(18)} recentPayouts={transactions} />
     </Col>
-    <Col className={styles.transactionList} xs={12}>
+
+    <Col xs={12}>
       <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
     </Col>
   </Row>

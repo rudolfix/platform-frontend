@@ -29,8 +29,8 @@ interface IProps {
 
 export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps> = props => (
   <KycPanel
-    steps={4}
-    currentStep={3}
+    steps={5}
+    currentStep={4}
     title={"Upload your ID"}
     description={
       "Please upload a colored copy of your passport or both sides of ID card for verification."

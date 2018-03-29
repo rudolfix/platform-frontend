@@ -19,6 +19,7 @@ export const routingActions = {
   //kyc routes
   goToKYCHome: () => createRoutingAction(kycRoutes.start),
   goToKYCIndividualStart: () => createRoutingAction(kycRoutes.individualStart),
+  goToKYCIndividualInstantId: () => createRoutingAction(kycRoutes.individualInstantId),
   goToKYCIndividualUpload: () => createRoutingAction(kycRoutes.individualUpload),
 
   goToKYCBusinessStart: () => createRoutingAction(kycRoutes.businessStart),

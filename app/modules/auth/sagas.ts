@@ -69,11 +69,17 @@ function* signInUser(): Iterator<any> {
   try {
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);
-    yield effects.spawn(loadUser);
-
-    yield effects.put(actions.routing.goToDashboard());
   } catch (e) {
     yield effects.put(actions.walletSelector.messageSigningError("Error while signing a message!"));
+  }
+
+  try {
+    yield neuCall(loadUser);
+    yield effects.put(actions.routing.goToDashboard());
+  } catch (e) {
+    yield effects.put(
+      actions.walletSelector.messageSigningError("Error while connecting with server!"),
+    );
   }
 }
 

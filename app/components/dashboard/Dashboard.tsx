@@ -10,12 +10,12 @@ import { UserInfo } from "./UserInfo";
 
 export const Dashboard = () => (
   <LayoutAuthorized>
-    <Row className="py-4">
+    <Row className="row-gutter-top">
       <Col lg={8} xs={12}>
-        <MyPortfolio />
+        <MyPortfolio className="h-100" />
       </Col>
       <Col>
-        <MyWalletWidget />
+        <MyWalletWidget className="h-100" />
       </Col>
     </Row>
     <SectionHeader>

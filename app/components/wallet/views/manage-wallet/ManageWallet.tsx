@@ -6,7 +6,7 @@ import { appConnect } from "../../../../store";
 import { MoneyTransfer } from "../../../shared/Money";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
 import { TransactionList, TransactionType } from "../../transaction-list/TransactionList";
-import { WalletBalance, WalletBalanceTheme } from "../../wallet-balance/WalletBalance";
+import { WalletBalance } from "../../wallet-balance/WalletBalance";
 import * as styles from "./ManageWallet.module.scss";
 
 const timestamp = Date.now();
@@ -70,7 +70,7 @@ const ManageWalletComponent: React.SFC<IProps> = props => (
         chartData={chartDoughnutData}
         headerText="Your wallet balance"
         totalEurValue={"1234567" + "0".repeat(18)}
-        theme={WalletBalanceTheme.light}
+        theme="light"
         depositEthFunds={props.goToDepositEth}
         depositEuroTokenFunds={props.goToDepositEuroToken}
       />

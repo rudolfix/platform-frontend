@@ -34,7 +34,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
           <Col xs={12} className="d-flex justify-content-center">
             <Link to="#">
-              <Button layout="icon-after" svgIcon={arrowRight}>
+              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
                 Resend Link
               </Button>
             </Link>
@@ -51,7 +51,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <Link to="#">
-              <Button layout="icon-after" svgIcon={arrowRight}>
+              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
                 Verify
               </Button>
             </Link>

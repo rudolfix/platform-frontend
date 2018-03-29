@@ -15,7 +15,6 @@ const DoneButton = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       onClick: () => dispatch(actions.routing.goToWallet()),
-      goToCompany: () => dispatch(actions.routing.goToKYCBusinessStart()),
     }),
   }),
 )(Button);

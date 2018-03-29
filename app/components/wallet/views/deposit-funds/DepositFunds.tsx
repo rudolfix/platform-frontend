@@ -1,12 +1,24 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+import { actions } from "../../../../modules/actions";
 import { BreadCrumb } from "../../../shared/BreadCrumb";
 import { Button } from "../../../shared/Buttons";
 import { PanelWhite } from "../../../shared/PanelWhite";
 import { Tabs } from "../../../shared/Tabs";
 import * as styles from "./DepositFunds.module.scss";
 
+import { compose } from "redux";
+import { appConnect } from "../../../../store";
 import { walletRoutes } from "../../routes";
+
+const DoneButton = compose<React.SFC>(
+  appConnect<IProps>({
+    dispatchToProps: dispatch => ({
+      onClick: () => dispatch(actions.routing.goToWallet()),
+      goToCompany: () => dispatch(actions.routing.goToKYCBusinessStart()),
+    }),
+  }),
+)(Button);
 
 interface IProps {
   path: string;
@@ -32,7 +44,7 @@ export const DepositFunds: React.SFC<IProps> = ({ children, path }) => {
                 ]}
               />
               {children}
-              <Button onClick={() => {}}>Done</Button>
+              <DoneButton>Done</DoneButton>
             </div>
           </PanelWhite>
         </Col>

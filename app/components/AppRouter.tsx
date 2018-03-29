@@ -1,5 +1,4 @@
 export const appRoutes = {
-  depositFunds: "/deposit-funds",
   wallet: "/wallet",
   root: "/",
   register: "/register",

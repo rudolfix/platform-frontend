@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { parentRoutePath, walletRoutes } from "./routes";
-
 import { DepositEth } from "./views/deposit-funds/DepositEth";
 import { DepositEuroToken } from "./views/deposit-funds/DepositEuroToken";
 import { ManageWallet } from "./views/manage-wallet/ManageWallet";
@@ -21,5 +20,7 @@ export const WalletRouter: React.SFC = () => (
       exact
     />
     <Route path={walletRoutes.eth} render={() => <DepositEth path={walletRoutes.eth} />} exact />
+
+    <Redirect to={parentRoutePath} />
   </Switch>
 );

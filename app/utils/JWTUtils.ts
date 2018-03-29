@@ -1,13 +1,13 @@
 import * as Moment from "moment";
 
+import { MAX_EXPIRATION_DIFF_MINUTES } from "../config/constants";
+
 interface IJwt {
   exp: number;
   permissions?: {
     [name: string]: number;
   };
 }
-
-const MAX_EXPIRATION_DIFF_MINUTES = 10;
 
 /**
  * Checks if JWT expiration date is further in past than MAX_EXPIRATION_DIFF_MINUTES minutes

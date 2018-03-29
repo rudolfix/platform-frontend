@@ -46,3 +46,12 @@ class Component extends React.Component<IProps, IState> {
 
 * use `appConnect<IStateProps, IDispatchProps, IOwnProps>`
 * use separate interfaces for props from state, dispatch, own
+
+## Redux Sagas
+
+* generators in Typescript are not typesafe - everytime you `yield` something you get any as a
+  return type so you need to manually provide types
+* prefer extracting logic to async functions which can be properly typed
+* use `neuCall` to access global dependency object as first argument
+* avoid defining manual watchers with while loops. Use `neuTakeEvery` instead
+* if you don't need dependency injection stick with standard effects like `call` and `takeEvery`

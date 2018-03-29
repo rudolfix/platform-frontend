@@ -1,11 +1,13 @@
+import * as cn from "classnames";
 import * as React from "react";
+import { NavLink } from "react-router-dom";
 import * as styles from "./Tabs.module.scss";
 
-type TTheme = "t-dark" | "t-light";
+type TTheme = "dark" | "light";
 
 interface ITab {
+  path: string;
   text: string;
-  isSelected: boolean;
   handleClick?: () => void;
 }
 
@@ -17,19 +19,17 @@ interface IProps {
 }
 
 export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) => (
-  <div className={`${styles.tabs} ${className}`} {...props}>
-    {tabs.map(({ text, isSelected, handleClick }) => (
-      <div
-        key={text}
-        className={`${styles.tab} ${theme} ${isSelected ? "is-selected" : ""}`}
-        onClick={handleClick}
-      >
-        {text}
-      </div>
+  <div className={cn(styles.tabs, className)} {...props}>
+    {tabs.map(({ path, text, handleClick }) => (
+      <NavLink to={path} className={cn(styles.tab, theme)}>
+        <div key={text} onClick={handleClick}>
+          {text}
+        </div>
+      </NavLink>
     ))}
   </div>
 );
 
 Tabs.defaultProps = {
-  theme: "t-dark",
+  theme: "dark",
 };

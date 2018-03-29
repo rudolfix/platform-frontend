@@ -14,12 +14,8 @@ export const WalletRouter: React.SFC = () => (
     <Route path={walletRoutes.manageWallet} component={ManageWallet} exact />
 
     {/* Deposit Funds */}
-    <Route
-      path={walletRoutes.euroToken}
-      render={() => <DepositEuroToken path={walletRoutes.euroToken} />}
-      exact
-    />
-    <Route path={walletRoutes.eth} render={() => <DepositEth path={walletRoutes.eth} />} exact />
+    <Route path={walletRoutes.euroToken} component={DepositEuroToken} exact />
+    <Route path={walletRoutes.eth} component={DepositEth} exact />
 
     <Redirect to={parentRoutePath} />
   </Switch>

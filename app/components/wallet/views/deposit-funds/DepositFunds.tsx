@@ -23,7 +23,7 @@ interface IProps {
   path: string;
 }
 
-export const DepositFunds: React.SFC<IProps> = ({ children, path }) => {
+export const DepositFunds: React.SFC<IProps> = ({ children }) => {
   return (
     <>
       <Row>
@@ -38,8 +38,14 @@ export const DepositFunds: React.SFC<IProps> = ({ children, path }) => {
               <Tabs
                 className="mb-5"
                 tabs={[
-                  { text: "deposit neur", isSelected: path === walletRoutes.euroToken },
-                  { text: "deposit eth", isSelected: path === walletRoutes.eth },
+                  {
+                    text: "deposit neur",
+                    path: walletRoutes.euroToken,
+                  },
+                  {
+                    text: "deposit eth",
+                    path: walletRoutes.eth,
+                  },
                 ]}
               />
               {children}

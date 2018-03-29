@@ -9,9 +9,9 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { appRoutes } from "../AppRouter";
 import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
+import { Tabs } from "../shared/Tabs";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
-import { WalletSelectorNavigation } from "./WalletSelectorNavigation";
 
 interface IStateProps {
   isMessageSigning: boolean;
@@ -34,8 +34,14 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({
         <WalletMessageSigner rootPath={rootPath} />
       ) : (
         <>
-          <Row>
-            <WalletSelectorNavigation rootPath={rootPath} />
+          <Row className="justify-content-center mb-4 mt-4">
+            <Tabs
+              tabs={[
+                { path: `${rootPath}/light`, text: "use Neufund wallet" },
+                { path: `${rootPath}/browser`, text: "use existing wallet" },
+                { path: `${rootPath}/ledger`, text: "use nano ledger" },
+              ]}
+            />
           </Row>
           <Row>
             <Col>

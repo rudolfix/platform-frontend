@@ -339,20 +339,20 @@ export const Demo: React.SFC = () => (
 
     <Container>
       <Tabs
-        theme="t-dark"
+        theme="dark"
         tabs={[
-          { text: "tab 1", isSelected: false },
-          { text: "tab 2", isSelected: true },
-          { text: "tab 3", isSelected: false },
+          { text: "tab 1", path: "/demo" },
+          { text: "tab 2", path: "" },
+          { text: "tab 3", path: "" },
         ]}
       />
       <Tabs
         style={{ background: "black" }}
-        theme="t-light"
+        theme="light"
         tabs={[
-          { text: "tab 1", isSelected: false },
-          { text: "tab 2", isSelected: true },
-          { text: "tab 3", isSelected: false },
+          { text: "tab 1", path: "" },
+          { text: "tab 2", path: "" },
+          { text: "tab 3", path: "" },
         ]}
       />
     </Container>

@@ -1,10 +1,13 @@
 @import "../../styles/neufund-theme";
 
 .neufund-kpi-widget {
+  @include media-breakpoint-up (lg) {
+    padding-right: px-to-rem(30px);
+    padding-left: px-to-rem(8px);
+  }
+
   padding-bottom: px-to-rem(25px);
-  padding-right: px-to-rem(30px);
   padding-top: px-to-rem(16px);
-  padding-left: px-to-rem(8px);
 }
 
 .header {
@@ -13,6 +16,10 @@
   text-transform: uppercase;
   font-weight: $font-weight-bold;
   margin-bottom: px-to-rem(16px);
+
+  img {
+    margin-right: px-to-rem(10px);
+  }
 }
 
 .date {
@@ -37,10 +44,13 @@
 }
 
 .list {
-  border-right: 1px solid $neu-pale-grey;
+  @include media-breakpoint-up (lg) {
+    border-right: 1px solid $neu-pale-grey;
+    padding-right: px-to-rem(28px);
+  }
+
   font-weight: $font-weight-bold;
   padding-top: px-to-rem(34px);
-  padding-right: px-to-rem(28px);
   height: 100%;
 
   .list-element {
@@ -58,6 +68,15 @@
       flex-basis: 50%;
     }
   }
+}
+
+.bar-wrapper,
+.pie-wrapper {
+  @include media-breakpoint-up (lg) {
+    padding-top: 0;
+  }
+
+  padding-top: px-to-rem(34px);
 }
 
 .pie-wrapper {

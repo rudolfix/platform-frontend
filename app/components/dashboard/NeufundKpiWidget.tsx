@@ -1,37 +1,47 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
-import { ChartBars } from "../shared/charts/ChartBars";
-import { ChartPie } from "../shared/charts/ChartPie";
-import { Money } from "../shared/Money";
+import { ChartBars, IChartBarsData } from "../shared/charts/ChartBars";
+import { ChartPie, IChartPieData } from "../shared/charts/ChartPie";
+import { Money, TCurrency } from "../shared/Money";
 import { PanelWhite } from "../shared/PanelWhite";
 import * as styles from "./NeufundKpiWidget.module.scss";
 
-const chartPieData = {
-  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
-  datasets: [
-    {
-      data: [100, 50, 20, 40, 50, 12],
-      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
-    },
-  ],
-};
+import * as logo from "../../assets/img/logo_small_black.svg";
 
-const chartBarData = {
-  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
-  datasets: [
-    {
-      data: [100, 50, 20, 40, 50, 12],
-      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
-    },
-  ],
-};
+interface IProps {
+  date: string;
+  tokenHolders: number;
+  investorsNum: number;
+  etosNum: number;
+  vcAccessible: string;
+  currency: TCurrency;
+  totalCapitalDeployed: string;
+  platformPortfolioValue: string;
+  chartPieData: IChartPieData;
+  chartBarData: IChartBarsData;
+  totalProceeds: string;
+  totalProceedsToken: string; 
+}
 
-export const NeufundKpiWidget = () => {
+export const NeufundKpiWidget: React.SFC<IProps> = ({
+  date,
+  tokenHolders,
+  investorsNum,
+  etosNum,
+  currency,
+  totalCapitalDeployed,
+  platformPortfolioValue,
+  chartBarData,
+  chartPieData,
+  vcAccessible,
+  totalProceeds,
+  totalProceedsToken
+}) => {
   return (
     <PanelWhite className={styles.neufundKpiWidget}>
       <div>
         <h3 className={styles.header}>
-          Neufund kpi <time className={styles.date}>13. Feb 2018</time>
+          <img src={logo} alt="neufund logo" /> Neufund kpi <time className={styles.date}>{ date }</time>
         </h3>
       </div>
       <Row>
@@ -42,34 +52,34 @@ export const NeufundKpiWidget = () => {
                 Total Proceeds<br />distributed to<br />NEU holders
               </div>
               <div className={styles.value}>
-                <Money value={"2" + "0".repeat(26)} currency="eur" theme="t-green" />
-                <Money value={"2" + "0".repeat(20)} currency="eth" />
+                <Money value={totalProceeds} currency={currency} theme="t-green" />
+                <Money value={totalProceedsToken} currency="eth" />
               </div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>NEU Tokenholders</div>
-              <div className={styles.value}>57</div>
+              <div className={styles.value}>{ tokenHolders }</div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>
                 Professional<br />Investors
               </div>
-              <div className={styles.value}>6</div>
+              <div className={styles.value}>{ investorsNum }</div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>VC Accessible</div>
               <div className={styles.value}>
-                <Money value={"2" + "0".repeat(20)} currency="eur" />
+                <Money value={vcAccessible} currency={ currency } />
               </div>
             </div>
             <div className={styles.listElement}>
-              <div className={styles.label}>NUMBER OF ETOs</div>
-              <div className={styles.value} />
+              <div className={styles.label}>Number of ETOs</div>
+              <div className={styles.value}>{ etosNum }</div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>total capital deployed</div>
               <div className={styles.value}>
-                <Money value={"2" + "0".repeat(20)} currency="eur" />
+                <Money value={totalCapitalDeployed} currency="eur" />
               </div>
             </div>
           </div>
@@ -83,7 +93,7 @@ export const NeufundKpiWidget = () => {
             <h4 className={styles.label}>NEU - Platform Portfolio Value</h4>
             <h5 className={styles.totalMoney}>
               <span className={styles.totalLabel}>Total</span>
-              <Money value={"2" + "0".repeat(26)} currency="eur" theme="t-green" />
+              <Money value={platformPortfolioValue} currency={currency} theme="t-green" />
             </h5>
             <ChartBars data={chartBarData} />
           </div>

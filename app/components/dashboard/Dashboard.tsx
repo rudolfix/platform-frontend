@@ -9,6 +9,26 @@ import { MyWalletWidget } from "./myWallet/MyWalletWidget";
 import { NeufundKpiWidget } from "./NeufundKpiWidget";
 import { UserInfo } from "./UserInfo";
 
+const chartPieData = {
+  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
+  datasets: [
+    {
+      data: [100, 50, 20, 40, 50, 12],
+      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
+    },
+  ],
+};
+
+const chartBarData = {
+  labels: ["Lorem", "Ipsum", "Dit", "Sit", "Amet", "Blah"],
+  datasets: [
+    {
+      data: [100, 50, 20, 40, 50, 12],
+      backgroundColor: ["#394651", "#c4c5c6", "#616611", "#9fa914", "#d5e20f", "#0b0e11"],
+    },
+  ],
+};
+
 export const Dashboard = () => (
   <LayoutAuthorized>
     <Row className="row-gutter-top">
@@ -19,9 +39,22 @@ export const Dashboard = () => (
         <MyWalletWidget className="h-100" />
       </Col>
     </Row>
-    <Row>
+    <Row className="mt-4 mb-4">
       <Col lg={8} xs={12}>
-        <NeufundKpiWidget />
+        <NeufundKpiWidget
+          date="12 Sep. 2018"
+          tokenHolders={12}
+          investorsNum={5}
+          etosNum={20}
+          currency="eur"
+          totalCapitalDeployed={"5" + "0".repeat(26)}
+          platformPortfolioValue={"2" + "0".repeat(22)}
+          chartBarData={chartBarData}
+          chartPieData={chartPieData}
+          vcAccessible={"2" + "0".repeat(26)}
+          totalProceeds={"2" + "0".repeat(24)}
+          totalProceedsToken={"2" + "0".repeat(20)}
+        />
       </Col>
     </Row>
     <SectionHeader>

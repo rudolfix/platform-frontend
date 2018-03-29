@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { parentRoutePath, walletRoutes } from "./routes";
 
 import { DepositEth } from "./views/deposit-funds/DepositEth";

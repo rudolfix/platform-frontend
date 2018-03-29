@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
+import { actions } from "../../../../modules/actions";
+import { appConnect } from "../../../../store";
 import { MoneyTransfer } from "../../../shared/Money";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
 import { TransactionList, TransactionType } from "../../transaction-list/TransactionList";
 import { WalletBalance, WalletBalanceTheme } from "../../wallet-balance/WalletBalance";
 import * as styles from "./Start.module.scss";
-import { appConnect } from "../../../../store";
-import { actions } from "../../../../modules/actions";
 
 const timestamp = Date.now();
 const amount = "1234" + "0".repeat(18);

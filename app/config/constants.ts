@@ -11,7 +11,6 @@ export const MONEY_DECIMALS = 18;
 export const SUBMIT_KYC_PERMISSION = "submit-kyc";
 export const CHANGE_EMAIL_PERMISSION = "change-email";
 
-
 /**
  *  Constants for JWT tokens
  */

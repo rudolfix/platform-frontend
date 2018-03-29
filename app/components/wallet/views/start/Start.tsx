@@ -56,48 +56,45 @@ const chartDoughnutData = {
   ],
 };
 
-
 interface IProps {
   goToDepositEuroToken: () => void;
   goToDepositEth: () => void;
 }
 
-
 const WalletStartComponent: React.SFC<IProps> = props => (
   <Row>
-      <Col className={styles.card} lg={6} xs={12}>
-        <WalletBalance
-          moneyValueOne={66482000000000000000000}
-          moneyValueTwo={36490000000000000000000}
-          headerText="Your wallet balance"
-          totalEurValue={"1234567" + "0".repeat(18)}
-          theme={WalletBalanceTheme.light}
-          chartData={chartDoughnutData}
-          depositEuroTokenFunds={props.goToDepositEuroToken}
-          depositEthFunds={props.goToDepositEth}
-        />
-      </Col>
-      <Col className={styles.card} lg={6} xs={12}>
-        <WalletBalance
-          moneyValueOne={0}
-          moneyValueTwo={0}
-          headerText="ICBM Wallet"
-          totalEurValue="0"
-          theme={WalletBalanceTheme.dark}
-          chartData={chartDoughnutData}
-          depositEuroTokenFunds={props.goToDepositEuroToken}
-          depositEthFunds={props.goToDepositEth}
-        />
-      </Col>
-      <Col className={styles.dividends} xs={12}>
-        <ClaimedDividends totalEurValue={"1234" + "0".repeat(18)} recentPayouts={transactions} />
-      </Col>
-      <Col className={styles.transactionList} xs={12}>
-        <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
-      </Col>
-    </Row>
-)
-
+    <Col className={styles.card} lg={6} xs={12}>
+      <WalletBalance
+        moneyValueOne={66482000000000000000000}
+        moneyValueTwo={36490000000000000000000}
+        headerText="Your wallet balance"
+        totalEurValue={"1234567" + "0".repeat(18)}
+        theme={WalletBalanceTheme.light}
+        chartData={chartDoughnutData}
+        depositEuroTokenFunds={props.goToDepositEuroToken}
+        depositEthFunds={props.goToDepositEth}
+      />
+    </Col>
+    <Col className={styles.card} lg={6} xs={12}>
+      <WalletBalance
+        moneyValueOne={0}
+        moneyValueTwo={0}
+        headerText="ICBM Wallet"
+        totalEurValue="0"
+        theme={WalletBalanceTheme.dark}
+        chartData={chartDoughnutData}
+        depositEuroTokenFunds={props.goToDepositEuroToken}
+        depositEthFunds={props.goToDepositEth}
+      />
+    </Col>
+    <Col className={styles.dividends} xs={12}>
+      <ClaimedDividends totalEurValue={"1234" + "0".repeat(18)} recentPayouts={transactions} />
+    </Col>
+    <Col className={styles.transactionList} xs={12}>
+      <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
+    </Col>
+  </Row>
+);
 
 export const WalletStart = compose<React.SFC>(
   appConnect<IProps>({

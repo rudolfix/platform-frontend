@@ -7,15 +7,19 @@ import { DepositEuroToken } from "./views/deposit-funds/DepositEuroToken";
 import { ManageWallet } from "./views/manage-wallet/ManageWallet";
 import { WalletStart } from "./views/start/Start";
 
-export const WalletRouter: React.SFC = props => (
+export const WalletRouter: React.SFC = () => (
   <Switch>
-    <Route path={ parentRoutePath } component={WalletStart} exact />
+    <Route path={parentRoutePath} component={WalletStart} exact />
 
     {/* Manage Wallet */}
     <Route path={walletRoutes.manageWallet} component={ManageWallet} exact />
 
     {/* Deposit Funds */}
-    <Route path={walletRoutes.euroToken} render={props => <DepositEuroToken path={walletRoutes.euroToken} />} exact />
-    <Route path={walletRoutes.eth} render={props => <DepositEth path={walletRoutes.eth} />} exact />
+    <Route
+      path={walletRoutes.euroToken}
+      render={() => <DepositEuroToken path={walletRoutes.euroToken} />}
+      exact
+    />
+    <Route path={walletRoutes.eth} render={() => <DepositEth path={walletRoutes.eth} />} exact />
   </Switch>
 );

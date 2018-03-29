@@ -1,15 +1,14 @@
-import * as React from 'react';
-import * as styles from './DepositEuroToken.module.scss';
-import { DepositFunds } from './DepositFunds';
+import * as React from "react";
+import * as styles from "./DepositEuroToken.module.scss";
+import { DepositFunds } from "./DepositFunds";
 
 import * as icon from "../../../../assets/img/nEUR_icon.svg";
-import { appConnect } from '../../../../store';
 
 interface IProps {
   path: string;
 }
 
-export const DepositEuroToken: React.SFC<IProps> = ({path}) => {
+export const DepositEuroToken: React.SFC<IProps> = ({ path }) => {
   return (
     <DepositFunds path={path}>
       <div className={styles.methodEuroToken}>
@@ -39,5 +38,5 @@ export const DepositEuroToken: React.SFC<IProps> = ({path}) => {
         </div>
       </div>
     </DepositFunds>
-  )
-}
+  );
+};

@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { Money } from '../../../shared/Money';
-import * as styles from './DepositEth.module.scss';
-import { DepositFunds } from './DepositFunds';
+import * as React from "react";
+import { Money } from "../../../shared/Money";
+import * as styles from "./DepositEth.module.scss";
+import { DepositFunds } from "./DepositFunds";
 
 import * as icon from "../../../../assets/img/eth_icon.svg";
 
@@ -9,7 +9,7 @@ interface IProps {
   path: string;
 }
 
-export const DepositEth: React.SFC<IProps> = ({path}) => {
+export const DepositEth: React.SFC<IProps> = ({ path }) => {
   return (
     <DepositFunds path={path}>
       <div className={styles.methodEth}>
@@ -35,5 +35,5 @@ export const DepositEth: React.SFC<IProps> = ({path}) => {
         </div>
       </div>
     </DepositFunds>
-  )
-}
+  );
+};

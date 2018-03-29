@@ -22,7 +22,8 @@ export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) =>
       <div
         key={text}
         className={`${styles.tab} ${theme} ${isSelected ? "is-selected" : ""}`}
-        onClick={handleClick}>
+        onClick={handleClick}
+      >
         {text}
       </div>
     ))}

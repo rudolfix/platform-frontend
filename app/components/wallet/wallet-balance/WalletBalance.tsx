@@ -19,6 +19,8 @@ interface IWalletBalance {
   moneyValueOne: number;
   moneyValueTwo: number;
   chartData: any;
+  depositEuroTokenFunds: () => void;
+  depositEthFunds: () => void;
 }
 
 export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance> = ({
@@ -28,6 +30,8 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance> = ({
   headerText,
   totalEurValue,
   theme,
+  depositEuroTokenFunds,
+  depositEthFunds,
 }) => (
   <div className={`${styles.walletBalance} ${theme}`}>
     <PanelDark headerText={headerText} rightComponent={<TotalEuro totalEurValue={totalEurValue} />}>
@@ -48,7 +52,9 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance> = ({
             />
             <div className={styles.buttonsWrapper}>
               <Button layout="secondary">Withdraw funds ></Button>
-              <Button layout="secondary">Deposit funds ></Button>
+              <Button layout="secondary" onClick={depositEuroTokenFunds}>
+                Deposit funds >
+              </Button>
             </div>
           </div>
           <div className={styles.moneySuiteWrapper}>
@@ -63,7 +69,9 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance> = ({
             />
             <div className={styles.buttonsWrapper}>
               <Button layout="secondary">Withdraw funds ></Button>
-              <Button layout="secondary">Deposit funds ></Button>
+              <Button layout="secondary" onClick={depositEthFunds}>
+                Deposit funds >
+              </Button>
             </div>
           </div>
         </div>

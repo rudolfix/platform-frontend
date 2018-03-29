@@ -6,16 +6,13 @@ import { PanelWhite } from "../../../shared/PanelWhite";
 import { Tabs } from "../../../shared/Tabs";
 import * as styles from "./DepositFunds.module.scss";
 
-import { actions } from "../../../../modules/actions";
 import { walletRoutes } from "../../routes";
-
 
 interface IProps {
   path: string;
 }
 
-
-export const DepositFunds: React.SFC<IProps> = ({children, path}) => {
+export const DepositFunds: React.SFC<IProps> = ({ children, path }) => {
   return (
     <>
       <Row>
@@ -31,11 +28,11 @@ export const DepositFunds: React.SFC<IProps> = ({children, path}) => {
                 className="mb-5"
                 tabs={[
                   { text: "deposit neur", isSelected: path === walletRoutes.euroToken },
-                  { text: "deposit eth", isSelected: path === walletRoutes.eth }
+                  { text: "deposit eth", isSelected: path === walletRoutes.eth },
                 ]}
               />
               {children}
-              <Button onClick={()=>{}}>Done</Button>
+              <Button onClick={() => {}}>Done</Button>
             </div>
           </PanelWhite>
         </Col>

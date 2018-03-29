@@ -3,7 +3,6 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { LayoutAuthorized } from "../../../layouts/LayoutAuthorized";
 import { MoneyTransfer } from "../../../shared/Money";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
 import { TransactionList, TransactionType } from "../../transaction-list/TransactionList";
@@ -84,7 +83,6 @@ const ManageWalletComponent: React.SFC<IProps> = props => (
     </Col>
   </Row>
 );
-
 
 export const ManageWallet = compose<React.SFC>(
   appConnect<IProps>({

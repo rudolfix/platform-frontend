@@ -11,6 +11,8 @@ export enum MoneyTransfer {
   out = "outcome",
 }
 
+type TTheme = "t-green";
+
 interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currency: TCurrency;
   value: string;
@@ -19,6 +21,7 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currencyClassName?: string;
   currencyStyle?: React.CSSProperties;
   transfer?: MoneyTransfer;
+  theme?: TTheme;
 }
 
 type IProps = IOwnProps;
@@ -57,6 +60,7 @@ export const Money: React.SFC<IProps> = ({
   doNotSeparateThousands,
   transfer,
   noCurrencySymbol,
+  theme,
   ...props
 }) => {
   const decimalPlaces = selectDecimalPlaces(currency);
@@ -67,7 +71,7 @@ export const Money: React.SFC<IProps> = ({
     : formatThousands(formatMoney(value, MONEY_DECIMALS, decimalPlaces));
 
   return (
-    <span {...props} className={cn(styles.money, transfer, props.className)}>
+    <span {...props} className={cn(styles.money, transfer, props.className, theme)}>
       {formattedMoney}{" "}
       <span className={cn(currencyClassName)} style={currencyStyle}>
         {noCurrencySymbol ? "" : currencySymbol}

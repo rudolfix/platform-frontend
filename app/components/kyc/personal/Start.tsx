@@ -106,7 +106,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
 
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
-    <KycPanel steps={4} currentStep={2} title={"Personal Details"} hasBackButton={true}>
+    <KycPanel steps={5} currentStep={2} title={"Personal Details"} hasBackButton={true}>
       <KYCEnhancedForm {...props} />
     </KycPanel>
   );

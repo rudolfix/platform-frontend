@@ -89,7 +89,12 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
       {!isModal && (
         <Row>
           <Col>
-            <Button layout="icon-before" svgIcon={arrowLeft} onClick={onBack}>
+            <Button
+              layout="secondary"
+              iconPosition="icon-before"
+              svgIcon={arrowLeft}
+              onClick={onBack}
+            >
               Back
             </Button>
           </Col>

@@ -6,9 +6,11 @@ import * as styles from "./Buttons.module.scss";
 
 import * as closeIcon from "../../assets/img/inline_icons/close.svg";
 
-type TButtonLayout = "primary" | "secondary" | "icon-before" | "icon-after";
+type TButtonLayout = "primary" | "secondary";
 
 type TButtonTheme = "t-dark" | "t-white";
+
+type TIconPosition = "icon-before" | "icon-after";
 
 interface IButtonProps {
   layout?: TButtonLayout;
@@ -18,6 +20,7 @@ interface IButtonProps {
   svgIcon?: string;
   type?: string;
   className?: string;
+  iconPosition?: TIconPosition;
 }
 
 export const Button: React.SFC<IButtonProps> = ({
@@ -27,20 +30,20 @@ export const Button: React.SFC<IButtonProps> = ({
   disabled,
   svgIcon,
   className,
+  iconPosition,
   ...props
 }) => {
-  const iconLayout = layout === "icon-before" || layout === "icon-after" ? "secondary" : "";
   return (
     <button
-      className={cn("button", layout, iconLayout, theme)}
+      className={cn("button", layout, iconPosition, theme)}
       disabled={disabled}
       tabIndex={0}
       {...props}
     >
       <div className={cn(styles.content, className)} tabIndex={-1}>
-        {layout === "icon-before" && <InlineIcon svgIcon={svgIcon || ""} />}
+        {iconPosition === "icon-before" && <InlineIcon svgIcon={svgIcon || ""} />}
         {children}
-        {layout === "icon-after" && <InlineIcon svgIcon={svgIcon || ""} />}
+        {iconPosition === "icon-after" && <InlineIcon svgIcon={svgIcon || ""} />}
       </div>
     </button>
   );
@@ -53,11 +56,11 @@ Button.defaultProps = {
 };
 
 interface IButtonClose {
-  handleClick?: () => void;
+  onClick?: () => void;
 }
 
-export const ButtonClose: React.SFC<IButtonClose> = ({ ...props }) => (
-  <div className={styles.buttonClose} onClick={props.handleClick}>
+export const ButtonClose: React.SFC<IButtonClose> = ({ onClick, ...props }) => (
+  <div className={styles.buttonClose} onClick={onClick}>
     <InlineIcon {...props} svgIcon={closeIcon} />
   </div>
 );

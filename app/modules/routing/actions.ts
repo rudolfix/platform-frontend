@@ -33,6 +33,9 @@ export const routingActions = {
   // registration
   goToRegister: () => createRoutingAction(appRoutes.register),
 
+  // login
+  goToLogin: () => createRoutingAction(appRoutes.login),
+
   // Successful password recovery
   goToSuccessfulRecovery: () => createRoutingAction(recoverRoutes.success),
 

@@ -77,6 +77,13 @@
   }
 
   padding-top: px-to-rem(34px);
+  display: flex;
+  flex-direction: column;
+
+  :global(.button) {
+    display: inline-flex;
+    margin-left: auto;
+  }
 }
 
 .pie-wrapper {

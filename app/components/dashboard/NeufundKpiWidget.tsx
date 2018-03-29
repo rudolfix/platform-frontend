@@ -7,6 +7,7 @@ import { PanelWhite } from "../shared/PanelWhite";
 import * as styles from "./NeufundKpiWidget.module.scss";
 
 import * as logo from "../../assets/img/logo_small_black.svg";
+import { Button } from "../shared/Buttons";
 
 interface IProps {
   date: string;
@@ -89,6 +90,7 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
           <div className={styles.pieWrapper}>
             <h4 className={styles.label}>NEU Distribution among token holders</h4>
             <ChartPie data={chartPieData} />
+            <Button layout="secondary">View All ></Button>
           </div>
           <div className={styles.barWrapper}>
             <h4 className={styles.label}>NEU - Platform Portfolio Value</h4>
@@ -97,6 +99,7 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
               <Money value={platformPortfolioValue} currency={currency} theme="t-green" />
             </h5>
             <ChartBars data={chartBarData} />
+            <Button layout="secondary">View All ></Button>
           </div>
         </Col>
       </Row>

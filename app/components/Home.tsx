@@ -13,6 +13,8 @@ export const Home: React.SFC = () => (
         <Link to={appRoutes.login}>
           <Button>Login</Button>
         </Link>
+        <br />
+        <br />
         <Link to={appRoutes.register}>
           <Button>Register</Button>
         </Link>

@@ -18,6 +18,7 @@ export const routingActions = {
   //kyc routes
   goToKYCHome: () => createRoutingAction(kycRoutes.start),
   goToKYCIndividualStart: () => createRoutingAction(kycRoutes.individualStart),
+  goToKYCIndividualInstantId: () => createRoutingAction(kycRoutes.individualInstantId),
   goToKYCIndividualUpload: () => createRoutingAction(kycRoutes.individualUpload),
 
   goToKYCBusinessStart: () => createRoutingAction(kycRoutes.businessStart),
@@ -31,6 +32,9 @@ export const routingActions = {
 
   // registration
   goToRegister: () => createRoutingAction(appRoutes.register),
+
+  // login
+  goToLogin: () => createRoutingAction(appRoutes.login),
 
   // Successful password recovery
   goToSuccessfulRecovery: () => createRoutingAction(recoverRoutes.success),

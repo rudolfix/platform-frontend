@@ -9,17 +9,18 @@ import * as styles from "./MyPortfolioWidget.module.scss";
 
 import { Link } from "react-router-dom";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import { CommonHtmlProps } from "../../../types";
 import { Button } from "../../shared/Buttons";
 
-export const MyPortfolio: React.SFC = () => {
+export const MyPortfolio: React.SFC<CommonHtmlProps> = ({ className, style }) => {
   return (
-    <PanelDark headerText="My portfolio">
+    <PanelDark headerText="My portfolio" className={className} style={style}>
       <Row className={cn(styles.main, "pb-3")}>
         <Col xl={8} md={7} xs={12} className="mt-5 text-center mb-4 ">
           <h3>Welcome to NEUFUND!</h3>
           <p>You have no assets in your portifolio yet.</p>
           <Link to="#">
-            <Button layout="icon-after" svgIcon={arrowRight}>
+            <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
               Investment Opportunities
             </Button>
           </Link>

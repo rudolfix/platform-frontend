@@ -8,6 +8,7 @@ export const kycRoutes = {
   // private
   individualStart: parentRoutePath + "/personal/start",
   individualUpload: parentRoutePath + "/personal/upload",
+  individualInstantId: parentRoutePath + "/personal/instant-id",
 
   // company
   businessStart: parentRoutePath + "/business/start",

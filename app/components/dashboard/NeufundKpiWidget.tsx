@@ -20,7 +20,7 @@ interface IProps {
   chartPieData: IChartPieData;
   chartBarData: IChartBarsData;
   totalProceeds: string;
-  totalProceedsToken: string; 
+  totalProceedsToken: string;
 }
 
 export const NeufundKpiWidget: React.SFC<IProps> = ({
@@ -35,13 +35,14 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
   chartPieData,
   vcAccessible,
   totalProceeds,
-  totalProceedsToken
+  totalProceedsToken,
 }) => {
   return (
     <PanelWhite className={styles.neufundKpiWidget}>
       <div>
         <h3 className={styles.header}>
-          <img src={logo} alt="neufund logo" /> Neufund kpi <time className={styles.date}>{ date }</time>
+          <img src={logo} alt="neufund logo" /> Neufund kpi{" "}
+          <time className={styles.date}>{date}</time>
         </h3>
       </div>
       <Row>
@@ -58,23 +59,23 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>NEU Tokenholders</div>
-              <div className={styles.value}>{ tokenHolders }</div>
+              <div className={styles.value}>{tokenHolders}</div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>
                 Professional<br />Investors
               </div>
-              <div className={styles.value}>{ investorsNum }</div>
+              <div className={styles.value}>{investorsNum}</div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>VC Accessible</div>
               <div className={styles.value}>
-                <Money value={vcAccessible} currency={ currency } />
+                <Money value={vcAccessible} currency={currency} />
               </div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>Number of ETOs</div>
-              <div className={styles.value}>{ etosNum }</div>
+              <div className={styles.value}>{etosNum}</div>
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>total capital deployed</div>

@@ -28,7 +28,7 @@ export const ChartBars: React.SFC<IProps> = ({ data }) => {
           legend={{ display: false }}
           options={{
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             scales: {
               xAxes: [
                 {

@@ -1,0 +1,77 @@
+@import "../../styles/neufund-theme";
+
+.neufund-kpi-widget {
+  padding-bottom: px-to-rem(25px);
+  padding-right: px-to-rem(30px);
+  padding-top: px-to-rem(16px);
+  padding-left: px-to-rem(8px);
+}
+
+.header {
+  @include font-tab;
+  color: $neu-black;
+  text-transform: uppercase;
+  font-weight: $font-weight-bold;
+  margin-bottom: px-to-rem(16px);
+}
+
+.date {
+  $color: $neu-slate-grey;
+  text-transform: none;
+  margin-left: px-to-rem(10px);
+  font-weight: 500;
+  color: $neu-slate-grey;
+}
+
+.label {
+  @include font-label;
+
+  color: $neu-slate-grey;
+  text-transform: uppercase;
+}
+
+.value {
+  display: flex;
+  flex-direction: column;
+  color: $neu-almost-black;
+}
+
+.list {
+  border-right: 1px solid $neu-pale-grey;
+  font-weight: $font-weight-bold;
+  padding-top: px-to-rem(34px);
+  padding-right: px-to-rem(28px);
+  height: 100%;
+
+  .list-element {
+    display: flex;
+    align-items: center;
+    min-height: px-to-rem(60px);
+    padding: px-to-rem(8px) px-to-rem(15px);
+
+    &:nth-of-type(odd) {
+      background-color: $neu-pale-blue;
+    }
+
+    .label,
+    .title {
+      flex-basis: 50%;
+    }
+  }
+}
+
+.pie-wrapper {
+  padding-bottom: px-to-rem(20px);
+  margin-bottom: px-to-rem(20px);
+  border-bottom: 1px solid $neu-pale-grey;
+}
+
+.total-money {
+  @include font-label;
+  color: $neu-slate-grey;
+
+  .total-label {
+    margin-bottom: px-to-rem(16px);
+    margin-right: px-to-rem(10px);
+  }
+}

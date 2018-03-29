@@ -6,6 +6,7 @@ import { Tag } from "../shared/Tag";
 import { InvestmentPreview } from "./investmentOportunities/InvestmentPreview";
 import { MyPortfolio } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
+import { NeufundKpiWidget } from "./NeufundKpiWidget";
 import { UserInfo } from "./UserInfo";
 
 export const Dashboard = () => (
@@ -16,6 +17,11 @@ export const Dashboard = () => (
       </Col>
       <Col>
         <MyWalletWidget className="h-100" />
+      </Col>
+    </Row>
+    <Row>
+      <Col lg={8} xs={12}>
+        <NeufundKpiWidget />
       </Col>
     </Row>
     <SectionHeader>

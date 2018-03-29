@@ -6,6 +6,7 @@ type TTheme = "t-dark" | "t-light";
 interface ITab {
   text: string;
   isSelected: boolean;
+  handleClick?: () => void;
 }
 
 interface IProps {
@@ -17,8 +18,11 @@ interface IProps {
 
 export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) => (
   <div className={`${styles.tabs} ${className}`} {...props}>
-    {tabs.map(({ text, isSelected }) => (
-      <div key={text} className={`${styles.tab} ${theme} ${isSelected ? "is-selected" : ""}`}>
+    {tabs.map(({ text, isSelected, handleClick }) => (
+      <div
+        key={text}
+        className={`${styles.tab} ${theme} ${isSelected ? "is-selected" : ""}`}
+        onClick={handleClick}>
         {text}
       </div>
     ))}

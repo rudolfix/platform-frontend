@@ -23,7 +23,7 @@ function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
       } else {
         yield put(actions.auth.logout());
         yield put(actions.routing.goToLogin());
-        logger.error("JTW expiring to soon.");
+        logger.error("JTW expiring too soon.");
       }
     }
 

@@ -1,4 +1,4 @@
-@import "../../styles/neufund-theme";
+@import "../../../../styles/neufund-theme";
 
 .card {
   + #{&} {
@@ -10,7 +10,14 @@
   }
 }
 
-.transaction-list,
+.transaction-list {
+  margin-top: px-to-rem(20px);
+}
+
 .dividends {
+  @include media-breakpoint-up (lg) {
+    margin-top: 0;
+  }
+
   margin-top: px-to-rem(20px);
 }

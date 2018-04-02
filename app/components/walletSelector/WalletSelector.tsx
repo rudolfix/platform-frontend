@@ -37,9 +37,21 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({
           <Row className="justify-content-center mb-4 mt-4">
             <Tabs
               tabs={[
-                { path: `${rootPath}/light`, text: "use Neufund wallet" },
-                { path: `${rootPath}/browser`, text: "use existing wallet" },
-                { path: `${rootPath}/ledger`, text: "use nano ledger" },
+                {
+                  path: `${rootPath}/light`,
+                  text: "use Neufund wallet",
+                  dataTestId: "wallet-selector-light",
+                },
+                {
+                  path: `${rootPath}/browser`,
+                  text: "use existing wallet",
+                  dataTestId: "wallet-selector-browser",
+                },
+                {
+                  path: `${rootPath}/ledger`,
+                  text: "use nano ledger",
+                  dataTestId: "wallet-selector-ledger",
+                },
               ]}
             />
           </Row>

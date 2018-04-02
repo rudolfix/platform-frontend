@@ -9,6 +9,7 @@ interface ITab {
   path: string;
   text: string;
   handleClick?: () => void;
+  dataTestId?: string;
 }
 
 interface IProps {
@@ -20,8 +21,8 @@ interface IProps {
 
 export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) => (
   <div className={cn(styles.tabs, className)} {...props}>
-    {tabs.map(({ path, text, handleClick }) => (
-      <NavLink to={path} className={cn(styles.tab, theme)}>
+    {tabs.map(({ path, text, handleClick, dataTestId }) => (
+      <NavLink to={path} className={cn(styles.tab, theme)} data-test-id={dataTestId}>
         <div key={text} onClick={handleClick}>
           {text}
         </div>

@@ -8,13 +8,13 @@ interface IDataset {
   backgroundColor: string[];
 }
 
-interface IData {
+export interface IChartPieData {
   datasets: IDataset[];
   labels: string[];
 }
 
 interface IProps {
-  data: IData;
+  data: IChartPieData;
 }
 
 export const ChartPie: React.SFC<IProps> = ({ data }) => {

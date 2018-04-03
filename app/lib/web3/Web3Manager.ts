@@ -33,8 +33,8 @@ export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 5000;
 @injectable()
 export class Web3Manager {
   public personalWallet?: IPersonalWallet;
-  public networkId?: EthereumNetworkId;
-  public internalWeb3Adapter?: Web3Adapter;
+  public networkId!: EthereumNetworkId;
+  public internalWeb3Adapter!: Web3Adapter;
 
   private readonly web3ConnectionWatcher: AsyncIntervalScheduler;
 
@@ -59,7 +59,7 @@ export class Web3Manager {
   }
 
   public async plugPersonalWallet(personalWallet: IPersonalWallet): Promise<void> {
-    const isWalletConnected = await personalWallet.testConnection(this.networkId!);
+    const isWalletConnected = await personalWallet.testConnection(this.networkId);
     if (!isWalletConnected) {
       throw new WalletNotConnectedError(personalWallet);
     }
@@ -98,7 +98,7 @@ export class Web3Manager {
     }
 
     const isConnectionWorking = await promiseTimeout({
-      promise: this.personalWallet.testConnection(this.networkId!),
+      promise: this.personalWallet.testConnection(this.networkId),
       defaultValue: false,
       timeout: WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL,
     });

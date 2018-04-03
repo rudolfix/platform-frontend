@@ -8,7 +8,7 @@ interface IMoneySuiteWidgetProps {
   currencyTotal: TCurrency;
   largeNumber: string;
   value: string;
-  percentage: string;
+  percentage?: string;
 }
 
 export const MoneySuiteWidget: React.SFC<
@@ -24,10 +24,12 @@ export const MoneySuiteWidget: React.SFC<
         </div>
         <div className={styles.totalMoney}>
           = <Money value={value} currency={currencyTotal} />
-          <span className={`${parseInt(percentage, 10) > 0 ? styles.green : styles.red}`}>
-            {" "}
-            ({percentage}%)
-          </span>
+          {percentage && (
+            <span className={`${parseInt(percentage, 10) > 0 ? styles.green : styles.red}`}>
+              {" "}
+              ({percentage}%)
+            </span>
+          )}
         </div>
       </div>
     </div>

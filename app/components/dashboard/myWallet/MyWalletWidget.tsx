@@ -34,7 +34,6 @@ type StateProps = {
     euroTokenEuroAmount: string;
     ethAmount: string;
     ethEuroAmount: string;
-    percentage: string;
     totalAmount: string;
   };
 };
@@ -48,7 +47,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
     const {
       euroTokenAmount,
       euroTokenEuroAmount,
-      percentage,
       ethAmount,
       ethEuroAmount,
       totalAmount,
@@ -64,7 +62,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               icon={moneyIcon}
               data-test-id="euro-widget"
               value={euroTokenEuroAmount}
-              percentage={percentage}
               currencyTotal={"eur"}
             />
           </Col>
@@ -76,7 +73,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               data-test-id="eth-widget"
               className={cn(styles.borderLeft, "pl-sm-2 pl-md-0")}
               value={ethEuroAmount}
-              percentage={percentage}
               currencyTotal={"eur"}
             />
           </Col>

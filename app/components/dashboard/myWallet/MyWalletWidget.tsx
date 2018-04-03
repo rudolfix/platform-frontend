@@ -8,6 +8,7 @@ import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { actions } from "../../../modules/actions";
 import {
+  selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
   selectLiquidEuroTokenBalance,
   selectLiquidEuroTotalAmount,
@@ -153,9 +154,8 @@ export const MyWalletWidget = compose<React.SFC<CommonHtmlProps>>(
           data: {
             euroTokenEuroAmount: selectLiquidEuroTokenBalance(walletData),
             euroTokenAmount: selectLiquidEuroTokenBalance(walletData),
-            ethAmount: selectLiquidEtherBalanceEuroAmount(walletData),
+            ethAmount: selectLiquidEtherBalance(walletData),
             ethEuroAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-            percentage: "0", // TODO connect 24h change
             totalAmount: selectLiquidEuroTotalAmount(walletData),
           },
         };

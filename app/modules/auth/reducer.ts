@@ -24,7 +24,7 @@ export const authReducer: AppReducer<IAuthState> = (
         ...state,
         jwt: action.payload.jwt,
       };
-    //Log out is done on whole initial state instead of just AUTH reducer
+    //Log out is done on whole state instead of just AUTH reducer
   }
 
   return state;

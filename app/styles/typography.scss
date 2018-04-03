@@ -3,18 +3,18 @@
 @mixin headline-big {
   font-family: $headings-font-family;
   font-size: px-to-rem(34px);
-  letter-spacing: px-to-rem(-.05px);
+  letter-spacing: px-to-rem(-.5px);
 }
 
-@mixin headline {
+@mixin font-headline {
   font-family: $headings-font-family;
   font-size: px-to-rem(20px);
   letter-spacing: px-to-rem(-.3px);
 }
 
-@mixin headline-small {
+@mixin font-headline-small {
   font-family: $headings-font-family;
-  font-size: px-to-rem(16px);
+  font-size: px-to-rem(18px);
   letter-spacing: px-to-rem(-.3px);
 }
 

@@ -21,6 +21,7 @@ import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
 import { PercentageIndicatorBar } from "./shared/PercentageIndicatorBar";
 import { SectionHeader } from "./shared/SectionHeader";
+import { Tabs } from "./shared/Tabs";
 import { Tag } from "./shared/Tag";
 
 const chartDoughnutData = {
@@ -334,6 +335,26 @@ export const Demo: React.SFC = () => (
 
     <Container>
       <ChartBars data={chartBarData} />
+    </Container>
+
+    <Container>
+      <Tabs
+        theme="dark"
+        tabs={[
+          { text: "tab 1", path: "/demo" },
+          { text: "tab 2", path: "" },
+          { text: "tab 3", path: "" },
+        ]}
+      />
+      <Tabs
+        style={{ background: "black" }}
+        theme="light"
+        tabs={[
+          { text: "tab 1", path: "" },
+          { text: "tab 2", path: "" },
+          { text: "tab 3", path: "" },
+        ]}
+      />
     </Container>
   </div>
 );

@@ -12,7 +12,7 @@
   }
 
   .money {
-    @include headline;
+    @include font-headline;
     color: $neu-almost-black;
   }
 

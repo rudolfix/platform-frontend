@@ -22,7 +22,7 @@
 }
 
 .total {
-  @include headline;
+  @include font-headline;
   display: flex;
   align-content: center;
   color: $neu-seaweed;

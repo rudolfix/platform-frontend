@@ -1,6 +1,5 @@
 export const appRoutes = {
   wallet: "/wallet",
-  manageWallet: "/manage-wallet",
   root: "/",
   register: "/register",
   login: "/login",
@@ -26,7 +25,6 @@ import { settingsRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
-import { ManageWallet } from "./wallet/ManageWallet";
 import { Wallet } from "./wallet/Wallet";
 import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
 import { WalletSelector } from "./walletSelector/WalletSelector";
@@ -39,7 +37,6 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
 
     <OnlyAuthorizedRoute path={appRoutes.wallet} component={Wallet} />
-    <OnlyAuthorizedRoute path={appRoutes.manageWallet} component={ManageWallet} />
     <OnlyAuthorizedRoute path={appRoutes.kyc} component={Kyc} />
     <OnlyAuthorizedRoute path={appRoutes.dashboard} component={Dashboard} exact />
     <OnlyAuthorizedRoute path={appRoutes.settings} component={Settings} exact />

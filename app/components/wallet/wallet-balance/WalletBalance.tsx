@@ -18,6 +18,8 @@ interface IWalletBalance {
   moneyValueOne: number;
   moneyValueTwo: number;
   chartData: any;
+  depositEuroTokenFunds: () => void;
+  depositEthFunds: () => void;
   theme?: TWalletBalance;
 }
 
@@ -27,6 +29,8 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
   chartData,
   headerText,
   totalEurValue,
+  depositEuroTokenFunds,
+  depositEthFunds,
   className,
   style,
   theme = "light",
@@ -54,7 +58,9 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
           />
           <div className={styles.buttonsWrapper}>
             <Button layout="secondary">Withdraw funds ></Button>
-            <Button layout="secondary">Deposit funds ></Button>
+            <Button layout="secondary" onClick={depositEuroTokenFunds}>
+              Deposit funds >
+            </Button>
           </div>
         </div>
         <div className={styles.moneySuiteWrapper}>
@@ -69,7 +75,9 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
           />
           <div className={styles.buttonsWrapper}>
             <Button layout="secondary">Withdraw funds ></Button>
-            <Button layout="secondary">Deposit funds ></Button>
+            <Button layout="secondary" onClick={depositEthFunds}>
+              Deposit funds >
+            </Button>
           </div>
         </div>
       </div>

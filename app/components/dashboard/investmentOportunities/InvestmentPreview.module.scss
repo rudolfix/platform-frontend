@@ -41,7 +41,7 @@
   }
 
   .company-name {
-    @include headline;
+    @include font-headline;
     font-weight: $font-weight-bold;
     margin-bottom: px-to-rem(14px);
   }

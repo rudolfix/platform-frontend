@@ -1,7 +1,7 @@
 @import "../../styles/neufund-theme";
 
 .section-header {
-  @include headline-small;
+  @include font-headline-small;
 
   text-transform: uppercase;
   padding-left: px-to-rem(10px);

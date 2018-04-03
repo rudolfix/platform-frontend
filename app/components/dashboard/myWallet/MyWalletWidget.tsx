@@ -14,7 +14,6 @@ import {
 } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { appRoutes } from "../../AppRouter";
 import { Button } from "../../shared/Buttons";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { Money } from "../../shared/Money";
@@ -24,6 +23,7 @@ import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import { CommonHtmlProps } from "../../../types";
+import { walletRoutes } from "../../wallet/routes";
 import * as styles from "./MyWalletWidget.module.scss";
 
 type StateProps = {
@@ -95,7 +95,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
             </div>
           </Col>
           <Col className="d-block d-sm-none text-right col-auto">
-            <Link to={appRoutes.manageWallet}>
+            <Link to={walletRoutes.manageWallet}>
               <Button
                 layout="secondary"
                 iconPosition="icon-after"
@@ -122,7 +122,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
     <PanelDark
       headerText="My Wallet"
       rightComponent={
-        <Link to={appRoutes.manageWallet}>
+        <Link to={walletRoutes.manageWallet}>
           <Button
             layout="secondary"
             iconPosition="icon-after"

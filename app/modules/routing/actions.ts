@@ -2,6 +2,7 @@ import { push } from "react-router-redux";
 
 import { appRoutes } from "../../components/AppRouter";
 import { kycRoutes } from "../../components/kyc/routes";
+import { walletRoutes } from "../../components/wallet/routes";
 import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";
 import { createAction } from "../actionsUtils";
 
@@ -38,6 +39,13 @@ export const routingActions = {
 
   // Successful password recovery
   goToSuccessfulRecovery: () => createRoutingAction(recoverRoutes.success),
+
+  // wallet
+  goToWallet: () => createRoutingAction(appRoutes.wallet),
+
+  // deposit founds
+  goToDepositEuroToken: () => createRoutingAction(walletRoutes.euroToken),
+  goToDepositEth: () => createRoutingAction(walletRoutes.eth),
 
   // other...
 };

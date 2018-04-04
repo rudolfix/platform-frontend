@@ -29,7 +29,7 @@ function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
 }
 
 async function loadWalletDataAsync(
-  { contractsService }: TGlobalDependencies,
+  { contractsService, web3Manager }: TGlobalDependencies,
   ethAddress: EthereumAddress,
 ): Promise<IWalletStateData> {
   return valuesToString(
@@ -38,7 +38,7 @@ async function loadWalletDataAsync(
       euroTokenLockedBalance: Promise.resolve(new BigNumber("0")),
       euroTokenICBMLockedBalance: contractsService.euroLock.balanceOf(ethAddress),
 
-      etherBalance: Promise.resolve(new BigNumber("0")),
+      etherBalance: web3Manager.internalWeb3Adapter.getBalance(ethAddress),
       etherTokenBalance: contractsService.etherTokenContract.balanceOf(ethAddress),
       etherTokenLockedBalance: Promise.resolve(new BigNumber("0")),
       etherICBMLockedBalance: contractsService.etherLock.balanceOf(ethAddress),

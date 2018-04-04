@@ -1,6 +1,6 @@
 @import "../../styles/neufund-theme";
 
-$header-height: px-to-rem(40px);
+$header-height: px-to-rem(46px);
 
 .panel {
   box-shadow: $shadow;
@@ -11,11 +11,11 @@ $header-height: px-to-rem(40px);
   margin-right: px-to-rem(10px);
 }
 
-.header {
-  @include media-breakpoint-up (xl) {
-    height: $header-height;
-  }
+.header-row {
+  min-height: $header-height;
+}
 
+.header {
   background-color: $neu-charcoal-grey;
   color: $neu-white;
   padding-bottom: px-to-rem(8px);

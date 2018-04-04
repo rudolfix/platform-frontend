@@ -63,6 +63,7 @@ export function* updateUser(updatedUser: IUser): Iterator<any> {
 function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Iterator<any> {
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
+  yield effects.put(actions.init.start());
 }
 
 function* signInUser(): Iterator<any> {

@@ -38,7 +38,9 @@ export async function loadUserPromise({
       backupCodesVerified: false,
     });
   } else {
-    return apiUserSerivce.createAccount();
+    return apiUserSerivce.createAccount({
+      backupCodesVerified: true,
+    });
   }
 }
 

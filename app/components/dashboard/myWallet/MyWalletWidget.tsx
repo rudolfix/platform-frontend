@@ -8,6 +8,7 @@ import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { actions } from "../../../modules/actions";
 import {
+  selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
   selectLiquidEuroTokenBalance,
   selectLiquidEuroTotalAmount,
@@ -34,7 +35,6 @@ type StateProps = {
     euroTokenEuroAmount: string;
     ethAmount: string;
     ethEuroAmount: string;
-    percentage: string;
     totalAmount: string;
   };
 };
@@ -48,7 +48,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
     const {
       euroTokenAmount,
       euroTokenEuroAmount,
-      percentage,
       ethAmount,
       ethEuroAmount,
       totalAmount,
@@ -64,7 +63,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               icon={moneyIcon}
               data-test-id="euro-widget"
               value={euroTokenEuroAmount}
-              percentage={percentage}
               currencyTotal={"eur"}
             />
           </Col>
@@ -76,7 +74,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               data-test-id="eth-widget"
               className={cn(styles.borderLeft, "pl-sm-2 pl-md-0")}
               value={ethEuroAmount}
-              percentage={percentage}
               currencyTotal={"eur"}
             />
           </Col>
@@ -157,9 +154,8 @@ export const MyWalletWidget = compose<React.SFC<CommonHtmlProps>>(
           data: {
             euroTokenEuroAmount: selectLiquidEuroTokenBalance(walletData),
             euroTokenAmount: selectLiquidEuroTokenBalance(walletData),
-            ethAmount: selectLiquidEtherBalanceEuroAmount(walletData),
+            ethAmount: selectLiquidEtherBalance(walletData),
             ethEuroAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-            percentage: "0", // TODO connect 24h change
             totalAmount: selectLiquidEuroTotalAmount(walletData),
           },
         };

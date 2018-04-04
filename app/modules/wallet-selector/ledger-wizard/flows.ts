@@ -22,7 +22,7 @@ export const ledgerWizardFlows = {
       web3Manager: Web3Manager,
     ) => {
       try {
-        await ledgerWalletConnector.connect(web3Manager.networkId!);
+        await ledgerWalletConnector.connect(web3Manager.networkId);
 
         dispatch(actions.walletSelector.ledgerConnectionEstablished());
       } catch (e) {
@@ -63,7 +63,7 @@ export const ledgerWizardFlows = {
 
       const balances = await Promise.all(
         derivationPathsArray.map(dp =>
-          web3Manager.internalWeb3Adapter!.getBalance(dp.address).then(bn => bn.toString()),
+          web3Manager.internalWeb3Adapter.getBalance(dp.address).then(bn => bn.toString()),
         ),
       );
 

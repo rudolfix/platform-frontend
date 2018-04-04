@@ -201,7 +201,6 @@ export const Demo: React.SFC = () => (
               euroTokenAmount: "36490" + "0".repeat(18),
               ethAmount: "66482" + "0".repeat(14),
               ethEuroAmount: "6004904646" + "0".repeat(16),
-              percentage: "-3.67",
               totalAmount: "637238" + "0".repeat(18),
             }}
           />

@@ -19,7 +19,7 @@ export const PanelDark: React.SFC<IPanelDarkProps & React.HTMLAttributes<HTMLDiv
   ...props
 }) => (
   <Col {...props} className={cn(styles.panel, className)}>
-    <Row>
+    <Row className={styles.headerRow}>
       <Col
         className={cn(styles.header, "d-flex flex-wrap justify-content-between align-items-center")}
       >

@@ -62,7 +62,7 @@ async function connectLedger(
   web3Manager: Web3Manager,
   metadata: ILedgerWalletMetadata,
 ): Promise<IPersonalWallet> {
-  await ledgerWalletConnector.connect(web3Manager.networkId!);
+  await ledgerWalletConnector.connect(web3Manager.networkId);
   return await ledgerWalletConnector.finishConnecting(metadata.derivationPath);
 }
 
@@ -72,7 +72,7 @@ async function connectBrowser(
   // tslint:disable-next-line
   metadata: IBrowserWalletMetadata, // todo browser wallet should verify connected address
 ): Promise<IPersonalWallet> {
-  return await browserWalletConnector.connect(web3Manager.networkId!);
+  return await browserWalletConnector.connect(web3Manager.networkId);
 }
 
 export async function connectLightWallet(

@@ -19,7 +19,7 @@ export const browserWizardFlows = {
       walletMetadataStorage: ObjectStorage<TWalletMetadata>,
     ) => {
       try {
-        const browserWallet = await browserWalletConnector.connect(web3Manager.networkId!);
+        const browserWallet = await browserWalletConnector.connect(web3Manager.networkId);
 
         await web3Manager.plugPersonalWallet(browserWallet);
         walletMetadataStorage.set(browserWallet.getMetadata());

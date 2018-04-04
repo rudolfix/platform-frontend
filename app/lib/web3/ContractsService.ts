@@ -13,33 +13,24 @@ import { Web3Manager } from "./Web3Manager";
 
 @injectable()
 export class ContractsService {
-  public universeContract: Commitment;
+  public universeContract!: Commitment;
 
-  public neumarkContract: Neumark;
-  public euroTokenContract: EuroToken;
-  public etherTokenContract: EtherToken;
+  public neumarkContract!: Neumark;
+  public euroTokenContract!: EuroToken;
+  public etherTokenContract!: EtherToken;
 
-  public euroLock: LockedAccount;
-  public etherLock: LockedAccount;
+  public euroLock!: LockedAccount;
+  public etherLock!: LockedAccount;
 
   constructor(
     @inject(symbols.config) private readonly config: IConfig,
     @inject(symbols.web3Manager) private readonly web3Manager: Web3Manager,
     @inject(symbols.logger) private readonly logger: ILogger,
-  ) {
-    // this is workaround to silent compiler error about not properties not assigned
-    // its fine b/c we gonna always call async init method before using this class
-    this.universeContract = null as any;
-    this.neumarkContract = null as any;
-    this.euroTokenContract = null as any;
-    this.etherTokenContract = null as any;
-    this.euroLock = null as any;
-    this.etherLock = null as any;
-  }
+  ) {}
 
   public async init(): Promise<void> {
     this.logger.info("Initializing contracts...");
-    const web3 = this.web3Manager.internalWeb3Adapter!.web3;
+    const web3 = this.web3Manager.internalWeb3Adapter.web3;
 
     this.universeContract = await Commitment.createAndValidate(
       web3,

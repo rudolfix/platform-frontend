@@ -20,19 +20,11 @@ import {
 } from "../../../../modules/wallet/selectors";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { MoneyTransfer } from "../../../shared/Money";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
-import { TransactionList, TransactionType } from "../../transaction-list/TransactionList";
+import { TransactionList } from "../../transaction-list/TransactionList";
 import { IWalletValues, WalletBalance } from "../../wallet-balance/WalletBalance";
 
-const timestamp = Date.now();
-const amount = "1234" + "0".repeat(18);
-const fromTo = "from/to string";
-const transactions = [
-  { timestamp, amount, type: TransactionType.Deposit, fromTo, id: 1, transfer: MoneyTransfer.in },
-  { timestamp, amount, type: TransactionType.Deposit, fromTo, id: 2, transfer: MoneyTransfer.out },
-  { timestamp, amount, type: TransactionType.Deposit, fromTo, id: 3, transfer: MoneyTransfer.in },
-];
+const transactions: any[] = [];
 const categories = [
   {
     isSelected: false,
@@ -127,11 +119,7 @@ const WalletStartComponent: React.SFC<TProps> = props => (
           : 12
       }
     >
-      <ClaimedDividends
-        className="h-100"
-        totalEurValue={"1234" + "0".repeat(18)}
-        recentPayouts={transactions}
-      />
+      <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
     </Col>
 
     <Col xs={12}>

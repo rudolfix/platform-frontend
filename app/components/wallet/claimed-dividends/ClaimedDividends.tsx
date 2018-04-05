@@ -27,6 +27,8 @@ interface IClaimedDividendsProps {
   recentPayouts: IDividendPayout[];
 }
 
+const NoPayoutsInfo = () => <div className="py-3">You didn't claimed any dividends so far.</div>;
+
 export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProps> = ({
   totalEurValue,
   recentPayouts,
@@ -40,24 +42,28 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
     className={cn(styles.claimedDividends, className)}
     {...htmlProps}
   >
-    <h3 className={styles.title}>Most rescent</h3>
+    <h3 className={styles.title}>Most recent</h3>
     <TableBody>
-      {recentPayouts.map(({ timestamp, amount, id }) => (
-        <TableRow key={`table-row-claimed-dividends-${id}`}>
-          <TableCell narrow>
-            <Date timestamp={timestamp} />
-          </TableCell>
-          <TableCell narrow>
-            <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
-          </TableCell>
-          <TableCell narrow>
-            <Button layout="secondary">
-              <span>TXN</span>
-              <InlineIcon svgIcon={LinkOutIcon} />
-            </Button>
-          </TableCell>
-        </TableRow>
-      ))}
+      {recentPayouts.length === 0 ? (
+        <NoPayoutsInfo />
+      ) : (
+        recentPayouts.map(({ timestamp, amount, id }) => (
+          <TableRow key={`table-row-claimed-dividends-${id}`}>
+            <TableCell narrow>
+              <Date timestamp={timestamp} />
+            </TableCell>
+            <TableCell narrow>
+              <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
+            </TableCell>
+            <TableCell narrow>
+              <Button layout="secondary">
+                <span>TXN</span>
+                <InlineIcon svgIcon={LinkOutIcon} />
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))
+      )}
     </TableBody>
   </PanelDark>
 );

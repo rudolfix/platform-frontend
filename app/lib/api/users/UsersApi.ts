@@ -3,7 +3,7 @@ import { inject, injectable } from "inversify";
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../dependencies/Logger";
 import { IHttpClient } from "../client/IHttpClient";
-import { INewUser, IUser, UserValidator } from "./interfaces";
+import { INewUser, IUser, IVerifyEmailUser, UserValidator } from "./interfaces";
 
 const USER_API_ROOT = "/api/user";
 
@@ -36,6 +36,22 @@ export class UsersApi {
       url: "/user/me",
       responseSchema: UserValidator,
       allowedStatusCodes: [404],
+    });
+
+    if (response.statusCode === 404) {
+      throw new UserNotExisting();
+    }
+
+    return response.body;
+  }
+
+  public async verifyUserEmail(userCode: IVerifyEmailUser): Promise<IVerifyEmailUser> {
+    const response = await this.httpClient.put<IVerifyEmailUser>({
+      baseUrl: USER_API_ROOT,
+      url: "/user/me/email-verification",
+      responseSchema: UserValidator,
+      allowedStatusCodes: [404],
+      body: userCode,
     });
 
     if (response.statusCode === 404) {

@@ -2,9 +2,10 @@ import * as queryString from "query-string";
 import * as React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { selectIsAuthorized } from "../../../modules/auth/reducer";
-import { selectActivationCodeFromQueryString } from '../../../modules/web3/reducer';
+import { selectActivationCodeFromQueryString } from "../../../modules/web3/reducer";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../AppRouter";
+import { walletRoutes } from "../../walletSelector/walletRoutes";
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -29,8 +30,10 @@ export const OnlyAuthorizedRouteComponent: React.SFC<TProps> = ({
         ) : (
           <Redirect
             to={{
-              pathname: appRoutes.login,
-              search: queryString.stringify(routerState),
+              pathname: "/login/light",
+              search: queryString.stringify({
+                redirect: window.location.href.replace(window.location.origin, ""),
+              }),
             }}
           />
         )

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
-import { selectIsLoginRoute } from "../modules/routing/selectors";
 import { appConnect } from "../store";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 

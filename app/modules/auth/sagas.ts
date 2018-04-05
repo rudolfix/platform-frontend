@@ -9,6 +9,8 @@ import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
 import { WalletType } from "../web3/types";
+import { IAppState } from './../../store';
+import { selectRedirectURLFromQueryString } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -78,7 +80,15 @@ function* signInUser(): Iterator<any> {
 
   try {
     yield neuCall(loadUser);
-    yield effects.put(actions.routing.goToDashboard());
+
+    const redirectionUrl = yield effects.select((state: IAppState) =>
+      selectRedirectURLFromQueryString(state.router),
+    );
+    if (redirectionUrl) {
+      yield effects.put(actions.routing.goTo(redirectionUrl));
+    } else {
+      yield effects.put(actions.routing.goToDashboard());
+    }
   } catch (e) {
     yield effects.put(
       actions.walletSelector.messageSigningError("Error while connecting with server!"),

@@ -36,7 +36,7 @@ const computeChartDataForTokens = (euroValues: string[]) => {
   const simplifiedValues = euroValues
     .map(s => new BigNumber(s))
     .map(b => b.div(Q18))
-    .map(b => b.toNumber());
+    .map(b => b.round(2).toNumber());
 
   return {
     labels: ["ETH", "nEUR"],

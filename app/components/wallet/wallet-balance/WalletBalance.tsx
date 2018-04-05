@@ -1,11 +1,14 @@
+import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
+import { Q18 } from "../../../config/constants";
 import { CommonHtmlProps } from "../../../types";
 import { Button } from "../../shared/Buttons";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { IPanelDarkProps, PanelDark } from "../../shared/PanelDark";
 import { TotalEuro } from "../TotalEuro";
@@ -13,22 +16,43 @@ import * as styles from "./WalletBalance.module.scss";
 
 export type TWalletBalance = "light" | "dark";
 
+export interface IWalletValues {
+  euroTokenAmount: string;
+  euroTokenEuroAmount: string;
+  ethAmount: string;
+  ethEuroAmount: string;
+  totalEuroAmount: string;
+}
+
 interface IWalletBalance {
-  totalEurValue: string;
-  moneyValueOne: number;
-  moneyValueTwo: number;
-  chartData: any;
   depositEuroTokenFunds: () => void;
   depositEthFunds: () => void;
   theme?: TWalletBalance;
+  isLoading: boolean;
+  data?: IWalletValues;
 }
 
+const computeChartDataForTokens = (euroValues: string[]) => {
+  const simplifiedValues = euroValues
+    .map(s => new BigNumber(s))
+    .map(b => b.div(Q18))
+    .map(b => b.toNumber());
+
+  return {
+    labels: ["ETH", "nEUR"],
+    datasets: [
+      {
+        data: simplifiedValues,
+        backgroundColor: ["#e3eaf5", "#394651"],
+      },
+    ],
+  };
+};
+
 export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonHtmlProps> = ({
-  moneyValueOne,
-  moneyValueTwo,
-  chartData,
+  data,
+  isLoading,
   headerText,
-  totalEurValue,
   depositEuroTokenFunds,
   depositEthFunds,
   className,
@@ -39,48 +63,52 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
     className={cn(className, styles.walletBalance, `t-${theme}`)}
     style={style}
     headerText={headerText}
-    rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
+    rightComponent={data && <TotalEuro totalEurValue={data.totalEuroAmount} />}
   >
-    <div className={styles.walletBalanceWrapper}>
-      <div className={styles.chartWrapper}>
-        <ChartDoughnut data={chartData} />
-      </div>
-      <div className={`${styles.walletBalanceActions}`}>
-        <div className={styles.moneySuiteWrapper}>
-          <MoneySuiteWidget
-            currency="eur_token"
-            largeNumber={`${moneyValueOne}`}
-            icon={moneyIcon}
-            data-test-id="euro-widget"
-            value={`6004904646${"0".repeat(16)}`}
-            percentage={"0"}
-            currencyTotal={"eur"}
+    {isLoading ? (
+      <LoadingIndicator />
+    ) : (
+      <div className={styles.walletBalanceWrapper}>
+        <div className={styles.chartWrapper}>
+          <ChartDoughnut
+            data={computeChartDataForTokens([data!.ethEuroAmount, data!.euroTokenEuroAmount])}
           />
-          <div className={styles.buttonsWrapper}>
-            <Button layout="secondary">Withdraw funds ></Button>
-            <Button layout="secondary" onClick={depositEuroTokenFunds}>
-              Deposit funds >
-            </Button>
+        </div>
+        <div className={`${styles.walletBalanceActions}`}>
+          <div className={styles.moneySuiteWrapper}>
+            <MoneySuiteWidget
+              currency="eur_token"
+              largeNumber={data!.euroTokenAmount}
+              value={data!.euroTokenEuroAmount}
+              icon={moneyIcon}
+              data-test-id="euro-widget"
+              currencyTotal="eur"
+            />
+            <div className={styles.buttonsWrapper}>
+              <Button layout="secondary">Withdraw funds ></Button>
+              <Button layout="secondary" onClick={depositEuroTokenFunds}>
+                Deposit funds >
+              </Button>
+            </div>
+          </div>
+          <div className={styles.moneySuiteWrapper}>
+            <MoneySuiteWidget
+              currency="eth"
+              largeNumber={data!.ethAmount}
+              value={data!.ethEuroAmount}
+              icon={ethIcon}
+              data-test-id="euro-widget"
+              currencyTotal="eur"
+            />
+            <div className={styles.buttonsWrapper}>
+              <Button layout="secondary">Withdraw funds ></Button>
+              <Button layout="secondary" onClick={depositEthFunds}>
+                Deposit funds >
+              </Button>
+            </div>
           </div>
         </div>
-        <div className={styles.moneySuiteWrapper}>
-          <MoneySuiteWidget
-            currency="eth"
-            largeNumber={`${moneyValueTwo}`}
-            icon={ethIcon}
-            data-test-id="euro-widget"
-            value={"6004904646" + "0".repeat(16)}
-            percentage={"-500"}
-            currencyTotal={"eur"}
-          />
-          <div className={styles.buttonsWrapper}>
-            <Button layout="secondary">Withdraw funds ></Button>
-            <Button layout="secondary" onClick={depositEthFunds}>
-              Deposit funds >
-            </Button>
-          </div>
-        </div>
       </div>
-    </div>
+    )}
   </PanelDark>
 );

@@ -37,7 +37,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <Route path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
-   
+
     <OnlyAuthorizedRoute path={appRoutes.verify} component={WalletVerify} />
     <OnlyAuthorizedRoute path={appRoutes.wallet} component={Wallet} />
     <OnlyAuthorizedRoute path={appRoutes.kyc} component={Kyc} />

@@ -1,9 +1,15 @@
 import { appRoutes } from "../AppRouter";
 
-const parentRoutePath = appRoutes.register;
+const parentRegisterRoutePath = appRoutes.register;
+export const walletRegisterRoutes = {
+  light: parentRegisterRoutePath + "/light",
+  browser: parentRegisterRoutePath + "/browser",
+  ledger: parentRegisterRoutePath + "/ledger",
+};
 
-export const walletRoutes = {
-  light: parentRoutePath + "/light",
-  browser: parentRoutePath + "/browser",
-  ledger: parentRoutePath + "/ledger",
+const parentLoginRoutePath = appRoutes.login;
+export const loginWalletRoutes = {
+  light: parentLoginRoutePath + "/light",
+  browser: parentLoginRoutePath + "/browser",
+  ledger: parentLoginRoutePath + "/ledger",
 };

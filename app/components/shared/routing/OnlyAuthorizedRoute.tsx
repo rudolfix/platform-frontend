@@ -1,22 +1,22 @@
+import { LocationDescriptor } from "history";
 import * as queryString from "query-string";
 import * as React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
+import { RouterState } from "react-router-redux";
 import { selectIsAuthorized } from "../../../modules/auth/reducer";
-import { selectActivationCodeFromQueryString } from "../../../modules/web3/reducer";
 import { appConnect } from "../../../store";
-import { appRoutes } from "../../AppRouter";
-import { walletRoutes } from "../../walletSelector/walletRoutes";
+import { loginWalletRoutes } from "../../walletSelector/walletRoutes";
 
 interface IStateProps {
   isAuthorized: boolean;
-  routerState: any;
+  redirectionUrl: LocationDescriptor;
 }
 
 type TProps = RouteProps & IStateProps;
 
 export const OnlyAuthorizedRouteComponent: React.SFC<TProps> = ({
   isAuthorized,
-  routerState,
+  redirectionUrl,
   component: Component,
   ...rest
 }) => {
@@ -24,20 +24,7 @@ export const OnlyAuthorizedRouteComponent: React.SFC<TProps> = ({
   return (
     <Route
       {...rest}
-      render={() =>
-        isAuthorized ? (
-          <ComponentAsAny />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login/light",
-              search: queryString.stringify({
-                redirect: window.location.href.replace(window.location.origin, ""),
-              }),
-            }}
-          />
-        )
-      }
+      render={() => (isAuthorized ? <ComponentAsAny /> : <Redirect to={redirectionUrl} />)}
     />
   );
 };
@@ -45,6 +32,15 @@ export const OnlyAuthorizedRouteComponent: React.SFC<TProps> = ({
 export const OnlyAuthorizedRoute = appConnect<IStateProps, {}>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
-    routerState: selectActivationCodeFromQueryString(s.router),
+    redirectionUrl: generateRedirectionUrl(s.router),
   }),
 })(OnlyAuthorizedRouteComponent);
+
+export function generateRedirectionUrl(state: RouterState): LocationDescriptor {
+  return {
+    pathname: loginWalletRoutes.light,
+    search: queryString.stringify({
+      redirect: state.location!.pathname + state.location!.search,
+    }),
+  };
+}

@@ -22,7 +22,12 @@ interface IProps {
 export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) => (
   <div className={cn(styles.tabs, className)} {...props}>
     {tabs.map(({ path, text, handleClick, dataTestId }, index) => (
-      <NavLink to={{pathname:path, search:window.location.search}} className={cn(styles.tab, theme)} data-test-id={dataTestId} key={index}>
+      <NavLink
+        to={{ pathname: path, search: window.location.search }}
+        className={cn(styles.tab, theme)}
+        data-test-id={dataTestId}
+        key={index}
+      >
         <div key={text} onClick={handleClick}>
           {text}
         </div>

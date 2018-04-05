@@ -4,8 +4,7 @@ import { compose } from "redux";
 import { appConnect } from "../store";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
-interface IWalletVerifyProps {
-}
+interface IWalletVerifyProps {}
 
 export const WalletVerifyComponent: React.SFC<IWalletVerifyProps> = () => (
   <div>
@@ -15,7 +14,6 @@ export const WalletVerifyComponent: React.SFC<IWalletVerifyProps> = () => (
 
 export const WalletVerify = compose<React.SFC>(
   appConnect<IWalletVerifyProps>({
-    stateToProps: state => ({
-    }),
+    stateToProps: _state => ({}),
   }),
 )(WalletVerifyComponent);

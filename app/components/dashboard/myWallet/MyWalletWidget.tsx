@@ -8,10 +8,10 @@ import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { actions } from "../../../modules/actions";
 import {
-  selectLiquidEtherBalance,
-  selectLiquidEtherBalanceEuroAmount,
-  selectLiquidEuroTokenBalance,
-  selectLiquidEuroTotalAmount,
+  selectTotalEtherBalance,
+  selectTotalEtherBalanceEuroAmount,
+  selectTotalEuroBalance,
+  selectTotalEuroTokenBalance,
 } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -32,7 +32,6 @@ type StateProps = {
   error?: string;
   data?: {
     euroTokenAmount: string;
-    euroTokenEuroAmount: string;
     ethAmount: string;
     ethEuroAmount: string;
     totalAmount: string;
@@ -45,13 +44,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
   } else if (props.error) {
     return <WarningAlert>{props.error}</WarningAlert>;
   } else {
-    const {
-      euroTokenAmount,
-      euroTokenEuroAmount,
-      ethAmount,
-      ethEuroAmount,
-      totalAmount,
-    } = props.data!;
+    const { euroTokenAmount, ethAmount, ethEuroAmount, totalAmount } = props.data!;
 
     return (
       <>
@@ -62,7 +55,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               largeNumber={euroTokenAmount}
               icon={moneyIcon}
               data-test-id="euro-widget"
-              value={euroTokenEuroAmount}
+              value={euroTokenAmount}
               currencyTotal={"eur"}
             />
           </Col>
@@ -152,11 +145,10 @@ export const MyWalletWidget = compose<React.SFC<CommonHtmlProps>>(
           isLoading,
           error,
           data: {
-            euroTokenEuroAmount: selectLiquidEuroTokenBalance(walletData),
-            euroTokenAmount: selectLiquidEuroTokenBalance(walletData),
-            ethAmount: selectLiquidEtherBalance(walletData),
-            ethEuroAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-            totalAmount: selectLiquidEuroTotalAmount(walletData),
+            euroTokenAmount: selectTotalEuroTokenBalance(walletData),
+            ethAmount: selectTotalEtherBalance(walletData),
+            ethEuroAmount: selectTotalEtherBalanceEuroAmount(walletData),
+            totalAmount: selectTotalEuroBalance(walletData),
           },
         };
       } else {

@@ -41,6 +41,7 @@ export const selectLockedEuroTotalAmount = (state: IWalletStateData) =>
   addBigNumbers([selectLockedEtherBalanceEuroAmount(state), selectLockedEuroTokenBalance(state)]);
 export const selectLockedWalletHasFunds = (state: IWalletStateData): boolean =>
   selectLockedEuroTotalAmount(state) !== "0";
+
 /**
  * ICBM Wallet Assets
  */
@@ -54,5 +55,33 @@ export const selectICBMLockedEuroTotalAmount = (state: IWalletStateData) =>
   addBigNumbers([selectLockedEtherBalanceEuroAmount(state), selectLockedEuroTokenBalance(state)]);
 export const selectICBMLockedWalletHasFunds = (state: IWalletStateData): boolean =>
   selectICBMLockedEuroTotalAmount(state) !== "0";
+
+/**
+ * Total wallet assets value
+ */
+export const selectTotalEtherBalance = (state: IWalletStateData) =>
+  addBigNumbers([
+    selectLiquidEtherBalance(state),
+    selectLockedEtherBalance(state),
+    selectICBMLockedEtherBalance(state),
+  ]);
+export const selectTotalEtherBalanceEuroAmount = (state: IWalletStateData) =>
+  addBigNumbers([
+    selectLiquidEtherBalanceEuroAmount(state),
+    selectLockedEtherBalanceEuroAmount(state),
+    selectICBMLockedEtherBalanceEuroAmount(state),
+  ]);
+export const selectTotalEuroTokenBalance = (state: IWalletStateData) =>
+  addBigNumbers([
+    selectLiquidEuroTokenBalance(state),
+    selectLockedEuroTokenBalance(state),
+    selectICBMLockedEuroTokenBalance(state),
+  ]);
+export const selectTotalEuroBalance = (state: IWalletStateData) =>
+  addBigNumbers([
+    selectLiquidEuroTotalAmount(state),
+    selectLockedEuroTotalAmount(state),
+    selectICBMLockedEuroTotalAmount(state),
+  ]);
 
 export const selectIsLoaded = (state: IWalletState): boolean => !state.loading;

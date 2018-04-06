@@ -47,7 +47,7 @@ export async function loadUserPromise({
   }
 }
 
-export async function VerifyUserEmailPromise({
+export async function verifyUserEmailPromise({
   apiUserSerivce,
   getState,
   notificationCenter,
@@ -113,8 +113,8 @@ function* signInUser(): Iterator<any> {
   }
 }
 
-function* VerifyUserEmail(): Iterator<any> {
-  yield neuCall(VerifyUserEmailPromise);
+function* verifyUserEmail(): Iterator<any> {
+  yield neuCall(verifyUserEmailPromise);
   yield neuCall(loadUser);
   yield effects.put(actions.routing.goHome());
 }
@@ -195,6 +195,6 @@ export function* ensurePermissionsArePresent(
 
 export const authSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
-  yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", VerifyUserEmail);
+  yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", signInUser);
 };

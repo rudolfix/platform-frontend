@@ -158,19 +158,19 @@ export const selectLightWalletFromQueryString = (
 
 export const selectActivationCodeFromQueryString = (
   state: RouterState,
-): { code: string } | undefined => {
+): { verificationCode: string } | undefined => {
   if (!(state.location && state.location.search)) {
     return undefined;
   }
   const params = queryString.parse(state.location.search);
-  const code = params.code;
+  const verificationCode = params.code;
 
-  if (!code) {
+  if (!verificationCode) {
     return undefined;
   }
 
   return {
-    code,
+    verificationCode,
   };
 };
 

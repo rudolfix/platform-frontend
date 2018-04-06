@@ -10,6 +10,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
 import { WalletType } from "../web3/types";
 import { IAppState } from "./../../store";
+import { selectActivationCodeFromQueryString } from "./../web3/reducer";
 import { selectRedirectURLFromQueryString } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -35,7 +36,7 @@ export async function loadUserPromise({
   const walletMetadata = walletMetadataStorage.get();
   if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
     return apiUserSerivce.createAccount({
-      unverifiedEmail: walletMetadata.email,
+      newEmail: walletMetadata.email,
       salt: walletMetadata.salt,
       backupCodesVerified: false,
     });
@@ -44,6 +45,17 @@ export async function loadUserPromise({
       backupCodesVerified: true,
     });
   }
+}
+
+export async function VerifyUserEmailPromise({
+  apiUserSerivce,
+  getState,
+}: TGlobalDependencies): Promise<void> {
+  const userCode = selectActivationCodeFromQueryString(getState().router);
+  if (!userCode) return;
+  try {
+    await apiUserSerivce.verifyUserEmail(userCode);
+  } catch (e) {}
 }
 
 export async function updateUserPromise(
@@ -95,6 +107,10 @@ function* signInUser(): Iterator<any> {
       actions.walletSelector.messageSigningError("Error while connecting with server!"),
     );
   }
+}
+
+function* VerifyUserEmail(): Iterator<any> {
+  yield neuCall(VerifyUserEmailPromise);
 }
 
 /**
@@ -173,5 +189,6 @@ export function* ensurePermissionsArePresent(
 
 export const authSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
+  yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", VerifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", signInUser);
 };

@@ -23,13 +23,13 @@ import { Eto } from "./eto/Eto";
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
 
+import { emailVerify } from "./emailVerify";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
 import { settingsRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
 import { Wallet } from "./wallet/Wallet";
 import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
 import { WalletSelector } from "./walletSelector/WalletSelector";
-import { WalletVerify } from "./walletVerify";
 
 export const AppRouter: React.SFC = () => (
   <Switch>
@@ -38,7 +38,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
 
-    <OnlyAuthorizedRoute path={appRoutes.verify} component={WalletVerify} />
+    <OnlyAuthorizedRoute path={appRoutes.verify} component={emailVerify} />
     <OnlyAuthorizedRoute path={appRoutes.wallet} component={Wallet} />
     <OnlyAuthorizedRoute path={appRoutes.kyc} component={Kyc} />
     <OnlyAuthorizedRoute path={appRoutes.dashboard} component={Dashboard} exact />

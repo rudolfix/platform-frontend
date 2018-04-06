@@ -50,12 +50,16 @@ export async function loadUserPromise({
 export async function VerifyUserEmailPromise({
   apiUserSerivce,
   getState,
+  notificationCenter,
 }: TGlobalDependencies): Promise<void> {
   const userCode = selectActivationCodeFromQueryString(getState().router);
   if (!userCode) return;
   try {
     await apiUserSerivce.verifyUserEmail(userCode);
-  } catch (e) {}
+    notificationCenter.info("Your email was verified successfully.");
+  } catch (e) {
+    notificationCenter.error("Failed to verify your email.");
+  }
 }
 
 export async function updateUserPromise(
@@ -111,6 +115,8 @@ function* signInUser(): Iterator<any> {
 
 function* VerifyUserEmail(): Iterator<any> {
   yield neuCall(VerifyUserEmailPromise);
+  yield neuCall(loadUser);
+  yield effects.put(actions.routing.goHome());
 }
 
 /**

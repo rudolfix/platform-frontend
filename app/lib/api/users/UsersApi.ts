@@ -45,7 +45,7 @@ export class UsersApi {
     return response.body;
   }
 
-  public async verifyUserEmail(userCode: IVerifyEmailUser): Promise<IVerifyEmailUser> {
+  public async verifyUserEmail(userCode: IVerifyEmailUser): Promise<IUser> {
     const response = await this.httpClient.put<IVerifyEmailUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me/email-verification",
@@ -58,7 +58,7 @@ export class UsersApi {
       throw new UserNotExisting();
     }
 
-    return response.body;
+    return response.body as IUser;
   }
 
   public async updateUser(updatedUser: IUser): Promise<IUser> {

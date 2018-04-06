@@ -7,11 +7,10 @@ import { AccountRow, WalletLedgerChooserTableAdvanced } from "./WalletLedgerChoo
 
 import BigNumber from "bignumber.js";
 import { tid } from "../../../test/testUtils";
-import { MONEY_DECIMALS } from "../../config/constants";
+import { Q18 } from "../../config/constants";
 
-const ethWeiConvertionConstant = new BigNumber(10).pow(MONEY_DECIMALS);
-const weiBalance = new BigNumber(1.6495).mul(ethWeiConvertionConstant).toString();
-const neuWeiBalance = new BigNumber(10.6495).mul(ethWeiConvertionConstant).toString();
+const weiBalance = new BigNumber(1.6495).mul(Q18).toString();
+const neuWeiBalance = new BigNumber(10.6495).mul(Q18).toString();
 
 const defaultProps = () => ({
   loading: false,
@@ -105,8 +104,8 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
       const accountRow = render(
         <AccountRow ledgerAccount={account} handleAddressChosen={props.handleAddressChosen} />,
       );
-      const ethBalance = new BigNumber(weiBalance).div(ethWeiConvertionConstant).toString();
-      const neuBalance = new BigNumber(neuWeiBalance).div(ethWeiConvertionConstant).toString();
+      const ethBalance = new BigNumber(weiBalance).div(Q18).toString();
+      const neuBalance = new BigNumber(neuWeiBalance).div(Q18).toString();
       const renderedDerivationPath = accountRow.find(tid("account-derivation-path"));
       expect(renderedDerivationPath.text()).to.be.eq(account.derivationPath);
 

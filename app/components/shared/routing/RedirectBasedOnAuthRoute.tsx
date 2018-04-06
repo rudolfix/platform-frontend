@@ -5,7 +5,7 @@ import { Redirect, Route, RouteProps } from "react-router-dom";
 import { LocationDescriptor } from "history";
 import { isFunction } from "lodash";
 import { RouterState } from "react-router-redux";
-import { selectIsAuthorized } from "../../../modules/auth/reducer";
+import { selectIsAuthorized } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../AppRouter";
 import { loginWalletRoutes } from "../../walletSelector/walletRoutes";

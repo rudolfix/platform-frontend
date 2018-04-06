@@ -23,7 +23,7 @@ export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) =>
   <div className={cn(styles.tabs, className)} {...props}>
     {tabs.map(({ path, text, handleClick, dataTestId }, index) => (
       <NavLink
-        to={{ pathname: path, search: window.location.search }}
+        to={{ pathname: path, search: window.location.search }} // we pass all query string arguments. It's needed to make redirection back to authorized route work
         className={cn(styles.tab, theme)}
         data-test-id={dataTestId}
         key={index}

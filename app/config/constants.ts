@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 60 * 5;
 
 /**
@@ -15,3 +17,8 @@ export const CHANGE_EMAIL_PERMISSION = "change-email";
  *  Constants for JWT tokens
  */
 export const MAX_EXPIRATION_DIFF_MINUTES = 10;
+
+/**
+ * Useful for money related calculations
+ */
+export const Q18 = new BigNumber(10).pow(18);

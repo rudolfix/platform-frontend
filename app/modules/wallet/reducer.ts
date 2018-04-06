@@ -12,11 +12,11 @@ export interface IWalletStateData {
   euroTokenLockedBalance: string;
   euroTokenICBMLockedBalance: string;
 
-  etherBalance: string;
   etherTokenBalance: string;
   etherTokenLockedBalance: string;
-  etherICBMLockedBalance: string;
+  etherTokenICBMLockedBalance: string;
 
+  etherBalance: string;
   neuBalance: string;
 
   // this info should probably be somewhere else?

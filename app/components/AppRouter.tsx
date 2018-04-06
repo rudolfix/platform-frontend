@@ -15,6 +15,8 @@ export const appRoutes = {
 import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import { OnlyAuthorizedRoute, OnlyPublicRoute } from "./shared/routing/RedirectBasedOnAuthRoute";
+
 import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
 import { Eto } from "./eto/Eto";
@@ -24,8 +26,6 @@ import { Kyc } from "./kyc/Kyc";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
 import { settingsRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
-import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
-import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 import { Wallet } from "./wallet/Wallet";
 import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
 import { WalletSelector } from "./walletSelector/WalletSelector";
@@ -35,7 +35,7 @@ export const AppRouter: React.SFC = () => (
   <Switch>
     <OnlyPublicRoute path={appRoutes.root} component={Home} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
-    <Route path={appRoutes.login} component={WalletSelector} />
+    <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
 
     <OnlyAuthorizedRoute path={appRoutes.verify} component={WalletVerify} />

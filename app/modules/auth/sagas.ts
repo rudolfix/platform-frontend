@@ -9,7 +9,7 @@ import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
 import { WalletType } from "../web3/types";
-import { IAppState } from './../../store';
+import { IAppState } from "./../../store";
 import { selectRedirectURLFromQueryString } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -67,6 +67,7 @@ export function* updateUser(updatedUser: IUser): Iterator<any> {
 function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Iterator<any> {
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
+  yield effects.put(actions.routing.goHome());
   yield effects.put(actions.init.start());
 }
 

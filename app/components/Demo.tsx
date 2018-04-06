@@ -197,7 +197,6 @@ export const Demo: React.SFC = () => (
           <MyWalletWidgetComponent
             isLoading={false}
             data={{
-              euroTokenEuroAmount: "6004904646" + "0".repeat(16),
               euroTokenAmount: "36490" + "0".repeat(18),
               ethAmount: "66482" + "0".repeat(14),
               ethEuroAmount: "6004904646" + "0".repeat(16),

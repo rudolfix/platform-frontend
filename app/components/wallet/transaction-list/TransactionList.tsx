@@ -40,6 +40,8 @@ interface ITransactionList {
   tabs: IFilter[];
 }
 
+const NoTransactionList = () => <div className="py-3">No transactions.</div>;
+
 export const TransactionList: React.SFC<ITransactionList> = ({
   transactions,
   categories,
@@ -89,32 +91,36 @@ export const TransactionList: React.SFC<ITransactionList> = ({
     <Row>
       <Col>
         <TableBody>
-          {transactions.map(({ id, timestamp, type, amount, fromTo, transfer }) => (
-            <TableRow key={id}>
-              <TableCell decorate mobileDescription={"Date"}>
-                <Date timestamp={timestamp} />
-              </TableCell>
-              <TableCell decorate mobileDescription={"Transaction type"}>
-                {type}
-              </TableCell>
-              <TableCell decorate mobileDescription={"Amount"}>
-                <Money currency="eur_token" value={amount} transfer={transfer} />
-              </TableCell>
-              <TableCell decorate mobileDescription={"From/To"}>
-                {fromTo}
-              </TableCell>
-              <TableCell decorate mobileDescription={"TXN"} center>
-                <Button layout="secondary">
-                  <InlineIcon svgIcon={LinkOutIcon} />
-                </Button>
-              </TableCell>
-              <TableCell decorate mobileDescription={"Details"} center>
-                <Button layout="secondary">
-                  <InlineIcon svgIcon={AddIcon} />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {transactions.length === 0 ? (
+            <NoTransactionList />
+          ) : (
+            transactions.map(({ id, timestamp, type, amount, fromTo, transfer }) => (
+              <TableRow key={id}>
+                <TableCell decorate mobileDescription={"Date"}>
+                  <Date timestamp={timestamp} />
+                </TableCell>
+                <TableCell decorate mobileDescription={"Transaction type"}>
+                  {type}
+                </TableCell>
+                <TableCell decorate mobileDescription={"Amount"}>
+                  <Money currency="eur_token" value={amount} transfer={transfer} />
+                </TableCell>
+                <TableCell decorate mobileDescription={"From/To"}>
+                  {fromTo}
+                </TableCell>
+                <TableCell decorate mobileDescription={"TXN"} center>
+                  <Button layout="secondary">
+                    <InlineIcon svgIcon={LinkOutIcon} />
+                  </Button>
+                </TableCell>
+                <TableCell decorate mobileDescription={"Details"} center>
+                  <Button layout="secondary">
+                    <InlineIcon svgIcon={AddIcon} />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Col>
     </Row>

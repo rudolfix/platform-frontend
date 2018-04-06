@@ -13,6 +13,7 @@ import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_ina
 import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inactive.svg";
 // tslint:disable-next-line:no-implicit-dependencies
 import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
+import { appRoutes } from "../AppRouter";
 
 interface IMenuEntry {
   svgString: string;
@@ -39,9 +40,9 @@ const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
 
 export const LayoutAuthorizedMenu = () => (
   <div className={styles.menu}>
-    <MenuEntry svgString={iconStart} to="/dashboard" title="Start" />
-    <MenuEntry svgString={iconPortfolio} to="/portfolio" title="Portfolio" />
-    <MenuEntry svgString={iconWallet} to="/wallet" title="Wallet" />
-    <MenuEntry svgString={iconSettings} to="/settings" title="Settings" actionRequired />
+    <MenuEntry svgString={iconStart} to={appRoutes.dashboard} title="Start" />
+    <MenuEntry svgString={iconPortfolio} to="#" title="Portfolio" />
+    <MenuEntry svgString={iconWallet} to={appRoutes.wallet} title="Wallet" />
+    <MenuEntry svgString={iconSettings} to={appRoutes.settings} title="Settings" actionRequired />
   </div>
 );

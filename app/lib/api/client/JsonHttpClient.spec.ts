@@ -163,7 +163,7 @@ describe("JsonHttpClient", () => {
           new_user: {
             backup_codes_verified: true,
             salt: "e5GiSRkNa3SA8oFBJtuJfxyqs7YXEtMl4eFn3PNkwAI=",
-            new_email: "chris@kaczor.io",
+            unverified_email: "chris@kaczor.io",
           },
         },
       });

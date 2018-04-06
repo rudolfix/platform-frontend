@@ -1,11 +1,18 @@
 import { expect } from "chai";
-import { shallow } from "enzyme";
+import { shallow, mount, render } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
 import { AccountRow, WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 
 import { tid } from "../../../test/testUtils";
+import BigNumber from "bignumber.js";
+import { MONEY_DECIMALS } from "../../config/constants";
+
+const ethWeiConvertionConstant = new BigNumber(10).pow(MONEY_DECIMALS);
+const weiBalance = new BigNumber(1.6495).mul(ethWeiConvertionConstant).toString();
+const neuWeiBalance = new BigNumber(10.6495).mul(ethWeiConvertionConstant).toString();
+
 
 const defaultProps = () => ({
   loading: false,
@@ -13,26 +20,26 @@ const defaultProps = () => ({
     {
       address: "0x6C1086C292a7E1FdF66C68776eA972038467A370",
       derivationPath: "44'/60'/0'/0",
-      balanceETH: "1.6495",
-      balanceNEU: "0",
+      balanceETH: weiBalance,
+      balanceNEU: neuWeiBalance,
     },
     {
       address: "0xB2A0e2688c5A82bEEe6818F5a3D206680FdFD75d",
       derivationPath: "44'/60'/0'/1",
       balanceETH: "0",
-      balanceNEU: "0",
+      balanceNEU: "0.0000",
     },
     {
       address: "0xa13D14DA39529761a6C45F4f556700735E0774a8",
       derivationPath: "44'/60'/0'/2",
       balanceETH: "0",
-      balanceNEU: "0",
+      balanceNEU: "0.0000",
     },
     {
       address: "0x3cC2ef578f6Eb7ff63f9CA8f5a54cfe40339256A",
       derivationPath: "44'/60'/0'/3",
-      balanceETH: "1.6495",
-      balanceNEU: "0",
+      balanceETH: weiBalance,
+      balanceNEU: "0.0000",
     },
   ],
   handleAddressChosen: spy(),
@@ -96,18 +103,30 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
     it("should render correct account data and handle click", () => {
       const props = defaultProps();
       const account = props.accounts[0];
-      const accountRow = shallow(
+      const accountRow = render(
         <AccountRow ledgerAccount={account} handleAddressChosen={props.handleAddressChosen} />,
       );
+      const ethBalance = new BigNumber(weiBalance).div(ethWeiConvertionConstant);
+      const neuBalance = new BigNumber(neuWeiBalance).div(ethWeiConvertionConstant);
 
       const renderedDerivationPath = accountRow.find(tid("account-derivation-path"));
       expect(renderedDerivationPath.text()).to.be.eq(account.derivationPath);
+
       const renderedAddress = accountRow.find(tid("account-address"));
       expect(renderedAddress.text()).to.be.eq(account.address);
+
       const renderedBalanceETH = accountRow.find(tid("account-balance-eth"));
-      expect(renderedBalanceETH.text()).to.be.eq(account.balanceETH + " ETH");
+      expect(renderedBalanceETH.text()).to.be.eq(ethBalance + " ETH");
+
       const renderedBalanceNEU = accountRow.find(tid("account-balance-neu"));
-      expect(renderedBalanceNEU.text()).to.be.eq(account.balanceNEU + " NEU");
+      expect(renderedBalanceNEU.text()).to.be.eq(neuBalance + " NEU");
+    });
+    it("should handle click", () => {
+      const props = defaultProps();
+      const account = props.accounts[0];
+      const accountRow = shallow(
+        <AccountRow ledgerAccount={account} handleAddressChosen={props.handleAddressChosen} />,
+      );
 
       accountRow.find(tid("button-select")).simulate("click");
       expect(props.handleAddressChosen).to.be.calledOnce;

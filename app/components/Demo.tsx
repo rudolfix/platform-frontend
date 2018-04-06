@@ -222,7 +222,7 @@ export const Demo: React.SFC = () => (
           <VerifyEmailWidgetComponent />
         </Col>
         <Col lg={6} xs={12}>
-          <VerifyEmailWidgetComponent verifiedEmail="moe@test.co" />
+          <VerifyEmailWidgetComponent isUserEmailVarified={true} />
         </Col>
       </Row>
     </Container>

@@ -1,18 +1,17 @@
 import { expect } from "chai";
-import { shallow, mount, render } from "enzyme";
+import { render, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
 import { AccountRow, WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 
-import { tid } from "../../../test/testUtils";
 import BigNumber from "bignumber.js";
+import { tid } from "../../../test/testUtils";
 import { MONEY_DECIMALS } from "../../config/constants";
 
 const ethWeiConvertionConstant = new BigNumber(10).pow(MONEY_DECIMALS);
 const weiBalance = new BigNumber(1.6495).mul(ethWeiConvertionConstant).toString();
 const neuWeiBalance = new BigNumber(10.6495).mul(ethWeiConvertionConstant).toString();
-
 
 const defaultProps = () => ({
   loading: false,
@@ -106,9 +105,8 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
       const accountRow = render(
         <AccountRow ledgerAccount={account} handleAddressChosen={props.handleAddressChosen} />,
       );
-      const ethBalance = new BigNumber(weiBalance).div(ethWeiConvertionConstant);
-      const neuBalance = new BigNumber(neuWeiBalance).div(ethWeiConvertionConstant);
-
+      const ethBalance = new BigNumber(weiBalance).div(ethWeiConvertionConstant).toString();
+      const neuBalance = new BigNumber(neuWeiBalance).div(ethWeiConvertionConstant).toString();
       const renderedDerivationPath = accountRow.find(tid("account-derivation-path"));
       expect(renderedDerivationPath.text()).to.be.eq(account.derivationPath);
 
@@ -116,10 +114,10 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
       expect(renderedAddress.text()).to.be.eq(account.address);
 
       const renderedBalanceETH = accountRow.find(tid("account-balance-eth"));
-      expect(renderedBalanceETH.text()).to.be.eq(ethBalance + " ETH");
+      expect(renderedBalanceETH.text()).to.be.eq(`${ethBalance} ETH`);
 
       const renderedBalanceNEU = accountRow.find(tid("account-balance-neu"));
-      expect(renderedBalanceNEU.text()).to.be.eq(neuBalance + " NEU");
+      expect(renderedBalanceNEU.text()).to.be.eq(`${neuBalance} NEU`);
     });
     it("should handle click", () => {
       const props = defaultProps();

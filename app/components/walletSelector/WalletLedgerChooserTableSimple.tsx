@@ -3,8 +3,8 @@ import * as React from "react";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { Button } from "../shared/Buttons";
-import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
 import { Money } from "../shared/Money";
+import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
 
 interface IAccountRow {
   ledgerAccount: ILedgerAccount;

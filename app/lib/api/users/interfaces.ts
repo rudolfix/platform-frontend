@@ -9,7 +9,6 @@ export interface IUser {
 }
 
 export interface IVerifyEmailUser {
-  verification_code: string;
   verificationCode: string;
 }
 

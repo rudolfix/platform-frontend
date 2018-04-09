@@ -1,10 +1,7 @@
 import * as React from "react";
 
 import { compact } from "lodash";
-import {
-  INotification,
-  selectSeedNotBackedUpNotification,
-} from "../../../modules/notifications/reducer";
+import { INotification, selectSettingsNotification } from "../../../modules/notifications/reducer";
 import { appConnect, AppDispatch } from "../../../store";
 import { Notification } from "./Notification";
 
@@ -37,7 +34,7 @@ const NotificationWidgetComponent: React.SFC<IProps> = ({ notifications, dispatc
 export const NotificationWidget = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => {
     const notifications = s.notifications.notifications;
-    const appStateDerivedNotifications = compact([selectSeedNotBackedUpNotification(s.auth)]);
+    const appStateDerivedNotifications = compact([selectSettingsNotification(s)]);
     return {
       notifications: [...notifications, ...appStateDerivedNotifications],
     };

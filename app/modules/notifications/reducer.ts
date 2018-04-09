@@ -1,8 +1,8 @@
-import { IKycState } from "./../kyc/reducer";
 import { AppActionTypes, AppReducer, IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { selectKycRequestStatus } from "../kyc/selectors";
 import { routingActions } from "../routing/actions";
-import { IAuthState } from "./../auth/reducer";
+import { selectBackupCodesVerified, selectIsUserEmailVerified } from "./../auth/selectors";
 import { notificationActions } from "./actions";
 
 export enum NotificationType {
@@ -72,6 +72,8 @@ export const settingsNotification = () => ({
 });
 
 export const selectSettingsNotification = (state: IAppState) =>
-  state.auth.user && (state.auth.user.backupCodesVerified || state.auth.user.unverifiedEmail)
-    ? undefined
-    : settingsNotification();
+  !selectIsUserEmailVerified(state.auth) ||
+  !selectBackupCodesVerified(state.auth) ||
+  !selectKycRequestStatus(state.kyc)
+    ? settingsNotification()
+    : undefined;

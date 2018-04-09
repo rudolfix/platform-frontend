@@ -8,7 +8,6 @@ import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
 import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
-import { compose } from "redux";
 import {
   selectIsThereUnverifiedEmail,
   selectIsUserEmailVerified,
@@ -67,10 +66,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
     </PanelDark>
   );
 };
-export const VerifyEmailWidget =
-  appConnect<IStateProps,{}>({
-    stateToProps: s => ({
-      isUserEmailVarified: selectIsUserEmailVerified(s.auth),
-      isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
-    }),
-  })(VerifyEmailWidgetComponent);
+export const VerifyEmailWidget = appConnect<IStateProps, {}>({
+  stateToProps: s => ({
+    isUserEmailVarified: selectIsUserEmailVerified(s.auth),
+    isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
+  }),
+})(VerifyEmailWidgetComponent);

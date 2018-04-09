@@ -197,11 +197,9 @@ export const Demo: React.SFC = () => (
           <MyWalletWidgetComponent
             isLoading={false}
             data={{
-              euroTokenEuroAmount: "6004904646" + "0".repeat(16),
               euroTokenAmount: "36490" + "0".repeat(18),
               ethAmount: "66482" + "0".repeat(14),
               ethEuroAmount: "6004904646" + "0".repeat(16),
-              percentage: "-3.67",
               totalAmount: "637238" + "0".repeat(18),
             }}
           />
@@ -220,10 +218,10 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <VerifyEmailWidgetComponent />
+          <VerifyEmailWidgetComponent isUserEmailVarified={false} isThereUnverifiedEmail={true} />
         </Col>
         <Col lg={6} xs={12}>
-          <VerifyEmailWidgetComponent verifiedEmail="moe@test.co" />
+          <VerifyEmailWidgetComponent isUserEmailVarified={true} isThereUnverifiedEmail={true} />
         </Col>
       </Row>
     </Container>

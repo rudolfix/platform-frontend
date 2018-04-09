@@ -1,6 +1,7 @@
 import { AppActionTypes, AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 import { routingActions } from "../routing/actions";
+import { IAuthState } from "./../auth/reducer";
 import { notificationActions } from "./actions";
 
 export enum NotificationType {
@@ -68,3 +69,6 @@ export const seedNotBackedUpNotification = () => ({
   actionLinkText: "Go to settings",
   onClickAction: routingActions.goToSettings(),
 });
+
+export const selectSeedNotBackedUpNotification = (state: IAuthState) =>
+  state.user && state.user.backupCodesVerified ? undefined : seedNotBackedUpNotification();

@@ -9,9 +9,12 @@
   height: px-to-rem(28px);
 }
 
-.link {
-  font-size: px-to-rem(14px);
-  font-weight: $font-weight-bold;
+:global(.button) > div {
+  &.link {
+    font-size: px-to-rem(14px);
+    font-weight: $font-weight-bold;
+    padding: 0;
+  }
 }
 
 .small-font {

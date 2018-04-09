@@ -9,6 +9,9 @@ import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/reducer";
 import { WalletType } from "../web3/types";
+import { IAppState } from "./../../store";
+import { selectActivationCodeFromQueryString } from "./../web3/reducer";
+import { selectRedirectURLFromQueryString } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -33,12 +36,29 @@ export async function loadUserPromise({
   const walletMetadata = walletMetadataStorage.get();
   if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
     return apiUserSerivce.createAccount({
-      unverifiedEmail: walletMetadata.email,
+      newEmail: walletMetadata.email,
       salt: walletMetadata.salt,
       backupCodesVerified: false,
     });
   } else {
-    return apiUserSerivce.createAccount();
+    return apiUserSerivce.createAccount({
+      backupCodesVerified: true,
+    });
+  }
+}
+
+export async function verifyUserEmailPromise({
+  apiUserSerivce,
+  getState,
+  notificationCenter,
+}: TGlobalDependencies): Promise<void> {
+  const userCode = selectActivationCodeFromQueryString(getState().router);
+  if (!userCode) return;
+  try {
+    await apiUserSerivce.verifyUserEmail(userCode);
+    notificationCenter.info("Your email was verified successfully.");
+  } catch (e) {
+    notificationCenter.error("Failed to verify your email.");
   }
 }
 
@@ -63,6 +83,8 @@ export function* updateUser(updatedUser: IUser): Iterator<any> {
 function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Iterator<any> {
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
+  yield effects.put(actions.routing.goHome());
+  yield effects.put(actions.init.start());
 }
 
 function* signInUser(): Iterator<any> {
@@ -75,12 +97,26 @@ function* signInUser(): Iterator<any> {
 
   try {
     yield neuCall(loadUser);
-    yield effects.put(actions.routing.goToDashboard());
+
+    const redirectionUrl = yield effects.select((state: IAppState) =>
+      selectRedirectURLFromQueryString(state.router),
+    );
+    if (redirectionUrl) {
+      yield effects.put(actions.routing.goTo(redirectionUrl));
+    } else {
+      yield effects.put(actions.routing.goToDashboard());
+    }
   } catch (e) {
     yield effects.put(
       actions.walletSelector.messageSigningError("Error while connecting with server!"),
     );
   }
+}
+
+function* verifyUserEmail(): Iterator<any> {
+  yield neuCall(verifyUserEmailPromise);
+  yield neuCall(loadUser);
+  yield effects.put(actions.routing.goHome());
 }
 
 /**
@@ -159,5 +195,6 @@ export function* ensurePermissionsArePresent(
 
 export const authSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
+  yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", signInUser);
 };

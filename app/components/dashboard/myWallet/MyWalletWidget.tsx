@@ -8,9 +8,10 @@ import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { actions } from "../../../modules/actions";
 import {
-  selectLiquidEtherBalanceEuroAmount,
-  selectLiquidEuroTokenBalance,
-  selectLiquidEuroTotalAmount,
+  selectTotalEtherBalance,
+  selectTotalEtherBalanceEuroAmount,
+  selectTotalEuroBalance,
+  selectTotalEuroTokenBalance,
 } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -23,7 +24,7 @@ import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import { CommonHtmlProps } from "../../../types";
-import { walletRoutes } from "../../wallet/routes";
+import { appRoutes } from "../../AppRouter";
 import * as styles from "./MyWalletWidget.module.scss";
 
 type StateProps = {
@@ -31,10 +32,8 @@ type StateProps = {
   error?: string;
   data?: {
     euroTokenAmount: string;
-    euroTokenEuroAmount: string;
     ethAmount: string;
     ethEuroAmount: string;
-    percentage: string;
     totalAmount: string;
   };
 };
@@ -45,14 +44,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
   } else if (props.error) {
     return <WarningAlert>{props.error}</WarningAlert>;
   } else {
-    const {
-      euroTokenAmount,
-      euroTokenEuroAmount,
-      percentage,
-      ethAmount,
-      ethEuroAmount,
-      totalAmount,
-    } = props.data!;
+    const { euroTokenAmount, ethAmount, ethEuroAmount, totalAmount } = props.data!;
 
     return (
       <>
@@ -63,8 +55,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               largeNumber={euroTokenAmount}
               icon={moneyIcon}
               data-test-id="euro-widget"
-              value={euroTokenEuroAmount}
-              percentage={percentage}
+              value={euroTokenAmount}
               currencyTotal={"eur"}
             />
           </Col>
@@ -76,7 +67,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               data-test-id="eth-widget"
               className={cn(styles.borderLeft, "pl-sm-2 pl-md-0")}
               value={ethEuroAmount}
-              percentage={percentage}
               currencyTotal={"eur"}
             />
           </Col>
@@ -95,7 +85,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
             </div>
           </Col>
           <Col className="d-block d-sm-none text-right col-auto">
-            <Link to={walletRoutes.manageWallet}>
+            <Link to={appRoutes.wallet}>
               <Button
                 layout="secondary"
                 iconPosition="icon-after"
@@ -122,7 +112,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
     <PanelDark
       headerText="My Wallet"
       rightComponent={
-        <Link to={walletRoutes.manageWallet}>
+        <Link to={appRoutes.wallet}>
           <Button
             layout="secondary"
             iconPosition="icon-after"
@@ -155,12 +145,10 @@ export const MyWalletWidget = compose<React.SFC<CommonHtmlProps>>(
           isLoading,
           error,
           data: {
-            euroTokenEuroAmount: selectLiquidEuroTokenBalance(walletData),
-            euroTokenAmount: selectLiquidEuroTokenBalance(walletData),
-            ethAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-            ethEuroAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-            percentage: "0", // TODO connect 24h change
-            totalAmount: selectLiquidEuroTotalAmount(walletData),
+            euroTokenAmount: selectTotalEuroTokenBalance(walletData),
+            ethAmount: selectTotalEtherBalance(walletData),
+            ethEuroAmount: selectTotalEtherBalanceEuroAmount(walletData),
+            totalAmount: selectTotalEuroBalance(walletData),
           },
         };
       } else {

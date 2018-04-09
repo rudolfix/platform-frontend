@@ -1,5 +1,6 @@
 import { expect } from "chai";
-import { IAuthState, selectIsAuthorized, selectUserEmail } from "./reducer";
+import { IAuthState } from "./reducer";
+import { selectIsAuthorized, selectUserEmail } from "./selectors";
 
 describe("auth > selectors", () => {
   describe("selectIsAuthorized", () => {

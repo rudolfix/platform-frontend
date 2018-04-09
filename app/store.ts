@@ -38,7 +38,15 @@ export type IAppState = TReducersMapToReturnTypes<typeof appReducers> & {
   router: RouterState;
 };
 
-export const reducers = combineReducers<IAppState>(allReducers);
+export const rootReducer = combineReducers<IAppState>(allReducers);
+
+export const reducers = (state: any, action: any) => {
+  switch (action.type) {
+    case "AUTH_LOGOUT":
+      return rootReducer(undefined as any, action);
+  }
+  return rootReducer(state, action);
+};
 
 interface IAppConnectOptions<S, D, O> {
   stateToProps?: (state: IAppState, ownProps: O) => S;

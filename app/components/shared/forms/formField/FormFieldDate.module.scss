@@ -21,24 +21,6 @@
     text-align: center;
   }
 
-  // sass-lint:disable no-vendor-prefixes
-  ::-webkit-input-placeholder {
-    text-align: center;
-  }
-
-  :-moz-placeholder {
-    text-align: center;
-  }
-
-  ::-moz-placeholder {
-    text-align: center;
-  }
-
-  :-ms-input-placeholder {
-    text-align: center;
-  }
-  // sass-lint:enable no-vendor-prefixes
-
   .label {
     @include media-breakpoint-up (lg) {
       align-self: flex-end;
@@ -52,9 +34,7 @@
 
   .inputs-wrapper {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
 
     > div:last-of-type input {
       @include media-breakpoint-up (lg) {

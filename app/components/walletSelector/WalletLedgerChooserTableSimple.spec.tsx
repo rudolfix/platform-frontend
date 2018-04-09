@@ -76,7 +76,7 @@ describe("<WalletLedgerChooserTableSimple />", () => {
       const renderedBalanceNEU = accountRow.find(tid("account-balance-neu"));
       expect(renderedBalanceNEU.text()).to.be.eq(`${neuBalance} NEU`);
     });
-    
+
     it("should handle click", () => {
       const props = defaultProps();
       const account = props.accounts[0];

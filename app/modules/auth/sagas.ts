@@ -33,7 +33,7 @@ export async function loadUserPromise({
   const walletMetadata = walletMetadataStorage.get();
   if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
     return apiUserSerivce.createAccount({
-      unverifiedEmail: walletMetadata.email,
+      newEmail: walletMetadata.email,
       salt: walletMetadata.salt,
       backupCodesVerified: false,
     });

@@ -61,7 +61,7 @@ export class FormFieldDate extends React.Component<IProps> {
     const valid = isValid(touched, errors, name);
     return (
       <FormGroup>
-        <div className={styles.birthDateField}>
+        <div className={styles.dateField}>
           <span className={styles.label}>{this.props.label}</span>
           <div className={styles.inputsWrapper}>
             <Field

@@ -1,4 +1,4 @@
-@import "../../../styles/neufund-theme";
+@import "../../styles/neufund-theme";
 
 .upload {
   @include make-row;
@@ -30,16 +30,11 @@
 .upload-description {
   @include media-breakpoint-up (md) {
     border-right: 1px solid $neu-light-blue-grey;
-    padding-right: px-to-rem(60px);
   }
 
 }
 
 .upload-zone {
-  @include media-breakpoint-up (md) {
-    padding-left: px-to-rem(60px);
-  }
-
   strong {
     color: $neu-almost-black;
   }

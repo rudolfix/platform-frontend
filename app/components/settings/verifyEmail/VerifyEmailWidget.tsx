@@ -18,8 +18,8 @@ import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
 interface IStateProps {
-  isUserEmailVarified?: boolean;
-  isThereUnverifiedEmail?: Boolean;
+  isUserEmailVarified: boolean;
+  isThereUnverifiedEmail: boolean;
 }
 
 export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
@@ -67,11 +67,10 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
     </PanelDark>
   );
 };
-export const VerifyEmailWidget = compose<React.ComponentClass>(
-  appConnect<IStateProps>({
+export const VerifyEmailWidget =
+  appConnect<IStateProps,{}>({
     stateToProps: s => ({
       isUserEmailVarified: selectIsUserEmailVerified(s.auth),
       isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
     }),
-  }),
-)(VerifyEmailWidgetComponent);
+  })(VerifyEmailWidgetComponent);

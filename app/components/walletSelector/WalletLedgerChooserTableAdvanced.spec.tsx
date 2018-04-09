@@ -25,19 +25,19 @@ const defaultProps = () => ({
       address: "0xB2A0e2688c5A82bEEe6818F5a3D206680FdFD75d",
       derivationPath: "44'/60'/0'/1",
       balanceETH: "0",
-      balanceNEU: "0.0000",
+      balanceNEU: "0",
     },
     {
       address: "0xa13D14DA39529761a6C45F4f556700735E0774a8",
       derivationPath: "44'/60'/0'/2",
       balanceETH: "0",
-      balanceNEU: "0.0000",
+      balanceNEU: "0",
     },
     {
       address: "0x3cC2ef578f6Eb7ff63f9CA8f5a54cfe40339256A",
       derivationPath: "44'/60'/0'/3",
       balanceETH: weiBalance,
-      balanceNEU: "0.0000",
+      balanceNEU: "0",
     },
   ],
   handleAddressChosen: spy(),
@@ -118,6 +118,7 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
       const renderedBalanceNEU = accountRow.find(tid("account-balance-neu"));
       expect(renderedBalanceNEU.text()).to.be.eq(`${neuBalance} NEU`);
     });
+
     it("should handle click", () => {
       const props = defaultProps();
       const account = props.accounts[0];

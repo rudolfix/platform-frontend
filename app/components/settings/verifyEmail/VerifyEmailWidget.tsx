@@ -9,16 +9,23 @@ import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
-import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
+import {
+  selectIsThereUnverifiedEmail,
+  selectIsUserEmailVerified,
+} from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
 interface IStateProps {
   isUserEmailVarified?: boolean;
+  isThereUnverifiedEmail?: Boolean;
 }
 
-export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({ isUserEmailVarified }) => {
+export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
+  isUserEmailVarified,
+  isThereUnverifiedEmail,
+}) => {
   return (
     <PanelDark
       headerText="EMAIL VERIFICATION"
@@ -46,13 +53,19 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({ isUserEmail
             You need to verify your email address, which will be used for your wallet link we send
             you
           </p>
-          <Col xs={12} className="d-flex justify-content-center">
-            <Link to="#">
-              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
-                Verify
-              </Button>
-            </Link>
-          </Col>
+          {isThereUnverifiedEmail && (
+            <Col
+              xs={12}
+              className="d-flex justify-content-center"
+              data-test-id="resend-link"
+            >
+              <Link to="#">
+                <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
+                  Resend Link
+                </Button>
+              </Link>
+            </Col>
+          )}
         </div>
       )}
     </PanelDark>
@@ -62,6 +75,7 @@ export const VerifyEmailWidget = compose<React.ComponentClass>(
   appConnect<IStateProps>({
     stateToProps: s => ({
       isUserEmailVarified: selectIsUserEmailVerified(s.auth),
+      isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
     }),
   }),
 )(VerifyEmailWidgetComponent);

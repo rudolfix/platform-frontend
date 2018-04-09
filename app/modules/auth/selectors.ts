@@ -9,3 +9,5 @@ export const selectBackupCodesVerified = (state: IAuthState): boolean | undefine
   state.user && state.user.backupCodesVerified;
 export const selectIsUserEmailVerified = (state: IAuthState): boolean | undefined =>
   state.user && !!state.user.verifiedEmail && !state.user.unverifiedEmail;
+export const selectIsThereUnverifiedEmail = (state: IAuthState): boolean | undefined =>
+  state.user && !!state.user.unverifiedEmail;

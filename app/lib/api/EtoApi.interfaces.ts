@@ -36,12 +36,12 @@ export const EtoSimplePersonSchema = Yup.object().shape({
 });
 
 // file
-export interface IKycFileInfo {
+export interface IEtoFileInfo {
   id: string;
   fileName: string;
 }
 
-export const KycFileInfoSchema = Yup.object().shape({
+export const EtoFileInfoSchema = Yup.object().shape({
   id: Yup.string(),
   fileName: Yup.string(),
 });
@@ -86,7 +86,7 @@ export const EtoCompanyInformationSchemaRequired = makeAllRequired(EtoCompanyInf
 /**
  * Legal Representative Page
  */
-export interface IEtoLegalRepresentative extends IEtoPerson {}
+export interface IEtoLegalRepresentative extends IEtoPerson { }
 
 export const EtoLegalRepresentativeSchema = EtoPersonSchema;
 
@@ -144,12 +144,12 @@ export const EtoCaptableEntry = Yup.object().shape({
 export const EtoCaptableEntryRequired = makeAllRequired(EtoTeamInformationSchema);
 
 // notable investors
-export interface IEtoNotableInvestor extends IEtoSimplePerson {}
+export interface IEtoNotableInvestor extends IEtoSimplePerson { }
 export const EtoNotableInvestorSchema = EtoSimplePersonSchema;
 export const EtoNotableInvestorSchemaRequired = makeAllRequired(EtoTeamInformationSchema);
 
 // advisors
-export interface IEtoAdvisor extends IEtoSimplePerson {}
+export interface IEtoAdvisor extends IEtoSimplePerson { }
 export const EtoAdvisorSchema = EtoSimplePersonSchema;
 export const EtoAdvisorSchemaRequired = makeAllRequired(EtoTeamInformationSchema);
 
@@ -172,12 +172,12 @@ export const EtoMarketInformationSchema = Yup.object().shape({
 export const EtoMarketInformationSchemaRequired = makeAllRequired(EtoMarketInformationSchema);
 
 // business partners
-export interface IEtoBusinessPartners extends IEtoSimplePerson {}
+export interface IEtoBusinessPartners extends IEtoSimplePerson { }
 export const EtoBusinessPartnersSchema = EtoSimplePersonSchema;
 export const EtoBusinessPartnersSchemaRequired = makeAllRequired(EtoTeamInformationSchema);
 
 // key customers
-export interface IEtoKeyCustomer extends IEtoSimplePerson {}
+export interface IEtoKeyCustomer extends IEtoSimplePerson { }
 export const EtoKeyCustomerSchema = EtoSimplePersonSchema;
 export const EtoKeyCustomerSchemaRequired = makeAllRequired(EtoTeamInformationSchema);
 

@@ -3,6 +3,7 @@ import * as React from "react";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { Button } from "../shared/Buttons";
+import { Money } from "../shared/Money";
 import { NavigationButton } from "../shared/Navigation";
 import * as styles from "./WalletLedgerChooserTableAdvanced.module.scss";
 
@@ -30,10 +31,10 @@ export class AccountRow extends React.Component<IAccountRow> {
         </td>
         <td className={cn(styles.balance, styles.pseudoBorderLeft)}>
           <div data-test-id="account-balance-eth" className={styles.eth}>
-            {this.props.ledgerAccount.balanceETH} ETH
+            <Money value={this.props.ledgerAccount.balanceETH} currency="eth" />
           </div>
           <div data-test-id="account-balance-neu" className={styles.neu}>
-            {this.props.ledgerAccount.balanceNEU} NEU
+            <Money value={this.props.ledgerAccount.balanceNEU} currency="neu" />
           </div>
         </td>
         <td className={styles.select}>

@@ -1,5 +1,21 @@
+import * as queryString from "query-string";
+import { RouterState } from "react-router-redux";
 import { IUser } from "../../lib/api/users/interfaces";
 import { IAuthState } from "./reducer";
+
+export const selectRedirectURLFromQueryString = (state: RouterState): string | undefined => {
+  if (!(state.location && state.location.search)) {
+    return undefined;
+  }
+  const params = queryString.parse(state.location.search);
+  const redirect = params.redirect;
+
+  if (!redirect) {
+    return undefined;
+  }
+
+  return redirect;
+};
 
 export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
 export const selectUserEmail = (state: IAuthState): string | undefined =>

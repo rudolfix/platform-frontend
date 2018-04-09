@@ -31,7 +31,7 @@ import { actions } from "../../modules/actions";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "./WalletLedgerInitComponent";
-import { walletRoutes } from "./walletRoutes";
+import { walletRegisterRoutes } from "./walletRoutes";
 import { WalletSelector } from "./WalletSelector";
 
 describe("Wallet selector integration", () => {
@@ -93,7 +93,7 @@ describe("Wallet selector integration", () => {
       wrapWithProviders(WalletSelector, {
         container,
         store,
-        currentRoute: walletRoutes.light,
+        currentRoute: walletRegisterRoutes.light,
       }),
     );
 

@@ -11,6 +11,7 @@ import { actions } from "../../../modules/actions";
 import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 
 import { Col, Row } from "reactstrap";
+import { IEtoFileInfo } from "../../../lib/api/EtoApi.interfaces";
 import {
   IKycBusinessData,
   IKycFileInfo,
@@ -18,15 +19,15 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
+import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
-import { KycFileUploadList } from "../shared/KycFileUploadList";
 
 interface IStateProps {
   currentValues?: IKycBusinessData;
   loadingData: boolean;
   fileUploading: boolean;
   filesLoading: boolean;
-  files: IKycFileInfo[];
+  files: IKycFileInfo[] | IEtoFileInfo[];
 }
 
 interface IDispatchProps {
@@ -81,7 +82,7 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
       <br />
       Please upload company documents here
       <br />
-      <KycFileUploadList
+      <MultiFileUpload
         layout="business"
         onDropFile={props.onDropFile}
         files={props.files}

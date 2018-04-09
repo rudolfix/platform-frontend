@@ -33,7 +33,7 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { KycPanel } from "../KycPanel";
-import { KycFileUploadList } from "../shared/KycFileUploadList";
+import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -101,7 +101,7 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   if (!props.lrDataValid) return <div />;
   return (
     <div>
-      <KycFileUploadList
+      <MultiFileUpload
         layout="personal"
         onDropFile={props.onDropFile}
         files={props.files}

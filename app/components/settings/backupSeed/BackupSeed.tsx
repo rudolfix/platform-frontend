@@ -4,7 +4,7 @@ import { actions } from "../../../modules/actions";
 import { selectIsUnlocked, selectSeed } from "../../../modules/web3/reducer";
 import { appConnect } from "../../../store";
 
-import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
+import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { BackupSeedFlowContainer } from "./BackupSeedFlowContainer";
 

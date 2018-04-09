@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import { selectIsAuthorized } from "../../../modules/auth/reducer";
+import { selectIsAuthorized } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../AppRouter";
 

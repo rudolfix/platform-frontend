@@ -18,8 +18,8 @@
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
-
 import { appConnect } from "../../../store";
 
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -28,10 +28,15 @@ import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
 import { FormField } from "../../shared/forms/forms";
 
+import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 import {
   EtoTeamInformationSchemaRequired,
   IEtoTeamInformation,
 } from "../../../lib/api/EtoApi.interfaces";
+import { Accordion, AccordionElement } from "../../shared/Accordion";
+import { FormTextArea } from "../../shared/forms/formField/FormTextArea";
+import { HorizontalLine } from "../../shared/HorizontalLine";
+import { SingleFileUpload } from "../../shared/SingleFileUpload";
 
 interface IStateProps {
   currentValues: IEtoTeamInformation;
@@ -46,12 +51,114 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
   <Form>
-    <FormField label="First name" name="firstName" />
     {/** add founnders section here, lis of IEtoFounder **/}
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <h4>Founders</h4>
+        <Accordion>
+          <AccordionElement isOpened={true} title={"First Name"}>
+            <FormField label="First name" name="firstName" />
+            <FormField label="Surname" name="surName" />
+            <SingleFileUpload
+              className="my-5"
+              onDropFile={() => { }}
+              files={[]}
+              fileUploading={false}
+              filesLoading={false}
+              uploadCta="Add founder photo"
+              fileFormatInformation=".jpg, .png"
+            />
+            <FormTextArea label="Short bio" name="shortBio" />
+          </AccordionElement>
+        </Accordion>
+        <div className="p-4 text-center">
+          <Button
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={plusIcon}
+            onClick={() => { }}
+            disabled={true}
+          >
+            Add new Owner
+          </Button>
+        </div>
+      </Col>
+    </Row>
+    <HorizontalLine className="mb-4" />
     {/** add captable section here, list of IEtoCaptableEntry, for now you could omit the social channels, the design needs to change here **/}
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <h4>Captable</h4>
+        <Accordion>
+          <AccordionElement isOpened={true} title={"First Name"}>
+            <FormField label="First name" name="firstName" />
+            <FormField label="Surname" name="surname" />
+            <FormField label="Percent" placeholder="%" name="percent" />
+          </AccordionElement>
+        </Accordion>
+        <div className="p-4 text-center">
+          <Button
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={plusIcon}
+            onClick={() => { }}
+            disabled={true}
+          >
+            Add more
+          </Button>
+        </div>
+      </Col>
+    </Row>
+    <HorizontalLine className="mb-4" />
     {/** add noable investors section here, list of IEtoNotableInvestor, for now omit the social channels **/}
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <h4>Notable Investors</h4>
+        <Accordion>
+          <AccordionElement isOpened={true} title={"First Name"}>
+            <FormField label="First name" name="firstName" />
+            <FormField label="Surname" name="surName" />
+          </AccordionElement>
+        </Accordion>
+        <div className="p-4 text-center">
+          <Button
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={plusIcon}
+            onClick={() => { }}
+            disabled={true}
+          >
+            Add more
+          </Button>
+        </div>
+      </Col>
+    </Row>
+    <HorizontalLine className="mb-4" />
     {/** add advisors section here, list of IEtoAdvisor, omit the social channels  **/}
-    <div className="p-4 text-center">
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <h4>Advisors</h4>
+        <Accordion>
+          <AccordionElement isOpened={true} title={"First Name"}>
+            <FormField label="First name" name="firstName" />
+            <FormField label="Surname" name="surName" />
+          </AccordionElement>
+        </Accordion>
+        <div className="p-4 text-center">
+          <Button
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={plusIcon}
+            onClick={() => { }}
+            disabled={true}
+          >
+            Add more
+          </Button>
+        </div>
+      </Col>
+    </Row>
+    <HorizontalLine className="mb-5" />
+    <div className="text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
         Submit and continue
       </Button>
@@ -86,10 +193,10 @@ export const EtoRegistrationTeamAndInvestors = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => {},
+      submitForm: () => { },
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => {},
+    actionCreator: _dispatch => { },
   }),
 )(EtoRegistrationTeamAndInvestorsComponent);

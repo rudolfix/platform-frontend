@@ -5,8 +5,8 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
-import { selectUser } from "../auth/reducer";
 import { ensurePermissionsArePresent, updateUser } from "../auth/sagas";
+import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { actions } from "./../actions";
 

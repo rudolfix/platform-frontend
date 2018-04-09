@@ -9,24 +9,28 @@ import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
-import { IUser } from "../../../lib/api/users/interfaces";
+import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
-export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) => {
+interface IStateProps {
+  isUserEmailVarified?: boolean;
+}
+
+export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({ isUserEmailVarified }) => {
   return (
     <PanelDark
       headerText="EMAIL VERIFICATION"
       rightComponent={
-        verifiedEmail ? (
+        isUserEmailVarified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
         ) : (
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
     >
-      {verifiedEmail ? (
+      {isUserEmailVarified ? (
         <div
           data-test-id="verified-section"
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
@@ -62,9 +66,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IUser> = ({ verifiedEmail }) 
   );
 };
 export const VerifyEmailWidget = compose<React.ComponentClass>(
-  appConnect<any>({
+  appConnect<IStateProps>({
     stateToProps: s => ({
-      user: s.auth.user,
+      isUserEmailVarified: selectIsUserEmailVerified(s.auth),
     }),
   }),
 )(VerifyEmailWidgetComponent);

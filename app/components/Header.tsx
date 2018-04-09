@@ -4,7 +4,7 @@ import { Navbar } from "reactstrap";
 
 import * as logo from "../../app/assets/img/logo_yellow.svg";
 import { actions } from "../modules/actions";
-import { selectIsAuthorized } from "../modules/auth/reducer";
+import { selectIsAuthorized } from "../modules/auth/selectors";
 import { appConnect } from "../store";
 import { appRoutes } from "./AppRouter";
 import * as styles from "./Header.module.scss";

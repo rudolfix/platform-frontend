@@ -1,6 +1,6 @@
 import * as React from "react";
 import { actions } from "../../modules/actions";
-import { selectIsAuthorized, selectUserEmail } from "../../modules/auth/reducer";
+import { selectIsAuthorized, selectUserEmail } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
 

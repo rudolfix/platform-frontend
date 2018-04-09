@@ -36,13 +36,6 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({ isUserEmail
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
-          <Col xs={12} className="d-flex justify-content-center">
-            <Link to="#">
-              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
-                Resend Link
-              </Button>
-            </Link>
-          </Col>
         </div>
       ) : (
         <div

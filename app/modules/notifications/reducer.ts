@@ -74,6 +74,6 @@ export const settingsNotification = () => ({
 export const selectSettingsNotification = (state: IAppState) =>
   !selectIsUserEmailVerified(state.auth) ||
   !selectBackupCodesVerified(state.auth) ||
-  !selectKycRequestStatus(state.kyc)
+  selectKycRequestStatus(state.kyc) !== "Approved"
     ? settingsNotification()
     : undefined;

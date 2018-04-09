@@ -23,7 +23,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
   });
 
   it("should render resend link button", () => {
-    const MyNeuWidgetComponent = shallow(<VerifyEmailWidgetComponent isThereUnverifiedEmail={true}/>);
+    const MyNeuWidgetComponent = shallow(
+      <VerifyEmailWidgetComponent isThereUnverifiedEmail={true} />,
+    );
     expect(MyNeuWidgetComponent.find(tid("resend-link"))).to.have.length(1);
   });
 });

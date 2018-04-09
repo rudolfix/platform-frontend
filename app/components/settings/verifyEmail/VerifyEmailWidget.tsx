@@ -54,11 +54,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
             you
           </p>
           {isThereUnverifiedEmail && (
-            <Col
-              xs={12}
-              className="d-flex justify-content-center"
-              data-test-id="resend-link"
-            >
+            <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
               <Link to="#">
                 <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
                   Resend Link

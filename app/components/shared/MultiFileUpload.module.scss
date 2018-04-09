@@ -45,6 +45,8 @@
   margin: 0 auto;
 
   > * {
+    margin-left: auto;
+    margin-right: px-to-rem(18px);
     background-color: $neu-pale-blue;
     border: 1px dashed $neu-cloudy-blue;
     border-radius: 3px;

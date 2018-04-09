@@ -6,13 +6,12 @@
 }
 
 .accordion-element {
-  cursor: pointer;
-
+  
   &:global(.is-closed) {
     .title :global(.inline-icon) {
       transform: rotate(180deg);
     }
-
+    
     .content {
       height: 0;
     }
@@ -21,6 +20,7 @@
 
 .title {
   align-items: center;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   user-select: none;

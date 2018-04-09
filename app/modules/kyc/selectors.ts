@@ -2,11 +2,11 @@ import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IKycState } from "./reducer";
 
 export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undefined => {
-  const requstState =
+  const requestState =
     state.individualRequestState && state.individualRequestState.status === "Draft"
       ? state.businessRequestState
       : state.individualRequestState;
-  if (requstState) return requstState.status;
+  if (requestState) return requestState.status;
   return undefined;
 };
 

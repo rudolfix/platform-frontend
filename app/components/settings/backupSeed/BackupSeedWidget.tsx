@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col } from "reactstrap";
 
 import { Link } from "react-router-dom";
-import { selectBackupCodesVerified } from "../../../modules/auth/reducer";
+import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";

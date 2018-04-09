@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { Button } from "../../shared/Buttons";
-import { walletRoutes } from "../walletRoutes";
+import { walletRegisterRoutes } from "../walletRoutes";
 import { recoverRoutes } from "./recoverRoutes";
 
 export const LoginHelp: React.SFC<void> = () => (
@@ -44,7 +44,7 @@ export const LoginHelp: React.SFC<void> = () => (
     </Col>
     <Col md={12}>
       <Row className="ml-2 mt-5 pt-5 mr-2 justify-content-between align-items-center">
-        <Link className="" to={walletRoutes.light}>
+        <Link className="" to={walletRegisterRoutes.light}>
           <i className="fa fa-lg fa-angle-left mr-1" /> BACK
         </Link>
         <Link className="" to={recoverRoutes.help}>

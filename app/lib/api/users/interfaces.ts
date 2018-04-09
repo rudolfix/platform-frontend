@@ -8,6 +8,10 @@ export interface IUser {
   newEmail?: string;
 }
 
+export interface IVerifyEmailUser {
+  verificationCode: string;
+}
+
 export const UserValidator = Yup.object()
   .shape({
     backupCodesVerified: Yup.boolean(),

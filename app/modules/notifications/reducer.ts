@@ -1,7 +1,8 @@
-import { AppActionTypes, AppReducer } from "../../store";
+import { AppActionTypes, AppReducer, IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { selectKycRequestStatus } from "../kyc/selectors";
 import { routingActions } from "../routing/actions";
-import { IAuthState } from "./../auth/reducer";
+import { selectBackupCodesVerified, selectIsUserEmailVerified } from "./../auth/selectors";
 import { notificationActions } from "./actions";
 
 export enum NotificationType {
@@ -62,13 +63,17 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
   return state;
 };
 
-export const seedNotBackedUpNotification = () => ({
+export const settingsNotification = () => ({
   id: Date.now(),
   type: NotificationType.WARNING,
-  text: "You have to backup your codes",
+  text: "ACTION REQUIRED: Please update your account settings",
   actionLinkText: "Go to settings",
   onClickAction: routingActions.goToSettings(),
 });
 
-export const selectSeedNotBackedUpNotification = (state: IAuthState) =>
-  state.user && state.user.backupCodesVerified ? undefined : seedNotBackedUpNotification();
+export const selectSettingsNotification = (state: IAppState) =>
+  !selectIsUserEmailVerified(state.auth) ||
+  !selectBackupCodesVerified(state.auth) ||
+  selectKycRequestStatus(state.kyc) !== "Approved"
+    ? settingsNotification()
+    : undefined;

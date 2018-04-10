@@ -6,8 +6,8 @@ import { ButtonClose } from "../../shared/Buttons";
 
 import * as styles from "./Notification.module.scss";
 
-import * as infoIcon from "../../../assets/img/notfications/info.svg";
-import * as warningIcon from "../../../assets/img/notfications/warning.svg";
+import * as infoIcon from "../../../assets/img/notifications/info.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 
 export interface INotificationProps {
   type: NotificationType;

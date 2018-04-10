@@ -11,6 +11,7 @@ import { Col } from "reactstrap";
 import {
   selectIsThereUnverifiedEmail,
   selectIsUserEmailVerified,
+  selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
@@ -19,11 +20,13 @@ import { PanelDark } from "../../shared/PanelDark";
 interface IStateProps {
   isUserEmailVarified: boolean;
   isThereUnverifiedEmail: boolean;
+  email?: string;
 }
 
 export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
   isUserEmailVarified,
   isThereUnverifiedEmail,
+  email,
 }) => {
   return (
     <PanelDark
@@ -42,6 +45,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
+          <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
+            <p>{email}</p>
+          </Col>
         </div>
       ) : (
         <div
@@ -70,5 +76,6 @@ export const VerifyEmailWidget = appConnect<IStateProps, {}>({
   stateToProps: s => ({
     isUserEmailVarified: selectIsUserEmailVerified(s.auth),
     isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
+    email: selectVerifiedUserEmail(s.auth),
   }),
 })(VerifyEmailWidgetComponent);

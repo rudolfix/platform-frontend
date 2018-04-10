@@ -20,7 +20,7 @@ import { PanelDark } from "../../shared/PanelDark";
 interface IStateProps {
   isUserEmailVarified: boolean;
   isThereUnverifiedEmail: boolean;
-  unverifiedEmail?: string;
+  email?: string;
 }
 
 interface IDispatchProps {
@@ -30,6 +30,7 @@ interface IDispatchProps {
 export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps> = ({
   isUserEmailVarified,
   isThereUnverifiedEmail,
+  email,
   resendEmail,
 }) => {
   return (
@@ -64,14 +65,14 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps>
           </p>
           {isThereUnverifiedEmail && (
             <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
-                <Button
-                  layout="secondary"
-                  iconPosition="icon-after"
-                  svgIcon={arrowRight}
-                  onClick={resendEmail}
-                >
-                  Resend Link
-                </Button>
+              <Button
+                layout="secondary"
+                iconPosition="icon-after"
+                svgIcon={arrowRight}
+                onClick={resendEmail}
+              >
+                Resend Link
+              </Button>
             </Col>
           )}
         </div>

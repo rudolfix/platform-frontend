@@ -1,16 +1,16 @@
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IKycState } from "./reducer";
 
-export const selectKycRequestStatuts = (state: IKycState): TRequestStatus | undefined => {
-  const requstState =
+export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undefined => {
+  const requestState =
     state.individualRequestState && state.individualRequestState.status === "Draft"
       ? state.businessRequestState
       : state.individualRequestState;
-  if (requstState) return requstState.status;
+  if (requestState) return requestState.status;
   return undefined;
 };
 
-export const selectKycOutourcedURL = (state: IKycState): string => {
+export const selectKycOutSourcedURL = (state: IKycState): string => {
   if (state.individualRequestState && state.individualRequestState.redirectUrl)
     return state.individualRequestState.redirectUrl;
   return "";

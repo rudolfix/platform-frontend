@@ -3,14 +3,15 @@ import * as React from "react";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notfications/warning.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 
-import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
+import { actions } from "../../../modules/actions";
 import {
   selectIsThereUnverifiedEmail,
   selectIsUserEmailVerified,
+  selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
@@ -19,11 +20,18 @@ import { PanelDark } from "../../shared/PanelDark";
 interface IStateProps {
   isUserEmailVarified: boolean;
   isThereUnverifiedEmail: boolean;
+  email?: string;
 }
 
-export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
+interface IDispatchProps {
+  resendEmail: () => void;
+}
+
+export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps> = ({
   isUserEmailVarified,
   isThereUnverifiedEmail,
+  email,
+  resendEmail,
 }) => {
   return (
     <PanelDark
@@ -42,6 +50,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
+          <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
+            <p>{email}</p>
+          </Col>
         </div>
       ) : (
         <div
@@ -54,11 +65,14 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
           </p>
           {isThereUnverifiedEmail && (
             <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
-              <Link to="#">
-                <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
-                  Resend Link
-                </Button>
-              </Link>
+              <Button
+                layout="secondary"
+                iconPosition="icon-after"
+                svgIcon={arrowRight}
+                onClick={resendEmail}
+              >
+                Resend Link
+              </Button>
             </Col>
           )}
         </div>
@@ -66,9 +80,15 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps> = ({
     </PanelDark>
   );
 };
-export const VerifyEmailWidget = appConnect<IStateProps, {}>({
+export const VerifyEmailWidget = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: s => ({
     isUserEmailVarified: selectIsUserEmailVerified(s.auth),
     isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
+    email: selectVerifiedUserEmail(s.auth),
+  }),
+  dispatchToProps: dispatch => ({
+    resendEmail: () => {
+      dispatch(actions.settings.resendEmail());
+    },
   }),
 })(VerifyEmailWidgetComponent);

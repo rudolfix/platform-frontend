@@ -12,8 +12,8 @@ import { settingsRoutes } from "../routes";
 import * as styles from "./BackupSeedWidget.module.scss";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notfications/warning.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 
 interface IStateProps {
   backupCodesVerified?: boolean;

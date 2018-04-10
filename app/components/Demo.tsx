@@ -240,10 +240,10 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onStartKyc={() => {}} />
+          <KycStatusWidgetComponent onStartKyc={() => {}} isUserEmailVerified={true} />
         </Col>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onStartKyc={() => {}} />
+          <KycStatusWidgetComponent onStartKyc={() => {}} isUserEmailVerified={false} />
         </Col>
       </Row>
     </Container>

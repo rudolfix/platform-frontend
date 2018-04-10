@@ -1,22 +1,5 @@
-import BigNumber from "bignumber.js";
+import { addBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { IWalletState, IWalletStateData } from "./reducer";
-
-/**
- * helper for adding up array of big numbers
- */
-const addBigNumbers = (numbers: string[]): string =>
-  numbers
-    .reduce((aggr, number) => {
-      return aggr.plus(new BigNumber(number));
-    }, new BigNumber(0))
-    .toString();
-
-const multiplyBigNumbers = (numbers: string[]): string =>
-  numbers
-    .reduce((aggr, number) => {
-      return aggr.mul(new BigNumber(number));
-    }, new BigNumber(1))
-    .toString();
 
 /**
  * Liquid Assets

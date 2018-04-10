@@ -19,7 +19,7 @@ export const selectRedirectURLFromQueryString = (state: RouterState): string | u
 
 export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
 export const selectUserEmail = (state: IAuthState): string | undefined =>
-  state.user && (state.user.unverifiedEmail || state.user.verifiedEmail);
+  state.user && (state.user.verifiedEmail || state.user.unverifiedEmail);
 export const selectUser = (state: IAuthState): IUser | undefined => state.user;
 export const selectBackupCodesVerified = (state: IAuthState): boolean =>
   !!state.user && !!state.user.backupCodesVerified;

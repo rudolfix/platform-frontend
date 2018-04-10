@@ -12,8 +12,8 @@ import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as styles from "./GenericModal.module.scss";
 
-import * as successIcon from "../../assets/img/notfications/Success_small.svg";
-import * as warningIcon from "../../assets/img/notfications/warning.svg";
+import * as successIcon from "../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../assets/img/notifications/warning.svg";
 import { Button } from "../shared/Buttons";
 
 interface IStateProps {

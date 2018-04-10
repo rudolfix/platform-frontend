@@ -10,7 +10,7 @@ export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undef
   return undefined;
 };
 
-export const selectKycOutourcedURL = (state: IKycState): string => {
+export const selectKycOutSourcedURL = (state: IKycState): string => {
   if (state.individualRequestState && state.individualRequestState.redirectUrl)
     return state.individualRequestState.redirectUrl;
   return "";

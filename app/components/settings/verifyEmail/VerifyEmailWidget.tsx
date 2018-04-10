@@ -11,6 +11,7 @@ import { actions } from "../../../modules/actions";
 import {
   selectIsThereUnverifiedEmail,
   selectIsUserEmailVerified,
+  selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
@@ -48,6 +49,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps>
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
+          <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
+            <p>{email}</p>
+          </Col>
         </div>
       ) : (
         <div
@@ -79,6 +83,7 @@ export const VerifyEmailWidget = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: s => ({
     isUserEmailVarified: selectIsUserEmailVerified(s.auth),
     isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
+    email: selectVerifiedUserEmail(s.auth),
   }),
   dispatchToProps: dispatch => ({
     resendEmail: () => {

@@ -1,20 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec65230c36a8054f42c65
- *
- * Number of founders does not make sense. We will have multiple founders in here similar
- * to the beneficial owners
- *
- *
- * Probably we need a single file upload field. Maybe you can create one which we then can
- * use in other components
- * Re-use the social channels component from company information here
- *
- * Captable, Notable investors and advisors should be set up similar to the beneifical owners
- * with a "Add captable entry" button instead of adding multiple entries at once. Please
- * user the correct interface definiions from EtoApi.interfaces.ts. For deleting you can add the
- * wastebin from the file upload next to the entry
- */
-
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";
@@ -51,7 +34,6 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
   <Form>
-    {/** add founnders section here, lis of IEtoFounder **/}
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
         <h4>Founders</h4>
@@ -84,8 +66,9 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
         </div>
       </Col>
     </Row>
+
     <HorizontalLine className="mb-4" />
-    {/** add captable section here, list of IEtoCaptableEntry, for now you could omit the social channels, the design needs to change here **/}
+
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
         <h4>Captable</h4>
@@ -109,8 +92,9 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
         </div>
       </Col>
     </Row>
+
     <HorizontalLine className="mb-4" />
-    {/** add noable investors section here, list of IEtoNotableInvestor, for now omit the social channels **/}
+
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
         <h4>Notable Investors</h4>
@@ -134,7 +118,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
       </Col>
     </Row>
     <HorizontalLine className="mb-4" />
-    {/** add advisors section here, list of IEtoAdvisor, omit the social channels  **/}
+
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
         <h4>Advisors</h4>

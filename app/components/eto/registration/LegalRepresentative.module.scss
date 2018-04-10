@@ -2,7 +2,7 @@
 
 .section-title {
   font-size: px-to-rem(18px);
-  font-weight: 600;
+  font-weight: $font-weight-bold;
   letter-spacing: px-to-rem(-.3px);
   margin-bottom: px-to-rem(30px);
   margin-top: px-to-rem(30px);

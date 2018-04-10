@@ -1,9 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec6548d47ba9d1552d820
- * Maybe you can try to add a formfield for tags which produces an array and a formfield
- * for the list of social channels, which basically is an array of strings (see IEtoCompanyInformation)
- */
-
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";

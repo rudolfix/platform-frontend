@@ -1,11 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec65430c36a8054f42d93
- * You can make this pretty much the same as the corresponding kyc page with the benefical owners etc
- * Booleans should always be dropdowns like in kyc, not like in the design
- * I think the monthly income button on this page is not needed, though, please ignore it.
- * We can also re-use the upload field from kyc here, please refactor it into a general component
- */
-
 import * as React from "react";
 import * as styles from "./LegalRepresentative.module.scss";
 

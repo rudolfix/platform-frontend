@@ -1,9 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec65230c36a8054f42bb0
- * Pretty straightforward. We need a text area field here but that's all really.
- * Person lists can be reused from other components
- */
-
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";

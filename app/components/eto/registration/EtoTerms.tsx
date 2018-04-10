@@ -1,8 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec652833aeb2b1665594b
- * Quite straight forward. Add an upload field here, and remember to make the bool fields as dropdown
- */
-
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";

@@ -1,8 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec6527abe10c916f73da4
- * very straight forward :)
- */
-
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";

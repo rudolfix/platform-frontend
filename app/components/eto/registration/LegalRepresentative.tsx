@@ -68,7 +68,7 @@ const EtoForm = (formikBag: FormikProps<IEtoLegalRepresentative> & IProps) => (
         <MultiFileUpload
           className="my-5"
           layout="business"
-          onDropFile={() => { }}
+          onDropFile={() => {}}
           files={[]}
           fileUploading={false}
           filesLoading={false}
@@ -78,9 +78,10 @@ const EtoForm = (formikBag: FormikProps<IEtoLegalRepresentative> & IProps) => (
         <Button
           className="mt-3 mb-4"
           type="submit"
-          disabled={!formikBag.isValid || formikBag.loadingData} >
+          disabled={!formikBag.isValid || formikBag.loadingData}
+        >
           Save
-          </Button>
+        </Button>
       </Col>
     </Row>
     <HorizontalLine className="my-4" />
@@ -111,13 +112,13 @@ const EtoForm = (formikBag: FormikProps<IEtoLegalRepresentative> & IProps) => (
             <MultiFileUpload
               className="my-5"
               layout="business"
-              onDropFile={() => { }}
+              onDropFile={() => {}}
               files={[]}
               fileUploading={false}
               filesLoading={false}
             />
             <div className="p-4 text-center">
-              <Button layout="secondary" onClick={() => { }}>
+              <Button layout="secondary" onClick={() => {}}>
                 Delete {name}
               </Button>
             </div>
@@ -128,16 +129,16 @@ const EtoForm = (formikBag: FormikProps<IEtoLegalRepresentative> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => { }}
+            onClick={() => {}}
             disabled={true}
           >
             Add new Beneficial Owner
-      </Button>
+          </Button>
         </div>
         <small className={styles.note}>
           According to the German anti money laundering act, we are obliged to keep a record of your
           personal data for five years after account closure.
-    </small>
+        </small>
       </Col>
     </Row>
   </Form>
@@ -171,10 +172,10 @@ export const EtoRegistrationLegalRepresentative = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => { },
+      submitForm: () => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationLegalRepresentativeComponent);

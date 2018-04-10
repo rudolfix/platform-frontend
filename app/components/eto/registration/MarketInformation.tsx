@@ -71,7 +71,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => { }}
+            onClick={() => {}}
             disabled={true}
           >
             Add more
@@ -94,7 +94,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => { }}
+            onClick={() => {}}
             disabled={true}
           >
             Add more
@@ -139,10 +139,10 @@ export const EtoRegistrationMarketInformation = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => { },
+      submitForm: () => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationMarketInformationComponent);

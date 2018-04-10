@@ -67,7 +67,7 @@ export class FormFieldDate extends React.Component<IProps> {
             <Field
               name={this.props.name}
               render={({ field }) => (
-                <div>
+                <div className={styles.inputWrapper}>
                   <Input
                     {...field}
                     onChange={e => this.onChange("day", e, field.onChange)}

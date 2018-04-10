@@ -6,15 +6,16 @@
 }
 
 .accordion-element {
-  
+
   &:global(.is-closed) {
     .title :global(.inline-icon) {
       transform: rotate(180deg);
     }
-    
+
     .content {
       height: 0;
     }
+
   }
 }
 

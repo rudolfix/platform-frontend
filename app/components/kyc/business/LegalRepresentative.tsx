@@ -32,8 +32,8 @@ import {
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
-import { KycPanel } from "../KycPanel";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { KycPanel } from "../KycPanel";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",

@@ -15,13 +15,12 @@ import { Button } from "../../shared/Buttons";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
 import { Col, Row } from "reactstrap";
-import { FormField, FormTextArea } from "../../shared/forms/forms";
+import { FormTextArea } from "../../shared/forms/forms";
 
 import {
   EtoProductAndVisionSchemaRequired,
   IEtoProductAndVision,
 } from "../../../lib/api/EtoApi.interfaces";
-
 
 interface IStateProps {
   currentValues: IEtoProductAndVision;
@@ -42,13 +41,19 @@ const EtoForm = (formikBag: FormikProps<IEtoProductAndVision> & IProps) => (
           <FormTextArea label="What is the sales model?" name="salesModel" />
         </div>
         <div className="mb-4">
-          <FormTextArea label="What is the exact target segment of your product?" name="targetSegment" />
+          <FormTextArea
+            label="What is the exact target segment of your product?"
+            name="targetSegment"
+          />
         </div>
         <div className="mb-4">
           <FormTextArea label="what is the product vision?" name="productVision" />
         </div>
         <div className="mb-4">
-          <FormTextArea label="What are the key product priorities (i.e. roadmap) for the next 12 months?" name="productPriorities" />
+          <FormTextArea
+            label="What are the key product priorities (i.e. roadmap) for the next 12 months?"
+            name="productPriorities"
+          />
         </div>
         <div className="mb-4">
           <FormTextArea label="What has inspired you to start this company?" name="whyStarted" />
@@ -94,10 +99,10 @@ export const EtoRegistrationProductAndVision = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => { },
+      submitForm: () => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationProductAndVisionComponent);

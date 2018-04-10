@@ -26,13 +26,9 @@ interface IProps {
 export const SingleFileUpload: React.SFC<IProps> = ({ files, ...props }) => {
   const onDrop = (accepted: File[]) => accepted[0] && props.onDropFile(accepted[0]);
 
-  const dropzoneInner = props.fileUploading ? (
-    <div>Uploading a File</div>
-  ) : (
-      <div>Photo</div>
-    );
+  const dropzoneInner = props.fileUploading ? <div>Uploading a File</div> : <div>Photo</div>;
 
-  const dropzoneWithFilesInner = (<span>Photo</span>);
+  const dropzoneWithFilesInner = <span>Photo</span>;
   const dropzoneStyle = {
     width: "66px",
     height: "66px",
@@ -53,23 +49,19 @@ export const SingleFileUpload: React.SFC<IProps> = ({ files, ...props }) => {
             accept={ACCEPTED_FILES}
             onDrop={onDrop}
             disabled={props.fileUploading}
-            style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}>
-            {
-              files.length ? dropzoneWithFilesInner : dropzoneInner
-            }
+            style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}
+          >
+            {files.length ? dropzoneWithFilesInner : dropzoneInner}
           </Dropzone>
         </div>
         <div>
-          {
-            files.length
-              ? (<UploadedFiles onRemove={() => { }} files={files} />)
-              : (<Button
-                layout="secondary"
-                iconPosition="icon-before"
-                svgIcon={uploadIcon}>
-                {props.uploadCta}
-              </Button>)
-          }
+          {files.length ? (
+            <UploadedFiles onRemove={() => {}} files={files} />
+          ) : (
+            <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
+              {props.uploadCta}
+            </Button>
+          )}
           <div className={styles.fileFormatInformation}>{props.fileFormatInformation}</div>
         </div>
       </div>

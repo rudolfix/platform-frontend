@@ -14,7 +14,13 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
-import { BOOL_FALSE_KEY, BOOL_TRUE_KEY, FormField, FormSelectField, NONE_KEY } from "../../shared/forms/forms";
+import {
+  BOOL_FALSE_KEY,
+  BOOL_TRUE_KEY,
+  FormField,
+  FormSelectField,
+  NONE_KEY,
+} from "../../shared/forms/forms";
 
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
@@ -52,7 +58,11 @@ const EtoForm = (formikBag: FormikProps<IEtoTerms> & IProps) => (
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
         <div className="mb-4">
-          <FormField label="How many shares do you want to tokenize?" placeholder="%" name="tokenizedSharesPercent" />
+          <FormField
+            label="How many shares do you want to tokenize?"
+            placeholder="%"
+            name="tokenizedSharesPercent"
+          />
         </div>
         <div className="mb-4">
           <FormField label="What is the price a share?" placeholder="€" name="tokenPrice" />
@@ -60,10 +70,14 @@ const EtoForm = (formikBag: FormikProps<IEtoTerms> & IProps) => (
         <div className="mb-4">
           <p>Please use 3 characters and check if this name is available here:</p>
           <Link to="#0">
-            <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">Etherscan</Button>
+            <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">
+              Etherscan
+            </Button>
           </Link>
           <Link to="#0">
-            <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">Etherscan</Button>
+            <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">
+              Etherscan
+            </Button>
           </Link>
         </div>
         <div className="mb-4">
@@ -75,7 +89,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTerms> & IProps) => (
           filesLoading={false}
           fileFormatInformation=".jpg, .svg, .png"
           uploadCta="Upload token symbol"
-          onDropFile={() => { }}
+          onDropFile={() => {}}
         />
       </Col>
     </Row>
@@ -132,10 +146,10 @@ export const EtoRegistrationTerms = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => { },
+      submitForm: () => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationTermsComponent);

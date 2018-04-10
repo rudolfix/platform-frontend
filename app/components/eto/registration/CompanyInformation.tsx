@@ -46,7 +46,7 @@ const EtoForm = (formikBag: FormikProps<IEtoCompanyInformation> & IProps) => (
         <FormField label="Company Website" name="website" className="mt-2" />
         <SingleFileUpload
           className="my-5"
-          onDropFile={() => { }}
+          onDropFile={() => {}}
           files={[]}
           fileUploading={false}
           filesLoading={false}
@@ -70,7 +70,7 @@ const EtoForm = (formikBag: FormikProps<IEtoCompanyInformation> & IProps) => (
         <MultiFileUpload
           className="my-5"
           layout="business"
-          onDropFile={() => { }}
+          onDropFile={() => {}}
           files={[]}
           fileUploading={false}
           filesLoading={false}
@@ -81,9 +81,10 @@ const EtoForm = (formikBag: FormikProps<IEtoCompanyInformation> & IProps) => (
         <Button
           className="mt-3"
           type="submit"
-          disabled={!formikBag.isValid || formikBag.loadingData} >
+          disabled={!formikBag.isValid || formikBag.loadingData}
+        >
           Submit and continue
-          </Button>
+        </Button>
       </Col>
     </Row>
   </Form>
@@ -117,10 +118,10 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: (_values: IEtoCompanyInformation) => { },
+      submitForm: (_values: IEtoCompanyInformation) => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationCompanyInformationComponent);

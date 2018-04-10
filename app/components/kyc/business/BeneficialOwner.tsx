@@ -28,7 +28,6 @@ import {
 } from "../../shared/forms/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
-
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
   [BOOL_TRUE_KEY]: "Yes they are",

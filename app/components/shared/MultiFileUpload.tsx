@@ -7,7 +7,7 @@ import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
 import Dropzone from "react-dropzone";
 
 import * as addFileIcon from "../../assets/img/add_file.svg";
-import * as idImage from "../../assets/img/id_img.svg"
+import * as idImage from "../../assets/img/id_img.svg";
 
 import { InlineIcon } from "../shared/InlineIcon";
 import { UploadedFiles } from "./UploadedFiles";
@@ -36,13 +36,13 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
       <div>Uploading a File</div>
     </>
   ) : (
-      <>
-        <img src={addFileIcon} />
-        <span>
-          Drag and drop your files here or <strong>upload</strong>
-        </span>
-      </>
-    );
+    <>
+      <img src={addFileIcon} />
+      <span>
+        Drag and drop your files here or <strong>upload</strong>
+      </span>
+    </>
+  );
 
   const dropzoneWithFilesInner = (
     <>
@@ -91,7 +91,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
       </div>
       <div className={styles.uploadZone}>
         <h3 className={styles.title}>Upload documents</h3>
-        {!!files.length && <UploadedFiles onRemove={() => { }} files={files} />}
+        {!!files.length && <UploadedFiles onRemove={() => {}} files={files} />}
         <div className={files.length ? styles.dropzoneWithFilesWrapper : styles.dropzoneWrapper}>
           <Dropzone
             accept={ACCEPTED_FILES}

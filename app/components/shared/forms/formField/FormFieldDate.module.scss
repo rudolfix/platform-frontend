@@ -31,12 +31,16 @@
     flex-shrink: 0;
     margin-bottom: px-to-rem(10px);
   }
+}
 
-  .inputs-wrapper {
-    display: flex;
-    align-items: center;
+.inputs-wrapper {
+  display: flex;
+  align-items: center;
+}
 
-    > div:last-of-type input {
+.input-wrapper {
+  &:last-of-type {
+    input {
       @include media-breakpoint-up (lg) {
         margin-right: 0;
       }

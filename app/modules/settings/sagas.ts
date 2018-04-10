@@ -18,6 +18,7 @@ export function* addNewEmail(
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
+
   try {
     yield neuCall(
       ensurePermissionsArePresent,
@@ -25,8 +26,8 @@ export function* addNewEmail(
       "Change email",
       "Confirm changing your email.",
     );
+
     yield effects.call(updateUser, { ...user, new_email: email });
-    yield effects.put(actions.routing.goToSettings());
     notificationCenter.info("New Email added");
   } catch {
     notificationCenter.error("Failed to change email");
@@ -41,8 +42,10 @@ export function* resendEmail(
 
   const user = yield select((s: IAppState) => selectUser(s.auth));
   const email = user.unverifiedEmail;
+
   try {
     if (!email) throw new Error("No unverified email");
+
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
@@ -50,7 +53,6 @@ export function* resendEmail(
       "Confirm resending activation email.",
     );
     yield effects.call(updateUser, { ...user, new_email: email });
-    yield effects.put(actions.routing.goToSettings());
     notificationCenter.info("Email successfully resent");
   } catch {
     notificationCenter.error("Failed to resend email");

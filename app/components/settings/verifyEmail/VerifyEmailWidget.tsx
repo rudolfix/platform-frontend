@@ -6,7 +6,6 @@ import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 
-import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { actions } from "../../../modules/actions";
 import {
@@ -61,7 +60,6 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps>
           </p>
           {isThereUnverifiedEmail && (
             <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
-              <Link to="#">
                 <Button
                   layout="secondary"
                   iconPosition="icon-after"
@@ -70,7 +68,6 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps>
                 >
                   Resend Link
                 </Button>
-              </Link>
             </Col>
           )}
         </div>

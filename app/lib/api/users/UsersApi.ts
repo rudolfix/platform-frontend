@@ -3,7 +3,7 @@ import { inject, injectable } from "inversify";
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../dependencies/Logger";
 import { IHttpClient } from "../client/IHttpClient";
-import { INewUser, IUser, IVerifyEmailUser, UserValidator } from "./interfaces";
+import { IUser, IUserInput, IVerifyEmailUser, UserValidator } from "./interfaces";
 
 const USER_API_ROOT = "/api/user";
 
@@ -17,8 +17,8 @@ export class UsersApi {
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 
-  public async createAccount(newUser?: INewUser): Promise<IUser> {
-    this.logger.info("Creating account for email: ", newUser && newUser.unverifiedEmail);
+  public async createAccount(newUser?: IUserInput): Promise<IUser> {
+    this.logger.info("Creating account for email: ", newUser && newUser.newEmail);
 
     const response = await this.httpClient.post<IUser>({
       baseUrl: USER_API_ROOT,
@@ -61,7 +61,7 @@ export class UsersApi {
     return response.body as IUser;
   }
 
-  public async updateUser(updatedUser: IUser): Promise<IUser> {
+  public async updateUser(updatedUser: IUserInput): Promise<IUser> {
     const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me",

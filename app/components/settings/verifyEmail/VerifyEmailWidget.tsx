@@ -11,7 +11,7 @@ import { Col } from "reactstrap";
 import {
   selectIsThereUnverifiedEmail,
   selectIsUserEmailVerified,
-  selectUserEmail,
+  selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
@@ -76,6 +76,6 @@ export const VerifyEmailWidget = appConnect<IStateProps, {}>({
   stateToProps: s => ({
     isUserEmailVarified: selectIsUserEmailVerified(s.auth),
     isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
-    email: selectUserEmail(s.auth),
+    email: selectVerifiedUserEmail(s.auth),
   }),
 })(VerifyEmailWidgetComponent);

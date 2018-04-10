@@ -6,19 +6,21 @@ import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notfications/warning.svg";
 
-import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
 import { selectKycRequestStatuts } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
+import { Dictionary } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
 interface IStateProps {
   requestStatus?: TRequestStatus;
+  isUserEmailVerified: boolean;
 }
 
 interface IDispatchProps {
@@ -27,7 +29,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const statusTextMap: { [status: string]: string } = {
+const statusTextMap: Dictionary<string> = {
   Approved: "Your Kyc request is has been approved. Happy investing!",
   Rejected: "Your Kyc request was rejected. ",
   Pending:
@@ -35,6 +37,18 @@ const statusTextMap: { [status: string]: string } = {
   Draft: "Please submit your Kyc request now.",
   Outsourced:
     "Your instant identification is being processed. You will be notified by e-mail once this is completed.",
+};
+
+const getStatus = (selectIsUserEmailVerified: boolean, requestStatus?: TRequestStatus): string => {
+  if (!selectIsUserEmailVerified) {
+    return "You need to verify email before starting KYC";
+  }
+
+  if (!requestStatus) {
+    return "";
+  }
+
+  return statusTextMap[requestStatus];
 };
 
 export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
@@ -59,20 +73,19 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>
-            {props.requestStatus ? statusTextMap[props.requestStatus] : ""}
+            {getStatus(props.isUserEmailVerified, props.requestStatus)}
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             {props.requestStatus && props.requestStatus === "Draft" ? (
-              <Link to="#">
-                <Button
-                  layout="secondary"
-                  iconPosition="icon-after"
-                  svgIcon={arrowRight}
-                  onClick={props.onStartKyc}
-                >
-                  Verify KYC
-                </Button>
-              </Link>
+              <Button
+                layout="secondary"
+                iconPosition="icon-after"
+                svgIcon={arrowRight}
+                onClick={props.onStartKyc}
+                disabled={!props.isUserEmailVerified}
+              >
+                Verify KYC
+              </Button>
             ) : (
               <div />
             )}
@@ -87,6 +100,7 @@ export const KycStatusWidget = compose<React.ComponentClass>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       requestStatus: selectKycRequestStatuts(s.kyc),
+      isUserEmailVerified: selectIsUserEmailVerified(s.auth),
     }),
     dispatchToProps: dispatch => ({
       onStartKyc: () => dispatch(actions.routing.goToKYCHome()),
@@ -99,5 +113,3 @@ export const KycStatusWidget = compose<React.ComponentClass>(
     },
   }),
 )(KycStatusWidgetComponent);
-
-//TODO: Connect Widget With status

@@ -7,7 +7,11 @@ import { KycStatusWidgetComponent } from "./KycStatusWidget";
 describe("<KycStatusWidgetComponent />", () => {
   it("should render verified section", () => {
     const MyNeuWidgetComponent = shallow(
-      <KycStatusWidgetComponent onStartKyc={() => {}} requestStatus="Approved" />,
+      <KycStatusWidgetComponent
+        onStartKyc={() => {}}
+        requestStatus="Approved"
+        isUserEmailVerified={true}
+      />,
     );
     expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(0);
     expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(1);
@@ -15,7 +19,11 @@ describe("<KycStatusWidgetComponent />", () => {
 
   it("should render unverified section", () => {
     const MyNeuWidgetComponent = shallow(
-      <KycStatusWidgetComponent onStartKyc={() => {}} requestStatus="Draft" />,
+      <KycStatusWidgetComponent
+        onStartKyc={() => {}}
+        requestStatus="Draft"
+        isUserEmailVerified={true}
+      />,
     );
     expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(1);
     expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(0);

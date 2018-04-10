@@ -18,6 +18,7 @@ export function* addNewEmail(
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
+
   try {
     yield neuCall(
       ensurePermissionsArePresent,
@@ -25,11 +26,36 @@ export function* addNewEmail(
       "Change email",
       "Confirm changing your email.",
     );
+
     yield effects.call(updateUser, { ...user, new_email: email });
-    yield effects.put(actions.routing.goToSettings());
     notificationCenter.info("New Email added");
   } catch {
     notificationCenter.error("Failed to change email");
+  }
+}
+
+export function* resendEmail(
+  { notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
+  if (action.type !== "SETTINGS_RESEND_EMAIL") return;
+
+  const user = yield select((s: IAppState) => selectUser(s.auth));
+  const email = user.unverifiedEmail;
+
+  try {
+    if (!email) throw new Error("No unverified email");
+
+    yield neuCall(
+      ensurePermissionsArePresent,
+      [CHANGE_EMAIL_PERMISSION],
+      "Resend email",
+      "Confirm resending activation email.",
+    );
+    yield effects.call(updateUser, { ...user, new_email: email });
+    notificationCenter.info("Email successfully resent");
+  } catch {
+    notificationCenter.error("Failed to resend email");
   }
 }
 
@@ -50,5 +76,6 @@ export function* loadSeedOrReturnToSettings(): Iterator<any> {
 
 export const settingsSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "SETTINGS_ADD_NEW_EMAIL", addNewEmail);
+  yield fork(neuTakeEvery, "SETTINGS_RESEND_EMAIL", resendEmail);
   yield fork(neuTakeEvery, "LOAD_SEED_OR_RETURN_TO_SETTINGS", loadSeedOrReturnToSettings);
 };

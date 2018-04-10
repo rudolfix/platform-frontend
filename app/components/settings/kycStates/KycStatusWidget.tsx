@@ -3,15 +3,15 @@ import * as React from "react";
 import * as styles from "./KycStatusWidget.module.scss";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notfications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notfications/warning.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 
 import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectKycRequestStatuts } from "../../../modules/kyc/selectors";
+import { selectKycRequestStatus } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
@@ -86,7 +86,7 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = props => {
 export const KycStatusWidget = compose<React.ComponentClass>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      requestStatus: selectKycRequestStatuts(s.kyc),
+      requestStatus: selectKycRequestStatus(s.kyc),
     }),
     dispatchToProps: dispatch => ({
       onStartKyc: () => dispatch(actions.routing.goToKYCHome()),

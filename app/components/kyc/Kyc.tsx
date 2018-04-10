@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectKycOutourcedURL, selectKycRequestStatuts } from "../../modules/kyc/selectors";
+import { selectKycOutSourcedURL, selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
@@ -121,8 +121,8 @@ export const Kyc = compose<React.SFC>(
     stateToProps: state => ({
       requestLoading:
         state.kyc.individualRequestStateLoading || state.kyc.businessRequestStateLoading,
-      requestStatus: selectKycRequestStatuts(state.kyc),
-      redirectUrl: selectKycOutourcedURL(state.kyc),
+      requestStatus: selectKycRequestStatus(state.kyc),
+      redirectUrl: selectKycOutSourcedURL(state.kyc),
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},

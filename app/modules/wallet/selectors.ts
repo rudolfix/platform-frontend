@@ -29,13 +29,16 @@ export const selectLockedWalletHasFunds = (state: IWalletStateData): boolean =>
  * ICBM Wallet Assets
  */
 export const selectICBMLockedEtherBalance = (state: IWalletStateData) =>
-  state.euroTokenICBMLockedBalance;
+  state.etherTokenICBMLockedBalance;
 export const selectICBMLockedEtherBalanceEuroAmount = (state: IWalletStateData) =>
   multiplyBigNumbers([state.etherPriceEur, state.etherTokenICBMLockedBalance]);
 export const selectICBMLockedEuroTokenBalance = (state: IWalletStateData) =>
   state.euroTokenICBMLockedBalance;
 export const selectICBMLockedEuroTotalAmount = (state: IWalletStateData) =>
-  addBigNumbers([selectLockedEtherBalanceEuroAmount(state), selectLockedEuroTokenBalance(state)]);
+  addBigNumbers([
+    selectICBMLockedEtherBalanceEuroAmount(state),
+    selectICBMLockedEuroTokenBalance(state),
+  ]);
 export const selectICBMLockedWalletHasFunds = (state: IWalletStateData): boolean =>
   selectICBMLockedEuroTotalAmount(state) !== "0";
 

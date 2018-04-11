@@ -19,8 +19,17 @@ export interface ITag {
   svgIcon?: string;
 }
 
-export const Tag: React.SFC<ITag> = ({ text, to, layout, size, theme, className, onClick, svgIcon }) => {
-  const classes = cn('js-tab-component', styles.tag, layout, size, theme, className);
+export const Tag: React.SFC<ITag> = ({
+  text,
+  to,
+  layout,
+  size,
+  theme,
+  className,
+  onClick,
+  svgIcon,
+}) => {
+  const classes = cn("js-tab-component", styles.tag, layout, size, theme, className);
 
   return (
     <>
@@ -30,11 +39,11 @@ export const Tag: React.SFC<ITag> = ({ text, to, layout, size, theme, className,
           {text}
         </Link>
       ) : (
-          <span onClick={onClick} className={classes}>
-            {Boolean(svgIcon) && <InlineIcon svgIcon={svgIcon || ""} />}
-            {text}
-          </span>
-        )}
+        <span onClick={onClick} className={classes}>
+          {Boolean(svgIcon) && <InlineIcon svgIcon={svgIcon || ""} />}
+          {text}
+        </span>
+      )}
     </>
   );
 };

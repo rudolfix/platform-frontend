@@ -23,6 +23,7 @@ import { PercentageIndicatorBar } from "./shared/PercentageIndicatorBar";
 import { SectionHeader } from "./shared/SectionHeader";
 import { Tabs } from "./shared/Tabs";
 import { Tag } from "./shared/Tag";
+import { TagsEditor } from "./eto/shared/TagsEditor";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -82,8 +83,8 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <NavigationButton forward text="NavigationButton" onClick={() => {}} />
-          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
+          <NavigationButton forward text="NavigationButton" onClick={() => { }} />
+          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => { }} />
           <NavigationLink forward to="/" text="NavigationLink" />
         </Col>
       </Row>
@@ -240,16 +241,16 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onStartKyc={() => {}} isUserEmailVerified={true} />
+          <KycStatusWidgetComponent onStartKyc={() => { }} isUserEmailVerified={true} />
         </Col>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onStartKyc={() => {}} isUserEmailVerified={false} />
+          <KycStatusWidgetComponent onStartKyc={() => { }} isUserEmailVerified={false} />
         </Col>
       </Row>
     </Container>
 
     <Container>
-      <ChangeEmailComponent submitForm={() => {}} />
+      <ChangeEmailComponent submitForm={() => { }} />
     </Container>
 
     <Container>
@@ -260,7 +261,8 @@ export const Demo: React.SFC = () => (
       <Tag to="#0" text="tag" />
       <Tag layout="ghost" to="#0" text="ghost tag" />
       <Tag layout="ghost" size="small" to="#0" text="small ghost tag" />
-      <Tag color="green" layout="ghost" size="small" to="#0" text="Small green ghost tag" />
+      <Tag theme="green" layout="ghost" size="small" to="#0" text="Small green ghost tag" />
+      <Tag theme="dark" size="small" to="#0" text="Small dark tag" />
     </Container>
 
     <Container>
@@ -275,7 +277,7 @@ export const Demo: React.SFC = () => (
         tokenPrice={"2€"}
         neuInvestorsNum={500}
         startingOn="22.12.2019"
-        handleEmailSend={() => {}}
+        handleEmailSend={() => { }}
         endInDays={25}
         company={"Superawesome startup two"}
         hasStarted={true}
@@ -302,7 +304,7 @@ export const Demo: React.SFC = () => (
         tokenPrice={"2€"}
         neuInvestorsNum={500}
         startingOn="22.12.2019"
-        handleEmailSend={() => {}}
+        handleEmailSend={() => { }}
         endInDays={25}
         company={"Superawesome startup one"}
         hasStarted={true}
@@ -353,6 +355,13 @@ export const Demo: React.SFC = () => (
           { text: "tab 3", path: "" },
         ]}
       />
+    </Container>
+
+    <Container>
+      <TagsEditor
+        availiableTags={['tag1', 'tag2', 'tag3', 'tag with random text4', 'tag5', 'tag6']}
+        selectedTags={['tag1', 'tag3']}
+        selectedTagsLimit={5} />
     </Container>
   </div>
 );

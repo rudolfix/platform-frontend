@@ -10,6 +10,16 @@ export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undef
   return undefined;
 };
 
+export const selectPendingKycRequestType = (
+  state: IKycState,
+): "individual" | "business" | undefined => {
+  if (state.individualRequestState && state.individualRequestState.status === "Pending")
+    return "individual";
+  if (state.businessRequestState && state.businessRequestState.status === "Pending")
+    return "business";
+  return undefined;
+};
+
 export const selectKycOutSourcedURL = (state: IKycState): string => {
   if (state.individualRequestState && state.individualRequestState.redirectUrl)
     return state.individualRequestState.redirectUrl;

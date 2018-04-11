@@ -5,12 +5,17 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectKycOutSourcedURL, selectKycRequestStatus } from "../../modules/kyc/selectors";
+import {
+  selectKycOutSourcedURL,
+  selectKycRequestStatus,
+  selectPendingKycRequestType,
+} from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Button } from "../shared/Buttons";
 import { KycPanel } from "./KycPanel";
+import { KYCAddDocuments } from "./shared/AddDocuments";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 
@@ -18,6 +23,7 @@ interface IStateProps {
   requestLoading?: boolean;
   requestStatus?: TRequestStatus;
   redirectUrl: string;
+  pendingRequestType: "individual" | "business" | undefined;
 }
 
 interface IDispatchProps {
@@ -53,8 +59,9 @@ const RequestStateInfo: React.SFC<IProps> = props => {
         title="Kyc request received"
         steps={5}
         currentStep={5}
-        description="We have received your request and are currently processing it."
+        description="We have received your request and are currently processing it. You can submit additional documents for your request here."
       >
+        {props.pendingRequestType && <KYCAddDocuments uploadType={props.pendingRequestType} />}
         {settingsButton}
       </KycPanel>
     );
@@ -123,6 +130,7 @@ export const Kyc = compose<React.SFC>(
         state.kyc.individualRequestStateLoading || state.kyc.businessRequestStateLoading,
       requestStatus: selectKycRequestStatus(state.kyc),
       redirectUrl: selectKycOutSourcedURL(state.kyc),
+      pendingRequestType: selectPendingKycRequestType(state.kyc),
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},

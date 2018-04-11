@@ -16,7 +16,7 @@ const ACCEPTED_FILES = "application/pdf, image/*";
 
 import * as plusIcon from "../../assets/img/inline_icons/plus.svg";
 
-export type TUploadListLayout = "business" | "personal";
+export type TUploadListLayout = "business" | "individual";
 
 interface IProps {
   className?: string;
@@ -47,7 +47,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   const dropzoneWithFilesInner = (
     <>
       <InlineIcon svgIcon={plusIcon} />
-      {layout === "personal" && <span>Add more</span>}
+      {layout === "individual" && <span>Add more</span>}
       {layout === "business" && <span>Upload more documents</span>}
     </>
   );
@@ -66,11 +66,11 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   return (
     <div className={cn(styles.upload, layout, props.className)}>
       <div className={styles.uploadDescription}>
-        {layout === "personal" && <h3 className={styles.title}>Images must include</h3>}
+        {layout === "individual" && <h3 className={styles.title}>Images must include</h3>}
         {layout === "business" && <h3 className={styles.title}>Required documents</h3>}
-        {layout === "personal" && <img src={idImage} />}
+        {layout === "individual" && <img src={idImage} />}
         <div>
-          {layout === "personal" && (
+          {layout === "individual" && (
             <ul className={styles.documentRequirements}>
               <li>Colored photo</li>
               <li>Full name</li>

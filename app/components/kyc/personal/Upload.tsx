@@ -42,7 +42,7 @@ export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps
       files={props.files}
       fileUploading={props.fileUploading}
       filesLoading={props.filesLoading}
-      layout="personal"
+      layout="individual"
     />
     <div className="p-4 text-center">
       <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>

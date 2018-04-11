@@ -24,7 +24,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  onStartKyc: () => void;
+  onGoToKycHome: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -54,7 +54,7 @@ const getStatus = (selectIsUserEmailVerified: boolean, requestStatus?: TRequestS
 export const KycStatusWidgetComponent: React.SFC<IProps> = ({
   requestStatus,
   isUserEmailVerified,
-  onStartKyc,
+  onGoToKycHome,
 }) => {
   return (
     <PanelDark
@@ -78,15 +78,15 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
         >
           <p className={cn(styles.text, "pt-2")}>{getStatus(isUserEmailVerified, requestStatus)}</p>
           <Col xs={12} className="d-flex justify-content-center">
-            {requestStatus && requestStatus === "Draft" ? (
+            {requestStatus && (requestStatus === "Draft" || requestStatus === "Pending") ? (
               <Button
                 layout="secondary"
                 iconPosition="icon-after"
                 svgIcon={arrowRight}
-                onClick={onStartKyc}
+                onClick={onGoToKycHome}
                 disabled={!isUserEmailVerified}
               >
-                Verify KYC
+                {requestStatus === "Draft" ? "Start KYC process" : "Submit additional Documents"}
               </Button>
             ) : (
               <div />
@@ -105,7 +105,7 @@ export const KycStatusWidget = compose<React.ComponentClass>(
       requestStatus: selectKycRequestStatus(s.kyc),
     }),
     dispatchToProps: dispatch => ({
-      onStartKyc: () => dispatch(actions.routing.goToKYCHome()),
+      onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),
     }),
   }),
   onEnterAction({

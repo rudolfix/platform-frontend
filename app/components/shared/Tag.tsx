@@ -15,7 +15,7 @@ export interface ITag {
   size?: TSize;
   theme?: TTheme;
   className?: string;
-  onClick?: ((e: any) => void) | undefined;
+  onClick?: (e: any) => void;
   svgIcon?: string;
 }
 
@@ -35,15 +35,15 @@ export const Tag: React.SFC<ITag> = ({
     <>
       {to ? (
         <Link to={to} className={classes}>
-          {Boolean(svgIcon) && <InlineIcon svgIcon={svgIcon || ""} />}
+          {!!svgIcon && <InlineIcon svgIcon={svgIcon} />}
           {text}
         </Link>
       ) : (
-        <span onClick={onClick} className={classes}>
-          {Boolean(svgIcon) && <InlineIcon svgIcon={svgIcon || ""} />}
-          {text}
-        </span>
-      )}
+          <span onClick={onClick} className={classes}>
+            {!!svgIcon && <InlineIcon svgIcon={svgIcon} />}
+            {text}
+          </span>
+        )}
     </>
   );
 };

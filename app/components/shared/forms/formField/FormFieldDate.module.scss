@@ -1,7 +1,7 @@
 @import "../../../../styles/neufund-theme";
 
-.birth-date-field {
-  @include media-breakpoint-up (md) {
+.date-field {
+  @include media-breakpoint-up (lg) {
     flex-direction: row;
   }
 
@@ -12,7 +12,7 @@
   flex-direction: column;
 
   input {
-    @include media-breakpoint-up (md) {
+    @include media-breakpoint-up (lg) {
       width: px-to-rem(80px);
       margin: 0 px-to-rem(10px);
     }
@@ -21,26 +21,8 @@
     text-align: center;
   }
 
-  // sass-lint:disable no-vendor-prefixes
-  ::-webkit-input-placeholder {
-    text-align: center;
-  }
-
-  :-moz-placeholder {
-    text-align: center;
-  }
-
-  ::-moz-placeholder {
-    text-align: center;
-  }
-
-  :-ms-input-placeholder {
-    text-align: center;
-  }
-  // sass-lint:enable no-vendor-prefixes
-
   .label {
-    @include media-breakpoint-up (md) {
+    @include media-breakpoint-up (lg) {
       align-self: flex-end;
       margin-bottom: 0;
     }
@@ -49,11 +31,20 @@
     flex-shrink: 0;
     margin-bottom: px-to-rem(10px);
   }
+}
 
-  .inputs-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.inputs-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper {
+  &:last-of-type {
+    input {
+      @include media-breakpoint-up (lg) {
+        margin-right: 0;
+      }
+    }
   }
 }
 

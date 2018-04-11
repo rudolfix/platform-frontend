@@ -82,9 +82,10 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
 
           {layout === "business" && (
             <ul className={styles.documentRequirements}>
-              <li>trade register scan</li>
-              <li>Article of association</li>
-              <li>Proof od address</li>
+              <li>Commercial register entry</li>
+              <li>Article of ssociation</li>
+              <li>Partnership agreement</li>
+              <li>Proof of address (non-german entities only)</li>
             </ul>
           )}
         </div>

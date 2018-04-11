@@ -1,6 +1,9 @@
 import { addBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { IWalletState, IWalletStateData } from "./reducer";
 
+export const selectNeuBalanceEuroAmount = (state: IWalletStateData): string =>
+  multiplyBigNumbers([state.neuPriceEur, state.neuBalance]);
+
 /**
  * Liquid Assets
  */

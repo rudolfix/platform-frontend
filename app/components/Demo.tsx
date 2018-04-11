@@ -4,7 +4,7 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 import * as styles from "./Demo.module.scss";
 
 import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
-import { MyPortfolio } from "./dashboard/myPortfolio/MyPortfolioWidget";
+import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
@@ -186,7 +186,37 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <MyPortfolio />
+          <MyPortfolioWidgetComponent isLoading />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <MyPortfolioWidgetComponent
+            isLoading={false}
+            data={{ balanceEur: "36490" + "0".repeat(18), balanceNeu: "1000" + "0".repeat(18) }}
+          />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <MyPortfolioWidgetComponent isLoading={false} error="Something went wrong!" />
+        </Col>
+      </Row>
+    </Container>
+
+    <Container>
+      <Row>
+        <Col>
+          <MyPortfolioWidgetComponent
+            isLoading={false}
+            data={{ balanceEur: "0", balanceNeu: "0" }}
+          />
         </Col>
       </Row>
     </Container>

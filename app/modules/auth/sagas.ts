@@ -1,7 +1,7 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IUser } from "../../lib/api/users/interfaces";
+import { IUser, IUserInput } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
@@ -64,7 +64,7 @@ export async function verifyUserEmailPromise({
 
 export async function updateUserPromise(
   { apiUserSerivce }: TGlobalDependencies,
-  user: IUser,
+  user: IUserInput,
 ): Promise<IUser> {
   await apiUserSerivce.me();
   return apiUserSerivce.updateUser(user);
@@ -75,7 +75,7 @@ export function* loadUser(): Iterator<any> {
   yield effects.put(actions.auth.loadUser(user));
 }
 
-export function* updateUser(updatedUser: IUser): Iterator<any> {
+export function* updateUser(updatedUser: IUserInput): Iterator<any> {
   const user: IUser = yield neuCall(updateUserPromise, updatedUser);
   yield effects.put(actions.auth.loadUser(user));
 }

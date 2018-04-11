@@ -5,7 +5,13 @@ export interface IUser {
   language?: string;
   unverifiedEmail?: string;
   verifiedEmail?: string;
+}
+
+export interface IUserInput {
   newEmail?: string;
+  salt?: string;
+  language?: string;
+  backupCodesVerified?: boolean;
 }
 
 export interface IVerifyEmailUser {
@@ -20,7 +26,3 @@ export const UserValidator = Yup.object()
     verifiedEmail: Yup.string(),
   })
   .required();
-
-export interface INewUser extends IUser {
-  salt?: string;
-}

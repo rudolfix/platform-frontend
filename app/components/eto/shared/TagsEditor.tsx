@@ -1,6 +1,6 @@
 import * as React from "react";
-
 import { Input } from "reactstrap";
+
 import { Button } from "../../shared/Buttons";
 import { Tag } from "../../shared/Tag";
 
@@ -26,7 +26,6 @@ export class TagsEditor extends React.Component<IProps, IState> {
   };
 
   inputRef: HTMLInputElement | null = null;
-  tabComponentClassName = ".js-tab-component";
 
   componentDidMount(): void {
     const { selectedTags, availiableTags } = this.props;
@@ -41,7 +40,7 @@ export class TagsEditor extends React.Component<IProps, IState> {
 
   private createTag(): void {
     const { tags, selectedTags } = this.state;
-    const tag: string = this.inputRef!.value.trim().replace(/\s\s+/g, " ") || "";
+    const tag: string = this.inputRef!.value.trim().replace(/\s\s+/g, " ");
     const tagExist: boolean = tags.includes(tag) || selectedTags.includes(tag);
     const isTooShort: boolean = tag.length < 1;
 
@@ -53,11 +52,9 @@ export class TagsEditor extends React.Component<IProps, IState> {
     this.inputRef!.value = "";
   }
 
-  private selectTag(e: { target: HTMLElement }): void {
+  private selectTag(tag: string): void {
     const { selectedTagsLimit } = this.props;
     const { tags, selectedTags } = this.state;
-    const tagElement: any = e.target.closest(this.tabComponentClassName);
-    const tag: string = tagElement.innerText;
     const isLimitReached: boolean = selectedTags.length === selectedTagsLimit;
 
     if (isLimitReached) {
@@ -70,10 +67,8 @@ export class TagsEditor extends React.Component<IProps, IState> {
     });
   }
 
-  private deselectTag(e: { target: HTMLElement }): void {
+  private deselectTag(tag: string): void {
     const { tags, selectedTags } = this.state;
-    const tagElement: any = e.target.closest(this.tabComponentClassName);
-    const tag: string = tagElement.innerText;
 
     this.setState({
       selectedTags: selectedTags.filter(filteredTag => filteredTag !== tag),
@@ -99,7 +94,7 @@ export class TagsEditor extends React.Component<IProps, IState> {
           <div className={styles.selectedTags}>
             {selectedTags.map(tag => (
               <Tag
-                onClick={e => this.deselectTag(e)}
+                onClick={() => this.deselectTag(tag)}
                 text={tag}
                 svgIcon={checkIcon}
                 size="small"
@@ -113,7 +108,7 @@ export class TagsEditor extends React.Component<IProps, IState> {
           <div>
             {tags.map(tag => (
               <Tag
-                onClick={e => this.selectTag(e)}
+                onClick={() => this.selectTag(tag)}
                 size="small"
                 svgIcon={plusIcon}
                 text={tag}

@@ -1,0 +1,9 @@
+@import "../../styles/neufund-theme";
+
+.sub-header {
+  color: $neu-almost-black;
+  font-size: $bigger-font-size;
+  border-left: solid;
+  border-left-width: px-to-rem(2px);
+  border-left-color: $neu-piss-yellow;
+}

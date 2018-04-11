@@ -1,8 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec6527abe10c916f73da4
- * very straight forward :)
- */
-
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";
@@ -14,7 +9,8 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
-import { FormField } from "../../shared/forms/forms";
+import { Col, Row } from "reactstrap";
+import { FormTextArea } from "../../shared/forms/forms";
 
 import {
   EtoProductAndVisionSchemaRequired,
@@ -34,7 +30,34 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (formikBag: FormikProps<IEtoProductAndVision> & IProps) => (
   <Form>
-    <FormField label="First name" name="firstName" />
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <div className="mb-4">
+          <FormTextArea label="What is the sales model?" name="salesModel" />
+        </div>
+        <div className="mb-4">
+          <FormTextArea
+            label="What is the exact target segment of your product?"
+            name="targetSegment"
+          />
+        </div>
+        <div className="mb-4">
+          <FormTextArea label="what is the product vision?" name="productVision" />
+        </div>
+        <div className="mb-4">
+          <FormTextArea
+            label="What are the key product priorities (i.e. roadmap) for the next 12 months?"
+            name="productPriorities"
+          />
+        </div>
+        <div className="mb-4">
+          <FormTextArea label="What has inspired you to start this company?" name="whyStarted" />
+        </div>
+        <div className="mb-4">
+          <FormTextArea label="how will you use the raised capital?" name="capitalUse" />
+        </div>
+      </Col>
+    </Row>
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
         Submit and continue

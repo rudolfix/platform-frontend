@@ -1,11 +1,37 @@
 # React guidelines
 
+## Imports
+
+* imports should be grouped like this:
+
+```
+// imports coausing side effects
+import "polyfills";
+
+// package imports
+import "react";
+import "redux";
+
+// relative imports
+import { something } from "./something.ts"
+
+// non-ts/js imports
+import * as image from "../images/image.png"
+import * as styles from "./styles.module.scss"
+```
+
+* each group should be separated by a new line
+* items in group should be automatically sorted automatically by linter
+* [DO NOT USE DEFAULT EXPORTS](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad)
+
 ## Functional components:
 
 * you should almost always prefer functional components only valid reason for having class style
   component is when you have internal state or heavily use life cycle methods
 * if you need to do something while components shows up you can use `onEnterAction` HOC
 * functional components should always be of a type `React.SFC<IProps>` not `()=>..`
+* prefer destructing props object if there are not so many props (< 5)
+  `({ onClick, className }) => ...` instead of `(props) => ...`
 
 ## Class components:
 

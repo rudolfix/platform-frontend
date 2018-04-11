@@ -43,8 +43,8 @@ const US_CITIZEN_VALUES = {
 
 const HIGH_INCOME_VALUES = {
   [NONE_KEY]: "-please select-",
-  [BOOL_TRUE_KEY]: "Yes I have",
-  [BOOL_FALSE_KEY]: "No I have not",
+  [BOOL_TRUE_KEY]: "Yes",
+  [BOOL_FALSE_KEY]: "No",
 };
 
 interface IStateProps {
@@ -77,19 +77,25 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <br />
     <FormSelectField
       values={PEP_VALUES}
-      label="Are you politically exposed?"
+      label="Are you a politically exposed person? 1)"
       name="isPoliticallyExposed"
     />
     <FormSelectField values={US_CITIZEN_VALUES} label="Are you a US citizen?" name="isUsCitizen" />
     <FormSelectField
       values={HIGH_INCOME_VALUES}
-      label="Do you have a high income??"
+      label="Is your income above 5.000 EUR monthly, or do you have more than 100k EUR of assets available?"
       name="isHighIncome"
     />
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
         Submit and continue
       </Button>
+    </div>
+    <div className="p-4">
+      <b>1)</b> A Politically Exposed Person (PEP) is someone who, through their prominent position
+      or influence, is more susceptible to being involved in bribery or corruption. In addition, any
+      close business associate or family member of such a person will also be deemed as being a
+      risk, and therefore could also be added to the PEP list.
     </div>
   </Form>
 );
@@ -107,6 +113,12 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
     <KycPanel steps={5} currentStep={2} title={"Personal Details"} hasBackButton={true}>
+      <div className="pb-4">
+        <h6>Why do we need this information?</h6>
+        The following information is used to verify your identity, following know your client and
+        anti money laundering policy. Your information is always kept confidentail and need to be
+        stored for at least 5 years. For more information you can read our privacy policy here.
+      </div>
       <KYCEnhancedForm {...props} />
     </KycPanel>
   );

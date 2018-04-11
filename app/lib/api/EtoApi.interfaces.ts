@@ -36,12 +36,12 @@ export const EtoSimplePersonSchema = Yup.object().shape({
 });
 
 // file
-export interface IKycFileInfo {
+export interface IEtoFileInfo {
   id: string;
   fileName: string;
 }
 
-export const KycFileInfoSchema = Yup.object().shape({
+export const EtoFileInfoSchema = Yup.object().shape({
   id: Yup.string(),
   fileName: Yup.string(),
 });

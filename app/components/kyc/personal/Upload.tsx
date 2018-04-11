@@ -9,8 +9,8 @@ import { actions } from "../../../modules/actions";
 import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
+import { MultiFileUpload, TUploadListLayout } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
-import { KycFileUploadList, TUploadListLayout } from "../shared/KycFileUploadList";
 
 interface IStateProps {
   fileUploading: boolean;
@@ -37,7 +37,7 @@ export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps
     }
     hasBackButton={true}
   >
-    <KycFileUploadList
+    <MultiFileUpload
       onDropFile={props.onDropFile}
       files={props.files}
       fileUploading={props.fileUploading}

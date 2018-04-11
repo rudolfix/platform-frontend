@@ -26,7 +26,7 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
-import { KycFileUploadList } from "../shared/KycFileUploadList";
+import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 const PEP_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -122,7 +122,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
     return (
       <AccordionElement title={name} isOpened={true}>
         <KYCEnhancedForm {...this.props} />
-        <KycFileUploadList
+        <MultiFileUpload
           layout={"personal"}
           onDropFile={this.props.onDropFile}
           files={this.props.files}

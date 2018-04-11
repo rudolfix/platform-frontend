@@ -1,9 +1,3 @@
-/**
- * https://app.zeplin.io/project/5a8a92c89c1a166a6a6e8f37/screen/5a9ec65230c36a8054f42bb0
- * Pretty straightforward. We need a text area field here but that's all really.
- * Person lists can be reused from other components
- */
-
 import * as React from "react";
 
 import { Form, FormikProps, withFormik } from "formik";
@@ -15,12 +9,17 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
-import { FormField } from "../../shared/forms/forms";
+import { FormField, FormTextArea } from "../../shared/forms/forms";
 
+import { Col, Row } from "reactstrap";
 import {
   EtoMarketInformationSchemaRequired,
   IEtoMarketInformation,
 } from "../../../lib/api/EtoApi.interfaces";
+import { Accordion, AccordionElement } from "../../shared/Accordion";
+import { HorizontalLine } from "../../shared/HorizontalLine";
+
+import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 
 interface IStateProps {
   currentValues: IEtoMarketInformation;
@@ -35,9 +34,69 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
   <Form>
-    <FormField label="Sales Model" name="salesModel" />
-    {/** add business partners here, list of IEtoBusinessPartners, for now you could omit the social channels, the design needs to change here **/}
-    {/** add key customers section here, list of IEtoKeyCustomer, for now omit the social channels **/}
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <div className="mb-4">
+          <FormTextArea label="What is the sales model?" name="salesModel" />
+        </div>
+        <div className="mb-4">
+          <FormTextArea label="What is the marketing approach?" name="marketingApproach" />
+        </div>
+        <div className="mb-4">
+          <FormTextArea label="USP" name="usp" />
+        </div>
+        <div className="mb-4">
+          <FormTextArea label="Who are your key competitors?" name="competitors" />
+        </div>
+      </Col>
+    </Row>
+    <HorizontalLine className="mb-4" />
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <h4>Business partners</h4>
+        <Accordion>
+          <AccordionElement isOpened={true} title={"First Name"}>
+            <FormField label="First name" name="firstName" />
+            <FormField label="Surname" name="surName" />
+          </AccordionElement>
+        </Accordion>
+        <div className="p-4 text-center">
+          <Button
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={plusIcon}
+            onClick={() => {}}
+            disabled={true}
+          >
+            Add more
+          </Button>
+        </div>
+      </Col>
+    </Row>
+    <HorizontalLine className="mb-4" />
+    <Row className="justify-content-center">
+      <Col xs={12} lg={6}>
+        <h4>Key Customers</h4>
+        <Accordion>
+          <AccordionElement isOpened={true} title={"First Name"}>
+            <FormField label="First name" name="firstName" />
+            <FormField label="Surname" name="surName" />
+          </AccordionElement>
+        </Accordion>
+        <div className="p-4 text-center">
+          <Button
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={plusIcon}
+            onClick={() => {}}
+            disabled={true}
+          >
+            Add more
+          </Button>
+        </div>
+      </Col>
+    </Row>
+    <HorizontalLine className="mb-4" />
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
         Submit and continue

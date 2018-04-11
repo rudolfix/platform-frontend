@@ -24,7 +24,7 @@ export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
   isMaxWidth,
 }) => (
   <div className={`${styles.kycPanel} ${isMaxWidth ? styles.kycPanelMax : ""}`}>
-    <PanelWhite>
+    <PanelWhite className="mt-4">
       <header className={styles.header}>
         <ProgressStepper steps={steps} currentStep={currentStep} />
         <h2 className={styles.title}>{title}</h2>

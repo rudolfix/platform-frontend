@@ -90,8 +90,8 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <NavigationButton forward text="NavigationButton" onClick={() => { }} />
-          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => { }} />
+          <NavigationButton forward text="NavigationButton" onClick={() => {}} />
+          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
           <NavigationLink forward to="/" text="NavigationLink" />
         </Col>
       </Row>
@@ -229,14 +229,14 @@ export const Demo: React.SFC = () => (
           <VerifyEmailWidgetComponent
             isUserEmailVarified={false}
             isThereUnverifiedEmail={true}
-            resendEmail={() => { }}
+            resendEmail={() => {}}
           />
         </Col>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
             isUserEmailVarified={true}
             isThereUnverifiedEmail={true}
-            resendEmail={() => { }}
+            resendEmail={() => {}}
           />
         </Col>
       </Row>
@@ -256,16 +256,16 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onStartKyc={() => { }} isUserEmailVerified={true} />
+          <KycStatusWidgetComponent onStartKyc={() => {}} isUserEmailVerified={true} />
         </Col>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onStartKyc={() => { }} isUserEmailVerified={false} />
+          <KycStatusWidgetComponent onStartKyc={() => {}} isUserEmailVerified={false} />
         </Col>
       </Row>
     </Container>
 
     <Container>
-      <ChangeEmailComponent submitForm={() => { }} />
+      <ChangeEmailComponent submitForm={() => {}} />
     </Container>
 
     <Container>
@@ -292,7 +292,7 @@ export const Demo: React.SFC = () => (
         tokenPrice={"2€"}
         neuInvestorsNum={500}
         startingOn="22.12.2019"
-        handleEmailSend={() => { }}
+        handleEmailSend={() => {}}
         endInDays={25}
         company={"Superawesome startup two"}
         hasStarted={true}
@@ -319,7 +319,7 @@ export const Demo: React.SFC = () => (
         tokenPrice={"2€"}
         neuInvestorsNum={500}
         startingOn="22.12.2019"
-        handleEmailSend={() => { }}
+        handleEmailSend={() => {}}
         endInDays={25}
         company={"Superawesome startup one"}
         hasStarted={true}
@@ -376,7 +376,8 @@ export const Demo: React.SFC = () => (
       <TagsEditor
         availiableTags={["tag1", "tag2", "tag3", "tag with random text4", "tag5", "tag6"]}
         selectedTags={["tag1", "tag3"]}
-        selectedTagsLimit={5} />
+        selectedTagsLimit={5}
+      />
     </Container>
     <Container>
       <SocialProfilesEditor

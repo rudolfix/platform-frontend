@@ -146,15 +146,19 @@ const EtoEnhancedForm = withFormik<IProps, IEtoLegalRepresentative>({
 })(EtoForm);
 
 export const EtoRegistrationLegalRepresentativeComponent: React.SFC<IProps> = props => (
-  <EtoRegistrationPanel
-    steps={6}
-    currentStep={2}
-    title={"Legal Representative"}
-    hasBackButton={false}
-    isMaxWidth={true}
-  >
-    <EtoEnhancedForm {...props} />
-  </EtoRegistrationPanel>
+  <Row>
+    <Col xs={12} lg={{ size: 8, offset: 2 }}>
+      <EtoRegistrationPanel
+        steps={6}
+        currentStep={2}
+        title={"Legal Representative"}
+        hasBackButton={false}
+        isMaxWidth={true}
+      >
+        <EtoEnhancedForm {...props} />
+      </EtoRegistrationPanel>
+    </Col>
+  </Row>
 );
 
 export const EtoRegistrationLegalRepresentative = compose<React.SFC>(

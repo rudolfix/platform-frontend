@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { selectIsLightWallet } from "../../modules/web3/reducer";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { SubHeader } from "../shared/SubHeader";
+import { SectionHeader } from "../shared/SectionHeader";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { KycStatusWidget } from "./kycStates/KycStatusWidget";
@@ -18,7 +18,7 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
   <LayoutAuthorized>
     <Row className="row-gutter-top">
       <Col xs={12}>
-        <SubHeader view="Security Settings" />
+        <SectionHeader> Security Settings </SectionHeader>
       </Col>
       <Col lg={4} xs={12}>
         <VerifyEmailWidget />
@@ -34,7 +34,7 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
         <KycStatusWidget />
       </Col>
       <Col xs={12}>
-        <SubHeader view="Personal Settings" />
+        <SectionHeader> Personal Settings </SectionHeader>
       </Col>
       <Col lg={8} xs={12}>
         <ChangeEmail />

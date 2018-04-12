@@ -42,11 +42,13 @@ export class UsersApi {
       throw new UserNotExisting();
     }
 
+    response.body.type = "investor"; // @todo remove it when api is done
+
     return response.body;
   }
 
   public async verifyUserEmail(userCode: IVerifyEmailUser): Promise<IUser> {
-    const response = await this.httpClient.put<IVerifyEmailUser>({
+    const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me/email-verification",
       responseSchema: UserValidator,
@@ -58,7 +60,7 @@ export class UsersApi {
       throw new UserNotExisting();
     }
 
-    return response.body as IUser;
+    return response.body;
   }
 
   public async updateUser(updatedUser: IUserInput): Promise<IUser> {

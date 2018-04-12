@@ -21,8 +21,15 @@ import { PanelDark } from "./shared/PanelDark";
 import { PanelWhite } from "./shared/PanelWhite";
 import { PercentageIndicatorBar } from "./shared/PercentageIndicatorBar";
 import { SectionHeader } from "./shared/SectionHeader";
+import { SocialProfilesEditor } from "./shared/SocialProfilesEditor";
 import { Tabs } from "./shared/Tabs";
 import { Tag } from "./shared/Tag";
+
+import * as facebookIcon from "../assets/img/inline_icons/social_facebook.svg";
+import * as linkedinIcon from "../assets/img/inline_icons/social_linkedin.svg";
+import * as mediumIcon from "../assets/img/inline_icons/social_medium.svg";
+import * as redditIcon from "../assets/img/inline_icons/social_reddit.svg";
+import * as telegramIcon from "../assets/img/inline_icons/social_telegram.svg";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -389,6 +396,36 @@ export const Demo: React.SFC = () => (
           { text: "tab 1", path: "" },
           { text: "tab 2", path: "" },
           { text: "tab 3", path: "" },
+        ]}
+      />
+    </Container>
+
+    <Container>
+      <SocialProfilesEditor
+        profiles={[
+          {
+            name: "LinkedIn",
+            url: "linkedin.com",
+            svgIcon: linkedinIcon,
+          },
+          {
+            name: "Facebook",
+            url: "facebook.com",
+            svgIcon: facebookIcon,
+          },
+          {
+            name: "Medium",
+            svgIcon: mediumIcon,
+          },
+          {
+            name: "Reddit",
+            url: "reddit.com",
+            svgIcon: redditIcon,
+          },
+          {
+            name: "Telegram",
+            svgIcon: telegramIcon,
+          },
         ]}
       />
     </Container>

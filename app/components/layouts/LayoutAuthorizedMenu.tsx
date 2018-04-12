@@ -13,12 +13,19 @@ import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_ina
 import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inactive.svg";
 // tslint:disable-next-line:no-implicit-dependencies
 import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
+import { TUserType } from "../../lib/api/users/interfaces";
+import { selectUserType } from "../../modules/auth/selectors";
+import { appConnect } from "../../store";
 import { appRoutes } from "../AppRouter";
 
 interface IMenuEntry {
   svgString: string;
   title: string;
   actionRequired?: boolean;
+}
+
+interface IStateProps {
+  userType?: TUserType;
 }
 
 const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
@@ -38,11 +45,41 @@ const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
   );
 };
 
-export const LayoutAuthorizedMenu = () => (
-  <div className={styles.menu}>
-    <MenuEntry svgString={iconStart} to={appRoutes.dashboard} title="Start" />
-    <MenuEntry svgString={iconPortfolio} to="#" title="Portfolio" />
-    <MenuEntry svgString={iconWallet} to={appRoutes.wallet} title="Wallet" />
-    <MenuEntry svgString={iconSettings} to={appRoutes.settings} title="Settings" actionRequired />
-  </div>
-);
+export const LayoutAuthorizedMenuComponent = ({ userType }: IStateProps) => {
+  if (userType === "investor")
+    return (
+      <div className={styles.menu}>
+        <MenuEntry svgString={iconStart} to={appRoutes.dashboard} title="Start" />
+        <MenuEntry svgString={iconPortfolio} to="#" title="Portfolio" />
+        <MenuEntry svgString={iconWallet} to={appRoutes.wallet} title="Wallet" />
+        <MenuEntry
+          svgString={iconSettings}
+          to={appRoutes.settings}
+          title="Settings"
+          actionRequired
+        />
+      </div>
+    );
+  if (userType === "issuer")
+    return (
+      <div className={styles.menu}>
+        {/*TODO: Change icons to real icons when received by the designer*/}
+        {/*TODO: Connect icons with real routes */}
+        <MenuEntry svgString={iconStart} to={appRoutes.eto} title="Overview" />
+        <MenuEntry svgString={iconWallet} to={appRoutes.eto} title="Edit Page" />
+        <MenuEntry
+          svgString={iconSettings}
+          to={appRoutes.settings}
+          title="Settings"
+          actionRequired
+        />
+      </div>
+    );
+  throw new Error("Menu loaded in wrong state, user should be either issuer or investor");
+};
+
+export const LayoutAuthorizedMenu = appConnect<IStateProps, {}>({
+  stateToProps: s => ({
+    userType: selectUserType(s.auth),
+  }),
+})(LayoutAuthorizedMenuComponent);

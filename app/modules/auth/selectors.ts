@@ -1,6 +1,6 @@
 import * as queryString from "query-string";
 import { RouterState } from "react-router-redux";
-import { IUser } from "../../lib/api/users/interfaces";
+import { IUser, TUserType } from "../../lib/api/users/interfaces";
 import { IAuthState } from "./reducer";
 
 export const selectRedirectURLFromQueryString = (state: RouterState): string | undefined => {
@@ -18,6 +18,8 @@ export const selectRedirectURLFromQueryString = (state: RouterState): string | u
 };
 
 export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
+export const selectUserType = (state: IAuthState): TUserType | undefined =>
+  state.user && state.user.type;
 export const selectUserEmail = (state: IAuthState): string | undefined =>
   state.user && (state.user.unverifiedEmail || state.user.verifiedEmail);
 export const selectVerifiedUserEmail = (state: IAuthState): string | undefined =>

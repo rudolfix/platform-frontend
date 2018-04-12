@@ -39,10 +39,12 @@ export async function loadUserPromise({
       newEmail: walletMetadata.email,
       salt: walletMetadata.salt,
       backupCodesVerified: false,
+      type: "investor",
     });
   } else {
     return apiUserSerivce.createAccount({
       backupCodesVerified: true,
+      type: "investor",
     });
   }
 }

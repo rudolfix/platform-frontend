@@ -48,7 +48,7 @@ const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
 export const LayoutAuthorizedMenuComponent = ({ userType }: IStateProps) => {
   if (userType === "investor")
     return (
-      <div className={styles.menu}>
+      <div className={styles.menu} data-test-id="investor-menu">
         <MenuEntry svgString={iconStart} to={appRoutes.dashboard} title="Start" />
         <MenuEntry svgString={iconPortfolio} to="#" title="Portfolio" />
         <MenuEntry svgString={iconWallet} to={appRoutes.wallet} title="Wallet" />
@@ -60,9 +60,10 @@ export const LayoutAuthorizedMenuComponent = ({ userType }: IStateProps) => {
         />
       </div>
     );
+
   if (userType === "issuer")
     return (
-      <div className={styles.menu}>
+      <div className={styles.menu} data-test-id="issuer-menu">
         {/*TODO: Change icons to real icons when received by the designer*/}
         {/*TODO: Connect icons with real routes */}
         <MenuEntry svgString={iconStart} to={appRoutes.eto} title="Overview" />
@@ -75,6 +76,7 @@ export const LayoutAuthorizedMenuComponent = ({ userType }: IStateProps) => {
         />
       </div>
     );
+
   throw new Error("Menu loaded in wrong state, user should be either issuer or investor");
 };
 

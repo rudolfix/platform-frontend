@@ -1,11 +1,17 @@
 export const appRoutes = {
-  wallet: "/wallet",
   verify: "/email-verify",
+
   root: "/",
+
   register: "/register",
+  etoRegister: "/register-eto",
   login: "/login",
-  kyc: "/kyc",
+  etoLogin: "/login-eto",
   recover: "/recover",
+  etoRecover: "/recover-eto",
+
+  kyc: "/kyc",
+  wallet: "/wallet",
   dashboard: "/dashboard",
   settings: "/settings",
   demo: "/demo",
@@ -15,7 +21,8 @@ export const appRoutes = {
 import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import { OnlyAuthorizedRoute, OnlyPublicRoute } from "./shared/routing/RedirectBasedOnAuthRoute";
+import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
+import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 
 import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
@@ -38,18 +45,40 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
 
-    <OnlyAuthorizedRoute path={appRoutes.verify} component={emailVerify} />
-    <OnlyAuthorizedRoute path={appRoutes.wallet} component={Wallet} />
-    <OnlyAuthorizedRoute path={appRoutes.kyc} component={Kyc} />
-    <OnlyAuthorizedRoute path={appRoutes.dashboard} component={Dashboard} exact />
-    <OnlyAuthorizedRoute path={appRoutes.settings} component={Settings} exact />
-    <OnlyAuthorizedRoute path={settingsRoutes.seedBackup} component={BackupSeed} exact />
-    <OnlyAuthorizedRoute path={appRoutes.eto} component={Eto} />
+    {/* only investors routes */}
+    <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
+    <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} />
+
+    {/* only issuers routes */}
+    <OnlyAuthorizedRoute path={appRoutes.eto} issuerComponent={Eto} />
+
+    {/* common routes for both investors and issuers */}
+    <OnlyAuthorizedRoute
+      path={appRoutes.verify}
+      investorComponent={emailVerify}
+      issuerComponent={emailVerify}
+    />
+    <OnlyAuthorizedRoute
+      path={appRoutes.dashboard}
+      investorComponent={Dashboard}
+      issuerComponent={Dashboard}
+      exact
+    />
+    <OnlyAuthorizedRoute
+      path={appRoutes.settings}
+      investorComponent={Settings}
+      issuerComponent={Settings}
+      exact
+    />
+    <OnlyAuthorizedRoute
+      path={settingsRoutes.seedBackup}
+      investorComponent={BackupSeed}
+      issuerComponent={BackupSeed}
+      exact
+    />
 
     <Route path={appRoutes.demo} component={Demo} />
 
     <Redirect to={appRoutes.root} />
   </Switch>
 );
-
-//TODO: move help into wallet selector

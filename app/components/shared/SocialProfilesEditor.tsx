@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import * as linkIcon from "../../assets/img/inline_icons/social_link.svg";
 import * as styles from "./SocialProfilesEditor.module.scss";
 
-interface ISocialProfile {
+export interface ISocialProfile {
   name: string;
   svgIcon: string;
   url?: string;

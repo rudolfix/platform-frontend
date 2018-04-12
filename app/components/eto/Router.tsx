@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import { Overview } from "./Overview";
 import { EtoRegistrationCompanyInformation } from "./registration/CompanyInformation";
 import { EtoRegistrationTerms } from "./registration/EtoTerms";
 import { EtoRegistrationLegalRepresentative } from "./registration/LegalRepresentative";
@@ -27,8 +26,6 @@ export const EtoRouter: React.SFC = () => (
     <Route path={etoRoutes.marketInformation} component={EtoRegistrationMarketInformation} exact />
     <Route path={etoRoutes.productAndVision} component={EtoRegistrationProductAndVision} exact />
     <Route path={etoRoutes.etoTerms} component={EtoRegistrationTerms} exact />
-
-    <Route path={etoRoutes.overview} component={Overview} exact />
 
     <Redirect to={etoRoutes.companyInformation} />
   </Switch>

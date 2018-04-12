@@ -13,8 +13,8 @@ import { FormField } from "../../shared/forms/forms";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 import {
-  EtoTeamInformationSchemaRequired,
-  IEtoTeamInformation,
+  EtoDataSchema,
+  IEtoData,
 } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { FormTextArea } from "../../shared/forms/formField/FormTextArea";
@@ -22,17 +22,17 @@ import { HorizontalLine } from "../../shared/HorizontalLine";
 import { SingleFileUpload } from "../../shared/SingleFileUpload";
 
 interface IStateProps {
-  currentValues: IEtoTeamInformation;
+  currentValues: IEtoData;
   loadingData: boolean;
 }
 
 interface IDispatchProps {
-  submitForm: (values: IEtoTeamInformation) => void;
+  submitForm: (values: IEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
+const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
@@ -150,9 +150,9 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
   </Form>
 );
 
-const EtoEnhancedForm = withFormik<IProps, IEtoTeamInformation>({
-  validationSchema: EtoTeamInformationSchemaRequired,
-  isInitialValid: (props: any) => EtoTeamInformationSchemaRequired.isValidSync(props.currentValues),
+const EtoEnhancedForm = withFormik<IProps, IEtoData>({
+  validationSchema: EtoDataSchema,
+  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),

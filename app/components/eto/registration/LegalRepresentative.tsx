@@ -15,8 +15,8 @@ import { FormField } from "../../shared/forms/forms";
 
 import { Col, Row } from "reactstrap";
 import {
-  EtoLegalRepresentativeSchemaRequired,
-  IEtoLegalRepresentative,
+  EtoDataSchema,
+  IEtoData,
 } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
@@ -24,17 +24,17 @@ import { HorizontalLine } from "../../shared/HorizontalLine";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 interface IStateProps {
-  currentValues: IEtoLegalRepresentative;
+  currentValues: IEtoData;
   loadingData: boolean;
 }
 
 interface IDispatchProps {
-  submitForm: (values: IEtoLegalRepresentative) => void;
+  submitForm: (values: IEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (formikBag: FormikProps<IEtoLegalRepresentative> & IProps) => (
+const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
       <Col xs={12} lg={7}>
@@ -136,10 +136,10 @@ const EtoForm = (formikBag: FormikProps<IEtoLegalRepresentative> & IProps) => (
   </Form>
 );
 
-const EtoEnhancedForm = withFormik<IProps, IEtoLegalRepresentative>({
-  validationSchema: EtoLegalRepresentativeSchemaRequired,
+const EtoEnhancedForm = withFormik<IProps, IEtoData>({
+  validationSchema: EtoDataSchema,
   isInitialValid: (props: any) =>
-    EtoLegalRepresentativeSchemaRequired.isValidSync(props.currentValues),
+    EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),

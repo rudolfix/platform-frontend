@@ -13,8 +13,8 @@ import { FormField } from "../../shared/forms/forms";
 
 import { Col, Row } from "reactstrap";
 import {
-  EtoCompanyInformationSchemaRequired,
-  IEtoCompanyInformation,
+  EtoDataSchema,
+  IEtoData,
 } from "../../../lib/api/EtoApi.interfaces";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { FormTextArea } from "../../shared/forms/formField/FormTextArea";
@@ -22,17 +22,17 @@ import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { SingleFileUpload } from "../../shared/SingleFileUpload";
 
 interface IStateProps {
-  currentValues: IEtoCompanyInformation;
+  currentValues: IEtoData;
   loadingData: boolean;
 }
 
 interface IDispatchProps {
-  submitForm: (values: IEtoCompanyInformation) => void;
+  submitForm: (values: IEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (formikBag: FormikProps<IEtoCompanyInformation> & IProps) => (
+const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
@@ -84,10 +84,10 @@ const EtoForm = (formikBag: FormikProps<IEtoCompanyInformation> & IProps) => (
   </Form>
 );
 
-const EtoEnhancedForm = withFormik<IProps, IEtoCompanyInformation>({
-  validationSchema: EtoCompanyInformationSchemaRequired,
+const EtoEnhancedForm = withFormik<IProps, IEtoData>({
+  validationSchema: EtoDataSchema,
   isInitialValid: (props: any) =>
-    EtoCompanyInformationSchemaRequired.isValidSync(props.currentValues),
+  EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),
@@ -112,7 +112,7 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: (_values: IEtoCompanyInformation) => {},
+      submitForm: (_values: IEtoData) => {},
     }),
   }),
   onEnterAction({

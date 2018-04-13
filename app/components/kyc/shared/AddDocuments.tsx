@@ -1,14 +1,11 @@
 import * as React from "react";
-
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-
+import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-
-import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
+import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { MultiFileUpload, TUploadListLayout } from "../../shared/MultiFileUpload";
+import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 interface IStateProps {
   fileUploading: boolean;
@@ -21,22 +18,22 @@ interface IDispatchProps {
 }
 
 interface IOwnProps {
-  uploadType: "business" | "individual";
+  uploadType: TKycRequestType;
 }
 
-interface IProps {
-  layout: TUploadListLayout;
-}
-
-export const KYCAddDocumentsComponent: React.SFC<
-  IProps & IStateProps & IDispatchProps & IOwnProps
-> = props => (
+export const KYCAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & IOwnProps> = ({
+  onDropFile,
+  files,
+  filesLoading,
+  fileUploading,
+  uploadType,
+}) => (
   <MultiFileUpload
-    onDropFile={props.onDropFile}
-    files={props.files}
-    fileUploading={props.fileUploading}
-    filesLoading={props.filesLoading}
-    layout={props.uploadType}
+    onDropFile={onDropFile}
+    files={files}
+    fileUploading={fileUploading}
+    filesLoading={filesLoading}
+    layout={uploadType}
   />
 );
 

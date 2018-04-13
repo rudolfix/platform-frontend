@@ -1,6 +1,8 @@
 import * as Yup from "yup";
 import { makeAllRequired, personBirthDate } from "./util/schemaHelpers";
 
+export type TKycRequestType = "business" | "individual";
+
 export interface IKycPerson {
   firstName?: string;
   lastName?: string;

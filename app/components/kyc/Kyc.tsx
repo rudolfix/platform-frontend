@@ -3,7 +3,7 @@ import { KycRouter } from "./Router";
 
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
-import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import {
   selectKycOutSourcedURL,
@@ -23,7 +23,7 @@ interface IStateProps {
   requestLoading?: boolean;
   requestStatus?: TRequestStatus;
   redirectUrl: string;
-  pendingRequestType: "individual" | "business" | undefined;
+  pendingRequestType: TKycRequestType | undefined;
 }
 
 interface IDispatchProps {

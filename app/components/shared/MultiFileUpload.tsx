@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./MultiFileUpload.module.scss";
 
 import * as cn from "classnames";
-import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
+import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
 
 import Dropzone from "react-dropzone";
 
@@ -16,14 +16,12 @@ const ACCEPTED_FILES = "application/pdf, image/*";
 
 import * as plusIcon from "../../assets/img/inline_icons/plus.svg";
 
-export type TUploadListLayout = "business" | "individual";
-
 interface IProps {
   className?: string;
   fileUploading: boolean;
   filesLoading: boolean;
   files: IKycFileInfo[];
-  layout: TUploadListLayout;
+  layout: TKycRequestType;
   onDropFile: (file: File) => void;
 }
 

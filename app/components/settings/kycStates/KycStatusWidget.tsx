@@ -60,14 +60,14 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
     <PanelDark
       headerText="KYC PROCESS"
       rightComponent={
-        requestStatus === "Approved" ? (
+        requestStatus === "Accepted" ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
         ) : (
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
     >
-      {requestStatus === "Approved" ? (
+      {requestStatus === "Accepted" ? (
         <div data-test-id="verified-section" className={cn(styles.content)}>
           <div className="pt-2">{statusTextMap[requestStatus]}</div>
         </div>

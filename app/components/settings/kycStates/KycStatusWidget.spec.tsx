@@ -9,7 +9,7 @@ describe("<KycStatusWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <KycStatusWidgetComponent
         onGoToKycHome={() => {}}
-        requestStatus="Approved"
+        requestStatus="Accepted"
         isUserEmailVerified={true}
       />,
     );

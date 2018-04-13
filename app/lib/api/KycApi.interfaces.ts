@@ -94,7 +94,7 @@ export const KycFileInfoShape = Yup.object().shape({
 });
 
 // request state
-export type TRequestStatus = "Draft" | "Pending" | "Outsourced" | "Rejected" | "Approved";
+export type TRequestStatus = "Draft" | "Pending" | "Outsourced" | "Rejected" | "Accepted";
 export interface IKycRequestState {
   status: TRequestStatus;
   redirectUrl?: string;

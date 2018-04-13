@@ -66,7 +66,7 @@ const RequestStateInfo: React.SFC<IProps> = props => {
       </KycPanel>
     );
   }
-  if (props.requestStatus === "Approved") {
+  if (props.requestStatus === "Accepted") {
     return (
       <KycPanel
         title="Kyc request approved"

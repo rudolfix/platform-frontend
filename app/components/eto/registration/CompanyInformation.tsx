@@ -97,7 +97,7 @@ export const EtoRegistrationCompanyInformationComponent: React.SFC<IProps> = pro
   <EtoRegistrationPanel
     steps={6}
     currentStep={1}
-    title={"Company Information"}
+    title="Company Information"
     hasBackButton={false}
     isMaxWidth={true}
   >

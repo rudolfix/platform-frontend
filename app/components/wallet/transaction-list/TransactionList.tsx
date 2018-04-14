@@ -96,24 +96,24 @@ export const TransactionList: React.SFC<ITransactionList> = ({
           ) : (
             transactions.map(({ id, timestamp, type, amount, fromTo, transfer }) => (
               <TableRow key={id}>
-                <TableCell decorate mobileDescription={"Date"}>
+                <TableCell decorate mobileDescription="Date">
                   <Date timestamp={timestamp} />
                 </TableCell>
-                <TableCell decorate mobileDescription={"Transaction type"}>
+                <TableCell decorate mobileDescription="Transaction type">
                   {type}
                 </TableCell>
-                <TableCell decorate mobileDescription={"Amount"}>
+                <TableCell decorate mobileDescription="Amount">
                   <Money currency="eur_token" value={amount} transfer={transfer} />
                 </TableCell>
-                <TableCell decorate mobileDescription={"From/To"}>
+                <TableCell decorate mobileDescription="From/To">
                   {fromTo}
                 </TableCell>
-                <TableCell decorate mobileDescription={"TXN"} center>
+                <TableCell decorate mobileDescription="TXN" center>
                   <Button layout="secondary">
                     <InlineIcon svgIcon={LinkOutIcon} />
                   </Button>
                 </TableCell>
-                <TableCell decorate mobileDescription={"Details"} center>
+                <TableCell decorate mobileDescription="Details" center>
                   <Button layout="secondary">
                     <InlineIcon svgIcon={AddIcon} />
                   </Button>

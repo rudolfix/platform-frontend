@@ -1,5 +1,21 @@
 # React guidelines
 
+## JSX
+
+* when passing string literals do not wrap them in `{ }`.
+
+DO NOT:
+
+```
+<MyComponent title={"bad"} />
+```
+
+DO:
+
+```
+<MyComponent title="good" />
+```
+
 ## Imports
 
 * imports should be grouped like this:

@@ -1,6 +1,8 @@
 import * as Yup from "yup";
 import { makeAllRequired, personBirthDate } from "./util/schemaHelpers";
 
+export type TKycRequestType = "business" | "individual";
+
 export interface IKycPerson {
   firstName?: string;
   lastName?: string;
@@ -92,7 +94,7 @@ export const KycFileInfoShape = Yup.object().shape({
 });
 
 // request state
-export type TRequestStatus = "Draft" | "Pending" | "Outsourced" | "Rejected" | "Approved";
+export type TRequestStatus = "Draft" | "Pending" | "Outsourced" | "Rejected" | "Accepted";
 export interface IKycRequestState {
   status: TRequestStatus;
   redirectUrl?: string;

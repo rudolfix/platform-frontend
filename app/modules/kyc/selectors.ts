@@ -1,4 +1,4 @@
-import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IKycState } from "./reducer";
 
 export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undefined => {
@@ -7,6 +7,14 @@ export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undef
       ? state.businessRequestState
       : state.individualRequestState;
   if (requestState) return requestState.status;
+  return undefined;
+};
+
+export const selectPendingKycRequestType = (state: IKycState): TKycRequestType | undefined => {
+  if (state.individualRequestState && state.individualRequestState.status === "Pending")
+    return "individual";
+  if (state.businessRequestState && state.businessRequestState.status === "Pending")
+    return "business";
   return undefined;
 };
 

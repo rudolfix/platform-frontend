@@ -1,6 +1,8 @@
 import * as queryString from "query-string";
 import { RouterState } from "react-router-redux";
 import { IUser, TUserType } from "../../lib/api/users/interfaces";
+import { IAppState } from './../../store';
+import { selectKycRequestStatus } from './../kyc/selectors';
 import { IAuthState } from "./reducer";
 
 export const selectRedirectURLFromQueryString = (state: RouterState): string | undefined => {

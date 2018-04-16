@@ -71,9 +71,12 @@ export const settingsNotification = () => ({
   onClickAction: routingActions.goToSettings(),
 });
 
-export const selectSettingsNotification = (state: IAppState) =>
+export const selectIsActionRequiredSettings = (state: IAppState): boolean =>
   !selectIsUserEmailVerified(state.auth) ||
   !selectBackupCodesVerified(state.auth) ||
   selectKycRequestStatus(state.kyc) !== "Accepted"
-    ? settingsNotification()
-    : undefined;
+    ? true
+    : false;
+
+export const selectSettingsNotification = (state: IAppState) =>
+  selectIsActionRequiredSettings(state) ? settingsNotification() : undefined;

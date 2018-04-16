@@ -14,10 +14,7 @@ import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 import { FormField } from "../../shared/forms/forms";
 
 import { Col, Row } from "reactstrap";
-import {
-  EtoDataSchema,
-  IEtoData,
-} from "../../../lib/api/EtoApi.interfaces";
+import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { HorizontalLine } from "../../shared/HorizontalLine";
@@ -138,8 +135,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 
 const EtoEnhancedForm = withFormik<IProps, IEtoData>({
   validationSchema: EtoDataSchema,
-  isInitialValid: (props: any) =>
-    EtoDataSchema.isValidSync(props.currentValues),
+  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),

@@ -13,7 +13,6 @@ export const EtoFileInfoSchema = Yup.object().shape({
   fileName: Yup.string(),
 });
 
-
 /**
  * Main Eto data interface
  */
@@ -35,8 +34,8 @@ export interface IEtoCaptableEntry extends IEtoPerson {
 export const EtoCaptableEntrySchema = EtoPersonSchema.concat(
   Yup.object().shape({
     ownership: Yup.number(),
-  })
-)
+  }),
+);
 
 export interface IEtoFounder extends IEtoPerson {
   role?: string;
@@ -46,9 +45,9 @@ export interface IEtoFounder extends IEtoPerson {
 export const EtoFounderSchema = EtoPersonSchema.concat(
   Yup.object().shape({
     role: Yup.string(),
-    bio: Yup.string()
-  })
-)
+    bio: Yup.string(),
+  }),
+);
 
 export interface IEtoData {
   name?: string;
@@ -101,7 +100,5 @@ export const EtoDataSchema = Yup.object().shape({
   sharePrice: Yup.number(),
   tokenName: Yup.string(),
   thirdPartyDependency: Yup.boolean(),
-  subjectToRegulation: Yup.boolean()
-})
-
-
+  subjectToRegulation: Yup.boolean(),
+});

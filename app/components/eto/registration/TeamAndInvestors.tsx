@@ -12,10 +12,7 @@ import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 import { FormField } from "../../shared/forms/forms";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
-import {
-  EtoDataSchema,
-  IEtoData,
-} from "../../../lib/api/EtoApi.interfaces";
+import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { FormTextArea } from "../../shared/forms/formField/FormTextArea";
 import { HorizontalLine } from "../../shared/HorizontalLine";

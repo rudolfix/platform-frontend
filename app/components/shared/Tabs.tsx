@@ -1,6 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+
+import { NavLinkConnected } from "./connectedRouting";
 import * as styles from "./Tabs.module.scss";
 
 type TTheme = "dark" | "light";
@@ -22,7 +23,7 @@ interface IProps {
 export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) => (
   <div className={cn(styles.tabs, className)} {...props}>
     {tabs.map(({ path, text, handleClick, dataTestId }, index) => (
-      <NavLink
+      <NavLinkConnected
         to={{ pathname: path, search: window.location.search }} // we pass all query string arguments. It's needed to make redirection back to authorized route work
         className={cn(styles.tab, theme)}
         data-test-id={dataTestId}
@@ -31,7 +32,7 @@ export const Tabs: React.SFC<IProps> = ({ tabs, theme, className, ...props }) =>
         <div key={text} onClick={handleClick}>
           {text}
         </div>
-      </NavLink>
+      </NavLinkConnected>
     ))}
   </div>
 );

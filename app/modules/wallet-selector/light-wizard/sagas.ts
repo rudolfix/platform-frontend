@@ -87,7 +87,7 @@ export function* loadSeedFromWallet({ web3Manager }: TGlobalDependencies): Itera
     const lightWallet = web3Manager.personalWallet as LightWallet;
     //How should you bind instances when using call?
     const seed = yield call(lightWallet.getSeed.bind(lightWallet));
-    yield put(actions.web3.loadSeedtoState(seed));
+    yield put(actions.web3.loadSeedToState(seed));
   } catch (e) {
     throw new Error("Fetching seed failed");
   }

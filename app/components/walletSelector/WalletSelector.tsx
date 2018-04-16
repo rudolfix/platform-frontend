@@ -81,7 +81,6 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({
 export const WalletSelector = compose<React.SFC>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.walletSelector.reset()),
-    pure: false,
   }),
   appConnect<IStateProps>({
     stateToProps: s => ({
@@ -89,8 +88,5 @@ export const WalletSelector = compose<React.SFC>(
       rootPath: selectIsLoginRoute(s.router) ? appRoutes.login : appRoutes.register,
       isLoginRoute: selectIsLoginRoute(s.router),
     }),
-    options: {
-      pure: false,
-    },
   }),
 )(WalletSelectorComponent);

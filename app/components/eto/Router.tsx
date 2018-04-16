@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
+
+import { SwitchConnected } from "../shared/connectedRouting";
 import { etoRoutes } from "./routes";
 
 import { EtoRegistrationCompanyInformation } from "./registration/CompanyInformation";
@@ -10,7 +12,7 @@ import { EtoRegistrationProductAndVision } from "./registration/ProductAndVision
 import { EtoRegistrationTeamAndInvestors } from "./registration/TeamAndInvestors";
 
 export const EtoRouter: React.SFC = () => (
-  <Switch>
+  <SwitchConnected>
     <Route
       path={etoRoutes.companyInformation}
       component={EtoRegistrationCompanyInformation}
@@ -27,5 +29,5 @@ export const EtoRouter: React.SFC = () => (
     <Route path={etoRoutes.etoTerms} component={EtoRegistrationTerms} exact />
 
     <Redirect to={etoRoutes.companyInformation} />
-  </Switch>
+  </SwitchConnected>
 );

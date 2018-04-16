@@ -1,12 +1,14 @@
 import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
+
+import { SwitchConnected } from "../shared/connectedRouting";
 import { parentRoutePath, walletRoutes } from "./routes";
 import { DepositEth } from "./views/deposit-funds/DepositEth";
 import { DepositEuroToken } from "./views/deposit-funds/DepositEuroToken";
 import { WalletStart } from "./views/start/Start";
 
 export const WalletRouter: React.SFC = () => (
-  <Switch>
+  <SwitchConnected>
     <Route path={parentRoutePath} component={WalletStart} exact />
 
     {/* Deposit Funds */}
@@ -14,5 +16,5 @@ export const WalletRouter: React.SFC = () => (
     <Route path={walletRoutes.eth} component={DepositEth} exact />
 
     <Redirect to={parentRoutePath} />
-  </Switch>
+  </SwitchConnected>
 );

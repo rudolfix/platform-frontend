@@ -5,6 +5,7 @@ import { Col, Container, Row } from "reactstrap";
 import { appRoutes } from "./AppRouter";
 import { Button } from "./shared/Buttons";
 import { SectionHeader } from "./shared/SectionHeader";
+import { loginWalletRoutes } from "./walletSelector/walletRoutes";
 
 export const Home: React.SFC = () => (
   <Container>
@@ -17,7 +18,7 @@ export const Home: React.SFC = () => (
     <Row className="mb-5">
       <Col>
         <SectionHeader>Investors:</SectionHeader>
-        <Link to={appRoutes.login}>
+        <Link to={loginWalletRoutes.light}>
           <Button>Login</Button>
         </Link>
         <br />

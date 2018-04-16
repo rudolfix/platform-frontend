@@ -75,7 +75,7 @@ describe("Wallet selector integration", () => {
       createAccount: async () => getDummyUser(),
     });
 
-    const { store, container, dispatchSpy } = createIntegrationTestsSetup({
+    const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
       ledgerWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
@@ -85,6 +85,7 @@ describe("Wallet selector integration", () => {
           version: "58.0.0",
         },
       },
+      initialRoute: walletRegisterRoutes.light,
     });
     container
       .get<Web3ManagerMock>(symbols.web3Manager)
@@ -94,7 +95,7 @@ describe("Wallet selector integration", () => {
       wrapWithProviders(WalletSelector, {
         container,
         store,
-        currentRoute: walletRegisterRoutes.light,
+        history,
       }),
     );
 
@@ -103,6 +104,8 @@ describe("Wallet selector integration", () => {
       .find(tid("wallet-selector-ledger"))
       .find("a")
       .simulate("click", { button: 0 });
+
+    await waitForTid(mountedComponent, "ledger-wallet-error-msg");
 
     expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
       "Nano Ledger S not available",
@@ -202,7 +205,7 @@ describe("Wallet selector integration", () => {
       createAccount: async () => getDummyUser(),
     });
 
-    const { store, container, dispatchSpy } = createIntegrationTestsSetup({
+    const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
       browserWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
@@ -215,6 +218,7 @@ describe("Wallet selector integration", () => {
       wrapWithProviders(WalletSelector, {
         container,
         store,
+        history,
       }),
     );
 

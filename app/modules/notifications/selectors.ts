@@ -6,9 +6,7 @@ import { settingsNotification } from "./reducer";
 export const selectIsActionRequiredSettings = (state: IAppState): boolean =>
   !selectIsUserEmailVerified(state.auth) ||
   !selectBackupCodesVerified(state.auth) ||
-  selectKycRequestStatus(state.kyc) !== "Accepted"
-    ? true
-    : false;
+  selectKycRequestStatus(state.kyc) !== "Accepted";
 
 export const selectSettingsNotification = (state: IAppState) =>
   selectIsActionRequiredSettings(state) ? settingsNotification() : undefined;

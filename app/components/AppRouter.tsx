@@ -7,6 +7,7 @@ export const appRoutes = {
   etoRegister: "/register-eto",
   login: "/login",
   etoLogin: "/login-eto",
+  etoDashboard: "/eto-dashboard",
   recover: "/recover",
   etoRecover: "/recover-eto",
 
@@ -27,8 +28,10 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
 import { Eto } from "./eto/Eto";
+import { EtoDashboard } from "./eto/EtoDashboard"
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
+
 
 import { emailVerify } from "./emailVerify";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
@@ -51,6 +54,7 @@ export const AppRouter: React.SFC = () => (
 
     {/* only issuers routes */}
     <OnlyAuthorizedRoute path={appRoutes.eto} issuerComponent={Eto} />
+    <OnlyAuthorizedRoute path={appRoutes.etoDashboard} issuerComponent={EtoDashboard} />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute

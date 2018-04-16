@@ -6,12 +6,12 @@ import { Button } from "../shared/Buttons";
 import { PanelDark } from "../shared/PanelDark";
 import { PanelWhite } from "../shared/PanelWhite";
 import { SectionHeader } from "../shared/SectionHeader";
-import { CompanyDetails } from "./overview/CompanyDetails";
-import { EtoOverview } from "./overview/EtoOverview";
-import { FounderTeam } from "./overview/FounderTeam";
-import { LinkColumns } from "./overview/LinkColumns";
-import { QuestionsAndAnswers } from "./overview/QuestionsAndAnswers";
-import { RowLabeledDataSets } from "./overview/RowLabeledDataSets";
+import { CompanyDetails } from "./dashboard/CompanyDetails";
+import { EtoOverview } from "./dashboard/EtoOverview";
+import { FounderTeam } from "./dashboard/FounderTeam";
+import { LinkColumns } from "./dashboard/LinkColumns";
+import { QuestionsAndAnswers } from "./dashboard/QuestionsAndAnswers";
+import { RowLabeledDataSets } from "./dashboard/RowLabeledDataSets";
 
 import * as downloadIcon from "../../assets/img/inline_icons/download.svg";
 import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
@@ -19,6 +19,7 @@ import * as linkedinIcon from "../../assets/img/inline_icons/social_linkedin.svg
 import * as mediumIcon from "../../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
+import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 
 const loremIpsum =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -33,11 +34,13 @@ const chartPieData = {
   ],
 };
 
-export const Overview: React.SFC = () => (
-  <>
+export const EtoDashboard: React.SFC = () => (
+  <LayoutAuthorized>
     <SectionHeader>Eto overview</SectionHeader>
     <Row>
       <Col lg={8} xs={12}>
+
+
         <Row className="py-4">
           <Col>
             <EtoOverview
@@ -300,7 +303,7 @@ export const Overview: React.SFC = () => (
               theme="t-white"
               svgIcon={downloadIcon}
               iconPosition="icon-before"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               Download All
             </Button>
@@ -308,5 +311,5 @@ export const Overview: React.SFC = () => (
         />
       </Col>
     </Row>
-  </>
+  </LayoutAuthorized>
 );

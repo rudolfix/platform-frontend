@@ -15,7 +15,7 @@ import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inact
 import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { selectUserType } from "../../modules/auth/selectors";
-import { selectIsActionRequiredSettings } from "../../modules/notifications/reducer";
+import { selectIsActionRequiredSettings } from "../../modules/notifications/selectors";
 import { appConnect } from "../../store";
 import { appRoutes } from "../AppRouter";
 

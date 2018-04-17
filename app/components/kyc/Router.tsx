@@ -8,6 +8,7 @@ import { KYCStart } from "./start/Start";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
+import { invariant } from "../../utils/invariant";
 import { KYCBeneficialOwners } from "./business/BeneficialOwners";
 import { KycBusinessData } from "./business/BusinessData";
 import { KycLegalRepresentative } from "./business/LegalRepresentative";
@@ -60,7 +61,7 @@ export const KycRouterComponent: React.SFC<IStateProps> = ({ userType }) => {
     case "issuer":
       return <EtoKycRouter />;
     default:
-      throw new Error("Wrong user type, user should be either issuer or investor");
+      return invariant(false, "Unknown user type") as any;
   }
 };
 

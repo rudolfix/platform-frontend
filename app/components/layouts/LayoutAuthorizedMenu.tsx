@@ -17,6 +17,7 @@ import { TUserType } from "../../lib/api/users/interfaces";
 import { selectUserType } from "../../modules/auth/selectors";
 import { selectIsActionRequiredSettings } from "../../modules/notifications/selectors";
 import { appConnect } from "../../store";
+import { invariant } from "../../utils/invariant";
 import { appRoutes } from "../AppRouter";
 
 interface IMenuEntry {
@@ -85,7 +86,7 @@ export const LayoutAuthorizedMenuComponent: React.SFC<IStateProps> = ({ userType
     case "issuer":
       return <IssuerMenu data-test-id="issuer-menu" {...props} />;
     default:
-      throw new Error("Menu loaded in wrong state, user should be either issuer or investor");
+      return invariant(false, "Unknown user type") as any;
   }
 };
 

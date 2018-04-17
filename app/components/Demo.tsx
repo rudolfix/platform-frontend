@@ -6,7 +6,7 @@ import * as styles from "./Demo.module.scss";
 import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
-import { TagsEditor } from "./eto/shared/TagsEditor";
+import { TagsEditorWidget } from "./eto/shared/TagsEditor";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
 import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
@@ -403,7 +403,7 @@ export const Demo: React.SFC = () => (
     </Container>
 
     <Container>
-      <TagsEditor
+      <TagsEditorWidget
         availiableTags={["tag1", "tag2", "tag3", "tag with random text4", "tag5", "tag6"]}
         selectedTags={["tag1", "tag3"]}
         selectedTagsLimit={5}

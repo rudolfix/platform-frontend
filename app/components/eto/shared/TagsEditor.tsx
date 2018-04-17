@@ -1,3 +1,5 @@
+import { includes } from "lodash";
+
 import * as React from "react";
 import { Input } from "reactstrap";
 
@@ -8,51 +10,88 @@ import * as checkIcon from "../../../assets/img/inline_icons/check.svg";
 import * as plusIcon from "../../../assets/img/inline_icons/plus_bare.svg";
 import * as styles from "./TagsEditor.module.scss";
 
-interface IProps {
+interface IPropsWrapper {
   selectedTagsLimit: number;
   selectedTags: string[];
   availiableTags: string[];
 }
 
-interface IState {
+interface IProps {
+  handleSubmit: any;
+  handleInput: any;
+  handleSelectedTagClik: any;
+  handleDeselectedTagClick: any;
   selectedTags: string[];
-  tags: string[];
+  availiableTags: string[];
 }
 
-export class TagsEditor extends React.Component<IProps, IState> {
+interface IStateWrapper {
+  selectedTags: string[];
+  tags: string[];
+  inputValue: string;
+}
+
+class TagsEditor extends React.Component<IProps> {
+  render(): React.ReactNode {
+    return (
+      <div className={styles.tagsEditor}>
+        <form className={styles.form} onSubmit={e => this.props.handleSubmit(e)}>
+          <Input placeholder="Add category" onChange={e => this.props.handleInput(e)} />
+          <Button type="submit">Add</Button>
+        </form>
+        {!!this.props.selectedTags.length && (
+          <div className={styles.selectedTags}>
+            {this.props.selectedTags.map(tag => (
+              <Tag
+                onClick={() => this.props.handleSelectedTagClik(tag)}
+                text={tag}
+                svgIcon={checkIcon}
+                size="small"
+                theme="dark"
+                key={tag}
+              />
+            ))}
+          </div>
+        )}
+        {!!this.props.availiableTags.length && (
+          <div>
+            {this.props.availiableTags.map(tag => (
+              <Tag
+                onClick={() => this.props.handleDeselectedTagClick(tag)}
+                size="small"
+                svgIcon={plusIcon}
+                text={tag}
+                key={tag}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+}
+
+export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapper> {
   state = {
-    selectedTags: this.props.selectedTags,
-    tags: this.props.availiableTags,
+    selectedTags: [...this.props.selectedTags],
+    tags: [...this.props.availiableTags],
+    inputValue: "",
   };
 
-  inputRef: HTMLInputElement | null = null;
-
-  componentDidMount(): void {
-    const { selectedTags, availiableTags } = this.props;
-
-    if (!Boolean(selectedTags.length)) {
-      return;
-    }
-
-    const tags = availiableTags.filter(avaliableTag => !selectedTags.includes(avaliableTag));
-    this.setState({ tags });
-  }
-
-  private createTag(): void {
+  createTag = () => {
     const { tags, selectedTags } = this.state;
-    const tag: string = this.inputRef!.value.trim().replace(/\s\s+/g, " ");
-    const tagExist: boolean = tags.includes(tag) || selectedTags.includes(tag);
+    const tag: string = this.state.inputValue.trim().replace(/\s\s+/g, " ");
+    const tagExist: boolean = includes(tags, tag) || includes(selectedTags, tag);
     const isTooShort: boolean = tag.length < 1;
 
     if (tagExist || isTooShort) {
       return;
     }
 
-    this.setState({ tags: [tag, ...tags] });
-    this.inputRef!.value = "";
-  }
+    this.setState({ inputValue: "", tags: [tag, ...tags] });
+  };
 
-  private selectTag(tag: string): void {
+  handleTagSelection = (tag: string) => {
     const { selectedTagsLimit } = this.props;
     const { tags, selectedTags } = this.state;
     const isLimitReached: boolean = selectedTags.length === selectedTagsLimit;
@@ -65,59 +104,47 @@ export class TagsEditor extends React.Component<IProps, IState> {
       selectedTags: [tag, ...selectedTags],
       tags: tags.filter(filteredTag => filteredTag !== tag),
     });
-  }
+  };
 
-  private deselectTag(tag: string): void {
+  handleTagDeselection = (tag: string) => {
     const { tags, selectedTags } = this.state;
 
     this.setState({
       selectedTags: selectedTags.filter(filteredTag => filteredTag !== tag),
       tags: [tag, ...tags],
     });
-  }
+  };
 
-  private handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     this.createTag();
+  };
+
+  handleInput = (e: any) => {
+    this.setState({ inputValue: e.target.value });
+  };
+
+  componentDidMount(): void {
+    const { selectedTags, availiableTags } = this.props;
+
+    if (!selectedTags.length) {
+      return;
+    }
+
+    const tags = availiableTags.filter(avaliableTag => !includes(selectedTags, avaliableTag));
+    this.setState({ tags });
   }
 
   render(): React.ReactNode {
-    const { tags, selectedTags } = this.state;
-
     return (
-      <div className={styles.tagsEditor}>
-        <form className={styles.form} onSubmit={e => this.handleSubmit(e)}>
-          <Input placeholder="Add category" innerRef={input => (this.inputRef = input)} />
-          <Button type="submit">Add</Button>
-        </form>
-        {Boolean(selectedTags.length) && (
-          <div className={styles.selectedTags}>
-            {selectedTags.map(tag => (
-              <Tag
-                onClick={() => this.deselectTag(tag)}
-                text={tag}
-                svgIcon={checkIcon}
-                size="small"
-                theme="dark"
-                key={tag}
-              />
-            ))}
-          </div>
-        )}
-        {Boolean(tags.length) && (
-          <div>
-            {tags.map(tag => (
-              <Tag
-                onClick={() => this.selectTag(tag)}
-                size="small"
-                svgIcon={plusIcon}
-                text={tag}
-                key={tag}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <TagsEditor
+        selectedTags={this.state.selectedTags}
+        availiableTags={this.state.tags}
+        handleSubmit={this.handleSubmit}
+        handleInput={this.handleInput}
+        handleSelectedTagClik={this.handleTagDeselection}
+        handleDeselectedTagClick={this.handleTagSelection}
+      />
     );
   }
 }

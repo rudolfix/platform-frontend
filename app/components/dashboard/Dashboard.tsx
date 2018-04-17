@@ -59,7 +59,7 @@ export const Dashboard = () => (
     </Row>
     <SectionHeader>
       investment opportunities{" "}
-      <Tag className="ml-3" color="green" layout="ghost" size="small" text="1 new" />
+      <Tag className="ml-3" theme="green" layout="ghost" size="small" text="1 new" />
     </SectionHeader>
     <Row className="py-4">
       <Col xs={12} className="pb-2">

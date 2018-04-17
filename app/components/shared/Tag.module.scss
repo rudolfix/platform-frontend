@@ -8,10 +8,16 @@
   $color-tag-bg-hover: rgba($color-tag-base, .36);
 
   color: $neu-black;
+  cursor: pointer;
   background-color: $color-tag-bg;
   border-radius: px-to-rem(3px);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   font-weight: $font-weight-bold;
   padding: px-to-rem(6px) px-to-rem(10px);
+  transition: 150ms ease-out background-color;
+  user-select: none;
 
   & + .tag {
     margin-left: px-to-rem(10px);
@@ -42,5 +48,20 @@
 
   &:global(.green) {
     color: $neu-seaweed;
+  }
+
+  &:global(.dark) {
+    background-color: $neu-charcoal-grey;
+    color: $neu-white-two;
+
+    &:hover {
+      background-color: lighten($neu-charcoal-grey, 8%);
+    }
+  }
+
+  :global(.inline-icon) {
+    height: px-to-rem(12px);
+    width: px-to-rem(12px);
+    margin-right: px-to-rem(8px);
   }
 }

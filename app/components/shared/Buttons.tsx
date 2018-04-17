@@ -16,7 +16,7 @@ interface IButtonProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
   disabled?: boolean;
-  onClick?: React.MouseEventHandler<any>;
+  onClick?: () => void;
   svgIcon?: string;
   type?: string;
   className?: string;

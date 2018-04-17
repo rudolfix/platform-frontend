@@ -6,6 +6,7 @@ import * as styles from "./Demo.module.scss";
 import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
+import { TagsEditorWidget } from "./eto/shared/TagsEditor";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
 import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
@@ -305,7 +306,8 @@ export const Demo: React.SFC = () => (
       <Tag to="#0" text="tag" />
       <Tag layout="ghost" to="#0" text="ghost tag" />
       <Tag layout="ghost" size="small" to="#0" text="small ghost tag" />
-      <Tag color="green" layout="ghost" size="small" to="#0" text="Small green ghost tag" />
+      <Tag theme="green" layout="ghost" size="small" to="#0" text="Small green ghost tag" />
+      <Tag theme="dark" size="small" to="#0" text="Small dark tag" />
     </Container>
 
     <Container>
@@ -400,6 +402,13 @@ export const Demo: React.SFC = () => (
       />
     </Container>
 
+    <Container>
+      <TagsEditorWidget
+        availiableTags={["tag1", "tag2", "tag3", "tag with random text4", "tag5", "tag6"]}
+        selectedTags={["tag1", "tag3"]}
+        selectedTagsLimit={5}
+      />
+    </Container>
     <Container>
       <SocialProfilesEditor
         profiles={[

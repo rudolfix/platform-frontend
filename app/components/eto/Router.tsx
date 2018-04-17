@@ -9,8 +9,6 @@ import { EtoRegistrationTeamAndInvestors } from "./registration/TeamAndInvestors
 
 export const EtoRouter: React.SFC = () => (
   <Switch>
-    {/* ETO flow kyc components "EtoRegistrationLegalRepresentative" "EtoRegistrationCompanyInformation" 
-      were removed from the router but still remail in the file system */}
     <Route path={etoRoutes.teamAndInvestors} component={EtoRegistrationTeamAndInvestors} exact />
     <Route path={etoRoutes.marketInformation} component={EtoRegistrationMarketInformation} exact />
     <Route path={etoRoutes.productAndVision} component={EtoRegistrationProductAndVision} exact />

@@ -48,9 +48,9 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps> = ({
         </Row>
 
         <Row className="mb-4 text-center">
-          <StepCard img={walletIcon} text={"1. Choose existing wallet"} />
-          <StepCard img={browserIcon} text={"2. Turn on your browser plugin"} />
-          <StepCard img={lockIcon} text={"3. Unlock your wallet to register"} />
+          <StepCard img={walletIcon} text="1. Choose existing wallet" />
+          <StepCard img={browserIcon} text="2. Turn on your browser plugin" />
+          <StepCard img={lockIcon} text="3. Unlock your wallet to register" />
         </Row>
 
         <HorizontalLine className="mb-4" />

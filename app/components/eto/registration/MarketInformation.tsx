@@ -55,7 +55,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Business partners</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surName" />
           </AccordionElement>
@@ -65,7 +65,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => {}}
+            onClick={() => { }}
             disabled={true}
           >
             Add more
@@ -78,7 +78,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Key Customers</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surName" />
           </AccordionElement>
@@ -88,7 +88,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => {}}
+            onClick={() => { }}
             disabled={true}
           >
             Add more
@@ -118,8 +118,8 @@ export const EtoRegistrationMarketInformationComponent: React.SFC<IProps> = prop
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
-        steps={6}
-        currentStep={4}
+        steps={4}
+        currentStep={2}
         title={"Market Information"}
         hasBackButton={false}
         isMaxWidth={true}
@@ -137,10 +137,10 @@ export const EtoRegistrationMarketInformation = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => {},
+      submitForm: () => { },
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => {},
+    actionCreator: _dispatch => { },
   }),
 )(EtoRegistrationMarketInformationComponent);

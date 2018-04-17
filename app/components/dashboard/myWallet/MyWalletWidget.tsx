@@ -56,7 +56,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               icon={moneyIcon}
               data-test-id="euro-widget"
               value={euroTokenAmount}
-              currencyTotal={"eur"}
+              currencyTotal="eur"
             />
           </Col>
           <Col className={styles.moneySuiteWrapper} xs={12} sm={6} lg={12}>
@@ -67,7 +67,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               data-test-id="eth-widget"
               className={cn(styles.borderLeft, "pl-sm-2 pl-md-0")}
               value={ethEuroAmount}
-              currencyTotal={"eur"}
+              currencyTotal="eur"
             />
           </Col>
         </Row>
@@ -81,7 +81,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
                 noCurrencySymbol
                 className={cn(styles.money, "pl-1 pl-sm-2 m-0")}
               />
-              <span className={"pl-1"}>EUR</span>
+              <span className="pl-1">EUR</span>
             </div>
           </Col>
           <Col className="d-block d-sm-none text-right col-auto">

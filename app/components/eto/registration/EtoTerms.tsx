@@ -84,7 +84,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTerms> & IProps) => (
           filesLoading={false}
           fileFormatInformation=".jpg, .svg, .png"
           uploadCta="Upload token symbol"
-          onDropFile={() => {}}
+          onDropFile={() => { }}
         />
       </Col>
     </Row>
@@ -126,8 +126,8 @@ export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
-        steps={6}
-        currentStep={6}
+        steps={4}
+        currentStep={4}
         title={"ETO Terms"}
         hasBackButton={false}
         isMaxWidth={true}
@@ -145,10 +145,10 @@ export const EtoRegistrationTerms = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => {},
+      submitForm: () => { },
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => {},
+    actionCreator: _dispatch => { },
   }),
 )(EtoRegistrationTermsComponent);

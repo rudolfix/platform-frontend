@@ -79,8 +79,8 @@ export const EtoRegistrationProductAndVisionComponent: React.SFC<IProps> = props
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
-        steps={6}
-        currentStep={5}
+        steps={4}
+        currentStep={3}
         title={"Product and Vision"}
         hasBackButton={false}
         isMaxWidth={true}
@@ -98,10 +98,10 @@ export const EtoRegistrationProductAndVision = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => {},
+      submitForm: () => { },
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => {},
+    actionCreator: _dispatch => { },
   }),
 )(EtoRegistrationProductAndVisionComponent);

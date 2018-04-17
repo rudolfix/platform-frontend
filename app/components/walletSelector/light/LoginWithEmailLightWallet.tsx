@@ -33,7 +33,7 @@ interface IOwnProps {
 const LoginLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
     <FormField
-      type={"password"}
+      type="password"
       placeholder="Password"
       touched={formikBag.touched}
       errors={formikBag.errors}

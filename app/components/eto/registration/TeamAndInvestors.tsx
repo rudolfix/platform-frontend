@@ -35,7 +35,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Founders</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surName" />
             <SingleFileUpload
@@ -70,7 +70,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Captable</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surname" />
             <FormField label="Percent" placeholder="%" name="percent" />
@@ -96,7 +96,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Notable Investors</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surName" />
           </AccordionElement>
@@ -120,7 +120,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Advisors</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surName" />
           </AccordionElement>
@@ -157,8 +157,8 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
 
 export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
   <EtoRegistrationPanel
-    steps={6}
-    currentStep={3}
+    steps={4}
+    currentStep={1}
     title={"Team and Investors"}
     hasBackButton={false}
     isMaxWidth={true}

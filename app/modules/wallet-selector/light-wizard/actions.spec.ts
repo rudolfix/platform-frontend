@@ -12,6 +12,8 @@ import {
   LightWrongPasswordSaltError,
 } from "../../../lib/web3/LightWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
+import { IAppState } from "../../../store";
+import { DeepPartial } from "../../../types";
 import { actions } from "../../actions";
 import { walletFlows } from "../flows";
 
@@ -44,6 +46,13 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         return "test";
       },
     });
+    const getStateMock: () => DeepPartial<IAppState> = () => ({
+      router: {
+        location: {
+          pathname: "/eto/login/browser",
+        },
+      },
+    });
 
     it("should create new wallet and store", async () => {
       const lightWalletConnector = createMock(LightWalletConnector, {
@@ -58,6 +67,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         walletMetadataStorageMock,
         vaultApi,
         dummyLogger,
+        getStateMock as any,
       );
       expect(lightWalletConnector.connect).to.be.calledWith({
         walletInstance: expectedWalletDummy,
@@ -85,6 +95,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         walletMetadataStorageMock,
         vaultApi,
         dummyLogger,
+        getStateMock as any,
       );
 
       expect(dispatchMock).to.be.calledWithExactly(

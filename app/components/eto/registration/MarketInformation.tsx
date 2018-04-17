@@ -116,8 +116,8 @@ const EtoEnhancedForm = withFormik<IProps, IEtoMarketInformation>({
 
 export const EtoRegistrationMarketInformationComponent: React.SFC<IProps> = props => (
   <EtoRegistrationPanel
-    steps={6}
-    currentStep={4}
+    steps={4}
+    currentStep={2}
     title={"Market Information"}
     hasBackButton={false}
     isMaxWidth={true}

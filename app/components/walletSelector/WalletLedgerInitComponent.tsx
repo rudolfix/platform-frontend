@@ -10,8 +10,8 @@ import { WarningAlert } from "../shared/WarningAlert";
 import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.svg";
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
 import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
-import { selectIsLoginRoute } from "../../modules/routing/selectors";
 import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
+import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 

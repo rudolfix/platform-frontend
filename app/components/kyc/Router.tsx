@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { kycRoutes } from "./routes";
 
+import { SwitchConnected } from "../shared/connectedRouting";
 import { KYCStart } from "./start/Start";
 
 // private
@@ -22,7 +23,7 @@ interface IStateProps {
 }
 
 export const NormalKycRouter: React.SFC = () => (
-  <Switch>
+  <SwitchConnected>
     <Route path={kycRoutes.start} component={KYCStart} exact />
 
     {/* Personal */}
@@ -37,7 +38,7 @@ export const NormalKycRouter: React.SFC = () => (
     <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
 
     <Redirect to={kycRoutes.start} />
-  </Switch>
+  </SwitchConnected>
 );
 
 export const EtoKycRouter: React.SFC = () => (

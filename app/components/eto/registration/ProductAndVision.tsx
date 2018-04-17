@@ -98,10 +98,10 @@ export const EtoRegistrationProductAndVision = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => { },
+      submitForm: () => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationProductAndVisionComponent);

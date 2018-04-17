@@ -84,7 +84,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTerms> & IProps) => (
           filesLoading={false}
           fileFormatInformation=".jpg, .svg, .png"
           uploadCta="Upload token symbol"
-          onDropFile={() => { }}
+          onDropFile={() => {}}
         />
       </Col>
     </Row>
@@ -145,10 +145,10 @@ export const EtoRegistrationTerms = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => { },
+      submitForm: () => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationTermsComponent);

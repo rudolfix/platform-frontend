@@ -43,7 +43,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
             <FormField label="Surname" name="surName" />
             <SingleFileUpload
               className="my-5"
-              onDropFile={() => { }}
+              onDropFile={() => {}}
               files={[]}
               fileUploading={false}
               filesLoading={false}
@@ -58,7 +58,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => { }}
+            onClick={() => {}}
             disabled={true}
           >
             Add new Owner
@@ -84,7 +84,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => { }}
+            onClick={() => {}}
             disabled={true}
           >
             Add more
@@ -109,7 +109,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => { }}
+            onClick={() => {}}
             disabled={true}
           >
             Add more
@@ -133,7 +133,7 @@ const EtoForm = (formikBag: FormikProps<IEtoTeamInformation> & IProps) => (
             layout="secondary"
             iconPosition="icon-before"
             svgIcon={plusIcon}
-            onClick={() => { }}
+            onClick={() => {}}
             disabled={true}
           >
             Add more
@@ -181,10 +181,10 @@ export const EtoRegistrationTeamAndInvestors = compose<React.SFC>(
       currentValues: {},
     }),
     dispatchToProps: _dispatch => ({
-      submitForm: () => { },
+      submitForm: () => {},
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationTeamAndInvestorsComponent);

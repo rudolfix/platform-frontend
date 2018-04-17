@@ -1,7 +1,7 @@
 import { effects } from "redux-saga";
-import { call, Effect, fork } from "redux-saga/effects";
+import { call, Effect, fork, takeEvery, take } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IUser, IUserInput } from "../../lib/api/users/interfaces";
+import { IUser, IUserInput, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
@@ -21,10 +21,10 @@ export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> 
   }
 }
 
-export async function loadUserPromise({
-  apiUserService,
-  walletMetadataStorage,
-}: TGlobalDependencies): Promise<IUser> {
+export async function loadUserPromise(
+  { apiUserService, walletMetadataStorage }: TGlobalDependencies,
+  userType: TUserType,
+): Promise<IUser> {
   try {
     return await apiUserService.me();
   } catch (e) {
@@ -73,8 +73,8 @@ export async function updateUserPromise(
   return apiUserService.updateUser(user);
 }
 
-export function* loadUser(): Iterator<any> {
-  const user: IUser = yield neuCall(loadUserPromise);
+export function* loadUser(userType: TUserType): Iterator<any> {
+  const user: IUser = yield neuCall(loadUserPromise, userType);
   yield effects.put(actions.auth.loadUser(user));
 }
 
@@ -90,7 +90,7 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
   yield effects.put(actions.init.start());
 }
 
-function* signInUser(): Iterator<any> {
+function* signInUser(_: any, userType: any): Iterator<any> {
   try {
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);
@@ -99,7 +99,7 @@ function* signInUser(): Iterator<any> {
   }
 
   try {
-    yield neuCall(loadUser);
+    yield call(loadUser, userType);
 
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),

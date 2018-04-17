@@ -3,7 +3,6 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { selectIsLoginRoute } from "../../modules/routing/selectors";
 import { walletFlows } from "../../modules/wallet-selector/flows";
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
@@ -18,6 +17,7 @@ import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
 import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
 
 import * as styles from "./WalletBrowser.module.scss";
+import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 

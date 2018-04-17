@@ -9,6 +9,8 @@ import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
+import { GetState } from "../../../di/setupBindings";
+import { selectUrlUserType } from "../selectors";
 
 //Vault nonce should be exactly 24 chars
 const VAULT_MSG = "pleaseallowmetointroducemyselfim";
@@ -41,7 +43,10 @@ export const lightWizardFlows = {
         walletMetadataStorage: ObjectStorage<TWalletMetadata>,
         vaultApi: VaultApi,
         logger: ILogger,
+        getState: GetState,
       ) => {
+        const userType = selectUrlUserType(getState().router);
+
         try {
           const lightWalletVault = await lightWalletUtil.createLightWalletVault({
             password,
@@ -67,7 +72,7 @@ export const lightWizardFlows = {
           walletMetadataStorage.set(lightWallet.getMetadata());
           await web3Manager.plugPersonalWallet(lightWallet);
           if (seed) dispatch(actions.routing.goToSuccessfulRecovery());
-          else dispatch(actions.walletSelector.connected());
+          else dispatch(actions.walletSelector.connected(userType));
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
           dispatch(
@@ -86,6 +91,7 @@ export const lightWizardFlows = {
         symbols.walletMetadataStorage,
         symbols.vaultApi,
         symbols.logger,
+        symbols.getState,
       ],
     ),
 };

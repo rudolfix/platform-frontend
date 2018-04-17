@@ -32,12 +32,12 @@ export const Home: React.SFC = () => (
     <Row>
       <Col>
         <SectionHeader>Issuers:</SectionHeader>
-        <Link to={appRoutes.etoLogin}>
+        <Link to={appRoutes.loginEto}>
           <Button>Login</Button>
         </Link>
         <br />
         <br />
-        <Link to={appRoutes.etoRegister}>
+        <Link to={appRoutes.registerEto}>
           <Button>Register</Button>
         </Link>
       </Col>

@@ -19,6 +19,8 @@ import { WalletType } from "../../web3/types";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getVaultKey } from "./flows";
+import { selectUrlUserType } from "../selectors";
+import { TUserType } from "../../../lib/api/users/interfaces";
 
 export async function retrieveMetadataFromVaultAPI(
   { lightWalletUtil, vaultApi }: TGlobalDependencies,
@@ -111,6 +113,8 @@ export function* lightWalletLoginWatch(
     return;
   }
   const { password } = action.payload;
+  const userType: TUserType = yield effects.select((s: IAppState) => selectUrlUserType(s.router));
+
   try {
     const walletMetadata: ILightWalletRetrieveMetadata | undefined = yield neuCall(
       getWalletMetadata,
@@ -136,7 +140,7 @@ export function* lightWalletLoginWatch(
 
     walletMetadataStorage.set(wallet.getMetadata());
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.walletSelector.connected());
+    yield put(actions.walletSelector.connected(userType));
   } catch (e) {
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),

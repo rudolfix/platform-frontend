@@ -31,44 +31,42 @@ interface IStateWrapper {
   inputValue: string;
 }
 
-class TagsEditor extends React.Component<IProps> {
-  render(): React.ReactNode {
-    return (
-      <div className={styles.tagsEditor}>
-        <form className={styles.form} onSubmit={e => this.props.handleSubmit(e)}>
-          <Input placeholder="Add category" onChange={e => this.props.handleInput(e)} />
-          <Button type="submit">Add</Button>
-        </form>
-        {!!this.props.selectedTags.length && (
-          <div className={styles.selectedTags}>
-            {this.props.selectedTags.map(tag => (
-              <Tag
-                onClick={() => this.props.handleSelectedTagClik(tag)}
-                text={tag}
-                svgIcon={checkIcon}
-                size="small"
-                theme="dark"
-                key={tag}
-              />
-            ))}
-          </div>
-        )}
-        {!!this.props.availiableTags.length && (
-          <div>
-            {this.props.availiableTags.map(tag => (
-              <Tag
-                onClick={() => this.props.handleDeselectedTagClick(tag)}
-                size="small"
-                svgIcon={plusIcon}
-                text={tag}
-                key={tag}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
+const TagsEditor: React.SFC<IProps> = (props) => {
+  return (
+    <div className={styles.tagsEditor}>
+      <form className={styles.form} onSubmit={e => props.handleSubmit(e)}>
+        <Input placeholder="Add category" onChange={e => props.handleInput(e)} />
+        <Button type="submit">Add</Button>
+      </form>
+      {!!props.selectedTags.length && (
+        <div className={styles.selectedTags}>
+          {props.selectedTags.map(tag => (
+            <Tag
+              onClick={() => props.handleSelectedTagClik(tag)}
+              text={tag}
+              svgIcon={checkIcon}
+              size="small"
+              theme="dark"
+              key={tag}
+            />
+          ))}
+        </div>
+      )}
+      {!!props.availiableTags.length && (
+        <div>
+          {props.availiableTags.map(tag => (
+            <Tag
+              onClick={() => props.handleDeselectedTagClick(tag)}
+              size="small"
+              svgIcon={plusIcon}
+              text={tag}
+              key={tag}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapper> {
@@ -80,9 +78,9 @@ export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapp
 
   createTag = () => {
     const { tags, selectedTags } = this.state;
-    const tag: string = this.state.inputValue.trim().replace(/\s\s+/g, " ");
-    const tagExist: boolean = includes(tags, tag) || includes(selectedTags, tag);
-    const isTooShort: boolean = tag.length < 1;
+    const tag = this.state.inputValue.trim().replace(/\s\s+/g, " ");
+    const tagExist = includes(tags, tag) || includes(selectedTags, tag);
+    const isTooShort = tag.length < 1;
 
     if (tagExist || isTooShort) {
       return;
@@ -94,7 +92,7 @@ export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapp
   handleTagSelection = (tag: string) => {
     const { selectedTagsLimit } = this.props;
     const { tags, selectedTags } = this.state;
-    const isLimitReached: boolean = selectedTags.length === selectedTagsLimit;
+    const isLimitReached = selectedTags.length === selectedTagsLimit;
 
     if (isLimitReached) {
       return;

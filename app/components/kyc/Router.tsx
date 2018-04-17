@@ -42,7 +42,7 @@ export const NormalKycRouter: React.SFC = () => (
 );
 
 export const EtoKycRouter: React.SFC = () => (
-  <Switch>
+  <SwitchConnected>
     <Route path={kycRoutes.start} component={KycBusinessStart} exact />
 
     {/* Business Only*/}
@@ -52,7 +52,7 @@ export const EtoKycRouter: React.SFC = () => (
     <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
 
     <Redirect to={kycRoutes.businessStart} />
-  </Switch>
+  </SwitchConnected>
 );
 
 export const KycRouterComponent: React.SFC<IStateProps> = ({ userType }) => {

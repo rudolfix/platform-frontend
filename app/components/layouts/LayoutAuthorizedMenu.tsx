@@ -86,7 +86,7 @@ export const LayoutAuthorizedMenuComponent: React.SFC<IStateProps> = ({ userType
     case "issuer":
       return <IssuerMenu data-test-id="issuer-menu" {...props} />;
     default:
-      return invariant(false, "Unknown user type") as any;
+      return invariant(false, "Unknown user type");
   }
 };
 

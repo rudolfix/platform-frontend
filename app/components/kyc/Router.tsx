@@ -62,7 +62,7 @@ export const KycRouterComponent: React.SFC<IStateProps> = ({ userType }) => {
     case "issuer":
       return <EtoKycRouter />;
     default:
-      return invariant(false, "Unknown user type") as any;
+      return invariant(false, "Unknown user type");
   }
 };
 

@@ -6,7 +6,7 @@ import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { SinonSpy } from "sinon";
 
-import { MemoryRouter } from "react-router";
+import { ConnectedRouter } from "react-router-redux";
 import {
   customizerContainerWithMiddlewareApi,
   setupBindings,
@@ -36,6 +36,9 @@ import { Web3Adapter } from "../app/lib/web3/Web3Adapter";
 import { UsersApi } from "../app/lib/api/users/UsersApi";
 import { SignatureAuthApi } from "../app/lib/api/SignatureAuthApi";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
+import { routerMiddleware } from "react-router-redux";
+import { BrowserRouter } from "react-router-dom";
+import { createBrowserHistory, History, createMemoryHistory } from "history";
 
 interface ICreateIntegrationTestsSetupOptions {
   initialState?: Partial<IAppState>;
@@ -44,12 +47,14 @@ interface ICreateIntegrationTestsSetupOptions {
   storageMock?: Storage;
   usersApiMock?: UsersApi;
   signatureAuthApiMock?: SignatureAuthApi;
+  initialRoute?: string;
 }
 
 interface ICreateIntegrationTestsSetupOutput {
   store: Store<IAppState>;
   container: Container;
   dispatchSpy: SinonSpy;
+  history: History;
 }
 
 export function createIntegrationTestsSetup(
@@ -82,8 +87,13 @@ export function createIntegrationTestsSetup(
   const sagaMiddleware = createSagaMiddleware({ context });
   const spyMiddleware = createSpyMiddleware();
 
+  const history = createMemoryHistory({
+    initialEntries: [options.initialRoute ? options.initialRoute : "/"],
+  });
+
   const middleware = applyMiddleware(
     spyMiddleware.middleware,
+    routerMiddleware(history),
     createInjectMiddleware(container, (container, middlewareApi) => {
       customizerContainerWithMiddlewareApi(container, middlewareApi);
     }),
@@ -98,6 +108,7 @@ export function createIntegrationTestsSetup(
     store,
     container,
     dispatchSpy: spyMiddleware.dispatchSpy,
+    history,
   };
 }
 
@@ -134,8 +145,8 @@ export async function waitForPredicate(predicate: () => boolean, errorMsg: strin
 
 interface ICreateProviderContext {
   container?: Container;
-  currentRoute?: string;
   store?: Store<any>;
+  history?: History;
 }
 
 export function wrapWithProviders(
@@ -148,15 +159,19 @@ export function wrapWithProviders(
     setup = createIntegrationTestsSetup();
   }
 
-  const { currentRoute = "/", store = setup!.store, container = setup!.container } = context;
+  const {
+    store = setup!.store,
+    container = setup!.container,
+    history = createMemoryHistory(),
+  } = context;
 
   return (
-    <MemoryRouter initialEntries={[currentRoute]}>
-      <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <ConnectedRouter history={history!}>
         <InversifyProvider container={container}>
           <Component />
         </InversifyProvider>
-      </ReduxProvider>
-    </MemoryRouter>
+      </ConnectedRouter>
+    </ReduxProvider>
   );
 }

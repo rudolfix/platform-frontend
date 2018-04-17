@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+import { TUserType } from "../../../lib/api/users/interfaces";
 import { ILightWalletRetrieveMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightWallet,
@@ -16,6 +17,7 @@ import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
+import { selectUrlUserType } from "../selectors";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getVaultKey } from "./flows";
@@ -87,7 +89,7 @@ export function* loadSeedFromWallet({ web3Manager }: TGlobalDependencies): Itera
     const lightWallet = web3Manager.personalWallet as LightWallet;
     //How should you bind instances when using call?
     const seed = yield call(lightWallet.getSeed.bind(lightWallet));
-    yield put(actions.web3.loadSeedtoState(seed));
+    yield put(actions.web3.loadSeedToState(seed));
   } catch (e) {
     throw new Error("Fetching seed failed");
   }
@@ -111,6 +113,8 @@ export function* lightWalletLoginWatch(
     return;
   }
   const { password } = action.payload;
+  const userType: TUserType = yield effects.select((s: IAppState) => selectUrlUserType(s.router));
+
   try {
     const walletMetadata: ILightWalletRetrieveMetadata | undefined = yield neuCall(
       getWalletMetadata,
@@ -136,7 +140,7 @@ export function* lightWalletLoginWatch(
 
     walletMetadataStorage.set(wallet.getMetadata());
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.walletSelector.connected());
+    yield put(actions.walletSelector.connected(userType));
   } catch (e) {
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),

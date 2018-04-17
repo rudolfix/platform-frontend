@@ -3,17 +3,26 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { TUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
+import { selectUrlUserType } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { recoverRoutes } from "./recoverRoutes";
 
-interface IProps {
-  goToDashboard: () => void;
+interface IStateProps {
+  userType: TUserType;
 }
 
-export const RecoverySuccessComponent: React.SFC<IProps> = props => (
+interface IDispatchProps {
+  goToDashboard: (userType: TUserType) => void;
+}
+
+export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> = ({
+  goToDashboard,
+  userType,
+}) => (
   <div>
     <Col className="mt-4 pb-5">
       <HeaderProgressStepper
@@ -30,7 +39,7 @@ export const RecoverySuccessComponent: React.SFC<IProps> = props => (
     </Col>
     <Row className="justify-content-center mb-5 mt-5 pt-4">
       <Col xs={6} sm={5} md={4} lg={4}>
-        <Button onClick={props.goToDashboard}>GO TO DASHBOARD</Button>
+        <Button onClick={() => goToDashboard(userType)}>GO TO DASHBOARD</Button>
       </Col>
     </Row>
     <Row className="justify-content-end mt-4 pt-4 align-bottom" noGutters>
@@ -44,9 +53,12 @@ export const RecoverySuccessComponent: React.SFC<IProps> = props => (
 );
 
 export const RecoverySuccess = compose<React.SFC>(
-  appConnect<IProps>({
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: s => ({
+      userType: selectUrlUserType(s.router),
+    }),
     dispatchToProps: dispatch => ({
-      goToDashboard: () => dispatch(actions.walletSelector.connected()),
+      goToDashboard: (userType: TUserType) => dispatch(actions.walletSelector.connected(userType)),
     }),
   }),
 )(RecoverySuccessComponent);

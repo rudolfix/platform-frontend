@@ -123,6 +123,7 @@ module.exports = merge(configCommon, {
                 options: {
                   configFileName: "./tsconfig.dev.json",
                   useCache: true,
+                  // errorsAsWarnings: true, // uncomment this to be able to run application with type errors
                 },
               },
             ],

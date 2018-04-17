@@ -12,27 +12,24 @@ import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 import { FormField, FormTextArea } from "../../shared/forms/forms";
 
 import { Col, Row } from "reactstrap";
-import {
-  EtoMarketInformationSchemaRequired,
-  IEtoMarketInformation,
-} from "../../../lib/api/EtoApi.interfaces";
+import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 
 interface IStateProps {
-  currentValues: IEtoMarketInformation;
+  currentValues: IEtoData;
   loadingData: boolean;
 }
 
 interface IDispatchProps {
-  submitForm: (values: IEtoMarketInformation) => void;
+  submitForm: (values: IEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
+const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
@@ -105,10 +102,9 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
   </Form>
 );
 
-const EtoEnhancedForm = withFormik<IProps, IEtoMarketInformation>({
-  validationSchema: EtoMarketInformationSchemaRequired,
-  isInitialValid: (props: any) =>
-    EtoMarketInformationSchemaRequired.isValidSync(props.currentValues),
+const EtoEnhancedForm = withFormik<IProps, IEtoData>({
+  validationSchema: EtoDataSchema,
+  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),

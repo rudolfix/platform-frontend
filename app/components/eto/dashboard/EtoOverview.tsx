@@ -19,8 +19,8 @@ interface IProps {
   tokenImageSrc: string;
   goalValue: string;
   goalSymbol: TCurrency;
-  currentValueationValue: string;
-  currentValueationSymbol: TCurrency;
+  currentValuationValue: string;
+  currentValuationSymbol: TCurrency;
   tokenPriceNeu: string;
   tokenPriceEth: string;
   tokenSymbol: string;

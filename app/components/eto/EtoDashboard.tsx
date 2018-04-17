@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
+import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Accordion, AccordionElement } from "../shared/Accordion";
 import { Button } from "../shared/Buttons";
 import { InlineIcon } from "../shared/InlineIcon";
@@ -21,7 +22,6 @@ import * as linkedinIcon from "../../assets/img/inline_icons/social_linkedin.svg
 import * as mediumIcon from "../../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 
 const loremIpsum =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -66,8 +66,8 @@ export const EtoDashboard: React.SFC = () => (
               tokenImageSrc="token src"
               goalValue="4650000000000"
               goalSymbol="neu"
-              currentValueationValue="4650000000000"
-              currentValueationSymbol="eur"
+              currentValuationValue="4650000000000"
+              currentValuationSymbol="eur"
               tokenPriceNeu="2500"
               tokenPriceEth="25"
               tokenSymbol="XXX"
@@ -77,7 +77,7 @@ export const EtoDashboard: React.SFC = () => (
         </Row>
 
         <SectionHeader>
-          Compoany details <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          Company details <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
 
         <Row className="py-4">

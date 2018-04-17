@@ -16,7 +16,7 @@ export const RowLabeledDataSets: React.SFC<IProps> = ({ dataSets }) => {
   return (
     <>
       {dataSets.map(({ title, content }, index) => (
-        <Row className={index !== 0 ? "mt-3" : ""}>
+        <Row className={index !== 0 ? "mt-3" : ""} key={index}>
           <Col className={styles.label} xs={12} md={5}>
             {title}
           </Col>

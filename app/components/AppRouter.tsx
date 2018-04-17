@@ -7,7 +7,6 @@ export const appRoutes = {
   etoRegister: "/register-eto",
   login: "/login",
   etoLogin: "/login-eto",
-  etoDashboard: "/eto-dashboard",
   recover: "/recover",
   etoRecover: "/recover-eto",
 
@@ -50,10 +49,10 @@ export const AppRouter: React.SFC = () => (
     {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} />
+    <OnlyAuthorizedRoute path={appRoutes.eto} investorComponent={Eto} />
 
     {/* only issuers routes */}
-    <OnlyAuthorizedRoute path={appRoutes.eto} issuerComponent={Eto} />
-    <OnlyAuthorizedRoute path={appRoutes.etoDashboard} issuerComponent={EtoDashboard} />
+    <OnlyAuthorizedRoute path={appRoutes.eto} issuerComponent={EtoDashboard} />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute

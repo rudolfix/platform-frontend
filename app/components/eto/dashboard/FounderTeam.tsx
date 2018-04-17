@@ -42,8 +42,8 @@ export const FounderTeam: React.SFC<IProps> = ({ teamMembers }) => {
                     </Link>
                   </div>
                 </div>
-                {socialProfilesLinks.map(({ svgIcon, url }) => (
-                  <Link to={url} key={url}>
+                {socialProfilesLinks.map(({ svgIcon, url }, index) => (
+                  <Link to={url} key={index}>
                     <InlineIcon svgIcon={svgIcon} />
                   </Link>
                 ))}

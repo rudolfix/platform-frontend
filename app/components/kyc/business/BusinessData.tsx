@@ -99,8 +99,8 @@ export const KycBusinessDataComponent: React.SFC<IProps> = props => {
     <KycPanel
       steps={5}
       currentStep={4}
-      title={"Business Information"}
-      description={"Please tell us about your business"}
+      title="Business Information"
+      description="Please tell us about your business"
       hasBackButton={true}
     >
       <KYCEnhancedForm {...props} />

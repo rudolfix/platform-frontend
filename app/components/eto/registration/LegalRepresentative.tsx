@@ -81,7 +81,7 @@ const EtoForm = (formikBag: FormikProps<IEtoLegalRepresentative> & IProps) => (
       <Col xs={12} md={7}>
         <h4 className={styles.sectionTitle}>Beneficial owners (which hold more than 25%)</h4>
         <Accordion>
-          <AccordionElement title={"beneficiary name"} isOpened={true}>
+          <AccordionElement title="beneficiary name" isOpened={true}>
             <FormField label="First Name" name="firstName" className="mt-2" />
             <FormField label="Surname" name="surmane" className="mt-2" />
             <Row>
@@ -149,7 +149,7 @@ export const EtoRegistrationLegalRepresentativeComponent: React.SFC<IProps> = pr
   <EtoRegistrationPanel
     steps={6}
     currentStep={2}
-    title={"Legal Representative"}
+    title="Legal Representative"
     hasBackButton={false}
     isMaxWidth={true}
   >

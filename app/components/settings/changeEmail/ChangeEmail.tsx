@@ -21,7 +21,7 @@ interface IFormValues {
 const ChangeEmailForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
     <FormField
-      type={"email"}
+      type="email"
       placeholder="Enter new email"
       touched={formikBag.touched}
       errors={formikBag.errors}

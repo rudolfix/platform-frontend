@@ -6,6 +6,7 @@ interface IProps {
   svgIcon: string;
   width?: string;
   height?: string;
+  onClick?: () => void;
 }
 
 export const InlineIcon: React.SFC<IProps> = ({ svgIcon, width, height, ...props }) => {

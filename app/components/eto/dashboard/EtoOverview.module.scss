@@ -8,6 +8,14 @@
   }
 
   .details-wrapper {
+    @include media-breakpoint-down (lg) {
+      flex-wrap: wrap;
+    }
+
+    @include media-breakpoint-down (md) {
+      flex-direction: column;
+    }
+
     display: flex;
     padding-top: px-to-rem(15px);
     padding-bottom: px-to-rem(15px);
@@ -35,6 +43,10 @@
   }
 
   .detail-box {
+    @include media-breakpoint-down (lg) {
+      flex-basis: 50%;
+    }
+
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -42,6 +54,10 @@
     padding: px-to-rem(15px);
 
     + .detail-box {
+      @include media-breakpoint-down (lg) {
+        border-left: 0;
+      }
+
       border-left: 1px solid $neu-pale-grey;
     }
 

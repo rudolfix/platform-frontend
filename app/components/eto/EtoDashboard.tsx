@@ -3,6 +3,7 @@ import { Col, Container, Row } from "reactstrap";
 
 import { Accordion, AccordionElement } from "../shared/Accordion";
 import { Button } from "../shared/Buttons";
+import { InlineIcon } from "../shared/InlineIcon";
 import { PanelDark } from "../shared/PanelDark";
 import { PanelWhite } from "../shared/PanelWhite";
 import { SectionHeader } from "../shared/SectionHeader";
@@ -14,6 +15,7 @@ import { QuestionsAndAnswers } from "./dashboard/QuestionsAndAnswers";
 import { RowLabeledDataSets } from "./dashboard/RowLabeledDataSets";
 
 import * as downloadIcon from "../../assets/img/inline_icons/download.svg";
+import * as editIcon from "../../assets/img/inline_icons/edit.svg";
 import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
 import * as linkedinIcon from "../../assets/img/inline_icons/social_linkedin.svg";
 import * as mediumIcon from "../../assets/img/inline_icons/social_medium.svg";
@@ -36,11 +38,15 @@ const chartPieData = {
 
 export const EtoDashboard: React.SFC = () => (
   <LayoutAuthorized>
-    <SectionHeader>Eto overview</SectionHeader>
     <Row>
       <Col lg={8} xs={12}>
-
-
+        <SectionHeader>
+          Eto overview <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
+      </Col>
+    </Row>
+    <Row>
+      <Col lg={8} xs={12}>
         <Row className="py-4">
           <Col>
             <EtoOverview
@@ -70,7 +76,9 @@ export const EtoDashboard: React.SFC = () => (
           </Col>
         </Row>
 
-        <SectionHeader>Compoany details</SectionHeader>
+        <SectionHeader>
+          Compoany details <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
 
         <Row className="py-4">
           <Col>
@@ -112,7 +120,9 @@ export const EtoDashboard: React.SFC = () => (
           </Col>
         </Row>
 
-        <SectionHeader>Last funding round</SectionHeader>
+        <SectionHeader>
+          Last funding round <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
 
         <Row className="py-4">
           <Col>
@@ -139,7 +149,9 @@ export const EtoDashboard: React.SFC = () => (
           </Col>
         </Row>
 
-        <SectionHeader>Founder / leadership team</SectionHeader>
+        <SectionHeader>
+          Founder / leadership team <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
 
         <Row className="py-4">
           <Col>
@@ -186,7 +198,9 @@ export const EtoDashboard: React.SFC = () => (
           </Col>
         </Row>
 
-        <SectionHeader>Product pitch</SectionHeader>
+        <SectionHeader>
+          Product pitch <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
 
         <Row className="py-4">
           <Col>
@@ -221,7 +235,9 @@ export const EtoDashboard: React.SFC = () => (
           </Col>
         </Row>
 
-        <SectionHeader>Market conditions</SectionHeader>
+        <SectionHeader>
+          Market conditions <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
 
         <Row className="py-4">
           <Col>
@@ -248,7 +264,9 @@ export const EtoDashboard: React.SFC = () => (
           </Col>
         </Row>
 
-        <SectionHeader>Partners & customers</SectionHeader>
+        <SectionHeader>
+          Partners & customers <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
 
         <Row className="py-4">
           <Col>
@@ -303,7 +321,7 @@ export const EtoDashboard: React.SFC = () => (
               theme="t-white"
               svgIcon={downloadIcon}
               iconPosition="icon-before"
-              onClick={() => { }}
+              onClick={() => {}}
             >
               Download All
             </Button>

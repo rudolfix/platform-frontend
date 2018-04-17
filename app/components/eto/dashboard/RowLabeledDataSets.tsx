@@ -21,7 +21,7 @@ export const RowLabeledDataSets: React.SFC<IProps> = ({ dataSets }) => {
             {title}
           </Col>
           <Col xs={12} md={7}>
-            {content instanceof Array ? content.join(', ') : content}
+            {content instanceof Array ? content.join(", ") : content}
           </Col>
         </Row>
       ))}

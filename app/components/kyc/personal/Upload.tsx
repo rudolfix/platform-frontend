@@ -6,10 +6,10 @@ import { appConnect } from "../../../store";
 
 import { actions } from "../../../modules/actions";
 
-import { IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
+import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
-import { MultiFileUpload, TUploadListLayout } from "../../shared/MultiFileUpload";
+import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 
 interface IStateProps {
@@ -24,14 +24,14 @@ interface IDispatchProps {
 }
 
 interface IProps {
-  layout: TUploadListLayout;
+  layout: TKycRequestType;
 }
 
 export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps> = props => (
   <KycPanel
     steps={5}
     currentStep={4}
-    title={"Upload your ID"}
+    title="Upload your ID"
     description={
       "Please upload a colored copy of your passport or both sides of ID card for verification."
     }
@@ -42,7 +42,7 @@ export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps
       files={props.files}
       fileUploading={props.fileUploading}
       filesLoading={props.filesLoading}
-      layout="personal"
+      layout="individual"
     />
     <div className="p-4 text-center">
       <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>

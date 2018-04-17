@@ -126,7 +126,7 @@ export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
   <EtoRegistrationPanel
     steps={6}
     currentStep={6}
-    title={"ETO Terms"}
+    title="ETO Terms"
     hasBackButton={false}
     isMaxWidth={true}
   >

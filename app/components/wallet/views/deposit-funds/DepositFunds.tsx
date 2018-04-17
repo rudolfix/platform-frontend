@@ -28,7 +28,7 @@ export const DepositFunds: React.SFC<IProps> = ({ children }) => {
     <>
       <Row>
         <Col>
-          <BreadCrumb path={["Dashboard", "Wallet"]} view={"Deposit funds"} className="pt-5 pb-5" />
+          <BreadCrumb path={["Dashboard", "Wallet"]} view="Deposit funds" className="pt-5 pb-5" />
         </Col>
       </Row>
       <Row>

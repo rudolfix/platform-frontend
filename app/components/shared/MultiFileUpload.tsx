@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./MultiFileUpload.module.scss";
 
 import * as cn from "classnames";
-import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
+import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
 
 import Dropzone from "react-dropzone";
 
@@ -16,14 +16,12 @@ const ACCEPTED_FILES = "application/pdf, image/*";
 
 import * as plusIcon from "../../assets/img/inline_icons/plus.svg";
 
-export type TUploadListLayout = "business" | "personal";
-
 interface IProps {
   className?: string;
   fileUploading: boolean;
   filesLoading: boolean;
   files: IKycFileInfo[];
-  layout: TUploadListLayout;
+  layout: TKycRequestType;
   onDropFile: (file: File) => void;
 }
 
@@ -47,7 +45,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   const dropzoneWithFilesInner = (
     <>
       <InlineIcon svgIcon={plusIcon} />
-      {layout === "personal" && <span>Add more</span>}
+      {layout === "individual" && <span>Add more</span>}
       {layout === "business" && <span>Upload more documents</span>}
     </>
   );
@@ -66,11 +64,11 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   return (
     <div className={cn(styles.upload, layout, props.className)}>
       <div className={styles.uploadDescription}>
-        {layout === "personal" && <h3 className={styles.title}>Images must include</h3>}
+        {layout === "individual" && <h3 className={styles.title}>Images must include</h3>}
         {layout === "business" && <h3 className={styles.title}>Required documents</h3>}
-        {layout === "personal" && <img src={idImage} />}
+        {layout === "individual" && <img src={idImage} />}
         <div>
-          {layout === "personal" && (
+          {layout === "individual" && (
             <ul className={styles.documentRequirements}>
               <li>Colored photo</li>
               <li>Full name</li>

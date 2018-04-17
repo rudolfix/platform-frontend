@@ -25,7 +25,7 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent> = ({
           name="derivationPathPrefix"
           value={derivationPathPrefix}
           onChange={onDerivationPathPrefixChange}
-          placeholder={"Enter derivation path"}
+          placeholder="Enter derivation path"
           valid={errorMessage === null ? undefined : false}
         />
         <FormFeedback data-test-id="dpChooser-error-msg">{errorMessage}</FormFeedback>

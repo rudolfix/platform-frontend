@@ -13,7 +13,7 @@ import { KycPanel } from "../KycPanel";
 import * as idImage from "../../../assets/img/id_now.svg";
 import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as linkOutIcon from "../../../assets/img/inline_icons/link_out_small.svg";
-import { TUploadListLayout } from "../../shared/MultiFileUpload";
+import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 
 interface IStateProps {}
 
@@ -23,7 +23,7 @@ interface IDispatchProps {
 }
 
 interface IProps {
-  layout: TUploadListLayout;
+  layout: TKycRequestType;
 }
 
 export const KycPersonalInstantIdComponent: React.SFC<
@@ -32,7 +32,7 @@ export const KycPersonalInstantIdComponent: React.SFC<
   <KycPanel
     steps={5}
     currentStep={4}
-    title={"Start Instant Verification"}
+    title="Start Instant Verification"
     description={
       "You will be redirected to our verification partner IDNow in order to complete a fast video verification via your desktop or mobile camera. After the successfull verification, you can mmediately invest and deposit funds on the NEUFUND platform."
     }

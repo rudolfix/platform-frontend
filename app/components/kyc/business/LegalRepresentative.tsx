@@ -102,7 +102,7 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   return (
     <div>
       <MultiFileUpload
-        layout="personal"
+        layout="individual"
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
@@ -124,8 +124,8 @@ export const KycLegalRepresentativeComponent: React.SFC<IProps> = props => {
     <KycPanel
       steps={5}
       currentStep={3}
-      title={"Legal Representative"}
-      description={"Please tell us about yourself"}
+      title="Legal Representative"
+      description="Please tell us about yourself"
       hasBackButton={true}
     >
       <KYCEnhancedForm {...props} />

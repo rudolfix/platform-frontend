@@ -8,8 +8,8 @@ describe("<KycStatusWidgetComponent />", () => {
   it("should render verified section", () => {
     const MyNeuWidgetComponent = shallow(
       <KycStatusWidgetComponent
-        onStartKyc={() => {}}
-        requestStatus="Approved"
+        onGoToKycHome={() => {}}
+        requestStatus="Accepted"
         isUserEmailVerified={true}
       />,
     );
@@ -20,7 +20,7 @@ describe("<KycStatusWidgetComponent />", () => {
   it("should render unverified section", () => {
     const MyNeuWidgetComponent = shallow(
       <KycStatusWidgetComponent
-        onStartKyc={() => {}}
+        onGoToKycHome={() => {}}
         requestStatus="Draft"
         isUserEmailVerified={true}
       />,

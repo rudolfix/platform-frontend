@@ -18,7 +18,7 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
   <KycPanel
     steps={4}
     currentStep={1}
-    title={"Start your KYC"}
+    title="Start your KYC"
     hasBackButton={false}
     isMaxWidth={true}
   >

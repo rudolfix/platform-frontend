@@ -4,7 +4,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
 import { Tag } from "../shared/Tag";
 import { InvestmentPreview } from "./investmentOportunities/InvestmentPreview";
-import { MyPortfolio } from "./myPortfolio/MyPortfolioWidget";
+import { MyPortfolioWidget } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
 import { NeufundKpiWidget } from "./NeufundKpiWidget";
 import { UserInfo } from "./UserInfo";
@@ -33,7 +33,7 @@ export const Dashboard = () => (
   <LayoutAuthorized>
     <Row className="row-gutter-top">
       <Col lg={8} xs={12}>
-        <MyPortfolio className="h-100" />
+        <MyPortfolioWidget className="h-100" />
       </Col>
       <Col>
         <MyWalletWidget className="h-100" />

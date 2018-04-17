@@ -13,7 +13,7 @@ import { KycPanel } from "../KycPanel";
 import * as idImage from "../../../assets/img/id_now.svg";
 import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as linkOutIcon from "../../../assets/img/inline_icons/link_out_small.svg";
-import { TUploadListLayout } from "../../shared/MultiFileUpload";
+import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 
 interface IStateProps {}
 
@@ -23,7 +23,7 @@ interface IDispatchProps {
 }
 
 interface IProps {
-  layout: TUploadListLayout;
+  layout: TKycRequestType;
 }
 
 export const KycPersonalInstantIdComponent: React.SFC<

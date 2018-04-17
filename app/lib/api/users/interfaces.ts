@@ -1,10 +1,13 @@
 import * as Yup from "yup";
 
+export type TUserType = "investor" | "issuer";
+
 export interface IUser {
   backupCodesVerified?: boolean;
   language?: string;
   unverifiedEmail?: string;
   verifiedEmail?: string;
+  type: TUserType;
 }
 
 export interface IUserInput {
@@ -12,6 +15,7 @@ export interface IUserInput {
   salt?: string;
   language?: string;
   backupCodesVerified?: boolean;
+  type: TUserType;
 }
 
 export interface IVerifyEmailUser {
@@ -24,5 +28,6 @@ export const UserValidator = Yup.object()
     language: Yup.string(),
     unverifiedEmail: Yup.string(),
     verifiedEmail: Yup.string(),
+    type: Yup.string().oneOf(["investor", "eto"]),
   })
   .required();

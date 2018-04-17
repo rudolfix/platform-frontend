@@ -12,6 +12,7 @@ import { globalFakeClock } from "../../../test/setupTestsHooks";
 import { createMock, tid } from "../../../test/testUtils";
 import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
+import { getDummyUser } from "../../lib/api/users/fixtures";
 import { UsersApi } from "../../lib/api/users/UsersApi";
 import {
   IBrowserWalletMetadata,
@@ -70,8 +71,8 @@ describe("Wallet selector integration", () => {
       }),
     });
     const usersApiMock = createMock(UsersApi, {
-      me: async () => ({}), // no user
-      createAccount: async () => ({}),
+      me: async () => getDummyUser(),
+      createAccount: async () => getDummyUser(),
     });
 
     const { store, container, dispatchSpy } = createIntegrationTestsSetup({
@@ -197,8 +198,8 @@ describe("Wallet selector integration", () => {
       }),
     });
     const usersApiMock = createMock(UsersApi, {
-      me: async () => ({}), // no user
-      createAccount: async () => ({}),
+      me: async () => getDummyUser(),
+      createAccount: async () => getDummyUser(),
     });
 
     const { store, container, dispatchSpy } = createIntegrationTestsSetup({

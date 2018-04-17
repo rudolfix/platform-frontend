@@ -45,8 +45,8 @@ async function loadWalletDataAsync(
       etherBalance: web3Manager.internalWeb3Adapter.getBalance(ethAddress),
       neuBalance: contractsService.neumarkContract.balanceOf(ethAddress),
 
-      etherPriceEur: Promise.resolve(new BigNumber("499")),
-      neuPriceEur: Promise.resolve(new BigNumber("0.500901")),
+      etherPriceEur: Promise.resolve(new BigNumber("499")), // @todo hardcoded value
+      neuPriceEur: Promise.resolve(new BigNumber("0.500901")), // @todo hardcoded value
     }),
   );
 }

@@ -7,7 +7,9 @@ describe("auth > selectors", () => {
     it("should return true for authorized users", () => {
       const state: IAuthState = {
         jwt: "eyjwt",
-        user: {},
+        user: {
+          type: "investor",
+        },
       };
 
       const actualValue = selectIsAuthorized(state);
@@ -35,6 +37,7 @@ describe("auth > selectors", () => {
         user: {
           unverifiedEmail: "unverified@email.com",
           verifiedEmail: "some.verified@email.com",
+          type: "investor",
         },
       };
 

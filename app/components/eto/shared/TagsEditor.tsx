@@ -23,6 +23,7 @@ interface IProps {
   handleDeselectedTagClick: any;
   selectedTags: string[];
   availiableTags: string[];
+  inputValue: string;
 }
 
 interface IStateWrapper {
@@ -35,7 +36,10 @@ const TagsEditor: React.SFC<IProps> = (props) => {
   return (
     <div className={styles.tagsEditor}>
       <form className={styles.form} onSubmit={e => props.handleSubmit(e)}>
-        <Input placeholder="Add category" onChange={e => props.handleInput(e)} />
+        <Input
+          placeholder="Add category"
+          value={props.inputValue}
+          onChange={e => props.handleInput(e)} />
         <Button type="submit">Add</Button>
       </form>
       {!!props.selectedTags.length && (
@@ -142,6 +146,7 @@ export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapp
         handleInput={this.handleInput}
         handleSelectedTagClik={this.handleTagDeselection}
         handleDeselectedTagClick={this.handleTagSelection}
+        inputValue={this.state.inputValue}
       />
     );
   }

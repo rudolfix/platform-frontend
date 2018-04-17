@@ -112,7 +112,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
 
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
-    <KycPanel steps={5} currentStep={2} title={"Personal Details"} hasBackButton={true}>
+    <KycPanel steps={5} currentStep={2} title="Personal Details" hasBackButton={true}>
       <div className="pb-4">
         <h6>Why do we need this information?</h6>
         The following information is used to verify your identity, following know your client and

@@ -124,8 +124,8 @@ const EtoEnhancedForm = withFormik<IProps, IEtoTerms>({
 
 export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
   <EtoRegistrationPanel
-    steps={6}
-    currentStep={6}
+    steps={4}
+    currentStep={4}
     title={"ETO Terms"}
     hasBackButton={false}
     isMaxWidth={true}

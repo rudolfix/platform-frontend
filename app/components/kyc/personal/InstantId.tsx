@@ -32,7 +32,7 @@ export const KycPersonalInstantIdComponent: React.SFC<
   <KycPanel
     steps={5}
     currentStep={4}
-    title={"Start Instant Verification"}
+    title="Start Instant Verification"
     description={
       "You will be redirected to our verification partner IDNow in order to complete a fast video verification via your desktop or mobile camera. After the successfull verification, you can mmediately invest and deposit funds on the NEUFUND platform."
     }

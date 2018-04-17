@@ -90,11 +90,12 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
   yield effects.put(actions.init.start());
 }
 
-function* signInUser(): Iterator<any> {
+function* signInUser({ logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);
   } catch (e) {
+    logger.error("Error:", e);
     yield effects.put(actions.walletSelector.messageSigningError("Error while signing a message!"));
   }
 

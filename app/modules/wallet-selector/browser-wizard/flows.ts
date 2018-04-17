@@ -1,3 +1,4 @@
+import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
@@ -7,9 +8,8 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 import { selectUrlUserType } from "../selectors";
-import { GetState } from "../../../di/setupBindings";
+import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 
 export const browserWizardFlows = {
   tryConnectingWithBrowserWallet: injectableFn(

@@ -9,8 +9,8 @@ import * as logoFirefox from "../../assets/img/wallet_selector/logo_firefox.svg"
 import * as styles from "./WalletLedgerNotSupportedComponent.module.scss";
 
 import * as arrowIcon from "../../assets/img/link_arrow.svg";
-import { appConnect } from "../../store";
 import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
+import { appConnect } from "../../store";
 
 interface IBrowserCard {
   name: string;

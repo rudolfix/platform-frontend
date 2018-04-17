@@ -1,6 +1,6 @@
 import { RouterState } from "react-router-redux";
-import { TUserType } from "../../lib/api/users/interfaces";
 import { appRoutes } from "../../components/AppRouter";
+import { TUserType } from "../../lib/api/users/interfaces";
 
 export const selectUrlUserType = (router: RouterState): TUserType =>
   router.location && router.location.pathname.includes("eto") ? "issuer" : "investor";

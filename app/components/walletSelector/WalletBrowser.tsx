@@ -16,8 +16,8 @@ import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg"
 import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
 import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
 
-import * as styles from "./WalletBrowser.module.scss";
 import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
+import * as styles from "./WalletBrowser.module.scss";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 

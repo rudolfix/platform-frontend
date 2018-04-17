@@ -1,9 +1,16 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
+import { compact } from "lodash";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import { actions } from "../../modules/actions";
+import {
+  selectIsLoginRoute,
+  selectOppositeRootPath,
+  selectRootPath,
+  selectUrlUserType,
+} from "../../modules/wallet-selector/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { appRoutes } from "../AppRouter";
@@ -11,13 +18,6 @@ import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
 import { Tabs } from "../shared/Tabs";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
-import {
-  selectRootPath,
-  selectIsLoginRoute,
-  selectUrlUserType,
-  selectOppositeRootPath,
-} from "../../modules/wallet-selector/selectors";
-import { compact } from "lodash";
 
 interface IStateProps {
   isMessageSigning: boolean;

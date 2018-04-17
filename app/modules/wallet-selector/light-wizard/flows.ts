@@ -1,3 +1,4 @@
+import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
@@ -8,9 +9,8 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { mapLightWalletErrorToErrorMessage } from "./errors";
-import { GetState } from "../../../di/setupBindings";
 import { selectUrlUserType } from "../selectors";
+import { mapLightWalletErrorToErrorMessage } from "./errors";
 
 //Vault nonce should be exactly 24 chars
 const VAULT_MSG = "pleaseallowmetointroducemyselfim";

@@ -10,8 +10,8 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { mapLedgerErrorToErrorMessage } from "./errors";
 import { selectUrlUserType } from "../selectors";
+import { mapLedgerErrorToErrorMessage } from "./errors";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
 

@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { call, Effect, fork, takeEvery, take } from "redux-saga/effects";
+import { call, Effect, fork } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser, IUserInput, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
@@ -21,7 +21,7 @@ export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> 
   }
 }
 
-export async function loadUserPromise(
+export async function loadOrCreateUserPromise(
   { apiUserService, walletMetadataStorage }: TGlobalDependencies,
   userType: TUserType,
 ): Promise<IUser> {
@@ -40,12 +40,12 @@ export async function loadUserPromise(
       newEmail: walletMetadata.email,
       salt: walletMetadata.salt,
       backupCodesVerified: false,
-      type: "investor",
+      type: userType,
     });
   } else {
     return apiUserService.createAccount({
       backupCodesVerified: true,
-      type: "investor",
+      type: userType,
     });
   }
 }
@@ -73,9 +73,18 @@ export async function updateUserPromise(
   return apiUserService.updateUser(user);
 }
 
-export function* loadUser(userType: TUserType): Iterator<any> {
-  const user: IUser = yield neuCall(loadUserPromise, userType);
+export function* loadOrCreateUser(userType: TUserType): Iterator<any> {
+  const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
   yield effects.put(actions.auth.loadUser(user));
+}
+
+export function* loadUser(): Iterator<any> {
+  const user: IUser = yield neuCall(loadOrCreateUserPromise);
+  yield effects.put(actions.auth.loadUser(user));
+}
+
+export async function loadUserPromise({ apiUserService }: TGlobalDependencies): Promise<IUser> {
+  return await apiUserService.me();
 }
 
 export function* updateUser(updatedUser: IUserInput): Iterator<any> {
@@ -99,7 +108,7 @@ function* signInUser(_: any, userType: any): Iterator<any> {
   }
 
   try {
-    yield call(loadUser, userType);
+    yield call(loadOrCreateUser, userType);
 
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),

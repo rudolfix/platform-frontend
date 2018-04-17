@@ -11,9 +11,9 @@ import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
 import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
 import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
+import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
-import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
 

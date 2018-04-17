@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+import { TUserType } from "../../../lib/api/users/interfaces";
 import { ILightWalletRetrieveMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightWallet,
@@ -16,11 +17,10 @@ import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
 import { WalletType } from "../../web3/types";
+import { selectUrlUserType } from "../selectors";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getVaultKey } from "./flows";
-import { selectUrlUserType } from "../selectors";
-import { TUserType } from "../../../lib/api/users/interfaces";
 
 export async function retrieveMetadataFromVaultAPI(
   { lightWalletUtil, vaultApi }: TGlobalDependencies,

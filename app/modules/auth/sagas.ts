@@ -99,7 +99,7 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
   yield effects.put(actions.init.start());
 }
 
-function* signInUser(_: any, userType: any): Iterator<any> {
+function* signInUser(_: TGlobalDependencies, { payload: { userType } }: any): Iterator<any> {
   try {
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);

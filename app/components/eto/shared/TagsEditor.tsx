@@ -32,14 +32,15 @@ interface IStateWrapper {
   inputValue: string;
 }
 
-const TagsEditor: React.SFC<IProps> = (props) => {
+const TagsEditor: React.SFC<IProps> = props => {
   return (
     <div className={styles.tagsEditor}>
       <form className={styles.form} onSubmit={e => props.handleSubmit(e)}>
         <Input
           placeholder="Add category"
           value={props.inputValue}
-          onChange={e => props.handleInput(e)} />
+          onChange={e => props.handleInput(e)}
+        />
         <Button type="submit">Add</Button>
       </form>
       {!!props.selectedTags.length && (
@@ -71,7 +72,7 @@ const TagsEditor: React.SFC<IProps> = (props) => {
       )}
     </div>
   );
-}
+};
 
 export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapper> {
   state = {

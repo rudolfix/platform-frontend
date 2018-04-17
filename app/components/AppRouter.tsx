@@ -56,9 +56,6 @@ export const AppRouter: React.SFC = () => (
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} />
     <OnlyAuthorizedRoute path={appRoutes.eto} investorComponent={Eto} />
 
-    {/* only issuers routes */}
-    <OnlyAuthorizedRoute path={appRoutes.eto} issuerComponent={EtoDashboard} />
-
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute
       path={appRoutes.verify}
@@ -68,7 +65,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyAuthorizedRoute
       path={appRoutes.dashboard}
       investorComponent={Dashboard}
-      issuerComponent={Dashboard}
+      issuerComponent={EtoDashboard}
       exact
     />
     <OnlyAuthorizedRoute

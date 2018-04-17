@@ -18,7 +18,7 @@ import {
 import { Web3Adapter } from "../../../lib/web3/Web3Adapter";
 import { WalletNotConnectedError, Web3Manager } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
-import { Dictionary } from "../../../types";
+import { DeepPartial, Dictionary } from "../../../types";
 import { actions } from "../../actions";
 import { WalletType } from "../../web3/types";
 import { ledgerWizardFlows } from "./flows";
@@ -237,12 +237,20 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
+      const getStateMock: () => DeepPartial<IAppState> = () => ({
+        router: {
+          location: {
+            pathname: "/eto/login/browser",
+          },
+        },
+      });
 
       await ledgerWizardFlows.finishSettingUpLedgerConnector(expectedDerivationPath)(
         dispatchMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
         walletMetadataStorageMock,
+        getStateMock as any,
       );
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
@@ -250,7 +258,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
       expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata);
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("issuer"));
     });
 
     it("should not navigate when ledger wallet is not connected", async () => {
@@ -270,6 +278,13 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
+      const getStateMock: () => DeepPartial<IAppState> = () => ({
+        router: {
+          location: {
+            pathname: "/eto/login/browser",
+          },
+        },
+      });
 
       await ledgerWizardFlows
         .finishSettingUpLedgerConnector(expectedDerivationPath)(
@@ -277,6 +292,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           ledgerWalletConnectorMock,
           web3ManagerMock,
           walletMetadataStorageMock,
+          getStateMock as any,
         )
         .catch(() => {});
 

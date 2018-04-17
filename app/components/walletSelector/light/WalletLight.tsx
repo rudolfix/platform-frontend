@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container } from "reactstrap";
 
-import { selectIsLoginRoute } from "../../../modules/routing/selectors";
+import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { LoginLightWallet } from "./LoginLightWallet";
 import { RegisterLightWallet } from "./RegisterLightWallet";

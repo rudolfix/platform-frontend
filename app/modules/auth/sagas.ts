@@ -1,7 +1,7 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IUser, IUserInput } from "../../lib/api/users/interfaces";
+import { IUser, IUserInput, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
@@ -21,10 +21,10 @@ export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> 
   }
 }
 
-export async function loadUserPromise({
-  apiUserService,
-  walletMetadataStorage,
-}: TGlobalDependencies): Promise<IUser> {
+export async function loadOrCreateUserPromise(
+  { apiUserService, walletMetadataStorage }: TGlobalDependencies,
+  userType: TUserType,
+): Promise<IUser> {
   try {
     return await apiUserService.me();
   } catch (e) {
@@ -40,12 +40,12 @@ export async function loadUserPromise({
       newEmail: walletMetadata.email,
       salt: walletMetadata.salt,
       backupCodesVerified: false,
-      type: "investor",
+      type: userType,
     });
   } else {
     return apiUserService.createAccount({
       backupCodesVerified: true,
-      type: "investor",
+      type: userType,
     });
   }
 }
@@ -73,9 +73,18 @@ export async function updateUserPromise(
   return apiUserService.updateUser(user);
 }
 
-export function* loadUser(): Iterator<any> {
-  const user: IUser = yield neuCall(loadUserPromise);
+export function* loadOrCreateUser(userType: TUserType): Iterator<any> {
+  const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
   yield effects.put(actions.auth.loadUser(user));
+}
+
+export function* loadUser(): Iterator<any> {
+  const user: IUser = yield neuCall(loadOrCreateUserPromise);
+  yield effects.put(actions.auth.loadUser(user));
+}
+
+export async function loadUserPromise({ apiUserService }: TGlobalDependencies): Promise<IUser> {
+  return await apiUserService.me();
 }
 
 export function* updateUser(updatedUser: IUserInput): Iterator<any> {
@@ -90,7 +99,7 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
   yield effects.put(actions.init.start());
 }
 
-function* signInUser(): Iterator<any> {
+function* signInUser(_: TGlobalDependencies, { payload: { userType } }: any): Iterator<any> {
   try {
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);
@@ -99,7 +108,7 @@ function* signInUser(): Iterator<any> {
   }
 
   try {
-    yield neuCall(loadUser);
+    yield call(loadOrCreateUser, userType);
 
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),

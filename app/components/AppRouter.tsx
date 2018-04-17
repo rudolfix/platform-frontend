@@ -4,11 +4,11 @@ export const appRoutes = {
   root: "/",
 
   register: "/register",
-  etoRegister: "/register-eto",
+  registerEto: "/eto/register",
   login: "/login",
-  etoLogin: "/login-eto",
+  loginEto: "/eto/login",
   recover: "/recover",
-  etoRecover: "/recover-eto",
+  recoverEto: "/eto/recover",
 
   kyc: "/kyc",
   wallet: "/wallet",
@@ -19,7 +19,7 @@ export const appRoutes = {
 };
 
 import * as React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
@@ -34,16 +34,21 @@ import { emailVerify } from "./emailVerify";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
 import { settingsRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
+import { SwitchConnected } from "./shared/connectedRouting";
 import { Wallet } from "./wallet/Wallet";
 import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
 import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const AppRouter: React.SFC = () => (
-  <Switch>
+  <SwitchConnected>
     <OnlyPublicRoute path={appRoutes.root} component={Home} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
+
+    <OnlyPublicRoute path={appRoutes.registerEto} component={WalletSelector} />
+    <OnlyPublicRoute path={appRoutes.loginEto} component={WalletSelector} />
+    <OnlyPublicRoute path={appRoutes.recoverEto} component={WalletRecoverMain} />
 
     {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
@@ -80,5 +85,5 @@ export const AppRouter: React.SFC = () => (
     <Route path={appRoutes.demo} component={Demo} />
 
     <Redirect to={appRoutes.root} />
-  </Switch>
+  </SwitchConnected>
 );

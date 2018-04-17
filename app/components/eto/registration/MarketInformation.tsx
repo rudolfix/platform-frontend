@@ -55,7 +55,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Business partners</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surName" />
           </AccordionElement>
@@ -78,7 +78,7 @@ const EtoForm = (formikBag: FormikProps<IEtoMarketInformation> & IProps) => (
       <Col xs={12} lg={6}>
         <h4>Key Customers</h4>
         <Accordion>
-          <AccordionElement isOpened={true} title={"First Name"}>
+          <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
             <FormField label="Surname" name="surName" />
           </AccordionElement>

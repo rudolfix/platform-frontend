@@ -30,6 +30,7 @@ describe("EtoProgressStepper", () => {
     expect(component1.find(tid("check-icon")).length).to.be.eq(1);
     expect(component2.find(tid("check-icon")).length).to.be.eq(0);
   });
+
   it("Should render name of step when isDone is false", () => {
     const component = shallow(
       <EtoProgressStepper currentStep={1} stepProps={[mockData[1]]} onClick={spyFunction} />,
@@ -40,11 +41,11 @@ describe("EtoProgressStepper", () => {
     );
   });
 
-  it("Should simulate a click when square is clicked", () => {
+  it("Should call callback function with index", () => {
     const component = shallow(
       <EtoProgressStepper currentStep={1} stepProps={[mockData[1]]} onClick={spyFunction} />,
     );
     component.find(tid("EtoProgressStepper-step-button")).simulate("click");
-    expect(spyFunction).to.be.calledOnce;
+    expect(spyFunction).to.be.calledWith(0);
   });
 });

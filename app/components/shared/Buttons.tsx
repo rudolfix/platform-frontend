@@ -12,6 +12,8 @@ type TButtonTheme = "t-dark" | "t-white";
 
 type TIconPosition = "icon-before" | "icon-after";
 
+type TSize = "wide";
+
 interface IButtonProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
@@ -21,6 +23,7 @@ interface IButtonProps {
   type?: string;
   className?: string;
   iconPosition?: TIconPosition;
+  size?: TSize;
 }
 
 export const Button: React.SFC<IButtonProps> = ({
@@ -31,11 +34,12 @@ export const Button: React.SFC<IButtonProps> = ({
   svgIcon,
   className,
   iconPosition,
+  size,
   ...props
 }) => {
   return (
     <button
-      className={cn("button", layout, iconPosition, theme)}
+      className={cn("button", layout, iconPosition, theme, size)}
       disabled={disabled}
       tabIndex={0}
       {...props}

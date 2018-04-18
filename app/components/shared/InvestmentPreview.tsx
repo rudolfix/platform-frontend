@@ -1,9 +1,11 @@
 import * as React from "react";
+
 import { Link } from "react-router-dom";
-import { Button } from "../../shared/Buttons";
-import { Money } from "../../shared/Money";
-import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
-import { ITag, Tag } from "../../shared/Tag";
+import { Button } from "./Buttons";
+import { Money } from "./Money";
+import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
+import { ITag, Tag } from "./Tag";
+
 import * as styles from "./InvestmentPreview.module.scss";
 
 interface IPreFoundingStatus {
@@ -25,6 +27,7 @@ interface IProps {
   currentValuation: string;
   tokenPrice: string;
   linkToDetails: string;
+  className?: string;
   handleEmailSend: () => void;
 }
 
@@ -41,9 +44,10 @@ export const InvestmentPreview: React.SFC<IProps> = ({
   currentValuation,
   tokenPrice,
   linkToDetails,
+  className
 }) => {
   return (
-    <article className={`${styles.investmentPreview} ${hasStarted ? "has-started" : ""}`}>
+    <article className={`${styles.investmentPreview} ${hasStarted ? "has-started" : ""} ${className}`}>
       <div className={styles.logoWrapper}>
         <img src="" srcSet="" alt="" />
       </div>
@@ -106,13 +110,13 @@ export const InvestmentPreview: React.SFC<IProps> = ({
               </div>
             </>
           ) : (
-            <>
-              <span>Starting on {startingOn}</span>
-              <Button layout="secondary" onClick={() => handleEmailSend}>
-                Get notification email
+              <>
+                <span>Starting on {startingOn}</span>
+                <Button layout="secondary" onClick={() => handleEmailSend}>
+                  Get notification email
               </Button>
-            </>
-          )}
+              </>
+            )}
         </div>
       </div>
       <Link to={linkToDetails}>

@@ -1,9 +1,6 @@
 import * as React from "react";
 import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap";
 
-import * as styles from "./Demo.module.scss";
-
-import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { TagsEditorWidget } from "./eto/shared/TagsEditor";
@@ -16,6 +13,7 @@ import { Button } from "./shared/Buttons";
 import { ChartBars } from "./shared/charts/ChartBars";
 import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
 import { ChartPie } from "./shared/charts/ChartPie";
+import { InvestmentPreview } from "./shared/InvestmentPreview";
 import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
@@ -31,6 +29,7 @@ import * as linkedinIcon from "../assets/img/inline_icons/social_linkedin.svg";
 import * as mediumIcon from "../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../assets/img/inline_icons/social_telegram.svg";
+import * as styles from "./Demo.module.scss";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -90,8 +89,8 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <NavigationButton forward text="NavigationButton" onClick={() => {}} />
-          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
+          <NavigationButton forward text="NavigationButton" onClick={() => { }} />
+          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => { }} />
           <NavigationLink forward to="/" text="NavigationLink" />
         </Col>
       </Row>
@@ -259,14 +258,14 @@ export const Demo: React.SFC = () => (
           <VerifyEmailWidgetComponent
             isUserEmailVarified={false}
             isThereUnverifiedEmail={true}
-            resendEmail={() => {}}
+            resendEmail={() => { }}
           />
         </Col>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
             isUserEmailVarified={true}
             isThereUnverifiedEmail={true}
-            resendEmail={() => {}}
+            resendEmail={() => { }}
           />
         </Col>
       </Row>
@@ -286,16 +285,16 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onGoToKycHome={() => {}} isUserEmailVerified={true} />
+          <KycStatusWidgetComponent onGoToKycHome={() => { }} isUserEmailVerified={true} />
         </Col>
         <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent onGoToKycHome={() => {}} isUserEmailVerified={false} />
+          <KycStatusWidgetComponent onGoToKycHome={() => { }} isUserEmailVerified={false} />
         </Col>
       </Row>
     </Container>
 
     <Container>
-      <ChangeEmailComponent submitForm={() => {}} />
+      <ChangeEmailComponent submitForm={() => { }} />
     </Container>
 
     <Container>
@@ -322,7 +321,7 @@ export const Demo: React.SFC = () => (
         tokenPrice={"2€"}
         neuInvestorsNum={500}
         startingOn="22.12.2019"
-        handleEmailSend={() => {}}
+        handleEmailSend={() => { }}
         endInDays={25}
         company={"Superawesome startup two"}
         hasStarted={true}
@@ -349,7 +348,7 @@ export const Demo: React.SFC = () => (
         tokenPrice={"2€"}
         neuInvestorsNum={500}
         startingOn="22.12.2019"
-        handleEmailSend={() => {}}
+        handleEmailSend={() => { }}
         endInDays={25}
         company={"Superawesome startup one"}
         hasStarted={true}

@@ -422,18 +422,15 @@ export const Demo: React.SFC = () => (
           {
             name: "test",
             isDone: true,
-            onClick: () => {
-              alert("You clicked a checked box ha!");
-            },
           },
           {
             name: "Test",
             isDone: false,
-            onClick: () => {
-              alert("You clicked an unfinished box ha");
-            },
           },
         ]}
+        onClick={() => {
+          alert("You clicked here ha");
+        }}
       />
     </Container>
   </div>

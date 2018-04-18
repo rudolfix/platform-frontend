@@ -9,14 +9,18 @@ import * as styles from "./EtoProgressStepper.module.scss";
 export interface IStepProps {
   name: string;
   isDone: boolean;
-  onClick?: () => void;
 }
 export interface IEtoProgressStepper {
   currentStep: number;
   stepProps: IStepProps[];
+  onClick: (step: number) => void;
 }
 
-export const EtoProgressStepper: React.SFC<IEtoProgressStepper> = ({ currentStep, stepProps }) => (
+export const EtoProgressStepper: React.SFC<IEtoProgressStepper> = ({
+  currentStep,
+  stepProps,
+  onClick,
+}) => (
   <div className={styles.progressStepper}>
     {range(stepProps.length).map(number => (
       <div key={number} className="text-center" data-test-id="EtoProgressStepper-header-text">
@@ -33,7 +37,7 @@ export const EtoProgressStepper: React.SFC<IEtoProgressStepper> = ({ currentStep
         )}
         <div
           className={cn(styles.step, number + 1 === currentStep && styles.active)}
-          onClick={stepProps[number].onClick}
+          onClick={() => onClick(number)}
           data-test-id="EtoProgressStepper-step-button"
         />
       </div>

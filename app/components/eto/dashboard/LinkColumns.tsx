@@ -29,8 +29,8 @@ export const LinkColumns: React.SFC<IProps> = ({ categories }) => {
       {categories.map(({ name, links }) => (
         <Col xs={12} md={6} key={name}>
           <h4 className={styles.title}>{name}</h4>
-          {links.map(({ title, url }) => (
-            <div className={cn(styles.linkWrapper, "pt-3")}>
+          {links.map(({ title, url }, index) => (
+            <div className={cn(styles.linkWrapper, "pt-3")} key={index}>
               <Link to={url} target="_blank" key={title}>
                 {title}
                 <InlineIcon svgIcon={externalLinkIcon} />

@@ -1,0 +1,19 @@
+@import "../../../styles/neufund-theme";
+
+.register-cta {
+  background-color: $blue-green;
+  color: $neu-white-two;
+  display: flex;
+  justify-content: center;
+  padding: px-to-rem(40px);
+  align-items: center;
+  flex-direction: column;
+  min-height: px-to-rem(320px);
+  width: 100%;
+
+  .cta-text {
+    color: inherit;
+    margin-bottom: px-to-rem(38px);
+    font-weight: $font-weight-light;
+  }
+}

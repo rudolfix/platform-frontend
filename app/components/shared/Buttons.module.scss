@@ -124,3 +124,9 @@ $_active-color: lighten($_hover-color, 20%);
     width: px-to-rem(20px);
   }
 }
+
+.button-close {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}

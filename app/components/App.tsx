@@ -31,11 +31,11 @@ class AppComponent extends React.Component<IStateProps> {
       <>
         <Header />
         <div className="wrapper">
-          <GenericModal />
-          <AccessWalletModal />
-          <ToastContainer />
           <AppRouter />
         </div>
+        <AccessWalletModal />
+        <ToastContainer />
+        <GenericModal />
       </>
     );
   }

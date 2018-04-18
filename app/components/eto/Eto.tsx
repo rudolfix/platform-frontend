@@ -17,11 +17,7 @@ type IProps = IStateProps & IDispatchProps;
 export const EtoComponent: React.SFC<IProps> = () => {
   return (
     <LayoutAuthorized>
-      <Row>
-        <Col xs={12} lg={{ size: 8, offset: 2 }}>
-          <EtoRouter />
-        </Col>
-      </Row>
+      <EtoRouter />
     </LayoutAuthorized>
   );
 };

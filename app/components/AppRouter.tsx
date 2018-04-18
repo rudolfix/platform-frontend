@@ -27,6 +27,7 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
 import { Eto } from "./eto/Eto";
+import { EtoDashboard } from "./eto/EtoDashboard";
 import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
 
@@ -53,9 +54,7 @@ export const AppRouter: React.SFC = () => (
     {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} />
-
-    {/* only issuers routes */}
-    <OnlyAuthorizedRoute path={appRoutes.eto} issuerComponent={Eto} />
+    <OnlyAuthorizedRoute path={appRoutes.eto} investorComponent={Eto} />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute
@@ -66,7 +65,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyAuthorizedRoute
       path={appRoutes.dashboard}
       investorComponent={Dashboard}
-      issuerComponent={Dashboard}
+      issuerComponent={EtoDashboard}
       exact
     />
     <OnlyAuthorizedRoute

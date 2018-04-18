@@ -156,15 +156,19 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
 })(EtoForm);
 
 export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
-  <EtoRegistrationPanel
-    steps={4}
-    currentStep={1}
-    title={"Team and Investors"}
-    hasBackButton={false}
-    isMaxWidth={true}
-  >
-    <EtoEnhancedForm {...props} />
-  </EtoRegistrationPanel>
+  <Row>
+    <Col xs={12} lg={{ size: 8, offset: 2 }}>
+      <EtoRegistrationPanel
+        steps={4}
+        currentStep={1}
+        title={"Team and Investors"}
+        hasBackButton={false}
+        isMaxWidth={true}
+      >
+        <EtoEnhancedForm {...props} />
+      </EtoRegistrationPanel>
+    </Col>
+  </Row>
 );
 
 export const EtoRegistrationTeamAndInvestors = compose<React.SFC>(

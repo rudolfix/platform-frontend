@@ -1,0 +1,13 @@
+@import "../../../styles/neufund-theme";
+
+.label {
+  @include font-label;
+
+  text-transform: uppercase;
+  color: $neu-slate-grey;
+}
+
+.investors {
+  color: $neu-black;
+  font-weight: $font-weight-bold;
+}

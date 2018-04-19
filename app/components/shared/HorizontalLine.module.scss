@@ -3,8 +3,9 @@
 .horizontal-line {
   height: 1px;
   background-color: $neu-pale-grey;
+  margin: 0 auto;
 
-  &:global(.green) {
+  &:global(.yellow) {
     background-color: $neu-piss-yellow;
   }
 

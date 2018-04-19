@@ -9,6 +9,11 @@ import { appConnect } from "../store";
 import { appRoutes } from "./AppRouter";
 import * as styles from "./Header.module.scss";
 import { Button } from "./shared/Buttons";
+import { loginWalletRoutes } from "./walletSelector/walletRoutes";
+
+interface IProps {
+  loginLink?: string;
+}
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -18,21 +23,33 @@ interface IDispatchProps {
   logout: () => void;
 }
 
-export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
+export const HeaderComponent: React.SFC<IStateProps & IDispatchProps & IProps> = props => (
   <Navbar dark className={styles.bar}>
     <Link to={appRoutes.root} className="navbar-brand">
       <img src={logo} className={styles.logo} />
     </Link>
-    {props.isAuthorized && (
-      <Button
-        layout="secondary"
-        theme="t-white"
-        onClick={props.logout}
-        data-test-id="Header-logout"
-      >
-        LOGOUT
-      </Button>
-    )}
+    {
+      props.isAuthorized
+        ? (
+          <Button
+            layout="secondary"
+            theme="t-white"
+            onClick={props.logout}
+            data-test-id="Header-logout"
+          >
+            LOGOUT
+          </Button>
+        ) : (
+          <Link to={location.pathname === appRoutes.eto ? appRoutes.loginEto : loginWalletRoutes.light}>
+            <Button
+              theme="t-white"
+              data-test-id="Header-login"
+            >
+              LOGIN
+            </Button>
+          </Link>
+        )
+    }
   </Navbar>
 );
 

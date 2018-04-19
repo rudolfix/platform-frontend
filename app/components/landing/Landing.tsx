@@ -1,3 +1,5 @@
+import { appRoutes } from "../AppRouter";
+
 import { Col, Container, Row } from 'reactstrap';
 
 
@@ -13,9 +15,9 @@ export const Landing: React.SFC = () => {
   return (
     <div className={styles.landing}>
       <RegisterCta
-        onRegister={() => { }}
         text="Invest now in companes you like."
-        ctaText="Regiseter" />
+        ctaText="Regiseter"
+        ctaLink={appRoutes.register} />
       <div className={styles.landingContainer}>
         <Container>
           <SectionHeader className="my-4">investment opportunities</SectionHeader>
@@ -49,6 +51,7 @@ export const Landing: React.SFC = () => {
                   },
                 ]} />
               <InvestmentPreview
+                className="mb-3"
                 linkToDetails="#0"
                 moneyGoal={"400€"}
                 currentValuation={"4000€"}

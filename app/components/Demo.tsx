@@ -3,6 +3,7 @@ import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap"
 
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
+import { EtoProgressStepper } from "./eto/shared/EtoProgressStepper";
 import { TagsEditorWidget } from "./eto/shared/TagsEditor";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
@@ -85,7 +86,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -95,7 +95,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>Breadcrumb in different states</Col>
@@ -116,7 +115,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -127,7 +125,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -148,7 +145,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -160,7 +156,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -189,7 +184,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -197,7 +191,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -208,7 +201,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -216,7 +208,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col>
@@ -227,7 +218,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row noGutters>
         <Col>
@@ -243,7 +233,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row noGutters>
         <Col>
@@ -251,7 +240,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col lg={6} xs={12}>
@@ -270,7 +258,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col lg={6} xs={12}>
@@ -281,7 +268,6 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <Row>
         <Col lg={6} xs={12}>
@@ -292,15 +278,12 @@ export const Demo: React.SFC = () => (
         </Col>
       </Row>
     </Container>
-
     <Container>
       <ChangeEmailComponent submitForm={() => {}} />
     </Container>
-
     <Container>
       <PercentageIndicatorBar percent={79} />
     </Container>
-
     <Container>
       <Tag to="#0" text="tag" />
       <Tag layout="ghost" to="#0" text="ghost tag" />
@@ -308,11 +291,9 @@ export const Demo: React.SFC = () => (
       <Tag theme="green" layout="ghost" size="small" to="#0" text="Small green ghost tag" />
       <Tag theme="dark" size="small" to="#0" text="Small dark tag" />
     </Container>
-
     <Container>
       <SectionHeader>Section's Header</SectionHeader>
     </Container>
-
     <Container>
       <InvestmentPreview
         linkToDetails="#0"
@@ -372,15 +353,12 @@ export const Demo: React.SFC = () => (
     <Container>
       <ChartDoughnut data={chartDoughnutData} />
     </Container>
-
     <Container>
       <ChartPie data={chartPieData} />
     </Container>
-
     <Container>
       <ChartBars data={chartBarData} />
     </Container>
-
     <Container>
       <Tabs
         theme="dark"
@@ -400,7 +378,6 @@ export const Demo: React.SFC = () => (
         ]}
       />
     </Container>
-
     <Container>
       <TagsEditorWidget
         availiableTags={["tag1", "tag2", "tag3", "tag with random text4", "tag5", "tag6"]}
@@ -435,6 +412,24 @@ export const Demo: React.SFC = () => (
             svgIcon: telegramIcon,
           },
         ]}
+      />
+    </Container>
+    <Container>
+      <EtoProgressStepper
+        currentStep={2}
+        stepProps={[
+          {
+            name: "test",
+            isDone: true,
+          },
+          {
+            name: "Test",
+            isDone: false,
+          },
+        ]}
+        onClick={() => {
+          alert("You clicked here ha");
+        }}
       />
     </Container>
   </div>

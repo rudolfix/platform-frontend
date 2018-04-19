@@ -1,24 +1,22 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { NavLink, NavLinkProps } from "react-router-dom";
-import { InlineIcon } from "../shared/InlineIcon";
 
-import * as styles from "./LayoutAuthorizedMenu.module.scss";
-
-// tslint:disable-next-line:no-implicit-dependencies
-import * as iconStart from "../../assets/img/inline_icons/icon_home_active.svg";
-// tslint:disable-next-line:no-implicit-dependencies
-import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_inactive.svg";
-// tslint:disable-next-line:no-implicit-dependencies
-import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inactive.svg";
-// tslint:disable-next-line:no-implicit-dependencies
-import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { selectUserType } from "../../modules/auth/selectors";
 import { selectIsActionRequiredSettings } from "../../modules/notifications/selectors";
 import { appConnect } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { appRoutes } from "../AppRouter";
+import { InlineIcon } from "../shared/InlineIcon";
+
+import * as iconEdit from "../../assets/img/inline_icons/icon_edit.svg";
+import * as iconStart from "../../assets/img/inline_icons/icon_home_active.svg";
+import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_inactive.svg";
+import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inactive.svg";
+import * as iconStats from "../../assets/img/inline_icons/icon_stats.svg";
+import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
+import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
 interface IMenuEntry {
   svgString: string;
@@ -66,10 +64,9 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
 
 const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequiredSettings }) => (
   <div className={styles.menu}>
-    {/*TODO: Change icons to real icons when received by the designer*/}
-    {/*TODO: Connect icons with real routes */}
-    <MenuEntry svgString={iconStart} to={appRoutes.eto} title="Overview" />
-    <MenuEntry svgString={iconWallet} to={appRoutes.eto} title="Edit Page" />
+    <MenuEntry svgString={iconStats} to={appRoutes.dashboard} title="Overview" />
+    {/*TODO: This route is not correct */}
+    <MenuEntry svgString={iconEdit} to={appRoutes.eto} title="Edit Page" />{" "}
     <MenuEntry
       svgString={iconSettings}
       to={appRoutes.settings}

@@ -5,6 +5,7 @@ import { Col, Container, Row } from "reactstrap";
 
 import * as React from "react";
 
+import { CenteredListWithTitle } from "../shared/CenterdListWithTitle";
 import { OffToOnCompany } from "./shared/OffToOnChainCompany";
 import { RegisterCta } from "./shared/RegisterCta";
 
@@ -23,6 +24,24 @@ export const LandingEto: React.SFC = () => {
           <Row>
             <Col>
               <h2>Why fundraise with equity token?</h2>
+              <Row>
+                <CenteredListWithTitle
+                  title="Quick access to capital"
+                  list={["One single pitch", "No roadshows", "Faster fundraising"]}
+                />
+                <CenteredListWithTitle
+                  title="Reduced costs"
+                  list={["Decreased amount of intermediaries", "Less paper work"]}
+                />
+                <CenteredListWithTitle
+                  title="Instant capitalisation"
+                  list={["Instant asset liquidation on secondary markets", "Asset flexibility"]}
+                />
+                <CenteredListWithTitle
+                  title="Efficient investment"
+                  list={["Symmetry of information", "Full alignment of investors and companies"]}
+                />
+              </Row>
             </Col>
           </Row>
         </Container>

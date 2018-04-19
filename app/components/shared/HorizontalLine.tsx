@@ -18,5 +18,5 @@ export const HorizontalLine: React.SFC<IHorizontalLineProps> = ({ className, siz
 );
 
 HorizontalLine.defaultProps = {
-  size: "wide"
+  size: "wide",
 };

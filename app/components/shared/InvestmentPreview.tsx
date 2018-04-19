@@ -44,10 +44,12 @@ export const InvestmentPreview: React.SFC<IProps> = ({
   currentValuation,
   tokenPrice,
   linkToDetails,
-  className
+  className,
 }) => {
   return (
-    <article className={`${styles.investmentPreview} ${hasStarted ? "has-started" : ""} ${className}`}>
+    <article
+      className={`${styles.investmentPreview} ${hasStarted ? "has-started" : ""} ${className}`}
+    >
       <div className={styles.logoWrapper}>
         <img src="" srcSet="" alt="" />
       </div>
@@ -110,13 +112,13 @@ export const InvestmentPreview: React.SFC<IProps> = ({
               </div>
             </>
           ) : (
-              <>
-                <span>Starting on {startingOn}</span>
-                <Button layout="secondary" onClick={() => handleEmailSend}>
-                  Get notification email
+            <>
+              <span>Starting on {startingOn}</span>
+              <Button layout="secondary" onClick={() => handleEmailSend}>
+                Get notification email
               </Button>
-              </>
-            )}
+            </>
+          )}
         </div>
       </div>
       <Link to={linkToDetails}>

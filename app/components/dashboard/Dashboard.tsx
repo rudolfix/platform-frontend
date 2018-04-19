@@ -70,7 +70,7 @@ export const Dashboard = () => (
           tokenPrice={"2€"}
           neuInvestorsNum={500}
           startingOn="22.12.2019"
-          handleEmailSend={() => { }}
+          handleEmailSend={() => {}}
           endInDays={25}
           company={"Superawesome startup 2"}
           hasStarted={true}
@@ -99,7 +99,7 @@ export const Dashboard = () => (
           tokenPrice={"2€"}
           neuInvestorsNum={500}
           startingOn="22.12.2019"
-          handleEmailSend={() => { }}
+          handleEmailSend={() => {}}
           endInDays={25}
           company={"Superawesome startup one"}
           hasStarted={false}

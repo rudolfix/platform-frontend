@@ -91,7 +91,7 @@ $vertical-space: px-to-rem(30px);
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     width: 5px;
     height: $badge-size;
     background-color: currentColor;

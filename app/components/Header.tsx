@@ -28,28 +28,22 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps & IProps> =
     <Link to={appRoutes.root} className="navbar-brand">
       <img src={logo} className={styles.logo} />
     </Link>
-    {
-      props.isAuthorized
-        ? (
-          <Button
-            layout="secondary"
-            theme="t-white"
-            onClick={props.logout}
-            data-test-id="Header-logout"
-          >
-            LOGOUT
-          </Button>
-        ) : (
-          <Link to={location.pathname === appRoutes.eto ? appRoutes.loginEto : loginWalletRoutes.light}>
-            <Button
-              theme="t-white"
-              data-test-id="Header-login"
-            >
-              LOGIN
-            </Button>
-          </Link>
-        )
-    }
+    {props.isAuthorized ? (
+      <Button
+        layout="secondary"
+        theme="t-white"
+        onClick={props.logout}
+        data-test-id="Header-logout"
+      >
+        LOGOUT
+      </Button>
+    ) : (
+      <Link to={location.pathname === appRoutes.eto ? appRoutes.loginEto : loginWalletRoutes.light}>
+        <Button theme="t-white" data-test-id="Header-login">
+          LOGIN
+        </Button>
+      </Link>
+    )}
   </Navbar>
 );
 

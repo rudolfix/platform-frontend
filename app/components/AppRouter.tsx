@@ -28,7 +28,6 @@ import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
 import { Eto } from "./eto/Eto";
 import { EtoDashboard } from "./eto/EtoDashboard";
-import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
 
 import { emailVerify } from "./emailVerify";

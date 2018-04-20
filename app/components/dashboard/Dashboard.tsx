@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { NewsWidget } from "../shared/NewsWidget";
 import { SectionHeader } from "../shared/SectionHeader";
 import { Tag } from "../shared/Tag";
 import { InvestmentPreview } from "./investmentOportunities/InvestmentPreview";
@@ -54,6 +55,14 @@ export const Dashboard = () => (
           vcAccessible={"2" + "0".repeat(26)}
           totalProceeds={"2" + "0".repeat(24)}
           totalProceedsToken={"2" + "0".repeat(20)}
+        />
+      </Col>
+      <Col lg={4} xs={12}>
+        <NewsWidget
+          className="h-100"
+          isEditable={false}
+          activeTab="news"
+          news={[{ path: "asdf", title: "asdf" }, { path: "asdf", title: "asdf" }]}
         />
       </Col>
     </Row>

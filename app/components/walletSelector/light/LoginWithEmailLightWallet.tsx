@@ -32,13 +32,7 @@ interface IOwnProps {
 
 const LoginLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
-    <FormField
-      type="password"
-      placeholder="Password"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name={PASSWORD}
-    />
+    <FormField type="password" placeholder="Password" name={PASSWORD} />
     <div className="text-center">
       <Button type="submit" disabled={!formikBag.values.password}>
         Login

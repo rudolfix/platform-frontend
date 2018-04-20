@@ -20,13 +20,7 @@ interface IFormValues {
 
 const ChangeEmailForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
-    <FormField
-      type="email"
-      placeholder="Enter new email"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name={EMAIL}
-    />
+    <FormField type="email" placeholder="Enter new email" name={EMAIL} />
     <div className="text-center">
       <Button type="submit" disabled={!formikBag.values.email}>
         Submit

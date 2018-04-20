@@ -4,6 +4,7 @@ import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
+import { etoFlowActions } from "./eto-flow/actions";
 import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
@@ -29,6 +30,7 @@ export const actions = {
   auth: authActions,
   wallet: walletActions,
   notifications: notificationActions,
+  etoFlow: etoFlowActions,
 };
 
 /**
@@ -48,6 +50,7 @@ export const allActions = {
   ...authActions,
   ...walletActions,
   ...notificationActions,
+  ...etoFlowActions,
 };
 
 /**

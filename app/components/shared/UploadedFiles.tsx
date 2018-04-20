@@ -3,10 +3,9 @@ import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
 import * as styles from "./UploadedFiles.module.scss";
 
 import * as confirmIcon from "../../assets/img/notifications/Success_small.svg";
-import { IEtoFileInfo } from "../../lib/api/EtoApi.interfaces";
 
 interface IProps {
-  files: IKycFileInfo[] | IEtoFileInfo[];
+  files: IKycFileInfo[];
   onRemove: () => void;
 }
 

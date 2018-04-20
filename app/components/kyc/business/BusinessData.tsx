@@ -11,7 +11,6 @@ import { actions } from "../../../modules/actions";
 import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 
 import { Col, Row } from "reactstrap";
-import { IEtoFileInfo } from "../../../lib/api/EtoApi.interfaces";
 import {
   IKycBusinessData,
   IKycFileInfo,
@@ -27,7 +26,7 @@ interface IStateProps {
   loadingData: boolean;
   fileUploading: boolean;
   filesLoading: boolean;
-  files: IKycFileInfo[] | IEtoFileInfo[];
+  files: IKycFileInfo[];
 }
 
 interface IDispatchProps {

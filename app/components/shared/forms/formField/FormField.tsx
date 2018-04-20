@@ -1,8 +1,16 @@
-import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
+import {
+  Field,
+  FieldAttributes,
+  FieldProps,
+  FormikErrors,
+  FormikProps,
+  FormikTouched,
+} from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap";
 
+import { get } from "lodash";
 import { InputType } from "../../../../types";
 import * as styles from "./FormField.module.scss";
 
@@ -19,21 +27,21 @@ type FieldGroupProps = IFieldGroup & FieldAttributes;
 
 /* The function that encapsulates the logic of determining a value for Input field valid property. Note we have to
    return boolean | undefined value. Undefined should be returned when the field has not been touched by the user. */
-const isValid = (
-  touched: { [name: string]: boolean },
-  errors: { [name: string]: string },
-  name: string,
+export const isValid = (
+  touched: FormikTouched<any>,
+  errors: FormikErrors<any>,
+  key: string,
 ): boolean | undefined => {
-  if (touched && touched[name] !== true) {
+  if (touched && get(touched, key) !== true) {
     return undefined;
   }
 
-  return !(errors && errors[name]);
+  return !(errors && get(errors, key));
 };
 
-const isNonValid = (
-  touched: { [name: string]: boolean },
-  errors: { [name: string]: string },
+export const isNonValid = (
+  touched: FormikTouched<any>,
+  errors: FormikErrors<any>,
   name: string,
 ): boolean | undefined => {
   const argument = isValid(touched, errors, name);
@@ -50,6 +58,7 @@ export class FormField extends React.Component<FieldGroupProps> {
     const { label, type, placeholder, name, prefix, suffix } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
+
     //This is done due to the difference between reactstrap and @typings/reactstrap
     const inputExtraProps = {
       invalid: isNonValid(touched, errors, name),

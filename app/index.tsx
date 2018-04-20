@@ -30,15 +30,6 @@ import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 import "./styles/overrides.scss";
 
-// @note: this is done to make HMR work with react router. In production build its gone.
-function forceRerenderInDevMode(): number {
-  if (process.env.NODE_ENV === "development") {
-    return Math.random();
-  } else {
-    return 1;
-  }
-}
-
 function renderApp(
   store: Store<IAppState>,
   history: any,
@@ -49,7 +40,7 @@ function renderApp(
   ReactDOM.render(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
-        <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
+        <ConnectedRouter history={history}>
           <Component />
         </ConnectedRouter>
       </InversifyProvider>

@@ -20,13 +20,7 @@ export interface IFormValues {
 
 const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => (
   <Form>
-    <FormField
-      type="password"
-      placeholder="Password"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
-      name="password"
-    />
+    <FormField type="password" placeholder="Password" name="password" />
     <div className="mt-3">
       <Button type="submit" disabled={!formikBag.values.password}>
         {" "}

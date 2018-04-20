@@ -1,22 +1,20 @@
-import * as React from "react";
-
 import { Form, FormikProps, withFormik } from "formik";
+import * as React from "react";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
-
 import { onEnterAction } from "../../../utils/OnEnterAction";
+import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { Button } from "../../shared/Buttons";
+import { FormField, FormTextArea } from "../../shared/forms/forms";
+import { HorizontalLine } from "../../shared/HorizontalLine";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
-import { FormField, FormTextArea } from "../../shared/forms/forms";
-
-import { Col, Row } from "reactstrap";
-import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
-import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { HorizontalLine } from "../../shared/HorizontalLine";
-
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
+
+// @todo
+type IEtoData = any;
 
 interface IStateProps {
   currentValues: IEtoData;
@@ -102,9 +100,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   </Form>
 );
 
-const EtoEnhancedForm = withFormik<IProps, IEtoData>({
-  validationSchema: EtoDataSchema,
-  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
+const EtoEnhancedForm = withFormik<IProps, any>({
+  // validationSchema: EtoDataSchema,
+  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),

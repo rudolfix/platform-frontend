@@ -1,13 +1,12 @@
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormFeedback, FormGroup, InputGroup, InputGroupAddon, Label } from "reactstrap";
+import { FormGroup, InputGroup, InputGroupAddon, Label } from "reactstrap";
+import { isNonValid } from "./FormField";
 
 interface IFieldGroup {
   label?: string;
   placeholder?: string;
-  touched?: { [name: string]: boolean }; // deprecated, remove from other forms
-  errors?: { [name: string]: string }; // deprecated, remove from other forms
   prefix?: string;
   suffix?: string;
 }
@@ -20,7 +19,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
   render(): React.ReactChild {
     const { label, placeholder, name, prefix, suffix } = this.props;
     const formik: FormikProps<any> = this.context.formik;
-    const { errors } = formik;
+    const { touched, errors } = formik;
     return (
       <FormGroup>
         {label && <Label for={name}>{label}</Label>}
@@ -34,7 +33,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
             </InputGroup>
           )}
         />
-        {errors[name] && <FormFeedback>{errors[name]}</FormFeedback>}
+        {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
       </FormGroup>
     );
   }

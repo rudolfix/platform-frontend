@@ -1,5 +1,6 @@
 import { accessWalletReducer } from "./accessWallet/reducer";
 import { authReducer } from "./auth/reducer";
+import { etoFlowReducer } from "./eto-flow/reducer";
 import { genericModalReducer } from "./genericModal/reducer";
 import { initReducer } from "./init/reducer";
 import { kycReducer } from "./kyc/reducer";
@@ -29,4 +30,5 @@ export const appReducers = {
   money: moneyReducer,
   wallet: walletReducer,
   notifications: notificationsReducer,
+  etoFlow: etoFlowReducer,
 };

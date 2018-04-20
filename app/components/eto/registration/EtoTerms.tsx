@@ -19,11 +19,13 @@ import {
 
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { SingleFileUpload } from "../../shared/SingleFileUpload";
 
 import * as iconExternalLink from "../../../assets/img/inline_icons/link_out_small.svg";
+
+// @todo
+type IEtoData = any;
 
 const THIRD_PARTIES_DEPENDENCY_VALUES = {
   [NONE_KEY]: "-please select-",
@@ -115,8 +117,8 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 );
 
 const EtoEnhancedForm = withFormik<IProps, IEtoData>({
-  validationSchema: EtoDataSchema,
-  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
+  // validationSchema: EtoDataSchema,
+  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),
@@ -128,7 +130,7 @@ export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
       <EtoRegistrationPanel
         steps={4}
         currentStep={4}
-        title={"ETO Terms"}
+        title="ETO Terms"
         hasBackButton={false}
         isMaxWidth={true}
       >

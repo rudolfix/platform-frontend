@@ -62,63 +62,63 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
   style,
   theme = "light",
 }) => (
-    <PanelDark
-      className={cn(className, styles.walletBalance, `t-${theme}`)}
-      style={style}
-      headerText={headerText}
-      rightComponent={data && <TotalEuro totalEurValue={data.totalEuroAmount} />}
-    >
-      {isLoading ? (
-        <LoadingIndicator />
-      ) : (
-          <div className={styles.walletBalanceWrapper}>
-            {data!.euroTokenAmount !== "0" &&
-              data!.ethAmount !== "0" && (
-                <div className={styles.chartWrapper}>
-                  <ChartDoughnut
-                    data={computeChartDataForTokens([data!.ethEuroAmount, data!.euroTokenEuroAmount])}
-                  />
-                </div>
-              )}
-            <div className={styles.walletBalanceActions}>
-              <div className={styles.moneySuiteWrapper}>
-                <MoneySuiteWidget
-                  currency="eur_token"
-                  largeNumber={data!.euroTokenAmount}
-                  value={data!.euroTokenEuroAmount}
-                  icon={moneyIcon}
-                  data-test-id="euro-widget"
-                  currencyTotal="eur"
-                />
-                {!isLocked && (
-                  <div className={styles.buttonsWrapper}>
-                    <Button layout="secondary">Withdraw funds ></Button>
-                    <Button layout="secondary" onClick={depositEuroTokenFunds}>
-                      Deposit funds >
-                </Button>
-                  </div>
-                )}
-              </div>
-              <div className={styles.moneySuiteWrapper}>
-                <MoneySuiteWidget
-                  currency="eth"
-                  largeNumber={data!.ethAmount}
-                  value={data!.ethEuroAmount}
-                  icon={ethIcon}
-                  data-test-id="euro-widget"
-                  currencyTotal="eur"
-                />
-                {!isLocked && (
-                  <div className={styles.buttonsWrapper}>
-                    <Button layout="secondary">Withdraw funds ></Button>
-                    <Button layout="secondary" onClick={depositEthFunds}>
-                      Deposit funds >
-                </Button>
-                  </div>
-                )}
-              </div>
+  <PanelDark
+    className={cn(className, styles.walletBalance, `t-${theme}`)}
+    style={style}
+    headerText={headerText}
+    rightComponent={data && <TotalEuro totalEurValue={data.totalEuroAmount} />}
+  >
+    {isLoading ? (
+      <LoadingIndicator />
+    ) : (
+      <div className={styles.walletBalanceWrapper}>
+        {data!.euroTokenAmount !== "0" &&
+          data!.ethAmount !== "0" && (
+            <div className={styles.chartWrapper}>
+              <ChartDoughnut
+                data={computeChartDataForTokens([data!.ethEuroAmount, data!.euroTokenEuroAmount])}
+              />
             </div>
+          )}
+        <div className={styles.walletBalanceActions}>
+          <div className={styles.moneySuiteWrapper}>
+            <MoneySuiteWidget
+              currency="eur_token"
+              largeNumber={data!.euroTokenAmount}
+              value={data!.euroTokenEuroAmount}
+              icon={moneyIcon}
+              data-test-id="euro-widget"
+              currencyTotal="eur"
+            />
+            {!isLocked && (
+              <div className={styles.buttonsWrapper}>
+                <Button layout="secondary">Withdraw funds ></Button>
+                <Button layout="secondary" onClick={depositEuroTokenFunds}>
+                  Deposit funds >
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-    </PanelDark>
-  );
+          <div className={styles.moneySuiteWrapper}>
+            <MoneySuiteWidget
+              currency="eth"
+              largeNumber={data!.ethAmount}
+              value={data!.ethEuroAmount}
+              icon={ethIcon}
+              data-test-id="euro-widget"
+              currencyTotal="eur"
+            />
+            {!isLocked && (
+              <div className={styles.buttonsWrapper}>
+                <Button layout="secondary">Withdraw funds ></Button>
+                <Button layout="secondary" onClick={depositEthFunds}>
+                  Deposit funds >
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+  </PanelDark>
+);

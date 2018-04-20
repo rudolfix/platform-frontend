@@ -2,8 +2,6 @@ import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
 
-import * as ethIcon from "../../../assets/img/eth_icon.svg";
-import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import { Q18 } from "../../../config/constants";
 import { CommonHtmlProps } from "../../../types";
 import { Button } from "../../shared/Buttons";
@@ -12,6 +10,9 @@ import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { IPanelDarkProps, PanelDark } from "../../shared/PanelDark";
 import { TotalEuro } from "../TotalEuro";
+
+import * as ethIcon from "../../../assets/img/eth_icon.svg";
+import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import * as styles from "./WalletBalance.module.scss";
 
 export type TWalletBalance = "light" | "dark";
@@ -30,6 +31,7 @@ interface IWalletBalance {
   theme?: TWalletBalance;
   isLoading: boolean;
   data?: IWalletValues;
+  isLocked: boolean;
 }
 
 const computeChartDataForTokens = (euroValues: string[]) => {
@@ -50,6 +52,7 @@ const computeChartDataForTokens = (euroValues: string[]) => {
 };
 
 export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonHtmlProps> = ({
+  isLocked,
   data,
   isLoading,
   headerText,
@@ -74,7 +77,7 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
             data={computeChartDataForTokens([data!.ethEuroAmount, data!.euroTokenEuroAmount])}
           />
         </div>
-        <div className={`${styles.walletBalanceActions}`}>
+        <div className={styles.walletBalanceActions}>
           <div className={styles.moneySuiteWrapper}>
             <MoneySuiteWidget
               currency="eur_token"
@@ -84,12 +87,14 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
               data-test-id="euro-widget"
               currencyTotal="eur"
             />
-            <div className={styles.buttonsWrapper}>
-              <Button layout="secondary">Withdraw funds ></Button>
-              <Button layout="secondary" onClick={depositEuroTokenFunds}>
-                Deposit funds >
-              </Button>
-            </div>
+            {!isLocked && (
+              <div className={styles.buttonsWrapper}>
+                <Button layout="secondary">Withdraw funds ></Button>
+                <Button layout="secondary" onClick={depositEuroTokenFunds}>
+                  Deposit funds >
+                </Button>
+              </div>
+            )}
           </div>
           <div className={styles.moneySuiteWrapper}>
             <MoneySuiteWidget
@@ -100,12 +105,14 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
               data-test-id="euro-widget"
               currencyTotal="eur"
             />
-            <div className={styles.buttonsWrapper}>
-              <Button layout="secondary">Withdraw funds ></Button>
-              <Button layout="secondary" onClick={depositEthFunds}>
-                Deposit funds >
-              </Button>
-            </div>
+            {!isLocked && (
+              <div className={styles.buttonsWrapper}>
+                <Button layout="secondary">Withdraw funds ></Button>
+                <Button layout="secondary" onClick={depositEthFunds}>
+                  Deposit funds >
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

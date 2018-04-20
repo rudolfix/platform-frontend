@@ -90,7 +90,7 @@ const WalletStartComponent: React.SFC<TProps> = props => (
           <WalletBalance
             isLocked={true}
             className="h-100"
-            headerText="ICBM Wallet"
+            headerText="Locked Wallet"
             depositEuroTokenFunds={props.goToDepositEuroToken}
             depositEthFunds={props.goToDepositEth}
             isLoading={props.isLoading}

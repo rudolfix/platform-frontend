@@ -74,6 +74,7 @@ const WalletStartComponent: React.SFC<TProps> = props => (
   <Row className="row-gutter-top">
     <Col lg={6} xs={12}>
       <WalletBalance
+        isLocked={false}
         className="h-100"
         headerText="Your wallet balance"
         depositEuroTokenFunds={props.goToDepositEuroToken}
@@ -87,8 +88,9 @@ const WalletStartComponent: React.SFC<TProps> = props => (
       props.lockedWalletData!.hasFunds && (
         <Col lg={6} xs={12}>
           <WalletBalance
+            isLocked={true}
             className="h-100"
-            headerText="Locked Wallet"
+            headerText="ICBM Wallet"
             depositEuroTokenFunds={props.goToDepositEuroToken}
             depositEthFunds={props.goToDepositEth}
             isLoading={props.isLoading}
@@ -101,8 +103,9 @@ const WalletStartComponent: React.SFC<TProps> = props => (
       props.icbmWalletData!.hasFunds && (
         <Col lg={6} xs={12}>
           <WalletBalance
+            isLocked={true}
             className="h-100"
-            headerText="Locked Wallet"
+            headerText="ICBM Wallet"
             depositEuroTokenFunds={props.goToDepositEuroToken}
             depositEthFunds={props.goToDepositEth}
             isLoading={props.isLoading}

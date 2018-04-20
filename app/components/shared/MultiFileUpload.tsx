@@ -66,7 +66,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
       <div className={styles.uploadDescription}>
         {layout === "individual" && <h3 className={styles.title}>Images must include</h3>}
         {layout === "business" && <h3 className={styles.title}>Required documents</h3>}
-        {layout === "individual" && <img src={idImage} />}
+        {layout === "individual" && <img className={styles.sampleDocumentId} src={idImage} />}
         <div>
           {layout === "individual" && (
             <ul className={styles.documentRequirements}>

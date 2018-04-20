@@ -27,6 +27,7 @@ import {
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
+import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 
 const PEP_VALUES = {
@@ -77,7 +78,17 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <br />
     <FormSelectField
       values={PEP_VALUES}
-      label="Are you a politically exposed person? 1)"
+      label={
+        <>
+          Are you a politically exposed person?<Tooltip
+            className="ml-2"
+            text={`A Politically Exposed Person (PEP) is someone who, through their prominent position
+      or influence, is more susceptible to being involved in bribery or corruption. In addition, any
+      close business associate or family member of such a person will also be deemed as being a
+      risk, and therefore could also be added to the PEP list.`}
+          />
+        </>
+      }
       name="isPoliticallyExposed"
     />
     <FormSelectField values={US_CITIZEN_VALUES} label="Are you a US citizen?" name="isUsCitizen" />
@@ -90,12 +101,6 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
         Submit and continue
       </Button>
-    </div>
-    <div className="p-4">
-      <b>1)</b> A Politically Exposed Person (PEP) is someone who, through their prominent position
-      or influence, is more susceptible to being involved in bribery or corruption. In addition, any
-      close business associate or family member of such a person will also be deemed as being a
-      risk, and therefore could also be added to the PEP list.
     </div>
   </Form>
 );

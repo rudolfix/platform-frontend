@@ -29,7 +29,7 @@ export const unboolify = <T extends {}>(values: T): T => {
 };
 
 interface IFieldGroup {
-  label?: string;
+  label?: string | React.ReactNode;
   values: {
     [key: string]: string;
   };

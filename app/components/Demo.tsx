@@ -435,21 +435,97 @@ export const Demo: React.SFC = () => (
       />
     </Container>
     <Container>
-      <WalletBalance
-        isLocked={true}
-        className="h-100"
-        headerText="Your wallet balance | LOADED & LOCKED"
-        depositEuroTokenFunds={() => {}}
-        depositEthFunds={() => {}}
-        isLoading={false}
-        data={{
-          euroTokenAmount: "100000000000000000000000000",
-          euroTokenEuroAmount: "100000000000000000000000000",
-          ethAmount: "100000000000000000000000000",
-          ethEuroAmount: "100000000000000000000000000",
-          totalEuroAmount: "100000000000000000000000000",
-        }}
-      />
+      <Row>
+        <Col xs={12}>
+          <WalletBalance
+            isLocked={true}
+            className="h-100"
+            headerText="Your wallet balance | LOADED & LOCKED"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={true}
+            className="h-100"
+            headerText="Your wallet balance | LOADED & LOCKED"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={true}
+            className="h-100"
+            headerText="Your wallet balance | LOADED & LOCKED & EMPTY"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "0",
+              euroTokenEuroAmount: "0",
+              ethAmount: "0",
+              ethEuroAmount: "0",
+              totalEuroAmount: "0",
+            }}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={false}
+            className="h-100"
+            headerText="LOADED & UNLOCKED & EMPTY"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={false}
+            className="h-100"
+            headerText="Loading"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={true}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+      </Row>
     </Container>
   </div>
 );

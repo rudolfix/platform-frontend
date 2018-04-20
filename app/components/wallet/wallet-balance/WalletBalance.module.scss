@@ -25,6 +25,11 @@
   display: none;
   flex-shrink: 0;
   width: 30%;
+
+  > canvas {
+    max-height: px-to-rem(180px);
+    max-width: px-to-rem(180px);
+  }
 }
 
 .money-suite-wrapper {

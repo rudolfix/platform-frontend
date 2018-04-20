@@ -72,11 +72,14 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
       <LoadingIndicator />
     ) : (
       <div className={styles.walletBalanceWrapper}>
-        <div className={styles.chartWrapper}>
-          <ChartDoughnut
-            data={computeChartDataForTokens([data!.ethEuroAmount, data!.euroTokenEuroAmount])}
-          />
-        </div>
+        {!!parseInt(data!.euroTokenAmount, 10) &&
+          !!parseInt(data!.ethAmount, 10) && (
+            <div className={styles.chartWrapper}>
+              <ChartDoughnut
+                data={computeChartDataForTokens([data!.ethEuroAmount, data!.euroTokenEuroAmount])}
+              />
+            </div>
+          )}
         <div className={styles.walletBalanceActions}>
           <div className={styles.moneySuiteWrapper}>
             <MoneySuiteWidget

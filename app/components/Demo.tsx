@@ -6,6 +6,7 @@ import * as styles from "./Demo.module.scss";
 import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
+import { EtoProgressStepper } from "./eto/shared/EtoProgressStepper";
 import { TagsEditorWidget } from "./eto/shared/TagsEditor";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
@@ -25,13 +26,13 @@ import { SectionHeader } from "./shared/SectionHeader";
 import { SocialProfilesEditor } from "./shared/SocialProfilesEditor";
 import { Tabs } from "./shared/Tabs";
 import { Tag } from "./shared/Tag";
+import { WalletBalance } from "./wallet/wallet-balance/WalletBalance";
 
 import * as facebookIcon from "../assets/img/inline_icons/social_facebook.svg";
 import * as linkedinIcon from "../assets/img/inline_icons/social_linkedin.svg";
 import * as mediumIcon from "../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../assets/img/inline_icons/social_telegram.svg";
-import { EtoProgressStepper } from "./eto/shared/EtoProgressStepper";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -430,6 +431,23 @@ export const Demo: React.SFC = () => (
         ]}
         onClick={() => {
           alert("You clicked here ha");
+        }}
+      />
+    </Container>
+    <Container>
+      <WalletBalance
+        isLocked={true}
+        className="h-100"
+        headerText="Your wallet balance | LOADED & LOCKED"
+        depositEuroTokenFunds={() => {}}
+        depositEthFunds={() => {}}
+        isLoading={false}
+        data={{
+          euroTokenAmount: "100000000000000000000000000",
+          euroTokenEuroAmount: "100000000000000000000000000",
+          ethAmount: "100000000000000000000000000",
+          ethEuroAmount: "100000000000000000000000000",
+          totalEuroAmount: "100000000000000000000000000",
         }}
       />
     </Container>

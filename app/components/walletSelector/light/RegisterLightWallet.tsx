@@ -42,22 +42,16 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
     <FormField
       placeholder="Email"
       type="email"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
       name={EMAIL}
     />
     <FormField
       type="password"
       placeholder="Password"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
       name={PASSWORD}
     />
     <FormField
       type="password"
       placeholder="Repeat Password"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
       name={REPEAT_PASSWORD}
     />
     <div className="text-center">

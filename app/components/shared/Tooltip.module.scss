@@ -14,7 +14,6 @@
     background-color: $neu-charcoal-grey;
     color: $neu-white-two;
     padding: px-to-rem(14px);
-    display: block;
     position: absolute;
     top: 50%;
     left: 150%;
@@ -26,6 +25,7 @@
     transition: 100ms ease-out;
     transform-origin: center left;
     will-change: transform opacity;
+    pointer-events: none;
   }
 
   &:hover {

@@ -66,6 +66,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 {...field}
                 type={type}
                 value={field.value || ""}
+                valid={isValid(touched, errors, name)}
                 placeholder={placeholder || label}
                 {...inputExtraProps}
               />

@@ -38,7 +38,11 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps & IProps> =
         LOGOUT
       </Button>
     ) : (
-      <Link to={location.pathname === appRoutes.eto ? appRoutes.loginEto : loginWalletRoutes.light}>
+      <Link
+        to={
+          location.pathname === appRoutes.etoLanding ? appRoutes.loginEto : loginWalletRoutes.light
+        }
+      >
         <Button theme="t-white" data-test-id="Header-login">
           LOGIN
         </Button>

@@ -1,0 +1,64 @@
+@import "../../styles/neufund-theme";
+
+.tooltip {
+  display: inline-block;
+  cursor: help;
+  position: relative;
+
+  &::before {
+    @include media-breakpoint-down (md) {
+      display: none;
+    }
+
+    content: attr(data-tooltip);
+    background-color: $neu-charcoal-grey;
+    color: $neu-white-two;
+    padding: px-to-rem(14px);
+    position: absolute;
+    top: 50%;
+    left: 150%;
+    width: 90vw;
+    max-width: px-to-rem(300px);
+    box-shadow: $shadow;
+    opacity: 0;
+    transform: translate(-5px, -50%) scale(.8);
+    transition: 100ms ease-out;
+    transform-origin: center left;
+    will-change: transform opacity;
+    pointer-events: none;
+  }
+
+  &:hover {
+    &::before {
+      @include media-breakpoint-down (md) {
+        display: none;
+      }
+
+      transform: translate(0, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+
+  &:focus {
+    &::before {
+      @include media-breakpoint-down (md) {
+        display: block;
+        position: static;
+      }
+    }
+  }
+
+  :global(.inline-icon) {
+    height: px-to-rem(18px);
+    width: px-to-rem(18px);
+  }
+}
+
+.mobile-text {
+  @include media-breakpoint-down (md) {
+    display: block;
+  }
+
+  display: none;
+  margin-top: px-to-rem(14px);
+}

@@ -4,7 +4,9 @@ import { appConnect } from "../../../store";
 
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
+import { TUserType } from "../../../lib/api/users/interfaces";
 import { flows } from "../../../modules/flows";
+import { selectUrlUserType } from "../../../modules/wallet-selector/selectors";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { RegisterWalletComponent } from "../light/RegisterLightWallet";
 import { recoverRoutes } from "./recoverRoutes";
@@ -21,11 +23,9 @@ interface IFormValues {
   seed?: string;
 }
 
-interface IProps {
+interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
-  seed: string;
 }
-
 interface IMainRecoveryProps {
   submitForm: (values: IFormValues) => void;
 }
@@ -80,16 +80,20 @@ export class RecoveryProcessesComponent extends React.Component<
   }
 }
 
-export const RecoveryProcesses: React.SFC<IProps> = props => {
+export const RecoveryProcesses: React.SFC<IDispatchProps> = props => {
   return <RecoveryProcessesComponent {...props} />;
 };
 
 export const RecoverWallet = compose<React.SFC>(
-  appConnect<IProps>({
+  appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
-      submitForm: (values: IFormValues) => {
+      submitForm: (values: IFormValues, userType: TUserType) => {
         dispatch(
-          flows.wallet.tryConnectingWithLightWallet(values.email, values.password, values.seed),
+          flows.wallet.tryConnectingWithLightWallet(
+            values.email,
+            values.password,
+            values.seed,
+          ),
         );
       },
     }),

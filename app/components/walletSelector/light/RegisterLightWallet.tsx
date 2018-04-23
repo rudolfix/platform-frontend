@@ -8,7 +8,9 @@ import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 
 import * as Yup from "yup";
+import { TUserType } from "../../../lib/api/users/interfaces";
 import { flows } from "../../../modules/flows";
+import { selectUrlUserType } from "../../../modules/wallet-selector/selectors";
 
 const EMAIL = "email";
 const PASSWORD = "password";
@@ -20,7 +22,7 @@ export interface IFormValues {
   repeatPassword: string;
 }
 
-interface IProps {
+interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
   currentValues?: IFormValues;
 }
@@ -50,13 +52,13 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   </Form>
 );
 
-const RegisterEnhancedLightWalletForm = withFormik<IProps, IFormValues>({
+const RegisterEnhancedLightWalletForm = withFormik<IDispatchProps, IFormValues>({
   validationSchema: validationSchema,
   mapPropsToValues: props => props.currentValues as IFormValues,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(RegisterLightWalletForm);
 
-export const RegisterWalletComponent: React.SFC<IProps> = props => {
+export const RegisterWalletComponent: React.SFC<IDispatchProps> = props => {
   return (
     <Row className="justify-content-sm-center mt-3">
       <Col className="align-self-end col-sm-auto col-xs-12">
@@ -68,10 +70,12 @@ export const RegisterWalletComponent: React.SFC<IProps> = props => {
 };
 
 export const RegisterLightWallet = compose<React.SFC>(
-  appConnect<IProps>({
+  appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
-      submitForm: (values: IFormValues) =>
-        dispatch(flows.wallet.tryConnectingWithLightWallet(values.email, values.password)),
+      submitForm: (values: IFormValues, userType: TUserType) =>
+        dispatch(
+          flows.wallet.tryConnectingWithLightWallet(userType, values.email, values.password),
+        ),
     }),
   }),
 )(RegisterWalletComponent);

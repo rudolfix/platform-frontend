@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { makeAllRequired, personBirthDate } from "./util/schemaHelpers";
+import { isUsCitizen, makeAllRequired, personBirthDate } from "./util/schemaHelpers";
 
 export type TKycRequestType = "business" | "individual";
 
@@ -23,6 +23,7 @@ export const KycPersonSchema = Yup.object().shape({
   country: Yup.string(),
   birthDate: personBirthDate,
   isPoliticallyExposed: Yup.bool(),
+  isUsCitizen: isUsCitizen,
 });
 
 // individual data

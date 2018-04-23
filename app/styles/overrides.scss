@@ -86,3 +86,12 @@ textarea {
   width: 100%;
   outline: none;
 }
+
+
+.form-group {
+  label {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}

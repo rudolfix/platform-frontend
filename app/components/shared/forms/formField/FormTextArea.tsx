@@ -28,9 +28,9 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
           name={name}
           render={({ field }: FieldProps) => (
             <InputGroup>
-              {prefix && <InputGroupAddon>{prefix}</InputGroupAddon>}
+              {prefix && <InputGroupAddon addonType="prepend">{prefix}</InputGroupAddon>}
               <textarea {...field} value={field.value || ""} placeholder={placeholder || label} />
-              {suffix && <InputGroupAddon>{suffix}</InputGroupAddon>}
+              {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
             </InputGroup>
           )}
         />

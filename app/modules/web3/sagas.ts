@@ -56,8 +56,9 @@ export function* unlockWallet(
   yield put(actions.web3.walletUnlocked());
 }
 
-export function* loadPreviousWallet({ walletMetadataStorage }: TGlobalDependencies): Iterator<any> {
-  const storageData = walletMetadataStorage.get();
+export function* loadPreviousWallet({ walletStorage }: TGlobalDependencies): Iterator<any> {
+  //HERE
+  const storageData = walletStorage.get("investor"); //HERE
   if (storageData) {
     yield put(actions.web3.loadPreviousWallet(storageData));
   }

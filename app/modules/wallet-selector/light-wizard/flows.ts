@@ -1,9 +1,10 @@
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
+import { TUserType } from "../../../lib/api/users/interfaces";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
-import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { WalletStorage } from "../../../lib/persistence/WalletStorage";
 import { LightWalletConnector, LightWalletUtil } from "../../../lib/web3/LightWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
@@ -33,14 +34,18 @@ export async function getVaultKey(
 }
 
 export const lightWizardFlows = {
-  tryConnectingWithLightWallet: (email: string, password: string, seed?: string) =>
+  tryConnectingWithLightWallet: (
+    email: string,
+    password: string,
+    seed?: string,
+  ) =>
     injectableFn(
       async (
         dispatch: AppDispatch,
         web3Manager: Web3Manager,
         lightWalletConnector: LightWalletConnector,
         lightWalletUtil: LightWalletUtil,
-        walletMetadataStorage: ObjectStorage<TWalletMetadata>,
+        walletStorage: WalletStorage<TWalletMetadata>, //HERE
         vaultApi: VaultApi,
         logger: ILogger,
         getState: GetState,
@@ -69,7 +74,7 @@ export const lightWizardFlows = {
             email,
             password,
           );
-          walletMetadataStorage.set(lightWallet.getMetadata());
+          walletStorage.set(userType, lightWallet.getMetadata());
           await web3Manager.plugPersonalWallet(lightWallet);
           if (seed) dispatch(actions.routing.goToSuccessfulRecovery());
           else dispatch(actions.walletSelector.connected(userType));
@@ -88,7 +93,7 @@ export const lightWizardFlows = {
         symbols.web3Manager,
         symbols.lightWalletConnector,
         symbols.lightWalletUtil,
-        symbols.walletMetadataStorage,
+        symbols.walletStorage, //HERE
         symbols.vaultApi,
         symbols.logger,
         symbols.getState,

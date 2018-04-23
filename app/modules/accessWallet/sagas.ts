@@ -15,6 +15,7 @@ import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
+import { selectUserType } from '../auth/selectors';
 import { neuCall } from "../sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
 import { unlockWallet } from "../web3/sagas";
@@ -24,17 +25,18 @@ import { selectIsSigning } from "./reducer";
 
 export async function ensureWalletConnection({
   web3Manager,
-  walletMetadataStorage,
+  walletStorage, //HERE
   lightWalletConnector,
   ledgerWalletConnector,
   browserWalletConnector,
+  getState,
 }: TGlobalDependencies): Promise<void> {
   if (web3Manager.personalWallet) {
     return;
   }
-
+  const s = getState();  
   /* tslint:disable: no-useless-cast */
-  const metadata = walletMetadataStorage.get()!;
+  const metadata = walletStorage.get(selectUserType(s.auth)!)!; //HERE
   /* tslint:enable: no-useless-cast */
 
   invariant(metadata, "User has JWT but doesn't have wallet metadata!");

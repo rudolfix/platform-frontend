@@ -44,7 +44,7 @@ export async function retrieveMetadataFromVaultAPI(
 }
 
 export function* getWalletMetadata(
-  { walletMetadataStorage }: TGlobalDependencies,
+  { walletStorage }: TGlobalDependencies, //HERE
   password: string,
 ): Iterator<any | ILightWalletRetrieveMetadata | undefined> {
   const queryStringWalletInfo: { email: string; salt: string } | undefined = yield select(
@@ -59,7 +59,7 @@ export function* getWalletMetadata(
     );
   }
 
-  const savedMetadata = walletMetadataStorage.get();
+  const savedMetadata = walletStorage.get("investor"); //HERE
   if (savedMetadata && savedMetadata.walletType === WalletType.LIGHT) {
     return savedMetadata;
   }
@@ -106,7 +106,7 @@ export function* loadSeedFromWalletWatch(): Iterator<any> {
 }
 
 export function* lightWalletLoginWatch(
-  { web3Manager, walletMetadataStorage, lightWalletConnector }: TGlobalDependencies,
+  { web3Manager, walletStorage, lightWalletConnector }: TGlobalDependencies, //HERE
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "LIGHT_WALLET_LOGIN") {
@@ -138,7 +138,7 @@ export function* lightWalletLoginWatch(
       throw new LightWalletWrongPassword();
     }
 
-    walletMetadataStorage.set(wallet.getMetadata());
+    walletStorage.set("investor", wallet.getMetadata()); //HERE
     yield web3Manager.plugPersonalWallet(wallet);
     yield put(actions.walletSelector.connected(userType));
   } catch (e) {

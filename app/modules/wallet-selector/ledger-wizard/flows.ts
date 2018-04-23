@@ -1,9 +1,9 @@
 import { toPairs, zip } from "lodash";
+import { WalletStorage } from "./../../../lib/persistence/WalletStorage";
 
 import { pairZip } from "../../../../typings/modifications";
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
-import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { LedgerNotAvailableError, LedgerWalletConnector } from "../../../lib/web3/LedgerWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
@@ -116,7 +116,7 @@ export const ledgerWizardFlows = {
         dispatch: AppDispatch,
         ledgerConnector: LedgerWalletConnector,
         web3Manager: Web3Manager,
-        walletMetadataStorage: ObjectStorage<TWalletMetadata>,
+        walletStorage: WalletStorage<TWalletMetadata>,
         getState: GetState,
       ) => {
         const userType = selectUrlUserType(getState().router);
@@ -125,14 +125,14 @@ export const ledgerWizardFlows = {
         await web3Manager.plugPersonalWallet(ledgerWallet);
 
         // todo move saving metadata to unified connect functions
-        walletMetadataStorage.set(ledgerWallet.getMetadata());
+        walletStorage.set("investor", ledgerWallet.getMetadata()); //HERE
         dispatch(actions.walletSelector.connected(userType));
       },
       [
         symbols.appDispatch,
         symbols.ledgerWalletConnector,
         symbols.web3Manager,
-        symbols.walletMetadataStorage,
+        symbols.walletStorage, //HERE
         symbols.getState,
       ],
     ),

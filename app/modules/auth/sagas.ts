@@ -22,7 +22,7 @@ export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> 
 }
 
 export async function loadOrCreateUserPromise(
-  { apiUserService, walletMetadataStorage }: TGlobalDependencies,
+  { apiUserService, walletStorage }: TGlobalDependencies, //HERE
   userType: TUserType,
 ): Promise<IUser> {
   try {
@@ -34,7 +34,7 @@ export async function loadOrCreateUserPromise(
   }
 
   // for light wallet we need to send slightly different request
-  const walletMetadata = walletMetadataStorage.get();
+  const walletMetadata = walletStorage.get(userType); //HERE
   if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
     return apiUserService.createAccount({
       newEmail: walletMetadata.email,

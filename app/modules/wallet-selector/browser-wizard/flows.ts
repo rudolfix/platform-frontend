@@ -1,8 +1,8 @@
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../../lib/dependencies/Logger";
-import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { WalletStorage } from "../../../lib/persistence/WalletStorage";
 import { BrowserWalletConnector } from "../../../lib/web3/BrowserWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
@@ -18,7 +18,7 @@ export const browserWizardFlows = {
       browserWalletConnector: BrowserWalletConnector,
       web3Manager: Web3Manager,
       logger: ILogger,
-      walletMetadataStorage: ObjectStorage<TWalletMetadata>,
+      walletStorage: WalletStorage<TWalletMetadata>,
       getState: GetState,
     ) => {
       const userType = selectUrlUserType(getState().router);
@@ -27,7 +27,7 @@ export const browserWizardFlows = {
         const browserWallet = await browserWalletConnector.connect(web3Manager.networkId);
 
         await web3Manager.plugPersonalWallet(browserWallet);
-        walletMetadataStorage.set(browserWallet.getMetadata());
+        walletStorage.set("investor", browserWallet.getMetadata()); //HERE
         dispatch(actions.walletSelector.connected(userType));
       } catch (e) {
         logger.warn("Error while trying to connect with browser wallet: ", e.message);
@@ -43,7 +43,7 @@ export const browserWizardFlows = {
       symbols.browserWalletConnector,
       symbols.web3Manager,
       symbols.logger,
-      symbols.walletMetadataStorage,
+      symbols.walletStorage, //HERE
       symbols.getState,
     ],
   ),

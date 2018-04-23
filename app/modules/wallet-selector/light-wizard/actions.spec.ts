@@ -16,12 +16,13 @@ import { IAppState } from "../../../store";
 import { DeepPartial } from "../../../types";
 import { actions } from "../../actions";
 import { walletFlows } from "../flows";
+import { WalletStorage } from "./../../../lib/persistence/WalletStorage";
 
 describe("Wallet selector > Light wallet wizard > actions", () => {
   describe("tryConnectingWithLightWallet action", () => {
     const dispatchMock = spy();
     const expectedWalletDummy = { addresses: ["mockAddress"] };
-    const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+    const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
       set: () => {},
     }) as any;
     const web3ManagerMock = createMock(Web3Manager, {
@@ -59,12 +60,12 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         connect: spy(),
       });
 
-      await walletFlows.tryConnectingWithLightWallet("test@test.com", "password")(
+      await walletFlows.tryConnectingWithLightWallet("investor","test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
         lightWalletUtil,
-        walletMetadataStorageMock,
+        walletStorageMock,
         vaultApi,
         dummyLogger,
         getStateMock as any,
@@ -87,12 +88,12 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await walletFlows.tryConnectingWithLightWallet("test@test.com", "password")(
+      await walletFlows.tryConnectingWithLightWallet("investor","test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
         lightWalletUtil,
-        walletMetadataStorageMock,
+        walletStorageMock, //HERE
         vaultApi,
         dummyLogger,
         getStateMock as any,

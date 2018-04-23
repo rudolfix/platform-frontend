@@ -7,6 +7,7 @@ import {
   IBrowserWalletMetadata,
   TWalletMetadata,
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { WalletStorage } from "../../../lib/persistence/WalletStorage";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -46,7 +47,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
 
@@ -84,7 +85,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
 

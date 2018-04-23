@@ -9,6 +9,7 @@ import {
   ILedgerWalletMetadata,
   TWalletMetadata,
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { WalletStorage } from "../../../lib/persistence/WalletStorage";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
@@ -234,7 +235,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
       const getStateMock: () => DeepPartial<IAppState> = () => ({
@@ -275,7 +276,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           throw new WalletNotConnectedError(ledgerWalletMock);
         },
       });
-      const walletMetadataStorageMock: ObjectStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
       const getStateMock: () => DeepPartial<IAppState> = () => ({

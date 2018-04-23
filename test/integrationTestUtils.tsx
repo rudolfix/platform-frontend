@@ -26,7 +26,7 @@ import { Storage } from "../app/lib/persistence/Storage";
 import { ObjectStorage } from "../app/lib/persistence/ObjectStorage";
 import {
   TWalletMetadata,
-  STORAGE_WALLET_METADATA_KEY,
+  STORAGE_WALLET_METADATA_INVESTOR_KEY, //HERE
 } from "../app/lib/persistence/WalletMetadataObjectStorage";
 import { STORAGE_JWT_KEY } from "../app/lib/persistence/JwtObjectStorage";
 import { createMockStorage } from "../app/lib/persistence/Storage.mock";

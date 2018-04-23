@@ -1,9 +1,6 @@
 import * as React from "react";
 import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap";
 
-import * as styles from "./Demo.module.scss";
-
-import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { EtoProgressStepper } from "./eto/shared/EtoProgressStepper";
@@ -17,6 +14,7 @@ import { Button } from "./shared/Buttons";
 import { ChartBars } from "./shared/charts/ChartBars";
 import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
 import { ChartPie } from "./shared/charts/ChartPie";
+import { InvestmentPreview } from "./shared/InvestmentPreview";
 import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
@@ -33,6 +31,8 @@ import * as linkedinIcon from "../assets/img/inline_icons/social_linkedin.svg";
 import * as mediumIcon from "../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../assets/img/inline_icons/social_telegram.svg";
+
+import * as styles from "./Demo.module.scss";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],

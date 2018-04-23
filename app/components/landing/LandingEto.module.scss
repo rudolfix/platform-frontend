@@ -1,0 +1,18 @@
+@import "../../styles/neufund-theme";
+
+.landing-eto {
+  width: 100%;
+
+  h2 {
+    margin-bottom: px-to-rem(20px);
+  }
+}
+
+.landing-container {
+  padding: px-to-rem(34px) 0;
+  text-align: center;
+
+  &:global(.t-white) {
+    background-color: $neu-white-two;
+  }
+}

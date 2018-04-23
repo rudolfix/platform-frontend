@@ -1,10 +1,11 @@
 import * as cn from "classnames";
 import * as React from "react";
+
+import { Size } from "../../types";
 import { InlineIcon } from "./InlineIcon";
 
-import * as styles from "./Buttons.module.scss";
-
 import * as closeIcon from "../../assets/img/inline_icons/close.svg";
+import * as styles from "./Buttons.module.scss";
 
 type TButtonLayout = "primary" | "secondary";
 
@@ -21,6 +22,7 @@ interface IButtonProps {
   type?: string;
   className?: string;
   iconPosition?: TIconPosition;
+  size?: Size;
 }
 
 export const Button: React.SFC<IButtonProps> = ({
@@ -31,11 +33,12 @@ export const Button: React.SFC<IButtonProps> = ({
   svgIcon,
   className,
   iconPosition,
+  size,
   ...props
 }) => {
   return (
     <button
-      className={cn("button", layout, iconPosition, theme)}
+      className={cn("button", layout, iconPosition, theme, size)}
       disabled={disabled}
       tabIndex={0}
       {...props}

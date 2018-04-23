@@ -16,6 +16,7 @@ export const appRoutes = {
   settings: "/settings",
   demo: "/demo",
   eto: "/eto",
+  etoLanding: "/eto-landing",
 };
 
 import * as React from "react";
@@ -28,10 +29,11 @@ import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
 import { Eto } from "./eto/Eto";
 import { EtoDashboard } from "./eto/EtoDashboard";
-import { Home } from "./Home";
 import { Kyc } from "./kyc/Kyc";
 
 import { emailVerify } from "./emailVerify";
+import { Landing } from "./landing/Landing";
+import { LandingEto } from "./landing/LandingEto";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
 import { settingsRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
@@ -42,7 +44,8 @@ import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const AppRouter: React.SFC = () => (
   <SwitchConnected>
-    <OnlyPublicRoute path={appRoutes.root} component={Home} exact />
+    <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
+    <OnlyPublicRoute path={appRoutes.etoLanding} component={LandingEto} />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />

@@ -1,5 +1,20 @@
 @import "../../styles/neufund-theme";
 
 .horizontal-line {
-  border-top: 1px solid $neu-pale-grey;
+  height: 1px;
+  background-color: $neu-pale-grey;
+  margin: 0 auto;
+
+  &:global(.yellow) {
+    background-color: $neu-piss-yellow;
+  }
+
+  &:global(.wide) {
+    width: 100%;
+  }
+
+  &:global(.narrow) {
+    width: px-to-rem(90px);
+    height: px-to-rem(3px);
+  }
 }

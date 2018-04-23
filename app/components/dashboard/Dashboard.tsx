@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { InvestmentPreview } from "../shared/InvestmentPreview";
 import { SectionHeader } from "../shared/SectionHeader";
 import { Tag } from "../shared/Tag";
-import { InvestmentPreview } from "./investmentOportunities/InvestmentPreview";
 import { MyPortfolioWidget } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
 import { NeufundKpiWidget } from "./NeufundKpiWidget";
@@ -58,7 +58,7 @@ export const Dashboard = () => (
       </Col>
     </Row>
     <SectionHeader>
-      investment opportunities{" "}
+      investment opportunities
       <Tag className="ml-3" theme="green" layout="ghost" size="small" text="1 new" />
     </SectionHeader>
     <Row className="py-4">

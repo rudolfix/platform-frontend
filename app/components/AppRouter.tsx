@@ -16,6 +16,7 @@ export const appRoutes = {
   settings: "/settings",
   demo: "/demo",
   eto: "/eto",
+  etoLanding: "/eto-landing"
 };
 
 import * as React from "react";
@@ -44,7 +45,7 @@ import { WalletSelector } from "./walletSelector/WalletSelector";
 export const AppRouter: React.SFC = () => (
   <SwitchConnected>
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
-    <OnlyPublicRoute path={appRoutes.eto} component={LandingEto} exact />
+    <OnlyPublicRoute path={appRoutes.etoLanding} component={LandingEto} />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />

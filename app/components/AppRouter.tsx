@@ -16,7 +16,7 @@ export const appRoutes = {
   settings: "/settings",
   demo: "/demo",
   eto: "/eto",
-  etoLanding: "/eto-landing"
+  etoLanding: "/eto-landing",
 };
 
 import * as React from "react";

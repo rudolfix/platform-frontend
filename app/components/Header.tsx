@@ -11,19 +11,16 @@ import * as styles from "./Header.module.scss";
 import { Button } from "./shared/Buttons";
 import { loginWalletRoutes } from "./walletSelector/walletRoutes";
 
-interface IProps {
-  loginLink?: string;
-}
-
 interface IStateProps {
   isAuthorized: boolean;
+  location: any;
 }
 
 interface IDispatchProps {
   logout: () => void;
 }
 
-export const HeaderComponent: React.SFC<IStateProps & IDispatchProps & IProps> = props => (
+export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Navbar dark className={styles.bar}>
     <Link to={appRoutes.root} className="navbar-brand">
       <img src={logo} className={styles.logo} />
@@ -38,15 +35,17 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps & IProps> =
         LOGOUT
       </Button>
     ) : (
-      <Link
-        to={
-          location.pathname === appRoutes.etoLanding ? appRoutes.loginEto : loginWalletRoutes.light
-        }
-      >
-        <Button theme="t-white" data-test-id="Header-login">
-          LOGIN
-        </Button>
-      </Link>
+      <div>
+        {props.location === appRoutes.etoLanding ? (
+          <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
+            <Button theme="t-white">LOGIN</Button>
+          </Link>
+        ) : (
+          <Link data-test-id="Header-login" to={loginWalletRoutes.light}>
+            <Button theme="t-white">LOGIN</Button>
+          </Link>
+        )}
+      </div>
     )}
   </Navbar>
 );
@@ -54,6 +53,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps & IProps> =
 export const Header = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
+    location: s.router.location!.pathname,
   }),
   dispatchToProps: dispatch => ({
     logout: () => {

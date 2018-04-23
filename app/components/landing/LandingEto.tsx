@@ -54,28 +54,34 @@ export const LandingEto: React.SFC = () => {
               <OffToOnCompany
                 steps={[
                   {
-                    htmlTitle: "register",
-                    htmlDescription: "your company on the <br />Neufund platform",
+                    title: "register",
+                    description: `your company on the
+                    Neufund platform`,
                   },
                   {
-                    htmlTitle: "specify",
-                    htmlDescription: "the terms of your offer<br />for investors",
+                    title: "specify",
+                    description: `the terms of your offer
+                    for investors`,
                   },
                   {
-                    htmlTitle: "raise",
-                    htmlDescription: "funds in ETH<br />and/or EUR",
+                    title: "raise",
+                    description: `funds in ETH
+                    and/or EUR`,
                   },
                   {
-                    htmlTitle: "close",
-                    htmlDescription: "the financing round",
+                    title: "close",
+                    description: `the financing round`,
                   },
                   {
-                    htmlTitle: "govern",
-                    htmlDescription: "your organisation<br />after the ETO",
+                    title: "govern",
+                    description: `your organisation
+                    after the ETO`,
                   },
                   {
-                    htmlTitle: "raise follow-on<br />rounds",
-                    htmlDescription: "by issuing new<br />equity tokens",
+                    title: `raise follow-on
+                    rounds`,
+                    description: `by issuing new
+                    equity tokens`,
                   },
                 ]}
               />

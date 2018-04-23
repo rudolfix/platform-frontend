@@ -7,8 +7,8 @@ import * as arrowHead from "../../../assets/img/inline_icons/arrowhead.svg";
 import * as styles from "./OffToOnChainCompany.module.scss";
 
 interface IStepProps {
-  htmlTitle: string;
-  htmlDescription: string;
+  title: string;
+  description: string;
 }
 
 interface IProps {
@@ -23,16 +23,13 @@ export const OffToOnCompany: React.SFC<IProps> = ({ steps }) => {
       </h3>
       <HorizontalLine theme="yellow" size="narrow" />
       <div className={styles.steps}>
-        {steps.map(({ htmlTitle, htmlDescription }, index) => (
+        {steps.map(({ title, description }, index) => (
           <div className={styles.step} key={index}>
-            <h4 className={styles.stepName} dangerouslySetInnerHTML={{ __html: htmlTitle }} />
+            <h4 className={styles.stepName}>{title}</h4>
             <div className={styles.stepCount}>
               <div className={styles.counter}>{index + 1}</div>
             </div>
-            <p
-              className={styles.stepDescription}
-              dangerouslySetInnerHTML={{ __html: htmlDescription }}
-            />
+            <p className={styles.stepDescription}>{description}</p>
           </div>
         ))}
         <InlineIcon svgIcon={arrowHead} />

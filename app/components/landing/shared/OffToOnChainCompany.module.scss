@@ -54,6 +54,7 @@ $vertical-space: px-to-rem(30px);
 .step-description {
   flex-basis: calc(50% - #{$badge-size} / 2);
   margin: 0;
+  white-space: pre-line;
 }
 
 .step-name {

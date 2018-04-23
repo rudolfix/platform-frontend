@@ -47,3 +47,9 @@ export const foundingDate = date.test(
     return d.isValid() && d.isBefore(moment());
   },
 );
+
+export const citizen = Yup.bool();
+
+export const isUsCitizen = citizen.test("is-us-citizen", "US citizen is disallowed", response => {
+  return response === false;
+});

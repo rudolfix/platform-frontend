@@ -1,18 +1,17 @@
 import * as cn from "classnames";
 import * as React from "react";
+
+import { Size } from "../../types";
 import { InlineIcon } from "./InlineIcon";
 
-import * as styles from "./Buttons.module.scss";
-
 import * as closeIcon from "../../assets/img/inline_icons/close.svg";
+import * as styles from "./Buttons.module.scss";
 
 type TButtonLayout = "primary" | "secondary";
 
 type TButtonTheme = "t-dark" | "t-white";
 
 type TIconPosition = "icon-before" | "icon-after";
-
-type TSize = "wide";
 
 interface IButtonProps {
   layout?: TButtonLayout;
@@ -23,7 +22,7 @@ interface IButtonProps {
   type?: string;
   className?: string;
   iconPosition?: TIconPosition;
-  size?: TSize;
+  size?: Size;
 }
 
 export const Button: React.SFC<IButtonProps> = ({

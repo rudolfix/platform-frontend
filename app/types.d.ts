@@ -58,3 +58,5 @@ export type CommonHtmlProps = {
   className?: string;
   style?: CSSProperties;
 };
+
+export type Size = "narrow" | "wide";

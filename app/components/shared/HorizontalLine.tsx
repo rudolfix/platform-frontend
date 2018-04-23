@@ -1,15 +1,15 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import * as styles from "./HorizontalLine.module.scss";
+import { Size } from "../../types";
 
-type TSize = "narrow" | "wide";
+import * as styles from "./HorizontalLine.module.scss";
 
 type TTheme = "yellow";
 
 interface IHorizontalLineProps {
   className?: string;
-  size?: TSize;
+  size?: Size;
   theme?: TTheme;
 }
 

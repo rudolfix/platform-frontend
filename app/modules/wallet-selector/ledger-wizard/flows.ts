@@ -119,14 +119,12 @@ export const ledgerWizardFlows = {
         walletStorage: WalletStorage<TWalletMetadata>,
         getState: GetState,
       ) => {
-        const userType = selectUrlUserType(getState().router);
-
         const ledgerWallet = await ledgerConnector.finishConnecting(derivationPath);
         await web3Manager.plugPersonalWallet(ledgerWallet);
 
         // todo move saving metadata to unified connect functions
         walletStorage.set(ledgerWallet.getMetadata(), "investor"); //HERE
-        dispatch(actions.walletSelector.connected(userType));
+        dispatch(actions.walletSelector.connected("investor"));
       },
       [
         symbols.appDispatch,

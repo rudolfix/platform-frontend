@@ -47,7 +47,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
         set: () => {},
       }) as any;
 
@@ -56,13 +56,13 @@ describe("Wallet selector > Browser wizard > actions", () => {
         browserWalletConnectorMock,
         web3ManagerMock,
         dummyLogger,
-        walletMetadataStorageMock,
+        walletStorageMock,
         getStateMock as any,
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata);
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("issuer"));
+      expect(walletStorageMock.set).to.be.calledWithExactly(dummyMetadata, "investor");
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("investor"));
     });
 
     it("should dispatch error action on error", async () => {
@@ -85,7 +85,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
         set: () => {},
       }) as any;
 
@@ -94,12 +94,12 @@ describe("Wallet selector > Browser wizard > actions", () => {
         browserWalletConnectorMock,
         web3ManagerMock,
         dummyLogger,
-        walletMetadataStorageMock,
+        walletStorageMock,
         getStateMock as any,
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletMetadataStorageMock.set).to.not.be.called;
+      expect(walletStorageMock.set).to.not.be.called;
       expect(dispatchMock).to.be.calledWithExactly(
         actions.walletSelector.browserWalletConnectionError(
           "Your wallet seems to be locked — we can't access any accounts.",

@@ -235,7 +235,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
         set: () => {},
       }) as any;
       const getStateMock: () => DeepPartial<IAppState> = () => ({
@@ -250,7 +250,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         dispatchMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
-        walletMetadataStorageMock,
+        walletStorageMock,
         getStateMock as any,
       );
 
@@ -258,8 +258,8 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         expectedDerivationPath,
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata);
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("issuer"));
+      expect(walletStorageMock.set).to.be.calledWithExactly(dummyMetadata, "investor");
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("investor"));
     });
 
     it("should not navigate when ledger wallet is not connected", async () => {
@@ -276,7 +276,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           throw new WalletNotConnectedError(ledgerWalletMock);
         },
       });
-      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
+      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
         set: () => {},
       }) as any;
       const getStateMock: () => DeepPartial<IAppState> = () => ({
@@ -292,7 +292,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           navigateToMock,
           ledgerWalletConnectorMock,
           web3ManagerMock,
-          walletMetadataStorageMock,
+          walletStorageMock,
           getStateMock as any,
         )
         .catch(() => {});
@@ -300,7 +300,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
         expectedDerivationPath,
       );
-      expect(walletMetadataStorageMock.set).to.not.be.called;
+      expect(walletStorageMock.set).to.not.be.called;
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
       expect(navigateToMock).not.be.called;
     });

@@ -5,6 +5,7 @@ import { Container } from "inversify";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";
+import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
@@ -12,7 +13,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import "reflect-metadata";
-import { IntlProvider } from "react-intl";
 
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";

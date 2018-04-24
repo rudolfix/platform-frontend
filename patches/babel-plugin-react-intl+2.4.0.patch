@@ -1,0 +1,36 @@
+patch-package
+--- a/node_modules/babel-plugin-react-intl/lib/index.js
++++ b/node_modules/babel-plugin-react-intl/lib/index.js
+@@ -145,11 +145,6 @@ exports.default = function (_ref) {
+         var file = state.file,
+             opts = state.opts;
+ 
+-
+-        if (!(id && defaultMessage)) {
+-            throw path.buildCodeFrameError('[React Intl] Message Descriptors require an `id` and `defaultMessage`.');
+-        }
+-
+         var messages = file.get(MESSAGES);
+         if (messages.has(id)) {
+             var existing = messages.get(id);
+@@ -259,9 +254,10 @@ exports.default = function (_ref) {
+                     // `<FormattedMessage id={dynamicId} />`, because it will be
+                     // skipped here and extracted elsewhere. The descriptor will
+                     // be extracted only if a `defaultMessage` prop exists.
+-                    if (descriptor.defaultMessage) {
++                    // if (descriptor.defaultMessage) {
+                         // Evaluate the Message Descriptor values in a JSX
+                         // context, then store it.
++
+                         descriptor = evaluateMessageDescriptor(descriptor, {
+                             isJSXSource: true
+                         });
+@@ -279,7 +275,7 @@ exports.default = function (_ref) {
+ 
+                         // Tag the AST node so we don't try to extract it twice.
+                         tagAsExtracted(path);
+-                    }
++                    // }
+                 }
+             },
+             CallExpression: function CallExpression(path, state) {

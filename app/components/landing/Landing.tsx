@@ -1,15 +1,13 @@
-import { appRoutes } from "../AppRouter";
-
+import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Container, Row } from "reactstrap";
 
-import * as React from "react";
-
+import { appRoutes } from "../AppRouter";
 import { InvestmentPreview } from "../shared/InvestmentPreview";
 import { SectionHeader } from "../shared/SectionHeader";
 import { RegisterCta } from "./shared/RegisterCta";
 
 import * as styles from "./Landing.module.scss";
-import { FormattedMessage } from "react-intl";
 
 export const Landing: React.SFC = () => {
   return (
@@ -21,7 +19,9 @@ export const Landing: React.SFC = () => {
       />
       <div className={styles.landingContainer}>
         <Container>
-          <SectionHeader className="my-4"><FormattedMessage id="landing.investors.header" defaultMessage="TEST"/></SectionHeader>
+          <SectionHeader className="my-4">
+            <FormattedMessage id="landing.investors.header" />
+          </SectionHeader>
           <Row>
             <Col>
               <InvestmentPreview

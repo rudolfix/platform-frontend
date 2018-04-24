@@ -61,6 +61,7 @@
     "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
     "ganache-cli": "^6.0.3",
+    "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
     "http-proxy-middleware": "^0.18.0",
     "ignore-styles": "^5.0.1",
@@ -70,6 +71,7 @@
     "mocha": "^4.1.0",
     "node-sass": "^4.7.2",
     "nyc": "^11.4.1",
+    "patch-package": "^5.1.1",
     "prettier": "^1.11.1",
     "raw-loader": "^0.5.1",
     "sass-lint": "^1.12.1",
@@ -112,7 +114,7 @@
     "test:fix": "yarn lint:fix && yarn test:browser && yarn test:node",
     "codecov": "codecov",
     "generate:contracts": "typechain --force --outDir app/lib/contracts './node_modules/neufund-contracts-tmp/abis/*.json'",
-    "prepare": "yarn generate:contracts"
+    "prepare": "patch-package && yarn generate:contracts"
   },
   "dependencies": {
     "bignumber.js": "^5.0.0",

@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    [
+      "react-intl",
+      {
+        "messagesDir": "./intl/messages/"
+      }
+    ]
+  ],
+  "presets": ["@babel/typescript", "@babel/react"]
+}

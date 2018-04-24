@@ -12,6 +12,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import "reflect-metadata";
+import { IntlProvider } from "react-intl";
 
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
@@ -50,7 +51,9 @@ function renderApp(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
         <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-          <Component />
+          <IntlProvider locale="en-us">
+            <Component />
+          </IntlProvider>
         </ConnectedRouter>
       </InversifyProvider>
     </ReduxProvider>,

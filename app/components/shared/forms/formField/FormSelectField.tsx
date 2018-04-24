@@ -2,7 +2,11 @@ import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
+import { FormGroup, Input, Label } from "reactstrap";
+
+import { isNonValid } from "../forms";
+
+import * as styles from "./FormField.module.scss";
 
 export const NONE_KEY = "__NONE__";
 export const BOOL_TRUE_KEY = "true";
@@ -73,6 +77,11 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
     const { label, name } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
+    //This is done due to the difference between reactstrap and @typings/reactstrap
+    const inputExtraProps = {
+      invalid: isNonValid(touched, errors, name),
+    } as any;
+
     return (
       <FormGroup>
         {label && <Label for={name}>{label}</Label>}
@@ -84,12 +93,15 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
               type="select"
               value={field.value}
               valid={isValid(touched, errors, name)}
+              {...inputExtraProps}
             >
               {this.renderOptions()}
             </Input>
           )}
         />
-        {errors[name] && <FormFeedback>{errors[name]}</FormFeedback>}
+        <div className={styles.errorLabel}>
+          {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
+        </div>
       </FormGroup>
     );
   }

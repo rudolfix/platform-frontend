@@ -31,7 +31,7 @@ const isValid = (
   return !(errors && errors[name]);
 };
 
-const isNonValid = (
+export const isNonValid = (
   touched: { [name: string]: boolean },
   errors: { [name: string]: string },
   name: string,

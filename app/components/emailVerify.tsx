@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Container } from "reactstrap";
 import { actions } from "../modules/actions";
-import { selectIsUserEmailVerified } from "../modules/auth/selectors";
+import { selectVerifiedUserEmail } from "../modules/auth/selectors";
+import { selectLightWalletEmailFromQueryString } from "../modules/web3/reducer";
 import { appConnect } from "../store";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
@@ -11,13 +12,14 @@ interface IEmailVerifyDispatchProps {
 }
 
 interface IEmailVerifyStateProps {
-  isVerified?: boolean;
+  urlEmail?: string;
+  verifiedEmail?: string;
 }
 
 export const emailVerifyComponent: React.SFC<
   IEmailVerifyDispatchProps & IEmailVerifyStateProps
-> = ({ verifyEmail, isVerified, goHome }) => {
-  if (isVerified) {
+> = ({ verifyEmail, urlEmail, verifiedEmail, goHome }) => {
+  if (urlEmail === verifiedEmail) {
     goHome();
   } else {
     verifyEmail();
@@ -31,7 +33,8 @@ export const emailVerifyComponent: React.SFC<
 
 export const emailVerify = appConnect<IEmailVerifyStateProps, IEmailVerifyDispatchProps>({
   stateToProps: s => ({
-    isVerified: selectIsUserEmailVerified(s.auth),
+    urlEmail: selectLightWalletEmailFromQueryString(s.router),
+    verifiedEmail: selectVerifiedUserEmail(s.auth),
   }),
   dispatchToProps: dispatch => ({
     verifyEmail: () => dispatch(actions.auth.verifyEmail()),

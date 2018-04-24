@@ -1,7 +1,7 @@
 {
   "plugins": [
     [
-      "react-intl",
+      "react-intl-krzkaczor",
       {
         "messagesDir": "./intl/messages/"
       }

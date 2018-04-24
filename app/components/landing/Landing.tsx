@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage, injectIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { Col, Container, Row } from "reactstrap";
 
 import { appRoutes } from "../AppRouter";
@@ -7,14 +7,15 @@ import { InvestmentPreview } from "../shared/InvestmentPreview";
 import { SectionHeader } from "../shared/SectionHeader";
 import { RegisterCta } from "./shared/RegisterCta";
 
+import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import * as styles from "./Landing.module.scss";
 
-export const Landing = injectIntl(({ intl: { formatMessage } }) => {
+export const Landing = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
   return (
     <div className={styles.landing}>
       <RegisterCta
-        text={formatMessage({ id: "investors-landing.cta" })}
-        ctaText="Register"
+        text={formatIntlMessage("investors-landing.cta")}
+        ctaText={formatIntlMessage("investors-landing.cta-register")}
         ctaLink={appRoutes.register}
       />
       <div className={styles.landingContainer}>

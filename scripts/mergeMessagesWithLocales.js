@@ -38,6 +38,7 @@ function main() {
 
   writeFileSync(defaultLocalePath, stringifyAndSort(newLocale));
   console.log(`File ${defaultLocalePath} saved...`);
+  console.log("Extracted translations: ", Object.keys(newLocale).length);
 }
 
 main();

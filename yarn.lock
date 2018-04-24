@@ -863,9 +863,9 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-react-intl@^2.4.0:
+babel-plugin-react-intl-krzkaczor@^2.4.0:
   version "2.4.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl/-/babel-plugin-react-intl-2.4.0.tgz#292fca8030603a9e0476973290836aa0c7da17e2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl-krzkaczor/-/babel-plugin-react-intl-krzkaczor-2.4.0.tgz#51d7cf6c3ced5868e7f73e59ab5b82a5289b7654"
   dependencies:
     babel-runtime "^6.2.0"
     intl-messageformat-parser "^1.2.0"

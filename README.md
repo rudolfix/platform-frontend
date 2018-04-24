@@ -45,6 +45,12 @@ yarn test:fix
 yarn build:prod
 ```
 
+### Extracting translations from the app
+
+```
+yarn intl:extract
+```
+
 ### Docs
 
 * [Component Development Guidelines](./docs/component-development-guidelines.md)

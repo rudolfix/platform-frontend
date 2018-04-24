@@ -30,6 +30,7 @@ import { InversifyProvider } from "./utils/InversifyProvider";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 import "./styles/overrides.scss";
+import * as languageEn from "../intl/locales/en-en.json";
 
 // @note: this is done to make HMR work with react router. In production build its gone.
 function forceRerenderInDevMode(): number {
@@ -51,7 +52,7 @@ function renderApp(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
         <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-          <IntlProvider locale="en-us">
+          <IntlProvider locale="en-us" messages={languageEn} >
             <Component />
           </IntlProvider>
         </ConnectedRouter>

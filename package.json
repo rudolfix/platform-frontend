@@ -114,7 +114,8 @@
     "test:fix": "yarn lint:fix && yarn test:browser && yarn test:node",
     "codecov": "codecov",
     "generate:contracts": "typechain --force --outDir app/lib/contracts './node_modules/neufund-contracts-tmp/abis/*.json'",
-    "prepare": "patch-package && yarn generate:contracts"
+    "prepare": "patch-package && yarn generate:contracts",
+    "intl:extract": "./scripts/extract-intl-messages.sh"
   },
   "dependencies": {
     "bignumber.js": "^5.0.0",

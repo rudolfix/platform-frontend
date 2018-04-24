@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
 import { Col, Container, Row } from "reactstrap";
 
 import { appRoutes } from "../AppRouter";
@@ -9,18 +9,18 @@ import { RegisterCta } from "./shared/RegisterCta";
 
 import * as styles from "./Landing.module.scss";
 
-export const Landing: React.SFC = () => {
+export const Landing = injectIntl(({ intl: { formatMessage } }) => {
   return (
     <div className={styles.landing}>
       <RegisterCta
-        text="Invest now in companes you like."
-        ctaText="Regiseter"
+        text={formatMessage({ id: "investors-landing.cta" })}
+        ctaText="Register"
         ctaLink={appRoutes.register}
       />
       <div className={styles.landingContainer}>
         <Container>
           <SectionHeader className="my-4">
-            <FormattedMessage id="landing.investors.header" />
+            <FormattedMessage id="investors-landing.header" />
           </SectionHeader>
           <Row>
             <Col>
@@ -113,4 +113,4 @@ export const Landing: React.SFC = () => {
       </div>
     </div>
   );
-};
+});

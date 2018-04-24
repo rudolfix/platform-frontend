@@ -4,7 +4,7 @@ import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap";
 
 import { InputType } from "../../../../types";
-import * as styles from "./FormField.module.scss";
+import * as styles from "./FormError.module.scss";
 
 interface IFieldGroup {
   label?: string;

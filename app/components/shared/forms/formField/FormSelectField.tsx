@@ -6,7 +6,7 @@ import { FormGroup, Input, Label } from "reactstrap";
 
 import { isNonValid } from "../forms";
 
-import * as styles from "./FormField.module.scss";
+import * as errorStyles from "./FormError.module.scss";
 
 export const NONE_KEY = "__NONE__";
 export const BOOL_TRUE_KEY = "true";
@@ -99,7 +99,7 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
             </Input>
           )}
         />
-        <div className={styles.errorLabel}>
+        <div className={errorStyles.errorLabel}>
           {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
         </div>
       </FormGroup>

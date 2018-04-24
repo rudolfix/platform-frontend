@@ -4,9 +4,7 @@ import { appConnect } from "../../../store";
 
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { TUserType } from "../../../lib/api/users/interfaces";
 import { flows } from "../../../modules/flows";
-import { selectUrlUserType } from "../../../modules/wallet-selector/selectors";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { RegisterWalletComponent } from "../light/RegisterLightWallet";
 import { recoverRoutes } from "./recoverRoutes";
@@ -87,13 +85,9 @@ export const RecoveryProcesses: React.SFC<IDispatchProps> = props => {
 export const RecoverWallet = compose<React.SFC>(
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
-      submitForm: (values: IFormValues, userType: TUserType) => {
+      submitForm: (values: IFormValues) => {
         dispatch(
-          flows.wallet.tryConnectingWithLightWallet(
-            values.email,
-            values.password,
-            values.seed,
-          ),
+          flows.wallet.tryConnectingWithLightWallet(values.email, values.password, values.seed),
         );
       },
     }),

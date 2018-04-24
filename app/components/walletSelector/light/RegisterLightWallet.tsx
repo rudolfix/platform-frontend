@@ -8,9 +8,7 @@ import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 
 import * as Yup from "yup";
-import { TUserType } from "../../../lib/api/users/interfaces";
 import { flows } from "../../../modules/flows";
-import { selectUrlUserType } from "../../../modules/wallet-selector/selectors";
 
 const EMAIL = "email";
 const PASSWORD = "password";
@@ -72,10 +70,8 @@ export const RegisterWalletComponent: React.SFC<IDispatchProps> = props => {
 export const RegisterLightWallet = compose<React.SFC>(
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
-      submitForm: (values: IFormValues, userType: TUserType) =>
-        dispatch(
-          flows.wallet.tryConnectingWithLightWallet(userType, values.email, values.password),
-        ),
+      submitForm: (values: IFormValues) =>
+        dispatch(flows.wallet.tryConnectingWithLightWallet(values.email, values.password)),
     }),
   }),
 )(RegisterWalletComponent);

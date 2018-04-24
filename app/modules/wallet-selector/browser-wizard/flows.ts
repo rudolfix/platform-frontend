@@ -27,7 +27,7 @@ export const browserWizardFlows = {
         const browserWallet = await browserWalletConnector.connect(web3Manager.networkId);
 
         await web3Manager.plugPersonalWallet(browserWallet);
-        walletStorage.set("investor", browserWallet.getMetadata()); //HERE
+        walletStorage.set(browserWallet.getMetadata(), "investor"); //HERE
         dispatch(actions.walletSelector.connected(userType));
       } catch (e) {
         logger.warn("Error while trying to connect with browser wallet: ", e.message);

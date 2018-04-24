@@ -60,7 +60,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         connect: spy(),
       });
 
-      await walletFlows.tryConnectingWithLightWallet("investor","test@test.com", "password")(
+      await walletFlows.tryConnectingWithLightWallet("investor", "test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
@@ -88,7 +88,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await walletFlows.tryConnectingWithLightWallet("investor","test@test.com", "password")(
+      await walletFlows.tryConnectingWithLightWallet("investor", "test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,

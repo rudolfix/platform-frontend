@@ -1,6 +1,5 @@
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
-import { TUserType } from "../../../lib/api/users/interfaces";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
@@ -34,11 +33,7 @@ export async function getVaultKey(
 }
 
 export const lightWizardFlows = {
-  tryConnectingWithLightWallet: (
-    email: string,
-    password: string,
-    seed?: string,
-  ) =>
+  tryConnectingWithLightWallet: (email: string, password: string, seed?: string) =>
     injectableFn(
       async (
         dispatch: AppDispatch,
@@ -74,7 +69,7 @@ export const lightWizardFlows = {
             email,
             password,
           );
-          walletStorage.set(userType, lightWallet.getMetadata());
+          walletStorage.set(lightWallet.getMetadata(), userType);
           await web3Manager.plugPersonalWallet(lightWallet);
           if (seed) dispatch(actions.routing.goToSuccessfulRecovery());
           else dispatch(actions.walletSelector.connected(userType));

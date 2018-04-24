@@ -125,7 +125,7 @@ export const ledgerWizardFlows = {
         await web3Manager.plugPersonalWallet(ledgerWallet);
 
         // todo move saving metadata to unified connect functions
-        walletStorage.set("investor", ledgerWallet.getMetadata()); //HERE
+        walletStorage.set(ledgerWallet.getMetadata(), "investor"); //HERE
         dispatch(actions.walletSelector.connected(userType));
       },
       [

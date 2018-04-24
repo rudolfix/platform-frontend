@@ -26,9 +26,7 @@ import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
-import {
-  TWalletMetadata,
-} from "../lib/persistence/WalletMetadataObjectStorage";
+import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { ContractsService } from "../lib/web3/ContractsService";
 import { symbols } from "./symbols";

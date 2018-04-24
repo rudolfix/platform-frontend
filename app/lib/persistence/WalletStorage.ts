@@ -1,5 +1,4 @@
 import { inject, injectable } from "inversify";
-import { GetState } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
 import { selectUserType } from "../../modules/auth/selectors";
 import { invariant } from "../../utils/invariant";

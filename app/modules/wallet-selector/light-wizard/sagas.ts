@@ -58,8 +58,7 @@ export function* getWalletMetadata(
       queryStringWalletInfo.email,
     );
   }
-
-  const savedMetadata = walletStorage.get("investor"); //HERE
+  const savedMetadata = walletStorage.get(); //HERE
   if (savedMetadata && savedMetadata.walletType === WalletType.LIGHT) {
     return savedMetadata;
   }
@@ -137,8 +136,7 @@ export function* lightWalletLoginWatch(
     if (!isValidPassword) {
       throw new LightWalletWrongPassword();
     }
-
-    walletStorage.set("investor", wallet.getMetadata()); //HERE
+    walletStorage.set(wallet.getMetadata()); //HERE
     yield web3Manager.plugPersonalWallet(wallet);
     yield put(actions.walletSelector.connected(userType));
   } catch (e) {

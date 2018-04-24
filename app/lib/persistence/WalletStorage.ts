@@ -1,10 +1,15 @@
 import { inject, injectable } from "inversify";
+import { GetState } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
+import { selectUserType } from "../../modules/auth/selectors";
 import { invariant } from "../../utils/invariant";
 import { ILogger } from "../dependencies/Logger";
+import { IAppState } from "./../../store";
 import { TUserType } from "./../api/users/interfaces";
 import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
+
+import { selectUrlUserType } from "../../modules/wallet-selector/selectors";
 import {
   STORAGE_WALLET_METADATA_INVESTOR_KEY,
   STORAGE_WALLET_METADATA_ISSUER_KEY,
@@ -13,11 +18,12 @@ import {
 @injectable()
 export class WalletStorage<TWalletMetadata> {
   private walletMetadataStorageInvestor: ObjectStorage<TWalletMetadata>;
-  private walletMetadataStorageIssuer:  ObjectStorage<TWalletMetadata>;
+  private walletMetadataStorageIssuer: ObjectStorage<TWalletMetadata>;
 
   constructor(
     @inject(symbols.storage) private readonly storage: Storage,
     @inject(symbols.logger) private readonly logger: ILogger,
+    @inject(symbols.getState) private readonly getState: () => IAppState,
   ) {
     this.walletMetadataStorageInvestor = new ObjectStorage<TWalletMetadata>(
       this.storage,
@@ -31,7 +37,11 @@ export class WalletStorage<TWalletMetadata> {
     );
   }
 
-  public set(userType: TUserType, value:  TWalletMetadata): void {
+  public set(value: TWalletMetadata, manualUserType?: TUserType): void {
+    const s = this.getState();
+    const userType = manualUserType
+      ? manualUserType
+      : selectUrlUserType(s.router) ? selectUrlUserType(s.router) : selectUserType(s.auth);
     switch (userType) {
       case "issuer":
         this.walletMetadataStorageIssuer.set(value);
@@ -44,7 +54,11 @@ export class WalletStorage<TWalletMetadata> {
     }
   }
 
-  public get(userType: TUserType): TWalletMetadata | undefined {
+  public get(manualUserType?: TUserType): TWalletMetadata | undefined {
+    const s = this.getState();
+    const userType = manualUserType
+      ? manualUserType
+      : selectUrlUserType(s.router) ? selectUrlUserType(s.router) : selectUserType(s.auth);
     switch (userType) {
       case "issuer":
         return this.walletMetadataStorageIssuer.get();

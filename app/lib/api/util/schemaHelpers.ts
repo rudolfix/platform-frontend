@@ -50,6 +50,10 @@ export const foundingDate = date.test(
 
 export const citizen = Yup.bool();
 
-export const isUsCitizen = citizen.test("is-us-citizen", "US citizens are not allowed", response => {
-  return response === false;
-});
+export const isUsCitizen = citizen.test(
+  "is-us-citizen",
+  "US citizens are not allowed",
+  response => {
+    return response === false;
+  },
+);

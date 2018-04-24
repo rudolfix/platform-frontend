@@ -7,11 +7,14 @@ import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { selectEthereumAddressWithChecksum } from "../web3/reducer";
+import {
+  selectEthereumAddressWithChecksum,
+  selectLightWalletEmailFromQueryString,
+} from "../web3/reducer";
 import { WalletType } from "../web3/types";
 import { IAppState } from "./../../store";
 import { selectActivationCodeFromQueryString } from "./../web3/reducer";
-import { selectRedirectURLFromQueryString } from "./selectors";
+import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -55,7 +58,14 @@ export async function verifyUserEmailPromise({
   getState,
   notificationCenter,
 }: TGlobalDependencies): Promise<void> {
-  const userCode = selectActivationCodeFromQueryString(getState().router);
+  const state = getState();
+  const userCode = selectActivationCodeFromQueryString(state.router);
+  const urlEmail = selectLightWalletEmailFromQueryString(state.router);
+  const verifiedEmail = selectVerifiedUserEmail(state.auth);
+  if (urlEmail === verifiedEmail) {
+    notificationCenter.error("Your email is already verified");
+    return;
+  }
   if (!userCode) return;
   try {
     await apiUserService.verifyUserEmail(userCode);

@@ -94,9 +94,10 @@
     "webpack-merge": "^4.1.1"
   },
   "scripts": {
+    "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
+    "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
     "ganache": "./scripts/ganache-cli.sh",
-    "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,js,json,md,gql}'",
     "tslint": "tslint --project . --format stylish && tslint --project . --format stylish --config ./tslint.spec.json '**/*.spec.ts?(x)'",

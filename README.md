@@ -17,6 +17,11 @@ yarn ganache   # in separate window. You need to upload neufund contracts. Keep 
 yarn start
 ```
 
+#### Using external backend
+
+Set NF_REMOTE_BACKEND_PROXY_ROOT variable in your .env file and run `yarn start:remote` to connect
+to remote backend.
+
 #### Uploading contracts
 
 To upload modified version of Neufund Smartcontract that allows for easier blockchain development

@@ -20,7 +20,7 @@ export const OffToOnCompany: React.SFC<IProps> = ({ steps }) => {
   return (
     <div className={styles.offToOnChainCompany}>
       <h3 className={styles.header}>
-        <FormattedHTMLMessage id="off-to-on-chain.header" />
+        <FormattedHTMLMessage tagName="span" id="off-to-on-chain.header" />
       </h3>
       <HorizontalLine theme="yellow" size="narrow" />
       <div className={styles.steps}>
@@ -36,7 +36,7 @@ export const OffToOnCompany: React.SFC<IProps> = ({ steps }) => {
         <InlineIcon svgIcon={arrowHead} />
       </div>
       <h3 className={styles.header}>
-        <FormattedHTMLMessage id="off-to-on-chain.footer" />
+        <FormattedHTMLMessage tagName="span" id="off-to-on-chain.footer" />
       </h3>
       <HorizontalLine theme="yellow" size="narrow" />
     </div>

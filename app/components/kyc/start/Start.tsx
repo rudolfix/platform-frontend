@@ -1,10 +1,11 @@
 import * as React from "react";
-
+import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { Panels, PanelTheme } from "../shared/Panels";
@@ -14,11 +15,11 @@ interface IProps {
   goToCompany: () => void;
 }
 
-export const KYCStartComponent: React.SFC<IProps> = props => (
+export const KYCStartComponent = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage }, ...props }) => (
   <KycPanel
     steps={4}
     currentStep={1}
-    title="Start your KYC"
+    title={formatIntlMessage("kyc.start.title")}
     hasBackButton={false}
     isMaxWidth={true}
   >
@@ -27,7 +28,7 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
         {
           content: (
             <Button theme="t-white" onClick={props.goToPerson}>
-              I represent myself
+              <FormattedMessage id="kyc.start.go-to-personal" />
             </Button>
           ),
           theme: PanelTheme.black,
@@ -36,7 +37,7 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
         {
           content: (
             <Button theme="t-white" onClick={props.goToCompany}>
-              I represent a company
+              <FormattedMessage id="kyc.start.go-to-company" />
             </Button>
           ),
           theme: PanelTheme.blue,
@@ -45,7 +46,7 @@ export const KYCStartComponent: React.SFC<IProps> = props => (
       ]}
     />
   </KycPanel>
-);
+));
 
 export const KYCStart = compose<React.SFC>(
   appConnect<IProps>({

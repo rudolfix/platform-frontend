@@ -43,6 +43,9 @@
   "kyc.request-state.rejected.description": "Your Kyc request was rejected",
   "kyc.request-state.rejected.title": "Kyc request rejected",
   "kyc.request-state.title": "Kyc request",
+  "kyc.start.go-to-company": "I represent a company",
+  "kyc.start.go-to-personal": "I represent myself",
+  "kyc.start.title": "Start your KYC",
   "off-to-on-chain.footer": "<strong>OFF-CHAIN</strong> company",
   "off-to-on-chain.header": "<strong>ON-CHAIN</strong> company"
 }

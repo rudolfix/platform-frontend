@@ -31,6 +31,18 @@
   "investors-landing.header": "Investment opportunities",
   "investors-landing.register.buttonText": "Register",
   "investors-landing.register.cta": "Invest now in companies you like.",
+  "kyc.request-state.accepted.description": "Your Kyc request was approved",
+  "kyc.request-state.accepted.title": "Kyc request approved",
+  "kyc.request-state.click-here-to-continue": "Click here to continue",
+  "kyc.request-state.description": "Loading...",
+  "kyc.request-state.go-to-settings": "Go to settings",
+  "kyc.request-state.outsourced.description": "If you're not automatically forwarded to idNow, please click the link below to continue.",
+  "kyc.request-state.outsourced.title": "Instant identification started",
+  "kyc.request-state.pending.description": "We have received your request and are currently processing it. You can submit additional documents for your request here.",
+  "kyc.request-state.pending.title": "Kyc request received",
+  "kyc.request-state.rejected.description": "Your Kyc request was rejected",
+  "kyc.request-state.rejected.title": "Kyc request rejected",
+  "kyc.request-state.title": "Kyc request",
   "off-to-on-chain.footer": "<strong>OFF-CHAIN</strong> company",
   "off-to-on-chain.header": "<strong>ON-CHAIN</strong> company"
 }

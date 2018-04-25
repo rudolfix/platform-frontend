@@ -6,6 +6,7 @@ import { spy } from "sinon";
 import { AccountRow, WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 
 import BigNumber from "bignumber.js";
+import { wrapWithIntl } from "../../../test/integrationTestUtils";
 import { tid } from "../../../test/testUtils";
 import { Q18 } from "../../config/constants";
 
@@ -64,7 +65,9 @@ describe("<WalletLedgerChooserTableSimple />", () => {
       const props = defaultProps();
       const account = props.accounts[0];
       const accountRow = render(
-        <AccountRow ledgerAccount={account} handleAddressChosen={props.handleAddressChosen} />,
+        wrapWithIntl(
+          <AccountRow ledgerAccount={account} handleAddressChosen={props.handleAddressChosen} />,
+        ),
       );
       const ethBalance = new BigNumber(weiBalance).div(Q18).toString();
       const neuBalance = new BigNumber(neuWeiBalance).div(Q18).toString();

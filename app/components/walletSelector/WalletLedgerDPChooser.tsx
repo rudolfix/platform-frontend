@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, FormFeedback, FormGroup, Input, Row } from "reactstrap";
 
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../modules/wallet-selector/ledger-wizard/reducer";
-import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
+import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { derivationPathPrefixValidator } from "../../utils/Validators";
 
 const DEBOUNCE_DELAY = 200;
@@ -14,30 +14,32 @@ interface IDPChooserComponent {
   errorMessage: string | null;
 }
 
-export const DPChooserComponent = injectIntlHelpers<IDPChooserComponent>(
-  ({
-    derivationPathPrefix,
-    onDerivationPathPrefixChange,
-    errorMessage,
-    intl: { formatIntlMessage },
-  }) => (
-    <Row>
-      <Col md="5">
-        <FormGroup>
-          <Input
-            name="derivationPathPrefix"
-            value={derivationPathPrefix}
-            onChange={onDerivationPathPrefixChange}
-            placeholder={formatIntlMessage(
-              "wallet-selector.ledger.derivation-path-selector.placeholder",
-            )}
-            valid={errorMessage === null ? undefined : false}
-          />
-          <FormFeedback data-test-id="dpChooser-error-msg">{errorMessage}</FormFeedback>
-        </FormGroup>
-      </Col>
-    </Row>
-  ),
+export const DPChooserComponent: React.SFC<IDPChooserComponent & IIntlProps> = ({
+  derivationPathPrefix,
+  onDerivationPathPrefixChange,
+  errorMessage,
+  intl: { formatIntlMessage },
+}) => (
+  <Row>
+    <Col md="5">
+      <FormGroup>
+        <Input
+          name="derivationPathPrefix"
+          value={derivationPathPrefix}
+          onChange={onDerivationPathPrefixChange}
+          placeholder={formatIntlMessage(
+            "wallet-selector.ledger.derivation-path-selector.placeholder",
+          )}
+          valid={errorMessage === null ? undefined : false}
+        />
+        <FormFeedback data-test-id="dpChooser-error-msg">{errorMessage}</FormFeedback>
+      </FormGroup>
+    </Col>
+  </Row>
+);
+
+export const DPChooserComponentWithIntl = injectIntlHelpers<IDPChooserComponent>(
+  DPChooserComponent,
 );
 
 interface IDPChooserProps {
@@ -81,7 +83,7 @@ export class WalletLedgerDPChooser extends React.Component<IDPChooserProps, IDPC
 
   render(): React.ReactNode {
     return (
-      <DPChooserComponent
+      <DPChooserComponentWithIntl
         onDerivationPathPrefixChange={this.onDerivationPathPrefixChange}
         derivationPathPrefix={this.state.derivationPathPrefix}
         errorMessage={this.state.errorMessage}

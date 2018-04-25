@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
+import { FormattedMessage } from "react-intl";
 
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
@@ -14,6 +15,7 @@ import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/f
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { LedgerHeader } from "./ledger/LedgerHeader";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
+import { injectIntlHelpers, IIntlProps } from "../../utils/injectIntlHelpers";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
 
@@ -36,9 +38,10 @@ interface IWalletLedgerInitComponentProps {
   errorMessage?: string;
 }
 
-export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps> = ({
+export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps & IIntlProps> = ({
   errorMessage,
   isInitialConnectionInProgress,
+  intl: { formatIntlMessage }
 }) => {
   if (isInitialConnectionInProgress) {
     return <LoadingIndicator />;
@@ -53,25 +56,26 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
       {errorMessage && (
         <Row className="justify-content-center">
           <WarningAlert className="my-4">
-            Connection status: <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
+            <FormattedMessage id="wallet-selector.ledger.start.connection-status" />
+            <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
           </WarningAlert>
         </Row>
       )}
       <Row>
         <InitStep
-          header="1. Connect to USB"
+          header={formatIntlMessage("wallet-selector.ledger.start.step1.header")}
           img={imgStep1}
-          desc="Connect your Ledger Nano into USB and prepare your PIN Code for the device"
+          desc={formatIntlMessage("wallet-selector.ledger.start.step1.description")}
         />
         <InitStep
-          header="2. Enter Pin Code"
+          header={formatIntlMessage("wallet-selector.ledger.start.step2.header")}
           img={imgStep2}
-          desc="Use left and right key to enter numbers and press 2 keys at the same time to confirm the code"
+          desc={formatIntlMessage("wallet-selector.ledger.start.step2.description")}
         />
         <InitStep
-          header="3. Pick Ethereum"
+          header={formatIntlMessage("wallet-selector.ledger.start.step3.header")}
           img={imgStep3}
-          desc="Click on arrows to scroll  apps and pick Ethereum icon. Press 2 keys at the same time to confirm"
+          desc={formatIntlMessage("wallet-selector.ledger.start.step3.description")}
         />
       </Row>
     </>
@@ -89,4 +93,5 @@ export const WalletLedgerInit = compose<React.SFC>(
       errorMessage: state.ledgerWizardState.errorMsg,
     }),
   }),
+  injectIntlHelpers,
 )(WalletLedgerInitComponent);

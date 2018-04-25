@@ -1,6 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+import { FormattedMessage } from 'react-intl';
 
 import { WarningAlert } from "../shared/WarningAlert";
 import { LedgerHeader } from "./ledger/LedgerHeader";
@@ -36,7 +37,7 @@ export const WalletLedgerNotSupported: React.SFC = () => (
     </Row>
     <Row className="justify-content-center">
       <WarningAlert className="my-5">
-        Your browser does not support NeuKey. For security reasons we require a recent version of:
+        <FormattedMessage id="wallet-selector.ledger-not-supported"/>
       </WarningAlert>
     </Row>
     <Row className="justify-content-center text-center">

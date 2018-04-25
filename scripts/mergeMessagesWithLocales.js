@@ -48,7 +48,10 @@ function main() {
 
   if (checkMode) {
     if (oldLocaleFileContents !== stringifyAndSort(newLocale)) {
-      throw new Error(`Some strings were not extracted or not formatted correctly! Diff: ${diffFormatted}`);
+      console.error(
+        `Some strings were not extracted or not formatted correctly! Diff: ${diffFormatted}`,
+      );
+      process.exit(1);
     }
   } else {
     writeFileSync(defaultLocalePath, stringifyAndSort(newLocale));

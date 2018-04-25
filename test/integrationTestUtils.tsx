@@ -1,6 +1,7 @@
 import { ReactWrapper } from "enzyme";
 import { Container } from "inversify";
 import * as React from "react";
+import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
@@ -39,6 +40,8 @@ import { createSpyMiddleware } from "./reduxSpyMiddleware";
 import { routerMiddleware } from "react-router-redux";
 import { BrowserRouter } from "react-router-dom";
 import { createBrowserHistory, History, createMemoryHistory } from "history";
+
+const defaultTranslations = require("../intl/locales/en-en.json");
 
 interface ICreateIntegrationTestsSetupOptions {
   initialState?: Partial<IAppState>;
@@ -169,7 +172,10 @@ export function wrapWithProviders(
     <ReduxProvider store={store}>
       <ConnectedRouter history={history!}>
         <InversifyProvider container={container}>
-          <Component />
+          {/* if we experience slow dows related to this we can switch to injecting dummy intl impl*/}
+          <IntlProvider locale="en-en" messages={defaultTranslations}>
+            <Component />
+          </IntlProvider>
         </InversifyProvider>
       </ConnectedRouter>
     </ReduxProvider>

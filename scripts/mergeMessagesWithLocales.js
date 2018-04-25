@@ -19,8 +19,12 @@ function stringifyAndSort(obj) {
 }
 
 function main() {
-  const defaultLocaleFileContents = readFileOrDefault(defaultLocalePath, "{}");
-  const defaultLocale = JSON.parse(defaultLocaleFileContents);
+  // only check if there are no changes to the baseline
+  const checkMode = process.argv[2] === "--check";
+
+  const oldLocaleFileContents = readFileOrDefault(defaultLocalePath, "{}");
+  const oldLocale = JSON.parse(oldLocaleFileContents);
+
   const newLocale = {};
 
   const messageFiles = glob.sync(messageFilesPath + "/**/*.json", { absolute: true });
@@ -32,13 +36,28 @@ function main() {
 
     // add new ids to default locale file
     for (const id of extractedIds) {
-      newLocale[id] = defaultLocale[id] || "";
+      newLocale[id] = oldLocale[id] || "";
     }
   });
 
-  writeFileSync(defaultLocalePath, stringifyAndSort(newLocale));
-  console.log(`File ${defaultLocalePath} saved...`);
-  console.log("Extracted translations: ", Object.keys(newLocale).length);
+  // some stats
+  const oldLocaleSize = Object.keys(oldLocale).length;
+  const newLocaleSize = Object.keys(newLocale).length;
+  const diff = newLocaleSize - oldLocaleSize;
+  const diffFormatted = diff >= 0 ? "+" + diff : diff;
+
+  if (checkMode) {
+    if (oldLocaleFileContents !== stringifyAndSort(newLocale)) {
+      console.error(
+        `Some strings were not extracted or not formatted correctly! Diff: ${diffFormatted}`,
+      );
+      process.exit(1);
+    }
+  } else {
+    writeFileSync(defaultLocalePath, stringifyAndSort(newLocale));
+    console.log(`File ${defaultLocalePath} saved...`);
+    console.log(`Extracted translations:  ${newLocaleSize}(${diffFormatted})`);
+  }
 }
 
 main();

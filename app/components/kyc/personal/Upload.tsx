@@ -30,27 +30,28 @@ interface IProps {
 
 export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDispatchProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
-  <KycPanel
-    steps={5}
-    currentStep={4}
-    title={formatIntlMessage("kyc.personal.uploadId.title")}
-    description={formatIntlMessage("kyc.personal.uploadId.description")}
-    hasBackButton={true}
-  >
-    <MultiFileUpload
-      onDropFile={props.onDropFile}
-      files={props.files}
-      fileUploading={props.fileUploading}
-      filesLoading={props.filesLoading}
-      layout="individual"
-    />
-    <div className="p-4 text-center">
-      <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>
-        <FormattedMessage id="form.button.submit" />
-      </Button>
-    </div>
-  </KycPanel>
-));
+    <KycPanel
+      steps={5}
+      currentStep={4}
+      title={formatIntlMessage("kyc.personal.uploadId.title")}
+      description={formatIntlMessage("kyc.personal.uploadId.description")}
+      hasBackButton={true}
+    >
+      <MultiFileUpload
+        onDropFile={props.onDropFile}
+        files={props.files}
+        fileUploading={props.fileUploading}
+        filesLoading={props.filesLoading}
+        layout="individual"
+      />
+      <div className="p-4 text-center">
+        <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>
+          <FormattedMessage id="form.button.submit" />
+        </Button>
+      </div>
+    </KycPanel>
+  ),
+);
 
 export const KYCPersonalUpload = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

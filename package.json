@@ -104,8 +104,8 @@
     "tslint:fix": "tslint --fix --project . --format stylish && tslint --fix --project . --format stylish --config ./tslint.spec.json '**/*.spec.ts?(x)' '**/*.spec.node.ts?(x)'",
     "tsc": "tsc --noEmit --project .",
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
-    "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc",
-    "lint:fix": "yarn tslint:fix && yarn format:fix && yarn sasslint && yarn tsc",
+    "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc && yarn intl:extract:check",
+    "lint:fix": "yarn tslint:fix && yarn format:fix && yarn sasslint && yarn tsc && yarn intl:extract",
     "test:browser": "NODE_ENV=test mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts './test/setupTestsHooks.ts' '**/*.spec.ts?(x)'",
     "test:browser-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts 'test/setupTestsHooks.ts' '**/*.spec.ts?(x)'",
     "test:node": "NODE_ENV=test mocha --require ts-node/register --require ./test/setupTests.ts '**/*.spec.node.ts?(x)'",
@@ -116,7 +116,8 @@
     "codecov": "codecov",
     "generate:contracts": "typechain --force --outDir app/lib/contracts './node_modules/neufund-contracts-tmp/abis/*.json'",
     "prepare": "patch-package && yarn generate:contracts",
-    "intl:extract": "./scripts/extract-intl-messages.sh"
+    "intl:extract": "./scripts/extract-intl-messages.sh",
+    "intl:extract:check": "./scripts/extract-intl-messages.sh --check"
   },
   "dependencies": {
     "bignumber.js": "^5.0.0",

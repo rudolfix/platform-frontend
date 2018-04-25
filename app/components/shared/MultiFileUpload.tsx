@@ -12,7 +12,6 @@ import * as addFileIcon from "../../assets/img/add_file.svg";
 import * as idImage from "../../assets/img/id_img.svg";
 import * as styles from "./MultiFileUpload.module.scss";
 
-
 const ACCEPTED_FILES = "application/pdf, image/*";
 
 import * as plusIcon from "../../assets/img/inline_icons/plus.svg";
@@ -32,7 +31,9 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   const dropzoneInner = props.fileUploading ? (
     <>
       <img src={addFileIcon} />
-      <div><FormattedMessage id="shared-component.multi-file-upload.uploading" /></div>
+      <div>
+        <FormattedMessage id="shared-component.multi-file-upload.uploading" />
+      </div>
     </>
   ) : (
     <>
@@ -44,8 +45,16 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   const dropzoneWithFilesInner = (
     <>
       <InlineIcon svgIcon={plusIcon} />
-      {layout === "individual" && <span><FormattedMessage id="shared-component.multi-file-upload.individual.add-more" /></span>}
-      {layout === "business" && <span><FormattedMessage id="shared-component.multi-file-upload.business.add-more" /></span>}
+      {layout === "individual" && (
+        <span>
+          <FormattedMessage id="shared-component.multi-file-upload.individual.add-more" />
+        </span>
+      )}
+      {layout === "business" && (
+        <span>
+          <FormattedMessage id="shared-component.multi-file-upload.business.add-more" />
+        </span>
+      )}
     </>
   );
   const dropzoneStyle = {
@@ -63,32 +72,60 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   return (
     <div className={cn(styles.upload, layout, props.className)}>
       <div className={styles.uploadDescription}>
-        {layout === "individual" && <h3 className={styles.title}><FormattedMessage id="shared-component.multi-file-upload.individual.images-must-be-included" /></h3>}
-        {layout === "business" && <h3 className={styles.title}><FormattedMessage id="shared-component.multi-file-upload.business.required-documents" /></h3>}
+        {layout === "individual" && (
+          <h3 className={styles.title}>
+            <FormattedMessage id="shared-component.multi-file-upload.individual.images-must-be-included" />
+          </h3>
+        )}
+        {layout === "business" && (
+          <h3 className={styles.title}>
+            <FormattedMessage id="shared-component.multi-file-upload.business.required-documents" />
+          </h3>
+        )}
         {layout === "individual" && <img className={styles.sampleDocumentId} src={idImage} />}
         <div>
           {layout === "individual" && (
             <ul className={styles.documentRequirements}>
-              <li><FormattedMessage id="shared-component.multi-file-upload.individual.id.colored-photo" /></li>
-              <li><FormattedMessage id="shared-component.multi-file-upload.individual.id.full-name" /></li>
-              <li><FormattedMessage id="shared-component.multi-file-upload.individual.id.date-of-birth" /></li>
-              <li><FormattedMessage id="shared-component.multi-file-upload.individual.id.expiration-date" /></li>
-              <li><FormattedMessage id="shared-component.multi-file-upload.individual.id.number" /></li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.colored-photo" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.full-name" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.date-of-birth" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.expiration-date" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.number" />
+              </li>
             </ul>
           )}
 
           {layout === "business" && (
             <ul className={styles.documentRequirements}>
-              <li><FormattedMessage id="shared-component.multi-file-upload.business.id.commercial-register" /></li>
-              <li><FormattedMessage id="shared-component.multi-file-upload.business.id.association" /></li>
-              <li><FormattedMessage id="shared-component.multi-file-upload.business.id.partnership" /></li>
-              <li><FormattedMessage id="shared-component.multi-file-upload.business.id.address" /></li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.commercial-register" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.association" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.partnership" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.address" />
+              </li>
             </ul>
           )}
         </div>
       </div>
       <div className={styles.uploadZone}>
-        <h3 className={styles.title}><FormattedMessage id="shared-component.multi-file-upload.upload-documents" /></h3>
+        <h3 className={styles.title}>
+          <FormattedMessage id="shared-component.multi-file-upload.upload-documents" />
+        </h3>
         {!!files.length && <UploadedFiles onRemove={() => {}} files={files} />}
         <div className={files.length ? styles.dropzoneWithFilesWrapper : styles.dropzoneWrapper}>
           <Dropzone
@@ -101,7 +138,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
           </Dropzone>
         </div>
         <div className={styles.documentRequirements}>
-        <FormattedMessage id="shared-component.multi-file-upload.allowed-documents" />
+          <FormattedMessage id="shared-component.multi-file-upload.allowed-documents" />
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { compact } from "lodash";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import { actions } from "../../modules/actions";
@@ -12,6 +13,7 @@ import {
   selectUrlUserType,
 } from "../../modules/wallet-selector/selectors";
 import { appConnect } from "../../store";
+import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { appRoutes } from "../AppRouter";
 import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
@@ -27,15 +29,20 @@ interface IStateProps {
   userType: string;
 }
 
-export const WalletSelectorComponent: React.SFC<IStateProps> = ({
+export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
   isMessageSigning,
   rootPath,
   isLoginRoute,
   oppositeRoute,
   userType,
+  intl: { formatIntlMessage },
 }) => {
-  const oppositeViewLabel = isLoginRoute ? "You don't have an account?" : "Do you have an account?";
-  const oppositeViewLinkLabel = isLoginRoute ? "Register" : "Login";
+  const oppositeViewLabel = isLoginRoute
+    ? formatIntlMessage("wallet-selector.neuwallet.register-link-text")
+    : formatIntlMessage("wallet-selector.neuwallet.login-link-text");
+  const oppositeViewLinkLabel = isLoginRoute
+    ? formatIntlMessage("wallet-selector.register")
+    : formatIntlMessage("wallet-selector.login");
 
   return (
     <LayoutRegisterLogin>
@@ -48,17 +55,17 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({
               tabs={compact([
                 {
                   path: `${rootPath}/light`,
-                  text: "use Neufund wallet",
+                  text: formatIntlMessage("wallet-selector.tabs.neuwallet"),
                   dataTestId: "wallet-selector-light",
                 },
                 userType === "investor" && {
                   path: `${rootPath}/browser`,
-                  text: "use existing wallet",
+                  text: formatIntlMessage("wallet-selector.tabs.browser-wallet"),
                   dataTestId: "wallet-selector-browser",
                 },
                 userType === "investor" && {
                   path: `${rootPath}/ledger`,
-                  text: "use nano ledger",
+                  text: formatIntlMessage("wallet-selector.tabs.ledger"),
                   dataTestId: "wallet-selector-ledger",
                 },
               ])}
@@ -72,7 +79,10 @@ export const WalletSelectorComponent: React.SFC<IStateProps> = ({
           <Row className="mt-5">
             <Col xs={12} sm={6}>
               <span>
-                Having troubles with login? <Link to={appRoutes.recover}>Help</Link>
+                <FormattedMessage id="wallet-selector.help-link" />
+                <Link to={appRoutes.recover}>
+                  <FormattedMessage id="wallet-selector.help-link.label" />
+                </Link>
               </span>
             </Col>
             <Col xs={12} sm={6}>
@@ -100,4 +110,5 @@ export const WalletSelector = compose<React.SFC>(
       oppositeRoute: selectOppositeRootPath(s.router),
     }),
   }),
+  injectIntlHelpers,
 )(WalletSelectorComponent);

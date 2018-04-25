@@ -51,7 +51,12 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
   );
   if (!props.requestStatus) {
     return (
-      <KycPanel title={formatIntlMessage("kyc.request-state.title")} steps={5} currentStep={0} description={formatIntlMessage("kyc.request-state.description")}>
+      <KycPanel
+        title={formatIntlMessage("kyc.request-state.title")}
+        steps={5}
+        currentStep={0}
+        description={formatIntlMessage("kyc.request-state.description")}
+      >
         {settingsButton}
       </KycPanel>
     );
@@ -103,7 +108,9 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
       >
         {" "}
         <div className="p-4 text-center">
-          <a href={props.redirectUrl}><FormattedMessage id="kyc.request-state.click-here-to-continue" /></a>
+          <a href={props.redirectUrl}>
+            <FormattedMessage id="kyc.request-state.click-here-to-continue" />
+          </a>
         </div>
       </KycPanel>
     );

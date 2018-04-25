@@ -26,7 +26,9 @@ interface IProps {
   layout: TKycRequestType;
 }
 
-export const KycPersonalInstantIdComponent = injectIntlHelpers<IProps & IStateProps & IDispatchProps>(({ intl: { formatIntlMessage }, ...props }) => (
+export const KycPersonalInstantIdComponent = injectIntlHelpers<
+  IProps & IStateProps & IDispatchProps
+>(({ intl: { formatIntlMessage }, ...props }) => (
   <KycPanel
     steps={5}
     currentStep={4}
@@ -41,7 +43,7 @@ export const KycPersonalInstantIdComponent = injectIntlHelpers<IProps & IStatePr
       </Button>
     </div>
     <p className="text-center">
-    <FormattedMessage id="kyc.personal.instant-id.manual-verification-description" />
+      <FormattedMessage id="kyc.personal.instant-id.manual-verification-description" />
     </p>
     <div className="text-center">
       <Button

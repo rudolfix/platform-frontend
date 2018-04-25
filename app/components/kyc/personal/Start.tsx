@@ -1,4 +1,4 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { Form, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
@@ -59,49 +59,55 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(({ intl: { formatIntlMessage }, ...props }) => (
-  <Form>
-    <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
-    <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
-    <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
+const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
+  ({ intl: { formatIntlMessage } }) => (
+    <Form>
+      <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
+      <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
+      <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
 
-    <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
-    <Row>
-      <Col xs={12} md={6} lg={8}>
-        <FormField label={formatIntlMessage("form.label.city")} name="city" />
-      </Col>
-      <Col xs={12} md={6} lg={4}>
-        <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
-      </Col>
-    </Row>
-    <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
-    <br />
-    <FormSelectField
-      values={PEP_VALUES}
-      label={
-        <>
-          <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
-          <Tooltip
-            className="ml-2"
-            text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
-          />
-        </>
-      }
-      name="isPoliticallyExposed"
-    />
-    <FormSelectField values={US_CITIZEN_VALUES} label="Are you a US citizen?" name="isUsCitizen" />
-    <FormSelectField
-      values={HIGH_INCOME_VALUES}
-      label={formatIntlMessage("kyc.personal.high-income")}
-      name="isHighIncome"
-    />
-    <div className="p-4 text-center">
-      <Button type="submit">
-        <FormattedMessage id={"form.save-and-submit"} />
-      </Button>
-    </div>
-  </Form>
-));
+      <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
+      <Row>
+        <Col xs={12} md={6} lg={8}>
+          <FormField label={formatIntlMessage("form.label.city")} name="city" />
+        </Col>
+        <Col xs={12} md={6} lg={4}>
+          <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
+        </Col>
+      </Row>
+      <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
+      <br />
+      <FormSelectField
+        values={PEP_VALUES}
+        label={
+          <>
+            <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
+            <Tooltip
+              className="ml-2"
+              text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+            />
+          </>
+        }
+        name="isPoliticallyExposed"
+      />
+      <FormSelectField
+        values={US_CITIZEN_VALUES}
+        label="Are you a US citizen?"
+        name="isUsCitizen"
+      />
+      <FormSelectField
+        values={HIGH_INCOME_VALUES}
+        label={formatIntlMessage("kyc.personal.high-income")}
+        name="isHighIncome"
+      />
+      <div className="p-4 text-center">
+        <Button type="submit">
+          <FormattedMessage id={"form.save-and-submit"} />
+        </Button>
+      </div>
+    </Form>
+  ),
+);
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   validationSchema: KycIndividudalDataSchemaRequired,
@@ -113,17 +119,26 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   },
 })(KYCForm);
 
-export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage }, ...props }) => {
-  return (
-    <KycPanel steps={5} currentStep={2} title={formatIntlMessage("kyc.personal.title")} hasBackButton={true}>
-      <div className="pb-4">
-        <h6><FormattedMessage id={"kyc.personal.personal-information.question"} /></h6>
-        <FormattedMessage id={"kyc.personal.personal-information.answer"} />
-      </div>
-      <KYCEnhancedForm {...props} />
-    </KycPanel>
-  );
-});
+export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(
+  ({ intl: { formatIntlMessage }, ...props }) => {
+    return (
+      <KycPanel
+        steps={5}
+        currentStep={2}
+        title={formatIntlMessage("kyc.personal.title")}
+        hasBackButton={true}
+      >
+        <div className="pb-4">
+          <h6>
+            <FormattedMessage id={"kyc.personal.personal-information.question"} />
+          </h6>
+          <FormattedMessage id={"kyc.personal.personal-information.answer"} />
+        </div>
+        <KYCEnhancedForm {...props} />
+      </KycPanel>
+    );
+  },
+);
 
 export const KYCPersonalStart = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

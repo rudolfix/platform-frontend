@@ -38,7 +38,7 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
   ) : (
     <div className={cn(styles.background, "h-100")}>
       <h5 className={cn(styles.title, "text-left mb-3 pl-2 pl-md-3 pt-2")}>
-        <FormattedMessage id="dashboard.my-neu-widget.my-neu" />
+        <FormattedMessage id="dashboard.my-neu-widget.my-neumark" />
       </h5>
       <Row noGutters>
         <Col>

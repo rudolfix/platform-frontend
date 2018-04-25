@@ -1,4 +1,4 @@
-import { Form, withFormik } from "formik";
+import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
@@ -57,10 +57,10 @@ interface IDispatchProps {
   submitForm: (values: IKycIndividualData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & FormikProps<IKycIndividualData>;
 
 const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
-  ({ intl: { formatIntlMessage } }) => (
+  ({ intl: { formatIntlMessage }, ...props }) => (
     <Form>
       <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
       <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
@@ -101,7 +101,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
         name="isHighIncome"
       />
       <div className="p-4 text-center">
-        <Button type="submit">
+        <Button type="submit" disabled={!props.isValid || props.loadingData}>
           <FormattedMessage id={"form.save-and-submit"} />
         </Button>
       </div>

@@ -1,13 +1,13 @@
 import * as cn from "classnames";
-import { Col, Container, Row } from "reactstrap";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
+import { Col, Container, Row } from "reactstrap";
 
+import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { appRoutes } from "../AppRouter";
 import { CenteredListWithTitle } from "../shared/CenterdListWithTitle";
 import { OffToOnCompany } from "./shared/OffToOnChainCompany";
 import { RegisterCta } from "./shared/RegisterCta";
-import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 
 import * as styles from "./LandingEto.module.scss";
 

@@ -30,5 +30,7 @@
   "eto-landing.why-fundraise.section4.title": "Efficient investment",
   "investors-landing.header": "Investment opportunities",
   "investors-landing.register.buttonText": "Register",
-  "investors-landing.register.cta": "Invest now in companies you like."
+  "investors-landing.register.cta": "Invest now in companies you like.",
+  "off-to-on-chain.footer": "<strong>OFF-CHAIN</strong> company",
+  "off-to-on-chain.header": "<strong>ON-CHAIN</strong> company"
 }

@@ -53,7 +53,7 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
           <div className={styles.list}>
             <div className={styles.listElement}>
               <div className={styles.label}>
-                <FormattedHTMLMessage id="dashboard.neufund-kpi-widget.list.label" />
+                <FormattedHTMLMessage tagName="span" id="dashboard.neufund-kpi-widget.list.label" />
               </div>
               <div className={styles.value}>
                 <Money value={totalProceeds} currency={currency} theme="t-green" />
@@ -68,7 +68,7 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
             </div>
             <div className={styles.listElement}>
               <div className={styles.label}>
-                <FormattedHTMLMessage id="dashboard.neufund-kpi-widget.label3" />
+                <FormattedHTMLMessage tagName="span" id="dashboard.neufund-kpi-widget.label3" />
               </div>
               <div className={styles.value}>{investorsNum}</div>
             </div>

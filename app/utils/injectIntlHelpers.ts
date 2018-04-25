@@ -10,7 +10,7 @@ import {
   MessageValue,
 } from "react-intl";
 
-interface IIntlHelpers {
+export interface IIntlHelpers {
   formatDate(value: DateSource, options?: FormattedDate.PropsBase): string;
   formatTime(value: DateSource, options?: FormattedTime.PropsBase): string;
   formatRelative(value: DateSource, options?: FormattedRelative.PropsBase & { now?: any }): string;
@@ -29,7 +29,7 @@ interface IIntlHelpers {
   now(): number;
 }
 
-interface IIntlProps {
+export interface IIntlProps {
   intl: IIntlHelpers;
 }
 

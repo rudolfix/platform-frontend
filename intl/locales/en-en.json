@@ -32,5 +32,14 @@
   "investors-landing.register.buttonText": "Register",
   "investors-landing.register.cta": "Invest now in companies you like.",
   "off-to-on-chain.footer": "<strong>OFF-CHAIN</strong> company",
-  "off-to-on-chain.header": "<strong>ON-CHAIN</strong> company"
+  "off-to-on-chain.header": "<strong>ON-CHAIN</strong> company",
+  "wallet-selector.help-link": "Having troubles with login?",
+  "wallet-selector.help-link.label": "Help",
+  "wallet-selector.login": "Login",
+  "wallet-selector.neuwallet.login-link-text": "Do you have an account?",
+  "wallet-selector.neuwallet.register-link-text": "You don't have an account?",
+  "wallet-selector.register": "Register",
+  "wallet-selector.tabs.browser-wallet": "use existing wallet",
+  "wallet-selector.tabs.ledger": "use nano ledger",
+  "wallet-selector.tabs.neuwallet": "use Neufund wallet"
 }

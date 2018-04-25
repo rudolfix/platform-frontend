@@ -1,12 +1,11 @@
-import * as React from "react";
-
 import { Form, FormikProps, withFormik } from "formik";
-
+import * as React from "react";
+import { FormattedMessage } from "react-intl";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-
 import { actions } from "../../../modules/actions";
+import { appConnect } from "../../../store";
 
 import {
   BOOL_FALSE_KEY,
@@ -19,11 +18,12 @@ import {
   unboolify,
 } from "../../shared/forms/forms";
 
-import { Col, Row } from "reactstrap";
 import {
   IKycIndividualData,
   KycIndividudalDataSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
+
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
@@ -31,21 +31,21 @@ import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 
 const PEP_VALUES = {
-  [NONE_KEY]: "-please select-",
-  [BOOL_TRUE_KEY]: "Yes I am",
-  [BOOL_FALSE_KEY]: "No I am not",
+  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
+  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
+  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-i-am-not" />,
 };
 
 const US_CITIZEN_VALUES = {
-  [NONE_KEY]: "-please select-",
-  [BOOL_TRUE_KEY]: "Yes I am",
-  [BOOL_FALSE_KEY]: "No I am not",
+  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
+  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
+  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-i-am-not" />,
 };
 
 const HIGH_INCOME_VALUES = {
-  [NONE_KEY]: "-please select-",
-  [BOOL_TRUE_KEY]: "Yes",
-  [BOOL_FALSE_KEY]: "No",
+  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
+  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes" />,
+  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no" />,
 };
 
 interface IStateProps {
@@ -59,33 +59,31 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
+const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(({ intl: { formatIntlMessage }, ...props }) => (
   <Form>
-    <FormField label="First Name" name="firstName" />
-    <FormField label="Last Name" name="lastName" />
-    <FormFieldDate label="Birthdate" name="birthDate" />
+    <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
+    <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
+    <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
 
-    <FormField label="Street and number" name="street" />
+    <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
     <Row>
       <Col xs={12} md={6} lg={8}>
-        <FormField label="City" name="city" />
+        <FormField label={formatIntlMessage("form.label.city")} name="city" />
       </Col>
       <Col xs={12} md={6} lg={4}>
-        <FormField label="Zip Code" name="zipCode" />
+        <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
       </Col>
     </Row>
-    <FormSelectCountryField label="Country" name="country" />
+    <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
     <br />
     <FormSelectField
       values={PEP_VALUES}
       label={
         <>
-          Are you a politically exposed person?<Tooltip
+          <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
+          <Tooltip
             className="ml-2"
-            text={`A Politically Exposed Person (PEP) is someone who, through their prominent position
-      or influence, is more susceptible to being involved in bribery or corruption. In addition, any
-      close business associate or family member of such a person will also be deemed as being a
-      risk, and therefore could also be added to the PEP list.`}
+            text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
           />
         </>
       }
@@ -94,16 +92,16 @@ const KYCForm = (formikBag: FormikProps<IKycIndividualData> & IProps) => (
     <FormSelectField values={US_CITIZEN_VALUES} label="Are you a US citizen?" name="isUsCitizen" />
     <FormSelectField
       values={HIGH_INCOME_VALUES}
-      label="Is your income above 5.000 EUR monthly, or do you have more than 100k EUR of assets available?"
+      label={formatIntlMessage("kyc.personal.high-income")}
       name="isHighIncome"
     />
     <div className="p-4 text-center">
-      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        Submit and continue
+      <Button type="submit">
+        <FormattedMessage id={"form.save-and-submit"} />
       </Button>
     </div>
   </Form>
-);
+));
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   validationSchema: KycIndividudalDataSchemaRequired,
@@ -119,10 +117,8 @@ export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
     <KycPanel steps={5} currentStep={2} title="Personal Details" hasBackButton={true}>
       <div className="pb-4">
-        <h6>Why do we need this information?</h6>
-        The following information is used to verify your identity, following know your client and
-        anti money laundering policy. Your information is always kept confidentail and need to be
-        stored for at least 5 years. For more information you can read our privacy policy here.
+        <h6><FormattedMessage id={"kyc.personal.personal-information.question"} /></h6>
+        <FormattedMessage id={"kyc.personal.personal-information.answer"} />
       </div>
       <KYCEnhancedForm {...props} />
     </KycPanel>

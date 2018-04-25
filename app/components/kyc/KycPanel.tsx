@@ -1,11 +1,12 @@
 import * as React from "react";
-import * as styles from "./KycPanel.module.scss";
+import { FormattedMessage } from "react-intl";
 
 import { Button } from "../shared/Buttons";
 import { PanelWhite } from "../shared/PanelWhite";
 import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
+import * as styles from "./KycPanel.module.scss";
 
 interface IPropsKycPanel {
   title: string;
@@ -39,7 +40,7 @@ export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
             svgIcon={arrowLeft}
             onClick={() => {}}
           >
-            BACK
+            <FormattedMessage id="kyc.panel.go-back" />
           </Button>
         )}
       </footer>

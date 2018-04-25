@@ -52,7 +52,7 @@ function renderApp(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
         <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-          <IntlProvider locale="en-us" messages={languageEn}>
+          <IntlProvider locale="en-us" messages={languageEn} textComponent={React.Fragment}>
             <Component />
           </IntlProvider>
         </ConnectedRouter>

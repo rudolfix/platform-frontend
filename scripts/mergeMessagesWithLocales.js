@@ -19,6 +19,7 @@ function stringifyAndSort(obj) {
 }
 
 function main() {
+  // only check if there are no changes to the baseline
   const checkMode = process.argv[2] === "--check";
 
   const oldLocaleFileContents = readFileOrDefault(defaultLocalePath, "{}");
@@ -46,8 +47,8 @@ function main() {
   const diffFormatted = diff >= 0 ? "+" + diff : diff;
 
   if (checkMode) {
-    if (stringifyAndSort(oldLocale) !== stringifyAndSort(newLocale)) {
-      throw new Error(`Some strings were not extracted!. Diff: ${diffFormatted}`);
+    if (oldLocaleFileContents !== stringifyAndSort(newLocale)) {
+      throw new Error(`Some strings were not extracted or not formatted correctly! Diff: ${diffFormatted}`);
     }
   } else {
     writeFileSync(defaultLocalePath, stringifyAndSort(newLocale));

@@ -35,7 +35,7 @@ export const unboolify = <T extends {}>(values: T): T => {
 interface IFieldGroup {
   label?: string | React.ReactNode;
   values: {
-    [key: string]: any;
+    [key: string]: string | React.ReactNode;
   };
   disabledValues?: {
     [key: string]: boolean;

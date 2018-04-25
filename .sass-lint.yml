@@ -10,6 +10,7 @@ files:
     - 'dist/**'
     - 'test/**'
 rules:
+  nesting-depth: 3
   property-sort-order: 0
   quotes:
     - 1

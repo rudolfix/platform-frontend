@@ -2,6 +2,8 @@ import { Field, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
+
+import * as errorStyles from "./FormError.module.scss";
 import * as styles from "./FormFieldDate.module.scss";
 
 interface IProps {
@@ -99,7 +101,7 @@ export class FormFieldDate extends React.Component<IProps> {
             <Field
               name={this.props.name}
               render={({ field }) => (
-                <div>
+                <div className={styles.dateFieldYear}>
                   <Input
                     {...field}
                     onChange={e => this.onChange("year", e, field.onChange)}
@@ -113,7 +115,8 @@ export class FormFieldDate extends React.Component<IProps> {
             />
           </div>
         </div>
-        {errors[name] && touched[name] && <div className={styles.errorLabel}>{errors[name]}</div>}
+        {errors[name] &&
+          touched[name] && <div className={errorStyles.errorLabel}>{errors[name]}</div>}
       </FormGroup>
     );
   }

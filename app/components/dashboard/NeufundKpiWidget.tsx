@@ -8,7 +8,6 @@ import { PanelWhite } from "../shared/PanelWhite";
 import * as styles from "./NeufundKpiWidget.module.scss";
 
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
-import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { Button } from "../shared/Buttons";
 
 interface IProps {
@@ -26,106 +25,104 @@ interface IProps {
   totalProceedsToken: string;
 }
 
-export const NeufundKpiWidget = injectIntlHelpers<IProps>(
-  ({
-    date,
-    tokenHolders,
-    investorsNum,
-    etosNum,
-    currency,
-    totalCapitalDeployed,
-    platformPortfolioValue,
-    chartBarData,
-    chartPieData,
-    vcAccessible,
-    totalProceeds,
-    totalProceedsToken,
-  }) => {
-    return (
-      <PanelWhite className={styles.neufundKpiWidget}>
-        <div>
-          <h3 className={styles.header}>
-            <img src={logo} alt="neufund logo" />
-            <FormattedMessage id="dashboard-neufundKpiWidget.header" />
-            <time className={styles.date}>{date}</time>
-          </h3>
-        </div>
-        <Row>
-          <Col lg={6} xs={12}>
-            <div className={styles.list}>
-              <div className={styles.listElement}>
-                <div className={styles.label}>
-                  <FormattedHTMLMessage id="dashboard-neufundKpiWidget-list.label" />
-                </div>
-                <div className={styles.value}>
-                  <Money value={totalProceeds} currency={currency} theme="t-green" />
-                  <Money value={totalProceedsToken} currency="eth" />
-                </div>
+export const NeufundKpiWidget: React.SFC<IProps> = ({
+  date,
+  tokenHolders,
+  investorsNum,
+  etosNum,
+  currency,
+  totalCapitalDeployed,
+  platformPortfolioValue,
+  chartBarData,
+  chartPieData,
+  vcAccessible,
+  totalProceeds,
+  totalProceedsToken,
+}) => {
+  return (
+    <PanelWhite className={styles.neufundKpiWidget}>
+      <div>
+        <h3 className={styles.header}>
+          <img src={logo} alt="neufund logo" />
+          <FormattedMessage id="dashboard.neufund-kpi-widget.header" />
+          <time className={styles.date}>{date}</time>
+        </h3>
+      </div>
+      <Row>
+        <Col lg={6} xs={12}>
+          <div className={styles.list}>
+            <div className={styles.listElement}>
+              <div className={styles.label}>
+                <FormattedHTMLMessage id="dashboard.neufund-kpi-widget.list.label" />
               </div>
-              <div className={styles.listElement}>
-                <div className={styles.label}>
-                  <FormattedMessage id="dashboard-neufundKpiWidget.label2" />
-                </div>
-                <div className={styles.value}>{tokenHolders}</div>
-              </div>
-              <div className={styles.listElement}>
-                <div className={styles.label}>
-                  <FormattedHTMLMessage id="dashboard-neufundKpiWidget.label3" />
-                </div>
-                <div className={styles.value}>{investorsNum}</div>
-              </div>
-              <div className={styles.listElement}>
-                <div className={styles.label}>
-                  <FormattedMessage id="dashboard-neufundKpiWidget.label4" />
-                </div>
-                <div className={styles.value}>
-                  <Money value={vcAccessible} currency={currency} />
-                </div>
-              </div>
-              <div className={styles.listElement}>
-                <div className={styles.label}>
-                  <FormattedMessage id="dashboard-neufundKpiWidget.label5" />
-                </div>
-                <div className={styles.value}>{etosNum}</div>
-              </div>
-              <div className={styles.listElement}>
-                <div className={styles.label}>
-                  <FormattedMessage id="dashboard-neufundKpiWidget.label6" />
-                </div>
-                <div className={styles.value}>
-                  <Money value={totalCapitalDeployed} currency="eur" />
-                </div>
+              <div className={styles.value}>
+                <Money value={totalProceeds} currency={currency} theme="t-green" />
+                <Money value={totalProceedsToken} currency="eth" />
               </div>
             </div>
-          </Col>
-          <Col lg={6} xs={12}>
-            <div className={styles.pieWrapper}>
-              <h4 className={styles.label}>
-                <FormattedMessage id="dashboard-neufundKpiWidget-chart.title" />
-              </h4>
-              <ChartPie data={chartPieData} />
-              <Button layout="secondary">
-                <FormattedMessage id="dashboard-neufundKpiWidget-chart.button" />
-              </Button>
+            <div className={styles.listElement}>
+              <div className={styles.label}>
+                <FormattedMessage id="dashboard.neufund-kpi-widget.label2" />
+              </div>
+              <div className={styles.value}>{tokenHolders}</div>
             </div>
-            <div className={styles.barWrapper}>
-              <h4 className={styles.label}>
-                <FormattedMessage id="dashboard-neufundKpiWidget-chart2.title" />
-              </h4>
-              <h5 className={styles.totalMoney}>
-                <span className={styles.totalLabel}>
-                  <FormattedMessage id="dashboard-neufundKpiWidget-chart2.label" />
-                </span>
-                <Money value={platformPortfolioValue} currency={currency} theme="t-green" />
-              </h5>
-              <ChartBars data={chartBarData} />
-              <Button layout="secondary">
-                <FormattedMessage id="dashboard-neufundKpiWidget-chart2.button" />
-              </Button>
+            <div className={styles.listElement}>
+              <div className={styles.label}>
+                <FormattedHTMLMessage id="dashboard.neufund-kpi-widget.label3" />
+              </div>
+              <div className={styles.value}>{investorsNum}</div>
             </div>
-          </Col>
-        </Row>
-      </PanelWhite>
-    );
-  },
-);
+            <div className={styles.listElement}>
+              <div className={styles.label}>
+                <FormattedMessage id="dashboard.neufund-kpi-widget.label4" />
+              </div>
+              <div className={styles.value}>
+                <Money value={vcAccessible} currency={currency} />
+              </div>
+            </div>
+            <div className={styles.listElement}>
+              <div className={styles.label}>
+                <FormattedMessage id="dashboard.neufund-kpi-widget.label5" />
+              </div>
+              <div className={styles.value}>{etosNum}</div>
+            </div>
+            <div className={styles.listElement}>
+              <div className={styles.label}>
+                <FormattedMessage id="dashboard.neufund-kpi-widget.label6" />
+              </div>
+              <div className={styles.value}>
+                <Money value={totalCapitalDeployed} currency="eur" />
+              </div>
+            </div>
+          </div>
+        </Col>
+        <Col lg={6} xs={12}>
+          <div className={styles.pieWrapper}>
+            <h4 className={styles.label}>
+              <FormattedMessage id="dashboard.neufund-kpi-widget.chart.title" />
+            </h4>
+            <ChartPie data={chartPieData} />
+            <Button layout="secondary">
+              <FormattedMessage id="dashboard.neufund-kpi-widget.chart.button" />
+            </Button>
+          </div>
+          <div className={styles.barWrapper}>
+            <h4 className={styles.label}>
+              <FormattedMessage id="dashboard.neufund-kpi-widget-chart2.title" />
+            </h4>
+            <h5 className={styles.totalMoney}>
+              <span className={styles.totalLabel}>
+                <FormattedMessage id="dashboard.neufund-kpi-widget.chart2.label" />
+              </span>
+              <Money value={platformPortfolioValue} currency={currency} theme="t-green" />
+            </h5>
+            <ChartBars data={chartBarData} />
+            <Button layout="secondary">
+              <FormattedMessage id="dashboard.neufund-kpi-widget.chart2.button" />
+            </Button>
+          </div>
+        </Col>
+      </Row>
+    </PanelWhite>
+  );
+};

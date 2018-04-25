@@ -1,8 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
-import { FormattedMessage } from "react-intl";
 
 import { appConnect } from "../../store";
 import { withActionWatcher } from "../../utils/withActionWatcher";
@@ -12,10 +12,10 @@ import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
 import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
 import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
+import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { LedgerHeader } from "./ledger/LedgerHeader";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
-import { injectIntlHelpers, IIntlProps } from "../../utils/injectIntlHelpers";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
 
@@ -41,7 +41,7 @@ interface IWalletLedgerInitComponentProps {
 export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps & IIntlProps> = ({
   errorMessage,
   isInitialConnectionInProgress,
-  intl: { formatIntlMessage }
+  intl: { formatIntlMessage },
 }) => {
   if (isInitialConnectionInProgress) {
     return <LoadingIndicator />;
@@ -56,7 +56,7 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
       {errorMessage && (
         <Row className="justify-content-center">
           <WarningAlert className="my-4">
-            <FormattedMessage id="wallet-selector.ledger.start.connection-status" />
+            <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
             <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
           </WarningAlert>
         </Row>

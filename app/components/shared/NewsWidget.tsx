@@ -9,11 +9,12 @@ import { Tabs } from "./Tabs";
 
 import * as iconPlus from "../../assets/img/inline_icons/plus.svg";
 import * as iconTrash from "../../assets/img/inline_icons/trash.svg";
+import * as styles from "./NewsWidget.module.scss";
 
 type TActiveTab = "news" | "twitter";
 
 interface INews {
-  path: string;
+  url: string;
   title: string;
 }
 
@@ -24,38 +25,60 @@ interface IProps {
   className?: string;
 }
 
-export const NewsWidget: React.SFC<IProps> = ({ news, isEditable, activeTab, className }) => {
-  return (
-    <PanelWhite className={cn(className)}>
-      <Tabs
-        tabs={[
-          {
-            text: "Latest news",
-            handleClick: () => {},
-            isActive: activeTab === "news",
-          },
-          {
-            text: "Twitter",
-            handleClick: () => {},
-            isActive: activeTab === "twitter",
-          },
-        ]}
-      />
-      <div>
-        {news.map(({ path, title }) => (
-          <div>
-            <NavLinkConnected to={{ pathname: path || "#0", search: location.search }}>
-              {title}
-            </NavLinkConnected>
-            {isEditable && <InlineIcon svgIcon={iconTrash} />}
+export class NewsWidget extends React.Component<IProps> {
+  state = {
+    activeTab: this.props.activeTab,
+  };
+
+  toggleContent = (activeTab: TActiveTab) => {
+    this.setState({ activeTab });
+  };
+
+  render(): React.ReactNode {
+    const { news, isEditable, className } = this.props;
+    const { activeTab } = this.state;
+
+    return (
+      <PanelWhite className={cn(styles.newsWidget, isEditable && "is-editable", className)}>
+        <Tabs
+          tabs={[
+            {
+              text: "Latest news",
+              handleClick: () => this.toggleContent("news"),
+              isActive: activeTab === "news",
+            },
+            {
+              text: "Twitter",
+              handleClick: () => this.toggleContent("twitter"),
+              isActive: activeTab === "twitter",
+            },
+          ]}
+        />
+        {
+          <div className={styles.contentWrapper}>
+            {activeTab === "news" &&
+              news.map(({ url, title }) => (
+                <div className={styles.newsSingle} key={url}>
+                  <NavLinkConnected to={{ pathname: url || "#0", search: location.search }}>
+                    {title}
+                  </NavLinkConnected>
+                  {isEditable && <InlineIcon svgIcon={iconTrash} />}
+                </div>
+              ))}
+            {isEditable && (
+              <Button
+                svgIcon={iconPlus}
+                className={styles.addNews}
+                layout="secondary"
+                iconPosition="icon-before"
+              >
+                Add news
+              </Button>
+            )}
           </div>
-        ))}
-      </div>
-      {isEditable && (
-        <Button svgIcon={iconPlus} iconPosition="icon-before">
-          Add news
-        </Button>
-      )}
-    </PanelWhite>
-  );
-};
+        }
+        {activeTab === "twitter" && <div>twitter content</div>}
+      </PanelWhite>
+    );
+  }
+}

@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
 import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
 import { Button } from "../shared/Buttons";
@@ -39,7 +40,7 @@ export class AccountRow extends React.Component<IAccountRow> {
         </td>
         <td className={styles.select}>
           <Button layout="secondary" data-test-id="button-select" onClick={this.handleClick}>
-            Select
+            <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.row.select-button" />
           </Button>
         </td>
       </tr>
@@ -65,9 +66,15 @@ export const WalletLedgerChooserTableAdvanced: React.SFC<IWalletLedgerChooserTab
   <table className={cn(styles.table, "mt-3")}>
     <thead>
       <tr>
-        <th>Derivation path</th>
-        <th>Public wallet ID</th>
-        <th colSpan={2}>balance</th>
+        <th>
+          <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.derivation-path" />
+        </th>
+        <th>
+          <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.public-wallet" />
+        </th>
+        <th colSpan={2}>
+          <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.balance" />
+        </th>
       </tr>
     </thead>
     <tbody data-test-id="wallet-ledger-accounts-table-body">

@@ -41,7 +41,7 @@ export const Dashboard = () => (
         <MyWalletWidget className="h-100" />
       </Col>
     </Row>
-    <Row className="mt-4 mb-4">
+    <Row className="row-gutter-top mb-4">
       <Col lg={8} xs={12}>
         <NeufundKpiWidget
           date="12 Sep. 2018"
@@ -63,7 +63,10 @@ export const Dashboard = () => (
           className="h-100"
           isEditable={false}
           activeTab="news"
-          news={[{ path: "asdf", title: "asdf" }, { path: "asdf", title: "asdf" }]}
+          news={[
+            { title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta", url: "asdf asdfffa sad" },
+            { title: "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?", url: "asdf asdad as sdd" },
+          ]}
         />
       </Col>
     </Row>

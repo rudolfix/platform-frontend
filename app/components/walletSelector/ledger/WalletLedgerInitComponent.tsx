@@ -4,17 +4,17 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../store";
-import { withActionWatcher } from "../../utils/withActionWatcher";
-import { WarningAlert } from "../shared/WarningAlert";
+import { appConnect } from "../../../store";
+import { withActionWatcher } from "../../../utils/withActionWatcher";
+import { WarningAlert } from "../../shared/WarningAlert";
 
-import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.svg";
-import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
-import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
-import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
-import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
-import { LoadingIndicator } from "../shared/LoadingIndicator";
-import { LedgerHeader } from "./ledger/LedgerHeader";
+import * as imgStep1 from "../../../assets/img/wallet_selector/ledger_login_step_1.svg";
+import * as imgStep2 from "../../../assets/img/wallet_selector/ledger_login_step_2.svg";
+import * as imgStep3 from "../../../assets/img/wallet_selector/ledger_login_step_3.svg";
+import { ledgerWizardFlows } from "../../../modules/wallet-selector/ledger-wizard/flows";
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
+import { LedgerHeader } from "./LedgerHeader";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;

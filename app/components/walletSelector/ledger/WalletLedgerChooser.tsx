@@ -1,15 +1,15 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import { actions } from "../../modules/actions";
-import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
+import { actions } from "../../../modules/actions";
+import { ledgerWizardFlows } from "../../../modules/wallet-selector/ledger-wizard/flows";
 import {
   ILedgerAccount,
   selectHasPreviousPage,
-} from "../../modules/wallet-selector/ledger-wizard/reducer";
-import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction";
-import { withActionWatcher } from "../../utils/withActionWatcher";
+} from "../../../modules/wallet-selector/ledger-wizard/reducer";
+import { appConnect } from "../../../store";
+import { onEnterAction } from "../../../utils/OnEnterAction";
+import { withActionWatcher } from "../../../utils/withActionWatcher";
 import {
   IWalletLedgerChooserComponent,
   IWalletLedgerChooserComponentDispatchProps,

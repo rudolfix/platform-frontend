@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { tid } from "../../../test/testUtils";
-import { dummyIntl } from "../../utils/injectIntlHelpers.fixtures";
+import { tid } from "../../../../test/testUtils";
+import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
 
 describe("<WalletLedgerInitComponent />", () => {

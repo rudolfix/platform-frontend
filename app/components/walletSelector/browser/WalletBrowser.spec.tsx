@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { tid } from "../../../test/testUtils";
-import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { tid } from "../../../../test/testUtils";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { WalletBrowserComponent } from "./WalletBrowser";
 
 describe("<WalletBrowser />", () => {

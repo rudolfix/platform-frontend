@@ -3,20 +3,20 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { walletFlows } from "../../modules/wallet-selector/flows";
-import { appConnect } from "../../store";
-import { withActionWatcher } from "../../utils/withActionWatcher";
-import { HiResImage } from "../shared/HiResImage";
-import { HorizontalLine } from "../shared/HorizontalLine";
-import { LoadingIndicator } from "../shared/LoadingIndicator";
-import { StepCard } from "../shared/StepCard";
-import { WarningAlert } from "../shared/WarningAlert";
+import { walletFlows } from "../../../modules/wallet-selector/flows";
+import { appConnect } from "../../../store";
+import { withActionWatcher } from "../../../utils/withActionWatcher";
+import { HiResImage } from "../../shared/HiResImage";
+import { HorizontalLine } from "../../shared/HorizontalLine";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
+import { StepCard } from "../../shared/StepCard";
+import { WarningAlert } from "../../shared/WarningAlert";
 
-import * as browserIcon from "../../assets/img/wallet_selector/browser_icon.svg";
-import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
-import * as walletIcon from "../../assets/img/wallet_selector/wallet_icon.svg";
+import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.svg";
+import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
+import * as walletIcon from "../../../assets/img/wallet_selector/wallet_icon.svg";
 
-import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
+import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import * as styles from "./WalletBrowser.module.scss";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;

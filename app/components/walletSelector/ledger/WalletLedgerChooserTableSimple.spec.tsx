@@ -6,9 +6,9 @@ import { spy } from "sinon";
 import { AccountRow, WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 
 import BigNumber from "bignumber.js";
-import { wrapWithIntl } from "../../../test/integrationTestUtils";
-import { tid } from "../../../test/testUtils";
-import { Q18 } from "../../config/constants";
+import { wrapWithIntl } from "../../../../test/integrationTestUtils";
+import { tid } from "../../../../test/testUtils";
+import { Q18 } from "../../../config/constants";
 
 const weiBalance = new BigNumber(1.6495).mul(Q18).toString();
 const neuWeiBalance = new BigNumber(10.6495).mul(Q18).toString();

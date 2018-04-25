@@ -3,14 +3,14 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 
-import { WarningAlert } from "../shared/WarningAlert";
-import { LedgerHeader } from "./ledger/LedgerHeader";
+import { WarningAlert } from "../../shared/WarningAlert";
+import { LedgerHeader } from "./LedgerHeader";
 
-import * as logoChrome from "../../assets/img/wallet_selector/logo_chrome.svg";
-import * as logoFirefox from "../../assets/img/wallet_selector/logo_firefox.svg";
+import * as logoChrome from "../../../assets/img/wallet_selector/logo_chrome.svg";
+import * as logoFirefox from "../../../assets/img/wallet_selector/logo_firefox.svg";
 import * as styles from "./WalletLedgerNotSupportedComponent.module.scss";
 
-import * as arrowIcon from "../../assets/img/link_arrow.svg";
+import * as arrowIcon from "../../../assets/img/link_arrow.svg";
 
 interface IBrowserCard {
   name: string;

@@ -3,14 +3,13 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { WarningAlert } from "../shared/WarningAlert";
+import { LedgerHeader } from "./ledger/LedgerHeader";
 
 import * as logoChrome from "../../assets/img/wallet_selector/logo_chrome.svg";
 import * as logoFirefox from "../../assets/img/wallet_selector/logo_firefox.svg";
 import * as styles from "./WalletLedgerNotSupportedComponent.module.scss";
 
 import * as arrowIcon from "../../assets/img/link_arrow.svg";
-import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
-import { appConnect } from "../../store";
 
 interface IBrowserCard {
   name: string;
@@ -28,17 +27,11 @@ const BrowserCard: React.SFC<IBrowserCard> = ({ name, img, url }) => (
   </Col>
 );
 
-interface IStateProps {
-  isLoginRoute: boolean;
-}
-
-export const WalletLedgerNotSupportedComponent: React.SFC<IStateProps> = ({ isLoginRoute }) => (
+export const WalletLedgerNotSupported: React.SFC = () => (
   <>
     <Row>
       <Col>
-        <h1 className="text-center">
-          {isLoginRoute ? "Log in with Nano Ledger" : "Register your Nano Ledger"}
-        </h1>
+        <LedgerHeader />
       </Col>
     </Row>
     <Row className="justify-content-center">
@@ -52,9 +45,3 @@ export const WalletLedgerNotSupportedComponent: React.SFC<IStateProps> = ({ isLo
     </Row>
   </>
 );
-
-export const WalletLedgerNotSupported = appConnect({
-  stateToProps: s => ({
-    isLoginRoute: selectIsLoginRoute(s.router),
-  }),
-})(WalletLedgerNotSupportedComponent);

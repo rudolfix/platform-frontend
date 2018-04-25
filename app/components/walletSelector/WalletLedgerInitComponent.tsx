@@ -11,8 +11,8 @@ import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.
 import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
 import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
 import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
-import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { LedgerHeader } from "./ledger/LedgerHeader";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
@@ -34,12 +34,10 @@ const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
 interface IWalletLedgerInitComponentProps {
   isInitialConnectionInProgress: boolean;
   errorMessage?: string;
-  isLoginRoute: boolean;
 }
 
 export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps> = ({
   errorMessage,
-  isLoginRoute,
   isInitialConnectionInProgress,
 }) => {
   if (isInitialConnectionInProgress) {
@@ -49,9 +47,7 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
     <>
       <Row>
         <Col>
-          <h1 className="text-center">
-            {isLoginRoute ? "Log in with Nano Ledger" : "Register your Nano Ledger"}
-          </h1>
+          <LedgerHeader />
         </Col>
       </Row>
       {errorMessage && (
@@ -91,7 +87,6 @@ export const WalletLedgerInit = compose<React.SFC>(
     stateToProps: state => ({
       isInitialConnectionInProgress: state.ledgerWizardState.isInitialConnectionInProgress,
       errorMessage: state.ledgerWizardState.errorMsg,
-      isLoginRoute: selectIsLoginRoute(state.router),
     }),
   }),
 )(WalletLedgerInitComponent);

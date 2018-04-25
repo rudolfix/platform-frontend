@@ -9,11 +9,7 @@ describe("<WalletLedgerInitComponent />", () => {
   it("should render error message", () => {
     const errorMsg = "some error";
     const component = shallow(
-      <WalletLedgerInitComponent
-        errorMessage={errorMsg}
-        isLoginRoute
-        isInitialConnectionInProgress={false}
-      />,
+      <WalletLedgerInitComponent errorMessage={errorMsg} isInitialConnectionInProgress={false} />,
     );
     expect(component.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(errorMsg);
   });

@@ -45,32 +45,27 @@
   "investors-landing.register.buttonText": "Register",
   "investors-landing.register.cta": "Invest now in companies you like.",
   "kyc.panel.go-back": "BACK",
-  "kyc.personal.high-income":
-    "Is your income above 5.000 EUR monthly, or do you have more than 100k EUR of assets available?",
-  "kyc.personal.instant-id.description":
-    "You will be redirected to our verification partner IDNow in order to complete a fast video verification via your desktop or mobile camera. After the successfull verification, you can mmediately invest and deposit funds on the NEUFUND platform.",
+  "kyc.personal.high-income": "Is your income above 5.000 EUR monthly, or do you have more than 100k EUR of assets available?",
+  "kyc.personal.instant-id.description": "You will be redirected to our verification partner IDNow in order to complete a fast video verification via your desktop or mobile camera. After the successfull verification, you can mmediately invest and deposit funds on the NEUFUND platform.",
   "kyc.personal.instant-id.go-to-manual-verification": "Go to manual verification",
   "kyc.personal.instant-id.go-to-video-verification": "Go to video verification",
-  "kyc.personal.instant-id.manual-verification-description":
-    "Optionally, fill out the form and upload your documents.\nThis verfcation method will a take 24h processing time.",
+  "kyc.personal.instant-id.manual-verification-description": "Optionally, fill out the form and upload your documents.\nThis verfcation method will a take 24h processing time.",
   "kyc.personal.instant-id.title": "Start Instant Verification",
-  "kyc.personal.personal-information.answer":
-    "The following information is used to verify your identity, following know your client and anti money laundering policy. Your information is always kept confidential and need to be stored for at least 5 years. For more information you can read our privacy policy here.",
+  "kyc.personal.personal-information.answer": "The following information is used to verify your identity, following know your client and anti money laundering policy. Your information is always kept confidential and need to be stored for at least 5 years. For more information you can read our privacy policy here.",
   "kyc.personal.personal-information.question": "Why do we need this information?",
   "kyc.personal.politically-exposed.question": "Are you a politically exposed person?",
-  "kyc.personal.politically-exposed.tooltip":
-    "A Politically Exposed Person (PEP) is someone who, through their prominent position or influence, is more susceptible to being involved in bribery or corruption. In addition, any close business associate or family member of such a person will also be deemed as being a risk, and therefore could also be added to the PEP list.",
+  "kyc.personal.politically-exposed.tooltip": "A Politically Exposed Person (PEP) is someone who, through their prominent position or influence, is more susceptible to being involved in bribery or corruption. In addition, any close business associate or family member of such a person will also be deemed as being a risk, and therefore could also be added to the PEP list.",
   "kyc.personal.title": "Personal Details",
+  "kyc.personal.uploadId.description": "Please upload a colored copy of your passport or both sides of ID card for verification.",
+  "kyc.personal.uploadId.title": "Upload your ID",
   "kyc.request-state.accepted.description": "Your Kyc request was approved",
   "kyc.request-state.accepted.title": "Kyc request approved",
   "kyc.request-state.click-here-to-continue": "Click here to continue",
   "kyc.request-state.description": "Loading...",
   "kyc.request-state.go-to-settings": "Go to settings",
-  "kyc.request-state.outsourced.description":
-    "If you're not automatically forwarded to idNow, please click the link below to continue.",
+  "kyc.request-state.outsourced.description": "If you're not automatically forwarded to idNow, please click the link below to continue.",
   "kyc.request-state.outsourced.title": "Instant identification started",
-  "kyc.request-state.pending.description":
-    "We have received your request and are currently processing it. You can submit additional documents for your request here.",
+  "kyc.request-state.pending.description": "We have received your request and are currently processing it. You can submit additional documents for your request here.",
   "kyc.request-state.pending.title": "Kyc request received",
   "kyc.request-state.rejected.description": "Your Kyc request was rejected",
   "kyc.request-state.rejected.title": "Kyc request rejected",

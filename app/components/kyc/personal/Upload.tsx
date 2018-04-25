@@ -7,6 +7,7 @@ import { appConnect } from "../../../store";
 import { actions } from "../../../modules/actions";
 
 import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
@@ -27,14 +28,13 @@ interface IProps {
   layout: TKycRequestType;
 }
 
-export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps> = props => (
+export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDispatchProps>(
+  ({ intl: { formatIntlMessage }, ...props }) => (
   <KycPanel
     steps={5}
     currentStep={4}
-    title="Upload your ID"
-    description={
-      "Please upload a colored copy of your passport or both sides of ID card for verification."
-    }
+    title={formatIntlMessage("kyc.personal.uploadId.title")}
+    description={formatIntlMessage("kyc.personal.uploadId.description")}
     hasBackButton={true}
   >
     <MultiFileUpload
@@ -50,7 +50,7 @@ export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps
       </Button>
     </div>
   </KycPanel>
-);
+));
 
 export const KYCPersonalUpload = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

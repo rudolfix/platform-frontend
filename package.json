@@ -5,6 +5,10 @@
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.46",
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/preset-react": "^7.0.0-beta.46",
+    "@babel/preset-typescript": "^7.0.0-beta.46",
     "@types/bignumber.js": "^5.0.0",
     "@types/bluebird": "^3.5.1",
     "@types/chai": "^4.1.0",
@@ -25,6 +29,7 @@
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
     "@types/react-dropzone": "^4.2.0",
+    "@types/react-intl": "^2.3.7",
     "@types/react-redux": "^5.0.6",
     "@types/react-router-dom": "^4.2.2",
     "@types/react-router-redux": "^5.0.11",
@@ -42,6 +47,7 @@
     "@types/yup": "^0.24.0",
     "awesome-typescript-loader": "^3.4.1",
     "babel-loader": "^7.1.2",
+    "babel-plugin-react-intl-krzkaczor": "^2.4.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "clean-webpack-plugin": "^0.1.18",
@@ -55,6 +61,7 @@
     "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
     "ganache-cli": "^6.0.3",
+    "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
     "http-proxy-middleware": "^0.18.0",
     "ignore-styles": "^5.0.1",
@@ -64,6 +71,7 @@
     "mocha": "^4.1.0",
     "node-sass": "^4.7.2",
     "nyc": "^11.4.1",
+    "patch-package": "^5.1.1",
     "prettier": "^1.11.1",
     "raw-loader": "^0.5.1",
     "sass-lint": "^1.12.1",
@@ -86,9 +94,10 @@
     "webpack-merge": "^4.1.1"
   },
   "scripts": {
+    "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
+    "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
     "ganache": "./scripts/ganache-cli.sh",
-    "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,js,json,md,gql}'",
     "tslint": "tslint --project . --format stylish && tslint --project . --format stylish --config ./tslint.spec.json '**/*.spec.ts?(x)'",
@@ -106,7 +115,8 @@
     "test:fix": "yarn lint:fix && yarn test:browser && yarn test:node",
     "codecov": "codecov",
     "generate:contracts": "typechain --force --outDir app/lib/contracts './node_modules/neufund-contracts-tmp/abis/*.json'",
-    "prepare": "yarn generate:contracts"
+    "prepare": "patch-package && yarn generate:contracts",
+    "intl:extract": "./scripts/extract-intl-messages.sh"
   },
   "dependencies": {
     "bignumber.js": "^5.0.0",
@@ -140,6 +150,7 @@
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.8",
     "react-hot-loader": "^4.0.0-beta.17",
+    "react-intl": "^2.4.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",

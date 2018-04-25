@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -7,6 +7,7 @@ import { appConnect } from "../../../store";
 import { actions } from "../../../modules/actions";
 
 import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
@@ -27,29 +28,29 @@ interface IProps {
   layout: TKycRequestType;
 }
 
-export const KYCUploadComponent: React.SFC<IProps & IStateProps & IDispatchProps> = props => (
-  <KycPanel
-    steps={5}
-    currentStep={4}
-    title="Upload your ID"
-    description={
-      "Please upload a colored copy of your passport or both sides of ID card for verification."
-    }
-    hasBackButton={true}
-  >
-    <MultiFileUpload
-      onDropFile={props.onDropFile}
-      files={props.files}
-      fileUploading={props.fileUploading}
-      filesLoading={props.filesLoading}
-      layout="individual"
-    />
-    <div className="p-4 text-center">
-      <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>
-        Submit
-      </Button>
-    </div>
-  </KycPanel>
+export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDispatchProps>(
+  ({ intl: { formatIntlMessage }, ...props }) => (
+    <KycPanel
+      steps={5}
+      currentStep={4}
+      title={formatIntlMessage("kyc.personal.uploadId.title")}
+      description={formatIntlMessage("kyc.personal.uploadId.description")}
+      hasBackButton={true}
+    >
+      <MultiFileUpload
+        onDropFile={props.onDropFile}
+        files={props.files}
+        fileUploading={props.fileUploading}
+        filesLoading={props.filesLoading}
+        layout="individual"
+      />
+      <div className="p-4 text-center">
+        <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>
+          <FormattedMessage id="form.button.submit" />
+        </Button>
+      </div>
+    </KycPanel>
+  ),
 );
 
 export const KYCPersonalUpload = compose<React.SFC>(

@@ -1,45 +1,60 @@
-import { appRoutes } from "../AppRouter";
-
 import * as cn from "classnames";
 import { Col, Container, Row } from "reactstrap";
-
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
+import { appRoutes } from "../AppRouter";
 import { CenteredListWithTitle } from "../shared/CenterdListWithTitle";
 import { OffToOnCompany } from "./shared/OffToOnChainCompany";
 import { RegisterCta } from "./shared/RegisterCta";
+import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 
 import * as styles from "./LandingEto.module.scss";
 
-export const LandingEto: React.SFC = () => {
+export const LandingEto = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
   return (
     <div className={styles.landingEto}>
       <RegisterCta
-        text="Fundraise with equity token"
-        ctaText="Regiseter an eto"
+        text={formatIntlMessage("eto-landing.register.cta")}
+        ctaText={formatIntlMessage("eto-landing.register.buttonText")}
         ctaLink={appRoutes.registerEto}
       />
       <section className={cn(styles.landingContainer, "t-white")}>
         <Container>
           <Row>
             <Col>
-              <h2>Why fundraise with equity token?</h2>
+              <h2>
+                <FormattedMessage id={"eto-landing.why-fundraise.header"} />
+              </h2>
               <Row>
                 <CenteredListWithTitle
-                  title="Quick access to capital"
-                  list={["One single pitch", "No roadshows", "Faster fundraising"]}
+                  title={formatIntlMessage("eto-landing.why-fundraise.section1.title")}
+                  list={[
+                    formatIntlMessage("eto-landing.why-fundraise.section1.text1"),
+                    formatIntlMessage("eto-landing.why-fundraise.section1.text2"),
+                    formatIntlMessage("eto-landing.why-fundraise.section1.text3"),
+                  ]}
                 />
                 <CenteredListWithTitle
-                  title="Reduced costs"
-                  list={["Decreased amount of intermediaries", "Less paper work"]}
+                  title={formatIntlMessage("eto-landing.why-fundraise.section2.title")}
+                  list={[
+                    formatIntlMessage("eto-landing.why-fundraise.section2.text1"),
+                    formatIntlMessage("eto-landing.why-fundraise.section2.text2"),
+                  ]}
                 />
                 <CenteredListWithTitle
-                  title="Instant capitalisation"
-                  list={["Instant asset liquidation on secondary markets", "Asset flexibility"]}
+                  title={formatIntlMessage("eto-landing.why-fundraise.section3.title")}
+                  list={[
+                    formatIntlMessage("eto-landing.why-fundraise.section3.text1"),
+                    formatIntlMessage("eto-landing.why-fundraise.section3.text2"),
+                  ]}
                 />
                 <CenteredListWithTitle
-                  title="Efficient investment"
-                  list={["Symmetry of information", "Full alignment of investors and companies"]}
+                  title={formatIntlMessage("eto-landing.why-fundraise.section4.title")}
+                  list={[
+                    formatIntlMessage("eto-landing.why-fundraise.section4.text1"),
+                    formatIntlMessage("eto-landing.why-fundraise.section4.text2"),
+                  ]}
                 />
               </Row>
             </Col>
@@ -50,38 +65,34 @@ export const LandingEto: React.SFC = () => {
         <Container>
           <Row>
             <Col>
-              <h2>6 steps to ETO your company</h2>
+              <h2>
+                <FormattedMessage id="eto-landing.steps-to-eto.title" />
+              </h2>
               <OffToOnCompany
                 steps={[
                   {
-                    title: "register",
-                    description: `your company on the
-                    Neufund platform`,
+                    title: formatIntlMessage("eto-landing.steps-to-eto.step1.title"),
+                    description: formatIntlMessage("eto-landing.steps-to-eto.step1.description"),
                   },
                   {
-                    title: "specify",
-                    description: `the terms of your offer
-                    for investors`,
+                    title: formatIntlMessage("eto-landing.steps-to-eto.step2.title"),
+                    description: formatIntlMessage("eto-landing.steps-to-eto.step2.description"),
                   },
                   {
-                    title: "raise",
-                    description: `funds in ETH
-                    and/or EUR`,
+                    title: formatIntlMessage("eto-landing.steps-to-eto.step3.title"),
+                    description: formatIntlMessage("eto-landing.steps-to-eto.step3.description"),
                   },
                   {
-                    title: "close",
-                    description: `the financing round`,
+                    title: formatIntlMessage("eto-landing.steps-to-eto.step4.title"),
+                    description: formatIntlMessage("eto-landing.steps-to-eto.step4.description"),
                   },
                   {
-                    title: "govern",
-                    description: `your organisation
-                    after the ETO`,
+                    title: formatIntlMessage("eto-landing.steps-to-eto.step5.title"),
+                    description: formatIntlMessage("eto-landing.steps-to-eto.step5.description"),
                   },
                   {
-                    title: `raise follow-on
-                    rounds`,
-                    description: `by issuing new
-                    equity tokens`,
+                    title: formatIntlMessage("eto-landing.steps-to-eto.step6.title"),
+                    description: formatIntlMessage("eto-landing.steps-to-eto.step6.description"),
                   },
                 ]}
               />
@@ -91,4 +102,4 @@ export const LandingEto: React.SFC = () => {
       </section>
     </div>
   );
-};
+});

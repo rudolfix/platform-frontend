@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { compact } from "lodash";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import { actions } from "../../modules/actions";
@@ -79,7 +79,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
           <Row className="mt-5">
             <Col xs={12} sm={6}>
               <span>
-                <FormattedHTMLMessage id="wallet-selector.help-link" />
+                <FormattedMessage id="wallet-selector.help-link" />
                 <Link to={appRoutes.recover}>
                   <FormattedMessage id="wallet-selector.help-link.label" />
                 </Link>

@@ -7,7 +7,9 @@ We use `react-intl` to provide intl feature in to Neufund Platform app.
 All strings used by the app need to be statically extractable. We use `babel@7` (it parses
 typescript code) + enhanced `babel-plugin-react-intl` to allow so. We extract them and build default
 `intl/locales/en-en.json` file based on found string. If you want to modify english version (default
-translation) just do so in `en-en.json` file
+translation) just do so in `en-en.json` file.
+Strings are wrapped in React.Fragment by default, because of that if you want to use
+`<FormattedHTMLMessage>` then you have to add `tagName="span"` prop to it.
 
 To make you code extractable you need to:
 

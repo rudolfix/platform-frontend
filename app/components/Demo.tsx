@@ -1,11 +1,9 @@
 import * as React from "react";
 import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap";
 
-import * as styles from "./Demo.module.scss";
-
-import { InvestmentPreview } from "./dashboard/investmentOportunities/InvestmentPreview";
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
+import { EtoProgressStepper } from "./eto/shared/EtoProgressStepper";
 import { TagsEditorWidget } from "./eto/shared/TagsEditor";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
@@ -16,6 +14,7 @@ import { Button } from "./shared/Buttons";
 import { ChartBars } from "./shared/charts/ChartBars";
 import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
 import { ChartPie } from "./shared/charts/ChartPie";
+import { InvestmentPreview } from "./shared/InvestmentPreview";
 import { Money } from "./shared/Money";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
 import { PanelDark } from "./shared/PanelDark";
@@ -25,13 +24,15 @@ import { SectionHeader } from "./shared/SectionHeader";
 import { SocialProfilesEditor } from "./shared/SocialProfilesEditor";
 import { Tabs } from "./shared/Tabs";
 import { Tag } from "./shared/Tag";
+import { WalletBalance } from "./wallet/wallet-balance/WalletBalance";
 
 import * as facebookIcon from "../assets/img/inline_icons/social_facebook.svg";
 import * as linkedinIcon from "../assets/img/inline_icons/social_linkedin.svg";
 import * as mediumIcon from "../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../assets/img/inline_icons/social_telegram.svg";
-import { EtoProgressStepper } from "./eto/shared/EtoProgressStepper";
+
+import * as styles from "./Demo.module.scss";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -432,6 +433,99 @@ export const Demo: React.SFC = () => (
           alert("You clicked here ha");
         }}
       />
+    </Container>
+    <Container>
+      <Row>
+        <Col xs={12}>
+          <WalletBalance
+            isLocked={true}
+            className="h-100"
+            headerText="Your wallet balance | LOADED & LOCKED"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={true}
+            className="h-100"
+            headerText="Your wallet balance | LOADED & LOCKED"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={true}
+            className="h-100"
+            headerText="Your wallet balance | LOADED & LOCKED & EMPTY"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "0",
+              euroTokenEuroAmount: "0",
+              ethAmount: "0",
+              ethEuroAmount: "0",
+              totalEuroAmount: "0",
+            }}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={false}
+            className="h-100"
+            headerText="LOADED & UNLOCKED & EMPTY"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={false}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+        <Col xs={12} md={6}>
+          <WalletBalance
+            isLocked={false}
+            className="h-100"
+            headerText="Loading"
+            depositEuroTokenFunds={() => {}}
+            depositEthFunds={() => {}}
+            isLoading={true}
+            data={{
+              euroTokenAmount: "100000000000000000000000000",
+              euroTokenEuroAmount: "100000000000000000000000000",
+              ethAmount: "100000000000000000000000000",
+              ethEuroAmount: "100000000000000000000000000",
+              totalEuroAmount: "100000000000000000000000000",
+            }}
+          />
+        </Col>
+      </Row>
     </Container>
   </div>
 );

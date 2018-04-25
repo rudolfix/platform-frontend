@@ -92,6 +92,9 @@ $_active-color: lighten($_hover-color, 20%);
     }
   }
 
+  &:global(.wide) {
+    min-width: px-to-rem(220px);
+  }
 
   &:global {
     // themes

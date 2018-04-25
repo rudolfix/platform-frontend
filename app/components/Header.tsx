@@ -9,9 +9,11 @@ import { appConnect } from "../store";
 import { appRoutes } from "./AppRouter";
 import * as styles from "./Header.module.scss";
 import { Button } from "./shared/Buttons";
+import { loginWalletRoutes } from "./walletSelector/walletRoutes";
 
 interface IStateProps {
   isAuthorized: boolean;
+  location: any;
 }
 
 interface IDispatchProps {
@@ -23,7 +25,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
     <Link to={appRoutes.root} className="navbar-brand">
       <img src={logo} className={styles.logo} />
     </Link>
-    {props.isAuthorized && (
+    {props.isAuthorized ? (
       <Button
         layout="secondary"
         theme="t-white"
@@ -32,6 +34,18 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       >
         LOGOUT
       </Button>
+    ) : (
+      <div>
+        {props.location === appRoutes.etoLanding ? (
+          <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
+            <Button theme="t-white">LOGIN</Button>
+          </Link>
+        ) : (
+          <Link data-test-id="Header-login" to={loginWalletRoutes.light}>
+            <Button theme="t-white">LOGIN</Button>
+          </Link>
+        )}
+      </div>
     )}
   </Navbar>
 );
@@ -39,6 +53,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
 export const Header = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
+    location: s.router.location!.pathname,
   }),
   dispatchToProps: dispatch => ({
     logout: () => {

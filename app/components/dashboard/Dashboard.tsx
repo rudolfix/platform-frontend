@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { InvestmentPreview } from "../shared/InvestmentPreview";
@@ -58,7 +59,7 @@ export const Dashboard = () => (
       </Col>
     </Row>
     <SectionHeader>
-      investment opportunities
+      <FormattedMessage id="dashboard.start-page.investment-opportunities" />
       <Tag className="ml-3" theme="green" layout="ghost" size="small" text="1 new" />
     </SectionHeader>
     <Row className="py-4">

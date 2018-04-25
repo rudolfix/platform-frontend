@@ -1,4 +1,7 @@
 {
+  "dashboard.my-wallet-widget.hidden-wallet-redirect-button": "Manage",
+  "dashboard.my-wallet-widget.main-wallet-redirect-button": "Manage Wallet",
+  "dashboard.my-wallet-widget.total": "TOTAL",
   "dashboard.neufund-kpi-widget-chart2.title": "NEU - Platform Portfolio Value",
   "dashboard.neufund-kpi-widget.chart.button": "View All >",
   "dashboard.neufund-kpi-widget.chart.title": "NEU Distribution among token holders",
@@ -11,6 +14,7 @@
   "dashboard.neufund-kpi-widget.label5": "Number of ETOs",
   "dashboard.neufund-kpi-widget.label6": "total capital deployed",
   "dashboard.neufund-kpi-widget.list.label": "Total Proceeds<br />distributed to<br />NEU holders",
+  "dashboard.start-page.investment-opportunities": "investment opportunities",
   "eto-landing.register.buttonText": "Fundraise with equity token",
   "eto-landing.register.cta": "Register an eto",
   "eto-landing.steps-to-eto.step1.description": "your company on the\nNeufund platform",

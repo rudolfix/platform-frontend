@@ -36,8 +36,11 @@
   "wallet-selector.help-link": "Having troubles with login?",
   "wallet-selector.help-link.label": "Help",
   "wallet-selector.login": "Login",
+  "wallet-selector.neuwallet.login-instructions":
+    "In order to login to your NEUFUND wallet, please click on the link in your email with the subject \"Welcome to Neufund\"",
   "wallet-selector.neuwallet.login-link-text": "Do you have an account?",
   "wallet-selector.neuwallet.register-link-text": "You don't have an account?",
+  "wallet-selector.neuwallet.welcome": "Welcome back!",
   "wallet-selector.register": "Register",
   "wallet-selector.tabs.browser-wallet": "use existing wallet",
   "wallet-selector.tabs.ledger": "use nano ledger",

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import {
   selectLightWalletEmailFromQueryString,
@@ -15,7 +16,9 @@ interface IStateProps {
 export const LoginLightWalletComponent: React.SFC<IStateProps> = ({ email }) => (
   <Row className="justify-content-sm-center mb-5">
     <Col xs="12" md="5" className="align-self-end">
-      <h1 className="text-center mb-4">Welcome back!</h1>
+      <h1 className="text-center mb-4">
+        <FormattedMessage id="wallet-selector.neuwallet.welcome" />
+      </h1>
 
       {email ? <LoginWithEmailLightWallet email={email} /> : <MissingEmailLightWallet />}
     </Col>

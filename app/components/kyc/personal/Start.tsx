@@ -113,9 +113,9 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   },
 })(KYCForm);
 
-export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
+export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage }, ...props }) => {
   return (
-    <KycPanel steps={5} currentStep={2} title="Personal Details" hasBackButton={true}>
+    <KycPanel steps={5} currentStep={2} title={formatIntlMessage("kyc.personal.title")} hasBackButton={true}>
       <div className="pb-4">
         <h6><FormattedMessage id={"kyc.personal.personal-information.question"} /></h6>
         <FormattedMessage id={"kyc.personal.personal-information.answer"} />
@@ -123,7 +123,7 @@ export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
       <KYCEnhancedForm {...props} />
     </KycPanel>
   );
-};
+});
 
 export const KYCPersonalStart = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

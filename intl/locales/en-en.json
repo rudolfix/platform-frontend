@@ -1,5 +1,5 @@
 {
-  "investors-landing.cta": "test",
-  "investors-landing.cta-register": "register",
-  "investors-landing.header": "Investment opportunities"
+  "investors-landing.header": "Investment opportunities",
+  "investors-landing.register.buttonText": "Register",
+  "investors-landing.register.cta": "Invest now in companies you like."
 }

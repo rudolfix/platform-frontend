@@ -14,8 +14,8 @@ export const Landing = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
   return (
     <div className={styles.landing}>
       <RegisterCta
-        text={formatIntlMessage("investors-landing.cta")}
-        ctaText={formatIntlMessage("investors-landing.cta-register")}
+        text={formatIntlMessage("investors-landing.register.cta")}
+        ctaText={formatIntlMessage("investors-landing.register.buttonText")}
         ctaLink={appRoutes.register}
       />
       <div className={styles.landingContainer}>

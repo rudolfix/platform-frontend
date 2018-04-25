@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -46,7 +46,7 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
     />
     <div className="p-4 text-center">
       <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>
-        Submit
+        <FormattedMessage id="form.button.submit" />
       </Button>
     </div>
   </KycPanel>

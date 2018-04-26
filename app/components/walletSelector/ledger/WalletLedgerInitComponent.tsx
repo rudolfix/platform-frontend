@@ -106,7 +106,7 @@ export class WalletLedgerInitComponent extends React.Component<
           onClick={this.handleShowSupport}
         >
           <h5 className={this.state.showLedgerBrowserSupport ? "mt-3 mb-4" : "mt-3"}>
-            Ensure you enable "Browser support" on your ledger
+            {this.props.intl.formatIntlMessage("wallet-selector.ledger.start.browser-support")}
             <i
               className={cn(
                 "fa fa-lg ml-3",

@@ -83,7 +83,7 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
       <br />
       <div className="p-4 text-center">
         <Button type="submit" disabled={!props.isValid || props.loadingData}>
-          <FormattedMessage id="form.button.save" />,
+          <FormattedMessage id="form.button.save" />
         </Button>
       </div>
     </Form>

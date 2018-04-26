@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  ComponentConstructor,
   DateSource,
   FormattedDate,
   FormattedMessage,
@@ -38,8 +39,8 @@ export interface IIntlProps {
  * Simplifies interface of injectIntl. We should use exclusively these helpers!
  */
 export const injectIntlHelpers = <OwnProps extends {}>(
-  component: React.SFC<OwnProps & IIntlProps>,
-): React.SFC<OwnProps> => {
+  Component: ComponentConstructor<OwnProps & IIntlProps>,
+): ComponentConstructor<OwnProps> => {
   return injectIntl<any>(({ intl, ...props }) => {
     const newIntl: IIntlHelpers = {
       ...intl,
@@ -48,6 +49,6 @@ export const injectIntlHelpers = <OwnProps extends {}>(
         intl.formatMessage({ id }, values),
     };
 
-    return component({ intl: newIntl, ...props });
+    return <Component intl={newIntl} {...props} />;
   }) as any;
 };

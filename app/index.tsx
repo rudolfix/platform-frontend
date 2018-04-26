@@ -27,6 +27,7 @@ import { rootSaga } from "./modules/sagas";
 import { IAppState, reducers } from "./store";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
+import { compact } from "lodash";
 import * as languageEn from "../intl/locales/en-en.json";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
@@ -72,13 +73,19 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
   const sagaMiddleware = createSagaMiddleware({ context });
 
   const middleware = applyMiddleware(
-    routerMiddleware(history),
-    createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
-    logger,
-    sagaMiddleware,
+    ...compact([
+      routerMiddleware(history),
+      createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
+      logger,
+      sagaMiddleware,
+    ]),
   );
 
-  const store = createStore(reducers, composeWithDevTools(middleware));
+  const store: Store<IAppState> =
+    process.env.NODE_ENV === "production"
+      ? createStore(reducers)
+      : createStore(reducers, composeWithDevTools(middleware));
+
   // we have to create the dependencies here, because getState and dispatch get
   // injected in the middleware step above, maybe change this later
   context.deps = createGlobalDependencies(container);

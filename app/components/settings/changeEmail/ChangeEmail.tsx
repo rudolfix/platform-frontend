@@ -2,10 +2,11 @@ import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
+import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { FormField } from "../../shared/forms/formField/FormField";
 import { PanelDark } from "../../shared/PanelDark";
@@ -46,29 +47,33 @@ const SettingsEnhancedChangeEmailForm = withFormik<IDispatchProps, IFormValues>(
   },
 })(ChangeEmailForm);
 
-export const ChangeEmailComponent = injectIntlHelpers<IDispatchProps>(
-  ({ intl: { formatIntlMessage }, ...props }) => {
-    return (
-      <PanelDark headerText={formatIntlMessage("settings.change-email-component.header")}>
-        <Row>
-          <Col xs={6} className="mt-3">
-            <p data-test-id="paragraph-section">
-              <FormattedMessage id="settings.change-email-component.text" />
-            </p>
-          </Col>
-          <Col className="mt-3 mb-4" data-test-id="form-section">
-            <SettingsEnhancedChangeEmailForm {...props} />
-          </Col>
-        </Row>
-      </PanelDark>
-    );
-  },
-);
+export const ChangeEmailComponent: React.SFC<IDispatchProps & IIntlProps> = ({
+  intl: { formatIntlMessage },
+  ...props
+}) => {
+  return (
+    <PanelDark headerText={formatIntlMessage("settings.change-email-component.header")}>
+      <Row>
+        <Col xs={6} className="mt-3">
+          <p data-test-id="paragraph-section">
+            <FormattedMessage id="settings.change-email-component.text" />
+          </p>
+        </Col>
+        <Col className="mt-3 mb-4" data-test-id="form-section">
+          <SettingsEnhancedChangeEmailForm {...props} />
+        </Col>
+      </Row>
+    </PanelDark>
+  );
+};
 
-export const ChangeEmail = appConnect<IDispatchProps>({
-  dispatchToProps: dispatch => ({
-    submitForm: (values: IFormValues) => {
-      dispatch(actions.settings.addNewEmail(values.email));
-    },
+export const ChangeEmail = compose<React.SFC>(
+  appConnect<IDispatchProps>({
+    dispatchToProps: dispatch => ({
+      submitForm: (values: IFormValues) => {
+        dispatch(actions.settings.addNewEmail(values.email));
+      },
+    }),
   }),
-})(ChangeEmailComponent);
+  injectIntlHelpers,
+)(ChangeEmailComponent);

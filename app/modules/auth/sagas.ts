@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { call, Effect, fork } from "redux-saga/effects";
+import { call, Effect, fork, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser, IUserInput, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
@@ -12,6 +12,7 @@ import {
   selectLightWalletEmailFromQueryString,
 } from "../web3/reducer";
 import { WalletType } from "../web3/types";
+import { IVerifyEmailUser } from "./../../lib/api/users/interfaces";
 import { IAppState } from "./../../store";
 import { selectActivationCodeFromQueryString } from "./../web3/reducer";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
@@ -53,17 +54,14 @@ export async function loadOrCreateUserPromise(
   }
 }
 
-export async function verifyUserEmailPromise({
-  apiUserService,
-  getState,
-  notificationCenter,
-}: TGlobalDependencies): Promise<void> {
-  const state = getState();
-  const userCode = selectActivationCodeFromQueryString(state.router);
-  const urlEmail = selectLightWalletEmailFromQueryString(state.router);
-  const verifiedEmail = selectVerifiedUserEmail(state.auth);
+export async function verifyUserEmailPromise(
+  { apiUserService, notificationCenter }: TGlobalDependencies,
+  userCode: IVerifyEmailUser,
+  urlEmail: string,
+  verifiedEmail: string,
+): Promise<void> {
   if (urlEmail === verifiedEmail) {
-    notificationCenter.error("Your email is already verified");
+    notificationCenter.info("Your email is already verified");
     return;
   }
   if (!userCode) return;
@@ -141,7 +139,10 @@ function* signInUser(
 }
 
 function* verifyUserEmail(): Iterator<any> {
-  yield neuCall(verifyUserEmailPromise);
+  const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
+  const urlEmail = yield select((s: IAppState) => selectLightWalletEmailFromQueryString(s.router));
+  const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
+  yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);
   yield effects.put(actions.routing.goHome());
 }

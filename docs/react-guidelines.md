@@ -74,7 +74,7 @@ becomes:
 
 ```javascript
 class Component extends React.Component<IProps, IState> {
-  private state = {
+  state = {
     value: 0,
   };
 

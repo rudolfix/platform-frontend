@@ -79,7 +79,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
           <Row className="mt-5">
             <Col xs={12} sm={6}>
               <span>
-                <FormattedMessage id="wallet-selector.help-link" />
+                <FormattedMessage id="wallet-selector.help-link" />{" "}
                 <Link to={appRoutes.recover}>
                   <FormattedMessage id="wallet-selector.help-link.label" />
                 </Link>

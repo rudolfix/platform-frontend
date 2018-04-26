@@ -1,18 +1,20 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../store";
-import { withActionWatcher } from "../../utils/withActionWatcher";
-import { WarningAlert } from "../shared/WarningAlert";
+import { appConnect } from "../../../store";
+import { withActionWatcher } from "../../../utils/withActionWatcher";
+import { WarningAlert } from "../../shared/WarningAlert";
 
-import * as imgStep1 from "../../assets/img/wallet_selector/ledger_login_step_1.svg";
-import * as imgStep2 from "../../assets/img/wallet_selector/ledger_login_step_2.svg";
-import * as imgStep3 from "../../assets/img/wallet_selector/ledger_login_step_3.svg";
-import { ledgerWizardFlows } from "../../modules/wallet-selector/ledger-wizard/flows";
-import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
-import { LoadingIndicator } from "../shared/LoadingIndicator";
+import * as imgStep1 from "../../../assets/img/wallet_selector/ledger_login_step_1.svg";
+import * as imgStep2 from "../../../assets/img/wallet_selector/ledger_login_step_2.svg";
+import * as imgStep3 from "../../../assets/img/wallet_selector/ledger_login_step_3.svg";
+import { ledgerWizardFlows } from "../../../modules/wallet-selector/ledger-wizard/flows";
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
+import { LedgerHeader } from "./LedgerHeader";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
@@ -34,13 +36,12 @@ const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
 interface IWalletLedgerInitComponentProps {
   isInitialConnectionInProgress: boolean;
   errorMessage?: string;
-  isLoginRoute: boolean;
 }
 
-export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps> = ({
+export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps & IIntlProps> = ({
   errorMessage,
-  isLoginRoute,
   isInitialConnectionInProgress,
+  intl: { formatIntlMessage },
 }) => {
   if (isInitialConnectionInProgress) {
     return <LoadingIndicator />;
@@ -49,33 +50,32 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
     <>
       <Row>
         <Col>
-          <h1 className="text-center">
-            {isLoginRoute ? "Log in with Nano Ledger" : "Register your Nano Ledger"}
-          </h1>
+          <LedgerHeader />
         </Col>
       </Row>
       {errorMessage && (
         <Row className="justify-content-center">
           <WarningAlert className="my-4">
-            Connection status: <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
+            <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
+            <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
           </WarningAlert>
         </Row>
       )}
       <Row>
         <InitStep
-          header="1. Connect to USB"
+          header={formatIntlMessage("wallet-selector.ledger.start.step1.header")}
           img={imgStep1}
-          desc="Connect your Ledger Nano into USB and prepare your PIN Code for the device"
+          desc={formatIntlMessage("wallet-selector.ledger.start.step1.description")}
         />
         <InitStep
-          header="2. Enter Pin Code"
+          header={formatIntlMessage("wallet-selector.ledger.start.step2.header")}
           img={imgStep2}
-          desc="Use left and right key to enter numbers and press 2 keys at the same time to confirm the code"
+          desc={formatIntlMessage("wallet-selector.ledger.start.step2.description")}
         />
         <InitStep
-          header="3. Pick Ethereum"
+          header={formatIntlMessage("wallet-selector.ledger.start.step3.header")}
           img={imgStep3}
-          desc="Click on arrows to scroll  apps and pick Ethereum icon. Press 2 keys at the same time to confirm"
+          desc={formatIntlMessage("wallet-selector.ledger.start.step3.description")}
         />
       </Row>
     </>
@@ -91,7 +91,7 @@ export const WalletLedgerInit = compose<React.SFC>(
     stateToProps: state => ({
       isInitialConnectionInProgress: state.ledgerWizardState.isInitialConnectionInProgress,
       errorMessage: state.ledgerWizardState.errorMsg,
-      isLoginRoute: selectIsLoginRoute(state.router),
     }),
   }),
+  injectIntlHelpers,
 )(WalletLedgerInitComponent);

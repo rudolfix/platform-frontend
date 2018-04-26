@@ -1,16 +1,16 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 
-import { WarningAlert } from "../shared/WarningAlert";
+import { WarningAlert } from "../../shared/WarningAlert";
+import { LedgerHeader } from "./LedgerHeader";
 
-import * as logoChrome from "../../assets/img/wallet_selector/logo_chrome.svg";
-import * as logoFirefox from "../../assets/img/wallet_selector/logo_firefox.svg";
+import * as logoChrome from "../../../assets/img/wallet_selector/logo_chrome.svg";
+import * as logoFirefox from "../../../assets/img/wallet_selector/logo_firefox.svg";
 import * as styles from "./WalletLedgerNotSupportedComponent.module.scss";
 
-import * as arrowIcon from "../../assets/img/link_arrow.svg";
-import { selectIsLoginRoute } from "../../modules/wallet-selector/selectors";
-import { appConnect } from "../../store";
+import * as arrowIcon from "../../../assets/img/link_arrow.svg";
 
 interface IBrowserCard {
   name: string;
@@ -28,22 +28,16 @@ const BrowserCard: React.SFC<IBrowserCard> = ({ name, img, url }) => (
   </Col>
 );
 
-interface IStateProps {
-  isLoginRoute: boolean;
-}
-
-export const WalletLedgerNotSupportedComponent: React.SFC<IStateProps> = ({ isLoginRoute }) => (
+export const WalletLedgerNotSupported: React.SFC = () => (
   <>
     <Row>
       <Col>
-        <h1 className="text-center">
-          {isLoginRoute ? "Log in with Nano Ledger" : "Register your Nano Ledger"}
-        </h1>
+        <LedgerHeader />
       </Col>
     </Row>
     <Row className="justify-content-center">
       <WarningAlert className="my-5">
-        Your browser does not support NeuKey. For security reasons we require a recent version of:
+        <FormattedMessage id="wallet-selector.ledger-not-supported" />
       </WarningAlert>
     </Row>
     <Row className="justify-content-center text-center">
@@ -52,9 +46,3 @@ export const WalletLedgerNotSupportedComponent: React.SFC<IStateProps> = ({ isLo
     </Row>
   </>
 );
-
-export const WalletLedgerNotSupported = appConnect({
-  stateToProps: s => ({
-    isLoginRoute: selectIsLoginRoute(s.router),
-  }),
-})(WalletLedgerNotSupportedComponent);

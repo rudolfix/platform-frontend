@@ -1,4 +1,4 @@
-@import "../../styles/neufund-theme";
+@import "../../../styles/neufund-theme";
 
 .table {
   width: 100%;
@@ -60,11 +60,11 @@
     }
 
     .eth {
-      background-image: url("../../assets/img/eth_icon.svg");
+      background-image: url("../../../assets/img/eth_icon.svg");
     }
 
     .neu {
-      background-image: url("../../assets/img/neu_icon.svg");
+      background-image: url("../../../assets/img/neu_icon.svg");
     }
   }
 

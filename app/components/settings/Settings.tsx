@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 
 import { selectIsLightWallet } from "../../modules/web3/reducer";
@@ -18,7 +19,9 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
   <LayoutAuthorized>
     <Row className="row-gutter-top">
       <Col xs={12}>
-        <SectionHeader> Security Settings </SectionHeader>
+        <SectionHeader>
+          <FormattedMessage id="settings.security-settings.title" />
+        </SectionHeader>
       </Col>
       <Col lg={4} xs={12}>
         <VerifyEmailWidget />
@@ -34,7 +37,9 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
         <KycStatusWidget />
       </Col>
       <Col xs={12}>
-        <SectionHeader> Personal Settings </SectionHeader>
+        <SectionHeader>
+          <FormattedMessage id="settings.personal-settings.title" />
+        </SectionHeader>
       </Col>
       <Col lg={8} xs={12}>
         <ChangeEmail />

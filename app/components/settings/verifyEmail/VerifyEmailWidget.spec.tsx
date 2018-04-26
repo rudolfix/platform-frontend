@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import { tid } from "../../../../test/testUtils";
+import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { VerifyEmailWidgetComponent } from "./VerifyEmailWidget";
 
 describe("<VerifyEmailWidgetComponent />", () => {
@@ -9,8 +10,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={true}
-        isUserEmailVarified={true}
+        isUserEmailVerified={true}
         resendEmail={() => {}}
+        intl={dummyIntl}
       />,
     );
     expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(0);
@@ -21,8 +23,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={false}
-        isUserEmailVarified={false}
+        isUserEmailVerified={false}
         resendEmail={() => {}}
+        intl={dummyIntl}
       />,
     );
     expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(1);
@@ -33,8 +36,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={false}
-        isUserEmailVarified={false}
+        isUserEmailVerified={false}
         resendEmail={() => {}}
+        intl={dummyIntl}
       />,
     );
     expect(MyNeuWidgetComponent.find(tid("resend-link"))).to.have.length(0);
@@ -44,8 +48,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={true}
-        isUserEmailVarified={false}
+        isUserEmailVerified={false}
         resendEmail={() => {}}
+        intl={dummyIntl}
       />,
     );
     expect(MyNeuWidgetComponent.find(tid("resend-link"))).to.have.length(1);

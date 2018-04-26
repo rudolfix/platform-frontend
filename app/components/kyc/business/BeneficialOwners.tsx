@@ -31,7 +31,7 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   <div>
     <HorizontalLine className={cn("mt-2", "mb-2")} />
     <h4 className={styles.sectionTitle}>
-    <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />
+      <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />
     </h4>
     <Accordion>
       {props.beneficialOwners.map(

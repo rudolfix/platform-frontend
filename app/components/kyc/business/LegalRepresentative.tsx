@@ -58,36 +58,37 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const KYCForm  = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
+const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
-  <Form>
-    <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
-    <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
-    <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
+    <Form>
+      <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
+      <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
+      <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
 
-    <FormField label={formatIntlMessage("form.label.address")} name="street" />
-    <Row>
-      <Col xs={12} md={6} lg={8}>
-        <FormField label={formatIntlMessage("form.label.city")} name="city" />
-      </Col>
-      <Col xs={12} md={6} lg={4}>
-        <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
-      </Col>
-    </Row>
-    <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
-    <FormSelectField
-      values={PEP_VALUES}
-      label={formatIntlMessage("kyc.business.legal-representative.pep")}
-      name="isPoliticallyExposed"
-    />
-    <br />
-    <div className="p-4 text-center">
-      <Button type="submit" disabled={!props.isValid || props.loadingData}>
-      <FormattedMessage id="form.button.save" />,
-      </Button>
-    </div>
-  </Form>
-));
+      <FormField label={formatIntlMessage("form.label.address")} name="street" />
+      <Row>
+        <Col xs={12} md={6} lg={8}>
+          <FormField label={formatIntlMessage("form.label.city")} name="city" />
+        </Col>
+        <Col xs={12} md={6} lg={4}>
+          <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
+        </Col>
+      </Row>
+      <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
+      <FormSelectField
+        values={PEP_VALUES}
+        label={formatIntlMessage("kyc.business.legal-representative.pep")}
+        name="isPoliticallyExposed"
+      />
+      <br />
+      <div className="p-4 text-center">
+        <Button type="submit" disabled={!props.isValid || props.loadingData}>
+          <FormattedMessage id="form.button.save" />,
+        </Button>
+      </div>
+    </Form>
+  ),
+);
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   validationSchema: KycLegalRepresentativeSchemaRequired,
@@ -121,30 +122,31 @@ const BeneficialOwners: React.SFC<IProps & { lrDataValid: boolean }> = props => 
 
 export const KycLegalRepresentativeComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => {
-  const lrDataValid = KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative);
-  return (
-    <KycPanel
-      steps={5}
-      currentStep={3}
-      title={formatIntlMessage("kyc.business.legal-representative.title")}
-      description={formatIntlMessage("kyc.business.legal-representative.description")}
-      hasBackButton={true}
-    >
-      <KYCEnhancedForm {...props} />
-      <FileUploadList {...props} lrDataValid={lrDataValid} />
-      <BeneficialOwners {...props} lrDataValid={lrDataValid} />
-      <div className="p-4 text-center">
-        <Button
-          type="submit"
-          disabled={!props.legalRepresentative || props.files.length === 0}
-          onClick={props.onContinue}
-        >
-          <FormattedMessage id="form.button.submit-request" />
-        </Button>
-      </div>
-    </KycPanel>
-  );
-});
+    const lrDataValid = KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative);
+    return (
+      <KycPanel
+        steps={5}
+        currentStep={3}
+        title={formatIntlMessage("kyc.business.legal-representative.title")}
+        description={formatIntlMessage("kyc.business.legal-representative.description")}
+        hasBackButton={true}
+      >
+        <KYCEnhancedForm {...props} />
+        <FileUploadList {...props} lrDataValid={lrDataValid} />
+        <BeneficialOwners {...props} lrDataValid={lrDataValid} />
+        <div className="p-4 text-center">
+          <Button
+            type="submit"
+            disabled={!props.legalRepresentative || props.files.length === 0}
+            onClick={props.onContinue}
+          >
+            <FormattedMessage id="form.button.submit-request" />
+          </Button>
+        </div>
+      </KycPanel>
+    );
+  },
+);
 
 export const KycLegalRepresentative = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

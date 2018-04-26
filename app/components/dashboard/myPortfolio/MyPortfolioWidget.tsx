@@ -11,6 +11,7 @@ import { PanelDark } from "../../shared/PanelDark";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
+import { FormattedMessage } from "react-intl";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./MyPortfolioWidget.module.scss";
 
@@ -38,10 +39,14 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, d
   return (
     <>
       <Col xl={8} md={7} xs={12} className="mt-5 text-center mb-4 ">
-        <h3>Welcome to NEUFUND!</h3>
-        <p>You have no assets in your portfolio yet.</p>
+        <h3>
+          <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
+        </h3>
+        <p>
+          <FormattedMessage id="dashboard.my-portfolio-widget.no-assets" />
+        </p>
         <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
-          Investment Opportunities
+          <FormattedMessage id="dashboard.my-portfolio-widget.investment-opportunities-button" />
         </Button>
       </Col>
       <Col xl={4} md={5} xs={12} className="mt-3">

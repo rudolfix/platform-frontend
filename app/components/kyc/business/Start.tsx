@@ -23,58 +23,59 @@ type IProps = IStateProps & IDispatchProps;
 
 export const KycBusinessStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
-  <KycPanel
-    steps={5}
-    currentStep={2}
-    title={formatIntlMessage("kyc.business.start.title")}
-    hasBackButton={true}
-    isMaxWidth={true}
-  >
-    <Panels
-      panels={[
-        {
-          content: (
-            <Button
-              theme="t-white"
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("small")}
-            >
-              <FormattedMessage id="kyc.business.start.type.small" />
-            </Button>
-          ),
-          theme: PanelTheme.black,
-          id: 1,
-        },
-        {
-          content: (
-            <Button
-              theme="t-white"
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("corporate")}
-            >
-              <FormattedMessage id="kyc.business.start.type.corporation" />
-            </Button>
-          ),
-          theme: PanelTheme.grey,
-          id: 2,
-        },
-        {
-          content: (
-            <Button
-              theme="t-white"
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("partnership")}
-            >
-              <FormattedMessage id="kyc.business.start.type.partnership" />
-            </Button>
-          ),
-          theme: PanelTheme.blue,
-          id: 3,
-        },
-      ]}
-    />
-  </KycPanel>
-));
+    <KycPanel
+      steps={5}
+      currentStep={2}
+      title={formatIntlMessage("kyc.business.start.title")}
+      hasBackButton={true}
+      isMaxWidth={true}
+    >
+      <Panels
+        panels={[
+          {
+            content: (
+              <Button
+                theme="t-white"
+                disabled={props.loading}
+                onClick={() => props.setBusinessType("small")}
+              >
+                <FormattedMessage id="kyc.business.start.type.small" />
+              </Button>
+            ),
+            theme: PanelTheme.black,
+            id: 1,
+          },
+          {
+            content: (
+              <Button
+                theme="t-white"
+                disabled={props.loading}
+                onClick={() => props.setBusinessType("corporate")}
+              >
+                <FormattedMessage id="kyc.business.start.type.corporation" />
+              </Button>
+            ),
+            theme: PanelTheme.grey,
+            id: 2,
+          },
+          {
+            content: (
+              <Button
+                theme="t-white"
+                disabled={props.loading}
+                onClick={() => props.setBusinessType("partnership")}
+              >
+                <FormattedMessage id="kyc.business.start.type.partnership" />
+              </Button>
+            ),
+            theme: PanelTheme.blue,
+            id: 3,
+          },
+        ]}
+      />
+    </KycPanel>
+  ),
+);
 
 export const KycBusinessStart = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

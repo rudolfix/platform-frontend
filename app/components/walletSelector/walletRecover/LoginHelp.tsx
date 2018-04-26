@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
+import { FormattedMessage } from "react-intl";
 import { Button } from "../../shared/Buttons";
 import { walletRegisterRoutes } from "../walletRoutes";
 import { recoverRoutes } from "./recoverRoutes";
@@ -9,24 +10,34 @@ import { recoverRoutes } from "./recoverRoutes";
 export const LoginHelp: React.SFC<void> = () => (
   <div>
     <Col className="mt-5 mb-5">
-      <h2 className="font-weight-bold mx-auto text-center">Having some troubles to login?</h2>
+      <h2 className="font-weight-bold mx-auto text-center">
+        <FormattedMessage id="wallet-selector.recover.help.prompt" />
+      </h2>
     </Col>
     <Col md={10} className="mb-5 mt-5 offset-md-1 ">
-      <h5 className="font-weight-bold mb-2">I can't find my wallet ID </h5>
-      <p className=""> Please Check your email Neufund for the Login link</p>
+      <h5 className="font-weight-bold mb-2">
+        <FormattedMessage id="wallet-selector.recover.help.wallet-id-missing" />
+      </h5>
+      <p>
+        <FormattedMessage id="wallet-selector.recover.help.email-login" />
+      </p>
       <div className="border-bottom pb-4" />
     </Col>
     <Col md={10} className="mb-5 mt-5 offset-md-1">
       <Row className="justify-content-between" noGutters>
         <div>
-          <h5 className="font-weight-bold">I don't remember my wallet password.</h5>
+          <h5 className="font-weight-bold">
+            <FormattedMessage id="wallet-selector.recover.help.password-forgotten" />
+          </h5>
           <p>
-            Recover with 24 words passphrase <i className="fa fa-question" />
+            <FormattedMessage id="wallet-selector.recover.help.recover-with-passphrase" />
           </p>
         </div>
         <Col xs={12} md={4}>
           <Link to={recoverRoutes.seed}>
-            <Button>Recover Wallet</Button>
+            <Button>
+              <FormattedMessage id="wallet-selector.recover.help.recover-button" />
+            </Button>
           </Link>
         </Col>
       </Row>
@@ -34,10 +45,14 @@ export const LoginHelp: React.SFC<void> = () => (
     </Col>
     <Col md={10} className="mt-5 mb-5 offset-md-1">
       <Row className="justify-content-between" noGutters>
-        <h5 className="font-weight-bold">I've lost my Nano Ledger device. </h5>
+        <h5 className="font-weight-bold">
+          <FormattedMessage id="wallet-selector.recover.help.ledger-lost" />
+        </h5>
         <Col xs={12} md={4}>
           <Link to="/">
-            <Button>View Tutorial</Button>
+            <Button>
+              <FormattedMessage id="wallet-selector.recover.help.ledger-lost-btn" />
+            </Button>
           </Link>
         </Col>
       </Row>
@@ -48,11 +63,10 @@ export const LoginHelp: React.SFC<void> = () => (
           <i className="fa fa-lg fa-angle-left mr-1" /> BACK
         </Link>
         <Link className="" to={recoverRoutes.help}>
-          Contact for help <i className="fa fa-lg fa-angle-right ml-1" />
+          <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />{" "}
+          <i className="fa fa-lg fa-angle-right ml-1" />
         </Link>
       </Row>
     </Col>
   </div>
 );
-
-//TODO: change <p> to <Navlink> once routing is done

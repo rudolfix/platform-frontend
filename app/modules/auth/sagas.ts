@@ -87,7 +87,7 @@ export function* loadOrCreateUser(userType: TUserType): Iterator<any> {
 }
 
 export function* loadUser(): Iterator<any> {
-  const user: IUser = yield neuCall(loadOrCreateUserPromise);
+  const user: IUser = yield neuCall(loadUserPromise);
   yield effects.put(actions.auth.loadUser(user));
 }
 

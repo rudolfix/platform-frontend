@@ -8,7 +8,7 @@ if (!applicationEnv.NF_REMOTE_BACKEND_PROXY_ROOT) {
   throw new Error("Missing NF_REMOTE_BACKEND_PROXY_ROOT env variable. Add it to your .env file");
 }
 
-const backendUrl = applicationEnv.NF_REMOTE_BACKEND_PROXY_ROOT;
+const backendUrl = JSON.parse(applicationEnv.NF_REMOTE_BACKEND_PROXY_ROOT);
 
 const localDevConfig = merge(devConfig, {
   devServer: {

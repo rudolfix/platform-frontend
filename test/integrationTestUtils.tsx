@@ -181,3 +181,11 @@ export function wrapWithProviders(
     </ReduxProvider>
   );
 }
+
+export function wrapWithIntl(component: React.ReactElement<any>): React.ReactElement<any> {
+  return (
+    <IntlProvider locale="en-en" messages={defaultTranslations}>
+      {component}
+    </IntlProvider>
+  );
+}

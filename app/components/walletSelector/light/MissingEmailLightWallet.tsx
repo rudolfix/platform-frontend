@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Row } from "reactstrap";
 import * as mailLink from "../../../assets/img/mail_link.svg";
 
@@ -9,8 +10,7 @@ export const MissingEmailLightWallet: React.SFC<any> = () => {
         <img src={mailLink} className="text-center" />
       </Row>
       <p className="text-center font-weight-bold">
-        In order to login to your NEUFUND wallet, please click on the link in your email with the
-        subject "Welcome to Neufund"
+        <FormattedMessage id="wallet-selector.neuwallet.login-instructions" />
       </p>
     </>
   );

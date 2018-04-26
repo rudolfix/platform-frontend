@@ -2,7 +2,11 @@ import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
+import { FormGroup, Input, Label } from "reactstrap";
+
+import { isNonValid } from "../forms";
+
+import * as errorStyles from "./FormError.module.scss";
 
 export const NONE_KEY = "__NONE__";
 export const BOOL_TRUE_KEY = "true";
@@ -31,7 +35,7 @@ export const unboolify = <T extends {}>(values: T): T => {
 interface IFieldGroup {
   label?: string | React.ReactNode;
   values: {
-    [key: string]: string;
+    [key: string]: string | React.ReactNode;
   };
   disabledValues?: {
     [key: string]: boolean;
@@ -73,6 +77,11 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
     const { label, name } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
+    //This is done due to the difference between reactstrap and @typings/reactstrap
+    const inputExtraProps = {
+      invalid: isNonValid(touched, errors, name),
+    } as any;
+
     return (
       <FormGroup>
         {label && <Label for={name}>{label}</Label>}
@@ -84,12 +93,15 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
               type="select"
               value={field.value}
               valid={isValid(touched, errors, name)}
+              {...inputExtraProps}
             >
               {this.renderOptions()}
             </Input>
           )}
         />
-        {errors[name] && <FormFeedback>{errors[name]}</FormFeedback>}
+        <div className={errorStyles.errorLabel}>
+          {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
+        </div>
       </FormGroup>
     );
   }

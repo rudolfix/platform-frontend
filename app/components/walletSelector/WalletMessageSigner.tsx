@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -46,7 +47,9 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
       )}
       <Row>
         <Col className="text-center">
-          <Button onClick={cancelSigning}>Cancel</Button>
+          <Button onClick={cancelSigning}>
+            <FormattedMessage id="form.button.cancel" />
+          </Button>
         </Col>
       </Row>
     </>

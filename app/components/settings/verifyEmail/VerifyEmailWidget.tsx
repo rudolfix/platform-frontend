@@ -35,56 +35,57 @@ export const VerifyEmailWidgetComponent = injectIntlHelpers<IStateProps & IDispa
     isUserEmailVerified,
     isThereUnverifiedEmail,
     email,
-    resendEmail
+    resendEmail,
   }) => {
-  return (
-    <PanelDark
-      headerText={formatIntlMessage("settings.verify-email-widget.header")}
-      rightComponent={
-        isUserEmailVerified ? (
-          <img src={successIcon} className={styles.icon} aria-hidden="true" />
-        ) : (
-          <img src={warningIcon} className={styles.icon} aria-hidden="true" />
-        )
-      }
-    >
-      {isUserEmailVerified ? (
-        <div
-          data-test-id="verified-section"
-          className={cn(styles.content, "d-flex flex-wrap align-content-around")}
-        >
-          <p className={cn(styles.text, "pt-2")}>
-            <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
-          </p>
-          <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
-            <p>{email}</p>
-          </Col>
-        </div>
-      ) : (
-        <div
-          data-test-id="unverified-section"
-          className={cn(styles.content, "d-flex flex-wrap align-content-around")}
-        >
-          <p className={cn(styles.text, "pt-2")}>
-          <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
-          </p>
-          {isThereUnverifiedEmail && (
+    return (
+      <PanelDark
+        headerText={formatIntlMessage("settings.verify-email-widget.header")}
+        rightComponent={
+          isUserEmailVerified ? (
+            <img src={successIcon} className={styles.icon} aria-hidden="true" />
+          ) : (
+            <img src={warningIcon} className={styles.icon} aria-hidden="true" />
+          )
+        }
+      >
+        {isUserEmailVerified ? (
+          <div
+            data-test-id="verified-section"
+            className={cn(styles.content, "d-flex flex-wrap align-content-around")}
+          >
+            <p className={cn(styles.text, "pt-2")}>
+              <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
+            </p>
             <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
-              <Button
-                layout="secondary"
-                iconPosition="icon-after"
-                svgIcon={arrowRight}
-                onClick={resendEmail}
-              >
-                <FormattedMessage id="settings.verify-email-widget.resend-link" />
-              </Button>
+              <p>{email}</p>
             </Col>
-          )}
-        </div>
-      )}
-    </PanelDark>
-  );
-});
+          </div>
+        ) : (
+          <div
+            data-test-id="unverified-section"
+            className={cn(styles.content, "d-flex flex-wrap align-content-around")}
+          >
+            <p className={cn(styles.text, "pt-2")}>
+              <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
+            </p>
+            {isThereUnverifiedEmail && (
+              <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
+                <Button
+                  layout="secondary"
+                  iconPosition="icon-after"
+                  svgIcon={arrowRight}
+                  onClick={resendEmail}
+                >
+                  <FormattedMessage id="settings.verify-email-widget.resend-link" />
+                </Button>
+              </Col>
+            )}
+          </div>
+        )}
+      </PanelDark>
+    );
+  },
+);
 
 export const VerifyEmailWidget = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: s => ({

@@ -21,21 +21,22 @@ interface IFormValues {
 
 const ChangeEmailForm = injectIntlHelpers<FormikProps<IFormValues>>(
   ({ intl: { formatIntlMessage }, ...props }) => (
-  <Form>
-    <FormField
-      type="email"
-      placeholder={formatIntlMessage("form.placeholder.enter-new-email")}
-      touched={props.touched}
-      errors={props.errors}
-      name={"email"}
-    />
-    <div className="text-center">
-      <Button type="submit" disabled={!props.values.email}>
-        <FormattedMessage id="form.button.submit" />
-      </Button>
-    </div>
-  </Form>
-));
+    <Form>
+      <FormField
+        type="email"
+        placeholder={formatIntlMessage("form.placeholder.enter-new-email")}
+        touched={props.touched}
+        errors={props.errors}
+        name={"email"}
+      />
+      <div className="text-center">
+        <Button type="submit" disabled={!props.values.email}>
+          <FormattedMessage id="form.button.submit" />
+        </Button>
+      </div>
+    </Form>
+  ),
+);
 
 const SettingsEnhancedChangeEmailForm = withFormik<IDispatchProps, IFormValues>({
   mapPropsToValues: props => props.currentValues as IFormValues,
@@ -47,21 +48,22 @@ const SettingsEnhancedChangeEmailForm = withFormik<IDispatchProps, IFormValues>(
 
 export const ChangeEmailComponent = injectIntlHelpers<IDispatchProps>(
   ({ intl: { formatIntlMessage }, ...props }) => {
-  return (
-    <PanelDark headerText={formatIntlMessage("settings.change-email-component.header")}>
-      <Row>
-        <Col xs={6} className="mt-3">
-          <p data-test-id="paragraph-section">
-            <FormattedMessage id="settings.change-email-component.text" />
-          </p>
-        </Col>
-        <Col className="mt-3 mb-4" data-test-id="form-section">
-          <SettingsEnhancedChangeEmailForm {...props} />
-        </Col>
-      </Row>
-    </PanelDark>
-  );
-});
+    return (
+      <PanelDark headerText={formatIntlMessage("settings.change-email-component.header")}>
+        <Row>
+          <Col xs={6} className="mt-3">
+            <p data-test-id="paragraph-section">
+              <FormattedMessage id="settings.change-email-component.text" />
+            </p>
+          </Col>
+          <Col className="mt-3 mb-4" data-test-id="form-section">
+            <SettingsEnhancedChangeEmailForm {...props} />
+          </Col>
+        </Row>
+      </PanelDark>
+    );
+  },
+);
 
 export const ChangeEmail = appConnect<IDispatchProps>({
   dispatchToProps: dispatch => ({

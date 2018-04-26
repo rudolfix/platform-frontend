@@ -38,9 +38,12 @@ const statusTextMap: Dictionary<React.ReactNode> = {
   Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
 };
 
-const getStatus = (selectIsUserEmailVerified: boolean, requestStatus?: TRequestStatus): React.ReactNode => {
+const getStatus = (
+  selectIsUserEmailVerified: boolean,
+  requestStatus?: TRequestStatus,
+): React.ReactNode => {
   if (!selectIsUserEmailVerified) {
-    return <FormattedMessage id="settings.kyc-status-widget.status.error-verification-email" />
+    return <FormattedMessage id="settings.kyc-status-widget.status.error-verification-email" />;
   }
 
   if (!requestStatus) {
@@ -85,11 +88,11 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
                 onClick={onGoToKycHome}
                 disabled={!isUserEmailVerified}
               >
-                {
-                  requestStatus === "Draft"
-                    ? <FormattedMessage id="settings.kyc-status-widget.start-kyc-process" />
-                    : <FormattedMessage id="settings.kyc-status-widget.submit-additional-documents" />
-                }
+                {requestStatus === "Draft" ? (
+                  <FormattedMessage id="settings.kyc-status-widget.start-kyc-process" />
+                ) : (
+                  <FormattedMessage id="settings.kyc-status-widget.submit-additional-documents" />
+                )}
               </Button>
             ) : (
               <div />

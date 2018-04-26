@@ -9,7 +9,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={true}
-        isUserEmailVarified={true}
+        isUserEmailVerified={true}
         resendEmail={() => {}}
       />,
     );
@@ -21,7 +21,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={false}
-        isUserEmailVarified={false}
+        isUserEmailVerified={false}
         resendEmail={() => {}}
       />,
     );
@@ -33,7 +33,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={false}
-        isUserEmailVarified={false}
+        isUserEmailVerified={false}
         resendEmail={() => {}}
       />,
     );
@@ -44,7 +44,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={true}
-        isUserEmailVarified={false}
+        isUserEmailVerified={false}
         resendEmail={() => {}}
       />,
     );

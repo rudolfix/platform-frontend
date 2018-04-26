@@ -246,14 +246,14 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
-            isUserEmailVarified={false}
+            isUserEmailVerified={false}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
           />
         </Col>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
-            isUserEmailVarified={true}
+            isUserEmailVerified={true}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
           />

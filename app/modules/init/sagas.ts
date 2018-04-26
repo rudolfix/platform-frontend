@@ -19,10 +19,16 @@ function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
 
     if (jwt) {
       if (isJwtExpiringLateEnough(jwt)) {
-        yield loadUser();
+        try {
+          yield loadUser();
+        } catch (e) {
+          yield cleanupAndLogoutSaga();
+          logger.error(
+            "Cannot retrieve account. This could happen b/c account was deleted on backend",
+          );
+        }
       } else {
-        yield put(actions.auth.logout());
-        yield put(actions.routing.goToLogin());
+        yield cleanupAndLogoutSaga();
         logger.error("JTW expiring too soon.");
       }
     }
@@ -35,6 +41,11 @@ function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
     yield put(actions.init.error(e.message || "Unknown error"));
     logger.error("Error: ", e);
   }
+}
+
+export function* cleanupAndLogoutSaga(): Iterator<any> {
+  yield put(actions.auth.logout());
+  yield put(actions.routing.goToLogin());
 }
 
 export const initSagas = function*(): Iterator<effects.Effect> {

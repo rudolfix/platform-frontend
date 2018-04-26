@@ -144,7 +144,7 @@ function* verifyUserEmail(): Iterator<any> {
   const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);
-  yield effects.put(actions.routing.goHome());
+  yield effects.put(actions.routing.goToSettings());
 }
 
 /**

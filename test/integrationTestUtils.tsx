@@ -41,6 +41,7 @@ import { routerMiddleware } from "react-router-redux";
 import { BrowserRouter } from "react-router-dom";
 import { createBrowserHistory, History, createMemoryHistory } from "history";
 import { noopLogger } from "../app/lib/dependencies/Logger";
+import { ContractsService } from "../app/lib/web3/ContractsService";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 
@@ -52,6 +53,7 @@ interface ICreateIntegrationTestsSetupOptions {
   usersApiMock?: UsersApi;
   signatureAuthApiMock?: SignatureAuthApi;
   initialRoute?: string;
+  contractsMock?: ContractsService;
 }
 
 interface ICreateIntegrationTestsSetupOutput {
@@ -71,6 +73,7 @@ export function createIntegrationTestsSetup(
   const storageMock = options.storageMock || createMockStorage();
   const usersApiMock = options.usersApiMock || createMock(UsersApi, {});
   const signatureAuthApiMock = options.signatureAuthApiMock || createMock(SignatureAuthApi, {});
+  const contractsMock = options.contractsMock || createMock(ContractsService, {});
 
   const container = setupBindings(dummyConfig);
   container.rebind(symbols.ledgerWalletConnector).toConstantValue(ledgerWalletMock);
@@ -83,6 +86,7 @@ export function createIntegrationTestsSetup(
   container.rebind(symbols.storage).toConstantValue(storageMock);
   container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
   container.rebind(symbols.signatureAuthApi).toConstantValue(signatureAuthApiMock);
+  container.rebind(symbols.contractsService).toConstantValue(contractsMock);
 
   const context: { container: Container; deps?: TGlobalDependencies } = {
     container,

@@ -1,47 +1,37 @@
 import { ReactWrapper } from "enzyme";
+import { createMemoryHistory, History } from "history";
 import { Container } from "inversify";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
+import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
+import createSagaMiddleware from "redux-saga";
 import { SinonSpy } from "sinon";
 
-import { ConnectedRouter } from "react-router-redux";
 import {
+  createGlobalDependencies,
   customizerContainerWithMiddlewareApi,
   setupBindings,
   TGlobalDependencies,
-  createGlobalDependencies,
 } from "../app/di/setupBindings";
 import { symbols } from "../app/di/symbols";
+import { SignatureAuthApi } from "../app/lib/api/SignatureAuthApi";
+import { UsersApi } from "../app/lib/api/users/UsersApi";
+import { noopLogger } from "../app/lib/dependencies/Logger";
+import { Storage } from "../app/lib/persistence/Storage";
+import { createMockStorage } from "../app/lib/persistence/Storage.mock";
 import { BrowserWalletConnector } from "../app/lib/web3/BrowserWallet";
+import { ContractsService } from "../app/lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../app/lib/web3/LedgerWallet";
-import { Web3Manager } from "../app/lib/web3/Web3Manager";
+import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
 import { createInjectMiddleware } from "../app/middlewares/redux-injectify";
+import { rootSaga } from "../app/modules/sagas";
 import { IAppState, reducers } from "../app/store";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
 import { dummyConfig } from "./fixtures";
-import { createMock, tid } from "./testUtils";
-import { Storage } from "../app/lib/persistence/Storage";
-import { ObjectStorage } from "../app/lib/persistence/ObjectStorage";
-import {
-  TWalletMetadata,
-  STORAGE_WALLET_METADATA_KEY,
-} from "../app/lib/persistence/WalletMetadataObjectStorage";
-import { STORAGE_JWT_KEY } from "../app/lib/persistence/JwtObjectStorage";
-import { createMockStorage } from "../app/lib/persistence/Storage.mock";
-import { rootSaga } from "../app/modules/sagas";
-import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
-import { Web3Adapter } from "../app/lib/web3/Web3Adapter";
-import { UsersApi } from "../app/lib/api/users/UsersApi";
-import { SignatureAuthApi } from "../app/lib/api/SignatureAuthApi";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
-import { routerMiddleware } from "react-router-redux";
-import { BrowserRouter } from "react-router-dom";
-import { createBrowserHistory, History, createMemoryHistory } from "history";
-import { noopLogger } from "../app/lib/dependencies/Logger";
-import { ContractsService } from "../app/lib/web3/ContractsService";
+import { createMock, tid } from "./testUtils";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 

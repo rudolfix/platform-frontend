@@ -32,6 +32,7 @@ import * as mediumIcon from "../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../assets/img/inline_icons/social_telegram.svg";
 
+import { dummyIntl } from "../utils/injectIntlHelpers.fixtures";
 import * as styles from "./Demo.module.scss";
 
 const chartDoughnutData = {
@@ -246,16 +247,18 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
-            isUserEmailVarified={false}
+            isUserEmailVerified={false}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
+            intl={dummyIntl}
           />
         </Col>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
-            isUserEmailVarified={true}
+            isUserEmailVerified={true}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
+            intl={dummyIntl}
           />
         </Col>
       </Row>
@@ -263,10 +266,10 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <BackupSeedWidgetComponent />
+          <BackupSeedWidgetComponent intl={dummyIntl} />
         </Col>
         <Col lg={6} xs={12}>
-          <BackupSeedWidgetComponent backupCodesVerified />
+          <BackupSeedWidgetComponent backupCodesVerified intl={dummyIntl} />
         </Col>
       </Row>
     </Container>
@@ -281,7 +284,7 @@ export const Demo: React.SFC = () => (
       </Row>
     </Container>
     <Container>
-      <ChangeEmailComponent submitForm={() => {}} />
+      <ChangeEmailComponent submitForm={() => {}} intl={dummyIntl} />
     </Container>
     <Container>
       <PercentageIndicatorBar percent={79} />

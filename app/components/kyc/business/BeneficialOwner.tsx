@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -13,6 +13,7 @@ import {
 import { actions } from "../../../modules/actions";
 
 import { Col, Row } from "reactstrap";
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { AccordionElement } from "../../shared/Accordion";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
@@ -29,9 +30,9 @@ import {
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 const PEP_VALUES = {
-  [NONE_KEY]: "-please select-",
-  [BOOL_TRUE_KEY]: "Yes they are",
-  [BOOL_FALSE_KEY]: "No they are not",
+  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
+  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-they-are" />,
+  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-they-are-not" />,
 };
 
 interface IStateProps {
@@ -60,25 +61,26 @@ interface IOwnProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
+const KYCForm = injectIntlHelpers<FormikProps<IKycBeneficialOwner> & IProps>(
+  ({ intl: { formatIntlMessage }, ...props }) => {
   return (
     <Form>
-      <FormField label="First Name" name="firstName" />
-      <FormField label="Last Name" name="lastName" />
-      <FormFieldDate label="Birthdate" name="birthDate" />
-      <FormField label="Street and number" name="street" />
+      <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
+      <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
+      <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
+      <FormField label={formatIntlMessage("form.label.address")} name="street" />
       <Row>
         <Col xs={12} md={6} lg={8}>
-          <FormField label="City" name="city" />
+          <FormField label={formatIntlMessage("form.label.city")} name="city" />
         </Col>
         <Col xs={12} md={6} lg={4}>
-          <FormField label="Zip Code" name="zipCode" />
+          <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
         </Col>
       </Row>
-      <FormSelectCountryField label="Country" name="country" />
+      <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
       <FormSelectField
         values={PEP_VALUES}
-        label="Is this person politically exposed?"
+        label={formatIntlMessage("kyc.business.beneficial-owner.pep")}
         name="isPoliticallyExposed"
       />
       <Row>
@@ -87,13 +89,13 @@ const KYCForm = (formikBag: FormikProps<IKycBeneficialOwner> & IProps) => {
         </Col>
       </Row>
       <div className="p-4 text-center">
-        <Button type="submit" disabled={!formikBag.isValid || formikBag.loading}>
-          Submit changes
+        <Button type="submit" disabled={!props.isValid || props.loading}>
+          <FormattedMessage id="form.button.submit-changes" />
         </Button>
       </div>
     </Form>
   );
-};
+});
 
 const KYCEnhancedForm = withFormik<IProps, IKycBeneficialOwner>({
   validationSchema: KycBeneficialOwnerSchemaRequired,
@@ -131,7 +133,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
         />
         <div className="p-4 text-center">
           <Button layout="secondary" onClick={this.props.delete}>
-            Delete {name}
+            <FormattedMessage id="form.button.delete" /> {name}
           </Button>
         </div>
       </AccordionElement>

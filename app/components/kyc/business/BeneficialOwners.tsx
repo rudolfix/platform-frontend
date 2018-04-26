@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import * as styles from "./BeneficialOwners.module.scss";
-
+import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
@@ -15,6 +14,7 @@ import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KYCBeneficialOwner } from "./BeneficialOwner";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
+import * as styles from "./BeneficialOwners.module.scss";
 
 interface IStateProps {
   beneficialOwners: IKycBeneficialOwner[];
@@ -30,7 +30,9 @@ type IProps = IStateProps & IDispatchProps;
 export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   <div>
     <HorizontalLine className={cn("mt-2", "mb-2")} />
-    <h4 className={styles.sectionTitle}>Beneficial owners (which hold more than 25%)</h4>
+    <h4 className={styles.sectionTitle}>
+    <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />
+    </h4>
     <Accordion>
       {props.beneficialOwners.map(
         (owner, index) =>
@@ -49,12 +51,11 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
         onClick={props.createBeneficialOwner}
         disabled={props.loading}
       >
-        Add new Beneficial Owner
+        <FormattedMessage id="kyc.business.beneficial-owner.add-new-beneficial-owner" />
       </Button>
     </div>
     <small className={styles.note}>
-      According to the German anti money laundering act, we are obliged to keep a record of your
-      personal data for five years after account closure.
+      <FormattedMessage id="kyc.business.beneficial-owner.anti-laundry" />
     </small>
   </div>
 );

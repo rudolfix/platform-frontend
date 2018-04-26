@@ -1,4 +1,4 @@
-@import "../../styles/neufund-theme";
+@import "../../../styles/neufund-theme";
 
 .table {
   margin-left: auto;
@@ -44,11 +44,11 @@
   }
 
   .eth-col {
-    background-image: url("../../assets/img/eth_icon.svg");
+    background-image: url("../../../assets/img/eth_icon.svg");
   }
 
   .neu-col {
-    background-image: url("../../assets/img/neu_icon.svg");
+    background-image: url("../../../assets/img/neu_icon.svg");
   }
 
   .select {

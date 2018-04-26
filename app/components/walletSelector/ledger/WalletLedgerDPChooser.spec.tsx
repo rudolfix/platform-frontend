@@ -3,8 +3,9 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { tid } from "../../../test/testUtils";
-import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../modules/wallet-selector/ledger-wizard/reducer";
+import { tid } from "../../../../test/testUtils";
+import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../modules/wallet-selector/ledger-wizard/reducer";
+import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { DPChooserComponent } from "./WalletLedgerDPChooser";
 
 describe("<DPChooserComponent />", () => {
@@ -14,6 +15,7 @@ describe("<DPChooserComponent />", () => {
     derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
     onDerivationPathPrefixChange: spy(),
     errorMessage: errorMessage,
+    intl: dummyIntl,
   });
 
   it("should render correct derivation path prefix", () => {

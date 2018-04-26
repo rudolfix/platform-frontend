@@ -1,8 +1,9 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
-import { ILedgerAccount } from "../../modules/wallet-selector/ledger-wizard/reducer";
-import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { ILedgerAccount } from "../../../modules/wallet-selector/ledger-wizard/reducer";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
@@ -39,7 +40,9 @@ export const WalletLedgerChooserComponent: React.SFC<
   handleAdvanced,
 }) => (
   <>
-    <h1 className="text-center mb-4">Select your wallet for registration</h1>
+    <h1 className="text-center mb-4">
+      <FormattedMessage id="wallet-selector.ledger.select-wallet" />
+    </h1>
     {advanced && (
       <WalletLedgerDPChooser
         onDerivationPathPrefixChange={onDerivationPathPrefixChange}
@@ -68,7 +71,7 @@ export const WalletLedgerChooserComponent: React.SFC<
         {!advanced && (
           <div className={styles.advanced}>
             <span onClick={handleAdvanced} data-test-id="btn-advanced-simple">
-              Advanced options
+              <FormattedMessage id="wallet-selector.ledger.advanced-options" />
               <i className="fa fa-chevron-down ml-2" aria-hidden="true" />
             </span>
           </div>
@@ -85,7 +88,7 @@ export const WalletLedgerChooserComponent: React.SFC<
               data-test-id="btn-advanced-advanced"
             >
               <i className={cn("fa fa-chevron-left mr-2", styles.left)} aria-hidden="true" />
-              Back
+              <FormattedMessage id="form.button.back" />
             </span>
           )}
       </div>

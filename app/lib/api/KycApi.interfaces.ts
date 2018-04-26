@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { isUsCitizen, makeAllRequired, personBirthDate } from "./util/schemaHelpers";
+import { makeAllRequired, personBirthDate } from "./util/schemaHelpers";
 
 export type TKycRequestType = "business" | "individual";
 

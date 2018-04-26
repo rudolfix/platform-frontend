@@ -126,7 +126,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
         <h3 className={styles.title}>
           <FormattedMessage id="shared-component.multi-file-upload.upload-documents" />
         </h3>
-        {!!files.length && <UploadedFiles onRemove={() => {}} files={files} />}
+        {!!files.length && <UploadedFiles files={files} />}
         <div className={files.length ? styles.dropzoneWithFilesWrapper : styles.dropzoneWrapper}>
           <Dropzone
             accept={ACCEPTED_FILES}

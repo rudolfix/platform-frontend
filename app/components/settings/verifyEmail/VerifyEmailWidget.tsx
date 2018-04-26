@@ -1,12 +1,9 @@
 import * as cn from "classnames";
 import * as React from "react";
-import * as styles from "./VerifyEmailWidget.module.scss";
-
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-
+import { FormattedMessage } from "react-intl";
 import { Col } from "reactstrap";
+import { compose } from "redux";
+
 import { actions } from "../../../modules/actions";
 import {
   selectIsThereUnverifiedEmail,
@@ -14,11 +11,17 @@ import {
   selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
+import * as styles from "./VerifyEmailWidget.module.scss";
+
 interface IStateProps {
-  isUserEmailVarified: boolean;
+  isUserEmailVerified: boolean;
   isThereUnverifiedEmail: boolean;
   email?: string;
 }
@@ -27,29 +30,32 @@ interface IDispatchProps {
   resendEmail: () => void;
 }
 
-export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps> = ({
-  isUserEmailVarified,
+export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps & IIntlProps> = ({
+  intl: { formatIntlMessage },
+  isUserEmailVerified,
   isThereUnverifiedEmail,
   email,
   resendEmail,
 }) => {
   return (
     <PanelDark
-      headerText="EMAIL VERIFICATION"
+      headerText={formatIntlMessage("settings.verify-email-widget.header")}
       rightComponent={
-        isUserEmailVarified ? (
+        isUserEmailVerified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
         ) : (
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
     >
-      {isUserEmailVarified ? (
+      {isUserEmailVerified ? (
         <div
           data-test-id="verified-section"
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
-          <p className={cn(styles.text, "pt-2")}>Your email is verified. </p>
+          <p className={cn(styles.text, "pt-2")}>
+            <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
+          </p>
           <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
             <p>{email}</p>
           </Col>
@@ -60,8 +66,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps>
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>
-            You need to verify your email address, which will be used for your wallet link we send
-            you
+            <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
           </p>
           {isThereUnverifiedEmail && (
             <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
@@ -71,7 +76,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps>
                 svgIcon={arrowRight}
                 onClick={resendEmail}
               >
-                Resend Link
+                <FormattedMessage id="settings.verify-email-widget.resend-link" />
               </Button>
             </Col>
           )}
@@ -80,15 +85,19 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps>
     </PanelDark>
   );
 };
-export const VerifyEmailWidget = appConnect<IStateProps, IDispatchProps, {}>({
-  stateToProps: s => ({
-    isUserEmailVarified: selectIsUserEmailVerified(s.auth),
-    isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
-    email: selectVerifiedUserEmail(s.auth),
+
+export const VerifyEmailWidget = compose<React.SFC>(
+  appConnect<IStateProps, IDispatchProps, {}>({
+    stateToProps: s => ({
+      isUserEmailVerified: selectIsUserEmailVerified(s.auth),
+      isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
+      email: selectVerifiedUserEmail(s.auth),
+    }),
+    dispatchToProps: dispatch => ({
+      resendEmail: () => {
+        dispatch(actions.settings.resendEmail());
+      },
+    }),
   }),
-  dispatchToProps: dispatch => ({
-    resendEmail: () => {
-      dispatch(actions.settings.resendEmail());
-    },
-  }),
-})(VerifyEmailWidgetComponent);
+  injectIntlHelpers,
+)(VerifyEmailWidgetComponent);

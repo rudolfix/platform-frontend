@@ -76,14 +76,14 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
     ...compact([
       routerMiddleware(history),
       createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
-      logger,
+      process.env.NODE_ENV !== "production" && logger,
       sagaMiddleware,
     ]),
   );
 
   const store: Store<IAppState> =
     process.env.NODE_ENV === "production"
-      ? createStore(reducers)
+      ? createStore(reducers, middleware)
       : createStore(reducers, composeWithDevTools(middleware));
 
   // we have to create the dependencies here, because getState and dispatch get

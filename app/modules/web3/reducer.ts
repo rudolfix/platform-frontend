@@ -175,6 +175,15 @@ export const selectActivationCodeFromQueryString = (
 };
 
 export const selectLightWalletEmailFromQueryString = (state: RouterState): string | undefined => {
-  const wallet = selectLightWalletFromQueryString(state);
-  return wallet && wallet.email;
+  if (!(state.location && state.location.search)) {
+    return undefined;
+  }
+  const params = queryString.parse(state.location.search);
+  const urlEmail = params.email;
+
+  if (!urlEmail) {
+    return undefined;
+  }
+
+  return urlEmail;
 };

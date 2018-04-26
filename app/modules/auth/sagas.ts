@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { call, Effect, fork } from "redux-saga/effects";
+import { call, Effect, fork, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser, IUserInput, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
@@ -7,11 +7,15 @@ import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { selectEthereumAddressWithChecksum } from "../web3/reducer";
+import {
+  selectEthereumAddressWithChecksum,
+  selectLightWalletEmailFromQueryString,
+} from "../web3/reducer";
 import { WalletType } from "../web3/types";
+import { IVerifyEmailUser } from "./../../lib/api/users/interfaces";
 import { IAppState } from "./../../store";
 import { selectActivationCodeFromQueryString } from "./../web3/reducer";
-import { selectRedirectURLFromQueryString } from "./selectors";
+import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -50,12 +54,16 @@ export async function loadOrCreateUserPromise(
   }
 }
 
-export async function verifyUserEmailPromise({
-  apiUserService,
-  getState,
-  notificationCenter,
-}: TGlobalDependencies): Promise<void> {
-  const userCode = selectActivationCodeFromQueryString(getState().router);
+export async function verifyUserEmailPromise(
+  { apiUserService, notificationCenter }: TGlobalDependencies,
+  userCode: IVerifyEmailUser,
+  urlEmail: string,
+  verifiedEmail: string,
+): Promise<void> {
+  if (urlEmail === verifiedEmail) {
+    notificationCenter.info("Your email is already verified");
+    return;
+  }
   if (!userCode) return;
   try {
     await apiUserService.verifyUserEmail(userCode);
@@ -131,9 +139,12 @@ function* signInUser(
 }
 
 function* verifyUserEmail(): Iterator<any> {
-  yield neuCall(verifyUserEmailPromise);
+  const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
+  const urlEmail = yield select((s: IAppState) => selectLightWalletEmailFromQueryString(s.router));
+  const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
+  yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);
-  yield effects.put(actions.routing.goHome());
+  yield effects.put(actions.routing.goToSettings());
 }
 
 /**

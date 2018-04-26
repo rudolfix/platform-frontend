@@ -24,5 +24,6 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": applicationEnv,
     }),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
   ],
 };

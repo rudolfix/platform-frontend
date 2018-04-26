@@ -132,6 +132,8 @@
   "wallet-selector.ledger.derivation-path-selector.list.header.public-wallet": "Public wallet ID",
   "wallet-selector.ledger.derivation-path-selector.list.row.select-button": "Select",
   "wallet-selector.ledger.derivation-path-selector.placeholder": "Enter derivation path",
+  "wallet-selector.ledger.login": "Log in with Nano Ledger",
+  "wallet-selector.ledger.register": "Register your Nano Ledger",
   "wallet-selector.ledger.select-wallet": "Select your wallet for registration",
   "wallet-selector.ledger.start.connection-status": "Connection status:",
   "wallet-selector.ledger.start.step1.description": "Connect your Ledger Nano into USB and prepare your PIN Code for the device",

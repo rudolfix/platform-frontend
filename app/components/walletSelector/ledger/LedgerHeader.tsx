@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 
@@ -8,7 +9,11 @@ interface IStateProps {
 
 export const LedgerHeaderComponent: React.SFC<IStateProps> = ({ isLoginRoute }) => (
   <h1 className="text-center">
-    {isLoginRoute ? "Log in with Nano Ledger" : "Register your Nano Ledger"}
+    {isLoginRoute ? (
+      <FormattedMessage id="wallet-selector.ledger.login" />
+    ) : (
+      <FormattedMessage id="wallet-selector.ledger.register" />
+    )}
   </h1>
 );
 

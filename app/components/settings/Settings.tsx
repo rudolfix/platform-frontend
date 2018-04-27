@@ -33,17 +33,21 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
         </Col>
       )}
 
-      <Col lg={4} xs={12}>
-        <KycStatusWidget />
-      </Col>
-      <Col xs={12}>
-        <SectionHeader>
-          <FormattedMessage id="settings.personal-settings.title" />
-        </SectionHeader>
-      </Col>
-      <Col lg={8} xs={12}>
-        <ChangeEmail />
-      </Col>
+      {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
+        <>
+          <Col lg={4} xs={12}>
+            <KycStatusWidget />
+          </Col>
+          <Col xs={12}>
+            <SectionHeader>
+              <FormattedMessage id="settings.personal-settings.title" />
+            </SectionHeader>
+          </Col>
+          <Col lg={8} xs={12}>
+            <ChangeEmail />
+          </Col>
+        </>
+      )}
     </Row>
   </LayoutAuthorized>
 );

@@ -8,6 +8,7 @@
   "dashboard.my-wallet-widget.hidden-wallet-redirect-button": "Manage",
   "dashboard.my-wallet-widget.main-wallet-redirect-button": "Manage Wallet",
   "dashboard.my-wallet-widget.total": "TOTAL",
+  "dashboard.name": "Dashboard",
   "dashboard.neufund-kpi-widget-chart2.title": "NEU - Platform Portfolio Value",
   "dashboard.neufund-kpi-widget.chart.button": "View All >",
   "dashboard.neufund-kpi-widget.chart.title": "NEU Distribution among token holders",
@@ -54,6 +55,7 @@
   "form.button.cancel": "Cancel",
   "form.button.continue": "Continue",
   "form.button.delete": "Delete",
+  "form.button.done": "Done",
   "form.button.save": "Save",
   "form.button.submit": "Submit",
   "form.button.submit-changes": "Submit changes",
@@ -230,5 +232,9 @@
   "wallet-selector.tabs.neuwallet": "use Neufund wallet",
   "wallet.deposit-funds.eth.email-notification": "You will receive an e-mail notification once your funds have been successfully deposited!",
   "wallet.deposit-funds.eth.header": "Deposit {icon} ETH to your wallet",
-  "wallet.deposit-funds.eth.your-eth-address": "Your ETH address"
+  "wallet.deposit-funds.eth.your-eth-address": "Your ETH address",
+  "wallet.deposit-funds.menu.eth": "Deposit Eth",
+  "wallet.deposit-funds.menu.eur": "Deposit nEur",
+  "wallet.deposit-funds.name": "Deposit funds",
+  "wallet.name": "Wallet"
 }

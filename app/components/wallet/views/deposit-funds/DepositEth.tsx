@@ -2,11 +2,11 @@ import * as React from "react";
 import * as styles from "./DepositEth.module.scss";
 import { DepositFunds } from "./DepositFunds";
 
+import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 import * as icon from "../../../../assets/img/eth_icon.svg";
 import { selectEthereumAddress } from "../../../../modules/web3/reducer";
 import { appConnect } from "../../../../store";
-import { FormattedMessage } from "react-intl";
 
 interface IProps {
   path: string;

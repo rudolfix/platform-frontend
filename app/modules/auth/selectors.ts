@@ -32,4 +32,4 @@ export const selectIsUserEmailVerified = (state: IAuthState): boolean =>
 export const selectIsThereUnverifiedEmail = (state: IAuthState): boolean =>
   !!state.user && !!state.user.unverifiedEmail;
 export const selectDoesEmailExist = (state: IAuthState): boolean =>
-  selectIsThereUnverifiedEmail(state) && selectIsUserEmailVerified(state);
+  selectIsThereUnverifiedEmail(state) || selectIsUserEmailVerified(state);

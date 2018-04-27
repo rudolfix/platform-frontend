@@ -33,6 +33,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   resendEmail: () => void;
+  addNewEmail?: (values: { email: string }) => void;
 }
 
 const SetEmailForm = (formikBag: FormikProps<any> & any) => (
@@ -56,7 +57,7 @@ const SetEmailEnhancedForm = withFormik<any, any>({
   validationSchema: EmailFormSchema,
   isInitialValid: () => EmailFormSchema.isValidSync(false),
   mapPropsToValues: props => props.currentValues,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
 const VerifiedUser: React.SFC<{ email?: string }> = ({ email }) => (
@@ -105,6 +106,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
   doesEmailExist,
   email,
   resendEmail,
+  addNewEmail,
 }) => {
   return (
     <PanelDark
@@ -127,7 +129,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
           />
         )
       ) : (
-        <SetEmailEnhancedForm />
+        <SetEmailEnhancedForm handleSubmit={addNewEmail} />
       )}
     </PanelDark>
   );
@@ -144,6 +146,9 @@ export const VerifyEmailWidget = compose<React.SFC>(
     dispatchToProps: dispatch => ({
       resendEmail: () => {
         dispatch(actions.settings.resendEmail());
+      },
+      addNewEmail: (values: { email: string }) => {
+        dispatch(actions.settings.addNewEmail(values.email));
       },
     }),
   }),

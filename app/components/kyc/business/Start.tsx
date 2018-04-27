@@ -24,10 +24,10 @@ type IProps = IStateProps & IDispatchProps;
 export const KycBusinessStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel
-      steps={5}
-      currentStep={2}
+      steps={4}
+      currentStep={1}
       title={formatIntlMessage("kyc.business.start.title")}
-      hasBackButton={true}
+      backLink={""}
       isMaxWidth={true}
     >
       <Panels

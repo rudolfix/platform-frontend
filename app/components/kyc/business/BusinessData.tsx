@@ -21,6 +21,7 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
+import { kycRoutes } from "../routes";
 
 interface IStateProps {
   currentValues?: IKycBusinessData;
@@ -104,11 +105,11 @@ export const KycBusinessDataComponent = injectIntlHelpers<IProps>(
     const dataValid = KycBusinessDataSchemaRequired.isValidSync(props.currentValues);
     return (
       <KycPanel
-        steps={5}
-        currentStep={4}
+        steps={4}
+        currentStep={2}
         title={formatIntlMessage("kyc.business.business-data.title")}
         description={formatIntlMessage("kyc.business.business-data.description")}
-        hasBackButton={true}
+        backLink={kycRoutes.businessStart}
       >
         <KYCEnhancedForm {...props} />
         <FileUploadList {...props} dataValid={dataValid} />

@@ -29,6 +29,7 @@ import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
+import { kycRoutes } from "../routes";
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
@@ -123,10 +124,10 @@ export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => {
     return (
       <KycPanel
-        steps={5}
+        steps={3}
         currentStep={2}
         title={formatIntlMessage("kyc.personal.title")}
-        hasBackButton={true}
+        backLink={kycRoutes.start}
       >
         <div className="pb-4">
           <h6>

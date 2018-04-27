@@ -60,6 +60,14 @@ const SetEmailEnhancedForm = withFormik<any, any>({
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
+const NoEmailUser: React.SFC<{ addNewEmail: () => void }> = ({ addNewEmail }) => (
+  <div className={styles.content}>
+    <p className={styles.customPaddingTop}>
+      <FormattedMessage id="settings.verify-email-widget.enter-email" />
+    </p>
+    <SetEmailEnhancedForm handleSubmit={addNewEmail} />
+  </div>
+);
 const VerifiedUser: React.SFC<{ email?: string }> = ({ email }) => (
   <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
     <p className={cn(styles.text, "pt-2")}>
@@ -124,12 +132,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
           />
         )
       ) : (
-        <div className={styles.content}>
-          <p className="pt-2">
-            <FormattedMessage id="settings.verify-email-widget.enter-email" />
-          </p>
-          <SetEmailEnhancedForm handleSubmit={addNewEmail} />
-        </div>
+        <NoEmailUser addNewEmail={addNewEmail as any} />
       )}
     </PanelDark>
   );

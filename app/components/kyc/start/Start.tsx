@@ -21,7 +21,6 @@ export const KYCStartComponent = injectIntlHelpers<IProps>(
       steps={4}
       currentStep={1}
       title={formatIntlMessage("kyc.start.title")}
-      backLink={""}
       isMaxWidth={true}
     >
       <Panels

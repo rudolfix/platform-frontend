@@ -39,6 +39,7 @@
 .label {
   @include font-label;
 
+  text-transform: uppercase;
   color: $neu-slate-grey;
 }
 

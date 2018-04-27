@@ -6,6 +6,7 @@ import { compose } from "redux";
 import * as icon from "../../../../assets/img/eth_icon.svg";
 import { selectEthereumAddress } from "../../../../modules/web3/reducer";
 import { appConnect } from "../../../../store";
+import { FormattedMessage } from "react-intl";
 
 interface IProps {
   path: string;
@@ -20,14 +21,19 @@ export const DepositEthComponent: React.SFC<IProps & IStateProps> = ({ path, eth
     <DepositFunds path={path}>
       <div className={styles.methodEth}>
         <h2 className={styles.title}>
-          Deposit <img src={icon} className={styles.icon} alt="ETH icon" /> ETH to your wallet
+          <FormattedMessage
+            id="wallet.deposit-funds.eth.header"
+            values={{ icon: <img src={icon} className={styles.icon} alt="ETH icon" /> }}
+          />
         </h2>
         <p className={styles.description}>
-          You will receive an e-mail notification once your funds have been successfully deposited!
+          <FormattedMessage id="wallet.deposit-funds.eth.email-notification" />
         </p>
         <div className={styles.background}>
           <div className={styles.details}>
-            <div className={styles.label}>Your ETH address</div>
+            <div className={styles.label}>
+              <FormattedMessage id="wallet.deposit-funds.eth.your-eth-address" />
+            </div>
             <div className={styles.ethAddress}>{ethAddress}</div>
           </div>
         </div>

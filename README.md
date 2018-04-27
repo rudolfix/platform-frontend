@@ -64,3 +64,4 @@ yarn intl:extract
 * [React Guidelines](./docs/react-guidelines.md)
 * [Testing production build](./docs/testing-prod-build.md)
 * [Working with Intl](./docs/working-with-intl.md)
+* [Feature flags](./docs/feature-flags.md)

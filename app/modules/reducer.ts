@@ -1,5 +1,6 @@
 import { accessWalletReducer } from "./accessWallet/reducer";
 import { authReducer } from "./auth/reducer";
+import { connectedButtonReducer } from "./connectedButtton/reducer";
 import { genericModalReducer } from "./genericModal/reducer";
 import { initReducer } from "./init/reducer";
 import { kycReducer } from "./kyc/reducer";
@@ -16,6 +17,7 @@ import { web3Reducer } from "./web3/reducer";
 // add new app reducers here. They must be AppReducer<T> type
 export const appReducers = {
   ledgerWizardState: ledgerWizardReducer,
+  connectedButtonState: connectedButtonReducer,
   browserWalletWizardState: browserWalletWizardReducer,
   web3: web3Reducer,
   browser: browserReducer,

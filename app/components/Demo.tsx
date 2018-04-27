@@ -249,6 +249,7 @@ export const Demo: React.SFC = () => (
           <VerifyEmailWidgetComponent
             isUserEmailVerified={false}
             isThereUnverifiedEmail={true}
+            doesEmailExist={true}
             resendEmail={() => {}}
             intl={dummyIntl}
           />
@@ -256,6 +257,7 @@ export const Demo: React.SFC = () => (
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
             isUserEmailVerified={true}
+            doesEmailExist={true}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
             intl={dummyIntl}

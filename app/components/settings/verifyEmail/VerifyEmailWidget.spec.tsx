@@ -11,6 +11,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={true}
         isUserEmailVerified={true}
+        doesEmailExist={true}
         resendEmail={() => {}}
         intl={dummyIntl}
       />,
@@ -24,6 +25,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={false}
         isUserEmailVerified={false}
+        doesEmailExist={false}
         resendEmail={() => {}}
         intl={dummyIntl}
       />,
@@ -37,6 +39,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={false}
         isUserEmailVerified={false}
+        doesEmailExist={false}
         resendEmail={() => {}}
         intl={dummyIntl}
       />,
@@ -49,6 +52,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={true}
         isUserEmailVerified={false}
+        doesEmailExist={true}
         resendEmail={() => {}}
         intl={dummyIntl}
       />,

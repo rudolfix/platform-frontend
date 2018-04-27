@@ -27,6 +27,8 @@ export interface IDerivationPathToAddress {
 }
 
 export class LedgerError extends Error {}
+export class LedgerConfirmationRejectedError extends LedgerError {}
+export class LedgerContractsDisabledError extends LedgerError {}
 export class LedgerLockedError extends LedgerError {}
 export class LedgerNotAvailableError extends LedgerError {}
 export class LedgerNotSupportedVersionError extends LedgerError {}
@@ -51,11 +53,11 @@ export class LedgerWallet implements IPersonalWallet {
 
   public async signMessage(data: string): Promise<string> {
     try {
-      return noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
+      return await noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
         return await this.web3Adapter.ethSign(this.ethereumAddress, data);
       });
-    } catch {
-      throw new SignerError();
+    } catch (e) {
+      throw parseLedgerError(e);
     }
   }
 
@@ -247,4 +249,14 @@ async function noSimultaneousConnectionsGuard<T>(
     await delay(0);
   }
   return callRightAfter();
+}
+
+export function parseLedgerError(error: any): LedgerError {
+  if (error.message !== undefined && error.message === "Invalid status 6985") {
+    return new LedgerConfirmationRejectedError()
+  } else if (error.message !== undefined && error.message === "Invalid status 6a80") {
+    return new LedgerContractsDisabledError()
+  } else {
+    return new LedgerUnknownError()
+  }
 }

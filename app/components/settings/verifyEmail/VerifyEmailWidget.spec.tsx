@@ -14,6 +14,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         isUserEmailVerified={true}
         doesEmailExist={true}
         resendEmail={() => {}}
+        addNewEmail={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -28,6 +29,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         isUserEmailVerified={false}
         doesEmailExist={true}
         resendEmail={() => {}}
+        addNewEmail={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -42,6 +44,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         isUserEmailVerified={false}
         doesEmailExist={false}
         resendEmail={() => {}}
+        addNewEmail={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -56,6 +59,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
           isUserEmailVerified={false}
           doesEmailExist={true}
           resendEmail={() => {}}
+          addNewEmail={() => {}}
           intl={dummyIntl}
         />,
       ),

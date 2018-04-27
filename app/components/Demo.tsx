@@ -251,6 +251,7 @@ export const Demo: React.SFC = () => (
             isThereUnverifiedEmail={true}
             doesEmailExist={true}
             resendEmail={() => {}}
+            addNewEmail={() => {}}
             intl={dummyIntl}
           />
         </Col>
@@ -260,6 +261,7 @@ export const Demo: React.SFC = () => (
             doesEmailExist={true}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
+            addNewEmail={() => {}}
             intl={dummyIntl}
           />
         </Col>

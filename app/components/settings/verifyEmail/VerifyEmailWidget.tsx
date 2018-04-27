@@ -33,7 +33,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   resendEmail: () => void;
-  addNewEmail?: (values: { email: string }) => void;
+  addNewEmail: (values: { email: string }) => void;
 }
 
 const SetEmailForm = (formikBag: FormikProps<any> & any) => (
@@ -60,7 +60,9 @@ const SetEmailEnhancedForm = withFormik<any, any>({
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
-const NoEmailUser: React.SFC<{ addNewEmail: () => void }> = ({ addNewEmail }) => (
+const NoEmailUser: React.SFC<{ addNewEmail: (values: { email: string }) => void }> = ({
+  addNewEmail,
+}) => (
   <div className={styles.content}>
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
@@ -123,16 +125,15 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
     >
       {doesEmailExist ? (
         isUserEmailVerified ? (
-          <VerifiedUser email={email} data-test-id="verified-section" />
+          <VerifiedUser {...{ email }} data-test-id="verified-section" />
         ) : (
           <UnVerifiedUser
-            isThereUnverifiedEmail={isThereUnverifiedEmail}
-            resendEmail={resendEmail}
+            {...{ isThereUnverifiedEmail, resendEmail }}
             data-test-id="unverified-section"
           />
         )
       ) : (
-        <NoEmailUser addNewEmail={addNewEmail as any} />
+        <NoEmailUser {...{ addNewEmail }} />
       )}
     </PanelDark>
   );

@@ -34,6 +34,7 @@ import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
+import { kycRoutes } from "../routes";
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
@@ -125,11 +126,11 @@ export const KycLegalRepresentativeComponent = injectIntlHelpers<IProps>(
     const lrDataValid = KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative);
     return (
       <KycPanel
-        steps={5}
+        steps={4}
         currentStep={3}
         title={formatIntlMessage("kyc.business.legal-representative.title")}
         description={formatIntlMessage("kyc.business.legal-representative.description")}
-        hasBackButton={true}
+        backLink={kycRoutes.businessData}
       >
         <KYCEnhancedForm {...props} />
         <FileUploadList {...props} lrDataValid={lrDataValid} />

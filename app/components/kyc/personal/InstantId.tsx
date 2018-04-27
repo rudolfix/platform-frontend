@@ -9,6 +9,7 @@ import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
+import { kycRoutes } from "../routes";
 
 import * as idImage from "../../../assets/img/id_now.svg";
 import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
@@ -30,11 +31,11 @@ export const KycPersonalInstantIdComponent = injectIntlHelpers<
   IProps & IStateProps & IDispatchProps
 >(({ intl: { formatIntlMessage }, ...props }) => (
   <KycPanel
-    steps={5}
-    currentStep={4}
+    steps={3}
+    currentStep={3}
     title={formatIntlMessage("kyc.personal.instant-id.title")}
     description={formatIntlMessage("kyc.personal.instant-id.description")}
-    hasBackButton={true}
+    backLink={kycRoutes.individualStart}
   >
     <img className={styles.image} src={idImage} alt="id now" />
     <div className="mb-5 text-center">

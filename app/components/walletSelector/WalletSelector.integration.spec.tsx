@@ -14,6 +14,7 @@ import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
 import { getDummyUser } from "../../lib/api/users/fixtures";
 import { UsersApi } from "../../lib/api/users/UsersApi";
+import { Neumark } from "../../lib/contracts/Neumark";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
@@ -24,6 +25,7 @@ import {
   BrowserWalletLockedError,
   BrowserWalletMissingError,
 } from "../../lib/web3/BrowserWallet";
+import { ContractsService } from "../../lib/web3/ContractsService";
 import { LedgerWallet, LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Adapter } from "../../lib/web3/Web3Adapter";
@@ -75,10 +77,17 @@ describe("Wallet selector integration", () => {
       createAccount: async () => getDummyUser(),
     });
 
+    const contractsMock = createMock(ContractsService, {
+      neumarkContract: createMock(Neumark, {
+        balanceOf: (_address: string) => Promise.resolve(new BigNumber(1)),
+      }),
+    });
+
     const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
       ledgerWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
+      contractsMock,
       initialState: {
         browser: {
           name: "chrome",

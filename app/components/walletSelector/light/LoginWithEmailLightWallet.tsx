@@ -8,6 +8,7 @@ import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 
+import { FormattedMessage } from "react-intl";
 import { actions } from "../../../modules/actions";
 import { FormConstantField } from "../../shared/forms/formField/FormConstantField";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -65,7 +66,9 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
   return (
     <>
       <Row>
-        <p className="small mx-auto">Sign in to your Neufund wallet.</p>
+        <p className="small mx-auto">
+          <FormattedMessage id="wallet-selector.neuwallet.login.prompt" />
+        </p>
       </Row>
       <Row>
         <Col xs={12}>

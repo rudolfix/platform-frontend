@@ -2,6 +2,7 @@ import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
+import * as Yup from "yup";
 
 import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
@@ -13,16 +14,20 @@ import { WarningAlert } from "../../shared/WarningAlert";
 
 const PASSWORD = "password";
 
+export const PasswordValidator = Yup.object().shape({
+  password: Yup.string().required(),
+});
+
 export interface IFormValues {
   password: string;
 }
 
-interface IProps {
+interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
-  currentValues?: IFormValues;
 }
 
 interface IStateProps {
+  isLoading: boolean;
   errorMsg?: string;
 }
 
@@ -30,30 +35,32 @@ interface IOwnProps {
   email: string;
 }
 
-const LoginLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
+type TProps = IOwnProps & IStateProps & IDispatchProps;
+
+const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props => (
   <Form>
     <FormField
       type="password"
       placeholder="Password"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
+      touched={props.touched}
+      errors={props.errors}
       name={PASSWORD}
     />
     <div className="text-center">
-      <Button type="submit" disabled={!formikBag.values.password}>
+      <Button type="submit" disabled={!props.values.password || props.isLoading}>
         Login
       </Button>
     </div>
   </Form>
 );
 
-const LoginEnhancedLightWalletForm = withFormik<IProps, IFormValues>({
-  mapPropsToValues: props => props.currentValues as IFormValues,
+const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
   handleSubmit: (values, props) => props.props.submitForm(values),
+  validationSchema: PasswordValidator,
 })(LoginLightWalletForm);
 
 export const LoginWithEmailLightWalletComponent: React.SFC<
-  IProps & IStateProps & IOwnProps
+  IDispatchProps & IStateProps & IOwnProps
 > = props => {
   return (
     <>
@@ -72,9 +79,10 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
 };
 
 export const LoginWithEmailLightWallet = compose<React.SFC<IOwnProps>>(
-  appConnect<IStateProps, IProps, IOwnProps>({
+  appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: state => ({
       errorMsg: state.lightWalletWizard.errorMsg,
+      isLoading: state.lightWalletWizard.isLoading,
     }),
     dispatchToProps: (dispatch, ownProps) => ({
       submitForm: (values: IFormValues) => {

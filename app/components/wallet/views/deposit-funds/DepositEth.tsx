@@ -5,7 +5,7 @@ import { DepositFunds } from "./DepositFunds";
 import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 import * as icon from "../../../../assets/img/eth_icon.svg";
-import { selectEthereumAddress } from "../../../../modules/web3/reducer";
+import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 
 interface IProps {

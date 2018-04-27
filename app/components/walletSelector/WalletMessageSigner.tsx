@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
-import { selectIsLightWallet } from "../../modules/web3/reducer";
+import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
 import { LoadingIndicator } from "../shared/LoadingIndicator";

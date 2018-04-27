@@ -1,15 +1,21 @@
 import * as React from "react";
-import { Money } from "../../../shared/Money";
 import * as styles from "./DepositEth.module.scss";
 import { DepositFunds } from "./DepositFunds";
 
+import { compose } from "redux";
 import * as icon from "../../../../assets/img/eth_icon.svg";
+import { selectEthereumAddress } from "../../../../modules/web3/reducer";
+import { appConnect } from "../../../../store";
 
 interface IProps {
   path: string;
 }
 
-export const DepositEth: React.SFC<IProps> = ({ path }) => {
+interface IStateProps {
+  ethAddress: string;
+}
+
+export const DepositEthComponent: React.SFC<IProps & IStateProps> = ({ path, ethAddress }) => {
   return (
     <DepositFunds path={path}>
       <div className={styles.methodEth}>
@@ -20,20 +26,20 @@ export const DepositEth: React.SFC<IProps> = ({ path }) => {
           You will receive an e-mail notification once your funds have been successfully deposited!
         </p>
         <div className={styles.background}>
-          <div className={styles.qrcodeWrapper}>
-            <div className={styles.label}>ETH ADDRESS</div>
-            <div className={styles.qrcodeMock} />
-          </div>
           <div className={styles.details}>
-            <div className={styles.label}>ETH ADDRESS</div>
-            <div className={styles.ethAddress}>0x32Be343B94f860124dC4fEe278FDCBD38C102D88</div>
-            <div className={styles.label}>ETH PRICE TODAY</div>
-            <span className={styles.moneyWrapper}>
-              <Money currency="eur" value={"600000" + "0".repeat(16)} />
-            </span>
+            <div className={styles.label}>Your ETH address</div>
+            <div className={styles.ethAddress}>{ethAddress}</div>
           </div>
         </div>
       </div>
     </DepositFunds>
   );
 };
+
+export const DepositEth = compose(
+  appConnect<IStateProps>({
+    stateToProps: s => ({
+      ethAddress: selectEthereumAddress(s.web3),
+    }),
+  }),
+)(DepositEthComponent);

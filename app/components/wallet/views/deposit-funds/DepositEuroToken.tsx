@@ -23,13 +23,13 @@ export const DepositEuroToken: React.SFC<IProps> = ({ path }) => {
         <div className={styles.background}>
           <div className={styles.details}>
             <div className={styles.label}>Beneficiary</div>
-            <div className={styles.value}>NEUFUND</div>
-            <div className={styles.label}>iban</div>
-            <div className={styles.value}>DE12500?0?170648489890</div>
+            <div className={styles.value}>-</div>
+            <div className={styles.label}>IBAN</div>
+            <div className={styles.value}>-</div>
             <div className={styles.label}>BIC</div>
-            <div className={styles.value}>TLXXXXXXXX</div>
-            <div className={styles.label}>reference</div>
-            <div className={styles.value}>00?0?17064848989</div>
+            <div className={styles.value}>-</div>
+            <div className={styles.label}>Reference</div>
+            <div className={styles.value}>-</div>
           </div>
           <div className={styles.currencyDetails}>
             <div className={styles.label}>nEUR VALUE</div>

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { dummyLogger } from "../../test/fixtures";
 import { globalFakeClock } from "../../test/setupTestsHooks";
+import { noopLogger } from "../lib/dependencies/Logger";
 import { AsyncIntervalScheduler } from "./AsyncIntervalScheduler";
 import { delay } from "./delay";
 
@@ -14,7 +14,7 @@ describe("AsyncIntervalScheduler", () => {
       return delay(expectedFunctionDelay);
     });
     const asyncInterval = new AsyncIntervalScheduler(
-      dummyLogger,
+      noopLogger,
       asyncFunctionMock,
       expectedInterval,
     );
@@ -35,7 +35,7 @@ describe("AsyncIntervalScheduler", () => {
     const asyncFunctionMock = spy(async () => {});
 
     const asyncInterval = new AsyncIntervalScheduler(
-      dummyLogger,
+      noopLogger,
       asyncFunctionMock,
       expectedInterval,
     );
@@ -48,7 +48,7 @@ describe("AsyncIntervalScheduler", () => {
     const asyncFunctionMock = spy(async () => {});
 
     const asyncInterval = new AsyncIntervalScheduler(
-      dummyLogger,
+      noopLogger,
       asyncFunctionMock,
       expectedInterval,
     );
@@ -67,7 +67,7 @@ describe("AsyncIntervalScheduler", () => {
     });
 
     const asyncInterval = new AsyncIntervalScheduler(
-      dummyLogger,
+      noopLogger,
       asyncFunctionMock,
       expectedInterval,
     );
@@ -90,7 +90,7 @@ describe("AsyncIntervalScheduler", () => {
       return delay(expectedFunctionDelay);
     });
     const asyncInterval = new AsyncIntervalScheduler(
-      dummyLogger,
+      noopLogger,
       asyncFunctionMock,
       expectedInterval,
     );
@@ -109,7 +109,7 @@ describe("AsyncIntervalScheduler", () => {
     const asyncFunctionMock = spy(async () => {});
 
     const asyncInterval = new AsyncIntervalScheduler(
-      dummyLogger,
+      noopLogger,
       asyncFunctionMock,
       expectedInterval,
     );
@@ -129,7 +129,7 @@ describe("AsyncIntervalScheduler", () => {
   it("should work with sync functions", () => {
     const syncFunctionMock = spy(() => {});
     const asyncInterval = new AsyncIntervalScheduler(
-      dummyLogger,
+      noopLogger,
       syncFunctionMock,
       expectedInterval,
     );

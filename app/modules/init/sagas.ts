@@ -10,7 +10,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { detectUserAgent } from "../userAgent/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
 
-function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
+export function* setupSaga({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(detectUserAgent);
     yield web3Manager.initialize();
@@ -49,5 +49,5 @@ export function* cleanupAndLogoutSaga(): Iterator<any> {
 }
 
 export const initSagas = function*(): Iterator<effects.Effect> {
-  yield fork(neuTakeEvery, "INIT_START", setup);
+  yield fork(neuTakeEvery, "INIT_START", setupSaga);
 };

@@ -21,7 +21,7 @@ import { Web3Manager } from "../app/lib/web3/Web3Manager";
 import { createInjectMiddleware } from "../app/middlewares/redux-injectify";
 import { IAppState, reducers } from "../app/store";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
-import { dummyConfig, dummyLogger } from "./fixtures";
+import { dummyConfig } from "./fixtures";
 import { createMock, tid } from "./testUtils";
 import { Storage } from "../app/lib/persistence/Storage";
 import { ObjectStorage } from "../app/lib/persistence/ObjectStorage";
@@ -40,6 +40,7 @@ import { createSpyMiddleware } from "./reduxSpyMiddleware";
 import { routerMiddleware } from "react-router-redux";
 import { BrowserRouter } from "react-router-dom";
 import { createBrowserHistory, History, createMemoryHistory } from "history";
+import { noopLogger } from "../app/lib/dependencies/Logger";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 
@@ -78,7 +79,7 @@ export function createIntegrationTestsSetup(
     .rebind(symbols.web3Manager)
     .to(Web3ManagerMock)
     .inSingletonScope();
-  container.rebind(symbols.logger).toConstantValue(dummyLogger);
+  container.rebind(symbols.logger).toConstantValue(noopLogger);
   container.rebind(symbols.storage).toConstantValue(storageMock);
   container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
   container.rebind(symbols.signatureAuthApi).toConstantValue(signatureAuthApiMock);

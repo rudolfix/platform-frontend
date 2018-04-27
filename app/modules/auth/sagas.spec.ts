@@ -1,13 +1,10 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import {
-  dummyEthereumAddress,
-  dummyEthereumAddressWithChecksum,
-  dummyLogger,
-} from "../../../test/fixtures";
+import { dummyEthereumAddress, dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
 import { createMock } from "../../../test/testUtils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
+import { noopLogger } from "../../lib/dependencies/Logger";
 import { BrowserWallet } from "../../lib/web3/BrowserWallet";
 import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
@@ -54,7 +51,7 @@ describe("Jwt actions", () => {
         getState: getStateMock,
         signatureAuthApi: signatureAuthApiMock,
         cryptoRandomString: randomStringMock,
-        logger: dummyLogger,
+        logger: noopLogger,
       } as any) as TGlobalDependencies);
 
       expect(randomStringMock).to.be.calledWithExactly(64);

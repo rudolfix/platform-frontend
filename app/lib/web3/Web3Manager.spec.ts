@@ -1,11 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import {
-  dummyConfig,
-  dummyEthereumAddress,
-  dummyLogger,
-  dummyNetworkId,
-} from "../../../test/fixtures";
+import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import { globalFakeClock } from "../../../test/setupTestsHooks";
 import { createMock, expectToBeRejected } from "../../../test/testUtils";
 import { web3Actions } from "../../modules/web3/actions";
@@ -16,6 +11,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
 import { delay } from "../../utils/delay";
+import { noopLogger } from "../dependencies/Logger";
 import { ILedgerWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { LedgerWallet } from "./LedgerWallet";
 import {
@@ -50,7 +46,7 @@ describe("Web3Manager", () => {
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       dispatchMock,
-      dummyLogger,
+      noopLogger,
       asyncIntervalSchedulerFactoryMock,
     );
     web3Manager.networkId = expectedNetworkId;
@@ -89,7 +85,7 @@ describe("Web3Manager", () => {
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       dispatchMock,
-      dummyLogger,
+      noopLogger,
       asyncIntervalSchedulerFactoryMock,
     );
     web3Manager.networkId = expectedNetworkId;
@@ -113,12 +109,12 @@ describe("Web3Manager", () => {
         } as any),
     });
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
-      new AsyncIntervalScheduler(dummyLogger, cb, interval);
+      new AsyncIntervalScheduler(noopLogger, cb, interval);
 
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       dispatchMock,
-      dummyLogger,
+      noopLogger,
       asyncIntervalSchedulerFactory,
     );
     web3Manager.networkId = expectedNetworkId;
@@ -148,12 +144,12 @@ describe("Web3Manager", () => {
         } as any),
     });
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
-      new AsyncIntervalScheduler(dummyLogger, cb, interval);
+      new AsyncIntervalScheduler(noopLogger, cb, interval);
 
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       dispatchMock,
-      dummyLogger,
+      noopLogger,
       asyncIntervalSchedulerFactory,
     );
     web3Manager.networkId = expectedNetworkId;

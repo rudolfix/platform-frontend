@@ -37,7 +37,7 @@ interface IDispatchProps {
 }
 
 const SetEmailForm = (formikBag: FormikProps<any> & any) => (
-  <Form className={cn(styles.content, "mt-0 pt-2 mb-0")}>
+  <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
     <FormField placeholder="Email address" name="email" />
     <div className="text-center">
       <Button type="submit" disabled={!formikBag.isValid}>
@@ -130,7 +130,9 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
         )
       ) : (
         <div className={styles.content}>
-          <p className="pt-2">Please enter your email</p>
+          <p className="pt-2">
+            <FormattedMessage id="settings.verify-email-widget.enter-email" />
+          </p>
           <SetEmailEnhancedForm handleSubmit={addNewEmail} />
         </div>
       )}

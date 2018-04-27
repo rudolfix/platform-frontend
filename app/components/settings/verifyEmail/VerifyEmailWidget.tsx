@@ -21,6 +21,7 @@ import * as Yup from "yup";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
+import { ConnectedButton } from "../../shared/connectedButton";
 import { FormField } from "../../shared/forms/formField/FormField";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
@@ -40,9 +41,9 @@ const SetEmailForm = (formikBag: FormikProps<any> & any) => (
   <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
     <FormField placeholder="Email address" name="email" />
     <div className="text-center">
-      <Button type="submit" disabled={!formikBag.isValid}>
+      <ConnectedButton type="submit" disabled={!formikBag.isValid}>
         <FormattedMessage id="form.button.submit" />
-      </Button>
+      </ConnectedButton>
     </div>
   </Form>
 );

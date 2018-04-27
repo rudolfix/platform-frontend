@@ -20,6 +20,7 @@ export function* addNewEmail(
   const user = yield select((s: IAppState) => selectUser(s.auth));
 
   try {
+    yield effects.put(actions.connectedButton.lockConnectedButton());
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
@@ -33,6 +34,7 @@ export function* addNewEmail(
     yield effects.call(loadUser);
     notificationCenter.error("Failed to send email");
   }
+  yield effects.put(actions.connectedButton.freeConnectedButton());
 }
 
 export function* resendEmail(

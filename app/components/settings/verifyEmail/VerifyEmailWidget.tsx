@@ -38,7 +38,7 @@ interface IDispatchProps {
 
 const SetEmailForm = (formikBag: FormikProps<any> & any) => (
   <Form className={cn(styles.content, "mt-0 pt-2 mb-0")}>
-    <FormField label="please submit you email address" placeholder="Email address" name="email" />
+    <FormField placeholder="Email address" name="email" />
     <div className="text-center">
       <Button type="submit" disabled={!formikBag.isValid}>
         <FormattedMessage id="form.button.submit" />
@@ -50,7 +50,7 @@ const SetEmailForm = (formikBag: FormikProps<any> & any) => (
 const EmailFormSchema = Yup.object().shape({
   email: Yup.string()
     .email()
-    .min(1),
+    .required(),
 });
 
 const SetEmailEnhancedForm = withFormik<any, any>({
@@ -129,7 +129,10 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
           />
         )
       ) : (
-        <SetEmailEnhancedForm handleSubmit={addNewEmail} />
+        <div className={styles.content}>
+          <p className="pt-2">Please enter your email</p>
+          <SetEmailEnhancedForm handleSubmit={addNewEmail} />
+        </div>
       )}
     </PanelDark>
   );

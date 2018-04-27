@@ -61,14 +61,11 @@ const SetEmailEnhancedForm = withFormik<any, any>({
 })(SetEmailForm);
 
 const VerifiedUser: React.SFC<{ email?: string }> = ({ email }) => (
-  <div
-    data-test-id="verified-section"
-    className={cn(styles.content, "d-flex flex-wrap align-content-around")}
-  >
+  <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
     </p>
-    <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
+    <Col xs={12} className="d-flex justify-content-center">
       <p>{email}</p>
     </Col>
   </div>
@@ -78,10 +75,7 @@ const UnVerifiedUser: React.SFC<{
   isThereUnverifiedEmail: boolean;
   resendEmail: () => void;
 }> = ({ isThereUnverifiedEmail, resendEmail }) => (
-  <div
-    data-test-id="unverified-section"
-    className={cn(styles.content, "d-flex flex-wrap align-content-around")}
-  >
+  <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
     </p>
@@ -121,11 +115,12 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
     >
       {doesEmailExist ? (
         isUserEmailVerified ? (
-          <VerifiedUser email={email} />
+          <VerifiedUser email={email} data-test-id="verified-section" />
         ) : (
           <UnVerifiedUser
             isThereUnverifiedEmail={isThereUnverifiedEmail}
             resendEmail={resendEmail}
+            data-test-id="unverified-section"
           />
         )
       ) : (

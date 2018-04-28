@@ -1,5 +1,6 @@
 import * as React from "react";
 import { compose } from "redux";
+import { selectIsConnectedButtonLocked } from "../../modules/connectedButtton/reducer";
 import { appConnect } from "../../store";
 import { Button, IButtonProps } from "./Buttons";
 
@@ -18,9 +19,7 @@ const ConnectedButtonComponent: React.SFC<IButtonProps & IStateProps> = ({
 export const ConnectedButton = compose<React.SFC<IButtonProps>>(
   appConnect<IStateProps, IButtonProps>({
     stateToProps: s => ({
-      isLocked: s.connectedButtonState.isButtonLocked,
+      isLocked: selectIsConnectedButtonLocked(s.connectedButtonState),
     }),
   }),
 )(ConnectedButtonComponent);
-
-//TODO: Use selector for isLocked

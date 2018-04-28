@@ -26,3 +26,6 @@ export const connectedButtonReducer: AppReducer<IConnectedButtonState> = (
 
   return state;
 };
+
+export const selectIsConnectedButtonLocked = (state: IConnectedButtonState): boolean =>
+  state && state.isButtonLocked;

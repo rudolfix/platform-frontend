@@ -65,8 +65,8 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.pending.title")}
-        steps={5}
-        currentStep={5}
+        steps={4}
+        currentStep={4}
         description={formatIntlMessage("kyc.request-state.pending.description")}
       >
         {props.pendingRequestType && <KYCAddDocuments uploadType={props.pendingRequestType} />}
@@ -78,8 +78,8 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.accepted.title")}
-        steps={5}
-        currentStep={5}
+        steps={4}
+        currentStep={4}
         description={formatIntlMessage("kyc.request-state.accepted.description")}
       >
         {settingsButton}
@@ -90,8 +90,8 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.rejected.title")}
-        steps={5}
-        currentStep={5}
+        steps={4}
+        currentStep={4}
         description={formatIntlMessage("kyc.request-state.rejected.description")}
       >
         {settingsButton}
@@ -102,8 +102,8 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.outsourced.title")}
-        steps={5}
-        currentStep={5}
+        steps={4}
+        currentStep={4}
         description={formatIntlMessage("kyc.request-state.outsourced.description")}
       >
         {" "}

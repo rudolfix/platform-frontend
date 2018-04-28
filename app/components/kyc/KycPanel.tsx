@@ -1,6 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
+import { Link } from "react-router-dom";
 import { Button } from "../shared/Buttons";
 import { PanelWhite } from "../shared/PanelWhite";
 import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
@@ -10,7 +11,7 @@ import * as styles from "./KycPanel.module.scss";
 
 interface IPropsKycPanel {
   title: string;
-  hasBackButton?: boolean;
+  backLink?: string;
   isMaxWidth?: boolean;
   description?: string;
 }
@@ -21,7 +22,7 @@ export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
   title,
   children,
   description,
-  hasBackButton,
+  backLink,
   isMaxWidth,
 }) => (
   <div className={`${styles.kycPanel} ${isMaxWidth ? styles.kycPanelMax : ""}`}>
@@ -33,15 +34,12 @@ export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
       </header>
       <div className={styles.content}>{children}</div>
       <footer className={styles.footer}>
-        {hasBackButton && (
-          <Button
-            layout="secondary"
-            iconPosition="icon-before"
-            svgIcon={arrowLeft}
-            onClick={() => {}}
-          >
-            <FormattedMessage id="kyc.panel.go-back" />
-          </Button>
+        {backLink && (
+          <Link to={backLink}>
+            <Button layout="secondary" iconPosition="icon-before" svgIcon={arrowLeft}>
+              <FormattedMessage id="kyc.panel.go-back" />
+            </Button>
+          </Link>
         )}
       </footer>
     </PanelWhite>

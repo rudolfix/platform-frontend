@@ -3,7 +3,7 @@ import { Col, Row } from "reactstrap";
 
 import * as ledgerConfirm from "../../assets/img/wallet_selector/ledger_confirm.svg";
 import * as walletConfirmIcon from "../../assets/img/wallet_selector/wallet_confirm_icon.svg";
-import { selectConnectedWeb3State } from "../../modules/web3/reducer";
+import { selectConnectedWeb3State } from "../../modules/web3/selectors";
 import { WalletType } from "../../modules/web3/types";
 import { appConnect } from "../../store";
 

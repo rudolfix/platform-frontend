@@ -2,7 +2,7 @@ import * as React from "react";
 import { Modal } from "reactstrap";
 import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
 import { actions } from "../../modules/actions";
-import { selectIsLightWallet, selectIsUnlocked } from "../../modules/web3/reducer";
+import { selectIsLightWallet, selectIsUnlocked } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";

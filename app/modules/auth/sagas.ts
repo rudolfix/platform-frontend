@@ -8,13 +8,13 @@ import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import {
+  selectActivationCodeFromQueryString,
   selectEthereumAddressWithChecksum,
   selectLightWalletEmailFromQueryString,
-} from "../web3/reducer";
+} from "../web3/selectors";
 import { WalletType } from "../web3/types";
 import { IVerifyEmailUser } from "./../../lib/api/users/interfaces";
 import { IAppState } from "./../../store";
-import { selectActivationCodeFromQueryString } from "./../web3/reducer";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {

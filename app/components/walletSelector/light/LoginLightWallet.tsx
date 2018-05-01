@@ -1,10 +1,11 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
+
 import {
   selectLightWalletEmailFromQueryString,
   selectPreviousLightWalletEmail,
-} from "../../../modules/web3/reducer";
+} from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { LoginWithEmailLightWallet } from "./LoginWithEmailLightWallet";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";

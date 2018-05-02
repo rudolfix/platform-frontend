@@ -1,6 +1,7 @@
 import { expect } from "chai";
-import { shallow } from "enzyme";
+import { render, shallow } from "enzyme";
 import * as React from "react";
+import { wrapWithIntl } from "../../../../test/integrationTestUtils";
 import { tid } from "../../../../test/testUtils";
 import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { VerifyEmailWidgetComponent } from "./VerifyEmailWidget";
@@ -11,7 +12,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={true}
         isUserEmailVerified={true}
+        doesEmailExist={true}
         resendEmail={() => {}}
+        addNewEmail={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -22,9 +25,11 @@ describe("<VerifyEmailWidgetComponent />", () => {
   it("should render unverified section", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
-        isThereUnverifiedEmail={false}
+        isThereUnverifiedEmail={true}
         isUserEmailVerified={false}
+        doesEmailExist={true}
         resendEmail={() => {}}
+        addNewEmail={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -37,7 +42,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
       <VerifyEmailWidgetComponent
         isThereUnverifiedEmail={false}
         isUserEmailVerified={false}
+        doesEmailExist={false}
         resendEmail={() => {}}
+        addNewEmail={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -45,13 +52,17 @@ describe("<VerifyEmailWidgetComponent />", () => {
   });
 
   it("should render resend link button", () => {
-    const MyNeuWidgetComponent = shallow(
-      <VerifyEmailWidgetComponent
-        isThereUnverifiedEmail={true}
-        isUserEmailVerified={false}
-        resendEmail={() => {}}
-        intl={dummyIntl}
-      />,
+    const MyNeuWidgetComponent = render(
+      wrapWithIntl(
+        <VerifyEmailWidgetComponent
+          isThereUnverifiedEmail={true}
+          isUserEmailVerified={false}
+          doesEmailExist={true}
+          resendEmail={() => {}}
+          addNewEmail={() => {}}
+          intl={dummyIntl}
+        />,
+      ),
     );
     expect(MyNeuWidgetComponent.find(tid("resend-link"))).to.have.length(1);
   });

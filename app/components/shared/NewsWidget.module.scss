@@ -19,6 +19,7 @@
 
   :global(.button) {
     margin-top: px-to-rem(20px);
+    width: 100%;
   }
 }
 
@@ -80,6 +81,7 @@
     color: $neu-cloudy-blue;
     transition: 150ms ease-out color;
     margin-left: px-to-rem(12px);
+    flex-shrink: 0;
 
     &:hover {
       color: $neu-red;

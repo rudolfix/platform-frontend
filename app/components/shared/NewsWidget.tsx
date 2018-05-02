@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
 import { Button } from "./Buttons";
 import { NavLinkConnected } from "./connectedRouting";
@@ -43,7 +44,7 @@ export class NewsWidget extends React.Component<IProps> {
         <Tabs
           tabs={[
             {
-              text: "Latest news",
+              text: <FormattedMessage id="shared-component-news-widget-tab-latest" />,
               handleClick: () => this.toggleContent("news"),
               isActive: activeTab === "news",
             },
@@ -72,7 +73,7 @@ export class NewsWidget extends React.Component<IProps> {
                 layout="secondary"
                 iconPosition="icon-before"
               >
-                Add news
+                <FormattedMessage id="shared-component-news-widget-add-news" />
               </Button>
             )}
           </div>

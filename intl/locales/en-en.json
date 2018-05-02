@@ -150,6 +150,8 @@
   "settings.verify-email-widget.header": "EMAIL VERIFICATION",
   "settings.verify-email-widget.resend-link": "Resend link",
   "settings.verify-email-widget.you-need-to-verify-email": "You need to verify your email address, which will be used for your wallet link we send you",
+  "shared-component-news-widget-add-news": "Add news",
+  "shared-component-news-widget-tab-latest": "Latest news",
   "shared-component.investment-preview.current-valuation": "Current Valuation",
   "shared-component.investment-preview.days-left": "Ends in {endInDays} days",
   "shared-component.investment-preview.details": "Details",

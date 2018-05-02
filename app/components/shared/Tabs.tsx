@@ -8,7 +8,7 @@ type TTheme = "dark" | "light";
 
 interface ITab {
   path?: string;
-  text: string;
+  text: string | React.ReactNode;
   handleClick?: () => void;
   dataTestId?: string;
   isActive?: boolean;

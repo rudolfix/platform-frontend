@@ -261,6 +261,8 @@
   "wallet-selector.tabs.browser-wallet": "use existing wallet",
   "wallet-selector.tabs.ledger": "use nano ledger",
   "wallet-selector.tabs.neuwallet": "use Neufund wallet",
+  "wallet.balance.deposit": "Deposit funds >",
+  "wallet.balance.withdraw": "Withdraw funds >",
   "wallet.deposit-funds.eth.email-notification": "You will receive an e-mail notification once your funds have been successfully deposited!",
   "wallet.deposit-funds.eth.header": "Deposit {icon} ETH to your wallet",
   "wallet.deposit-funds.eth.your-eth-address": "Your ETH address",
@@ -275,5 +277,6 @@
   "wallet.deposit-funds.menu.eth": "Deposit Eth",
   "wallet.deposit-funds.menu.eur": "Deposit nEur",
   "wallet.deposit-funds.name": "Deposit funds",
-  "wallet.name": "Wallet"
+  "wallet.name": "Wallet",
+  "wallet.total": "Total"
 }

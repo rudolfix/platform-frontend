@@ -86,7 +86,7 @@ function* loadIndividualFiles(
 }
 
 function* loadIndividualRequest(
-  { apiKycService }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_LOAD_INDIVIDUAL_REQUEST_STATE") return;
@@ -94,8 +94,9 @@ function* loadIndividualRequest(
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.getIndividualRequest();
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
-  } catch {
-    yield put(actions.kyc.kycUpdateIndividualRequestState(false));
+  } catch (e) {
+    logger.error("Error while getting business KYC data", e);
+    yield put(actions.kyc.kycUpdateIndividualRequestState(false, undefined, e.message));
   }
 }
 
@@ -392,7 +393,7 @@ function* loadBeneficialOwnerFiles(
 
 // request
 function* loadBusinessRequest(
-  { apiKycService }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_LOAD_BUSINESS_REQUEST_STATE") return;
@@ -400,8 +401,9 @@ function* loadBusinessRequest(
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.getBusinessRequest();
     yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
-  } catch {
-    yield put(actions.kyc.kycUpdateBusinessRequestState(false));
+  } catch (e) {
+    logger.error("Error while getting business KYC data", e);
+    yield put(actions.kyc.kycUpdateBusinessRequestState(false, undefined, e.message));
   }
 }
 

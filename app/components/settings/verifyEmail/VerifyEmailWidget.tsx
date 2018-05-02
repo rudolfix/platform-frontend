@@ -16,7 +16,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers"
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
-import { Form, withFormik } from "formik";
+import { Form, FormikProps, withFormik } from "formik";
 import * as Yup from "yup";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
@@ -33,12 +33,26 @@ interface IStateProps {
   isLocked?: boolean;
 }
 
+interface IEnhancedFormProps {
+  handleSubmit: (values: IFormValues) => void;
+  isLocked?: boolean;
+}
+
 interface IDispatchProps {
   resendEmail: () => void;
   addNewEmail: (values: { email: string }) => void;
 }
 
-const SetEmailForm: React.SFC<any> = props => (
+interface IFormValues {
+  email: string;
+}
+
+interface INoEMailUser {
+  addNewEmail: (values: { email: string }) => void;
+  isLocked?: boolean;
+}
+
+const SetEmailForm: React.SFC<IEnhancedFormProps & FormikProps<IFormValues>> = props => (
   <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
     <FormField placeholder="Email address" name="email" />
     <div className="text-center">
@@ -55,16 +69,13 @@ const EmailFormSchema = Yup.object().shape({
     .required(),
 });
 
-const SetEmailEnhancedForm = withFormik<any, any>({
+const SetEmailEnhancedForm = withFormik<IEnhancedFormProps, IFormValues>({
   validationSchema: EmailFormSchema,
   isInitialValid: () => EmailFormSchema.isValidSync(false),
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
-const NoEmailUser: React.SFC<{
-  addNewEmail: (values: { email: string }) => void;
-  isLocked?: boolean;
-}> = ({ addNewEmail, isLocked }) => (
+const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked }) => (
   <div className={styles.content}>
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />

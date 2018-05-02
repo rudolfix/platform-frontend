@@ -148,6 +148,8 @@
   "settings.personal-settings.title": "Personal Settings",
   "settings.security-settings.title": "Security Settings",
   "settings.verify-email-widget.email-is-verified": "Your email is verified.",
+  "settings.verify-email-widget.email-placeholder": "Email Address",
+  "settings.verify-email-widget.enter-email": "Please enter your email",
   "settings.verify-email-widget.header": "EMAIL VERIFICATION",
   "settings.verify-email-widget.resend-link": "Resend link",
   "settings.verify-email-widget.you-need-to-verify-email": "You need to verify your email address, which will be used for your wallet link we send you",

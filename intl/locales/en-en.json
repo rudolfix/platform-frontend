@@ -147,6 +147,7 @@
   "settings.personal-settings.title": "Personal Settings",
   "settings.security-settings.title": "Security Settings",
   "settings.verify-email-widget.email-is-verified": "Your email is verified.",
+  "settings.verify-email-widget.email-placeholder": "Email Address",
   "settings.verify-email-widget.enter-email": "Please enter your email",
   "settings.verify-email-widget.header": "EMAIL VERIFICATION",
   "settings.verify-email-widget.resend-link": "Resend link",

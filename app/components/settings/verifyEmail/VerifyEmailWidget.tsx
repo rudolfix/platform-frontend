@@ -4,6 +4,11 @@ import { FormattedMessage } from "react-intl";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 
+import { Form, FormikProps, withFormik } from "formik";
+import * as Yup from "yup";
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import { actions } from "../../../modules/actions";
 import {
   selectDoesEmailExist,
@@ -11,18 +16,12 @@ import {
   selectIsUserEmailVerified,
   selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
+import { selectIsConnectedButtonLocked } from "../../../modules/verifyEmailWidget/reducer";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
-import { PanelDark } from "../../shared/PanelDark";
-
-import { Form, FormikProps, withFormik } from "formik";
-import * as Yup from "yup";
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-import { selectIsConnectedButtonLocked } from "../../../modules/verifyEmailWidget/reducer";
 import { FormField } from "../../shared/forms/formField/FormField";
+import { PanelDark } from "../../shared/PanelDark";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
 interface IStateProps {
@@ -52,15 +51,20 @@ interface INoEMailUser {
   isLocked?: boolean;
 }
 
-const SetEmailForm: React.SFC<IEnhancedFormProps & FormikProps<IFormValues>> = props => (
-  <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
-    <FormField placeholder="Email address" name="email" />
-    <div className="text-center">
-      <Button type="submit" disabled={!props.isValid || props.isLocked}>
-        <FormattedMessage id="form.button.submit" />
-      </Button>
-    </div>
-  </Form>
+const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormValues>>(
+  ({ intl: { formatIntlMessage }, ...props }) => (
+    <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
+      <FormField
+        placeholder={formatIntlMessage("settings.verify-email-widget.email-placeholder")}
+        name="email"
+      />
+      <div className="text-center">
+        <Button type="submit" disabled={!props.isValid || props.isLocked}>
+          <FormattedMessage id="form.button.submit" />
+        </Button>
+      </div>
+    </Form>
+  ),
 );
 
 const EmailFormSchema = Yup.object().shape({

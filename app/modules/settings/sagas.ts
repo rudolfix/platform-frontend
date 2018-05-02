@@ -33,8 +33,9 @@ export function* addNewEmail(
   } catch {
     yield effects.call(loadUser);
     notificationCenter.error("Failed to send email");
+  } finally {
+    yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
   }
-  yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
 }
 
 export function* resendEmail(

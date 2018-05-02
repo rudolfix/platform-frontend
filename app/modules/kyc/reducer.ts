@@ -15,6 +15,7 @@ export interface IKycState {
   // individual
   individualRequestState?: IKycRequestState;
   individualRequestStateLoading?: boolean;
+  individualRequestError?: string;
 
   individualData?: IKycIndividualData;
   individualDataLoading?: boolean;
@@ -26,9 +27,11 @@ export interface IKycState {
   // business
   businessRequestState?: IKycRequestState;
   businessRequestStateLoading?: boolean;
+  businessRequestError?: string;
 
   businessData?: IKycBusinessData;
   businessDataLoading?: boolean;
+
   businessFilesLoading?: boolean;
   businessFileUploading?: boolean;
   businessFiles: IKycFileInfo[];

@@ -21,7 +21,10 @@ export const kycActions = {
   kycLoadIndividualData: () => createSimpleAction("KYC_LOAD_INDIVIDUAL_DATA"),
 
   kycUpdateIndividualData: (individualDataLoading?: boolean, individualData?: IKycIndividualData) =>
-    createAction("KYC_UPDATE_INDIVIDUAL_DATA", { individualData, individualDataLoading }),
+    createAction("KYC_UPDATE_INDIVIDUAL_DATA", {
+      individualData,
+      individualDataLoading,
+    }),
 
   // files
   kycLoadIndividualDocumentList: () => createSimpleAction("KYC_LOAD_INDIVIDUAL_FILE_LIST"),
@@ -43,10 +46,12 @@ export const kycActions = {
   kycUpdateIndividualRequestState: (
     individualRequestStateLoading?: boolean,
     individualRequestState?: IKycRequestState,
+    individualRequestError?: string,
   ) =>
     createAction("KYC_UPDATE_INDIVIDUAL_REQUEST_STATE", {
       individualRequestState,
       individualRequestStateLoading,
+      individualRequestError,
     }),
 
   kycSubmitIndividualRequest: () => createSimpleAction("KYC_SUBMIT_INDIVIDUAL_REQUEST"),
@@ -64,7 +69,10 @@ export const kycActions = {
   kycLoadBusinessData: () => createSimpleAction("KYC_LOAD_BUSINESS_DATA"),
 
   kycUpdateBusinessData: (businessDataLoading?: boolean, businessData?: IKycBusinessData) =>
-    createAction("KYC_UPDATE_BUSINESS_DATA", { businessData, businessDataLoading }),
+    createAction("KYC_UPDATE_BUSINESS_DATA", {
+      businessData,
+      businessDataLoading,
+    }),
 
   // business documents
   kycLoadBusinessDocumentList: () => createSimpleAction("KYC_LOAD_BUSINESS_FILE_LIST"),
@@ -167,10 +175,12 @@ export const kycActions = {
   kycUpdateBusinessRequestState: (
     businessRequestStateLoading?: boolean,
     businessRequestState?: IKycRequestState,
+    businessRequestError?: string,
   ) =>
     createAction("KYC_UPDATE_BUSINESS_REQUEST_STATE", {
       businessRequestState,
       businessRequestStateLoading,
+      businessRequestError,
     }),
 
   kycSubmitBusinessRequest: () => createSimpleAction("KYC_SUBMIT_BUSINESS_REQUEST"),

@@ -137,7 +137,7 @@
   "settings.change-email-component.header": "CHANGE MY E-MAIL ADDRESS",
   "settings.change-email-component.text": "Lorem ipsum dolor sit amet, consetetur, sadpcsi and then that is how you get the email",
   "settings.kyc-status-widget.start-kyc-process": "Start KYC process",
-  "settings.kyc-status-widget.status.approved": "Your Kyc request is has been approved. Happy investing!",
+  "settings.kyc-status-widget.status.accepted": "Your Kyc request is has been approved. Happy investing!",
   "settings.kyc-status-widget.status.draft": "Please submit your Kyc request now.",
   "settings.kyc-status-widget.status.error-verification-email": "You need to verify email before starting KYC",
   "settings.kyc-status-widget.status.outsourced": "Your instant identification is being processed. You will be notified by e-mail once this is completed.",

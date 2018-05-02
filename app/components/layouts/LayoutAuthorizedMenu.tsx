@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { NavLink, NavLinkProps } from "react-router-dom";
@@ -31,27 +30,32 @@ interface IStateProps {
   actionRequiredSettings: boolean;
 }
 
-const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
+const MenuEntryContent: React.SFC<IMenuEntry & NavLinkProps> = ({
   actionRequired,
   menuName,
-  to,
   svgString,
 }) => {
-  return /^https?:\/\//.test(to) ? (
-    <a href={to} target="_blank" className={cn(styles.menuItem, svgString)}>
+  return (
+    <>
       <span className={styles.icon}>
         <InlineIcon svgIcon={svgString} />
         {actionRequired && <div className={styles.actionIndicator} />}
       </span>
       <span className={styles.name}>{menuName}</span>
+    </>
+  );
+};
+
+const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({ to, svgString, ...props }) => {
+  const isAbsoluteLink = /^https?:\/\//.test(to);
+
+  return isAbsoluteLink ? (
+    <a href={to} target="_blank" className={styles.menuItem}>
+      <MenuEntryContent {...props} to={to} svgString={svgString} />
     </a>
   ) : (
-    <NavLink to={to} className={cn(styles.menuItem, svgString)}>
-      <span className={styles.icon}>
-        <InlineIcon svgIcon={svgString} />
-        {actionRequired && <div className={styles.actionIndicator} />}
-      </span>
-      <span className={styles.name}>{menuName}</span>
+    <NavLink to={to} className={styles.menuItem}>
+      <MenuEntryContent {...props} to={to} svgString={svgString} />
     </NavLink>
   );
 };

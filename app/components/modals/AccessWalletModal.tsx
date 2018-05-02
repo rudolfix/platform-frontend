@@ -29,7 +29,7 @@ interface IDispatchProps {
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
   <div className="text-md-center">
     <Button onClick={onCancel}>
-      <FormattedMessage id="modal.button.cancel" />
+      <FormattedMessage id="form.button.cancel" />
     </Button>
   </div>
 );

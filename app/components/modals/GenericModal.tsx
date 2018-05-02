@@ -52,7 +52,7 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
 
         <Row className="mb-5 justify-content-center">
           <Button onClick={onDismiss}>
-            <FormattedMessage id="modal.button.dismiss" />
+            <FormattedMessage id="form.button.ok" />
           </Button>
         </Row>
       </ModalComponentBody>

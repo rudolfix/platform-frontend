@@ -16,12 +16,12 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers"
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
-import { Form, FormikProps, withFormik } from "formik";
+import { Form, withFormik } from "formik";
 import * as Yup from "yup";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-import { ConnectedButton } from "../../shared/connectedButton";
+import { selectIsConnectedButtonLocked } from "../../../modules/verifyEmailWidget/reducer";
 import { FormField } from "../../shared/forms/formField/FormField";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
@@ -30,6 +30,7 @@ interface IStateProps {
   isThereUnverifiedEmail: boolean;
   doesEmailExist: boolean;
   email?: string;
+  isLocked?: boolean;
 }
 
 interface IDispatchProps {
@@ -37,13 +38,13 @@ interface IDispatchProps {
   addNewEmail: (values: { email: string }) => void;
 }
 
-const SetEmailForm = (formikBag: FormikProps<any> & any) => (
+const SetEmailForm: React.SFC<any> = props => (
   <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
     <FormField placeholder="Email address" name="email" />
     <div className="text-center">
-      <ConnectedButton type="submit" disabled={!formikBag.isValid}>
+      <Button type="submit" disabled={!props.isValid || props.isLocked}>
         <FormattedMessage id="form.button.submit" />
-      </ConnectedButton>
+      </Button>
     </div>
   </Form>
 );
@@ -57,18 +58,18 @@ const EmailFormSchema = Yup.object().shape({
 const SetEmailEnhancedForm = withFormik<any, any>({
   validationSchema: EmailFormSchema,
   isInitialValid: () => EmailFormSchema.isValidSync(false),
-  mapPropsToValues: props => props.currentValues,
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
-const NoEmailUser: React.SFC<{ addNewEmail: (values: { email: string }) => void }> = ({
-  addNewEmail,
-}) => (
+const NoEmailUser: React.SFC<{
+  addNewEmail: (values: { email: string }) => void;
+  isLocked?: boolean;
+}> = ({ addNewEmail, isLocked }) => (
   <div className={styles.content}>
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
     </p>
-    <SetEmailEnhancedForm handleSubmit={addNewEmail} />
+    <SetEmailEnhancedForm handleSubmit={addNewEmail} isLocked={isLocked} />
   </div>
 );
 const VerifiedUser: React.SFC<{ email?: string }> = ({ email }) => (
@@ -112,6 +113,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
   email,
   resendEmail,
   addNewEmail,
+  isLocked,
 }) => {
   return (
     <PanelDark
@@ -134,7 +136,7 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
           />
         )
       ) : (
-        <NoEmailUser {...{ addNewEmail }} />
+        <NoEmailUser {...{ addNewEmail, isLocked }} />
       )}
     </PanelDark>
   );
@@ -147,6 +149,7 @@ export const VerifyEmailWidget = compose<React.SFC>(
       isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
       doesEmailExist: selectDoesEmailExist(s.auth),
       email: selectVerifiedUserEmail(s.auth),
+      isLocked: selectIsConnectedButtonLocked(s.verifyEmailWidgetState),
     }),
     dispatchToProps: dispatch => ({
       resendEmail: () => {

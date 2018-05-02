@@ -1,9 +1,9 @@
 import { settingsActions } from "./settings/actions";
+import { verifyEmailActions } from "./verifyEmailWidget/actions";
 
 import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
-import { connectedButtonActions } from "./connectedButtton/actions";
 import { dashboardActions } from "./dashboard/actions";
 import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
@@ -19,7 +19,7 @@ import { web3Actions } from "./web3/actions";
 export const actions = {
   dashboard: dashboardActions,
   settings: settingsActions,
-  connectedButton: connectedButtonActions,
+  verifyEmail: verifyEmailActions,
   genericModal: genericModalActions,
   signMessageModal: accessWalletActions,
   init: initActions,
@@ -38,7 +38,7 @@ export const actions = {
  */
 export const allActions = {
   ...dashboardActions,
-  ...connectedButtonActions,
+  ...verifyEmailActions,
   ...settingsActions,
   ...genericModalActions,
   ...accessWalletActions,

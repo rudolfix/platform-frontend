@@ -28,4 +28,4 @@ export const verifyEmailWidgetReducer: AppReducer<IVerifyEmailWidgetState> = (
 };
 
 export const selectIsConnectedButtonLocked = (state: IVerifyEmailWidgetState): boolean =>
-  state && state.isButtonLocked;
+  state.isButtonLocked;

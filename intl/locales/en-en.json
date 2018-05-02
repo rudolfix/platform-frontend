@@ -86,6 +86,7 @@
   "kyc.business.beneficial-owner.add-new-beneficial-owner": "Add new beneficial owner",
   "kyc.business.beneficial-owner.anti-laundry": "According to the German anti money laundering act, we are obliged to keep a record of your personal data for five years after account closure.",
   "kyc.business.beneficial-owner.beneficial-owners": "Beneficial owners",
+  "kyc.business.beneficial-owner.label": "Beneficial Owner {id}",
   "kyc.business.beneficial-owner.pep": "Is this person politically exposed?",
   "kyc.business.business-data.description": "Please tell us about your business",
   "kyc.business.business-data.supporting-documents": "Supporting documents",

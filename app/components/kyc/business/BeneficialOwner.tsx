@@ -118,9 +118,14 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
     const { owner } = this.props;
 
     const name =
-      owner && owner.firstName && owner.lastName
-        ? `${owner.firstName} ${owner.lastName}`
-        : `Beneficial Owner ${this.props.index + 1}`;
+      owner && owner.firstName && owner.lastName ? (
+        `${owner.firstName} ${owner.lastName}`
+      ) : (
+        <FormattedMessage
+          id="kyc.business.beneficial-owner.label"
+          values={{ id: this.props.index + 1 }}
+        />
+      );
 
     return (
       <AccordionElement title={name} isOpened={true}>

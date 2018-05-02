@@ -533,29 +533,45 @@ export const Demo: React.SFC = () => (
     </Container>
     <Container>
       <Row>
-          <Col>
-            <NewsWidget
-              className="h-100"
-              isEditable={true}
-              activeTab="news"
-              news={[
-                { title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta", url: "asdf asdfffa sad" },
-                { title: "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?", url: "asdf asdad as sdd" },
-              ]}
-            />
-          </Col>
-          <Col>
-            <NewsWidget
-              className="h-100"
-              isEditable={false}
-              activeTab="twitter"
-              news={[
-                { title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta", url: "asdf asdfffa sad" },
-                { title: "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?", url: "asdf asdad as sdd" },
-              ]}
-            />
-          </Col>
-        </Row>
+        <Col>
+          <NewsWidget
+            className="h-100"
+            isEditable={true}
+            activeTab="news"
+            news={[
+              {
+                title:
+                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta",
+                url: "asdf asdfffa sad",
+              },
+              {
+                title:
+                  "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?",
+                url: "asdf asdad as sdd",
+              },
+            ]}
+          />
+        </Col>
+        <Col>
+          <NewsWidget
+            className="h-100"
+            isEditable={false}
+            activeTab="twitter"
+            news={[
+              {
+                title:
+                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta",
+                url: "asdf asdfffa sad",
+              },
+              {
+                title:
+                  "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?",
+                url: "asdf asdad as sdd",
+              },
+            ]}
+          />
+        </Col>
+      </Row>
     </Container>
   </div>
 );

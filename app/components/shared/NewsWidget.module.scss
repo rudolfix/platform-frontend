@@ -75,13 +75,12 @@
 
   :global(.inline-icon) {
     opacity: 0;
-    flex-shrink: none;
+    flex-shrink: 0;
     width: 12px;
     cursor: pointer;
     color: $neu-cloudy-blue;
     transition: 150ms ease-out color;
     margin-left: px-to-rem(12px);
-    flex-shrink: 0;
 
     &:hover {
       color: $neu-red;

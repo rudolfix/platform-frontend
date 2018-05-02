@@ -1,5 +1,5 @@
-import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { NavLink, NavLinkProps } from "react-router-dom";
 
 import { TUserType } from "../../lib/api/users/interfaces";
@@ -20,8 +20,9 @@ import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
 interface IMenuEntry {
   svgString: string;
-  title: string;
+  menuName: string | React.ReactNode;
   actionRequired?: boolean;
+  to: string;
 }
 
 interface IStateProps {
@@ -29,19 +30,32 @@ interface IStateProps {
   actionRequiredSettings: boolean;
 }
 
-const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({
+const MenuEntryContent: React.SFC<IMenuEntry & NavLinkProps> = ({
   actionRequired,
-  title,
-  to,
+  menuName,
   svgString,
 }) => {
   return (
-    <NavLink to={to} className={cn(styles.menuItem, svgString)}>
+    <>
       <span className={styles.icon}>
         <InlineIcon svgIcon={svgString} />
         {actionRequired && <div className={styles.actionIndicator} />}
       </span>
-      <span className={styles.name}>{title}</span>
+      <span className={styles.name}>{menuName}</span>
+    </>
+  );
+};
+
+const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({ to, svgString, ...props }) => {
+  const isAbsoluteLink = /^https?:\/\//.test(to);
+
+  return isAbsoluteLink ? (
+    <a href={to} target="_blank" className={styles.menuItem}>
+      <MenuEntryContent {...props} to={to} svgString={svgString} />
+    </a>
+  ) : (
+    <NavLink to={to} className={styles.menuItem}>
+      <MenuEntryContent {...props} to={to} svgString={svgString} />
     </NavLink>
   );
 };
@@ -50,28 +64,60 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
   actionRequiredSettings,
 }) => (
   <div className={styles.menu}>
-    <MenuEntry svgString={iconStart} to={appRoutes.dashboard} title="Start" />
-    <MenuEntry svgString={iconPortfolio} to="#" title="Portfolio" />
-    <MenuEntry svgString={iconWallet} to={appRoutes.wallet} title="Wallet" />
+    <MenuEntry
+      svgString={iconStart}
+      to={appRoutes.dashboard}
+      menuName={<FormattedMessage id="menu.start" />}
+    />
+    <MenuEntry
+      svgString={iconPortfolio}
+      to="#"
+      menuName={<FormattedMessage id="menu.portfolio" />}
+    />
+    <MenuEntry
+      svgString={iconWallet}
+      to={appRoutes.wallet}
+      menuName={<FormattedMessage id="menu.wallet" />}
+    />
     <MenuEntry
       svgString={iconSettings}
       to={appRoutes.settings}
-      title="Settings"
+      menuName="Settings"
       actionRequired={actionRequiredSettings}
+    />
+    <MenuEntry
+      svgString={iconPortfolio}
+      to="https://neufund.freshdesk.com/support/home"
+      menuName={<FormattedMessage id="menu.help" />}
+      target="_blank"
     />
   </div>
 );
 
 const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequiredSettings }) => (
   <div className={styles.menu}>
-    <MenuEntry svgString={iconStats} to={appRoutes.dashboard} title="Overview" />
+    <MenuEntry
+      svgString={iconStats}
+      to={appRoutes.dashboard}
+      menuName={<FormattedMessage id="menu.overview" />}
+    />
     {/*TODO: This route is not correct */}
-    <MenuEntry svgString={iconEdit} to={appRoutes.eto} title="Edit Page" />{" "}
+    <MenuEntry
+      svgString={iconEdit}
+      to={appRoutes.eto}
+      menuName={<FormattedMessage id="menu.edit-page" />}
+    />{" "}
     <MenuEntry
       svgString={iconSettings}
       to={appRoutes.settings}
-      title="Settings"
+      menuName={<FormattedMessage id="menu.settings" />}
       actionRequired={actionRequiredSettings}
+    />
+    <MenuEntry
+      svgString={iconPortfolio}
+      to="https://neufund.freshdesk.com/support/home"
+      menuName={<FormattedMessage id="menu.help" />}
+      target="_blank"
     />
   </div>
 );

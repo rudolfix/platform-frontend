@@ -5,7 +5,7 @@ import { InlineIcon } from "./InlineIcon";
 import * as indicatorIcon from "../../assets/img/inline_icons/accordion_arrow.svg";
 
 interface IAccordionElementProps {
-  title: string;
+  title: string | React.ReactNode;
   children: any;
   isOpened?: boolean;
 }

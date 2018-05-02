@@ -34,6 +34,7 @@ import * as telegramIcon from "../assets/img/inline_icons/social_telegram.svg";
 
 import { dummyIntl } from "../utils/injectIntlHelpers.fixtures";
 import * as styles from "./Demo.module.scss";
+import { NewsWidget } from "./shared/NewsWidget";
 
 const chartDoughnutData = {
   labels: ["ETH", "nEUR"],
@@ -249,15 +250,19 @@ export const Demo: React.SFC = () => (
           <VerifyEmailWidgetComponent
             isUserEmailVerified={false}
             isThereUnverifiedEmail={true}
+            doesEmailExist={true}
             resendEmail={() => {}}
+            addNewEmail={() => {}}
             intl={dummyIntl}
           />
         </Col>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
             isUserEmailVerified={true}
+            doesEmailExist={true}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
+            addNewEmail={() => {}}
             intl={dummyIntl}
           />
         </Col>
@@ -550,6 +555,48 @@ export const Demo: React.SFC = () => (
               ethEuroAmount: "100000000000000000000000000",
               totalEuroAmount: "100000000000000000000000000",
             }}
+          />
+        </Col>
+      </Row>
+    </Container>
+    <Container>
+      <Row>
+        <Col>
+          <NewsWidget
+            className="h-100"
+            isEditable={true}
+            activeTab="news"
+            news={[
+              {
+                title:
+                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta",
+                url: "asdf asdfffa sad",
+              },
+              {
+                title:
+                  "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?",
+                url: "asdf asdad as sdd",
+              },
+            ]}
+          />
+        </Col>
+        <Col>
+          <NewsWidget
+            className="h-100"
+            isEditable={false}
+            activeTab="twitter"
+            news={[
+              {
+                title:
+                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta",
+                url: "asdf asdfffa sad",
+              },
+              {
+                title:
+                  "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?",
+                url: "asdf asdad as sdd",
+              },
+            ]}
           />
         </Col>
       </Row>

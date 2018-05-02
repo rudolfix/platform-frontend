@@ -1,5 +1,7 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
+
 import { Button } from "../shared/Buttons";
 import { FormField } from "../shared/forms/forms";
 
@@ -30,10 +32,10 @@ const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => 
     <div className="mt-3">
       <Button type="submit" disabled={!formikBag.values.password}>
         {" "}
-        Accept
+        <FormattedMessage id="form.button.accept" />
       </Button>
       <Button layout="secondary" onClick={formikBag.onCancel}>
-        Reject
+        <FormattedMessage id="form.button.reject" />
       </Button>
     </div>
   </Form>
@@ -48,12 +50,14 @@ export const AccessLightWalletPrompt: React.SFC<IProps> = props =>
     <div className="mt-3">
       <Button onClick={() => props.onAccept()}>Accept</Button>
       <Button layout="secondary" onClick={props.onCancel}>
-        Reject
+        <FormattedMessage id="form.button.reject" />
       </Button>
     </div>
   ) : (
     <div>
-      <p>Please enter your password to unlock the wallet</p>
+      <p>
+        <FormattedMessage id="modal.light-wallet.message" />
+      </p>
       <EnhancedForm {...props} />
     </div>
   );

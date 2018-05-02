@@ -23,7 +23,6 @@ export const KycPersonSchema = Yup.object().shape({
   country: Yup.string(),
   birthDate: personBirthDate,
   isPoliticallyExposed: Yup.bool(),
-  isUsCitizen: isUsCitizen,
 });
 
 // individual data
@@ -34,7 +33,7 @@ export interface IKycIndividualData extends IKycPerson {
 
 export const KycIndividudalDataSchema = KycPersonSchema.concat(
   Yup.object().shape({
-    isUsCitizen: Yup.bool(),
+    isUsCitizen,
     isHighIncome: Yup.bool(),
   }),
 );

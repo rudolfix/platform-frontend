@@ -2,6 +2,7 @@ import {
   LightCreationError,
   LightKeyEncryptError,
   LightSignMessageError,
+  LightWalletWrongMnemonic,
   LightWalletWrongPassword,
 } from "../../../lib/web3/LightWallet";
 import {
@@ -28,5 +29,9 @@ export function mapLightWalletErrorToErrorMessage(e: Error): string {
   if (e instanceof LightWalletWrongPassword) {
     return "Password is not correct";
   }
+  if (e instanceof LightWalletWrongMnemonic) {
+    return "Recovery phrase entered is not correct";
+  }
+
   return "Light wallet unavailable";
 }

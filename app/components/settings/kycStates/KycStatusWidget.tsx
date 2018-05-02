@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 
@@ -29,19 +30,20 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const statusTextMap: Dictionary<string> = {
-  Approved: "Your Kyc request is has been approved. Happy investing!",
-  Rejected: "Your Kyc request was rejected. ",
-  Pending:
-    "We are currently reviewing your Kyc request. You will receive and email once your request has been processed.",
-  Draft: "Please submit your Kyc request now.",
-  Outsourced:
-    "Your instant identification is being processed. You will be notified by e-mail once this is completed.",
+const statusTextMap: Dictionary<React.ReactNode> = {
+  Approved: <FormattedMessage id="settings.kyc-status-widget.status.approved" />,
+  Rejected: <FormattedMessage id="settings.kyc-status-widget.status.rejected" />,
+  Pending: <FormattedMessage id="settings.kyc-status-widget.status.pending" />,
+  Draft: <FormattedMessage id="settings.kyc-status-widget.status.draft" />,
+  Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
 };
 
-const getStatus = (selectIsUserEmailVerified: boolean, requestStatus?: TRequestStatus): string => {
+const getStatus = (
+  selectIsUserEmailVerified: boolean,
+  requestStatus?: TRequestStatus,
+): React.ReactNode => {
   if (!selectIsUserEmailVerified) {
-    return "You need to verify email before starting KYC";
+    return <FormattedMessage id="settings.kyc-status-widget.status.error-verification-email" />;
   }
 
   if (!requestStatus) {
@@ -86,7 +88,11 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
                 onClick={onGoToKycHome}
                 disabled={!isUserEmailVerified}
               >
-                {requestStatus === "Draft" ? "Start KYC process" : "Submit additional Documents"}
+                {requestStatus === "Draft" ? (
+                  <FormattedMessage id="settings.kyc-status-widget.start-kyc-process" />
+                ) : (
+                  <FormattedMessage id="settings.kyc-status-widget.submit-additional-documents" />
+                )}
               </Button>
             ) : (
               <div />

@@ -5,6 +5,7 @@ import { Container } from "inversify";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";
+import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
@@ -26,6 +27,8 @@ import { rootSaga } from "./modules/sagas";
 import { IAppState, reducers } from "./store";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
+import { compact } from "lodash";
+import * as languageEn from "../intl/locales/en-en.json";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 import "./styles/overrides.scss";
@@ -50,7 +53,9 @@ function renderApp(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
         <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-          <Component />
+          <IntlProvider locale="en-us" messages={languageEn} textComponent={React.Fragment}>
+            <Component />
+          </IntlProvider>
         </ConnectedRouter>
       </InversifyProvider>
     </ReduxProvider>,
@@ -68,13 +73,19 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
   const sagaMiddleware = createSagaMiddleware({ context });
 
   const middleware = applyMiddleware(
-    routerMiddleware(history),
-    createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
-    logger,
-    sagaMiddleware,
+    ...compact([
+      routerMiddleware(history),
+      createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
+      process.env.NODE_ENV !== "production" && logger,
+      sagaMiddleware,
+    ]),
   );
 
-  const store = createStore(reducers, composeWithDevTools(middleware));
+  const store: Store<IAppState> =
+    process.env.NODE_ENV === "production"
+      ? createStore(reducers, middleware)
+      : createStore(reducers, composeWithDevTools(middleware));
+
   // we have to create the dependencies here, because getState and dispatch get
   // injected in the middleware step above, maybe change this later
   context.deps = createGlobalDependencies(container);

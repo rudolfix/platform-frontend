@@ -1,8 +1,10 @@
 import * as React from "react";
-import { KycRouter } from "./Router";
-
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
+
+import { KycRouter } from "./Router";
+
 import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import {
@@ -18,6 +20,7 @@ import { KycPanel } from "./KycPanel";
 import { KYCAddDocuments } from "./shared/AddDocuments";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
+import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 
 interface IStateProps {
   requestLoading?: boolean;
@@ -33,7 +36,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const RequestStateInfo: React.SFC<IProps> = props => {
+const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage }, ...props }) => {
   const settingsButton = (
     <div className="p-4 text-center">
       <Button
@@ -42,13 +45,18 @@ const RequestStateInfo: React.SFC<IProps> = props => {
         svgIcon={arrowLeft}
         onClick={props.goToSettings}
       >
-        Go to settings
+        <FormattedMessage id="kyc.request-state.go-to-settings" />
       </Button>
     </div>
   );
   if (!props.requestStatus) {
     return (
-      <KycPanel title="Kyc request" steps={5} currentStep={0} description="Loading...">
+      <KycPanel
+        title={formatIntlMessage("kyc.request-state.title")}
+        steps={5}
+        currentStep={0}
+        description={formatIntlMessage("kyc.request-state.description")}
+      >
         {settingsButton}
       </KycPanel>
     );
@@ -56,10 +64,10 @@ const RequestStateInfo: React.SFC<IProps> = props => {
   if (props.requestStatus === "Pending") {
     return (
       <KycPanel
-        title="Kyc request received"
-        steps={5}
-        currentStep={5}
-        description="We have received your request and are currently processing it. You can submit additional documents for your request here."
+        title={formatIntlMessage("kyc.request-state.pending.title")}
+        steps={4}
+        currentStep={4}
+        description={formatIntlMessage("kyc.request-state.pending.description")}
       >
         {props.pendingRequestType && <KYCAddDocuments uploadType={props.pendingRequestType} />}
         {settingsButton}
@@ -69,10 +77,10 @@ const RequestStateInfo: React.SFC<IProps> = props => {
   if (props.requestStatus === "Accepted") {
     return (
       <KycPanel
-        title="Kyc request approved"
-        steps={5}
-        currentStep={5}
-        description="Your Kyc request was approved"
+        title={formatIntlMessage("kyc.request-state.accepted.title")}
+        steps={4}
+        currentStep={4}
+        description={formatIntlMessage("kyc.request-state.accepted.description")}
       >
         {settingsButton}
       </KycPanel>
@@ -81,10 +89,10 @@ const RequestStateInfo: React.SFC<IProps> = props => {
   if (props.requestStatus === "Rejected") {
     return (
       <KycPanel
-        title="Kyc request rejected"
-        steps={5}
-        currentStep={5}
-        description="Your Kyc request was rejected"
+        title={formatIntlMessage("kyc.request-state.rejected.title")}
+        steps={4}
+        currentStep={4}
+        description={formatIntlMessage("kyc.request-state.rejected.description")}
       >
         {settingsButton}
       </KycPanel>
@@ -93,20 +101,22 @@ const RequestStateInfo: React.SFC<IProps> = props => {
   if (props.requestStatus === "Outsourced") {
     return (
       <KycPanel
-        title="Instant identification started"
-        steps={5}
-        currentStep={5}
-        description="If you're not automatically forwarded to idNow, please click the link below to continue."
+        title={formatIntlMessage("kyc.request-state.outsourced.title")}
+        steps={4}
+        currentStep={4}
+        description={formatIntlMessage("kyc.request-state.outsourced.description")}
       >
         {" "}
         <div className="p-4 text-center">
-          <a href={props.redirectUrl}>Click here to continue</a>
+          <a href={props.redirectUrl}>
+            <FormattedMessage id="kyc.request-state.click-here-to-continue" />
+          </a>
         </div>
       </KycPanel>
     );
   }
   return <div />;
-};
+});
 
 export const KycComponent: React.SFC<IProps> = props => {
   const router = props.requestStatus === "Draft" ? <KycRouter /> : <div />;

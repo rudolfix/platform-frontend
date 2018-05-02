@@ -1,7 +1,8 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 
-import { selectIsLightWallet } from "../../modules/web3/reducer";
+import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
@@ -18,7 +19,9 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
   <LayoutAuthorized>
     <Row className="row-gutter-top">
       <Col xs={12}>
-        <SectionHeader> Security Settings </SectionHeader>
+        <SectionHeader>
+          <FormattedMessage id="settings.security-settings.title" />
+        </SectionHeader>
       </Col>
       <Col lg={4} xs={12}>
         <VerifyEmailWidget />
@@ -33,12 +36,19 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
       <Col lg={4} xs={12}>
         <KycStatusWidget />
       </Col>
-      <Col xs={12}>
-        <SectionHeader> Personal Settings </SectionHeader>
-      </Col>
-      <Col lg={8} xs={12}>
-        <ChangeEmail />
-      </Col>
+
+      {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
+        <>
+          <Col xs={12}>
+            <SectionHeader>
+              <FormattedMessage id="settings.personal-settings.title" />
+            </SectionHeader>
+          </Col>
+          <Col lg={8} xs={12}>
+            <ChangeEmail />
+          </Col>
+        </>
+      )}
     </Row>
   </LayoutAuthorized>
 );

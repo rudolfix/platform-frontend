@@ -8,7 +8,7 @@ import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
 import { UsersApi } from "../lib/api/users/UsersApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
 import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
-import { DevConsoleLogger, ILogger } from "../lib/dependencies/Logger";
+import { DevConsoleLogger, ILogger, noopLogger } from "../lib/dependencies/Logger";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
 import { Storage } from "../lib/persistence/Storage";
 import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
@@ -53,7 +53,11 @@ export function setupBindings(config: IConfig): Container {
   container.bind<IConfig>(symbols.config).toConstantValue(config);
 
   // @todo different logger could be injected to each class with additional info like name of the file etc.
-  container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
+  if (process.env.NODE_ENV === "production") {
+    container.bind(symbols.logger).toConstantValue(noopLogger);
+  } else {
+    container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
+  }
 
   // classes
   container

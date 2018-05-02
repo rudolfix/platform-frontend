@@ -56,7 +56,7 @@ export const SingleFileUpload: React.SFC<IProps> = ({ files, ...props }) => {
         </div>
         <div>
           {files.length ? (
-            <UploadedFiles onRemove={() => {}} files={files} />
+            <UploadedFiles files={files} />
           ) : (
             <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
               {props.uploadCta}

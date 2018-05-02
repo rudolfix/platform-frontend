@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+
 import { TUserType } from "../../../lib/api/users/interfaces";
 import { ILightWalletRetrieveMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
@@ -15,7 +16,7 @@ import { actions, TAction } from "../../actions";
 import { updateUserPromise } from "../../auth/sagas";
 import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
+import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { TGlobalDependencies } from "./../../../di/setupBindings";

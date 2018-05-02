@@ -1,8 +1,10 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
+
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { InvestmentPreview } from "../shared/InvestmentPreview";
+import { NewsWidget } from "../shared/NewsWidget";
 import { SectionHeader } from "../shared/SectionHeader";
 import { Tag } from "../shared/Tag";
 import { MyPortfolioWidget } from "./myPortfolio/MyPortfolioWidget";
@@ -40,7 +42,7 @@ export const Dashboard = () => (
         <MyWalletWidget className="h-100" />
       </Col>
     </Row>
-    <Row className="mt-4 mb-4">
+    <Row className="row-gutter-top mb-4">
       <Col lg={8} xs={12}>
         <NeufundKpiWidget
           date="12 Sep. 2018"
@@ -55,6 +57,24 @@ export const Dashboard = () => (
           vcAccessible={"2" + "0".repeat(26)}
           totalProceeds={"2" + "0".repeat(24)}
           totalProceedsToken={"2" + "0".repeat(20)}
+        />
+      </Col>
+      <Col lg={4} xs={12}>
+        <NewsWidget
+          className="h-100"
+          isEditable={false}
+          activeTab="news"
+          news={[
+            {
+              title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta",
+              url: "asdf asdfffa sad",
+            },
+            {
+              title:
+                "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?",
+              url: "asdf asdad as sdd",
+            },
+          ]}
         />
       </Col>
     </Row>

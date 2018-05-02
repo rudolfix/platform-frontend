@@ -31,3 +31,9 @@ export const selectCombinedBeneficialOwnerOwnership = (state: IKycState): number
     0,
   );
 };
+
+export const selectWidgetLoading = (state: IKycState): boolean =>
+  !!state.individualDataLoading || !!state.businessDataLoading;
+
+export const selectWidgetError = (state: IKycState): string | undefined =>
+  state.individualRequestError || state.businessRequestError;

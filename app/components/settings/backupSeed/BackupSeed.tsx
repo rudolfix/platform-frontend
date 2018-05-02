@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { actions } from "../../../modules/actions";
-import { selectIsUnlocked, selectSeed } from "../../../modules/web3/reducer";
+import { selectIsUnlocked, selectSeed } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";

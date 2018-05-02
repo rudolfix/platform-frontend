@@ -9,6 +9,7 @@ import { TKycBusinessType } from "../../../lib/api/KycApi.interfaces";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
+import { kycRoutes } from "../routes";
 import { Panels, PanelTheme } from "../shared/Panels";
 
 interface IStateProps {
@@ -24,10 +25,10 @@ type IProps = IStateProps & IDispatchProps;
 export const KycBusinessStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel
-      steps={5}
-      currentStep={2}
+      steps={4}
+      currentStep={1}
       title={formatIntlMessage("kyc.business.start.title")}
-      hasBackButton={true}
+      backLink={kycRoutes.start}
       isMaxWidth={true}
     >
       <Panels

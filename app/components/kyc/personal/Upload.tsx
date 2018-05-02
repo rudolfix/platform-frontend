@@ -12,6 +12,7 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
+import { kycRoutes } from "../routes";
 
 interface IStateProps {
   fileUploading: boolean;
@@ -31,11 +32,11 @@ interface IProps {
 export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDispatchProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel
-      steps={5}
-      currentStep={4}
+      steps={3}
+      currentStep={3}
       title={formatIntlMessage("kyc.personal.uploadId.title")}
       description={formatIntlMessage("kyc.personal.uploadId.description")}
-      hasBackButton={true}
+      backLink={kycRoutes.individualStart}
     >
       <MultiFileUpload
         onDropFile={props.onDropFile}

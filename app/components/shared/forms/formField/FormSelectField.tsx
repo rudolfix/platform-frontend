@@ -76,7 +76,7 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
   render(): React.ReactChild {
     const { label, name } = this.props;
     const formik: FormikProps<any> = this.context.formik;
-    const { touched, errors } = formik;
+    const { touched, errors, setFieldTouched } = formik;
     //This is done due to the difference between reactstrap and @typings/reactstrap
     const inputExtraProps = {
       invalid: isNonValid(touched, errors, name),
@@ -90,6 +90,7 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
           render={({ field }: FieldProps) => (
             <Input
               {...field}
+              onFocus={() => setFieldTouched(name, true)}
               type="select"
               value={field.value}
               valid={isValid(touched, errors, name)}

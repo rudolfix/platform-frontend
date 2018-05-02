@@ -20,3 +20,18 @@ export function getRequiredNumber(env: NodeJS.ProcessEnv, name: string): number 
 export function getOptionalEnv(env: NodeJS.ProcessEnv, name: string): string | undefined {
   return env[name] as any;
 }
+
+/**
+ * Validates if feature flag is "0", "1" or undefined.
+ */
+export function verifyOptionalFlagEnv(env: NodeJS.ProcessEnv, name: string): void {
+  const value = env[name];
+
+  if (!value) {
+    return;
+  }
+
+  if (value !== "0" && value !== "1") {
+    throw new Error(`Env flag ${name} has incorrect value. Correct values: "0", "1"`);
+  }
+}

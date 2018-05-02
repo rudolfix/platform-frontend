@@ -2,8 +2,8 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 interface IBreadCrumbProps {
-  path?: string[];
-  view: string;
+  path?: string[] | React.ReactNode[];
+  view: string | React.ReactNode;
 }
 
 export const BreadCrumb: React.SFC<IBreadCrumbProps & React.HTMLAttributes<HTMLDivElement>> = ({

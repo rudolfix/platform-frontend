@@ -10,10 +10,12 @@ import { LockedAccount } from "../contracts/LockedAccount";
 import { Neumark } from "../contracts/Neumark";
 import { ILogger } from "../dependencies/Logger";
 import { Web3Manager } from "./Web3Manager";
+import { Universe } from "../contracts/Universe";
+import { knownInterfaces } from "./knownInterfaces";
 
 @injectable()
 export class ContractsService {
-  public universeContract!: Commitment;
+  public universeContract!: Universe;
 
   public neumarkContract!: Neumark;
   public euroTokenContract!: EuroToken;
@@ -32,28 +34,32 @@ export class ContractsService {
     this.logger.info("Initializing contracts...");
     const web3 = this.web3Manager.internalWeb3Adapter.web3;
 
-    this.universeContract = await Commitment.createAndValidate(
+    this.universeContract = await Universe.createAndValidate(
       web3,
       this.config.contractsAddresses.universeContractAddress,
     );
 
-    const { neumarkAddress, euroLockAddress, etherLockAddress } = await promiseAll({
-      neumarkAddress: this.universeContract.neumark,
-      euroLockAddress: this.universeContract.euroLock,
-      etherLockAddress: this.universeContract.etherLock,
-    });
+    const [
+      neumarkAddress,
+      euroLockAddress,
+      etherLockAddress,
+      euroTokenAddress,
+      etherTokenAddress,
+    ] = await this.universeContract.getManySingletons([
+      knownInterfaces.neumark,
+      knownInterfaces.euroLock,
+      knownInterfaces.etherLock,
+      knownInterfaces.euroToken,
+      knownInterfaces.etherToken,
+    ]);
 
     this.neumarkContract = await Neumark.createAndValidate(web3, neumarkAddress);
     this.euroLock = await LockedAccount.createAndValidate(web3, euroLockAddress);
     this.etherLock = await LockedAccount.createAndValidate(web3, etherLockAddress);
 
-    const { euroTokenAddress, etherTokenAddress } = await promiseAll({
-      euroTokenAddress: this.euroLock.assetToken,
-      etherTokenAddress: this.etherLock.assetToken,
-    });
-
     this.euroTokenContract = await EuroToken.createAndValidate(web3, euroTokenAddress);
     this.etherTokenContract = await EtherToken.createAndValidate(web3, etherTokenAddress);
+
     this.logger.info("Initializing contracts DONE.");
   }
 }

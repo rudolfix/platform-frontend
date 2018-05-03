@@ -8155,9 +8155,9 @@ type-name@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/type-name/-/type-name-2.0.2.tgz#efe7d4123d8ac52afff7f40c7e4dec5266008fb4"
 
-typechain@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/typechain/-/typechain-0.1.4.tgz#e6fb5292236fadb3369074950095fcb4b7acf412"
+typechain@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/typechain/-/typechain-0.1.5.tgz#2a4248ac59f277301b74f57f2097be1753341ec9"
   dependencies:
     bignumber.js "^5.0.0"
     chalk "^2.3.0"

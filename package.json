@@ -80,7 +80,7 @@
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^4.1.1",
-    "typechain": "^0.1.4",
+    "typechain": "^0.1.5",
     "types-bn": "^0.0.1",
     "types-ethereumjs-util": "^0.0.5",
     "typescript": "^2.8.1",

@@ -3,7 +3,7 @@ import { Col, Row } from "reactstrap";
 
 interface IStepCardProps {
   img: string;
-  text: string;
+  text: string | React.ReactNode;
 }
 export const StepCard: React.SFC<IStepCardProps> = ({ img, text }) => (
   <Col sm={4} xs={12} className="mb-4 mb-sm-0">

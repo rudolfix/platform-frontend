@@ -1,16 +1,14 @@
-import * as React from "react";
-import * as styles from "./SingleFileUpload.module.scss";
-
 import * as cn from "classnames";
-import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
-
+import * as React from "react";
 import Dropzone from "react-dropzone";
-
-import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
-
 import { FormattedMessage } from "react-intl";
+
+import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
 import { Button } from "../shared/Buttons";
 import { UploadedFiles } from "./UploadedFiles";
+
+import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
+import * as styles from "./SingleFileUpload.module.scss";
 
 const ACCEPTED_FILES = "application/pdf, image/*";
 

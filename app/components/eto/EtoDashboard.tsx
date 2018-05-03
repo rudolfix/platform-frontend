@@ -15,6 +15,7 @@ import { LinkColumns } from "./dashboard/LinkColumns";
 import { QuestionsAndAnswers } from "./dashboard/QuestionsAndAnswers";
 import { RowLabeledDataSets } from "./dashboard/RowLabeledDataSets";
 
+import { FormattedMessage } from "react-intl";
 import * as downloadIcon from "../../assets/img/inline_icons/download.svg";
 import * as editIcon from "../../assets/img/inline_icons/edit.svg";
 import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
@@ -41,7 +42,8 @@ export const EtoDashboard: React.SFC = () => (
     <Row>
       <Col lg={8} xs={12}>
         <SectionHeader>
-          Eto overview <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          <FormattedMessage id="eto.dashboard.header.overview" />
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
       </Col>
     </Row>
@@ -77,7 +79,8 @@ export const EtoDashboard: React.SFC = () => (
         </Row>
 
         <SectionHeader>
-          Company details <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          <FormattedMessage id="eto.dashboard.header.company-details" />
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
 
         <Row className="py-4">
@@ -121,7 +124,8 @@ export const EtoDashboard: React.SFC = () => (
         </Row>
 
         <SectionHeader>
-          Last funding round <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          <FormattedMessage id="eto.dashboard.header.founding-round" />
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
 
         <Row className="py-4">
@@ -150,7 +154,8 @@ export const EtoDashboard: React.SFC = () => (
         </Row>
 
         <SectionHeader>
-          Founder / leadership team <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          <FormattedMessage id="eto.dashboard.header.founder" />
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
 
         <Row className="py-4">
@@ -199,7 +204,8 @@ export const EtoDashboard: React.SFC = () => (
         </Row>
 
         <SectionHeader>
-          Product pitch <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          <FormattedMessage id="eto.dashboard.header.product-pitch" />
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
 
         <Row className="py-4">
@@ -236,7 +242,8 @@ export const EtoDashboard: React.SFC = () => (
         </Row>
 
         <SectionHeader>
-          Market conditions <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          <FormattedMessage id="eto.dashboard.header.market-conditions" />
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
 
         <Row className="py-4">
@@ -265,7 +272,8 @@ export const EtoDashboard: React.SFC = () => (
         </Row>
 
         <SectionHeader>
-          Partners & customers <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+          <FormattedMessage id="eto.dashboard.header.partner-and-customers" />
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
         </SectionHeader>
 
         <Row className="py-4">
@@ -314,7 +322,7 @@ export const EtoDashboard: React.SFC = () => (
 
       <Col className="py-4">
         <PanelDark
-          headerText="ETO DOCUMENTS"
+          headerText={<FormattedMessage id="eto.dashboard.download.header" />}
           rightComponent={
             <Button
               layout="secondary"
@@ -323,7 +331,7 @@ export const EtoDashboard: React.SFC = () => (
               iconPosition="icon-before"
               onClick={() => {}}
             >
-              Download All
+              <FormattedMessage id="eto.dashboard.download.cta" />
             </Button>
           }
         />

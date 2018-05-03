@@ -8,8 +8,8 @@ import { ProgressStepper } from "./ProgressStepper";
 interface IProps {
   steps: number;
   currentStep: number;
-  headerText: string;
-  descText?: string;
+  headerText: string | React.ReactNode;
+  descText?: string | React.ReactNode;
   warning?: boolean;
 }
 

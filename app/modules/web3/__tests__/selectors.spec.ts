@@ -82,6 +82,14 @@ describe("web3 > selectors", () => {
   });
 
   describe("selectLightWalletFromQueryString", () => {
+    const previousConnectedWallet = {
+      walletType: WalletType.LIGHT,
+      address: dummyEthereumAddress,
+      vault,
+      email: "test@example.com",
+      salt,
+    };
+
     it("should work with activation link", () => {
       const state: any = {
         location: {
@@ -90,18 +98,26 @@ describe("web3 > selectors", () => {
           hash: "",
           search: `?redirect=%2F%26email%3D${encodedEmail}%26salt%3D${salt}`,
         },
-        previousConnectedWallet: {
-          walletType: WalletType.LIGHT,
-          address: dummyEthereumAddress,
-          vault,
-          email: "test@example.com",
-          salt,
-        },
+        ...previousConnectedWallet,
       };
 
       const result: any = { ...selectLightWalletFromQueryString(state) };
 
       expect(result.email === email && result.salt === salt).to.be.true;
+    });
+
+    it("should not work if email or salt is not provided", () => {
+      const state: any = {
+        location: {
+          pathname: "/login/light",
+          state: undefined,
+          hash: "",
+          search: `?redirect=%2F%26email%3D${encodedEmail}`,
+        },
+        ...previousConnectedWallet,
+      };
+
+      expect(selectLightWalletFromQueryString(state) === undefined).to.be.true;
     });
   });
 });

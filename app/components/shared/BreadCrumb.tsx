@@ -2,8 +2,8 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 interface IBreadCrumbProps {
-  path?: string[];
-  view: string;
+  path?: string[] | React.ReactNode[];
+  view: string | React.ReactNode;
 }
 
 export const BreadCrumb: React.SFC<IBreadCrumbProps & React.HTMLAttributes<HTMLDivElement>> = ({
@@ -21,7 +21,7 @@ export const BreadCrumb: React.SFC<IBreadCrumbProps & React.HTMLAttributes<HTMLD
             </span>
             {path.length > 1 && (
               <span data-test-id="breadcrumb-path-rest">
-                {path.slice(1).map(pathEntry => ` / ${pathEntry}`)}
+                {path.slice(1).map(pathEntry => <> / {pathEntry}</>)}
               </span>
             )}
             <span className="font-weight-bold"> &gt; </span>

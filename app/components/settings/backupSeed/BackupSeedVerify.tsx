@@ -51,6 +51,7 @@ export const BackupSeedVerifyComponent = class extends React.Component<
   IBackupSeedVerifyState
 > {
   displayName = "BackupSeedVerify";
+  private formatIntlMessage = this.props.intl.formatIntlMessage;
 
   constructor(props: IBackupSeedVerifyProps & IIntlProps) {
     super(props);
@@ -60,7 +61,7 @@ export const BackupSeedVerifyComponent = class extends React.Component<
       verificationWords: wordsToCheck.map(number => ({ number: number, word: "" })),
     };
   }
-  private formatIntlMessage = this.props.intl.formatIntlMessage;
+
   updateValueFactory = (wordOnPageNumber: number) => (newValue: any): void => {
     const verificationWords = this.state.verificationWords;
     verificationWords[wordOnPageNumber].word = newValue;

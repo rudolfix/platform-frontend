@@ -1,17 +1,15 @@
 import { inject, injectable } from "inversify";
-import promiseAll = require("promise-all");
 
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";
-import { Commitment } from "../contracts/Commitment";
 import { EtherToken } from "../contracts/EtherToken";
 import { EuroToken } from "../contracts/EuroToken";
 import { LockedAccount } from "../contracts/LockedAccount";
 import { Neumark } from "../contracts/Neumark";
-import { ILogger } from "../dependencies/Logger";
-import { Web3Manager } from "./Web3Manager";
 import { Universe } from "../contracts/Universe";
+import { ILogger } from "../dependencies/Logger";
 import { knownInterfaces } from "./knownInterfaces";
+import { Web3Manager } from "./Web3Manager";
 
 @injectable()
 export class ContractsService {
@@ -56,7 +54,6 @@ export class ContractsService {
     this.neumarkContract = await Neumark.createAndValidate(web3, neumarkAddress);
     this.euroLock = await LockedAccount.createAndValidate(web3, euroLockAddress);
     this.etherLock = await LockedAccount.createAndValidate(web3, etherLockAddress);
-
     this.euroTokenContract = await EuroToken.createAndValidate(web3, euroTokenAddress);
     this.etherTokenContract = await EtherToken.createAndValidate(web3, etherTokenAddress);
 

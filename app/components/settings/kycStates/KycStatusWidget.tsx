@@ -69,8 +69,9 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
   error,
 }) => {
   return (
+    //TODO: ADD translations
     <PanelDark
-      headerText="KYC PROCESS"
+      headerText="VERIFY YOUR IDENTITY"
       rightComponent={
         !isLoading &&
         (requestStatus === "Accepted" ? (

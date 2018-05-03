@@ -78,7 +78,6 @@ describe("<BackupSeedVerify />", () => {
     component.setState(state);
 
     expect(component.find(tid("seed-verify-invalid-msg"))).to.have.lengthOf(0);
-    component.update();
     expect(component.find(tid("seed-verify-button-next"))).to.have.lengthOf(1);
   });
 

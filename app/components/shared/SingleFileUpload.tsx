@@ -8,6 +8,7 @@ import Dropzone from "react-dropzone";
 
 import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
 
+import { FormattedMessage } from "react-intl";
 import { Button } from "../shared/Buttons";
 import { UploadedFiles } from "./UploadedFiles";
 
@@ -26,9 +27,21 @@ interface IProps {
 export const SingleFileUpload: React.SFC<IProps> = ({ files, ...props }) => {
   const onDrop = (accepted: File[]) => accepted[0] && props.onDropFile(accepted[0]);
 
-  const dropzoneInner = props.fileUploading ? <div>Uploading a File</div> : <div>Photo</div>;
+  const dropzoneInner = props.fileUploading ? (
+    <div>
+      <FormattedMessage id="shared-component.single-file-upload.uploading" />
+    </div>
+  ) : (
+    <div>
+      <FormattedMessage id="shared-component.single-file-upload.photo" />
+    </div>
+  );
 
-  const dropzoneWithFilesInner = <span>Photo</span>;
+  const dropzoneWithFilesInner = (
+    <span>
+      <FormattedMessage id="shared-component.single-file-upload.photo" />
+    </span>
+  );
   const dropzoneStyle = {
     width: "66px",
     height: "66px",

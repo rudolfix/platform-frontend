@@ -213,6 +213,8 @@
   "shared-component.multi-file-upload.upload-cta": "Drag and drop your files here or <strong>upload</strong>",
   "shared-component.multi-file-upload.upload-documents": "Upload documents",
   "shared-component.multi-file-upload.uploading": "Uploading a File",
+  "shared-component.single-file-upload.photo": "Photo",
+  "shared-component.single-file-upload.uploading": "Uploading a File",
   "signing.browser-wallet.header": "Confirm your wallet ownership",
   "signing.browser-wallet.message": "Please confirm on selected existing wallet that you will be using it for Neufund platform",
   "signing.ledger-wallet.header": "Confirm you Ledger Ownership",

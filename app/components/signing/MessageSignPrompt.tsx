@@ -1,11 +1,13 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 
-import * as ledgerConfirm from "../../assets/img/wallet_selector/ledger_confirm.svg";
-import * as walletConfirmIcon from "../../assets/img/wallet_selector/wallet_confirm_icon.svg";
 import { selectConnectedWeb3State } from "../../modules/web3/selectors";
 import { WalletType } from "../../modules/web3/types";
 import { appConnect } from "../../store";
+
+import * as ledgerConfirm from "../../assets/img/wallet_selector/ledger_confirm.svg";
+import * as walletConfirmIcon from "../../assets/img/wallet_selector/wallet_confirm_icon.svg";
 
 interface IStateProps {
   walletType: WalletType;
@@ -14,10 +16,12 @@ interface IStateProps {
 export const BrowserWalletMessageSignPrompt: React.SFC = () => (
   <Row className="text-center">
     <Col>
-      <h1>Confirm your wallet ownership</h1>
+      <h1>
+        <FormattedMessage id="signing.browser-wallet.header" />
+      </h1>
       <img className="mt-5 mb-4" src={walletConfirmIcon} />
       <p className="font-weight-bold">
-        Please confirm on selected existing wallet that you will be using it for Neufund platform
+        <FormattedMessage id="signing.browser-wallet.message" />
       </p>
     </Col>
   </Row>
@@ -26,11 +30,12 @@ export const BrowserWalletMessageSignPrompt: React.SFC = () => (
 export const LedgerWalletMessageSignPrompt: React.SFC = () => (
   <Row className="text-center">
     <Col>
-      <h1>Confirm you Ledger Ownership</h1>
+      <h1>
+        <FormattedMessage id="signing.ledger-wallet.header" />
+      </h1>
       <img className="mt-5 mb-4" src={ledgerConfirm} />
       <p className="font-weight-bold">
-        Please confirm on your Nano Ledger that you are an owner of the device by clicking on the
-        right button
+        <FormattedMessage id="signing.ledger-wallet.message" />
       </p>
     </Col>
   </Row>

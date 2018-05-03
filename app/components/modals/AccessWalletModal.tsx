@@ -1,18 +1,22 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Modal } from "reactstrap";
-import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
+
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet, selectIsUnlocked } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
+
 import { Button } from "../shared/Buttons";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 import { ModalComponentBody } from "./ModalComponentBody";
 
+import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
+
 interface IStateProps {
   isOpen: boolean;
-  errorMsg?: string;
-  title?: string;
-  message?: string;
+  errorMsg?: string | React.ReactNode;
+  title?: string | React.ReactNode;
+  message?: string | React.ReactNode;
   isLightWallet: boolean;
   isUnlocked: boolean;
 }
@@ -24,7 +28,9 @@ interface IDispatchProps {
 
 const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
   <div className="text-md-center">
-    <Button onClick={onCancel}>Cancel</Button>
+    <Button onClick={onCancel}>
+      <FormattedMessage id="form.button.cancel" />
+    </Button>
   </div>
 );
 

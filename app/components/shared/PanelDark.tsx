@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import * as styles from "./PanelDark.module.scss";
 
 export interface IPanelDarkProps {
-  headerText: string;
+  headerText: string | React.ReactNode;
   rightComponent?: React.ReactNode;
   icon?: string;
 }

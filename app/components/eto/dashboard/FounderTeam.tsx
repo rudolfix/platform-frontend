@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
@@ -38,7 +39,7 @@ export const FounderTeam: React.SFC<IProps> = ({ teamMembers }) => {
                     <h4 className={styles.name}>{name}</h4>
                     <h5 className={styles.title}>{title}</h5>
                     <Link className={styles.link} to={bioLink}>
-                      View bio >
+                      <FormattedMessage id="eto.dashboard.founder-team.bio" />
                     </Link>
                   </div>
                 </div>

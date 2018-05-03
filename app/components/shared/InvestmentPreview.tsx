@@ -83,8 +83,12 @@ export const InvestmentPreview: React.SFC<IProps> = ({
       </div>
       <div className={styles.termsAndEto}>
         <div className={styles.labels}>
-          <h5 className={styles.label}>{hasStarted && "Neufund terms"}</h5>
-          <h5 className={styles.label}>{hasStarted && "Eto status"}</h5>
+          <h5 className={styles.label}>
+            {hasStarted && <FormattedMessage id="shared-component.investment-preview.terms" />}
+          </h5>
+          <h5 className={styles.label}>
+            {hasStarted && <FormattedMessage id="shared-component.investment-preview.status" />}
+          </h5>
         </div>
         <div className={styles.background}>
           {hasStarted ? (

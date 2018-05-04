@@ -38,7 +38,7 @@ describe("web3 > selectors", () => {
           walletType: WalletType.LIGHT,
           address: dummyEthereumAddress,
           vault,
-          email: "test@example.com",
+          email,
           salt,
         },
       };
@@ -56,11 +56,11 @@ describe("web3 > selectors", () => {
           pathname: "/login/light",
           state: undefined,
           hash: "",
-          search: `?redirect=%2F%26email%3D${encodedEmail}`,
+          search: encodeURI(`?redirect=/&email=${email}`),
         },
       };
 
-      expect(selectLightWalletEmailFromQueryString(state) === email).to.be.true;
+      expect(selectLightWalletEmailFromQueryString(state)).to.be.eq(email);
     });
   });
 
@@ -71,7 +71,7 @@ describe("web3 > selectors", () => {
           pathname: "/login/light",
           state: undefined,
           hash: "",
-          search: `?redirect=%2F%26code%3D${code}`,
+          search: encodeURI(`?redirect=/&code=${code}`),
         },
       };
 
@@ -86,7 +86,7 @@ describe("web3 > selectors", () => {
       walletType: WalletType.LIGHT,
       address: dummyEthereumAddress,
       vault,
-      email: "test@example.com",
+      email,
       salt,
     };
 
@@ -96,14 +96,16 @@ describe("web3 > selectors", () => {
           pathname: "/login/light",
           state: undefined,
           hash: "",
-          search: `?redirect=%2F%26email%3D${encodedEmail}%26salt%3D${salt}`,
+          search: encodeURI(`?redirect=/&email=${email}&salt=${salt}`),
         },
         ...previousConnectedWallet,
       };
 
       const result: any = { ...selectLightWalletFromQueryString(state) };
 
-      expect(result.email === email && result.salt === salt).to.be.true;
+      expect(result.email).to.be.eq(email);
+
+      expect(result.salt).to.be.eq(salt);
     });
 
     it("should not work if email or salt is not provided", () => {
@@ -112,12 +114,16 @@ describe("web3 > selectors", () => {
           pathname: "/login/light",
           state: undefined,
           hash: "",
-          search: `?redirect=%2F%26email%3D${encodedEmail}`,
+          search: encodeURI(`?redirect=/&email=${email}`),
         },
         ...previousConnectedWallet,
       };
 
-      expect(selectLightWalletFromQueryString(state) === undefined).to.be.true;
+      expect(selectLightWalletFromQueryString(state)).to.be.undefined;
+
+      state.search = encodeURI(`?redirect=/&salt=${salt}`)
+
+      expect(selectLightWalletFromQueryString(state)).to.be.undefined;
     });
   });
 });

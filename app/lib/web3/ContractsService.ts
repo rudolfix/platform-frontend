@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import promiseAll = require("promise-all");
+import promiseAll from "promise-all";
 
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";

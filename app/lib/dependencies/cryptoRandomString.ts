@@ -1,4 +1,4 @@
-import cryptoRandomStringModule = require("crypto-random-string");
+import cryptoRandomStringModule from "crypto-random-string";
 
 export type CryptoRandomString = (length: number) => string;
 

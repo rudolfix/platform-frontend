@@ -1,4 +1,4 @@
-import promiseAll = require("promise-all");
+import promiseAll from "promise-all";
 
 import BigNumber from "bignumber.js";
 import { fork, put, select } from "redux-saga/effects";

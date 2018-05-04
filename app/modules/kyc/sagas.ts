@@ -101,7 +101,11 @@ function* loadIndividualRequest(
 }
 
 function* submitIndividualRequest(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_REQUEST") return;
@@ -109,8 +113,8 @@ function* submitIndividualRequest(
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],
-      "Submit KYC",
-      "Confirm submitting your KYC request",
+      formatIntlMessage("kyc.modal.header"),
+      formatIntlMessage("kyc.modal.submit-description"),
     );
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitIndividualRequest();

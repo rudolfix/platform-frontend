@@ -44,17 +44,25 @@ $lg-width: px-to-rem(133px);
     color: $neu-charcoal-grey;
   }
 
+  &:hover,
   &:focus,
+  &:global(.active) {
+    .icon {
+      color: inherit;
+    }
+  }
+
   &:hover,
   &:global(.active) {
     background-color: $neu-charcoal-grey;
     color: $neu-white-two;
     border-color: $neu-piss-yellow;
     text-decoration: none;
+  }
 
-    .icon {
-      color: inherit;
-    }
+  &:focus {
+    background-color: lighten($neu-charcoal-grey, 8%);
+    color: $neu-white-two;
   }
 
   @include media-breakpoint-down(xs) {

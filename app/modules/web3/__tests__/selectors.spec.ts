@@ -16,7 +16,6 @@ describe("web3 > selectors", () => {
   const code = "code";
   const vault = "vault";
   const email = "test@example.com";
-  const encodedEmail = email.replace("@", "%2540");
 
   describe("selectIsLightWallet", () => {
     it("should work with connected wallet", () => {
@@ -121,7 +120,7 @@ describe("web3 > selectors", () => {
 
       expect(selectLightWalletFromQueryString(state)).to.be.undefined;
 
-      state.search = encodeURI(`?redirect=/&salt=${salt}`)
+      state.search = encodeURI(`?redirect=/&salt=${salt}`);
 
       expect(selectLightWalletFromQueryString(state)).to.be.undefined;
     });

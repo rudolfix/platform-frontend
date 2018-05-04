@@ -7,6 +7,9 @@
 @import "./utils";
 @import "./global";
 
+@import "./elements/a";
+@import "./elements/ul";
+
 // sass-lint:disable no-vendor-prefixes
 // Enable font smoothing on mac
 body {
@@ -14,15 +17,6 @@ body {
   -moz-osx-font-smoothing: antialiased;
 }
 // sass-lint:enable no-vendor-prefixes
-
-a {
-  font-weight: $font-weight-bold;
-
-  &:focus {
-    outline: 0;
-    text-decoration: underline;
-  }
-}
 
 .form-control {
   font-size: $neu-font-size-lg !important;

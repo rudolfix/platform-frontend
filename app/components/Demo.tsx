@@ -71,67 +71,6 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <Button>Default Button Primary</Button>
-          <br />
-          <Button disabled>Default Button Primary Disabled</Button>
-          <br />
-          <Button layout="secondary">Button Secondary</Button>
-          <br />
-          <Button layout="secondary" disabled>
-            Button Secondary Disabled
-          </Button>
-        </Col>
-      </Row>
-    </Container>
-    <Container>
-      <Row>
-        <Col>
-          <a href="/">link</a>
-        </Col>
-      </Row>
-    </Container>
-    <Container>
-      <Row>
-        <Col>
-          <NavigationButton forward text="NavigationButton" onClick={() => {}} />
-          <NavigationButton disabled forward text="NavigationButton disabled" onClick={() => {}} />
-          <NavigationLink forward to="/" text="NavigationLink" />
-        </Col>
-      </Row>
-    </Container>
-    <Container>
-      <Row>
-        <Col>Breadcrumb in different states</Col>
-      </Row>
-      <Row>
-        <Col>
-          <BreadCrumb view={"no path just view name"} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <BreadCrumb path={["Single path"]} view={"view name"} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <BreadCrumb path={["First path", "Second path"]} view={"view name"} />
-        </Col>
-      </Row>
-    </Container>
-    <Container>
-      <Row>
-        <Col>
-          <FormGroup>
-            <Input placeholder={"This form is always invalid"} valid={false} />
-            <FormFeedback>invalid</FormFeedback>
-          </FormGroup>
-        </Col>
-      </Row>
-    </Container>
-    <Container>
-      <Row>
-        <Col>
           <PanelDark
             headerText="header text"
             rightComponent={

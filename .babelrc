@@ -7,5 +7,5 @@
       }
     ]
   ],
-  "presets": ["@babel/typescript", "@babel/react"]
+  "presets": ["@babel/preset-typescript", "@babel/react"]
 }

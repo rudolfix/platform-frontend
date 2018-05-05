@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Col, Container, FormFeedback, FormGroup, Input, Row } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
@@ -9,8 +9,6 @@ import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidge
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
 import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
-import { BreadCrumb } from "./shared/BreadCrumb";
-import { Button } from "./shared/Buttons";
 import { ChartBars } from "./shared/charts/ChartBars";
 import { ChartDoughnut } from "./shared/charts/ChartDoughnut";
 import { ChartPie } from "./shared/charts/ChartPie";

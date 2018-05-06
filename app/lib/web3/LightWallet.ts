@@ -207,6 +207,7 @@ export class LightWallet implements IPersonalWallet {
       // @see https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#torpcsig
       return ethSig.concatSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
     } catch (e) {
+      //TODO return SignerRejectConfirmationError which is more generic
       throw new LightSignMessageError();
     }
   }

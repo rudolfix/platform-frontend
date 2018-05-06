@@ -1,8 +1,11 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IUser, IUserInput, TUserType } from "../../lib/api/users/interfaces";
+import { IUser, IUserInput, IVerifyEmailUser, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
+import { SignerRejectConfirmationError } from "../../lib/web3/Web3Manager";
+import { IAppState } from "../../store";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
@@ -13,8 +16,6 @@ import {
   selectLightWalletEmailFromQueryString,
 } from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { IVerifyEmailUser } from "./../../lib/api/users/interfaces";
-import { IAppState } from "./../../store";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -114,14 +115,7 @@ function* signInUser(
   try {
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);
-  } catch (e) {
-    logger.error("Error:", e);
-    yield effects.put(actions.walletSelector.messageSigningError("Error while signing a message!"));
-  }
-
-  try {
     yield call(loadOrCreateUser, userType);
-
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),
     );
@@ -131,12 +125,16 @@ function* signInUser(
       yield effects.put(actions.routing.goToDashboard());
     }
   } catch (e) {
-    logger.error("Error:", e);
-    yield effects.put(
-      actions.walletSelector.messageSigningError(
-        "Our server is having problems connecting with your wallet. Please try again or contact our Support Desk.",
-      ),
-    );
+    if (e instanceof SignerRejectConfirmationError) {
+      yield effects.put(actions.walletSelector.messageSigningError("Message signing was rejected"));
+    } else {
+      logger.error("Error:", e);
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          "Our server is having problems connecting with your wallet. Please try again or contact our Support Desk.",
+        ),
+      );
+    }
   }
   //TODO: Add translations
 }

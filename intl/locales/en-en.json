@@ -129,6 +129,8 @@
   "kyc.personal.title": "Personal Details",
   "kyc.personal.uploadId.description": "Please upload a colored copy of your passport or both sides of your ID card for verification.",
   "kyc.personal.uploadId.title": "Verification",
+  "kyc.personal.us-citizen.disclaimer": "Due to regulatory uncertainties in the US we can currently not accept any US American citizens. Since US law also operates outside of its geographical borders we cannot make an exception even if you are based overseas",
+  "kyc.personal.us-citizen.question": "Are you a US citizen?",
   "kyc.request-state.accepted.description": "Your Kyc request was approved",
   "kyc.request-state.accepted.title": "Kyc request approved",
   "kyc.request-state.click-here-to-continue": "Click here to continue",

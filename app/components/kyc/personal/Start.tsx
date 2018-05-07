@@ -66,7 +66,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
       <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
       <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
       <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
-      <FormattedHTMLMessage tagName="span" id="kyc.personal.current.address"/>
+      <FormattedHTMLMessage tagName="span" id="kyc.personal.current.address" />
       <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
       <Row>
         <Col xs={12} md={6} lg={8}>
@@ -93,7 +93,15 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
       />
       <FormSelectField
         values={US_CITIZEN_VALUES}
-        label="Are you a US citizen?"
+        label={
+          <>
+            <FormattedMessage id={"kyc.personal.us-citizen.question"} />
+            <Tooltip
+              className="ml-2"
+              text={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
+            />
+          </>
+        }
         name="isUsCitizen"
       />
       <FormSelectField

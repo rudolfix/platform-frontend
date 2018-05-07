@@ -146,7 +146,7 @@
     "ledger-wallet-provider": "2.0.1-beta.2",
     "lodash": "^4.17.4",
     "moment": "^2.21.0",
-    "neufund-contracts-tmp": "^1.0.5",
+    "neufund-contracts-tmp": "^1.0.7",
     "promise-all": "^1.0.0",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.1",

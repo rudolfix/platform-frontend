@@ -6023,9 +6023,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-neufund-contracts-tmp@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/neufund-contracts-tmp/-/neufund-contracts-tmp-1.0.5.tgz#95b84e041b5421835fa997e778bf5734ff811191"
+neufund-contracts-tmp@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/neufund-contracts-tmp/-/neufund-contracts-tmp-1.0.7.tgz#05e59663f1a39ec1fb01fd4765487639dfc16803"
 
 nise@^1.2.0:
   version "1.2.0"

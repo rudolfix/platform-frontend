@@ -5,7 +5,6 @@ import { Container } from "inversify";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";
-import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
@@ -25,10 +24,10 @@ import {
 import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
 import { IAppState, reducers } from "./store";
+import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
 import { compact } from "lodash";
-import * as languageEn from "../intl/locales/en-en.json";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 import "./styles/overrides.scss";
@@ -53,9 +52,9 @@ function renderApp(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
         <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-          <IntlProvider locale="en-us" messages={languageEn} textComponent={React.Fragment}>
+          <IntlProviderAndInjector>
             <Component />
-          </IntlProvider>
+          </IntlProviderAndInjector>
         </ConnectedRouter>
       </InversifyProvider>
     </ReduxProvider>,

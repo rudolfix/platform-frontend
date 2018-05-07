@@ -70,9 +70,14 @@ export function* getWalletMetadata(
 
 export function* lightWalletBackupWatch(): Iterator<any> {
   try {
+    //TODO: Add translations
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
-    yield neuCall(displayInfoModalSaga, "Backup Seed", "you have successfully back up your wallet");
+    yield neuCall(
+      displayInfoModalSaga,
+      "Backup Recovery Phrase",
+      "You have successfully backed up your Neufund Wallet",
+    );
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
     yield put(

@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
@@ -55,7 +55,7 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
       </Button>
     </div>
     <small className={styles.note}>
-      <FormattedMessage id="kyc.business.beneficial-owner.anti-laundry" />
+      <FormattedHTMLMessage tagName="span" id="kyc.business.beneficial-owner.anti-laundry" />
     </small>
   </div>
 );

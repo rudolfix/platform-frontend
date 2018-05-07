@@ -9,7 +9,8 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": ["./node_modules/@types", "./@types"]
   },
   "include": [
     "./node_modules/types-bn/index.d.ts",

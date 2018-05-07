@@ -61,10 +61,11 @@ function* uploadIndividualFile(
   if (action.type !== "KYC_UPLOAD_INDIVIDUAL_FILE") return;
   const { file } = action.payload;
   try {
+    //TODO: add translation
     yield put(actions.kyc.kycUpdateIndividualDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadIndividualDocument(file);
     yield put(actions.kyc.kycUpdateIndividualDocument(false, result.body));
-    notificationCenter.info("Your file was uploaded successfully.");
+    notificationCenter.info("The file was successfully uploaded");
   } catch {
     yield put(actions.kyc.kycUpdateIndividualDocument(false));
     notificationCenter.error("There was a problem uploading your file. Please try again.");
@@ -101,16 +102,20 @@ function* loadIndividualRequest(
 }
 
 function* submitIndividualRequest(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_REQUEST") return;
   try {
+    // TODO: Add to translations
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],
-      "Submit KYC",
-      "Confirm submitting your KYC request",
+      formatIntlMessage("kyc.modal.submit-description"),
     );
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitIndividualRequest();
@@ -426,8 +431,7 @@ function* submitBusinessRequest(
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],
-      "Submit KYC",
-      "Confirm submitting your KYC request",
+      "Confirm your Verification",
     );
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitBusinessRequest();

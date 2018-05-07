@@ -1,6 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -133,7 +133,7 @@ export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(
           <h6>
             <FormattedMessage id={"kyc.personal.personal-information.question"} />
           </h6>
-          <FormattedMessage id={"kyc.personal.personal-information.answer"} />
+          <FormattedHTMLMessage tagName="span" id={"kyc.personal.personal-information.answer"} />
         </div>
         <KYCEnhancedForm {...props} />
       </KycPanel>

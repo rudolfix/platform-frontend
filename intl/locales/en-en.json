@@ -121,7 +121,7 @@
   "kyc.personal.instant-id.go-to-video-verification": "START INSTANT VERIFICATION",
   "kyc.personal.instant-id.manual-verification-description": "If you do not wish to get instantly verified you can also choose the manual process. Therefore you have to fill out a form and upload your documents. The process may take up to 1 business day.",
   "kyc.personal.instant-id.title": "Verification",
-  "kyc.personal.personal-information.answer": "The following information will be used to verify your identity in compliance with European Know Your Client and Anti Money Laundering policies. our information is always kept confidential and needs to be stored for at least 5 years. By providing your information and clicking “Continue” you are consenting to your data being processed.",
+  "kyc.personal.personal-information.answer": "The following information will be used to verify your identity in compliance with European Know Your Client and Anti Money Laundering policies. <br/><br/>your information is always kept confidential and needs to be stored for at least 5 years.<br/><br/>By providing your information and clicking “Continue” you are consenting to your data being processed.",
   "kyc.personal.personal-information.question": "Why do we need this information?",
   "kyc.personal.politically-exposed.question": "Are you a Politically Exposed Person?",
   "kyc.personal.politically-exposed.tooltip": "You are a Politically Exposed Person (PEP) if: 1. you hold a prominent position or have influence, thus you’re being more susceptible to be involved in bribery or corruption, 2. you are any close business associate or family member of the former.",

@@ -117,7 +117,7 @@ describe("Wallet selector integration", () => {
     await waitForTid(mountedComponent, "ledger-wallet-error-msg");
 
     expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
-      "Nano Ledger S not available",
+      "Nano Ledger S is not available",
     );
 
     // simulate successful connection
@@ -240,7 +240,7 @@ describe("Wallet selector integration", () => {
 
     // there is no wallet in browser (BrowserWallet thrown BrowserWalletMissingError)
     expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
-      "We did not detect any Web3 wallet.",
+      "We did not detect any Web3 wallet",
     );
 
     // wallet in browser is locked
@@ -253,7 +253,7 @@ describe("Wallet selector integration", () => {
     mountedComponent.update();
 
     expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
-      "Your wallet seems to be locked — we can't access any accounts.",
+      "Your wallet seems to be locked — we can't access any accounts",
     );
 
     // connect doesn't throw which means there is web3 in browser

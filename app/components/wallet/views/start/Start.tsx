@@ -42,6 +42,7 @@ const categories = [
     onFilter: () => alert("sample category 3"),
   },
 ];
+//TODO: Make n letter small
 const tabs = [
   {
     isSelected: false,
@@ -69,14 +70,14 @@ interface IDispatchProps {
 }
 
 type TProps = IStateProps & IDispatchProps;
-
+//TODO: add translations
 const WalletStartComponent: React.SFC<TProps> = props => (
   <Row className="row-gutter-top">
     <Col lg={6} xs={12}>
       <WalletBalance
         isLocked={false}
         className="h-100"
-        headerText="Your wallet balance"
+        headerText="MY WALLET"
         depositEuroTokenFunds={props.goToDepositEuroToken}
         depositEthFunds={props.goToDepositEth}
         isLoading={props.isLoading}

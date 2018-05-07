@@ -84,8 +84,9 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBeneficialOwner> & IProps>(
           name="isPoliticallyExposed"
         />
         <Row>
+          {/* TODO:Add translation */}
           <Col xs={6} md={4}>
-            <FormField label="Percent owned" name="ownership" suffix="%" />
+            <FormField label="Percent held" name="ownership" suffix="%" />
           </Col>
         </Row>
         <div className="p-4 text-center">

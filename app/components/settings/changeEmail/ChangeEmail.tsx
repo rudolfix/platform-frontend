@@ -54,6 +54,7 @@ export const ChangeEmailComponent: React.SFC<IDispatchProps & IIntlProps> = ({
   return (
     <PanelDark headerText={formatIntlMessage("settings.change-email-component.header")}>
       <Row>
+        {/* TODO: Remove Message */}
         <Col xs={6} className="mt-3">
           <p data-test-id="paragraph-section">
             <FormattedMessage id="settings.change-email-component.text" />

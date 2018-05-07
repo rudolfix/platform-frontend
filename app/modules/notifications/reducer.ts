@@ -65,7 +65,9 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
 export const settingsNotification = () => ({
   id: Date.now(),
   type: NotificationType.WARNING,
-  text: "ACTION REQUIRED: Please update your account settings",
+  text: "Please update your account before proceeding. Head to Settings now. ",
   actionLinkText: "Go to settings",
   onClickAction: routingActions.goToSettings(),
 });
+
+//TODO: Add Translation

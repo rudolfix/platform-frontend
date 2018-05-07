@@ -27,8 +27,8 @@ interface IClaimedDividendsProps {
   recentPayouts: IDividendPayout[];
 }
 
-const NoPayoutsInfo = () => <div className="py-3">You didn't claimed any dividends so far.</div>;
-
+const NoPayoutsInfo = () => <div className="py-3">You have not claimed any proceeds so far.</div>;
+//TODO: Add translation
 export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProps> = ({
   totalEurValue,
   recentPayouts,
@@ -37,7 +37,7 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
 }) => (
   <PanelDark
     icon={neuIcon}
-    headerText="Dividends claimed from neu"
+    headerText="MY PROCEEDS"
     rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
     className={cn(styles.claimedDividends, className)}
     {...htmlProps}

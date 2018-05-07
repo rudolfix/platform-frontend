@@ -58,12 +58,14 @@ export const selectPreviousLightWalletEmail = (state: IWeb3State): string | unde
 export const selectLightWalletFromQueryString = (
   state: RouterState,
 ): { email: string; salt: string } | undefined => {
-  if (!(state.location && state.location.search)) {
+  if (!state.location) {
     return undefined;
   }
+
   const params = queryString.parse(state.location.search);
-  const email = params.email;
-  const salt = params.salt;
+  const redirect = params.redirect;
+  const email = params.email || (redirect && queryString.parse(redirect).email);
+  const salt = params.salt || (redirect && queryString.parse(redirect).salt);
 
   if (!email || !salt) {
     return undefined;
@@ -78,11 +80,9 @@ export const selectLightWalletFromQueryString = (
 export const selectActivationCodeFromQueryString = (
   state: RouterState,
 ): { verificationCode: string } | undefined => {
-  if (!(state.location && state.location.search)) {
-    return undefined;
-  }
-  const params = queryString.parse(state.location.search);
-  const verificationCode = params.code;
+  const params = queryString.parse(state.location!.search);
+  const redirect = params.redirect;
+  const verificationCode = params.code || (redirect && queryString.parse(redirect).code);
 
   if (!verificationCode) {
     return undefined;
@@ -97,8 +97,10 @@ export const selectLightWalletEmailFromQueryString = (state: RouterState): strin
   if (!(state.location && state.location.search)) {
     return undefined;
   }
+
   const params = queryString.parse(state.location.search);
-  const urlEmail = params.email;
+  const redirect = params.redirect;
+  const urlEmail = params.email || (redirect && queryString.parse(redirect).email);
 
   if (!urlEmail) {
     return undefined;

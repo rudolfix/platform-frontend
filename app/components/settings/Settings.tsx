@@ -39,6 +39,7 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
 
       {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
         <>
+          {/* TODO: Remove message */}
           <Col xs={12}>
             <SectionHeader>
               <FormattedMessage id="settings.personal-settings.title" />

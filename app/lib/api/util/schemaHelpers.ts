@@ -28,13 +28,13 @@ export const date = Yup.string()
   .test("is-valid", "Please enter a valid date", s => {
     return parse(s).isValid();
   });
-
+//TODO: Add translations
 export const personBirthDate = date
-  .test("is-old-enough", "This person must be older than 18 years.", s => {
+  .test("is-old-enough", "You must be older than 18 years", s => {
     const d = parse(s);
     return d.isValid() && d.isBefore(moment().subtract(18, "years"));
   })
-  .test("is-young-enough", "This person must be younger than 100 years.", s => {
+  .test("is-young-enough", "You must be younger than 100 years", s => {
     const d = parse(s);
     return d.isValid() && d.isAfter(moment().subtract(100, "years"));
   });
@@ -50,9 +50,10 @@ export const foundingDate = date.test(
 
 export const citizen = Yup.bool();
 
+//TODO: add to translations
 export const isUsCitizen = citizen.test(
   "is-us-citizen",
-  "US citizens are not allowed",
+  "We are very sorry, at the moment we cannot serve US customers due to regulatory uncertainties.",
   response => {
     return response === false;
   },

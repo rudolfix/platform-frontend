@@ -71,7 +71,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
 
       expect(mockDispatch).to.be.calledWithExactly(
-        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S is not available"),
       );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
@@ -351,7 +351,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S is not available"),
       );
     });
   });

@@ -18,7 +18,7 @@ export function* addNewEmail(
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
-
+  //TODO: Add translations
   try {
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
     yield neuCall(
@@ -53,9 +53,10 @@ export function* resendEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Resend email",
+      "Email Confirmation",
       "Confirm resending activation email.",
     );
+    //TODO: Add translations
     yield effects.call(updateUser, { ...user, new_email: email });
     notificationCenter.info("Email successfully resent");
   } catch {
@@ -66,12 +67,13 @@ export function* resendEmail(
 export function* loadSeedOrReturnToSettings(): Iterator<any> {
   // unlock wallet
   try {
+    //TODO: Add translations
     const signEffect = put(actions.web3.fetchSeedFromWallet());
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
-      "Access seed",
-      "Please confirm to access your seed.",
+      "Access recovery phrase",
+      "Please confirm to access your recovery phrase.",
     );
   } catch {
     yield put(actions.routing.goToSettings());

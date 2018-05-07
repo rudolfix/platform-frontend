@@ -75,7 +75,7 @@ export class FormFieldDate extends React.Component<IProps> {
                     onChange={e => this.onChange("day", e, field.onChange)}
                     value={this.fromValue("day", field.value)}
                     type="tel"
-                    placeholder="dd"
+                    placeholder="DD"
                     valid={valid}
                   />
                 </div>
@@ -91,13 +91,14 @@ export class FormFieldDate extends React.Component<IProps> {
                     onChange={e => this.onChange("month", e, field.onChange)}
                     value={this.fromValue("month", field.value)}
                     type="tel"
-                    placeholder="mm"
+                    placeholder="MM"
                     valid={valid}
                   />
                 </div>
               )}
             />
             {"/"}
+            {/* TODO: Add to translations file */}
             <Field
               name={this.props.name}
               render={({ field }) => (
@@ -107,7 +108,7 @@ export class FormFieldDate extends React.Component<IProps> {
                     onChange={e => this.onChange("year", e, field.onChange)}
                     value={this.fromValue("year", field.value)}
                     type="tel"
-                    placeholder="yyyy"
+                    placeholder="YYYY"
                     valid={valid}
                   />
                 </div>

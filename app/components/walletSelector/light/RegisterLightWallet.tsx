@@ -40,9 +40,10 @@ const validationSchema = Yup.object().shape({
 
 const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   <Form>
-    <FormField placeholder="Email" type="email" name={EMAIL} />
+    {/* TODO: ADD TRANSALTIONS */}
+    <FormField placeholder="Email Address" type="email" name={EMAIL} />
     <FormField type="password" placeholder="Password" name={PASSWORD} />
-    <FormField type="password" placeholder="Repeat Password" name={REPEAT_PASSWORD} />
+    <FormField type="password" placeholder="Confirm Password" name={REPEAT_PASSWORD} />
     <div className="text-center">
       <Button type="submit" disabled={!formikBag.isValid}>
         <FormattedMessage id="wallet-selector.neuwallet.register" />

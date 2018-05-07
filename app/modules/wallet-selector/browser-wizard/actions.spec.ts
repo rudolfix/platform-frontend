@@ -102,7 +102,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       expect(walletMetadataStorageMock.set).to.not.be.called;
       expect(dispatchMock).to.be.calledWithExactly(
         actions.walletSelector.browserWalletConnectionError(
-          "Your wallet seems to be locked — we can't access any accounts.",
+          "Your wallet seems to be locked — we can't access any accounts",
         ),
       );
     });

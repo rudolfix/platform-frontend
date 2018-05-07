@@ -133,9 +133,12 @@ function* signInUser(
   } catch (e) {
     logger.error("Error:", e);
     yield effects.put(
-      actions.walletSelector.messageSigningError("Error while connecting with server!"),
+      actions.walletSelector.messageSigningError(
+        "Our server is having problems connecting with your wallet. Please try again or contact our Support Desk.",
+      ),
     );
   }
+  //TODO: Add translations
 }
 
 function* verifyUserEmail(): Iterator<any> {

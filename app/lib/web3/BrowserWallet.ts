@@ -1,5 +1,5 @@
 import { promisify } from "bluebird";
-import hex2ascii = require("hex2ascii");
+import * as hex2ascii from "hex2ascii";
 import { injectable } from "inversify";
 import * as Web3 from "web3";
 

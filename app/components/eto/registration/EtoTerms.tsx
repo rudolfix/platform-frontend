@@ -25,14 +25,15 @@ import { SingleFileUpload } from "../../shared/SingleFileUpload";
 
 import * as iconExternalLink from "../../../assets/img/inline_icons/link_out_small.svg";
 
+//TODO: add to translations
 const THIRD_PARTIES_DEPENDENCY_VALUES = {
-  [NONE_KEY]: "-please select-",
+  [NONE_KEY]: "please select",
   [BOOL_TRUE_KEY]: "Yes there is",
   [BOOL_FALSE_KEY]: "No there is not",
 };
 
 const SUBJECT_OF_REGULATION_VALUES = {
-  [NONE_KEY]: "-please select-",
+  [NONE_KEY]: "please select",
   [BOOL_TRUE_KEY]: "Yes there is",
   [BOOL_FALSE_KEY]: "No there is not",
 };

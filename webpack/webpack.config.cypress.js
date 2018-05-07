@@ -1,6 +1,9 @@
 const paths = require("./paths");
 
 module.exports = {
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"],
+  },
   module: {
     rules: [
       {
@@ -11,10 +14,10 @@ module.exports = {
             options: {
               configFileName: "./cypress/tsconfig.json",
               useCache: true,
+              errorsAsWarnings: true,
             },
           },
         ],
-        include: paths.app,
       },
     ],
   },

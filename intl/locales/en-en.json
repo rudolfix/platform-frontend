@@ -115,6 +115,7 @@
   "kyc.business.start.type.small": "Small Business",
   "kyc.modal.submit-description": "Confirm submitting your KYC request",
   "kyc.panel.go-back": "BACK",
+  "kyc.personal.current.address": "<h5>Current address</h5>",
   "kyc.personal.high-income": "Is your income above 5.000 EUR monthly, or do you have more than 100.000 EUR of assets available?",
   "kyc.personal.instant-id.description": "You will be redirected to our verification partner IDNow in order to complete a fast video verification via your computer or mobile camera. After the successful verification, you can invest and deposit funds on the Neufund Platform instantly.",
   "kyc.personal.instant-id.go-to-manual-verification": "START MANUAL VERIFICATION",

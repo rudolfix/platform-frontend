@@ -9,7 +9,7 @@ import * as icon from "../../assets/img/inline_icons/icon_questionmark.svg";
 import * as styles from "./Tooltip.module.scss";
 
 interface IProps {
-  text: string | React.ReactNode;
+  text: string;
   className?: string;
 }
 

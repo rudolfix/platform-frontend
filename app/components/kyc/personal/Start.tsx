@@ -109,6 +109,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
         label={formatIntlMessage("kyc.personal.high-income")}
         name="isHighIncome"
       />
+      <FormattedMessage id={"kyc.personal.income.disclaimer"} />
       <div className="p-4 text-center">
         <Button type="submit" disabled={!props.isValid || props.loadingData}>
           <FormattedMessage id={"form.save-and-submit"} />

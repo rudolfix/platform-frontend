@@ -113,6 +113,8 @@
   "kyc.business.start.type.corporation": "Corporation",
   "kyc.business.start.type.partnership": "Partnership Business",
   "kyc.business.start.type.small": "Small Business",
+  "kyc.modal.header": "Submit KYC",
+  "kyc.modal.submit-description": "Confirm submitting your KYC request",
   "kyc.panel.go-back": "BACK",
   "kyc.personal.high-income": "Is your income above 5.000 EUR monthly, or do you have more than 100k EUR of assets available?",
   "kyc.personal.instant-id.description": "You will be redirected to our verification partner IDNow in order to complete a fast video verification via your desktop or mobile camera. After the successfull verification, you can immediately invest and deposit funds on the NEUFUND platform.",

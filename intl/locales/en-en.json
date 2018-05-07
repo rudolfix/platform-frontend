@@ -98,7 +98,7 @@
   "investors-landing.register.buttonText": "Register",
   "investors-landing.register.cta": "Invest now in companies you like.",
   "kyc.business.beneficial-owner.add-new-beneficial-owner": "Add new beneficial owner",
-  "kyc.business.beneficial-owner.anti-laundry": "Why do we need this information? The following information will be used to verify your identity in compliance with European Know Your Client and Anti Money Laundering policies.Your information is always kept confidential and needs to be stored for at least 5 years. By providing your information and clicking “Continue” you are consenting to your data being processed.",
+  "kyc.business.beneficial-owner.anti-laundry": "Why do we need this information? <br/> The following information will be used to verify your identity in compliance with European Know Your Client and Anti Money Laundering policies.<br/><br/>Your information is always kept confidential and needs to be stored for at least 5 years.<br/><br/> By providing your information and clicking “Continue” you are consenting to your data being processed.",
   "kyc.business.beneficial-owner.beneficial-owners": "Beneficial owners",
   "kyc.business.beneficial-owner.label": "Beneficial Owner {id}",
   "kyc.business.beneficial-owner.pep": "Is this person politically exposed?",

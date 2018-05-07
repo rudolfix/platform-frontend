@@ -54,6 +54,10 @@ export class Web3Adapter {
       from: address as string,
     });
 
+    if (resultData.error !== undefined) {
+      throw resultData.error;
+    }
+
     return resultData.result;
   }
 }

@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "../../shared/Buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { Money, MoneyTransfer } from "../../shared/Money";
+import { Money } from "../../shared/Money";
 import { PanelDark } from "../../shared/PanelDark";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
@@ -53,7 +53,7 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
               <Date timestamp={timestamp} />
             </TableCell>
             <TableCell narrow>
-              <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
+              <Money currency="eur_token" value={amount} transfer="income" />
             </TableCell>
             <TableCell narrow>
               <Button layout="secondary">

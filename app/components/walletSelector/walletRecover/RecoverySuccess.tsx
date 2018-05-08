@@ -18,7 +18,7 @@ interface IStateProps {
 interface IDispatchProps {
   goToDashboard: (userType: TUserType) => void;
 }
-
+// TODO: add translation
 export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> = ({
   goToDashboard,
   userType,
@@ -27,7 +27,6 @@ export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> =
     <Col className="mt-4 pb-5">
       <HeaderProgressStepper
         headerText="Reset your Password"
-        descText="Lorem ipsum"
         steps={8}
         currentStep={8}
       />
@@ -38,7 +37,7 @@ export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> =
       </h5>
     </Col>
     <Row className="justify-content-center mb-5 mt-5 pt-4">
-      <Col xs={6} sm={5} md={4} lg={4}>
+      <Col xs={6} sm={5} md={4} lg={3}>
         <Button onClick={() => goToDashboard(userType)}>GO TO DASHBOARD</Button>
       </Col>
     </Row>

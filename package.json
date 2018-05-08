@@ -124,7 +124,7 @@
     "test:e2e:cypress": "cypress run",
     "test": "yarn lint && yarn test:browser && yarn test:node && test:e2e",
     "test:coverage": "yarn lint && yarn test:browser-coverage && yarn test:node && yarn test:e2e",
-    "test:fix": "yarn lint:fix && yarn test:browser && yarn test:node && yarn test:e2e",
+    "test:fix": "yarn lint:fix && yarn test:browser && yarn test:node",
     "codecov": "codecov",
     "generate:contracts": "typechain --force --outDir app/lib/contracts './node_modules/neufund-contracts-tmp/abis/*.json'",
     "prepare": "patch-package && yarn generate:contracts",

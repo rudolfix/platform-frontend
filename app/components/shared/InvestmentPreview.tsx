@@ -6,7 +6,7 @@ import { Money } from "./Money";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import * as styles from "./InvestmentPreview.module.scss";
 
 interface IPreFoundingStatus {
@@ -109,16 +109,25 @@ export const InvestmentPreview: React.SFC<IProps> = ({
               </div>
               <div className={styles.eto}>
                 <div>
-                  <span>
-                    <FormattedMessage id="shared-component.investment-preview.neu-investors" />
-                    <strong>{neuInvestorsNum}</strong>
-                  </span>
-                  <FormattedMessage
-                    id="shared-component.investment-preview.days-left"
-                    values={{
-                      endInDays: endInDays,
-                    }}
-                  />
+                  {endInDays === 1 ? (
+                    <FormattedHTMLMessage
+                      tagName="span"
+                      id="shared-component.investment-preview.investment-timeline"
+                      values={{
+                        endInDays: endInDays,
+                        neuInvestors: neuInvestorsNum,
+                      }}
+                    />
+                  ) : (
+                    <FormattedHTMLMessage
+                      tagName="span"
+                      id="shared-component.investment-preview.investment-timeline-one-day"
+                      values={{
+                        endInDays: endInDays,
+                        neuInvestors: neuInvestorsNum,
+                      }}
+                    />
+                  )}
                 </div>
                 <PercentageIndicatorBar percent={25} />
                 <strong>

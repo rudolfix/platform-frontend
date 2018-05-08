@@ -114,10 +114,10 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
             {!isLocked && (
               <div className={styles.buttonsWrapper}>
                 <Button layout="secondary">
-                  <FormattedMessage id="wallet.balance.withdraw" />
+                  <FormattedMessage id="wallet.balance.send" />
                 </Button>
                 <Button layout="secondary" onClick={depositEthFunds}>
-                  <FormattedMessage id="wallet.balance.deposit" />
+                  <FormattedMessage id="wallet.balance.receive" />
                 </Button>
               </div>
             )}

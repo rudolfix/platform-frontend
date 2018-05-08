@@ -33,7 +33,7 @@
   $bg-color: rgba($gray6, .2);
 
   @include make-col-ready;
-  @include make-col(10, 12);
+  @include make-col(11, 12);
 
   background-color: $bg-color;
   color: $neu-white-two;
@@ -67,14 +67,14 @@
 }
 
 .cta {
+  @include media-breakpoint-down(lg) {
+    margin-bottom: px-to-rem(20px);
+  }
+
   color: $neu-white-two;
   font-size: px-to-rem(30px);
   margin-bottom: px-to-rem(56px);
   text-align: center;
-
-  @include media-breakpoint-down(lg) {
-    margin-bottom: px-to-rem(20px);
-  }
 }
 
 .bullets {

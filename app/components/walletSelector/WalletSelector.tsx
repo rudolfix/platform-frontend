@@ -87,7 +87,10 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
             </Col>
             <Col xs={12} sm={6}>
               <span className="float-sm-right">
-                {oppositeViewLabel} <Link to={oppositeRoute}>{oppositeViewLinkLabel}</Link>
+                {oppositeViewLabel}{" "}
+                <Link to={oppositeRoute} data-test-id="wallet-selector-opposite-route-link">
+                  {oppositeViewLinkLabel}
+                </Link>
               </span>
             </Col>
           </Row>

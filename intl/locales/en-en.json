@@ -125,6 +125,7 @@
   "kyc.personal.instant-id.title": "Verification",
   "kyc.personal.personal-information.answer": "The following information will be used to verify your identity in compliance with European Know Your Client and Anti Money Laundering policies. <br/><br/>your information is always kept confidential and needs to be stored for at least 5 years.<br/><br/>By providing your information and clicking “Continue” you are consenting to your data being processed.",
   "kyc.personal.personal-information.question": "Why do we need this information?",
+  "kyc.personal.politically-exposed.disclaimer": "You will be asked to provide more details about your situation at a later stage.",
   "kyc.personal.politically-exposed.question": "Are you a Politically Exposed Person?",
   "kyc.personal.politically-exposed.tooltip": "You are a Politically Exposed Person (PEP) if: 1. you hold a prominent position or have influence, thus you’re being more susceptible to be involved in bribery or corruption, 2. you are any close business associate or family member of the former.",
   "kyc.personal.title": "Personal Details",

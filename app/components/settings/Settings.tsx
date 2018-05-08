@@ -15,44 +15,47 @@ interface IProps {
   isLightWallet: boolean;
 }
 
-export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => (
-  <LayoutAuthorized>
-    <Row className="row-gutter-top">
-      <Col xs={12}>
-        <SectionHeader>
-          <FormattedMessage id="settings.security-settings.title" />
-        </SectionHeader>
-      </Col>
-      <Col lg={4} xs={12}>
-        <VerifyEmailWidget />
-      </Col>
-
-      {isLightWallet && (
-        <Col lg={4} xs={12}>
-          <BackupSeedWidget />
+export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
+  let i = 0;
+  return (
+    <LayoutAuthorized>
+      <Row className="row-gutter-top">
+        <Col xs={12}>
+          <SectionHeader>
+            <FormattedMessage id="settings.security-settings.title" />
+          </SectionHeader>
         </Col>
-      )}
+        <Col lg={4} xs={12}>
+          <VerifyEmailWidget step={(i = i + 1)} />
+        </Col>
 
-      <Col lg={4} xs={12}>
-        <KycStatusWidget />
-      </Col>
+        {isLightWallet && (
+          <Col lg={4} xs={12}>
+            <BackupSeedWidget step={(i = i + 1)} />
+          </Col>
+        )}
 
-      {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
-        <>
-          {/* TODO: Remove message */}
-          <Col xs={12}>
-            <SectionHeader>
-              <FormattedMessage id="settings.personal-settings.title" />
-            </SectionHeader>
-          </Col>
-          <Col lg={8} xs={12}>
-            <ChangeEmail />
-          </Col>
-        </>
-      )}
-    </Row>
-  </LayoutAuthorized>
-);
+        <Col lg={4} xs={12}>
+          <KycStatusWidget step={(i = i + 1)} />
+        </Col>
+
+        {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
+          <>
+            {/* TODO: Remove message */}
+            <Col xs={12}>
+              <SectionHeader>
+                <FormattedMessage id="settings.personal-settings.title" />
+              </SectionHeader>
+            </Col>
+            <Col lg={8} xs={12}>
+              <ChangeEmail />
+            </Col>
+          </>
+        )}
+      </Row>
+    </LayoutAuthorized>
+  );
+};
 
 export const Settings = appConnect<IProps, {}>({
   stateToProps: s => ({

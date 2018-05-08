@@ -57,21 +57,31 @@ export async function loadOrCreateUserPromise(
 }
 
 export async function verifyUserEmailPromise(
-  { apiUserService, notificationCenter }: TGlobalDependencies,
+  {
+    apiUserService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
   verifiedEmail: string,
 ): Promise<void> {
   if (urlEmail === verifiedEmail) {
-    notificationCenter.info("Your email is already verified");
+    notificationCenter.info(
+      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-already-verified"),
+    );
     return;
   }
   if (!userCode) return;
   try {
     await apiUserService.verifyUserEmail(userCode);
-    notificationCenter.info("Your email was verified successfully.");
+    notificationCenter.info(
+      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-verified"),
+    );
   } catch (e) {
-    notificationCenter.error("Failed to verify your email.");
+    notificationCenter.error(
+      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.failed-email-verify"),
+    );
   }
 }
 
@@ -114,7 +124,7 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
 }
 
 function* signInUser(
-  { logger }: TGlobalDependencies,
+  { logger, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
   { payload: { userType } }: any,
 ): Iterator<any> {
   try {
@@ -141,7 +151,6 @@ function* signInUser(
       );
     }
   }
-  //TODO: Add translations
 }
 
 function* verifyUserEmail(): Iterator<any> {

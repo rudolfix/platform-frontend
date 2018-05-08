@@ -38,7 +38,11 @@ function* loadIndividualData(
 }
 
 function* submitIndividualData(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_FORM") return;
@@ -49,12 +53,18 @@ function* submitIndividualData(
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
     yield put(actions.routing.goToKYCIndividualInstantId());
   } catch {
-    notificationCenter.error("There was a problem sending your data. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
+    );
   }
 }
 
 function* uploadIndividualFile(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_INDIVIDUAL_FILE") return;
@@ -64,10 +74,14 @@ function* uploadIndividualFile(
     yield put(actions.kyc.kycUpdateIndividualDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadIndividualDocument(file);
     yield put(actions.kyc.kycUpdateIndividualDocument(false, result.body));
-    notificationCenter.info("The file was successfully uploaded");
+    notificationCenter.info(
+      formatIntlMessage("module.kyc.sagas.successfully-uploaded"),
+    );
   } catch {
     yield put(actions.kyc.kycUpdateIndividualDocument(false));
-    notificationCenter.error("There was a problem uploading your file. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-uploading"),
+    );
   }
 }
 
@@ -121,20 +135,25 @@ function* submitIndividualRequest(
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateIndividualRequestState(false));
-    notificationCenter.error("There was a problem submitting your request. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem.submitting"),
+    );
   }
 }
 
 function* startIndividualInstantId({
   apiKycService,
   notificationCenter,
+  intlWrapper: { intl: { formatIntlMessage } },
 }: TGlobalDependencies): Iterator<any> {
   try {
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.startInstantId();
     if (result.body.redirectUrl) window.location.replace(result.body.redirectUrl);
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch {
-    notificationCenter.error("There was a problem submitting your request. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem.submitting"),
+    );
   }
 }
 
@@ -160,7 +179,11 @@ function* loadLegalRepresentative(
 }
 
 function* submitLegalRepresentative(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_LEGAL_REPRESENTATIVE") return;
@@ -172,12 +195,18 @@ function* submitLegalRepresentative(
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
-    notificationCenter.error("There was a problem sending your data. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
+    );
   }
 }
 
 function* uploadLegalRepresentativeFile(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_LEGAL_REPRESENTATIVE_FILE") return;
@@ -190,7 +219,9 @@ function* uploadLegalRepresentativeFile(
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false));
-    notificationCenter.error("There was a problem uploading your file. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-uploading"),
+    );
   }
 }
 
@@ -212,7 +243,11 @@ function* loadLegalRepresentativeFiles(
 
 // business data
 function* setBusinessType(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SET_BUSINESS_TYPE") return;
@@ -229,7 +264,9 @@ function* setBusinessType(
     yield put(actions.routing.goToKYCBusinessData());
   } catch (_e) {
     yield put(actions.kyc.kycUpdateBusinessData(false));
-    notificationCenter.error("There was a problem sending your data. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
+    );
   }
 }
 
@@ -246,7 +283,11 @@ function* loadBusinessData({ apiKycService }: TGlobalDependencies, action: TActi
 }
 
 function* submitBusinessData(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_DATA") return;
@@ -258,12 +299,18 @@ function* submitBusinessData(
     yield put(actions.kyc.kycUpdateBusinessData(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBusinessData(false));
-    notificationCenter.error("There was a problem sending your data. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
+    );
   }
 }
 
 function* uploadBusinessFile(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_BUSINESS_FILE") return;
@@ -272,10 +319,14 @@ function* uploadBusinessFile(
     yield put(actions.kyc.kycUpdateBusinessDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadBusinessDocument(file);
     yield put(actions.kyc.kycUpdateBusinessDocument(false, result.body));
-    notificationCenter.info("Your file was uploaded successfully.");
+    notificationCenter.info(
+      formatIntlMessage("module.kyc.sagas.successfully-uploaded"),
+    );
   } catch {
     yield put(actions.kyc.kycUpdateBusinessDocument(false));
-    notificationCenter.error("There was a problem uploading your file. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-uploading"),
+    );
   }
 }
 
@@ -309,7 +360,11 @@ function* loadBeneficialOwners(
 }
 
 function* createBeneficialOwner(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_ADD_BENEFICIAL_OWNER") return;
@@ -319,12 +374,18 @@ function* createBeneficialOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error("There was a problem sending your data. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
+    );
   }
 }
 
 function* submitBeneficialOwner(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BENEFICIAL_OWNER") return;
@@ -336,12 +397,16 @@ function* submitBeneficialOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error("There was a problem saving your changes. Please try again.");
+    notificationCenter.error(      formatIntlMessage("module.kyc.sagas.problem-saving-data")  );
   }
 }
 
 function* deleteBeneficalOwner(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_DELETE_BENEFICIAL_OWNER") return;
@@ -351,12 +416,18 @@ function* deleteBeneficalOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, action.payload.id, undefined));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error("There was a problem sending your data. Please try again.");
+    notificationCenter.error(
+      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
+    );
   }
 }
 
 function* uploadBeneficialOwnerFile(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_BENEFICIAL_OWNER_FILE") return;
@@ -368,10 +439,12 @@ function* uploadBeneficialOwnerFile(
       file,
     );
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false, result.body));
-    notificationCenter.info("Your file was uploaded successfully.");
+    notificationCenter.info(
+      formatIntlMessage(formatIntlMessage("module.kyc.sagas.successfully-uploaded")),
+    );
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false));
-    notificationCenter.error("There was a problem uploading your file. Please try again.");
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-uploading"));
   }
 }
 
@@ -409,7 +482,11 @@ function* loadBusinessRequest(
 }
 
 function* submitBusinessRequest(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  {
+    apiKycService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_REQUEST") return;
@@ -419,8 +496,8 @@ function* submitBusinessRequest(
     if (ownerShip > 100) {
       yield neuCall(
         displayErrorModalSaga,
-        "Error",
-        "Your beneficial owners have a combined ownership of more than 100%. Please make sure this is 100% or less.",
+        formatIntlMessage("module.kyc.sagas.error"),
+        formatIntlMessage("module.kyc.sagas.beneficial-owners"),
       );
       return;
     }
@@ -434,7 +511,7 @@ function* submitBusinessRequest(
     yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBusinessRequestState(false));
-    notificationCenter.error("There was a problem submitting your request. Please try again.");
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem.submitting"));
   }
 }
 

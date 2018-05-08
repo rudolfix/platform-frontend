@@ -8,14 +8,14 @@ import { BackupSeedWidgetComponent } from "./BackupSeedWidget";
 describe("<BackupSeedWidgetComponent />", () => {
   it("should render verified section", () => {
     const MyNeuWidgetComponent = shallow(
-      <BackupSeedWidgetComponent backupCodesVerified intl={dummyIntl} />,
+      <BackupSeedWidgetComponent backupCodesVerified step={1} intl={dummyIntl} />,
     );
     expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(0);
     expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(1);
   });
 
   it("should render unverified section", () => {
-    const MyNeuWidgetComponent = shallow(<BackupSeedWidgetComponent intl={dummyIntl} />);
+    const MyNeuWidgetComponent = shallow(<BackupSeedWidgetComponent step={1} intl={dummyIntl} />);
     expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(1);
     expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(0);
   });

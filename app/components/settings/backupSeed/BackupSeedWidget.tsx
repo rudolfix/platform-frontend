@@ -11,6 +11,7 @@ import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 import { settingsRoutes } from "../routes";
 
+import { compose } from "redux";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
@@ -20,15 +21,17 @@ interface IStateProps {
   backupCodesVerified?: boolean;
 }
 
+interface IOwnProps {
+  step: number;
+}
 interface IDispatchProps {}
 
-export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps & IIntlProps> = ({
-  intl: { formatIntlMessage },
-  backupCodesVerified,
-}) => {
+export const BackupSeedWidgetComponent: React.SFC<
+  IStateProps & IDispatchProps & IIntlProps & IOwnProps
+> = ({ intl: { formatIntlMessage }, backupCodesVerified, step }) => {
   return (
     <PanelDark
-      headerText={formatIntlMessage("settings.backup-seed-widget.header")}
+      headerText={formatIntlMessage("settings.backup-seed-widget.header", { step })}
       rightComponent={
         backupCodesVerified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
@@ -74,12 +77,14 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps &
   );
 };
 
-export const BackupSeedWidgetComponentWithIntl = injectIntlHelpers<IStateProps & IDispatchProps>(
-  BackupSeedWidgetComponent,
-);
+export const BackupSeedWidgetComponentWithIntl = injectIntlHelpers<
+  IStateProps & IDispatchProps & IOwnProps
+>(BackupSeedWidgetComponent);
 
-export const BackupSeedWidget = appConnect<IStateProps & IDispatchProps, {}>({
-  stateToProps: s => ({
-    backupCodesVerified: selectBackupCodesVerified(s.auth),
+export const BackupSeedWidget = compose<React.SFC<IOwnProps>>(
+  appConnect<IStateProps & IDispatchProps, IOwnProps>({
+    stateToProps: s => ({
+      backupCodesVerified: selectBackupCodesVerified(s.auth),
+    }),
   }),
-})(BackupSeedWidgetComponentWithIntl);
+)(BackupSeedWidgetComponentWithIntl);

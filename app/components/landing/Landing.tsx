@@ -51,7 +51,7 @@ export const Landing: React.SFC = () => (
               />
             </Col>
           </Row>
-          <Link to={appRoutes.registerEto}>
+          <Link to={appRoutes.register}>
             <Button theme="t-white">
               <FormattedMessage id="landing.welcome-box.register-now" />
             </Button>

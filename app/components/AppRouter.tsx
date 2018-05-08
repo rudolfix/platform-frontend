@@ -1,6 +1,7 @@
 export const appRoutes = {
   verify: "/email-verify",
 
+
   root: "/",
 
   register: "/register",
@@ -17,6 +18,8 @@ export const appRoutes = {
   demo: "/demo",
   eto: "/eto",
   etoLanding: "/eto-landing",
+
+  etoOverview: "/eto-overview",
 };
 
 import * as React from "react";
@@ -32,6 +35,7 @@ import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 
 import { emailVerify } from "./emailVerify";
+import { EtoOverview } from "./eto/EtoOverview";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
@@ -54,6 +58,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.loginEto} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recoverEto} component={WalletRecoverMain} />
 
+
     {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
 
@@ -67,6 +72,7 @@ export const AppRouter: React.SFC = () => (
       issuerComponent={EtoDashboard}
       exact
     />
+    <OnlyAuthorizedRoute path={appRoutes.etoOverview} issuerComponent={EtoOverview} investorComponent={EtoOverview} />
     <OnlyAuthorizedRoute
       path={appRoutes.verify}
       investorComponent={emailVerify}

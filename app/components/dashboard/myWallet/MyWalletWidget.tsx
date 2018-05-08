@@ -1,11 +1,10 @@
-import * as React from "react";
-import { Col, Row } from "reactstrap";
-
 import * as cn from "classnames";
+import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
-import * as ethIcon from "../../../assets/img/eth_icon.svg";
-import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
+
 import { actions } from "../../../modules/actions";
 import {
   selectTotalEtherBalance,
@@ -22,10 +21,12 @@ import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
 import { WarningAlert } from "../../shared/WarningAlert";
 
-import { FormattedMessage } from "react-intl";
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import { CommonHtmlProps } from "../../../types";
 import { appRoutes } from "../../AppRouter";
+
+import * as ethIcon from "../../../assets/img/eth_icon.svg";
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import * as styles from "./MyWalletWidget.module.scss";
 
 type StateProps = {

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Bar } from "react-chartjs-2";
 import * as styles from "./ChartBars.module.scss";
+import { ChartLegned } from "./ChartLegned";
 
 interface IDataset {
   data: number[];
@@ -16,7 +17,7 @@ interface IProps {
   data: IChartBarsData;
 }
 
-export const ChartBars: React.SFC<IProps> = ({ data }) => {
+export const ChartBarsWithLegend: React.SFC<IProps> = ({ data }) => {
   return (
     <div className={styles.chartBars}>
       <div className={styles.chartWrapper}>
@@ -40,6 +41,9 @@ export const ChartBars: React.SFC<IProps> = ({ data }) => {
             },
           }}
         />
+      </div>
+      <div className={styles.legendWrapper}>
+        <ChartLegned data={data} />
       </div>
     </div>
   );

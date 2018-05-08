@@ -32,6 +32,8 @@ import { InversifyProvider } from "../app/utils/InversifyProvider";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
 import { createMock, tid } from "./testUtils";
+import { delay } from "bluebird";
+import { globalFakeClock } from "./setupTestsHooks";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 
@@ -134,6 +136,24 @@ export async function waitForPredicate(predicate: () => boolean, errorMsg: strin
   let waitTime = 20;
   while (--waitTime > 0 && !predicate()) {
     await Promise.resolve();
+  }
+
+  if (waitTime === 0) {
+    throw new Error(`Timeout while waiting for '${errorMsg}'`);
+  }
+}
+
+export async function waitUntilDoesntThrow(fn: () => any, errorMsg: string): Promise<void> {
+  // wait until event queue is empty :/ currently we don't have a better way to solve it
+  let waitTime = 20;
+  while (--waitTime > 0) {
+    try {
+      fn();
+      break;
+    } catch {
+      delay(1);
+      await globalFakeClock.tickAsync(1);
+    }
   }
 
   if (waitTime === 0) {

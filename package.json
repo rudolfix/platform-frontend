@@ -7,8 +7,6 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.46",
     "@babel/core": "^7.0.0-beta.46",
-    "@babel/plugin-proposal-decorators": "^7.0.0-beta.46",
-    "@babel/plugin-proposal-optional-catch-binding": "^7.0.0-beta.46",
     "@babel/preset-react": "^7.0.0-beta.46",
     "@babel/preset-typescript": "^7.0.0-beta.46",
     "@babel/register": "^7.0.0-beta.46",
@@ -131,6 +129,8 @@
     "storybook": "start-storybook -p 9001 -c .storybook -s ./app/assets"
   },
   "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.0.0-beta.46",
+    "@babel/plugin-proposal-optional-catch-binding": "^7.0.0-beta.46",
     "babel-core": "^7.0.0-bridge.0",
     "bignumber.js": "^5.0.0",
     "bitcore-mnemonic": "^1.5.0",

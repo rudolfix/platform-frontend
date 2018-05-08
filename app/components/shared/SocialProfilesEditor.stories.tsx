@@ -1,6 +1,5 @@
-// tslint:disable-next-line:no-implicit-dependencies
 import { action, configureActions } from "@storybook/addon-actions";
-// tslint:disable-next-line:no-implicit-dependencies
+
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 

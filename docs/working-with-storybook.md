@@ -12,7 +12,6 @@ be imported automatically to Storybook.
 Example story:
 
 ```javascript
-  // tslint:disable-next-line:no-implicit-dependencies
   import { storiesOf } from "@storybook/react";
   import * as React from "react";
 

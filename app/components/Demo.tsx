@@ -248,6 +248,7 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
+            step={1}
             isUserEmailVerified={false}
             isThereUnverifiedEmail={true}
             doesEmailExist={true}
@@ -258,6 +259,7 @@ export const Demo: React.SFC = () => (
         </Col>
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
+            step={1}
             isUserEmailVerified={true}
             doesEmailExist={true}
             isThereUnverifiedEmail={true}
@@ -271,10 +273,10 @@ export const Demo: React.SFC = () => (
     <Container>
       <Row>
         <Col lg={6} xs={12}>
-          <BackupSeedWidgetComponent intl={dummyIntl} />
+          <BackupSeedWidgetComponent step={1} intl={dummyIntl} />
         </Col>
         <Col lg={6} xs={12}>
-          <BackupSeedWidgetComponent backupCodesVerified intl={dummyIntl} />
+          <BackupSeedWidgetComponent step={1} backupCodesVerified intl={dummyIntl} />
         </Col>
       </Row>
     </Container>
@@ -282,30 +284,38 @@ export const Demo: React.SFC = () => (
       <Row>
         <Col lg={6} xs={12}>
           <KycStatusWidgetComponent
+            step={1}
             onGoToKycHome={() => {}}
             isUserEmailVerified={true}
             isLoading={false}
             requestStatus="Accepted"
+            intl={dummyIntl}
           />
         </Col>
         <Col lg={6} xs={12}>
           <KycStatusWidgetComponent
+            step={1}
             onGoToKycHome={() => {}}
+            intl={dummyIntl}
             isUserEmailVerified={false}
             isLoading={false}
           />
         </Col>
         <Col lg={6} xs={12}>
           <KycStatusWidgetComponent
+            step={1}
             onGoToKycHome={() => {}}
             isUserEmailVerified={true}
+            intl={dummyIntl}
             isLoading={true}
           />
         </Col>
         <Col lg={6} xs={12}>
           <KycStatusWidgetComponent
+            step={1}
             onGoToKycHome={() => {}}
             isUserEmailVerified={true}
+            intl={dummyIntl}
             isLoading={false}
             error="ERROR"
           />

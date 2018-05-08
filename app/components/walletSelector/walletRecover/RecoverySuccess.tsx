@@ -25,11 +25,7 @@ export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> =
 }) => (
   <div>
     <Col className="mt-4 pb-5">
-      <HeaderProgressStepper
-        headerText="Reset your Password"
-        steps={8}
-        currentStep={8}
-      />
+      <HeaderProgressStepper headerText="Reset your Password" steps={8} currentStep={8} />
     </Col>
     <Col className="mt-4 mb-5 mx-auto">
       <h5 className="text-center">

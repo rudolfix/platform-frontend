@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 
 import { FormattedMessage } from "react-intl";
 import { Button } from "../../shared/Buttons";
-import { walletRegisterRoutes } from "../walletRoutes";
+import { loginWalletRoutes } from "../walletRoutes";
 import { recoverRoutes } from "./recoverRoutes";
 
 export const LoginHelp: React.SFC<void> = () => (
@@ -59,13 +59,13 @@ export const LoginHelp: React.SFC<void> = () => (
     </Col>
     <Col md={12}>
       <Row className="ml-2 mt-5 pt-5 mr-2 justify-content-between align-items-center">
-        <Link className="" to={walletRegisterRoutes.light}>
+        <Link className="" to={loginWalletRoutes.light}>
           <i className="fa fa-lg fa-angle-left mr-1" /> BACK
         </Link>
-        <Link className="" to={recoverRoutes.help}>
+        <a href="https://neufund.freshdesk.com/support/home">
           <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />{" "}
           <i className="fa fa-lg fa-angle-right ml-1" />
-        </Link>
+        </a>
       </Row>
     </Col>
   </div>

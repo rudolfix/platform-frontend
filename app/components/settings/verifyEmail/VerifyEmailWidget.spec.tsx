@@ -10,6 +10,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
   it("should render verified section", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
+        step={1}
         isThereUnverifiedEmail={true}
         isUserEmailVerified={true}
         doesEmailExist={true}
@@ -25,6 +26,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
   it("should render unverified section", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
+        step={1}
         isThereUnverifiedEmail={true}
         isUserEmailVerified={false}
         doesEmailExist={true}
@@ -40,6 +42,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
   it("should not render resend link button", () => {
     const MyNeuWidgetComponent = shallow(
       <VerifyEmailWidgetComponent
+        step={1}
         isThereUnverifiedEmail={false}
         isUserEmailVerified={false}
         doesEmailExist={false}
@@ -55,6 +58,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const MyNeuWidgetComponent = render(
       wrapWithIntl(
         <VerifyEmailWidgetComponent
+          step={1}
           isThereUnverifiedEmail={true}
           isUserEmailVerified={false}
           doesEmailExist={true}

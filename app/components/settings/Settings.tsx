@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
-  let i = 0;
+  let settingsStepCounter = 0;
   return (
     <LayoutAuthorized>
       <Row className="row-gutter-top">
@@ -26,17 +26,17 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
           </SectionHeader>
         </Col>
         <Col lg={4} xs={12}>
-          <VerifyEmailWidget step={(i = i + 1)} />
+          <VerifyEmailWidget step={++settingsStepCounter} />
         </Col>
 
         {isLightWallet && (
           <Col lg={4} xs={12}>
-            <BackupSeedWidget step={(i = i + 1)} />
+            <BackupSeedWidget step={++settingsStepCounter} />
           </Col>
         )}
 
         <Col lg={4} xs={12}>
-          <KycStatusWidget step={(i = i + 1)} />
+          <KycStatusWidget step={++settingsStepCounter} />
         </Col>
 
         {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (

@@ -10,7 +10,7 @@ import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 import * as styles from "./KycPanel.module.scss";
 
 interface IPropsKycPanel {
-  title: string;
+  title: string | React.ReactNode;
   backLink?: string;
   isMaxWidth?: boolean;
   description?: string | React.ReactNode;

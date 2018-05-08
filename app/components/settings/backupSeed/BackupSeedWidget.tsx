@@ -1,9 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Col } from "reactstrap";
-
 import { Link } from "react-router-dom";
+import { Col } from "reactstrap";
+import { compose } from "redux";
+
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
@@ -11,7 +12,6 @@ import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 import { settingsRoutes } from "../routes";
 
-import { compose } from "redux";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";

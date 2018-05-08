@@ -13,7 +13,7 @@ interface IPropsKycPanel {
   title: string;
   backLink?: string;
   isMaxWidth?: boolean;
-  description?: string;
+  description?: string | React.ReactNode;
 }
 
 export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({

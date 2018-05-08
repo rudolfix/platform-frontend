@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
@@ -34,7 +34,7 @@ export const KycPersonalInstantIdComponent = injectIntlHelpers<
     steps={3}
     currentStep={3}
     title={formatIntlMessage("kyc.personal.instant-id.title")}
-    description={formatIntlMessage("kyc.personal.instant-id.description")}
+    description={<FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />}
     backLink={kycRoutes.individualStart}
   >
     <img className={styles.image} src={idImage} alt="id now" />
@@ -44,7 +44,10 @@ export const KycPersonalInstantIdComponent = injectIntlHelpers<
       </Button>
     </div>
     <p className="text-center">
-      <FormattedMessage id="kyc.personal.instant-id.manual-verification-description" />
+      <FormattedHTMLMessage
+        tagName="span"
+        id="kyc.personal.instant-id.manual-verification-description"
+      />
     </p>
     <div className="text-center">
       <Button

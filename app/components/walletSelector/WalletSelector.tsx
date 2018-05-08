@@ -86,10 +86,21 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
           <Row className="mt-5">
             <Col xs={12} sm={6}>
               <span>
-                <FormattedMessage id="wallet-selector.help-link" />{" "}
-                <Link to={appRoutes.recover}>
-                  <FormattedMessage id="wallet-selector.help-link.label" />
-                </Link>
+                {isLoginRoute ? (
+                  <>
+                    <FormattedMessage id="wallet-selector.login.help-link" />{" "}
+                    <Link to={appRoutes.recover}>
+                      <FormattedMessage id="wallet-selector.help-link.label" />
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <FormattedMessage id="wallet-selector.register.help-link" />{" "}
+                    <a href="https://neufund.freshdesk.com/support/home">
+                      <FormattedMessage id="wallet-selector.help-link.label" />
+                    </a>
+                  </>
+                )}
               </span>
             </Col>
             <Col xs={12} sm={6}>

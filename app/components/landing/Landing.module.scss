@@ -1,9 +1,82 @@
 @import "../../styles/neufund-theme";
 
 .landing {
+  @include media-breakpoint-down(lg) {
+    background-position: px-to-rem(-255px) 30%;
+  }
+
   width: 100%;
+  min-height: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $blue-green url("../../assets/img/fancy_token_bg.svg") -2.6% 0 no-repeat;
+  background-size: px-to-rem(500px);
+  padding: px-to-rem(46px) 0;
 }
 
 .landing-container {
   padding-bottom: px-to-rem(88px);
+}
+
+.welcome-header {
+  font-weight: $font-weight-bold;
+  color: $neu-pale-blue;
+  text-transform: uppercase;
+  font-size: px-to-rem(16px);
+  text-align: center;
+  margin-bottom: px-to-rem(30px);
+}
+
+.welcome-box {
+  $bg-color: rgba($gray6, .2);
+
+  @include make-col-ready;
+  @include make-col(10, 12);
+
+  background-color: $bg-color;
+  color: $neu-white-two;
+  margin: 0 auto;
+  padding: px-to-rem(40px);
+
+  :global(.button) {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.logo-mobile {
+  width: px-to-rem(126px);
+}
+
+.learn-more {
+  display: inline-block;
+  margin: 0 auto;
+  color: $neu-white-two;
+  text-decoration: underline;
+  text-align: center;
+  margin-top: px-to-rem(20px);
+}
+
+.image {
+  display: block;
+  margin-bottom: px-to-rem(24px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta {
+  color: $neu-white-two;
+  font-size: px-to-rem(30px);
+  margin-bottom: px-to-rem(56px);
+  text-align: center;
+
+  @include media-breakpoint-down(lg) {
+    margin-bottom: px-to-rem(20px);
+  }
+}
+
+.bullets {
+  margin-bottom: px-to-rem(58px);
 }

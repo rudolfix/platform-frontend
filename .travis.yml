@@ -10,6 +10,9 @@ install:
   - yarn --frozen-lockfile
 script:
   - set -e                     # fail fast
+  # shutdown postgres instance ran by travis (WHY ITS EVEN THERE)
+  - sudo service postgresql stop
+  - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
   - yarn test:coverage
   - yarn codecov
 addons:

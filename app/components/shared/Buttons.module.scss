@@ -1,9 +1,10 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
 @import "../../styles/neufund-theme";
 
 $_hover-color: $neu-piss-yellow;
 $_focus-color: $neu-piss-yellow;
 $_active-color: lighten($_hover-color, 20%);
-
 
 :global(.button) {
   all: initial;
@@ -12,7 +13,7 @@ $_active-color: lighten($_hover-color, 20%);
   text-decoration: none;
 
   &:focus,
-  .content:focus { // sass-lint:disable-line force-pseudo-nesting
+  .content:focus {
     outline: none;
   }
 
@@ -21,7 +22,6 @@ $_active-color: lighten($_hover-color, 20%);
       box-shadow: 0 0 px-to-rem(3px) px-to-rem(6px) $_focus-color;
     }
   }
-
 
   .content {
     align-items: center;
@@ -49,7 +49,6 @@ $_active-color: lighten($_hover-color, 20%);
     }
   }
 
-
   // types
   &:global(.primary) {
     @include font-button-default;
@@ -76,7 +75,6 @@ $_active-color: lighten($_hover-color, 20%);
       }
     }
   }
-
 
   &:global(.secondary) {
     @include font-tab;
@@ -112,7 +110,6 @@ $_active-color: lighten($_hover-color, 20%);
         margin-right: px-to-rem(10px);
       }
     }
-
 
     &.icon-after {
       :global(.inline-icon) {

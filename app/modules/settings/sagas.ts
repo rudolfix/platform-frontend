@@ -13,7 +13,7 @@ import { WalletType } from "../web3/types";
 import { actions } from "./../actions";
 
 export function* addNewEmail(
-  { notificationCenter }: TGlobalDependencies,
+  { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;

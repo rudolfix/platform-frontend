@@ -68,15 +68,17 @@ export function* getWalletMetadata(
   return undefined;
 }
 
-export function* lightWalletBackupWatch(): Iterator<any> {
+export function* lightWalletBackupWatch({
+  intlWrapper: { intl: { formatIntlMessage } },
+}: TGlobalDependencies): Iterator<any> {
   try {
     //TODO: Add translations
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield neuCall(
       displayInfoModalSaga,
-      "Backup Recovery Phrase",
-      "You have successfully backed up your Neufund Wallet",
+      formatIntlMessage("modules.wallet-selector.light-wizard.sagas.backup-recovery"),
+      formatIntlMessage("modules.wallet-selector.light-wizard.sagas.successfully.backed-up"),
     );
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {

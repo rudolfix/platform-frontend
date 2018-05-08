@@ -1,117 +1,64 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Container, Row } from "reactstrap";
 
-import { appRoutes } from "../AppRouter";
-import { InvestmentPreview } from "../shared/InvestmentPreview";
-import { SectionHeader } from "../shared/SectionHeader";
-import { RegisterCta } from "./shared/RegisterCta";
+import { Button } from "../shared/Buttons";
+import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
-import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
+import * as logoMobile from "../../assets/img/logo-square-white.svg";
+import * as logo from "../../assets/img/logo_capitalized.svg";
 import * as styles from "./Landing.module.scss";
 
-export const Landing = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
-  return (
-    <div className={styles.landing}>
-      <RegisterCta
-        text={formatIntlMessage("investors-landing.register.cta")}
-        ctaText={formatIntlMessage("investors-landing.register.buttonText")}
-        ctaLink={appRoutes.register}
-      />
-      <div className={styles.landingContainer}>
-        <Container>
-          <SectionHeader className="my-4">
-            <FormattedMessage id="investors-landing.header" />
-          </SectionHeader>
-          <Row>
-            <Col>
-              <InvestmentPreview
-                className="mb-3"
-                linkToDetails="#0"
-                moneyGoal={"400€"}
-                currentValuation={"4000€"}
-                tokenPrice={"2€"}
-                neuInvestorsNum={500}
-                startingOn="22.12.2019"
-                handleEmailSend={() => {}}
-                endInDays={25}
-                company={"Superawesome startup 2"}
-                hasStarted={true}
-                detailsLink="#0"
-                preFoundingStatus={{
-                  money: "€ 50M",
-                  investorsNum: 5,
-                  leadInvestors: ["abc", "zxc"],
-                }}
-                tags={[
-                  {
-                    text: "tag 1",
-                    to: "#0",
-                  },
-                  {
-                    text: "tag 2",
-                  },
-                ]}
+export const Landing: React.SFC = () => (
+  <div className={styles.landing}>
+    <Container>
+      <Row>
+        <Col>
+          <img className={cn(styles.image, "d-none", "d-lg-block")} src={logo} alt="Neufund logo" />
+          <img
+            className={cn(styles.image, styles.logoMobile, "d-lg-none")}
+            src={logoMobile}
+            alt="Neufund logo"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col className={styles.cta}>
+          <FormattedMessage id="landing.welcome-box.cta" />
+        </Col>
+      </Row>
+      <Row>
+        <div className={styles.welcomeBox}>
+          <h2 className={styles.welcomeHeader}>
+            <FormattedMessage id="landing.welcome-box.header" />
+          </h2>
+          <Row className={styles.bullets}>
+            <Col xs={12} lg={6}>
+              <BulletPointWithDescription
+                header={<FormattedMessage id="landing.welcome-box.bullet.one.header" />}
+                description={<FormattedMessage id="landing.welcome-box.bullet.one.description" />}
+                index={1}
               />
-              <InvestmentPreview
-                className="mb-3"
-                linkToDetails="#0"
-                moneyGoal={"400€"}
-                currentValuation={"4000€"}
-                tokenPrice={"2€"}
-                neuInvestorsNum={500}
-                startingOn="22.12.2019"
-                handleEmailSend={() => {}}
-                endInDays={25}
-                company={"Superawesome startup 2"}
-                hasStarted={true}
-                detailsLink="#0"
-                preFoundingStatus={{
-                  money: "€ 50M",
-                  investorsNum: 5,
-                  leadInvestors: ["abc", "zxc"],
-                }}
-                tags={[
-                  {
-                    text: "tag 1",
-                    to: "#0",
-                  },
-                  {
-                    text: "tag 2",
-                  },
-                ]}
-              />
-              <InvestmentPreview
-                linkToDetails="#0"
-                moneyGoal={"400€"}
-                currentValuation={"4000€"}
-                tokenPrice={"2€"}
-                neuInvestorsNum={500}
-                startingOn="22.12.2019"
-                handleEmailSend={() => {}}
-                endInDays={25}
-                company={"Superawesome startup 2"}
-                hasStarted={true}
-                detailsLink="#0"
-                preFoundingStatus={{
-                  money: "€ 50M",
-                  investorsNum: 5,
-                  leadInvestors: ["abc", "zxc"],
-                }}
-                tags={[
-                  {
-                    text: "tag 1",
-                    to: "#0",
-                  },
-                  {
-                    text: "tag 2",
-                  },
-                ]}
+            </Col>
+            <Col xs={12} lg={6} className="mt-4 mt-lg-0">
+              <BulletPointWithDescription
+                header={<FormattedMessage id="landing.welcome-box.bullet.two.header" />}
+                description={<FormattedMessage id="landing.welcome-box.bullet.two.description" />}
+                index={2}
               />
             </Col>
           </Row>
-        </Container>
-      </div>
-    </div>
-  );
-});
+          <Button theme="t-white">
+            <FormattedMessage id="landing.welcome-box.register-now" />
+          </Button>
+        </div>
+      </Row>
+      <Row className="d-flex">
+        <a className={styles.learnMore} href="https://neufund.org/investing" target="_blank">
+          <FormattedMessage id="landing.learn-more" />
+        </a>
+      </Row>
+    </Container>
+  </div>
+);

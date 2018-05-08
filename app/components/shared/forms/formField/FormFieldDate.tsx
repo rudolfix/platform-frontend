@@ -3,8 +3,8 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
-import * as errorStyles from "./FormError.module.scss";
 import * as styles from "./FormFieldDate.module.scss";
+import * as errorStyles from "./FormStyles.module.scss";
 
 interface IProps {
   label: string;

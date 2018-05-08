@@ -61,62 +61,69 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps & FormikProps<IKycIndividualData>;
 
 const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
-  ({ intl: { formatIntlMessage }, ...props }) => (
-    <Form>
-      <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
-      <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
-      <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
-      <FormattedHTMLMessage tagName="span" id="kyc.personal.current.address" />
-      <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
-      <Row>
-        <Col xs={12} md={6} lg={8}>
-          <FormField label={formatIntlMessage("form.label.city")} name="city" />
-        </Col>
-        <Col xs={12} md={6} lg={4}>
-          <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
-        </Col>
-      </Row>
-      <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
-      <br />
-      <FormSelectField
-        values={PEP_VALUES}
-        label={
-          <>
-            <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
-            <Tooltip
-              className="ml-2"
-              text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
-            />
-          </>
-        }
-        name="isPoliticallyExposed"
-      />
-      <FormSelectField
-        values={US_CITIZEN_VALUES}
-        label={
-          <>
-            <FormattedMessage id={"kyc.personal.us-citizen.question"} />
-            <Tooltip
-              className="ml-2"
-              text={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
-            />
-          </>
-        }
-        name="isUsCitizen"
-      />
-      <FormSelectField
-        values={HIGH_INCOME_VALUES}
-        label={formatIntlMessage("kyc.personal.high-income")}
-        name="isHighIncome"
-      />
-      <FormattedMessage id={"kyc.personal.income.disclaimer"} />
-      <div className="p-4 text-center">
-        <Button type="submit" disabled={!props.isValid || props.loadingData}>
-          <FormattedMessage id={"form.save-and-submit"} />
-        </Button>
-      </div>
-    </Form>
-  ),
+  ({ intl: { formatIntlMessage }, ...props }) => {
+    return (
+      <Form>
+        <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
+        <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
+        <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
+        <FormattedHTMLMessage tagName="span" id="kyc.personal.current.address" />
+        <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
+        <Row>
+          <Col xs={12} md={6} lg={8}>
+            <FormField label={formatIntlMessage("form.label.city")} name="city" />
+          </Col>
+          <Col xs={12} md={6} lg={4}>
+            <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
+          </Col>
+        </Row>
+        <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
+        <br />
+        <FormSelectField
+          values={PEP_VALUES}
+          label={
+            <>
+              <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
+              <Tooltip
+                className="ml-2"
+                text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+              />
+            </>
+          }
+          name="isPoliticallyExposed"
+          extraMessage={
+            props.values.isPoliticallyExposed === ("true" as any) && (
+              <FormattedMessage id={"kyc.personal.politically-exposed.disclaimer"} />
+            )
+          }
+        />
+        <FormSelectField
+          values={US_CITIZEN_VALUES}
+          label={
+            <>
+              <FormattedMessage id={"kyc.personal.us-citizen.question"} />
+              <Tooltip
+                className="ml-2"
+                text={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
+              />
+            </>
+          }
+          name="isUsCitizen"
+        />
+        <FormSelectField
+          values={HIGH_INCOME_VALUES}
+          label={formatIntlMessage("kyc.personal.high-income")}
+          name="isHighIncome"
+          extraMessage={<FormattedMessage id={"kyc.personal.income.disclaimer"} />}
+        />
+        <div className="p-4 text-center">
+          <Button type="submit" disabled={!props.isValid || props.loadingData}>
+            <FormattedMessage id={"form.save-and-submit"} />
+          </Button>
+        </div>
+      </Form>
+    );
+  },
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({

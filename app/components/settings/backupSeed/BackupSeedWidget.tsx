@@ -1,9 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Col } from "reactstrap";
-
 import { Link } from "react-router-dom";
+import { Col } from "reactstrap";
+import { compose } from "redux";
+
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
@@ -20,15 +21,17 @@ interface IStateProps {
   backupCodesVerified?: boolean;
 }
 
+interface IOwnProps {
+  step: number;
+}
 interface IDispatchProps {}
 
-export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps & IIntlProps> = ({
-  intl: { formatIntlMessage },
-  backupCodesVerified,
-}) => {
+export const BackupSeedWidgetComponent: React.SFC<
+  IStateProps & IDispatchProps & IIntlProps & IOwnProps
+> = ({ intl: { formatIntlMessage }, backupCodesVerified, step }) => {
   return (
     <PanelDark
-      headerText={formatIntlMessage("settings.backup-seed-widget.header")}
+      headerText={formatIntlMessage("settings.backup-seed-widget.header", { step })}
       rightComponent={
         backupCodesVerified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
@@ -74,12 +77,14 @@ export const BackupSeedWidgetComponent: React.SFC<IStateProps & IDispatchProps &
   );
 };
 
-export const BackupSeedWidgetComponentWithIntl = injectIntlHelpers<IStateProps & IDispatchProps>(
-  BackupSeedWidgetComponent,
-);
+export const BackupSeedWidgetComponentWithIntl = injectIntlHelpers<
+  IStateProps & IDispatchProps & IOwnProps
+>(BackupSeedWidgetComponent);
 
-export const BackupSeedWidget = appConnect<IStateProps & IDispatchProps, {}>({
-  stateToProps: s => ({
-    backupCodesVerified: selectBackupCodesVerified(s.auth),
+export const BackupSeedWidget = compose<React.SFC<IOwnProps>>(
+  appConnect<IStateProps & IDispatchProps, IOwnProps>({
+    stateToProps: s => ({
+      backupCodesVerified: selectBackupCodesVerified(s.auth),
+    }),
   }),
-})(BackupSeedWidgetComponentWithIntl);
+)(BackupSeedWidgetComponentWithIntl);

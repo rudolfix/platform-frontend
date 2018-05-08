@@ -8,6 +8,8 @@ import { TAction } from "../actions";
 import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { selectWalletType } from "../web3/selectors";
+import { WalletType } from "../web3/types";
 import { actions } from "./../actions";
 
 export function* addNewEmail(
@@ -18,14 +20,33 @@ export function* addNewEmail(
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
+  const walletType = yield select((s: IAppState) => selectWalletType(s.web3));
+
+  let addEmailMessage;
+
   //TODO: Add translations
   try {
+    switch (walletType) {
+      case WalletType.BROWSER:
+        addEmailMessage = "Please confirm on Metamask if the email address is correct";
+        break;
+      case WalletType.LEDGER:
+        addEmailMessage = "Please confirm on your ledger if the email address is correct";
+        break;
+      case WalletType.LIGHT:
+        addEmailMessage =
+          "Please confirm through your light wallet if the email address is correct.";
+        break;
+      default:
+        throw new Error("Wrong wallet type");
+    }
+
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Change email",
-      "Confirm changing your email.",
+      "Add email",
+      addEmailMessage,
     );
 
     yield effects.call(updateUser, { ...user, new_email: email });

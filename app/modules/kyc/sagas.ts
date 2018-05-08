@@ -48,7 +48,6 @@ function* submitIndividualData(
     );
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
     yield put(actions.routing.goToKYCIndividualInstantId());
-    notificationCenter.info("Your data was saved successfully.");
   } catch {
     notificationCenter.error("There was a problem sending your data. Please try again.");
   }
@@ -171,7 +170,6 @@ function* submitLegalRepresentative(
       IKycLegalRepresentative
     > = yield apiKycService.putLegalRepresentative(action.payload.data);
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
-    notificationCenter.info("Your data was saved successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
     notificationCenter.error("There was a problem sending your data. Please try again.");
@@ -258,7 +256,6 @@ function* submitBusinessData(
       action.payload.data,
     );
     yield put(actions.kyc.kycUpdateBusinessData(false, result.body));
-    notificationCenter.info("Your data was saved successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateBusinessData(false));
     notificationCenter.error("There was a problem sending your data. Please try again.");
@@ -337,7 +334,6 @@ function* submitBeneficialOwner(
       action.payload.owner,
     );
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
-    notificationCenter.info("Your data was saved successfully.");
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
     notificationCenter.error("There was a problem saving your changes. Please try again.");

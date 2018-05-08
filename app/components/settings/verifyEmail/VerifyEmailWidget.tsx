@@ -32,6 +32,9 @@ interface IStateProps {
   isLocked?: boolean;
 }
 
+interface IOwnProps {
+  step: number;
+}
 interface IEnhancedFormProps {
   handleSubmit: (values: IFormValues) => void;
   isLocked?: boolean;
@@ -135,7 +138,9 @@ const UnVerifiedUser: React.SFC<{
     )}
   </div>
 );
-export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps & IIntlProps> = ({
+export const VerifyEmailWidgetComponent: React.SFC<
+  IStateProps & IDispatchProps & IOwnProps & IIntlProps
+> = ({
   intl: { formatIntlMessage },
   isUserEmailVerified,
   isThereUnverifiedEmail,
@@ -144,10 +149,11 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
   resendEmail,
   addNewEmail,
   isLocked,
+  step,
 }) => {
   return (
     <PanelDark
-      headerText={formatIntlMessage("settings.verify-email-widget.header")}
+      headerText={formatIntlMessage("settings.verify-email-widget.header", { step })}
       rightComponent={
         isUserEmailVerified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
@@ -172,8 +178,8 @@ export const VerifyEmailWidgetComponent: React.SFC<IStateProps & IDispatchProps 
   );
 };
 
-export const VerifyEmailWidget = compose<React.SFC>(
-  appConnect<IStateProps, IDispatchProps, {}>({
+export const VerifyEmailWidget = compose<React.SFC<IOwnProps>>(
+  appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: s => ({
       isUserEmailVerified: selectIsUserEmailVerified(s.auth),
       isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),

@@ -31,7 +31,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   reopenRequest: () => void;
-  goToSettings: () => void;
+  goToWallet: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -43,9 +43,9 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
         layout="secondary"
         iconPosition="icon-before"
         svgIcon={arrowLeft}
-        onClick={props.goToSettings}
+        onClick={props.goToWallet}
       >
-        <FormattedMessage id="kyc.request-state.go-to-settings" />
+        <FormattedMessage id="kyc.request-state.go-to-wallet" />
       </Button>
     </div>
   );
@@ -144,7 +144,7 @@ export const Kyc = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},
-      goToSettings: () => dispatch(actions.routing.goToSettings()),
+      goToWallet: () => dispatch(actions.routing.goToWallet()),
     }),
     options: { pure: false },
   }),

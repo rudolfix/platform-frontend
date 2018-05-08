@@ -10,8 +10,9 @@ import { VerifyEmailWidgetComponent } from "./VerifyEmailWidget";
 
 describe("<VerifyEmailWidgetComponent />", () => {
   it("should render verified section", () => {
-    const MyNeuWidgetComponent = shallow(
+    const verifyEmailWidget = shallow(
       <VerifyEmailWidgetComponent
+        step={1}
         isThereUnverifiedEmail={true}
         isUserEmailVerified={true}
         doesEmailExist={true}
@@ -20,13 +21,14 @@ describe("<VerifyEmailWidgetComponent />", () => {
         intl={dummyIntl}
       />,
     );
-    expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(0);
-    expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(1);
+    expect(verifyEmailWidget.find(tid("unverified-section"))).to.have.length(0);
+    expect(verifyEmailWidget.find(tid("verified-section"))).to.have.length(1);
   });
 
   it("should render unverified section", () => {
-    const MyNeuWidgetComponent = shallow(
+    const verifyEmailWidget = shallow(
       <VerifyEmailWidgetComponent
+        step={1}
         isThereUnverifiedEmail={true}
         isUserEmailVerified={false}
         doesEmailExist={true}
@@ -35,14 +37,30 @@ describe("<VerifyEmailWidgetComponent />", () => {
         intl={dummyIntl}
       />,
     );
-    expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(1);
-    expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(0);
+    expect(verifyEmailWidget.find(tid("unverified-section"))).to.have.length(1);
+    expect(verifyEmailWidget.find(tid("verified-section"))).to.have.length(0);
+  });
+
+  it("should not render resend link button", () => {
+    const verifyEmailWidget = shallow(
+      <VerifyEmailWidgetComponent
+        step={1}
+        isThereUnverifiedEmail={false}
+        isUserEmailVerified={false}
+        doesEmailExist={false}
+        resendEmail={() => {}}
+        addNewEmail={() => {}}
+        intl={dummyIntl}
+      />,
+    );
+    expect(verifyEmailWidget.find(tid("resend-link"))).to.have.length(0);
   });
 
   it("should render resend link button", () => {
-    const MyNeuWidgetComponent = render(
+    const verifyEmailWidget = render(
       wrapWithIntl(
         <VerifyEmailWidgetComponent
+          step={1}
           isThereUnverifiedEmail={true}
           isUserEmailVerified={false}
           doesEmailExist={true}
@@ -52,14 +70,15 @@ describe("<VerifyEmailWidgetComponent />", () => {
         />,
       ),
     );
-    expect(MyNeuWidgetComponent.find(tid("resend-link"))).to.have.length(1);
+    expect(verifyEmailWidget.find(tid("resend-link"))).to.have.length(1);
   });
 
   describe("email form", () => {
     it("initially submit button should be disabled", () => {
-      const VerifyEmailWidget = createMount(
+      const verifyEmailWidget = createMount(
         wrapWithIntl(
           <VerifyEmailWidgetComponent
+            step={1}
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
             doesEmailExist={false}
@@ -71,7 +90,8 @@ describe("<VerifyEmailWidgetComponent />", () => {
       );
 
       expect(
-        VerifyEmailWidget.find(tid("verify-email-widget-form-submit"))
+        verifyEmailWidget
+          .find(tid("verify-email-widget-form-submit"))
           .first()
           .prop("disabled"),
       ).to.be.true;
@@ -82,6 +102,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
       const verifyEmailWidget = createMount(
         wrapWithIntl(
           <VerifyEmailWidgetComponent
+            step={1}
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
             doesEmailExist={false}
@@ -120,6 +141,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
       const verifyEmailWidget = createMount(
         wrapWithIntl(
           <VerifyEmailWidgetComponent
+            step={1}
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
             doesEmailExist={false}

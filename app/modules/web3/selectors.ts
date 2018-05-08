@@ -34,6 +34,11 @@ export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
     state.previousConnectedWallet.vault
   );
 
+export const selectWalletType = (state: IWeb3State): WalletType | undefined =>
+  state.connected
+    ? state.wallet.walletType
+    : state.previousConnectedWallet && state.previousConnectedWallet.walletType;
+
 /**
  * Works both when wallet is connected or not.
  */

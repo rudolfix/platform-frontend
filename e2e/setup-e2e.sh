@@ -22,7 +22,6 @@ run_backend() {
     echo "Running backend"
     cd ./platform-backend
 
-    git pull 2> /dev/null
     make run
 
     cd ..

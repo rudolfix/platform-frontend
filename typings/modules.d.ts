@@ -12,3 +12,5 @@ declare module "eth-lightwallet";
 declare module "bitcore-mnemonic";
 declare module "eth-sig-util";
 declare module "tweetnacl";
+
+declare module "@storybook/addon-actions";

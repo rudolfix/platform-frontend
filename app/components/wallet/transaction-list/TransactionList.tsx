@@ -3,7 +3,7 @@ import { Col, Row } from "reactstrap";
 import { Button } from "../../shared/Buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { Money, MoneyTransfer } from "../../shared/Money";
+import { Money, TMoneyTransfer } from "../../shared/Money";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
 import { TableHeader } from "../../shared/table/TableHeader";
@@ -24,7 +24,7 @@ export interface ITransaction {
   type: TransactionType;
   amount: string;
   fromTo: string;
-  transfer: MoneyTransfer;
+  transfer: TMoneyTransfer;
   id: any;
 }
 

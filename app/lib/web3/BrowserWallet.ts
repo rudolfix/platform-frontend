@@ -44,7 +44,6 @@ export class BrowserWallet implements IPersonalWallet {
     return !!await this.web3Adapter.getAccountAddress();
   }
 
-  //TODO: we should recognize sign msg rejection and return SignerRejectConfirmationError in that case
   public async signMessage(data: string): Promise<string> {
     if (this.walletSubType === WalletSubType.METAMASK) {
       const typedDataDecoded = JSON.parse(hex2ascii(data));

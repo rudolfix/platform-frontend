@@ -21,6 +21,7 @@ import { PanelDark } from "../../shared/PanelDark";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { WarningAlert } from "../../shared/WarningAlert";
 import * as styles from "./KycStatusWidget.module.scss";
@@ -32,11 +33,15 @@ interface IStateProps {
   error?: string;
 }
 
+interface IOwnProps {
+  step: number;
+}
+
 interface IDispatchProps {
   onGoToKycHome: () => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & IOwnProps & IIntlProps;
 
 const statusTextMap: UnionDictionary<TRequestStatus, React.ReactNode> = {
   Accepted: <FormattedMessage id="settings.kyc-status-widget.status.accepted" />,
@@ -62,16 +67,18 @@ const getStatus = (
 };
 
 export const KycStatusWidgetComponent: React.SFC<IProps> = ({
+  intl: { formatIntlMessage },
   requestStatus,
   isUserEmailVerified,
   onGoToKycHome,
   isLoading,
   error,
+  step,
 }) => {
   return (
     //TODO: ADD translations
     <PanelDark
-      headerText="VERIFY YOUR IDENTITY"
+      headerText={formatIntlMessage("settings.kyc-widget.header", { step })}
       rightComponent={
         !isLoading &&
         (requestStatus === "Accepted" ? (
@@ -126,8 +133,8 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
   );
 };
 
-export const KycStatusWidget = compose<React.ComponentClass>(
-  appConnect<IStateProps, IDispatchProps>({
+export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
+  appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: s => ({
       isUserEmailVerified: selectIsUserEmailVerified(s.auth),
       requestStatus: selectKycRequestStatus(s.kyc),
@@ -144,4 +151,5 @@ export const KycStatusWidget = compose<React.ComponentClass>(
       dispatch(actions.kyc.kycLoadBusinessRequest());
     },
   }),
+  injectIntlHelpers,
 )(KycStatusWidgetComponent);

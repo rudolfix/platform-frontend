@@ -1,12 +1,10 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
@@ -27,14 +25,14 @@ interface IProps {
   layout: TKycRequestType;
 }
 
-export const KycPersonalInstantIdComponent = injectIntlHelpers<
-  IProps & IStateProps & IDispatchProps
->(({ intl: { formatIntlMessage }, ...props }) => (
+export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDispatchProps> = ({
+  ...props
+}) => (
   <KycPanel
     steps={3}
     currentStep={3}
-    title={formatIntlMessage("kyc.personal.instant-id.title")}
-    description={formatIntlMessage("kyc.personal.instant-id.description")}
+    title={<FormattedMessage id="kyc.personal.instant-id.title" />}
+    description={<FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />}
     backLink={kycRoutes.individualStart}
   >
     <img className={styles.image} src={idImage} alt="id now" />
@@ -44,7 +42,10 @@ export const KycPersonalInstantIdComponent = injectIntlHelpers<
       </Button>
     </div>
     <p className="text-center">
-      <FormattedMessage id="kyc.personal.instant-id.manual-verification-description" />
+      <FormattedHTMLMessage
+        tagName="span"
+        id="kyc.personal.instant-id.manual-verification-description"
+      />
     </p>
     <div className="text-center">
       <Button
@@ -57,7 +58,7 @@ export const KycPersonalInstantIdComponent = injectIntlHelpers<
       </Button>
     </div>
   </KycPanel>
-));
+);
 
 export const KycPersonalInstantId = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

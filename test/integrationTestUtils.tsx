@@ -34,6 +34,7 @@ import { createSpyMiddleware } from "./reduxSpyMiddleware";
 import { createMock, tid } from "./testUtils";
 import { delay } from "bluebird";
 import { globalFakeClock } from "./setupTestsHooks";
+import { WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL } from "../app/lib/web3/Web3Manager";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 
@@ -146,18 +147,22 @@ export async function waitForPredicate(predicate: () => boolean, errorMsg: strin
 export async function waitUntilDoesntThrow(fn: () => any, errorMsg: string): Promise<void> {
   // wait until event queue is empty :/ currently we don't have a better way to solve it
   let waitTime = 20;
+  let lastError: any;
   while (--waitTime > 0) {
     try {
       fn();
       break;
-    } catch {
+    } catch (e) {
       delay(1);
       await globalFakeClock.tickAsync(1);
+      lastError = e;
     }
   }
 
   if (waitTime === 0) {
-    throw new Error(`Timeout while waiting for '${errorMsg}'`);
+    throw new Error(
+      `Timeout while waiting for '${errorMsg}'. Original error: ${lastError && lastError.message}`,
+    );
   }
 }
 

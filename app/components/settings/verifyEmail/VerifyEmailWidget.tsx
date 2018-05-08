@@ -51,15 +51,30 @@ interface INoEMailUser {
   isLocked?: boolean;
 }
 
+/**
+ * Workaround for: https://github.com/jaredpalmer/formik/issues/621
+ */
+function isValid(props: FormikProps<IFormValues>): boolean {
+  const noErrors = Object.keys(props.errors).length === 0;
+  const notEmpty = !!props.values.email;
+
+  return noErrors && notEmpty;
+}
+
 const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormValues>>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
       <FormField
         placeholder={formatIntlMessage("settings.verify-email-widget.email-placeholder")}
         name="email"
+        data-test-id="verify-email-widget-form-email-input"
       />
       <div className="text-center">
-        <Button type="submit" disabled={!props.isValid || props.isLocked}>
+        <Button
+          type="submit"
+          disabled={!isValid(props) || props.isLocked}
+          data-test-id="verify-email-widget-form-submit"
+        >
           <FormattedMessage id="form.button.submit" />
         </Button>
       </div>
@@ -75,7 +90,6 @@ const EmailFormSchema = Yup.object().shape({
 
 const SetEmailEnhancedForm = withFormik<IEnhancedFormProps, IFormValues>({
   validationSchema: EmailFormSchema,
-  isInitialValid: () => EmailFormSchema.isValidSync(false),
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
@@ -87,6 +101,7 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked }) => (
     <SetEmailEnhancedForm handleSubmit={addNewEmail} isLocked={isLocked} />
   </div>
 );
+
 const VerifiedUser: React.SFC<{ email?: string }> = ({ email }) => (
   <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
     <p className={cn(styles.text, "pt-2")}>

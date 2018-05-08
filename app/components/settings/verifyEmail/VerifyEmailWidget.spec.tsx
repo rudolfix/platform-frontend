@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { render, shallow } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 import { createMount } from "../../../../test/createMount";
 import { waitUntilDoesntThrow, wrapWithIntl } from "../../../../test/integrationTestUtils";
 import { tid } from "../../../../test/testUtils";
@@ -77,20 +78,22 @@ describe("<VerifyEmailWidgetComponent />", () => {
     });
 
     it("should be possible to submit with valid email", async () => {
-      const VerifyEmailWidget = createMount(
+      const addNewEmailSpy = spy();
+      const verifyEmailWidget = createMount(
         wrapWithIntl(
           <VerifyEmailWidgetComponent
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
             doesEmailExist={false}
             resendEmail={() => {}}
-            addNewEmail={() => {}}
+            addNewEmail={addNewEmailSpy}
             intl={dummyIntl}
           />,
         ),
       );
 
-      VerifyEmailWidget.find(tid("verify-email-widget-form-email-input"))
+      verifyEmailWidget
+        .find(tid("verify-email-widget-form-email-input"))
         .last()
         .simulate("change", {
           target: {
@@ -100,14 +103,21 @@ describe("<VerifyEmailWidgetComponent />", () => {
         });
 
       expect(
-        VerifyEmailWidget.find(tid("verify-email-widget-form-submit"))
+        verifyEmailWidget
+          .find(tid("verify-email-widget-form-submit"))
           .first()
           .prop("disabled"),
       ).to.be.false;
+
+      verifyEmailWidget.find("form").simulate("submit");
+
+      await waitUntilDoesntThrow(() => {
+        expect(addNewEmailSpy).to.be.calledOnce;
+      }, "Form callback should be called");
     });
 
     it("should not be possible to submit with invalid email", async () => {
-      const VerifyEmailWidget = createMount(
+      const verifyEmailWidget = createMount(
         wrapWithIntl(
           <VerifyEmailWidgetComponent
             isThereUnverifiedEmail={false}
@@ -120,7 +130,8 @@ describe("<VerifyEmailWidgetComponent />", () => {
         ),
       );
 
-      VerifyEmailWidget.find(tid("verify-email-widget-form-email-input"))
+      verifyEmailWidget
+        .find(tid("verify-email-widget-form-email-input"))
         .last()
         .simulate("change", {
           target: {
@@ -130,9 +141,10 @@ describe("<VerifyEmailWidgetComponent />", () => {
         });
 
       await waitUntilDoesntThrow(() => {
-        VerifyEmailWidget.update();
+        verifyEmailWidget.update();
         expect(
-          VerifyEmailWidget.find(tid("verify-email-widget-form-submit"))
+          verifyEmailWidget
+            .find(tid("verify-email-widget-form-submit"))
             .first()
             .prop("disabled"),
         ).to.be.true;

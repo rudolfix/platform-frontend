@@ -6,6 +6,8 @@ import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { PanelWhite } from "../../shared/PanelWhite";
 
+import * as stylesCommon from "../EtoOverviewCommon.module.scss";
+
 interface IProps {
   tokenCreatedBeforeIco: number;
   tokenCreatedDuringIco: number;
@@ -20,19 +22,19 @@ export const EtoTokenIssuance: React.SFC<IProps> = ({
   tokenCreatedDuringIco,
 }) => (
   <PanelWhite>
-    <Container>
+    <div className={stylesCommon.container}>
       <Row>
         <Col>
           <div>
-            <h4>
+            <strong className={stylesCommon.label}>
               <FormattedMessage id="eto.overview.token-issuance.number-of-created-token.during-ico" />
-            </h4>
+            </strong>
             {tokenCreatedDuringIco}
           </div>
           <div>
-            <h4>
+            <strong className={stylesCommon.label}>
               <FormattedMessage id="eto.overview.token-issuance.number-of-created-token.before-ico" />
-            </h4>
+            </strong>
             {tokenCreatedBeforeIco}
           </div>
           <HorizontalLine className="my-3" />
@@ -40,24 +42,28 @@ export const EtoTokenIssuance: React.SFC<IProps> = ({
       </Row>
       <Row>
         <Col xs={12} md={6}>
-          <h3>
-            <FormattedMessage id="eto.overview.token-issuance.chart-token-raised-over-time" />
-          </h3>
-          <small>
-            <FormattedMessage id="eto.overview.token-issuance.number-of-investors" />
-          </small>
-          <ChartBars data={chartDataTokensOverTime} />
+          <div className={stylesCommon.chartNarrow}>
+            <h3 className={stylesCommon.header}>
+              <FormattedMessage id="eto.overview.token-issuance.chart-token-raised-over-time" />
+            </h3>
+            <small>
+              <FormattedMessage id="eto.overview.token-issuance.number-of-investors" />
+            </small>
+            <ChartBars data={chartDataTokensOverTime} />
+          </div>
         </Col>
         <Col xs={12} md={6}>
-          <h3>
-            <FormattedMessage id="eto.overview.token-issuance.chart-transactions-over-time" />
-          </h3>
-          <small>
-            <FormattedMessage id="eto.overview.token-issuance.number-of-investors" />
-          </small>
-          <ChartBars data={chartDataTransactionsOverTime} />
+          <div className={stylesCommon.chartNarrow}>
+            <h3 className={stylesCommon.header}>
+              <FormattedMessage id="eto.overview.token-issuance.chart-transactions-over-time" />
+            </h3>
+            <small>
+              <FormattedMessage id="eto.overview.token-issuance.number-of-investors" />
+            </small>
+            <ChartBars data={chartDataTransactionsOverTime} />
+          </div>
         </Col>
       </Row>
-    </Container>
+    </div>
   </PanelWhite>
 );

@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { FormattedMessage } from "react-intl";
@@ -8,6 +9,9 @@ import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
 import { TableHeader } from "../../shared/table/TableHeader";
 import { TableRow } from "../../shared/table/TableRow";
+
+import { HorizontalLine } from "../../shared/HorizontalLine";
+import * as stylesCommon from "../EtoOverviewCommon.module.scss";
 
 interface IInvestor {
   name: string;
@@ -32,19 +36,24 @@ export const EtoFundsDistribution: React.SFC<IProps> = ({
   numberOfTransactions,
 }) => (
   <PanelWhite>
-    <Container>
+    <div className={stylesCommon.container}>
       <Row>
-        <Col xs={12} md={6}>
-          <div>
-            <div>
+        <Col>
+            <strong className={stylesCommon.label}>
               <FormattedMessage id="eto.overview.funds-distribution.number-of-investors" />
+            </strong>
               {numberOfInvestors}
-            </div>
             <div>
-              <FormattedMessage id="eto.overview.funds-distribution.number-of-investors" />
+              <strong className={stylesCommon.label}>
+                <FormattedMessage id="eto.overview.funds-distribution.number-of-transactions" />
+              </strong>
               {numberOfTransactions}
             </div>
-          </div>
+        </Col>
+      </Row>
+      <HorizontalLine className="my-3" />
+      <Row>
+        <Col xs={12} md={6}>
           <TableBody>
             <TableHeader>
               <Container>
@@ -80,8 +89,8 @@ export const EtoFundsDistribution: React.SFC<IProps> = ({
           </TableBody>
         </Col>
         <Col xs={12} md={6}>
-          <div>
-            <h3>
+          <div className={cn(stylesCommon.chartNarrow, "mb-3")}>
+            <h3 className={stylesCommon.header}>
               <FormattedMessage id="eto.overview.token-distribution.table.number-of-investors-header" />
             </h3>
             <strong className="mb-2">
@@ -91,8 +100,8 @@ export const EtoFundsDistribution: React.SFC<IProps> = ({
             </strong>
             <ChartBars data={chartDataNumberOfInvestors} />
           </div>
-          <div>
-            <h3>
+          <div className={stylesCommon.chartNarrow}>
+            <h3 className={stylesCommon.header}>
               <FormattedMessage id="eto.overview.token-distribution.table.number-of-investors-header" />
             </h3>
             <strong className="mb-2">
@@ -104,6 +113,6 @@ export const EtoFundsDistribution: React.SFC<IProps> = ({
           </div>
         </Col>
       </Row>
-    </Container>
+    </div>
   </PanelWhite>
 );

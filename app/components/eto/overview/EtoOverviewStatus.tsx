@@ -5,48 +5,54 @@ import { Col, Container, Row } from "reactstrap";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { PanelWhite } from "../../shared/PanelWhite";
 
+import * as stylesCommon from "../EtoOverviewCommon.module.scss";
+import * as styles from "./EtoOverviewStatus.module.scss";
+
 interface IProps {
 
 }
 
 export const EtoOverviewStatus: React.SFC<IProps> = () => (
   <PanelWhite>
-    <Container>
+    <div className={stylesCommon.container}>
       <Row>
         <Col>
           <div>
             <div>
-              <h4><FormattedMessage id="eto.overview.overview-status.status-of-your-eto" /></h4>
-              <h5><FormattedMessage id="eto.overview.overview-status.time-to-end-of-the-round" /></h5>
+              <div>
+                <h4 className={styles.stylesCommon}><FormattedMessage id="eto.overview.overview-status.status-of-your-eto" /></h4>
+              </div>
+              <div>
+                <h4 className={styles.stylesCommon}><FormattedMessage id="eto.overview.overview-status.time-to-end-of-the-round" /></h4>
+              </div>
             </div>
             <ul>
               <li>
                 <strong>
-                  <FormattedMessage id="eto.overview.overview-status.list.declared-cap.label" />
+                  <FormattedMessage id="eto.overview.overview-status.list.declared-cap" />
                 </strong>
                 <span>
-                  <FormattedMessage id="eto.overview.overview-status.list.declared-cap.value" />
                 </span>
               </li>
               <li>
                 <strong>
-                  <FormattedMessage id="eto.overview.overview-status.list.declared-duration.label" />
+                  <FormattedMessage id="eto.overview.overview-status.list.declared-duration" />
                 </strong>
                 <span>
-                  <FormattedMessage id="eto.overview.overview-status.list.declared-duration.value" />
+
                 </span>
               </li>
               <li>
                 <strong>
-                  <FormattedMessage id="eto.overview.overview-status.list.tokens-supply.label" />
+                  <FormattedMessage id="eto.overview.overview-status.list.tokens-supply" />
                 </strong>
                 <span>
-                  <FormattedMessage id="eto.overview.overview-status.list.tokens-supply.value" />
+
                 </span>
               </li>
               <li>
                 <strong>
-                  <FormattedMessage id="eto.overview.overview-status.list.tokens-symbol.label" />
+                  <FormattedMessage id="eto.overview.overview-status.list.token-symbol" />
                 </strong>
                 <span>
 
@@ -60,6 +66,6 @@ export const EtoOverviewStatus: React.SFC<IProps> = () => (
           </div>
         </Col>
       </Row>
-    </Container>
+    </div>
   </PanelWhite>
 );

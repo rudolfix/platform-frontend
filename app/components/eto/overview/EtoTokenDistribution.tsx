@@ -9,6 +9,10 @@ import { TableCell } from "../../shared/table/TableCell";
 import { TableHeader } from "../../shared/table/TableHeader";
 import { TableRow } from "../../shared/table/TableRow";
 
+import { HorizontalLine } from "../../shared/HorizontalLine";
+
+import * as stylesCommon from "../EtoOverviewCommon.module.scss";
+
 interface IProps {
   chartData: IChartBarsData;
   giniIndex: number;
@@ -21,15 +25,16 @@ export const EtoTokenDistribution: React.SFC<IProps> = ({
   tokenDistribution,
 }) => (
   <PanelWhite>
-    <Container>
-      <Row className="py-3">
+    <div className={stylesCommon.container}>
+      <Row className="mb-3">
         <Col>
-          <span>
+          <strong className={stylesCommon.label}>
             <FormattedMessage id="eto.overview.token-distribution.gini-index" />
-          </span>
+          </strong>{" "}
           <span>{giniIndex}</span>
         </Col>
       </Row>
+      <HorizontalLine className="my-3" />
       <Row>
         <Col xs={12} md={6}>
           <TableBody>
@@ -47,7 +52,7 @@ export const EtoTokenDistribution: React.SFC<IProps> = ({
                 <FormattedMessage id="eto.overview.token-distribution.table.share-of-investors" />
               </TableCell>
               <TableCell>
-                <FormattedMessage id="eto.overview.token-distribution.table.share-of-investors" />
+                <FormattedMessage id="eto.overview.token-distribution.table.share-of-tokens-owned" />
               </TableCell>
             </TableRow>
             {tokenDistribution.map((data, index) => (
@@ -59,14 +64,16 @@ export const EtoTokenDistribution: React.SFC<IProps> = ({
           </TableBody>
         </Col>
         <Col xs={12} md={6}>
-          <strong className="mb-2">
-            <small>
-              <FormattedMessage id="eto.overview.token-distribution.table.chart-description" />
-            </small>
-          </strong>
-          <ChartBars data={chartData} />
+          <div className={stylesCommon.chartNarrow}>
+            <strong className="mb-2">
+              <small>
+                <FormattedMessage id="eto.overview.token-distribution.table.chart-description" />
+              </small>
+            </strong>
+            <ChartBars data={chartData} />
+          </div>
         </Col>
       </Row>
-    </Container>
+    </div>
   </PanelWhite>
 );

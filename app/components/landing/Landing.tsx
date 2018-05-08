@@ -1,8 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
+import { appRoutes } from "../AppRouter";
 import { Button } from "../shared/Buttons";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
@@ -49,9 +51,11 @@ export const Landing: React.SFC = () => (
               />
             </Col>
           </Row>
-          <Button theme="t-white">
-            <FormattedMessage id="landing.welcome-box.register-now" />
-          </Button>
+          <Link to={appRoutes.registerEto}>
+            <Button theme="t-white">
+              <FormattedMessage id="landing.welcome-box.register-now" />
+            </Button>
+          </Link>
         </div>
       </Row>
       <Row className="d-flex">

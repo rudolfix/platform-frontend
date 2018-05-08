@@ -16,6 +16,7 @@ interface IProps {
 export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ text, className }) => {
   return (
     <>
+      {/* TODO: Change tooltip to use bootstrap which supports injecting html elements */}
       <span className={cn(className, styles.tooltip)} data-tooltip={text}>
         <InlineIcon svgIcon={icon} />
       </span>

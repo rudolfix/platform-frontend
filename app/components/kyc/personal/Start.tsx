@@ -1,6 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -66,7 +66,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
       <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
       <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
       <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
-
+      <FormattedHTMLMessage tagName="span" id="kyc.personal.current.address" />
       <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
       <Row>
         <Col xs={12} md={6} lg={8}>
@@ -93,7 +93,15 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
       />
       <FormSelectField
         values={US_CITIZEN_VALUES}
-        label="Are you a US citizen?"
+        label={
+          <>
+            <FormattedMessage id={"kyc.personal.us-citizen.question"} />
+            <Tooltip
+              className="ml-2"
+              text={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
+            />
+          </>
+        }
         name="isUsCitizen"
       />
       <FormSelectField
@@ -101,6 +109,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
         label={formatIntlMessage("kyc.personal.high-income")}
         name="isHighIncome"
       />
+      <FormattedMessage id={"kyc.personal.income.disclaimer"} />
       <div className="p-4 text-center">
         <Button type="submit" disabled={!props.isValid || props.loadingData}>
           <FormattedMessage id={"form.save-and-submit"} />
@@ -133,7 +142,7 @@ export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(
           <h6>
             <FormattedMessage id={"kyc.personal.personal-information.question"} />
           </h6>
-          <FormattedMessage id={"kyc.personal.personal-information.answer"} />
+          <FormattedHTMLMessage tagName="span" id={"kyc.personal.personal-information.answer"} />
         </div>
         <KYCEnhancedForm {...props} />
       </KycPanel>

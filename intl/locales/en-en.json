@@ -225,6 +225,7 @@
   "settings.kyc-status-widget.status.pending": "We are currently reviewing your Verification Process request. You will receive and email once your request has been processed.",
   "settings.kyc-status-widget.status.rejected": "Your Verification Process request was rejected.",
   "settings.kyc-status-widget.submit-additional-documents": "Submit additional Documents",
+  "settings.kyc-widget.error": "Error occured while loading data",
   "settings.kyc-widget.header": "{step}. VERIFY YOUR IDENTITY",
   "settings.personal-settings.title": "Personal Settings",
   "settings.security-settings.title": "Account Settings",

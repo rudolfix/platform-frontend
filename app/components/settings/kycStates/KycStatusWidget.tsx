@@ -75,7 +75,6 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
   step,
 }) => {
   return (
-    //TODO: ADD translations
     <PanelDark
       headerText={formatIntlMessage("settings.kyc-widget.header", { step })}
       rightComponent={
@@ -97,7 +96,7 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
         </div>
       ) : error ? (
         <div className={styles.content}>
-          <WarningAlert>Error occured while loading data</WarningAlert>
+        <WarningAlert><FormattedMessage id="settings.kyc-widget.error"/></WarningAlert>
         </div>
       ) : (
         <>

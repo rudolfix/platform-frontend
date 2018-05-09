@@ -110,7 +110,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
           <div className={styles.errorLabel}>
             {isNonValid(touched, errors, name) && (
               <div>
-                {!errors[name].includes("__NONE__") ? (
+                {errors[name].includes(NONE_KEY) ? (
                   <FormattedMessage id="form.field.error.is-required" />
                 ) : (
                   errors[name]

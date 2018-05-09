@@ -72,7 +72,6 @@ export function* lightWalletBackupWatch({
   intlWrapper: { intl: { formatIntlMessage } },
 }: TGlobalDependencies): Iterator<any> {
   try {
-    //TODO: Add translations
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield neuCall(

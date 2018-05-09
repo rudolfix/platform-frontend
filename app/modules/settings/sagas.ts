@@ -83,7 +83,6 @@ export function* resendEmail(
       formatIntlMessage("modules.settings.sagas.resend-email.confirmation"),
       formatIntlMessage("modules.settings.sagas.resend-email.confirmation-description"),
     );
-    //TODO: Add translations
     yield effects.call(updateUser, { ...user, new_email: email });
     notificationCenter.info(formatIntlMessage("modules.settings.sagas.resend-email.sent"));
   } catch {
@@ -96,13 +95,14 @@ export function* loadSeedOrReturnToSettings({
 }: TGlobalDependencies): Iterator<any> {
   // unlock wallet
   try {
-    //TODO: Add translations
     const signEffect = put(actions.web3.fetchSeedFromWallet());
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
       formatIntlMessage("modules.settings.sagas.load-seed-return-settings.access-recovery-phrase"),
-      formatIntlMessage("modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description"),
+      formatIntlMessage(
+        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description",
+      ),
     );
   } catch {
     yield put(actions.routing.goToSettings());

@@ -53,9 +53,7 @@ function* submitIndividualData(
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
     yield put(actions.routing.goToKYCIndividualInstantId());
   } catch {
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-sending-data"));
   }
 }
 
@@ -70,18 +68,13 @@ function* uploadIndividualFile(
   if (action.type !== "KYC_UPLOAD_INDIVIDUAL_FILE") return;
   const { file } = action.payload;
   try {
-    //TODO: add translation
     yield put(actions.kyc.kycUpdateIndividualDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadIndividualDocument(file);
     yield put(actions.kyc.kycUpdateIndividualDocument(false, result.body));
-    notificationCenter.info(
-      formatIntlMessage("module.kyc.sagas.successfully-uploaded"),
-    );
+    notificationCenter.info(formatIntlMessage("module.kyc.sagas.successfully-uploaded"));
   } catch {
     yield put(actions.kyc.kycUpdateIndividualDocument(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-uploading"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-uploading"));
   }
 }
 
@@ -135,9 +128,7 @@ function* submitIndividualRequest(
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateIndividualRequestState(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem.submitting"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem.submitting"));
   }
 }
 
@@ -151,9 +142,7 @@ function* startIndividualInstantId({
     if (result.body.redirectUrl) window.location.replace(result.body.redirectUrl);
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch {
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem.submitting"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem.submitting"));
   }
 }
 
@@ -195,9 +184,7 @@ function* submitLegalRepresentative(
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-sending-data"));
   }
 }
 
@@ -219,9 +206,7 @@ function* uploadLegalRepresentativeFile(
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-uploading"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-uploading"));
   }
 }
 
@@ -264,9 +249,7 @@ function* setBusinessType(
     yield put(actions.routing.goToKYCBusinessData());
   } catch (_e) {
     yield put(actions.kyc.kycUpdateBusinessData(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-sending-data"));
   }
 }
 
@@ -299,9 +282,7 @@ function* submitBusinessData(
     yield put(actions.kyc.kycUpdateBusinessData(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBusinessData(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-sending-data"));
   }
 }
 
@@ -319,14 +300,10 @@ function* uploadBusinessFile(
     yield put(actions.kyc.kycUpdateBusinessDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadBusinessDocument(file);
     yield put(actions.kyc.kycUpdateBusinessDocument(false, result.body));
-    notificationCenter.info(
-      formatIntlMessage("module.kyc.sagas.successfully-uploaded"),
-    );
+    notificationCenter.info(formatIntlMessage("module.kyc.sagas.successfully-uploaded"));
   } catch {
     yield put(actions.kyc.kycUpdateBusinessDocument(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-uploading"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-uploading"));
   }
 }
 
@@ -374,9 +351,7 @@ function* createBeneficialOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-sending-data"));
   }
 }
 
@@ -397,7 +372,7 @@ function* submitBeneficialOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error(      formatIntlMessage("module.kyc.sagas.problem-saving-data")  );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-saving-data"));
   }
 }
 
@@ -416,9 +391,7 @@ function* deleteBeneficalOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, action.payload.id, undefined));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error(
-      formatIntlMessage("module.kyc.sagas.problem-sending-data"),
-    );
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-sending-data"));
   }
 }
 

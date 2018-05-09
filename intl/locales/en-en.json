@@ -1,4 +1,13 @@
 {
+  "components.wallet-selector.wallet-recover.recovery-success.contact-for-help": "Contact for help",
+  "components.wallet-selector.wallet-recover.recovery-success.go-to-dashboard": "GO TO DASHBOARD",
+  "components.wallet-selector.wallet-recover.recovery-success.you-have-new-password": "Great, you have a new password!",
+  "components.wallet.claimed-dividends.most-recent": "Most recent",
+  "components.wallet.claimed-dividends.txn": "TXN",
+  "components.wallet.claimed-dividends.you-claimed-no-proceeds": "You have not claimed any proceeds so far.",
+  "components.wallet.start.icbm-wallet": "ICBM WALLET",
+  "components.wallet.start.locked-wallet": "LOCKED WALLET",
+  "components.wallet.start.my-wallet": "MY WALLET",
   "dashboard.my-neu-widget.about": "About NEU",
   "dashboard.my-neu-widget.my-neumark": "MY NEUMARK",
   "dashboard.my-neu-widget.your-neumark": "YOUR NEUMARKS",

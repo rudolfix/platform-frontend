@@ -7,3 +7,5 @@ coverage
 .awcache
 app/lib/contracts
 intl/messages
+cypress/videos
+cypress/screenshots

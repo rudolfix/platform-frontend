@@ -6,10 +6,7 @@ import { formatMoney, formatThousands } from "./Money.utils";
 
 export type TCurrency = "neu" | "eur" | "eur_token" | "eth";
 
-export enum MoneyTransfer {
-  in = "income",
-  out = "outcome",
-}
+export type TMoneyTransfer = "income" | "outcome";
 
 type TTheme = "t-green";
 
@@ -20,7 +17,7 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   noCurrencySymbol?: boolean;
   currencyClassName?: string;
   currencyStyle?: React.CSSProperties;
-  transfer?: MoneyTransfer;
+  transfer?: TMoneyTransfer;
   theme?: TTheme;
 }
 

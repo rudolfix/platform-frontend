@@ -55,17 +55,24 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
               tabs={compact([
                 {
                   path: `${rootPath}/light`,
-                  text: formatIntlMessage("wallet-selector.tabs.neuwallet"),
+                  text: isLoginRoute
+                    ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")
+                    : formatIntlMessage("wallet-selector.tabs.neuwallet-register"),
                   dataTestId: "wallet-selector-light",
                 },
                 userType === "investor" && {
                   path: `${rootPath}/browser`,
-                  text: formatIntlMessage("wallet-selector.tabs.browser-wallet"),
+                  text: isLoginRoute
+                    ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
+                    : formatIntlMessage("wallet-selector.tabs.browser-wallet-register"),
+
                   dataTestId: "wallet-selector-browser",
                 },
                 userType === "investor" && {
                   path: `${rootPath}/ledger`,
-                  text: formatIntlMessage("wallet-selector.tabs.ledger"),
+                  text: isLoginRoute
+                    ? formatIntlMessage("wallet-selector.tabs.ledger-login")
+                    : formatIntlMessage("wallet-selector.tabs.ledger-register"),
                   dataTestId: "wallet-selector-ledger",
                 },
               ])}
@@ -79,15 +86,29 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
           <Row className="mt-5">
             <Col xs={12} sm={6}>
               <span>
-                <FormattedMessage id="wallet-selector.help-link" />{" "}
-                <Link to={appRoutes.recover}>
-                  <FormattedMessage id="wallet-selector.help-link.label" />
-                </Link>
+                {isLoginRoute ? (
+                  <>
+                    <FormattedMessage id="wallet-selector.login.help-link" />{" "}
+                    <Link to={appRoutes.recover}>
+                      <FormattedMessage id="wallet-selector.help-link.label" />
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <FormattedMessage id="wallet-selector.register.help-link" />{" "}
+                    <a href="https://neufund.freshdesk.com/support/home">
+                      <FormattedMessage id="wallet-selector.help-link.label" />
+                    </a>
+                  </>
+                )}
               </span>
             </Col>
             <Col xs={12} sm={6}>
               <span className="float-sm-right">
-                {oppositeViewLabel} <Link to={oppositeRoute}>{oppositeViewLinkLabel}</Link>
+                {oppositeViewLabel}{" "}
+                <Link to={oppositeRoute} data-test-id="wallet-selector-opposite-route-link">
+                  {oppositeViewLinkLabel}
+                </Link>
               </span>
             </Col>
           </Row>

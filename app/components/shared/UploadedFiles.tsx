@@ -11,8 +11,8 @@ interface IProps {
 
 export const UploadedFiles: React.SFC<IProps> = ({ files }) => (
   <div className={styles.uploadedFiles}>
-    {files.map(({ fileName }) => (
-      <div key={fileName} className={styles.file}>
+    {files.map(({ fileName }, index) => (
+      <div key={index} className={styles.file}>
         <span className={styles.text} title={fileName}>
           {fileName}
         </span>

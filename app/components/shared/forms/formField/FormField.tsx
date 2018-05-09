@@ -4,7 +4,7 @@ import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap";
 
 import { InputType } from "../../../../types";
-import * as styles from "./FormError.module.scss";
+import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
   label?: string;
@@ -47,7 +47,7 @@ export class FormField extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const { label, type, placeholder, name, prefix, suffix } = this.props;
+    const { label, type, placeholder, name, prefix, suffix, ...props } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
     //This is done due to the difference between reactstrap and @typings/reactstrap
@@ -69,6 +69,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 valid={isValid(touched, errors, name)}
                 placeholder={placeholder || label}
                 {...inputExtraProps}
+                {...props}
               />
               {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
             </InputGroup>

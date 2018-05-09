@@ -24,18 +24,22 @@ export function* addNewEmail(
 
   let addEmailMessage;
 
-  //TODO: Add translations
   try {
     switch (walletType) {
       case WalletType.BROWSER:
-        addEmailMessage = "Please confirm on Metamask if the email address is correct";
+        addEmailMessage = formatIntlMessage(
+          "modules.settings.sagas.add-new-email.confirm-browser-wallet",
+        );
         break;
       case WalletType.LEDGER:
-        addEmailMessage = "Please confirm on your ledger if the email address is correct";
+        addEmailMessage = formatIntlMessage(
+          "modules.settings.sagas.add-new-email.confirm-ledger-wallet",
+        );
         break;
       case WalletType.LIGHT:
-        addEmailMessage =
-          "Please confirm through your light wallet if the email address is correct.";
+        addEmailMessage = formatIntlMessage(
+          "modules.settings.sagas.add-new-email.confirm-light-wallet",
+        );
         break;
       default:
         throw new Error("Wrong wallet type");
@@ -50,17 +54,19 @@ export function* addNewEmail(
     );
 
     yield effects.call(updateUser, { ...user, new_email: email });
-    notificationCenter.info("New Email added");
+    notificationCenter.info(
+      formatIntlMessage("modules.settings.sagas.add-new-email.new-email-added"),
+    );
   } catch {
     yield effects.call(loadUser);
-    notificationCenter.error("Failed to send email");
+    notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
   } finally {
     yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
   }
 }
 
 export function* resendEmail(
-  { notificationCenter }: TGlobalDependencies,
+  { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "SETTINGS_RESEND_EMAIL") return;
@@ -74,18 +80,20 @@ export function* resendEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Email Confirmation",
-      "Confirm resending activation email.",
+      formatIntlMessage("modules.settings.sagas.resend-email.confirmation"),
+      formatIntlMessage("modules.settings.sagas.resend-email.confirmation-description"),
     );
     //TODO: Add translations
     yield effects.call(updateUser, { ...user, new_email: email });
-    notificationCenter.info("Email successfully resent");
+    notificationCenter.info(formatIntlMessage("modules.settings.sagas.resend-email.sent"));
   } catch {
-    notificationCenter.error("Failed to resend email");
+    notificationCenter.error(formatIntlMessage("modules.settings.sagas.resend-email.failed"));
   }
 }
 
-export function* loadSeedOrReturnToSettings(): Iterator<any> {
+export function* loadSeedOrReturnToSettings({
+  intlWrapper: { intl: { formatIntlMessage } },
+}: TGlobalDependencies): Iterator<any> {
   // unlock wallet
   try {
     //TODO: Add translations
@@ -93,8 +101,8 @@ export function* loadSeedOrReturnToSettings(): Iterator<any> {
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
-      "Access recovery phrase",
-      "Please confirm to access your recovery phrase.",
+      formatIntlMessage("modules.settings.sagas.load-seed-return-settings.access-recovery-phrase"),
+      formatIntlMessage("modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description"),
     );
   } catch {
     yield put(actions.routing.goToSettings());

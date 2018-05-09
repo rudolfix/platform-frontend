@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
 
+import { dummyIntl } from "./../../../utils/injectIntlHelpers.fixtures";
 import { dummyEthereumAddress } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { NotificationCenter } from "../../../lib/dependencies/NotificationCenter";
@@ -30,6 +31,7 @@ describe("web3 > flows", () => {
         dummyDispatch,
         () => state as any,
         dummyNotificationCenter,
+        { intl: dummyIntl },
       );
 
       expect(dummyNotificationCenter.error).to.be.calledOnce;
@@ -51,6 +53,7 @@ describe("web3 > flows", () => {
         dummyDispatch,
         () => state as any,
         dummyNotificationCenter,
+        { intl: dummyIntl },
       );
 
       expect(dummyNotificationCenter.error).not.to.be.called;

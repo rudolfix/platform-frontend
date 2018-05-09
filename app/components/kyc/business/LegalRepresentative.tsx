@@ -59,7 +59,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
+const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <Form>
       <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
@@ -80,6 +80,11 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
         values={PEP_VALUES}
         label={formatIntlMessage("kyc.business.legal-representative.pep")}
         name="isPoliticallyExposed"
+        extraMessage={
+          props.values.isPoliticallyExposed === ("true" as any) && (
+            <FormattedMessage id={"kyc.personal.politically-exposed.disclaimer"} />
+          )
+        }
       />
       <br />
       <div className="p-4 text-center">

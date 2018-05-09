@@ -74,6 +74,7 @@
   "form.button.submit": "CONTINUE",
   "form.button.submit-changes": "CONTINUE",
   "form.button.submit-request": "CONTINUE",
+  "form.field.error.is-required": "This field is required",
   "form.label.address": "Address",
   "form.label.birth-date": "Date of birth",
   "form.label.city": "City",

@@ -109,10 +109,11 @@ export const InvestmentPreview: React.SFC<IProps> = ({
               </div>
               <div className={styles.eto}>
                 <div>
+                  {/* TODO: use intl plural */}
                   {endInDays === 1 ? (
                     <FormattedHTMLMessage
                       tagName="span"
-                      id="shared-component.investment-preview.investment-timeline"
+                      id="shared-component.investment-preview.investment-timeline-one-day"
                       values={{
                         endInDays: endInDays,
                         neuInvestors: neuInvestorsNum,
@@ -121,7 +122,7 @@ export const InvestmentPreview: React.SFC<IProps> = ({
                   ) : (
                     <FormattedHTMLMessage
                       tagName="span"
-                      id="shared-component.investment-preview.investment-timeline-one-day"
+                      id="shared-component.investment-preview.investment-timeline"
                       values={{
                         endInDays: endInDays,
                         neuInvestors: neuInvestorsNum,

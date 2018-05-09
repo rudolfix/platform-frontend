@@ -117,7 +117,7 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       if (isLightWallet) {
         yield call(unlockLightWallet);
       }
-      break;
+      return yield effect;
     } catch (e) {
       yield effects.put(
         actions.signMessageModal.signingError(mapSignMessageErrorToErrorMessage(e)),
@@ -126,7 +126,6 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       yield delay(500);
     }
   }
-  return yield effect;
 }
 
 export function* accessWalletAndRunEffect(

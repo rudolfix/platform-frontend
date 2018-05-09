@@ -8,6 +8,7 @@ import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { IBrowserWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
+import { SignerRejectConfirmationError } from "./Web3Manager";
 
 export class BrowserWalletError extends Error {}
 export class BrowserWalletMissingError extends BrowserWalletError {}
@@ -20,6 +21,8 @@ export class BrowserWalletMismatchedNetworkError extends BrowserWalletError {
   }
 }
 export class BrowserWalletLockedError extends BrowserWalletError {}
+export class BrowserWalletConfirmationRejectedError extends BrowserWalletError {}
+export class BrowserWalletUnknownError extends BrowserWalletError {}
 
 export class BrowserWallet implements IPersonalWallet {
   public readonly walletType = WalletType.BROWSER;
@@ -45,7 +48,17 @@ export class BrowserWallet implements IPersonalWallet {
     if (this.walletSubType === WalletSubType.METAMASK) {
       const typedDataDecoded = JSON.parse(hex2ascii(data));
 
-      return this.web3Adapter.signTypedData(this.ethereumAddress, typedDataDecoded);
+      try {
+        // We can await as signTypedData function already awaits inside for result of RPC call.
+        return await this.web3Adapter.signTypedData(this.ethereumAddress, typedDataDecoded);
+      } catch (e) {
+        const error = parseBrowserWalletError(e);
+        if (error instanceof BrowserWalletConfirmationRejectedError) {
+          throw new SignerRejectConfirmationError();
+        } else {
+          throw error;
+        }
+      }
     } else {
       return this.web3Adapter.ethSign(this.ethereumAddress, data);
     }
@@ -98,5 +111,19 @@ export class BrowserWalletConnector {
     }
     // @todo support for mist
     return WalletSubType.UNKNOWN;
+  }
+}
+
+// At this moment it's only Metamask
+export function parseBrowserWalletError(error: any): BrowserWalletError {
+  if (
+    error.code !== undefined &&
+    error.message !== undefined &&
+    error.code === -32603 &&
+    error.message.startsWith("Error: MetaMask Message Signature: User denied message signature.")
+  ) {
+    return new BrowserWalletConfirmationRejectedError();
+  } else {
+    return new BrowserWalletUnknownError();
   }
 }

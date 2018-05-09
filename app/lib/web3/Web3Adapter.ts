@@ -54,6 +54,15 @@ export class Web3Adapter {
       from: address as string,
     });
 
+    if (resultData.error !== undefined) {
+      /*
+       Sane thing is to throw Error but here result.error contain object with message and code fields.
+       We could create own error but here it's gonna get more complicated when we will support more browser wallets as
+       those have different API's and returned objects may differ
+      */
+      throw resultData.error;
+    }
+
     return resultData.result;
   }
 }

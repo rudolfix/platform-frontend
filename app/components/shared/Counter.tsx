@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import * as styles from "./Counter.module.scss";
 
 interface IProps {
-  endDate: Date
+  endDate?: Date
 }
 
 const Counter: React.SFC<IProps> = ({endDate}) => {

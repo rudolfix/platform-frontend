@@ -30,6 +30,8 @@ const chartBarData = {
   ],
 };
 
+const tokenIcon = "../../assets/img/nEUR_icon.svg";
+
 export const EtoOverview: React.SFC = () => (
   <LayoutAuthorized>
     <SectionHeader>
@@ -38,7 +40,12 @@ export const EtoOverview: React.SFC = () => (
 
     <Row className="py-4">
       <Col>
-        <EtoOverviewStatus />
+        <EtoOverviewStatus
+        cap="HARD CAP: 750M EDT"
+        duration="22.02.2018 to 22.5.2019"
+        tokensSupply="50000000"
+        tokenName="ABC"
+        tokenImg={tokenIcon} />
       </Col>
     </Row>
 

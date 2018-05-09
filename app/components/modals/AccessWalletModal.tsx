@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Modal } from "reactstrap";
@@ -5,12 +6,12 @@ import { Modal } from "reactstrap";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet, selectIsUnlocked } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-
 import { Button } from "../shared/Buttons";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as lockIcon from "../../assets/img/wallet_selector/lock_icon.svg";
+import * as styles from "./AccessWalletModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
@@ -46,7 +47,7 @@ const AccessWalletModalComponent: React.SFC<IStateProps & IDispatchProps> = prop
         ) : (
           <GenericSignPrompt onCancel={props.onCancel} />
         )}
-        <p>{props.errorMsg}</p>
+        <p className={cn("mt-3", styles.error)}>{props.errorMsg}</p>
       </div>
     </ModalComponentBody>
   </Modal>

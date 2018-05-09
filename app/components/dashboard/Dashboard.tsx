@@ -27,10 +27,7 @@ export const Dashboard = () => (
       <FormattedMessage id="dashboard.start-page.investment-opportunities" />
       <Tag className="ml-3" theme="green" layout="ghost" size="small" text="1 new" />
     </SectionHeader>
-    <br />
-    <br />
-    <br />
-    <br />
-    <UserInfo />
+
+    {process.env.NF_USER_INFO_COMPONENT_ENABLED === "1" && <UserInfo />}
   </LayoutAuthorized>
 );

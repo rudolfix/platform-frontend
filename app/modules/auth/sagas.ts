@@ -9,6 +9,7 @@ import { IAppState } from "../../store";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
+import { loadKycRequestData } from "../kyc/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
 import {
   selectActivationCodeFromQueryString,
@@ -85,11 +86,15 @@ export async function updateUserPromise(
 export function* loadOrCreateUser(userType: TUserType): Iterator<any> {
   const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
   yield effects.put(actions.auth.loadUser(user));
+
+  yield neuCall(loadKycRequestData);
 }
 
 export function* loadUser(): Iterator<any> {
   const user: IUser = yield neuCall(loadUserPromise);
   yield effects.put(actions.auth.loadUser(user));
+
+  yield neuCall(loadKycRequestData);
 }
 
 export async function loadUserPromise({ apiUserService }: TGlobalDependencies): Promise<IUser> {

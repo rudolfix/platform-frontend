@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Col } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
@@ -14,7 +14,6 @@ import {
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { UnionDictionary } from "../../../types";
-import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { PanelDark } from "../../shared/PanelDark";
 
@@ -89,13 +88,21 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
       }
     >
       {isLoading ? (
-        <LoadingIndicator />
+        <div className={styles.content}>
+          <Row noGutters>
+            <Col>
+              <LoadingIndicator className={styles.loading} />
+            </Col>
+          </Row>
+        </div>
       ) : error ? (
-        <WarningAlert>Error occured while loading data</WarningAlert>
+        <div className={styles.content}>
+          <WarningAlert>Error occured while loading data</WarningAlert>
+        </div>
       ) : (
         <>
           {requestStatus === "Accepted" ? (
-            <div data-test-id="verified-section" className={cn(styles.content)}>
+            <div data-test-id="verified-section" className={styles.content}>
               <div className="pt-2">{statusTextMap[requestStatus]}</div>
             </div>
           ) : (
@@ -145,11 +152,6 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
       onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),
     }),
   }),
-  onEnterAction({
-    actionCreator: dispatch => {
-      dispatch(actions.kyc.kycLoadIndividualRequest());
-      dispatch(actions.kyc.kycLoadBusinessRequest());
-    },
-  }),
+  // note: data for this view are loaded as part of app init process
   injectIntlHelpers,
 )(KycStatusWidgetComponent);

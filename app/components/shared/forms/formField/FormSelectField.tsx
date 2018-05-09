@@ -2,6 +2,7 @@ import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { FormGroup, Input, Label } from "reactstrap";
 
 import { isNonValid } from "../forms";
@@ -107,7 +108,15 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
           <div className={styles.noteLabel}>{extraMessage}</div>
         ) : (
           <div className={styles.errorLabel}>
-            {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
+            {isNonValid(touched, errors, name) && (
+              <div>
+                {!errors[name].includes("__NONE__") ? (
+                  <FormattedMessage id="form.field.error.is-required" />
+                ) : (
+                  errors[name]
+                )}
+              </div>
+            )}
           </div>
         )}
       </FormGroup>

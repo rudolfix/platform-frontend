@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { configure, addDecorator } from "@storybook/react";
 import { setIntlConfig, withIntl } from "storybook-addon-intl";
 import { Provider as ReduxProvider } from "react-redux";

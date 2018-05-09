@@ -141,12 +141,18 @@ function* signInUser(
     }
   } catch (e) {
     if (e instanceof SignerRejectConfirmationError) {
-      yield effects.put(actions.walletSelector.messageSigningError("Message signing was rejected"));
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-was-rejected"),
+        ),
+      );
     } else {
       logger.error("Error:", e);
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          "Our server is having problems connecting with your wallet. Please try again or contact our Support Desk.",
+          formatIntlMessage(
+            "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+          ),
         ),
       );
     }

@@ -142,8 +142,6 @@ export const Dashboard = () => (
         />
       </Col>
     </Row>
-    {
-      process.env.NF_USER_INFO_COMPONENT_ENABLED === "1" && <UserInfo />
-    }
+    {process.env.NF_USER_INFO_COMPONENT_ENABLED === "1" && <UserInfo />}
   </LayoutAuthorized>
 );

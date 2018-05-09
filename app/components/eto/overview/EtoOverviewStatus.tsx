@@ -79,7 +79,7 @@ export const EtoOverviewStatus: React.SFC<IProps> = (props) => (
           <HorizontalLine className="my-3" />
           <div>
             <strong>
-              <span className="mb-3">
+              <span className={cn(stylesCommon.label, "mb-3")}>
                 <FormattedMessage id="eto.overview.overview-status.time" />
               </span>
               <EtoTimeline />

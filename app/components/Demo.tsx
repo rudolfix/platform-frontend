@@ -125,18 +125,18 @@ export const Demo: React.SFC = () => (
           <KycStatusWidgetComponent
             step={1}
             onGoToKycHome={() => {}}
+            isUserEmailVerified={true}
             intl={dummyIntl}
-            isUserEmailVerified={false}
-            isLoading={false}
+            isLoading={true}
           />
         </Col>
         <Col lg={6} xs={12}>
           <KycStatusWidgetComponent
             step={1}
             onGoToKycHome={() => {}}
-            isUserEmailVerified={true}
             intl={dummyIntl}
-            isLoading={true}
+            isUserEmailVerified={false}
+            isLoading={false}
           />
         </Col>
         <Col lg={6} xs={12}>

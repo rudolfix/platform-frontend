@@ -438,6 +438,11 @@ function* submitBusinessRequest(
   }
 }
 
+export function* loadKycRequestData(): any {
+  yield put(actions.kyc.kycLoadIndividualRequest());
+  yield put(actions.kyc.kycLoadBusinessRequest());
+}
+
 export function* kycSagas(): any {
   yield fork(neuTakeEvery, "KYC_LOAD_INDIVIDUAL_DATA", loadIndividualData);
   yield fork(neuTakeEvery, "KYC_SUBMIT_INDIVIDUAL_FORM", submitIndividualData);

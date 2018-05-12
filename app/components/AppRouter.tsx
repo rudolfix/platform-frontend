@@ -1,24 +1,3 @@
-export const appRoutes = {
-  verify: "/email-verify",
-
-  root: "/",
-
-  register: "/register",
-  registerEto: "/eto/register",
-  login: "/login",
-  loginEto: "/eto/login",
-  recover: "/recover",
-  recoverEto: "/eto/recover",
-
-  kyc: "/kyc",
-  wallet: "/wallet",
-  dashboard: "/dashboard",
-  settings: "/settings",
-  demo: "/demo",
-  eto: "/eto",
-  etoLanding: "/eto-landing",
-};
-
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -31,6 +10,7 @@ import { Eto } from "./eto/Eto";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 
+import { appRoutes } from "./appRoutes";
 import { emailVerify } from "./emailVerify";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";

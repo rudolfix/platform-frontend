@@ -25,7 +25,7 @@ import { WarningAlert } from "../../shared/WarningAlert";
 import { FormattedMessage } from "react-intl";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import { CommonHtmlProps } from "../../../types";
-import { appRoutes } from "../../AppRouter";
+import { appRoutes } from "../../appRoutes";
 import * as styles from "./MyWalletWidget.module.scss";
 
 type StateProps = {

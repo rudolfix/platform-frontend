@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
-import { appRoutes } from "../../AppRouter";
+import { appRoutes } from "../../appRoutes";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { BreadCrumb } from "../../shared/BreadCrumb";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";

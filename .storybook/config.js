@@ -4,6 +4,7 @@ import { configure, addDecorator } from "@storybook/react";
 import { setIntlConfig, withIntl } from "storybook-addon-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import StoryRouter from "storybook-react-router";
+import { initScreenshot, withScreenshot } from "storybook-chrome-screenshot/lib";
 
 // Load the locale data for all your defined locales
 import { addLocaleData } from "react-intl";
@@ -26,7 +27,18 @@ setIntlConfig({
   getMessages,
 });
 
-// Register decorators
+addDecorator(initScreenshot());
+addDecorator(
+  withScreenshot({
+    delay: 10000,
+    viewport: [
+      {
+        width: 1280,
+        height: 800,
+      },
+    ],
+  }),
+);
 addDecorator(withIntl);
 addDecorator(StoryRouter());
 

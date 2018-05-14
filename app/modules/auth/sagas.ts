@@ -169,9 +169,12 @@ export async function obtainJwtPromise(
   /* tslint:enable: no-useless-cast */
 
   logger.info("Obtaining auth challenge from api");
-  const {
-    body: { challenge },
-  } = await signatureAuthApi.challenge(address, salt, signerType, permissions);
+  const { body: { challenge } } = await signatureAuthApi.challenge(
+    address,
+    salt,
+    signerType,
+    permissions,
+  );
 
   logger.info("Signing challenge");
   /* tslint:disable: no-useless-cast */
@@ -179,9 +182,11 @@ export async function obtainJwtPromise(
   /* tslint:enable: no-useless-cast */
 
   logger.info("Sending signed challenge back to api");
-  const {
-    body: { jwt },
-  } = await signatureAuthApi.createJwt(challenge, signedChallenge, signerType);
+  const { body: { jwt } } = await signatureAuthApi.createJwt(
+    challenge,
+    signedChallenge,
+    signerType,
+  );
 
   return jwt;
 }

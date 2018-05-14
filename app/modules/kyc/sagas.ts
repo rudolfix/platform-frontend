@@ -104,9 +104,7 @@ function* submitIndividualRequest(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
+    intlWrapper: { intl: { formatIntlMessage } },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {

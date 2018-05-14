@@ -6,6 +6,7 @@ import { Money } from "./Money";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag";
 
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import * as styles from "./InvestmentPreview.module.scss";
 
 interface IPreFoundingStatus {
@@ -58,17 +59,21 @@ export const InvestmentPreview: React.SFC<IProps> = ({
         <div>{tags.map((tag, i) => <Tag key={i} {...tag} />)}</div>
       </div>
       <div className={styles.preFundingStatus}>
-        <h5 className={styles.label}>Pre funding status</h5>
+        <h5 className={styles.label}>
+          <FormattedMessage id="shared-component.investment-preview.pre-funding-status" />
+        </h5>
         <div className={styles.preFundingWrapper}>
           <p>
-            Pre money
+            <FormattedMessage id="shared-component.investment-preview.pre-money" />
             <strong className={styles.hilight}> {preFoundingStatus.money}</strong>
           </p>
           <p>
-            Investors
+            <FormattedMessage id="shared-component.investment-preview.investors" />
             <strong className={styles.hilight}> {preFoundingStatus.investorsNum}</strong>
           </p>
-          <p>Lead invsetors</p>
+          <p>
+            <FormattedMessage id="shared-component.investment-preview.lead-investors" />
+          </p>
           {preFoundingStatus.leadInvestors.map((investor, i) => (
             <strong key={i} className={styles.lead}>
               {investor}
@@ -78,32 +83,52 @@ export const InvestmentPreview: React.SFC<IProps> = ({
       </div>
       <div className={styles.termsAndEto}>
         <div className={styles.labels}>
-          <h5 className={styles.label}>{hasStarted && "Neufund terms"}</h5>
-          <h5 className={styles.label}>{hasStarted && "Eto status"}</h5>
+          <h5 className={styles.label}>
+            {hasStarted && <FormattedMessage id="shared-component.investment-preview.terms" />}
+          </h5>
+          <h5 className={styles.label}>
+            {hasStarted && <FormattedMessage id="shared-component.investment-preview.status" />}
+          </h5>
         </div>
         <div className={styles.background}>
           {hasStarted ? (
             <>
               <div className={styles.terms}>
                 <p>
-                  Goal
+                  <FormattedMessage id="shared-component.investment-preview.goal" />
                   <strong className={styles.hilight}> {moneyGoal}</strong>
                 </p>
                 <p>
-                  Current Valuation
+                  <FormattedMessage id="shared-component.investment-preview.current-valuation" />
                   <strong className={styles.hilight}> {currentValuation}</strong>
                 </p>
                 <p>
-                  Token price
+                  <FormattedMessage id="shared-component.investment-preview.token-price" />
                   <strong className={styles.hilight}> {tokenPrice}</strong>
                 </p>
               </div>
               <div className={styles.eto}>
                 <div>
-                  <span>
-                    NEU Investors <strong>{neuInvestorsNum}</strong>
-                  </span>
-                  <span>Ends in {endInDays} days</span>
+                  {/* TODO: use intl plural */}
+                  {endInDays === 1 ? (
+                    <FormattedHTMLMessage
+                      tagName="span"
+                      id="shared-component.investment-preview.investment-timeline-one-day"
+                      values={{
+                        endInDays: endInDays,
+                        neuInvestors: neuInvestorsNum,
+                      }}
+                    />
+                  ) : (
+                    <FormattedHTMLMessage
+                      tagName="span"
+                      id="shared-component.investment-preview.investment-timeline"
+                      values={{
+                        endInDays: endInDays,
+                        neuInvestors: neuInvestorsNum,
+                      }}
+                    />
+                  )}
                 </div>
                 <PercentageIndicatorBar percent={25} />
                 <strong>
@@ -113,16 +138,25 @@ export const InvestmentPreview: React.SFC<IProps> = ({
             </>
           ) : (
             <>
-              <span>Starting on {startingOn}</span>
+              <span>
+                <FormattedMessage
+                  id="shared-component.investment-preview.starting-date"
+                  values={{
+                    startingOn: startingOn,
+                  }}
+                />
+              </span>
               <Button layout="secondary" onClick={() => handleEmailSend}>
-                Get notification email
+                <FormattedMessage id="shared-component.investment-preview.get-notification" />
               </Button>
             </>
           )}
         </div>
       </div>
       <Link to={linkToDetails}>
-        <Button layout="secondary">Details</Button>
+        <Button layout="secondary">
+          <FormattedMessage id="shared-component.investment-preview.details" />
+        </Button>
       </Link>
     </article>
   );

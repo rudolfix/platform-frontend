@@ -12,7 +12,7 @@ import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap
 
 import { get } from "lodash";
 import { InputType } from "../../../../types";
-import * as styles from "./FormField.module.scss";
+import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
   label?: string;
@@ -40,8 +40,8 @@ export const isValid = (
 };
 
 export const isNonValid = (
-  touched: FormikTouched<any>,
-  errors: FormikErrors<any>,
+  touched: { [name: string]: boolean },
+  errors: { [name: string]: string },
   name: string,
 ): boolean | undefined => {
   const argument = isValid(touched, errors, name);
@@ -55,7 +55,7 @@ export class FormField extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const { label, type, placeholder, name, prefix, suffix } = this.props;
+    const { label, type, placeholder, name, prefix, suffix, ...props } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
 
@@ -78,6 +78,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 valid={isValid(touched, errors, name)}
                 placeholder={placeholder || label}
                 {...inputExtraProps}
+                {...props}
               />
               {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
             </InputGroup>

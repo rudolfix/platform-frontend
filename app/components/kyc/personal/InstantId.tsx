@@ -1,19 +1,18 @@
 import * as React from "react";
-import * as styles from "./InstantId.module.scss";
-
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-
+import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-
+import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
+import { kycRoutes } from "../routes";
 
 import * as idImage from "../../../assets/img/id_now.svg";
 import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as linkOutIcon from "../../../assets/img/inline_icons/link_out_small.svg";
-import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import * as styles from "./InstantId.module.scss";
 
 interface IStateProps {}
 
@@ -26,27 +25,27 @@ interface IProps {
   layout: TKycRequestType;
 }
 
-export const KycPersonalInstantIdComponent: React.SFC<
-  IProps & IStateProps & IDispatchProps
-> = props => (
+export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDispatchProps> = ({
+  ...props
+}) => (
   <KycPanel
-    steps={5}
-    currentStep={4}
-    title="Start Instant Verification"
-    description={
-      "You will be redirected to our verification partner IDNow in order to complete a fast video verification via your desktop or mobile camera. After the successfull verification, you can mmediately invest and deposit funds on the NEUFUND platform."
-    }
-    hasBackButton={true}
+    steps={3}
+    currentStep={3}
+    title={<FormattedMessage id="kyc.personal.instant-id.title" />}
+    description={<FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />}
+    backLink={kycRoutes.individualStart}
   >
     <img className={styles.image} src={idImage} alt="id now" />
     <div className="mb-5 text-center">
       <Button onClick={props.onStartInstantId} svgIcon={linkOutIcon} iconPosition="icon-after">
-        Go to video verification
+        <FormattedMessage id="kyc.personal.instant-id.go-to-video-verification" />
       </Button>
     </div>
     <p className="text-center">
-      Optionally, fill out the form and upload your documents.<br />This verfcation method will a
-      take 24h processing time.
+      <FormattedHTMLMessage
+        tagName="span"
+        id="kyc.personal.instant-id.manual-verification-description"
+      />
     </p>
     <div className="text-center">
       <Button
@@ -55,7 +54,7 @@ export const KycPersonalInstantIdComponent: React.SFC<
         svgIcon={arrowRightIcon}
         iconPosition="icon-after"
       >
-        Manual veryfication
+        <FormattedMessage id="kyc.personal.instant-id.go-to-manual-verification" />
       </Button>
     </div>
   </KycPanel>

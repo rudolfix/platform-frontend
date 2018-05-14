@@ -22,6 +22,7 @@ import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { PanelDark } from "../../shared/PanelDark";
 import { WarningAlert } from "../../shared/WarningAlert";
 
+import { FormattedMessage } from "react-intl";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import { CommonHtmlProps } from "../../../types";
 import { appRoutes } from "../../AppRouter";
@@ -74,7 +75,9 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
         <Row data-test-id="total-widget">
           <Col>
             <div className={`${styles.total} mt-3 mb-3 d-flex align-items-center`}>
-              <span className={cn(styles.smallFont)}>TOTAL</span>
+              <span className={cn(styles.smallFont)}>
+                <FormattedMessage id="dashboard.my-wallet-widget.total" />
+              </span>
               <Money
                 value={totalAmount}
                 currency="eur"
@@ -93,7 +96,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
                 svgIcon={arrowRight}
                 className={cn(styles.link, "pr-0")}
               >
-                Manage
+                <FormattedMessage id="dashboard.my-wallet-widget.hidden-wallet-redirect-button" />
               </Button>
             </Link>
           </Col>
@@ -120,7 +123,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
             svgIcon={arrowRight}
             className={cn(styles.link, "pr-0")}
           >
-            Manage Wallet
+            <FormattedMessage id="dashboard.my-wallet-widget.main-wallet-redirect-button" />
           </Button>
         </Link>
       }

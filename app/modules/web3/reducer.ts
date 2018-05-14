@@ -1,12 +1,5 @@
-import * as queryString from "query-string";
-import { createSelector } from "reselect";
-
-import { RouterState } from "react-router-redux";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { AppReducer } from "../../store";
-import { EthereumAddress } from "../../types";
-import { WalletType } from "./types";
-import { makeEthereumAddressChecksummed } from "./utils";
 
 export interface IDisconnectedWeb3State {
   connected: false;
@@ -89,92 +82,4 @@ export const web3Reducer: AppReducer<IWeb3State> = (
       }
   }
   return state;
-};
-
-export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {
-  if (!state.connected) {
-    throw Error("Wallet not connected");
-  }
-  return state;
-};
-
-export const selectEthereumAddress = (state: IWeb3State): EthereumAddress =>
-  state.connected ? state.wallet.address : state.previousConnectedWallet!.address;
-
-export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAddress, address => {
-  return makeEthereumAddressChecksummed(address);
-});
-
-export const selectSeed = (state: IWeb3State): string[] | undefined => {
-  return (state.connected && state.seed && state.seed.split(" ")) || undefined;
-};
-export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
-  !!(
-    !state.connected &&
-    state.previousConnectedWallet &&
-    state.previousConnectedWallet.walletType === WalletType.LIGHT &&
-    state.previousConnectedWallet.email &&
-    state.previousConnectedWallet.salt &&
-    state.previousConnectedWallet.vault
-  );
-
-export const selectIsLightWallet = (state: IWeb3State): boolean => {
-  return (
-    (state.connected && state.wallet.walletType === WalletType.LIGHT) ||
-    isLightWalletReadyToLogin(state)
-  );
-};
-
-export const selectIsUnlocked = (state: IWeb3State): boolean => {
-  return state.connected && state.isUnlocked;
-};
-
-export const selectPreviousLightWalletEmail = (state: IWeb3State): string | undefined =>
-  (!state.connected &&
-    state.previousConnectedWallet &&
-    state.previousConnectedWallet.walletType === WalletType.LIGHT &&
-    state.previousConnectedWallet.email) ||
-  undefined;
-
-export const selectLightWalletFromQueryString = (
-  state: RouterState,
-): { email: string; salt: string } | undefined => {
-  if (!(state.location && state.location.search)) {
-    return undefined;
-  }
-  const params = queryString.parse(state.location.search);
-  const email = params.email;
-  const salt = params.salt;
-
-  if (!email || !salt) {
-    return undefined;
-  }
-
-  return {
-    email,
-    salt,
-  };
-};
-
-export const selectActivationCodeFromQueryString = (
-  state: RouterState,
-): { verificationCode: string } | undefined => {
-  if (!(state.location && state.location.search)) {
-    return undefined;
-  }
-  const params = queryString.parse(state.location.search);
-  const verificationCode = params.code;
-
-  if (!verificationCode) {
-    return undefined;
-  }
-
-  return {
-    verificationCode,
-  };
-};
-
-export const selectLightWalletEmailFromQueryString = (state: RouterState): string | undefined => {
-  const wallet = selectLightWalletFromQueryString(state);
-  return wallet && wallet.email;
 };

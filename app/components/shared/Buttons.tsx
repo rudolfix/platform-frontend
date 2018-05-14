@@ -13,7 +13,7 @@ type TButtonTheme = "t-dark" | "t-white";
 
 type TIconPosition = "icon-before" | "icon-after";
 
-interface IButtonProps {
+export interface IButtonProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
   disabled?: boolean;

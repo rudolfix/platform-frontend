@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
 import { Q18 } from "../../../config/constants";
 import { CommonHtmlProps } from "../../../types";
@@ -92,9 +93,11 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
             />
             {!isLocked && (
               <div className={styles.buttonsWrapper}>
-                <Button layout="secondary">Withdraw funds ></Button>
+                <Button layout="secondary">
+                  <FormattedMessage id="wallet.balance.withdraw" />
+                </Button>
                 <Button layout="secondary" onClick={depositEuroTokenFunds}>
-                  Deposit funds >
+                  <FormattedMessage id="wallet.balance.deposit" />
                 </Button>
               </div>
             )}
@@ -110,9 +113,11 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
             />
             {!isLocked && (
               <div className={styles.buttonsWrapper}>
-                <Button layout="secondary">Withdraw funds ></Button>
+                <Button layout="secondary">
+                  <FormattedMessage id="wallet.balance.send" />
+                </Button>
                 <Button layout="secondary" onClick={depositEthFunds}>
-                  Deposit funds >
+                  <FormattedMessage id="wallet.balance.receive" />
                 </Button>
               </div>
             )}

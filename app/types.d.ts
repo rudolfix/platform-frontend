@@ -1,6 +1,7 @@
 import { HTMLAttributes, CSSProperties } from "react";
 
 type Dictionary<T> = { [id: string]: T };
+type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
 
 type AsInterface<T> = { [K in keyof T]: T[K] };
 

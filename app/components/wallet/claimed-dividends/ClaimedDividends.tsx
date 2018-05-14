@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "../../shared/Buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { Money, MoneyTransfer } from "../../shared/Money";
+import { Money } from "../../shared/Money";
 import { PanelDark } from "../../shared/PanelDark";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
@@ -27,8 +27,8 @@ interface IClaimedDividendsProps {
   recentPayouts: IDividendPayout[];
 }
 
-const NoPayoutsInfo = () => <div className="py-3">You didn't claimed any dividends so far.</div>;
-
+const NoPayoutsInfo = () => <div className="py-3">You have not claimed any proceeds so far.</div>;
+//TODO: Add translation
 export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProps> = ({
   totalEurValue,
   recentPayouts,
@@ -37,7 +37,7 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
 }) => (
   <PanelDark
     icon={neuIcon}
-    headerText="Dividends claimed from neu"
+    headerText="MY PROCEEDS"
     rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
     className={cn(styles.claimedDividends, className)}
     {...htmlProps}
@@ -53,7 +53,7 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
               <Date timestamp={timestamp} />
             </TableCell>
             <TableCell narrow>
-              <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
+              <Money currency="eur_token" value={amount} transfer="income" />
             </TableCell>
             <TableCell narrow>
               <Button layout="secondary">

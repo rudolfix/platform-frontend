@@ -9,7 +9,12 @@ import {
 import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
+import { FormattedMessage } from "react-intl";
+import { FormGroup, Input, Label } from "reactstrap";
+
+import { isNonValid } from "../forms";
+
+import * as styles from "./FormStyles.module.scss";
 
 export const NONE_KEY = "__NONE__";
 export const BOOL_TRUE_KEY = "true";
@@ -35,10 +40,13 @@ export const unboolify = <T extends {}>(values: T): T => {
   }) as T;
 };
 
+interface IOwnProps {
+  extraMessage?: string | React.ReactNode;
+}
 interface IFieldGroup {
   label?: string | React.ReactNode;
   values: {
-    [key: string]: string;
+    [key: string]: string | React.ReactNode;
   };
   disabledValues?: {
     [key: string]: boolean;
@@ -60,7 +68,7 @@ const isValid = (
   return !(errors && errors[name]);
 };
 
-export class FormSelectField extends React.Component<FieldGroupProps> {
+export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
@@ -77,9 +85,14 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
     ));
 
   render(): React.ReactChild {
-    const { label, name } = this.props;
+    const { label, name, extraMessage } = this.props;
     const formik: FormikProps<any> = this.context.formik;
-    const { touched, errors } = formik;
+    const { touched, errors, setFieldTouched } = formik;
+    //This is done due to the difference between reactstrap and @typings/reactstrap
+    const inputExtraProps = {
+      invalid: isNonValid(touched, errors, name),
+    } as any;
+
     return (
       <FormGroup>
         {label && <Label for={name}>{label}</Label>}
@@ -88,15 +101,31 @@ export class FormSelectField extends React.Component<FieldGroupProps> {
           render={({ field }: FieldProps) => (
             <Input
               {...field}
+              onFocus={() => setFieldTouched(name, true)}
               type="select"
               value={field.value}
               valid={isValid(touched, errors, name)}
+              {...inputExtraProps}
             >
               {this.renderOptions()}
             </Input>
           )}
         />
-        {errors[name] && <FormFeedback>{errors[name]}</FormFeedback>}
+        {extraMessage ? (
+          <div className={styles.noteLabel}>{extraMessage}</div>
+        ) : (
+          <div className={styles.errorLabel}>
+            {isNonValid(touched, errors, name) && (
+              <div>
+                {errors[name].includes(NONE_KEY) ? (
+                  <FormattedMessage id="form.field.error.is-required" />
+                ) : (
+                  errors[name]
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </FormGroup>
     );
   }

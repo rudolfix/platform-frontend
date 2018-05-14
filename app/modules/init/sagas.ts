@@ -10,7 +10,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { detectUserAgent } from "../userAgent/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
 
-function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
+export function* setupSaga({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(detectUserAgent);
     yield web3Manager.initialize();
@@ -19,10 +19,16 @@ function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
 
     if (jwt) {
       if (isJwtExpiringLateEnough(jwt)) {
-        yield loadUser();
+        try {
+          yield loadUser();
+        } catch (e) {
+          yield cleanupAndLogoutSaga();
+          logger.error(
+            "Cannot retrieve account. This could happen b/c account was deleted on backend",
+          );
+        }
       } else {
-        yield put(actions.auth.logout());
-        yield put(actions.routing.goToLogin());
+        yield cleanupAndLogoutSaga();
         logger.error("JTW expiring too soon.");
       }
     }
@@ -37,6 +43,11 @@ function* setup({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
   }
 }
 
+export function* cleanupAndLogoutSaga(): Iterator<any> {
+  yield put(actions.auth.logout());
+  yield put(actions.routing.goToLogin());
+}
+
 export const initSagas = function*(): Iterator<effects.Effect> {
-  yield fork(neuTakeEvery, "INIT_START", setup);
+  yield fork(neuTakeEvery, "INIT_START", setupSaga);
 };

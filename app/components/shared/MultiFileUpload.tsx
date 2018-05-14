@@ -1,16 +1,16 @@
-import * as React from "react";
-import * as styles from "./MultiFileUpload.module.scss";
-
 import * as cn from "classnames";
-import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
-
+import * as React from "react";
 import Dropzone from "react-dropzone";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 
-import * as addFileIcon from "../../assets/img/add_file.svg";
-import * as idImage from "../../assets/img/id_img.svg";
+import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
 
 import { InlineIcon } from "../shared/InlineIcon";
 import { UploadedFiles } from "./UploadedFiles";
+
+import * as addFileIcon from "../../assets/img/add_file.svg";
+import * as idImage from "../../assets/img/id_img.svg";
+import * as styles from "./MultiFileUpload.module.scss";
 
 const ACCEPTED_FILES = "application/pdf, image/*";
 
@@ -31,22 +31,30 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   const dropzoneInner = props.fileUploading ? (
     <>
       <img src={addFileIcon} />
-      <div>Uploading a File</div>
+      <div>
+        <FormattedMessage id="shared-component.multi-file-upload.uploading" />
+      </div>
     </>
   ) : (
     <>
       <img src={addFileIcon} />
-      <span>
-        Drag and drop your files here or <strong>upload</strong>
-      </span>
+      <FormattedHTMLMessage tagName="span" id="shared-component.multi-file-upload.upload-cta" />
     </>
   );
 
   const dropzoneWithFilesInner = (
     <>
       <InlineIcon svgIcon={plusIcon} />
-      {layout === "individual" && <span>Add more</span>}
-      {layout === "business" && <span>Upload more documents</span>}
+      {layout === "individual" && (
+        <span>
+          <FormattedMessage id="shared-component.multi-file-upload.individual.add-more" />
+        </span>
+      )}
+      {layout === "business" && (
+        <span>
+          <FormattedMessage id="shared-component.multi-file-upload.business.add-more" />
+        </span>
+      )}
     </>
   );
   const dropzoneStyle = {
@@ -64,33 +72,61 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
   return (
     <div className={cn(styles.upload, layout, props.className)}>
       <div className={styles.uploadDescription}>
-        {layout === "individual" && <h3 className={styles.title}>Images must include</h3>}
-        {layout === "business" && <h3 className={styles.title}>Required documents</h3>}
+        {layout === "individual" && (
+          <h3 className={styles.title}>
+            <FormattedMessage id="shared-component.multi-file-upload.individual.images-must-be-included" />
+          </h3>
+        )}
+        {layout === "business" && (
+          <h3 className={styles.title}>
+            <FormattedMessage id="shared-component.multi-file-upload.business.required-documents" />
+          </h3>
+        )}
         {layout === "individual" && <img className={styles.sampleDocumentId} src={idImage} />}
         <div>
           {layout === "individual" && (
             <ul className={styles.documentRequirements}>
-              <li>Colored photo</li>
-              <li>Full name</li>
-              <li>Date of birth</li>
-              <li>Valid expiration date</li>
-              <li>Official document number</li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.colored-photo" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.full-name" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.date-of-birth" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.expiration-date" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.individual.id.number" />
+              </li>
             </ul>
           )}
 
           {layout === "business" && (
             <ul className={styles.documentRequirements}>
-              <li>Commercial register entry</li>
-              <li>Article of ssociation</li>
-              <li>Partnership agreement</li>
-              <li>Proof of address (non-german entities only)</li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.commercial-register" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.association" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.partnership" />
+              </li>
+              <li>
+                <FormattedMessage id="shared-component.multi-file-upload.business.id.address" />
+              </li>
             </ul>
           )}
         </div>
       </div>
       <div className={styles.uploadZone}>
-        <h3 className={styles.title}>Upload documents</h3>
-        {!!files.length && <UploadedFiles onRemove={() => {}} files={files} />}
+        <h3 className={styles.title}>
+          <FormattedMessage id="shared-component.multi-file-upload.upload-documents" />
+        </h3>
+        {files.length > 0 && <UploadedFiles files={files} />}
         <div className={files.length ? styles.dropzoneWithFilesWrapper : styles.dropzoneWrapper}>
           <Dropzone
             accept={ACCEPTED_FILES}
@@ -102,7 +138,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
           </Dropzone>
         </div>
         <div className={styles.documentRequirements}>
-          Please upload .pdf or .jpg files containing colored scans in good quality.
+          <FormattedMessage id="shared-component.multi-file-upload.allowed-documents" />
         </div>
       </div>
     </div>

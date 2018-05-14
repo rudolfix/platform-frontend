@@ -24,11 +24,22 @@ import {
 import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
 import { IAppState, reducers } from "./store";
+import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
+import { compact } from "lodash";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 import "./styles/overrides.scss";
+
+// @note: this is done to make HMR work with react router. In production build its gone.
+function forceRerenderInDevMode(): number {
+  if (process.env.NODE_ENV === "development") {
+    return Math.random();
+  } else {
+    return 1;
+  }
+}
 
 function renderApp(
   store: Store<IAppState>,
@@ -40,8 +51,10 @@ function renderApp(
   ReactDOM.render(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
-        <ConnectedRouter history={history}>
-          <Component />
+        <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
+          <IntlProviderAndInjector>
+            <Component />
+          </IntlProviderAndInjector>
         </ConnectedRouter>
       </InversifyProvider>
     </ReduxProvider>,
@@ -59,13 +72,19 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
   const sagaMiddleware = createSagaMiddleware({ context });
 
   const middleware = applyMiddleware(
-    routerMiddleware(history),
-    createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
-    logger,
-    sagaMiddleware,
+    ...compact([
+      routerMiddleware(history),
+      createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
+      process.env.NODE_ENV !== "production" && logger,
+      sagaMiddleware,
+    ]),
   );
 
-  const store = createStore(reducers, composeWithDevTools(middleware));
+  const store: Store<IAppState> =
+    process.env.NODE_ENV === "production"
+      ? createStore(reducers, middleware)
+      : createStore(reducers, composeWithDevTools(middleware));
+
   // we have to create the dependencies here, because getState and dispatch get
   // injected in the middleware step above, maybe change this later
   context.deps = createGlobalDependencies(container);

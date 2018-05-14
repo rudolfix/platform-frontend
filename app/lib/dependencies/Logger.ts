@@ -33,3 +33,11 @@ export class DevConsoleLogger implements ILogger {
     console.error(...args);
   }
 }
+
+export const noopLogger: ILogger = {
+  info: () => {},
+  verbose: () => {},
+  debug: () => {},
+  warn: () => {},
+  error: () => {},
+};

@@ -1,7 +1,8 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { dummyEthereumAddress, dummyLogger, dummyNetworkId } from "../../../../test/fixtures";
+import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
+import { noopLogger } from "../../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import {
   IBrowserWalletMetadata,
@@ -54,7 +55,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,
-        dummyLogger,
+        noopLogger,
         walletMetadataStorageMock,
         getStateMock as any,
       );
@@ -92,7 +93,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,
-        dummyLogger,
+        noopLogger,
         walletMetadataStorageMock,
         getStateMock as any,
       );
@@ -101,7 +102,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       expect(walletMetadataStorageMock.set).to.not.be.called;
       expect(dispatchMock).to.be.calledWithExactly(
         actions.walletSelector.browserWalletConnectionError(
-          "Your wallet seems to be locked — we can't access any accounts.",
+          "Your wallet seems to be locked — we can't access any accounts",
         ),
       );
     });

@@ -8,7 +8,7 @@ import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
 import { UsersApi } from "../lib/api/users/UsersApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
 import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
-import { DevConsoleLogger, ILogger } from "../lib/dependencies/Logger";
+import { DevConsoleLogger, ILogger, noopLogger } from "../lib/dependencies/Logger";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
 import { Storage } from "../lib/persistence/Storage";
 import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
@@ -24,6 +24,7 @@ import {
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
+import { IntlWrapper } from "../lib/intl/IntlWrapper";
 import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import {
@@ -53,7 +54,11 @@ export function setupBindings(config: IConfig): Container {
   container.bind<IConfig>(symbols.config).toConstantValue(config);
 
   // @todo different logger could be injected to each class with additional info like name of the file etc.
-  container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
+  if (process.env.NODE_ENV === "production") {
+    container.bind(symbols.logger).toConstantValue(noopLogger);
+  } else {
+    container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
+  }
 
   // classes
   container
@@ -149,6 +154,8 @@ export function setupBindings(config: IConfig): Container {
     )
     .inSingletonScope();
 
+  container.bind(symbols.intlWrapper).toConstantValue(new IntlWrapper());
+
   return container;
 }
 
@@ -197,7 +204,8 @@ export const createGlobalDependencies = (container: Container) => ({
   apiKycService: container.get<KycApi>(symbols.apiKycService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
+
+  intlWrapper: container.get<IntlWrapper>(symbols.intlWrapper),
 });
 
-const globalDependencies = (false as true) && createGlobalDependencies(new Container());
-export type TGlobalDependencies = typeof globalDependencies;
+export type TGlobalDependencies = ReturnType<typeof createGlobalDependencies>;

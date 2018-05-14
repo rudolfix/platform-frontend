@@ -16,8 +16,8 @@ import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
 import { neuCall } from "../sagas";
-import { selectIsLightWallet, selectIsUnlocked } from "../web3/reducer";
 import { unlockWallet } from "../web3/sagas";
+import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
 import { WalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage } from "./errors";
 import { selectIsSigning } from "./reducer";
@@ -117,7 +117,7 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       if (isLightWallet) {
         yield call(unlockLightWallet);
       }
-      break;
+      return yield effect;
     } catch (e) {
       yield effects.put(
         actions.signMessageModal.signingError(mapSignMessageErrorToErrorMessage(e)),
@@ -126,7 +126,6 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       yield delay(500);
     }
   }
-  return yield effect;
 }
 
 export function* accessWalletAndRunEffect(

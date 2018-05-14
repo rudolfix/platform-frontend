@@ -1,4 +1,5 @@
 import { settingsActions } from "./settings/actions";
+import { verifyEmailActions } from "./verifyEmailWidget/actions";
 
 import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
@@ -19,6 +20,7 @@ import { web3Actions } from "./web3/actions";
 export const actions = {
   dashboard: dashboardActions,
   settings: settingsActions,
+  verifyEmail: verifyEmailActions,
   genericModal: genericModalActions,
   signMessageModal: accessWalletActions,
   init: initActions,
@@ -38,6 +40,7 @@ export const actions = {
  */
 export const allActions = {
   ...dashboardActions,
+  ...verifyEmailActions,
   ...settingsActions,
   ...genericModalActions,
   ...accessWalletActions,

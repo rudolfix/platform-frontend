@@ -1,0 +1,94 @@
+// sass-lint:disable nesting-depth
+@import "../../styles/neufund-theme";
+
+.news-widget {
+  display: flex;
+  flex-direction: column;
+  padding: px-to-rem(20px) px-to-rem(14px);
+
+  &:global(.is-editable) {
+    .news-single {
+      &::after {
+        content: "";
+      }
+
+      &:hover {
+        background-color: $neu-pale-blue;
+      }
+    }
+  }
+
+  :global(.button) {
+    margin-top: px-to-rem(20px);
+    width: 100%;
+  }
+}
+
+.content-wrapper {
+  margin-top: px-to-rem(30px);
+}
+
+.news-single {
+  $bg-color: rgba($neu-almost-black, .1);
+
+  padding: px-to-rem(14px);
+  width: calc(100% + #{px-to-rem(12px)});
+  margin-left: px-to-rem(-6px);
+  margin-right: px-to-rem(-6px);
+  display: flex;
+  min-height: px-to-rem(56px);
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    transition: 100ms ease-out background-color;
+
+    :global(.inline-icon) {
+      opacity: 1;
+    }
+  }
+
+  + .news-single {
+    position: relative;
+    margin-top: px-to-rem(7px);
+
+    &::before {
+      content: "";
+      width: 100%;
+      height: 1px;
+      background-color: $bg-color;
+      position: absolute;
+      top: px-to-rem(-3px);
+      left: 0;
+    }
+  }
+
+  &:last-of-type {
+    &::after {
+      width: 100%;
+      height: 1px;
+      background-color: $bg-color;
+      position: absolute;
+      bottom: px-to-rem(-3px);
+      left: 0;
+    }
+  }
+
+  :global(.inline-icon) {
+    opacity: 0;
+    flex-shrink: 0;
+    width: 12px;
+    cursor: pointer;
+    color: $neu-cloudy-blue;
+    transition: 150ms ease-out color;
+    margin-left: px-to-rem(12px);
+
+    &:hover {
+      color: $neu-red;
+    }
+  }
+
+  a {
+    margin-right: auto;
+  }
+}

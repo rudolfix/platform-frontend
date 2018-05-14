@@ -4,11 +4,13 @@ import { spy } from "sinon";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
+import { Neumark } from "../../../lib/contracts/Neumark";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import {
   ILedgerWalletMetadata,
   TWalletMetadata,
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { ContractsService } from "../../../lib/web3/ContractsService";
 import {
   IDerivationPathToAddress,
   LedgerNotAvailableError,
@@ -69,7 +71,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
 
       expect(mockDispatch).to.be.calledWithExactly(
-        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S is not available"),
       );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
@@ -93,9 +95,14 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         "44'/60'/0'/1": "0x131213123123",
         "44'/60'/0'/2": "0xab2245c",
       };
-      const expectedAccountsToBalances: Dictionary<number> = {
+      const expectedAccountsToBalancesETH: Dictionary<number> = {
         "0x131213123123": 4,
         "0xab2245c": 15,
+      };
+
+      const expectedAccountsToBalancesNEU: Dictionary<number> = {
+        "0x131213123123": 40,
+        "0xab2245c": 150,
       };
 
       const dispatchMock = spy();
@@ -106,7 +113,14 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         internalWeb3Adapter: createMock(Web3Adapter, {
           getBalance: (address: string) =>
-            Promise.resolve(new BigNumber(expectedAccountsToBalances[address])),
+            Promise.resolve(new BigNumber(expectedAccountsToBalancesETH[address])),
+        }),
+      });
+
+      const contractsMock = createMock(ContractsService, {
+        neumarkContract: createMock(Neumark, {
+          balanceOf: (address: string) =>
+            Promise.resolve(new BigNumber(expectedAccountsToBalancesNEU[address])),
         }),
       });
 
@@ -115,6 +129,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         getStateMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
+        contractsMock,
       );
 
       expect(
@@ -129,14 +144,22 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           [
             {
               address: expectedAccounts["44'/60'/0'/1"],
-              balanceETH: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/1"]].toString(),
-              balanceNEU: "0",
+              balanceETH: expectedAccountsToBalancesETH[
+                expectedAccounts["44'/60'/0'/1"]
+              ].toString(),
+              balanceNEU: expectedAccountsToBalancesNEU[
+                expectedAccounts["44'/60'/0'/1"]
+              ].toString(),
               derivationPath: "44'/60'/0'/1",
             },
             {
               address: expectedAccounts["44'/60'/0'/2"],
-              balanceETH: expectedAccountsToBalances[expectedAccounts["44'/60'/0'/2"]].toString(),
-              balanceNEU: "0",
+              balanceETH: expectedAccountsToBalancesETH[
+                expectedAccounts["44'/60'/0'/2"]
+              ].toString(),
+              balanceNEU: expectedAccountsToBalancesNEU[
+                expectedAccounts["44'/60'/0'/2"]
+              ].toString(),
               derivationPath: "44'/60'/0'/2",
             },
           ],
@@ -328,7 +351,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError("Nano Ledger S is not available"),
       );
     });
   });

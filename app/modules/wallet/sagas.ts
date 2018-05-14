@@ -1,4 +1,4 @@
-import promiseAll = require("promise-all");
+import * as promiseAll from "promise-all";
 
 import BigNumber from "bignumber.js";
 import { fork, put, select } from "redux-saga/effects";
@@ -8,7 +8,7 @@ import { EthereumAddress } from "../../types";
 import { actions } from "../actions";
 import { numericValuesToString } from "../contracts/utils";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { selectEthereumAddress } from "../web3/reducer";
+import { selectEthereumAddress } from "../web3/selectors";
 import { IWalletStateData } from "./reducer";
 import { selectIsLoaded } from "./selectors";
 

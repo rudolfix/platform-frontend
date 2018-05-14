@@ -15,6 +15,8 @@ import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 /* tslint:enable: no-submodule-imports */
 
+import { FormattedMessage } from "react-intl";
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import * as styles from "./BackupSeedVerify.module.scss";
 
 export const WORDS_TO_VERIFY = 4;
@@ -44,13 +46,15 @@ const getRandomNumbers = (numbers: number, range: number): number[] => {
   return arr.sort((a, b) => a - b);
 };
 
-export class BackupSeedVerify extends React.Component<
-  IBackupSeedVerifyProps,
+export const BackupSeedVerifyComponent = class extends React.Component<
+  IBackupSeedVerifyProps & IIntlProps,
   IBackupSeedVerifyState
 > {
-  constructor(props: IBackupSeedVerifyProps) {
-    super(props);
+  displayName = "BackupSeedVerify";
+  private formatIntlMessage = this.props.intl.formatIntlMessage;
 
+  constructor(props: IBackupSeedVerifyProps & IIntlProps) {
+    super(props);
     const wordsToCheck = getRandomNumbers(WORDS_TO_VERIFY, props.words.length);
 
     this.state = {
@@ -105,12 +109,12 @@ export class BackupSeedVerify extends React.Component<
     <Select
       options={wordsOptions}
       simpleValue
-      matchPos="start"
-      matchProp="value"
+      matchPos={this.formatIntlMessage("settings.backup-seed-verify.start")}
+      matchProp={this.formatIntlMessage("settings.backup-seed-verify.value")}
       value={this.state.verificationWords[wordOnPageNumber].word}
       onChange={this.updateValueFactory(wordOnPageNumber)}
-      placeholder="enter word"
-      noResultsText="no matching word"
+      placeholder={this.formatIntlMessage("settings.backup-seed-verify.enter-word")}
+      noResultsText={this.formatIntlMessage("settings.backup-seed-verify.no-matching-words")}
       className={this.getValidationStyle(wordOnPageNumber)}
     />
   );
@@ -144,7 +148,7 @@ export class BackupSeedVerify extends React.Component<
               data-test-id="seed-verify-invalid-msg"
               className={styles.placeholderHeight}
             >
-              Some words you entered are not correct. Please re-check ones marked with orange color.
+              <FormattedMessage id="settings.backup-seed-verify.recheck-words-message" />
             </WarningAlert>
           </Row>
         )}
@@ -152,7 +156,7 @@ export class BackupSeedVerify extends React.Component<
           <Row className="my-4 text-center">
             <Col className={styles.placeholderHeight}>
               <Button data-test-id="seed-verify-button-next" onClick={this.props.onNext}>
-                continue
+                <FormattedMessage id="form.button.continue" />
               </Button>
             </Col>
           </Row>
@@ -171,11 +175,13 @@ export class BackupSeedVerify extends React.Component<
               svgIcon={arrowLeft}
               onClick={this.props.onBack}
             >
-              Back
+              <FormattedMessage id="form.button.back" />
             </Button>
           </Col>
         </Row>
       </>
     );
   }
-}
+};
+
+export const BackupSeedVerify = injectIntlHelpers(BackupSeedVerifyComponent);

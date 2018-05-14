@@ -5,9 +5,11 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
-import { ensurePermissionsArePresent, updateUser } from "../auth/sagas";
+import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { selectWalletType } from "../web3/selectors";
+import { WalletType } from "../web3/types";
 import { actions } from "./../actions";
 
 export function* addNewEmail(
@@ -18,19 +20,42 @@ export function* addNewEmail(
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
+  const walletType = yield select((s: IAppState) => selectWalletType(s.web3));
 
+  let addEmailMessage;
+
+  //TODO: Add translations
   try {
+    switch (walletType) {
+      case WalletType.BROWSER:
+        addEmailMessage = "Please confirm on Metamask if the email address is correct";
+        break;
+      case WalletType.LEDGER:
+        addEmailMessage = "Please confirm on your ledger if the email address is correct";
+        break;
+      case WalletType.LIGHT:
+        addEmailMessage =
+          "Please confirm through your light wallet if the email address is correct.";
+        break;
+      default:
+        throw new Error("Wrong wallet type");
+    }
+
+    yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Change email",
-      "Confirm changing your email.",
+      "Add email",
+      addEmailMessage,
     );
 
     yield effects.call(updateUser, { ...user, new_email: email });
     notificationCenter.info("New Email added");
   } catch {
-    notificationCenter.error("Failed to change email");
+    yield effects.call(loadUser);
+    notificationCenter.error("Failed to send email");
+  } finally {
+    yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
   }
 }
 
@@ -49,9 +74,10 @@ export function* resendEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Resend email",
+      "Email Confirmation",
       "Confirm resending activation email.",
     );
+    //TODO: Add translations
     yield effects.call(updateUser, { ...user, new_email: email });
     notificationCenter.info("Email successfully resent");
   } catch {
@@ -62,12 +88,13 @@ export function* resendEmail(
 export function* loadSeedOrReturnToSettings(): Iterator<any> {
   // unlock wallet
   try {
+    //TODO: Add translations
     const signEffect = put(actions.web3.fetchSeedFromWallet());
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
-      "Access seed",
-      "Please confirm to access your seed.",
+      "Access recovery phrase",
+      "Please confirm to access your recovery phrase.",
     );
   } catch {
     yield put(actions.routing.goToSettings());

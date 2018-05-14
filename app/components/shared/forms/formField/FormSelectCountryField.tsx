@@ -17,7 +17,7 @@ const DISABLED_VALUES = {
 };
 
 const VALUES = {
-  NONE_KEY: "-Please select-",
+  NONE_KEY: "Please select",
   AF: "Afghanistan",
   AX: "ÅLand Islands",
   AL: "Albania",

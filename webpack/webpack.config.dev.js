@@ -113,12 +113,6 @@ module.exports = merge(configCommon, {
             test: /\.(tsx?)$/,
             use: [
               {
-                loader: "babel-loader",
-                options: {
-                  plugins: ["react-hot-loader/babel"],
-                },
-              },
-              {
                 loader: "awesome-typescript-loader",
                 options: {
                   configFileName: "./tsconfig.dev.json",

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Modal, Row } from "reactstrap";
 
 import { actions } from "../../modules/actions";
@@ -8,13 +9,13 @@ import {
   selectIsOpen,
 } from "../../modules/genericModal/reducer";
 import { appConnect } from "../../store";
-import { ModalComponentBody } from "./ModalComponentBody";
 
-import * as styles from "./GenericModal.module.scss";
+import { Button } from "../shared/Buttons";
+import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as successIcon from "../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../assets/img/notifications/warning.svg";
-import { Button } from "../shared/Buttons";
+import * as styles from "./GenericModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
@@ -50,7 +51,9 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
         </Row>
 
         <Row className="mb-5 justify-content-center">
-          <Button onClick={onDismiss}>OK</Button>
+          <Button onClick={onDismiss}>
+            <FormattedMessage id="modal.generic.button.dismiss" />
+          </Button>
         </Row>
       </ModalComponentBody>
     </Modal>

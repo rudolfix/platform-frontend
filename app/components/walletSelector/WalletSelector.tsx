@@ -53,7 +53,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
           <Row className="justify-content-center mb-4 mt-4">
             <Tabs
               tabs={compact([
-                {
+                userType === "investor" && {
                   path: `${rootPath}/light`,
                   text: isLoginRoute
                     ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")
@@ -68,7 +68,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
 
                   dataTestId: "wallet-selector-browser",
                 },
-                userType === "investor" && {
+                (userType === "issuer" || userType === "investor") && {
                   path: `${rootPath}/ledger`,
                   text: isLoginRoute
                     ? formatIntlMessage("wallet-selector.tabs.ledger-login")

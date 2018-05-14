@@ -412,9 +412,7 @@ function* uploadBeneficialOwnerFile(
       file,
     );
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false, result.body));
-    notificationCenter.info(
-      formatIntlMessage(formatIntlMessage("module.kyc.sagas.successfully-uploaded")),
-    );
+    notificationCenter.info(formatIntlMessage("module.kyc.sagas.successfully-uploaded"));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false));
     notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem-uploading"));

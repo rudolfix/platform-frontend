@@ -10,6 +10,7 @@ import { ISocialProfile } from "../../shared/SocialProfilesEditor";
 import { LinkColumns } from "./LinkColumns";
 import { RowLabeledDataSets } from "./RowLabeledDataSets";
 
+import { FormattedMessage } from "react-intl";
 import * as styles from "./CompanyDetails.module.scss";
 
 interface IProps {
@@ -31,31 +32,37 @@ export const CompanyDetails: React.SFC<IProps> = props => {
         <RowLabeledDataSets
           dataSets={[
             {
-              title: "location",
+              title: <FormattedMessage id="components.eto.dashboard.company-details.location" />,
               content: props.location,
             },
             {
-              title: "Founded date",
+              title: (
+                <FormattedMessage id="components.eto.dashboard.company-details.founded-date" />
+              ),
               content: props.foundedDate,
             },
             {
-              title: "Founders",
+              title: <FormattedMessage id="components.eto.dashboard.company-details.founders" />,
               content: props.founders,
             },
             {
-              title: "Legal Form",
+              title: <FormattedMessage id="components.eto.dashboard.company-details.legal-form" />,
               content: props.legalForm,
             },
             {
-              title: "Number of employees",
+              title: (
+                <FormattedMessage id="components.eto.dashboard.company-details.number-of-employees" />
+              ),
               content: props.employeesNumber,
             },
             {
-              title: "Vat",
+              title: <FormattedMessage id="components.eto.dashboard.company-details.vat" />,
               content: props.vat,
             },
             {
-              title: "Registration",
+              title: (
+                <FormattedMessage id="components.eto.dashboard.company-details.registration" />
+              ),
               content: props.registration,
             },
           ]}

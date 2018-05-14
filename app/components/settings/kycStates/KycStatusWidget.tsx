@@ -96,9 +96,9 @@ export const KycStatusWidgetComponent: React.SFC<IProps> = ({
         </div>
       ) : error ? (
         <div className={styles.content}>
-        <WarningAlert>
-          <FormattedMessage id="settings.kyc-widget.error" />
-        </WarningAlert>
+          <WarningAlert>
+            <FormattedMessage id="settings.kyc-widget.error" />
+          </WarningAlert>
         </div>
       ) : (
         <>

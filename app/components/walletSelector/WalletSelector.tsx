@@ -68,7 +68,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
 
                   dataTestId: "wallet-selector-browser",
                 },
-                (userType === "issuer" || userType === "investor") && {
+                {
                   path: `${rootPath}/ledger`,
                   text: isLoginRoute
                     ? formatIntlMessage("wallet-selector.tabs.ledger-login")

@@ -6,7 +6,7 @@ import { Col, FormGroup, Input, InputGroup, InputGroupAddon, Label, Row } from "
 import { InputType } from "../../../../types";
 
 import { isNonValid, isValid } from "./FormField";
-import * as styles from "./FormField.module.scss";
+import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
   label?: string;

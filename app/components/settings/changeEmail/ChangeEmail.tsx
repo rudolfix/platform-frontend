@@ -26,8 +26,6 @@ const ChangeEmailForm = injectIntlHelpers<FormikProps<IFormValues>>(
       <FormField
         type="email"
         placeholder={formatIntlMessage("form.placeholder.enter-new-email")}
-        touched={props.touched}
-        errors={props.errors}
         name={"email"}
       />
       <div className="text-center">

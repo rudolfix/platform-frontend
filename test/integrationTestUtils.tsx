@@ -35,6 +35,8 @@ import { createMock, tid } from "./testUtils";
 import { delay } from "bluebird";
 import { globalFakeClock } from "./setupTestsHooks";
 import { WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL } from "../app/lib/web3/Web3Manager";
+import { IntlWrapper } from "../app/lib/intl/IntlWrapper";
+import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 

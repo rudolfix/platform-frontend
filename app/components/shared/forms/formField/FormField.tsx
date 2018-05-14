@@ -17,8 +17,6 @@ import * as styles from "./FormStyles.module.scss";
 interface IFieldGroup {
   label?: string;
   placeholder?: string;
-  touched?: { [name: string]: boolean }; // deprecated, remove from other forms
-  errors?: { [name: string]: string }; // deprecated, remove from other forms
   type?: InputType;
   prefix?: string;
   suffix?: string;
@@ -40,8 +38,8 @@ export const isValid = (
 };
 
 export const isNonValid = (
-  touched: { [name: string]: boolean },
-  errors: { [name: string]: string },
+  errors: FormikErrors<any>,
+  touched: FormikTouched<any>,
   name: string,
 ): boolean | undefined => {
   const argument = isValid(touched, errors, name);

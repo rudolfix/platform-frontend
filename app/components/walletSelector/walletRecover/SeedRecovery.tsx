@@ -1,3 +1,7 @@
+import "react-select/dist/react-select.css";
+import "react-virtualized-select/styles.css";
+import "react-virtualized/styles.css";
+
 import * as Mnemonic from "bitcore-mnemonic";
 import { range } from "lodash";
 import * as React from "react";
@@ -7,12 +11,6 @@ import { Col, Row } from "reactstrap";
 
 import { Button } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
-
-/* tslint:disable: no-submodule-imports */
-import "react-select/dist/react-select.css";
-import "react-virtualized-select/styles.css";
-import "react-virtualized/styles.css";
-/* tslint:enable: no-submodule-imports */
 
 export const SEED_LENGTH = 24;
 const WORDS_PER_VIEW = 4;
@@ -51,17 +49,19 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
   };
 
   generateSelect = (wordNumber: number): React.ReactNode => (
-    <Select
-      options={wordsOptions}
-      simpleValue
-      clearable={false}
-      matchPos="start"
-      matchProp="value"
-      value={this.state.words[wordNumber]}
-      onChange={this.updateValueFactory(wordNumber)}
-      placeholder={(wordNumber + 1).toString(10) + ". Word"}
-      noResultsText="No matching word"
-    />
+    <div data-test-id={`seed-recovery-word-${wordNumber}`}>
+      <Select
+        options={wordsOptions}
+        simpleValue
+        clearable={false}
+        matchPos="start"
+        matchProp="value"
+        value={this.state.words[wordNumber]}
+        onChange={this.updateValueFactory(wordNumber)}
+        placeholder={(wordNumber + 1).toString(10) + ". Word"}
+        noResultsText="No matching word"
+      />
+    </div>
   );
 
   handleNextView = () => {

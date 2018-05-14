@@ -53,7 +53,8 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
           <Row className="justify-content-center mb-4 mt-4">
             <Tabs
               tabs={compact([
-                userType === "investor" && {
+                (userType === "investor" ||
+                  process.env.NF_ISSUERS_CAN_LOGIN_WITH_NEUFUND_WALLET === "1") && {
                   path: `${rootPath}/light`,
                   text: isLoginRoute
                     ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")

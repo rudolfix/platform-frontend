@@ -11,4 +11,5 @@ Code disabled by feature flag will be entirely stripped from build.
 ```
 NF_FEATURE_EMAIL_CHANGE_ENABLED
 NF_USER_INFO_COMPONENT_ENABLED
+NF_ISSUERS_CAN_LOGIN_WITH_NEUFUND_WALLET
 ```

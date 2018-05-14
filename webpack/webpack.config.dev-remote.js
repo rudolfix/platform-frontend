@@ -14,8 +14,12 @@ const localDevConfig = merge(devConfig, {
   devServer: {
     proxy: {
       "/node": {
-        target: "http://localhost:8545",
+        target: "https://neufund.org/nodes/mainnet",
+        changeOrigin: true,
         pathRewrite: { "^/node": "" },
+        headers: {
+          origin: "https://platform.neufund.io",
+        },
       },
       "/api/signature": {
         target: backendUrl + "signature",

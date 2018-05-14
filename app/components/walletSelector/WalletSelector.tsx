@@ -15,7 +15,7 @@ import {
 import { appConnect } from "../../store";
 import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../utils/OnEnterAction";
-import { appRoutes } from "../AppRouter";
+import { appRoutes } from "../appRoutes";
 import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
 import { Tabs } from "../shared/Tabs";
 import { WalletMessageSigner } from "./WalletMessageSigner";

@@ -7,7 +7,7 @@ import { RouterState } from "react-router-redux";
 import { TUserType } from "../../../lib/api/users/interfaces";
 import { selectIsAuthorized, selectUserType } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-import { appRoutes } from "../../AppRouter";
+import { appRoutes } from "../../appRoutes";
 import { loginWalletRoutes } from "../../walletSelector/walletRoutes";
 
 interface IStateProps {

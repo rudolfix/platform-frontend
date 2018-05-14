@@ -4,8 +4,8 @@ import { spy } from "sinon";
 import { invariant } from "../app/utils/invariant";
 
 // helper to generate quickly selector for data-test-ids
-export function tid(id: string): string {
-  return `[data-test-id="${id}"]`;
+export function tid(id: string, rest?: string): string {
+  return `[data-test-id="${id}"]` + (rest ? ` ${rest}` : "");
 }
 
 export interface IMockFns<T> {

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
+
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 

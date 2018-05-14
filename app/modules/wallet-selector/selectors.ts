@@ -1,5 +1,5 @@
 import { RouterState } from "react-router-redux";
-import { appRoutes } from "../../components/AppRouter";
+import { appRoutes } from "../../components/appRoutes";
 import { TUserType } from "../../lib/api/users/interfaces";
 
 export const selectUrlUserType = (router: RouterState): TUserType =>

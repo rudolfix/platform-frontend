@@ -6,3 +6,4 @@ package.json
 coverage
 .awcache
 intl
+e2e

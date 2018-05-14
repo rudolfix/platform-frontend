@@ -34,7 +34,12 @@ export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> =
     </Col>
     <Row className="justify-content-center mb-5 mt-5 pt-4">
       <Col xs={6} sm={5} md={4} lg={3}>
-        <Button onClick={() => goToDashboard(userType)}>GO TO DASHBOARD</Button>
+        <Button
+          onClick={() => goToDashboard(userType)}
+          data-test-id="recovery-success-btn-go-dashboard"
+        >
+          GO TO DASHBOARD
+        </Button>
       </Col>
     </Row>
     <Row className="justify-content-end mt-4 pt-4 align-bottom" noGutters>

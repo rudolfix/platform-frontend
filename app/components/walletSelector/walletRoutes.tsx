@@ -1,4 +1,4 @@
-import { appRoutes } from "../AppRouter";
+import { appRoutes } from "../appRoutes";
 
 const parentRegisterRoutePath = appRoutes.register;
 export const walletRegisterRoutes = {

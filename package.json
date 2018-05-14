@@ -9,8 +9,8 @@
     "@babel/core": "^7.0.0-beta.46",
     "@babel/preset-react": "^7.0.0-beta.46",
     "@babel/preset-typescript": "^7.0.0-beta.46",
-    "@cypress/webpack-preprocessor": "1",
     "@babel/register": "^7.0.0-beta.46",
+    "@cypress/webpack-preprocessor": "1",
     "@storybook/addon-actions": "^3.4.3",
     "@storybook/react": "^3.4.3",
     "@types/bignumber.js": "^5.0.0",
@@ -85,6 +85,7 @@
     "sass-lint": "^1.12.1",
     "sass-loader": "^6.0.6",
     "storybook-addon-intl": "^2.3.0",
+    "storybook-chrome-screenshot": "1.0.1",
     "storybook-react-router": "^1.0.1",
     "style-loader": "^0.19.1",
     "ts-node": "^4.1.0",
@@ -122,7 +123,8 @@
     "test:node-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require ./test/setupTests.ts '**/*.spec.node.ts?(x)'",
     "test:e2e": "./e2e/setup-e2e.sh",
     "test:e2e:cypress": "cypress run",
-    "test": "yarn lint && yarn test:browser && yarn test:node && test:e2e",
+    "test:e2e:dev": "cypress open",
+    "test": "yarn lint && yarn test:browser && yarn test:node && yarn test:e2e",
     "test:coverage": "yarn lint && yarn test:browser-coverage && yarn test:node && yarn test:e2e",
     "test:fix": "yarn lint:fix && yarn test:browser && yarn test:node",
     "codecov": "codecov",
@@ -130,8 +132,8 @@
     "prepare": "patch-package && yarn generate:contracts",
     "intl:extract": "./scripts/extract-intl-messages.sh",
     "intl:extract:check": "./scripts/extract-intl-messages.sh --check",
-    "cypress:open": "cypress open",
-    "storybook": "start-storybook -p 9001 -c .storybook -s ./app/assets"
+    "storybook": "start-storybook -p 9001 -c .storybook -s ./app/assets",
+    "storybook:screenshots": "storybook-chrome-screenshot -p 9001 -c .storybook --debug"
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.0.0-beta.46",

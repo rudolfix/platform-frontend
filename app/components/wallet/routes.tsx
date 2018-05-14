@@ -1,4 +1,4 @@
-import { appRoutes } from "../AppRouter";
+import { appRoutes } from "../appRoutes";
 
 export const parentRoutePath = appRoutes.wallet;
 

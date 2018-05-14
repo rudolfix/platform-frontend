@@ -3,7 +3,7 @@ import { Redirect, Route, RouteProps } from "react-router-dom";
 
 import { selectIsAuthorized } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-import { appRoutes } from "../../AppRouter";
+import { appRoutes } from "../../appRoutes";
 
 interface IStateProps {
   isAuthorized: boolean;

@@ -22,8 +22,8 @@ describe("<MyWalletWidget />", () => {
 
     const component = shallow(<MyWalletWidgetComponentBody {...props} />);
 
-    expect(component.find(tid("euro-widget"))).to.have.length(1);
-    expect(component.find(tid("eth-widget"))).to.have.length(1);
-    expect(component.find(tid("total-widget"))).to.have.length(1);
+    expect(component.find(tid("my-wallet-widget-eur-token"))).to.have.length(1);
+    expect(component.find(tid("my-wallet-widget-eth-token"))).to.have.length(1);
+    expect(component.find(tid("my-wallet-widget-total"))).to.have.length(1);
   });
 });

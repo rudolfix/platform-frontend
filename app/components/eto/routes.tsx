@@ -1,4 +1,4 @@
-import { appRoutes } from "../AppRouter";
+import { appRoutes } from "../appRoutes";
 
 const parentRoutePath = appRoutes.eto;
 const registrationPath = parentRoutePath + "/registration";

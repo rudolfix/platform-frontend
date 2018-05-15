@@ -40,6 +40,8 @@ export class FormFieldDate extends React.Component<IProps> {
     year: "",
   };
 
+  monthInputRef = React.createRef();
+
   onChange = (
     type: "year" | "month" | "day",
     e: React.FormEvent<HTMLInputElement>,
@@ -47,6 +49,7 @@ export class FormFieldDate extends React.Component<IProps> {
   ) => {
     this.cache[type] = e.currentTarget.value;
     e.currentTarget.value = `${this.cache.year}-${this.cache.month}-${this.cache.day}`;
+
     handler(e);
   };
 
@@ -77,6 +80,7 @@ export class FormFieldDate extends React.Component<IProps> {
                     type="tel"
                     placeholder="DD"
                     valid={valid}
+                    maxLength={2}
                   />
                 </div>
               )}
@@ -93,6 +97,7 @@ export class FormFieldDate extends React.Component<IProps> {
                     type="tel"
                     placeholder="MM"
                     valid={valid}
+                    maxLength={2}
                   />
                 </div>
               )}
@@ -110,6 +115,7 @@ export class FormFieldDate extends React.Component<IProps> {
                     type="tel"
                     placeholder="YYYY"
                     valid={valid}
+                    maxLength={4}
                   />
                 </div>
               )}

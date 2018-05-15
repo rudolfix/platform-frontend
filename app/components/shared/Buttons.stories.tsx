@@ -34,7 +34,7 @@ storiesOf("Button", module)
     </>
   ))
   .add("white theme", () => (
-    <div style={{ "background-color": "black", padding: "20px" }}>
+    <div >
       <Button theme="t-white">primary</Button>
       <br />
       <Button theme="t-white" disabled>

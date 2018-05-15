@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
@@ -47,7 +47,6 @@ export const EtoRaisedAmount: React.SFC<IProps> = ({
       <Row>
         <Col>
           <div className={styles.overview}>
-
             <div className={styles.overviewMoney}>
               <div className={stylesCommon.header}>
                 <FormattedMessage id="eto.overview.raised-amount.total" />{" "}
@@ -73,7 +72,6 @@ export const EtoRaisedAmount: React.SFC<IProps> = ({
               <PercentageIndicatorBar percent={76} />
               <Money className={styles.total} value={"1234567" + "0".repeat(14)} currency="eur" />
             </div>
-
           </div>
           <HorizontalLine className="my-3" />
           <div>

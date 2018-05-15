@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { PanelWhite } from "../shared/PanelWhite";
 import { SectionHeader } from "../shared/SectionHeader";
 import { EtoFundsDistribution } from "./overview/EtoFundsDistribution";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus";
@@ -41,11 +40,12 @@ export const EtoOverview: React.SFC = () => (
     <Row className="py-4">
       <Col>
         <EtoOverviewStatus
-        cap="HARD CAP: 750M EDT"
-        duration="22.02.2018 to 22.5.2019"
-        tokensSupply="50000000"
-        tokenName="ABC"
-        tokenImg={tokenIcon} />
+          cap="HARD CAP: 750M EDT"
+          duration="22.02.2018 to 22.5.2019"
+          tokensSupply="50000000"
+          tokenName="ABC"
+          tokenImg={tokenIcon}
+        />
       </Col>
     </Row>
 

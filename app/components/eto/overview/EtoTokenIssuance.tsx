@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";

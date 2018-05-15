@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 import Counter from "../../shared/Counter";
 import { HorizontalLine } from "../../shared/HorizontalLine";
@@ -20,7 +20,7 @@ interface IProps {
   tokenImg: string;
 }
 
-export const EtoOverviewStatus: React.SFC<IProps> = (props) => (
+export const EtoOverviewStatus: React.SFC<IProps> = props => (
   <PanelWhite>
     <div className={stylesCommon.container}>
       <Row>
@@ -45,25 +45,19 @@ export const EtoOverviewStatus: React.SFC<IProps> = (props) => (
                 <strong className={cn(stylesCommon.label, "mb-1")}>
                   <FormattedMessage id="eto.overview.overview-status.list.declared-cap" />
                 </strong>
-                <span>
-                  {props.cap}
-                </span>
+                <span>{props.cap}</span>
               </div>
               <div className={styles.details}>
                 <strong className={cn(stylesCommon.label, "mb-1")}>
                   <FormattedMessage id="eto.overview.overview-status.list.declared-duration" />
                 </strong>
-                <span>
-                  {props.duration}
-                </span>
+                <span>{props.duration}</span>
               </div>
               <div className={styles.details}>
                 <strong className={cn(stylesCommon.label, "mb-1")}>
                   <FormattedMessage id="eto.overview.overview-status.list.tokens-supply" />
                 </strong>
-                <span>
-                  {props.tokensSupply}
-                </span>
+                <span>{props.tokensSupply}</span>
               </div>
               <div className={styles.details}>
                 <strong className={cn(stylesCommon.label, "mb-1")}>

@@ -39,16 +39,16 @@ export const EtoFundsDistribution: React.SFC<IProps> = ({
     <div className={stylesCommon.container}>
       <Row>
         <Col>
+          <strong className={stylesCommon.label}>
+            <FormattedMessage id="eto.overview.funds-distribution.number-of-investors" />
+          </strong>
+          {numberOfInvestors}
+          <div>
             <strong className={stylesCommon.label}>
-              <FormattedMessage id="eto.overview.funds-distribution.number-of-investors" />
+              <FormattedMessage id="eto.overview.funds-distribution.number-of-transactions" />
             </strong>
-              {numberOfInvestors}
-            <div>
-              <strong className={stylesCommon.label}>
-                <FormattedMessage id="eto.overview.funds-distribution.number-of-transactions" />
-              </strong>
-              {numberOfTransactions}
-            </div>
+            {numberOfTransactions}
+          </div>
         </Col>
       </Row>
       <HorizontalLine className="my-3" />

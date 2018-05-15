@@ -39,20 +39,27 @@ export class LedgerWallet implements IPersonalWallet {
   public readonly walletType = WalletType.LEDGER;
   public readonly walletSubType = WalletSubType.UNKNOWN; // in future we may detect if it's pure ledger or Neukey
   public readonly signerType = SignerType.ETH_SIGN;
+  waitingForCommand: boolean;
 
   public constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddress,
     private readonly ledgerInstance: any | undefined,
     public readonly derivationPath: string,
-  ) {}
+  ) {
+    this.waitingForCommand = false;
+  }
 
   public async testConnection(): Promise<boolean> {
+    if (this.waitingForCommand) {
+      return true;
+    }
     return testConnection(this.ledgerInstance);
   }
 
   public async signMessage(data: string): Promise<string> {
     try {
+      this.waitingForCommand = true;
       return await noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
         return await this.web3Adapter.ethSign(this.ethereumAddress, data);
       });
@@ -63,6 +70,8 @@ export class LedgerWallet implements IPersonalWallet {
       } else {
         throw ledgerError;
       }
+    } finally {
+      this.waitingForCommand = false;
     }
   }
 

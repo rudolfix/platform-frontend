@@ -1,6 +1,6 @@
 import { tid } from "../../../../test/testUtils";
 
-const LONG_TIMEOUT = 5000;
+const LONG_TIMEOUT = 10000;
 
 describe("WalletSelector > Light", () => {
   it("should be able to create an account", () => {

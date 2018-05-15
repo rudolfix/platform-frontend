@@ -9,13 +9,13 @@ run_backend() {
     echo "Cloning backend repo..."
     if [[ -z "${BACKEND_DEPLOYMENT_KEY}" ]]; then
         if [ ! -d "./platform-backend" ]; then
-            git clone git@github.com:Neufund/platform-backend.git
+            git clone git@github.com:Neufund/platform-backend.git -b kk/fix-smartcontract-SHA
         fi
     else
         if [ ! -d "./platform-backend" ]; then
             echo "${BACKEND_DEPLOYMENT_KEY}" | base64 -d > "./cert"
             chmod 600 ./cert
-            GIT_SSH_COMMAND='ssh -i ./cert' git clone git@github.com:Neufund/platform-backend.git
+            GIT_SSH_COMMAND='ssh -i ./cert' git clone git@github.com:Neufund/platform-backend.git -b kk/fix-smartcontract-SHA
         fi
     fi
 
@@ -53,8 +53,7 @@ else
     run_frontend
 fi
 
-yarn test:e2e:cypress
-
+yarn test:e2e:cypress:record
 
 if [[ $frontend_pid -ne 0 ]]; then
     echo "Killing frontend server..."

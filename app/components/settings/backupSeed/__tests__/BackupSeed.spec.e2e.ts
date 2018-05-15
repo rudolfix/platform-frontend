@@ -27,7 +27,7 @@ describe("Wallet backup recovery phrase", () => {
         secondSeed.shift();
         const seed = firstSeed.concat(secondSeed);
         cy.get(tid("seed-display-next-link")).click();
-        // seed-verify-random-words
+        cy.exec(`echo SEED: ${seed}`);
         cy.get(tid("seed-verify-random-words")).then(randomWords => {
           const randomEnt = randomWords.text().split(" ");
           randomEnt.pop();
@@ -35,8 +35,9 @@ describe("Wallet backup recovery phrase", () => {
             cy
               .get(tid(`backup-seed-verify-word-${index}`, "input"))
               .type(seed[Number.parseInt(randomEnt[index])], { force: true, timeout: 20 })
+              .wait(1000)
               .type("{enter}", { force: true });
-            cy.wait(100);
+              cy.exec(`echo WORD${index+1}: ${seed[Number.parseInt(randomEnt[index])]}`);
           }
           cy.get(tid("seed-verify-button-next")).click();
           cy.get(tid("generic-modal-dismiss-button")).click();

@@ -9,6 +9,7 @@ export const registerWithLightWallet = () => {
 
   cy.get(tid("wallet-selector-register-button")).click();
 };
+
 describe("Wallet backup recovery phrase", () => {
   it("should register user with light0-wallet", () => {
     registerWithLightWallet();

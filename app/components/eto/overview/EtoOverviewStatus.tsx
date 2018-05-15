@@ -6,11 +6,11 @@ import { Col, Row } from "reactstrap";
 import Counter from "../../shared/Counter";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { PanelWhite } from "../../shared/PanelWhite";
+import { ProjectStatus, TStatus } from "../../shared/ProjectStatus";
+import { EtoTimeline } from "./EtoTimeline";
 
-import { ProjectStatus } from "../../shared/ProjectStatus";
 import * as stylesCommon from "../EtoOverviewCommon.module.scss";
 import * as styles from "./EtoOverviewStatus.module.scss";
-import { EtoTimeline } from "./EtoTimeline";
 
 interface IProps {
   cap: string;
@@ -18,7 +18,16 @@ interface IProps {
   tokensSupply: string;
   tokenName: string;
   tokenImg: string;
+  status: TStatus;
 }
+
+const day = 86400000;
+const etoStartDate = Date.now();
+const bookBuildingEndDate = etoStartDate + 7 * day;
+const whitelistedEndDate = bookBuildingEndDate + 7 * day;
+const publicEndDate = whitelistedEndDate + 7 * day;
+const inSigningEndDate = publicEndDate + 7 * day;
+const etoEndDate = inSigningEndDate + 7 * day;
 
 export const EtoOverviewStatus: React.SFC<IProps> = props => (
   <PanelWhite>
@@ -31,7 +40,7 @@ export const EtoOverviewStatus: React.SFC<IProps> = props => (
                 <strong className={stylesCommon.label}>
                   <FormattedMessage id="eto.overview.overview-status.status-of-your-eto" />
                 </strong>
-                <ProjectStatus status="whitelisted" />
+                <ProjectStatus status={props.status} />
               </div>
               <div className={styles.divided}>
                 <strong className={cn(stylesCommon.label, "mb-2")}>
@@ -70,13 +79,20 @@ export const EtoOverviewStatus: React.SFC<IProps> = props => (
               </div>
             </div>
           </div>
-          <HorizontalLine className="my-3" />
+          <HorizontalLine className="my-3 d-none d-lg-block" />
           <div>
-            <strong>
+            <strong className="d-none d-lg-block">
               <span className={cn(stylesCommon.label, "mb-3")}>
                 <FormattedMessage id="eto.overview.overview-status.time" />
               </span>
-              <EtoTimeline />
+              <EtoTimeline
+                bookBuildingEndDate={bookBuildingEndDate}
+                whitelistedEndDate={whitelistedEndDate}
+                publicEndDate={publicEndDate}
+                inSigningEndDate={inSigningEndDate}
+                etoStartDate={etoStartDate}
+                etoEndDate={etoEndDate}
+                status={props.status}/>
             </strong>
           </div>
         </Col>

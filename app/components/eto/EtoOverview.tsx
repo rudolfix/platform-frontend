@@ -45,6 +45,7 @@ export const EtoOverview: React.SFC = () => (
           tokensSupply="50000000"
           tokenName="ABC"
           tokenImg={tokenIcon}
+          status="book-building"
         />
       </Col>
     </Row>

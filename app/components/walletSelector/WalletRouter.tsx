@@ -2,7 +2,6 @@ import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
 import { SwitchConnected } from "../shared/connectedRouting";
-
 import { WalletBrowser } from "./browser/WalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
 import { WalletLight } from "./light/WalletLight";

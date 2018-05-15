@@ -1,27 +1,3 @@
-export const appRoutes = {
-  verify: "/email-verify",
-
-
-  root: "/",
-
-  register: "/register",
-  registerEto: "/eto/register",
-  login: "/login",
-  loginEto: "/eto/login",
-  recover: "/recover",
-  recoverEto: "/eto/recover",
-
-  kyc: "/kyc",
-  wallet: "/wallet",
-  dashboard: "/dashboard",
-  settings: "/settings",
-  demo: "/demo",
-  eto: "/eto",
-  etoLanding: "/eto-landing",
-
-  etoOverview: "/eto-overview",
-};
-
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -34,6 +10,7 @@ import { Eto } from "./eto/Eto";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 
+import { appRoutes } from "./appRoutes";
 import { emailVerify } from "./emailVerify";
 import { EtoOverview } from "./eto/EtoOverview";
 import { Landing } from "./landing/Landing";
@@ -58,7 +35,6 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.loginEto} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recoverEto} component={WalletRecoverMain} />
 
-
     {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
 
@@ -72,7 +48,11 @@ export const AppRouter: React.SFC = () => (
       issuerComponent={EtoDashboard}
       exact
     />
-    <OnlyAuthorizedRoute path={appRoutes.etoOverview} issuerComponent={EtoOverview} investorComponent={EtoOverview} />
+    <OnlyAuthorizedRoute
+      path={appRoutes.etoOverview}
+      issuerComponent={EtoOverview}
+      investorComponent={EtoOverview}
+    />
     <OnlyAuthorizedRoute
       path={appRoutes.verify}
       investorComponent={emailVerify}

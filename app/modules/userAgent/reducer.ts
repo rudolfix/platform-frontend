@@ -27,5 +27,5 @@ export const browserReducer: AppReducer<IUserAgentState> = (
 };
 
 export function isSupportingLedger(state: IUserAgentState): boolean {
-  return !state.name || state.name === "chrome" || state.name === "firefox";
+  return !state.name || state.name === "chrome";
 }

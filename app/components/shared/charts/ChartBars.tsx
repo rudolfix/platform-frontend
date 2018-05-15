@@ -50,8 +50,7 @@ export const ChartBars: React.SFC<IProps> = ({ data, className, width, height })
   );
 };
 
-
 ChartBars.defaultProps = {
   width: 388,
-  height: 244
-}
+  height: 244,
+};

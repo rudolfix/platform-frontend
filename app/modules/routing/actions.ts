@@ -1,6 +1,6 @@
 import { push } from "react-router-redux";
 
-import { appRoutes } from "../../components/AppRouter";
+import { appRoutes } from "../../components/appRoutes";
 import { kycRoutes } from "../../components/kyc/routes";
 import { walletRoutes } from "../../components/wallet/routes";
 import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";

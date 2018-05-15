@@ -7,7 +7,7 @@ import { selectUserType } from "../../modules/auth/selectors";
 import { selectIsActionRequiredSettings } from "../../modules/notifications/selectors";
 import { appConnect } from "../../store";
 import { invariant } from "../../utils/invariant";
-import { appRoutes } from "../AppRouter";
+import { appRoutes } from "../appRoutes";
 import { InlineIcon } from "../shared/InlineIcon";
 
 import * as iconEdit from "../../assets/img/inline_icons/icon_edit.svg";
@@ -97,6 +97,11 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
 
 const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequiredSettings }) => (
   <div className={styles.menu}>
+    <MenuEntry
+      svgString={iconStats}
+      to={appRoutes.etoOverview}
+      menuName={<FormattedMessage id="menu.overview" />}
+    />
     <MenuEntry
       svgString={iconStats}
       to={appRoutes.dashboard}

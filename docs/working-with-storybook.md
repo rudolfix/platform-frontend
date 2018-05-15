@@ -2,7 +2,7 @@
 
 ## Setup
 
-Use `yarn storybook` to launch Storybook server.
+Use `yarn storybook` to launch Storybook server. Open `http://localhost:9001`.
 
 All files with global setting, plugins and addons are placed in `.storybook` folder.
 

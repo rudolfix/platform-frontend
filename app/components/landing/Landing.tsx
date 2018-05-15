@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
-import { appRoutes } from "../AppRouter";
+import { appRoutes } from "../appRoutes";
 import { Button } from "../shared/Buttons";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 

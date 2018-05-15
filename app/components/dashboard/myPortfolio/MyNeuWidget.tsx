@@ -45,12 +45,23 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
           <Row className="justify-content-md-center ml-3 ml-md-0" noGutters>
             <img src={icon} className={cn(styles.icon, "mr-2")} />
             <h3 className={cn("align-self-end", styles.neu)} data-test-id="balance-neu">
-              <Money value={props.balanceNeu} currency="neu" doNotSeparateThousands />
+              <Money
+                value={props.balanceNeu}
+                currency="neu"
+                doNotSeparateThousands
+                data-test-id="my-neu-widget-neumark-balance"
+              />
             </h3>
           </Row>
           <Col md={12} xs={10} className="text-md-center pl-5 pl-md-0 ml-2">
             <p data-test-id="balance-eur" className={cn(styles.smaller)}>
-              = <Money value={props.balanceEur!} currency="eur" doNotSeparateThousands />
+              ={" "}
+              <Money
+                value={props.balanceEur!}
+                currency="eur"
+                doNotSeparateThousands
+                data-test-id="my-neu-widget-eur-balance"
+              />
             </p>
           </Col>
         </Col>

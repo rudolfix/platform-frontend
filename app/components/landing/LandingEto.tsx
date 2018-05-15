@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { Col, Container, Row } from "reactstrap";
 
 import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
-import { appRoutes } from "../AppRouter";
+import { appRoutes } from "../appRoutes";
 import { CenteredListWithTitle } from "../shared/CenterdListWithTitle";
 import { OffToOnCompany } from "./shared/OffToOnChainCompany";
 import { RegisterCta } from "./shared/RegisterCta";

@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { Button } from "../shared/Buttons";
 import { PanelWhite } from "../shared/PanelWhite";
-import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
+import { IProgressStepper, ProgressStepper } from "../shared/ProgressStepper";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 import * as styles from "./KycPanel.module.scss";
@@ -16,7 +16,7 @@ interface IPropsKycPanel {
   description?: string | React.ReactNode;
 }
 
-export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
+export const KycPanel: React.SFC<IPropsKycPanel & IProgressStepper> = ({
   steps,
   currentStep,
   title,

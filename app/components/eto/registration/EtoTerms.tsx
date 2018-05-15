@@ -1,14 +1,15 @@
-import * as React from "react";
-
 import { Form, FormikProps, withFormik } from "formik";
+import * as React from "react";
+import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
 import { appConnect } from "../../../store";
-
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
-
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -16,12 +17,9 @@ import {
   FormSelectField,
   NONE_KEY,
 } from "../../shared/forms/forms";
-
-import { Link } from "react-router-dom";
-import { Col, Row } from "reactstrap";
-import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { SingleFileUpload } from "../../shared/SingleFileUpload";
+import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
 import * as iconExternalLink from "../../../assets/img/inline_icons/link_out_small.svg";
 
@@ -48,7 +46,7 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
-
+// TODO: Add translations to Labels
 const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
@@ -64,15 +62,17 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
           <FormField label="What is the price a share?" placeholder="€" name="tokenPrice" />
         </div>
         <div className="mb-4">
-          <p>Please use 3 characters and check if this name is available here:</p>
+          <p>
+            <FormattedMessage id="components.eto.registration.eto-terms.use-three-characters" />
+          </p>
           <Link to="#0">
             <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">
-              Etherscan
+              <FormattedMessage id="components.eto.registration.eto-terms.etherscan" />
             </Button>
           </Link>
           <Link to="#0">
             <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">
-              Etherscan
+              <FormattedMessage id="components.eto.registration.eto-terms.etherscan" />
             </Button>
           </Link>
         </div>
@@ -90,18 +90,24 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
       </Col>
     </Row>
     <HorizontalLine className="my-4" />
-    <h4 className="text-center mb-4">Risk assessment</h4>
+    <h4 className="text-center mb-4">
+      <FormattedMessage id="components.eto.registration.eto-terms.risk-assessment" />
+    </h4>
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
         <div className="mb-4">
           <FormSelectField
             values={THIRD_PARTIES_DEPENDENCY_VALUES}
-            label="Ist there a dependency on third parties"
+            label={
+              <FormattedMessage id="components.eto.registration.eto-terms.third-party-dependency" />
+            }
             name="hasDependencyOnThirdParties"
           />
           <FormSelectField
             values={SUBJECT_OF_REGULATION_VALUES}
-            label="Ist there a dependency on third parties"
+            label={
+              <FormattedMessage id="components.eto.registration.eto-terms.third-party-dependency" />
+            }
             name="hasDependencyOnThirdParties"
           />
         </div>
@@ -109,7 +115,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     </Row>
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        Submit and continue
+        <FormattedMessage id="components.eto.registration.eto-terms.save-and-continue" />
       </Button>
     </div>
   </Form>
@@ -123,13 +129,16 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationTermsComponent: React.SFC<IProps & IIntlProps> = ({
+  intl: { formatIntlMessage },
+  ...props
+}) => (
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
         steps={4}
         currentStep={4}
-        title={"ETO Terms"}
+        title={formatIntlMessage("components.eto.registration.eto-terms.eto-terms")}
         hasBackButton={false}
         isMaxWidth={true}
       >
@@ -152,4 +161,5 @@ export const EtoRegistrationTerms = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
+  injectIntlHelpers,
 )(EtoRegistrationTermsComponent);

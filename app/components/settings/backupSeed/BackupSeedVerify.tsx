@@ -106,17 +106,19 @@ export const BackupSeedVerifyComponent = class extends React.Component<
   };
 
   generateSelect = (wordOnPageNumber: number): React.ReactNode => (
-    <Select
-      options={wordsOptions}
-      simpleValue
-      matchPos={this.formatIntlMessage("settings.backup-seed-verify.start")}
-      matchProp={this.formatIntlMessage("settings.backup-seed-verify.value")}
-      value={this.state.verificationWords[wordOnPageNumber].word}
-      onChange={this.updateValueFactory(wordOnPageNumber)}
-      placeholder={this.formatIntlMessage("settings.backup-seed-verify.enter-word")}
-      noResultsText={this.formatIntlMessage("settings.backup-seed-verify.no-matching-words")}
-      className={this.getValidationStyle(wordOnPageNumber)}
-    />
+    <div data-test-id={`backup-seed-verify-word-${wordOnPageNumber}`}>
+      <Select
+        options={wordsOptions}
+        simpleValue
+        matchPos={this.formatIntlMessage("settings.backup-seed-verify.start")}
+        matchProp={this.formatIntlMessage("settings.backup-seed-verify.value")}
+        value={this.state.verificationWords[wordOnPageNumber].word}
+        onChange={this.updateValueFactory(wordOnPageNumber)}
+        placeholder={this.formatIntlMessage("settings.backup-seed-verify.enter-word")}
+        noResultsText={this.formatIntlMessage("settings.backup-seed-verify.no-matching-words")}
+        className={this.getValidationStyle(wordOnPageNumber)}
+      />
+    </div>
   );
 
   render(): React.ReactNode {
@@ -134,6 +136,10 @@ export const BackupSeedVerifyComponent = class extends React.Component<
                     key={num}
                     className="my-4"
                   >
+                    <div
+                      className="d-none"
+                      data-test-id="seed-verify-random-words"
+                    >{`${wordNumber} `}</div>
                     <div data-test-id={`seed-verify-label`}>{`word ${wordNumber + 1}`}</div>
                     {this.generateSelect(num)}
                   </Col>

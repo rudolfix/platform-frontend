@@ -50,7 +50,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
                 lg={3}
                 xl={2}
                 key={index}
-                data-test-id="seed-display-word"
+                data-test-id={`seed-display-word`}
               >
                 {`${pageNo * WORDS_PER_PAGE + index + 1}.`}
                 {isModal ? <div>{word}</div> : word}

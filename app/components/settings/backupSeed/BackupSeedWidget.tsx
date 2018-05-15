@@ -42,7 +42,7 @@ export const BackupSeedWidgetComponent: React.SFC<
     >
       {backupCodesVerified ? (
         <div
-          data-test-id="verified-section"
+          data-test-id="backup-seed-verified-section"
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>
@@ -58,14 +58,14 @@ export const BackupSeedWidgetComponent: React.SFC<
         </div>
       ) : (
         <div
-          data-test-id="unverified-section"
+          data-test-id="backup-seed-unverified-section"
           className={cn(styles.content, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>
             <FormattedMessage id="settings.backup-seed-widget.write-down-recovery-phrase" />
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <Link to={settingsRoutes.seedBackup}>
+            <Link to={settingsRoutes.seedBackup} data-test-id="backup-seed-widget-link-button">
               <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
                 <FormattedMessage id="settings.backup-seed-widget.backup-phrase" />
               </Button>

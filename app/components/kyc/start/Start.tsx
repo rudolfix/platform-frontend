@@ -8,7 +8,26 @@ import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
-import { Panels, PanelTheme } from "../shared/Panels";
+import { Panels } from "../shared/Panels";
+
+export const personalSteps = [
+  {
+    label: "representation",
+    isChecked: true
+  },
+  {
+    label: "personal details",
+    isChecked: false
+  },
+  {
+    label: "documents verification",
+    isChecked: false
+  },
+  {
+    label: "review",
+    isChecked: false
+  },
+];
 
 interface IProps {
   goToPerson: () => void;
@@ -18,8 +37,7 @@ interface IProps {
 export const KYCStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel
-      steps={4}
-      currentStep={1}
+      steps={personalSteps}
       title={formatIntlMessage("kyc.start.title")}
       isMaxWidth={true}
     >
@@ -27,21 +45,17 @@ export const KYCStartComponent = injectIntlHelpers<IProps>(
         panels={[
           {
             content: (
-              <Button theme="t-white" onClick={props.goToPerson}>
-                <FormattedMessage id="kyc.start.go-to-personal" />
-              </Button>
+              <FormattedMessage id="kyc.start.go-to-personal" />
             ),
-            theme: PanelTheme.black,
             id: 1,
+            onClick: () => props.goToPerson()
           },
           {
             content: (
-              <Button theme="t-white" onClick={props.goToCompany}>
-                <FormattedMessage id="kyc.start.go-to-company" />
-              </Button>
+              <FormattedMessage id="kyc.start.go-to-company" />
             ),
-            theme: PanelTheme.blue,
             id: 2,
+            onClick: () => props.goToCompany()
           },
         ]}
       />

@@ -23,6 +23,25 @@ import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
+export const businessSteps = [
+  {
+    label: "representation",
+    isChecked: true
+  },
+  {
+    label: "personal details",
+    isChecked: false
+  },
+  {
+    label: "documents verification",
+    isChecked: false
+  },
+  {
+    label: "review",
+    isChecked: false
+  },
+];
+
 interface IStateProps {
   currentValues?: IKycBusinessData;
   loadingData: boolean;
@@ -105,8 +124,7 @@ export const KycBusinessDataComponent = injectIntlHelpers<IProps>(
     const dataValid = KycBusinessDataSchemaRequired.isValidSync(props.currentValues);
     return (
       <KycPanel
-        steps={4}
-        currentStep={2}
+        steps={businessSteps}
         title={formatIntlMessage("kyc.business.business-data.title")}
         description={formatIntlMessage("kyc.business.business-data.description")}
         backLink={kycRoutes.businessStart}

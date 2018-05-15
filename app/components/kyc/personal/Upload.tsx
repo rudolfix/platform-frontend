@@ -14,6 +14,25 @@ import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
+export const personalSteps = [
+  {
+    label: "representation",
+    isChecked: true
+  },
+  {
+    label: "personal details",
+    isChecked: false
+  },
+  {
+    label: "documents verification",
+    isChecked: false
+  },
+  {
+    label: "review",
+    isChecked: false
+  },
+];
+
 interface IStateProps {
   fileUploading: boolean;
   filesLoading: boolean;
@@ -32,8 +51,7 @@ interface IProps {
 export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDispatchProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel
-      steps={3}
-      currentStep={3}
+      steps={personalSteps}
       title={formatIntlMessage("kyc.personal.uploadId.title")}
       description={formatIntlMessage("kyc.personal.uploadId.description")}
       backLink={kycRoutes.individualStart}

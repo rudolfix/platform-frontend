@@ -36,6 +36,25 @@ import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
+export const businessSteps = [
+  {
+    label: "representation",
+    isChecked: true
+  },
+  {
+    label: "personal details",
+    isChecked: false
+  },
+  {
+    label: "documents verification",
+    isChecked: false
+  },
+  {
+    label: "review",
+    isChecked: false
+  },
+];
+
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
   [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
@@ -131,8 +150,7 @@ export const KycLegalRepresentativeComponent = injectIntlHelpers<IProps>(
     const lrDataValid = KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative);
     return (
       <KycPanel
-        steps={4}
-        currentStep={3}
+        steps={businessSteps}
         title={formatIntlMessage("kyc.business.legal-representative.title")}
         description={formatIntlMessage("kyc.business.legal-representative.description")}
         backLink={kycRoutes.businessData}

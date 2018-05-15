@@ -31,6 +31,25 @@ import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
+export const personalSteps = [
+  {
+    label: "representation",
+    isChecked: true
+  },
+  {
+    label: "personal details",
+    isChecked: false
+  },
+  {
+    label: "documents verification",
+    isChecked: false
+  },
+  {
+    label: "review",
+    isChecked: false
+  },
+];
+
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
   [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
@@ -140,8 +159,7 @@ export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => {
     return (
       <KycPanel
-        steps={3}
-        currentStep={2}
+        steps={personalSteps}
         title={formatIntlMessage("kyc.personal.title")}
         backLink={kycRoutes.start}
       >

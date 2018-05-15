@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../shared/Buttons";
 import { PanelWhite } from "../shared/PanelWhite";
 import { IProgresStepper, ProgressStepper } from "../shared/ProgressStepper";
+import { IVerificationProgressStep, VerificationStatus } from "../shared/VerificationStatus";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 import * as styles from "./KycPanel.module.scss";
@@ -14,11 +15,11 @@ interface IPropsKycPanel {
   backLink?: string;
   isMaxWidth?: boolean;
   description?: string | React.ReactNode;
+  steps: IVerificationProgressStep[];
 }
 
-export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
+export const KycPanel: React.SFC<IPropsKycPanel> = ({
   steps,
-  currentStep,
   title,
   children,
   description,
@@ -28,9 +29,8 @@ export const KycPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
   <div className={`${styles.kycPanel} ${isMaxWidth ? styles.kycPanelMax : ""}`}>
     <PanelWhite className="mt-4">
       <header className={styles.header}>
-        <ProgressStepper steps={steps} currentStep={currentStep} />
-        <h2 className={styles.title}>{title}</h2>
-        {description && <p className={styles.description}>{description}</p>}
+        <h2 className={styles.title}>Verification</h2>
+        <VerificationStatus steps={steps} />
       </header>
       <div className={styles.content}>{children}</div>
       <footer className={styles.footer}>

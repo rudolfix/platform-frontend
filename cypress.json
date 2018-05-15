@@ -1,5 +1,6 @@
 {
   "baseUrl": "https://localhost:9090",
   "integrationFolder": "./app/",
-  "testFiles": "**/*.spec.e2e.ts"
+  "testFiles": "**/*.spec.e2e.ts",
+  "projectId": "y5m5cy"
 }

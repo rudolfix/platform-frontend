@@ -1,5 +1,3 @@
-import { action } from "@storybook/addon-actions";
-
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
@@ -22,7 +20,8 @@ storiesOf("EtoTimeline", module)
       inSigningEndDate={inSigningEndDate}
       etoStartDate={etoStartDate}
       etoEndDate={etoEndDate}
-      status="book-building"/>
+      status="book-building"
+    />
   ))
   .add("whitelisted", () => (
     <EtoTimeline
@@ -32,7 +31,8 @@ storiesOf("EtoTimeline", module)
       inSigningEndDate={inSigningEndDate}
       etoStartDate={etoStartDate}
       etoEndDate={etoEndDate}
-      status="whitelisted"/>
+      status="whitelisted"
+    />
   ))
   .add("public", () => (
     <EtoTimeline
@@ -42,7 +42,8 @@ storiesOf("EtoTimeline", module)
       inSigningEndDate={inSigningEndDate}
       etoStartDate={etoStartDate}
       etoEndDate={etoEndDate}
-      status="public"/>
+      status="public"
+    />
   ))
   .add("in signing", () => (
     <EtoTimeline
@@ -52,7 +53,8 @@ storiesOf("EtoTimeline", module)
       inSigningEndDate={inSigningEndDate}
       etoStartDate={etoStartDate}
       etoEndDate={etoEndDate}
-      status="in-signing"/>
+      status="in-signing"
+    />
   ))
   .add("pay off", () => (
     <EtoTimeline
@@ -62,5 +64,6 @@ storiesOf("EtoTimeline", module)
       inSigningEndDate={inSigningEndDate}
       etoStartDate={etoStartDate}
       etoEndDate={etoEndDate}
-      status="pay-off"/>
+      status="pay-off"
+    />
   ));

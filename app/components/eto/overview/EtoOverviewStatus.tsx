@@ -92,7 +92,8 @@ export const EtoOverviewStatus: React.SFC<IProps> = props => (
                 inSigningEndDate={inSigningEndDate}
                 etoStartDate={etoStartDate}
                 etoEndDate={etoEndDate}
-                status={props.status}/>
+                status={props.status}
+              />
             </strong>
           </div>
         </Col>

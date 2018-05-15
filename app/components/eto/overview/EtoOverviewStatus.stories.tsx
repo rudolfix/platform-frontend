@@ -1,12 +1,9 @@
-import { action } from "@storybook/addon-actions";
-
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { EtoOverviewStatus } from "./EtoOverviewStatus";
 
 const tokenIcon = "../../../assets/img/nEUR_icon.svg";
-
 
 storiesOf("EtoOverviewStatus", module).add("default", () => (
   <EtoOverviewStatus

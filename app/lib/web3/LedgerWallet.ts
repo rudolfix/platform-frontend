@@ -13,7 +13,11 @@ import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { ILedgerWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
-import { IEthereumNetworkConfig, SignerRejectConfirmationError } from "./Web3Manager";
+import {
+  IEthereumNetworkConfig,
+  SignerRejectConfirmationError,
+  SignerTimeoutError,
+} from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -33,6 +37,7 @@ export class LedgerLockedError extends LedgerError {}
 export class LedgerNotAvailableError extends LedgerError {}
 export class LedgerNotSupportedVersionError extends LedgerError {}
 export class LedgerInvalidDerivationPathError extends LedgerError {}
+export class LedgerTimeoutError extends LedgerError {}
 export class LedgerUnknownError extends LedgerError {}
 
 export class LedgerWallet implements IPersonalWallet {
@@ -67,6 +72,8 @@ export class LedgerWallet implements IPersonalWallet {
       const ledgerError = parseLedgerError(e);
       if (ledgerError instanceof LedgerConfirmationRejectedError) {
         throw new SignerRejectConfirmationError();
+      } else if (ledgerError instanceof LedgerTimeoutError) {
+        throw new SignerTimeoutError();
       } else {
         throw ledgerError;
       }
@@ -270,6 +277,13 @@ export function parseLedgerError(error: any): LedgerError {
     return new LedgerConfirmationRejectedError();
   } else if (error.message !== undefined && error.message === "Invalid status 6a80") {
     return new LedgerContractsDisabledError();
+  } else if (
+    error.message !== undefined &&
+    error.metaData !== undefined &&
+    error.message === "Sign failed" &&
+    error.metaData.type === "TIMEOUT"
+  ) {
+    return new LedgerTimeoutError();
   } else {
     return new LedgerUnknownError();
   }

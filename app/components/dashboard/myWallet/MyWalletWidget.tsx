@@ -114,7 +114,9 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
 }) => {
   return (
     <PanelDark
-      headerText="My Wallet"
+      headerText={
+        <FormattedMessage id="components.dashboard.my-wallet.my-wallet-widget.header-text" />
+      }
       rightComponent={
         <Link to={appRoutes.wallet}>
           <Button

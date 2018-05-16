@@ -5,6 +5,7 @@ import { SwitchConnected } from "../shared/connectedRouting";
 import { WalletBrowser } from "./browser/WalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
 import { WalletLight } from "./light/WalletLight";
+import { getRedirectionUrl } from "./walletRouterHelpers";
 
 interface IProps {
   rootPath: string;
@@ -15,6 +16,6 @@ export const WalletRouter: React.SFC<IProps> = ({ rootPath }) => (
     <Route path={`${rootPath}/light`} component={WalletLight} />
     <Route path={`${rootPath}/browser`} component={WalletBrowser} exact />
     <Route path={`${rootPath}/ledger`} component={WalletLedger} exact />
-    <Redirect to={`${rootPath}/light`} />
+    <Redirect to={getRedirectionUrl(rootPath)} />
   </SwitchConnected>
 );

@@ -32,8 +32,8 @@ import { Tooltip } from "../../shared/Tooltip";
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
-  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-they-are" />,
-  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-they-are-not" />,
+  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
+  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-i-am-not" />,
 };
 
 interface IStateProps {

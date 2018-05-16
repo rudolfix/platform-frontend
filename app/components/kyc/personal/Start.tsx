@@ -1,12 +1,19 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import {
+  IKycIndividualData,
+  KycIndividudalDataSchemaRequired,
+} from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../utils/OnEnterAction";
+import { Button } from "../../shared/Buttons";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -17,19 +24,10 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
-
-import {
-  IKycIndividualData,
-  KycIndividudalDataSchemaRequired,
-} from "../../../lib/api/KycApi.interfaces";
-
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
+import { KycDisclaimer } from "../shared/KycDisclaimer";
 
 export const personalSteps = [
   {
@@ -160,12 +158,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
     <KycPanel steps={personalSteps} backLink={kycRoutes.start}>
-      <div className="pb-4">
-        <h6>
-          <FormattedMessage id={"kyc.personal.personal-information.question"} />
-        </h6>
-        <FormattedHTMLMessage tagName="span" id={"kyc.personal.personal-information.answer"} />
-      </div>
+      <KycDisclaimer className="pb-5" />
       <KYCEnhancedForm {...props} />
     </KycPanel>
   );

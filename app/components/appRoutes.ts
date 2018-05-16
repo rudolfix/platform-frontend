@@ -9,6 +9,7 @@ export const appRoutes = {
   loginEto: "/eto/login",
   recover: "/recover",
   recoverEto: "/eto/recover",
+  etoOverview: "/eto-overview",
 
   kyc: "/kyc",
   wallet: "/wallet",

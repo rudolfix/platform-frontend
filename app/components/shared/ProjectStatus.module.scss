@@ -1,0 +1,51 @@
+@import "../../styles/neufund-theme";
+
+.project-status {
+  @include font-label;
+
+  text-transform: uppercase;
+  font-weight: $font-weight-light;
+  color: $neu-black;
+  display: flex;
+  align-items: center;
+
+  &::before {
+    display: block;
+    content: "";
+    width: px-to-rem(14px);
+    height: px-to-rem(14px);
+    margin-right: px-to-rem(10px);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &:global(.book-building) {
+    &::before {
+      background-color: $gray3;
+    }
+  }
+
+  &:global(.whitelisted) {
+    &::before {
+      background-color: $blue-light;
+    }
+  }
+
+  &:global(.public) {
+    &::before {
+      background-color: $neu-seaweed;
+    }
+  }
+
+  &:global(.in-signing) {
+    &::before {
+      background-color: lighten($neu-slate-grey, 5%);
+    }
+  }
+
+  &:global(.pay-off) {
+    &::before {
+      background-color: $neu-slate-grey;
+    }
+  }
+}

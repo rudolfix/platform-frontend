@@ -1,0 +1,26 @@
+@import "../../styles/neufund-theme";
+
+.counter {
+  display: flex;
+  line-height: px-to-rem(32px);
+}
+
+.plate {
+  @include font-headline;
+
+  color: $neu-black;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: px-to-rem(44px);
+  height: px-to-rem(32px);
+  background-color: $neu-pale-grey;
+  margin: 0 px-to-rem(4px);
+}
+
+.label {
+  font-size: px-to-rem(12px);
+  font-weight: $font-weight-light;
+  text-align: center;
+  text-transform: uppercase;
+}

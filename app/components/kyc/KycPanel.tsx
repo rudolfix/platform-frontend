@@ -29,7 +29,9 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
   <div className={`${styles.kycPanel} ${isMaxWidth ? styles.kycPanelMax : ""}`}>
     <PanelWhite className="mt-4">
       <header className={styles.header}>
-        <h2 className={styles.title}>Verification</h2>
+        <h2 className={styles.title}>
+          <FormattedMessage id="kyc.panel.verification" />
+        </h2>
         <VerificationStatus steps={steps} />
       </header>
       <div className={styles.content}>{children}</div>

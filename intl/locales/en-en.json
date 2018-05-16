@@ -113,6 +113,7 @@
   "kyc.business.start.type.small": "Small Business",
   "kyc.modal.submit-description": "Confirm submitting your Verification Process request",
   "kyc.panel.go-back": "BACK",
+  "kyc.panel.verification": "Verification",
   "kyc.personal.current.address": "<h5>Current address</h5>",
   "kyc.personal.high-income": "Is your income above 5.000 EUR monthly, or do you have more than 100.000 EUR of assets available?",
   "kyc.personal.income.disclaimer": "The German Federal Financial Supervisory Authority requires us to ensure that our clients invest within their means",

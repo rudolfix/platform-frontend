@@ -4,7 +4,7 @@ import { call, Effect, fork, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser, IUserInput, IVerifyEmailUser, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
-import { SignerRejectConfirmationError } from "../../lib/web3/Web3Manager";
+import { SignerRejectConfirmationError, SignerTimeoutError } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
@@ -144,6 +144,12 @@ function* signInUser(
       yield effects.put(
         actions.walletSelector.messageSigningError(
           formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-was-rejected"),
+        ),
+      );
+    } else if (e instanceof SignerTimeoutError) {
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
         ),
       );
     } else {

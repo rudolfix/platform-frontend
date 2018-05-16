@@ -40,8 +40,6 @@ export class FormFieldDate extends React.Component<IProps> {
     year: "",
   };
 
-  monthInputRef = React.createRef();
-
   onChange = (
     type: "year" | "month" | "day",
     e: React.FormEvent<HTMLInputElement>,

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { makeTid } from "../../utils/tidUtils";
 import { Money, selectCurrencySymbol, TCurrency } from "./Money";
 import * as styles from "./MoneySuiteWidget.module.scss";

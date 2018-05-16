@@ -1,27 +1,25 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-
-import { actions } from "../../../modules/actions";
-
-import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
-
-import { Col, Row } from "reactstrap";
 import { IEtoFileInfo } from "../../../lib/api/EtoApi.interfaces";
 import {
   IKycBusinessData,
   IKycFileInfo,
   KycBusinessDataSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
+import { actions } from "../../../modules/actions";
+import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
+import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
+import { KycDisclaimer } from "../shared/KycDisclaimer";
 
 export const businessSteps = [
   {
@@ -127,6 +125,7 @@ export const KycBusinessDataComponent = injectIntlHelpers<IProps>(
         description={formatIntlMessage("kyc.business.business-data.description")}
         backLink={kycRoutes.businessStart}
       >
+        <KycDisclaimer className="pb-5" />
         <KYCEnhancedForm {...props} />
         <FileUploadList {...props} dataValid={dataValid} />
         <div className="p-4 text-center">

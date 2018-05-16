@@ -142,7 +142,7 @@
   "eto.overview.token-distribution.table.number-of-investors": "Number of investors",
   "eto.overview.token-distribution.table.number-of-investors-header": "Total amount invested with the given ticket size",
   "eto.overview.token-distribution.table.share-of-investors": "Share of investors by ownership",
-  "eto.overview.token-distribution.table.share-of-tokens-owned": "",
+  "eto.overview.token-distribution.table.share-of-tokens-owned": "Share of tokens owned",
   "eto.overview.token-issuance.chart-token-raised-over-time": "Token raised over time",
   "eto.overview.token-issuance.chart-transactions-over-time": "Transactions over time",
   "eto.overview.token-issuance.number-of-created-token.before-ico": "Numbers of tokens created before ico",

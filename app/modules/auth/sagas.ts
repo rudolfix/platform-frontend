@@ -147,8 +147,10 @@ function* signInUser(
         ),
       );
     } else if (e instanceof SignerTimeoutError) {
-      actions.walletSelector.messageSigningError(
-        formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
+        ),
       );
     } else {
       logger.error("Error:", e);

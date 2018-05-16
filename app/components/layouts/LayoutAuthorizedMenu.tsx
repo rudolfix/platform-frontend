@@ -16,6 +16,7 @@ import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inact
 import * as iconStats from "../../assets/img/inline_icons/icon_stats.svg";
 import * as iconSupport from "../../assets/img/inline_icons/icon_support.svg";
 import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
+import { externalRoutes } from "../externalRoutes";
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
 interface IMenuEntry {
@@ -82,7 +83,7 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
     />
     <MenuEntry
       svgString={iconSupport}
-      to="https://neufund.freshdesk.com/support/home"
+      to={externalRoutes.freshdesk}
       menuName={<FormattedMessage id="menu.help" />}
       target="_blank"
     />

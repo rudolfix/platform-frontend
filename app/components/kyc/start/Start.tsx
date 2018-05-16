@@ -11,19 +11,19 @@ import { Panels } from "../shared/Panels";
 
 export const personalSteps = [
   {
-    label: "representation",
+    label: <FormattedMessage id="kyc.steps.representation" />,
     isChecked: true,
   },
   {
-    label: "personal details",
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
     isChecked: false,
   },
   {
-    label: "documents verification",
+    label: <FormattedMessage id="kyc.steps.documents-verification" />,
     isChecked: false,
   },
   {
-    label: "review",
+    label: <FormattedMessage id="kyc.steps.review" />,
     isChecked: false,
   },
 ];

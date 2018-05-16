@@ -7,7 +7,7 @@ import * as icon from "../../assets/img/inline_icons/icon_check.svg";
 import * as styles from "./VerificationStatus.module.scss";
 
 export interface IVerificationProgressStep {
-  label: string;
+  label: string | React.ReactNode;
   isChecked: boolean;
   onClick?: () => void;
 }
@@ -20,7 +20,7 @@ export const VerificationStatus: React.SFC<IProps> = ({ steps }) => {
   return (
     <div className={styles.verificationStatus}>
       {steps.map(({ label, isChecked, onClick }, index) => (
-        <div className={styles.step}>
+        <div className={styles.step} key={index}>
           <div
             className={cn(styles.indicator, isChecked && "is-checked")}
             onClick={onClick ? () => onClick() : () => {}}

@@ -38,19 +38,19 @@ import { kycRoutes } from "../routes";
 
 export const businessSteps = [
   {
-    label: "representation",
+    label: <FormattedMessage id="kyc.steps.representation" />,
     isChecked: true,
   },
   {
-    label: "personal details",
-    isChecked: false,
+    label: <FormattedMessage id="kyc.steps.company-details" />,
+    isChecked: true,
   },
   {
-    label: "documents verification",
-    isChecked: false,
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: true,
   },
   {
-    label: "review",
+    label: <FormattedMessage id="kyc.steps.review" />,
     isChecked: false,
   },
 ];

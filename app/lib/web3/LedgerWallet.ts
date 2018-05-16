@@ -44,16 +44,14 @@ export class LedgerWallet implements IPersonalWallet {
   public readonly walletType = WalletType.LEDGER;
   public readonly walletSubType = WalletSubType.UNKNOWN; // in future we may detect if it's pure ledger or Neukey
   public readonly signerType = SignerType.ETH_SIGN;
-  waitingForCommand: boolean;
+  waitingForCommand = false; // if ledger is waiting for user interaction it is blocked and you should not send any instructions to it.
 
   public constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddress,
     private readonly ledgerInstance: any | undefined,
     public readonly derivationPath: string,
-  ) {
-    this.waitingForCommand = false;
-  }
+  ) {}
 
   public async testConnection(): Promise<boolean> {
     if (this.waitingForCommand) {
@@ -278,9 +276,8 @@ export function parseLedgerError(error: any): LedgerError {
   } else if (error.message !== undefined && error.message === "Invalid status 6a80") {
     return new LedgerContractsDisabledError();
   } else if (
-    error.message !== undefined &&
-    error.metaData !== undefined &&
     error.message === "Sign failed" &&
+    error.metaData !== undefined &&
     error.metaData.type === "TIMEOUT"
   ) {
     return new LedgerTimeoutError();

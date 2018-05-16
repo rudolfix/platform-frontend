@@ -51,11 +51,13 @@ export const Landing: React.SFC = () => (
               />
             </Col>
           </Row>
-          <Link to={appRoutes.register}>
-            <Button theme="t-white">
-              <FormattedMessage id="landing.welcome-box.register-now" />
-            </Button>
-          </Link>
+          <div className={styles.buttonWrapper}>
+            <Link to={appRoutes.register}>
+              <Button theme="t-white">
+                <FormattedMessage id="landing.welcome-box.register-now" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </Row>
       <Row className="d-flex">

@@ -15,12 +15,11 @@ interface IProps {
 
 export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ text, className }) => {
   return (
-    <>
-      {/* TODO: Change tooltip to use bootstrap which supports injecting html elements */}
+    <div className={styles.tooltipWrapper}>
       <span className={cn(className, styles.tooltip)} data-tooltip={text}>
         <InlineIcon svgIcon={icon} />
       </span>
-      <p className={styles.mobileText}>{text}</p>
-    </>
+      <p className={styles.tooltipText}>{text}</p>
+    </div>
   );
 };

@@ -31,7 +31,7 @@ export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNe
     </Row>
     <Row className="my-5">
       <Col className="text-center">
-        <Button onClick={onNext}>
+        <Button onClick={onNext} data-test-id="backup-seed-intro-button">
           <FormattedMessage id="settings.backup-seed-intro.read-instructions" />
         </Button>
       </Col>

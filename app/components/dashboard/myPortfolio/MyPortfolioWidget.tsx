@@ -75,7 +75,11 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
         {isLoading ? (
           <LoadingIndicator />
         ) : (
-          <MyPortfolioWidgetComponentBody data={data} error={error} />
+          <MyPortfolioWidgetComponentBody
+            data={data}
+            error={error}
+            test-data-id="dashboard-my-portfolio-widget"
+          />
         )}
       </Row>
     </PanelDark>

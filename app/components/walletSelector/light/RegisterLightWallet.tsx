@@ -60,7 +60,11 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
       data-test-id="wallet-selector-register-confirm-password"
     />
     <div className="text-center">
-      <Button type="submit" disabled={!formikBag.isValid}>
+      <Button
+        type="submit"
+        disabled={!formikBag.isValid}
+        data-test-id="wallet-selector-register-button"
+      >
         <FormattedMessage id="wallet-selector.neuwallet.register" />
       </Button>
     </div>

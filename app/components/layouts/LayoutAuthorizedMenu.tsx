@@ -12,7 +12,6 @@ import { InlineIcon } from "../shared/InlineIcon";
 
 import * as iconEdit from "../../assets/img/inline_icons/icon_edit.svg";
 import * as iconStart from "../../assets/img/inline_icons/icon_home_active.svg";
-import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_inactive.svg";
 import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inactive.svg";
 import * as iconStats from "../../assets/img/inline_icons/icon_stats.svg";
 import * as iconSupport from "../../assets/img/inline_icons/icon_support.svg";

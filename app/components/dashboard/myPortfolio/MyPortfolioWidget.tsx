@@ -64,7 +64,13 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   data,
 }) => {
   return (
-    <PanelDark headerText="My portfolio" className={className} style={style}>
+    <PanelDark
+      headerText={
+        <FormattedMessage id="components.dashboard.my-portfolio.my-portfolio-widget.header-text" />
+      }
+      className={className}
+      style={style}
+    >
       <Row className={cn(styles.main, "pb-3")}>
         {isLoading ? (
           <LoadingIndicator />

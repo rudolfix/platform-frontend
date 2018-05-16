@@ -101,6 +101,11 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
   <div className={styles.menu}>
     <MenuEntry
       svgString={iconStats}
+      to={appRoutes.etoOverview}
+      menuName={<FormattedMessage id="menu.overview" />}
+    />
+    <MenuEntry
+      svgString={iconStats}
       to={appRoutes.dashboard}
       menuName={<FormattedMessage id="menu.overview" />}
     />

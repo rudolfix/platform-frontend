@@ -17,7 +17,7 @@ Example story:
 
   import { ComponentName } from "./ComponentName";
 
-  storyOf("ComponentName", module)
+  storiesOf("ComponentName", module)
     .add("default", () => (
       <ComponentName />
     ))

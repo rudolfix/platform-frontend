@@ -91,16 +91,6 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
               data-test-id="euro-widget"
               currencyTotal="eur"
             />
-            {!isLocked && (
-              <div className={styles.buttonsWrapper}>
-                <Button layout="secondary" disabled>
-                  <FormattedMessage id="wallet.balance.withdraw" />
-                </Button>
-                <Button layout="secondary" onClick={depositEuroTokenFunds}>
-                  <FormattedMessage id="wallet.balance.deposit" />
-                </Button>
-              </div>
-            )}
           </div>
           <div className={styles.moneySuiteWrapper}>
             <MoneySuiteWidget
@@ -111,16 +101,6 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
               data-test-id="euro-widget"
               currencyTotal="eur"
             />
-            {!isLocked && (
-              <div className={styles.buttonsWrapper}>
-                <Button layout="secondary" disabled>
-                  <FormattedMessage id="wallet.balance.receive" />
-                </Button>
-                <Button layout="secondary" onClick={depositEthFunds}>
-                  <FormattedMessage id="wallet.balance.send" />
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -33,6 +33,9 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
     <h4 className={styles.sectionTitle}>
       <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />
     </h4>
+    <p>
+      <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners-disclaimer" />
+    </p>
     <Accordion>
       {props.beneficialOwners.map(
         (owner, index) =>

@@ -110,7 +110,7 @@ export const BackupSeedVerifyComponent = class extends React.Component<
       <Select
         options={wordsOptions}
         simpleValue
-        clearable={false}
+        clearable={true}
         matchPos="start"
         matchProp="value"
         value={this.state.verificationWords[wordOnPageNumber].word}

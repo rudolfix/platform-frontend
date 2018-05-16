@@ -259,6 +259,7 @@
   "module.kyc.sagas.problem.submitting": "There was a problem submitting your request. Please try again.",
   "module.kyc.sagas.successfully-uploaded": "The file was successfully uploaded",
   "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems": "Our server is having problems connecting with your wallet. Please try again or contact our Support Desk.",
+  "modules.auth.sagas.sign-in-user.message-signing-timeout": "Timeout when signing message",
   "modules.auth.sagas.sign-in-user.message-signing-was-rejected": "Message signing was rejected",
   "modules.auth.sagas.verify-user-email-promise.email-already-verified": "Your email is already verified",
   "modules.auth.sagas.verify-user-email-promise.email-verified": "Your email was verified successfully.",

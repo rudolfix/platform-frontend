@@ -1,10 +1,10 @@
 import { GetState } from "../../di/setupBindings";
 import { symbols } from "../../di/symbols";
 import { NotificationCenter } from "../../lib/dependencies/NotificationCenter";
+import { IntlWrapper } from "../../lib/intl/IntlWrapper";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { AppDispatch } from "../../store";
 import { actions } from "../actions";
-import { IntlWrapper } from "./../../lib/intl/IntlWrapper";
 import { selectIsLightWallet } from "./selectors";
 
 export const web3Flows = {
@@ -15,6 +15,8 @@ export const web3Flows = {
       notificationCenter: NotificationCenter,
       intlWrapper: IntlWrapper,
     ) => {
+      dispatch(actions.walletSelector.reset());
+      dispatch(actions.walletSelector.ledgerReset());
       dispatch(actions.web3.personalWalletDisconnected());
 
       const state = getState();

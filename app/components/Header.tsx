@@ -36,7 +36,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       </Button>
     ) : (
       <div>
-        {props.location === appRoutes.etoLanding ? (
+        {props.location && props.location.indexOf("eto") !== -1 ? (
           <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
             <Button theme="t-white">LOGIN</Button>
           </Link>

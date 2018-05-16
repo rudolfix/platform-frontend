@@ -25,19 +25,19 @@ import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 export const personalSteps = [
   {
     label: "representation",
-    isChecked: true
+    isChecked: true,
   },
   {
     label: "personal details",
-    isChecked: true
+    isChecked: true,
   },
   {
     label: "documents verification",
-    isChecked: true
+    isChecked: true,
   },
   {
     label: "review",
-    isChecked: true
+    isChecked: true,
   },
 ];
 
@@ -71,7 +71,6 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
   if (!props.requestStatus) {
     return (
       <KycPanel
-        title={formatIntlMessage("kyc.request-state.title")}
         steps={personalSteps}
         description={formatIntlMessage("kyc.request-state.description")}
       >

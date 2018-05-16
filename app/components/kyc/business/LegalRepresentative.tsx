@@ -39,19 +39,19 @@ import { kycRoutes } from "../routes";
 export const businessSteps = [
   {
     label: "representation",
-    isChecked: true
+    isChecked: true,
   },
   {
     label: "personal details",
-    isChecked: false
+    isChecked: false,
   },
   {
     label: "documents verification",
-    isChecked: false
+    isChecked: false,
   },
   {
     label: "review",
-    isChecked: false
+    isChecked: false,
   },
 ];
 
@@ -151,7 +151,6 @@ export const KycLegalRepresentativeComponent = injectIntlHelpers<IProps>(
     return (
       <KycPanel
         steps={businessSteps}
-        title={formatIntlMessage("kyc.business.legal-representative.title")}
         description={formatIntlMessage("kyc.business.legal-representative.description")}
         backLink={kycRoutes.businessData}
       >

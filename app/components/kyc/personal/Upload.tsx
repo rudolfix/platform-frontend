@@ -17,19 +17,19 @@ import { kycRoutes } from "../routes";
 export const personalSteps = [
   {
     label: "representation",
-    isChecked: true
+    isChecked: true,
   },
   {
     label: "personal details",
-    isChecked: false
+    isChecked: true,
   },
   {
     label: "documents verification",
-    isChecked: false
+    isChecked: true,
   },
   {
     label: "review",
-    isChecked: false
+    isChecked: false,
   },
 ];
 
@@ -52,7 +52,6 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel
       steps={personalSteps}
-      title={formatIntlMessage("kyc.personal.uploadId.title")}
       description={formatIntlMessage("kyc.personal.uploadId.description")}
       backLink={kycRoutes.individualStart}
     >

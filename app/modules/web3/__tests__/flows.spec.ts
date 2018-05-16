@@ -7,6 +7,7 @@ import { NotificationCenter } from "../../../lib/dependencies/NotificationCenter
 import { IAppState } from "../../../store";
 import { web3Flows } from "../flows";
 import { WalletType } from "../types";
+import { dummyIntl } from "./../../../utils/injectIntlHelpers.fixtures";
 import { getDummyLightWalletMetadata } from "./fixtures";
 
 describe("web3 > flows", () => {
@@ -30,6 +31,7 @@ describe("web3 > flows", () => {
         dummyDispatch,
         () => state as any,
         dummyNotificationCenter,
+        { intl: dummyIntl },
       );
 
       expect(dummyNotificationCenter.error).to.be.calledOnce;
@@ -51,6 +53,7 @@ describe("web3 > flows", () => {
         dummyDispatch,
         () => state as any,
         dummyNotificationCenter,
+        { intl: dummyIntl },
       );
 
       expect(dummyNotificationCenter.error).not.to.be.called;

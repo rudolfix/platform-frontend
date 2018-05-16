@@ -50,17 +50,23 @@ export const EtoOverview: React.SFC<IProps> = props => {
               <div className={styles.detailsWrapper}>
                 <div className={styles.detailBox}>
                   <div>
-                    <div className={styles.label}>Start</div>
+                    <div className={styles.label}>
+                      <FormattedMessage id="components.eto.dashboard.eto-overview.start" />
+                    </div>
                     <div className={styles.value}>{props.startDate}</div>
                   </div>
                   <div>
-                    <div className={styles.label}>End</div>
+                    <div className={styles.label}>
+                      <FormattedMessage id="components.eto.dashboard.eto-overview.end" />
+                    </div>
                     <div className={styles.value}>{props.endDate}</div>
                   </div>
                 </div>
                 <div className={styles.detailBox}>
                   <div>
-                    <div className={styles.label}>Goal</div>
+                    <div className={styles.label}>
+                      <FormattedMessage id="components.eto.dashboard.eto-overview.goal" />
+                    </div>
                     <div className={styles.value}>
                       <Money currency="neu" value={props.goalValue} />
                     </div>

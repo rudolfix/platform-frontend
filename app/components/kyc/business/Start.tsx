@@ -6,8 +6,6 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import { TKycBusinessType } from "../../../lib/api/KycApi.interfaces";
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 import { Panels } from "../shared/Panels";
@@ -15,19 +13,19 @@ import { Panels } from "../shared/Panels";
 export const businessSteps = [
   {
     label: "representation",
-    isChecked: true
+    isChecked: true,
   },
   {
     label: "personal details",
-    isChecked: false
+    isChecked: false,
   },
   {
     label: "documents verification",
-    isChecked: false
+    isChecked: false,
   },
   {
     label: "review",
-    isChecked: false
+    isChecked: false,
   },
 ];
 
@@ -41,41 +39,28 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-export const KycBusinessStartComponent = injectIntlHelpers<IProps>(
-  ({ intl: { formatIntlMessage }, ...props }) => (
-    <KycPanel
-      steps={businessSteps}
-      title={formatIntlMessage("kyc.business.start.title")}
-      backLink={kycRoutes.start}
-      isMaxWidth={true}
-    >
-      <Panels
-        panels={[
-          {
-            content: (
-              <FormattedMessage id="kyc.business.start.type.small" />
-            ),
-            id: 1,
-            onClick: () => props.setBusinessType("small")
-          },
-          {
-            content: (
-              <FormattedMessage id="kyc.business.start.type.corporation" />
-            ),
-            id: 2,
-            onClick: () => props.setBusinessType("corporate")
-          },
-          {
-            content: (
-              <FormattedMessage id="kyc.business.start.type.partnership" />
-            ),
-            id: 3,
-            onClick: () => props.setBusinessType("partnership")
-          },
-        ]}
-      />
-    </KycPanel>
-  ),
+export const KycBusinessStartComponent: React.SFC<IProps> = props => (
+  <KycPanel steps={businessSteps} backLink={kycRoutes.start} isMaxWidth={true}>
+    <Panels
+      panels={[
+        {
+          content: <FormattedMessage id="kyc.business.start.type.small" />,
+          id: 1,
+          onClick: () => props.setBusinessType("small"),
+        },
+        {
+          content: <FormattedMessage id="kyc.business.start.type.corporation" />,
+          id: 2,
+          onClick: () => props.setBusinessType("corporate"),
+        },
+        {
+          content: <FormattedMessage id="kyc.business.start.type.partnership" />,
+          id: 3,
+          onClick: () => props.setBusinessType("partnership"),
+        },
+      ]}
+    />
+  </KycPanel>
 );
 
 export const KycBusinessStart = compose<React.SFC>(

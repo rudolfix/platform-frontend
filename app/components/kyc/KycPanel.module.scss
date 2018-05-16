@@ -13,7 +13,7 @@
   @include media-breakpoint-up (lg) {
     max-width: 70%;
   }
-
+  font-size: px-to-rem(16px);
   max-width: 90%;
   text-align: center;
   margin-top: px-to-rem(18px);

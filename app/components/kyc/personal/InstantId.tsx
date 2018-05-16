@@ -17,19 +17,19 @@ import * as styles from "./InstantId.module.scss";
 export const personalSteps = [
   {
     label: "representation",
-    isChecked: true
+    isChecked: true,
   },
   {
     label: "personal details",
-    isChecked: false
+    isChecked: true,
   },
   {
     label: "documents verification",
-    isChecked: false
+    isChecked: true,
   },
   {
     label: "review",
-    isChecked: false
+    isChecked: false,
   },
 ];
 
@@ -49,7 +49,6 @@ export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDi
 }) => (
   <KycPanel
     steps={personalSteps}
-    title={<FormattedMessage id="kyc.personal.instant-id.title" />}
     description={<FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />}
     backLink={kycRoutes.individualStart}
   >

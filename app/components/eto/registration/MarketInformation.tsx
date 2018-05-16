@@ -1,20 +1,18 @@
-import * as React from "react";
-
 import { Form, FormikProps, withFormik } from "formik";
+import * as React from "react";
+import { FormattedMessage } from "react-intl";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
-
-import { FormField, FormTextArea } from "../../shared/forms/forms";
-
-import { Col, Row } from "reactstrap";
 import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
+import { appConnect } from "../../../store";
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
+import { Button } from "../../shared/Buttons";
+import { FormField, FormTextArea } from "../../shared/forms/forms";
 import { HorizontalLine } from "../../shared/HorizontalLine";
+import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 
@@ -28,7 +26,7 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
-
+// TODO: Add translations to forms
 const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
@@ -50,7 +48,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     <HorizontalLine className="mb-4" />
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Business partners</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.market-information.business-partners" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -65,7 +65,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add more
+            <FormattedMessage id="components.eto.registration.market-information.add-more" />
           </Button>
         </div>
       </Col>
@@ -73,7 +73,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     <HorizontalLine className="mb-4" />
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Key Customers</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.market-information.key-customers" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -88,7 +90,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add more
+            <FormattedMessage id="components.eto.registration.market-information.add-more" />
           </Button>
         </div>
       </Col>
@@ -96,7 +98,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     <HorizontalLine className="mb-4" />
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        Submit and continue
+        <FormattedMessage id="components.eto.registration.market-information.submit-and-continue" />
       </Button>
     </div>
   </Form>
@@ -110,13 +112,16 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationMarketInformationComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationMarketInformationComponent: React.SFC<IProps & IIntlProps> = ({
+  intl,
+  ...props
+}) => (
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
         steps={4}
         currentStep={2}
-        title={"Market Information"}
+        title={intl.formatIntlMessage("components.eto.registration.market-information.title")}
         hasBackButton={false}
         isMaxWidth={true}
       >
@@ -139,4 +144,5 @@ export const EtoRegistrationMarketInformation = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
+  injectIntlHelpers,
 )(EtoRegistrationMarketInformationComponent);

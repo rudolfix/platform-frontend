@@ -1,7 +1,5 @@
 import { tid } from "../../../../../test/testUtils";
 
-const LONG_TIMEOUT = 10000;
-
 describe("Wallet recover", () => {
   const words = [
     "argue",
@@ -52,7 +50,7 @@ describe("Wallet recover", () => {
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");
     cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
 
-    cy.get(tid("recovery-success-btn-go-dashboard"), { timeout: LONG_TIMEOUT }).click();
+    cy.get(tid("recovery-success-btn-go-dashboard")).click();
 
     cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
     cy.contains(tid("my-neu-widget-eur-balance"), "28857.83 EUR");

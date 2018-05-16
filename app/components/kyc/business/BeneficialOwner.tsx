@@ -28,6 +28,7 @@ import {
   unboolify,
 } from "../../shared/forms/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { Tooltip } from "../../shared/Tooltip";
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
@@ -80,7 +81,15 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBeneficialOwner> & IProps>(
         <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
         <FormSelectField
           values={PEP_VALUES}
-          label={formatIntlMessage("kyc.business.beneficial-owner.pep")}
+          label={
+            <>
+              <FormattedMessage id="kyc.business.beneficial-owner.pep" />
+              <Tooltip
+                className="ml-2"
+                text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+              />
+            </>
+          }
           name="isPoliticallyExposed"
         />
         <Row>

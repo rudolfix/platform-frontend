@@ -14,6 +14,25 @@ import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.sv
 import * as linkOutIcon from "../../../assets/img/inline_icons/link_out_small.svg";
 import * as styles from "./InstantId.module.scss";
 
+export const personalSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.documents-verification" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: false,
+  },
+];
+
 interface IStateProps {}
 
 interface IDispatchProps {
@@ -29,9 +48,7 @@ export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDi
   ...props
 }) => (
   <KycPanel
-    steps={3}
-    currentStep={3}
-    title={<FormattedMessage id="kyc.personal.instant-id.title" />}
+    steps={personalSteps}
     description={<FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />}
     backLink={kycRoutes.individualStart}
   >

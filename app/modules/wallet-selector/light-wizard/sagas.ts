@@ -13,7 +13,7 @@ import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { updateUserPromise } from "../../auth/sagas";
+import { loadUser, updateUserPromise } from "../../auth/sagas";
 import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/selectors";
@@ -79,6 +79,7 @@ export function* lightWalletBackupWatch({
       formatIntlMessage("modules.wallet-selector.light-wizard.sagas.backup-recovery"),
       formatIntlMessage("modules.wallet-selector.light-wizard.sagas.successfully.backed-up"),
     );
+    yield effects.call(loadUser);
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
     yield put(

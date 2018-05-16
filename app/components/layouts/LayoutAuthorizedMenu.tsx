@@ -35,10 +35,11 @@ const MenuEntryContent: React.SFC<IMenuEntry & NavLinkProps> = ({
   actionRequired,
   menuName,
   svgString,
+  ...props
 }) => {
   return (
     <>
-      <span className={styles.icon}>
+      <span className={styles.icon} {...props}>
         <InlineIcon svgIcon={svgString} />
         {actionRequired && <div className={styles.actionIndicator} />}
       </span>
@@ -85,6 +86,7 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
       to={appRoutes.settings}
       menuName="Settings"
       actionRequired={actionRequiredSettings}
+      data-test-id="authorized-layout-settings-button"
     />
     <MenuEntry
       svgString={iconSupport}

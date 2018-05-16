@@ -31,6 +31,25 @@ import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
+export const personalSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.documents-verification" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: false,
+  },
+];
+
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
   [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
@@ -67,7 +86,9 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
         <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
         <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
         <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
-        <FormattedHTMLMessage tagName="span" id="kyc.personal.current.address" />
+        <h5 className="mt-5">
+          <FormattedMessage tagName="span" id="kyc.personal.current.address" />
+        </h5>
         <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
         <Row>
           <Col xs={12} md={6} lg={8}>
@@ -136,26 +157,19 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   },
 })(KYCForm);
 
-export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(
-  ({ intl: { formatIntlMessage }, ...props }) => {
-    return (
-      <KycPanel
-        steps={3}
-        currentStep={2}
-        title={formatIntlMessage("kyc.personal.title")}
-        backLink={kycRoutes.start}
-      >
-        <div className="pb-4">
-          <h6>
-            <FormattedMessage id={"kyc.personal.personal-information.question"} />
-          </h6>
-          <FormattedHTMLMessage tagName="span" id={"kyc.personal.personal-information.answer"} />
-        </div>
-        <KYCEnhancedForm {...props} />
-      </KycPanel>
-    );
-  },
-);
+export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
+  return (
+    <KycPanel steps={personalSteps} backLink={kycRoutes.start}>
+      <div className="pb-4">
+        <h6>
+          <FormattedMessage id={"kyc.personal.personal-information.question"} />
+        </h6>
+        <FormattedHTMLMessage tagName="span" id={"kyc.personal.personal-information.answer"} />
+      </div>
+      <KYCEnhancedForm {...props} />
+    </KycPanel>
+  );
+};
 
 export const KYCPersonalStart = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

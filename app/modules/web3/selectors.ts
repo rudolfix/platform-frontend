@@ -99,17 +99,7 @@ export const selectActivationCodeFromQueryString = (
 };
 
 export const selectLightWalletEmailFromQueryString = (state: RouterState): string | undefined => {
-  if (!(state.location && state.location.search)) {
-    return undefined;
-  }
+  const lightWallet = selectLightWalletFromQueryString(state);
 
-  const params = queryString.parse(state.location.search);
-  const redirect = params.redirect;
-  const urlEmail = params.email || (redirect && queryString.parse(redirect).email);
-
-  if (!urlEmail) {
-    return undefined;
-  }
-
-  return urlEmail;
+  return lightWallet && lightWallet.email;
 };

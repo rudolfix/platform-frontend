@@ -22,6 +22,44 @@ import { KYCAddDocuments } from "./shared/AddDocuments";
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 
+export const personalSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.documents-verification" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: true,
+  },
+];
+
+export const businessSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.company-details" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: true,
+  },
+];
+
 interface IStateProps {
   requestLoading?: boolean;
   requestStatus?: TRequestStatus;
@@ -37,6 +75,7 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage }, ...props }) => {
+  const steps = props.pendingRequestType === "business" ? businessSteps : personalSteps;
   const settingsButton = (
     <div className="p-4 text-center">
       <Button
@@ -51,12 +90,7 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
   );
   if (!props.requestStatus) {
     return (
-      <KycPanel
-        title={formatIntlMessage("kyc.request-state.title")}
-        steps={5}
-        currentStep={0}
-        description={formatIntlMessage("kyc.request-state.description")}
-      >
+      <KycPanel steps={steps} description={formatIntlMessage("kyc.request-state.description")}>
         {settingsButton}
       </KycPanel>
     );
@@ -65,8 +99,7 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.pending.title")}
-        steps={4}
-        currentStep={4}
+        steps={steps}
         description={formatIntlMessage("kyc.request-state.pending.description")}
       >
         {props.pendingRequestType && <KYCAddDocuments uploadType={props.pendingRequestType} />}
@@ -78,8 +111,7 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.accepted.title")}
-        steps={4}
-        currentStep={4}
+        steps={steps}
         description={formatIntlMessage("kyc.request-state.accepted.description")}
       >
         {settingsButton}
@@ -90,8 +122,7 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.rejected.title")}
-        steps={4}
-        currentStep={4}
+        steps={steps}
         description={formatIntlMessage("kyc.request-state.rejected.description")}
       >
         {settingsButton}
@@ -102,8 +133,7 @@ const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage 
     return (
       <KycPanel
         title={formatIntlMessage("kyc.request-state.outsourced.title")}
-        steps={4}
-        currentStep={4}
+        steps={steps}
         description={formatIntlMessage("kyc.request-state.outsourced.description")}
       >
         {" "}

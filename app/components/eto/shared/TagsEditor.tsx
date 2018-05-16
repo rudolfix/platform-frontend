@@ -19,7 +19,7 @@ interface IPropsWrapper {
 interface IProps {
   handleSubmit: any;
   handleInput: any;
-  handleSelectedTagClik: any;
+  handleSelectedTagClick: any;
   handleDeselectedTagClick: any;
   selectedTags: string[];
   availiableTags: string[];
@@ -47,7 +47,7 @@ const TagsEditor: React.SFC<IProps> = props => {
         <div className={styles.selectedTags}>
           {props.selectedTags.map(tag => (
             <Tag
-              onClick={() => props.handleSelectedTagClik(tag)}
+              onClick={() => props.handleSelectedTagClick(tag)}
               text={tag}
               svgIcon={checkIcon}
               size="small"
@@ -134,7 +134,7 @@ export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapp
       return;
     }
 
-    const tags = availiableTags.filter(avaliableTag => !includes(selectedTags, avaliableTag));
+    const tags = availiableTags.filter(availiableTag => !includes(selectedTags, availiableTag));
     this.setState({ tags });
   }
 
@@ -145,7 +145,7 @@ export class TagsEditorWidget extends React.Component<IPropsWrapper, IStateWrapp
         availiableTags={this.state.tags}
         handleSubmit={this.handleSubmit}
         handleInput={this.handleInput}
-        handleSelectedTagClik={this.handleTagDeselection}
+        handleSelectedTagClick={this.handleTagDeselection}
         handleDeselectedTagClick={this.handleTagSelection}
         inputValue={this.state.inputValue}
       />

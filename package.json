@@ -123,6 +123,7 @@
     "test:node-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require ./test/setupTests.ts '**/*.spec.node.ts?(x)'",
     "test:e2e": "./e2e/setup-e2e.sh",
     "test:e2e:cypress": "cypress run",
+    "test:e2e:cypress:record": "cypress run --record",
     "test:e2e:dev": "cypress open",
     "test": "yarn lint && yarn test:browser && yarn test:node && yarn test:e2e",
     "test:coverage": "yarn lint && yarn test:browser-coverage && yarn test:node && yarn test:e2e",

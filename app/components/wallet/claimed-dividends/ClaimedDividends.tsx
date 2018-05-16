@@ -12,6 +12,7 @@ import { TableRow } from "../../shared/table/TableRow";
 import { TotalEuro } from "../TotalEuro";
 import * as styles from "./ClaimedDividends.module.scss";
 
+import { FormattedMessage } from "react-intl";
 import * as LinkOutIcon from "../../../assets/img/inline_icons/link_out.svg";
 import * as neuIcon from "../../../assets/img/neu_icon.svg";
 import { CommonHtmlProps } from "../../../types";
@@ -27,8 +28,11 @@ interface IClaimedDividendsProps {
   recentPayouts: IDividendPayout[];
 }
 
-const NoPayoutsInfo = () => <div className="py-3">You have not claimed any proceeds so far.</div>;
-//TODO: Add translation
+const NoPayoutsInfo = () => (
+  <div className="py-3">
+    <FormattedMessage id="components.wallet.claimed-dividends.you-claimed-no-proceeds" />
+  </div>
+);
 export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProps> = ({
   totalEurValue,
   recentPayouts,
@@ -42,7 +46,9 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
     className={cn(styles.claimedDividends, className)}
     {...htmlProps}
   >
-    <h3 className={styles.title}>Most recent</h3>
+    <h3 className={styles.title}>
+      <FormattedMessage id="components.wallet.claimed-dividends.most-recent" />
+    </h3>
     <TableBody>
       {recentPayouts.length === 0 ? (
         <NoPayoutsInfo />
@@ -57,7 +63,9 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
             </TableCell>
             <TableCell narrow>
               <Button layout="secondary">
-                <span>TXN</span>
+                <span>
+                  <FormattedMessage id="components.wallet.claimed-dividends.txn" />
+                </span>
                 <InlineIcon svgIcon={LinkOutIcon} />
               </Button>
             </TableCell>

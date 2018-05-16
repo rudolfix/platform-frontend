@@ -136,11 +136,7 @@ export const BackupSeedVerifyComponent = class extends React.Component<
                     key={num}
                     className="my-4"
                   >
-                    <div
-                      className="d-none"
-                      data-test-id="seed-verify-random-words"
-                    >{`${wordNumber} `}</div>
-                    <div data-test-id={`seed-verify-label`}>{`word ${wordNumber + 1}`}</div>
+                    <div data-test-id="seed-verify-label">{`word ${wordNumber + 1}`}</div>
                     {this.generateSelect(num)}
                   </Col>
                 );

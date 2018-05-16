@@ -298,8 +298,6 @@
   "settings.backup-seed-verify.enter-word": "enter word",
   "settings.backup-seed-verify.no-matching-words": "no matching word",
   "settings.backup-seed-verify.recheck-words-message": "Some of the words you entered are not correct. Please recheck the ones highlighted in orange.",
-  "settings.backup-seed-verify.start": "Start",
-  "settings.backup-seed-verify.value": "value",
   "settings.backup-seed-widget.backed-up-seed": "You have backed up your SEED.",
   "settings.backup-seed-widget.backup-phrase": "Backup phrase",
   "settings.backup-seed-widget.header": "{step}. BACKUP RECOVERY PHRASE",

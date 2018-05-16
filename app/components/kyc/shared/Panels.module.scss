@@ -3,29 +3,19 @@
 .panels {
   @include make-row;
   flex: 1;
+  padding-bottom: px-to-rem(115px);
 }
 
 .panel {
   flex: 1;
-  min-height: px-to-rem(490px);
+  min-height: px-to-rem(248px);
   display: flex;
   justify-content: center;
   align-items: center;
 
   + .panel {
-    border-left: 4px solid $neu-white-two;
-  }
-
-  &:global(.t-blue) {
-    background-color: $neu-charcoal-grey;
-  }
-
-  &:global(.t-black) {
-    background-color: $neu-almost-black;
-  }
-
-  &:global(.t-grey) {
-    background-color: $neu-slate-grey;
+    $color: rgba($neu-black, .2);
+    border-left: 1px solid $color;
   }
 
   :global {
@@ -37,5 +27,29 @@
       max-height: px-to-rem(38px);
       color: $neu-white-two;
     }
+  }
+}
+
+.tile {
+  width: px-to-rem(128px);
+}
+
+.cta {
+  @include font-button-default;
+  text-transform: uppercase;
+  height: 100%;
+  width: 100%;
+  border: 2px solid $neu-piss-yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: px-to-rem(10px);
+  text-align: center;
+  color: $neu-black;
+  transition: 250ms background-color ease-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $neu-piss-yellow;
   }
 }

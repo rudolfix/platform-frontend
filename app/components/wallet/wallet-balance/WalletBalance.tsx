@@ -93,7 +93,7 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
             />
             {!isLocked && (
               <div className={styles.buttonsWrapper}>
-                <Button layout="secondary">
+                <Button layout="secondary" disabled>
                   <FormattedMessage id="wallet.balance.withdraw" />
                 </Button>
                 <Button layout="secondary" onClick={depositEuroTokenFunds}>
@@ -113,11 +113,11 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
             />
             {!isLocked && (
               <div className={styles.buttonsWrapper}>
-                <Button layout="secondary">
-                  <FormattedMessage id="wallet.balance.send" />
+                <Button layout="secondary" disabled>
+                  <FormattedMessage id="wallet.balance.receive" />
                 </Button>
                 <Button layout="secondary" onClick={depositEthFunds}>
-                  <FormattedMessage id="wallet.balance.receive" />
+                  <FormattedMessage id="wallet.balance.send" />
                 </Button>
               </div>
             )}

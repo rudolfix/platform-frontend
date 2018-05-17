@@ -1,23 +1,10 @@
 import { FieldAttributes } from "formik";
 import * as React from "react";
-import { FormSelectField } from "./FormSelectField";
 
-const DISABLED_VALUES = {
-  BA: true,
-  KP: true,
-  CU: true,
-  IR: true,
-  IQ: true,
-  LK: true,
-  SY: true,
-  SD: true,
-  US: true,
-  AL: true,
-  RS: true,
-};
+import { FormSelectField, NONE_KEY } from "./FormSelectField";
 
 const VALUES = {
-  NONE_KEY: "Please select",
+  [NONE_KEY]: "Please select",
   AF: "Afghanistan",
   AX: "ÅLand Islands",
   AL: "Albania",
@@ -273,5 +260,5 @@ interface IFieldGroup {
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
 export const FormSelectCountryField: React.SFC<FieldGroupProps> = props => (
-  <FormSelectField {...props} values={VALUES} disabledValues={DISABLED_VALUES} />
+  <FormSelectField {...props} values={VALUES} />
 );

@@ -180,6 +180,7 @@
   "form.select.yes-they-are": "Yes, they are",
   "kyc.business.beneficial-owner.add-new-beneficial-owner": "Add new beneficial owner",
   "kyc.business.beneficial-owner.beneficial-owners": "Beneficial owners",
+  "kyc.business.beneficial-owner.beneficial-owners-disclaimer": "Are there any beneficial owners of this company? Someone qualifies as such if they hold more than 25% of a company's shares. If there is a beneficial owner, please fill in the following details.",
   "kyc.business.beneficial-owner.label": "Beneficial Owner {id}",
   "kyc.business.beneficial-owner.pep": "Is this person politically exposed?",
   "kyc.business.beneficial-owner.percent-held": "Percent held",

@@ -71,7 +71,7 @@ const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.R
     />
   ),
   other: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.other" />,
-  started: "",
+  started: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
   success: "",
   success_data_changed: "",
 };
@@ -123,7 +123,9 @@ const ActionButton = ({
 
   if (
     requestStatus === "Outsourced" &&
-    (requestOutsourcedStatus === "canceled" || requestOutsourcedStatus === "aborted")
+    (requestOutsourcedStatus === "canceled" ||
+      requestOutsourcedStatus === "aborted" ||
+      requestOutsourcedStatus === "started")
   ) {
     return (
       <a href={externalKycUrl}>

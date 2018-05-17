@@ -112,6 +112,7 @@ export interface IKycRequestState {
 
 export const KycRequestStateSchema = Yup.object().shape({
   status: Yup.string().required("Request state is required"),
+  outsourcedStatus: Yup.string(),
   redirectUrl: Yup.string(),
   type: Yup.string(),
 });

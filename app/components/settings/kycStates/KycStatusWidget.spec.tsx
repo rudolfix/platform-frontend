@@ -1,14 +1,14 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
-import { tid } from "../../../../test/testUtils";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { KycStatusWidgetComponent } from "./KycStatusWidget";
 
 describe("<KycStatusWidgetComponent />", () => {
   it("should render verified section", () => {
-    const MyNeuWidgetComponent = shallow(
+    const component = shallow(
       <KycStatusWidgetComponent
         step={1}
         onGoToKycHome={() => {}}
@@ -18,12 +18,13 @@ describe("<KycStatusWidgetComponent />", () => {
         isLoading={false}
       />,
     );
-    expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(0);
-    expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(1);
+
+    expect(component.contains(<FormattedMessage id="settings.kyc-status-widget.status.accepted" />))
+      .to.be.true;
   });
 
   it("should render unverified section", () => {
-    const MyNeuWidgetComponent = shallow(
+    const component = shallow(
       <KycStatusWidgetComponent
         step={1}
         onGoToKycHome={() => {}}
@@ -33,12 +34,13 @@ describe("<KycStatusWidgetComponent />", () => {
         isLoading={false}
       />,
     );
-    expect(MyNeuWidgetComponent.find(tid("unverified-section"))).to.have.length(1);
-    expect(MyNeuWidgetComponent.find(tid("verified-section"))).to.have.length(0);
+
+    expect(component.contains(<FormattedMessage id="settings.kyc-status-widget.status.draft" />)).to
+      .be.true;
   });
 
   it("should render loading indicator", () => {
-    const MyNeuWidgetComponent = shallow(
+    const component = shallow(
       <KycStatusWidgetComponent
         step={1}
         onGoToKycHome={() => {}}
@@ -47,6 +49,6 @@ describe("<KycStatusWidgetComponent />", () => {
         isLoading={true}
       />,
     );
-    expect(MyNeuWidgetComponent.find(LoadingIndicator)).to.have.length(1);
+    expect(component.find(LoadingIndicator)).to.have.length(1);
   });
 });

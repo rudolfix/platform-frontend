@@ -73,8 +73,10 @@ const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.R
   ),
   other: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.other" />,
   started: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
-  success: "",
-  success_data_changed: "",
+  success: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />,
+  success_data_changed: (
+    <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />
+  ),
 };
 
 const getStatus = (
@@ -192,10 +194,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </WarningAlert>
         </div>
       ) : (
-        <div
-          data-test-id="unverified-section"
-          className={cn(styles.content, "d-flex flex-wrap align-content-around")}
-        >
+        <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
           <p className={cn(styles.text, "pt-2")}>
             {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
           </p>

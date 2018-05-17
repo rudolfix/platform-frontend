@@ -13,7 +13,9 @@ const commonProps = {
 };
 
 storiesOf("KycStatusWidget", module)
-  .add("email-not-verified", () => <KycStatusWidgetComponent {...commonProps} requestStatus="Draft" isUserEmailVerified={false} />)
+  .add("email-not-verified", () => (
+    <KycStatusWidgetComponent {...commonProps} requestStatus="Draft" isUserEmailVerified={false} />
+  ))
   .add("draft", () => <KycStatusWidgetComponent {...commonProps} requestStatus="Draft" />)
   .add("pending", () => <KycStatusWidgetComponent {...commonProps} requestStatus="Pending" />)
   .add("rejected", () => <KycStatusWidgetComponent {...commonProps} requestStatus="Rejected" />)

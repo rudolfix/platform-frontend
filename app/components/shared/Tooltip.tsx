@@ -9,17 +9,17 @@ import * as icon from "../../assets/img/inline_icons/icon_questionmark.svg";
 import * as styles from "./Tooltip.module.scss";
 
 interface IProps {
-  text: string | React.ReactNode;
+  content: string | React.ReactNode;
   className?: string;
 }
 
-export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ text, className }) => {
+export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ content, className }) => {
   return (
     <div className={styles.tooltipWrapper}>
-      <span className={cn(className, styles.tooltip)} data-tooltip={text}>
+      <span className={cn(className, styles.tooltip)} data-tooltip={content}>
         <InlineIcon svgIcon={icon} />
       </span>
-      <p className={styles.tooltipText}>{text}</p>
+      <p className={styles.tooltipText}>{content}</p>
     </div>
   );
 };

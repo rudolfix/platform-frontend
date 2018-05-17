@@ -103,7 +103,7 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>
             <FormattedMessage id="kyc.business.legal-representative.pep" />
             <Tooltip
               className="ml-2"
-              text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+              content={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
             />
           </>
         }

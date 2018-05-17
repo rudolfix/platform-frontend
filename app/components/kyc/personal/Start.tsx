@@ -107,7 +107,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
               <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
               <Tooltip
                 className="ml-2"
-                text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+                content={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
               />
             </>
           }
@@ -125,7 +125,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
               <FormattedMessage id={"kyc.personal.us-citizen.question"} />
               <Tooltip
                 className="ml-2"
-                text={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
+                content={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
               />
             </>
           }

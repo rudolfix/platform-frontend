@@ -1,5 +1,5 @@
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
-import { includes, map, mapValues } from "lodash";
+import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
@@ -110,9 +110,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               onFocus={() => setFieldTouched(name, true)}
               type="select"
               value={field.value}
-              valid={
-                includes(DISABLED_COUNTRIES, field.value) ? false : isValid(touched, errors, name)
-              }
+              valid={isValid(touched, errors, name)}
               {...inputExtraProps}
             >
               {this.renderOptions()}

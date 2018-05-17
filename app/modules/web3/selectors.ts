@@ -103,3 +103,11 @@ export const selectLightWalletEmailFromQueryString = (state: RouterState): strin
 
   return lightWallet && lightWallet.email;
 };
+
+export const selectEmailFromQueryString = (state: RouterState): string | undefined => {
+  if (!state.location) {
+    return undefined;
+  }
+  const params = queryString.parse(state.location.search);
+  return params.email;
+};

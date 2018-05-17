@@ -9,18 +9,17 @@ import * as icon from "../../assets/img/inline_icons/icon_questionmark.svg";
 import * as styles from "./Tooltip.module.scss";
 
 interface IProps {
-  text: string;
+  content: string | React.ReactNode;
   className?: string;
 }
 
-export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ text, className }) => {
+export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ content, className }) => {
   return (
-    <>
-      {/* TODO: Change tooltip to use bootstrap which supports injecting html elements */}
-      <span className={cn(className, styles.tooltip)} data-tooltip={text}>
+    <div className={styles.tooltipWrapper}>
+      <span className={cn(className, styles.tooltip)}>
         <InlineIcon svgIcon={icon} />
       </span>
-      <p className={styles.mobileText}>{text}</p>
-    </>
+      <p className={styles.tooltipText}>{content}</p>
+    </div>
   );
 };

@@ -1,19 +1,18 @@
 import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
+import { dummyIntl } from "../utils/injectIntlHelpers.fixtures";
 import { MyPortfolioWidgetComponent } from "./dashboard/myPortfolio/MyPortfolioWidget";
 import { MyWalletWidgetComponent } from "./dashboard/myWallet/MyWalletWidget";
 import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidget";
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
-import { KycStatusWidgetComponent } from "./settings/kycStates/KycStatusWidget";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import { InvestmentPreview } from "./shared/InvestmentPreview";
 import { NavigationButton, NavigationLink } from "./shared/Navigation";
+import { NewsWidget } from "./shared/NewsWidget";
 import { Tabs } from "./shared/Tabs";
 
-import { dummyIntl } from "../utils/injectIntlHelpers.fixtures";
 import * as styles from "./Demo.module.scss";
-import { NewsWidget } from "./shared/NewsWidget";
 
 export const Demo: React.SFC = () => (
   <div className={styles.demoWrapper}>
@@ -106,48 +105,6 @@ export const Demo: React.SFC = () => (
         </Col>
         <Col lg={6} xs={12}>
           <BackupSeedWidgetComponent step={1} backupCodesVerified intl={dummyIntl} />
-        </Col>
-      </Row>
-    </Container>
-    <Container>
-      <Row>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            isUserEmailVerified={true}
-            isLoading={false}
-            requestStatus="Accepted"
-            intl={dummyIntl}
-          />
-        </Col>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            isUserEmailVerified={true}
-            intl={dummyIntl}
-            isLoading={true}
-          />
-        </Col>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            intl={dummyIntl}
-            isUserEmailVerified={false}
-            isLoading={false}
-          />
-        </Col>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            isUserEmailVerified={true}
-            intl={dummyIntl}
-            isLoading={false}
-            error="ERROR"
-          />
         </Col>
       </Row>
     </Container>

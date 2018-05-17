@@ -21,9 +21,24 @@ interface IStateProps {
   backupCodesVerified: boolean;
 }
 
-class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> {
+interface IBackupSeedComponentState {
+  seed?: string[];
+}
+
+class BackupSeedComponent extends React.Component<
+  IDispatchProps & IStateProps,
+  IBackupSeedComponentState
+> {
+  constructor(props: IDispatchProps & IStateProps) {
+    super(props);
+    this.state = {};
+  }
   componentWillMount(): void {
     this.props.getSeed();
+  }
+
+  componentDidUpdate(): void {
+    if (this.props.seed && !this.state.seed) this.setState({ seed: this.props.seed });
   }
 
   componentWillUnmount(): void {
@@ -31,13 +46,13 @@ class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> 
   }
 
   render(): React.ReactNode {
-    if (this.props.seed)
+    if (this.state.seed)
       return (
         <BackupSeedFlowContainer
           backupCodesVerified={this.props.backupCodesVerified}
           verifyBackupPhrase={this.props.verifyBackupPhrase}
           onCancel={this.props.onCancel}
-          seed={this.props.seed}
+          seed={this.state.seed}
         />
       );
     return <LoadingIndicator />;

@@ -22,41 +22,9 @@ import {
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
-import { TransactionList } from "../../transaction-list/TransactionList";
 import { IWalletValues, WalletBalance } from "../../wallet-balance/WalletBalance";
 
 const transactions: any[] = [];
-const categories = [
-  {
-    isSelected: false,
-    title: "smaple category",
-    onFilter: () => alert("sample category 1"),
-  },
-  {
-    isSelected: true,
-    title: "category 2",
-    onFilter: () => alert("sample category 2"),
-  },
-  {
-    isSelected: false,
-    title: "smaple 3",
-    onFilter: () => alert("sample category 3"),
-  },
-];
-//TODO: Make n letter small
-const tabs = [
-  {
-    isSelected: false,
-    title: "neur transactions",
-    onFilter: () => alert("nEUR"),
-  },
-  {
-    isSelected: true,
-    title: "eth transactions",
-    onFilter: () => alert("eth"),
-  },
-];
-
 interface IStateProps {
   isLoading: boolean;
   error?: string;
@@ -125,10 +93,6 @@ const WalletStartComponent: React.SFC<TProps> = props => (
       }
     >
       <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
-    </Col>
-
-    <Col xs={12}>
-      <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
     </Col>
   </Row>
 );

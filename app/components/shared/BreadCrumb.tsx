@@ -21,7 +21,7 @@ export const BreadCrumb: React.SFC<IBreadCrumbProps & React.HTMLAttributes<HTMLD
             </span>
             {path.length > 1 && (
               <span data-test-id="breadcrumb-path-rest">
-                {path.slice(1).map(pathEntry => <> / {pathEntry}</>)}
+                {path.slice(1).map((pathEntry, index) => <span key={index}> / {pathEntry}</span>)}
               </span>
             )}
             <span className="font-weight-bold"> &gt; </span>

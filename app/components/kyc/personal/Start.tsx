@@ -4,9 +4,16 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import {
+  IKycIndividualData,
+  KycIndividudalDataSchemaRequired,
+} from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../utils/OnEnterAction";
+import { Button } from "../../shared/Buttons";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -17,19 +24,10 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
-
-import {
-  IKycIndividualData,
-  KycIndividudalDataSchemaRequired,
-} from "../../../lib/api/KycApi.interfaces";
-
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
+import { KycDisclaimer } from "../shared/KycDisclaimer";
 
 export const personalSteps = [
   {
@@ -171,6 +169,7 @@ export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
         </h6>
         <FormattedHTMLMessage tagName="div" id={"kyc.personal.personal-information.answer"} />
       </div>
+      <KycDisclaimer className="pb-5" />
       <KYCEnhancedForm {...props} />
     </KycPanel>
   );

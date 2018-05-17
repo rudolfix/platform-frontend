@@ -16,6 +16,7 @@ describe("<WalletSelector />", () => {
         userType="investor"
         isLoginRoute
         intl={dummyIntl}
+        location={'/'}
       />,
     );
 

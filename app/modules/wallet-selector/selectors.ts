@@ -23,3 +23,5 @@ export const selectOppositeRootPath = (state: RouterState): string => {
     return selectIsLoginRoute(state) ? appRoutes.registerEto : appRoutes.loginEto;
   }
 };
+
+export const selectLocation = (router: RouterState): any => router.location;

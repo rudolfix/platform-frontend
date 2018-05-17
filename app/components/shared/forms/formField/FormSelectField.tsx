@@ -79,8 +79,6 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
     formik: PropTypes.object,
   };
 
-  fieldValue = "";
-
   renderOptions = () =>
     map(this.props.values, (value, key) => (
       <option
@@ -106,41 +104,33 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
         {label && <Label for={name}>{label}</Label>}
         <Field
           name={name}
-          render={({ field }: FieldProps) => {
-            this.fieldValue = field.value;
-
-            return (
-              <Input
-                {...field}
-                onFocus={() => setFieldTouched(name, true)}
-                type="select"
-                value={field.value}
-                valid={
-                  includes(DISABLED_COUNTRIES, field.value) ? false : isValid(touched, errors, name)
-                }
-                {...inputExtraProps}
-              >
-                {this.renderOptions()}
-              </Input>
-            );
-          }}
+          render={({ field }: FieldProps) => (
+            <Input
+              {...field}
+              onFocus={() => setFieldTouched(name, true)}
+              type="select"
+              value={field.value}
+              valid={
+                includes(DISABLED_COUNTRIES, field.value) ? false : isValid(touched, errors, name)
+              }
+              {...inputExtraProps}
+            >
+              {this.renderOptions()}
+            </Input>
+          )}
         />
         {extraMessage ? (
           <div className={styles.noteLabel}>{extraMessage}</div>
         ) : (
           <div className={styles.errorLabel}>
-            {includes(DISABLED_COUNTRIES, this.fieldValue) ? (
-              <FormattedMessage id="form.field.error.high-risk-country" />
-            ) : (
-              isNonValid(touched, errors, name) && (
-                <div>
-                  {errors[name].includes(NONE_KEY) ? (
-                    <FormattedMessage id="form.field.error.is-required" />
-                  ) : (
-                    errors[name]
-                  )}
-                </div>
-              )
+            {isNonValid(touched, errors, name) && (
+              <div>
+                {errors[name].includes(NONE_KEY) ? (
+                  <FormattedMessage id="form.field.error.is-required" />
+                ) : (
+                  errors[name]
+                )}
+              </div>
             )}
           </div>
         )}

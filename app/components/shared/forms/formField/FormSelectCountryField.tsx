@@ -1,9 +1,10 @@
 import { FieldAttributes } from "formik";
 import * as React from "react";
-import { FormSelectField } from "./FormSelectField";
+
+import { FormSelectField, NONE_KEY } from "./FormSelectField";
 
 const VALUES = {
-  NONE_KEY: "Please select",
+  [NONE_KEY]: "Please select",
   AF: "Afghanistan",
   AX: "ÅLand Islands",
   AL: "Albania",

@@ -1,4 +1,4 @@
-import { mapValues } from "lodash";
+import { includes, mapValues } from "lodash";
 import * as moment from "moment";
 import * as Yup from "yup";
 
@@ -56,5 +56,28 @@ export const isUsCitizen = citizen.test(
   "We are very sorry, at the moment we cannot serve US customers due to regulatory uncertainties.",
   response => {
     return response === false;
+  },
+);
+
+export const countryCode = Yup.string();
+export const RESTRICTED_COUNTRIES = [
+  "BA",
+  "KP",
+  "CU",
+  "IR",
+  "IQ",
+  "LK",
+  "SY",
+  "SD",
+  "US",
+  "AL",
+  "RS",
+];
+
+export const restrictedCountry = countryCode.test(
+  "country",
+  "Unfortunately, we do not accept investors or companies coming from your country due to regulatory restrictions.",
+  response => {
+    return !includes(RESTRICTED_COUNTRIES, response);
   },
 );

@@ -40,7 +40,6 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
   userType,
   intl: { formatIntlMessage },
   location,
-  ...props
 }) => {
   const oppositeViewLabel = isLoginRoute
     ? formatIntlMessage("wallet-selector.neuwallet.register-link-text")
@@ -84,19 +83,18 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
               ])}
             />
           </Row>
-          {
-            location.pathname === `${rootPath}/light`
-              && (
-                <Row>
-                <Col xs={12} md={{size: 8, offset: 2}}>
+          {location.pathname === `${rootPath}/light` && (
+            <Row>
+              <Col xs={12} md={{ size: 8, offset: 2 }}>
                 <InfoBlock>
-                  <FormattedMessage id="wallet-selector.light.icbm-info.message"/>{" "}
-                  <Link to="/"><FormattedMessage id="wallet-selector.light.icbm-info.read-more-here"/></Link>
+                  <FormattedMessage id="wallet-selector.light.icbm-info.message" />{" "}
+                  <Link to="/">
+                    <FormattedMessage id="wallet-selector.light.icbm-info.read-more-here" />
+                  </Link>
                 </InfoBlock>
-                </Col>
-              </Row>
-              )
-          }
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col>
               <WalletRouter rootPath={rootPath} />
@@ -148,7 +146,7 @@ export const WalletSelector = compose<React.SFC>(
       isLoginRoute: selectIsLoginRoute(s.router),
       userType: selectUrlUserType(s.router),
       oppositeRoute: selectOppositeRootPath(s.router),
-      location: selectLocation(s.router)
+      location: selectLocation(s.router),
     }),
   }),
   injectIntlHelpers,

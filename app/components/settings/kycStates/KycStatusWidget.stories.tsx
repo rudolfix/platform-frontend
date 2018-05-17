@@ -17,6 +17,13 @@ storiesOf("KycStatusWidget", module)
   .add("pending", () => <KycStatusWidgetComponent {...commonProps} requestStatus="Pending" />)
   .add("rejected", () => <KycStatusWidgetComponent {...commonProps} requestStatus="Rejected" />)
   .add("accepted", () => <KycStatusWidgetComponent {...commonProps} requestStatus="Accepted" />)
+  .add("outsourced-started", () => (
+    <KycStatusWidgetComponent
+      {...commonProps}
+      requestStatus="Outsourced"
+      requestOutsourcedStatus="started"
+    />
+  ))
   .add("outsourced-aborted", () => (
     <KycStatusWidgetComponent
       {...commonProps}

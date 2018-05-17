@@ -104,32 +104,10 @@ export const selectLightWalletEmailFromQueryString = (state: RouterState): strin
   return lightWallet && lightWallet.email;
 };
 
-export const selectParamsFromQueryString = (
-  state: RouterState,
-): { email: string; salt: string; verificationCode: string } | undefined => {
+export const selectEmailFromQueryString = (state: RouterState): string | undefined => {
   if (!state.location) {
     return undefined;
   }
-
   const params = queryString.parse(state.location.search);
-  const redirect = params.redirect;
-  const email = params.email || (redirect && queryString.parse(redirect).email);
-  const salt = params.salt || (redirect && queryString.parse(redirect).salt);
-  const verificationCode = params.code || (redirect && queryString.parse(redirect).code);
-
-  if (!email && !salt && !verificationCode) {
-    return undefined;
-  }
-
-  return {
-    email,
-    salt,
-    verificationCode,
-  };
-};
-
-export const selectEmailFromQueryString = (state: RouterState): string | undefined => {
-  const urlParams = selectParamsFromQueryString(state);
-
-  return urlParams && urlParams.email;
+  return params.email;
 };

@@ -51,7 +51,7 @@ export const businessSteps = [
     isChecked: true,
   },
   {
-    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    label: <FormattedMessage id="kyc.steps.legal-representation" />,
     isChecked: true,
   },
   {

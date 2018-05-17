@@ -157,6 +157,7 @@
   "form.button.submit": "CONTINUE",
   "form.button.submit-changes": "CONTINUE",
   "form.button.submit-request": "CONTINUE",
+  "form.field.error.high-risk-country": "Unfortunately, we do not accept investors or companies coming from your country due to regulatory restrictions.",
   "form.field.error.is-required": "This field is required",
   "form.label.address": "Address",
   "form.label.birth-date": "Date of birth",

@@ -13,8 +13,8 @@ import { loadKycRequestData } from "../kyc/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
 import {
   selectActivationCodeFromQueryString,
+  selectEmailFromQueryString,
   selectEthereumAddressWithChecksum,
-  selectLightWalletEmailFromQueryString,
 } from "../web3/selectors";
 import { WalletType } from "../web3/types";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
@@ -167,7 +167,7 @@ function* signInUser(
 
 function* verifyUserEmail(): Iterator<any> {
   const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
-  const urlEmail = yield select((s: IAppState) => selectLightWalletEmailFromQueryString(s.router));
+  const urlEmail = yield select((s: IAppState) => selectEmailFromQueryString(s.router));
   const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);

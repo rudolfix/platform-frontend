@@ -12,6 +12,19 @@ import * as styles from "./FormStyles.module.scss";
 export const NONE_KEY = "__NONE__";
 export const BOOL_TRUE_KEY = "true";
 export const BOOL_FALSE_KEY = "false";
+export const DISABLED_COUNTRIES = [
+  "BA",
+  "KP",
+  "CU",
+  "IR",
+  "IQ",
+  "LK",
+  "SY",
+  "SD",
+  "US",
+  "AL",
+  "RS",
+];
 
 export const boolify = <T extends {}>(values: T): T => {
   if (!values) return values;

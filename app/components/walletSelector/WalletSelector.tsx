@@ -8,7 +8,6 @@ import { compose } from "redux";
 import { actions } from "../../modules/actions";
 import {
   selectIsLoginRoute,
-  selectLocation,
   selectOppositeRootPath,
   selectRootPath,
   selectUrlUserType,
@@ -18,7 +17,6 @@ import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { appRoutes } from "../appRoutes";
 import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
-import { InfoBlock } from "../shared/InfoBlock";
 import { Tabs } from "../shared/Tabs";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
@@ -29,7 +27,6 @@ interface IStateProps {
   isLoginRoute: boolean;
   oppositeRoute: string;
   userType: string;
-  location: any;
 }
 
 export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
@@ -39,7 +36,6 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
   oppositeRoute,
   userType,
   intl: { formatIntlMessage },
-  location,
 }) => {
   const oppositeViewLabel = isLoginRoute
     ? formatIntlMessage("wallet-selector.neuwallet.register-link-text")
@@ -83,18 +79,6 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
               ])}
             />
           </Row>
-          {location.pathname === `${rootPath}/light` && (
-            <Row>
-              <Col xs={12} md={{ size: 8, offset: 2 }}>
-                <InfoBlock>
-                  <FormattedMessage id="wallet-selector.light.icbm-info.message" />{" "}
-                  <Link to="/">
-                    <FormattedMessage id="wallet-selector.light.icbm-info.read-more-here" />
-                  </Link>
-                </InfoBlock>
-              </Col>
-            </Row>
-          )}
           <Row>
             <Col>
               <WalletRouter rootPath={rootPath} />
@@ -146,7 +130,6 @@ export const WalletSelector = compose<React.SFC>(
       isLoginRoute: selectIsLoginRoute(s.router),
       userType: selectUrlUserType(s.router),
       oppositeRoute: selectOppositeRootPath(s.router),
-      location: selectLocation(s.router),
     }),
   }),
   injectIntlHelpers,

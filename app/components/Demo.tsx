@@ -118,7 +118,6 @@ export const Demo: React.SFC = () => (
             isUserEmailVerified={true}
             isLoading={false}
             requestStatus="Accepted"
-            intl={dummyIntl}
           />
         </Col>
         <Col lg={6} xs={12}>
@@ -126,7 +125,6 @@ export const Demo: React.SFC = () => (
             step={1}
             onGoToKycHome={() => {}}
             isUserEmailVerified={true}
-            intl={dummyIntl}
             isLoading={true}
           />
         </Col>
@@ -134,7 +132,6 @@ export const Demo: React.SFC = () => (
           <KycStatusWidgetComponent
             step={1}
             onGoToKycHome={() => {}}
-            intl={dummyIntl}
             isUserEmailVerified={false}
             isLoading={false}
           />
@@ -144,7 +141,6 @@ export const Demo: React.SFC = () => (
             step={1}
             onGoToKycHome={() => {}}
             isUserEmailVerified={true}
-            intl={dummyIntl}
             isLoading={false}
             error="ERROR"
           />

@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+
 import { tid } from "../../../../test/testUtils";
-import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { KycStatusWidgetComponent } from "./KycStatusWidget";
 
@@ -13,7 +13,6 @@ describe("<KycStatusWidgetComponent />", () => {
         step={1}
         onGoToKycHome={() => {}}
         requestStatus="Accepted"
-        intl={dummyIntl}
         isUserEmailVerified={true}
         isLoading={false}
       />,
@@ -28,7 +27,6 @@ describe("<KycStatusWidgetComponent />", () => {
         step={1}
         onGoToKycHome={() => {}}
         requestStatus="Draft"
-        intl={dummyIntl}
         isUserEmailVerified={true}
         isLoading={false}
       />,
@@ -41,7 +39,6 @@ describe("<KycStatusWidgetComponent />", () => {
     const MyNeuWidgetComponent = shallow(
       <KycStatusWidgetComponent
         step={1}
-        intl={dummyIntl}
         onGoToKycHome={() => {}}
         isUserEmailVerified={true}
         isLoading={true}

@@ -12,6 +12,7 @@ describe("<KycStatusWidgetComponent />", () => {
       <KycStatusWidgetComponent
         step={1}
         onGoToKycHome={() => {}}
+        onGoToWallet={() => {}}
         requestStatus="Accepted"
         isUserEmailVerified={true}
         isLoading={false}
@@ -26,6 +27,7 @@ describe("<KycStatusWidgetComponent />", () => {
       <KycStatusWidgetComponent
         step={1}
         onGoToKycHome={() => {}}
+        onGoToWallet={() => {}}
         requestStatus="Draft"
         isUserEmailVerified={true}
         isLoading={false}
@@ -40,6 +42,7 @@ describe("<KycStatusWidgetComponent />", () => {
       <KycStatusWidgetComponent
         step={1}
         onGoToKycHome={() => {}}
+        onGoToWallet={() => {}}
         isUserEmailVerified={true}
         isLoading={true}
       />,

@@ -9,6 +9,7 @@ const commonProps = {
   error: undefined,
   step: 1,
   onGoToKycHome: () => {},
+  onGoToWallet: () => {},
 };
 
 storiesOf("KycStatusWidget", module)

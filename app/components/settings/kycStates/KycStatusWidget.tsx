@@ -42,6 +42,7 @@ interface IOwnProps {
 
 interface IDispatchProps {
   onGoToKycHome: () => void;
+  onGoToWallet: () => void;
 }
 
 export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
@@ -102,7 +103,22 @@ const ActionButton = ({
   onGoToKycHome,
   isUserEmailVerified,
   externalKycUrl,
+  onGoToWallet,
 }: IKycStatusWidgetProps) => {
+  if (requestStatus === "Accepted") {
+    return (
+      <Button
+        layout="secondary"
+        iconPosition="icon-after"
+        svgIcon={arrowRight}
+        onClick={onGoToWallet}
+        disabled={!isUserEmailVerified}
+      >
+        <FormattedMessage id="kyc.request-state.go-to-wallet" />
+      </Button>
+    );
+  }
+
   if (requestStatus === "Draft" || requestStatus === "Pending") {
     return (
       <Button
@@ -176,25 +192,17 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </WarningAlert>
         </div>
       ) : (
-        <>
-          {requestStatus === "Accepted" ? (
-            <div data-test-id="verified-section" className={styles.content}>
-              <div className="pt-2">{statusTextMap[requestStatus]}</div>
-            </div>
-          ) : (
-            <div
-              data-test-id="unverified-section"
-              className={cn(styles.content, "d-flex flex-wrap align-content-around")}
-            >
-              <p className={cn(styles.text, "pt-2")}>
-                {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
-              </p>
-              <Col xs={12} className="d-flex justify-content-center">
-                <ActionButton {...props} />
-              </Col>
-            </div>
-          )}
-        </>
+        <div
+          data-test-id="unverified-section"
+          className={cn(styles.content, "d-flex flex-wrap align-content-around")}
+        >
+          <p className={cn(styles.text, "pt-2")}>
+            {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
+          </p>
+          <Col xs={12} className="d-flex justify-content-center">
+            <ActionButton {...props} />
+          </Col>
+        </div>
       )}
     </PanelDark>
   );
@@ -212,6 +220,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
     }),
     dispatchToProps: dispatch => ({
       onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),
+      onGoToWallet: () => dispatch(actions.routing.goToWallet()),
     }),
   }),
   // note: data for this view are loaded as part of app init process

@@ -110,44 +110,6 @@ export const Demo: React.SFC = () => (
       </Row>
     </Container>
     <Container>
-      <Row>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            isUserEmailVerified={true}
-            isLoading={false}
-            requestStatus="Accepted"
-          />
-        </Col>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            isUserEmailVerified={true}
-            isLoading={true}
-          />
-        </Col>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            isUserEmailVerified={false}
-            isLoading={false}
-          />
-        </Col>
-        <Col lg={6} xs={12}>
-          <KycStatusWidgetComponent
-            step={1}
-            onGoToKycHome={() => {}}
-            isUserEmailVerified={true}
-            isLoading={false}
-            error="ERROR"
-          />
-        </Col>
-      </Row>
-    </Container>
-    <Container>
       <ChangeEmailComponent submitForm={() => {}} intl={dummyIntl} />
     </Container>
     <Container>

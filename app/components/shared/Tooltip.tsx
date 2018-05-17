@@ -16,7 +16,7 @@ interface IProps {
 export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ content, className }) => {
   return (
     <div className={styles.tooltipWrapper}>
-      <span className={cn(className, styles.tooltip)} data-tooltip={content}>
+      <span className={cn(className, styles.tooltip)}>
         <InlineIcon svgIcon={icon} />
       </span>
       <p className={styles.tooltipText}>{content}</p>

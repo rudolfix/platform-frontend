@@ -206,7 +206,7 @@
   "kyc.personal.personal-information.question": "Why do we need this information?",
   "kyc.personal.politically-exposed.disclaimer": "You will be asked to provide more details about your situation at a later stage.",
   "kyc.personal.politically-exposed.question": "Are you a Politically Exposed Person?",
-  "kyc.personal.politically-exposed.tooltip": "You are a Politically Exposed Person (PEP) if: 1. you hold a prominent position or have influence, thus you’re being more susceptible to be involved in bribery or corruption, 2. you are any close business associate or family member of the former.",
+  "kyc.personal.politically-exposed.tooltip": "<p>You are a Politically Exposed Person (PEP) if:</p><ol><li>You hold a prominent position or have influence, thus you’re being more susceptible to be involved in bribery or corruption,</li><li>You are any close business associate or family member of the former.</li></ol>",
   "kyc.personal.uploadId.description": "Please upload a colored copy of your passport or both sides of your ID card for verification.",
   "kyc.personal.us-citizen.disclaimer": "Due to regulatory uncertainties in the US we can currently not accept any US American citizens. Since US law also operates outside of its geographical borders we cannot make an exception even if you are based overseas",
   "kyc.personal.us-citizen.question": "Are you a US citizen?",

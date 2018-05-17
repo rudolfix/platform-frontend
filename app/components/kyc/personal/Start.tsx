@@ -107,7 +107,12 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
               <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
               <Tooltip
                 className="ml-2"
-                content={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+                content={
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="kyc.personal.politically-exposed.tooltip"
+                  />
+                }
               />
             </>
           }
@@ -164,7 +169,7 @@ export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
         <h6>
           <FormattedMessage id={"kyc.personal.personal-information.question"} />
         </h6>
-        <FormattedHTMLMessage tagName="span" id={"kyc.personal.personal-information.answer"} />
+        <FormattedHTMLMessage tagName="div" id={"kyc.personal.personal-information.answer"} />
       </div>
       <KYCEnhancedForm {...props} />
     </KycPanel>

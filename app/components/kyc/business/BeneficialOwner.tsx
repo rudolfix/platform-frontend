@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -86,7 +86,7 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBeneficialOwner> & IProps>(
               <FormattedMessage id="kyc.business.beneficial-owner.pep" />
               <Tooltip
                 className="ml-2"
-                content={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+                content={<FormattedHTMLMessage id="kyc.personal.politically-exposed.tooltip" />}
               />
             </>
           }
@@ -103,7 +103,7 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBeneficialOwner> & IProps>(
         </Row>
         <div className="p-4 text-center">
           <Button type="submit" disabled={!props.isValid || props.loading}>
-            <FormattedMessage id="form.button.submit-changes" />
+            <FormattedMessage tagName="div" id="form.button.submit-changes" />
           </Button>
         </div>
       </Form>

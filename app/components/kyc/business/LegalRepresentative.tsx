@@ -1,6 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -103,7 +103,9 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>
             <FormattedMessage id="kyc.business.legal-representative.pep" />
             <Tooltip
               className="ml-2"
-              content={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+              content={
+                <FormattedHTMLMessage tagName="div" id="kyc.personal.politically-exposed.tooltip" />
+              }
             />
           </>
         }

@@ -1,6 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -33,6 +33,7 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
@@ -97,7 +98,17 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>
       <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
       <FormSelectField
         values={PEP_VALUES}
-        label={formatIntlMessage("kyc.business.legal-representative.pep")}
+        label={
+          <>
+            <FormattedMessage id="kyc.business.legal-representative.pep" />
+            <Tooltip
+              className="ml-2"
+              content={
+                <FormattedHTMLMessage tagName="div" id="kyc.personal.politically-exposed.tooltip" />
+              }
+            />
+          </>
+        }
         name="isPoliticallyExposed"
         extraMessage={
           props.values.isPoliticallyExposed === ("true" as any) && (

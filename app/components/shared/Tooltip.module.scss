@@ -1,50 +1,21 @@
 @import "../../styles/neufund-theme";
 
+.tooltip-wrapper {
+  position: relative;
+}
+
 .tooltip {
+  @include media-breakpoint-down (md) {
+    display: none;
+  }
+
   display: inline-block;
   cursor: help;
-  position: relative;
-
-  &::before {
-    @include media-breakpoint-down (md) {
-      display: none;
-    }
-
-    content: attr(data-tooltip);
-    background-color: $neu-charcoal-grey;
-    color: $neu-white-two;
-    padding: px-to-rem(14px);
-    position: absolute;
-    top: 50%;
-    left: 150%;
-    width: 90vw;
-    max-width: px-to-rem(300px);
-    box-shadow: $shadow;
-    opacity: 0;
-    transform: translate(-5px, -50%) scale(.8);
-    transition: 100ms ease-out;
-    transform-origin: center left;
-    will-change: transform opacity;
-    pointer-events: none;
-  }
 
   &:hover {
-    &::before {
-      @include media-breakpoint-down (md) {
-        display: none;
-      }
-
+    + .tooltip-text {
       transform: translate(0, -50%) scale(1);
       opacity: 1;
-    }
-  }
-
-  &:focus {
-    &::before {
-      @include media-breakpoint-down (md) {
-        display: block;
-        position: static;
-      }
     }
   }
 
@@ -54,11 +25,35 @@
   }
 }
 
-.mobile-text {
+.tooltip-text {
   @include media-breakpoint-down (md) {
-    display: block;
+    position: static;
+    opacity: 1;
+    background-color: transparent;
+    transform: none;
+    color: inherit;
+    padding: 0;
+    box-shadow: none;
+    margin-top: px-to-rem(8px);
+    padding-left: px-to-rem(8px);
+    font-size: px-to-rem(12px);
+    max-width: none;
+    width: 100%;
   }
 
-  display: none;
-  margin-top: px-to-rem(14px);
+  background-color: $neu-charcoal-grey;
+  color: $neu-white-two;
+  padding: px-to-rem(14px);
+  position: absolute;
+  top: 50%;
+  left: px-to-rem(30px);
+  max-width: px-to-rem(340px);
+  box-shadow: $shadow;
+  opacity: 0;
+  transform: translate(-5px, -50%) scale(.8);
+  transition: 100ms ease-out;
+  transform-origin: center left;
+  will-change: transform opacity;
+  pointer-events: none;
+  width: 90vw;
 }

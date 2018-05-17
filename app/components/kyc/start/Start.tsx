@@ -35,7 +35,11 @@ interface IProps {
 
 export const KYCStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
-    <KycPanel steps={personalSteps} title={formatIntlMessage("kyc.start.title")} isMaxWidth={true}>
+    <KycPanel
+      steps={personalSteps}
+      title={formatIntlMessage("kyc.panel.verification")}
+      isMaxWidth={true}
+    >
       <Panels
         panels={[
           {

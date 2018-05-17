@@ -163,12 +163,6 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
 export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
     <KycPanel steps={personalSteps} backLink={kycRoutes.start}>
-      <div className="pb-4">
-        <h6>
-          <FormattedMessage id={"kyc.personal.personal-information.question"} />
-        </h6>
-        <FormattedHTMLMessage tagName="div" id={"kyc.personal.personal-information.answer"} />
-      </div>
       <KycDisclaimer className="pb-5" />
       <KYCEnhancedForm {...props} />
     </KycPanel>

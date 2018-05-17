@@ -393,6 +393,8 @@
   "wallet-selector.ledger.start.step5.header": "5. Choose Browser support",
   "wallet-selector.ledger.start.step6.description": "Choose Yes and press 2 keys at the same time to confirm choice",
   "wallet-selector.ledger.start.step6.header": "6. Choose Yes",
+  "wallet-selector.light.icbm-info.message": "Are you an ICBM investor? Please create your account using the wallet with which you made your commitment.",
+  "wallet-selector.light.icbm-info.read-more-here": "Read more here",
   "wallet-selector.login": "Login",
   "wallet-selector.login.help-link": "Having trouble with logging in?",
   "wallet-selector.neuwallet.login-instructions": "To login, please click on the Access Link you received after creating your Neufund Wallet",

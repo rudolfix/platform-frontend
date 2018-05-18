@@ -1,9 +1,11 @@
 @import "../../../styles/neufund-theme";
 
-$panel-height: 170px;
+$panel-height: px-to-rem(170px);
 
 .panel-body {
-  height: px-to-rem($panel-height);
-  text-align: center;
-  padding-top: px-to-rem($panel-height / 2 - 12px); // @todo refactor this
+  min-height: $panel-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-all;
 }

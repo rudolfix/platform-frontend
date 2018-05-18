@@ -23,6 +23,8 @@ import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { WarningAlert } from "../../shared/WarningAlert";
 import * as styles from "./KycStatusWidget.module.scss";
@@ -222,5 +224,11 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
       onGoToWallet: () => dispatch(actions.routing.goToWallet()),
     }),
   }),
-  // note: data for this view are loaded as part of app init process
+  // note: initial data for this view are loaded as part of app init process
+  onEnterAction({
+    actionCreator: d => d(actions.kyc.kycStartWatching()),
+  }),
+  onLeaveAction({
+    actionCreator: d => d(actions.kyc.kycStopWatching()),
+  }),
 )(KycStatusWidgetComponent);

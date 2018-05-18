@@ -11,6 +11,17 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
     return false;
   }
 
+  return (
+    !selectIsUserEmailVerified(state.auth) ||
+    !selectBackupCodesVerified(state.auth) ||
+    selectKycRequestStatus(state.kyc) !== "Accepted"
+  );
+};
+
+/**
+ * Hides notification on blacklisted routes.
+ */
+export const selectIsVisibleSecurityNotification = (state: IAppState): boolean => {
   const disallowedViewsPaths = [appRoutes.settings, appRoutes.kyc];
 
   if (
@@ -20,12 +31,8 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
     return false;
   }
 
-  return (
-    !selectIsUserEmailVerified(state.auth) ||
-    !selectBackupCodesVerified(state.auth) ||
-    selectKycRequestStatus(state.kyc) !== "Accepted"
-  );
+  return selectIsActionRequiredSettings(state);
 };
 
 export const selectSettingsNotification = (state: IAppState) =>
-  selectIsActionRequiredSettings(state) ? settingsNotification() : undefined;
+  selectIsVisibleSecurityNotification(state) ? settingsNotification() : undefined;

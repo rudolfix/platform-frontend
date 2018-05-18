@@ -1,9 +1,10 @@
-import { fork, put, select } from "redux-saga/effects";
+import { cancel, fork, put, select, take } from "redux-saga/effects";
 
 import { actions, TAction } from "../actions";
 
 import { neuCall, neuTakeEvery } from "../sagas";
 
+import { delay } from "redux-saga";
 import { SUBMIT_KYC_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
@@ -14,11 +15,76 @@ import {
   IKycIndividualData,
   IKycLegalRepresentative,
   IKycRequestState,
+  TRequestOutsourcedStatus,
+  TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { displayErrorModalSaga } from "../genericModal/sagas";
-import { selectCombinedBeneficialOwnerOwnership } from "./selectors";
+import {
+  selectCombinedBeneficialOwnerOwnership,
+  selectKycRequestOutsourcedStatus,
+  selectKycRequestStatus,
+} from "./selectors";
+
+/**
+ * whole watcher feature is just a temporary workaround for a lack of real time communication with backend
+ */
+let kycWidgetWatchDelay: number = 1000;
+function* kycRefreshWidgetSaga(): any {
+  kycWidgetWatchDelay = 1000;
+
+  while (true) {
+    const status: TRequestStatus | undefined = yield select((s: IAppState) =>
+      selectKycRequestStatus(s.kyc),
+    );
+
+    // if its accepted we can stop whole mechanism
+    if (status === "Accepted") {
+      return;
+    }
+
+    const outsourcedStatus: TRequestOutsourcedStatus | undefined = yield select((s: IAppState) =>
+      selectKycRequestOutsourcedStatus(s.kyc),
+    );
+
+    if (
+      outsourcedStatus === "started" ||
+      outsourcedStatus === "canceled" ||
+      outsourcedStatus === "review_pending"
+    ) {
+      yield put(actions.kyc.kycLoadIndividualRequest(true));
+    }
+
+    yield delay(kycWidgetWatchDelay);
+    expandWatchTimeout();
+  }
+}
+
+// it will sleep for 1000, 3000, and then always 10 000
+function expandWatchTimeout(): void {
+  // tslint:disable-next-line
+  if (kycWidgetWatchDelay === 1000) {
+    kycWidgetWatchDelay = 3000;
+  } else {
+    kycWidgetWatchDelay = 10000;
+  }
+}
+
+let watchTask: any;
+function* kycRefreshWidgetSagaWatcher(): any {
+  while (true) {
+    yield take("KYC_WATCHER_START");
+    watchTask = yield fork(kycRefreshWidgetSaga);
+  }
+}
+
+function* kycRefreshWidgetSagaWatcherStop(): any {
+  while (true) {
+    yield take("KYC_WATCHER_STOP");
+    yield cancel(watchTask);
+  }
+}
 
 /**
  * Individual Request
@@ -98,7 +164,9 @@ function* loadIndividualRequest(
 ): Iterator<any> {
   if (action.type !== "KYC_LOAD_INDIVIDUAL_REQUEST_STATE") return;
   try {
-    yield put(actions.kyc.kycUpdateIndividualRequestState(true));
+    if (!action.payload.inBackground) {
+      yield put(actions.kyc.kycUpdateIndividualRequestState(true));
+    }
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.getIndividualRequest();
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch (e) {
@@ -522,4 +590,7 @@ export function* kycSagas(): any {
 
   yield fork(neuTakeEvery, "KYC_LOAD_BUSINESS_REQUEST_STATE", loadBusinessRequest);
   yield fork(neuTakeEvery, "KYC_SUBMIT_BUSINESS_REQUEST", submitBusinessRequest);
+
+  yield fork(kycRefreshWidgetSagaWatcher);
+  yield fork(kycRefreshWidgetSagaWatcherStop);
 }

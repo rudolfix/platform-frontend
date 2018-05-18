@@ -1,9 +1,9 @@
 version: 2
 jobs:
-  build:
+  install:
     docker:
       - image: krzkaczor/neufund-platform-base
-    working_directory: /app
+    working_directory: /home/circleci/app
 
     steps:
       - checkout
@@ -11,16 +11,63 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-deps-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v1-deps-
 
       - run: yarn --frozen-lockfile
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-deps-{{ checksum "package.json" }}
 
-      # run tests!
-      # - run: yarn test
+  test:
+    docker:
+      - image: krzkaczor/neufund-platform-base
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-deps-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-deps-
+      - run: yarn prepare
+
+      - run: yarn test:coverage-no-e2e
+
+  test-e2e:
+    machine:
+      enabled: true
+      image: circleci/classic:edge
+      docker_layer_caching: true
+
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - run: ./.circleci/install-yarn.sh
+
+      - restore_cache:
+          keys:
+          - v1-deps-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-deps-
+      - run: yarn prepare
+
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
+
+workflows:
+  version: 2
+
+  mainflow:
+    jobs:
+      - install
+      - test:
+          requires:
+            - install
+      - test-e2e:
+          requires:
+            - install

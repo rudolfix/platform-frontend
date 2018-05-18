@@ -13,9 +13,10 @@ run_backend() {
         fi
     else
         if [ ! -d "./platform-backend" ]; then
+            echo "using env variable"
             echo "${BACKEND_DEPLOYMENT_KEY}" | base64 -d > "./cert"
             chmod 600 ./cert
-            GIT_SSH_COMMAND='ssh -i ./cert' git clone git@github.com:Neufund/platform-backend.git -b kk/fix-smartcontract-SHA
+            ssh-agent sh -c 'ssh-add ./cert; git clone git@github.com:Neufund/platform-backend.git -b kk/fix-smartcontract-SHA'
         fi
     fi
 

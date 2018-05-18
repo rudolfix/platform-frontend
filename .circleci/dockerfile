@@ -1,7 +1,7 @@
 # docker file used as a base image
-FROM  node:8.11-slim
+FROM  node:8.11
 
 RUN apt-get update \
-  && apt-get install -y g++-4.8 g++-4.8-multilib gcc-multilib libgtk2.0-0 libxtst6 libnotify4 libgconf2-4 socat libusb-1.0-0-dev libudev-dev
+  && apt-get install -y g++-4.8 g++-4.8-multilib gcc-multilib libgtk2.0-0 libxtst6 libnotify4 libgconf2-4 socat libusb-1.0-0-dev libudev-dev lsof
 
 WORKDIR /app

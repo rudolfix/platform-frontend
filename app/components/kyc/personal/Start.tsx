@@ -93,7 +93,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
           label={formatIntlMessage("form.label.birth-date")}
           name="birthDate"
           data-test-id="kyc-personal-start-birth-date" />
-        <h5 className="mt-5">
+        <h5 className="my-5">
           <FormattedMessage tagName="span" id="kyc.personal.current.address" />
         </h5>
         <FormField

@@ -14,7 +14,7 @@
 
   &:hover {
     + .tooltip-text {
-      transform: translate(0, -50%) scale(1);
+      transform: translate(-50%, -110%) scale(1);
       opacity: 1;
     }
   }
@@ -45,14 +45,14 @@
   color: $neu-white-two;
   padding: px-to-rem(14px);
   position: absolute;
-  top: 50%;
+  top: 0;
   left: px-to-rem(30px);
   max-width: px-to-rem(340px);
   box-shadow: $shadow;
   opacity: 0;
-  transform: translate(-5px, -50%) scale(.8);
+  transform: translate(-50%, -100%) scale(.8);
   transition: 100ms ease-out;
-  transform-origin: center left;
+  transform-origin: center bottom;
   will-change: transform opacity;
   pointer-events: none;
   width: 90vw;

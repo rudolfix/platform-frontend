@@ -11,6 +11,12 @@ import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const kycActions = {
   /**
+   * Widget watchers
+   */
+  kycStartWatching: () => createSimpleAction("KYC_WATCHER_START"),
+  kycStopWatching: () => createSimpleAction("KYC_WATCHER_STOP"),
+
+  /**
    * Individual
    */
 
@@ -41,7 +47,8 @@ export const kycActions = {
     createAction("KYC_UPDATE_INDIVIDUAL_FILE_INFO", { individualFileUploading, file }),
 
   // request
-  kycLoadIndividualRequest: () => createSimpleAction("KYC_LOAD_INDIVIDUAL_REQUEST_STATE"),
+  kycLoadIndividualRequest: (inBackground: boolean = false) =>
+    createAction("KYC_LOAD_INDIVIDUAL_REQUEST_STATE", { inBackground }),
 
   kycUpdateIndividualRequestState: (
     individualRequestStateLoading?: boolean,

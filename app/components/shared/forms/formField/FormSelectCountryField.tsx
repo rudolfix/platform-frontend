@@ -255,6 +255,7 @@ const VALUES = {
 
 interface IFieldGroup {
   label?: string;
+  tid?: string;
 }
 
 type FieldGroupProps = IFieldGroup & FieldAttributes;

@@ -12,19 +12,6 @@ import * as styles from "./FormStyles.module.scss";
 export const NONE_KEY = "__NONE__";
 export const BOOL_TRUE_KEY = "true";
 export const BOOL_FALSE_KEY = "false";
-export const DISABLED_COUNTRIES = [
-  "BA",
-  "KP",
-  "CU",
-  "IR",
-  "IQ",
-  "LK",
-  "SY",
-  "SD",
-  "US",
-  "AL",
-  "RS",
-];
 
 export const boolify = <T extends {}>(values: T): T => {
   if (!values) return values;
@@ -48,6 +35,7 @@ export const unboolify = <T extends {}>(values: T): T => {
 
 interface IOwnProps {
   extraMessage?: string | React.ReactNode;
+  tid?: string;
 }
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -111,6 +99,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               type="select"
               value={field.value}
               valid={isValid(touched, errors, name)}
+              data-test-id={this.props.tid}
               {...inputExtraProps}
             >
               {this.renderOptions()}

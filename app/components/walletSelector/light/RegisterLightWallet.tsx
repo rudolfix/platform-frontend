@@ -1,9 +1,11 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
+import { InfoBlock } from "../../shared/InfoBlock";
 
 import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
@@ -79,14 +81,29 @@ const RegisterEnhancedLightWalletForm = withFormik<IProps, IFormValues>({
 
 export const RegisterWalletComponent: React.SFC<IProps> = props => {
   return (
-    <Row className="justify-content-sm-center mt-3">
-      <Col className="align-self-end col-sm-auto col-xs-12">
-        <h1 className="mb-4">
-          <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
-        </h1>
-        <RegisterEnhancedLightWalletForm {...props} />
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col xs={12} md={{ size: 8, offset: 2 }}>
+          <InfoBlock>
+            <FormattedMessage id="wallet-selector.light.icbm-info.message" />{" "}
+            <Link
+              to="https://neufund.freshdesk.com/support/solutions/articles/36000060442-icbm-investors-registration"
+              target="_blank"
+            >
+              <FormattedMessage id="wallet-selector.light.icbm-info.read-more-here" />
+            </Link>
+          </InfoBlock>
+        </Col>
+      </Row>
+      <Row className="justify-content-sm-center mt-3">
+        <Col className="align-self-end col-sm-auto col-xs-12">
+          <h1 className="mb-4">
+            <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
+          </h1>
+          <RegisterEnhancedLightWalletForm {...props} />
+        </Col>
+      </Row>
+    </>
   );
 };
 

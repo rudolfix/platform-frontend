@@ -100,13 +100,24 @@ export const KycFileInfoShape = Yup.object().shape({
 
 // request state
 export type TRequestStatus = "Draft" | "Pending" | "Outsourced" | "Rejected" | "Accepted";
+export type TRequestOutsourcedStatus =
+  | "started"
+  | "success"
+  | "success_data_changed"
+  | "review_pending"
+  | "aborted"
+  | "canceled"
+  | "other";
+
 export interface IKycRequestState {
   status: TRequestStatus;
+  outsourcedStatus?: TRequestOutsourcedStatus;
   redirectUrl?: string;
 }
 
 export const KycRequestStateSchema = Yup.object().shape({
   status: Yup.string().required("Request state is required"),
+  outsourcedStatus: Yup.string(),
   redirectUrl: Yup.string(),
   type: Yup.string(),
 });

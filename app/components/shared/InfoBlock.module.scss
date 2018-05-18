@@ -1,0 +1,8 @@
+@import "../../styles/neufund-theme";
+
+.info-block {
+  border: 1px solid $blue;
+  background-color: lighten($blue, 48%);
+  padding: px-to-rem(10px) px-to-rem(12px);
+  width: 100%;
+}

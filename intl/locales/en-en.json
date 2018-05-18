@@ -221,6 +221,7 @@
   "kyc.request-state.rejected.title": "Verification Process request rejected",
   "kyc.start.go-to-company": "I represent a company",
   "kyc.start.go-to-personal": "I represent myself",
+  "kyc.start.title": "Start your Verification Process",
   "kyc.steps.company-details": "company details",
   "kyc.steps.documents-verification": "documents verification",
   "kyc.steps.legal-representation": "legal representation",

@@ -11,3 +11,4 @@ intl/messages
 cypress/videos
 cypress/screenshots
 __screenshots__
+e2e/platform-backend

@@ -1,0 +1,9 @@
+@import "../../../styles/neufund-theme";
+
+$panel-height: 170px;
+
+.panel-body {
+  height: px-to-rem($panel-height);
+  text-align: center;
+  padding-top: px-to-rem($panel-height / 2 - 12px); // @todo refactor this
+}

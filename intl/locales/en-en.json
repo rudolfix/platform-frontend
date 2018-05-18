@@ -280,6 +280,7 @@
   "project-status.pay-off": "Pay off",
   "project-status.public": "Public",
   "project-status.whitelisted": "Whitelisted",
+  "settings.account-info.title": "Account info",
   "settings.backup-seed-display.next-words": "next {wordNumber} words",
   "settings.backup-seed-display.previous-words": "previous {wordNumber} words",
   "settings.backup-seed-flow-container.bread-crumb-backup-recovery": "Backup Recovery Phrase",
@@ -442,5 +443,6 @@
   "wallet.deposit-funds.menu.eur": "Deposit nEur",
   "wallet.deposit-funds.name": "Deposit funds / Receive",
   "wallet.name": "Wallet",
-  "wallet.total": "Total"
+  "wallet.total": "Total",
+  "your-ethereum-address-widget.header": "Your ethereum address"
 }

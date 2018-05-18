@@ -51,6 +51,7 @@ function* kycRefreshWidgetSaga(): any {
     if (
       outsourcedStatus === "started" ||
       outsourcedStatus === "canceled" ||
+      outsourcedStatus === "aborted" ||
       outsourcedStatus === "review_pending"
     ) {
       yield put(actions.kyc.kycLoadIndividualRequest(true));

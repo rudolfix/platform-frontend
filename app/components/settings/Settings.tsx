@@ -8,6 +8,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
+import { YourEthereumAddressWidget } from "./ethereumAddressWidget/YourEthereumAddressWidget";
 import { KycStatusWidget } from "./kycStates/KycStatusWidget";
 import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
 
@@ -37,6 +38,16 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
 
         <Col lg={4} xs={12}>
           <KycStatusWidget step={++settingsStepCounter} />
+        </Col>
+
+        <Col xs={12}>
+          <SectionHeader>
+            <FormattedMessage id="settings.account-info.title" />
+          </SectionHeader>
+        </Col>
+
+        <Col lg={4} xs={12}>
+          <YourEthereumAddressWidget />
         </Col>
 
         {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (

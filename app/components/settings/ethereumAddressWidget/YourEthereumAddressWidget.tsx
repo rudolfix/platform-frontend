@@ -16,7 +16,7 @@ interface IStateProps {
 export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ address }) => (
   <PanelDark
     headerText={<FormattedMessage id="your-ethereum-address-widget.header" />}
-    rightComponent={<img className="" src={ethIcon} />}
+    rightComponent={<img src={ethIcon} />}
   >
     <div className={styles.panelBody}>{address}</div>
   </PanelDark>

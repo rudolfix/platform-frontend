@@ -15,6 +15,5 @@ const localDevConfig = merge(devRemoteConfig, {
     headers: { "Content-Security-Policy": "" },
   },
 });
-console.log(localDevConfig);
 
 module.exports = localDevConfig;

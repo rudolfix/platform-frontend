@@ -45,7 +45,7 @@ const goToIndividualKYCFlow = () => {
   cy.get(tid("wallet-selector-register-confirm-password")).type("such-strong-password");
   cy.get(tid("wallet-selector-register-button")).click();
 
-  cy.wait(3000).visit(kycRoutes.start);
+  cy.wait(10000).visit(kycRoutes.start);
 
   cy.get(tid("kyc-start-go-to-personal")).click();
 

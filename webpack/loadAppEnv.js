@@ -1,7 +1,7 @@
 const { mapValues } = require("lodash");
 const dotenv = require("dotenv");
 
-function updateParsedEnvsWithProcessEnvs(parsedEnvs, processEnvs) {
+function updateParsedEnvsWithProcessEnvs(parsedEnvs = {}, processEnvs) {
   const result = {};
 
   Object.keys(parsedEnvs).forEach(k => {

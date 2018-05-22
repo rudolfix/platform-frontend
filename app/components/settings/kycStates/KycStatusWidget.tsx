@@ -73,7 +73,7 @@ const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.R
       tagName="span"
     />
   ),
-  other: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.other" />,
+  other: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.other-info" />,
   started: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
   success: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />,
   success_data_changed: (

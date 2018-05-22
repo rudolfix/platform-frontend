@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { CommonHtmlProps } from "../../../types";
 
 export const KycDisclaimer: React.SFC<CommonHtmlProps> = props => (

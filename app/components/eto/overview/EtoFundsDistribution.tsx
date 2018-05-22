@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { PanelWhite } from "../../shared/PanelWhite";

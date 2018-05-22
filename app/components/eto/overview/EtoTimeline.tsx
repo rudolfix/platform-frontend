@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedDate, FormattedMessage } from "react-intl";
+import { FormattedDate, FormattedMessage } from "react-intl-phraseapp";
 
 import { TStatus } from "../../shared/ProjectStatus";
 

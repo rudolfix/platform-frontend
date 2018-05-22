@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal, Row } from "reactstrap";
 
 import { actions } from "../../modules/actions";

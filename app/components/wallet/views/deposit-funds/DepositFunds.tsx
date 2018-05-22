@@ -7,7 +7,7 @@ import { PanelWhite } from "../../../shared/PanelWhite";
 import { Tabs } from "../../../shared/Tabs";
 import * as styles from "./DepositFunds.module.scss";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 import { appConnect } from "../../../../store";
 import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers";

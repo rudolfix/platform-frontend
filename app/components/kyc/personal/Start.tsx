@@ -4,9 +4,16 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import {
+  IKycIndividualData,
+  KycIndividudalDataSchemaRequired,
+} from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../utils/OnEnterAction";
+import { Button } from "../../shared/Buttons";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -17,19 +24,29 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms/forms";
-
-import {
-  IKycIndividualData,
-  KycIndividudalDataSchemaRequired,
-} from "../../../lib/api/KycApi.interfaces";
-
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
+import { KycDisclaimer } from "../shared/KycDisclaimer";
+
+export const personalSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.documents-verification" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: false,
+  },
+];
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
@@ -67,7 +84,9 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
         <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
         <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
         <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
-        <FormattedHTMLMessage tagName="span" id="kyc.personal.current.address" />
+        <h5 className="my-5">
+          <FormattedMessage tagName="span" id="kyc.personal.current.address" />
+        </h5>
         <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
         <Row>
           <Col xs={12} md={6} lg={8}>
@@ -86,7 +105,12 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
               <FormattedMessage id={"kyc.personal.politically-exposed.question"} />
               <Tooltip
                 className="ml-2"
-                text={formatIntlMessage("kyc.personal.politically-exposed.tooltip")}
+                content={
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="kyc.personal.politically-exposed.tooltip"
+                  />
+                }
               />
             </>
           }
@@ -104,7 +128,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
               <FormattedMessage id={"kyc.personal.us-citizen.question"} />
               <Tooltip
                 className="ml-2"
-                text={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
+                content={formatIntlMessage("kyc.personal.us-citizen.disclaimer")}
               />
             </>
           }
@@ -136,26 +160,14 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   },
 })(KYCForm);
 
-export const KYCPersonalStartComponent = injectIntlHelpers<IProps>(
-  ({ intl: { formatIntlMessage }, ...props }) => {
-    return (
-      <KycPanel
-        steps={3}
-        currentStep={2}
-        title={formatIntlMessage("kyc.personal.title")}
-        backLink={kycRoutes.start}
-      >
-        <div className="pb-4">
-          <h6>
-            <FormattedMessage id={"kyc.personal.personal-information.question"} />
-          </h6>
-          <FormattedHTMLMessage tagName="span" id={"kyc.personal.personal-information.answer"} />
-        </div>
-        <KYCEnhancedForm {...props} />
-      </KycPanel>
-    );
-  },
-);
+export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
+  return (
+    <KycPanel steps={personalSteps} backLink={kycRoutes.start}>
+      <KycDisclaimer className="pb-5" />
+      <KYCEnhancedForm {...props} />
+    </KycPanel>
+  );
+};
 
 export const KYCPersonalStart = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({

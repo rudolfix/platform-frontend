@@ -5,8 +5,11 @@ yarn-error.log
 coverage
 .env
 .awcache
+.package-lock.json
 app/lib/contracts
 intl/messages
 cypress/videos
 cypress/screenshots
 __screenshots__
+e2e/platform-backend
+.reg

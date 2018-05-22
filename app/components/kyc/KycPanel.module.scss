@@ -1,21 +1,22 @@
 @import "../../styles/neufund-theme";
 
 .header {
-  margin-bottom: px-to-rem(72px);
+  margin: px-to-rem(46px) 0;
 }
 
 .title {
   text-align: center;
+  margin-bottom: px-to-rem(46px);
 }
 
 .description {
   @include media-breakpoint-up (lg) {
     max-width: 70%;
   }
-
+  font-size: px-to-rem(16px);
   max-width: 90%;
   text-align: center;
-  margin-top: px-to-rem(18px);
+  margin-top: px-to-rem(46px);
   margin-left: auto;
   margin-right: auto;
 }
@@ -32,20 +33,7 @@
     @include make-col-offset(1, 6);
   }
 
-  :global(.btn) {
-    margin-bottom: px-to-rem(30px);
-    margin-top: px-to-rem(30px);
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-
-    :global(.inline-icon) {
-      margin-right: px-to-rem(10px);
-    }
-  }
-
+  margin-top: px-to-rem(72px);
 }
 
 .footer {

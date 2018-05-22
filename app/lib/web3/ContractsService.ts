@@ -37,7 +37,8 @@ export class ContractsService {
       return this.initDeprecated();
     }
 
-    this.universeContract = await Universe.createAndValidate(
+    this.universeContract = await create(
+      Universe,
       web3,
       this.config.contractsAddresses.universeContractAddress,
     );
@@ -56,11 +57,11 @@ export class ContractsService {
       knownInterfaces.icbmEtherToken,
     ]);
 
-    this.neumarkContract = await Neumark.createAndValidate(web3, neumarkAddress);
-    this.euroLock = await ICBMLockedAccount.createAndValidate(web3, euroLockAddress);
-    this.etherLock = await ICBMLockedAccount.createAndValidate(web3, etherLockAddress);
-    this.euroTokenContract = await EuroToken.createAndValidate(web3, euroTokenAddress);
-    this.etherTokenContract = await EtherToken.createAndValidate(web3, etherTokenAddress);
+    this.neumarkContract = await create(Neumark, web3, neumarkAddress);
+    this.euroLock = await create(ICBMLockedAccount, web3, euroLockAddress);
+    this.etherLock = await create(ICBMLockedAccount, web3, etherLockAddress);
+    this.euroTokenContract = await create(EuroToken, web3, euroTokenAddress);
+    this.etherTokenContract = await create(EtherToken, web3, etherTokenAddress);
 
     this.logger.info("Initializing contracts DONE.");
   }
@@ -68,7 +69,8 @@ export class ContractsService {
   public async initDeprecated(): Promise<void> {
     const web3 = this.web3Manager.internalWeb3Adapter.web3;
 
-    const commitmentContract = await Commitment.createAndValidate(
+    const commitmentContract = await create(
+      Commitment,
       web3,
       this.config.contractsAddresses.universeContractAddress,
     );
@@ -79,9 +81,9 @@ export class ContractsService {
       etherLockAddress: commitmentContract.etherLock,
     });
 
-    this.neumarkContract = await Neumark.createAndValidate(web3, neumarkAddress);
-    const euroLock = await ICBMLockedAccount.createAndValidate(web3, euroLockAddress);
-    const etherLock = await ICBMLockedAccount.createAndValidate(web3, etherLockAddress);
+    this.neumarkContract = await create(Neumark, web3, neumarkAddress);
+    const euroLock = await create(ICBMLockedAccount, web3, euroLockAddress);
+    const etherLock = await create(ICBMLockedAccount, web3, etherLockAddress);
 
     this.euroLock = euroLock as any;
     this.etherLock = etherLock as any;
@@ -91,8 +93,25 @@ export class ContractsService {
       etherTokenAddress: etherLock.assetToken,
     });
 
-    this.euroTokenContract = await EuroToken.createAndValidate(web3, euroTokenAddress);
-    this.etherTokenContract = await EtherToken.createAndValidate(web3, etherTokenAddress);
+    this.euroTokenContract = await create(EuroToken, web3, euroTokenAddress);
+    this.etherTokenContract = await create(EtherToken, web3, etherTokenAddress);
     this.logger.info("Initializing contracts DONE.");
   }
+}
+
+/**
+ * Creates contract wrapper.
+ * In dev mode it will validate contract code to ease web3 development pains. In prod it will assume that address is correct, saving some network calls.
+ */
+async function create<T>(ContractCls: IContractCls<T>, web3: any, address: string): Promise<T> {
+  if (process.env.NODE_ENV === "production") {
+    return new ContractCls(web3, address);
+  } else {
+    return await ContractCls.createAndValidate(web3, address);
+  }
+}
+
+interface IContractCls<T> {
+  new (web3: any, address: string): T;
+  createAndValidate(web3: any, address: string): Promise<T>;
 }

@@ -6,4 +6,4 @@ import { Tooltip } from "./Tooltip";
 const lorem =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, consequatur deserunt voluptatibus sapiente ducimus iusto culpa consectetur minus, voluptatum tempora nostrum quasi, rerum non facilis doloribus tempore ea obcaecati reprehenderit!";
 
-storiesOf("Tooltip", module).add("default", () => <Tooltip text={lorem} />);
+storiesOf("Tooltip", module).add("default", () => <Tooltip content={lorem} />);

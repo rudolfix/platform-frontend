@@ -8,6 +8,7 @@ import { Money } from "../../shared/Money";
 import { FormattedMessage } from "react-intl";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as icon from "../../../assets/img/neu_icon.svg";
+import { externalRoutes } from "../../externalRoutes";
 import * as styles from "./MyNeuWidget.module.scss";
 
 interface IProps {
@@ -29,9 +30,16 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
           </h3>
         </Col>
         <Col md={12} className="text-right text-md-center" data-test-id="arrow-neu">
-          <Button layout="secondary" iconPosition="icon-after" theme="t-white" svgIcon={arrowRight}>
-            <FormattedMessage id="dashboard.my-neu-widget.about" />
-          </Button>
+          <a href={externalRoutes.freshdesk}>
+            <Button
+              layout="secondary"
+              iconPosition="icon-after"
+              theme="t-white"
+              svgIcon={arrowRight}
+            >
+              <FormattedMessage id="dashboard.my-neu-widget.about" />
+            </Button>
+          </a>
         </Col>
       </Row>
     </div>

@@ -1,7 +1,5 @@
 import { AppReducer } from "../../store";
 
-export type TWalletTab = "light" | "browser" | "ledger";
-
 export interface IWalletSelectorState {
   isMessageSigning: boolean;
   messageSigningError?: string;

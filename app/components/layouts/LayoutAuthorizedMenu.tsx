@@ -12,11 +12,11 @@ import { InlineIcon } from "../shared/InlineIcon";
 
 import * as iconEdit from "../../assets/img/inline_icons/icon_edit.svg";
 import * as iconStart from "../../assets/img/inline_icons/icon_home_active.svg";
-import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_inactive.svg";
 import * as iconSettings from "../../assets/img/inline_icons/icon_settings_inactive.svg";
 import * as iconStats from "../../assets/img/inline_icons/icon_stats.svg";
 import * as iconSupport from "../../assets/img/inline_icons/icon_support.svg";
 import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
+import { externalRoutes } from "../externalRoutes";
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
 interface IMenuEntry {
@@ -35,10 +35,11 @@ const MenuEntryContent: React.SFC<IMenuEntry & NavLinkProps> = ({
   actionRequired,
   menuName,
   svgString,
+  ...props
 }) => {
   return (
     <>
-      <span className={styles.icon}>
+      <span className={styles.icon} {...props}>
         <InlineIcon svgIcon={svgString} />
         {actionRequired && <div className={styles.actionIndicator} />}
       </span>
@@ -71,11 +72,6 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
       menuName={<FormattedMessage id="menu.start" />}
     />
     <MenuEntry
-      svgString={iconPortfolio}
-      to="#"
-      menuName={<FormattedMessage id="menu.portfolio" />}
-    />
-    <MenuEntry
       svgString={iconWallet}
       to={appRoutes.wallet}
       menuName={<FormattedMessage id="menu.wallet" />}
@@ -85,10 +81,11 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
       to={appRoutes.settings}
       menuName="Settings"
       actionRequired={actionRequiredSettings}
+      data-test-id="authorized-layout-settings-button"
     />
     <MenuEntry
       svgString={iconSupport}
-      to="https://neufund.freshdesk.com/support/home"
+      to={externalRoutes.freshdesk}
       menuName={<FormattedMessage id="menu.help" />}
       target="_blank"
     />
@@ -97,6 +94,11 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
 
 const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequiredSettings }) => (
   <div className={styles.menu}>
+    <MenuEntry
+      svgString={iconStats}
+      to={appRoutes.etoOverview}
+      menuName={<FormattedMessage id="menu.overview" />}
+    />
     <MenuEntry
       svgString={iconStats}
       to={appRoutes.dashboard}

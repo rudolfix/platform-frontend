@@ -1,3 +1,6 @@
+import { some } from "lodash";
+
+import { appRoutes } from "../../components/appRoutes";
 import { IAppState } from "../../store";
 import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../auth/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "./../kyc/selectors";
@@ -15,5 +18,21 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
   );
 };
 
+/**
+ * Hides notification on blacklisted routes.
+ */
+export const selectIsVisibleSecurityNotification = (state: IAppState): boolean => {
+  const disallowedViewsPaths = [appRoutes.settings, appRoutes.kyc];
+
+  if (
+    state.router.location &&
+    some(disallowedViewsPaths, p => state.router.location!.pathname.startsWith(p))
+  ) {
+    return false;
+  }
+
+  return selectIsActionRequiredSettings(state);
+};
+
 export const selectSettingsNotification = (state: IAppState) =>
-  selectIsActionRequiredSettings(state) ? settingsNotification() : undefined;
+  selectIsVisibleSecurityNotification(state) ? settingsNotification() : undefined;

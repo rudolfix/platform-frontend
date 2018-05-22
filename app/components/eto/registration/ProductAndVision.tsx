@@ -1,16 +1,15 @@
-import * as React from "react";
-
 import { Form, FormikProps, withFormik } from "formik";
+import * as React from "react";
+import { FormattedMessage } from "react-intl";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
-
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
-
-import { Col, Row } from "reactstrap";
 import { FormTextArea } from "../../shared/forms/forms";
+import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
 // @todo unhardcode
 type IEtoData = any;
@@ -26,6 +25,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
+// Add translations to forms
 const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
@@ -58,7 +58,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     </Row>
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        Submit and continue
+        <FormattedMessage id="components.eto.registration.product-and-vision.save-and-continue" />
       </Button>
     </div>
   </Form>
@@ -71,13 +71,16 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationProductAndVisionComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationProductAndVisionComponent: React.SFC<IProps & IIntlProps> = ({
+  intl: { formatIntlMessage },
+  ...props
+}) => (
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
         steps={4}
         currentStep={3}
-        title={"Product and Vision"}
+        title={formatIntlMessage("components.eto.registration.product-and-vision.title")}
         hasBackButton={false}
         isMaxWidth={true}
       >
@@ -100,4 +103,5 @@ export const EtoRegistrationProductAndVision = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
+  injectIntlHelpers,
 )(EtoRegistrationProductAndVisionComponent);

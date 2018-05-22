@@ -4,12 +4,12 @@ import * as cn from "classnames";
 import { range } from "lodash";
 import * as styles from "./ProgressStepper.module.scss";
 
-export interface IProgresStepper {
+export interface IProgressStepper {
   steps: number;
   currentStep: number;
 }
 
-export const ProgressStepper: React.SFC<IProgresStepper> = ({ steps, currentStep }) => (
+export const ProgressStepper: React.SFC<IProgressStepper> = ({ steps, currentStep }) => (
   <div className={styles.progressStepper}>
     {range(steps).map(number => (
       <div key={number} className={cn(styles.step, number < currentStep && styles.active)} />

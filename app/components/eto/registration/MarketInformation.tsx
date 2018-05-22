@@ -1,5 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -48,7 +49,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     <HorizontalLine className="mb-4" />
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Business partners</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.market-information.business-partners" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -63,7 +66,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add more
+            <FormattedMessage id="components.eto.registration.market-information.add-more" />
           </Button>
         </div>
       </Col>
@@ -71,7 +74,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     <HorizontalLine className="mb-4" />
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Key Customers</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.market-information.key-customers" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -86,7 +91,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add more
+            <FormattedMessage id="components.eto.registration.market-information.add-more" />
           </Button>
         </div>
       </Col>
@@ -94,7 +99,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     <HorizontalLine className="mb-4" />
     <div className="p-4 text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        Submit and continue
+        <FormattedMessage id="components.eto.registration.market-information.submit-and-continue" />
       </Button>
     </div>
   </Form>
@@ -114,7 +119,7 @@ export const EtoRegistrationMarketInformationComponent: React.SFC<IProps> = prop
       <EtoRegistrationPanel
         steps={4}
         currentStep={2}
-        title={"Market Information"}
+        title="Market Information"
         hasBackButton={false}
         isMaxWidth={true}
       >

@@ -87,6 +87,10 @@ export function createIntegrationTestsSetup(
     container,
   };
 
+  const intlWrapper = new IntlWrapper();
+  intlWrapper.intl = dummyIntl;
+  container.rebind(symbols.intlWrapper).toConstantValue(intlWrapper);
+
   const sagaMiddleware = createSagaMiddleware({ context });
   const spyMiddleware = createSpyMiddleware();
 

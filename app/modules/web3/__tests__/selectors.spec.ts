@@ -17,6 +17,14 @@ describe("web3 > selectors", () => {
   const vault = "vault";
   const email = "test@example.com";
 
+  const previousConnectedWallet = {
+    walletType: WalletType.LIGHT,
+    address: dummyEthereumAddress,
+    vault,
+    email,
+    salt,
+  };
+
   describe("selectIsLightWallet", () => {
     it("should work with connected wallet", () => {
       const state: IWeb3State = {
@@ -48,21 +56,6 @@ describe("web3 > selectors", () => {
     });
   });
 
-  describe("selectLightWalletEmailFromQueryString", () => {
-    it("should work with activation link", () => {
-      const state: RouterState = {
-        location: {
-          pathname: "/login/light",
-          state: undefined,
-          hash: "",
-          search: encodeURI(`?redirect=/&email=${email}`),
-        },
-      };
-
-      expect(selectLightWalletEmailFromQueryString(state)).to.be.eq(email);
-    });
-  });
-
   describe("selectActivationCodeFromQueryString", () => {
     it("should work with activation link", () => {
       const state: RouterState = {
@@ -81,14 +74,6 @@ describe("web3 > selectors", () => {
   });
 
   describe("selectLightWalletFromQueryString", () => {
-    const previousConnectedWallet = {
-      walletType: WalletType.LIGHT,
-      address: dummyEthereumAddress,
-      vault,
-      email,
-      salt,
-    };
-
     it("should work with activation link", () => {
       const state: any = {
         location: {
@@ -123,6 +108,22 @@ describe("web3 > selectors", () => {
       state.search = encodeURI(`?redirect=/&salt=${salt}`);
 
       expect(selectLightWalletFromQueryString(state)).to.be.undefined;
+    });
+  });
+
+  describe("selectLightWalletEmailFromQueryString", () => {
+    it("should not detect light wallet when salt is missing", () => {
+      const state: any = {
+        location: {
+          pathname: "/login/light",
+          state: undefined,
+          hash: "",
+          search: encodeURI(`?redirect=/&email=${email}`),
+        },
+        ...previousConnectedWallet,
+      };
+
+      expect(selectLightWalletEmailFromQueryString(state)).to.be.undefined;
     });
   });
 });

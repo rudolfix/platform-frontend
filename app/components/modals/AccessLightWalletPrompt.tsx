@@ -42,7 +42,10 @@ const EnhancedForm = withFormik<IProps, IFormValues>({
 export const AccessLightWalletPrompt: React.SFC<IProps> = props =>
   props.isUnlocked ? (
     <div className="mt-3">
-      <Button onClick={() => props.onAccept()}>
+      <Button
+        onClick={() => props.onAccept()}
+        data-test-id="access-light-wallet-prompt-accept-button"
+      >
         <FormattedMessage id="modal.light-wallet.button.accept" />
       </Button>
       <Button layout="secondary" onClick={props.onCancel}>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -28,11 +28,12 @@ import {
   unboolify,
 } from "../../shared/forms/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { Tooltip } from "../../shared/Tooltip";
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
-  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-they-are" />,
-  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-they-are-not" />,
+  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
+  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-i-am-not" />,
 };
 
 interface IStateProps {
@@ -80,18 +81,34 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBeneficialOwner> & IProps>(
         <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
         <FormSelectField
           values={PEP_VALUES}
-          label={formatIntlMessage("kyc.business.beneficial-owner.pep")}
+          label={
+            <>
+              <FormattedMessage id="kyc.business.beneficial-owner.pep" />
+              <Tooltip
+                className="ml-2"
+                content={
+                  <FormattedHTMLMessage
+                    id="kyc.personal.politically-exposed.tooltip"
+                    tagName="span"
+                  />
+                }
+              />
+            </>
+          }
           name="isPoliticallyExposed"
         />
         <Row>
-          {/* TODO:Add translation */}
           <Col xs={6} md={4}>
-            <FormField label="Percent held" name="ownership" suffix="%" />
+            <FormField
+              label={formatIntlMessage("kyc.business.beneficial-owner.percent-held")}
+              name="ownership"
+              suffix="%"
+            />
           </Col>
         </Row>
         <div className="p-4 text-center">
           <Button type="submit" disabled={!props.isValid || props.loading}>
-            <FormattedMessage id="form.button.submit-changes" />
+            <FormattedMessage tagName="div" id="form.button.submit-changes" />
           </Button>
         </div>
       </Form>

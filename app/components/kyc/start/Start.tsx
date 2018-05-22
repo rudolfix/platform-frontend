@@ -6,9 +6,27 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
-import { Panels, PanelTheme } from "../shared/Panels";
+import { Panels } from "../shared/Panels";
+
+export const personalSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.documents-verification" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: false,
+  },
+];
 
 interface IProps {
   goToPerson: () => void;
@@ -17,31 +35,18 @@ interface IProps {
 
 export const KYCStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
-    <KycPanel
-      steps={4}
-      currentStep={1}
-      title={formatIntlMessage("kyc.start.title")}
-      isMaxWidth={true}
-    >
+    <KycPanel steps={personalSteps} title={formatIntlMessage("kyc.start.title")} isMaxWidth={true}>
       <Panels
         panels={[
           {
-            content: (
-              <Button theme="t-white" onClick={props.goToPerson}>
-                <FormattedMessage id="kyc.start.go-to-personal" />
-              </Button>
-            ),
-            theme: PanelTheme.black,
+            content: <FormattedMessage id="kyc.start.go-to-personal" />,
             id: 1,
+            onClick: () => props.goToPerson(),
           },
           {
-            content: (
-              <Button theme="t-white" onClick={props.goToCompany}>
-                <FormattedMessage id="kyc.start.go-to-company" />
-              </Button>
-            ),
-            theme: PanelTheme.blue,
+            content: <FormattedMessage id="kyc.start.go-to-company" />,
             id: 2,
+            onClick: () => props.goToCompany(),
           },
         ]}
       />

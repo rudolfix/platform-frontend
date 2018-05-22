@@ -117,7 +117,7 @@ describe("Wallet selector integration", () => {
     await waitForTid(mountedComponent, "ledger-wallet-error-msg");
 
     expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
-      "Nano Ledger S is not available",
+      "Ledger Nano S is not available",
     );
 
     // simulate successful connection

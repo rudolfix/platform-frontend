@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
@@ -33,6 +33,9 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
     <h4 className={styles.sectionTitle}>
       <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />
     </h4>
+    <p>
+      <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners-disclaimer" />
+    </p>
     <Accordion>
       {props.beneficialOwners.map(
         (owner, index) =>
@@ -54,9 +57,6 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
         <FormattedMessage id="kyc.business.beneficial-owner.add-new-beneficial-owner" />
       </Button>
     </div>
-    <small className={styles.note}>
-      <FormattedHTMLMessage tagName="span" id="kyc.business.beneficial-owner.anti-laundry" />
-    </small>
   </div>
 );
 

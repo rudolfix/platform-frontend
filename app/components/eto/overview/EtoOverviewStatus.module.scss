@@ -1,0 +1,79 @@
+@import "../../../styles/neufund-theme";
+
+.overview {
+  @include media-breakpoint-down (md) {
+    flex-direction: column;
+  }
+
+  display: flex;
+}
+
+.divided {
+  @include media-breakpoint-down (md) {
+    flex-direction: column;
+    margin-bottom: px-to-rem(4px);
+  }
+
+  display: flex;
+  align-items: baseline;
+
+  > * {
+    width: 50%;
+  }
+}
+
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+}
+
+.left {
+  @include media-breakpoint-down (md) {
+    padding-right: 0;
+  }
+
+  justify-content: space-around;
+  flex-grow: 1;
+  padding-right: px-to-rem(40px);
+}
+
+.right {
+  @include media-breakpoint-down (md) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  justify-content: center;
+  border-left: 1px solid $neu-pale-grey;
+  flex-grow: 3;
+  padding-left: px-to-rem(40px);
+
+  > * {
+    min-width: 50%;
+  }
+}
+
+.token {
+  img {
+    background-color: $neu-pale-grey;
+    border-radius: 50%;
+    overflow: hidden;
+    width: px-to-rem(24px);
+    height: px-to-rem(24px);
+    margin-right: px-to-rem(4px);
+  }
+}
+
+.details {
+  > * {
+    @include media-breakpoint-down (md) {
+      display: block;
+      width: 100%;
+      margin-bottom: px-to-rem(4px);
+    }
+
+    display: inline-block;
+    width: 50%;
+  }
+}

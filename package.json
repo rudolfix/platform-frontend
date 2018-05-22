@@ -110,6 +110,7 @@
   "scripts": {
     "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
+    "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=translate webpack-dev-server --config ./webpack/webpack.config.translate.js",
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
     "ganache": "./scripts/ganache-cli.sh",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md,gql}'",
@@ -176,6 +177,7 @@
     "react-dropzone": "^4.2.8",
     "react-hot-loader": "^4.0.0-beta.17",
     "react-intl": "^2.4.0",
+    "react-intl-phraseapp": "^0.2.4",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",

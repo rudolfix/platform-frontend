@@ -9220,6 +9220,10 @@ react-inspector@^2.2.2:
     babel-runtime "^6.26.0"
     is-dom "^1.0.9"
 
+react-intl-phraseapp@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/react-intl-phraseapp/-/react-intl-phraseapp-0.2.4.tgz#02963975b007c2bd49b091802909a28bd87c3d51"
+
 react-intl@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.4.0.tgz#66c14dc9df9a73b2fbbfbd6021726e80a613eb15"

@@ -272,7 +272,7 @@
   "modules.settings.sagas.resend-email.sent": "Email successfully resent",
   "modules.wallet-selector.light-wizard.sagas.backup-recovery": "Backup Recovery Phrase",
   "modules.wallet-selector.light-wizard.sagas.successfully.backed-up": "You have successfully backed up your Neufund Wallet",
-  "modules.web3.flows.web3-error": "Web3 disconnected",
+  "modules.web3.flows.web3-error": "Your Browser Wallet was disconnected",
   "off-to-on-chain.footer": "<strong>OFF-CHAIN</strong> company",
   "off-to-on-chain.header": "<strong>ON-CHAIN</strong> company",
   "project-status.book-building": "Book building",

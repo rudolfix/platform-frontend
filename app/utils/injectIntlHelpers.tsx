@@ -36,7 +36,8 @@ export interface IIntlProps {
 }
 
 /**
- * Simplifies interface of injectIntl. We should use exclusively these helpers!
+ * Simplifies interface of injectIntl. We should use exclusively these helpers instead of original ones!
+ * Should be used only as a last resort only! Prefer FormattedMessage even when it requires changing typings (from string to string | ReactElement).
  */
 export const injectIntlHelpers = <OwnProps extends {}>(
   Component: ComponentConstructor<OwnProps & IIntlProps>,

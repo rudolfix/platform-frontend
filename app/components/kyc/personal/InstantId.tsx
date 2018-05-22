@@ -70,10 +70,9 @@ export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDi
         onClick={props.onManualVerification}
         svgIcon={arrowRightIcon}
         iconPosition="icon-after"
+        data-test-id="kyc-go-to-manual-verification"
       >
-        <FormattedMessage
-          id="kyc.personal.instant-id.go-to-manual-verification"
-          data-test-id="kyc-go-to-manual-verification" />
+        <FormattedMessage id="kyc.personal.instant-id.go-to-manual-verification" />
       </Button>
     </div>
   </KycPanel>

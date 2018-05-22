@@ -23,9 +23,10 @@ interface IProps {
   files: IKycFileInfo[];
   layout: TKycRequestType;
   onDropFile: (file: File) => void;
+  tid?: string;
 }
 
-export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) => {
+export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, tid, ...props }) => {
   const onDrop = (accepted: File[]) => accepted[0] && props.onDropFile(accepted[0]);
 
   const dropzoneInner = props.fileUploading ? (
@@ -133,6 +134,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
             onDrop={onDrop}
             disabled={props.fileUploading}
             style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}
+            data-test-id={tid}
           >
             {files.length ? dropzoneWithFilesInner : dropzoneInner}
           </Dropzone>

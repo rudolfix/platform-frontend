@@ -1,15 +1,13 @@
 import { tid } from "../../../../test/testUtils";
-import { appRoutes } from "../../appRoutes";
-import { registerWithLightWallet } from "../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
 import { kycRoutes } from "../routes";
 
 interface IPersonData {
   firstName: string;
   lastName: string;
   birthday: {
-    day: string,
-    month: string,
-    year: string
+    day: string;
+    month: string;
+    year: string;
   };
   street: string;
   city: string;
@@ -37,11 +35,13 @@ const personData = {
   hasHighIncome: "false",
 };
 
+const password = "such-strong-password";
+
 const goToIndividualKYCFlow = () => {
   cy.visit("/register");
 
   cy.get(tid("wallet-selector-register-email")).type("testemail@email.email");
-  cy.get(tid("wallet-selector-register-password")).type("such-strong-password");
+  cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type("such-strong-password");
   cy.get(tid("wallet-selector-register-button")).click();
 
@@ -49,11 +49,13 @@ const goToIndividualKYCFlow = () => {
 
   cy.get(tid("kyc-start-go-to-personal")).click();
 
-  cy.wait(2000).url().should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
-}
+  cy
+    .wait(2000)
+    .url()
+    .should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
+};
 
 const submitIndividualKYCForm = (person: IPersonData) => {
-
   cy.get(tid("kyc-personal-start-first-name")).type(person.firstName);
   cy.get(tid("kyc-personal-start-last-name")).type(person.lastName);
 
@@ -72,43 +74,46 @@ const submitIndividualKYCForm = (person: IPersonData) => {
 
   cy.get(tid("kyc-personal-start-submit-form")).click();
 
-  cy.wait(1000).url().should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
-}
+  cy
+    .wait(1000)
+    .url()
+    .should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
+};
 
 const goToIndividualManualVerification = () => {
   cy.get(tid("kyc-go-to-manual-verification")).click();
 
-  cy.wait(1000).url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
-}
+  cy
+    .wait(1000)
+    .url()
+    .should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
+};
 
 const uploadDocumentAndSubmitForm = () => {
-  cy.fixture("../../../assets/img/wallet_selector/logo_mist.png").as('logo')
-  cy.get("input[type=file]").then(($input: any) => {
+  const dropEvent = {
+    dataTransfer: {
+      files: [],
+    },
+  };
 
-    // convert the logo base64 string to a blob
-    // tslint:disable-next-line:no-invalid-this
-    return Cypress.Blob.base64StringToBlob(this.logo, "image/png").then((blob: any) => {
-
-      // pass the blob to the fileupload jQuery plugin
-      // used in your application's code
-      // which initiates a programmatic upload
-      $input.fileupload("add", { files: blob })
+  cy.fixture("example.png").then(picture => {
+    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: never) => {
+      dropEvent.dataTransfer.files.push(blob);
     });
-
-    cy.wait(1000).url().should("eq", `https://localhost:9090${kycRoutes.pending}`);
   });
+
+  cy.get(tid("kyc-personal-upload-dropzone")).trigger("drop", dropEvent);
 
   cy.get(tid("kyc-personal-upload-submit")).click();
-}
+  cy.get(tid("access-light-wallet-password-input")).type(password);
+  cy.get(tid("access-light-wallet-confirm")).click();
+};
 
 describe("KYC Personal flow with manual verification", () => {
-  it("should go to INDIVIDUAL flow from KYC start page", goToIndividualKYCFlow);
-
-  it("should submit form and go to INSTANT ID page", () => {
+  it("went through KYC flow with personal data", () => {
+    goToIndividualKYCFlow();
     submitIndividualKYCForm(personData);
+    goToIndividualManualVerification();
+    uploadDocumentAndSubmitForm();
   });
-
-  it("should go to MANUAL VERIFICATION page", goToIndividualManualVerification);
-
-  it("should upload document and go to another CONFIRMATION page", uploadDocumentAndSubmitForm);
 });

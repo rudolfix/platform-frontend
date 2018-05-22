@@ -19,10 +19,7 @@ export const Panels: React.SFC<IProps> = ({ panels }) => (
       <div key={id} className={styles.panel}>
         <div className={styles.tile}>
           <Proportion>
-            <div
-              className={styles.cta}
-              onClick={onClick}
-              data-test-id={tid}>
+            <div className={styles.cta} onClick={onClick} data-test-id={tid}>
               {content}
             </div>
           </Proportion>

@@ -32,7 +32,11 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
           {title || <FormattedMessage id="kyc.panel.verification" />}
         </h2>
         <VerificationStatus steps={steps} />
-        {description && <div className={styles.description}>{description}</div>}
+        {description && (
+          <div className={styles.description} data-test-id="kyc-panel-description">
+            {description}
+          </div>
+        )}
       </header>
       <div className={styles.content}>{children}</div>
       <footer className={styles.footer}>

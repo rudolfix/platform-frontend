@@ -80,7 +80,8 @@ export class FormFieldDate extends React.Component<IProps> {
                     placeholder="DD"
                     valid={valid}
                     maxLength={2}
-                    data-test-id="form-field-date-day" />
+                    data-test-id="form-field-date-day"
+                  />
                 </div>
               )}
             />
@@ -97,7 +98,8 @@ export class FormFieldDate extends React.Component<IProps> {
                     placeholder="MM"
                     valid={valid}
                     maxLength={2}
-                    data-test-id="form-field-date-month" />
+                    data-test-id="form-field-date-month"
+                  />
                 </div>
               )}
             />
@@ -115,7 +117,8 @@ export class FormFieldDate extends React.Component<IProps> {
                     placeholder="YYYY"
                     valid={valid}
                     maxLength={4}
-                    data-test-id="form-field-date-year" />
+                    data-test-id="form-field-date-year"
+                  />
                 </div>
               )}
             />

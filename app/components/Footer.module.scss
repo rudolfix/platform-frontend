@@ -1,0 +1,73 @@
+@import "../styles/neufund-theme";
+
+.footer {
+  background-color: $neu-almost-black;
+  color: $neu-white-two;
+  width: 100%;
+}
+
+.content-wrapper {
+  @include make-container;
+  @include media-breakpoint-down (md) {
+    padding-bottom: px-to-rem(20px);
+    padding-top: px-to-rem(20px);
+  }
+
+  max-width: 90%;
+  padding-bottom: px-to-rem(41px);
+  padding-top: px-to-rem(41px);
+}
+
+.links {
+  @include media-breakpoint-down (md) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  margin-bottom: px-to-rem(20px);
+
+  a {
+    @include media-breakpoint-down (md) {
+      padding: 0;
+    }
+
+    color: $neu-white-two;
+    padding-right: px-to-rem(10px);
+
+    &:hover {
+      color: $neu-piss-yellow;
+    }
+
+    + a {
+      @include media-breakpoint-down (md) {
+        padding-top: px-to-rem(4px);
+        padding-left: 0;
+        border: 0;
+      }
+
+      border-left: 1px solid $neu-white-two;
+      padding-left: px-to-rem(10px);
+    }
+  }
+}
+
+.content {
+  @include media-breakpoint-down (md) {
+    flex-direction: column;
+  }
+
+  padding-top: px-to-rem(20px);
+  border-top: 1px solid $neu-white-two;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.logo {
+  @include media-breakpoint-down (md) {
+    margin-bottom: px-to-rem(4px);
+  }
+
+  max-height: px-to-rem(32px);
+  max-width: px-to-rem(170px);
+}

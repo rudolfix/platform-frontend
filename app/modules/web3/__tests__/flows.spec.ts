@@ -12,17 +12,44 @@ import { getDummyLightWalletMetadata } from "./fixtures";
 
 describe("web3 > flows", () => {
   describe("personalWalletDisconnected", () => {
-    it("should send notification if it's not light wallet", () => {
+    it("should send notification if it's ledger wallet", () => {
       const dummyDispatch = spy();
-      const state: Partial<IAppState> = {
+      const state: Partial<any> = {
         web3: {
           connected: false,
           previousConnectedWallet: {
-            walletType: WalletType.BROWSER,
+            walletType: WalletType.LEDGER,
             address: dummyEthereumAddress,
           },
         },
       };
+
+      const dummyNotificationCenter = createMock(NotificationCenter, {
+        error: () => {},
+      });
+
+      web3Flows.personalWalletDisconnected(
+        dummyDispatch,
+        () => state as any,
+        dummyNotificationCenter,
+        { intl: dummyIntl },
+      );
+
+      expect(dummyNotificationCenter.error).to.be.calledOnce;
+    });
+
+    it("should send notification if it's browser wallet", () => {
+      const dummyDispatch = spy();
+      const state: Partial<any> = {
+        web3: {
+          connected: false,
+          previousConnectedWallet: {
+            walletType: WalletType.LEDGER,
+            address: dummyEthereumAddress,
+          },
+        },
+      };
+
       const dummyNotificationCenter = createMock(NotificationCenter, {
         error: () => {},
       });

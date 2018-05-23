@@ -27,11 +27,11 @@ export const web3Flows = {
         let error = "";
 
         switch (walletType) {
-          case WalletType.LIGHT:
-            error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.light");
+          case WalletType.BROWSER:
+            error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.browser");
             break;
           case WalletType.LEDGER:
-            error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.light");
+            error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
             break;
           default:
             return;

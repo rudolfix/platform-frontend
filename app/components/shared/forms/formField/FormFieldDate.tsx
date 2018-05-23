@@ -40,6 +40,15 @@ export class FormFieldDate extends React.Component<IProps> {
     year: "",
   };
 
+  monthInput?: HTMLInputElement;
+  saveMonthRef = (ref: HTMLInputElement) => {
+    this.monthInput = ref;
+  };
+  yearInput?: HTMLInputElement;
+  saveYearRef = (ref: HTMLInputElement) => {
+    this.yearInput = ref;
+  };
+
   onChange = (
     type: "year" | "month" | "day",
     e: React.FormEvent<HTMLInputElement>,
@@ -73,9 +82,15 @@ export class FormFieldDate extends React.Component<IProps> {
                 <div className={styles.inputWrapper}>
                   <Input
                     {...field}
-                    onChange={e => this.onChange("day", e, field.onChange)}
+                    onChange={e => {
+                      this.onChange("day", e, field.onChange);
+                      // auto advance to next field
+                      const realValue = this.fromValue("day", e.target.value);
+                      if (realValue.length === 2) {
+                        this.monthInput!.focus();
+                      }
+                    }}
                     value={this.fromValue("day", field.value)}
-                    type="tel"
                     placeholder="DD"
                     valid={valid}
                     maxLength={2}
@@ -90,18 +105,24 @@ export class FormFieldDate extends React.Component<IProps> {
                 <div>
                   <Input
                     {...field}
-                    onChange={e => this.onChange("month", e, field.onChange)}
+                    onChange={e => {
+                      this.onChange("month", e, field.onChange);
+                      // auto advance to next field
+                      const realValue = this.fromValue("month", e.target.value);
+                      if (realValue.length === 2) {
+                        this.yearInput!.focus();
+                      }
+                    }}
                     value={this.fromValue("month", field.value)}
-                    type="tel"
                     placeholder="MM"
                     valid={valid}
                     maxLength={2}
+                    innerRef={this.saveMonthRef}
                   />
                 </div>
               )}
             />
             {"/"}
-            {/* TODO: Add to translations file */}
             <Field
               name={this.props.name}
               render={({ field }) => (
@@ -110,10 +131,10 @@ export class FormFieldDate extends React.Component<IProps> {
                     {...field}
                     onChange={e => this.onChange("year", e, field.onChange)}
                     value={this.fromValue("year", field.value)}
-                    type="tel"
                     placeholder="YYYY"
                     valid={valid}
                     maxLength={4}
+                    innerRef={this.saveYearRef}
                   />
                 </div>
               )}

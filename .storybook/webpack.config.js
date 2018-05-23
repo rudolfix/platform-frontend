@@ -9,7 +9,7 @@ module.exports = (baseConfig, env, config) => {
   config.entry.preview.push(pathToStyleLoader);
 
   config.plugins.push(
-    new webpack.NormalModuleReplacementPlugin(/(.*)react-intl-phraseapp(\.*)/, data => {
+    new webpack.NormalModuleReplacementPlugin(/^react-intl-phraseapp$/, data => {
       data.request = data.request.replace(/react-intl-phraseapp/, `react-intl`);
     }),
   );

@@ -42,7 +42,7 @@ function forceRerenderInDevMode(): number {
   }
 }
 
-if (process.env.NODE_ENV === "translate") {
+if (process.env.NF_ENABLE_TRANSLATE_OVERLAY) {
   const config = {
     projectId: process.env.NF_TRANSLATION_ID!,
     phraseEnabled: true,

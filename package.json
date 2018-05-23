@@ -109,8 +109,9 @@
   "scripts": {
     "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
-    "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=translate webpack-dev-server --config ./webpack/webpack.config.translate.js",
+    "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack-dev-server --config ./webpack/webpack.config.translate.js",
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
+    "build:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack --config ./webpack/webpack.config.prod.js",
     "ganache": "./scripts/ganache-cli.sh",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md,gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,js,json,md,gql}'",

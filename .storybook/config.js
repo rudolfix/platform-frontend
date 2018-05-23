@@ -7,8 +7,8 @@ import StoryRouter from "storybook-react-router";
 import { initScreenshot, withScreenshot } from "storybook-chrome-screenshot/lib";
 
 // Load the locale data for all your defined locales
-import { addLocaleData } from "react-intl-phraseapp";
-import enLocaleData from "react-intl-phraseapp/locale-data/en";
+import { addLocaleData } from "react-intl";
+import enLocaleData from "react-intl/locale-data/en";
 
 import * as languageEn from "../intl/locales/en-en.json";
 

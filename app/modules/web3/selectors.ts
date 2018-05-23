@@ -49,6 +49,12 @@ export const selectIsLightWallet = (state: IWeb3State): boolean => {
   );
 };
 
+export const selectIsLedgerWallet = (state: IWeb3State): boolean => {
+  return (
+    (state.connected && state.wallet.walletType === WalletType.LEDGER)
+  );
+};
+
 export const selectIsUnlocked = (state: IWeb3State): boolean => {
   return state.connected && state.isUnlocked;
 };

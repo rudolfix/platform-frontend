@@ -5,7 +5,7 @@ import { IntlWrapper } from "../../lib/intl/IntlWrapper";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { AppDispatch } from "../../store";
 import { actions } from "../actions";
-import { selectIsLightWallet } from "./selectors";
+import { selectIsLedgerWallet, selectIsLightWallet } from "./selectors";
 
 export const web3Flows = {
   personalWalletDisconnected: injectableFn(
@@ -21,10 +21,13 @@ export const web3Flows = {
 
       const state = getState();
       const isLightWallet = selectIsLightWallet(state.web3);
+      const isLedgerWallet = selectIsLedgerWallet(state.web3);
 
       if (!isLightWallet) {
         notificationCenter.error(
-          intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error"),
+          isLedgerWallet
+            ? intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger")
+            : intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.light"),
         );
       }
     },

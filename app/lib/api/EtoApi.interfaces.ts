@@ -1,36 +1,34 @@
-import * as t from "io-ts";
-
+import * as YupTS from "../yup-ts";
 import { DeepPartial } from "../../types";
-import * as types from "../type-boundary";
 
-const EtoFounderType = t.type({
-  fullName: types.nonEmptyStringType,
-  role: types.nonEmptyStringType,
-  bio: types.nonEmptyStringType,
+const EtoFounderType = YupTS.object({
+  fullName: YupTS.string(),
+  role: YupTS.string(),
+  bio: YupTS.string(),
 });
-export type TEtoFounder = t.TypeOf<typeof EtoFounderType>;
+export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 
-const EtoCapTableType = t.type({
-  fullName: types.nonEmptyStringType,
-  ownership: types.NumberFromString,
-});
-
-const NotableInvestorsType = t.type({
-  fullName: types.nonEmptyStringType,
+const EtoCapTableType = YupTS.object({
+  fullName: YupTS.string(),
+  ownership: YupTS.number(),
 });
 
-const AdvisorsType = t.type({
-  fullName: types.nonEmptyStringType,
+const NotableInvestorsType = YupTS.object({
+  fullName: YupTS.string(),
 });
 
-export const EtoTeamDataType = t.type({
-  employeesAmount: types.IntegerFromString,
-  founders: t.array(EtoFounderType),
-  capTable: t.array(EtoCapTableType),
-  notableInvestors: t.array(NotableInvestorsType),
-  advisors: t.array(AdvisorsType),
+const AdvisorsType = YupTS.object({
+  fullName: YupTS.string(),
 });
-type TEtoTeamData = t.TypeOf<typeof EtoTeamDataType>;
 
-export type TEtoData = TEtoTeamData; // and others...
+export const EtoTeamDataType = YupTS.object({
+  employeesAmount: YupTS.number(),
+  founders: YupTS.array(EtoFounderType),
+  capTable: YupTS.array(EtoCapTableType),
+  notableInvestors: YupTS.array(NotableInvestorsType),
+  advisors: YupTS.array(AdvisorsType),
+});
+type TEtoTeamData = YupTS.TypeOf<typeof EtoTeamDataType>;
+
+export type TEtoData = TEtoTeamData;
 export type TPartialEtoData = DeepPartial<TEtoData>;

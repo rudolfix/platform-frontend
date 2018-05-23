@@ -41,7 +41,7 @@ export class BrowserWallet implements IPersonalWallet {
       return false;
     }
 
-    return !!(await this.web3Adapter.getAccountAddress());
+    return !!await this.web3Adapter.getAccountAddress();
   }
 
   public async signMessage(data: string): Promise<string> {
@@ -89,7 +89,7 @@ export class BrowserWalletConnector {
     }
 
     // check for locked wallet
-    if (!(await web3Adapter.getAccountAddress())) {
+    if (!await web3Adapter.getAccountAddress()) {
       throw new BrowserWalletLockedError();
     }
 

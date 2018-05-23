@@ -60,9 +60,7 @@ export async function verifyUserEmailPromise(
   {
     apiUserService,
     notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
+    intlWrapper: { intl: { formatIntlMessage } },
   }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
@@ -126,12 +124,7 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
 }
 
 function* signInUser(
-  {
-    logger,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
-  }: TGlobalDependencies,
+  { logger, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
   { payload: { userType } }: any,
 ): Iterator<any> {
   try {
@@ -197,9 +190,12 @@ export async function obtainJwtPromise(
   /* tslint:enable: no-useless-cast */
 
   logger.info("Obtaining auth challenge from api");
-  const {
-    body: { challenge },
-  } = await signatureAuthApi.challenge(address, salt, signerType, permissions);
+  const { body: { challenge } } = await signatureAuthApi.challenge(
+    address,
+    salt,
+    signerType,
+    permissions,
+  );
 
   logger.info("Signing challenge");
   /* tslint:disable: no-useless-cast */
@@ -207,9 +203,11 @@ export async function obtainJwtPromise(
   /* tslint:enable: no-useless-cast */
 
   logger.info("Sending signed challenge back to api");
-  const {
-    body: { jwt },
-  } = await signatureAuthApi.createJwt(challenge, signedChallenge, signerType);
+  const { body: { jwt } } = await signatureAuthApi.createJwt(
+    challenge,
+    signedChallenge,
+    signerType,
+  );
 
   return jwt;
 }

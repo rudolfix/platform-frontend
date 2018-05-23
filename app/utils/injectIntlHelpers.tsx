@@ -12,6 +12,8 @@ import {
   MessageValue,
 } from "react-intl";
 
+//react-intl-phraseapp for injecting is not used @see https://github.com/phrase/react-intl-phraseapp/issues/3
+
 export interface IIntlHelpers {
   formatDate(value: DateSource, options?: FormattedDate.PropsBase): string;
   formatTime(value: DateSource, options?: FormattedTime.PropsBase): string;

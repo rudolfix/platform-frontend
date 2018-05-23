@@ -1,6 +1,5 @@
-import * as Yup from "yup";
-import { valid } from "semver";
 import { mapValues } from "lodash";
+import * as Yup from "yup";
 import { Dictionary } from "../types";
 
 export const object = <T>(objectShape: T) => new ObjectYTS(objectShape);
@@ -11,8 +10,6 @@ export const boolean = () => new BooleanYTS();
 
 export type TypeOf<T extends YTS<any>> = T["_T"];
 type TypeOfProps<P extends Dictionary<any>> = { [K in keyof P]: TypeOf<P[K]> };
-
-type TOptional<O, REQUIRED> = REQUIRED extends true ? O : O | undefined;
 
 abstract class YTS<T> {
   _T!: T;
@@ -43,7 +40,7 @@ class ObjectYTS<T> extends YTS<TypeOfProps<T>> {
   }
 }
 
-class StringYTS<R = false> extends YTS<string> {
+class StringYTS extends YTS<string> {
   __TYPE__!: Unique<"string">;
 
   constructor(private isRequired: boolean = true) {
@@ -53,18 +50,18 @@ class StringYTS<R = false> extends YTS<string> {
   toYup(): Yup.Schema {
     const validator = Yup.string();
 
-    if (this.optional) {
+    if (this.isRequired) {
       return validator.required();
     }
     return validator;
   }
 
-  optional(): StringYTS<string | undefined> {
+  optional(): YTS<string | undefined> {
     return new StringYTS(false);
   }
 }
 
-class NumberYTS<R = false> extends YTS<number> {
+class NumberYTS extends YTS<number> {
   __TYPE__!: Unique<"number">;
 
   constructor(private isRequired: boolean = true) {
@@ -85,7 +82,7 @@ class NumberYTS<R = false> extends YTS<number> {
   }
 }
 
-class BooleanYTS<R = false> extends YTS<boolean> {
+class BooleanYTS extends YTS<boolean> {
   __TYPE__!: Unique<"boolean">;
 
   constructor(private isRequired: boolean = true) {
@@ -106,7 +103,7 @@ class BooleanYTS<R = false> extends YTS<boolean> {
   }
 }
 
-class ArrayYTS<T extends YTS<any>, R = false> extends YTS<Array<TypeOf<T>>> {
+class ArrayYTS<T extends YTS<any>> extends YTS<Array<TypeOf<T>>> {
   __TYPE__!: Unique<"array">;
 
   constructor(private shape: T, private isRequired: boolean = true) {

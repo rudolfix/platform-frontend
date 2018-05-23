@@ -1,13 +1,14 @@
-import * as YupTS from "./yup-ts";
 import { expect } from "chai";
+import * as YupTS from "./yup-ts";
 
-describe.only("yup-ts", () => {
+describe("yup-ts", () => {
   const animalValidator = YupTS.object({
     name: YupTS.string().optional(),
   });
 
   const personValidatorTemplate = YupTS.object({
     fullName: YupTS.string(),
+    middleName: YupTS.string().optional(),
     age: YupTS.number(),
     married: YupTS.boolean().optional(),
     animals: YupTS.array(animalValidator).optional(),
@@ -19,6 +20,7 @@ describe.only("yup-ts", () => {
   it("should work as yup", () => {
     const validValue1: TValidatorType = {
       fullName: "Typical Millennial Dev",
+      middleName: undefined,
       age: 21,
       married: false,
       animals: undefined,
@@ -26,6 +28,7 @@ describe.only("yup-ts", () => {
     const validValue2 = { fullName: "Typical Millennial Dev", age: "21" }; // testing coercing
     const validValue3: TValidatorType = {
       fullName: "John Smith",
+      middleName: "Peter",
       age: 21,
       married: false,
       animals: [{ name: "kitty" }],
@@ -43,6 +46,7 @@ describe.only("yup-ts", () => {
   it("should generate correct types", () => {
     type assert<T> = T extends {
       fullName: string;
+      middleName: string | undefined;
       age: number;
       married: boolean | undefined;
       animals: Array<{ name: string | undefined }> | undefined;
@@ -50,6 +54,7 @@ describe.only("yup-ts", () => {
       ? true
       : never;
 
+    // tslint:disable-next-line
     const t: assert<TValidatorType> = true;
   });
 });

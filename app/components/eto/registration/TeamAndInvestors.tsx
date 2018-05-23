@@ -16,7 +16,6 @@ import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 import { Section } from "./Shared";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
-import { formikValidator } from "../../../lib/type-boundary/utils";
 
 interface IStateProps {
   loadingData: boolean;
@@ -204,7 +203,7 @@ const PersonSubForm: React.SFC<ISubFormProps> = ({ prefix }) => (
 );
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
-  validate: formikValidator(EtoTeamDataType),
+  validationSchema: EtoTeamDataType.toYup(),
   // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.stateValues),
   mapPropsToValues: props => props.stateValues,
   // enableReinitialize: true,

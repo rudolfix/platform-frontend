@@ -1,5 +1,5 @@
-import * as YupTS from "../yup-ts";
 import { DeepPartial } from "../../types";
+import * as YupTS from "../yup-ts";
 
 const EtoFounderType = YupTS.object({
   fullName: YupTS.string(),

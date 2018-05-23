@@ -1,39 +1,33 @@
 import * as Yup from "yup";
 import { valid } from "semver";
 import { mapValues } from "lodash";
+import { Dictionary } from "../types";
 
 export const object = <T>(objectShape: T) => new ObjectYTS(objectShape);
 export const string = () => new StringYTS();
-export const array = <T extends YTS>(shape: T) => new ArrayYTS(shape);
+export const array = <T extends YTS<any>>(shape: T) => new ArrayYTS(shape);
 export const number = () => new NumberYTS();
 export const boolean = () => new BooleanYTS();
 
-type ToTypeSub<T> = T extends ObjectYTS<infer S, infer R>
-  ? TOptional<{ [K in keyof S]: ToType<S[K]> }, R>
-  : T extends ArrayYTS<infer S, infer R>
-    ? TOptional<Array<S>, R>
-    : T extends StringYTS<infer R>
-      ? TOptional<string, R>
-      : T extends NumberYTS<infer R>
-        ? TOptional<number, R>
-        : T extends BooleanYTS<infer R> ? TOptional<boolean, R> : never;
-
-export type ToType<T> = T extends ArrayYTS<infer S, infer R>
-  ? TOptional<Array<ToTypeSub<S>>, R>
-  : ToTypeSub<T>;
+export type TypeOf<T extends YTS<any>> = T["_T"];
+type TypeOfProps<P extends Dictionary<any>> = { [K in keyof P]: TypeOf<P[K]> };
 
 type TOptional<O, REQUIRED> = REQUIRED extends true ? O : O | undefined;
 
-interface YTS {
-  toYup(): Yup.Schema;
+abstract class YTS<T> {
+  _T!: T;
 
-  required(): YTS;
+  abstract toYup(): Yup.Schema;
+
+  abstract optional(): YTS<T | undefined>;
 }
 
-class ObjectYTS<T, R = false> {
+class ObjectYTS<T> extends YTS<TypeOfProps<T>> {
   __TYPE__!: Unique<"object">;
 
-  constructor(private shape: T, private isRequired: boolean = false) {}
+  constructor(private shape: T, private isRequired: boolean = true) {
+    super();
+  }
 
   toYup(): Yup.Schema {
     const validator = Yup.object(mapValues(this.shape, s => s.toYup()));
@@ -44,34 +38,38 @@ class ObjectYTS<T, R = false> {
     return validator;
   }
 
-  required(): ObjectYTS<T, true> {
-    return new ObjectYTS(this.shape, true);
+  optional(): ObjectYTS<T | undefined> {
+    return new ObjectYTS(this.shape, false);
   }
 }
 
-class StringYTS<R = false> {
+class StringYTS<R = false> extends YTS<string> {
   __TYPE__!: Unique<"string">;
 
-  constructor(private isRequired: boolean = false) {}
+  constructor(private isRequired: boolean = true) {
+    super();
+  }
 
   toYup(): Yup.Schema {
     const validator = Yup.string();
 
-    if (this.required) {
+    if (this.optional) {
       return validator.required();
     }
     return validator;
   }
 
-  required(): StringYTS<true> {
-    return new StringYTS(true);
+  optional(): StringYTS<string | undefined> {
+    return new StringYTS(false);
   }
 }
 
-class NumberYTS<R = false> {
+class NumberYTS<R = false> extends YTS<number> {
   __TYPE__!: Unique<"number">;
 
-  constructor(private isRequired: boolean = false) {}
+  constructor(private isRequired: boolean = true) {
+    super();
+  }
 
   toYup(): Yup.Schema {
     const validator = Yup.number();
@@ -82,15 +80,17 @@ class NumberYTS<R = false> {
     return validator;
   }
 
-  required(): NumberYTS<true> {
-    return new NumberYTS(true);
+  optional(): YTS<number | undefined> {
+    return new NumberYTS(false);
   }
 }
 
-class BooleanYTS<R = false> {
+class BooleanYTS<R = false> extends YTS<boolean> {
   __TYPE__!: Unique<"boolean">;
 
-  constructor(private isRequired: boolean = false) {}
+  constructor(private isRequired: boolean = true) {
+    super();
+  }
 
   toYup(): Yup.Schema {
     const validator = Yup.boolean();
@@ -101,15 +101,17 @@ class BooleanYTS<R = false> {
     return validator;
   }
 
-  required(): BooleanYTS<true> {
-    return new BooleanYTS(true);
+  optional(): YTS<boolean | undefined> {
+    return new BooleanYTS(false);
   }
 }
 
-class ArrayYTS<T extends YTS, R = false> {
+class ArrayYTS<T extends YTS<any>, R = false> extends YTS<Array<TypeOf<T>>> {
   __TYPE__!: Unique<"array">;
 
-  constructor(private shape: T, private isRequired: boolean = false) {}
+  constructor(private shape: T, private isRequired: boolean = true) {
+    super();
+  }
 
   toYup(): Yup.Schema {
     const validator = Yup.array().of(this.shape.toYup());
@@ -120,8 +122,8 @@ class ArrayYTS<T extends YTS, R = false> {
     return validator;
   }
 
-  required(): ArrayYTS<T, true> {
-    return new ArrayYTS(this.shape, true);
+  optional(): YTS<Array<TypeOf<T>> | undefined> {
+    return new ArrayYTS(this.shape, false);
   }
 }
 

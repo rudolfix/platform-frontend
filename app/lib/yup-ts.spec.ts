@@ -3,17 +3,17 @@ import { expect } from "chai";
 
 describe.only("yup-ts", () => {
   const animalValidator = YupTS.object({
-    name: YupTS.string().required(),
+    name: YupTS.string().optional(),
   });
 
   const personValidatorTemplate = YupTS.object({
-    fullName: YupTS.string().required(),
-    age: YupTS.number().required(),
-    married: YupTS.boolean(),
-    animals: YupTS.array(animalValidator),
-  }).required();
+    fullName: YupTS.string(),
+    age: YupTS.number(),
+    married: YupTS.boolean().optional(),
+    animals: YupTS.array(animalValidator).optional(),
+  });
 
-  type TValidatorType = YupTS.ToType<typeof personValidatorTemplate>;
+  type TValidatorType = YupTS.TypeOf<typeof personValidatorTemplate>;
   const validator = personValidatorTemplate.toYup();
 
   it("should work as yup", () => {
@@ -40,5 +40,16 @@ describe.only("yup-ts", () => {
   });
 
   // assertions on types done according to: https://abstract.properties/typescript-compile-assertions.html
-  it("should generate correct types", () => {});
+  it("should generate correct types", () => {
+    type assert<T> = T extends {
+      fullName: string;
+      age: number;
+      married: boolean | undefined;
+      animals: Array<{ name: string | undefined }> | undefined;
+    }
+      ? true
+      : never;
+
+    const t: assert<TValidatorType> = true;
+  });
 });

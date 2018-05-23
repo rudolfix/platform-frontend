@@ -15,7 +15,7 @@ export const Footer: React.SFC = () => {
             <FormattedMessage id="footer.links.imprint" />
           </Link>
           <Link
-            to="https://zh-file.s3.amazonaws.com/116978635/c9964332-ad6b-4644-8a54-245a8e840c4f?Expires=1527072934&AWSAccessKeyId=AKIAI5X57DET3FHKSALA&Signature=U3IRnOWCQwNrKkaWO8ERvPWMd0c%3D"
+            to="https://neufund.org/cms_resources/neufundprivacypolicy20180523.pdf"
             target="_blank"
           >
             <FormattedMessage id="footer.links.privacy-policy" />

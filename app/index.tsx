@@ -44,7 +44,7 @@ function forceRerenderInDevMode(): number {
 
 if (process.env.NODE_ENV === "translate") {
   const config = {
-    projectId: "6c987746f39a4c910f601940bba9b912",
+    projectId: process.env.NF_TRANSLATION_ID!,
     phraseEnabled: true,
     prefix: "[[__",
     suffix: "__]]",

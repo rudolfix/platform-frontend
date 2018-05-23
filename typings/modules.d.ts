@@ -13,6 +13,4 @@ declare module "bitcore-mnemonic";
 declare module "eth-sig-util";
 declare module "tweetnacl";
 
-declare module "react-intl-phraseapp";
-
 declare module "@storybook/addon-actions";

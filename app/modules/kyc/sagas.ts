@@ -108,7 +108,9 @@ function* submitIndividualData(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -128,7 +130,9 @@ function* uploadIndividualFile(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -180,7 +184,9 @@ function* submitIndividualRequest(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -204,7 +210,9 @@ function* submitIndividualRequest(
 function* startIndividualInstantId({
   apiKycService,
   notificationCenter,
-  intlWrapper: { intl: { formatIntlMessage } },
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
 }: TGlobalDependencies): Iterator<any> {
   try {
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.startInstantId();
@@ -240,7 +248,9 @@ function* submitLegalRepresentative(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -261,7 +271,9 @@ function* uploadLegalRepresentativeFile(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -300,7 +312,9 @@ function* setBusinessType(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -338,7 +352,9 @@ function* submitBusinessData(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -359,7 +375,9 @@ function* uploadBusinessFile(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -409,7 +427,9 @@ function* createBeneficialOwner(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -428,7 +448,9 @@ function* submitBeneficialOwner(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -449,7 +471,9 @@ function* deleteBeneficalOwner(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -468,7 +492,9 @@ function* uploadBeneficialOwnerFile(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -525,7 +551,9 @@ function* submitBusinessRequest(
   {
     apiKycService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {

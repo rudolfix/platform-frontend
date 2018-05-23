@@ -188,7 +188,7 @@ export class LightWallet implements IPersonalWallet {
     if (currentNetworkId !== networkId) {
       return false;
     }
-    return !!await this.web3Adapter.getAccountAddress();
+    return !!(await this.web3Adapter.getAccountAddress());
   }
 
   public async signMessage(data: string): Promise<string> {

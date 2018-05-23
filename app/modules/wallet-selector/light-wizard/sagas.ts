@@ -69,7 +69,9 @@ export function* getWalletMetadata(
 }
 
 export function* lightWalletBackupWatch({
-  intlWrapper: { intl: { formatIntlMessage } },
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
 }: TGlobalDependencies): Iterator<any> {
   try {
     const user = yield select((state: IAppState) => state.auth.user);

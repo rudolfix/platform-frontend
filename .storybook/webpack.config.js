@@ -10,7 +10,7 @@ module.exports = (baseConfig, env, config) => {
 
   config.plugins.push(
     new webpack.NormalModuleReplacementPlugin(/^react-intl-phraseapp$/, data => {
-      data.request = data.request.replace(/react-intl-phraseapp/, `react-intl`);
+      data.request = data.request.replace("/react-intl-phraseapp/", "react-intl");
     }),
   );
 

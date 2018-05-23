@@ -18,7 +18,7 @@ interface IPersonData {
   hasHighIncome: string;
 }
 
-const personData = {
+const personData: IPersonData = {
   firstName: "John",
   lastName: "Doe",
   birthday: {

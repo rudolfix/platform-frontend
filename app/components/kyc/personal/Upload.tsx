@@ -61,7 +61,7 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
         fileUploading={props.fileUploading}
         filesLoading={props.filesLoading}
         layout="individual"
-        tid="kyc-personal-upload-dropzone"
+        data-test-id="kyc-personal-upload-dropzone"
       />
       <div className="p-4 text-center">
         <Button

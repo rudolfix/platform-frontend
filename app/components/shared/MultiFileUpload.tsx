@@ -26,7 +26,7 @@ interface IProps {
   tid?: string;
 }
 
-export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, tid, ...props }) => {
+export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) => {
   const onDrop = (accepted: File[]) => accepted[0] && props.onDropFile(accepted[0]);
 
   const dropzoneInner = props.fileUploading ? (
@@ -134,7 +134,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, tid, ...prop
             onDrop={onDrop}
             disabled={props.fileUploading}
             style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}
-            data-test-id={tid}
+            {...props}
           >
             {files.length ? dropzoneWithFilesInner : dropzoneInner}
           </Dropzone>

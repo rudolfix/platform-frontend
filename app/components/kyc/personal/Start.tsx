@@ -123,7 +123,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
         <FormSelectCountryField
           label={formatIntlMessage("form.label.country")}
           name="country"
-          tid="kyc-personal-start-country"
+          data-test-id="kyc-personal-start-country"
         />
         <br />
         <FormSelectField
@@ -148,7 +148,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
               <FormattedMessage id={"kyc.personal.politically-exposed.disclaimer"} />
             )
           }
-          tid="kyc-personal-start-is-politically-exposed"
+          data-test-id="kyc-personal-start-is-politically-exposed"
         />
         <FormSelectField
           values={US_CITIZEN_VALUES}
@@ -162,14 +162,14 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
             </>
           }
           name="isUsCitizen"
-          tid="kyc-personal-start-is-us-citizen"
+          data-test-id="kyc-personal-start-is-us-citizen"
         />
         <FormSelectField
           values={HIGH_INCOME_VALUES}
           label={formatIntlMessage("kyc.personal.high-income")}
           name="isHighIncome"
           extraMessage={<FormattedMessage id={"kyc.personal.income.disclaimer"} />}
-          tid="kyc-personal-start-has-high-income"
+          data-test-id="kyc-personal-start-has-high-income"
         />
         <div className="p-4 text-center">
           <Button

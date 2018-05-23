@@ -35,7 +35,7 @@ export const unboolify = <T extends {}>(values: T): T => {
 
 interface IOwnProps {
   extraMessage?: string | React.ReactNode;
-  tid?: string;
+  "data-test-id"?: string;
 }
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -79,7 +79,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
     ));
 
   render(): React.ReactChild {
-    const { label, name, extraMessage } = this.props;
+    const { label, name, extraMessage, "data-test-id": dataTestId } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors, setFieldTouched } = formik;
     //This is done due to the difference between reactstrap and @typings/reactstrap
@@ -99,7 +99,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               type="select"
               value={field.value}
               valid={isValid(touched, errors, name)}
-              data-test-id={this.props.tid}
+              data-test-id={dataTestId}
               {...inputExtraProps}
             >
               {this.renderOptions()}

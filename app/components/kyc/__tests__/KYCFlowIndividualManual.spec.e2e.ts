@@ -49,10 +49,7 @@ const goToIndividualKYCFlow = () => {
 
   cy.get(tid("kyc-start-go-to-personal")).click();
 
-  cy
-    .wait(2000)
-    .url()
-    .should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
+  cy.url().should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
 };
 
 const submitIndividualKYCForm = (person: IPersonData) => {
@@ -74,19 +71,13 @@ const submitIndividualKYCForm = (person: IPersonData) => {
 
   cy.get(tid("kyc-personal-start-submit-form")).click();
 
-  cy
-    .wait(1000)
-    .url()
-    .should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
+  cy.url().should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
 };
 
 const goToIndividualManualVerification = () => {
   cy.get(tid("kyc-go-to-manual-verification")).click();
 
-  cy
-    .wait(1000)
-    .url()
-    .should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
+  cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
 };
 
 const uploadDocumentAndSubmitForm = () => {
@@ -115,5 +106,7 @@ describe("KYC Personal flow with manual verification", () => {
     submitIndividualKYCForm(personData);
     goToIndividualManualVerification();
     uploadDocumentAndSubmitForm();
+
+    cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
   });
 });

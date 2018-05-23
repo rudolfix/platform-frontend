@@ -119,11 +119,8 @@ export class FormFieldDate extends React.Component<IProps> {
                     placeholder="MM"
                     valid={valid}
                     maxLength={2}
-<<<<<<< HEAD
                     data-test-id="form-field-date-month"
-=======
                     innerRef={this.saveMonthRef}
->>>>>>> master
                   />
                 </div>
               )}
@@ -140,11 +137,8 @@ export class FormFieldDate extends React.Component<IProps> {
                     placeholder="YYYY"
                     valid={valid}
                     maxLength={4}
-<<<<<<< HEAD
                     data-test-id="form-field-date-year"
-=======
                     innerRef={this.saveYearRef}
->>>>>>> master
                   />
                 </div>
               )}

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { NavLink, NavLinkProps } from "react-router-dom";
 
 import { TUserType } from "../../lib/api/users/interfaces";

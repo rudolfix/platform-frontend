@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";

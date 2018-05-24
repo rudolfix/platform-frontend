@@ -5,7 +5,7 @@ import "react-virtualized/styles.css";
 import * as Mnemonic from "bitcore-mnemonic";
 import { range } from "lodash";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 

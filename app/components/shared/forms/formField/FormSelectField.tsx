@@ -2,7 +2,7 @@ import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup, Input, Label } from "reactstrap";
 
 import { isNonValid } from "../forms";

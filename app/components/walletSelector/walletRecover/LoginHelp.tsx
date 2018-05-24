@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Button } from "../../shared/Buttons";
 import { loginWalletRoutes } from "../walletRoutes";
 import { recoverRoutes } from "./recoverRoutes";

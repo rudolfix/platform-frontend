@@ -6,7 +6,7 @@ import { Money } from "./Money";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag";
 
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./InvestmentPreview.module.scss";
 
 interface IPreFoundingStatus {

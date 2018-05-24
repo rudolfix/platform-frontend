@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Button } from "./Buttons";
 import { NavLinkConnected } from "./connectedRouting";

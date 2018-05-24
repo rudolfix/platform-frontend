@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import Dropzone from "react-dropzone";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
 import { Button } from "../shared/Buttons";

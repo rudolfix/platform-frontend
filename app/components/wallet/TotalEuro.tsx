@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./TotalEuro.module.scss";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Money } from "../shared/Money";
 
 interface ITotalEuroProps {

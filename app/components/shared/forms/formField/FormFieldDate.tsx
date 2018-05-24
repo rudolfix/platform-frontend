@@ -9,7 +9,7 @@ import * as errorStyles from "./FormStyles.module.scss";
 interface IProps {
   label: string;
   name: string;
-  tid?: string;
+  "data-test-id"?: string;
 }
 
 const positionMap = {
@@ -70,11 +70,11 @@ export class FormFieldDate extends React.Component<IProps> {
   render(): React.ReactNode {
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
-    const { name } = this.props;
+    const { name, "data-test-id": dataTestId } = this.props;
     const valid = isValid(touched, errors, name);
     return (
       <FormGroup>
-        <div className={styles.dateField} data-test-id={this.props.tid}>
+        <div className={styles.dateField} data-test-id={dataTestId}>
           <span className={styles.label}>{this.props.label}</span>
           <div className={styles.inputsWrapper}>
             <Field

@@ -23,7 +23,6 @@ interface IProps {
   files: IKycFileInfo[];
   layout: TKycRequestType;
   onDropFile: (file: File) => void;
-  tid?: string;
 }
 
 export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) => {

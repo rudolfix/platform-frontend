@@ -29,13 +29,13 @@ export const web3Flows = {
           case WalletType.LEDGER:
             return intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
           default:
-            return "";
+            return;
         }
       };
 
       const message = disconnectedWalletErrorMessage();
 
-      if (message.length) {
+      if (message) {
         notificationCenter.error(message);
       }
     },

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 import * as noComputer from "../../../assets/img/seed_backup/no_computer.svg";

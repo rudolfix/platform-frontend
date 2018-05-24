@@ -16,7 +16,7 @@ import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.s
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
 import * as walletIcon from "../../../assets/img/wallet_selector/wallet_icon.svg";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import * as styles from "./WalletBrowser.module.scss";

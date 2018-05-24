@@ -7,7 +7,7 @@ import { Money, TCurrency } from "../shared/Money";
 import { PanelWhite } from "../shared/PanelWhite";
 import * as styles from "./NeufundKpiWidget.module.scss";
 
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Button } from "../shared/Buttons";
 
 interface IProps {

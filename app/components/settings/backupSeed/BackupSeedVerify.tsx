@@ -15,7 +15,7 @@ import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 /* tslint:enable: no-submodule-imports */
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import * as styles from "./BackupSeedVerify.module.scss";
 

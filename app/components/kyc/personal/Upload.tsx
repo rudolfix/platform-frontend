@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -61,9 +61,14 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
         fileUploading={props.fileUploading}
         filesLoading={props.filesLoading}
         layout="individual"
+        data-test-id="kyc-personal-upload-dropzone"
       />
       <div className="p-4 text-center">
-        <Button onClick={props.onDone} disabled={!props.files || props.files.length === 0}>
+        <Button
+          onClick={props.onDone}
+          disabled={!props.files || props.files.length === 0}
+          data-test-id="kyc-personal-upload-submit"
+        >
           <FormattedMessage id="form.button.submit" />
         </Button>
       </div>

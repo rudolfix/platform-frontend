@@ -2,7 +2,7 @@ import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup, Input, Label } from "reactstrap";
 
 import { isNonValid } from "../forms";
@@ -12,19 +12,6 @@ import * as styles from "./FormStyles.module.scss";
 export const NONE_KEY = "__NONE__";
 export const BOOL_TRUE_KEY = "true";
 export const BOOL_FALSE_KEY = "false";
-export const DISABLED_COUNTRIES = [
-  "BA",
-  "KP",
-  "CU",
-  "IR",
-  "IQ",
-  "LK",
-  "SY",
-  "SD",
-  "US",
-  "AL",
-  "RS",
-];
 
 export const boolify = <T extends {}>(values: T): T => {
   if (!values) return values;
@@ -48,6 +35,7 @@ export const unboolify = <T extends {}>(values: T): T => {
 
 interface IOwnProps {
   extraMessage?: string | React.ReactNode;
+  "data-test-id"?: string;
 }
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -91,7 +79,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
     ));
 
   render(): React.ReactChild {
-    const { label, name, extraMessage } = this.props;
+    const { label, name, extraMessage, "data-test-id": dataTestId } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors, setFieldTouched } = formik;
     //This is done due to the difference between reactstrap and @typings/reactstrap
@@ -111,6 +99,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               type="select"
               value={field.value}
               valid={isValid(touched, errors, name)}
+              data-test-id={dataTestId}
               {...inputExtraProps}
             >
               {this.renderOptions()}

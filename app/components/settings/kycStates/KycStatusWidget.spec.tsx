@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { KycStatusWidgetComponent } from "./KycStatusWidget";

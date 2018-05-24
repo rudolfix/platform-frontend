@@ -5,6 +5,7 @@ import { Container } from "inversify";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";
+import { initializePhraseAppEditor } from "react-intl-phraseapp";
 import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
@@ -39,6 +40,16 @@ function forceRerenderInDevMode(): number {
   } else {
     return 1;
   }
+}
+
+if (process.env.NF_ENABLE_TRANSLATE_OVERLAY) {
+  const config = {
+    projectId: process.env.NF_TRANSLATION_ID!,
+    phraseEnabled: true,
+    prefix: "[[__",
+    suffix: "__]]",
+  };
+  initializePhraseAppEditor(config);
 }
 
 function renderApp(

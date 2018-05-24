@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { compact } from "lodash";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
 import { actions } from "../../modules/actions";

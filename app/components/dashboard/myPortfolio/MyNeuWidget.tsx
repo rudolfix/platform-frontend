@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import { Button } from "../../shared/Buttons";
 import { Money } from "../../shared/Money";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as icon from "../../../assets/img/neu_icon.svg";
 import { externalRoutes } from "../../externalRoutes";

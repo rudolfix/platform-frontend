@@ -6,7 +6,7 @@ import { Button } from "../../shared/Buttons";
 
 import * as styles from "./BackupSeedDisplay.module.scss";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 
 export const WORDS_PER_PAGE = 12;

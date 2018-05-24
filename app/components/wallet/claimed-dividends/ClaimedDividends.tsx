@@ -12,7 +12,7 @@ import { TableRow } from "../../shared/table/TableRow";
 import { TotalEuro } from "../TotalEuro";
 import * as styles from "./ClaimedDividends.module.scss";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as LinkOutIcon from "../../../assets/img/inline_icons/link_out.svg";
 import * as neuIcon from "../../../assets/img/neu_icon.svg";
 import { CommonHtmlProps } from "../../../types";

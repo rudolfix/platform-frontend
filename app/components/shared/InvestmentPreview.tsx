@@ -118,7 +118,11 @@ export const InvestmentPreview: React.SFC<IProps> = ({
                       neuInvestors: neuInvestorsNum,
                     }}
                   />{" "}
-                  <FormattedPlural value={endInDays} one="day" other="days" />
+                  <FormattedPlural
+                    value={endInDays}
+                    one={<FormattedMessage id="general.word.day" />}
+                    other={<FormattedMessage id="general.word.days" />}
+                  />
                 </div>
                 <PercentageIndicatorBar percent={25} />
                 <strong>

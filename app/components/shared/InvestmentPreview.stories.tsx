@@ -22,9 +22,10 @@ const defaultProps = {
   linkToDetails: "http://localhost:9001",
   handleEmailSend: () => {},
 };
+
 storiesOf("InvestmentPreview", module)
   .add("ETO didn't start", () => <InvestmentPreview {...defaultProps} />)
-  .add("ETO ends in 1 day", () => <InvestmentPreview {...defaultProps} {...{ hasStarted: true }} />)
+  .add("ETO ends in 1 day", () => <InvestmentPreview {...defaultProps} hasStarted={true} />)
   .add("ETO ends in more day", () => (
-    <InvestmentPreview {...defaultProps} {...{ hasStarted: true, endInDays: 20 }} />
+    <InvestmentPreview {...defaultProps} hasStarted={true} endInDays={20} />
   ));

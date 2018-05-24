@@ -6,6 +6,7 @@ import { Money } from "./Money";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag";
 
+import { FormattedPlural } from "react-intl";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./InvestmentPreview.module.scss";
 
@@ -109,26 +110,15 @@ export const InvestmentPreview: React.SFC<IProps> = ({
               </div>
               <div className={styles.eto}>
                 <div>
-                  {/* TODO: use intl plural */}
-                  {endInDays === 1 ? (
-                    <FormattedHTMLMessage
-                      tagName="span"
-                      id="shared-component.investment-preview.investment-timeline-one-day"
-                      values={{
-                        endInDays: endInDays,
-                        neuInvestors: neuInvestorsNum,
-                      }}
-                    />
-                  ) : (
-                    <FormattedHTMLMessage
-                      tagName="span"
-                      id="shared-component.investment-preview.investment-timeline"
-                      values={{
-                        endInDays: endInDays,
-                        neuInvestors: neuInvestorsNum,
-                      }}
-                    />
-                  )}
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="shared-component.investment-preview.investment-timeline"
+                    values={{
+                      endInDays: endInDays,
+                      neuInvestors: neuInvestorsNum,
+                    }}
+                  />{" "}
+                  <FormattedPlural value={endInDays} one="day" other="days" />
                 </div>
                 <PercentageIndicatorBar percent={25} />
                 <strong>

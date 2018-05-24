@@ -1,0 +1,16 @@
+import { storiesOf } from "@storybook/react";
+import { Form, Formik } from "formik";
+import * as React from "react";
+import { MyPortfolioWidgetComponent } from "./MyPortfolioWidget";
+
+storiesOf("MyPortfolioWidget", module)
+  .add("loading", () => <MyPortfolioWidgetComponent isLoading />)
+  .add("loaded", () => (
+    <MyPortfolioWidgetComponent
+      isLoading={false}
+      data={{ balanceEur: "12312352413", balanceNeu: "123124123123" }}
+    />
+  ))
+  .add("loaded, no funds", () => (
+    <MyPortfolioWidgetComponent isLoading={false} data={{ balanceEur: "0", balanceNeu: "0" }} />
+  ));

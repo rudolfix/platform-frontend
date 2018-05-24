@@ -47,16 +47,19 @@ export const KycBusinessStartComponent: React.SFC<IProps> = props => (
           content: <FormattedMessage id="kyc.business.start.type.small" />,
           id: 1,
           onClick: () => props.setBusinessType("small"),
+          "data-test-id": "kyc-start-business-go-to-small",
         },
         {
           content: <FormattedMessage id="kyc.business.start.type.corporation" />,
           id: 2,
           onClick: () => props.setBusinessType("corporate"),
+          "data-test-id": "kyc-start-business-go-to-corporation",
         },
         {
           content: <FormattedMessage id="kyc.business.start.type.partnership" />,
           id: 3,
           onClick: () => props.setBusinessType("partnership"),
+          "data-test-id": "kyc-start-business-go-to-partnership",
         },
       ]}
     />

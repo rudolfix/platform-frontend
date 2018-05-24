@@ -1,6 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import { Form, Formik } from "formik";
 import * as React from "react";
+
+import { Q18 } from "../../../config/constants";
 import { MyPortfolioWidgetComponent } from "./MyPortfolioWidget";
 
 storiesOf("MyPortfolioWidget", module)
@@ -8,7 +10,7 @@ storiesOf("MyPortfolioWidget", module)
   .add("loaded", () => (
     <MyPortfolioWidgetComponent
       isLoading={false}
-      data={{ balanceEur: "12312352413", balanceNeu: "123124123123" }}
+      data={{ balanceEur: "12312352413", balanceNeu: `123${Q18.toString()}` }}
     />
   ))
   .add("loaded, no funds", () => (

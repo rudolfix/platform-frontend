@@ -42,13 +42,13 @@ export const KYCStartComponent = injectIntlHelpers<IProps>(
             content: <FormattedMessage id="kyc.start.go-to-personal" />,
             id: 1,
             onClick: () => props.goToPerson(),
-            tid: "kyc-start-go-to-personal",
+            "data-test-id": "kyc-start-go-to-personal",
           },
           {
             content: <FormattedMessage id="kyc.start.go-to-company" />,
             id: 2,
             onClick: () => props.goToCompany(),
-            tid: "kyc-start-go-to-company",
+            "data-test-id": "kyc-start-go-to-company",
           },
         ]}
       />

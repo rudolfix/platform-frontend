@@ -21,21 +21,23 @@ export const web3Flows = {
       dispatch(actions.web3.personalWalletDisconnected());
 
       const state = getState();
-      const walletType = selectWalletType(state.web3);
-      let error = "";
 
-      switch (walletType) {
-        case WalletType.BROWSER:
-          error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.browser");
-          break;
-        case WalletType.LEDGER:
-          error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
-          break;
-        default:
-          return;
+      const disconnectedWalletErrorMessage = () => {
+        switch (selectWalletType(state.web3)) {
+          case WalletType.BROWSER:
+            return intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.browser");
+          case WalletType.LEDGER:
+            return intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
+          default:
+            return "";
+        }
+      };
+
+      const message = disconnectedWalletErrorMessage();
+
+      if (message.length) {
+        notificationCenter.error(message);
       }
-
-      notificationCenter.error(error);
     },
     [symbols.appDispatch, symbols.getState, symbols.notificationCenter, symbols.intlWrapper],
   ),

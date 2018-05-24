@@ -4,7 +4,6 @@ import { spy } from "sinon";
 import { dummyEthereumAddress } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { NotificationCenter } from "../../../lib/dependencies/NotificationCenter";
-import { IAppState } from "../../../store";
 import { web3Flows } from "../flows";
 import { WalletType } from "../types";
 import { dummyIntl } from "./../../../utils/injectIntlHelpers.fixtures";
@@ -66,10 +65,11 @@ describe("web3 > flows", () => {
 
     it("should not send notification if it's light wallet", () => {
       const dummyDispatch = spy();
-      const state: Partial<IAppState> = {
+      const state: Partial<any> = {
         web3: {
           connected: false,
           previousConnectedWallet: getDummyLightWalletMetadata(),
+          walletType: WalletType.LIGHT,
         },
       };
       const dummyNotificationCenter = createMock(NotificationCenter, {

@@ -28,9 +28,14 @@ const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => 
       touched={formikBag.touched}
       errors={formikBag.errors}
       name="password"
+      data-test-id="access-light-wallet-password-input"
     />
     <div className="mt-3">
-      <Button type="submit" disabled={!formikBag.values.password}>
+      <Button
+        type="submit"
+        disabled={!formikBag.values.password}
+        data-test-id="access-light-wallet-confirm"
+      >
         {" "}
         <FormattedMessage id="modal.light-wallet.button.accept" />
       </Button>

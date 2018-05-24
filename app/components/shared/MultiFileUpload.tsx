@@ -133,6 +133,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
             onDrop={onDrop}
             disabled={props.fileUploading}
             style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}
+            {...props}
           >
             {files.length ? dropzoneWithFilesInner : dropzoneInner}
           </Dropzone>

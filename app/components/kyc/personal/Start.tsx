@@ -81,22 +81,50 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
   ({ intl: { formatIntlMessage }, ...props }) => {
     return (
       <Form>
-        <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
-        <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
-        <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
+        <FormField
+          label={formatIntlMessage("form.label.first-name")}
+          name="firstName"
+          data-test-id="kyc-personal-start-first-name"
+        />
+        <FormField
+          label={formatIntlMessage("form.label.last-name")}
+          name="lastName"
+          data-test-id="kyc-personal-start-last-name"
+        />
+        <FormFieldDate
+          label={formatIntlMessage("form.label.birth-date")}
+          name="birthDate"
+          data-test-id="kyc-personal-start-birth-date"
+        />
         <h5 className="my-5">
           <FormattedMessage tagName="span" id="kyc.personal.current.address" />
         </h5>
-        <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
+        <FormField
+          label={formatIntlMessage("form.label.street-and-number")}
+          name="street"
+          data-test-id="kyc-personal-start-street"
+        />
         <Row>
           <Col xs={12} md={6} lg={8}>
-            <FormField label={formatIntlMessage("form.label.city")} name="city" />
+            <FormField
+              label={formatIntlMessage("form.label.city")}
+              name="city"
+              data-test-id="kyc-personal-start-city"
+            />
           </Col>
           <Col xs={12} md={6} lg={4}>
-            <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
+            <FormField
+              label={formatIntlMessage("form.label.zip-code")}
+              name="zipCode"
+              data-test-id="kyc-personal-start-zip-code"
+            />
           </Col>
         </Row>
-        <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
+        <FormSelectCountryField
+          label={formatIntlMessage("form.label.country")}
+          name="country"
+          data-test-id="kyc-personal-start-country"
+        />
         <br />
         <FormSelectField
           values={PEP_VALUES}
@@ -120,6 +148,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
               <FormattedMessage id={"kyc.personal.politically-exposed.disclaimer"} />
             )
           }
+          data-test-id="kyc-personal-start-is-politically-exposed"
         />
         <FormSelectField
           values={US_CITIZEN_VALUES}
@@ -133,15 +162,21 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
             </>
           }
           name="isUsCitizen"
+          data-test-id="kyc-personal-start-is-us-citizen"
         />
         <FormSelectField
           values={HIGH_INCOME_VALUES}
           label={formatIntlMessage("kyc.personal.high-income")}
           name="isHighIncome"
           extraMessage={<FormattedMessage id={"kyc.personal.income.disclaimer"} />}
+          data-test-id="kyc-personal-start-has-high-income"
         />
         <div className="p-4 text-center">
-          <Button type="submit" disabled={!props.isValid || props.loadingData}>
+          <Button
+            type="submit"
+            disabled={!props.isValid || props.loadingData}
+            data-test-id="kyc-personal-start-submit-form"
+          >
             <FormattedMessage id={"form.save-and-submit"} />
           </Button>
         </div>

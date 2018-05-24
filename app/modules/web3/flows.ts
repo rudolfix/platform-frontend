@@ -22,23 +22,20 @@ export const web3Flows = {
 
       const state = getState();
       const walletType = selectWalletType(state.web3);
+      let error = "";
 
-      if (!state.web3.connected) {
-        let error = "";
-
-        switch (walletType) {
-          case WalletType.BROWSER:
-            error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.browser");
-            break;
-          case WalletType.LEDGER:
-            error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
-            break;
-          default:
-            return;
-        }
-
-        notificationCenter.error(error);
+      switch (walletType) {
+        case WalletType.BROWSER:
+          error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.browser");
+          break;
+        case WalletType.LEDGER:
+          error = intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
+          break;
+        default:
+          return;
       }
+
+      notificationCenter.error(error);
     },
     [symbols.appDispatch, symbols.getState, symbols.notificationCenter, symbols.intlWrapper],
   ),

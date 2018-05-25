@@ -7,6 +7,7 @@ import { Col, Container, Row } from "reactstrap";
 import { appRoutes } from "../appRoutes";
 import { Button } from "../shared/Buttons";
 import { EtoOfferingCard, IProps } from "../shared/EtoOfferingCard";
+import { EtoOfferingSoon } from "../shared/EtoOfferingSoon";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
 import * as logoMobile from "../../assets/img/logo-square-white.svg";
@@ -120,7 +121,7 @@ export const Landing: React.SFC = () => (
             <EtoOfferingCard {...sampleCard} />
           </Col>
           <Col xs={12} lg={6} className={styles.equityTokenCol}>
-            <EtoOfferingCard {...sampleCard} />
+            <EtoOfferingSoon description="The most exciting company working with the creative community to create original content generation for the worlds leading brands. " />
           </Col>
         </Row>
       </Container>

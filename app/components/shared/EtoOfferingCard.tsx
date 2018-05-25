@@ -25,7 +25,6 @@ export interface IProps {
 export const EtoOfferingCard: React.SFC<IProps> = props => {
   return (
     <Link to={props.to} className={styles.card}>
-      {/* <Proportion width={530} height={440}> */}
       <Proportion width={2} height={1}>
         <div className={styles.top}>
           <svg className={styles.roundLabel} viewBox="0 0 170 100">
@@ -63,7 +62,6 @@ export const EtoOfferingCard: React.SFC<IProps> = props => {
           </p>
         </blockquote>
       </div>
-      {/* </Proportion> */}
     </Link>
   );
 };

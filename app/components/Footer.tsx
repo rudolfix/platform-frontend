@@ -20,9 +20,6 @@ export const Footer: React.SFC = () => {
           >
             <FormattedMessage id="footer.links.privacy-policy" />
           </Link>
-          <Link to="#0" target="_blank">
-            <FormattedMessage id="footer.links.terms-and-conditions" />
-          </Link>
         </div>
         <div className={styles.content}>
           <img src={logo} className={styles.logo} alt="logo" />

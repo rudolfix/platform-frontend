@@ -5,7 +5,8 @@ import { IntlWrapper } from "../../lib/intl/IntlWrapper";
 import { injectableFn } from "../../middlewares/redux-injectify";
 import { AppDispatch } from "../../store";
 import { actions } from "../actions";
-import { selectIsLightWallet } from "./selectors";
+import { selectWalletType } from "./selectors";
+import { WalletType } from "./types";
 
 export const web3Flows = {
   personalWalletDisconnected: injectableFn(
@@ -20,12 +21,22 @@ export const web3Flows = {
       dispatch(actions.web3.personalWalletDisconnected());
 
       const state = getState();
-      const isLightWallet = selectIsLightWallet(state.web3);
 
-      if (!isLightWallet) {
-        notificationCenter.error(
-          intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error"),
-        );
+      const disconnectedWalletErrorMessage = () => {
+        switch (selectWalletType(state.web3)) {
+          case WalletType.BROWSER:
+            return intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.browser");
+          case WalletType.LEDGER:
+            return intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
+          default:
+            return;
+        }
+      };
+
+      const message = disconnectedWalletErrorMessage();
+
+      if (message) {
+        notificationCenter.error(message);
       }
     },
     [symbols.appDispatch, symbols.getState, symbols.notificationCenter, symbols.intlWrapper],

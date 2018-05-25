@@ -47,7 +47,12 @@ const sampleCard: IProps = {
 
 export const Landing: React.SFC = () => (
   <div className={styles.landingWrapper}>
-    <section className={styles.landing}>
+    <section
+      className={cn(
+        styles.landing,
+        (process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "0" || undefined) && "h-100",
+      )}
+    >
       <Container>
         <Row>
           <Col>
@@ -105,26 +110,28 @@ export const Landing: React.SFC = () => (
         </Row>
       </Container>
     </section>
-    <section className={styles.equityTokenOfferings}>
-      <Container>
-        <h2 className={styles.equityTokenHeader}>
-          <FormattedMessage id="landing.equity-token-offering.header" />
-        </h2>
-        <Row>
-          <Col xs={12} lg={6} className={styles.equityTokenCol}>
-            <EtoOfferingCard {...sampleCard} />
-          </Col>
-          <Col xs={12} lg={6} className={styles.equityTokenCol}>
-            <EtoOfferingCard {...sampleCard} />
-          </Col>
-          <Col xs={12} lg={6} className={styles.equityTokenCol}>
-            <EtoOfferingCard {...sampleCard} />
-          </Col>
-          <Col xs={12} lg={6} className={styles.equityTokenCol}>
-            <EtoOfferingSoon description="The most exciting company working with the creative community to create original content generation for the worlds leading brands. " />
-          </Col>
-        </Row>
-      </Container>
-    </section>
+    {process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "1" && (
+      <section className={styles.equityTokenOfferings}>
+        <Container>
+          <h2 className={styles.equityTokenHeader}>
+            <FormattedMessage id="landing.equity-token-offering.header" />
+          </h2>
+          <Row>
+            <Col xs={12} lg={6} className={styles.equityTokenCol}>
+              <EtoOfferingCard {...sampleCard} />
+            </Col>
+            <Col xs={12} lg={6} className={styles.equityTokenCol}>
+              <EtoOfferingCard {...sampleCard} />
+            </Col>
+            <Col xs={12} lg={6} className={styles.equityTokenCol}>
+              <EtoOfferingCard {...sampleCard} />
+            </Col>
+            <Col xs={12} lg={6} className={styles.equityTokenCol}>
+              <EtoOfferingSoon description="The most exciting company working with the creative community to create original content generation for the worlds leading brands. " />
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    )}
   </div>
 );

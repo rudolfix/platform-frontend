@@ -46,6 +46,7 @@ const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props
       touched={props.touched}
       errors={props.errors}
       name={PASSWORD}
+      data-test-id="light-wallet-login-with-email-password-field"
     />
     <div className="text-center">
       <Button type="submit" disabled={!props.values.password || props.isLoading}>
@@ -72,7 +73,11 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
       </Row>
       <Row>
         <Col xs={12}>
-          <FormConstantField value={props.email} className="mb-2" />
+          <FormConstantField
+            value={props.email}
+            className="mb-2"
+            data-test-id="light-wallet-login-with-email-email-field"
+          />
           <LoginEnhancedLightWalletForm {...props} />
           {props.errorMsg && <WarningAlert>{props.errorMsg}</WarningAlert>}
         </Col>

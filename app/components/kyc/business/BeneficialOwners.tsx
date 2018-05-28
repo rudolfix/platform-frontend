@@ -48,6 +48,7 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
     </Accordion>
     <div className="p-4 text-center">
       <Button
+        data-test-id="kyc-beneficial-owner-add-new"
         layout="secondary"
         iconPosition="icon-before"
         svgIcon={plusIcon}

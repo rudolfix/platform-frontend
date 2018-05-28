@@ -156,7 +156,11 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
           filesLoading={this.props.filesLoading}
         />
         <div className="p-4 text-center">
-          <Button layout="secondary" onClick={this.props.delete}>
+          <Button
+            data-test-id="kyc-beneficial-owner-delete"
+            layout="secondary"
+            onClick={this.props.delete}
+          >
             <FormattedMessage id="form.button.delete" /> {name}
           </Button>
         </div>

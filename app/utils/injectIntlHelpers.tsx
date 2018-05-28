@@ -12,6 +12,8 @@ import {
   MessageValue,
 } from "react-intl";
 
+//react-intl-phraseapp for injecting is not used @see https://github.com/phrase/react-intl-phraseapp/issues/3
+
 export interface IIntlHelpers {
   formatDate(value: DateSource, options?: FormattedDate.PropsBase): string;
   formatTime(value: DateSource, options?: FormattedTime.PropsBase): string;
@@ -36,7 +38,9 @@ export interface IIntlProps {
 }
 
 /**
- * Simplifies interface of injectIntl. We should use exclusively these helpers!
+ * Simplifies interface of injectIntl. We should use exclusively these helpers instead of original ones!
+ *
+ * IMPORTANT: Should be used only as a last resort only! Prefer FormattedMessage even when it requires changing typings (from string to string | ReactElement).
  */
 export const injectIntlHelpers = <OwnProps extends {}>(
   Component: ComponentConstructor<OwnProps & IIntlProps>,

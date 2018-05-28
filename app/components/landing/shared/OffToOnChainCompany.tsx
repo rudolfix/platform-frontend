@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedHTMLMessage } from "react-intl";
+import { FormattedHTMLMessage } from "react-intl-phraseapp";
 
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { InlineIcon } from "../../shared/InlineIcon";

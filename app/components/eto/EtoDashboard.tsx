@@ -15,7 +15,7 @@ import { LinkColumns } from "./dashboard/LinkColumns";
 import { QuestionsAndAnswers } from "./dashboard/QuestionsAndAnswers";
 import { RowLabeledDataSets } from "./dashboard/RowLabeledDataSets";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as downloadIcon from "../../assets/img/inline_icons/download.svg";
 import * as editIcon from "../../assets/img/inline_icons/edit.svg";
 import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";

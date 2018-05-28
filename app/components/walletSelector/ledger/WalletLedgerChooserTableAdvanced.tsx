@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Button } from "../../shared/Buttons";

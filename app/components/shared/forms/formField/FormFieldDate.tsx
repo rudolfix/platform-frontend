@@ -9,6 +9,7 @@ import * as errorStyles from "./FormStyles.module.scss";
 interface IProps {
   label: string;
   name: string;
+  "data-test-id"?: string;
 }
 
 const positionMap = {
@@ -40,6 +41,15 @@ export class FormFieldDate extends React.Component<IProps> {
     year: "",
   };
 
+  monthInput?: HTMLInputElement;
+  saveMonthRef = (ref: HTMLInputElement) => {
+    this.monthInput = ref;
+  };
+  yearInput?: HTMLInputElement;
+  saveYearRef = (ref: HTMLInputElement) => {
+    this.yearInput = ref;
+  };
+
   onChange = (
     type: "year" | "month" | "day",
     e: React.FormEvent<HTMLInputElement>,
@@ -60,11 +70,11 @@ export class FormFieldDate extends React.Component<IProps> {
   render(): React.ReactNode {
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
-    const { name } = this.props;
+    const { name, "data-test-id": dataTestId } = this.props;
     const valid = isValid(touched, errors, name);
     return (
       <FormGroup>
-        <div className={styles.dateField}>
+        <div className={styles.dateField} data-test-id={dataTestId}>
           <span className={styles.label}>{this.props.label}</span>
           <div className={styles.inputsWrapper}>
             <Field
@@ -73,12 +83,19 @@ export class FormFieldDate extends React.Component<IProps> {
                 <div className={styles.inputWrapper}>
                   <Input
                     {...field}
-                    onChange={e => this.onChange("day", e, field.onChange)}
+                    onChange={e => {
+                      this.onChange("day", e, field.onChange);
+                      // auto advance to next field
+                      const realValue = this.fromValue("day", e.target.value);
+                      if (realValue.length === 2) {
+                        this.monthInput!.focus();
+                      }
+                    }}
                     value={this.fromValue("day", field.value)}
-                    type="tel"
                     placeholder="DD"
                     valid={valid}
                     maxLength={2}
+                    data-test-id="form-field-date-day"
                   />
                 </div>
               )}
@@ -90,18 +107,25 @@ export class FormFieldDate extends React.Component<IProps> {
                 <div>
                   <Input
                     {...field}
-                    onChange={e => this.onChange("month", e, field.onChange)}
+                    onChange={e => {
+                      this.onChange("month", e, field.onChange);
+                      // auto advance to next field
+                      const realValue = this.fromValue("month", e.target.value);
+                      if (realValue.length === 2) {
+                        this.yearInput!.focus();
+                      }
+                    }}
                     value={this.fromValue("month", field.value)}
-                    type="tel"
                     placeholder="MM"
                     valid={valid}
                     maxLength={2}
+                    data-test-id="form-field-date-month"
+                    innerRef={this.saveMonthRef}
                   />
                 </div>
               )}
             />
             {"/"}
-            {/* TODO: Add to translations file */}
             <Field
               name={this.props.name}
               render={({ field }) => (
@@ -110,10 +134,11 @@ export class FormFieldDate extends React.Component<IProps> {
                     {...field}
                     onChange={e => this.onChange("year", e, field.onChange)}
                     value={this.fromValue("year", field.value)}
-                    type="tel"
                     placeholder="YYYY"
                     valid={valid}
                     maxLength={4}
+                    data-test-id="form-field-date-year"
+                    innerRef={this.saveYearRef}
                   />
                 </div>
               )}

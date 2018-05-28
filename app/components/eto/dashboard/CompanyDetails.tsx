@@ -10,7 +10,7 @@ import { ISocialProfile } from "../../shared/SocialProfilesEditor";
 import { LinkColumns } from "./LinkColumns";
 import { RowLabeledDataSets } from "./RowLabeledDataSets";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./CompanyDetails.module.scss";
 
 interface IProps {

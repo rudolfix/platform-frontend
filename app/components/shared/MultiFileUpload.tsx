@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import Dropzone from "react-dropzone";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
 
@@ -133,6 +133,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) 
             onDrop={onDrop}
             disabled={props.fileUploading}
             style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}
+            {...props}
           >
             {files.length ? dropzoneWithFilesInner : dropzoneInner}
           </Dropzone>

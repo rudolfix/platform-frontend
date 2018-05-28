@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
@@ -70,6 +70,7 @@ export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDi
         onClick={props.onManualVerification}
         svgIcon={arrowRightIcon}
         iconPosition="icon-after"
+        data-test-id="kyc-go-to-manual-verification"
       >
         <FormattedMessage id="kyc.personal.instant-id.go-to-manual-verification" />
       </Button>

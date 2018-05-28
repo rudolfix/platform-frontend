@@ -8,7 +8,7 @@ import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../modules/actions";
 import { FormConstantField } from "../../shared/forms/formField/FormConstantField";
 import { WarningAlert } from "../../shared/WarningAlert";

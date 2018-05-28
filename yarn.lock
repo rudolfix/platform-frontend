@@ -1606,9 +1606,9 @@ babel-plugin-react-docgen@^1.9.0:
     lodash "^4.17.0"
     react-docgen "^3.0.0-beta11"
 
-babel-plugin-react-intl-krzkaczor@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl-krzkaczor/-/babel-plugin-react-intl-krzkaczor-2.4.0.tgz#51d7cf6c3ced5868e7f73e59ab5b82a5289b7654"
+babel-plugin-react-intl-krzkaczor@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl-krzkaczor/-/babel-plugin-react-intl-krzkaczor-2.4.1.tgz#3ba98647efcac3953243811eba39db38f1e6814a"
   dependencies:
     babel-runtime "^6.2.0"
     intl-messageformat-parser "^1.2.0"
@@ -9225,6 +9225,10 @@ react-inspector@^2.2.2:
   dependencies:
     babel-runtime "^6.26.0"
     is-dom "^1.0.9"
+
+react-intl-phraseapp@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/react-intl-phraseapp/-/react-intl-phraseapp-0.2.4.tgz#02963975b007c2bd49b091802909a28bd87c3d51"
 
 react-intl@^2.4.0:
   version "2.4.0"

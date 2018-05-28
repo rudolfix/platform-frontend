@@ -2,7 +2,9 @@
 
 ## Setup
 
-We use `react-intl` to provide intl feature in to Neufund Platform app.
+We use `react-intl` to provide intl feature in to Neufund Platform app. When using `react-intl` use
+`react-intl-phraseapp` instead. This is a wrapper that connects our translations with a tool that
+enables direct change.
 
 All strings used by the app need to be statically extractable. We use `babel@7` (it parses
 typescript code) + enhanced `babel-plugin-react-intl` to allow so. We extract them and build default
@@ -13,6 +15,7 @@ prop to it.
 
 To make you code extractable you need to:
 
+* always import `react-intl-phraseapp` when using `<FormattedHTMLMessage>` or `<FormattedMessage>`
 * always use literals so no variables etc
 * create FormattedMessage component with `id` prop
 * if you need to pass translated value as a string use `injectIntlHelpers` HoC and then call

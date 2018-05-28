@@ -5,7 +5,7 @@ import { appConnect } from "../../../store";
 import { EthereumAddress } from "../../../types";
 import { PanelDark } from "../../shared/PanelDark";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as styles from "./YourEthereumAddressWidget.module.scss";
 

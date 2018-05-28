@@ -68,7 +68,11 @@ export class FormField extends React.Component<FieldGroupProps> {
           name={name}
           render={({ field }: FieldProps) => (
             <InputGroup>
-              {prefix && <InputGroupAddon addonType="prepend">{prefix}</InputGroupAddon>}
+              {prefix && (
+                <InputGroupAddon addonType="prepend" className={styles.addon}>
+                  {prefix}
+                </InputGroupAddon>
+              )}
               <Input
                 {...field}
                 type={type}
@@ -78,7 +82,11 @@ export class FormField extends React.Component<FieldGroupProps> {
                 {...inputExtraProps}
                 {...props}
               />
-              {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
+              {suffix && (
+                <InputGroupAddon addonType="append" className={styles.addon}>
+                  {suffix}
+                </InputGroupAddon>
+              )}
             </InputGroup>
           )}
         />

@@ -1,6 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Button } from "../shared/Buttons";
 import { FormField } from "../shared/forms/forms";
@@ -22,9 +22,18 @@ export interface IFormValues {
 
 const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => (
   <Form>
-    <FormField type="password" placeholder="Password" name="password" />
+    <FormField
+      type="password"
+      placeholder="Password"
+      name="password"
+      data-test-id="access-light-wallet-password-input"
+    />
     <div className="mt-3">
-      <Button type="submit" disabled={!formikBag.values.password}>
+      <Button
+        type="submit"
+        disabled={!formikBag.values.password}
+        data-test-id="access-light-wallet-confirm"
+      >
         {" "}
         <FormattedMessage id="modal.light-wallet.button.accept" />
       </Button>

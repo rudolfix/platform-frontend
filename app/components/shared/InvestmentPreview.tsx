@@ -6,7 +6,8 @@ import { Money } from "./Money";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag";
 
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedPlural } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./InvestmentPreview.module.scss";
 
 interface IPreFoundingStatus {
@@ -109,26 +110,19 @@ export const InvestmentPreview: React.SFC<IProps> = ({
               </div>
               <div className={styles.eto}>
                 <div>
-                  {/* TODO: use intl plural */}
-                  {endInDays === 1 ? (
-                    <FormattedHTMLMessage
-                      tagName="span"
-                      id="shared-component.investment-preview.investment-timeline-one-day"
-                      values={{
-                        endInDays: endInDays,
-                        neuInvestors: neuInvestorsNum,
-                      }}
-                    />
-                  ) : (
-                    <FormattedHTMLMessage
-                      tagName="span"
-                      id="shared-component.investment-preview.investment-timeline"
-                      values={{
-                        endInDays: endInDays,
-                        neuInvestors: neuInvestorsNum,
-                      }}
-                    />
-                  )}
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="shared-component.investment-preview.investment-timeline"
+                    values={{
+                      endInDays: endInDays,
+                      neuInvestors: neuInvestorsNum,
+                    }}
+                  />{" "}
+                  <FormattedPlural
+                    value={endInDays}
+                    one={<FormattedMessage id="general.word.day" />}
+                    other={<FormattedMessage id="general.word.days" />}
+                  />
                 </div>
                 <PercentageIndicatorBar percent={25} />
                 <strong>

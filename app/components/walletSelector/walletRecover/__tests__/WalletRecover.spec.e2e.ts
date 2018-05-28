@@ -53,12 +53,11 @@ describe("Wallet recover", () => {
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
 
     cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
-    cy.contains(tid("my-neu-widget-eur-balance"), "28857.83 EUR");
 
     cy.contains(tid("my-wallet-widget-eur-token-large-value"), "nEUR0.00");
     cy.contains(tid("my-wallet-widget-eur-token-value"), "0.00 EUR");
 
-    cy.contains(tid("my-wallet-widget-eth-token-large-value"), "ETH999 938.8590");
-    cy.contains(tid("my-wallet-widget-eth-token-value"), "498 969 490.64 EUR");
+    cy.contains(tid("my-wallet-widget-eth-token-large-value"), "ETH999 938.8591");
+    cy.contains(tid("my-wallet-widget-eth-token-value"), "483 930 410.24 EUR");
   });
 });

@@ -1,4 +1,9 @@
 import { tid } from "../../../../test/testUtils";
+import {
+  email,
+  password,
+  registerWithLightWallet,
+} from "../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
 import { kycRoutes } from "../routes";
 
 interface ISmallBusinessData {
@@ -53,15 +58,8 @@ const personData: IPersonData = {
   hasHighIncome: "false",
 };
 
-const password = "such-strong-password";
-
 const goToCorporationFlow = () => {
-  cy.visit("/register");
-  cy.get(tid("wallet-selector-register-email")).type("testemail@email.email");
-  cy.get(tid("wallet-selector-register-password")).type(password);
-  cy.get(tid("wallet-selector-register-confirm-password")).type("such-strong-password");
-  cy.get(tid("wallet-selector-register-button")).click();
-  cy.wait(10000).visit(kycRoutes.start);
+  cy.visit(kycRoutes.start);
   cy.get(tid("kyc-start-go-to-company")).click();
   cy.get(tid("kyc-start-business-go-to-partnership")).click();
 
@@ -142,6 +140,7 @@ const submitLegalRepresentativeForm = () => {
 
 describe("KYC Small Business flow with manual verification", () => {
   it("went through KYC Small Business flow", () => {
+    registerWithLightWallet(email, password);
     goToCorporationFlow();
     submitSmallBusinessKYCForm(smallBusinessData);
     uploadSupportingDocumentsAndSubmitForm();

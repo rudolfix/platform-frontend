@@ -1,4 +1,9 @@
 import { tid } from "../../../../test/testUtils";
+import {
+  email,
+  password,
+  registerWithLightWallet,
+} from "../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
 import { kycRoutes } from "../routes";
 
 interface IPersonData {
@@ -35,18 +40,8 @@ const personData: IPersonData = {
   hasHighIncome: "false",
 };
 
-const password = "such-strong-password";
-
 const goToIndividualKYCFlow = () => {
-  cy.visit("/register");
-
-  cy.get(tid("wallet-selector-register-email")).type("testemail@email.email");
-  cy.get(tid("wallet-selector-register-password")).type(password);
-  cy.get(tid("wallet-selector-register-confirm-password")).type("such-strong-password");
-  cy.get(tid("wallet-selector-register-button")).click();
-
-  cy.wait(10000).visit(kycRoutes.start);
-
+  cy.visit(kycRoutes.start);
   cy.get(tid("kyc-start-go-to-personal")).click();
 
   cy.url().should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
@@ -102,6 +97,7 @@ const uploadDocumentAndSubmitForm = () => {
 
 describe("KYC Personal flow with manual verification", () => {
   it("went through KYC flow with personal data", () => {
+    registerWithLightWallet(email, password);
     goToIndividualKYCFlow();
     submitIndividualKYCForm(personData);
     goToIndividualManualVerification();

@@ -18,8 +18,7 @@
     }
   }
 
-  &:hover,
-  &:focus {
+  &:hover {
     @include media-breakpoint-up(lg) {
       .round-label {
         transform: translate(-60%, -60%);

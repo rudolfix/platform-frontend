@@ -50,7 +50,7 @@ export const Landing: React.SFC = () => (
     <section
       className={cn(
         styles.landing,
-        (process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "0" || undefined) && "h-100",
+        process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "0" && "h-100",
       )}
     >
       <Container>

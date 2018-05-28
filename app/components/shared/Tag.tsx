@@ -29,7 +29,7 @@ export const Tag: React.SFC<ITag> = ({
   onClick,
   svgIcon,
 }) => {
-  const classes = cn("js-tab-component", styles.tag, layout, size, theme, className);
+  const classes = cn(styles.tag, layout, size, theme, className);
 
   return (
     <>

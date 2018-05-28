@@ -6,6 +6,7 @@ import { Button } from "../../shared/Buttons";
 
 import * as styles from "./BackupSeedDisplay.module.scss";
 
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 
 export const WORDS_PER_PAGE = 12;
@@ -64,13 +65,16 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
                 disabled={pageNo === 0}
                 onClick={onBack}
               >
-                {`previous ${WORDS_PER_PAGE} words`}
+                <FormattedMessage
+                  id="settings.backup-seed-display.previous-words"
+                  values={{ wordNumber: WORDS_PER_PAGE }}
+                />
               </Button>
             </Col>
             <Col className="mt-2" xs="auto">
               {!isModal && onNext && showNextButton ? (
                 <Button data-test-id="seed-display-next-link" onClick={onNext}>
-                  Continue
+                  <FormattedMessage id="form.button.continue" />
                 </Button>
               ) : (
                 <Button
@@ -78,7 +82,10 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
                   disabled={pageNo === 1}
                   onClick={onNext}
                 >
-                  {`next ${WORDS_PER_PAGE} words`}
+                  <FormattedMessage
+                    id="settings.backup-seed-display.next-words"
+                    values={{ wordNumber: WORDS_PER_PAGE }}
+                  />
                 </Button>
               )}
             </Col>
@@ -95,7 +102,7 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
               svgIcon={arrowLeft}
               onClick={onBack}
             >
-              Back
+              <FormattedMessage id="form.button.back" />
             </Button>
           </Col>
         </Row>

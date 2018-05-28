@@ -40,6 +40,8 @@ export const symbols = makeDebugSymbols({
   asyncIntervalSchedulerFactory: Symbol(),
   detectBrowser: Symbol(),
 
+  intlWrapper: Symbol(),
+
   // external modules
   cryptoRandomString: Symbol(),
 });

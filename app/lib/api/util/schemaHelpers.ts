@@ -1,6 +1,7 @@
-import { mapValues } from "lodash";
+import { includes, mapValues } from "lodash";
 import * as moment from "moment";
 import * as Yup from "yup";
+import { NONE_KEY } from "../../../components/shared/forms/forms";
 
 /**
  * Schema helpers
@@ -28,13 +29,13 @@ export const date = Yup.string()
   .test("is-valid", "Please enter a valid date", s => {
     return parse(s).isValid();
   });
-
+//TODO: Add translations
 export const personBirthDate = date
-  .test("is-old-enough", "This person must be older than 18 years.", s => {
+  .test("is-old-enough", "You must be older than 18 years", s => {
     const d = parse(s);
     return d.isValid() && d.isBefore(moment().subtract(18, "years"));
   })
-  .test("is-young-enough", "This person must be younger than 100 years.", s => {
+  .test("is-young-enough", "You must be younger than 100 years", s => {
     const d = parse(s);
     return d.isValid() && d.isAfter(moment().subtract(100, "years"));
   });
@@ -50,6 +51,36 @@ export const foundingDate = date.test(
 
 export const citizen = Yup.bool();
 
-export const isUsCitizen = citizen.test("is-us-citizen", "US citizen is disallowed", response => {
-  return response === false;
-});
+//TODO: add to translations
+export const isUsCitizen = citizen.test(
+  "is-us-citizen",
+  "We are very sorry, at the moment we cannot serve US customers due to regulatory uncertainties.",
+  response => {
+    return response === false;
+  },
+);
+
+export const countryCode = Yup.string();
+export const RESTRICTED_COUNTRIES = [
+  "BA",
+  "KP",
+  "CU",
+  "IR",
+  "IQ",
+  "LK",
+  "SY",
+  "SD",
+  "US",
+  "AL",
+  "RS",
+];
+
+export const restrictedCountry = countryCode
+  .test("country", "This field is required", response => response !== NONE_KEY)
+  .test(
+    "country",
+    "Unfortunately, we do not accept investors or companies coming from your country due to regulatory restrictions.",
+    response => {
+      return !includes(RESTRICTED_COUNTRIES, response);
+    },
+  );

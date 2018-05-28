@@ -14,6 +14,7 @@ import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
 import { getDummyUser } from "../../lib/api/users/fixtures";
 import { UsersApi } from "../../lib/api/users/UsersApi";
+import { Neumark } from "../../lib/contracts/Neumark";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
@@ -24,14 +25,15 @@ import {
   BrowserWalletLockedError,
   BrowserWalletMissingError,
 } from "../../lib/web3/BrowserWallet";
+import { ContractsService } from "../../lib/web3/ContractsService";
 import { LedgerWallet, LedgerWalletConnector } from "../../lib/web3/LedgerWallet";
 import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Adapter } from "../../lib/web3/Web3Adapter";
 import { Web3ManagerMock } from "../../lib/web3/Web3Manager.mock";
 import { actions } from "../../modules/actions";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
-import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./WalletBrowser";
-import { LEDGER_RECONNECT_INTERVAL } from "./WalletLedgerInitComponent";
+import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./browser/WalletBrowser";
+import { LEDGER_RECONNECT_INTERVAL } from "./ledger/WalletLedgerInitComponent";
 import { walletRegisterRoutes } from "./walletRoutes";
 import { WalletSelector } from "./WalletSelector";
 
@@ -75,10 +77,17 @@ describe("Wallet selector integration", () => {
       createAccount: async () => getDummyUser(),
     });
 
+    const contractsMock = createMock(ContractsService, {
+      neumarkContract: createMock(Neumark, {
+        balanceOf: (_address: string) => Promise.resolve(new BigNumber(1)),
+      }),
+    });
+
     const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
       ledgerWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
+      contractsMock,
       initialState: {
         browser: {
           name: "chrome",
@@ -108,7 +117,7 @@ describe("Wallet selector integration", () => {
     await waitForTid(mountedComponent, "ledger-wallet-error-msg");
 
     expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
-      "Nano Ledger S not available",
+      "Ledger Nano S is not available",
     );
 
     // simulate successful connection
@@ -231,7 +240,7 @@ describe("Wallet selector integration", () => {
 
     // there is no wallet in browser (BrowserWallet thrown BrowserWalletMissingError)
     expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
-      "We did not detect any Web3 wallet.",
+      "We did not detect any Web3 wallet",
     );
 
     // wallet in browser is locked
@@ -244,7 +253,7 @@ describe("Wallet selector integration", () => {
     mountedComponent.update();
 
     expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
-      "Your wallet seems to be locked — we can't access any accounts.",
+      "Your wallet seems to be locked — we can't access any accounts",
     );
 
     // connect doesn't throw which means there is web3 in browser

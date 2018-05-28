@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "../../shared/Buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { Money, MoneyTransfer } from "../../shared/Money";
+import { Money } from "../../shared/Money";
 import { PanelDark } from "../../shared/PanelDark";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
@@ -12,6 +12,7 @@ import { TableRow } from "../../shared/table/TableRow";
 import { TotalEuro } from "../TotalEuro";
 import * as styles from "./ClaimedDividends.module.scss";
 
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as LinkOutIcon from "../../../assets/img/inline_icons/link_out.svg";
 import * as neuIcon from "../../../assets/img/neu_icon.svg";
 import { CommonHtmlProps } from "../../../types";
@@ -27,8 +28,11 @@ interface IClaimedDividendsProps {
   recentPayouts: IDividendPayout[];
 }
 
-const NoPayoutsInfo = () => <div className="py-3">You didn't claimed any dividends so far.</div>;
-
+const NoPayoutsInfo = () => (
+  <div className="py-3">
+    <FormattedMessage id="components.wallet.claimed-dividends.you-claimed-no-proceeds" />
+  </div>
+);
 export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProps> = ({
   totalEurValue,
   recentPayouts,
@@ -37,12 +41,14 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
 }) => (
   <PanelDark
     icon={neuIcon}
-    headerText="Dividends claimed from neu"
+    headerText="MY PROCEEDS"
     rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
     className={cn(styles.claimedDividends, className)}
     {...htmlProps}
   >
-    <h3 className={styles.title}>Most recent</h3>
+    <h3 className={styles.title}>
+      <FormattedMessage id="components.wallet.claimed-dividends.most-recent" />
+    </h3>
     <TableBody>
       {recentPayouts.length === 0 ? (
         <NoPayoutsInfo />
@@ -53,11 +59,13 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
               <Date timestamp={timestamp} />
             </TableCell>
             <TableCell narrow>
-              <Money currency="eur_token" value={amount} transfer={MoneyTransfer.in} />
+              <Money currency="eur_token" value={amount} transfer="income" />
             </TableCell>
             <TableCell narrow>
               <Button layout="secondary">
-                <span>TXN</span>
+                <span>
+                  <FormattedMessage id="components.wallet.claimed-dividends.txn" />
+                </span>
                 <InlineIcon svgIcon={LinkOutIcon} />
               </Button>
             </TableCell>

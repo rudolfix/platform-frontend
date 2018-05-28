@@ -5,37 +5,68 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
-import { ensurePermissionsArePresent, updateUser } from "../auth/sagas";
+import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { selectWalletType } from "../web3/selectors";
+import { WalletType } from "../web3/types";
 import { actions } from "./../actions";
 
 export function* addNewEmail(
-  { notificationCenter }: TGlobalDependencies,
+  { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
+  const walletType = yield select((s: IAppState) => selectWalletType(s.web3));
+
+  let addEmailMessage;
 
   try {
+    switch (walletType) {
+      case WalletType.BROWSER:
+        addEmailMessage = formatIntlMessage(
+          "modules.settings.sagas.add-new-email.confirm-browser-wallet",
+        );
+        break;
+      case WalletType.LEDGER:
+        addEmailMessage = formatIntlMessage(
+          "modules.settings.sagas.add-new-email.confirm-ledger-wallet",
+        );
+        break;
+      case WalletType.LIGHT:
+        addEmailMessage = formatIntlMessage(
+          "modules.settings.sagas.add-new-email.confirm-light-wallet",
+        );
+        break;
+      default:
+        throw new Error("Wrong wallet type");
+    }
+
+    yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Change email",
-      "Confirm changing your email.",
+      "Add email",
+      addEmailMessage,
     );
 
     yield effects.call(updateUser, { ...user, new_email: email });
-    notificationCenter.info("New Email added");
+    notificationCenter.info(
+      formatIntlMessage("modules.settings.sagas.add-new-email.new-email-added"),
+    );
   } catch {
-    notificationCenter.error("Failed to change email");
+    yield effects.call(loadUser);
+    notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
+  } finally {
+    yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
   }
 }
 
 export function* resendEmail(
-  { notificationCenter }: TGlobalDependencies,
+  { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "SETTINGS_RESEND_EMAIL") return;
@@ -49,25 +80,29 @@ export function* resendEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Resend email",
-      "Confirm resending activation email.",
+      formatIntlMessage("modules.settings.sagas.resend-email.confirmation"),
+      formatIntlMessage("modules.settings.sagas.resend-email.confirmation-description"),
     );
     yield effects.call(updateUser, { ...user, new_email: email });
-    notificationCenter.info("Email successfully resent");
+    notificationCenter.info(formatIntlMessage("modules.settings.sagas.resend-email.sent"));
   } catch {
-    notificationCenter.error("Failed to resend email");
+    notificationCenter.error(formatIntlMessage("modules.settings.sagas.resend-email.failed"));
   }
 }
 
-export function* loadSeedOrReturnToSettings(): Iterator<any> {
+export function* loadSeedOrReturnToSettings({
+  intlWrapper: { intl: { formatIntlMessage } },
+}: TGlobalDependencies): Iterator<any> {
   // unlock wallet
   try {
     const signEffect = put(actions.web3.fetchSeedFromWallet());
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
-      "Access seed",
-      "Please confirm to access your seed.",
+      formatIntlMessage("modules.settings.sagas.load-seed-return-settings.access-recovery-phrase"),
+      formatIntlMessage(
+        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description",
+      ),
     );
   } catch {
     yield put(actions.routing.goToSettings());

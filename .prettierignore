@@ -5,3 +5,5 @@ package.json
 .nyc_output
 coverage
 .awcache
+intl
+e2e

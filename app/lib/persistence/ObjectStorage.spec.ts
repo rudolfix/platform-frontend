@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { dummyLogger } from "../../../test/fixtures";
 import { createMock } from "../../../test/testUtils";
+import { noopLogger } from "../dependencies/Logger";
 import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 
@@ -12,7 +12,7 @@ describe("Object storage", () => {
       setKey: () => {},
     });
 
-    const objectStorage = new ObjectStorage<string>(storageMock, dummyLogger, expectedKey);
+    const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
     objectStorage.set(expectedValue);
 
     expect(storageMock.setKey).to.be.calledWithExactly(expectedKey, JSON.stringify(expectedValue));
@@ -25,7 +25,7 @@ describe("Object storage", () => {
       getKey: () => expectedValue,
     });
 
-    const objectStorage = new ObjectStorage<string>(storageMock, dummyLogger, expectedKey);
+    const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
     const actualValue = objectStorage.get();
 
     expect(actualValue).to.be.eq(JSON.parse(expectedValue));
@@ -37,7 +37,7 @@ describe("Object storage", () => {
       getKey: () => undefined,
     });
 
-    const objectStorage = new ObjectStorage<string>(storageMock, dummyLogger, expectedKey);
+    const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
     const actualValue = objectStorage.get();
 
     expect(actualValue).to.be.undefined;
@@ -49,7 +49,7 @@ describe("Object storage", () => {
       removeKey: () => undefined,
     });
 
-    const objectStorage = new ObjectStorage<string>(storageMock, dummyLogger, expectedKey);
+    const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
     objectStorage.clear();
 
     expect(storageMock.removeKey).to.be.calledOnce;

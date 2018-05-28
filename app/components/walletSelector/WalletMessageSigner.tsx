@@ -1,9 +1,10 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
-import { selectIsLightWallet } from "../../modules/web3/reducer";
+import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
@@ -46,7 +47,9 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
       )}
       <Row>
         <Col className="text-center">
-          <Button onClick={cancelSigning}>Cancel</Button>
+          <Button onClick={cancelSigning}>
+            <FormattedMessage id="form.button.cancel" />
+          </Button>
         </Col>
       </Row>
     </>

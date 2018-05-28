@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedHTMLMessage } from "react-intl-phraseapp";
 
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { InlineIcon } from "../../shared/InlineIcon";
@@ -19,7 +20,7 @@ export const OffToOnCompany: React.SFC<IProps> = ({ steps }) => {
   return (
     <div className={styles.offToOnChainCompany}>
       <h3 className={styles.header}>
-        <strong>OFF-CHAIN</strong> company
+        <FormattedHTMLMessage tagName="span" id="off-to-on-chain.header" />
       </h3>
       <HorizontalLine theme="yellow" size="narrow" />
       <div className={styles.steps}>
@@ -35,7 +36,7 @@ export const OffToOnCompany: React.SFC<IProps> = ({ steps }) => {
         <InlineIcon svgIcon={arrowHead} />
       </div>
       <h3 className={styles.header}>
-        <strong>ON-CHAIN</strong> company
+        <FormattedHTMLMessage tagName="span" id="off-to-on-chain.footer" />
       </h3>
       <HorizontalLine theme="yellow" size="narrow" />
     </div>

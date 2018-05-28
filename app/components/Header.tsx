@@ -6,7 +6,7 @@ import * as logo from "../../app/assets/img/logo_yellow.svg";
 import { actions } from "../modules/actions";
 import { selectIsAuthorized } from "../modules/auth/selectors";
 import { appConnect } from "../store";
-import { appRoutes } from "./AppRouter";
+import { appRoutes } from "./appRoutes";
 import * as styles from "./Header.module.scss";
 import { Button } from "./shared/Buttons";
 import { loginWalletRoutes } from "./walletSelector/walletRoutes";
@@ -36,7 +36,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       </Button>
     ) : (
       <div>
-        {props.location === appRoutes.etoLanding ? (
+        {props.location && props.location.indexOf("eto") !== -1 ? (
           <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
             <Button theme="t-white">LOGIN</Button>
           </Link>

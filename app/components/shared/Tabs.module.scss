@@ -8,7 +8,8 @@
 .tab {
   opacity: .9;
   cursor: pointer;
-  border-bottom: px-to-rem(1px) solid transparent;
+  border-bottom: px-to-rem(2px) solid transparent;
+  padding-bottom: px-to-rem(4px);
 
   &:hover,
   &:focus {

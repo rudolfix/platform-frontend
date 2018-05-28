@@ -1,22 +1,22 @@
-import * as React from "react";
-
 import { Form, FormikProps, withFormik } from "formik";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
+
 import { appConnect } from "../../../store";
-
+import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
+import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { Button } from "../../shared/Buttons";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
-
+import { FormTextArea } from "../../shared/forms/formField/FormTextArea";
 import { FormField } from "../../shared/forms/forms";
+import { HorizontalLine } from "../../shared/HorizontalLine";
+import { SingleFileUpload } from "../../shared/SingleFileUpload";
+import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
 import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
-import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { FormTextArea } from "../../shared/forms/formField/FormTextArea";
-import { HorizontalLine } from "../../shared/HorizontalLine";
-import { SingleFileUpload } from "../../shared/SingleFileUpload";
 
 interface IStateProps {
   currentValues: IEtoData;
@@ -28,12 +28,14 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
-
+// TODO: Add translations to forms
 const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Founders</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.team-and-investors.founders" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -58,7 +60,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add new Owner
+            <FormattedMessage id="components.eto.registration.team-and-investors.add-new-owner" />
           </Button>
         </div>
       </Col>
@@ -68,7 +70,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Captable</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.team-and-investors.cap-table" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -84,7 +88,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add more
+            <FormattedMessage id="components.eto.registration.team-and-investors.add-more" />
           </Button>
         </div>
       </Col>
@@ -94,7 +98,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Notable Investors</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.team-and-investors.notable-investors" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -109,7 +115,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add more
+            <FormattedMessage id="components.eto.registration.team-and-investors.add-more" />
           </Button>
         </div>
       </Col>
@@ -118,7 +124,9 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 
     <Row className="justify-content-center">
       <Col xs={12} lg={6}>
-        <h4>Advisors</h4>
+        <h4>
+          <FormattedMessage id="components.eto.registration.team-and-investors.advisors" />
+        </h4>
         <Accordion>
           <AccordionElement isOpened={true} title="First Name">
             <FormField label="First name" name="firstName" />
@@ -133,7 +141,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
             onClick={() => {}}
             disabled={true}
           >
-            Add more
+            <FormattedMessage id="components.eto.registration.team-and-investors.add-more" />
           </Button>
         </div>
       </Col>
@@ -141,7 +149,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
     <HorizontalLine className="mb-5" />
     <div className="text-center">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        Submit and continue
+        <FormattedMessage id="components.eto.registration.team-and-investors.submit-and-continue" />
       </Button>
     </div>
   </Form>
@@ -155,13 +163,16 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps & IIntlProps> = ({
+  intl: { formatIntlMessage },
+  ...props
+}) => (
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
         steps={4}
         currentStep={1}
-        title={"Team and Investors"}
+        title={formatIntlMessage("components.eto.registration.team-and-investors.title")}
         hasBackButton={false}
         isMaxWidth={true}
       >
@@ -184,4 +195,5 @@ export const EtoRegistrationTeamAndInvestors = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
+  injectIntlHelpers,
 )(EtoRegistrationTeamAndInvestorsComponent);

@@ -1,50 +1,59 @@
 import * as React from "react";
-
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
-import { Button } from "../../shared/Buttons";
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { KycPanel } from "../KycPanel";
-import { Panels, PanelTheme } from "../shared/Panels";
+import { Panels } from "../shared/Panels";
+
+export const personalSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.personal-details" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.documents-verification" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: false,
+  },
+];
 
 interface IProps {
   goToPerson: () => void;
   goToCompany: () => void;
 }
 
-export const KYCStartComponent: React.SFC<IProps> = props => (
-  <KycPanel
-    steps={4}
-    currentStep={1}
-    title="Start your KYC"
-    hasBackButton={false}
-    isMaxWidth={true}
-  >
-    <Panels
-      panels={[
-        {
-          content: (
-            <Button theme="t-white" onClick={props.goToPerson}>
-              I represent myself
-            </Button>
-          ),
-          theme: PanelTheme.black,
-          id: 1,
-        },
-        {
-          content: (
-            <Button theme="t-white" onClick={props.goToCompany}>
-              I represent a company
-            </Button>
-          ),
-          theme: PanelTheme.blue,
-          id: 2,
-        },
-      ]}
-    />
-  </KycPanel>
+export const KYCStartComponent = injectIntlHelpers<IProps>(
+  ({ intl: { formatIntlMessage }, ...props }) => (
+    <KycPanel steps={personalSteps} title={formatIntlMessage("kyc.start.title")} isMaxWidth={true}>
+      <Panels
+        panels={[
+          {
+            content: <FormattedMessage id="kyc.start.go-to-personal" />,
+            id: 1,
+            onClick: () => props.goToPerson(),
+            "data-test-id": "kyc-start-go-to-personal",
+          },
+          {
+            content: <FormattedMessage id="kyc.start.go-to-company" />,
+            id: 2,
+            onClick: () => props.goToCompany(),
+            "data-test-id": "kyc-start-go-to-company",
+          },
+        ]}
+      />
+    </KycPanel>
+  ),
 );
 
 export const KYCStart = compose<React.SFC>(

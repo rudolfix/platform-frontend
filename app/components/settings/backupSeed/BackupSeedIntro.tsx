@@ -1,14 +1,12 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-
-import { Button } from "../../shared/Buttons";
-import { StepCard } from "../../shared/StepCard";
-
+import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 import * as noComputer from "../../../assets/img/seed_backup/no_computer.svg";
 import * as safe from "../../../assets/img/seed_backup/safe.svg";
 import * as write from "../../../assets/img/seed_backup/write.svg";
-
-import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
+import { Button } from "../../shared/Buttons";
+import { StepCard } from "../../shared/StepCard";
 
 interface IBackupSeedIntroProps {
   onNext: () => void;
@@ -18,13 +16,24 @@ interface IBackupSeedIntroProps {
 export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNext }) => (
   <>
     <Row className="mb-4 text-center">
-      <StepCard img={write} text={"Write all words on a piece of paper"} />
-      <StepCard img={noComputer} text={"Do not store the words on your computer"} />
-      <StepCard img={safe} text={"Store the phrase very safely"} />
+      <StepCard
+        img={write}
+        text={<FormattedMessage id="settings.backup-seed-intro.write-all-words" />}
+      />
+      <StepCard
+        img={noComputer}
+        text={<FormattedMessage id="settings.backup-seed-intro.words-warning" />}
+      />
+      <StepCard
+        img={safe}
+        text={<FormattedMessage id="settings.backup-seed-intro.store-safely" />}
+      />
     </Row>
     <Row className="my-5">
       <Col className="text-center">
-        <Button onClick={onNext}>I have read instructions</Button>
+        <Button onClick={onNext} data-test-id="backup-seed-intro-button">
+          <FormattedMessage id="settings.backup-seed-intro.read-instructions" />
+        </Button>
       </Col>
     </Row>
     <Row>
@@ -35,7 +44,7 @@ export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNe
           svgIcon={arrowLeft}
           onClick={() => onBack}
         >
-          Back
+          <FormattedMessage id="form.button.back" />
         </Button>
       </Col>
     </Row>

@@ -1,10 +1,11 @@
 import { toPairs, zip } from "lodash";
 import { WalletStorage } from "./../../../lib/persistence/WalletStorage";
 
-import { pairZip } from "../../../../typings/modifications";
+import { tripleZip } from "../../../../typings/modifications";
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { ContractsService } from "../../../lib/web3/ContractsService";
 import { LedgerNotAvailableError, LedgerWalletConnector } from "../../../lib/web3/LedgerWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
@@ -41,6 +42,7 @@ export const ledgerWizardFlows = {
       getState: GetState,
       ledgerConnector: LedgerWalletConnector,
       web3Manager: Web3Manager,
+      contractsService: ContractsService,
     ) => {
       const {
         advanced,
@@ -62,21 +64,35 @@ export const ledgerWizardFlows = {
         address: pair[1],
       }));
 
-      const balances = await Promise.all(
+      const balancesETH = await Promise.all(
         derivationPathsArray.map(dp =>
           web3Manager.internalWeb3Adapter.getBalance(dp.address).then(bn => bn.toString()),
         ),
       );
 
-      const accounts = (zip as pairZip)(derivationPathsArray, balances).map(([dp, balance]) => ({
-        ...dp,
-        balanceETH: balance,
-        balanceNEU: "0",
-      }));
+      const balancesNEU = await Promise.all(
+        derivationPathsArray.map(dp =>
+          contractsService.neumarkContract.balanceOf(dp.address).then(bn => bn.toString()),
+        ),
+      );
+
+      const accounts = (zip as tripleZip)(derivationPathsArray, balancesETH, balancesNEU).map(
+        ([dp, balanceETH, balanceNEU]) => ({
+          ...dp,
+          balanceETH: balanceETH,
+          balanceNEU: balanceNEU,
+        }),
+      );
 
       dispatch(actions.walletSelector.setLedgerAccounts(accounts, derivationPathPrefix));
     },
-    [symbols.appDispatch, symbols.getState, symbols.ledgerWalletConnector, symbols.web3Manager],
+    [
+      symbols.appDispatch,
+      symbols.getState,
+      symbols.ledgerWalletConnector,
+      symbols.web3Manager,
+      symbols.contractsService,
+    ],
   ),
 
   setDerivationPathPrefix: (derivationPathPrefix: string) =>

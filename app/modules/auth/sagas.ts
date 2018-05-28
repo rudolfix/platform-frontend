@@ -1,17 +1,23 @@
 import { effects } from "redux-saga";
-import { call, Effect, fork } from "redux-saga/effects";
+import { call, Effect, fork, select } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IUser, IUserInput, TUserType } from "../../lib/api/users/interfaces";
+import { IUser, IUserInput, IVerifyEmailUser, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
+import { SignerRejectConfirmationError, SignerTimeoutError } from "../../lib/web3/Web3Manager";
+import { IAppState } from "../../store";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
+import { loadKycRequestData } from "../kyc/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { selectEthereumAddressWithChecksum } from "../web3/reducer";
+import {
+  selectActivationCodeFromQueryString,
+  selectEmailFromQueryString,
+  selectEthereumAddressWithChecksum,
+} from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { IAppState } from "./../../store";
-import { selectActivationCodeFromQueryString } from "./../web3/reducer";
-import { selectRedirectURLFromQueryString } from "./selectors";
+import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -50,18 +56,32 @@ export async function loadOrCreateUserPromise(
   }
 }
 
-export async function verifyUserEmailPromise({
-  apiUserService,
-  getState,
-  notificationCenter,
-}: TGlobalDependencies): Promise<void> {
-  const userCode = selectActivationCodeFromQueryString(getState().router);
+export async function verifyUserEmailPromise(
+  {
+    apiUserService,
+    notificationCenter,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
+  userCode: IVerifyEmailUser,
+  urlEmail: string,
+  verifiedEmail: string,
+): Promise<void> {
+  if (urlEmail === verifiedEmail) {
+    notificationCenter.info(
+      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-already-verified"),
+    );
+    return;
+  }
   if (!userCode) return;
   try {
     await apiUserService.verifyUserEmail(userCode);
-    notificationCenter.info("Your email was verified successfully.");
+    notificationCenter.info(
+      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-verified"),
+    );
   } catch (e) {
-    notificationCenter.error("Failed to verify your email.");
+    notificationCenter.error(
+      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.failed-email-verify"),
+    );
   }
 }
 
@@ -76,11 +96,15 @@ export async function updateUserPromise(
 export function* loadOrCreateUser(userType: TUserType): Iterator<any> {
   const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
   yield effects.put(actions.auth.loadUser(user));
+
+  yield neuCall(loadKycRequestData);
 }
 
 export function* loadUser(): Iterator<any> {
-  const user: IUser = yield neuCall(loadOrCreateUserPromise);
+  const user: IUser = yield neuCall(loadUserPromise);
   yield effects.put(actions.auth.loadUser(user));
+
+  yield neuCall(loadKycRequestData);
 }
 
 export async function loadUserPromise({ apiUserService }: TGlobalDependencies): Promise<IUser> {
@@ -100,20 +124,13 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
 }
 
 function* signInUser(
-  { logger }: TGlobalDependencies,
+  { logger, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
   { payload: { userType } }: any,
 ): Iterator<any> {
   try {
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);
-  } catch (e) {
-    logger.error("Error:", e);
-    yield effects.put(actions.walletSelector.messageSigningError("Error while signing a message!"));
-  }
-
-  try {
     yield call(loadOrCreateUser, userType);
-
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),
     );
@@ -123,17 +140,38 @@ function* signInUser(
       yield effects.put(actions.routing.goToDashboard());
     }
   } catch (e) {
-    logger.error("Error:", e);
-    yield effects.put(
-      actions.walletSelector.messageSigningError("Error while connecting with server!"),
-    );
+    if (e instanceof SignerRejectConfirmationError) {
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-was-rejected"),
+        ),
+      );
+    } else if (e instanceof SignerTimeoutError) {
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
+        ),
+      );
+    } else {
+      logger.error("Error:", e);
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          formatIntlMessage(
+            "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+          ),
+        ),
+      );
+    }
   }
 }
 
 function* verifyUserEmail(): Iterator<any> {
-  yield neuCall(verifyUserEmailPromise);
+  const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
+  const urlEmail = yield select((s: IAppState) => selectEmailFromQueryString(s.router));
+  const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
+  yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);
-  yield effects.put(actions.routing.goHome());
+  yield effects.put(actions.routing.goToSettings());
 }
 
 /**

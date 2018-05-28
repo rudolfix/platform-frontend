@@ -1,5 +1,10 @@
 import * as Yup from "yup";
-import { isUsCitizen, makeAllRequired, personBirthDate } from "./util/schemaHelpers";
+import {
+  isUsCitizen,
+  makeAllRequired,
+  personBirthDate,
+  restrictedCountry,
+} from "./util/schemaHelpers";
 
 export type TKycRequestType = "business" | "individual";
 
@@ -20,10 +25,9 @@ export const KycPersonSchema = Yup.object().shape({
   street: Yup.string(),
   city: Yup.string(),
   zipCode: Yup.string(),
-  country: Yup.string(),
+  country: restrictedCountry,
   birthDate: personBirthDate,
   isPoliticallyExposed: Yup.bool(),
-  isUsCitizen: isUsCitizen,
 });
 
 // individual data
@@ -34,7 +38,7 @@ export interface IKycIndividualData extends IKycPerson {
 
 export const KycIndividudalDataSchema = KycPersonSchema.concat(
   Yup.object().shape({
-    isUsCitizen: Yup.bool(),
+    isUsCitizen,
     isHighIncome: Yup.bool(),
   }),
 );
@@ -60,7 +64,7 @@ export const KycBusinessDataSchema = Yup.object().shape({
   street: Yup.string(),
   city: Yup.string(),
   zipCode: Yup.string(),
-  country: Yup.string(),
+  country: restrictedCountry,
   jurisdiction: Yup.string().default("de"),
 });
 export const KycBusinessDataSchemaRequired = makeAllRequired(KycBusinessDataSchema);
@@ -96,13 +100,24 @@ export const KycFileInfoShape = Yup.object().shape({
 
 // request state
 export type TRequestStatus = "Draft" | "Pending" | "Outsourced" | "Rejected" | "Accepted";
+export type TRequestOutsourcedStatus =
+  | "started"
+  | "success"
+  | "success_data_changed"
+  | "review_pending"
+  | "aborted"
+  | "canceled"
+  | "other";
+
 export interface IKycRequestState {
   status: TRequestStatus;
+  outsourcedStatus?: TRequestOutsourcedStatus;
   redirectUrl?: string;
 }
 
 export const KycRequestStateSchema = Yup.object().shape({
   status: Yup.string().required("Request state is required"),
+  outsourcedStatus: Yup.string(),
   redirectUrl: Yup.string(),
   type: Yup.string(),
 });

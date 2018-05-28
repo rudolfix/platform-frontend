@@ -1,6 +1,7 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { appRoutes } from "../../AppRouter";
+import { appRoutes } from "../../appRoutes";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { BreadCrumb } from "../../shared/BreadCrumb";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
@@ -77,8 +78,13 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
       <LayoutAuthorized>
         <BreadCrumb
           className="mb-4"
-          path={["Settings", "Security settings"]}
-          view="Backup recovery phase"
+          path={[
+            <FormattedMessage id="settings.backup-seed-flow-container.bread-crumb-settings" />,
+            <FormattedMessage id="settings.backup-seed-flow-container.bread-crumb-security-settings" />,
+          ]}
+          view={
+            <FormattedMessage id="settings.backup-seed-flow-container.bread-crumb-backup-recovery" />
+          }
         />
         <Row>
           <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
@@ -86,8 +92,12 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
               <HeaderProgressStepper
                 steps={steps}
                 currentStep={this.state.backupStep}
-                headerText="The safety phrase is crucial for the safety of your assets"
-                descText="Please make sure you follow the instructions."
+                headerText={
+                  <FormattedMessage id="settings.backup-seed-flow-container.safety-message" />
+                }
+                descText={
+                  <FormattedMessage id="settings.backup-seed-flow-container.follow-instructions" />
+                }
                 warning
               />
               {this.renderBackupPage()}

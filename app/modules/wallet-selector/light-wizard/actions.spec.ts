@@ -1,8 +1,9 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { dummyLogger, dummyNetworkId } from "../../../../test/fixtures";
+import { dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
+import { noopLogger } from "../../../lib/dependencies/Logger";
 import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
@@ -67,7 +68,7 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         lightWalletUtil,
         walletStorageMock,
         vaultApi,
-        dummyLogger,
+        noopLogger,
         getStateMock as any,
       );
       expect(lightWalletConnector.connect).to.be.calledWith({
@@ -95,12 +96,12 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         lightWalletUtil,
         walletStorageMock, //HERE
         vaultApi,
-        dummyLogger,
+        noopLogger,
         getStateMock as any,
       );
 
       expect(dispatchMock).to.be.calledWithExactly(
-        actions.genericModal.showErrorModal("Light wallet Error", "Password is not correct"),
+        actions.genericModal.showErrorModal("Password is not correct"),
       );
     });
   });

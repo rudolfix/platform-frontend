@@ -1,14 +1,33 @@
 import * as React from "react";
-
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import { TKycBusinessType } from "../../../lib/api/KycApi.interfaces";
-import { Button } from "../../shared/Buttons";
 import { KycPanel } from "../KycPanel";
-import { Panels, PanelTheme } from "../shared/Panels";
+import { kycRoutes } from "../routes";
+import { Panels } from "../shared/Panels";
+
+export const businessSteps = [
+  {
+    label: <FormattedMessage id="kyc.steps.representation" />,
+    isChecked: true,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.company-details" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.legal-representation" />,
+    isChecked: false,
+  },
+  {
+    label: <FormattedMessage id="kyc.steps.review" />,
+    isChecked: false,
+  },
+];
 
 interface IStateProps {
   loading: boolean;
@@ -21,53 +40,26 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 export const KycBusinessStartComponent: React.SFC<IProps> = props => (
-  <KycPanel
-    steps={5}
-    currentStep={2}
-    title="What type of company are you?"
-    hasBackButton={true}
-    isMaxWidth={true}
-  >
+  <KycPanel steps={businessSteps} backLink={kycRoutes.start} isMaxWidth={true}>
     <Panels
       panels={[
         {
-          content: (
-            <Button
-              theme="t-white"
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("small")}
-            >
-              Small Business
-            </Button>
-          ),
-          theme: PanelTheme.black,
+          content: <FormattedMessage id="kyc.business.start.type.small" />,
           id: 1,
+          onClick: () => props.setBusinessType("small"),
+          "data-test-id": "kyc-start-business-go-to-small",
         },
         {
-          content: (
-            <Button
-              theme="t-white"
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("corporate")}
-            >
-              Corporation
-            </Button>
-          ),
-          theme: PanelTheme.grey,
+          content: <FormattedMessage id="kyc.business.start.type.corporation" />,
           id: 2,
+          onClick: () => props.setBusinessType("corporate"),
+          "data-test-id": "kyc-start-business-go-to-corporation",
         },
         {
-          content: (
-            <Button
-              theme="t-white"
-              disabled={props.loading}
-              onClick={() => props.setBusinessType("partnership")}
-            >
-              Partnership Business
-            </Button>
-          ),
-          theme: PanelTheme.blue,
+          content: <FormattedMessage id="kyc.business.start.type.partnership" />,
           id: 3,
+          onClick: () => props.setBusinessType("partnership"),
+          "data-test-id": "kyc-start-business-go-to-partnership",
         },
       ]}
     />

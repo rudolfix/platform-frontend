@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
@@ -49,30 +50,40 @@ export const EtoOverview: React.SFC<IProps> = props => {
               <div className={styles.detailsWrapper}>
                 <div className={styles.detailBox}>
                   <div>
-                    <div className={styles.label}>Start</div>
+                    <div className={styles.label}>
+                      <FormattedMessage id="components.eto.dashboard.eto-overview.start" />
+                    </div>
                     <div className={styles.value}>{props.startDate}</div>
                   </div>
                   <div>
-                    <div className={styles.label}>End</div>
+                    <div className={styles.label}>
+                      <FormattedMessage id="components.eto.dashboard.eto-overview.end" />
+                    </div>
                     <div className={styles.value}>{props.endDate}</div>
                   </div>
                 </div>
                 <div className={styles.detailBox}>
                   <div>
-                    <div className={styles.label}>Goal</div>
+                    <div className={styles.label}>
+                      <FormattedMessage id="components.eto.dashboard.eto-overview.goal" />
+                    </div>
                     <div className={styles.value}>
                       <Money currency="neu" value={props.goalValue} />
                     </div>
                   </div>
                   <div>
-                    <div className={styles.label}>Current valuation</div>
+                    <div className={styles.label}>
+                      <FormattedMessage id="eto.dashboard.eto-overview.current-valuation" />
+                    </div>
                     <div className={styles.value}>
                       <Money currency="neu" value={props.goalValue} />
                     </div>
                   </div>
                 </div>
                 <div className={styles.detailBox}>
-                  <div className={styles.label}>Token price</div>
+                  <div className={styles.label}>
+                    <FormattedMessage id="eto.dashboard.eto-overview.token-price" />
+                  </div>
                   <div className={cn(styles.value, styles.tokenPrice)}>
                     <Money value={props.tokenPriceNeu} currency="neu" />
                   </div>
@@ -81,12 +92,16 @@ export const EtoOverview: React.SFC<IProps> = props => {
                   </div>
                 </div>
                 <div className={styles.detailBox}>
-                  <div className={styles.label}>Company token</div>
+                  <div className={styles.label}>
+                    <FormattedMessage id="eto.dashboard.eto-overview.company-token" />
+                  </div>
                   <div className={styles.token}>
                     <img className={styles.tokenLogo} src={props.tokenImageSrc} />
                     <div className={styles.tokenSymbol}>{props.tokenSymbol}</div>
                   </div>
-                  <Link to={props.linkToDetailedTokenInfo}>Detailed token info ></Link>
+                  <Link to={props.linkToDetailedTokenInfo}>
+                    <FormattedMessage id="eto.dashboard.eto-overview.token-link" />
+                  </Link>
                 </div>
               </div>
             </div>

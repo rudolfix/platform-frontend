@@ -1,17 +1,16 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { selectNeuBalanceEuroAmount } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
-import { Button } from "../../shared/Buttons";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { PanelDark } from "../../shared/PanelDark";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./MyPortfolioWidget.module.scss";
 
 type TOwnProps = CommonHtmlProps;
@@ -38,11 +37,12 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, d
   return (
     <>
       <Col xl={8} md={7} xs={12} className="mt-5 text-center mb-4 ">
-        <h3>Welcome to NEUFUND!</h3>
-        <p>You have no assets in your portfolio yet.</p>
-        <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
-          Investment Opportunities
-        </Button>
+        <h3>
+          <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
+        </h3>
+        <p>
+          <FormattedMessage id="dashboard.my-portfolio-widget.no-assets" />
+        </p>
       </Col>
       <Col xl={4} md={5} xs={12} className="mt-3">
         <MyNeuWidget balanceNeu={data!.balanceNeu} balanceEur={data!.balanceEur} />
@@ -59,12 +59,22 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   data,
 }) => {
   return (
-    <PanelDark headerText="My portfolio" className={className} style={style}>
+    <PanelDark
+      headerText={
+        <FormattedMessage id="components.dashboard.my-portfolio.my-portfolio-widget.header-text" />
+      }
+      className={className}
+      style={style}
+    >
       <Row className={cn(styles.main, "pb-3")}>
         {isLoading ? (
           <LoadingIndicator />
         ) : (
-          <MyPortfolioWidgetComponentBody data={data} error={error} />
+          <MyPortfolioWidgetComponentBody
+            data={data}
+            error={error}
+            test-data-id="dashboard-my-portfolio-widget"
+          />
         )}
       </Row>
     </PanelDark>

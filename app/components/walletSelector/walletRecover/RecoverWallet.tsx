@@ -1,10 +1,11 @@
 import * as React from "react";
-import { compose } from "redux";
-import { appConnect } from "../../../store";
-
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
+import { compose } from "redux";
+
 import { flows } from "../../../modules/flows";
+import { appConnect } from "../../../store";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { RegisterWalletComponent } from "../light/RegisterLightWallet";
 import { recoverRoutes } from "./recoverRoutes";
@@ -46,8 +47,8 @@ export class RecoveryProcessesComponent extends React.Component<
         {this.state.seed ? (
           <div>
             <HeaderProgressStepper
-              headerText="Reset your Password"
-              descText="Lopsum Iprum"
+              headerText={<FormattedMessage id="wallet-selector.recover.seed.header" />}
+              descText={<FormattedMessage id="wallet-selector.recover.seed.register-description" />}
               currentStep={7}
               steps={8}
             />
@@ -68,8 +69,9 @@ export class RecoveryProcessesComponent extends React.Component<
         )}
         <Col md={12}>
           <Row className="mt-5 pt-5 justify-content-end align-items-center">
-            <Link className="" to={recoverRoutes.help}>
-              Contact for help <i className="fa fa-lg fa-angle-right ml-1" />
+            <Link to={recoverRoutes.help}>
+              <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />{" "}
+              <i className="fa fa-lg fa-angle-right ml-1" />
             </Link>
           </Row>
         </Col>

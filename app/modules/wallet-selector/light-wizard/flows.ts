@@ -75,12 +75,8 @@ export const lightWizardFlows = {
           else dispatch(actions.walletSelector.connected(userType));
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
-          dispatch(
-            actions.genericModal.showErrorModal(
-              "Light wallet Error",
-              mapLightWalletErrorToErrorMessage(e),
-            ),
-          );
+          //TODO: TRANSLATIONS
+          dispatch(actions.genericModal.showErrorModal(mapLightWalletErrorToErrorMessage(e)));
         }
       },
       [

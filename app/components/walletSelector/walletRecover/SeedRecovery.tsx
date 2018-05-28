@@ -1,17 +1,16 @@
+import "react-select/dist/react-select.css";
+import "react-virtualized-select/styles.css";
+import "react-virtualized/styles.css";
+
 import * as Mnemonic from "bitcore-mnemonic";
 import { range } from "lodash";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
 import { Button } from "../../shared/Buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
-
-/* tslint:disable: no-submodule-imports */
-import "react-select/dist/react-select.css";
-import "react-virtualized-select/styles.css";
-import "react-virtualized/styles.css";
-/* tslint:enable: no-submodule-imports */
 
 export const SEED_LENGTH = 24;
 const WORDS_PER_VIEW = 4;
@@ -50,17 +49,19 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
   };
 
   generateSelect = (wordNumber: number): React.ReactNode => (
-    <Select
-      options={wordsOptions}
-      simpleValue
-      clearable={false}
-      matchPos="start"
-      matchProp="value"
-      value={this.state.words[wordNumber]}
-      onChange={this.updateValueFactory(wordNumber)}
-      placeholder={(wordNumber + 1).toString(10) + ". Word"}
-      noResultsText="No matching word"
-    />
+    <div data-test-id={`seed-recovery-word-${wordNumber}`}>
+      <Select
+        options={wordsOptions}
+        simpleValue
+        clearable={true}
+        matchPos="start"
+        matchProp="value"
+        value={this.state.words[wordNumber]}
+        onChange={this.updateValueFactory(wordNumber)}
+        placeholder={(wordNumber + 1).toString(10) + ". Word"}
+        noResultsText="No matching word"
+      />
+    </div>
   );
 
   handleNextView = () => {
@@ -99,8 +100,8 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
       <>
         <Col className="mt-4 pb-4">
           <HeaderProgressStepper
-            headerText="Reset your Password"
-            descText="Use the Recovery Phrase to restore your password."
+            headerText={<FormattedMessage id="wallet-selector.recover.seed.header" />}
+            descText={<FormattedMessage id="wallet-selector.recover.seed.recover-description" />}
             currentStep={this.props.startingStep + this.state.page + 1}
             steps={this.props.extraSteps + SEED_LENGTH / WORDS_PER_VIEW}
           />
@@ -123,18 +124,21 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
             disabled={startIndex === 0}
             onClick={this.handlePreviousView}
           >
-            previous words
+            <FormattedMessage id="wallet-selector.recovery.seed.previous-words" />
           </Button>
           {this.state.page + 1 < SEED_LENGTH / WORDS_PER_VIEW && (
             <Button data-test-id="btn-next" disabled={!canAdvance} onClick={this.handleNextView}>
-              next {`${endIndex} / ${SEED_LENGTH}`}
+              <FormattedMessage
+                id="wallet-selector.recovery.seed.next-words"
+                values={{ words: `${endIndex} / ${SEED_LENGTH}` }}
+              />
             </Button>
           )}
         </Row>
         <Row className="text-center my-3">
           <Col>
             <Button data-test-id="btn-send" disabled={!canSubmit} onClick={this.handleSendWords}>
-              Send words
+              <FormattedMessage id="wallet-selector.recovery.seed.send-words-button" />
             </Button>
           </Col>
         </Row>

@@ -1,11 +1,12 @@
 import * as React from "react";
-import * as styles from "./EtoRegistrationPanel.module.scss";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Button } from "../../shared/Buttons";
 import { PanelWhite } from "../../shared/PanelWhite";
-import { IProgresStepper, ProgressStepper } from "../../shared/ProgressStepper";
+import { IProgressStepper, ProgressStepper } from "../../shared/ProgressStepper";
 
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
+import * as styles from "./EtoRegistrationPanel.module.scss";
 
 interface IPropsKycPanel {
   title: string;
@@ -14,7 +15,7 @@ interface IPropsKycPanel {
   description?: string;
 }
 
-export const EtoRegistrationPanel: React.SFC<IPropsKycPanel & IProgresStepper> = ({
+export const EtoRegistrationPanel: React.SFC<IPropsKycPanel & IProgressStepper> = ({
   steps,
   currentStep,
   title,
@@ -39,7 +40,7 @@ export const EtoRegistrationPanel: React.SFC<IPropsKycPanel & IProgresStepper> =
             svgIcon={arrowLeft}
             onClick={() => {}}
           >
-            BACK
+            <FormattedMessage id="form.button.back" />
           </Button>
         )}
       </footer>

@@ -1,24 +1,3 @@
-export const appRoutes = {
-  verify: "/email-verify",
-
-  root: "/",
-
-  register: "/register",
-  registerEto: "/eto/register",
-  login: "/login",
-  loginEto: "/eto/login",
-  recover: "/recover",
-  recoverEto: "/eto/recover",
-
-  kyc: "/kyc",
-  wallet: "/wallet",
-  dashboard: "/dashboard",
-  settings: "/settings",
-  demo: "/demo",
-  eto: "/eto",
-  etoLanding: "/eto-landing",
-};
-
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -31,7 +10,9 @@ import { Eto } from "./eto/Eto";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 
+import { appRoutes } from "./appRoutes";
 import { emailVerify } from "./emailVerify";
+import { EtoOverview } from "./eto/EtoOverview";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
@@ -45,14 +26,18 @@ import { WalletSelector } from "./walletSelector/WalletSelector";
 export const AppRouter: React.SFC = () => (
   <SwitchConnected>
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
-    <OnlyPublicRoute path={appRoutes.etoLanding} component={LandingEto} />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
 
-    <OnlyPublicRoute path={appRoutes.registerEto} component={WalletSelector} />
-    <OnlyPublicRoute path={appRoutes.loginEto} component={WalletSelector} />
-    <OnlyPublicRoute path={appRoutes.recoverEto} component={WalletRecoverMain} />
+    {process.env.NF_ISSUERS_ENABLED === "1" && (
+      <>
+        <OnlyPublicRoute path={appRoutes.etoLanding} component={LandingEto} />
+        <OnlyPublicRoute path={appRoutes.registerEto} component={WalletSelector} />
+        <OnlyPublicRoute path={appRoutes.loginEto} component={WalletSelector} />
+        <OnlyPublicRoute path={appRoutes.recoverEto} component={WalletRecoverMain} />
+      </>
+    )}
 
     {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
@@ -66,6 +51,11 @@ export const AppRouter: React.SFC = () => (
       investorComponent={Dashboard}
       issuerComponent={EtoDashboard}
       exact
+    />
+    <OnlyAuthorizedRoute
+      path={appRoutes.etoOverview}
+      issuerComponent={EtoOverview}
+      investorComponent={EtoOverview}
     />
     <OnlyAuthorizedRoute
       path={appRoutes.verify}

@@ -59,6 +59,7 @@ export class LightDeserializeError extends LightWalletUtilError {}
 export class LightWalletMissingPassword extends LightWalletError {}
 export class LightWalletWrongPassword extends LightWalletError {}
 export class LightWalletLocked extends LightWalletError {}
+export class LightWalletWrongMnemonic extends LightWalletError {}
 
 // it's useful to have it as a class to allow injection and mocking.Todo: remove static functions and probably move to separate file
 @injectable()
@@ -94,11 +95,14 @@ export class LightWalletUtil {
         seedPhrase: seed,
         hdPathString,
         salt,
+      }).catch(() => {
+        throw new LightWalletWrongMnemonic();
       });
       const unlockedWallet = await LightWalletUtil.getWalletKey(lightWalletInstance, password);
       lightWalletInstance.generateNewAddress(unlockedWallet, 1);
       return { walletInstance: await lightWalletInstance.serialize(), salt };
     } catch (e) {
+      if (e instanceof LightWalletWrongMnemonic) throw new LightWalletWrongMnemonic();
       throw new LightCreationError();
     }
   }

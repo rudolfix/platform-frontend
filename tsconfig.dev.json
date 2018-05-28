@@ -9,7 +9,8 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": ["./node_modules/@types", "./@types"]
   },
   "include": [
     "./node_modules/types-bn/index.d.ts",
@@ -20,5 +21,6 @@
     "typings/**/*.ts",
     "test/**/*.ts",
     "test/**/*.tsx"
-  ]
+  ],
+  "exclude": ["app/**/*.spec.e2e.ts"]
 }

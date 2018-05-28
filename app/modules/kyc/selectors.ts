@@ -1,4 +1,8 @@
-import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import {
+  TKycRequestType,
+  TRequestOutsourcedStatus,
+  TRequestStatus,
+} from "../../lib/api/KycApi.interfaces";
 import { IKycState } from "./reducer";
 
 export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undefined => {
@@ -7,6 +11,26 @@ export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undef
       ? state.businessRequestState
       : state.individualRequestState;
   if (requestState) return requestState.status;
+  return undefined;
+};
+
+export const selectKycRequestOutsourcedStatus = (
+  state: IKycState,
+): TRequestOutsourcedStatus | undefined => {
+  const requestState =
+    state.individualRequestState && state.individualRequestState.status === "Draft"
+      ? state.businessRequestState
+      : state.individualRequestState;
+  if (requestState) return requestState.outsourcedStatus;
+  return undefined;
+};
+
+export const selectExternalKycUrl = (state: IKycState): string | undefined => {
+  const requestState =
+    state.individualRequestState && state.individualRequestState.status === "Draft"
+      ? state.businessRequestState
+      : state.individualRequestState;
+  if (requestState) return requestState.redirectUrl;
   return undefined;
 };
 
@@ -31,3 +55,9 @@ export const selectCombinedBeneficialOwnerOwnership = (state: IKycState): number
     0,
   );
 };
+
+export const selectWidgetLoading = (state: IKycState): boolean =>
+  !!state.individualRequestStateLoading || !!state.businessRequestStateLoading;
+
+export const selectWidgetError = (state: IKycState): string | undefined =>
+  state.individualRequestError || state.businessRequestError;

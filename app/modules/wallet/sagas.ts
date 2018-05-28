@@ -1,4 +1,4 @@
-import promiseAll = require("promise-all");
+import * as promiseAll from "promise-all";
 
 import BigNumber from "bignumber.js";
 import { fork, put, select } from "redux-saga/effects";
@@ -8,7 +8,7 @@ import { EthereumAddress } from "../../types";
 import { actions } from "../actions";
 import { numericValuesToString } from "../contracts/utils";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { selectEthereumAddress } from "../web3/reducer";
+import { selectEthereumAddress } from "../web3/selectors";
 import { IWalletStateData } from "./reducer";
 import { selectIsLoaded } from "./selectors";
 
@@ -45,7 +45,7 @@ async function loadWalletDataAsync(
       etherBalance: web3Manager.internalWeb3Adapter.getBalance(ethAddress),
       neuBalance: contractsService.neumarkContract.balanceOf(ethAddress),
 
-      etherPriceEur: Promise.resolve(new BigNumber("499")), // @todo hardcoded value
+      etherPriceEur: Promise.resolve(new BigNumber("483.96")), // @todo hardcoded value
       neuPriceEur: Promise.resolve(new BigNumber("0.500901")), // @todo hardcoded value
     }),
   );

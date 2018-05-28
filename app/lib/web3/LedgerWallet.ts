@@ -13,7 +13,11 @@ import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { ILedgerWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
-import { IEthereumNetworkConfig, SignerError } from "./Web3Manager";
+import {
+  IEthereumNetworkConfig,
+  SignerRejectConfirmationError,
+  SignerTimeoutError,
+} from "./Web3Manager";
 
 const CHECK_INTERVAL = 1000;
 
@@ -27,16 +31,20 @@ export interface IDerivationPathToAddress {
 }
 
 export class LedgerError extends Error {}
+export class LedgerConfirmationRejectedError extends LedgerError {}
+export class LedgerContractsDisabledError extends LedgerError {}
 export class LedgerLockedError extends LedgerError {}
 export class LedgerNotAvailableError extends LedgerError {}
 export class LedgerNotSupportedVersionError extends LedgerError {}
 export class LedgerInvalidDerivationPathError extends LedgerError {}
+export class LedgerTimeoutError extends LedgerError {}
 export class LedgerUnknownError extends LedgerError {}
 
 export class LedgerWallet implements IPersonalWallet {
   public readonly walletType = WalletType.LEDGER;
   public readonly walletSubType = WalletSubType.UNKNOWN; // in future we may detect if it's pure ledger or Neukey
   public readonly signerType = SignerType.ETH_SIGN;
+  waitingForCommand = false; // if ledger is waiting for user interaction it is blocked and you should not send any instructions to it.
 
   public constructor(
     public readonly web3Adapter: Web3Adapter,
@@ -46,16 +54,29 @@ export class LedgerWallet implements IPersonalWallet {
   ) {}
 
   public async testConnection(): Promise<boolean> {
+    if (this.waitingForCommand) {
+      return true;
+    }
     return testConnection(this.ledgerInstance);
   }
 
   public async signMessage(data: string): Promise<string> {
     try {
-      return noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
+      this.waitingForCommand = true;
+      return await noSimultaneousConnectionsGuard(this.ledgerInstance, async () => {
         return await this.web3Adapter.ethSign(this.ethereumAddress, data);
       });
-    } catch {
-      throw new SignerError();
+    } catch (e) {
+      const ledgerError = parseLedgerError(e);
+      if (ledgerError instanceof LedgerConfirmationRejectedError) {
+        throw new SignerRejectConfirmationError();
+      } else if (ledgerError instanceof LedgerTimeoutError) {
+        throw new SignerTimeoutError();
+      } else {
+        throw ledgerError;
+      }
+    } finally {
+      this.waitingForCommand = false;
     }
   }
 
@@ -247,4 +268,20 @@ async function noSimultaneousConnectionsGuard<T>(
     await delay(0);
   }
   return callRightAfter();
+}
+
+export function parseLedgerError(error: any): LedgerError {
+  if (error.message !== undefined && error.message === "Invalid status 6985") {
+    return new LedgerConfirmationRejectedError();
+  } else if (error.message !== undefined && error.message === "Invalid status 6a80") {
+    return new LedgerContractsDisabledError();
+  } else if (
+    error.message === "Sign failed" &&
+    error.metaData !== undefined &&
+    error.metaData.type === "TIMEOUT"
+  ) {
+    return new LedgerTimeoutError();
+  } else {
+    return new LedgerUnknownError();
+  }
 }

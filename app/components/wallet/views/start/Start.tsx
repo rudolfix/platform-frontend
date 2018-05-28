@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { actions } from "../../../../modules/actions";
@@ -21,40 +22,9 @@ import {
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
-import { TransactionList } from "../../transaction-list/TransactionList";
 import { IWalletValues, WalletBalance } from "../../wallet-balance/WalletBalance";
 
 const transactions: any[] = [];
-const categories = [
-  {
-    isSelected: false,
-    title: "smaple category",
-    onFilter: () => alert("sample category 1"),
-  },
-  {
-    isSelected: true,
-    title: "category 2",
-    onFilter: () => alert("sample category 2"),
-  },
-  {
-    isSelected: false,
-    title: "smaple 3",
-    onFilter: () => alert("sample category 3"),
-  },
-];
-const tabs = [
-  {
-    isSelected: false,
-    title: "neur transactions",
-    onFilter: () => alert("nEUR"),
-  },
-  {
-    isSelected: true,
-    title: "eth transactions",
-    onFilter: () => alert("eth"),
-  },
-];
-
 interface IStateProps {
   isLoading: boolean;
   error?: string;
@@ -76,7 +46,7 @@ const WalletStartComponent: React.SFC<TProps> = props => (
       <WalletBalance
         isLocked={false}
         className="h-100"
-        headerText="Your wallet balance"
+        headerText={<FormattedMessage id="components.wallet.start.my-wallet" />}
         depositEuroTokenFunds={props.goToDepositEuroToken}
         depositEthFunds={props.goToDepositEth}
         isLoading={props.isLoading}
@@ -90,7 +60,7 @@ const WalletStartComponent: React.SFC<TProps> = props => (
           <WalletBalance
             isLocked={true}
             className="h-100"
-            headerText="Locked Wallet"
+            headerText={<FormattedMessage id="components.wallet.start.locked-wallet" />}
             depositEuroTokenFunds={props.goToDepositEuroToken}
             depositEthFunds={props.goToDepositEth}
             isLoading={props.isLoading}
@@ -105,7 +75,7 @@ const WalletStartComponent: React.SFC<TProps> = props => (
           <WalletBalance
             isLocked={true}
             className="h-100"
-            headerText="ICBM Wallet"
+            headerText={<FormattedMessage id="components.wallet.start.icbm-wallet" />}
             depositEuroTokenFunds={props.goToDepositEuroToken}
             depositEthFunds={props.goToDepositEth}
             isLoading={props.isLoading}
@@ -123,10 +93,6 @@ const WalletStartComponent: React.SFC<TProps> = props => (
       }
     >
       <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
-    </Col>
-
-    <Col xs={12}>
-      <TransactionList transactions={transactions} categories={categories} tabs={tabs} />
     </Col>
   </Row>
 );

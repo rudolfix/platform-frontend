@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+
 import { TUserType } from "../../../lib/api/users/interfaces";
 import { ILightWalletRetrieveMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
@@ -12,10 +13,10 @@ import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { updateUserPromise } from "../../auth/sagas";
+import { loadUser, updateUserPromise } from "../../auth/sagas";
 import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/reducer";
+import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
@@ -66,11 +67,18 @@ export function* getWalletMetadata(
   return undefined;
 }
 
-export function* lightWalletBackupWatch(): Iterator<any> {
+export function* lightWalletBackupWatch({
+  intlWrapper: { intl: { formatIntlMessage } },
+}: TGlobalDependencies): Iterator<any> {
   try {
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
-    yield neuCall(displayInfoModalSaga, "Backup Seed", "you have successfully back up your wallet");
+    yield neuCall(
+      displayInfoModalSaga,
+      formatIntlMessage("modules.wallet-selector.light-wizard.sagas.backup-recovery"),
+      formatIntlMessage("modules.wallet-selector.light-wizard.sagas.successfully.backed-up"),
+    );
+    yield effects.call(loadUser);
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
     yield put(

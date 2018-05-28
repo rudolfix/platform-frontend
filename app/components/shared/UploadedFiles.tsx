@@ -7,16 +7,12 @@ import { IEtoFileInfo } from "../../lib/api/EtoApi.interfaces";
 
 interface IProps {
   files: IKycFileInfo[] | IEtoFileInfo[];
-  onRemove: () => void;
 }
 
-export const UploadedFiles: React.SFC<IProps> = ({ files, onRemove }) => (
+export const UploadedFiles: React.SFC<IProps> = ({ files }) => (
   <div className={styles.uploadedFiles}>
-    {files.map(({ fileName }) => (
-      <div key={fileName} className={styles.file}>
-        <span className={styles.remove} onClick={() => onRemove()}>
-          {/* <InlineIcon svgIcon={removeIcon} /> */}
-        </span>
+    {files.map(({ fileName }, index) => (
+      <div key={index} className={styles.file}>
         <span className={styles.text} title={fileName}>
           {fileName}
         </span>

@@ -40,7 +40,7 @@ const chartPieData = {
 export const EtoDashboard: React.SFC = () => (
   <LayoutAuthorized>
     <Row>
-      <Col lg={8} xs={12}>
+      <Col lg={8} xs={12} data-test-id="eto-dashboard-header">
         <SectionHeader>
           <FormattedMessage id="eto.dashboard.header.overview" />
           <InlineIcon onClick={() => {}} svgIcon={editIcon} />

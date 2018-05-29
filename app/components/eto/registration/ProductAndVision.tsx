@@ -11,7 +11,8 @@ import { Button } from "../../shared/Buttons";
 import { FormTextArea } from "../../shared/forms/forms";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
-import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
+// @todo unhardcode
+type IEtoData = any;
 
 interface IStateProps {
   currentValues: IEtoData;
@@ -64,8 +65,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 );
 
 const EtoEnhancedForm = withFormik<IProps, IEtoData>({
-  validationSchema: EtoDataSchema,
-  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
+  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),

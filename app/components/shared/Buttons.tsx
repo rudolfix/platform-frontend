@@ -41,6 +41,7 @@ export const Button: React.SFC<IButtonProps> = ({
       className={cn("button", layout, iconPosition, theme, size)}
       disabled={disabled}
       tabIndex={0}
+      type="button"
       {...props}
     >
       <div className={cn(styles.content, className)} tabIndex={-1}>

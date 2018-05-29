@@ -25,8 +25,6 @@ const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => 
     <FormField
       type="password"
       placeholder="Password"
-      touched={formikBag.touched}
-      errors={formikBag.errors}
       name="password"
       data-test-id="access-light-wallet-password-input"
     />

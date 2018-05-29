@@ -9,7 +9,7 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { selectUrlUserType } from "../selectors";
+import { selectUrlUserType } from "./../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 
 //Vault nonce should be exactly 24 chars
@@ -40,13 +40,12 @@ export const lightWizardFlows = {
         web3Manager: Web3Manager,
         lightWalletConnector: LightWalletConnector,
         lightWalletUtil: LightWalletUtil,
-        walletStorage: WalletStorage<TWalletMetadata>, //HERE
+        walletStorage: WalletStorage<TWalletMetadata>,
         vaultApi: VaultApi,
         logger: ILogger,
         getState: GetState,
       ) => {
         const userType = selectUrlUserType(getState().router);
-
         try {
           const lightWalletVault = await lightWalletUtil.createLightWalletVault({
             password,
@@ -84,7 +83,7 @@ export const lightWizardFlows = {
         symbols.web3Manager,
         symbols.lightWalletConnector,
         symbols.lightWalletUtil,
-        symbols.walletStorage, //HERE
+        symbols.walletStorage,
         symbols.vaultApi,
         symbols.logger,
         symbols.getState,

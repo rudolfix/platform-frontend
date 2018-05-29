@@ -89,12 +89,20 @@ describe("Wallet selector > Light wallet wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
+      const getStateMock: () => DeepPartial<IAppState> = () => ({
+        router: {
+          location: {
+            pathname: "/eto/login/browser",
+          },
+        },
+      });
+
       await walletFlows.tryConnectingWithLightWallet("investor", "test@test.com", "password")(
         dispatchMock,
         web3ManagerMock,
         lightWalletConnector,
         lightWalletUtil,
-        walletStorageMock, //HERE
+        walletStorageMock,
         vaultApi,
         noopLogger,
         getStateMock as any,

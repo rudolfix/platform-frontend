@@ -1,10 +1,12 @@
-import { delay, Task } from "redux-saga";
+import { delay, effects, Task } from "redux-saga";
 import { call, cancel, fork, put } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
+import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { selectUserType } from "./../auth/selectors";
 import { WalletType } from "./types";
 
 let lockWalletTask: Task | undefined;
@@ -57,8 +59,8 @@ export function* unlockWallet(
 }
 
 export function* loadPreviousWallet({ walletStorage }: TGlobalDependencies): Iterator<any> {
-  //HERE
-  const storageData = walletStorage.get(); //HERE
+  const userType = yield effects.select((state: IAppState) => selectUserType(state.auth));
+  const storageData = walletStorage.get(userType);
   if (storageData) {
     yield put(actions.web3.loadPreviousWallet(storageData));
   }

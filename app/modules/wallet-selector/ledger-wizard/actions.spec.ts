@@ -5,11 +5,11 @@ import { spy } from "sinon";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { Neumark } from "../../../lib/contracts/Neumark";
-import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
 import {
   ILedgerWalletMetadata,
   TWalletMetadata,
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { WalletStorage } from "../../../lib/persistence/WalletStorage";
 import { ContractsService } from "../../../lib/web3/ContractsService";
 import {
   IDerivationPathToAddress,
@@ -263,7 +263,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const getStateMock: () => DeepPartial<IAppState> = () => ({
         router: {
           location: {
-            pathname: "/eto/login/browser",
+            pathname: "/login/browser",
           },
         },
       });

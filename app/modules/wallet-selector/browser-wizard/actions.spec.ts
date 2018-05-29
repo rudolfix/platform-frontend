@@ -15,8 +15,6 @@ import {
   BrowserWalletLockedError,
 } from "../../../lib/web3/BrowserWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
-import { IAppState } from "../../../store";
-import { DeepPartial } from "../../../types";
 import { actions } from "../../actions";
 import { WalletType } from "../../web3/types";
 import { walletFlows } from "../flows";
@@ -29,13 +27,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
         address: dummyEthereumAddress,
         walletType: WalletType.BROWSER,
       };
-      const getStateMock: () => DeepPartial<IAppState> = () => ({
-        router: {
-          location: {
-            pathname: "/eto/login/browser",
-          },
-        },
-      });
 
       const dispatchMock = spy();
       const browserWalletMock = createMock(BrowserWallet, {
@@ -48,7 +39,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
+      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
 
@@ -58,11 +49,10 @@ describe("Wallet selector > Browser wizard > actions", () => {
         web3ManagerMock,
         noopLogger,
         walletMetadataStorageMock,
-        getStateMock as any,
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletStorageMock.set).to.be.calledWithExactly(dummyMetadata, "investor");
+      expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata, "investor");
       expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("investor"));
     });
 
@@ -70,13 +60,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
       const expectedNetworkId = dummyNetworkId;
 
       const dispatchMock = spy();
-      const getStateMock: () => DeepPartial<IAppState> = () => ({
-        router: {
-          location: {
-            pathname: "/eto/login/browser",
-          },
-        },
-      });
       const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
         connect: async () => {
           throw new BrowserWalletLockedError();
@@ -86,7 +69,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
+      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
         set: () => {},
       }) as any;
 
@@ -96,11 +79,10 @@ describe("Wallet selector > Browser wizard > actions", () => {
         web3ManagerMock,
         noopLogger,
         walletMetadataStorageMock,
-        getStateMock as any,
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletStorageMock.set).to.not.be.called;
+      expect(walletMetadataStorageMock.set).to.not.be.called;
       expect(dispatchMock).to.be.calledWithExactly(
         actions.walletSelector.browserWalletConnectionError(
           "Your wallet seems to be locked — we can't access any accounts",

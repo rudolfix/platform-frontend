@@ -28,7 +28,7 @@ export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> 
 }
 
 export async function loadOrCreateUserPromise(
-  { apiUserService, walletStorage }: TGlobalDependencies, //HERE
+  { apiUserService, walletStorage }: TGlobalDependencies,
   userType: TUserType,
 ): Promise<IUser> {
   try {
@@ -40,7 +40,7 @@ export async function loadOrCreateUserPromise(
   }
 
   // for light wallet we need to send slightly different request
-  const walletMetadata = walletStorage.get(userType); //HERE
+  const walletMetadata = walletStorage.get(userType);
   if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
     return apiUserService.createAccount({
       newEmail: walletMetadata.email,
@@ -116,10 +116,15 @@ export function* updateUser(updatedUser: IUserInput): Iterator<any> {
   yield effects.put(actions.auth.loadUser(user));
 }
 
-function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Iterator<any> {
+function* logoutWatcher(
+  { web3Manager, jwtStorage }: TGlobalDependencies,
+  { payload: { userType } }: any,
+): Iterator<any> {
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
-  yield effects.put(actions.routing.goHome());
+  userType === "investor"
+    ? yield effects.put(actions.routing.goHome())
+    : yield effects.put(actions.routing.goEtoHome());
   yield effects.put(actions.init.start());
 }
 

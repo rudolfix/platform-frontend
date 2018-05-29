@@ -3,7 +3,6 @@ import { Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { TUserType } from "../../lib/api/users/interfaces";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
@@ -17,7 +16,6 @@ import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
-import { selectUserType } from "../auth/selectors";
 import { neuCall } from "../sagas";
 import { unlockWallet } from "../web3/sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
@@ -25,21 +23,18 @@ import { WalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage } from "./errors";
 import { selectIsSigning } from "./reducer";
 
-export async function ensureWalletConnection(
-  {
-    web3Manager,
-    walletStorage,
-    lightWalletConnector,
-    ledgerWalletConnector,
-    browserWalletConnector,
-  }: TGlobalDependencies,
-  userType: TUserType,
-): Promise<void> {
+export async function ensureWalletConnection({
+  web3Manager,
+  walletStorage,
+  lightWalletConnector,
+  ledgerWalletConnector,
+  browserWalletConnector,
+}: TGlobalDependencies): Promise<void> {
   if (web3Manager.personalWallet) {
     return;
   }
   /* tslint:disable: no-useless-cast */
-  const metadata = walletStorage.get(userType)!;
+  const metadata = walletStorage.get()!;
   /* tslint:enable: no-useless-cast */
 
   invariant(metadata, "User has JWT but doesn't have wallet metadata!");
@@ -116,8 +111,7 @@ function* unlockLightWallet(): any {
 export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): any {
   while (true) {
     try {
-      const userType = yield effects.select((state: IAppState) => selectUserType(state.auth));
-      yield neuCall(ensureWalletConnection, userType);
+      yield neuCall(ensureWalletConnection);
       const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3));
       if (isLightWallet) {
         yield call(unlockLightWallet);

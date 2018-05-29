@@ -36,11 +36,9 @@ export class WalletStorage<TWalletMetadata> {
     );
   }
 
-  public set(value: TWalletMetadata, manualUserType?: TUserType): void {
+  public set(value: TWalletMetadata, forcedUserType?: TUserType): void {
     const s = this.getState();
-    const userType = manualUserType
-      ? manualUserType
-      : selectUrlUserType(s.router) ? selectUrlUserType(s.router) : selectUserType(s.auth);
+    const userType = forcedUserType ? forcedUserType : selectUserType(s.auth);
     switch (userType) {
       case "issuer":
         this.walletMetadataStorageIssuer.set(value);
@@ -53,10 +51,10 @@ export class WalletStorage<TWalletMetadata> {
     }
   }
 
-  public get(manualUserType?: TUserType): TWalletMetadata | undefined {
+  public get(forcedUserType?: TUserType): TWalletMetadata | undefined {
     const s = this.getState();
-    const userType = manualUserType
-      ? manualUserType
+    const userType = forcedUserType
+      ? forcedUserType
       : selectUrlUserType(s.router) ? selectUrlUserType(s.router) : selectUserType(s.auth);
     switch (userType) {
       case "issuer":

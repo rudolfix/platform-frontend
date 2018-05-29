@@ -11,7 +11,6 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { selectUserType } from "../../auth/selectors";
 import { selectUrlUserType } from "../selectors";
 import { mapLedgerErrorToErrorMessage } from "./errors";
 
@@ -139,13 +138,11 @@ export const ledgerWizardFlows = {
         const ledgerWallet = await ledgerConnector.finishConnecting(derivationPath);
         await web3Manager.plugPersonalWallet(ledgerWallet);
 
-        const userType = selectUrlUserType(getState().router)
-          ? selectUrlUserType(getState().router)
-          : selectUserType(getState().auth);
+        const userType = selectUrlUserType(getState().router);
 
         // todo move saving metadata to unified connect functions
         walletStorage.set(ledgerWallet.getMetadata(), userType);
-        dispatch(actions.walletSelector.connected(userType!));
+        dispatch(actions.walletSelector.connected(userType));
       },
       [
         symbols.appDispatch,

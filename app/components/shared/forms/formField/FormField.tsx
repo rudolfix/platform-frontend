@@ -38,8 +38,8 @@ export const isValid = (
 };
 
 export const isNonValid = (
-  errors: FormikErrors<any>,
   touched: FormikTouched<any>,
+  errors: FormikErrors<any>,
   name: string,
 ): boolean | undefined => {
   const argument = isValid(touched, errors, name);

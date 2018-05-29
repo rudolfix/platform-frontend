@@ -4,8 +4,8 @@ import * as React from "react";
 import { Col, FormGroup, Input, InputGroup, InputGroupAddon, Label, Row } from "reactstrap";
 
 import { InputType } from "../../../../types";
+import { isNonValid, isValid } from "./utils";
 
-import { isNonValid, isValid } from "./FormField";
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {

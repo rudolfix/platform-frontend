@@ -1,17 +1,11 @@
-import {
-  Field,
-  FieldAttributes,
-  FieldProps,
-  FormikErrors,
-  FormikProps,
-  FormikTouched,
-} from "formik";
+import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap";
 
-import { get } from "lodash";
 import { InputType } from "../../../../types";
+import { isNonValid, isValid } from "./utils";
+
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
@@ -22,30 +16,6 @@ interface IFieldGroup {
   suffix?: string;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes;
-
-/* The function that encapsulates the logic of determining a value for Input field valid property. Note we have to
-   return boolean | undefined value. Undefined should be returned when the field has not been touched by the user. */
-export const isValid = (
-  touched: FormikTouched<any>,
-  errors: FormikErrors<any>,
-  key: string,
-): boolean | undefined => {
-  if (touched && get(touched, key) !== true) {
-    return undefined;
-  }
-
-  return !(errors && get(errors, key));
-};
-
-export const isNonValid = (
-  touched: FormikTouched<any>,
-  errors: FormikErrors<any>,
-  name: string,
-): boolean | undefined => {
-  const argument = isValid(touched, errors, name);
-  if (argument === undefined || argument === true) return false;
-  else return true;
-};
 
 export class FormField extends React.Component<FieldGroupProps> {
   static contextTypes = {

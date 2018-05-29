@@ -12,7 +12,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup, Input, Label } from "reactstrap";
 
-import { isNonValid } from "../forms";
+import { isNonValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 

@@ -2,7 +2,8 @@ import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, InputGroup, InputGroupAddon, Label } from "reactstrap";
-import { isNonValid } from "./FormField";
+
+import { isNonValid } from "./utils";
 
 interface IFieldGroup {
   label?: string;

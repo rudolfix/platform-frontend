@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { IEtoFileInfo } from "../../../lib/api/EtoApi.interfaces";
 import {
   IKycBusinessData,
   IKycFileInfo,
@@ -44,7 +43,7 @@ interface IStateProps {
   loadingData: boolean;
   fileUploading: boolean;
   filesLoading: boolean;
-  files: IKycFileInfo[] | IEtoFileInfo[];
+  files: IKycFileInfo[];
 }
 
 interface IDispatchProps {

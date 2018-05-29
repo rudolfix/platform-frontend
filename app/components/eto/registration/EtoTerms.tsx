@@ -5,9 +5,8 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
 import { appConnect } from "../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import {
@@ -17,13 +16,16 @@ import {
   FormSelectField,
   NONE_KEY,
 } from "../../shared/forms/forms";
+
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { SingleFileUpload } from "../../shared/SingleFileUpload";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
 import * as iconExternalLink from "../../../assets/img/inline_icons/link_out_small.svg";
 
-//TODO: add to translations
+// @todo
+type IEtoData = any;
+
 const THIRD_PARTIES_DEPENDENCY_VALUES = {
   [NONE_KEY]: "please select",
   [BOOL_TRUE_KEY]: "Yes there is",
@@ -122,23 +124,20 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 );
 
 const EtoEnhancedForm = withFormik<IProps, IEtoData>({
-  validationSchema: EtoDataSchema,
-  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
+  // validationSchema: EtoDataSchema,
+  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationTermsComponent: React.SFC<IProps & IIntlProps> = ({
-  intl: { formatIntlMessage },
-  ...props
-}) => (
+export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
   <Row>
     <Col xs={12} lg={{ size: 8, offset: 2 }}>
       <EtoRegistrationPanel
         steps={4}
         currentStep={4}
-        title={formatIntlMessage("components.eto.registration.eto-terms.eto-terms")}
+        title="ETO Terms"
         hasBackButton={false}
         isMaxWidth={true}
       >

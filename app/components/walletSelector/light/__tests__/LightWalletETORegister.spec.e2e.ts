@@ -2,7 +2,7 @@ import { tid } from "../../../../../test/testUtils";
 
 export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
-  
+
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);

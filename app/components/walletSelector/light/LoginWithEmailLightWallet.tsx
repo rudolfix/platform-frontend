@@ -40,13 +40,7 @@ type TProps = IOwnProps & IStateProps & IDispatchProps;
 
 const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props => (
   <Form>
-    <FormField
-      type="password"
-      placeholder="Password"
-      touched={props.touched}
-      errors={props.errors}
-      name={PASSWORD}
-    />
+    <FormField type="password" placeholder="Password" name={PASSWORD} />
     <div className="text-center">
       <Button type="submit" disabled={!props.values.password || props.isLoading}>
         Login

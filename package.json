@@ -160,7 +160,7 @@
     "eth-lightwallet": "https://github.com/Neufund/eth-lightwallet.git",
     "eth-sig-util": "^1.4.2",
     "ethereumjs-util": "^5.1.4",
-    "formik": "^0.10.5",
+    "formik": "^0.11.11",
     "get-params": "^0.1.2",
     "hex2ascii": "^0.0.3",
     "history": "^4.7.2",

@@ -27,6 +27,23 @@
     background-color: $color-tag-bg-hover;
   }
 
+  &:global(.ghost-bold) {
+    border: 2px solid currentColor;
+    border-radius: 0;
+    text-transform: uppercase;
+    padding-left: px-to-rem(24px);
+    padding-right: px-to-rem(24px);
+
+    &,
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+
   &:global(.ghost) {
     border: 1px solid currentColor;
     border-radius: 0;
@@ -57,6 +74,10 @@
     &:hover {
       background-color: lighten($neu-charcoal-grey, 8%);
     }
+  }
+
+  &:global(.white) {
+    color: $neu-white-two;
   }
 
   :global(.inline-icon) {

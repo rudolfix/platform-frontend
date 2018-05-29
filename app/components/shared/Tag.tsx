@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { InlineIcon } from "./InlineIcon";
 import * as styles from "./Tag.module.scss";
 
-type TTheme = "dark" | "green";
-type TLayout = "ghost";
+type TTheme = "dark" | "green" | "white";
+type TLayout = "ghost" | "ghost-bold";
 type TSize = "small";
 
 export interface ITag {

@@ -1,7 +1,10 @@
 import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
+import { IAppState } from "./../../store";
+import { selectUserType } from "./../auth/selectors";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { TUserType } from "../../lib/api/users/interfaces";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
@@ -44,8 +47,11 @@ export function* setupSaga({ web3Manager, logger }: TGlobalDependencies): Iterat
 }
 
 export function* cleanupAndLogoutSaga(): Iterator<any> {
-  yield put(actions.auth.logout());
-  yield put(actions.routing.goToLogin());
+  const userType: TUserType = yield effects.select((s: IAppState) => selectUserType(s.auth));
+  yield put(actions.auth.logout(userType));
+  userType === "investor"
+    ? yield put(actions.routing.goToLogin())
+    : yield put(actions.routing.goToEtoLogin());
 }
 
 export const initSagas = function*(): Iterator<effects.Effect> {

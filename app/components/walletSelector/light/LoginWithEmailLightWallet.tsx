@@ -71,7 +71,7 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
         </p>
       </Row>
       <Row>
-        <Col xs={12}>
+        <Col xs={12} data-test-id="wallet-selector-nuewallet.login-email">
           <FormConstantField value={props.email} className="mb-2" />
           <LoginEnhancedLightWalletForm {...props} />
           {props.errorMsg && <WarningAlert>{props.errorMsg}</WarningAlert>}

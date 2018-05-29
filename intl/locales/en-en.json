@@ -360,6 +360,8 @@
   "shared-component.multi-file-upload.upload-cta": "Drag and drop your files here or <strong>upload them</strong>",
   "shared-component.multi-file-upload.upload-documents": "UPLOAD THE DOCUMENTS",
   "shared-component.multi-file-upload.uploading": "Uploading a File",
+  "shared-component.range.max": "Max",
+  "shared-component.range.min": "Min",
   "shared-component.single-file-upload.photo": "Photo",
   "shared-component.single-file-upload.uploading": "Uploading a File",
   "signing.browser-wallet.header": "Confirm your wallet ownership",

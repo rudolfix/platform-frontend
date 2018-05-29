@@ -5,6 +5,7 @@ import * as styles from "./Range.module.scss";
 
 type TStep = "any" | number;
 type TUnit = string | React.ReactNode | undefined;
+
 interface IProps {
   min: number;
   max: number;

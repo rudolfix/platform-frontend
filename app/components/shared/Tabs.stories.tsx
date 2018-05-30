@@ -13,5 +13,5 @@ const tabs = [
 storiesOf("Tabs", module)
   .addDecorator(withStore())
   .add("default", () => <Tabs tabs={tabs} />)
-  .add("theme dark", () => <Tabs theme="dark" tabs={tabs} />)
+  .add("theme light", () => <Tabs theme="light" tabs={tabs} />)
   .add("large", () => <Tabs size="large" tabs={tabs} />);

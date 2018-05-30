@@ -18,4 +18,6 @@ export const appRoutes = {
   demo: "/demo",
   eto: "/eto",
   etoLanding: "/eto-landing",
+
+  etoRegister: "/eto/registration",
 };

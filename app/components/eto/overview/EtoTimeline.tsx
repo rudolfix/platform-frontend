@@ -5,7 +5,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TStatus } from "../../shared/ProjectStatus";
 
-import * as stylesCommon from "../EtoOverviewCommon.module.scss";
 import * as styles from "./EtoTimeline.module.scss";
 
 interface IProps {
@@ -21,10 +20,9 @@ interface IProps {
 interface IDatePointProps {
   date: number;
   blockWidth: number;
-  translate?: number;
 }
 
-const DatePoint: React.SFC<IDatePointProps> = ({date, translate, blockWidth}) => {
+const DatePoint: React.SFC<IDatePointProps> = ({date, blockWidth}) => {
   return (
     <g transform={`translate(${blockWidth - 33})`}>
       <text className={styles.date}>
@@ -43,7 +41,7 @@ type TBlockTheme = "navy-blue"
   | "gray";
 
 interface IBlockProps {
-  title: string;
+  title: string | React.ReactNode;
   theme: TBlockTheme;
   width: number;
   date: number;
@@ -84,7 +82,9 @@ const BlockPayOff: React.SFC = () => {
         className={styles.blockBackground}
         points="0 0 160 0 172.996 15 160 30 0 30" />
       <text className={styles.blockText}>
-        <tspan x="60.91" y="19">Pay off</tspan>
+        <tspan x="60.91" y="19">
+          <FormattedMessage id="eto-timeline.pay-off"/>
+        </tspan>
       </text>
     </>
   )
@@ -136,28 +136,28 @@ export class EtoTimeline extends React.Component <IProps> {
           <g transform="translate(35 67)">
             <g transform="translate(1)">
               <Block
-                title="Book building"
+                title={<FormattedMessage id="eto-timeline.book-building"/>}
                 date={this.props.bookBuildingEndDate}
                 width={bookBuildingWidth}
                 theme="navy-blue" />
             </g>
             <g transform={`translate(${bookBuildingWidth + 1})`}>
               <Block
-                title="Whitelisted"
+                title={<FormattedMessage id="eto-timeline.whitelisted"/>}
                 date={this.props.whitelistedEndDate}
                 width={whitelistedWidth}
                 theme="blue" />
             </g>
             <g transform={`translate(${bookBuildingWidth + whitelistedWidth + 1})`}>
               <Block
-                title="Public"
+                title={<FormattedMessage id="eto-timeline.public"/>}
                 date={this.props.publicEndDate}
                 width={publicWidth}
                 theme="green" />
             </g>
             <g transform={`translate(${bookBuildingWidth + whitelistedWidth + publicWidth + 1})`}>
               <Block
-                title="In signing"
+                title={<FormattedMessage id="eto-timeline.in-signing"/>}
                 date={this.props.inSigningEndDate}
                 width={inSigningWidth}
                 theme="gray" />
@@ -174,4 +174,4 @@ export class EtoTimeline extends React.Component <IProps> {
       </svg>
     );
   }
-};
+}

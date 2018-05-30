@@ -4,6 +4,7 @@ import * as React from "react";
 import { InlineIcon } from "./InlineIcon";
 
 import * as icon from "../../assets/img/inline_icons/icon_check.svg";
+import { CommonHtmlProps } from "../../types";
 import * as styles from "./VerificationStatus.module.scss";
 
 export interface IVerificationProgressStep {
@@ -16,11 +17,11 @@ interface IProps {
   steps: IVerificationProgressStep[];
 }
 
-export const VerificationStatus: React.SFC<IProps> = ({ steps }) => {
+export const VerificationStatus: React.SFC<IProps & CommonHtmlProps> = ({ steps, ...props }) => {
   return (
-    <div className={styles.verificationStatus}>
+    <div {...props} className={cn(styles.verificationStatus, props.className)}>
       {steps.map(({ label, isChecked, onClick }, index) => (
-        <div className={styles.step} key={index}>
+        <div className={styles.step} style={{ flexBasis: `${100 / steps.length}%` }} key={index}>
           <div
             className={cn(styles.indicator, isChecked && "is-checked")}
             onClick={onClick ? () => onClick() : () => {}}

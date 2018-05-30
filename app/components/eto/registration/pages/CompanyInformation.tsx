@@ -3,19 +3,18 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoTeamDataType, TPartialEtoData } from "../../../lib/api/EtoApi.interfaces";
-import { actions } from "../../../modules/actions";
-import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { Button } from "../../shared/Buttons";
-import { FormTextArea } from "../../shared/forms/formField/FormTextArea";
-import { FormField, InlineFormField } from "../../shared/forms/forms";
-import { SingleFileUpload } from "../../shared/SingleFileUpload";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
-import { Section } from "./Shared";
+import { EtoTeamDataType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { actions } from "../../../../modules/actions";
+import { appConnect } from "../../../../store";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { Accordion, AccordionElement } from "../../../shared/Accordion";
+import { Button } from "../../../shared/Buttons";
+import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
+import { FormField, InlineFormField } from "../../../shared/forms/forms";
+import { SingleFileUpload } from "../../../shared/SingleFileUpload";
+import { Section } from "../Shared";
 
-import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
+import * as plusIcon from "../../../../assets/img/inline_icons/plus.svg";
 
 interface IStateProps {
   loadingData: boolean;
@@ -211,18 +210,10 @@ const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
 })(EtoForm);
 
 export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
-  <EtoRegistrationPanel
-    steps={4}
-    currentStep={1}
-    title={"Team and Investors"}
-    hasBackButton={false}
-    isMaxWidth={true}
-  >
-    <EtoEnhancedForm {...props} />
-  </EtoRegistrationPanel>
+  <EtoEnhancedForm {...props} />
 );
 
-export const EtoRegistrationTeamAndInvestors = compose<React.SFC>(
+export const EtoRegistrationCompanyInformation = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,

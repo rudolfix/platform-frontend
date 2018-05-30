@@ -6,7 +6,6 @@
   $color-blue: #78d7dc;
   $color-green: #1fe06d;
   $color-gray: #aabcca;
-  $color-gray-light: #c3d0d9;
 
   &:global(.navy-blue) {
     .block-background {
@@ -49,6 +48,8 @@
 }
 
 .block-background {
+  $color-gray-light: #c3d0d9;
+
   fill: $color-gray-light;
 }
 

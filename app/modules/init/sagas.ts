@@ -24,6 +24,7 @@ export function* setupSaga({ web3Manager, logger }: TGlobalDependencies): Iterat
       if (isJwtExpiringLateEnough(jwt)) {
         try {
           yield loadUser();
+          yield neuCall(loadPreviousWallet);
         } catch (e) {
           yield cleanupAndLogoutSaga();
           logger.error(
@@ -36,7 +37,6 @@ export function* setupSaga({ web3Manager, logger }: TGlobalDependencies): Iterat
       }
     }
 
-    yield neuCall(loadPreviousWallet);
     yield neuCall(initializeContracts);
 
     yield put(actions.init.done());

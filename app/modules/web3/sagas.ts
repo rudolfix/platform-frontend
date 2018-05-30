@@ -5,6 +5,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { TUserType } from "./../../lib/api/users/interfaces";
 import { WalletType } from "./types";
 
 let lockWalletTask: Task | undefined;
@@ -56,8 +57,12 @@ export function* unlockWallet(
   yield put(actions.web3.walletUnlocked());
 }
 
-export function* loadPreviousWallet({ walletStorage }: TGlobalDependencies): Iterator<any> {
-  const storageData = walletStorage.get();
+export function* loadPreviousWallet(
+  { walletStorage }: TGlobalDependencies,
+  forcedUserType?: TUserType,
+): Iterator<any> {
+  //forcedUserType can still pass as undefined
+  const storageData = walletStorage.get(forcedUserType);
   if (storageData) {
     yield put(actions.web3.loadPreviousWallet(storageData));
   }

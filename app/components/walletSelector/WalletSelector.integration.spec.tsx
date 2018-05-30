@@ -214,10 +214,13 @@ describe("Wallet selector integration", () => {
       createAccount: async () => getDummyUser(),
     });
 
+    const initialRoute = "/register";
+
     const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
       browserWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
+      initialRoute,
     });
     container
       .get<Web3ManagerMock>(symbols.web3Manager)
@@ -258,7 +261,9 @@ describe("Wallet selector integration", () => {
 
     // connect doesn't throw which means there is web3 in browser
     browserWalletMock.reMock({
-      testConnection: async () => true,
+      testConnection: async () => {
+        return true;
+      },
       signMessage: async mess => dummySign(mess),
     });
     browserWalletConnectorMock.reMock({

@@ -14,7 +14,7 @@ import {
 } from "./WalletMetadataObjectStorage";
 
 /*
-  Stores wallet metadata in the correct location based on wither the user was an 
+  Stores wallet metadata in the correct location based on whether the user was an 
   Investor or an Issuer. Generally when using this class it is better to let 
   methods automatically detect the user type this is done via selectUserType
   selector.
@@ -46,7 +46,7 @@ export class WalletStorage<TWalletMetadata> {
   }
 
   public set(value: TWalletMetadata, forcedUserType?: TUserType): void {
-    const userType = forcedUserType ? forcedUserType : selectUserType(this.getState().auth);
+    const userType = forcedUserType || selectUserType(this.getState().auth);
 
     switch (userType) {
       case "issuer":
@@ -61,7 +61,7 @@ export class WalletStorage<TWalletMetadata> {
   }
 
   public get(forcedUserType?: TUserType): TWalletMetadata | undefined {
-    const userType = forcedUserType ? forcedUserType : selectUserType(this.getState().auth);
+    const userType = forcedUserType || selectUserType(this.getState().auth);
 
     switch (userType) {
       case "issuer":

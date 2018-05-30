@@ -104,10 +104,9 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
       to={appRoutes.dashboard}
       menuName={<FormattedMessage id="menu.overview" />}
     />
-    {/*TODO: This route is not correct */}
     <MenuEntry
       svgString={iconEdit}
-      to={appRoutes.eto}
+      to={appRoutes.etoRegister}
       menuName={<FormattedMessage id="menu.edit-page" />}
     />{" "}
     <MenuEntry

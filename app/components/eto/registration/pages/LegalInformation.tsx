@@ -4,15 +4,14 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { Button } from "../../shared/Buttons";
-import { FormField, FormTextArea } from "../../shared/forms/forms";
-import { HorizontalLine } from "../../shared/HorizontalLine";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
+import { appConnect } from "../../../../store";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { Accordion, AccordionElement } from "../../../shared/Accordion";
+import { Button } from "../../../shared/Buttons";
+import { FormField, FormTextArea } from "../../../shared/forms/forms";
+import { HorizontalLine } from "../../../shared/HorizontalLine";
 
-import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
+import * as plusIcon from "../../../../assets/img/inline_icons/plus.svg";
 
 // @todo
 type IEtoData = any;
@@ -114,22 +113,10 @@ const EtoEnhancedForm = withFormik<IProps, any>({
 })(EtoForm);
 
 export const EtoRegistrationMarketInformationComponent: React.SFC<IProps> = props => (
-  <Row>
-    <Col xs={12} lg={{ size: 8, offset: 2 }}>
-      <EtoRegistrationPanel
-        steps={4}
-        currentStep={2}
-        title="Market Information"
-        hasBackButton={false}
-        isMaxWidth={true}
-      >
-        <EtoEnhancedForm {...props} />
-      </EtoRegistrationPanel>
-    </Col>
-  </Row>
+  <EtoEnhancedForm {...props} />
 );
 
-export const EtoRegistrationMarketInformation = compose<React.SFC>(
+export const EtoRegistrationLegalInformation = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: _state => ({
       loadingData: false,

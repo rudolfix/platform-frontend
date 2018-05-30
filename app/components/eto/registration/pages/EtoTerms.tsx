@@ -5,23 +5,22 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
+import { appConnect } from "../../../../store";
+import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { Button } from "../../../shared/Buttons";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
   FormField,
   FormSelectField,
   NONE_KEY,
-} from "../../shared/forms/forms";
+} from "../../../shared/forms/forms";
 
-import { HorizontalLine } from "../../shared/HorizontalLine";
-import { SingleFileUpload } from "../../shared/SingleFileUpload";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
+import { HorizontalLine } from "../../../shared/HorizontalLine";
+import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 
-import * as iconExternalLink from "../../../assets/img/inline_icons/link_out_small.svg";
+import * as iconExternalLink from "../../../../assets/img/inline_icons/link_out_small.svg";
 
 // @todo
 type IEtoData = any;
@@ -132,19 +131,7 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
 })(EtoForm);
 
 export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
-  <Row>
-    <Col xs={12} lg={{ size: 8, offset: 2 }}>
-      <EtoRegistrationPanel
-        steps={4}
-        currentStep={4}
-        title="ETO Terms"
-        hasBackButton={false}
-        isMaxWidth={true}
-      >
-        <EtoEnhancedForm {...props} />
-      </EtoRegistrationPanel>
-    </Col>
-  </Row>
+  <EtoEnhancedForm {...props} />
 );
 
 export const EtoRegistrationTerms = compose<React.SFC>(

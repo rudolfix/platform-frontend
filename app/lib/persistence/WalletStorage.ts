@@ -8,11 +8,20 @@ import { TUserType } from "./../api/users/interfaces";
 import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 
-import { selectUrlUserType } from "../../modules/wallet-selector/selectors";
 import {
   STORAGE_WALLET_METADATA_INVESTOR_KEY,
   STORAGE_WALLET_METADATA_ISSUER_KEY,
 } from "./WalletMetadataObjectStorage";
+
+/*
+  Stores wallet metadata in the correct location based on wither the user was an 
+  Investor or an Issuer. Generally when using this class it is better to let 
+  methods automatically detect the user type this is done via selectUserType
+  selector.
+
+  In cases where user type is clear, Login or registration for example.
+  Use `forcedUserType` to override the selector and use a forced user type
+*/
 
 @injectable()
 export class WalletStorage<TWalletMetadata> {
@@ -37,8 +46,8 @@ export class WalletStorage<TWalletMetadata> {
   }
 
   public set(value: TWalletMetadata, forcedUserType?: TUserType): void {
-    const s = this.getState();
-    const userType = forcedUserType ? forcedUserType : selectUserType(s.auth);
+    const userType = forcedUserType ? forcedUserType : selectUserType(this.getState().auth);
+
     switch (userType) {
       case "issuer":
         this.walletMetadataStorageIssuer.set(value);
@@ -52,10 +61,8 @@ export class WalletStorage<TWalletMetadata> {
   }
 
   public get(forcedUserType?: TUserType): TWalletMetadata | undefined {
-    const s = this.getState();
-    const userType = forcedUserType
-      ? forcedUserType
-      : selectUrlUserType(s.router) ? selectUrlUserType(s.router) : selectUserType(s.auth);
+    const userType = forcedUserType ? forcedUserType : selectUserType(this.getState().auth);
+
     switch (userType) {
       case "issuer":
         return this.walletMetadataStorageIssuer.get();

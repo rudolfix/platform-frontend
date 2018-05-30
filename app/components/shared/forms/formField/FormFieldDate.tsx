@@ -1,4 +1,4 @@
-import { Field, FormikProps } from "formik";
+import { Field, FormikErrors, FormikProps, FormikTouched } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
@@ -19,8 +19,8 @@ const positionMap = {
 };
 
 const isValid = (
-  touched: { [name: string]: boolean },
-  errors: { [name: string]: string },
+  touched: FormikTouched<any>,
+  errors: FormikErrors<any>,
   name: string,
 ): boolean | undefined => {
   if (touched && touched[name] !== true) {

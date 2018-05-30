@@ -1,0 +1,54 @@
+@import "../../../styles/neufund-theme";
+
+.block {
+  $color-black: rgba($neu-almost-black, .55);
+
+  &:global(.navy-blue) {
+    .block-background {
+      fill: #0C6383;
+    }
+  }
+
+  &:global(.blue) {
+    .block-text {
+      fill: $color-black;
+    }
+
+    .block-background {
+      fill: #78D7DC;
+    }
+  }
+
+  &:global(.green) {
+    .block-text {
+      fill: $color-black;
+    }
+
+    .block-background {
+      fill: #1FE06D;
+    }
+  }
+
+  &:global(.gray) {
+    .block-background {
+      fill: #AABCCA;
+    }
+  }
+}
+
+.block-text {
+  fill: $neu-white-two;
+  font-size: px-to-rem(12px);
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}
+
+.block-background {
+  fill: #C3D0D9;
+}
+
+.date {
+  font-size: px-to-rem(12px);
+  font-weight: $font-weight-bold;
+  fill: $neu-almost-black;
+}

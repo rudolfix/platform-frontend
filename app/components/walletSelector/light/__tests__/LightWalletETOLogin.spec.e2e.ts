@@ -11,8 +11,8 @@ const loginWithLightWalletETO = (testEmail: string, password: string) => {
   cy.get(tid("Header-login-eto")).click();
   cy.get(tid("wallet-selector-light")).click();
 
-  cy.contains(tid("wallet-selector-nuewallet.login-email"), testEmail);
-  cy.get(tid("wallet-selector-nuewallet.login-password")).type(password);
+  cy.contains(tid("light-wallet-login-with-email-email-field"), testEmail);
+  cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).click();
 
   assertEtoDashboard();

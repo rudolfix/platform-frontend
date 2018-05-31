@@ -22,11 +22,11 @@ interface IProps {
 }
 
 const day = 86400000;
-const etoStartDate = Date.now();
-const bookBuildingEndDate = etoStartDate + 7 * day;
+const etoStartDate = Date.now() - 20 * day;
+const bookBuildingEndDate = etoStartDate + 16 * day;
 const whitelistedEndDate = bookBuildingEndDate + 7 * day;
 const publicEndDate = whitelistedEndDate + 7 * day;
-const inSigningEndDate = publicEndDate + 7 * day;
+const inSigningEndDate = publicEndDate + 14 * day;
 const etoEndDate = inSigningEndDate + 7 * day;
 
 export const EtoOverviewStatus: React.SFC<IProps> = props => (

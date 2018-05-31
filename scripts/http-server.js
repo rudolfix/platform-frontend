@@ -47,6 +47,15 @@ app.use(
   proxy({ target: "http://localhost:5003/", pathRewrite: { "^/api/kyc": "" }, changeOrigin: true }),
 );
 
+app.use(
+  "/api/external-services-mock",
+  proxy({
+    target: "http://localhost:1337/",
+    pathRewrite: { "^/api/external-services-mock": "" },
+    changeOrigin: true,
+  }),
+);
+
 app.use("/", express.static(join(__dirname, "../dist"), { extensions: ["html"] }));
 app.use(fallback("index.html", { root: join(__dirname, "../dist") }));
 

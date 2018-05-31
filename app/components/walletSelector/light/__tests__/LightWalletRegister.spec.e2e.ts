@@ -1,10 +1,15 @@
-import { tid } from "../../../../../test/testUtils";
+import { get } from "lodash";
 
-const testEmail = "moe@test.com";
-const password = "strongpassword";
+import { tid } from "../../../../../test/testUtils";
+import { appRoutes } from "../../../appRoutes";
+
+// todo: extract it to separate file
+// do it after moving all e2e tests back into cypress directory
+const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
+  "https://localhost:9090/api/"}external-services-mock/`;
 
 export const assertUserInDashboard = () => {
-  cy.url().should("contain", "/dashboard");
+  cy.url().should("contain", appRoutes.dashboard);
 };
 
 export const registerWithLightWallet = (email: string, password: string) => {
@@ -15,28 +20,87 @@ export const registerWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).click();
 
-  cy.url().should("contain", "/dashboard");
+  assertUserInDashboard();
 };
 
-export const loginWithLightWallet = (testEmail: string, password: string) => {
-  registerWithLightWallet(testEmail, password);
-
+export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("Header-logout")).click();
   cy.get(tid("Header-login")).click();
   cy.get(tid("wallet-selector-light")).click();
 
-  cy.contains(tid("wallet-selector-nuewallet.login-email"), testEmail);
-  cy.get(tid("wallet-selector-nuewallet.login-password")).type(password);
+  cy.contains(tid("light-wallet-login-with-email-email-field"), email);
+  cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).click();
 
   assertUserInDashboard();
 };
 
-describe("Light Wallet as Investor", () => {
-  it("should register user with light-wallet", () => {
-    registerWithLightWallet(testEmail, password);
+describe("Light wallet login / register", () => {
+  it("should register user with light-wallet and send email", () => {
+    const email = "moe@test.com";
+    const password = "strongpassword";
+
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+
+    registerWithLightWallet(email, password);
+
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
+      const email = get(r, "body[0].personalizations[0].to[0]") as string | undefined;
+
+      expect(email).to.be.eq(email);
+    });
   });
-  it("should register/login user with light-wallet", () => {
-    loginWithLightWallet(testEmail, password);
+
+  it("should remember light wallet details after logout", () => {
+    const email = "moe2@test.com";
+    const password = "strongpassword";
+
+    registerWithLightWallet(email, password);
+
+    cy.get(tid("Header-logout")).click();
+
+    loginWithLightWallet(email, password);
+
+    assertUserInDashboard();
   });
+
+  // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit
+  /**
+  it("should recover vault from email", () => {
+    const email = "moe3@test.com";
+    const password = "strongpassword";
+
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+
+    registerWithLightWallet(email, password);
+
+    cy.get(tid("Header-logout")).click();
+    cy.clearLocalStorage();
+
+    cy.writeFile('/tmp/cypress-outout.log', 'test!')
+
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
+      cy.writeFile('/tmp/cypress-outout.log', 'test2!')
+      cy.writeFile('/tmp/cypress-outout.log', r.body)
+
+      cy.exec(`echo '${JSON.stringify(r.body)}' > /tmp/test.txt`);
+      cy.log(`echo '${JSON.stringify(r.body)}' > /tmp/test.txt`);
+
+      const emailLinkVerification = get(
+        r,
+        `body[0].personalizations[0].substitutions["-loginLink-"]`,
+      );
+      const emailLinkVerificationWithFixedDomain = emailLinkVerification.replace(
+        process.env.NF_REMOTE_BACKEND_PROXY_ROOT!.replace("api/", ""),
+        "https://localhost:9090/",
+      );
+
+      cy.visit(emailLinkVerificationWithFixedDomain);
+
+      cy.get(tid("light-wallet-login-with-email-email-field")).should("contain", email);
+      cy.get(tid("light-wallet-login-with-email-password-field")).type(password + "{enter}");
+
+      cy.url().should("contain", "/dashboard");
+    });
+  });*/
 });

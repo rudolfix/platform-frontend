@@ -57,27 +57,56 @@ type IProps = IStateProps & IDispatchProps;
 const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <Form>
-      <FormField label={formatIntlMessage("form.label.company-name")} name="name" />
-      <FormField label={formatIntlMessage("form.label.legal-form")} name="legalForm" />
-      <FormField label={formatIntlMessage("form.label.street-and-number")} name="street" />
+      <FormField
+        data-test-id="kyc-company-business-data-company-name"
+        label={formatIntlMessage("form.label.company-name")}
+        name="name"
+      />
+      <FormField
+        data-test-id="kyc-company-business-data-legal-form"
+        label={formatIntlMessage("form.label.legal-form")}
+        name="legalForm"
+      />
+      <FormField
+        data-test-id="kyc-company-business-data-street"
+        label={formatIntlMessage("form.label.street-and-number")}
+        name="street"
+      />
       <Row>
         <Col xs={12} md={6} lg={8}>
-          <FormField label={formatIntlMessage("form.label.city")} name="city" />
+          <FormField
+            data-test-id="kyc-company-business-data-city"
+            label={formatIntlMessage("form.label.city")}
+            name="city"
+          />
         </Col>
         <Col xs={12} md={6} lg={4}>
-          <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
+          <FormField
+            data-test-id="kyc-company-business-data-zip-code"
+            label={formatIntlMessage("form.label.zip-code")}
+            name="zipCode"
+          />
         </Col>
       </Row>
-      <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
+      <FormSelectCountryField
+        data-test-id="kyc-company-business-data-country"
+        label={formatIntlMessage("form.label.country")}
+        name="country"
+      />
       {props.currentValues &&
         props.currentValues.legalFormType === "corporate" && (
           <FormSelectCountryField
+            data-test-id="kyc-company-business-data-jurisdiction"
             label={formatIntlMessage("form.label.jurisdiction")}
             name="jurisdiction"
           />
         )}
       <div className="p-4 text-center">
-        <Button type="submit" disabled={!props.isValid || props.loadingData}>
+        <Button
+          data-test-id="kyc-company-business-data-save"
+          type="submit"
+          disabled={!props.isValid || props.loadingData}
+        >
           <FormattedMessage id="form.button.save" />
         </Button>
       </div>
@@ -105,6 +134,7 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
       <FormattedMessage id="kyc.business.business-data.upload-documents" />
       <br />
       <MultiFileUpload
+        data-test-id="kyc-company-business-supporting-documents"
         layout="business"
         onDropFile={props.onDropFile}
         files={props.files}
@@ -129,6 +159,7 @@ export const KycBusinessDataComponent = injectIntlHelpers<IProps>(
         <FileUploadList {...props} dataValid={dataValid} />
         <div className="p-4 text-center">
           <Button
+            data-test-id="kyc-company-business-supporting-continue"
             type="submit"
             disabled={!props.currentValues || props.files.length === 0}
             onClick={props.submit}

@@ -82,21 +82,46 @@ type IProps = IStateProps & IDispatchProps;
 const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <Form>
-      <FormField label={formatIntlMessage("form.label.first-name")} name="firstName" />
-      <FormField label={formatIntlMessage("form.label.last-name")} name="lastName" />
+      <FormField
+        data-test-id="kyc-company-legal-representative-first-name"
+        label={formatIntlMessage("form.label.first-name")}
+        name="firstName"
+      />
+      <FormField
+        data-test-id="kyc-company-legal-representative-last-name"
+        label={formatIntlMessage("form.label.last-name")}
+        name="lastName"
+      />
       <FormFieldDate label={formatIntlMessage("form.label.birth-date")} name="birthDate" />
 
-      <FormField label={formatIntlMessage("form.label.address")} name="street" />
+      <FormField
+        data-test-id="kyc-company-legal-representative-address"
+        label={formatIntlMessage("form.label.address")}
+        name="street"
+      />
       <Row>
         <Col xs={12} md={6} lg={8}>
-          <FormField label={formatIntlMessage("form.label.city")} name="city" />
+          <FormField
+            data-test-id="kyc-company-legal-representative-city"
+            label={formatIntlMessage("form.label.city")}
+            name="city"
+          />
         </Col>
         <Col xs={12} md={6} lg={4}>
-          <FormField label={formatIntlMessage("form.label.zip-code")} name="zipCode" />
+          <FormField
+            data-test-id="kyc-company-legal-representative-zip-code"
+            label={formatIntlMessage("form.label.zip-code")}
+            name="zipCode"
+          />
         </Col>
       </Row>
-      <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
+      <FormSelectCountryField
+        data-test-id="kyc-company-legal-representative-country"
+        label={formatIntlMessage("form.label.country")}
+        name="country"
+      />
       <FormSelectField
+        data-test-id="kyc-company-legal-representative-pep"
         values={PEP_VALUES}
         label={
           <>
@@ -118,7 +143,11 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>
       />
       <br />
       <div className="p-4 text-center">
-        <Button type="submit" disabled={!props.isValid || props.loadingData}>
+        <Button
+          data-test-id="kyc-company-legal-representative-save"
+          type="submit"
+          disabled={!props.isValid || props.loadingData}
+        >
           <FormattedMessage id="form.button.save" />
         </Button>
       </div>
@@ -140,6 +169,7 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   return (
     <div>
       <MultiFileUpload
+        data-test-id="kyc-company-legal-representative-documents"
         layout="individual"
         onDropFile={props.onDropFile}
         files={props.files}
@@ -170,6 +200,7 @@ export const KycLegalRepresentativeComponent = injectIntlHelpers<IProps>(
         <BeneficialOwners {...props} lrDataValid={lrDataValid} />
         <div className="p-4 text-center">
           <Button
+            data-test-id="kyc-company-legal-representative-upload-and-submit"
             type="submit"
             disabled={!props.legalRepresentative || props.files.length === 0}
             onClick={props.onContinue}

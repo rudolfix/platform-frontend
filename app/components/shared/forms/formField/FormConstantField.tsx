@@ -8,8 +8,8 @@ interface IProps {
   className?: string;
 }
 
-export const FormConstantField: React.SFC<IProps> = ({ value, className }) => (
-  <div className={cn(styles.valueWrapper, className)}>
+export const FormConstantField: React.SFC<IProps> = ({ value, className, ...props }) => (
+  <div className={cn(styles.valueWrapper, className)} {...props}>
     <span>{value}</span>
   </div>
 );

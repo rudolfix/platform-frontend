@@ -3,6 +3,7 @@
 .tabs {
   display: inline-flex;
   text-transform: uppercase;
+  align-items: baseline;
 }
 
 .tab {
@@ -20,6 +21,17 @@
     opacity: 1;
     font-weight: $font-weight-bold;
     border-color: $neu-piss-yellow;
+  }
+
+  // layouts
+  &:global(.large) {
+    @include font-headline;
+
+    &:not(:global(.active)) {
+      @include font-headline-small;
+
+      font-weight: $font-weight-light;
+    }
   }
 
   // themes

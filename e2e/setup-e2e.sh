@@ -16,7 +16,7 @@ run_backend() {
             echo "using env variable"
             echo "${BACKEND_DEPLOYMENT_KEY}" | base64 -d > "./cert"
             chmod 600 ./cert
-            ssh-agent sh -c 'ssh-add ./cert; git clone git@github.com:Neufund/platform-backend.git; cd ./platform-backend; git reset --hard f949ae5f6a5d9fe6e248a37ac04790d226f401a0'
+            ssh-agent sh -c 'ssh-add ./cert; git clone git@github.com:Neufund/platform-backend.git; cd ./platform-backend; git reset --hard bb1a7b53c8bfe1ae2700318cca2f147878daa1e9'
         fi
     fi
 
@@ -54,14 +54,7 @@ else
     run_frontend
 fi
 
-if yarn test:e2e:cypress:record; then
-    echo "Command succeeded"
-else
-    echo "Tests failed. LOG:"
-    cat /tmp/cypress-outout.log
-
-    exit 1
-fi
+yarn test:e2e:cypress:record
 
 if [[ $frontend_pid -ne 0 ]]; then
     echo "Killing frontend server..."

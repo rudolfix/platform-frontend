@@ -11,7 +11,7 @@ export const registerWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).click();
-  cy.visit(appRoutes.dashboard);
+
   cy.url().should("contain", appRoutes.dashboard);
 };
 

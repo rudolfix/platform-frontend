@@ -81,12 +81,12 @@ const submitSmallBusinessKYCForm = (smallBusiness: ISmallBusinessData) => {
 const uploadSupportingDocumentsAndSubmitForm = () => {
   const dropEvent = {
     dataTransfer: {
-      files: [],
+      files: [] as any,
     },
   };
 
   cy.fixture("example.png").then(picture => {
-    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: never) => {
+    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: any) => {
       dropEvent.dataTransfer.files.push(blob);
     });
   });
@@ -117,12 +117,12 @@ const submitLegalRepresentationForm = (person: IPersonData) => {
 const uploadSupportingDocumentsAndSubmitFormForLegalRepresentation = () => {
   const dropEvent = {
     dataTransfer: {
-      files: [],
+      files: [] as any,
     },
   };
 
   cy.fixture("example.png").then(picture => {
-    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: never) => {
+    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: any) => {
       dropEvent.dataTransfer.files.push(blob);
     });
   });

@@ -78,12 +78,12 @@ const goToIndividualManualVerification = () => {
 const uploadDocumentAndSubmitForm = () => {
   const dropEvent = {
     dataTransfer: {
-      files: [],
+      files: [] as any,
     },
   };
 
   cy.fixture("example.png").then(picture => {
-    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: never) => {
+    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: any) => {
       dropEvent.dataTransfer.files.push(blob);
     });
   });

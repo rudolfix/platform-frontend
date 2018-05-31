@@ -1,6 +1,7 @@
 import { get } from "lodash";
 
 import { tid } from "../../../../../test/testUtils";
+import { appRoutes } from "../../../appRoutes";
 
 // todo: extract it to separate file
 // do it after moving all e2e tests back into cypress directory
@@ -15,7 +16,7 @@ export const registerWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).click();
 
-  cy.url().should("contain", "/dashboard");
+  cy.url().should("contain", appRoutes.dashboard);
 };
 
 describe("Light wallet login / register", () => {

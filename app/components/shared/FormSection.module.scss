@@ -1,0 +1,17 @@
+@import "../../styles/neufund-theme";
+
+.form-section {
+  @include make-row;
+}
+
+.title {
+  @include make-col-offset(1);
+  @include make-col(2);
+  @include font-default;
+
+  text-transform: uppercase;
+}
+
+.content {
+  @include make-col(8);
+}

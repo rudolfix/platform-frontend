@@ -6,6 +6,12 @@
   letter-spacing: px-to-rem(-.5px);
 }
 
+@mixin font-headline-medium {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(32px);
+  letter-spacing: px-to-rem(-.5px);
+}
+
 @mixin font-headline {
   font-family: $headings-font-family;
   font-size: px-to-rem(20px);
@@ -40,4 +46,16 @@
   font-family: $headings-font-family;
   font-size: px-to-rem(12px);
   font-weight: $font-weight-bold;
+}
+
+@mixin font-label-small {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(8px);
+  text-transform: uppercase;
+}
+
+@mixin font-label-micro {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(6px);
+  text-transform: uppercase;
 }

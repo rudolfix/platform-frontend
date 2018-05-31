@@ -6,13 +6,13 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 
 import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
-import { Eto } from "./eto/Eto";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 
 import { appRoutes } from "./appRoutes";
 import { emailVerify } from "./emailVerify";
 import { EtoOverview } from "./eto/EtoOverview";
+import { EtoRegister } from "./eto/registration/Start";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
 import { BackupSeed } from "./settings/backupSeed/BackupSeed";
@@ -30,20 +30,18 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
 
-    {process.env.NF_ISSUERS_ENABLED === "1" && (
-      <>
-        <OnlyPublicRoute path={appRoutes.etoLanding} component={LandingEto} />
-        <OnlyPublicRoute path={appRoutes.registerEto} component={WalletSelector} />
-        <OnlyPublicRoute path={appRoutes.loginEto} component={WalletSelector} />
-        <OnlyPublicRoute path={appRoutes.recoverEto} component={WalletRecoverMain} />
-      </>
-    )}
+    {process.env.NF_ISSUERS_ENABLED === "1" && [
+      <OnlyPublicRoute path={appRoutes.etoLanding} component={LandingEto} />,
+      <OnlyPublicRoute path={appRoutes.registerEto} component={WalletSelector} />,
+      <OnlyPublicRoute path={appRoutes.loginEto} component={WalletSelector} />,
+      <OnlyPublicRoute path={appRoutes.recoverEto} component={WalletRecoverMain} />,
+    ]}
 
     {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
 
     {/* only issuers routes */}
-    <OnlyAuthorizedRoute path={appRoutes.eto} issuerComponent={Eto} />
+    <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute

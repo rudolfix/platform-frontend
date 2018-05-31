@@ -1,13 +1,16 @@
 @import "../../styles/neufund-theme";
 
+.landing-wrapper {
+  width: 100%;
+  min-height: 100%;
+  flex-grow: 1;
+}
+
 .landing {
   @include media-breakpoint-down(lg) {
     background-position: px-to-rem(-255px) 30%;
   }
 
-  width: 100%;
-  min-height: 100%;
-  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,8 +36,8 @@
   $bg-color: rgba($gray6, .2);
 
   @include make-col-ready;
-  @include make-col(11, 12);
 
+  max-width: px-to-rem(983px);
   background-color: $bg-color;
   color: $neu-white-two;
   margin: 0 auto;
@@ -85,4 +88,35 @@
   display: flex;
   justify-content: center;
   align-content: center;
+}
+
+
+.equity-token-offerings {
+  padding-bottom: $spacing-vertical-lg-1;
+  padding-top: $spacing-vertical-lg-4;
+}
+
+.equity-token-header {
+  @include font-headline-medium;
+
+  margin-bottom: $spacing-vertical-lg-4;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: $font-weight-bold;
+}
+
+.equity-token-col {
+  @include media-breakpoint-up (lg) {
+    margin-bottom: $spacing-vertical-lg-4;
+
+    &:nth-of-type(odd) {
+      padding-right: 30px;
+    }
+
+    &:nth-of-type(even) {
+      padding-left: 30px;
+    }
+  }
+
+  margin-bottom: $spacing-vertical-sm-4;
 }

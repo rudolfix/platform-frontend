@@ -5,25 +5,26 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
-import { appConnect } from "../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
+import { appConnect } from "../../../../store";
+import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { Button } from "../../../shared/Buttons";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
   FormField,
   FormSelectField,
   NONE_KEY,
-} from "../../shared/forms/forms";
-import { HorizontalLine } from "../../shared/HorizontalLine";
-import { SingleFileUpload } from "../../shared/SingleFileUpload";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
+} from "../../../shared/forms/forms";
 
-import * as iconExternalLink from "../../../assets/img/inline_icons/link_out_small.svg";
+import { HorizontalLine } from "../../../shared/HorizontalLine";
+import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 
-//TODO: add to translations
+import * as iconExternalLink from "../../../../assets/img/inline_icons/link_out_small.svg";
+
+// @todo
+type IEtoData = any;
+
 const THIRD_PARTIES_DEPENDENCY_VALUES = {
   [NONE_KEY]: "please select",
   [BOOL_TRUE_KEY]: "Yes there is",
@@ -122,30 +123,15 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
 );
 
 const EtoEnhancedForm = withFormik<IProps, IEtoData>({
-  validationSchema: EtoDataSchema,
-  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
+  // validationSchema: EtoDataSchema,
+  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationTermsComponent: React.SFC<IProps & IIntlProps> = ({
-  intl: { formatIntlMessage },
-  ...props
-}) => (
-  <Row>
-    <Col xs={12} lg={{ size: 8, offset: 2 }}>
-      <EtoRegistrationPanel
-        steps={4}
-        currentStep={4}
-        title={formatIntlMessage("components.eto.registration.eto-terms.eto-terms")}
-        hasBackButton={false}
-        isMaxWidth={true}
-      >
-        <EtoEnhancedForm {...props} />
-      </EtoRegistrationPanel>
-    </Col>
-  </Row>
+export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
+  <EtoEnhancedForm {...props} />
 );
 
 export const EtoRegistrationTerms = compose<React.SFC>(

@@ -4,17 +4,17 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoDataSchema, IEtoData } from "../../../lib/api/EtoApi.interfaces";
-import { appConnect } from "../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { Button } from "../../shared/Buttons";
-import { FormField, FormTextArea } from "../../shared/forms/forms";
-import { HorizontalLine } from "../../shared/HorizontalLine";
-import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
+import { appConnect } from "../../../../store";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { Accordion, AccordionElement } from "../../../shared/Accordion";
+import { Button } from "../../../shared/Buttons";
+import { FormField, FormTextArea } from "../../../shared/forms/forms";
+import { HorizontalLine } from "../../../shared/HorizontalLine";
 
-import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
+import * as plusIcon from "../../../../assets/img/inline_icons/plus.svg";
+
+// @todo
+type IEtoData = any;
 
 interface IStateProps {
   currentValues: IEtoData;
@@ -26,7 +26,7 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
-// TODO: Add translations to forms
+
 const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
     <Row className="justify-content-center">
@@ -104,34 +104,19 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   </Form>
 );
 
-const EtoEnhancedForm = withFormik<IProps, IEtoData>({
-  validationSchema: EtoDataSchema,
-  isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
+const EtoEnhancedForm = withFormik<IProps, any>({
+  // validationSchema: EtoDataSchema,
+  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
   mapPropsToValues: props => props.currentValues,
   enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationMarketInformationComponent: React.SFC<IProps & IIntlProps> = ({
-  intl,
-  ...props
-}) => (
-  <Row>
-    <Col xs={12} lg={{ size: 8, offset: 2 }}>
-      <EtoRegistrationPanel
-        steps={4}
-        currentStep={2}
-        title={intl.formatIntlMessage("components.eto.registration.market-information.title")}
-        hasBackButton={false}
-        isMaxWidth={true}
-      >
-        <EtoEnhancedForm {...props} />
-      </EtoRegistrationPanel>
-    </Col>
-  </Row>
+export const EtoRegistrationMarketInformationComponent: React.SFC<IProps> = props => (
+  <EtoEnhancedForm {...props} />
 );
 
-export const EtoRegistrationMarketInformation = compose<React.SFC>(
+export const EtoRegistrationLegalInformation = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: _state => ({
       loadingData: false,
@@ -144,5 +129,4 @@ export const EtoRegistrationMarketInformation = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-  injectIntlHelpers,
 )(EtoRegistrationMarketInformationComponent);

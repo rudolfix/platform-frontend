@@ -43,8 +43,6 @@ const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props
     <FormField
       type="password"
       placeholder="Password"
-      touched={props.touched}
-      errors={props.errors}
       name={PASSWORD}
       data-test-id="light-wallet-login-with-email-password-field"
     />

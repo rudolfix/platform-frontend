@@ -1,10 +1,9 @@
 import { tid } from "../../../../test/testUtils";
-import {
-  email,
-  password,
-  registerWithLightWallet,
-} from "../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
+import { registerWithLightWallet } from "../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
 import { kycRoutes } from "../routes";
+
+const email = "test+individual@neufund.org";
+const password = "superstrongpassword";
 
 interface IPersonData {
   firstName: string;

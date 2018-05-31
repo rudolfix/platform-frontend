@@ -19,8 +19,7 @@ describe("Wallet backup recovery phrase", () => {
     navigateToSettings();
 
     cy.get(tid("backup-seed-widget-link-button")).click();
-    cy.get(tid("access-light-wallet-password-input")).type("strongpassword");
-    cy.get(tid("access-light-wallet-confirm")).click();
+    cy.get(tid("access-light-wallet-prompt-accept-button")).click();
     cy.get(tid("backup-seed-intro-button")).click();
 
     cy.get(tid("seed-display-word")).then(word => {

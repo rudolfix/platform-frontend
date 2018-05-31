@@ -16,7 +16,11 @@ import { actions, TAction } from "../../actions";
 import { loadUser, updateUserPromise } from "../../auth/sagas";
 import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/selectors";
+import {
+  selectIsUnlocked,
+  selectLightWalletFromQueryString,
+  selectPreviousConnectedWallet,
+} from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
@@ -45,7 +49,7 @@ export async function retrieveMetadataFromVaultAPI(
 }
 
 export function* getWalletMetadata(
-  { walletStorage }: TGlobalDependencies,
+  _: TGlobalDependencies,
   password: string,
 ): Iterator<any | ILightWalletRetrieveMetadata | undefined> {
   const queryStringWalletInfo: { email: string; salt: string } | undefined = yield select(
@@ -59,7 +63,9 @@ export function* getWalletMetadata(
       queryStringWalletInfo.email,
     );
   }
-  const savedMetadata = walletStorage.get();
+  const savedMetadata = yield effects.select((s: IAppState) =>
+    selectPreviousConnectedWallet(s.web3),
+  );
   if (savedMetadata && savedMetadata.walletType === WalletType.LIGHT) {
     return savedMetadata;
   }

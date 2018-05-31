@@ -261,9 +261,7 @@ describe("Wallet selector integration", () => {
 
     // connect doesn't throw which means there is web3 in browser
     browserWalletMock.reMock({
-      testConnection: async () => {
-        return true;
-      },
+      testConnection: async () => true,
       signMessage: async mess => dummySign(mess),
     });
     browserWalletConnectorMock.reMock({

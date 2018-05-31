@@ -1,5 +1,9 @@
 import { tid } from "../../../../../test/testUtils";
 
+export const assertEtoDashboard = () => {
+  cy.url().should("contain", "/dashboard");
+  cy.get(tid("eto-dashboard-header")).should("exist");
+};
 export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 
@@ -7,8 +11,8 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).click();
-  cy.url().should("contain", "/dashboard");
-  cy.get(tid("eto-dashboard-header")).should("exist");
+
+  assertEtoDashboard();
 };
 
 describe("Wallet backup recovery phrase", () => {

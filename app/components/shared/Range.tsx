@@ -1,3 +1,5 @@
+import { Field, FieldProps } from "formik";
+import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -17,6 +19,15 @@ interface IProps {
   step?: TStep;
 }
 
+interface IFormFields {
+  name: string;
+}
+
+interface IInternalProps {
+  value: number;
+  onChange: any;
+}
+
 interface IRangeLabelProps {
   label: string | React.ReactNode;
   value: number;
@@ -32,55 +43,53 @@ const RangeLabel: React.SFC<IRangeLabelProps> = ({ label, value, unit }) => (
   </div>
 );
 
-export class Range extends React.Component<IProps> {
-  state = {
-    value: 0,
+export const RangeComponent: React.SFC<IProps & IInternalProps> = props => {
+  const { name, unit, unitMin, unitMax, min, max, step, onChange, value } = props;
+
+  return (
+    <div className={styles.range}>
+      <RangeLabel
+        label={<FormattedMessage id="shared-component.range.min" />}
+        value={min}
+        unit={unitMin || unit}
+      />
+      <input
+        name={name}
+        value={value}
+        min={min}
+        max={max}
+        step={step || 1}
+        className={styles.input}
+        type="range"
+        onChange={onChange}
+      />
+      <RangeLabel
+        label={<FormattedMessage id="shared-component.range.max" />}
+        value={max}
+        unit={unitMax || unit}
+      />
+      <div className={styles.currentValue}>
+        {value} {unitMin && unitMax ? (value > 1 ? unitMax : unitMin) : unit}
+      </div>
+    </div>
+  );
+};
+
+export class FormRange extends React.Component<IProps & IFormFields> {
+  static contextTypes = {
+    formik: PropTypes.object,
   };
-
-  handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value;
-
-    this.setState({ value });
-  };
-
-  componentWillMount(): void {
-    const computedValue =
-      this.props.value && this.props.value > this.props.max ? this.props.max : this.props.value;
-    const value = computedValue || this.props.min + (this.props.max - this.props.min) / 2;
-
-    this.setState({ value });
-  }
 
   render(): React.ReactNode {
-    const { name, unit, unitMin, unitMax, min, max, step } = this.props;
-    const { value } = this.state;
+    const { name } = this.props;
 
     return (
-      <div className={styles.range}>
-        <RangeLabel
-          label={<FormattedMessage id="shared-component.range.min" />}
-          value={min}
-          unit={unitMin || unit}
-        />
-        <input
-          name={name}
-          value={value}
-          min={min}
-          max={max}
-          step={step || 1}
-          className={styles.input}
-          type="range"
-          onChange={this.handleInput}
-        />
-        <RangeLabel
-          label={<FormattedMessage id="shared-component.range.max" />}
-          value={max}
-          unit={unitMax || unit}
-        />
-        <div className={styles.currentValue}>
-          {value} {unitMin && unitMax ? (value > 1 ? unitMax : unitMin) : unit}
-        </div>
-      </div>
+      <Field
+        name={name}
+        render={({ field }: FieldProps) => (
+          <RangeComponent {...field} value={field.value} {...this.props} />
+        )}
+      />
     );
   }
 }

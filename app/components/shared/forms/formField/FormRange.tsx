@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
-import * as styles from "./Range.module.scss";
+import * as styles from "./FormRange.module.scss";
 
 type TStep = "any" | number;
 type TUnit = string | React.ReactNode | undefined;
@@ -20,7 +20,7 @@ interface IProps {
 
 interface IInternalProps {
   value: number;
-  onChange: any;
+  onChange: (e: React.ChangeEvent<any>) => any;
 }
 
 interface IRangeLabelProps {
@@ -82,9 +82,7 @@ export class FormRange extends React.Component<IProps> {
       // TODO: add here form label + form validation if needed
       <Field
         name={name}
-        render={({ field }: FieldProps) => (
-          <RangeComponent {...field} value={field.value} {...this.props} />
-        )}
+        render={({ field }: FieldProps) => <RangeComponent {...this.props} {...field} />}
       />
     );
   }

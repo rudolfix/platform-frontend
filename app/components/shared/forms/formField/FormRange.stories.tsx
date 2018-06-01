@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import { Form, Formik } from "formik";
 import * as React from "react";
 
-import { FormRange } from "./Range";
+import { FormRange } from "./FormRange";
 
 const formWrapper = (formState: any) => (Component: React.SFC) => () => (
   <Formik initialValues={formState} onSubmit={() => {}}>
@@ -25,7 +25,7 @@ storiesOf("Range", module)
   )
   .add(
     "with different step",
-    formWrapper({ name: 0 })(() => <FormRange name="name" min={0} max={12} step={3} unit="px" />),
+    formWrapper({ name: 6 })(() => <FormRange name="name" min={0} max={12} step={3} unit="px" />),
   )
   .add(
     "with different units",

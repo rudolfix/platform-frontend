@@ -12,15 +12,10 @@ interface IProps {
   min: number;
   max: number;
   name: string;
-  value?: number;
   unit?: TUnit;
   unitMin?: TUnit;
   unitMax?: TUnit;
   step?: TStep;
-}
-
-interface IFormFields {
-  name: string;
 }
 
 interface IInternalProps {
@@ -75,7 +70,7 @@ export const RangeComponent: React.SFC<IProps & IInternalProps> = props => {
   );
 };
 
-export class FormRange extends React.Component<IProps & IFormFields> {
+export class FormRange extends React.Component<IProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
@@ -84,6 +79,7 @@ export class FormRange extends React.Component<IProps & IFormFields> {
     const { name } = this.props;
 
     return (
+      // TODO: add here form label + form validation if needed
       <Field
         name={name}
         render={({ field }: FieldProps) => (

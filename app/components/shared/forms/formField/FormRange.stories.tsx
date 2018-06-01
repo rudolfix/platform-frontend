@@ -14,7 +14,7 @@ const formWrapper = (formState: any) => (Component: React.SFC) => () => (
   </Formik>
 );
 
-storiesOf("Range", module)
+storiesOf("FormRange", module)
   .add(
     "default",
     formWrapper({ name: 15 })(() => <FormRange name="name" min={10} max={20} unit="%" />),

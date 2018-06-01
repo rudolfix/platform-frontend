@@ -4,49 +4,36 @@ import * as React from "react";
 
 import { FormRange } from "./Range";
 
+const formWrapper = (formState: any) => (Component: React.SFC) => () => (
+  <Formik initialValues={formState} onSubmit={() => {}}>
+    {() => (
+      <Form>
+        <Component />
+      </Form>
+    )}
+  </Formik>
+);
+
 storiesOf("Range", module)
-  .add("default", () => (
-    <Formik initialValues={{ name: 10 }} onSubmit={() => {}}>
-      {() => (
-        <Form>
-          <FormRange name="name" min={10} max={20} unit="%" />
-        </Form>
-      )}
-    </Formik>
-  ))
-  .add("with default value", () => (
-    <Formik initialValues={{ name: 0 }} onSubmit={() => {}}>
-      {() => (
-        <Form>
-          <FormRange name="name" min={0} max={100} unit="%" />
-        </Form>
-      )}
-    </Formik>
-  ))
-  .add("with different step", () => (
-    <Formik initialValues={{ name: 10 }} onSubmit={() => {}}>
-      {() => (
-        <Form>
-          <FormRange name="name" min={0} max={12} step={3} unit="px" />
-        </Form>
-      )}
-    </Formik>
-  ))
-  .add("with different units", () => (
-    <Formik initialValues={{ name: 1 }} onSubmit={() => {}}>
-      {() => (
-        <Form>
-          <FormRange name="name" min={1} max={5} unitMin="week" unitMax="weeks" />
-        </Form>
-      )}
-    </Formik>
-  ))
-  .add("without unit", () => (
-    <Formik initialValues={{ name: 10 }} onSubmit={() => {}}>
-      {() => (
-        <Form>
-          <FormRange name="name" min={0} max={10} step={2} />
-        </Form>
-      )}
-    </Formik>
-  ));
+  .add(
+    "default",
+    formWrapper({ name: 15 })(() => <FormRange name="name" min={10} max={20} unit="%" />),
+  )
+  .add(
+    "with default value",
+    formWrapper({ name: 70 })(() => <FormRange name="name" min={0} max={100} unit="%" />),
+  )
+  .add(
+    "with different step",
+    formWrapper({ name: 0 })(() => <FormRange name="name" min={0} max={12} step={3} unit="px" />),
+  )
+  .add(
+    "with different units",
+    formWrapper({ name: 3 })(() => (
+      <FormRange name="name" min={1} max={5} unitMin="week" unitMax="weeks" />
+    )),
+  )
+  .add(
+    "without unit",
+    formWrapper({ name: 4 })(() => <FormRange name="name" min={0} max={10} step={2} />),
+  );

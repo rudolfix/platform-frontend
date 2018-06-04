@@ -42,7 +42,7 @@ export class FormCheckbox extends React.Component<IProps> {
     const { name } = this.props;
 
     return (
-      // TODO: add here form label + form validation if needed
+      // TODO: add form validation if needed
       <Field
         name={name}
         render={({ field }: FieldProps) => <CheckboxComponent {...this.props} {...field} />}

@@ -20,7 +20,7 @@ const description =
 const lorem =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.";
 
-const sampleCard: IProps = {
+export const sampleCard: IProps = {
   roundName: "seed round",
   tags: [
     {

@@ -42,7 +42,7 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
 export const EtoOfferingCard: React.SFC<IProps> = props => {
   return (
     <Link to={props.to} className={styles.card}>
-      <Proportion width={2} height={1}>
+      <Proportion width={10} height={6}>
         <div className={styles.top}>
           <RoundLabel text={props.roundName} />
           <img className={styles.logo} src={props.logo} alt={`${props.name} logo`} />
@@ -52,9 +52,13 @@ export const EtoOfferingCard: React.SFC<IProps> = props => {
         </div>
       </Proportion>
       <div className={styles.bottom}>
-        <InlineIcon svgIcon={linkIcon} />
-        <h3 className={styles.name}>{props.name}</h3>
-        <p className={styles.description}>{props.description}</p>
+        <Proportion width={10} height={4} className={styles.descriptionProportion}>
+          <div className={styles.descriptionWrapper}>
+            <InlineIcon svgIcon={linkIcon} />
+            <h3 className={styles.name}>{props.name}</h3>
+            <p className={styles.description}>{props.description}</p>
+          </div>
+        </Proportion>
         <blockquote className={styles.quote}>
           <p>
             {'"'}

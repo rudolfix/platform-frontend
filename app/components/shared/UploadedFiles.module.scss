@@ -1,14 +1,12 @@
 @import "../../styles/neufund-theme";
 
 .file {
-  padding: px-to-rem(9px) px-to-rem(6px);
   background-color: transparent;
   transition: 150ms ease-out background-color;
   display: flex;
   flex-direction: row-reverse;
   user-select: none;
   cursor: default;
-  margin-bottom: px-to-rem(6px);
 
   > * {
     flex-shrink: 0;

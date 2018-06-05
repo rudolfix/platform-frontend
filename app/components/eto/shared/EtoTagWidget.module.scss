@@ -1,0 +1,16 @@
+@import "../../../styles/neufund-theme";
+
+.tags-form {
+  .form {
+    display: flex;
+    margin-bottom: px-to-rem(10px);
+
+    :global(.button) {
+      margin-left: px-to-rem(16px);
+    }
+  }
+
+  .selected-tags {
+    margin-bottom: px-to-rem(24px);
+  }
+}

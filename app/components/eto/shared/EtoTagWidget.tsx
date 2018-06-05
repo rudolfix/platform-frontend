@@ -1,13 +1,15 @@
 import { includes } from "lodash";
 import * as React from "react";
-import { Creatable } from 'react-select'
+import { Creatable } from "react-select";
 import Select from "react-virtualized-select";
 import { Col, Input } from "reactstrap";
 
 import { Button } from "../../shared/Buttons";
 import { Tag } from "../../shared/Tag";
 
+import * as cn from "classnames";
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
+import * as styles from "./EtoTagWidget.module.scss";
 
 interface IPropsWrapper {
   selectedTagsLimit: number;
@@ -38,7 +40,7 @@ const TagsFormEditor: React.SFC<IProps> = props => {
         onChange={e => props.handleSubmit(e)}
         placeholder={"Add category"}
         noResultsText="No matching word"
-        className="mb-3"
+        className={cn("mb-3", styles.tagsForm)}
       />
       {!!props.selectedTags.length && (
         <div>
@@ -46,7 +48,7 @@ const TagsFormEditor: React.SFC<IProps> = props => {
             <Tag
               onClick={() => props.handleSelectedTagClick(tag)}
               text={tag}
-              className="w-25 ml-1"
+              className={cn(styles.tag, "ml-1")}
               svgIcon={checkIcon}
               size="small"
               key={tag}

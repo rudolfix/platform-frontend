@@ -1,6 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { Col, Row } from "reactstrap";
 import { InlineIcon } from "./InlineIcon";
 import * as styles from "./Tag.module.scss";
 
@@ -40,8 +41,21 @@ export const Tag: React.SFC<ITag> = ({
         </Link>
       ) : (
         <span onClick={onClick} className={classes}>
-          {!!svgIcon && <InlineIcon svgIcon={svgIcon} />}
-          {text}
+          <Row className="d-flex justify-content-between" noGutters>
+            {!end &&
+              !!svgIcon && (
+                <Col className="col-auto mr-2">
+                  <InlineIcon svgIcon={svgIcon} className="" />
+                </Col>
+              )}
+            <Col className="col-auto">{text}</Col>
+            {end &&
+              !!svgIcon && (
+                <Col className="col-auto ml-2">
+                  <InlineIcon svgIcon={svgIcon} className="" />
+                </Col>
+              )}
+          </Row>
         </span>
       )}
     </>

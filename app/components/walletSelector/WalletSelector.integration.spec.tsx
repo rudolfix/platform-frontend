@@ -93,6 +93,11 @@ describe("Wallet selector integration", () => {
           name: "chrome",
           version: "58.0.0",
         },
+        init: {
+          started: true,
+          done: true,
+          error: false,
+        },
       },
       initialRoute: walletRegisterRoutes.light,
     });

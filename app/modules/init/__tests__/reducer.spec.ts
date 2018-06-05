@@ -10,6 +10,7 @@ describe("init > reducer", () => {
     const newState = initReducer(previousState, action);
 
     expect(newState).to.be.deep.eq({
+      started: true,
       error: false,
       errorMsg: undefined,
       done: true,
@@ -24,6 +25,7 @@ describe("init > reducer", () => {
     const newState = initReducer(previousState, action);
 
     expect(newState).to.be.deep.eq({
+      started: true,
       done: false,
       error: true,
       errorMsg: expectedError,

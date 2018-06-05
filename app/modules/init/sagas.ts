@@ -1,7 +1,9 @@
 import { effects } from "redux-saga";
-import { fork, put } from "redux-saga/effects";
+import { fork, put, select, take } from "redux-saga/effects";
 
+import { LocationChangeAction } from "react-router-redux";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
@@ -50,4 +52,21 @@ export function* cleanupAndLogoutSaga(): Iterator<any> {
 
 export const initSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "INIT_START", setupSaga);
+
+  /**
+   * We don't require app initialization on every page so we are gonna watch location change action until we can init whole app
+   */
+  while (true) {
+    const isDoneOrInProgress: boolean = yield select(
+      (s: IAppState) => s.init.done || s.init.started,
+    );
+    if (isDoneOrInProgress) {
+      return;
+    }
+
+    const action: LocationChangeAction = yield take("@@router/LOCATION_CHANGE");
+    if (action.payload.pathname !== "/") {
+      yield put(actions.init.start());
+    }
+  }
 };

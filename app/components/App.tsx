@@ -2,9 +2,7 @@ import * as React from "react";
 import { ToastContainer } from "react-toastify";
 
 import { compose } from "redux";
-import { actions } from "../modules/actions";
 import { appConnect } from "../store";
-import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -13,6 +11,7 @@ import { GenericModal } from "./modals/GenericModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 interface IStateProps {
+  started: boolean;
   done: boolean;
   error: boolean;
   errorMsg?: string;
@@ -24,7 +23,7 @@ class AppComponent extends React.Component<IStateProps> {
       return <h1>Critical error occured: {this.props.errorMsg}</h1>;
     }
 
-    if (!this.props.done) {
+    if (this.props.started && !this.props.done) {
       return <LoadingIndicator />;
     }
 
@@ -44,12 +43,9 @@ class AppComponent extends React.Component<IStateProps> {
 }
 
 export const App = compose<React.ComponentClass>(
-  onEnterAction({
-    actionCreator: dispatch => dispatch(actions.init.start()),
-    pure: false,
-  }),
   appConnect<IStateProps>({
     stateToProps: s => ({
+      started: s.init.started,
       done: s.init.done,
       error: s.init.error,
       errorMsg: s.init.errorMsg,

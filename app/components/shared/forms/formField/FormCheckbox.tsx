@@ -10,13 +10,13 @@ interface IProps {
   type: TInputType;
   label: string;
   name: string;
-  value?: string;
-  checked: boolean;
+  value?: any;
+  checked?: boolean;
   "data-test-id"?: string;
 }
 
 interface IInternalProps {
-  value: string | number;
+  value: any;
   onChange: (e: React.ChangeEvent<any>) => any;
 }
 
@@ -53,7 +53,7 @@ export class FormCheckbox extends React.Component<IProps> {
 
   render(): React.ReactNode {
     const { name, value, type } = this.props;
-    const { setFieldValue } = this.context.formik as FormikProps<any>;
+    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     const setValue = (e: React.ChangeEvent<any>, name: string, value: any) => {
       if (type === "radio") {
@@ -71,9 +71,13 @@ export class FormCheckbox extends React.Component<IProps> {
     return (
       <Field
         name={name}
-        render={({ field }: FieldProps) => (
-          <CheckboxComponent {...this.props} {...field} onChange={e => setValue(e, name, value)} />
-        )}
+        render={({ field }: FieldProps) => {
+          console.log("Field:", field);
+          console.log("props:", this.props);
+          return (
+            <CheckboxComponent {...this.props} {...field} checked={field.value === this.props.value} onChange={e => setValue(e, name, value)} />
+          )
+        }}
       />
     );
   }

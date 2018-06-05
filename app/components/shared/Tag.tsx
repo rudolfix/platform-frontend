@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import { InlineIcon } from "./InlineIcon";
 import * as styles from "./Tag.module.scss";
 
-type TTheme = "dark" | "green" | "white";
+type TTheme = "dark" | "green" | "white" | "default";
 type TLayout = "ghost" | "ghost-bold";
 type TSize = "small";
 
@@ -18,6 +18,7 @@ export interface ITag {
   className?: string;
   onClick?: (e: any) => void;
   svgIcon?: string;
+  end?: boolean;
 }
 
 export const Tag: React.SFC<ITag> = ({
@@ -29,6 +30,7 @@ export const Tag: React.SFC<ITag> = ({
   className,
   onClick,
   svgIcon,
+  end,
 }) => {
   const classes = cn(styles.tag, layout, size, theme, className);
 
@@ -36,8 +38,9 @@ export const Tag: React.SFC<ITag> = ({
     <>
       {to ? (
         <Link to={to} className={classes}>
-          {!!svgIcon && <InlineIcon svgIcon={svgIcon} />}
+          {!end && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
           {text}
+          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
         </Link>
       ) : (
         <span onClick={onClick} className={classes}>

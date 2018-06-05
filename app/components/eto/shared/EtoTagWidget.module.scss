@@ -1,20 +1,9 @@
 @import "../../../styles/neufund-theme";
 
-.tags-form {
-  .form {
-    display: flex;
-    margin-bottom: px-to-rem(24px);
-
-    :global(.button) {
-      margin-left: px-to-rem(16px);
-    }
-  }
-}
-
 .tag {
   width: auto;
-  height: px-to-rem(25px);;
-  background-color: #fafafa;
-  border: solid 0.5px #f0f0f0;
-  border-radius: 2px;
+  height: px-to-rem(25px);
+  background-color: $gray7;
+  border: solid px-to-rem(.5px) $gray8;
+  border-radius: px-to-rem(2px);
 }

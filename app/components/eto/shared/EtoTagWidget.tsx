@@ -4,7 +4,6 @@ import { Creatable } from "react-select";
 import Select from "react-virtualized-select";
 import { Col, Input } from "reactstrap";
 
-import { Button } from "../../shared/Buttons";
 import { Tag } from "../../shared/Tag";
 
 import * as cn from "classnames";
@@ -17,6 +16,7 @@ interface IPropsWrapper {
 }
 
 interface IProps {
+  disabled: boolean;
   handleSubmit: any;
   handleSelectedTagClick: any;
   selectedTags: string[];
@@ -31,6 +31,7 @@ const TagsFormEditor: React.SFC<IProps> = props => {
   return (
     <div>
       <Select
+        disabled={props.disabled}
         options={props.options}
         simpleValue
         clearable={false}
@@ -44,7 +45,7 @@ const TagsFormEditor: React.SFC<IProps> = props => {
       />
       {!!props.selectedTags.length && (
         <div>
-          {props.selectedTags.map((tag, index) => (
+          {props.selectedTags.map(tag => (
             <Tag
               onClick={() => props.handleSelectedTagClick(tag)}
               text={tag}
@@ -87,6 +88,7 @@ export class EtoTagWidget extends React.Component<IPropsWrapper, IStateWrapper> 
   render(): React.ReactNode {
     return (
       <TagsFormEditor
+        disabled={this.state.selectedTags.length === this.props.selectedTagsLimit}
         selectedTags={this.state.selectedTags}
         handleSubmit={this.createTag}
         handleSelectedTagClick={this.handleTagDeselection}

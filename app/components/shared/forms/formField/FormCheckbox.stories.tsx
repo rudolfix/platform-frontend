@@ -3,38 +3,28 @@ import * as React from "react";
 
 import { formWrapper } from "./form-utils";
 
-import { FormCheckbox } from "./FormCheckbox";
+import { FormCheckbox, FormRadioButton } from "./FormCheckbox";
 
-storiesOf("FormCheckbox", module)
+storiesOf("FormCheckbox && FormRadioButton", module)
   .add(
-    "checkbox checked",
-    formWrapper({
-      "fancy checkbox": true,
-    })(() => (
-      <FormCheckbox name="fancy checkbox" type="checkbox" value="test" label="checkbox's label" />
-    )),
-  )
-  .add(
-    "checkbox group",
-    formWrapper({ bwm: true, ford: true })((form: any) => (
+    "checkbox",
+    formWrapper({ bwm: false, audi: false, ford: true, volvo: true })(() => (
       <>
-        <FormCheckbox name="bmw" type="checkbox" label="bmw" />
-        <FormCheckbox name="audi" type="checkbox" label="audi" />
-        <FormCheckbox name="ford" type="checkbox" label="ford" />
-        <FormCheckbox name="volvo" type="checkbox" label="volvo" />
+        <FormCheckbox name="bmw" label="bmw" />
+        <FormCheckbox name="audi" label="audi" />
+        <FormCheckbox name="ford" label="ford" />
+        <FormCheckbox name="volvo" label="volvo" />
       </>
     )),
   )
   .add(
-    "radio buttons group",
-    formWrapper({
-      car: "audi",
-    })((form: any) => (
+    "radio button",
+    formWrapper({ car: "bmw" })(() => (
       <>
-        <FormCheckbox name="car" type="radio" value="bmw" label="bmw" />
-        <FormCheckbox name="car" type="radio" value="audi" label="audi" />
-        <FormCheckbox name="car" type="radio" value="ford" label="ford" />
-        <FormCheckbox name="car" type="radio" value="volvo" label="volvo" />
+        <FormRadioButton name="car" value="bmw" label="bmw" />
+        <FormRadioButton name="car" value="audi" label="audi" />
+        <FormRadioButton name="car" value="ford" label="ford" />
+        <FormRadioButton name="car" value="volvo" label="volvo" />
       </>
     )),
   );

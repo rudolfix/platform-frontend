@@ -4,10 +4,7 @@ import * as React from "react";
 
 import * as styles from "./FormCheckbox.module.scss";
 
-export type TInputType = "checkbox" | "radio";
-
 interface IProps {
-  type: TInputType;
   label: string;
   name: string;
   value?: any;
@@ -21,23 +18,47 @@ interface IInternalProps {
 }
 
 const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
-  type,
   name,
   label,
   value,
-  checked,
   onChange,
+  checked,
   "data-test-id": dataTestId,
 }) => {
   return (
     <label className={styles.checkbox}>
       <input
-        onChange={onChange}
         className={styles.input}
-        type={type}
+        onChange={onChange}
+        type="checkbox"
         name={name}
-        defaultChecked={checked}
         value={value}
+        defaultChecked={checked}
+        data-test-id={dataTestId}
+      />
+      <div className={styles.indicator} />
+      <div className={styles.label}>{label}</div>
+    </label>
+  );
+};
+
+const RadioButtonComponent: React.SFC<IProps & IInternalProps> = ({
+  name,
+  label,
+  value,
+  onChange,
+  checked,
+  "data-test-id": dataTestId,
+}) => {
+  return (
+    <label className={styles.checkbox}>
+      <input
+        className={styles.input}
+        onChange={onChange}
+        type="radio"
+        name={name}
+        value={value}
+        defaultChecked={checked}
         data-test-id={dataTestId}
       />
       <div className={styles.indicator} />
@@ -52,31 +73,51 @@ export class FormCheckbox extends React.Component<IProps> {
   };
 
   render(): React.ReactNode {
-    const { name, value, type } = this.props;
+    const { name } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-
-    const setValue = (e: React.ChangeEvent<any>, name: string, value: any) => {
-      if (type === "radio") {
-        setFieldValue(name, value);
-        return;
-      }
-
-      if (e.target.checked) {
-        setFieldValue(name, true);
-      } else {
-        setFieldValue(name, false);
-      }
-    };
 
     return (
       <Field
         name={name}
         render={({ field }: FieldProps) => {
-          console.log("Field:", field);
-          console.log("props:", this.props);
           return (
-            <CheckboxComponent {...this.props} {...field} checked={field.value === this.props.value} onChange={e => setValue(e, name, value)} />
-          )
+            <CheckboxComponent
+              {...this.props}
+              {...field}
+              checked={values[name]}
+              onChange={() => setFieldValue(name, !values[name])}
+            />
+          );
+        }}
+      />
+    );
+  }
+}
+
+export class FormRadioButton extends React.Component<IProps> {
+  static contextTypes = {
+    formik: PropTypes.object,
+  };
+
+  render(): React.ReactNode {
+    const { name } = this.props;
+    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+
+    return (
+      <Field
+        name={name}
+        render={({ field }: FieldProps) => {
+          const { name } = field;
+          const { value } = this.props;
+
+          return (
+            <RadioButtonComponent
+              {...this.props}
+              {...field}
+              checked={values[name] === value}
+              onChange={() => setFieldValue(name, value)}
+            />
+          );
         }}
       />
     );

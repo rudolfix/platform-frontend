@@ -65,7 +65,7 @@ export const initSagas = function*(): Iterator<effects.Effect> {
     }
 
     const action: LocationChangeAction = yield take("@@router/LOCATION_CHANGE");
-    if (action.payload.pathname !== "/") {
+    if (action.payload && action.payload.pathname !== "/") {
       yield put(actions.init.start());
     }
   }

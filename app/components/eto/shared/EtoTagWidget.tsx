@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import { includes } from "lodash";
 import * as React from "react";
 import { Creatable } from "react-select";
@@ -6,19 +7,19 @@ import { Col, Input } from "reactstrap";
 
 import { Tag } from "../../shared/Tag";
 
-import * as cn from "classnames";
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
 import * as styles from "./EtoTagWidget.module.scss";
 
 interface IPropsWrapper {
   selectedTagsLimit: number;
   options: { value: string; label: string }[];
+  selectedTags?: string[];
 }
 
 interface IProps {
   disabled: boolean;
-  handleSubmit: any;
-  handleSelectedTagClick: any;
+  handleAddition: (tag: string) => void;
+  handleSelectedTagClick: (tag: string) => void;
   selectedTags: string[];
   options: { value: string; label: string }[];
 }
@@ -38,7 +39,7 @@ const TagsFormEditor: React.SFC<IProps> = props => {
         matchPos="start"
         matchProp="value"
         selectComponent={Creatable}
-        onChange={e => props.handleSubmit(e)}
+        onChange={e => props.handleAddition(e as any)}
         placeholder={"Add category"}
         noResultsText="No matching word"
         className={cn("mb-3", styles.tagsForm)}
@@ -64,7 +65,7 @@ const TagsFormEditor: React.SFC<IProps> = props => {
 
 export class EtoTagWidget extends React.Component<IPropsWrapper, IStateWrapper> {
   state = {
-    selectedTags: [],
+    selectedTags: this.props.selectedTags || [],
   };
 
   createTag = (tag: string) => {
@@ -90,7 +91,7 @@ export class EtoTagWidget extends React.Component<IPropsWrapper, IStateWrapper> 
       <TagsFormEditor
         disabled={this.state.selectedTags.length === this.props.selectedTagsLimit}
         selectedTags={this.state.selectedTags}
-        handleSubmit={this.createTag}
+        handleAddition={this.createTag}
         handleSelectedTagClick={this.handleTagDeselection}
         options={this.props.options}
       />

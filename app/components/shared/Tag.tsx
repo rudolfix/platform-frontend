@@ -42,25 +42,13 @@ export const Tag: React.SFC<ITag> = ({
         <Link to={to} className={classes}>
           {!end && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
           {text}
-          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
+          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2" />}
         </Link>
       ) : (
         <span onClick={onClick} className={classes}>
-          <Row className="d-flex justify-content-between" noGutters>
-            {!end &&
-              !!svgIcon && (
-                <Col className="col-auto mr-2">
-                  <InlineIcon svgIcon={svgIcon} className="" />
-                </Col>
-              )}
-            <Col className="col-auto">{text}</Col>
-            {end &&
-              !!svgIcon && (
-                <Col className="col-auto ml-2">
-                  <InlineIcon svgIcon={svgIcon} className="" />
-                </Col>
-              )}
-          </Row>
+          {!end && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
+          {text}
+          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2" />}
         </span>
       )}
     </>

@@ -15,6 +15,14 @@ $indicator-size: 16px;
       @include rect($indicator-size - 6px);
     }
   }
+
+  &:required {
+    ~ .label {
+      &::after {
+        content: "*";
+      }
+    }
+  }
 }
 
 .indicator {
@@ -44,4 +52,9 @@ $indicator-size: 16px;
   margin-left: px-to-rem(20px);
   text-transform: uppercase;
   user-select: none;
+
+  &::after {
+    font-size: .5em;
+    vertical-align: super;
+  }
 }

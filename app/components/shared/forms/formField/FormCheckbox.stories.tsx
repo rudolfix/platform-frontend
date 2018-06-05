@@ -1,33 +1,46 @@
 import { storiesOf } from "@storybook/react";
-import { Form, Formik } from "formik";
 import * as React from "react";
+
+import { formWrapper } from "./form-utils";
 
 import { FormCheckbox } from "./FormCheckbox";
 
-const formWrapper = (formState: any) => (Component: React.SFC) => () => (
-  <Formik initialValues={formState} onSubmit={() => {}}>
-    {() => (
-      <Form>
-        <Component />
-      </Form>
-    )}
-  </Formik>
-);
-
 storiesOf("FormCheckbox", module)
   .add(
-    "checkbox",
-    formWrapper({ name: "checkbox" })(() => (
-      <FormCheckbox type="checkbox" label="checkbox's label" name="checkbox" />
+    "checkbox checked",
+    formWrapper({
+      "fancy checkbox": true,
+    })(() => (
+      <FormCheckbox
+        checked={true}
+        name="fancy checkbox"
+        type="checkbox"
+        value="test"
+        label="checkbox's label"
+      />
     )),
   )
   .add(
-    "radio",
-    formWrapper({ name: "checkbox" })(() => (
+    "checkbox group",
+    formWrapper({})((form: any) => (
       <>
-        <FormCheckbox type="radio" label="checkbox's label" name="radio" />
-        <FormCheckbox type="radio" label="checkbox's label" name="radio" />
-        <FormCheckbox type="radio" label="checkbox's label" name="radio" />
+        <FormCheckbox checked={form.bmw} name="bmw" type="checkbox" label="bmw" />
+        <FormCheckbox checked={form.audi} name="audi" type="checkbox" label="audi" />
+        <FormCheckbox checked={form.ford} name="ford" type="checkbox" label="ford" />
+        <FormCheckbox checked={form.volvo} name="volvo" type="checkbox" label="volvo" />
+      </>
+    )),
+  )
+  .add(
+    "radio buttons group",
+    formWrapper({
+      car: "bmw",
+    })((form: any) => (
+      <>
+        <FormCheckbox checked={form.bmw} name="car" type="radio" value="bmw" label="bmw" />
+        <FormCheckbox checked={form.audi} name="car" type="radio" value="audi" label="audi" />
+        <FormCheckbox checked={form.ford} name="car" type="radio" value="ford" label="ford" />
+        <FormCheckbox checked={form.volvo} name="car" type="radio" value="volvo" label="volvo" />
       </>
     )),
   );

@@ -57,7 +57,7 @@ app.use(
 );
 
 app.use("/", express.static(join(__dirname, "../dist"), { extensions: ["html"] }));
-app.use(fallback("index.html", { root: join(__dirname, "../dist") }));
+app.use(fallback("base.html", { root: join(__dirname, "../dist") }));
 
 console.log(`Serving on ${PORT}`);
 https.createServer(sslOptions, app).listen(PORT);

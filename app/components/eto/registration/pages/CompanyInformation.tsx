@@ -1,4 +1,4 @@
-import { FieldArray, Form, FormikProps, withFormik, Formik } from "formik";
+import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
@@ -10,13 +10,11 @@ import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
-import { FormField, InlineFormField } from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/forms";
 import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 import { Section } from "../Shared";
 
-import * as plusIcon from "../../../../assets/img/inline_icons/plus.svg";
-import { TagsEditorWidget } from "../../shared/TagsEditor";
-import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
+import * as styles from "./CompanyInformation.module.scss";
 
 interface IStateProps {
   loadingData: boolean;
@@ -30,39 +28,80 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
-  // We are hitting tslint bug: https://github.com/palantir/tslint/issues/3540
-  /* tslint:disable:no-useless-cast restrict-plus-operands */
   return (
-    <Formik
-      initialValues={{ tags: [] }}
-      onSubmit={() => {
-        debugger;
-      }}
-    >
-      <Form>
-        <h4 className="text-center">Company Information</h4>
-        <Section>
-          {/* TODO: Remove Title and add it to header component */}
-          <FormField placeholder="Brand Name*" name="brandName" />
-          <FormField placeholder="Website*" name="website" />
-          <FormField placeholder="Company tagline*" name="companyTagline" />
-          <FormTextArea
-            placeholder="Describe your company* 250 Characters"
-            name="companyDescription"
-          />
-          <FormTextArea placeholder="Key Quote from Founder 250 Characters" name="founderQuote" />
-          <FormTextArea placeholder="Key Quote from Investor 250 Characters" name="investorQuote" />
-          <EtoTagWidget
-            name="tags"
-            selectedTagsLimit={5}
-            options={generateTagOptions(["science"])}
-          />
-          {/* TODO: Add upload single file component */}
-        </Section>
-      </Form>
-    </Formik>
+    <Form>
+      <h4 className="text-center">Company Information</h4>
+      <Section>
+        {/* TODO: Remove Title and add it to header component */}
+        <FormField label="Brand Name*" name="brandName" className={styles.inputField} />
+        <FormField label="Website*" name="website" className={styles.inputField} />
+        <FormField label="Company tagline*" name="companyTagline" className={styles.inputField} />
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="Company Description"
+          placeholder="Describe your company* 250 Characters"
+          name="companyDescription"
+        />
+        <FormTextArea
+          label="Founders Quote"
+          placeholder="Key Quote from Founder 250 Characters"
+          name="founderQuote"
+        />
+        <FormTextArea
+          label="Founders Investor"
+          placeholder="Key Quote from Investor 250 Characters"
+          name="investorQuote"
+        />
+        <SingleFileUpload
+          acceptedFiles="image/*"
+          fileUploading={false}
+          filesLoading={false}
+          fileFormatInformation="*150 x 150 png"
+          uploadCta="Upload logo"
+          files={[]}
+          onDropFile={() => {}}
+          className="mb-3"
+        />
+        <SingleFileUpload
+          acceptedFiles="image/*"
+          fileUploading={false}
+          filesLoading={false}
+          fileFormatInformation="*550 x 300 png"
+          uploadCta="Upload Teaser Image"
+          files={[]}
+          onDropFile={() => {}}
+          className="mb-3"
+        />
+        <SingleFileUpload
+          acceptedFiles="image/*"
+          fileUploading={false}
+          filesLoading={false}
+          fileFormatInformation="*1250 x 400 png"
+          uploadCta="Upload Banner"
+          files={[]}
+          onDropFile={() => {}}
+          className="mb-3"
+        />
+        {/* TODO: Use backend connected SingleFileUpload currently are only place holders */}
+        {/* TODO: Add Widget Tag Component */}
+      </Section>
+      <Col>
+        <Row className="justify-content-end">
+          <Button
+            layout="primary"
+            className="mr-4"
+            onClick={() => {
+              // tslint:disable-next-line
+              console.log("Form values: ", _props.values);
+              _props.submitForm();
+            }}
+          >
+            Save
+          </Button>
+        </Row>
+      </Col>
+    </Form>
   );
-  /* tslint:enable */
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({

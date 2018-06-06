@@ -24,7 +24,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
     const { touched, errors } = formik;
     return (
       <FormGroup>
-        {doNotShowLabel && label && <Label for={name}>{label}</Label>}
+        {!doNotShowLabel && label && <Label for={name}>{label}</Label>}
         <Field
           name={name}
           render={({ field }: FieldProps) => (

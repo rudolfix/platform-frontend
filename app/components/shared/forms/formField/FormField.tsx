@@ -14,6 +14,7 @@ interface IFieldGroup {
   type?: InputType;
   prefix?: string;
   doNotShowLabel?: boolean;
+  className?: string;
   suffix?: string;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes;
@@ -24,7 +25,17 @@ export class FormField extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const { label, type, placeholder, name, prefix, suffix, doNotShowLabel, ...props } = this.props;
+    const {
+      label,
+      type,
+      placeholder,
+      name,
+      prefix,
+      suffix,
+      className,
+      doNotShowLabel,
+      ...props
+    } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
 
@@ -45,6 +56,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 </InputGroupAddon>
               )}
               <Input
+                className={className}
                 {...field}
                 type={type}
                 value={field.value || ""}

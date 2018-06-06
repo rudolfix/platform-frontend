@@ -2,17 +2,9 @@ import { storiesOf } from "@storybook/react";
 import { Form, Formik } from "formik";
 import * as React from "react";
 
-import { FormRange } from "./FormRange";
+import { formWrapper } from "./form-utils";
 
-const formWrapper = (formState: any) => (Component: React.SFC) => () => (
-  <Formik initialValues={formState} onSubmit={() => {}}>
-    {() => (
-      <Form>
-        <Component />
-      </Form>
-    )}
-  </Formik>
-);
+import { FormRange } from "./FormRange";
 
 storiesOf("FormRange", module)
   .add(

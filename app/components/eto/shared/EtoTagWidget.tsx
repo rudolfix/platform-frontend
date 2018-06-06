@@ -23,9 +23,9 @@ interface IInternalProps {
   handleSelectedTagClick: (tag: string) => void;
   disabled: boolean;
 }
-
 const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
   <div>
+    {/* This generates a ref warning @see */}
     <Select
       disabled={props.disabled}
       options={props.options}

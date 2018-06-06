@@ -20,7 +20,7 @@ export interface ITag {
   className?: string;
   onClick?: (e: any) => void;
   svgIcon?: string;
-  end?: boolean;
+  placeSvgInEnd?: boolean;
 }
 
 export const Tag: React.SFC<ITag> = ({
@@ -32,7 +32,7 @@ export const Tag: React.SFC<ITag> = ({
   className,
   onClick,
   svgIcon,
-  end,
+  placeSvgInEnd,
 }) => {
   const classes = cn(styles.tag, layout, size, theme, className);
 
@@ -40,15 +40,15 @@ export const Tag: React.SFC<ITag> = ({
     <>
       {to ? (
         <Link to={to} className={classes}>
-          {!end && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
+          {!placeSvgInEnd && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
           {text}
-          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2" />}
+          {placeSvgInEnd && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2" />}
         </Link>
       ) : (
         <span onClick={onClick} className={classes}>
-          {!end && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
+          {!placeSvgInEnd && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}
           {text}
-          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2" />}
+          {placeSvgInEnd && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2" />}
         </span>
       )}
     </>

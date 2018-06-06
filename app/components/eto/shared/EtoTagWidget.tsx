@@ -19,7 +19,7 @@ interface IProps {
 
 interface IInternalProps {
   values: string[];
-  onChange: (e: any) => any;
+  onChange: (newTag: string) => void;
   handleSelectedTagClick: (tag: string) => void;
   disabled: boolean;
 }
@@ -48,7 +48,7 @@ const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
       matchProp="value"
       simpleValue
       selectComponent={Creatable}
-      onChange={e => props.onChange(e)}
+      onChange={newTag => props.onChange(newTag as any)}
       placeholder={"Add category"}
       noResultsText="No matching word"
       className={cn("mb-3", styles.tagsForm)}
@@ -63,7 +63,7 @@ const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
             svgIcon={checkIcon}
             size="small"
             key={tag}
-            end
+            placeSvgInEnd
           />
         ))}
       </div>
@@ -79,6 +79,8 @@ export class EtoTagWidget extends React.Component<IProps> {
   render(): React.ReactNode {
     const { name, selectedTagsLimit } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+    const selectedTags = values[name] as string[];
+
     return (
       <Field
         name={name}
@@ -86,12 +88,13 @@ export class EtoTagWidget extends React.Component<IProps> {
           <TagsFormEditor
             {...this.props}
             {...field}
-            onChange={(e: string) =>
-              !values[name].some((tag: string) => tag === e) &&
-              setFieldValue(name, [...values[name], e])
-            }
-            handleSelectedTagClick={(selectedTag: string) => {
-              return setFieldValue(name, values[name].filter((tag: string) => tag !== selectedTag));
+            onChange={newTag => {
+              const isAlreadyOnTheList = selectedTags.some(tag => tag === newTag);
+              if (!isAlreadyOnTheList) setFieldValue(name, [...selectedTags, newTag]);
+            }}
+            handleSelectedTagClick={(clickedTag: string) => {
+              const listWithRemovedTag = selectedTags.filter(tag => tag !== clickedTag);
+              return setFieldValue(name, listWithRemovedTag);
             }}
             disabled={values[name].length === selectedTagsLimit}
             values={values[name]}

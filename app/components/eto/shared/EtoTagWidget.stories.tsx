@@ -8,9 +8,16 @@ import { EtoTagWidget, generateTagOptions } from "./EtoTagWidget";
 
 const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
-storiesOf("TagsFormWidget", module).add(
-  "Empty",
-  formWrapper({ tags: [] })(() => (
-    <EtoTagWidget selectedTagsLimit={5} options={generateTagOptions(tagList)} name="tags" />
-  )),
-);
+storiesOf("TagsFormWidget", module)
+  .add(
+    "Empty",
+    formWrapper({ tags: [] })(() => (
+      <EtoTagWidget selectedTagsLimit={5} options={generateTagOptions(tagList)} name="tags" />
+    )),
+  )
+  .add(
+    "Already Tags",
+    formWrapper({ tags: ["Fintech", "Black Magic"] })(() => (
+      <EtoTagWidget selectedTagsLimit={5} options={generateTagOptions(tagList)} name="tags" />
+    )),
+  );

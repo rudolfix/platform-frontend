@@ -1,5 +1,4 @@
 import * as cn from "classnames";
-import { includes } from "lodash";
 import * as React from "react";
 import { Creatable } from "react-select";
 import Select from "react-virtualized-select";
@@ -7,93 +6,84 @@ import { Col, Input } from "reactstrap";
 
 import { Tag } from "../../shared/Tag";
 
+import { Field, FieldProps, FormikProps } from "formik";
+import * as PropTypes from "prop-types";
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
 import * as styles from "./EtoTagWidget.module.scss";
 
-interface IPropsWrapper {
+interface IProps {
+  name: string;
   selectedTagsLimit: number;
   options: { value: string; label: string }[];
-  selectedTags?: string[];
 }
 
-interface IProps {
-  disabled: boolean;
-  handleAddition: (tag: string) => void;
+interface IInternalProps {
+  values: string[];
+  onChange: (e: any) => any;
   handleSelectedTagClick: (tag: string) => void;
-  selectedTags: string[];
-  options: { value: string; label: string }[];
+  disabled: boolean;
 }
 
-interface IStateWrapper {
-  selectedTags: string[];
-}
+const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
+  <div>
+    <Select
+      disabled={props.disabled}
+      options={props.options}
+      clearable={false}
+      matchPos="start"
+      matchProp="value"
+      simpleValue
+      selectComponent={Creatable}
+      onChange={e => props.onChange(e)}
+      placeholder={"Add category"}
+      noResultsText="No matching word"
+      className={cn("mb-3", styles.tagsForm)}
+    />
+    {!!props.values && (
+      <div>
+        {props.values.map(tag => (
+          <Tag
+            onClick={() => props.handleSelectedTagClick(tag)}
+            text={tag}
+            className={cn(styles.tag, "ml-1")}
+            svgIcon={checkIcon}
+            size="small"
+            key={tag}
+            end
+          />
+        ))}
+      </div>
+    )}
+  </div>
+);
 
-const TagsFormEditor: React.SFC<IProps> = props => {
-  return (
-    <div>
-      <Select
-        disabled={props.disabled}
-        options={props.options}
-        simpleValue
-        clearable={false}
-        matchPos="start"
-        matchProp="value"
-        selectComponent={Creatable}
-        onChange={e => props.handleAddition(e as any)}
-        placeholder={"Add category"}
-        noResultsText="No matching word"
-        className={cn("mb-3", styles.tagsForm)}
-      />
-      {!!props.selectedTags.length && (
-        <div>
-          {props.selectedTags.map(tag => (
-            <Tag
-              onClick={() => props.handleSelectedTagClick(tag)}
-              text={tag}
-              className={cn(styles.tag, "ml-1")}
-              svgIcon={checkIcon}
-              size="small"
-              key={tag}
-              end
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export class EtoTagWidget extends React.Component<IPropsWrapper, IStateWrapper> {
-  state = {
-    selectedTags: this.props.selectedTags || [],
-  };
-
-  createTag = (tag: string) => {
-    const { selectedTags } = this.state;
-    const tagExist = includes(selectedTags, tag);
-
-    if (tagExist) {
-      return;
-    }
-    this.setState({ selectedTags: [tag, ...selectedTags] });
-  };
-
-  handleTagDeselection = (tag: string) => {
-    const { selectedTags } = this.state;
-
-    this.setState({
-      selectedTags: selectedTags.filter(filteredTag => filteredTag !== tag),
-    });
+export class EtoTagWidget extends React.Component<IProps> {
+  static contextTypes = {
+    formik: PropTypes.object,
   };
 
   render(): React.ReactNode {
+    const { name, selectedTagsLimit } = this.props;
+    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
     return (
-      <TagsFormEditor
-        disabled={this.state.selectedTags.length === this.props.selectedTagsLimit}
-        selectedTags={this.state.selectedTags}
-        handleAddition={this.createTag}
-        handleSelectedTagClick={this.handleTagDeselection}
-        options={this.props.options}
+      <Field
+        name={name}
+        render={({ field }: FieldProps) => (
+          <TagsFormEditor
+            {...this.props}
+            {...field}
+            onChange={(e: string) =>
+              !values[name].some((tag: string) => tag === e) &&
+              setFieldValue(name, [...values[name], e])
+            }
+            handleSelectedTagClick={(selectedTag: string) => {
+              const newValues = values[name].filter((tag: string) => tag !== selectedTag);
+              return setFieldValue(name, newValues);
+            }}
+            disabled={values[name].length === selectedTagsLimit}
+            values={values[name]}
+          />
+        )}
       />
     );
   }

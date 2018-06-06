@@ -5,8 +5,5 @@
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "./utils";
 @import "./variables";
-@import "./easings";
-@import "./spacings";
-@import "./typography";
-@import "./tools/shapes";
-@import "./tools/layout";
+@import "./config/index";
+@import "./tools/index";

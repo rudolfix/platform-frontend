@@ -1,4 +1,4 @@
-import { FieldArray, Form, FormikProps, withFormik } from "formik";
+import { FieldArray, Form, FormikProps, withFormik, Formik } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
@@ -15,6 +15,8 @@ import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 import { Section } from "../Shared";
 
 import * as plusIcon from "../../../../assets/img/inline_icons/plus.svg";
+import { TagsEditorWidget } from "../../shared/TagsEditor";
+import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 
 interface IStateProps {
   loadingData: boolean;
@@ -27,180 +29,41 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (props: FormikProps<TPartialEtoData>) => {
+const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
   // We are hitting tslint bug: https://github.com/palantir/tslint/issues/3540
   /* tslint:disable:no-useless-cast restrict-plus-operands */
   return (
-    <Form>
-      <Section line>
-        <InlineFormField
-          label="Number of employees (excluding founders):"
-          placeholder="0"
-          name="employeesAmount"
-        />
-      </Section>
-
-      <Section line>
-        <h4>Founders</h4>
-
-        <FieldArray name="founders">
-          {arrayHelpers => (
-            <div>
-              {props.values.founders!.map((_, index) => (
-                <div key={index}>
-                  <h5>#{index + 1}</h5>
-                  <div className="p-4">
-                    <FounderForm prefix={`founders.${index}`} />
-                  </div>
-                </div>
-              ))}
-
-              <Button
-                layout="secondary"
-                iconPosition="icon-before"
-                svgIcon={plusIcon}
-                type="button"
-                onClick={() => arrayHelpers.push({})}
-              >
-                Add new founder
-              </Button>
-            </div>
-          )}
-        </FieldArray>
-      </Section>
-
-      <Section line>
-        <h4>Cap Table</h4>
-
-        <FieldArray name="capTable">
-          {arrayHelpers => (
-            <div>
-              {props.values.capTable!.map((_, index) => (
-                <div key={index}>
-                  <h5>#{index + 1}</h5>
-                  <div className="p-4">
-                    <CapTableSubForm prefix={`capTable.${index}`} />
-                  </div>
-                </div>
-              ))}
-
-              <Button
-                layout="secondary"
-                iconPosition="icon-before"
-                svgIcon={plusIcon}
-                type="button"
-                onClick={() => arrayHelpers.push({})}
-              >
-                Add new cap table entry
-              </Button>
-            </div>
-          )}
-        </FieldArray>
-      </Section>
-
-      <Section line>
-        <h4>Notable Investors</h4>
-
-        <FieldArray name="notableInvestors">
-          {arrayHelpers => (
-            <div>
-              {props.values.notableInvestors!.map((_, index) => (
-                <div key={index}>
-                  <h5>#{index + 1}</h5>
-                  <div className="p-4">
-                    <PersonSubForm prefix={`notableInvestors.${index}`} />
-                  </div>
-                </div>
-              ))}
-
-              <Button
-                layout="secondary"
-                iconPosition="icon-before"
-                svgIcon={plusIcon}
-                onClick={() => arrayHelpers.push({})}
-                type="button"
-              >
-                Add new notable investor
-              </Button>
-            </div>
-          )}
-        </FieldArray>
-      </Section>
-
-      <Section line>
-        <h4>Advisors</h4>
-
-        <FieldArray name="advisors">
-          {arrayHelpers => (
-            <div>
-              {props.values.advisors!.map((_, index) => (
-                <div key={index}>
-                  <h5>#{index + 1}</h5>
-                  <div className="p-4">
-                    <PersonSubForm prefix={`advisors.${index}`} />
-                  </div>
-                </div>
-              ))}
-
-              <Button
-                layout="secondary"
-                iconPosition="icon-before"
-                svgIcon={plusIcon}
-                onClick={() => arrayHelpers.push({ fullName: "test" })}
-                type="button"
-              >
-                Add new advisor
-              </Button>
-            </div>
-          )}
-        </FieldArray>
-      </Section>
-
-      <div className="text-center">
-        <Button type="submit">
-          {/*disabled={!formikBag.isValid || formikBag.loadingData}> */}
-          Submit and continue
-        </Button>
-      </div>
-    </Form>
+    <Formik
+      initialValues={{ tags: [] }}
+      onSubmit={() => {
+        debugger;
+      }}
+    >
+      <Form>
+        <h4 className="text-center">Company Information</h4>
+        <Section>
+          {/* TODO: Remove Title and add it to header component */}
+          <FormField placeholder="Brand Name*" name="brandName" />
+          <FormField placeholder="Website*" name="website" />
+          <FormField placeholder="Company tagline*" name="companyTagline" />
+          <FormTextArea
+            placeholder="Describe your company* 250 Characters"
+            name="companyDescription"
+          />
+          <FormTextArea placeholder="Key Quote from Founder 250 Characters" name="founderQuote" />
+          <FormTextArea placeholder="Key Quote from Investor 250 Characters" name="investorQuote" />
+          <EtoTagWidget
+            name="tags"
+            selectedTagsLimit={5}
+            options={generateTagOptions(["science"])}
+          />
+          {/* TODO: Add upload single file component */}
+        </Section>
+      </Form>
+    </Formik>
   );
   /* tslint:enable */
 };
-
-interface ISubFormProps {
-  prefix: string;
-}
-
-const FounderForm: React.SFC<ISubFormProps> = ({ prefix }) => (
-  <>
-    <FormField label="Full name" name={`${prefix}.fullName`} />
-    <FormField label="Role" name={`${prefix}.role`} />
-    <SingleFileUpload
-      acceptedFiles="image/*"
-      className="my-5"
-      onDropFile={() => {}}
-      files={[]}
-      fileUploading={false}
-      filesLoading={false}
-      uploadCta="Add founder photo"
-      fileFormatInformation=".jpg, .png"
-    />
-    <FormTextArea label="Short bio" name={`${prefix}.bio`} />
-  </>
-);
-
-const CapTableSubForm: React.SFC<ISubFormProps> = ({ prefix }) => (
-  <>
-    <FormField label="Full name" name={`${prefix}.fullName`} />
-    <FormField label="Ownership" placeholder="%" name={`${prefix}.ownership`} />
-  </>
-);
-
-const PersonSubForm: React.SFC<ISubFormProps> = ({ prefix }) => (
-  <>
-    <FormField label="Full name" name={`${prefix}.fullName`} />
-  </>
-);
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
   validationSchema: EtoTeamDataType.toYup(),

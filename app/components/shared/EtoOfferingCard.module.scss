@@ -54,6 +54,19 @@ $card-heigh: px-to-rem(440px);
   }
 }
 
+:global(.responsive) {
+  @media (min-width: map-get($grid-breakpoints, "xl")) and (max-width: 1400px) {
+    .description {
+      font-size: 12px;
+    }
+
+    .quote {
+      font-size: px-to-rem(14px);
+      line-height: px-to-rem(16px);
+    }
+  }
+}
+
 .top {
   display: flex;
   flex-direction: column;

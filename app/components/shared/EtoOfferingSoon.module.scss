@@ -27,3 +27,11 @@
     text-transform: uppercase;
   }
 }
+
+:global(.responsive) {
+  @media (min-width: map-get($grid-breakpoints, "xl")) and (max-width: 1400px) {
+    .description {
+      font-size: px-to-rem(16px);
+    }
+  }
+}

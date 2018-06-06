@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
@@ -20,6 +21,8 @@ export interface IEtoOfferingProps {
   };
   to: string;
   logo: string;
+
+  className?: string;
 }
 
 interface IPropsRoundLabel {
@@ -42,7 +45,7 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
 
 export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
   return (
-    <Link to={props.to} className={styles.card}>
+    <Link to={props.to} className={cn(styles.card, props.className)}>
       <Proportion width={10} height={6}>
         <div className={styles.top}>
           <RoundLabel text={props.roundName} />

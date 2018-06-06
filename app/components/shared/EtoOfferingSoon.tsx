@@ -7,11 +7,12 @@ import * as styles from "./EtoOfferingSoon.module.scss";
 
 export interface IEtoOfferingSoonProps {
   description: string | React.ReactNode;
+  className?: string;
 }
 
-export const EtoOfferingSoon: React.SFC<IEtoOfferingSoonProps> = ({ description }) => {
+export const EtoOfferingSoon: React.SFC<IEtoOfferingSoonProps> = ({ description, className }) => {
   return (
-    <Proportion>
+    <Proportion className={className}>
       <div className={styles.card}>
         <h3 className={styles.title}>
           <FormattedMessage id="landing.eto-offering-card-soon.title" />

@@ -120,6 +120,7 @@ const VALUES = {
   KZ: "Kazakhstan",
   KE: "Kenya",
   KI: "Kiribati",
+  KO: "Kosovo",
   KP: "Korea, Democratic People'S Republic Of",
   KR: "Korea, Republic Of",
   KW: "Kuwait",

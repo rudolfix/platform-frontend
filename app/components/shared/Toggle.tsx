@@ -15,7 +15,7 @@ export const Toggle: React.SFC<IProps> = ({
   enabledLabel,
   onClick,
   checked,
-  disabled = false
+  disabled = false,
 }) => {
   return (
     <div className={styles.toggle}>
@@ -25,7 +25,8 @@ export const Toggle: React.SFC<IProps> = ({
           className={styles.input}
           type="checkbox"
           defaultChecked={checked}
-          disabled={disabled}/>
+          disabled={disabled}
+        />
         <div className={styles.track}>
           <div className={styles.indicator} />
         </div>

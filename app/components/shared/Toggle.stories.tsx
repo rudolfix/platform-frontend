@@ -9,4 +9,4 @@ storiesOf("Toggle", module)
   ))
   .add("disabled", () => (
     <Toggle enabledLabel="on" disabledLabel="off" checked={true} onClick={() => {}} disabled />
-  ))
+  ));

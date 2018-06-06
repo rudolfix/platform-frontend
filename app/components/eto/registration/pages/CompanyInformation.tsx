@@ -176,6 +176,7 @@ const FounderForm: React.SFC<ISubFormProps> = ({ prefix }) => (
     <FormField label="Full name" name={`${prefix}.fullName`} />
     <FormField label="Role" name={`${prefix}.role`} />
     <SingleFileUpload
+      acceptedFiles="image/*"
       className="my-5"
       onDropFile={() => {}}
       files={[]}

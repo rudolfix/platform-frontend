@@ -81,6 +81,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
           <FormField label="Your token Name" placeholder="XXX" name="tokenName" />
         </div>
         <SingleFileUpload
+          acceptedFiles="image/*"
           files={[]}
           fileUploading={false}
           filesLoading={false}

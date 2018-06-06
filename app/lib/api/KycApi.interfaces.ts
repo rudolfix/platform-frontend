@@ -91,6 +91,7 @@ export const KycBeneficialOwnerSchemaRequired = makeAllRequired(KycBeneficialOwn
 export interface IKycFileInfo {
   id: string;
   fileName: string;
+  preview?: string;
 }
 
 export const KycFileInfoShape = Yup.object().shape({

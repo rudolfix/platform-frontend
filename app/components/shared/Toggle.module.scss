@@ -58,7 +58,7 @@ $track-width: 48px;
   @include circle($indicator-size);
 
   background-color: $color-white;
-  box-shadow: $hadow1;
+  box-shadow: $shadow1;
   transition: 200ms $ease-out-expo transform;
   will-change: transform;
 }

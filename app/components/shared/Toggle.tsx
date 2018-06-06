@@ -20,7 +20,7 @@ export const Toggle: React.SFC<IProps> = ({
   return (
     <div className={styles.toggle}>
       <div>{disabledLabel}</div>
-      <label className={styles.toggleWrapper} onClick={() => onClick()}>
+      <label className={styles.toggleWrapper} onClick={onClick}>
         <input
           className={styles.input}
           type="checkbox"

@@ -10,9 +10,16 @@ import { UploadedFiles } from "./UploadedFiles";
 import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
 import * as styles from "./SingleFileUpload.module.scss";
 
-const ACCEPTED_FILES = "application/pdf, image/*";
+type TAcceptedFileType =
+  | "application/pdf"
+  | "image/png"
+  | "image/jpg"
+  | "image/jpeg"
+  | "image/svg+xml"
+  | "image/*";
 
 interface IProps {
+  acceptedFiles: TAcceptedFileType;
   className?: string;
   fileUploading: boolean;
   filesLoading: boolean;
@@ -22,60 +29,59 @@ interface IProps {
   onDropFile: (file: File) => void;
 }
 
-export const SingleFileUpload: React.SFC<IProps> = ({ files, ...props }) => {
-  const onDrop = (accepted: File[]) => accepted[0] && props.onDropFile(accepted[0]);
+export class SingleFileUpload extends React.Component<IProps> {
+  onDrop = (accepted: File[]) => accepted[0] && this.props.onDropFile(accepted[0]);
 
-  const dropzoneInner = props.fileUploading ? (
-    <div>
-      <FormattedMessage id="shared-component.single-file-upload.uploading" />
-    </div>
-  ) : (
-    <div>
-      <FormattedMessage id="shared-component.single-file-upload.photo" />
-    </div>
-  );
+  render(): React.ReactNode {
+    const {
+      acceptedFiles,
+      className,
+      files,
+      fileUploading,
+      fileFormatInformation,
+      uploadCta,
+    } = this.props;
+    const hasFiles = !!files.length;
 
-  const dropzoneWithFilesInner = (
-    <span>
-      <FormattedMessage id="shared-component.single-file-upload.photo" />
-    </span>
-  );
-  const dropzoneStyle = {
-    width: "66px",
-    height: "66px",
-    display: "flex",
-    cursor: "pointer",
-  };
-  const dropzoneWithFilesStyle = {
-    color: "#000",
-    display: "flex",
-    cursor: "pointer",
-  };
+    const dropzoneInner = fileUploading ? (
+      <div>
+        <FormattedMessage id="shared-component.single-file-upload.uploading" />
+      </div>
+    ) : (
+      <div>
+        <FormattedMessage id="shared-component.single-file-upload.dropzone-cta" />
+      </div>
+    );
 
-  return (
-    <div className={cn(styles.upload, props.className)}>
-      <div className={styles.uploadZone}>
-        <div className={files.length ? styles.dropzoneWithFilesWrapper : styles.dropzoneWrapper}>
-          <Dropzone
-            accept={ACCEPTED_FILES}
-            onDrop={onDrop}
-            disabled={props.fileUploading}
-            style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}
-          >
-            {files.length ? dropzoneWithFilesInner : dropzoneInner}
-          </Dropzone>
+    return (
+      <Dropzone
+        accept={acceptedFiles}
+        disabled={fileUploading}
+        onDrop={this.onDrop}
+        multiple={false}
+        className={cn(styles.dropzone, className)}
+        acceptClassName="accept"
+        rejectClassName="reject"
+        disabledClassName="disabled"
+      >
+        <div className={styles.fakeDropzoneArea}>
+          {hasFiles ? (
+            <img src={files[0] && files[0].preview} alt={files[0].fileName} />
+          ) : (
+            dropzoneInner
+          )}
         </div>
-        <div>
-          {files.length ? (
+        <div className={styles.sideBox}>
+          {hasFiles ? (
             <UploadedFiles files={files} />
           ) : (
             <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
-              {props.uploadCta}
+              {uploadCta}
             </Button>
           )}
-          <div className={styles.fileFormatInformation}>{props.fileFormatInformation}</div>
+          <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
         </div>
-      </div>
-    </div>
-  );
-};
+      </Dropzone>
+    );
+  }
+}

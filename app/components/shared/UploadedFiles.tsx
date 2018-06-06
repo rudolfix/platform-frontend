@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
 import * as styles from "./UploadedFiles.module.scss";
@@ -9,7 +10,7 @@ interface IProps {
 }
 
 export const UploadedFiles: React.SFC<IProps> = ({ files }) => (
-  <div className={styles.uploadedFiles}>
+  <div className={cn("c-uploaded-files", styles.uploadedFiles)}>
     {files.map(({ fileName }, index) => (
       <div key={index} className={styles.file}>
         <span className={styles.text} title={fileName}>

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EtoOfferingCard, IProps } from "./EtoOfferingCard";
+import { EtoOfferingCard, IEtoOfferingProps } from "./EtoOfferingCard";
 
 import * as logo from "../../assets/img/logo_capitalized.svg";
 
@@ -11,7 +11,7 @@ const description =
 const lorem =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.";
 
-const props: IProps = {
+const props: IEtoOfferingProps = {
   roundName: "seed round",
   tags: [
     {

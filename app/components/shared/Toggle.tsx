@@ -7,14 +7,25 @@ interface IProps {
   enabledLabel: string | React.ReactNode;
   onClick: () => void;
   checked: boolean;
+  disabled?: boolean;
 }
 
-export const Toggle: React.SFC<IProps> = ({ disabledLabel, enabledLabel, onClick, checked }) => {
+export const Toggle: React.SFC<IProps> = ({
+  disabledLabel,
+  enabledLabel,
+  onClick,
+  checked,
+  disabled = false
+}) => {
   return (
     <div className={styles.toggle}>
       <div>{disabledLabel}</div>
       <label className={styles.toggleWrapper} onClick={() => onClick()}>
-        <input className={styles.input} type="checkbox" defaultChecked={checked} />
+        <input
+          className={styles.input}
+          type="checkbox"
+          defaultChecked={checked}
+          disabled={disabled}/>
         <div className={styles.track}>
           <div className={styles.indicator} />
         </div>

@@ -14,6 +14,12 @@ $track-width: 48px;
 .input {
   @include visually-hidden;
 
+  &:disabled {
+    ~ .track {
+      opacity: .5;
+    }
+  }
+
   &:checked {
     ~ .track {
       color: $color-green;

@@ -8,6 +8,9 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Accordion, AccordionElement } from "../../../shared/Accordion";
+import { Button } from "../../../shared/Buttons";
+import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
+import { Section } from "../Shared";
 
 interface IStateProps {
   loadingData: boolean;
@@ -23,7 +26,80 @@ type IProps = IStateProps & IDispatchProps;
 const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
   return (
     <Form>
-      <h1>Product vision</h1>
+      <h4 className="text-center">Product Vision</h4>
+      <Section>
+        {/* TODO: Remove Title and add it to header component */}
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT IS THE PROBLEM YOU ARE SOLVING AND HOW?"
+          placeholder="Describe"
+          name="problemDescription"
+        />
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT IS THE EXACT TARGET CUSTOMER GROUP OF YOUR PRODUCT?"
+          placeholder="Describe"
+          name="customerGroup"
+        />
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT IS THE PRODUCT VISION?"
+          placeholder="Describe"
+          name="productVision"
+        />
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT HAS INSPIRED YOU TO START THIS COMPANY?"
+          placeholder="Describe"
+          name="companyInspiration"
+        />
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT ARE THE KEY PRODUCT PRIORITIES (I.E. ROADMAP) FOR THE NEXT 12 MOTNHS?"
+          placeholder="Describe"
+          name="productPriorities"
+        />
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT IS THE SALES MODEL?"
+          placeholder="Describe"
+          name="salesModel"
+        />
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT IS THE MARKETING APPRAOCH?"
+          placeholder="Describe"
+          name="marketingAppraoch"
+        />
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label="WHAT IS YOUR UNIQUE SELLING PROPOSITION?"
+          placeholder="Describe"
+          name="sellingProposition"
+        />
+      </Section>
+      <Col>
+        <Row className="justify-content-end">
+          <Button
+            layout="primary"
+            className="mr-4"
+            onClick={() => {
+              // tslint:disable-next-line
+              console.log("Form values: ", _props.values);
+              _props.submitForm();
+            }}
+          >
+            Save
+          </Button>
+        </Row>
+      </Col>
     </Form>
   );
 };
@@ -36,7 +112,7 @@ const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);
 
-export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationProductVisionComponent: React.SFC<IProps> = props => (
   <EtoEnhancedForm {...props} />
 );
 
@@ -55,4 +131,4 @@ export const EtoRegistrationProductVision = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-)(EtoRegistrationTeamAndInvestorsComponent);
+)(EtoRegistrationProductVisionComponent);

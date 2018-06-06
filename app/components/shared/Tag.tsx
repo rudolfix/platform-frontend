@@ -43,9 +43,9 @@ export const Tag: React.SFC<ITag> = ({
         </Link>
       ) : (
         <span onClick={onClick} className={classes}>
-          {!end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2 mr-0"/>}
+          {!end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2 mr-0" />}
           {text}
-          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2 mr-0"/>}
+          {end && !!svgIcon && <InlineIcon svgIcon={svgIcon} className="ml-2 mr-0" />}
         </span>
       )}
     </>

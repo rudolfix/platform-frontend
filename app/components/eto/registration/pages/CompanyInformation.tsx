@@ -14,8 +14,6 @@ import { FormField } from "../../../shared/forms/forms";
 import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 import { Section } from "../Shared";
 
-import * as styles from "./CompanyInformation.module.scss";
-
 interface IStateProps {
   loadingData: boolean;
   stateValues: TPartialEtoData;
@@ -33,9 +31,9 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
       <h4 className="text-center">Company Information</h4>
       <Section>
         {/* TODO: Remove Title and add it to header component */}
-        <FormField label="Brand Name*" name="brandName" className={styles.inputField} />
-        <FormField label="Website*" name="website" className={styles.inputField} />
-        <FormField label="Company tagline*" name="companyTagline" className={styles.inputField} />
+        <FormField label="Brand Name*" name="brandName" />
+        <FormField label="Website*" name="website" />
+        <FormField label="Company tagline*" name="companyTagline" />
         <FormTextArea
           className="mb-2 mt-2"
           label="Company Description"

@@ -5,11 +5,11 @@ import { Proportion } from "./Proportion";
 
 import * as styles from "./EtoOfferingSoon.module.scss";
 
-interface IProps {
+export interface IEtoOfferingSoonProps {
   description: string | React.ReactNode;
 }
 
-export const EtoOfferingSoon: React.SFC<IProps> = ({ description }) => {
+export const EtoOfferingSoon: React.SFC<IEtoOfferingSoonProps> = ({ description }) => {
   return (
     <Proportion>
       <div className={styles.card}>

@@ -7,7 +7,8 @@ import { ITag, Tag } from "./Tag";
 
 import * as linkIcon from "../../assets/img/inline_icons/icon_link.svg";
 import * as styles from "./EtoOfferingCard.module.scss";
-export interface IProps {
+
+export interface IEtoOfferingProps {
   roundName: string;
   tags: ITag[];
   name: string;
@@ -39,7 +40,7 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
   );
 };
 
-export const EtoOfferingCard: React.SFC<IProps> = props => {
+export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
   return (
     <Link to={props.to} className={styles.card}>
       <Proportion width={10} height={6}>

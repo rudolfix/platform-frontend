@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { sampleCard } from "../landing/Landing";
+import { etoCompaniesCards } from "../../data/etoCompanies";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { EtoOfferingCard } from "../shared/EtoOfferingCard";
-import { EtoOfferingSoon } from "../shared/EtoOfferingSoon";
+import { EtoCard } from "../shared/EtoCard";
 import { MyPortfolioWidget } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
 import { UserInfo } from "./UserInfo";
@@ -21,18 +20,11 @@ export const Dashboard = () => (
     </Row>
 
     <Row className="row-gutter-top mb-4">
-      <Col xs={12} lg={4}>
-        <EtoOfferingCard {...sampleCard} />
-      </Col>
-      <Col xs={12} lg={4}>
-        <EtoOfferingCard {...sampleCard} />
-      </Col>
-      <Col xs={12} lg={4}>
-        <EtoOfferingCard {...sampleCard} />
-      </Col>
-      <Col xs={12} lg={4}>
-        <EtoOfferingSoon description="The most exciting company working with the creative community to create original content generation for the worlds leading brands. " />
-      </Col>
+      {etoCompaniesCards.map(eto => (
+        <Col xs={12} lg={6} xl={4}>
+          <EtoCard {...eto} />
+        </Col>
+      ))}
     </Row>
 
     {process.env.NF_USER_INFO_COMPONENT_ENABLED === "1" && <UserInfo />}

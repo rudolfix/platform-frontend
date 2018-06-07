@@ -6,10 +6,13 @@ import { Creatable as ReactSelectCreatable } from "react-select";
 import Select from "react-virtualized-select";
 import { Col, Input } from "reactstrap";
 
+import { CommonHtmlProps } from "../../../types";
 import { Tag } from "../../shared/Tag";
 
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
 import * as styles from "./EtoTagWidget.module.scss";
+
+type ICombinedProps = IProps & CommonHtmlProps;
 
 interface IProps {
   name: string;
@@ -19,7 +22,7 @@ interface IProps {
 
 interface IInternalProps {
   values: string[];
-  onChange: (e: any) => any;
+  onChange: (newTag: string) => void;
   handleSelectedTagClick: (tag: string) => void;
   disabled: boolean;
 }
@@ -38,8 +41,8 @@ export const generateTagOptions = (tags: string[]): { value: string; label: stri
     label: word,
   }));
 
-const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
-  <div>
+const TagsFormEditor: React.SFC<ICombinedProps & IInternalProps> = props => (
+  <div className={cn(styles.tagWidget, props.className)}>
     <Select
       disabled={props.disabled}
       options={props.options}
@@ -48,7 +51,7 @@ const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
       matchProp="value"
       simpleValue
       selectComponent={Creatable}
-      onChange={e => props.onChange(e)}
+      onChange={newTag => props.onChange(newTag as any)}
       placeholder={"Add category"}
       noResultsText="No matching word"
       className={cn("mb-3", styles.tagsForm)}
@@ -63,7 +66,7 @@ const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
             svgIcon={checkIcon}
             size="small"
             key={tag}
-            end
+            placeSvgInEnd
           />
         ))}
       </div>
@@ -71,7 +74,7 @@ const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
   </div>
 );
 
-export class EtoTagWidget extends React.Component<IProps> {
+export class EtoTagWidget extends React.Component<IProps & CommonHtmlProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
@@ -79,6 +82,8 @@ export class EtoTagWidget extends React.Component<IProps> {
   render(): React.ReactNode {
     const { name, selectedTagsLimit } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+    const selectedTags = values[name] as string[];
+
     return (
       <Field
         name={name}
@@ -86,12 +91,13 @@ export class EtoTagWidget extends React.Component<IProps> {
           <TagsFormEditor
             {...this.props}
             {...field}
-            onChange={(e: string) =>
-              !values[name].some((tag: string) => tag === e) &&
-              setFieldValue(name, [...values[name], e])
-            }
-            handleSelectedTagClick={(selectedTag: string) => {
-              return setFieldValue(name, values[name].filter((tag: string) => tag !== selectedTag));
+            onChange={newTag => {
+              const isAlreadyOnTheList = selectedTags.some(tag => tag === newTag);
+              if (!isAlreadyOnTheList) setFieldValue(name, [...selectedTags, newTag]);
+            }}
+            handleSelectedTagClick={(clickedTag: string) => {
+              const listWithRemovedTag = selectedTags.filter(tag => tag !== clickedTag);
+              return setFieldValue(name, listWithRemovedTag);
             }}
             disabled={values[name].length === selectedTagsLimit}
             values={values[name]}

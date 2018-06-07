@@ -28,7 +28,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
     {props.isAuthorized ? (
       <Button
         layout="secondary"
-        theme="t-white"
+        theme="white"
         onClick={props.logout}
         data-test-id="Header-logout"
       >
@@ -38,11 +38,11 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       <div>
         {props.location && props.location.indexOf("eto") !== -1 ? (
           <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
-            <Button theme="t-white">LOGIN</Button>
+            <Button theme="white">LOGIN</Button>
           </Link>
         ) : (
           <Link data-test-id="Header-login" to={loginWalletRoutes.light}>
-            <Button theme="t-white">LOGIN</Button>
+            <Button theme="white">LOGIN</Button>
           </Link>
         )}
       </div>

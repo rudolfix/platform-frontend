@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 
 interface ISectionProps {
-  line: boolean;
+  line?: boolean;
 }
 
 export const Section: React.SFC<ISectionProps> = ({ line, children }) => (

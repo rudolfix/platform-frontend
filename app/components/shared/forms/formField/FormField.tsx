@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap";
 
-import { InputType } from "../../../../types";
+import { CommonHtmlProps, InputType } from "../../../../types";
 import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
@@ -15,7 +15,7 @@ interface IFieldGroup {
   prefix?: string;
   suffix?: string;
 }
-type FieldGroupProps = IFieldGroup & FieldAttributes;
+type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 
 export class FormField extends React.Component<FieldGroupProps> {
   static contextTypes = {
@@ -23,7 +23,7 @@ export class FormField extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const { label, type, placeholder, name, prefix, suffix, ...props } = this.props;
+    const { label, type, placeholder, name, prefix, suffix, className, ...props } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
 
@@ -44,6 +44,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 </InputGroupAddon>
               )}
               <Input
+                className={className}
                 {...field}
                 type={type}
                 value={field.value || ""}

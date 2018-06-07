@@ -21,8 +21,11 @@ const AdvisorsType = YupTS.object({
   fullName: YupTS.string(),
 });
 
+const tagsType = YupTS.string();
+
 export const EtoTeamDataType = YupTS.object({
   employeesAmount: YupTS.number(),
+  tags: YupTS.array(tagsType),
   founders: YupTS.array(EtoFounderType),
   capTable: YupTS.array(EtoCapTableType),
   notableInvestors: YupTS.array(NotableInvestorsType),

@@ -11,10 +11,10 @@ export const etoCompaniesCards: Array<EtoData> = [
   {
     type: "offering",
     data: {
-      roundName: "seed round",
+      roundName: "series d",
       tags: [
         {
-          text: "fintech",
+          text: "eyetech",
           layout: "ghost-bold",
           theme: "white",
         },
@@ -24,9 +24,48 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "Neufund",
+      name: "Brille24 GMBH",
       description:
-        "Neufund is a blockchain based equity fundraising platform, an ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech.",
+        "Eyewear pioneer aiming to change the way people access eye care with smart AI-applications. Founded 10 years ago, Brille24 has sold more than 2 million glasses and is currently serving one million customers.",
+      quote: {
+        text:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
+        person: "lorem",
+        position: "ipsum",
+      },
+      topImage: {
+        src: "",
+        srcSet: "",
+        alt: ""
+      },
+      quoteImage: {
+        src: "",
+        srcSet: "",
+        alt: ""
+      },
+      logo,
+      to: "#0",
+    },
+  },
+  {
+    type: "offering",
+    data: {
+      roundName: "seed",
+      tags: [
+        {
+          text: "automotive",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "sweden",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      name: "Uniti",
+      description:
+        "Swedish startup developing an electric city car. Optimised for high performance and agility in urban environments. Holistic safety, sustainability, and scalability in manufacturing. Unveiling 2017 - first deliveries 2019.",
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
@@ -50,10 +89,10 @@ export const etoCompaniesCards: Array<EtoData> = [
   {
     type: "offering",
     data: {
-      roundName: "seed round",
+      roundName: "series b",
       tags: [
         {
-          text: "fintech",
+          text: "re-commerce",
           layout: "ghost-bold",
           theme: "white",
         },
@@ -63,9 +102,9 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "XYZ Company",
+      name: "mySwoop",
       description:
-        "XYZ Company is a blockchain based equity fundraising platform, an ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech.",
+        "Online re-commerce platform buying and selling new and used electronics. With tailored software technology, mySWOOOP automatically determines current market prices in real-time assuring attractive resale-margins.",
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
@@ -89,10 +128,10 @@ export const etoCompaniesCards: Array<EtoData> = [
   {
     type: "offering",
     data: {
-      roundName: "seed round",
+      roundName: "series a",
       tags: [
         {
-          text: "fintech",
+          text: "iot",
           layout: "ghost-bold",
           theme: "white",
         },
@@ -102,55 +141,9 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "Example",
+      name: "Next big thing",
       description:
-        "Example is a blockchain based equity fundraising platform, an ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech.",
-      quote: {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
-      },
-      topImage: {
-        src: "",
-        srcSet: "",
-        alt: ""
-      },
-      quoteImage: {
-        src: "",
-        srcSet: "",
-        alt: ""
-      },
-      logo,
-      to: "#0",
-    },
-  },
-  {
-    type: "teaser",
-    data: {
-      description:
-        "The most exciting company working with the creative community to create original content generation for the worlds leading brands.",
-    },
-  },
-  {
-    type: "offering",
-    data: {
-      roundName: "seed round",
-      tags: [
-        {
-          text: "fintech",
-          layout: "ghost-bold",
-          theme: "white",
-        },
-        {
-          text: "germany",
-          layout: "ghost-bold",
-          theme: "white",
-        },
-      ],
-      name: "Neufund",
-      description:
-        "Neufund is a blockchain based equity fundraising platform, an ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech.",
+        "As Europe's premier startup incubator for IOT & blockchain and Germany's chosenDigital Hub for IoT, Next Big Thing drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models",
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
@@ -174,22 +167,22 @@ export const etoCompaniesCards: Array<EtoData> = [
   {
     type: "offering",
     data: {
-      roundName: "seed round",
+      roundName: "series a",
       tags: [
         {
-          text: "fintech",
+          text: "mobility",
           layout: "ghost-bold",
           theme: "white",
         },
         {
-          text: "germany",
+          text: "india",
           layout: "ghost-bold",
           theme: "white",
         },
       ],
-      name: "XYZ Company",
+      name: "emflux motors",
       description:
-        "XYZ Company is a blockchain based equity fundraising platform, an ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech.",
+        "Electric superbike changing the landscape of transportation & mobility. India-based venture backed by both crypto and traditional investors with a mission to power 10 million electric bikes in India by 2027.",
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
@@ -213,7 +206,7 @@ export const etoCompaniesCards: Array<EtoData> = [
   {
     type: "offering",
     data: {
-      roundName: "seed round",
+      roundName: "seed",
       tags: [
         {
           text: "fintech",
@@ -226,9 +219,9 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "Example",
+      name: "blockstate",
       description:
-        "Example is a blockchain based equity fundraising platform, an ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech.",
+        "Creating products for the future of finance. BlockState builds efficient, transparent and compliant products for Asset Management, Debt Issuance and Derivatives based on Blockchain technology.",
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",

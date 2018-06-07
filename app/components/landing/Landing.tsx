@@ -15,10 +15,31 @@ import * as styles from "./Landing.module.scss";
 export const Landing: React.SFC = () => (
   <div className={styles.landingWrapper}>
     <section className={styles.hero}>
-    <Container>
+      <Container>
         <Row>
-          <Col xs={12} md={6}></Col>
-          <Col xs={12} md={6}></Col>
+          <div className={styles.heroCta}>
+            <h2 className={styles.heroHeader}>Venture capital meets crypto</h2>
+            <p className={styles.heroDescription}>Neufund makes it possible to invest in real world equity on blockchain. Meet the first off-chain companies tokenizing their shares under German jurisdiction.</p>
+            <Link to={appRoutes.register}>
+              <Button theme="brand">
+                <FormattedMessage id="landing.welcome-box.register-now" />
+              </Button>
+            </Link>
+          </div>
+        </Row>
+        <Row>
+          <Col className={styles.benefits}>
+            <h3 className={styles.benefitsHeader}>Benefits of investing in equity shares</h3>
+            <div>
+              <span className={styles.benefit}>technologically enhanced shares</span>
+              <span className={styles.benefit}>legally binding tokens</span><br/>
+              <span className={styles.benefit}>EUR and ETH investments</span>
+              <span className={styles.benefit}>ticket and stage agnostic</span>
+              <span className={styles.benefit}>immediate liquidity</span><br/>
+              <span className={styles.benefit}>fractional ownership</span>
+              <span className={styles.benefit}>global offering</span>
+            </div>
+          </Col>
         </Row>
       </Container>
     </section>

@@ -85,14 +85,30 @@ $card-heigh: px-to-rem(440px);
 }
 
 .round-label {
+  display: flex;
   fill: $color-graphite;
   min-width: px-to-rem(170px);
   width: 36%;
+  height: px-to-rem(110px);
+  position: relative;
 
-  text {
-    fill: $neu-white-two;
+  svg {
+    @include rect(100%);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  span {
+    @include rect(90%, 1.3em);
+
+    color: $color-white;
     text-transform: uppercase;
-    width: 100%;
+    text-align: center;
+    margin-top: 10%;
+    z-index: 1;
+    font-size: px-to-rem(20px);
   }
 }
 

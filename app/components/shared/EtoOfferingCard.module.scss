@@ -93,8 +93,7 @@ $card-heigh: px-to-rem(440px);
   position: relative;
 
   svg {
-    @include rect(100%);
-
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
@@ -149,6 +148,10 @@ $card-heigh: px-to-rem(440px);
       top: px-to-rem(8px);
     }
 
+    @include media-breakpoint-down (md) {
+      display: none;
+    }
+
     position: absolute;
     width: px-to-rem(20px);
     height: px-to-rem(20px);
@@ -159,6 +162,10 @@ $card-heigh: px-to-rem(440px);
 
 .quote,
 .description-wrapper {
+  @include media-breakpoint-down(md) {
+    padding: 0;
+  }
+
   padding: 4% px-to-rem(34px);
 }
 

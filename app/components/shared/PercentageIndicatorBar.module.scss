@@ -5,6 +5,7 @@
   color: $green2;
   display: flex;
   flex-grow: 1;
+  position: relative;
 
   .label {
     @include font-default;

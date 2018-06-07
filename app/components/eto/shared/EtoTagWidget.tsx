@@ -6,16 +6,18 @@ import { Creatable as ReactSelectCreatable } from "react-select";
 import Select from "react-virtualized-select";
 import { Col, Input } from "reactstrap";
 
+import { CommonHtmlProps } from "../../../types";
 import { Tag } from "../../shared/Tag";
 
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
 import * as styles from "./EtoTagWidget.module.scss";
 
+type ICombinedProps = IProps & CommonHtmlProps;
+
 interface IProps {
   name: string;
   selectedTagsLimit: number;
   options: { value: string; label: string }[];
-  className?: string;
 }
 
 interface IInternalProps {
@@ -39,7 +41,7 @@ export const generateTagOptions = (tags: string[]): { value: string; label: stri
     label: word,
   }));
 
-const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
+const TagsFormEditor: React.SFC<ICombinedProps & IInternalProps> = props => (
   <div className={cn(styles.tagWidget, props.className)}>
     <Select
       disabled={props.disabled}
@@ -72,7 +74,7 @@ const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
   </div>
 );
 
-export class EtoTagWidget extends React.Component<IProps> {
+export class EtoTagWidget extends React.Component<IProps & CommonHtmlProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };

@@ -28,7 +28,7 @@ const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
+const EtoForm = (props: FormikProps<TPartialEtoData>) => {
   return (
     <Form>
       <h4 className="text-center">Company Information</h4>
@@ -39,8 +39,8 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
         <FormField label="Company tagline*" name="companyTagline" />
         <FormTextArea
           className="mb-2 mt-2"
-          label="Company Description"
-          placeholder="Describe your company* 250 Characters"
+          label="Company Description*"
+          placeholder="Describe your company 250 Characters"
           name="companyDescription"
         />
         <FormTextArea
@@ -100,8 +100,8 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
             className="mr-4"
             onClick={() => {
               // tslint:disable-next-line
-              console.log("Form values: ", _props.values);
-              _props.submitForm();
+              console.log("Form values: ", props.values);
+              props.submitForm();
             }}
           >
             Save

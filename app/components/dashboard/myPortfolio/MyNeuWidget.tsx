@@ -39,7 +39,7 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
             <Button
               layout="secondary"
               iconPosition="icon-after"
-              theme="t-white"
+              theme="white"
               svgIcon={arrowRight}
             >
               <FormattedMessage id="dashboard.my-neu-widget.about" />

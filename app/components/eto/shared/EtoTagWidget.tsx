@@ -15,6 +15,7 @@ interface IProps {
   name: string;
   selectedTagsLimit: number;
   options: { value: string; label: string }[];
+  className?: string;
 }
 
 interface IInternalProps {
@@ -39,7 +40,7 @@ export const generateTagOptions = (tags: string[]): { value: string; label: stri
   }));
 
 const TagsFormEditor: React.SFC<IProps & IInternalProps> = props => (
-  <div>
+  <div className={cn(styles.tagWidget, props.className)}>
     <Select
       disabled={props.disabled}
       options={props.options}

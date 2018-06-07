@@ -13,7 +13,6 @@ interface IFieldGroup {
   placeholder?: string;
   type?: InputType;
   prefix?: string;
-  doNotShowLabel?: boolean;
   className?: string;
   suffix?: string;
 }
@@ -25,17 +24,7 @@ export class FormField extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const {
-      label,
-      type,
-      placeholder,
-      name,
-      prefix,
-      suffix,
-      className,
-      doNotShowLabel,
-      ...props
-    } = this.props;
+    const { label, type, placeholder, name, prefix, suffix, className, ...props } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
 
@@ -45,7 +34,7 @@ export class FormField extends React.Component<FieldGroupProps> {
     } as any;
     return (
       <FormGroup>
-        {!doNotShowLabel && label && <Label for={name}>{label}</Label>}
+        {label && <Label for={name}>{label}</Label>}
         <Field
           name={name}
           render={({ field }: FieldProps) => (

@@ -7,3 +7,7 @@
   border: solid px-to-rem(.5px) $gray8;
   border-radius: px-to-rem(2px);
 }
+
+.tag-widget {
+  min-height: px-to-rem(77px);
+}

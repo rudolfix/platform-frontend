@@ -12,6 +12,7 @@ import { Button } from "../../../shared/Buttons";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { FormField } from "../../../shared/forms/forms";
 import { SingleFileUpload } from "../../../shared/SingleFileUpload";
+import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { Section } from "../Shared";
 
 interface IStateProps {
@@ -22,6 +23,8 @@ interface IStateProps {
 interface IDispatchProps {
   submitForm: (values: TPartialEtoData) => void;
 }
+
+const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
 type IProps = IStateProps & IDispatchProps;
 
@@ -50,6 +53,14 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
           placeholder="Key Quote from Investor 250 Characters"
           name="investorQuote"
         />
+
+        <EtoTagWidget
+          selectedTagsLimit={5}
+          options={generateTagOptions(tagList)}
+          name="tags"
+          className="mb-4"
+        />
+
         <SingleFileUpload
           acceptedFiles="image/*"
           fileUploading={false}
@@ -81,7 +92,6 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
           className="mb-3"
         />
         {/* TODO: Use backend connected SingleFileUpload currently are only place holders */}
-        {/* TODO: Add Widget Tag Component */}
       </Section>
       <Col>
         <Row className="justify-content-end">

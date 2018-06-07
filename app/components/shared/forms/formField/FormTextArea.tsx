@@ -10,7 +10,6 @@ interface IFieldGroup {
   placeholder?: string;
   prefix?: string;
   suffix?: string;
-  doNotShowLabel?: boolean;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 export class FormTextArea extends React.Component<FieldGroupProps> {
@@ -19,12 +18,12 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const { label, placeholder, name, prefix, suffix, doNotShowLabel } = this.props;
+    const { label, placeholder, name, prefix, suffix } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
     return (
       <FormGroup>
-        {!doNotShowLabel && label && <Label for={name}>{label}</Label>}
+        {label && <Label for={name}>{label}</Label>}
         <Field
           name={name}
           render={({ field }: FieldProps) => (

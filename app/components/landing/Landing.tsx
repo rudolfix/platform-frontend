@@ -4,15 +4,12 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
+import { etoCompaniesCards } from "../../data/etoCompanies";
 import { appRoutes } from "../appRoutes";
 import { Button } from "../shared/Buttons";
-import { EtoOfferingCard, IEtoOfferingProps } from "../shared/EtoOfferingCard";
+import { EtoCard } from "../shared/EtoCard";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
-import * as logoMobile from "../../assets/img/logo-square-white.svg";
-import * as logo from "../../assets/img/logo_capitalized.svg";
-import { etoCompaniesCards } from "../../data/etoCompanies";
-import { EtoCard } from "../shared/EtoCard";
 import * as styles from "./Landing.module.scss";
 
 export const Landing: React.SFC = () => (

@@ -1,9 +1,9 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoTeamDataType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -13,6 +13,7 @@ import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { FormField } from "../../../shared/forms/forms";
 import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 interface IStateProps {
@@ -30,8 +31,7 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (props: FormikProps<TPartialEtoData>) => {
   return (
-    <Form>
-      <h4 className="text-center">Company Information</h4>
+    <EtoFormBase title="Company Information" schema={EtoCompanyInformationType}>
       <Section>
         {/* TODO: Remove Title and add it to header component */}
         <FormField label="Brand Name*" name="brandName" />
@@ -46,12 +46,12 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
         <FormTextArea
           label="Founders Quote"
           placeholder="Key Quote from Founder 250 Characters"
-          name="founderQuote"
+          name="foundersQuote"
         />
         <FormTextArea
           label="Founders Investor"
           placeholder="Key Quote from Investor 250 Characters"
-          name="investorQuote"
+          name="keyQuoteFromInvestor"
         />
 
         <EtoTagWidget
@@ -108,12 +108,12 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
           </Button>
         </Row>
       </Col>
-    </Form>
+    </EtoFormBase>
   );
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
-  validationSchema: EtoTeamDataType.toYup(),
+  validationSchema: EtoCompanyInformationType.toYup(),
   // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.stateValues),
   mapPropsToValues: props => props.stateValues,
   // enableReinitialize: true,

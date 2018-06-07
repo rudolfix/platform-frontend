@@ -1,5 +1,6 @@
+import * as cn from "classnames";
 import * as React from "react";
-
+import { CommonHtmlProps } from "../../types";
 import * as styles from "./PercentageIndicatorBar.module.scss";
 
 interface IProps {
@@ -8,9 +9,12 @@ interface IProps {
 
 const CURVE = 20;
 
-export const PercentageIndicatorBar: React.SFC<IProps> = ({ percent }) => {
+export const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = ({
+  percent,
+  ...htmlProps
+}) => {
   return (
-    <div className={styles.percentageIndicatorBar}>
+    <div {...htmlProps} className={cn(styles.percentageIndicatorBar, htmlProps.className)}>
       <span className={styles.label}>{percent}%</span>
       <svg width="100%" height="38">
         <rect className={styles.background} width="100%" height="100%" rx={CURVE} ry={CURVE} />

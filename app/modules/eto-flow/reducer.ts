@@ -7,14 +7,10 @@ export interface IEtoFlowState {
   data: TPartialEtoData;
 }
 
-const etoFlowInitialState: IEtoFlowState = {
+export const etoFlowInitialState: IEtoFlowState = {
   loading: true,
   data: {
     tags: [],
-    founders: [{}],
-    capTable: [{}],
-    notableInvestors: [{}],
-    advisors: [{}],
   },
 };
 

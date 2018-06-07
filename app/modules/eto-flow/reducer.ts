@@ -10,6 +10,7 @@ export interface IEtoFlowState {
 const etoFlowInitialState: IEtoFlowState = {
   loading: true,
   data: {
+    tags: [],
     founders: [{}],
     capTable: [{}],
     notableInvestors: [{}],

@@ -32,6 +32,16 @@ const props: IEtoOfferingProps = {
     person: "John",
     position: "founder",
   },
+  topImage: {
+    src: "",
+    srcSet: "",
+    alt: ""
+  },
+  quoteImage: {
+    src: "",
+    srcSet: "",
+    alt: ""
+  },
   logo,
   to: "#0",
 };

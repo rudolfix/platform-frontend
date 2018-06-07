@@ -9,6 +9,12 @@ import { ITag, Tag } from "./Tag";
 import * as linkIcon from "../../assets/img/inline_icons/icon_link.svg";
 import * as styles from "./EtoOfferingCard.module.scss";
 
+export interface IResponsiveImage {
+  alt: string;
+  src: string;
+  srcSet?: string;
+}
+
 export interface IEtoOfferingProps {
   roundName: string;
   tags: ITag[];
@@ -21,7 +27,10 @@ export interface IEtoOfferingProps {
   };
   to: string;
   logo: string;
-
+  topImage: IResponsiveImage;
+  quoteImage?: IResponsiveImage;
+  quoteBackground?: string;
+  quoteColor?: string;
   className?: string;
 }
 
@@ -48,6 +57,13 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
     <Link to={props.to} className={cn(styles.card, props.className)}>
       <Proportion width={10} height={6}>
         <div className={styles.top}>
+          {
+            props.topImage && <img
+              className={styles.image}
+              src={props.topImage!.src}
+              srcSet={props.topImage!.srcSet}
+              alt={props.topImage!.alt} />
+          }
           <RoundLabel text={props.roundName} />
           <img className={styles.logo} src={props.logo} alt={`${props.name} logo`} />
           <div className={styles.tags}>
@@ -63,7 +79,14 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
             <p className={styles.description}>{props.description}</p>
           </div>
         </Proportion>
-        <blockquote className={styles.quote}>
+        <blockquote className={styles.quote} style={{background: props.quoteBackground, color: props.quoteColor}}>
+          {
+            props.quoteImage && <img
+              className={styles.image}
+              src={props.quoteImage!.src}
+              srcSet={props.quoteImage!.srcSet}
+              alt={props.quoteImage!.alt} />
+          }
           <p>
             {'"'}
             {props.quote.text}

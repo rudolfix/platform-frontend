@@ -8,14 +8,16 @@ const messageFilesPath = join(__dirname, "../intl/messages");
 
 function readFileOrDefault(path, def) {
   try {
-    return readFileSync(path, "utf8") || def;
+    const fileContents = readFileSync(path, "utf8") || def;
+
+    return fileContents.trim();
   } catch (e) {
     return def;
   }
 }
 
 function stringifyAndSort(obj) {
-  return JSON.stringify(obj, Object.keys(obj).sort(), 2) + "\n";
+  return JSON.stringify(obj, Object.keys(obj).sort(), 2);
 }
 
 function main() {
@@ -47,6 +49,7 @@ function main() {
   const diffFormatted = diff >= 0 ? "+" + diff : diff;
 
   if (checkMode) {
+    // both strings are trimmed — meaning we dont care about line endings b/c phrasepp integration breaks it anyway
     if (oldLocaleFileContents !== stringifyAndSort(newLocale)) {
       console.error(
         `Some strings were not extracted or not formatted correctly! Diff: ${diffFormatted}`,

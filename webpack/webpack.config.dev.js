@@ -42,6 +42,10 @@ module.exports = merge(configCommon, {
         target: "http://localhost:5003",
         pathRewrite: { "^/api/kyc": "" },
       },
+      "/api/eto-listing": {
+        target: "http://localhost:5009",
+        pathRewrite: { "^/api/eto-listing": "" },
+      },
     },
   },
   entry: [

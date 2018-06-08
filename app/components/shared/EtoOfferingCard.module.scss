@@ -258,5 +258,5 @@ $card-heigh: px-to-rem(440px);
   top: 0;
   left: 0;
   position: absolute;
-  background-size: cover;
+  object-fit: cover;
 }

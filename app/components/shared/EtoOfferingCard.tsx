@@ -3,11 +3,9 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { InlineIcon } from "./InlineIcon";
 import { Proportion } from "./Proportion";
 import { ITag, Tag } from "./Tag";
 
-import * as linkIcon from "../../assets/img/inline_icons/icon_link.svg";
 import * as styles from "./EtoOfferingCard.module.scss";
 
 export interface IResponsiveImage {
@@ -23,8 +21,7 @@ export interface IEtoOfferingProps {
   description: string;
   quote: {
     text: string;
-    person: string;
-    position: string;
+    credits: string;
   };
   to: string;
   logo?: string;
@@ -89,7 +86,6 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
           disabledOnMobile={true}
         >
           <div className={styles.descriptionWrapper}>
-            {props.name && <InlineIcon svgIcon={linkIcon} />}
             {props.name && <h3 className={styles.name}>{props.name}</h3>}
             <p className={cn(styles.description, props.teaser && styles.teaser)}>
               {props.description}
@@ -122,14 +118,7 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
                 {props.quote.text}
                 {'"'}
               </p>
-              <p>
-                {"- "}
-                {props.quote.person}
-                {", "}
-                {props.quote.position}
-                {" @ "}
-                {props.name}
-              </p>
+              <p>{props.quote.credits}</p>
             </>
           )}
         </blockquote>

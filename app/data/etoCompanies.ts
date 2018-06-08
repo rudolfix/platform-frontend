@@ -1,11 +1,29 @@
 import { IEtoOfferingProps } from "../components/shared/EtoOfferingCard";
 
-import * as blockstate from "../assets/img/eto_offers/blockstate.png";
-import * as brile24 from "../assets/img/eto_offers/brille24.png";
-import * as emflux_motors from "../assets/img/eto_offers/emflux_motors.png";
-import * as myswoop from "../assets/img/eto_offers/myswoop.png";
-import * as next_big_thing from "../assets/img/eto_offers/next_big_thing.png";
-import * as uniti from "../assets/img/eto_offers/uniti.gif";
+import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
+import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
+import * as blockstatehover from "../assets/img/eto_offers/blockstatehover@1x.jpg";
+import * as blockstate2hover from "../assets/img/eto_offers/blockstatehover@2x.jpg";
+import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
+import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
+import * as brile24hover from "../assets/img/eto_offers/brille24hover@1x.jpg";
+import * as brile242hover from "../assets/img/eto_offers/brille24hover@2x.jpg";
+import * as emflux from "../assets/img/eto_offers/emflux@1x.jpg";
+import * as emflux2 from "../assets/img/eto_offers/emflux@2x.jpg";
+import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
+import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
+import * as myswoop from "../assets/img/eto_offers/myswoop@1x.jpg";
+import * as myswoop2 from "../assets/img/eto_offers/myswoop@2x.jpg";
+import * as myswoophover from "../assets/img/eto_offers/myswoophover@1x.jpg";
+import * as myswoop2hover from "../assets/img/eto_offers/myswoophover@2x.jpg";
+import * as nextbigthing from "../assets/img/eto_offers/nextbigthing@1x.jpg";
+import * as nextbigthing2 from "../assets/img/eto_offers/nextbigthing@2x.jpg";
+import * as nextbigthinghover from "../assets/img/eto_offers/nextbigthinghover@1x.jpg";
+import * as nextbigthing2hover from "../assets/img/eto_offers/nextbigthinghover@2x.jpg";
+import * as uniti from "../assets/img/eto_offers/uniti@1x.jpg";
+import * as uniti2 from "../assets/img/eto_offers/uniti@2x.jpg";
+import * as unitihover from "../assets/img/eto_offers/unitihover@1x.jpg";
+import * as uniti2hover from "../assets/img/eto_offers/unitihover@2x.jpg";
 
 export type EtoData = { data: IEtoOfferingProps };
 
@@ -29,19 +47,17 @@ export const etoCompaniesCards: Array<EtoData> = [
       description:
         "Eyewear pioneer aiming to change the way people access eye care with smart AI-applications. Founded 10 years ago, Brille24 has sold more than 2 million glasses and is currently serving one million customers.",
       quote: {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "lorem",
-        position: "ipsum",
+        text: "",
+        credits: "",
       },
       topImage: {
         src: brile24,
-        srcSet: "",
+        srcSet: `${brile24} 1x, ${brile242} 2x`,
         alt: "",
       },
       quoteImage: {
-        src: "",
-        srcSet: "",
+        src: brile242hover,
+        srcSet: `${brile24hover} 1x, ${brile242hover} 2x`,
         alt: "",
       },
       to: "#0",
@@ -68,17 +84,16 @@ export const etoCompaniesCards: Array<EtoData> = [
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+        credits: "John",
       },
       topImage: {
         src: uniti,
-        srcSet: "",
+        srcSet: `${uniti} 1x, ${uniti2} 2x`,
         alt: "",
       },
       quoteImage: {
-        src: "",
-        srcSet: "",
+        src: uniti,
+        srcSet: `${unitihover} 1x, ${uniti2hover} 2x`,
         alt: "",
       },
       to: "#0",
@@ -104,18 +119,17 @@ export const etoCompaniesCards: Array<EtoData> = [
         "Online re-commerce platform buying and selling new and used electronics. With tailored software technology, mySWOOOP automatically determines current market prices in real-time assuring attractive resale-margins.",
       quote: {
         text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+          "mySWOOOP performing an innovative trading approach is a key role in our digital agenda. We’re impressed by an average annual sales growth of more than 170% that generated net sales of 4.6 Million in 2017 and we’re looking forward to support growth strategy in 2018.",
+        credits: "Rainer Wohlers, Melchers Group",
       },
       topImage: {
         src: myswoop,
-        srcSet: "",
+        srcSet: `${myswoop} 1x, ${myswoop2} 2x`,
         alt: "",
       },
       quoteImage: {
-        src: "",
-        srcSet: "",
+        src: myswoophover,
+        srcSet: `${myswoophover} 1x, ${myswoop2hover} 2x`,
         alt: "",
       },
       to: "#0",
@@ -141,18 +155,17 @@ export const etoCompaniesCards: Array<EtoData> = [
         "As Europe's premier startup incubator for IOT & blockchain and Germany's chosenDigital Hub for IoT, Next Big Thing drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models",
       quote: {
         text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+          "As IoT will significantly change service and industry structures, NBT offers early participation in this disruptive opportunity. They convinced me with their clear focus, proven track record, and professional attitude. The concept and structure are purposefully goal-oriented.",
+        credits: "Rudi Ludwig, Investor",
       },
       topImage: {
-        src: next_big_thing,
-        srcSet: "",
+        src: nextbigthing,
+        srcSet: `${nextbigthing} 1x, ${nextbigthing2} 2x`,
         alt: "",
       },
       quoteImage: {
-        src: "",
-        srcSet: "",
+        src: nextbigthinghover,
+        srcSet: `${nextbigthinghover} 1x, ${nextbigthing2hover} 2x`,
         alt: "",
       },
       to: "#0",
@@ -178,18 +191,17 @@ export const etoCompaniesCards: Array<EtoData> = [
         "Electric superbike changing the landscape of transportation & mobility. India-based venture backed by both crypto and traditional investors with a mission to power 10 million electric bikes in India by 2027.",
       quote: {
         text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+          "The Emflux ETO is a great opportunity to finance a game changing team in the Indian electric vehicles space. The company is deploying the Tesla model of moving from high end to mass market vehicles in the humungous Indian two wheeler segment.",
+        credits: "Meher Roy, co-founder of Chorus One and host at Epicenter.tv",
       },
       topImage: {
-        src: emflux_motors,
-        srcSet: "",
+        src: emflux,
+        srcSet: `${emflux} 1x, ${emflux2} 2x`,
         alt: "",
       },
       quoteImage: {
-        src: "",
-        srcSet: "",
+        src: emfluxhover,
+        srcSet: `${emfluxhover} 1x, ${emflux2hover} 2x`,
         alt: "",
       },
       to: "#0",
@@ -214,19 +226,17 @@ export const etoCompaniesCards: Array<EtoData> = [
       description:
         "Creating products for the future of finance. BlockState builds efficient, transparent and compliant products for Asset Management, Debt Issuance and Derivatives based on Blockchain technology.",
       quote: {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+        text: "",
+        credits: "",
       },
       topImage: {
         src: blockstate,
-        srcSet: "",
+        srcSet: `${blockstate} 1x, ${blockstate2} 2x`,
         alt: "",
       },
       quoteImage: {
-        src: "",
-        srcSet: "",
+        src: blockstatehover,
+        srcSet: `${blockstatehover} 1x, ${blockstate2hover} 2x`,
         alt: "",
       },
       to: "#0",
@@ -256,8 +266,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+        credits: "John",
       },
       topImage: {
         src: "",
@@ -287,8 +296,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+        credits: "John",
       },
       topImage: {
         src: "",
@@ -318,8 +326,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+        credits: "John",
       },
       topImage: {
         src: "",
@@ -349,8 +356,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       quote: {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        person: "John",
-        position: "founder",
+        credits: "John",
       },
       topImage: {
         src: "",

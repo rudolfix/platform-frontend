@@ -31,10 +31,10 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
       <h4 className="text-center">Legal Information</h4>
       <Section>
         {/* TODO: Remove Title and add it to header component */}
-        <FormField label="Legal company name" name="companyName" />
-        <FormField label="Legal form" name="legalForm" />
-        <FormField label="Company Street Address" name="companyAddress" />
-        <FormField label="City / Country" name="companyCountry" />
+        <FormField label="Legal company name" name="companyName" disabled />
+        <FormField label="Legal form" name="legalForm" disabled />
+        <FormField label="Company Street Address" name="companyAddress" disabled />
+        <FormField label="City / Country" name="companyCountry" disabled />
         <FormField label="Registration number*" name="registrationNumber" />
         <FormField label="Vat number*" name="vatNumber" />
         <FormFieldDate label="Company founding date*" name="foundingDate" />
@@ -67,7 +67,13 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
   validationSchema: EtoTeamDataType.toYup(),
   // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.stateValues),
-  mapPropsToValues: props => props.stateValues,
+  mapPropsToValues: props => ({
+    ...props.stateValues,
+    companyName: "Neufund",
+    legalForm: "10023",
+    companyAddress: "cuvryStrasse 4",
+    companyCountry: "Berlin / Germany",
+  }),
   // enableReinitialize: true,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(EtoForm);

@@ -5,10 +5,17 @@ import { TEtoData, TPartialEtoData } from "../../lib/api/EtoApi.interfaces";
 import { actions, TAction } from "../actions";
 import { neuTakeEvery } from "../sagas";
 
-export function* loadEtoData({ apiEtoService }: TGlobalDependencies): any {
-  const etoData: IHttpResponse<TEtoData> = yield apiEtoService.getCompanyData();
+export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
+  try {
+    const etoData: IHttpResponse<TEtoData> = yield apiEtoService.getCompanyData();
 
-  yield put(actions.etoFlow.loadData(etoData.body));
+    yield put(actions.etoFlow.loadData(etoData.body));
+  } catch (e) {
+    notificationCenter.error(
+      "Could not access ETO data. Make sure you have completed KYC and email verification process.",
+    );
+    yield put(actions.routing.goToDashboard());
+  }
 }
 
 export function* saveEtoData({ apiEtoService }: TGlobalDependencies, action: TAction): any {

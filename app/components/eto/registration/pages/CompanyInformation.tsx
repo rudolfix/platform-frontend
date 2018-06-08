@@ -18,6 +18,7 @@ import { Section } from "../Shared";
 
 interface IStateProps {
   loadingData: boolean;
+  savingData: boolean;
   stateValues: TPartialEtoData;
 }
 
@@ -102,6 +103,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
               // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
               props.saveData(props.values);
             }}
+            isLoading={props.savingData}
           >
             Save
           </Button>
@@ -125,11 +127,12 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
+      savingData: s.etoFlow.saving,
       stateValues: s.etoFlow.data,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: any) => {
-        dispatch(actions.etoFlow.saveData(data));
+        dispatch(actions.etoFlow.saveDataStart(data));
       },
     }),
   }),

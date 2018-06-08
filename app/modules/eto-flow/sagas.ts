@@ -12,7 +12,7 @@ export function* loadEtoData({ apiEtoService }: TGlobalDependencies): any {
 }
 
 export function* saveEtoData({ apiEtoService }: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "ETO_FLOW_SAVE_DATA") return;
+  if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
 
   const newData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
     action.payload.data,
@@ -24,5 +24,5 @@ export function* saveEtoData({ apiEtoService }: TGlobalDependencies, action: TAc
 
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
-  yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA", saveEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
 }

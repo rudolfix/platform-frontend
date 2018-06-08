@@ -18,8 +18,12 @@ export const Landing: React.SFC = () => (
       <Container>
         <Row>
           <div className={styles.heroCta}>
-            <h2 className={styles.heroHeader}>Venture capital meets crypto</h2>
-            <p className={styles.heroDescription}>Neufund makes it possible to invest in real world equity on blockchain. Meet the first off-chain companies tokenizing their shares under German jurisdiction.</p>
+            <h2 className={styles.heroHeader}>
+              <FormattedMessage id="landing.hero.header" />
+            </h2>
+            <p className={styles.heroDescription}>
+              <FormattedMessage id="landing.hero.description" />
+            </p>
             <Link to={appRoutes.register}>
               <Button theme="brand">
                 <FormattedMessage id="landing.welcome-box.register-now" />
@@ -29,15 +33,33 @@ export const Landing: React.SFC = () => (
         </Row>
         <Row>
           <Col className={styles.benefits}>
-            <h3 className={styles.benefitsHeader}>Benefits of investing in equity shares</h3>
+            <h3 className={styles.benefitsHeader}>
+              <FormattedMessage id="landing.hero.benefits.title" />
+            </h3>
             <div>
-              <span className={styles.benefit}>technologically enhanced shares</span>
-              <span className={styles.benefit}>legally binding tokens</span><br/>
-              <span className={styles.benefit}>EUR and ETH investments</span>
-              <span className={styles.benefit}>ticket and stage agnostic</span>
-              <span className={styles.benefit}>immediate liquidity</span><br/>
-              <span className={styles.benefit}>fractional ownership</span>
-              <span className={styles.benefit}>global offering</span>
+              <span className={styles.benefit}>
+                <FormattedMessage id="landing.hero.benefits.benefit-1" />
+              </span>
+              <span className={styles.benefit}>
+                <FormattedMessage id="landing.hero.benefits.benefit-2" />
+              </span>
+              <br />
+              <span className={styles.benefit}>
+                <FormattedMessage id="landing.hero.benefits.benefit-3" />
+              </span>
+              <span className={styles.benefit}>
+                <FormattedMessage id="landing.hero.benefits.benefit-4" />
+              </span>
+              <span className={styles.benefit}>
+                <FormattedMessage id="landing.hero.benefits.benefit-5" />
+              </span>
+              <br />
+              <span className={styles.benefit}>
+                <FormattedMessage id="landing.hero.benefits.benefit-6" />
+              </span>
+              <span className={styles.benefit}>
+                <FormattedMessage id="landing.hero.benefits.benefit-7" />
+              </span>
             </div>
           </Col>
         </Row>

@@ -31,9 +31,8 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (props: FormikProps<TPartialEtoData>) => {
   return (
-    <EtoFormBase title="Company Information" schema={EtoCompanyInformationType}>
+    <EtoFormBase title="Company Information" validator={EtoCompanyInformationType.toYup()}>
       <Section>
-        {/* TODO: Remove Title and add it to header component */}
         <FormField label="Brand Name*" name="brandName" />
         <FormField label="Website*" name="website" />
         <FormField label="Company tagline*" name="companyTagline" />

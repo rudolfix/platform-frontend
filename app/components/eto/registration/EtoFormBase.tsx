@@ -3,10 +3,10 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as Yup from "yup";
 
-import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
-import { Section } from "./Shared";
 import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
 import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
+import { Section } from "./Shared";
 
 import * as styles from "./EtoFormBase.module.scss";
 

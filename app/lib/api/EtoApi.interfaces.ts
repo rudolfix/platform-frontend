@@ -11,12 +11,12 @@ export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 const tagsType = YupTS.string();
 
 export const EtoCompanyInformationType = YupTS.object({
-  brandName: YupTS.string(),
-  website: YupTS.string(),
-  companyTagline: YupTS.string(),
+  companyBanner: YupTS.string(),
+  companyWebsite: YupTS.string(),
+  companyOneliner: YupTS.string(),
   companyDescription: YupTS.string(),
-  foundersQuote: YupTS.string(),
-  keyQuoteFromInvestor: YupTS.string(),
+  keyQuoteFounder: YupTS.string(),
+  keyQuoteInvestor: YupTS.string(),
   categories: YupTS.array(tagsType),
   // here we are missing image uploading data
 });

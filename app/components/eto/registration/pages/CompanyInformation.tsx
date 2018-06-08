@@ -33,9 +33,9 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   return (
     <EtoFormBase title="Company Information" validator={EtoCompanyInformationType.toYup()}>
       <Section>
-        <FormField label="Brand Name*" name="brandName" />
-        <FormField label="Website*" name="website" />
-        <FormField label="Company tagline*" name="companyTagline" />
+        <FormField label="Brand Name*" name="companyBanner" />
+        <FormField label="Website*" name="companyWebsite" />
+        <FormField label="Company tagline*" name="companyOneliner" />
         <FormTextArea
           className="mb-2 mt-2"
           label="Company Description*"
@@ -45,12 +45,12 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
         <FormTextArea
           label="Founders Quote"
           placeholder="Key Quote from Founder 250 Characters"
-          name="foundersQuote"
+          name="keyQuoteFounder"
         />
         <FormTextArea
           label="Founders Investor"
           placeholder="Key Quote from Investor 250 Characters"
-          name="keyQuoteFromInvestor"
+          name="keyQuoteInvestor"
         />
 
         <EtoTagWidget

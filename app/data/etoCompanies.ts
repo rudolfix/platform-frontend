@@ -1,15 +1,16 @@
 import { IEtoOfferingProps } from "../components/shared/EtoOfferingCard";
-import { IEtoOfferingSoonProps } from "../components/shared/EtoOfferingSoon";
 
-import * as logo from "../assets/img/logo_capitalized.svg";
+import * as blockstate from "../assets/img/eto_offers/blockstate.png";
+import * as brile24 from "../assets/img/eto_offers/brille24.png";
+import * as emflux_motors from "../assets/img/eto_offers/emflux_motors.png";
+import * as myswoop from "../assets/img/eto_offers/myswoop.png";
+import * as next_big_thing from "../assets/img/eto_offers/next_big_thing.png";
+import * as uniti from "../assets/img/eto_offers/uniti.gif";
 
-export type EtoData =
-  | { type: "offering"; data: IEtoOfferingProps }
-  | { type: "teaser"; data: IEtoOfferingSoonProps };
+export type EtoData = { data: IEtoOfferingProps };
 
 export const etoCompaniesCards: Array<EtoData> = [
   {
-    type: "offering",
     data: {
       roundName: "series d",
       tags: [
@@ -34,21 +35,19 @@ export const etoCompaniesCards: Array<EtoData> = [
         position: "ipsum",
       },
       topImage: {
-        src: "",
+        src: brile24,
         srcSet: "",
-        alt: ""
+        alt: "",
       },
       quoteImage: {
         src: "",
         srcSet: "",
-        alt: ""
+        alt: "",
       },
-      logo,
       to: "#0",
     },
   },
   {
-    type: "offering",
     data: {
       roundName: "seed",
       tags: [
@@ -73,21 +72,19 @@ export const etoCompaniesCards: Array<EtoData> = [
         position: "founder",
       },
       topImage: {
-        src: "",
+        src: uniti,
         srcSet: "",
-        alt: ""
+        alt: "",
       },
       quoteImage: {
         src: "",
         srcSet: "",
-        alt: ""
+        alt: "",
       },
-      logo,
       to: "#0",
     },
   },
   {
-    type: "offering",
     data: {
       roundName: "series b",
       tags: [
@@ -112,21 +109,19 @@ export const etoCompaniesCards: Array<EtoData> = [
         position: "founder",
       },
       topImage: {
-        src: "",
+        src: myswoop,
         srcSet: "",
-        alt: ""
+        alt: "",
       },
       quoteImage: {
         src: "",
         srcSet: "",
-        alt: ""
+        alt: "",
       },
-      logo,
       to: "#0",
     },
   },
   {
-    type: "offering",
     data: {
       roundName: "series a",
       tags: [
@@ -151,21 +146,19 @@ export const etoCompaniesCards: Array<EtoData> = [
         position: "founder",
       },
       topImage: {
-        src: "",
+        src: next_big_thing,
         srcSet: "",
-        alt: ""
+        alt: "",
       },
       quoteImage: {
         src: "",
         srcSet: "",
-        alt: ""
+        alt: "",
       },
-      logo,
       to: "#0",
     },
   },
   {
-    type: "offering",
     data: {
       roundName: "series a",
       tags: [
@@ -190,21 +183,19 @@ export const etoCompaniesCards: Array<EtoData> = [
         position: "founder",
       },
       topImage: {
-        src: "",
+        src: emflux_motors,
         srcSet: "",
-        alt: ""
+        alt: "",
       },
       quoteImage: {
         src: "",
         srcSet: "",
-        alt: ""
+        alt: "",
       },
-      logo,
       to: "#0",
     },
   },
   {
-    type: "offering",
     data: {
       roundName: "seed",
       tags: [
@@ -229,24 +220,150 @@ export const etoCompaniesCards: Array<EtoData> = [
         position: "founder",
       },
       topImage: {
-        src: "",
+        src: blockstate,
         srcSet: "",
-        alt: ""
+        alt: "",
       },
       quoteImage: {
         src: "",
         srcSet: "",
-        alt: ""
+        alt: "",
       },
-      logo,
       to: "#0",
     },
   },
   {
-    type: "teaser",
     data: {
+      tags: [
+        {
+          text: "community",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "banking",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "crypto",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
       description:
-        "The most exciting company working with the creative community to create original content generation for the worlds leading brands.",
+        "Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
+      quote: {
+        text:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
+        person: "John",
+        position: "founder",
+      },
+      topImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      quoteImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      to: "#0",
+      teaser: true,
+    },
+  },
+  {
+    data: {
+      tags: [
+        {
+          text: "biotech",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      description:
+        "German biotech startup introducing precision prevention with DNA healthcare applications. Featuring genome sequencing technologies.",
+      quote: {
+        text:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
+        person: "John",
+        position: "founder",
+      },
+      topImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      quoteImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      to: "#0",
+      teaser: true,
+    },
+  },
+  {
+    data: {
+      tags: [
+        {
+          text: "blockchain",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      description:
+        "Fintech developing solutions for transacting fiat currencies over blockchains – Smart Money. Coming to Ethereum in 2018.",
+      quote: {
+        text:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
+        person: "John",
+        position: "founder",
+      },
+      topImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      quoteImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      to: "#0",
+      teaser: true,
+    },
+  },
+  {
+    data: {
+      tags: [
+        {
+          text: "energy",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      description:
+        "Creating renewable energy solutions for a clean and sustainable world. Algorithm-based technology utilizing waste.",
+      quote: {
+        text:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
+        person: "John",
+        position: "founder",
+      },
+      topImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      quoteImage: {
+        src: "",
+        srcSet: "",
+        alt: "",
+      },
+      to: "#0",
+      teaser: true,
     },
   },
 ];

@@ -6,8 +6,8 @@ import * as blockstatehover from "../assets/img/eto_offers/blockstatehover@1x.jp
 import * as blockstate2hover from "../assets/img/eto_offers/blockstatehover@2x.jpg";
 import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
 import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
-import * as brile24hover from "../assets/img/eto_offers/brille24hover@1x.jpg";
-import * as brile242hover from "../assets/img/eto_offers/brille24hover@2x.jpg";
+import * as brile24hover from "../assets/img/eto_offers/Brille24hover@1x.jpg";
+import * as brile242hover from "../assets/img/eto_offers/Brille24hover@2x.jpg";
 import * as emflux from "../assets/img/eto_offers/emflux@1x.jpg";
 import * as emflux2 from "../assets/img/eto_offers/emflux@2x.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";

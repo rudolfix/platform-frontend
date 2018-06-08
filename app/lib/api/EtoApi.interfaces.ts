@@ -11,7 +11,7 @@ export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 const tagsType = YupTS.string();
 
 export const EtoCompanyInformationType = YupTS.object({
-  companyBanner: YupTS.string(),
+  brandName: YupTS.string(),
   companyWebsite: YupTS.string(),
   companyOneliner: YupTS.string(),
   companyDescription: YupTS.string(),

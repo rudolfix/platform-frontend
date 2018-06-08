@@ -33,7 +33,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   return (
     <EtoFormBase title="Company Information" validator={EtoCompanyInformationType.toYup()}>
       <Section>
-        <FormField label="Brand Name*" name="companyBanner" />
+        <FormField label="Brand Name*" name="brandName" />
         <FormField label="Website*" name="companyWebsite" />
         <FormField label="Company tagline*" name="companyOneliner" />
         <FormTextArea

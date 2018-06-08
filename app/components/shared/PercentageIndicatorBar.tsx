@@ -1,8 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
+
 import { CommonHtmlProps } from "../../types";
-import * as styles from "./PercentageIndicatorBar.module.scss";
 import { invariant } from "../../utils/invariant";
+
+import * as styles from "./PercentageIndicatorBar.module.scss";
 
 type IProps =
   | {

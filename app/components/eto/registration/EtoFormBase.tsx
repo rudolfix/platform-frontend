@@ -1,15 +1,14 @@
 import { Form, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { Schema } from "yup";
-
 import * as Yup from "yup";
+
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
-
 import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
-import * as styles from "./EtoFormBase.module.scss";
 import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+
+import * as styles from "./EtoFormBase.module.scss";
 
 interface IProps {
   title: string;

@@ -22,14 +22,14 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  submitForm: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialEtoData) => void;
 }
 
 const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (props: FormikProps<TPartialEtoData>) => {
+const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   return (
     <EtoFormBase title="Company Information" validator={EtoCompanyInformationType.toYup()}>
       <Section>
@@ -56,7 +56,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
         <EtoTagWidget
           selectedTagsLimit={5}
           options={generateTagOptions(tagList)}
-          name="tags"
+          name="categories"
           className="mb-4"
         />
 
@@ -97,10 +97,10 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
           <Button
             layout="primary"
             className="mr-4"
+            type="submit"
             onClick={() => {
-              // tslint:disable-next-line
-              console.log("Form values: ", props.values);
-              props.submitForm();
+              // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
+              props.saveData(props.values);
             }}
           >
             Save
@@ -113,10 +113,8 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
   validationSchema: EtoCompanyInformationType.toYup(),
-  // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.stateValues),
   mapPropsToValues: props => props.stateValues,
-  // enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
 export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
@@ -130,8 +128,8 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
       stateValues: s.etoFlow.data,
     }),
     dispatchToProps: dispatch => ({
-      submitForm: (data: any) => {
-        dispatch(actions.etoFlow.loadData(data));
+      saveData: (data: any) => {
+        dispatch(actions.etoFlow.saveData(data));
       },
     }),
   }),

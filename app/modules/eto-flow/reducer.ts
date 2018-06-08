@@ -10,7 +10,7 @@ export interface IEtoFlowState {
 export const etoFlowInitialState: IEtoFlowState = {
   loading: true,
   data: {
-    tags: [],
+    categories: [],
   },
 };
 
@@ -19,6 +19,12 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
   action,
 ): DeepReadonly<IEtoFlowState> => {
   switch (action.type) {
+    case "ETO_FLOW_LOAD_DATA_START":
+      return {
+        // it will re-load data in the background
+        loading: true,
+        ...state,
+      };
     case "ETO_FLOW_LOAD_DATA":
       return {
         loading: false,

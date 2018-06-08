@@ -17,7 +17,7 @@ export const EtoCompanyInformationType = YupTS.object({
   companyDescription: YupTS.string(),
   foundersQuote: YupTS.string(),
   keyQuoteFromInvestor: YupTS.string(),
-  tags: YupTS.array(tagsType),
+  categories: YupTS.array(tagsType),
   // here we are missing image uploading data
 });
 type TEtoTeamData = YupTS.TypeOf<typeof EtoCompanyInformationType>;

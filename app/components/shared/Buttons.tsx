@@ -13,6 +13,13 @@ type TButtonTheme = "t-dark" | "t-white";
 
 type TIconPosition = "icon-before" | "icon-after";
 
+interface IGeneralButton {
+  onClick?: () => void;
+}
+
+interface IButtonIcon extends IGeneralButton {
+  svgIcon: string;
+}
 export interface IButtonProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
@@ -59,12 +66,14 @@ Button.defaultProps = {
   disabled: false,
 };
 
-interface IButtonClose {
-  onClick?: () => void;
-}
-
-export const ButtonClose: React.SFC<IButtonClose> = ({ onClick, ...props }) => (
+export const ButtonClose: React.SFC<IGeneralButton> = ({ onClick, ...props }) => (
   <div className={styles.buttonClose} onClick={onClick}>
     <InlineIcon {...props} width="20px" height="20px" svgIcon={closeIcon} />
+  </div>
+);
+
+export const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, ...props }) => (
+  <div className={styles.buttonClose} onClick={onClick}>
+    <InlineIcon {...props} width="20px" height="20px" />
   </div>
 );

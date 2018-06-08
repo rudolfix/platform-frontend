@@ -6,6 +6,7 @@ import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { isNonValid, isValid } from "./utils";
 
+import * as cn from "classnames";
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
@@ -39,7 +40,7 @@ export class FormField extends React.Component<FieldGroupProps> {
           render={({ field }: FieldProps) => (
             <InputGroup>
               {prefix && (
-                <InputGroupAddon addonType="prepend" className={styles.addon}>
+                <InputGroupAddon addonType="prepend" className={cn(styles.addon)}>
                   {prefix}
                 </InputGroupAddon>
               )}

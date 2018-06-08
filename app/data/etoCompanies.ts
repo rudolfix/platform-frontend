@@ -82,9 +82,8 @@ export const etoCompaniesCards: Array<EtoData> = [
       description:
         "Swedish startup developing an electric city car. Optimised for high performance and agility in urban environments. Holistic safety, sustainability, and scalability in manufacturing. Unveiling 2017 - first deliveries 2019.",
       quote: {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        credits: "John",
+        text: "",
+        credits: "",
       },
       topImage: {
         src: uniti,

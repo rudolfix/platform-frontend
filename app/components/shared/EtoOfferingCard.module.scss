@@ -139,6 +139,12 @@ $card-heigh: px-to-rem(440px);
   transition: $ease-out-quart 250ms 50ms transform;
   will-change: transform;
   flex-wrap: wrap;
+
+  @include media-breakpoint-down (md) {
+    > * {
+      margin-top: px-to-rem(10px);
+    }
+  }
 }
 
 .bottom {
@@ -193,12 +199,6 @@ $card-heigh: px-to-rem(440px);
   color: inherit;
   font-weight: $font-weight-bold;
   text-transform: uppercase;
-}
-
-.curvy-background {
-  @include media-breakpoint-down(md) {
-    display: none;
-  }
 }
 
 .description {

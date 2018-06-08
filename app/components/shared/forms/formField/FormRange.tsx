@@ -1,5 +1,4 @@
 import { Field, FieldProps } from "formik";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -71,10 +70,6 @@ export const RangeComponent: React.SFC<IProps & IInternalProps> = props => {
 };
 
 export class FormRange extends React.Component<IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   render(): React.ReactNode {
     const { name } = this.props;
 

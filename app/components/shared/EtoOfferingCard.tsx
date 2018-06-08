@@ -86,7 +86,8 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
           width={10}
           height={4}
           className={styles.descriptionProportion}
-          disabledOnMobile={true}>
+          disabledOnMobile={true}
+        >
           <div className={styles.descriptionWrapper}>
             {props.name && <InlineIcon svgIcon={linkIcon} />}
             {props.name && <h3 className={styles.name}>{props.name}</h3>}

@@ -133,18 +133,18 @@ $card-heigh: px-to-rem(440px);
 }
 
 .tags {
+  @include media-breakpoint-down (md) {
+    > * {
+      margin-top: px-to-rem(10px);
+    }
+  }
+
   display: flex;
   justify-content: flex-end;
   padding: px-to-rem(10px);
   transition: $ease-out-quart 250ms 50ms transform;
   will-change: transform;
   flex-wrap: wrap;
-
-  @include media-breakpoint-down (md) {
-    > * {
-      margin-top: px-to-rem(10px);
-    }
-  }
 }
 
 .bottom {

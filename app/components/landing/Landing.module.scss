@@ -126,7 +126,7 @@
 
 .hero {
   @include media-breakpoint-down (md) {
-    background-position: 80% -60%;
+    background-size: 60%;
 
     &::before {
       $bg: rgba($color-white, .7);
@@ -141,21 +141,30 @@
     }
   }
 
+  @supports not (background-image: image-set(url("../../assets/img/landing_hero_bg.jpg") 1x)) {
+    background-image: url("../../assets/img/landing_hero_bg@3x.jpg");
+  }
+
   position: relative;
   min-height: px-to-rem(800px);
   background-image: image-set(
-    "../../assets/img/landing_hero_bg.jpg" 1x,
-    "../../assets/img/landing_hero_bg@2x.jpg" 2x,
-    "../../assets/img/landing_hero_bg@3x.jpg" 3x
+    url("../../assets/img/landing_hero_bg.jpg") 1x,
+    url("../../assets/img/landing_hero_bg@2x.jpg") 2x,
+    url("../../assets/img/landing_hero_bg@3x.jpg") 3x
   );
   background-repeat: no-repeat;
   background-position: right top;
+  background-size: 40%;
   display: flex;
 }
 
 .hero-cta {
   @include make-col-ready;
   @include make-col(6);
+
+  @include media-breakpoint-down (lg) {
+    @include make-col(10);
+  }
 
   @include media-breakpoint-down (md) {
     @include make-col(12);
@@ -217,6 +226,8 @@
 
   @include media-breakpoint-down (md) {
     @include font-headline-small;
+
+    display: block;
   }
 
   color: $color-graphite;

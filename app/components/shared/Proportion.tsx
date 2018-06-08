@@ -10,7 +10,13 @@ interface IProps {
   disabledOnMobile?: boolean;
 }
 
-export const Proportion: React.SFC<IProps> = ({ width = 1, height = 1, disabledOnMobile, children, className }) => {
+export const Proportion: React.SFC<IProps> = ({
+  width = 1,
+  height = 1,
+  disabledOnMobile,
+  children,
+  className,
+}) => {
   return (
     <div
       className={cn(styles.proportion, className, disabledOnMobile && styles.disabledOnMobile)}

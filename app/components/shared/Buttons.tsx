@@ -16,7 +16,7 @@ export interface IButtonProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (event: any) => void;
   svgIcon?: string;
   type?: string;
   className?: string;

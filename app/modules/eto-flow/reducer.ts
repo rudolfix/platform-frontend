@@ -32,7 +32,6 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         loading: false,
         saving: false,
         data: {
-          ...state.data,
           ...action.payload.data,
         },
       };

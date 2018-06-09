@@ -9,6 +9,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
+import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { Section } from "../Shared";
 
@@ -30,56 +31,62 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
       <Section>
         {/* TODO: Remove Title and add it to header component */}
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT IS THE PROBLEM YOU ARE SOLVING AND HOW?"
           placeholder="Describe"
           name="problemDescription"
         />
 
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT IS THE EXACT TARGET CUSTOMER GROUP OF YOUR PRODUCT?"
           placeholder="Describe"
           name="customerGroup"
         />
 
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT IS THE PRODUCT VISION?"
           placeholder="Describe"
           name="productVision"
         />
 
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT HAS INSPIRED YOU TO START THIS COMPANY?"
           placeholder="Describe"
           name="companyInspiration"
         />
 
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT ARE THE KEY PRODUCT PRIORITIES (I.E. ROADMAP) FOR THE NEXT 12 MOTNHS?"
           placeholder="Describe"
           name="productPriorities"
         />
 
+        <FormCategoryDistribution
+          label="HOW WILL YOU USE THE RAISED CAPITAL?"
+          name="moe"
+          className="my-3"
+        />
+
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT IS THE SALES MODEL?"
           placeholder="Describe"
           name="salesModel"
         />
 
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT IS THE MARKETING APPRAOCH?"
           placeholder="Describe"
           name="marketingAppraoch"
         />
 
         <FormTextArea
-          className="mb-2 mt-2"
+          className="my-2"
           label="WHAT IS YOUR UNIQUE SELLING PROPOSITION?"
           placeholder="Describe"
           name="sellingProposition"

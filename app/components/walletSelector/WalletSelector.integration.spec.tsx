@@ -94,9 +94,14 @@ describe("Wallet selector integration", () => {
           version: "58.0.0",
         },
         init: {
-          started: true,
-          done: true,
-          error: false,
+          appInit: {
+            done: true,
+            inProgress: false,
+          },
+          smartcontractsInit: {
+            done: true,
+            inProgress: false,
+          },
         },
       },
       initialRoute: walletRegisterRoutes.light,
@@ -130,7 +135,7 @@ describe("Wallet selector integration", () => {
       connect: async () => {},
       testConnection: async () => true,
       getMultipleAccounts: async () => ({
-        [expectedDerivationPath]: "0x12345123123",
+        [expectedDerivationPath]: dummyEthereumAddress,
       }),
       finishConnecting: async () => {
         return ledgerWalletMock;

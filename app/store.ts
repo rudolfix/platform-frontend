@@ -44,7 +44,7 @@ export const reducers = (state: IAppState, action: TAction) => {
   switch (action.type) {
     case "AUTH_LOGOUT":
       // on logout we preserve only routing state
-      return rootReducer({ router: state.router } as any, action);
+      return rootReducer(undefined as any, action);
   }
   return rootReducer(state, action);
 };

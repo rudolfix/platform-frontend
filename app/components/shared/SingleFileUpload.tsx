@@ -3,9 +3,9 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Button } from "../shared/Buttons";
 import { CommonHtmlProps } from "../../types";
 import { dontPropagateEvent } from "../../utils/dontPropagate";
+import { Button } from "../shared/Buttons";
 
 import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
 import * as styles from "./SingleFileUpload.module.scss";

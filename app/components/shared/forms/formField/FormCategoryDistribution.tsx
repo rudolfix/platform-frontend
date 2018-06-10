@@ -47,7 +47,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
           </Col>
           <Col>
             <FormField
-              name={`${props.name}.name`}
+              name={`${props.name}.description`}
               className={styles.containerWidget}
               placeholder={placeholder}
             />
@@ -59,7 +59,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
           <Col xs={9}>
             <FormField
               prefix="%"
-              name={`${props.name}.percentage`}
+              name={`${props.name}.percent`}
               className={styles.containerWidget}
             />
           </Col>
@@ -83,8 +83,8 @@ export class FormCategoryDistribution extends React.Component<IProps & CommonHtm
     const { name, label, className } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
     const blankField = {
-      name: "",
-      percentage: 0,
+      description: "",
+      percent: 0,
     };
     const categoryDistribution = values[name] || [];
 
@@ -97,14 +97,14 @@ export class FormCategoryDistribution extends React.Component<IProps & CommonHtm
             <div className="p-4">{label}</div>
           </Col>
         </Row>
-        <FormTextArea name="roadMapDetails" placeholder="Detail" className={styles.textArea} />
+        <FormTextArea name="useOfCapital" placeholder="Detail" className={styles.textArea} />
 
         <FieldArray
           name={name}
           render={arrayHelpers => (
             <>
               {categoryDistribution.map(
-                (_: { name: string; percentage: number }, index: number) => {
+                (_: { description: string; percent: number }, index: number) => {
                   const isLastElement = !(index < categoryDistribution.length - 1);
                   const isFirstElement = index === 0;
 

@@ -22,5 +22,17 @@ export const EtoCompanyInformationType = YupTS.object({
 });
 type TEtoTeamData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
-export type TEtoData = TEtoTeamData; // | other partial schemas;
+export const EtoProductVisionType = YupTS.object({
+  problemSolved: YupTS.string().optional(),
+  productVision: YupTS.string().optional(),
+  inspiration: YupTS.string().optional(),
+  keyProductPriorities: YupTS.string().optional(),
+  // useOfCapitalList: YupTS.array(YupTS.object({ description: YupTS.string, percent: YupTS.number })),
+  use_of_capital: YupTS.string().optional(),
+  // here we are missing some fields
+});
+
+type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
+
+export type TEtoData = TEtoTeamData | TEtoProductVision; // | other partial schemas;
 export type TPartialEtoData = DeepPartial<TEtoData>;

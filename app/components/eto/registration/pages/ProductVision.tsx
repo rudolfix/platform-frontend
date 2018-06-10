@@ -1,9 +1,13 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import {
+  EtoCompanyInformationType,
+  EtoProductVisionType,
+  TPartialEtoData,
+} from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -11,6 +15,7 @@ import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 interface IStateProps {
@@ -19,30 +24,31 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  submitForm: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
+const distributionSuggestions = ["Development", "ESOP"];
+
+const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   return (
-    <Form>
-      <h4 className="text-center">Product Vision</h4>
+    <EtoFormBase title="Product Vision" validator={EtoProductVisionType.toYup()}>
       <Section>
         {/* TODO: Remove Title and add it to header component */}
         <FormTextArea
           className="my-2"
           label="WHAT IS THE PROBLEM YOU ARE SOLVING AND HOW?"
           placeholder="Describe"
-          name="problemDescription"
+          name="problemSolved "
         />
 
-        <FormTextArea
+        {/*         <FormTextArea
           className="my-2"
           label="WHAT IS THE EXACT TARGET CUSTOMER GROUP OF YOUR PRODUCT?"
           placeholder="Describe"
           name="customerGroup"
-        />
+        /> */}
 
         <FormTextArea
           className="my-2"
@@ -55,20 +61,21 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
           className="my-2"
           label="WHAT HAS INSPIRED YOU TO START THIS COMPANY?"
           placeholder="Describe"
-          name="companyInspiration"
+          name="inspiration"
         />
 
         <FormTextArea
           className="my-2"
           label="WHAT ARE THE KEY PRODUCT PRIORITIES (I.E. ROADMAP) FOR THE NEXT 12 MOTNHS?"
           placeholder="Describe"
-          name="productPriorities"
+          name="keyProductPriorities"
         />
 
         <FormCategoryDistribution
           label="HOW WILL YOU USE THE RAISED CAPITAL?"
-          name="moe"
+          name="useOfCapitalList"
           className="my-3"
+          suggestions={distributionSuggestions}
         />
 
         <FormTextArea
@@ -98,25 +105,21 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
             layout="primary"
             className="mr-4"
             onClick={() => {
-              // tslint:disable-next-line
-              console.log("Form values: ", _props.values);
-              _props.submitForm();
+              props.saveData(props.values);
             }}
           >
             Save
           </Button>
         </Row>
       </Col>
-    </Form>
+    </EtoFormBase>
   );
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
   validationSchema: EtoCompanyInformationType.toYup(),
-  // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.stateValues),
   mapPropsToValues: props => props.stateValues,
-  // enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
 export const EtoRegistrationProductVisionComponent: React.SFC<IProps> = props => (
@@ -130,8 +133,8 @@ export const EtoRegistrationProductVision = compose<React.SFC>(
       stateValues: s.etoFlow.data,
     }),
     dispatchToProps: dispatch => ({
-      submitForm: (data: any) => {
-        dispatch(actions.etoFlow.loadData(data));
+      saveData: (data: any) => {
+        dispatch(actions.etoFlow.saveData(data));
       },
     }),
   }),

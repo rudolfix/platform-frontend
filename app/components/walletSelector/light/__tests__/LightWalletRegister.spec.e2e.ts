@@ -24,7 +24,6 @@ export const registerWithLightWallet = (email: string, password: string) => {
 };
 
 export const loginWithLightWallet = (email: string, password: string) => {
-  cy.get(tid("Header-logout")).click();
   cy.get(tid("Header-login")).click();
   cy.get(tid("wallet-selector-light")).click();
 

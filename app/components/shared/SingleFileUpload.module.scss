@@ -1,55 +1,55 @@
 @import "../../styles/neufund-theme";
 
-.upload-description {
-  @include media-breakpoint-up (md) {
-    border-right: 1px solid $neu-light-blue-grey;
-  }
+$component-height: px-to-rem(120px);
 
-}
-
-.upload-zone {
+.single-file-upload {
   display: flex;
 }
 
+.dropzone {
+  display: inline-flex;
+  height: $component-height;
+  align-items: center;
 
-.dropzone-wrapper {
-  margin-right: px-to-rem(10px);
-
-  > * {
-    background-color: $neu-pale-blue;
-    border: 1px dashed $neu-cloudy-blue;
-    border-radius: 3px;
-    flex-direction: column;
-    display: flex;
-    padding: px-to-rem(22px);
-    justify-content: space-between;
-    align-items: center;
-    transition: 150ms ease-out transform;
-
-    &:hover {
-      transform: scale(.96);
+  &:global {
+    &.reject {
+      :local(.fake-dropzone-area) {
+        color: $neu-red;
+      }
     }
+
+    &.disabled {
+      :local(.fake-dropzone-area) {
+        opacity: .6;
+      }
+    }
+  }
+
+  :global(.c-uploaded-files) {
+    margin-left: px-to-rem(20px);
   }
 }
 
+.fake-dropzone-area {
+  @include font-tab;
 
-.dropzone-with-files-wrapper {
-  > * {
-    background-color: transparent;
-    border: 0;
-    flex-direction: row;
-    margin-left: px-to-rem(6px);
-    font-weight: 600;
+  border: px-to-rem(2px) dashed $neu-silver;
+  color: $neu-cloudy-blue;
+  cursor: pointer;
+  display: flex;
+  font-weight: $font-weight-bold;
+  justify-content: center;
+  align-items: center;
+  height: $component-height;
+  padding: px-to-rem(12px);
+  width: px-to-rem(120px);
 
-    :global(.inline-icon) {
-      width: px-to-rem(20px);
-      margin-right: px-to-rem(12px);
-    }
+  img {
+    max-width: 90%;
   }
 }
 
-
-.file-format-information {
+.accepted-files {
   color: $neu-cloudy-blue;
   margin-left: px-to-rem(20px);
 }

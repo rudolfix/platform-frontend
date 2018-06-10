@@ -1,6 +1,8 @@
 import { TEtoData } from "../../lib/api/EtoApi.interfaces";
-import { createAction } from "../actionsUtils";
+import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const etoFlowActions = {
+  loadDataStart: () => createSimpleAction("ETO_FLOW_LOAD_DATA_START"),
   loadData: (data: Partial<TEtoData>) => createAction("ETO_FLOW_LOAD_DATA", { data }),
+  saveData: (data: Partial<TEtoData>) => createAction("ETO_FLOW_SAVE_DATA", { data }),
 };

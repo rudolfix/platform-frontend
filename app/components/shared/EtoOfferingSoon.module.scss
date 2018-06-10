@@ -3,7 +3,7 @@
 .card {
   box-shadow: $shadow;
   width: 100%;
-  min-height: px-to-rem(440px);
+  height: 100%;
   background-color: $blue-green;
   color: $neu-white-two;
   text-transform: uppercase;
@@ -25,5 +25,13 @@
     @include font-headline;
 
     text-transform: uppercase;
+  }
+}
+
+:global(.responsive) {
+  @media (min-width: map-get($grid-breakpoints, "xl")) and (max-width: 1400px) {
+    .description {
+      font-size: px-to-rem(16px);
+    }
   }
 }

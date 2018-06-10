@@ -352,7 +352,7 @@
   "shared-component.multi-file-upload.uploading": "Uploading a File",
   "shared-component.range.max": "Max",
   "shared-component.range.min": "Min",
-  "shared-component.single-file-upload.photo": "Photo",
+  "shared-component.single-file-upload.dropzone-cta": "Drag file or click to upload",
   "shared-component.single-file-upload.uploading": "Uploading a File",
   "signing.browser-wallet.header": "Confirm your wallet ownership",
   "signing.browser-wallet.message": "Please authorize the connection to the Neufund Platform in your external wallet",

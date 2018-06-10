@@ -1,0 +1,16 @@
+@mixin rect ($w, $h: $w) {
+  width: $w;
+  height: $h;
+}
+
+
+@mixin circle ($d) {
+  @include rect($d);
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    border-radius: 50%;
+  }
+}

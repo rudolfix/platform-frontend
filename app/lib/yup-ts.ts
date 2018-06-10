@@ -11,6 +11,8 @@ export const boolean = () => new BooleanYTS();
 export type TypeOf<T extends YTS<any>> = T["_T"];
 type TypeOfProps<P extends Dictionary<any>> = { [K in keyof P]: TypeOf<P[K]> };
 
+export type Schema<T> = ObjectYTS<T>;
+
 abstract class YTS<T> {
   _T!: T;
 
@@ -22,7 +24,7 @@ abstract class YTS<T> {
 class ObjectYTS<T> extends YTS<TypeOfProps<T>> {
   __TYPE__!: Unique<"object">;
 
-  constructor(private shape: T, private isRequired: boolean = true) {
+  constructor(public readonly shape: T, private isRequired: boolean = true) {
     super();
   }
 

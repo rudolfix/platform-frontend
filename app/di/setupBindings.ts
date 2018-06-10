@@ -22,6 +22,7 @@ import {
 } from "../utils/AsyncIntervalScheduler";
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
+import { EtoApi } from "../lib/api/EtoApi";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
@@ -123,6 +124,10 @@ export function setupBindings(config: IConfig): Container {
     .to(KycApi)
     .inSingletonScope();
   container
+    .bind<EtoApi>(symbols.apiEtoService)
+    .to(EtoApi)
+    .inSingletonScope();
+  container
     .bind<WalletStorage<TWalletMetadata>>(symbols.walletStorage)
     .to(WalletStorage)
     .inSingletonScope();
@@ -191,6 +196,7 @@ export const createGlobalDependencies = (container: Container) => ({
   // apis
   signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),
   apiKycService: container.get<KycApi>(symbols.apiKycService),
+  apiEtoService: container.get<EtoApi>(symbols.apiEtoService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
 

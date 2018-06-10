@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
@@ -7,7 +8,8 @@ import { ITag, Tag } from "./Tag";
 
 import * as linkIcon from "../../assets/img/inline_icons/icon_link.svg";
 import * as styles from "./EtoOfferingCard.module.scss";
-export interface IProps {
+
+export interface IEtoOfferingProps {
   roundName: string;
   tags: ITag[];
   name: string;
@@ -19,6 +21,8 @@ export interface IProps {
   };
   to: string;
   logo: string;
+
+  className?: string;
 }
 
 interface IPropsRoundLabel {
@@ -39,10 +43,10 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
   );
 };
 
-export const EtoOfferingCard: React.SFC<IProps> = props => {
+export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
   return (
-    <Link to={props.to} className={styles.card}>
-      <Proportion width={2} height={1}>
+    <Link to={props.to} className={cn(styles.card, props.className)}>
+      <Proportion width={10} height={6}>
         <div className={styles.top}>
           <RoundLabel text={props.roundName} />
           <img className={styles.logo} src={props.logo} alt={`${props.name} logo`} />
@@ -52,9 +56,13 @@ export const EtoOfferingCard: React.SFC<IProps> = props => {
         </div>
       </Proportion>
       <div className={styles.bottom}>
-        <InlineIcon svgIcon={linkIcon} />
-        <h3 className={styles.name}>{props.name}</h3>
-        <p className={styles.description}>{props.description}</p>
+        <Proportion width={10} height={4} className={styles.descriptionProportion}>
+          <div className={styles.descriptionWrapper}>
+            <InlineIcon svgIcon={linkIcon} />
+            <h3 className={styles.name}>{props.name}</h3>
+            <p className={styles.description}>{props.description}</p>
+          </div>
+        </Proportion>
         <blockquote className={styles.quote}>
           <p>
             {'"'}

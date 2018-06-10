@@ -16,6 +16,7 @@ import { QuestionsAndAnswers } from "./dashboard/QuestionsAndAnswers";
 import { RowLabeledDataSets } from "./dashboard/RowLabeledDataSets";
 
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Link } from "react-router-dom";
 import * as downloadIcon from "../../assets/img/inline_icons/download.svg";
 import * as editIcon from "../../assets/img/inline_icons/edit.svg";
 import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
@@ -23,6 +24,7 @@ import * as linkedinIcon from "../../assets/img/inline_icons/social_linkedin.svg
 import * as mediumIcon from "../../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
+import { etoRegisterRoutes } from "./registration/routes";
 
 const loremIpsum =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -41,6 +43,46 @@ export const EtoDashboard: React.SFC = () => (
   <LayoutAuthorized>
     <Row>
       <Col lg={8} xs={12} data-test-id="eto-dashboard-header">
+        <SectionHeader>
+          Dashboard
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
+      </Col>
+    </Row>
+    <Row>
+      <Col>
+        <Link to={etoRegisterRoutes.companyInformation}>
+          <Button>Company Information</Button>
+        </Link>
+      </Col>
+      <Col>
+        <Link to={etoRegisterRoutes.etoTerms}>
+          <Button>ETO TERMS</Button>
+        </Link>
+      </Col>
+      <Col>
+        <Link to={etoRegisterRoutes.keyIndividuals}>
+          <Button>Key individuals</Button>
+        </Link>
+      </Col>
+      <Col>
+        <Link to={etoRegisterRoutes.legalInformation}>
+          <Button>LegaL INFORMATION</Button>
+        </Link>
+      </Col>
+      <Col>
+        <Link to={etoRegisterRoutes.productVision}>
+          <Button>Product Vision</Button>
+        </Link>
+      </Col>
+    </Row>
+  </LayoutAuthorized>
+);
+
+export const oldEtoDashboard: React.SFC = () => (
+  <LayoutAuthorized>
+    <Row>
+      <Col lg={8} xs={12}>
         <SectionHeader>
           <FormattedMessage id="eto.dashboard.header.overview" />
           <InlineIcon onClick={() => {}} svgIcon={editIcon} />
@@ -319,7 +361,6 @@ export const EtoDashboard: React.SFC = () => (
           </Col>
         </Row>
       </Col>
-
       <Col className="py-4">
         <PanelDark
           headerText={<FormattedMessage id="eto.dashboard.download.header" />}

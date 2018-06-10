@@ -6,44 +6,14 @@ import { Col, Container, Row } from "reactstrap";
 
 import { appRoutes } from "../appRoutes";
 import { Button } from "../shared/Buttons";
-import { EtoOfferingCard, IProps } from "../shared/EtoOfferingCard";
-import { EtoOfferingSoon } from "../shared/EtoOfferingSoon";
+import { EtoOfferingCard, IEtoOfferingProps } from "../shared/EtoOfferingCard";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
 import * as logoMobile from "../../assets/img/logo-square-white.svg";
 import * as logo from "../../assets/img/logo_capitalized.svg";
+import { etoCompaniesCards } from "../../data/etoCompanies";
+import { EtoCard } from "../shared/EtoCard";
 import * as styles from "./Landing.module.scss";
-
-const description =
-  "Neufund is a blockchain based equity fundraising platform, an ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech.";
-
-const lorem =
-  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.";
-
-const sampleCard: IProps = {
-  roundName: "seed round",
-  tags: [
-    {
-      text: "fintech",
-      layout: "ghost-bold",
-      theme: "white",
-    },
-    {
-      text: "germany",
-      layout: "ghost-bold",
-      theme: "white",
-    },
-  ],
-  name: "Neufund",
-  description,
-  quote: {
-    text: lorem,
-    person: "John",
-    position: "founder",
-  },
-  logo,
-  to: "#0",
-};
 
 export const Landing: React.SFC = () => (
   <div className={styles.landingWrapper}>
@@ -117,18 +87,11 @@ export const Landing: React.SFC = () => (
             <FormattedMessage id="landing.equity-token-offering.header" />
           </h2>
           <Row>
-            <Col xs={12} lg={6} className={styles.equityTokenCol}>
-              <EtoOfferingCard {...sampleCard} />
-            </Col>
-            <Col xs={12} lg={6} className={styles.equityTokenCol}>
-              <EtoOfferingCard {...sampleCard} />
-            </Col>
-            <Col xs={12} lg={6} className={styles.equityTokenCol}>
-              <EtoOfferingCard {...sampleCard} />
-            </Col>
-            <Col xs={12} lg={6} className={styles.equityTokenCol}>
-              <EtoOfferingSoon description="The most exciting company working with the creative community to create original content generation for the worlds leading brands. " />
-            </Col>
+            {etoCompaniesCards.map(e => (
+              <Col xs={12} lg={6} className={styles.equityTokenCol}>
+                <EtoCard {...e} />
+              </Col>
+            ))}
           </Row>
         </Container>
       </section>

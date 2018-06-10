@@ -93,7 +93,7 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
           </div>
         </Proportion>
         <blockquote
-          className={styles.quote}
+          className={cn(styles.quote, props.teaser && styles.teaser)}
           style={{ background: props.quoteBackground, color: props.quoteColor }}
         >
           {props.quoteImage && (
@@ -113,12 +113,16 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
             </svg>
           ) : (
             <>
-              <p>
-                {'"'}
-                {props.quote.text}
-                {'"'}
-              </p>
-              <p>{props.quote.credits}</p>
+              {props.quote.text && (
+                <>
+                  <p>
+                    {'"'}
+                    {props.quote.text}
+                    {'"'}
+                  </p>
+                  <p>{props.quote.credits}</p>
+                </>
+              )}
             </>
           )}
         </blockquote>

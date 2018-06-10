@@ -3,7 +3,7 @@
 $card-heigh: px-to-rem(440px);
 
 .card {
-  @include media-breakpoint-down (md) {
+  @include media-breakpoint-down (sm) {
     display: flex;
     flex-direction: column;
   }
@@ -42,8 +42,7 @@ $card-heigh: px-to-rem(440px);
       }
 
       .name,
-      .description-proportion,
-      :global(.inline-icon) {
+      .description-proportion {
         display: none;
       }
 
@@ -133,7 +132,7 @@ $card-heigh: px-to-rem(440px);
 }
 
 .tags {
-  @include media-breakpoint-down (md) {
+  @include media-breakpoint-down (sm) {
     > * {
       margin-top: px-to-rem(10px);
     }
@@ -148,11 +147,13 @@ $card-heigh: px-to-rem(440px);
 }
 
 .bottom {
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     position: static;
     flex-grow: 1;
     padding: 4%;
   }
+
+
 
   background-color: $neu-white-two;
   transition: 400ms transform, 300ms background-color, 200ms color;
@@ -162,29 +163,15 @@ $card-heigh: px-to-rem(440px);
   height: 100%;
   will-change: transform;
 
-  :global(.inline-icon) {
-    @include media-breakpoint-up (lg) {
-      top: px-to-rem(8px);
-    }
-
-    @include media-breakpoint-down (md) {
+  .image {
+    @include media-breakpoint-down(lg) {
       display: none;
     }
-
-    position: absolute;
-    width: px-to-rem(20px);
-    height: px-to-rem(20px);
-    right: 3%;
-    top: px-to-rem(20px);
   }
 }
 
 .quote,
 .description-wrapper {
-  @include media-breakpoint-down(md) {
-    padding: 0;
-  }
-
   padding: 4% px-to-rem(34px);
 }
 
@@ -226,11 +213,14 @@ $card-heigh: px-to-rem(440px);
 .quote {
   @include font-default;
 
-  @include media-breakpoint-down(md) {
-    display: block;
-    flex-grow: 1;
-    margin-top: $spacing-vertical-sm-2;
-    margin-bottom: 0;
+  @include media-breakpoint-down(lg) {
+    position: static;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  @include media-breakpoint-up(lg) {
+    height: 100%;
   }
 
   flex-direction: column;
@@ -239,12 +229,17 @@ $card-heigh: px-to-rem(440px);
   text-align: center;
   line-height: px-to-rem(32px);
   width: 100%;
-  height: 100%;
   text-transform: uppercase;
   position: absolute;
 
+  &.teaser {
+    @include media-breakpoint-down(lg) {
+      display: none;
+    }
+  }
+
   p {
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(sm) {
       margin-bottom: 0;
     }
 

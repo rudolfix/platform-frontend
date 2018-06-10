@@ -57,10 +57,7 @@ app.use(
 );
 
 // match only main route
-app.use(/\//, (req, res) => {
-  res.sendFile(join(__dirname, "../dist/index-prerendered.html"));
-});
-app.use("/", express.static(join(__dirname, "../dist/"), { extensions: ["html"] }));
+app.use("/", express.static(join(__dirname, "../dist"), { extensions: ["html"] }));
 app.use(fallback("index.html", { root: join(__dirname, "../dist") }));
 
 console.log(`Serving on ${PORT}`);

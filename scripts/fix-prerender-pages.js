@@ -12,4 +12,4 @@ function fixPage(path) {
   fs.writeFileSync(path, fixedSource, "utf-8");
 }
 
-fixPage(join(__dirname, "../dist/index-prerendered.html"));
+fixPage(join(__dirname, "../dist/index.html"));

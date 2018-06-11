@@ -22,7 +22,7 @@ $card-heigh: px-to-rem(440px);
   }
 
   &:hover {
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(xl) {
       .round-label {
         transform: translate(-60%, -60%);
       }

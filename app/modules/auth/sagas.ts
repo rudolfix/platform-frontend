@@ -120,7 +120,7 @@ function* logoutWatcher({ web3Manager, jwtStorage }: TGlobalDependencies): Itera
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
   yield effects.put(actions.routing.goHome());
-  yield effects.put(actions.init.start());
+  yield effects.put(actions.init.start("appInit"));
 }
 
 function* signInUser(

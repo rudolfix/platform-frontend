@@ -40,10 +40,10 @@ export type IAppState = TReducersMapToReturnTypes<typeof appReducers> & {
 
 export const rootReducer = combineReducers<IAppState>(allReducers);
 
-export const reducers = (state: any, action: any) => {
+export const reducers = (state: IAppState, action: TAction) => {
   switch (action.type) {
     case "AUTH_LOGOUT":
-      return rootReducer(undefined as any, action);
+      return rootReducer({ router: state.router } as any, action);
   }
   return rootReducer(state, action);
 };

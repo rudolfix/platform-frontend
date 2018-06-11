@@ -1,15 +1,28 @@
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
-export interface IInitState {
+export type TInitType = "appInit" | "smartcontractsInit";
+
+interface IAsyncActionState {
+  inProgress: boolean;
   done: boolean;
-  error: boolean;
-  errorMsg?: string;
+  error?: string;
+}
+
+export interface IInitState {
+  appInit: IAsyncActionState;
+  smartcontractsInit: IAsyncActionState;
 }
 
 export const initInitialState: IInitState = {
-  done: false,
-  error: false,
+  appInit: {
+    done: false,
+    inProgress: false,
+  },
+  smartcontractsInit: {
+    done: false,
+    inProgress: false,
+  },
 };
 
 export const initReducer: AppReducer<IInitState> = (
@@ -17,19 +30,30 @@ export const initReducer: AppReducer<IInitState> = (
   action,
 ): DeepReadonly<IInitState> => {
   switch (action.type) {
+    case "INIT_START":
+      return {
+        ...state,
+        [action.payload.initType]: {
+          inProgress: true,
+          done: false,
+        },
+      };
     case "INIT_DONE":
       return {
         ...state,
-        error: false,
-        errorMsg: undefined,
-        done: true,
+        [action.payload.initType]: {
+          inProgress: false,
+          done: true,
+        },
       };
     case "INIT_ERROR":
       return {
         ...state,
-        done: false,
-        error: true,
-        errorMsg: action.payload.errorMsg,
+        [action.payload.initType]: {
+          inProgress: false,
+          done: false,
+          error: action.payload.errorMsg,
+        },
       };
   }
 

@@ -4,6 +4,7 @@
   width: 100%;
   min-height: 100%;
   flex-grow: 1;
+  background-color: $color-white;
 }
 
 .landing {
@@ -14,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: $blue-green url("../../assets/img/fancy_token_bg.svg") -2.6% 0 no-repeat;
+  background-color: $blue-green;
   background-size: px-to-rem(500px);
   padding: px-to-rem(46px) 0;
 }
@@ -94,6 +95,7 @@
 .equity-token-offerings {
   padding-bottom: $spacing-vertical-lg-1;
   padding-top: $spacing-vertical-lg-4;
+  background: url("../../assets//img/bg_eto_offers.svg") 0 50% no-repeat;
 }
 
 .equity-token-header {
@@ -119,4 +121,132 @@
   }
 
   margin-bottom: $spacing-vertical-sm-4;
+}
+
+
+.hero {
+  @include media-breakpoint-down (md) {
+    background-size: 60%;
+
+    &::before {
+      $bg: rgba($color-white, .7);
+
+      @include rect(100%);
+
+      position: absolute;
+      background-color: $bg;
+      top: 0;
+      left: 0;
+      content: "";
+    }
+  }
+
+  @supports not (background-image: image-set(url("../../assets/img/landing_hero_bg.jpg") 1x)) {
+    background-image: url("../../assets/img/landing_hero_bg@3x.jpg");
+  }
+
+  position: relative;
+  min-height: px-to-rem(800px);
+  background-image: image-set(
+    url("../../assets/img/landing_hero_bg.jpg") 1x,
+    url("../../assets/img/landing_hero_bg@2x.jpg") 2x,
+    url("../../assets/img/landing_hero_bg@3x.jpg") 3x
+  );
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-size: 40%;
+  display: flex;
+}
+
+.hero-cta {
+  @include make-col-ready;
+  @include make-col(6);
+
+  @include media-breakpoint-down (lg) {
+    @include make-col(10);
+  }
+
+  @include media-breakpoint-down (md) {
+    @include make-col(12);
+
+    padding: px-to-rem(40px);
+  }
+
+  padding-top: px-to-rem(100px);
+}
+
+.hero-header {
+  @include headline-huge;
+
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-graphite;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: px-to-rem(4px);
+    background-color: $color-brand;
+    margin-bottom: $spacing-vertical-lg-3;
+    margin-top: $spacing-vertical-lg-1;
+  }
+}
+
+.hero-description {
+  @include font-headline-medium;
+
+  @include media-breakpoint-down (md) {
+    @include font-headline-small;
+
+    text-shadow: $shadow-white;
+  }
+
+  margin-bottom: $spacing-vertical-lg-3;
+}
+
+.benefits {
+  @include media-breakpoint-down (md) {
+    margin-top: $spacing-vertical-lg-3;
+  }
+
+  text-align: center;
+}
+
+.benefits-header {
+  @include font-headline-medium;
+
+  margin: $spacing-vertical-lg-1 0;
+  color: $color-graphite;
+  text-transform: uppercase;
+}
+
+.benefit {
+  @include font-headline-medium;
+
+  @include media-breakpoint-down (md) {
+    @include font-headline-small;
+
+    display: block;
+  }
+
+  color: $color-graphite;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  &::before,
+  + br,
+  &:last-of-type::after { //sass-lint:disable-line force-pseudo-nesting
+    @include rect(4px, 30px);
+
+    @include media-breakpoint-down (md) {
+      display: none;
+    }
+
+    content: "";
+    display: inline-block;
+    background-color: $color-brand;
+    margin: 0 px-to-rem(16px);
+  }
 }

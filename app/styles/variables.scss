@@ -56,6 +56,7 @@ $smaller-font-size: px-to-rem(13px);
 $neu-font-size-lg: px-to-rem(20px);
 
 $shadow: 0 px-to-rem(2px) px-to-rem(4px) 0 rgba(0, 0, 0, .1);
+$shadow-white: 0 px-to-rem(2px) px-to-rem(4px) 0 rgba(255, 255, 255, .1);
 $shadow1: 0 3px 1px 0 rgba(0, 0, 0, .1), 0 1px 1px 0 rgba(0, 0, 0, .16), 0 3px 8px 0 rgba(0, 0, 0, .15);
 
 // Bootstrap variable overrides
@@ -101,9 +102,3 @@ $input-focus-width: 0;
 $input-focus-box-shadow: none;
 $form-feedback-font-size: px-to-rem(14px);
 $form-feedback-invalid-color: $neu-bright-orange;
-
-
-//z-index
-$z-index-under-base: -1;
-$z-index-base: 10;
-$z-index-over-base: 20;

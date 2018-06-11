@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoTeamDataType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -29,7 +29,7 @@ const EtoForm = (_props: FormikProps<TPartialEtoData>) => {
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
-  validationSchema: EtoTeamDataType.toYup(),
+  validationSchema: EtoCompanyInformationType.toYup(),
   // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.stateValues),
   mapPropsToValues: props => props.stateValues,
   // enableReinitialize: true,

@@ -37,6 +37,11 @@ const localDevConfig = merge(devConfig, {
         pathRewrite: { "^/api/kyc": "" },
         changeOrigin: true,
       },
+      "/api/eto-listing": {
+        target: backendUrl + "eto-listing",
+        pathRewrite: { "^/api/eto-listing": "" },
+        changeOrigin: true,
+      },
     },
   },
 });

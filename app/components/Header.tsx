@@ -48,7 +48,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
 export const Header = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
-    location: s.router.location!.pathname,
+    location: s.router.location && s.router.location.pathname,
   }),
   dispatchToProps: dispatch => ({
     logout: () => {

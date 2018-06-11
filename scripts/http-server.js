@@ -56,6 +56,7 @@ app.use(
   }),
 );
 
+// match only main route
 app.use("/", express.static(join(__dirname, "../dist"), { extensions: ["html"] }));
 app.use(fallback("index.html", { root: join(__dirname, "../dist") }));
 

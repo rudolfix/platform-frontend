@@ -3,7 +3,6 @@ jobs:
   install:
     docker:
       - image: krzkaczor/neufund-platform-base
-        user: circleci
     working_directory: /home/circleci/app
 
     steps:

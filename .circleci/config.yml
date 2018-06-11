@@ -11,16 +11,15 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - {{CACHE_VERSION}}-deps-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - {{CACHE_VERSION}}-deps-
+          - v3-deps-{{ checksum "package.json" }}
+          - v3-deps-
 
       - run: yarn --frozen-lockfile
 
       - save_cache:
           paths:
             - node_modules
-          key: {{CACHE_VERSION}}-deps-{{ checksum "package.json" }}
+          key: v3-deps-{{ checksum "package.json" }}
 
   lint:
     docker:
@@ -31,9 +30,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - {{CACHE_VERSION}}-deps-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - {{CACHE_VERSION}}-deps-
+          - v3-deps-{{ checksum "package.json" }}
+          - v3-deps-
       - run: yarn prepare
 
       - run: yarn lint
@@ -47,9 +45,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - {{CACHE_VERSION}}-deps-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - {{CACHE_VERSION}}-deps-
+          - v3-deps-{{ checksum "package.json" }}
+          - v3-deps-
       - run: yarn prepare
 
       - run: yarn test:browser-coverage && yarn test:node
@@ -68,9 +65,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - {{CACHE_VERSION}}-deps-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - {{CACHE_VERSION}}-deps-
+          - v3-deps-{{ checksum "package.json" }}
+          - v3-deps-
       - run: yarn prepare
 
       - run: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
@@ -84,9 +80,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - {{CACHE_VERSION}}-deps-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - {{CACHE_VERSION}}-deps-
+          - v3-deps-{{ checksum "package.json" }}
+          - v3-deps-
       - run: yarn prepare
 
       - run: yarn storybook:screenshots

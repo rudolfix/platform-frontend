@@ -51,9 +51,6 @@ jobs:
           keys:
           - v1-deps-{{ checksum "package.json" }}
           - v1-deps-
-      - restore_cache:
-          keys:
-          - v1-deps-cypress-{{ checksum "package.json" }}
       - run: yarn prepare
 
       - run: yarn test:browser-coverage && yarn test:node
@@ -74,6 +71,9 @@ jobs:
           keys:
           - v1-deps-{{ checksum "package.json" }}
           - v1-deps-
+      - restore_cache:
+          keys:
+          - v1-deps-cypress-{{ checksum "package.json" }}
       - run: yarn prepare
 
       - run: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e

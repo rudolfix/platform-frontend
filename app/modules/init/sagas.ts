@@ -20,7 +20,7 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any 
     yield put(actions.init.done("smartcontractsInit"));
   } catch (e) {
     yield put(
-      actions.init.error("smartcontractsInit", "Error while connecting with smartcontracts :("),
+      actions.init.error("smartcontractsInit", "Error while connecting with Ethereum blockchain"),
     );
     logger.error("Error: ", e);
   }
@@ -35,6 +35,11 @@ function* initApp({ logger }: TGlobalDependencies): any {
     if (jwt) {
       if (isJwtExpiringLateEnough(jwt)) {
         try {
+          // we need to initiate smartcontracts anyway to load user properly
+          if (yield checkIfSmartcontractsInitNeeded()) {
+            yield neuCall(initSmartcontracts);
+          }
+
           yield loadUser();
         } catch (e) {
           yield cleanupAndLogoutSaga();
@@ -77,18 +82,24 @@ export function* cleanupAndLogoutSaga(): Iterator<any> {
   yield put(actions.routing.goToLogin());
 }
 
+export function* checkIfSmartcontractsInitNeeded(): any {
+  const isDoneOrInProgress: boolean = yield select(
+    (s: IAppState) => s.init.smartcontractsInit.done || s.init.smartcontractsInit.inProgress,
+  );
+
+  return !isDoneOrInProgress;
+}
+
 /**
- * We don't require app initialization on every page so we are gonna watch location change action until we can init whole app
+ * We don't require app initialization on index (/) page so we are gonna watch location change action until navigation happens
  */
 export function* initSmartcontractsDelayed(): any {
-  while (true) {
-    const isDoneOrInProgress: boolean = yield select(
-      (s: IAppState) => s.init.smartcontractsInit.done || s.init.smartcontractsInit.inProgress,
-    );
-    if (isDoneOrInProgress) {
-      return;
-    }
+  const isNeeded = yield checkIfSmartcontractsInitNeeded();
+  if (!isNeeded) {
+    return;
+  }
 
+  while (true) {
     const action: LocationChangeAction = yield take("@@router/LOCATION_CHANGE");
 
     if (action.payload && action.payload.pathname !== "/") {

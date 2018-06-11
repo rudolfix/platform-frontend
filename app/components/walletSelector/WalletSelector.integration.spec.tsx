@@ -135,7 +135,7 @@ describe("Wallet selector integration", () => {
       connect: async () => {},
       testConnection: async () => true,
       getMultipleAccounts: async () => ({
-        [expectedDerivationPath]: dummyEthereumAddress,
+        [expectedDerivationPath]: "0x12345123123",
       }),
       finishConnecting: async () => {
         return ledgerWalletMock;

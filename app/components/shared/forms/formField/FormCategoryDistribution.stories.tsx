@@ -6,7 +6,12 @@ import { FormCategoryDistribution } from "./FormCategoryDistribution";
 
 storiesOf("FormCategoryDistribution", module).add(
   "checkbox",
-  formWrapper({ test: [{ name: "", percentage: 0, placeholder: "Product Development" }] })(() => (
-    <FormCategoryDistribution label="HOW WILL YOU USE THE RAISED CAPITAL?" name="test" />
+  formWrapper({})(() => (
+    <FormCategoryDistribution
+      label="HOW WILL YOU USE THE RAISED CAPITAL?"
+      name="test"
+      paragraphName="paragraph"
+      suggestions={["test1", "test2", "test3"]}
+    />
   )),
 );

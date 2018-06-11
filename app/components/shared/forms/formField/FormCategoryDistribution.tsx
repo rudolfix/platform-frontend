@@ -29,6 +29,11 @@ interface IInternalProps {
   isFirstElement: boolean;
 }
 
+interface IExternalProps {
+  suggestions: string[];
+  paragraphName: string;
+}
+
 const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = props => {
   const { isFirstElement, removeField, isLastElement, placeholder, addField } = props;
   return (
@@ -75,21 +80,33 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
   );
 };
 
-export class FormCategoryDistribution extends React.Component<IProps & CommonHtmlProps> {
+export class FormCategoryDistribution extends React.Component<
+  IProps & IExternalProps & CommonHtmlProps
+> {
   static contextTypes = {
     formik: PropTypes.object,
   };
+  static blankField = {
+    description: "",
+    percent: 0,
+  };
+  private suggestions = this.props.suggestions;
+
+  componentWillMount(): void {
+    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+    const { name } = this.props;
+
+    if (!values[name])
+      this.suggestions.forEach((_, index) =>
+        setFieldValue(`${name}.${index}`, FormCategoryDistribution.blankField),
+      );
+  }
 
   render(): React.ReactNode {
-    const { name, label, className } = this.props;
+    const { name, label, className, paragraphName } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const blankField = {
-      description: "",
-      percent: 0,
-    };
-    const categoryDistribution = values[name] || [];
 
-    if (!categoryDistribution.length) setFieldValue(name, [blankField]);
+    const categoryDistribution = values[name] || [];
 
     return (
       <Col className={cn(styles.containerWidget, className)}>
@@ -98,7 +115,7 @@ export class FormCategoryDistribution extends React.Component<IProps & CommonHtm
             <div className="p-4">{label}</div>
           </Col>
         </Row>
-        <FormTextArea name="useOfCapital" placeholder="Detail" className={styles.textArea} />
+        <FormTextArea name={paragraphName} placeholder="Detail" className={styles.textArea} />
 
         <FieldArray
           name={name}
@@ -113,9 +130,17 @@ export class FormCategoryDistribution extends React.Component<IProps & CommonHtm
                     <SingleCategoryDistributionComponent
                       key={index}
                       name={`${name}.${index}`}
-                      removeField={() => arrayHelpers.remove(index)}
-                      placeholder="Enter"
-                      addField={() => arrayHelpers.push(blankField)}
+                      removeField={() => {
+                        arrayHelpers.remove(index);
+                        this.suggestions.splice(index, 1);
+                      }}
+                      placeholder={this.suggestions[index]}
+                      addField={() => {
+                        // For some reason code below doesn't work
+                        // arrayHelpers.push(this.blankField)
+                        setFieldValue(`${name}.${index + 1}`, FormCategoryDistribution.blankField);
+                        this.suggestions.push("Other");
+                      }}
                       isFirstElement={isFirstElement}
                       isLastElement={isLastElement}
                     />

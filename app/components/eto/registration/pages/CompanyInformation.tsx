@@ -1,9 +1,9 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoTeamDataType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -13,6 +13,7 @@ import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { FormField } from "../../../shared/forms/forms";
 import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 interface IStateProps {
@@ -21,22 +22,20 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  submitForm: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialEtoData) => void;
 }
 
 const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (props: FormikProps<TPartialEtoData>) => {
+const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   return (
-    <Form>
-      <h4 className="text-center">Company Information</h4>
+    <EtoFormBase title="Company Information" validator={EtoCompanyInformationType.toYup()}>
       <Section>
-        {/* TODO: Remove Title and add it to header component */}
         <FormField label="Brand Name*" name="brandName" />
-        <FormField label="Website*" name="website" />
-        <FormField label="Company tagline*" name="companyTagline" />
+        <FormField label="Website*" name="companyWebsite" />
+        <FormField label="Company tagline*" name="companyOneliner" />
         <FormTextArea
           className="mb-2 mt-2"
           label="Company Description*"
@@ -46,18 +45,18 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
         <FormTextArea
           label="Founders Quote"
           placeholder="Key Quote from Founder 250 Characters"
-          name="founderQuote"
+          name="keyQuoteFounder"
         />
         <FormTextArea
           label="Founders Investor"
           placeholder="Key Quote from Investor 250 Characters"
-          name="investorQuote"
+          name="keyQuoteInvestor"
         />
 
         <EtoTagWidget
           selectedTagsLimit={5}
           options={generateTagOptions(tagList)}
-          name="tags"
+          name="categories"
           className="mb-4"
         />
 
@@ -98,26 +97,24 @@ const EtoForm = (props: FormikProps<TPartialEtoData>) => {
           <Button
             layout="primary"
             className="mr-4"
+            type="submit"
             onClick={() => {
-              // tslint:disable-next-line
-              console.log("Form values: ", props.values);
-              props.submitForm();
+              // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
+              props.saveData(props.values);
             }}
           >
             Save
           </Button>
         </Row>
       </Col>
-    </Form>
+    </EtoFormBase>
   );
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
-  validationSchema: EtoTeamDataType.toYup(),
-  // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.stateValues),
+  validationSchema: EtoCompanyInformationType.toYup(),
   mapPropsToValues: props => props.stateValues,
-  // enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
 export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
@@ -131,8 +128,8 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
       stateValues: s.etoFlow.data,
     }),
     dispatchToProps: dispatch => ({
-      submitForm: (data: any) => {
-        dispatch(actions.etoFlow.loadData(data));
+      saveData: (data: any) => {
+        dispatch(actions.etoFlow.saveData(data));
       },
     }),
   }),

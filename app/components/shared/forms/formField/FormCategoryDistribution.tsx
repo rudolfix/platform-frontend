@@ -59,6 +59,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
           <Col xs={9}>
             <FormField
               prefix="%"
+              type="number"
               name={`${props.name}.percent`}
               className={styles.containerWidget}
             />

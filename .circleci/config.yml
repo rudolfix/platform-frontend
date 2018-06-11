@@ -3,6 +3,7 @@ jobs:
   install:
     docker:
       - image: krzkaczor/neufund-platform-base
+        user: circleci
     working_directory: /home/circleci/app
 
     steps:
@@ -11,19 +12,24 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-deps-{{ checksum "package.json" }}
-          - v1-deps-
+          - v4-deps-{{ checksum "package.json" }}
+          - v4-deps-
+      - restore_cache:
+          keys:
+          - v4-deps-cypress{{ checksum "package.json" }}
 
       - run: yarn --frozen-lockfile
 
+      - run: mkdir -p /home/circleci/.cache
+      - run: mv ~/.cache/Cypress /home/circleci/.cache/Cypress
       - save_cache:
           paths:
             - node_modules
-          key: v1-deps-{{ checksum "package.json" }}
+          key: v4-deps-{{ checksum "package.json" }}
       - save_cache:
           paths:
             - ../.cache/Cypress
-          key: v1-deps-cypress-{{ checksum "package.json" }}
+          key: v4-deps-cypress-{{ checksum "package.json" }}
 
   lint:
     docker:
@@ -34,8 +40,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-deps-{{ checksum "package.json" }}
-          - v1-deps-
+          - v4-deps-{{ checksum "package.json" }}
+          - v4-deps-
       - run: yarn prepare
 
       - run: yarn lint
@@ -49,8 +55,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-deps-{{ checksum "package.json" }}
-          - v1-deps-
+          - v4-deps-{{ checksum "package.json" }}
+          - v4-deps-
       - run: yarn prepare
 
       - run: yarn test:browser-coverage && yarn test:node
@@ -69,11 +75,11 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-deps-{{ checksum "package.json" }}
-          - v1-deps-
+          - v4-deps-{{ checksum "package.json" }}
+          - v4-deps-
       - restore_cache:
           keys:
-          - v1-deps-cypress-{{ checksum "package.json" }}
+          - v4-deps-cypress-{{ checksum "package.json" }}
       - run: yarn prepare
 
       - run: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
@@ -87,8 +93,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-deps-{{ checksum "package.json" }}
-          - v1-deps-
+          - v4-deps-{{ checksum "package.json" }}
+          - v4-deps-
       - run: yarn prepare
 
       - run: yarn storybook:screenshots

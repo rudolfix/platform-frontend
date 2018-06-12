@@ -114,14 +114,14 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
           ) : (
             <>
               {props.quote.text && (
-                <>
+                <div className={styles.quoteWrapper}>
                   <p>
                     {'"'}
                     {props.quote.text}
                     {'"'}
                   </p>
                   <p>{props.quote.credits}</p>
-                </>
+                </div>
               )}
             </>
           )}

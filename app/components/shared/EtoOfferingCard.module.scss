@@ -191,8 +191,14 @@ $card-heigh: px-to-rem(440px);
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -80%);
+    transform: translate(-50%, -90%);
     width: 90%;
+  }
+
+  @include media-breakpoint-only(xs) {
+    transform: translate(-50%, -140%);
+    line-height: 1.2;
+    font-size: rem-to-px(13px);
   }
 }
 

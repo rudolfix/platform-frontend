@@ -16,7 +16,7 @@ import * as styles from "./Landing.module.scss";
 export const Landing: React.SFC = () => (
   <div className={styles.landingWrapper}>
     <section className={styles.hero}>
-      <img className={styles.rainbowsheep} src={rainbowsheep} alt="rainbow sheep"/>
+      <img className={styles.rainbowsheep} src={rainbowsheep} alt="rainbow sheep" />
       <Container>
         <Row>
           <div className={styles.heroCta}>

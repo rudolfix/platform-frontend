@@ -4,29 +4,34 @@ import { initInitialState, initReducer } from "../reducer";
 
 describe("init > reducer", () => {
   it("should act on INIT_DONE", () => {
-    const action = actions.init.done();
+    const action = actions.init.done("appInit");
     const previousState = initInitialState;
 
     const newState = initReducer(previousState, action);
 
     expect(newState).to.be.deep.eq({
-      error: false,
-      errorMsg: undefined,
-      done: true,
+      ...initInitialState,
+      appInit: {
+        inProgress: false,
+        done: true,
+      },
     });
   });
 
   it("should act on INIT_ERROR", () => {
     const expectedError = "SOME ERROR";
-    const action = actions.init.error(expectedError);
+    const action = actions.init.error("appInit", expectedError);
     const previousState = initInitialState;
 
     const newState = initReducer(previousState, action);
 
     expect(newState).to.be.deep.eq({
-      done: false,
-      error: true,
-      errorMsg: expectedError,
+      ...initInitialState,
+      appInit: {
+        inProgress: false,
+        done: false,
+        error: expectedError,
+      },
     });
   });
 });

@@ -228,7 +228,9 @@
     @include font-headline-small;
 
     text-align: left;
-    display: block;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: px-to-rem(6px);
   }
 
   color: $color-graphite;
@@ -247,6 +249,7 @@
     margin: 0 px-to-rem(16px);
   }
 
+  &:last-of-type::after,
   + br {
     @include media-breakpoint-down (md) {
       display: none;

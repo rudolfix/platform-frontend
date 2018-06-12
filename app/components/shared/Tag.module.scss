@@ -28,6 +28,13 @@
   }
 
   &:global(.ghost-bold) {
+    @include media-breakpoint-down(md) {
+      font-size: .6rem;
+      padding: .2rem .2rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
     border: 2px solid currentColor;
     border-radius: 0;
     text-transform: uppercase;

@@ -22,7 +22,7 @@ $card-heigh: px-to-rem(440px);
     }
   }
 
-  &:hover {
+  &:not(.teaser):hover { //sass-lint:disable-line force-pseudo-nesting
     @include media-breakpoint-up(xl) {
       .round-label {
         transform: translate(-60%, -60%);
@@ -73,8 +73,8 @@ $card-heigh: px-to-rem(440px);
 
 .badge {
   position: absolute;
-  top: px-to-rem(10px);
-  right: px-to-rem(10px);
+  top: 0;
+  right: 0;
   z-index: $z-index-base;
 }
 
@@ -137,6 +137,7 @@ $card-heigh: px-to-rem(440px);
 .teaser-message {
   @include font-headline-medium;
 
+  font-size: px-to-rem(24px);
   color: $color-white;
   width: 90%;
   text-align: center;
@@ -191,8 +192,14 @@ $card-heigh: px-to-rem(440px);
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -80%);
+    transform: translate(-50%, -90%);
     width: 90%;
+  }
+
+  @include media-breakpoint-only(xs) {
+    transform: translate(-50%, -140%);
+    line-height: 1.2;
+    font-size: rem-to-px(13px);
   }
 }
 

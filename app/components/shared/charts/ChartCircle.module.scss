@@ -1,0 +1,65 @@
+@import "../../../styles/neufund-theme";
+
+.chart-circle {
+  position: relative;
+
+  &,
+  svg {
+    @include rect(210px);
+  }
+
+  &:global(.is-completed) {
+    .progress {
+      stroke: $color-green;
+    }
+  }
+}
+
+.border,
+.indicator,
+.progress {
+  fill: transparent;
+  vector-effect: non-scaling-stroke;
+}
+
+.indicator,
+.progress {
+  stroke: $color-orange;
+}
+
+.border {
+  stroke: $color-green;
+  stroke-width: 1px;
+}
+
+.indicator {
+  stroke-width: 3px;
+}
+
+.progress {
+  stroke-width: 9px;
+}
+
+.labels {
+  @include rect(100%);
+
+  position: absolute;
+  z-index: $z-index-base;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+}
+
+.percents {
+  font-size: px-to-rem(32px);
+  font-weight: $font-weight-bold;
+  margin-top: 54px;
+}
+
+.name {
+  font-size: px-to-rem(24px);
+  font-weight: $font-weight-light;
+  margin-top: -4px;
+}

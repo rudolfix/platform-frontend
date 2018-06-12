@@ -44,11 +44,11 @@ export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
-      stateValues: s.etoFlow.data,
+      stateValues: s.etoFlow.companyData,
     }),
     dispatchToProps: dispatch => ({
       submitForm: (data: any) => {
-        dispatch(actions.etoFlow.loadData(data));
+        dispatch(actions.etoFlow.loadData({ companyData: data }));
       },
     }),
   }),

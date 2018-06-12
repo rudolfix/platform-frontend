@@ -125,11 +125,11 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
-      stateValues: s.etoFlow.data,
+      stateValues: s.etoFlow.companyData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: any) => {
-        dispatch(actions.etoFlow.saveData(data));
+        dispatch(actions.etoFlow.saveData({ companyData: data }));
       },
     }),
   }),

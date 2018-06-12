@@ -141,30 +141,29 @@
     }
   }
 
-  @supports not (background-image: image-set(url("../../assets/img/landing_hero_bg.jpg") 1x)) {
-    background-image: url("../../assets/img/landing_hero_bg@3x.jpg");
+  @include media-breakpoint-only (xs) {
+    background-size: 100%;
+  }
+
+  @supports not (background-image: image-set(url("../../assets/img/landing/flying-ppl@1x.png") 1x)) {
+    background-image: url("../../assets/img/landing/flying-ppl@1x.png");
   }
 
   position: relative;
   min-height: px-to-rem(800px);
   background-image: image-set(
-    url("../../assets/img/landing_hero_bg.jpg") 1x,
-    url("../../assets/img/landing_hero_bg@2x.jpg") 2x,
-    url("../../assets/img/landing_hero_bg@3x.jpg") 3x
+    url("../../assets/img/landing/flying-ppl@1x.png") 1x,
+    url("../../assets/img/landing/flying-ppl@2x.png") 2x,
+    url("../../assets/img/landing/flying-ppl@3x.png") 3x
   );
   background-repeat: no-repeat;
   background-position: right top;
-  background-size: 40%;
   display: flex;
 }
 
 .hero-cta {
   @include make-col-ready;
   @include make-col(6);
-
-  @include media-breakpoint-down (lg) {
-    @include make-col(10);
-  }
 
   @include media-breakpoint-down (md) {
     @include make-col(12);
@@ -176,9 +175,9 @@
 }
 
 .hero-header {
-  @include headline-huge;
+  font-size: 3rem;
 
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-light;
   text-transform: uppercase;
   color: $color-graphite;
 
@@ -194,14 +193,14 @@
 }
 
 .hero-description {
-  @include font-headline-medium;
-
   @include media-breakpoint-down (md) {
     @include font-headline-small;
 
     text-shadow: $shadow-white;
   }
 
+  font-size: 1.4rem;
+  letter-spacing: .03125rem;
   margin-bottom: $spacing-vertical-lg-3;
 }
 
@@ -210,11 +209,14 @@
     margin-top: $spacing-vertical-lg-3;
   }
 
+  margin-top: px-to-rem(100px);
   text-align: center;
 }
 
 .benefits-header {
-  @include font-headline-medium;
+  font-size: px-to-rem(30);
+  font-weight: 400;
+  letter-spacing: -.03125rem;
 
   margin: $spacing-vertical-lg-1 0;
   color: $color-graphite;
@@ -233,6 +235,7 @@
     margin-bottom: px-to-rem(6px);
   }
 
+  font-size: px-to-rem(28);
   color: $color-graphite;
   display: inline-flex;
   justify-content: center;
@@ -252,6 +255,17 @@
   &:last-of-type::after,
   + br {
     @include media-breakpoint-down (md) {
+      display: none;
+    }
+  }
+
+  @include media-breakpoint-down (md) {
+    @include font-headline-small;
+
+    text-align: left;
+    display: block;
+
+    &:last-of-type::after { //sass-lint:disable-line force-pseudo-nesting
       display: none;
     }
   }

@@ -1,5 +1,6 @@
 const merge = require("webpack-merge");
 const webpack = require("webpack");
+const path = require("path");
 
 const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
@@ -74,6 +75,10 @@ module.exports = merge(configCommon, {
                   localIdentName: "[name]__[local]___[hash:base64:5]",
                   camelCase: "dashesOnly",
                 },
+              },
+              {
+                loader: "postcss-loader",
+                options: { config: { path: path.join(__dirname, "../postcss.config.js") } },
               },
               { loader: "sass-loader" },
             ],

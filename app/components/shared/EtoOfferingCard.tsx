@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 
 import { Proportion } from "./Proportion";
 import { ITag, Tag } from "./Tag";
@@ -27,6 +26,7 @@ export interface IEtoOfferingProps {
   logo?: string;
   topImage: IResponsiveImage;
   quoteImage?: IResponsiveImage;
+  badge?: IResponsiveImage;
   quoteBackground?: string;
   quoteColor?: string;
   className?: string;
@@ -53,9 +53,17 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
 
 export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
   return (
-    <Link to={props.to} className={cn(styles.card, props.className)}>
-      <Proportion width={10} height={6}>
+    <a href={props.to} target="_blank" className={cn(styles.card, props.className)}>
+      <Proportion width={100} height={50}>
         <div className={styles.top}>
+          {props.badge && (
+            <img
+              className={styles.badge}
+              src={props.badge.src}
+              srcSet={props.badge.srcSet}
+              alt={props.badge.alt}
+            />
+          )}
           {props.topImage && (
             <img
               className={styles.image}
@@ -114,19 +122,19 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
           ) : (
             <>
               {props.quote.text && (
-                <>
+                <div className={styles.quoteWrapper}>
                   <p>
                     {'"'}
                     {props.quote.text}
                     {'"'}
                   </p>
                   <p>{props.quote.credits}</p>
-                </>
+                </div>
               )}
             </>
           )}
         </blockquote>
       </div>
-    </Link>
+    </a>
   );
 };

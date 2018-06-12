@@ -55,13 +55,21 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
   const Wrapper: React.SFC = ({ children }) => {
     if (props.to) {
       return (
-        <a href={props.to} target="_blank" className={cn(styles.card, props.className, props.teaser && styles.teaser)}>
+        <a
+          href={props.to}
+          target="_blank"
+          className={cn(styles.card, props.className, props.teaser && styles.teaser)}
+        >
           {children}
         </a>
       );
     }
 
-    return <div className={cn(styles.card, props.className, props.teaser && styles.teaser)}>{children}</div>;
+    return (
+      <div className={cn(styles.card, props.className, props.teaser && styles.teaser)}>
+        {children}
+      </div>
+    );
   };
 
   return (

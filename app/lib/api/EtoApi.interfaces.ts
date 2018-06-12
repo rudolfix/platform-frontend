@@ -10,6 +10,11 @@ export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 
 const tagsType = YupTS.string();
 
+const EtoCapitalListType = YupTS.object({
+  description: YupTS.string(),
+  percent: YupTS.number(),
+});
+
 export const EtoCompanyInformationType = YupTS.object({
   brandName: YupTS.string(),
   companyWebsite: YupTS.string(),
@@ -27,8 +32,8 @@ export const EtoProductVisionType = YupTS.object({
   productVision: YupTS.string().optional(),
   inspiration: YupTS.string().optional(),
   keyProductPriorities: YupTS.string().optional(),
-  // useOfCapitalList: YupTS.array(YupTS.object({ description: YupTS.string, percent: YupTS.number })),
-  use_of_capital: YupTS.string().optional(),
+  useOfCapital: YupTS.string(),
+  // useOfCapitalList: YupTS.array(EtoCapitalListType.optional()).optional(), THIS IS RETURNING A TYPING ERROR
   // here we are missing some fields
 });
 

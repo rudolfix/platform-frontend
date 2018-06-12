@@ -43,12 +43,12 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
           name="problemSolved "
         />
 
-        {/*         <FormTextArea
+        <FormTextArea
           className="my-2"
           label="WHAT IS THE EXACT TARGET CUSTOMER GROUP OF YOUR PRODUCT?"
           placeholder="Describe"
           name="customerGroup"
-        /> */}
+        />
 
         <FormTextArea
           className="my-2"
@@ -74,6 +74,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
         <FormCategoryDistribution
           label="HOW WILL YOU USE THE RAISED CAPITAL?"
           name="useOfCapitalList"
+          paragraphName="useOfCapital"
           className="my-3"
           suggestions={distributionSuggestions}
         />
@@ -89,7 +90,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
           className="my-2"
           label="WHAT IS THE MARKETING APPRAOCH?"
           placeholder="Describe"
-          name="marketingAppraoch"
+          name="marketingApproach"
         />
 
         <FormTextArea

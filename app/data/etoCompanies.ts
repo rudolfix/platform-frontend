@@ -6,8 +6,7 @@ import * as blockstatehover from "../assets/img/eto_offers/blockstatehover@1x.jp
 import * as blockstate2hover from "../assets/img/eto_offers/blockstatehover@2x.jpg";
 import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
 import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
-import * as brile24hover from "../assets/img/eto_offers/Brille24hover@1x.jpg";
-import * as brile242hover from "../assets/img/eto_offers/Brille24hover@2x.jpg";
+import * as brile24hover from "../assets/img/eto_offers/brille24hover.gif";
 import * as emflux from "../assets/img/eto_offers/emflux@1x.jpg";
 import * as emflux2 from "../assets/img/eto_offers/emflux@2x.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
@@ -58,8 +57,8 @@ export const etoCompaniesCards: Array<EtoData> = [
         alt: "",
       },
       quoteImage: {
-        src: brile242hover,
-        srcSet: `${brile24hover} 1x, ${brile242hover} 2x`,
+        src: brile24hover,
+        srcSet: `${brile24hover} 1x`,
         alt: "",
       },
       to: "https://itunes.apple.com/de/app/brille24/id1262362205?l=en&mt=8",

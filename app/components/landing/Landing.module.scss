@@ -253,3 +253,11 @@
     }
   }
 }
+
+.rainbowsheep {
+  @include rect(20px);
+
+  position: absolute;
+  top: 5vh;
+  right: 5vw;
+}

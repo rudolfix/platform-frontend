@@ -252,7 +252,7 @@
     margin: 0 px-to-rem(16px);
   }
 
-  &:last-of-type::after,
+  &:last-of-type::after, //sass-lint:disable-line force-pseudo-nesting
   + br {
     @include media-breakpoint-down (md) {
       display: none;

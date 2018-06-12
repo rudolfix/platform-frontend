@@ -53,7 +53,7 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
 
 export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
   return (
-    <Link to={props.to} className={cn(styles.card, props.className)}>
+    <a href={props.to} target="_blank" className={cn(styles.card, props.className)}>
       <Proportion width={10} height={6}>
         <div className={styles.top}>
           {props.topImage && (
@@ -127,6 +127,6 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
           )}
         </blockquote>
       </div>
-    </Link>
+    </a>
   );
 };

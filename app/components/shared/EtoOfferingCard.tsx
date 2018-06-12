@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 
 import { Proportion } from "./Proportion";
 import { ITag, Tag } from "./Tag";
@@ -54,7 +53,7 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
 export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
   return (
     <a href={props.to} target="_blank" className={cn(styles.card, props.className)}>
-      <Proportion width={10} height={6}>
+      <Proportion width={100} height={50}>
         <div className={styles.top}>
           {props.topImage && (
             <img

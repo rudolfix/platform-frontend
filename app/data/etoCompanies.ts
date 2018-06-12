@@ -173,7 +173,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: `${nextbigthinghover} 1x, ${nextbigthing2hover} 2x`,
         alt: "",
       },
-      to: "#0",
+      to: "http://www.nextbigthing.ag/",
     },
   },
   {
@@ -244,7 +244,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: `${blockstatehover} 1x, ${blockstate2hover} 2x`,
         alt: "",
       },
-      to: "www.blockstate.com",
+      to: "http://www.blockstate.com",
     },
   },
   {
@@ -268,11 +268,6 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       description:
         "Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
-      quote: {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        credits: "John",
-      },
       topImage: {
         src: "",
         srcSet: "",
@@ -283,7 +278,6 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: "",
         alt: "",
       },
-      to: "http://www.nextbigthing.ag/",
       teaser: true,
     },
   },
@@ -298,11 +292,6 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       description:
         "German biotech startup introducing precision prevention with DNA healthcare applications. Featuring genome sequencing technologies.",
-      quote: {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        credits: "John",
-      },
       topImage: {
         src: "",
         srcSet: "",
@@ -313,7 +302,6 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: "",
         alt: "",
       },
-      to: "#0",
       teaser: true,
     },
   },
@@ -328,11 +316,6 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       description:
         "Fintech developing solutions for transacting fiat currencies over blockchains – Smart Money. Coming to Ethereum in 2018.",
-      quote: {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, voluptatum illum unde doloremque sequi cum sed ex odit. Ad deleniti veniam, aliquid dolor eaque libero nobis magnam repellendus sed laborum.",
-        credits: "John",
-      },
       topImage: {
         src: "",
         srcSet: "",
@@ -343,7 +326,6 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: "",
         alt: "",
       },
-      to: "#0",
       teaser: true,
     },
   },
@@ -373,7 +355,6 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: "",
         alt: "",
       },
-      to: "#0",
       teaser: true,
     },
   },

@@ -99,7 +99,7 @@ module.exports = merge(configCommon, {
             include: paths.app,
           },
           {
-            test: /\.(jpg|png|svg)$/,
+            test: /\.(jpg|png|svg|gif)$/,
             loader: "url-loader",
             exclude: paths.inlineIcons,
             options: {

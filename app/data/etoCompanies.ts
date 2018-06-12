@@ -46,7 +46,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       name: "BRILLE24",
       description:
-        "Eyewear pioneer aiming to change the way people access eye care with smart AI-applications. Founded 10 years ago, Brille24 has sold more than 2 million glasses and is currently serving one million customers.",
+        "Eyewear pioneer aiming to change the way people access eye care with smart AI-applications. Founded 10 years ago, Brille24 has sold more than 2 million glasses and is currently serving millions of customers.",
       quote: {
         text: "",
         credits: "",
@@ -114,7 +114,7 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "mySWOOP",
+      name: "mySWOOOP",
       description:
         "Online re-commerce platform buying and selling new and used electronics. With tailored software technology, mySWOOOP automatically determines current market prices in real-time assuring attractive resale-margins.",
       quote: {
@@ -157,7 +157,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       name: "NEXT BIG THING",
       description:
-        "As Europe's premier startup incubator for IOT & blockchain and Germany's chosenDigital Hub for IoT, Next Big Thing drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models.",
+        "As Europe’s premier startup incubator for IoT & blockchain and Germany’s chosen Digital Hub for IoT, Next Big Thing drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models.",
       quote: {
         text:
           "As IoT will significantly change service and industry structures, NBT offers early participation in this disruptive opportunity. They convinced me with their clear focus, proven track record, and professional attitude. The concept and structure are purposefully goal-oriented.",

@@ -73,8 +73,8 @@ $card-heigh: px-to-rem(440px);
 
 .badge {
   position: absolute;
-  top: px-to-rem(10px);
-  right: px-to-rem(10px);
+  top: 0;
+  right: 0;
   z-index: $z-index-base;
 }
 

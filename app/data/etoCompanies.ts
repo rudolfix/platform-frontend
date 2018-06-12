@@ -79,7 +79,7 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "UNITY",
+      name: "UNITI",
       description:
         "Uniti is the Swedish electric car startup offering what CNBC has called “the car of the future.” Safe & affordable EVs with premium technology and a progressive design — it’s what we do.",
       quote: {

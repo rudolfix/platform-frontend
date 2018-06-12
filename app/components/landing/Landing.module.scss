@@ -224,8 +224,6 @@
 }
 
 .benefit {
-  @include font-headline-medium;
-
   @include media-breakpoint-down (md) {
     @include font-headline-small;
 

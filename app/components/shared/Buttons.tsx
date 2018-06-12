@@ -9,7 +9,7 @@ import * as styles from "./Buttons.module.scss";
 
 type TButtonLayout = "primary" | "secondary";
 
-type TButtonTheme = "t-dark" | "t-white";
+type TButtonTheme = "dark" | "white" | "brand";
 
 type TIconPosition = "icon-before" | "icon-after";
 
@@ -55,7 +55,7 @@ export const Button: React.SFC<IButtonProps> = ({
 
 Button.defaultProps = {
   layout: "primary",
-  theme: "t-dark",
+  theme: "dark",
   disabled: false,
 };
 

@@ -96,12 +96,21 @@ $_active-color: lighten($_hover-color, 20%);
 
   &:global {
     // themes
-    &.t-white {
+    &.white {
       color: $neu-white-two;
     }
 
-    &.t-dark {
+    &.dark {
       color: $neu-almost-black;
+    }
+
+    &.brand {
+      background-color: $color-brand;
+      color: $color-graphite;
+
+      :local(.content) {
+        border-color: $color-brand;
+      }
     }
 
     // elements

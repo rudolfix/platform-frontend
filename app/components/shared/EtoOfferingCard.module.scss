@@ -22,7 +22,7 @@ $card-heigh: px-to-rem(440px);
     }
   }
 
-  &:hover {
+  &:not(.teaser):hover { //sass-lint:disable-line force-pseudo-nesting
     @include media-breakpoint-up(xl) {
       .round-label {
         transform: translate(-60%, -60%);

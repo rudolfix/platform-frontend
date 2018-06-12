@@ -18,11 +18,11 @@ export interface IEtoOfferingProps {
   tags: ITag[];
   name?: string;
   description: string;
-  quote: {
+  quote?: {
     text: string;
     credits: string;
   };
-  to: string;
+  to?: string;
   logo?: string;
   topImage: IResponsiveImage;
   quoteImage?: IResponsiveImage;
@@ -52,8 +52,20 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
 };
 
 export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
+  const Wrapper: React.SFC = ({ children }) => {
+    if (props.to) {
+      return (
+        <a href={props.to} target="_blank" className={cn(styles.card, props.className)}>
+          {children}
+        </a>
+      );
+    }
+
+    return <div className={cn(styles.card, props.className)}>{children}</div>;
+  };
+
   return (
-    <a href={props.to} target="_blank" className={cn(styles.card, props.className)}>
+    <Wrapper>
       <Proportion width={100} height={50}>
         <div className={styles.top}>
           {props.badge && (
@@ -121,20 +133,21 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
             </svg>
           ) : (
             <>
-              {props.quote.text && (
-                <div className={styles.quoteWrapper}>
-                  <p>
-                    {'"'}
-                    {props.quote.text}
-                    {'"'}
-                  </p>
-                  <p>{props.quote.credits}</p>
-                </div>
-              )}
+              {props.quote &&
+                props.quote.text && (
+                  <div className={styles.quoteWrapper}>
+                    <p>
+                      {'"'}
+                      {props.quote.text}
+                      {'"'}
+                    </p>
+                    <p>{props.quote.credits}</p>
+                  </div>
+                )}
             </>
           )}
         </blockquote>
       </div>
-    </a>
+    </Wrapper>
   );
 };

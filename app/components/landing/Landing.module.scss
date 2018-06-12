@@ -227,6 +227,7 @@
   @include media-breakpoint-down (md) {
     @include font-headline-small;
 
+    text-align: left;
     display: block;
   }
 
@@ -240,13 +241,15 @@
   &:last-of-type::after { //sass-lint:disable-line force-pseudo-nesting
     @include rect(4px, 30px);
 
-    @include media-breakpoint-down (md) {
-      display: none;
-    }
-
     content: "";
     display: inline-block;
     background-color: $color-brand;
     margin: 0 px-to-rem(16px);
+  }
+
+  + br {
+    @include media-breakpoint-down (md) {
+      display: none;
+    }
   }
 }

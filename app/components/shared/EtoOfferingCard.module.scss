@@ -150,10 +150,14 @@ $card-heigh: px-to-rem(440px);
   @include media-breakpoint-down(lg) {
     position: static;
     flex-grow: 1;
-    padding: 4%;
   }
 
-
+  @include media-breakpoint-down(md) {
+    padding: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    height: auto;
+  }
 
   background-color: $neu-white-two;
   transition: 400ms transform, 300ms background-color, 200ms color;
@@ -165,8 +169,18 @@ $card-heigh: px-to-rem(440px);
 
   .image {
     @include media-breakpoint-down(lg) {
-      display: none;
+      position: static;
     }
+  }
+}
+
+.quote-wrapper {
+  @include media-breakpoint-down(lg) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    width: 90%;
   }
 }
 
@@ -185,7 +199,6 @@ $card-heigh: px-to-rem(440px);
 
   color: inherit;
   font-weight: $font-weight-bold;
-  text-transform: uppercase;
 }
 
 .description {
@@ -215,14 +228,14 @@ $card-heigh: px-to-rem(440px);
 
   @include media-breakpoint-down(lg) {
     position: static;
-    padding-bottom: 0;
-    padding-top: 0;
+    padding: 0;
   }
 
   @include media-breakpoint-up(lg) {
     height: 100%;
   }
 
+  color: $color-white;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -244,6 +257,10 @@ $card-heigh: px-to-rem(440px);
     }
 
     z-index: $z-index-over-base;
+  }
+
+  .image {
+    z-index: $z-index-under-base;
   }
 }
 

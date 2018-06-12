@@ -18,7 +18,7 @@ export const RegisterCta: React.SFC<ISelfProps> = ({ text, ctaText, ctaLink }) =
       <img className={styles.image} src={logo} alt="Neufund logo" />
       <h2 className={styles.ctaText}>{text}</h2>
       <Link to={ctaLink}>
-        <Button size="wide" theme="t-white">
+        <Button size="wide" theme="white">
           {ctaText}
         </Button>
       </Link>

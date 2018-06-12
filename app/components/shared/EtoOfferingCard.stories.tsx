@@ -29,8 +29,17 @@ const props: IEtoOfferingProps = {
   description,
   quote: {
     text: lorem,
-    person: "John",
-    position: "founder",
+    credits: "John",
+  },
+  topImage: {
+    src: "",
+    srcSet: "",
+    alt: "",
+  },
+  quoteImage: {
+    src: "",
+    srcSet: "",
+    alt: "",
   },
   logo,
   to: "#0",

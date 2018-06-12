@@ -26,6 +26,7 @@ export interface IEtoOfferingProps {
   logo?: string;
   topImage: IResponsiveImage;
   quoteImage?: IResponsiveImage;
+  badge?: IResponsiveImage;
   quoteBackground?: string;
   quoteColor?: string;
   className?: string;
@@ -55,6 +56,14 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
     <a href={props.to} target="_blank" className={cn(styles.card, props.className)}>
       <Proportion width={100} height={50}>
         <div className={styles.top}>
+          {props.badge && (
+            <img
+              className={styles.badge}
+              src={props.badge.src}
+              srcSet={props.badge.srcSet}
+              alt={props.badge.alt}
+            />
+          )}
           {props.topImage && (
             <img
               className={styles.image}

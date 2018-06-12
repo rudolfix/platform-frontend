@@ -50,6 +50,10 @@ $card-heigh: px-to-rem(440px);
       .quote {
         display: flex;
       }
+
+      .badge {
+        z-index: $z-index-under-base;
+      }
     }
   }
 }
@@ -65,6 +69,13 @@ $card-heigh: px-to-rem(440px);
       line-height: px-to-rem(16px);
     }
   }
+}
+
+.badge {
+  position: absolute;
+  top: px-to-rem(10px);
+  right: px-to-rem(10px);
+  z-index: $z-index-base;
 }
 
 .top {

@@ -14,6 +14,8 @@ import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
 import * as myswoop from "../assets/img/eto_offers/myswoop@1x.jpg";
 import * as myswoop2 from "../assets/img/eto_offers/myswoop@2x.jpg";
+import * as myswoopbadge from "../assets/img/eto_offers/myswoopbadge@1x.jpg";
+import * as myswoopbadge2 from "../assets/img/eto_offers/myswoopbadge@2x.jpg";
 import * as myswoophover from "../assets/img/eto_offers/myswoophover@1x.jpg";
 import * as myswoop2hover from "../assets/img/eto_offers/myswoophover@2x.jpg";
 import * as nextbigthing from "../assets/img/eto_offers/nextbigthing@1x.jpg";
@@ -129,6 +131,11 @@ export const etoCompaniesCards: Array<EtoData> = [
       quoteImage: {
         src: myswoophover,
         srcSet: `${myswoophover} 1x, ${myswoop2hover} 2x`,
+        alt: "",
+      },
+      badge: {
+        src: myswoopbadge,
+        srcSet: `${myswoopbadge} 1x, ${myswoopbadge2} 2x`,
         alt: "",
       },
       to: "http://www.myswooop.de/",

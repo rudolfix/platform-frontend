@@ -43,7 +43,7 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "Brille24 GMBH",
+      name: "BRILLE24",
       description:
         "Eyewear pioneer aiming to change the way people access eye care with smart AI-applications. Founded 10 years ago, Brille24 has sold more than 2 million glasses and is currently serving one million customers.",
       quote: {
@@ -60,7 +60,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: `${brile24hover} 1x, ${brile242hover} 2x`,
         alt: "",
       },
-      to: "#0",
+      to: "https://itunes.apple.com/de/app/brille24/id1262362205?l=en&mt=8",
     },
   },
   {
@@ -78,9 +78,9 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "Uniti",
+      name: "UNITY",
       description:
-        "Swedish startup developing an electric city car. Optimised for high performance and agility in urban environments. Holistic safety, sustainability, and scalability in manufacturing. Unveiling 2017 - first deliveries 2019.",
+        "Uniti is the Swedish electric car startup offering what CNBC has called “the car of the future.” Safe & affordable EVs with premium technology and a progressive design — it’s what we do.",
       quote: {
         text: "",
         credits: "",
@@ -95,7 +95,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: `${unitihover} 1x, ${uniti2hover} 2x`,
         alt: "",
       },
-      to: "#0",
+      to: "https://www.youtube.com/watch?v=49JASBTng-4",
     },
   },
   {
@@ -113,7 +113,7 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "mySwoop",
+      name: "mySWOOP",
       description:
         "Online re-commerce platform buying and selling new and used electronics. With tailored software technology, mySWOOOP automatically determines current market prices in real-time assuring attractive resale-margins.",
       quote: {
@@ -131,7 +131,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: `${myswoophover} 1x, ${myswoop2hover} 2x`,
         alt: "",
       },
-      to: "#0",
+      to: "http://www.myswooop.de/",
     },
   },
   {
@@ -149,7 +149,7 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "Next big thing",
+      name: "NEXT BIG THING",
       description:
         "As Europe's premier startup incubator for IOT & blockchain and Germany's chosenDigital Hub for IoT, Next Big Thing drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models",
       quote: {
@@ -185,7 +185,7 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "emflux motors",
+      name: "EMFLUX MOTORS",
       description:
         "Electric superbike changing the landscape of transportation & mobility. India-based venture backed by both crypto and traditional investors with a mission to power 10 million electric bikes in India by 2027.",
       quote: {
@@ -203,7 +203,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: `${emfluxhover} 1x, ${emflux2hover} 2x`,
         alt: "",
       },
-      to: "#0",
+      to: "http://www.emfluxmotors.com/",
     },
   },
   {
@@ -221,7 +221,7 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "blockstate",
+      name: "BLOCKSTATE",
       description:
         "Creating products for the future of finance. BlockState builds efficient, transparent and compliant products for Asset Management, Debt Issuance and Derivatives based on Blockchain technology.",
       quote: {
@@ -238,7 +238,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: `${blockstatehover} 1x, ${blockstate2hover} 2x`,
         alt: "",
       },
-      to: "#0",
+      to: "www.blockstate.com",
     },
   },
   {
@@ -277,7 +277,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         srcSet: "",
         alt: "",
       },
-      to: "#0",
+      to: "http://www.nextbigthing.ag/",
       teaser: true,
     },
   },

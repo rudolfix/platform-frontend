@@ -1,0 +1,29 @@
+@import "../../styles/neufund-theme";
+
+.eto-form-progress-widget {
+  background-color: $color-white;
+  box-shadow: $shadow;
+
+
+  :global(.c-proportion-content) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.link-wrapper {
+  margin-top: $spacing-vertical-lg-1;
+  color: $color-graphite;
+  font-size: px-to-rem(16px);
+  font-weight: $font-weight-light;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  :global(.inline-icon) {
+    margin-left: px-to-rem(10px);
+  }
+}

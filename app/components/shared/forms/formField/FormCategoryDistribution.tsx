@@ -32,6 +32,7 @@ interface IInternalProps {
 interface IExternalProps {
   suggestions: string[];
   paragraphName: string;
+  blankField: object;
 }
 
 const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = props => {
@@ -81,10 +82,8 @@ export class FormCategoryDistribution extends React.Component<
   static contextTypes = {
     formik: PropTypes.object,
   };
-  static blankField = {
-    description: "",
-    percent: 0,
-  };
+
+  private blankField = { ...this.props.blankField };
   private suggestions = [...this.props.suggestions];
 
   componentWillMount(): void {
@@ -92,9 +91,7 @@ export class FormCategoryDistribution extends React.Component<
     const { name } = this.props;
 
     if (!values[name])
-      this.suggestions.forEach((_, index) =>
-        setFieldValue(`${name}.${index}`, FormCategoryDistribution.blankField),
-      );
+      this.suggestions.forEach((_, index) => setFieldValue(`${name}.${index}`, this.blankField));
   }
 
   render(): React.ReactNode {
@@ -131,7 +128,7 @@ export class FormCategoryDistribution extends React.Component<
                       }}
                       placeholder={this.suggestions[index]}
                       addField={() => {
-                        setFieldValue(`${name}.${index + 1}`, FormCategoryDistribution.blankField);
+                        setFieldValue(`${name}.${index + 1}`, this.blankField);
                         this.suggestions.push("Other");
                       }}
                       isFirstElement={isFirstElement}

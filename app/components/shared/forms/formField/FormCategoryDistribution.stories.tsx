@@ -13,6 +13,10 @@ storiesOf("FormCategoryDistribution", module)
         name="test"
         paragraphName="paragraph"
         suggestions={["suggestion1", "suggestion2", "suggestion3"]}
+        blankField={{
+          description: "",
+          percent: 0,
+        }}
       />
     )),
   )
@@ -29,6 +33,10 @@ storiesOf("FormCategoryDistribution", module)
         name="test"
         paragraphName="paragraph"
         suggestions={["suggestion1", "suggestion2", "suggestion3"]}
+        blankField={{
+          description: "",
+          percent: 0,
+        }}
       />
     )),
   );

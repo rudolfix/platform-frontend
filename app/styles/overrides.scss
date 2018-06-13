@@ -14,7 +14,7 @@
 // Enable font smoothing on mac
 body {
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 // sass-lint:enable no-vendor-prefixes
 
@@ -57,7 +57,7 @@ body {
 
 
 .form-control {
-  -webkit-appearance: none; // scss-lint:disable VendorPrefi
+  appearance: none;
   border-radius: 0;
 }
 

@@ -1,5 +1,6 @@
 const merge = require("webpack-merge");
 const webpack = require("webpack");
+const path = require("path");
 
 const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
@@ -79,6 +80,10 @@ module.exports = merge(configCommon, {
                   camelCase: "dashesOnly",
                 },
               },
+              {
+                loader: "postcss-loader",
+                options: { config: { path: path.join(__dirname, "../postcss.config.js") } },
+              },
               { loader: "sass-loader" },
             ],
           },
@@ -132,7 +137,7 @@ module.exports = merge(configCommon, {
             include: paths.app,
           },
           {
-            test: /\.(jpg|png|svg)$/,
+            test: /\.(jpg|png|svg|gif)$/,
             loader: "url-loader",
             exclude: paths.inlineIcons,
             options: {

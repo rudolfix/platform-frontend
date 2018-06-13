@@ -367,7 +367,7 @@ export const oldEtoDashboard: React.SFC = () => (
           rightComponent={
             <Button
               layout="secondary"
-              theme="t-white"
+              theme="white"
               svgIcon={downloadIcon}
               iconPosition="icon-before"
               onClick={() => {}}

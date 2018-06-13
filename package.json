@@ -4,6 +4,10 @@
   "repository": "git@github.com:Neufund/platform-frontend.git",
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
+  "browserslist": [
+    "> 1%",
+    "not IE 11"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.46",
     "@babel/core": "^7.0.0-beta.46",
@@ -80,6 +84,8 @@
     "node-sass": "^4.7.2",
     "nyc": "^11.4.1",
     "patch-package": "^5.1.1",
+    "postcss-loader": "^2.1.5",
+    "prep": "1.6.0",
     "prettier": "^1.11.1",
     "raw-loader": "^0.5.1",
     "reg-simple-keygen-plugin": "^0.7.1",
@@ -111,6 +117,7 @@
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
     "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack-dev-server --config ./webpack/webpack.config.translate.js",
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
+    "build:prod:prerender": "./scripts/prerender.sh",
     "build:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack --config ./webpack/webpack.config.prod.js",
     "ganache": "./scripts/ganache-cli.sh",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md,gql}'",
@@ -144,6 +151,7 @@
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.0.0-beta.46",
     "@babel/plugin-proposal-optional-catch-binding": "^7.0.0-beta.46",
+    "autoprefixer": "^8.6.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-react-intl-krzkaczor": "^2.4.1",
     "bignumber.js": "^5.0.0",

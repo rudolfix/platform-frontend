@@ -1,7 +1,9 @@
-import { createAction, createSimpleAction } from "../actionsUtils";
+import { createAction } from "../actionsUtils";
+import { TInitType } from "./reducer";
 
 export const initActions = {
-  start: () => createSimpleAction("INIT_START"),
-  done: () => createSimpleAction("INIT_DONE"),
-  error: (errorMsg?: string) => createAction("INIT_ERROR", { errorMsg }),
+  start: (initType: TInitType) => createAction("INIT_START", { initType }),
+  done: (initType: TInitType) => createAction("INIT_DONE", { initType }),
+  error: (initType: TInitType, errorMsg?: string) =>
+    createAction("INIT_ERROR", { initType, errorMsg }),
 };

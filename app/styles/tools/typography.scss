@@ -1,5 +1,11 @@
 @import "../variables";
 
+@mixin headline-huge {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(48px);
+  letter-spacing: px-to-rem(-.3px);
+}
+
 @mixin headline-big {
   font-family: $headings-font-family;
   font-size: px-to-rem(34px);

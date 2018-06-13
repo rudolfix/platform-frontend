@@ -18,15 +18,22 @@ export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDepen
   }
 }
 
-export function* saveEtoData({ apiEtoService }: TGlobalDependencies, action: TAction): any {
+export function* saveEtoData(
+  { apiEtoService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): any {
   if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
+  try {
+    const newData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
+      action.payload.data,
+    );
 
-  const newData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
-    action.payload.data,
-  );
-  yield put(actions.etoFlow.loadData(newData.body));
-
-  yield put(actions.routing.goToDashboard());
+    yield put(actions.etoFlow.loadData(newData.body));
+    yield put(actions.routing.goToDashboard());
+  } catch (e) {
+    yield put(actions.etoFlow.loadDataStart());
+    notificationCenter.error("Failed to send ETO data");
+  }
 }
 
 export function* etoFlowSagas(): any {

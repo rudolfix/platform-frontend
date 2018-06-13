@@ -32,7 +32,7 @@ class ObjectYTS<T> extends YTS<TypeOfProps<T>> {
     const validator = Yup.object(mapValues(this.shape, s => s.toYup()));
 
     if (this.isRequired) {
-      return validator.required();
+      return validator.required("This field is required");
     }
     return validator;
   }
@@ -53,7 +53,7 @@ class StringYTS extends YTS<string> {
     const validator = Yup.string();
 
     if (this.isRequired) {
-      return validator.required();
+      return validator.required("This field is required");
     }
     return validator;
   }
@@ -74,7 +74,7 @@ class NumberYTS extends YTS<number> {
     const validator = Yup.number();
 
     if (this.isRequired) {
-      return validator.required();
+      return validator.required("This field is required");
     }
     return validator;
   }
@@ -95,7 +95,7 @@ class BooleanYTS extends YTS<boolean> {
     const validator = Yup.boolean();
 
     if (this.isRequired) {
-      return validator.required();
+      return validator.required("This field is required");
     }
     return validator;
   }
@@ -116,7 +116,7 @@ class ArrayYTS<T extends YTS<any>> extends YTS<Array<TypeOf<T>>> {
     const validator = Yup.array().of(this.shape.toYup());
 
     if (this.isRequired) {
-      return validator.required();
+      return validator.required("This field is required");
     }
     return validator;
   }

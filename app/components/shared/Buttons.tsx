@@ -3,14 +3,13 @@ import * as React from "react";
 
 import { Size } from "../../types";
 import { InlineIcon } from "./InlineIcon";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 import * as closeIcon from "../../assets/img/inline_icons/close.svg";
 import * as styles from "./Buttons.module.scss";
 
 type TButtonLayout = "primary" | "secondary";
-
 type TButtonTheme = "dark" | "white" | "brand";
-
 type TIconPosition = "icon-before" | "icon-after";
 
 interface IGeneralButton {
@@ -24,12 +23,13 @@ export interface IButtonProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: (event: any) => void;
   svgIcon?: string;
   type?: string;
   className?: string;
   iconPosition?: TIconPosition;
   size?: Size;
+  isLoading?: boolean;
 }
 
 export const Button: React.SFC<IButtonProps> = ({
@@ -41,20 +41,27 @@ export const Button: React.SFC<IButtonProps> = ({
   className,
   iconPosition,
   size,
+  isLoading,
   ...props
 }) => {
   return (
     <button
       className={cn("button", layout, iconPosition, theme, size)}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       tabIndex={0}
       type="button"
       {...props}
     >
       <div className={cn(styles.content, className)} tabIndex={-1}>
-        {iconPosition === "icon-before" && <InlineIcon svgIcon={svgIcon || ""} />}
-        {children}
-        {iconPosition === "icon-after" && <InlineIcon svgIcon={svgIcon || ""} />}
+        {isLoading ? (
+          <LoadingIndicator light />
+        ) : (
+          <>
+            {iconPosition === "icon-before" && <InlineIcon svgIcon={svgIcon || ""} />}
+            {children}
+            {iconPosition === "icon-after" && <InlineIcon svgIcon={svgIcon || ""} />}
+          </>
+        )}
       </div>
     </button>
   );

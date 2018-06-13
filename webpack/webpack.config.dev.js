@@ -19,7 +19,7 @@ module.exports = merge(configCommon, {
         "default-src 'self'; script-src 'self' 'unsafe-eval'; " +
         "style-src fonts.googleapis.com 'self' 'unsafe-inline'; " +
         "font-src 'self' fonts.gstatic.com; " +
-        "img-src 'self' data:; " +
+        "img-src 'self' data: documents.neufund.io documents.neufund.net;" +
         "connect-src 'self' wss://localhost:9090", // needed for hot reload
     },
     proxy: {
@@ -46,6 +46,10 @@ module.exports = merge(configCommon, {
       "/api/eto-listing": {
         target: "http://localhost:5009",
         pathRewrite: { "^/api/eto-listing": "" },
+      },
+      "/api/document-storage": {
+        target: "http://localhost:5015",
+        pathRewrite: { "^/api/document-storage": "" },
       },
     },
   },

@@ -50,27 +50,27 @@ export const EtoDashboard: React.SFC = () => (
       </Col>
     </Row>
     <Row>
-      <Col>
+      <Col md={4} className="pt-2">
         <Link to={etoRegisterRoutes.companyInformation}>
           <Button>Company Information</Button>
         </Link>
       </Col>
-      <Col>
+      <Col md={4} className="pt-2">
         <Link to={etoRegisterRoutes.etoTerms}>
           <Button>ETO TERMS</Button>
         </Link>
       </Col>
-      <Col>
+      <Col md={4} className="pt-2">
         <Link to={etoRegisterRoutes.keyIndividuals}>
           <Button>Key individuals</Button>
         </Link>
       </Col>
-      <Col>
+      <Col md={4} className="pt-2">
         <Link to={etoRegisterRoutes.legalInformation}>
-          <Button>LegaL INFORMATION</Button>
+          <Button>Legal information</Button>
         </Link>
       </Col>
-      <Col>
+      <Col md={4} className="pt-2">
         <Link to={etoRegisterRoutes.productVision}>
           <Button>Product Vision</Button>
         </Link>

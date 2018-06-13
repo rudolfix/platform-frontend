@@ -78,9 +78,17 @@ module.exports = merge(configCommon, {
               },
               {
                 loader: "postcss-loader",
-                options: { config: { path: path.join(__dirname, "../postcss.config.js") } },
+                options: { config: { path: path.join(__dirname, "postcss.config.js") } },
               },
-              { loader: "sass-loader" },
+              {
+                loader: "sass-loader",
+              },
+              {
+                loader: "sass-resources-loader",
+                options: {
+                  resources: [path.join(__dirname, "../app/styles/neufund-theme.scss")],
+                },
+              },
             ],
           },
           {

@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Button } from "./Buttons";
 import { NavLinkConnected } from "./connectedRouting";
 import { InlineIcon } from "./InlineIcon";
-import { PanelWhite } from "./PanelWhite";
+import { PanelWhite } from "./Panel";
 import { Tabs } from "./Tabs";
 
 import * as iconPlus from "../../assets/img/inline_icons/plus.svg";

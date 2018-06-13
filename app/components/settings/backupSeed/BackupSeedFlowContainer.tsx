@@ -5,7 +5,7 @@ import { appRoutes } from "../../appRoutes";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { BreadCrumb } from "../../shared/BreadCrumb";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { PanelWhite } from "../../shared/Panel";
 import { BackupSeedDisplay } from "./BackupSeedDisplay";
 import { BackupSeedIntro } from "./BackupSeedIntro";
 import { BackupSeedVerify } from "./BackupSeedVerify";

@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 
 import Counter from "../../shared/Counter";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { PanelWhite } from "../../shared/Panel";
 import { ProjectStatus, TStatus } from "../../shared/ProjectStatus";
 import { EtoTimeline } from "./EtoTimeline";
 

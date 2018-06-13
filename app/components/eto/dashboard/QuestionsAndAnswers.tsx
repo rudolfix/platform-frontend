@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { PanelWhite } from "../../shared/Panel";
 
 interface IquestionAndAnswer {
   question: string;

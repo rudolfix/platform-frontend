@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { PanelWhite } from "../../shared/PanelWhite";
+import { PanelWhite } from "../../shared/Panel";
 import { IProgressStepper, ProgressStepper } from "../../shared/ProgressStepper";
 import { EtoRegisterRouter } from "./Router";
 

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
 import { Money, TCurrency } from "../../shared/Money";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { PanelWhite } from "../../shared/Panel";
 import { ITag, Tag } from "../../shared/Tag";
 
 import * as styles from "./EtoOverview.module.scss";

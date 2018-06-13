@@ -4,14 +4,31 @@ import * as React from "react";
 import { formWrapper } from "./form-utils";
 import { FormCategoryDistribution } from "./FormCategoryDistribution";
 
-storiesOf("FormCategoryDistribution", module).add(
-  "checkbox",
-  formWrapper({})(() => (
-    <FormCategoryDistribution
-      label="HOW WILL YOU USE THE RAISED CAPITAL?"
-      name="test"
-      paragraphName="paragraph"
-      suggestions={["test1", "test2", "test3"]}
-    />
-  )),
-);
+storiesOf("FormCategoryDistribution", module)
+  .add(
+    "default",
+    formWrapper({})(() => (
+      <FormCategoryDistribution
+        label="HOW WILL YOU USE THE RAISED CAPITAL?"
+        name="test"
+        paragraphName="paragraph"
+        suggestions={["suggestion1", "suggestion2", "suggestion3"]}
+      />
+    )),
+  )
+  .add(
+    "Pre-filled Data",
+    formWrapper({
+      test: [
+        { description: "Important Category", percent: "10" },
+        { description: "ESOP", percent: "30" },
+      ],
+    })(() => (
+      <FormCategoryDistribution
+        label="HOW WILL YOU USE THE RAISED CAPITAL?"
+        name="test"
+        paragraphName="paragraph"
+        suggestions={["suggestion1", "suggestion2", "suggestion3"]}
+      />
+    )),
+  );

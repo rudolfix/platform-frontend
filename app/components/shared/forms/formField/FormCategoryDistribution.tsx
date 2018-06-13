@@ -36,19 +36,13 @@ interface IExternalProps {
 
 const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = props => {
   const { isFirstElement, removeField, isLastElement, placeholder, addField } = props;
+
   return (
     <Row>
       <Col xs={8}>
         <Row className="justify-content-center">
           <Col xs={1} className="pl-4 pt-2">
-            {isLastElement && (
-              <ButtonIcon
-                svgIcon={plusIcon}
-                onClick={() => {
-                  addField();
-                }}
-              />
-            )}
+            {isLastElement && <ButtonIcon svgIcon={plusIcon} onClick={addField} />}
           </Col>
           <Col>
             <FormField
@@ -65,6 +59,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
             <FormField
               prefix="%"
               type="number"
+              addonStyle={styles.addon}
               name={`${props.name}.percent`}
               className={styles.containerWidget}
             />
@@ -90,7 +85,7 @@ export class FormCategoryDistribution extends React.Component<
     description: "",
     percent: 0,
   };
-  private suggestions = this.props.suggestions;
+  private suggestions = [...this.props.suggestions];
 
   componentWillMount(): void {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
@@ -136,8 +131,6 @@ export class FormCategoryDistribution extends React.Component<
                       }}
                       placeholder={this.suggestions[index]}
                       addField={() => {
-                        // For some reason code below doesn't work
-                        // arrayHelpers.push(this.blankField)
                         setFieldValue(`${name}.${index + 1}`, FormCategoryDistribution.blankField);
                         this.suggestions.push("Other");
                       }}

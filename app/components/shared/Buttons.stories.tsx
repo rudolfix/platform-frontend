@@ -61,4 +61,5 @@ storiesOf("Button", module)
         secondary icon before text disabled
       </Button>
     </div>
-  ));
+  ))
+  .add("loading", () => <Button isLoading>Primary</Button>);

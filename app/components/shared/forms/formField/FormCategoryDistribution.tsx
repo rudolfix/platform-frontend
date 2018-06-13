@@ -18,6 +18,7 @@ interface IProps {
   className?: string;
   name: string;
   label?: string;
+  prefix?: string;
   selectedCategory?: { name: string; percentage: number };
 }
 
@@ -27,16 +28,25 @@ interface IInternalProps {
   isLastElement: boolean;
   placeholder: string;
   isFirstElement: boolean;
+  formFieldKeys: string[];
 }
 
 interface IExternalProps {
   suggestions: string[];
-  paragraphName: string;
+  paragraphName?: string;
   blankField: object;
 }
 
 const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = props => {
-  const { isFirstElement, removeField, isLastElement, placeholder, addField } = props;
+  const {
+    isFirstElement,
+    removeField,
+    isLastElement,
+    placeholder,
+    addField,
+    formFieldKeys,
+    prefix,
+  } = props;
 
   return (
     <Row>
@@ -47,7 +57,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
           </Col>
           <Col>
             <FormField
-              name={`${props.name}.description`}
+              name={`${props.name}.${formFieldKeys[0]}`}
               className={styles.containerWidget}
               placeholder={placeholder}
             />
@@ -58,10 +68,10 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
         <Row>
           <Col xs={9}>
             <FormField
-              prefix="%"
+              prefix={prefix}
               type="number"
               addonStyle={styles.addon}
-              name={`${props.name}.percent`}
+              name={`${props.name}.${formFieldKeys[1]}`}
               className={styles.containerWidget}
             />
           </Col>
@@ -95,11 +105,11 @@ export class FormCategoryDistribution extends React.Component<
   }
 
   render(): React.ReactNode {
-    const { name, label, className, paragraphName } = this.props;
+    const { name, label, className, paragraphName, prefix } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     const categoryDistribution = values[name] || [];
-
+    const formFieldKeys = Object.keys(this.blankField);
     return (
       <Col className={cn(styles.containerWidget, className)}>
         <Row>
@@ -107,7 +117,9 @@ export class FormCategoryDistribution extends React.Component<
             <div className="p-4">{label}</div>
           </Col>
         </Row>
-        <FormTextArea name={paragraphName} placeholder="Detail" className={styles.textArea} />
+        {paragraphName && (
+          <FormTextArea name={paragraphName} placeholder="Detail" className={styles.textArea} />
+        )}
 
         <FieldArray
           name={name}
@@ -121,6 +133,8 @@ export class FormCategoryDistribution extends React.Component<
                   return (
                     <SingleCategoryDistributionComponent
                       key={index}
+                      formFieldKeys={formFieldKeys}
+                      prefix={prefix}
                       name={`${name}.${index}`}
                       removeField={() => {
                         arrayHelpers.remove(index);
@@ -129,7 +143,7 @@ export class FormCategoryDistribution extends React.Component<
                       placeholder={this.suggestions[index]}
                       addField={() => {
                         setFieldValue(`${name}.${index + 1}`, this.blankField);
-                        this.suggestions.push("Other");
+                        this.suggestions[index + 1] = "Other";
                       }}
                       isFirstElement={isFirstElement}
                       isLastElement={isLastElement}

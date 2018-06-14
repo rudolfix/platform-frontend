@@ -2,6 +2,8 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
+import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
+import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
 import { Proportion } from "./Proportion";
 import { ITag, Tag } from "./Tag";
 
@@ -31,6 +33,7 @@ export interface IEtoOfferingProps {
   quoteColor?: string;
   className?: string;
   teaser?: boolean;
+  bannerWithGif?: boolean;
 }
 
 interface IPropsRoundLabel {
@@ -120,35 +123,75 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
             </p>
           </div>
         </Proportion>
-        <blockquote
-          className={cn(styles.quote, props.teaser && styles.teaser)}
-          style={{ background: props.quoteBackground, color: props.quoteColor }}
-        >
-          {props.quoteImage && (
-            <img
-              className={styles.image}
-              src={props.quoteImage.src}
-              srcSet={props.quoteImage.srcSet}
-              alt={props.quoteImage.alt}
-            />
-          )}
-          {!props.teaser && (
-            <>
-              {props.quote &&
-                props.quote.text && (
-                  <div className={styles.quoteWrapper}>
-                    <p>
-                      {'"'}
-                      {props.quote.text}
-                      {'"'}
-                    </p>
-                    <p>{props.quote.credits}</p>
-                  </div>
-                )}
-            </>
-          )}
-        </blockquote>
+        {props.bannerWithGif ? (
+          <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
+            {props.quoteImage && (
+              <div className={styles.imageWrapper}>
+                <img
+                  className={styles.animation}
+                  src={props.quoteImage.src}
+                  srcSet={props.quoteImage.srcSet}
+                  alt={props.quoteImage.alt}
+                />
+                <div className={styles.banner}>{renderBannerComponent(props.name!)}</div>
+              </div>
+            )}
+          </blockquote>
+        ) : (
+          <blockquote
+            className={cn(styles.quote, props.teaser && styles.teaser)}
+            style={{ background: props.quoteBackground, color: props.quoteColor }}
+          >
+            {props.quoteImage && (
+              <img
+                className={styles.image}
+                src={props.quoteImage.src}
+                srcSet={props.quoteImage.srcSet}
+                alt={props.quoteImage.alt}
+              />
+            )}
+            {!props.teaser && (
+              <>
+                {props.quote &&
+                  props.quote.text && (
+                    <div className={styles.quoteWrapper}>
+                      <p>
+                        {'"'}
+                        {props.quote.text}
+                        {'"'}
+                      </p>
+                      <p>{props.quote.credits}</p>
+                    </div>
+                  )}
+              </>
+            )}
+          </blockquote>
+        )}
       </div>
     </Wrapper>
   );
 };
+
+const renderBannerComponent = (name: string) => {
+  switch (name) {
+    case "BRILLE24":
+      return <BrilleBanner />;
+    case "UNITI":
+      return <UnitiBanner />;
+    default:
+      throw new Error("Unrecognized company name");
+  }
+};
+
+const BrilleBanner = () => (
+  <>
+    <img src={AppStoreIcon} className={styles.appStore} />
+  </>
+);
+
+const UnitiBanner = () => (
+  <>
+    <h3>Technological partner:</h3>
+    <img src={SiemensLogo} className={styles.siemensLogo} />
+  </>
+);

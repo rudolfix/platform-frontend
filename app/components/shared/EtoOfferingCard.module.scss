@@ -290,3 +290,41 @@ $card-heigh: px-to-rem(440px);
   left: 0;
   position: absolute;
 }
+
+.quote-description {
+  background-color: $black;
+}
+
+.animated-gif-with-description {
+  padding: 0;
+  height: 100%;
+
+  .image-wrapper {
+    height: 100%;
+    width: 100%;
+
+    .animation {
+      width: 100%;
+    }
+
+    .banner {
+      height: 100%;
+      background-color: $neu-black;
+      width: 100%;
+
+      h3 {
+        color: $white;
+        padding-top: 10px;
+      }
+
+      .app-store {
+        height: 80px;
+        margin-top: 60px;
+      }
+
+      .siemens-logo {
+        margin-top: 20px;
+      }
+    }
+  }
+}

@@ -3,26 +3,28 @@
 $_icon-size: px-to-rem(20px);
 
 $sm-width: px-to-rem(65px);
-$lg-width: px-to-rem(133px);
+$lg-width: px-to-rem(140px);
 
 .menu {
   @include media-breakpoint-up(sm) {
     display: block;
     padding-top: map-get($spacers, 3);
     justify-content: flex-start;
-  }
-
-  @include media-breakpoint-up(sm) {
     width: $sm-width;
     height: 100%;
   }
+
+  @include media-breakpoint-up(md) {
+    padding-top: px-to-rem(130px);
+  }
+
   @include media-breakpoint-up(lg) {
     width: $lg-width;
   }
 
   height: $header-height;
-  background-color: $neu-almost-black;
-  border-top: 2px solid $neu-almost-black;
+  background-color: $color-gray;
+  border-top: 2px solid $color-gray;
   display: flex;
   flex-shrink: 0;
   width: 100%;
@@ -36,28 +38,20 @@ $lg-width: px-to-rem(133px);
   flex-shrink: 0;
   position: relative;
   height: px-to-rem(60px);
-  color: $neu-silver;
+  color: $color-silver;
   display: flex;
   align-items: center;
 
   .icon {
-    color: $neu-charcoal-grey;
-  }
-
-  &:hover,
-  &:focus,
-  &:global(.active) {
-    .icon {
-      color: inherit;
-    }
+    color: $color-brand;
   }
 
   &:hover,
   &:global(.active) {
     background-color: $neu-charcoal-grey;
-    color: $neu-white-two;
     border-color: $neu-piss-yellow;
     text-decoration: none;
+    color: $color-silver;
   }
 
   &:focus {
@@ -102,7 +96,7 @@ $lg-width: px-to-rem(133px);
     display: none;
   }
 
-  max-width: calc(100% - (3 * #{$_icon-size}));
+  max-width: calc(100% - (2.5 * #{$_icon-size}));
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -5,7 +5,7 @@ import { Button } from "../../shared/Buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { Money } from "../../shared/Money";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
 import { TableRow } from "../../shared/table/TableRow";
@@ -39,7 +39,7 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
   className,
   ...htmlProps
 }) => (
-  <PanelDark
+  <Panel
     icon={neuIcon}
     headerText="MY PROCEEDS"
     rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
@@ -73,5 +73,5 @@ export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProp
         ))
       )}
     </TableBody>
-  </PanelDark>
+  </Panel>
 );

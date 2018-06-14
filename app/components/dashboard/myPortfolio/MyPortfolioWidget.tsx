@@ -7,7 +7,7 @@ import { selectNeuBalanceEuroAmount } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
@@ -59,7 +59,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   data,
 }) => {
   return (
-    <PanelDark
+    <Panel
       headerText={
         <FormattedMessage id="components.dashboard.my-portfolio.my-portfolio-widget.header-text" />
       }
@@ -77,7 +77,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
           />
         )}
       </Row>
-    </PanelDark>
+    </Panel>
   );
 };
 

@@ -9,7 +9,7 @@ import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 import { settingsRoutes } from "../routes";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
@@ -30,7 +30,7 @@ export const BackupSeedWidgetComponent: React.SFC<
   IStateProps & IDispatchProps & IIntlProps & IOwnProps
 > = ({ intl: { formatIntlMessage }, backupCodesVerified, step }) => {
   return (
-    <PanelDark
+    <Panel
       headerText={formatIntlMessage("settings.backup-seed-widget.header", { step })}
       rightComponent={
         backupCodesVerified ? (
@@ -73,7 +73,7 @@ export const BackupSeedWidgetComponent: React.SFC<
           </Col>
         </div>
       )}
-    </PanelDark>
+    </Panel>
   );
 };
 

@@ -23,22 +23,18 @@ export const Panel: React.SFC<IPanelProps & CommonHtmlProps> = ({
 
   return (
     <div {...props} className={cn(styles.panel, className)}>
-      {
-        hasHeader
-          && <header className={styles.header}>
-            {headerText && <div className={styles.left}>{headerText}</div>}
-            {
-              (rightComponent || icon)
-                && (
-                  <div className={styles.right}>
-                    {rightComponent}
-                    {icon && <img src={icon} className={styles.icon} />}
-                  </div>
-                )
-            }
-          </header>
-      }
+      {hasHeader && (
+        <header className={styles.header}>
+          {headerText && <div className={styles.left}>{headerText}</div>}
+          {(rightComponent || icon) && (
+            <div className={styles.right}>
+              {rightComponent}
+              {icon && <img src={icon} className={styles.icon} />}
+            </div>
+          )}
+        </header>
+      )}
       {children}
     </div>
-  )
+  );
 };

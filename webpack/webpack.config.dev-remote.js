@@ -42,6 +42,11 @@ const localDevConfig = merge(devConfig, {
         pathRewrite: { "^/api/eto-listing": "" },
         changeOrigin: true,
       },
+      "/api/document-storage": {
+        target: backendUrl + "document-storage",
+        pathRewrite: { "^/api/document-storage": "" },
+        changeOrigin: true,
+      },
     },
   },
 });

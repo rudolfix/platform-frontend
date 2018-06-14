@@ -11,6 +11,8 @@ import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
+import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
+import { remoteFileActions } from "./shared/remoteFile/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
 import { walletActions } from "./wallet/actions";
@@ -33,6 +35,8 @@ export const actions = {
   wallet: walletActions,
   notifications: notificationActions,
   etoFlow: etoFlowActions,
+  formSingleFileUpload: formSingleFileUploadActions,
+  remoteFile: remoteFileActions,
 };
 
 /**
@@ -54,6 +58,8 @@ export const allActions = {
   ...walletActions,
   ...notificationActions,
   ...etoFlowActions,
+  ...formSingleFileUploadActions,
+  ...remoteFileActions,
 };
 
 /**

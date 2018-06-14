@@ -1,4 +1,6 @@
+import { get } from "lodash";
 import { tid } from "../../../../../test/testUtils";
+import { mockApiUrl } from "./../../light/__tests__/LightWalletRegister.spec.e2e";
 
 describe("Wallet recover", () => {
   const words = [
@@ -46,11 +48,23 @@ describe("Wallet recover", () => {
 
     cy.get(tid("btn-send")).click();
 
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+
     cy.get(tid("wallet-selector-register-email")).type("john-smith@example.com");
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");
     cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
 
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
+
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
+      const email = get(r, "body[0].personalizations[0].to[0]") as string | undefined;
+      const loginLink = get(r, "body[0].personalizations[0].substitutions.-loginLink-") as
+        | string
+        | undefined;
+
+      expect(email).to.be.eq(email);
+      expect(loginLink).to.contain("salt");
+    });
 
     cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
 

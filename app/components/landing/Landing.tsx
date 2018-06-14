@@ -8,71 +8,21 @@ import { etoCompaniesCards } from "../../data/etoCompanies";
 import { appRoutes } from "../appRoutes";
 import { Button } from "../shared/Buttons";
 import { EtoCard } from "../shared/EtoCard";
+import { LandingHeader } from "./parts/LandingHeader";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
-import * as rainbowsheep from "../../assets/img/rainbowsheep.gif";
 import * as styles from "./Landing.module.scss";
 
 export const Landing: React.SFC = () => (
   <div className={styles.landingWrapper}>
-    <section className={styles.hero}>
-      <img className={styles.rainbowsheep} src={rainbowsheep} alt="rainbow sheep" />
-      <Container>
-        <Row>
-          <div className={styles.heroCta}>
-            <h2 className={styles.heroHeader}>
-              <FormattedMessage id="landing.hero.header" />
-            </h2>
-            <p className={styles.heroDescription}>
-              <FormattedMessage id="landing.hero.description" />
-            </p>
-            <Link to={appRoutes.register}>
-              <Button theme="brand">
-                <FormattedMessage id="landing.welcome-box.register-now" />
-              </Button>
-            </Link>
-          </div>
-        </Row>
-        <Row>
-          <Col className={styles.benefits}>
-            <h3 className={styles.benefitsHeader}>
-              <FormattedMessage id="landing.hero.benefits.title" />
-            </h3>
-            <div>
-              <span className={styles.benefit}>
-                <FormattedMessage id="landing.hero.benefits.benefit-1" />
-              </span>
-              <span className={styles.benefit}>
-                <FormattedMessage id="landing.hero.benefits.benefit-2" />
-              </span>
-              <br />
-              <span className={styles.benefit}>
-                <FormattedMessage id="landing.hero.benefits.benefit-3" />
-              </span>
-              <span className={styles.benefit}>
-                <FormattedMessage id="landing.hero.benefits.benefit-4" />
-              </span>
-              <span className={styles.benefit}>
-                <FormattedMessage id="landing.hero.benefits.benefit-5" />
-              </span>
-              <br />
-              <span className={styles.benefit}>
-                <FormattedMessage id="landing.hero.benefits.benefit-6" />
-              </span>
-              <span className={styles.benefit}>
-                <FormattedMessage id="landing.hero.benefits.benefit-7" />
-              </span>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </section>
+    <LandingHeader />
+
     {process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "1" && (
       <section className={styles.equityTokenOfferings}>
         <Container>
           <Row>
-            {etoCompaniesCards.map(e => (
-              <Col xs={12} lg={6} className={styles.equityTokenCol}>
+            {etoCompaniesCards.map((e, k) => (
+              <Col xs={12} lg={6} className={styles.equityTokenCol} key={k}>
                 <EtoCard {...e} />
               </Col>
             ))}

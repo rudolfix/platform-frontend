@@ -18,7 +18,6 @@ import {
 } from "../../../shared/forms/forms";
 
 import { HorizontalLine } from "../../../shared/HorizontalLine";
-import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 
 import * as iconExternalLink from "../../../../assets/img/inline_icons/link_out_small.svg";
 
@@ -80,15 +79,14 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
         <div className="mb-4">
           <FormField label="Your token Name" placeholder="XXX" name="tokenName" />
         </div>
-        <SingleFileUpload
+        {/* <SingleFileUpload
           acceptedFiles="image/*"
-          files={[]}
+          file={[]}
           fileUploading={false}
-          filesLoading={false}
           fileFormatInformation=".jpg, .svg, .png"
           uploadCta="Upload token symbol"
           onDropFile={() => {}}
-        />
+        /> */}
       </Col>
     </Row>
     <HorizontalLine className="my-4" />

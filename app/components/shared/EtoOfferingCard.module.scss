@@ -38,7 +38,7 @@ $card-heigh: px-to-rem(440px);
     .bottom {
       background-color: $blue-green;
       color: $neu-white-two;
-      transform: translateY(-56%);
+      transform: translateY(-59%);
     }
 
     .name,
@@ -215,6 +215,10 @@ $card-heigh: px-to-rem(440px);
     font-size: px-to-rem(14px);
   }
 
+  @include media-breakpoint-only(md) {
+    font-size: px-to-rem(14px);
+  }
+
   font-weight: 500;
   font-size: px-to-rem(16px);
   margin: 0;
@@ -289,7 +293,7 @@ $card-heigh: px-to-rem(440px);
 
       .app-store {
         height: 80px;
-        margin-top: 60px;
+        margin-top: 50px;
       }
 
       .siemens-logo {

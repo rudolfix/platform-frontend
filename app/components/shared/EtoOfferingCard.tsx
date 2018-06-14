@@ -112,7 +112,7 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
       <div className={styles.bottom}>
         <Proportion
           width={10}
-          height={4}
+          height={3.5}
           className={styles.descriptionProportion}
           disabledOnMobile={true}
         >

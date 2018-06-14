@@ -72,7 +72,7 @@ export const Landing: React.SFC = () => (
         <Container>
           <Row>
             {etoCompaniesCards.map(e => (
-              <Col xs={12} md={6} className={styles.equityTokenCol}>
+              <Col xs={12} lg={6} className={styles.equityTokenCol}>
                 <EtoCard {...e} />
               </Col>
             ))}

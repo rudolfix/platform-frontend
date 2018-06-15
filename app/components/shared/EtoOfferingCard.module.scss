@@ -3,11 +3,6 @@
 $card-heigh: px-to-rem(440px);
 
 .card {
-  @include media-breakpoint-down (sm) {
-    display: flex;
-    flex-direction: column;
-  }
-
   background-color: $color-white;
   box-shadow: $shadow;
   height: 100%;
@@ -15,12 +10,6 @@ $card-heigh: px-to-rem(440px);
   display: block;
   overflow: hidden;
   position: relative;
-
-  :global(.proportion) {
-    @include media-breakpoint-down(sm) {
-      padding-top: 100% !important; // sass-lint:disable-line no-important
-    }
-  }
 
   &:not(.teaser):hover { //sass-lint:disable-line force-pseudo-nesting
     .round-label {
@@ -36,14 +25,7 @@ $card-heigh: px-to-rem(440px);
     }
 
     .bottom {
-      background-color: $blue-green;
-      color: $neu-white-two;
-      transform: translateY(-59%);
-    }
-
-    .name,
-    .description-proportion {
-      display: none;
+      transform: translateY(-100%);
     }
 
     .quote {
@@ -55,19 +37,6 @@ $card-heigh: px-to-rem(440px);
     }
   }
 }
-
-// :global(.responsive) {
-//   @media (min-width: map-get($grid-breakpoints, "xl")) and (max-width: 1400px) {
-//     .description {
-//       font-size: 12px;
-//     }
-
-//     .quote {
-//       font-size: px-to-rem(14px);
-//       line-height: px-to-rem(16px);
-//     }
-//   }
-// }
 
 .badge {
   position: absolute;
@@ -167,22 +136,6 @@ $card-heigh: px-to-rem(440px);
   will-change: transform;
 }
 
-.quote-wrapper {
-  @include media-breakpoint-down(lg) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -90%);
-    width: 90%;
-  }
-
-  @include media-breakpoint-only(xs) {
-    transform: translate(-50%, -140%);
-    line-height: 1.2;
-    font-size: rem-to-px(13px);
-  }
-}
-
 .quote,
 .description-wrapper {
   padding: 4% px-to-rem(34px);
@@ -245,10 +198,6 @@ $card-heigh: px-to-rem(440px);
   position: absolute;
 
   p {
-    @include media-breakpoint-down(sm) {
-      margin-bottom: 0;
-    }
-
     z-index: $z-index-over-base;
   }
 

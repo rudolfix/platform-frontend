@@ -33,7 +33,7 @@ export const HiResImage: React.SFC<IHiResImageProps> = ({ partialPath, className
   } catch (e) {
     // we show error here. Otherwise react goes into loop
     // tslint:disable-next-line
-    console.error(`Couldnt find image at path ${partialPath}`);
+    console.error(`Couldnt find image at path assets/img/${partialPath}.png"`);
     return <div />;
   }
 };

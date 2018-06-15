@@ -13,9 +13,8 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const verifyEmailWidget = shallow(
       <VerifyEmailWidgetComponent
         step={1}
-        isThereUnverifiedEmail={true}
+        isThereUnverifiedEmail={false}
         isUserEmailVerified={true}
-        doesEmailExist={true}
         resendEmail={() => {}}
         addNewEmail={() => {}}
         intl={dummyIntl}
@@ -31,7 +30,6 @@ describe("<VerifyEmailWidgetComponent />", () => {
         step={1}
         isThereUnverifiedEmail={true}
         isUserEmailVerified={false}
-        doesEmailExist={true}
         resendEmail={() => {}}
         addNewEmail={() => {}}
         intl={dummyIntl}
@@ -47,7 +45,6 @@ describe("<VerifyEmailWidgetComponent />", () => {
         step={1}
         isThereUnverifiedEmail={false}
         isUserEmailVerified={false}
-        doesEmailExist={false}
         resendEmail={() => {}}
         addNewEmail={() => {}}
         intl={dummyIntl}
@@ -63,7 +60,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
           step={1}
           isThereUnverifiedEmail={true}
           isUserEmailVerified={false}
-          doesEmailExist={true}
+          unverifiedEmail="test@test.com"
           resendEmail={() => {}}
           addNewEmail={() => {}}
           intl={dummyIntl}
@@ -81,7 +78,6 @@ describe("<VerifyEmailWidgetComponent />", () => {
             step={1}
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
-            doesEmailExist={false}
             resendEmail={() => {}}
             addNewEmail={() => {}}
             intl={dummyIntl}
@@ -105,7 +101,6 @@ describe("<VerifyEmailWidgetComponent />", () => {
             step={1}
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
-            doesEmailExist={false}
             resendEmail={() => {}}
             addNewEmail={addNewEmailSpy}
             intl={dummyIntl}
@@ -144,7 +139,6 @@ describe("<VerifyEmailWidgetComponent />", () => {
             step={1}
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
-            doesEmailExist={false}
             resendEmail={() => {}}
             addNewEmail={() => {}}
             intl={dummyIntl}

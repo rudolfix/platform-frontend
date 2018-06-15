@@ -317,6 +317,8 @@
   "settings.verify-email-widget.enter-email": "Please enter your email",
   "settings.verify-email-widget.header": "{step}. EMAIL VERIFICATION",
   "settings.verify-email-widget.resend-link": "Resend link",
+  "settings.verify-email-widget.unverified-email": "unverified email",
+  "settings.verify-email-widget.verified-email": "verified email",
   "settings.verify-email-widget.you-need-to-verify-email": "Once you have verified your email address we will send you an Access Link to your Neufund Wallet.",
   "shared-component-news-widget-add-news": "Add news",
   "shared-component-news-widget-tab-latest": "Latest news",

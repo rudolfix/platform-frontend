@@ -1,10 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Container, Row, Col } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 
-import * as styles from "./LandingHeader.module.scss";
 import { HiResImage } from "../../shared/HiResImage";
+import * as styles from "./LandingHeader.module.scss";
 
 export const LandingHeader: React.SFC = () => (
   <section className={styles.hero}>
@@ -38,7 +38,6 @@ const NewsletterCta: React.SFC = () => (
   </form>
 );
 
-
 const CompanyImages: React.SFC = () => (
   <div className={styles.images}>
     <HiResImage partialPath="landing/myswooop" className={cn(styles.companyImage)} />
@@ -48,4 +47,4 @@ const CompanyImages: React.SFC = () => (
     <HiResImage partialPath="landing/emflux" className={styles.companyImage} />
     <HiResImage partialPath="landing/BT" className={styles.companyImage} />
   </div>
-)
+);

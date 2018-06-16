@@ -59,121 +59,169 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
   );
 };
 
-export const EtoOfferingCardComponent: React.SFC<IEtoOfferingProps & ISizeProps> = props => {
-  const Wrapper: React.SFC = ({ children }) => {
-    if (props.to) {
+interface IState {
+  isClicked: boolean;
+}
+
+export class EtoOfferingCardComponent extends React.Component<
+  IEtoOfferingProps & ISizeProps,
+  IState
+> {
+  state = {
+    isClicked: false,
+  };
+
+  private onClick = () => {
+    const { isMobile } = this.props;
+    const { isClicked } = this.state;
+
+    if (!isMobile) return;
+
+    this.setState({
+      ...this.state,
+      isClicked: !isClicked,
+    });
+  };
+
+  render(): React.ReactNode {
+    const props = this.props;
+    const { isClicked } = this.state;
+
+    const Wrapper: React.SFC = ({ children }) => {
+      if (props.to && !props.isMobile) {
+        return (
+          <a
+            href={props.to}
+            target="_blank"
+            className={cn(
+              styles.card,
+              props.className,
+              props.teaser && styles.teaser,
+              props.isMobile && styles.mobile,
+            )}
+          >
+            {children}
+          </a>
+        );
+      }
+
       return (
-        <a
-          href={props.to}
-          target="_blank"
+        <div
           className={cn(
             styles.card,
             props.className,
             props.teaser && styles.teaser,
             props.isMobile && styles.mobile,
+            isClicked && styles.flipped,
           )}
+          onClick={this.onClick}
         >
           {children}
-        </a>
+        </div>
       );
-    }
+    };
 
     return (
-      <div className={cn(styles.card, props.className, props.teaser && styles.teaser)}>
-        {children}
-      </div>
-    );
-  };
-
-  return (
-    <Wrapper>
-      <Proportion width={100} height={50}>
-        <div className={styles.top}>
-          {props.badge && (
-            <img
-              className={styles.badge}
-              src={props.badge.src}
-              srcSet={props.badge.srcSet}
-              alt={props.badge.alt}
-            />
-          )}
-          {props.topImage && (
-            <img
-              className={styles.image}
-              src={props.topImage.src}
-              srcSet={props.topImage.srcSet}
-              alt={props.topImage.alt}
-            />
-          )}
-          {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
-          {props.logo && (
-            <img className={styles.logo} src={props.logo} alt={`${props.name} logo`} />
-          )}
-          {props.teaser && (
-            <div className={styles.teaserMessage}>
-              <img src={QuestionMark} />
+      <Wrapper>
+        <Proportion width={100} height={50}>
+          <div className={styles.top}>
+            {props.badge && (
+              <img
+                className={styles.badge}
+                src={props.badge.src}
+                srcSet={props.badge.srcSet}
+                alt={props.badge.alt}
+              />
+            )}
+            {props.topImage && (
+              <img
+                className={styles.image}
+                src={props.topImage.src}
+                srcSet={props.topImage.srcSet}
+                alt={props.topImage.alt}
+              />
+            )}
+            {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
+            {props.logo && (
+              <img className={styles.logo} src={props.logo} alt={`${props.name} logo`} />
+            )}
+            {props.teaser && (
+              <div className={styles.teaserMessage}>
+                <img src={QuestionMark} />
+              </div>
+            )}
+            <div className={styles.tags}>
+              {props.tags.map((tag, index) => <Tag {...tag} key={index} />)}
             </div>
-          )}
-          <div className={styles.tags}>
-            {props.tags.map((tag, index) => <Tag {...tag} key={index} />)}
-          </div>
-        </div>
-      </Proportion>
-      <div className={styles.bottom}>
-        <Proportion width={10} height={3.5} className={styles.descriptionProportion}>
-          <div className={styles.descriptionWrapper}>
-            <h3 className={styles.name}>{props.name || "Announcing soon"}</h3>
-            <p className={cn(styles.description)}>{props.description}</p>
           </div>
         </Proportion>
-        {props.bannerWithGif ? (
-          <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
-            {props.quoteImage && (
-              <div className={styles.imageWrapper}>
+        <div className={styles.bottom}>
+          <Proportion width={10} height={3.5} className={styles.descriptionProportion}>
+            <div className={styles.descriptionWrapper}>
+              <h3 className={styles.name}>{props.name || "Announcing soon"}</h3>
+              <p className={cn(styles.description)}>{props.description}</p>
+            </div>
+          </Proportion>
+          {props.bannerWithGif ? (
+            <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
+              {props.quoteImage && (
+                <div className={styles.imageWrapper}>
+                  <img
+                    className={styles.animation}
+                    src={props.quoteImage.src}
+                    srcSet={props.quoteImage.srcSet}
+                    alt={props.quoteImage.alt}
+                  />
+                  <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
+                </div>
+              )}
+            </blockquote>
+          ) : (
+            <blockquote
+              className={cn(styles.quote, props.teaser && styles.teaser)}
+              style={{ background: props.quoteBackground, color: props.quoteColor }}
+            >
+              {props.quoteImage && (
                 <img
-                  className={styles.animation}
+                  className={styles.image}
                   src={props.quoteImage.src}
                   srcSet={props.quoteImage.srcSet}
                   alt={props.quoteImage.alt}
                 />
-                <div className={styles.banner}>{renderBannerComponent(props.name!)}</div>
-              </div>
-            )}
-          </blockquote>
-        ) : (
-          <blockquote
-            className={cn(styles.quote, props.teaser && styles.teaser)}
-            style={{ background: props.quoteBackground, color: props.quoteColor }}
-          >
-            {props.quoteImage && (
-              <img
-                className={styles.image}
-                src={props.quoteImage.src}
-                srcSet={props.quoteImage.srcSet}
-                alt={props.quoteImage.alt}
-              />
-            )}
-            {!props.teaser && (
-              <>
-                {props.quote &&
-                  props.quote.text && (
-                    <div className={styles.quoteWrapper}>
-                      <p>
-                        {'"'}
-                        {props.quote.text}
-                        {'"'}
-                      </p>
-                      <p>{props.quote.credits}</p>
-                    </div>
-                  )}
-              </>
-            )}
-          </blockquote>
-        )}
-      </div>
-    </Wrapper>
-  );
-};
+              )}
+              {!props.teaser && (
+                <>
+                  {props.quote &&
+                    props.quote.text && (
+                      <div className={styles.quoteWrapper}>
+                        <p>
+                          {'"'}
+                          {props.quote.text}
+                          {'"'}
+                        </p>
+                        <p>{props.quote.credits}</p>
+                      </div>
+                    )}
+                </>
+              )}
+            </blockquote>
+          )}
+        </div>
+      </Wrapper>
+    );
+  }
+
+  private renderBannerComponent(name: string): React.ReactNode {
+    switch (name) {
+      case "BRILLE24":
+        return <BrilleBanner />;
+      case "UNITI":
+        return <UnitiBanner />;
+      default:
+        throw new Error("Unrecognized company name");
+    }
+  }
+}
 
 const mapSizesToProps = ({ width }: any) => ({
   isMobile: width < 992,
@@ -182,17 +230,6 @@ const mapSizesToProps = ({ width }: any) => ({
 export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = withSizes(mapSizesToProps)(
   EtoOfferingCardComponent,
 );
-
-const renderBannerComponent = (name: string) => {
-  switch (name) {
-    case "BRILLE24":
-      return <BrilleBanner />;
-    case "UNITI":
-      return <UnitiBanner />;
-    default:
-      throw new Error("Unrecognized company name");
-  }
-};
 
 const BrilleBanner = () => (
   <>

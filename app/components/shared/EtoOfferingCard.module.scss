@@ -11,7 +11,8 @@ $card-heigh: px-to-rem(440px);
   overflow: hidden;
   position: relative;
 
-  &:not(.teaser):not(.mobile):hover { //sass-lint:disable-line force-pseudo-nesting
+  &:not(.teaser):not(.mobile):hover,  //sass-lint:disable-line force-pseudo-nesting
+  &.flipped {
     .round-label {
       transform: translate(-60%, -60%);
     }

@@ -158,7 +158,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       name: "NEXT BIG THING",
       description:
-        "As Europe’s premier startup incubator for IoT & blockchain and Germany’s chosen Digital Hub for IoT, Next Big Thing drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models.",
+        "As Europe’s premier startup incubator for IoT & blockchain and Germany’s chosen Digital Hub for IoT, NBT drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models.",
       quote: {
         text:
           "As IoT will significantly change service and industry structures, NBT offers early participation in this disruptive opportunity. They convinced me with their clear focus, proven track record, and professional attitude. The concept and structure are purposefully goal-oriented.",

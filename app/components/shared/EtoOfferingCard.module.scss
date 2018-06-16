@@ -11,7 +11,7 @@ $card-heigh: px-to-rem(440px);
   overflow: hidden;
   position: relative;
 
-  &:not(.teaser):hover { //sass-lint:disable-line force-pseudo-nesting
+  &:not(.teaser):not(.mobile):hover { //sass-lint:disable-line force-pseudo-nesting
     .round-label {
       transform: translate(-60%, -60%);
     }
@@ -102,13 +102,15 @@ $card-heigh: px-to-rem(440px);
 }
 
 .teaser-message {
-  @include font-headline-medium;
-
-  font-size: px-to-rem(24px);
-  color: $color-white;
-  width: 90%;
   text-align: center;
-  text-transform: uppercase;
+
+  img {
+    @include media-breakpoint-only(lg) {
+      width: 60px;
+    }
+
+    width: 80px;
+  }
 }
 
 .tags {
@@ -249,5 +251,42 @@ $card-heigh: px-to-rem(440px);
         margin-top: 20px;
       }
     }
+  }
+}
+
+
+.mobile {
+  .bottom {
+    animation: jump 15s ease 0s infinite normal;
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+
+  2% {
+    transform: translateY(0);
+  }
+
+  4% {
+    transform: translateY(-15px);
+  }
+
+  5% {
+    transform: translateY(0);
+  }
+
+  6% {
+    transform: translateY(-7px);
+  }
+
+  8% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
   }
 }

@@ -1,7 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { withSizes } from "react-sizes";
 
+import * as QuestionMark from "!url-loader!../../assets/img/inline_icons/questionmark_huge.svg";
 import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
 import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
 import { Proportion } from "./Proportion";
@@ -36,6 +37,10 @@ export interface IEtoOfferingProps {
   bannerWithGif?: boolean;
 }
 
+export interface ISizeProps {
+  isMobile: boolean;
+}
+
 interface IPropsRoundLabel {
   text: string | React.ReactNode;
 }
@@ -54,14 +59,19 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
   );
 };
 
-export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
+export const EtoOfferingCardComponent: React.SFC<IEtoOfferingProps & ISizeProps> = props => {
   const Wrapper: React.SFC = ({ children }) => {
     if (props.to) {
       return (
         <a
           href={props.to}
           target="_blank"
-          className={cn(styles.card, props.className, props.teaser && styles.teaser)}
+          className={cn(
+            styles.card,
+            props.className,
+            props.teaser && styles.teaser,
+            props.isMobile && styles.mobile,
+          )}
         >
           {children}
         </a>
@@ -101,7 +111,7 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
           )}
           {props.teaser && (
             <div className={styles.teaserMessage}>
-              <FormattedMessage id="shared-component.eto-offering-card.teaser" />
+              <img src={QuestionMark} />
             </div>
           )}
           <div className={styles.tags}>
@@ -110,16 +120,10 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
         </div>
       </Proportion>
       <div className={styles.bottom}>
-        <Proportion
-          width={10}
-          height={3.5}
-          className={styles.descriptionProportion}
-        >
+        <Proportion width={10} height={3.5} className={styles.descriptionProportion}>
           <div className={styles.descriptionWrapper}>
-            {props.name && <h3 className={styles.name}>{props.name}</h3>}
-            <p className={cn(styles.description, props.teaser && styles.teaser)}>
-              {props.description}
-            </p>
+            <h3 className={styles.name}>{props.name || "Announcing soon"}</h3>
+            <p className={cn(styles.description)}>{props.description}</p>
           </div>
         </Proportion>
         {props.bannerWithGif ? (
@@ -170,6 +174,14 @@ export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
     </Wrapper>
   );
 };
+
+const mapSizesToProps = ({ width }: any) => ({
+  isMobile: width < 992,
+});
+
+export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = withSizes(mapSizesToProps)(
+  EtoOfferingCardComponent,
+);
 
 const renderBannerComponent = (name: string) => {
   switch (name) {

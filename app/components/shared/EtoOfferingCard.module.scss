@@ -260,6 +260,12 @@ $card-heigh: px-to-rem(440px);
   .bottom {
     animation: jump 15s ease 0s infinite normal;
   }
+
+  &.flipped {
+    .bottom {
+      animation: none;
+    }
+  }
 }
 
 @keyframes jump {

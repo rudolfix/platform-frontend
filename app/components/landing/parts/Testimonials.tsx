@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Col, Container, Row } from "reactstrap";
 import Slider, { Settings } from "react-slick";
+import { Col, Container, Row } from "reactstrap";
 
+import { JoinCta } from "./LandingHeader";
 import { PeopleSlider } from "./testimonials/People";
 
-import * as styles from "./Testimonials.module.scss";
 import * as reutersImage from "../../../assets/img/landing/testimonials/reuters.png";
+import * as styles from "./Testimonials.module.scss";
 
 const settings: Settings = {
   dots: false,
@@ -44,13 +45,19 @@ export const Testimonials: React.SFC = () => (
 
       <Row>
         <Col className="text-center">
-          <h2>Become a member of a progressive investor community</h2>
+          <h2 className="my-5">Become a member of a progressive investor community</h2>
         </Col>
       </Row>
 
       <Row>
         <Col xs={12}>
           <PeopleSlider />
+        </Col>
+      </Row>
+
+      <Row className="align-self-center my-5">
+        <Col xs={12}>
+          <JoinCta className="justify-content-center" />
         </Col>
       </Row>
     </Container>

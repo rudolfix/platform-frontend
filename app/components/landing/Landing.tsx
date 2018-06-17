@@ -1,6 +1,6 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
-import * as cn from "classnames";
 
 import { etoCompaniesCards } from "../../data/etoCompanies";
 import { EtoCard } from "../shared/EtoCard";
@@ -19,15 +19,21 @@ export const Landing: React.SFC = () => (
       <Container>
         <Row>
           <Col>
-            <h2 className="text-center">
+            <h2 className="text-center px-5 my-5">
               Meet the first off-chain companies tokenizing their shares under German jurisdiction
             </h2>
           </Col>
         </Row>
 
         <Row>
-          {etoCompaniesCards.map((e, k) => (
-            <Col xs={12} lg={6} className={styles.equityTokenCol} key={k}>
+          {etoCompaniesCards.map((e, index) => (
+            <Col
+              xs={12}
+              lg={6}
+              className={styles.equityTokenCol}
+              id={`eto-card-${index}`}
+              key={index}
+            >
               <EtoCard {...e} />
             </Col>
           ))}

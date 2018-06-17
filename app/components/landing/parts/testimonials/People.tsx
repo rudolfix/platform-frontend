@@ -1,10 +1,9 @@
 import * as React from "react";
-import { Row, Col } from "reactstrap";
 import Slider, { Settings } from "react-slick";
-import { Button } from "../../../shared/Buttons";
+import { Col, Row } from "reactstrap";
 
-import * as styles from "./People.module.scss";
 import * as image1 from "../../../../assets/img/landing/testimonials/people/soundcloud.png";
+import * as styles from "./People.module.scss";
 
 interface IPersonInfoProps {
   imageSrc: string;
@@ -73,7 +72,7 @@ const people: Array<IPersonInfoProps> = [
 ];
 
 const PersonBox: React.SFC<IPersonInfoProps> = ({ imageSrc, fullName, description, link }) => (
-  <a href={link}>
+  <a href={link} className="text-center">
     <img src={imageSrc} className={styles.personImage} />
     <h3>{fullName}</h3>
     <p>{description}</p>

@@ -5,11 +5,13 @@
 }
 
 .hero-cta {
-  padding-top: px-to-rem(100px);
+  @include media-breakpoint-up(sm) {
+    padding-top: px-to-rem(100px);
+  }
 }
 
 .hero-header {
-  font-size: 3rem;
+  font-size: 2.9rem;
 
   font-weight: $font-weight-light;
   text-transform: uppercase;
@@ -36,17 +38,22 @@
   font-size: 1.4rem;
   letter-spacing: .03125rem;
   margin-bottom: $spacing-vertical-lg-3;
+  width: 476px;
 }
 
 .email {
+  margin: 0;
+
   & > * {
     height: px-to-rem(34);
     border: 1px solid $neu-piss-yellow;
   }
 
   .email-input {
-    width: px-to-rem(300);
-    border: 1px solid $neu-piss-yellow;
+    @include media-breakpoint-only(lg) {
+      width: px-to-rem(150);
+    }
+    width: px-to-rem(200);
     font-size: 14px;
 
     &::placeholder {
@@ -84,7 +91,6 @@
       animation: 0;
       transition: .2s ease-in-out;
       transform: scale(1.1);
-      cursor: pointer;
     }
 
     // images placement
@@ -119,7 +125,9 @@
     }
 
     @include media-breakpoint-only(lg) {
-      height: 200px;
+      img {
+        height: 200px;
+      }
 
       &:nth-of-type(1) {
         top: -37px;

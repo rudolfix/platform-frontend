@@ -10,6 +10,7 @@ import { Button } from "../shared/Buttons";
 import { EtoCard } from "../shared/EtoCard";
 import { Features } from "./parts/Features";
 import { LandingHeader } from "./parts/LandingHeader";
+import { Testimonials } from "./parts/Testimonials";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
 import * as styles from "./Landing.module.scss";
@@ -19,62 +20,26 @@ export const Landing: React.SFC = () => (
     <LandingHeader />
     <Features />
 
-    {process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "1" && (
-      <section className={styles.equityTokenOfferings}>
-        <Container>
-          <Row>
-            {etoCompaniesCards.map((e, k) => (
-              <Col xs={12} lg={6} className={styles.equityTokenCol} key={k}>
-                <EtoCard {...e} />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-    )}
-    <section
-      className={cn(
-        styles.landing,
-        process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE !== "1" && "h-100",
-      )}
-    >
+    <section className={styles.equityTokenOfferings}>
       <Container>
         <Row>
-          <div className={styles.welcomeBox}>
-            <h2 className={styles.welcomeHeader}>
-              <FormattedMessage id="landing.welcome-box.header" />
+          <Col>
+            <h2 className="text-center">
+              Meet the first off-chain companies tokenizing their shares under German jurisdiction
             </h2>
-            <Row className={styles.bullets}>
-              <Col xs={12} lg={6}>
-                <BulletPointWithDescription
-                  header={<FormattedMessage id="landing.welcome-box.bullet.one.header" />}
-                  description={<FormattedMessage id="landing.welcome-box.bullet.one.description" />}
-                  index={1}
-                />
-              </Col>
-              <Col xs={12} lg={6} className="mt-4 mt-lg-0">
-                <BulletPointWithDescription
-                  header={<FormattedMessage id="landing.welcome-box.bullet.two.header" />}
-                  description={<FormattedMessage id="landing.welcome-box.bullet.two.description" />}
-                  index={2}
-                />
-              </Col>
-            </Row>
-            <div className={styles.buttonWrapper}>
-              <Link to={appRoutes.register}>
-                <Button theme="brand">
-                  <FormattedMessage id="landing.welcome-box.register-now" />
-                </Button>
-              </Link>
-            </div>
-          </div>
+          </Col>
         </Row>
-        <Row className="d-flex">
-          <a className={styles.learnMore} href="https://neufund.org/investing" target="_blank">
-            <FormattedMessage id="landing.learn-more" />
-          </a>
+
+        <Row>
+          {etoCompaniesCards.map((e, k) => (
+            <Col xs={12} lg={6} className={styles.equityTokenCol} key={k}>
+              <EtoCard {...e} />
+            </Col>
+          ))}
         </Row>
       </Container>
     </section>
+
+    <Testimonials />
   </div>
 );

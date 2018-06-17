@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
+import * as cn from "classnames";
 
 import { etoCompaniesCards } from "../../data/etoCompanies";
 import { EtoCard } from "../shared/EtoCard";
@@ -10,7 +11,7 @@ import { Testimonials } from "./parts/Testimonials";
 import * as styles from "./Landing.module.scss";
 
 export const Landing: React.SFC = () => (
-  <div className={styles.landingWrapper}>
+  <div className={cn(styles.landingWrapper, "pure")}>
     <LandingHeader />
     <Features />
 

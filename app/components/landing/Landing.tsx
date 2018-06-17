@@ -8,6 +8,7 @@ import { etoCompaniesCards } from "../../data/etoCompanies";
 import { appRoutes } from "../appRoutes";
 import { Button } from "../shared/Buttons";
 import { EtoCard } from "../shared/EtoCard";
+import { Features } from "./parts/Features";
 import { LandingHeader } from "./parts/LandingHeader";
 import { BulletPointWithDescription } from "./shared/BulletPointWithDescription";
 
@@ -16,6 +17,7 @@ import * as styles from "./Landing.module.scss";
 export const Landing: React.SFC = () => (
   <div className={styles.landingWrapper}>
     <LandingHeader />
+    <Features />
 
     {process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "1" && (
       <section className={styles.equityTokenOfferings}>

@@ -1,3 +1,8 @@
+.wrapper {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
 :root {
   --page-color: #ffffff;
   --ring-color: #394651;
@@ -16,6 +21,8 @@ $spd: 1.6s;
   width: var(--loader-size);
   height: var(--loader-size);
   animation: rotate $spd * 3 linear infinite;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ring {

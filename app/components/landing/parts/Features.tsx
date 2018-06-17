@@ -38,7 +38,7 @@ export const Features: React.SFC = () => (
       <Col xs={12} md={6} className="align-self-center">
         <Interoperable />
       </Col>
-      <Col xs={12} md={6} className="align-self-center">
+      <Col xs={12} md={6}>
         <h2>Interoperable assets</h2>
         <p>
           Equity Tokens are fully liquid investment assets. They can be traded on secondary markets

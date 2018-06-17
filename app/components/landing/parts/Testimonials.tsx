@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Container, Row, Col } from "reactstrap";
-import Carousel from "nuka-carousel";
+import { Col, Container, Row } from "reactstrap";
 
 import * as styles from "./Testimonials.module.scss";
 
@@ -9,13 +8,7 @@ export const Testimonials: React.SFC = () => (
     <Container>
       <Row>
         <Col>
-          <div className={styles.media}>
-            <Carousel>
-              <div>#1</div>
-              <div>#2</div>
-              <div>#3</div>
-            </Carousel>
-          </div>
+          <div className={styles.media} />
         </Col>
       </Row>
     </Container>

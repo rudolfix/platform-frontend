@@ -72,10 +72,10 @@ export class EtoOfferingCardComponent extends React.Component<
   };
 
   private onClick = () => {
-    const { isMobile } = this.props;
+    const { isMobile, teaser } = this.props;
     const { isClicked } = this.state;
 
-    if (!isMobile) return;
+    if (!isMobile || teaser) return;
 
     this.setState({
       ...this.state,
@@ -111,7 +111,7 @@ export class EtoOfferingCardComponent extends React.Component<
             styles.card,
             props.className,
             props.teaser && styles.teaser,
-            props.isMobile && styles.mobile,
+            (props.isMobile && !props.teaser) && styles.mobile,
             isClicked && styles.flipped,
           )}
           onClick={this.onClick}

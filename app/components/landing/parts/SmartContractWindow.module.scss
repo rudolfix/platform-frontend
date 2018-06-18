@@ -49,7 +49,8 @@ $color-3rd: Gainsboro;
 }
 
 .window{
-	width:400px;
+	width:100%;
+	max-width:400px;
 	background:$color-2nd;
 	border-radius:0.3rem;
 	box-shadow:0 8px 12px rgba(0,0,0,0.1);

@@ -65,3 +65,18 @@
   font-size: px-to-rem(6px);
   text-transform: uppercase;
 }
+
+@mixin line-clamp ($lines, $line-height: false) {
+  overflow: hidden;
+  position: relative;
+  display: -webkit-box; // sass-lint:disable-line no-vendor-prefixes
+  -webkit-line-clamp: $lines; // sass-lint:disable-line no-vendor-prefixes
+  -webkit-box-orient: vertical; // sass-lint:disable-line no-vendor-prefixes
+
+  @if ($line-height) {
+    @supports not (-webkit-box-orient: vertical) { // sass-lint:disable-line no-vendor-prefixes
+      line-height: $line-height;
+      height: $lines * strip-unit($line-height) + em;
+    }
+  }
+}

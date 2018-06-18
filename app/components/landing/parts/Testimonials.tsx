@@ -27,7 +27,7 @@ export const Testimonials: React.SFC = () => (
   <section>
     <Container>
       <Row>
-        <Col xs={8} className={styles.media}>
+        <Col xs={12} md={8} className={styles.media}>
           <Slider {...settings}>
             <MediaQuote
               imageSrc={crowdfundinsiderImage}
@@ -65,7 +65,7 @@ export const Testimonials: React.SFC = () => (
 
       <Row>
         <Col className="text-center">
-          <h2 className="my-5">Become a member of a progressive investor community</h2>
+          <h2 className={styles.header}>Become a member of a progressive investor community</h2>
         </Col>
       </Row>
 
@@ -94,10 +94,10 @@ interface IMediaQuoteProps {
 const MediaQuote: React.SFC<IMediaQuoteProps> = ({ imageSrc, quote, link, author }) => (
   <a href={link} target="_blank" className={styles.mediaQuote}>
     <Row className="justify-content-around">
-      <Col className="align-self-center" xs={4}>
+      <Col className="align-self-center" xs={12} md={4}>
         <img src={imageSrc} className={styles.mediaQuoteImage} />
       </Col>
-      <Col className="align-self-center" xs={8}>
+      <Col className="align-self-center" xs={12} md={8}>
         <blockquote className={styles.mediaQuoteText}>
           {`"${quote}"`}
           {author && ` - ${author}`}

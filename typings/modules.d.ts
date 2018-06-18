@@ -14,3 +14,4 @@ declare module "eth-sig-util";
 declare module "tweetnacl";
 
 declare module "@storybook/addon-actions";
+declare module "react-sizes";

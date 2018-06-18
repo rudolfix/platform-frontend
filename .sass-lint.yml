@@ -9,6 +9,10 @@ files:
     - 'coverage/**'
     - 'dist/**'
     - 'test/**'
+    - 'app/styles/react-slick-overrides.scss'
+    - 'app/components/landing/parts/SmartContractWindow.module.scss'
+    - 'app/components/landing/parts/Interoperable.module.scss'
+    - 'app/components/landing/parts/SpinningEthereum.module.scss'
 rules:
   nesting-depth: 4
   property-sort-order: 0

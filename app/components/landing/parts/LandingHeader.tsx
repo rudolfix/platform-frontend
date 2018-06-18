@@ -1,9 +1,11 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
 import { CommonHtmlProps } from "../../../types";
+import { appRoutes } from "../../appRoutes";
 import { Button } from "../../shared/Buttons";
 import { HiResImage } from "../../shared/HiResImage";
 import * as styles from "./LandingHeader.module.scss";
@@ -37,7 +39,9 @@ export const LandingHeader: React.SFC = () => (
 
 export const JoinCta: React.SFC<CommonHtmlProps> = htmlProps => (
   <div className={cn("d-flex", htmlProps.className)} style={htmlProps.style}>
-    <Button theme="brand">Register NOW</Button>
+    <Link to={appRoutes.register}>
+      <Button theme="brand">Register NOW</Button>
+    </Link>
 
     <span className="m-2">or</span>
 
@@ -52,22 +56,22 @@ export const JoinCta: React.SFC<CommonHtmlProps> = htmlProps => (
 
 const CompanyImages: React.SFC = () => (
   <div className={styles.images}>
-    <a href="#eto-card-0" className={styles.companyImage}>
+    <a href="#eto-card-2" className={styles.companyImage}>
       <HiResImage partialPath="landing/myswooop" />
     </a>
     <a href="#eto-card-1" className={styles.companyImage}>
       <HiResImage partialPath="landing/uniti" />
     </a>
-    <a href="#eto-card-2" className={styles.companyImage}>
+    <a href="#eto-card-0" className={styles.companyImage}>
       <HiResImage partialPath="landing/brille" />
     </a>
-    <a href="#eto-card-3" className={styles.companyImage}>
+    <a href="#eto-card-5" className={styles.companyImage}>
       <HiResImage partialPath="landing/blockstate" />
     </a>
     <a href="#eto-card-4" className={styles.companyImage}>
       <HiResImage partialPath="landing/emflux" />
     </a>
-    <a href="#eto-card-5" className={styles.companyImage}>
+    <a href="#eto-card-3" className={styles.companyImage}>
       <HiResImage partialPath="landing/BT" />
     </a>
   </div>

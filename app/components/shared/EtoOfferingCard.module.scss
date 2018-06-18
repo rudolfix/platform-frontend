@@ -125,6 +125,7 @@ $card-heigh: px-to-rem(440px);
 
 .tags {
   @include media-breakpoint-down (sm) {
+    padding: px-to-rem(5px);
     > * {
       margin-top: px-to-rem(10px);
     }
@@ -226,6 +227,10 @@ $card-heigh: px-to-rem(440px);
       font-size: px-to-rem(12px);
     }
 
+    @include media-breakpoint-only(xs) {
+      line-height: 1.4;
+    }
+
     z-index: $z-index-over-base;
   }
 
@@ -264,16 +269,28 @@ $card-heigh: px-to-rem(440px);
       width: 100%;
 
       h3 {
+        @include media-breakpoint-only(xs) {
+          font-size: 10px;
+        }
+
         color: $white;
         padding-top: 10px;
       }
 
       .app-store {
+        @include media-breakpoint-only(xs) {
+          margin-top: 12px;
+        }
+
         height: 80px;
         margin-top: 50px;
       }
 
       .siemens-logo {
+        @include media-breakpoint-only(xs) {
+          margin-top: 10px;
+        }
+
         margin-top: 20px;
       }
     }

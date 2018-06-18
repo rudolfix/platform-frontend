@@ -38,12 +38,12 @@ export const Features: React.SFC = () => (
           <SmartContractWindow />
         </Col>
       </Row>
-      <RainbowSheepTip triggerY={1200} side="right" />
+      <RainbowSheepTip triggerY={1300} side="right" />
       <Row>
         <Col xs={12} md={6} className="align-self-center">
           <Interoperable />
         </Col>
-        <Col xs={12} md={6}>
+        <Col xs={12} md={6} className="align-self-center">
           <h2>Interoperable assets</h2>
           <p>
             Equity Tokens are fully liquid investment assets. They can be traded on secondary

@@ -1,24 +1,32 @@
-@import "../../styles/neufund-theme";
+@import "../../../styles/neufund-theme";
 
 .form-section {
   @include make-row;
+
+  padding-bottom: $spacing-vertical-lg-3;
+  position: relative;
 }
 
 .title {
   @include make-col-offset(1);
   @include make-col(2);
-  @include font-default;
+  @include font-label;
 
   @include media-breakpoint-down(md) {
     @include make-col-offset(0);
     @include make-col(12);
   }
 
+  align-self: flex-start;
+  color: $color-graphite;
+  padding-right: px-to-rem(60px);
   text-transform: uppercase;
+  position: sticky;
+  top: $spacing-vertical-lg-2;
 }
 
 .content {
-  @include make-col(8);
+  @include make-col(7);
 
   @include media-breakpoint-down(md) {
     @include make-col(12);

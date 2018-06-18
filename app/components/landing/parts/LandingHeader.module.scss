@@ -41,36 +41,6 @@
   width: 476px;
 }
 
-.email {
-  margin: 0;
-
-  & > * {
-    height: px-to-rem(34);
-    border: 1px solid $neu-piss-yellow;
-  }
-
-  .email-input {
-    @include media-breakpoint-only(lg) {
-      width: px-to-rem(150);
-    }
-    width: px-to-rem(200);
-    font-size: 14px;
-    padding-left: 5px;
-
-    &::placeholder {
-      color: $gray;
-    }
-  }
-
-  .email-btn {
-    background-color: $neu-piss-yellow;
-    text-transform: uppercase;
-    font-weight: $font-weight-bold;
-
-    cursor: pointer;
-  }
-}
-
 .images {
   @include media-breakpoint-up(xl) {
     height: 850px;

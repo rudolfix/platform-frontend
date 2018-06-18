@@ -191,14 +191,39 @@ const settings: Settings = {
   slidesToShow: 4,
   slidesToScroll: 4,
   arrows: true,
+  responsive: [
+    {
+      breakpoint: 500,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 900,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+      },
+    },
+    {
+      breakpoint: 1100,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+      },
+    },
+  ],
 };
 
 export const PeopleSlider: React.SFC = () => (
-  <Slider {...settings}>
-    {people.map((p, i) => (
-      <div key={i}>
-        <PersonBox {...p} />
-      </div>
-    ))}
-  </Slider>
+  <div className={styles.wrapper}>
+    <Slider {...settings}>
+      {people.map((p, i) => (
+        <div key={i}>
+          <PersonBox {...p} />
+        </div>
+      ))}
+    </Slider>
+  </div>
 );

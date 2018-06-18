@@ -8,6 +8,8 @@
   @include media-breakpoint-up(sm) {
     padding-top: px-to-rem(100px);
   }
+
+  padding-top: px-to-rem(40px);
 }
 
 .hero-header {
@@ -38,7 +40,8 @@
   font-size: 1.4rem;
   letter-spacing: .03125rem;
   margin-bottom: $spacing-vertical-lg-3;
-  width: 476px;
+  max-width: 476px;
+  width: 100%;
 }
 
 .images {

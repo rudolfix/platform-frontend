@@ -1,7 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -14,26 +13,26 @@ import {
   BOOL_TRUE_KEY,
   FormField,
   FormSelectField,
+  FormTextArea,
   NONE_KEY,
 } from "../../../shared/forms/forms";
 
-import { HorizontalLine } from "../../../shared/HorizontalLine";
-
-import * as iconExternalLink from "../../../../assets/img/inline_icons/link_out_small.svg";
+import { EtoFormWrapper } from "../../../shared/forms/EtoFormWrapper";
+import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
+import { FormLabel } from "../../../shared/forms/formField/FormLabel";
+import { FormRange } from "../../../shared/forms/formField/FormRange";
+import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
+import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
+import { FormSection } from "../../../shared/forms/FormSection";
+import { Toggle } from "../../../shared/Toggle";
 
 // @todo
 type IEtoData = any;
 
-const THIRD_PARTIES_DEPENDENCY_VALUES = {
+const TOKEN_HOLDERS_RIGHTS = {
   [NONE_KEY]: "please select",
-  [BOOL_TRUE_KEY]: "Yes there is",
-  [BOOL_FALSE_KEY]: "No there is not",
-};
-
-const SUBJECT_OF_REGULATION_VALUES = {
-  [NONE_KEY]: "please select",
-  [BOOL_TRUE_KEY]: "Yes there is",
-  [BOOL_FALSE_KEY]: "No there is not",
+  [BOOL_TRUE_KEY]: "1",
+  [BOOL_FALSE_KEY]: "2",
 };
 
 interface IStateProps {
@@ -46,76 +45,217 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
-// TODO: Add translations to Labels
+
 const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
   <Form>
-    <Row className="justify-content-center">
-      <Col xs={12} lg={6}>
-        <div className="mb-4">
-          <FormField
-            label="How many shares do you want to tokenize?"
-            placeholder="%"
-            name="tokenizedSharesPercent"
-          />
-        </div>
-        <div className="mb-4">
-          <FormField label="What is the price a share?" placeholder="€" name="tokenPrice" />
-        </div>
-        <div className="mb-4">
-          <p>
-            <FormattedMessage id="components.eto.registration.eto-terms.use-three-characters" />
-          </p>
-          <Link to="#0">
-            <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">
-              <FormattedMessage id="components.eto.registration.eto-terms.etherscan" />
-            </Button>
-          </Link>
-          <Link to="#0">
-            <Button svgIcon={iconExternalLink} layout="secondary" iconPosition="icon-after">
-              <FormattedMessage id="components.eto.registration.eto-terms.etherscan" />
-            </Button>
-          </Link>
-        </div>
-        <div className="mb-4">
-          <FormField label="Your token Name" placeholder="XXX" name="tokenName" />
-        </div>
-        {/* <SingleFileUpload
+    <FormSection title={<FormattedMessage id="eto.form.section.equity-token-information.title" />}>
+      <FormField
+        label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
+        placeholder="Token name"
+        name="tokenName"
+      />
+      <FormField
+        label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+        placeholder="3 - 4 characters"
+        name="tokenSymbol"
+      />
+      <div className="form-group">
+        <FormLabel>
+          <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
+        </FormLabel>
+        <FormSingleFileUpload
+          label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+          name="tokenImage"
           acceptedFiles="image/*"
-          file={[]}
-          fileUploading={false}
-          fileFormatInformation=".jpg, .svg, .png"
-          uploadCta="Upload token symbol"
-          onDropFile={() => {}}
-        /> */}
-      </Col>
-    </Row>
-    <HorizontalLine className="my-4" />
-    <h4 className="text-center mb-4">
-      <FormattedMessage id="components.eto.registration.eto-terms.risk-assessment" />
-    </h4>
-    <Row className="justify-content-center">
-      <Col xs={12} lg={6}>
-        <div className="mb-4">
-          <FormSelectField
-            values={THIRD_PARTIES_DEPENDENCY_VALUES}
-            label={
-              <FormattedMessage id="components.eto.registration.eto-terms.third-party-dependency" />
-            }
-            name="hasDependencyOnThirdParties"
-          />
-          <FormSelectField
-            values={SUBJECT_OF_REGULATION_VALUES}
-            label={
-              <FormattedMessage id="components.eto.registration.eto-terms.third-party-dependency" />
-            }
-            name="hasDependencyOnThirdParties"
-          />
-        </div>
-      </Col>
-    </Row>
-    <div className="p-4 text-center">
+          fileFormatInformation="*200 x 150px png"
+        />
+      </div>
+      <FormField
+        label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
+        placeholder="1000000"
+        name="tokensPerShare"
+        disabled
+      />
+    </FormSection>
+
+    <FormSection title={<FormattedMessage id="eto.form.section.investment-terms.title" />}>
+      <FormField
+        label={
+          <FormattedMessage id="eto.form.section.investment-terms.fully-diluted-pre-money-valuation" />
+        }
+        placeholder=" "
+        prefix="€"
+        name="fullyDilutedPreMoneyValuation"
+      />
+      <FormField
+        label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
+        placeholder="Number of existing shares"
+        name="numberOfExistingShares"
+      />
+      <FormField
+        label={
+          <FormattedMessage id="eto.form.section.investment-terms.minimum-new-shares-to-issue" />
+        }
+        placeholder="Number of share"
+        name="numberOfShares"
+      />
+      <FormHighlightGroup>
+        <FormField
+          label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
+          placeholder="1/1000000 of share price auto complete"
+          name="newSharePrice"
+          disabled
+        />
+        <Row>
+          <Col sm={12} md={6} className="mb-4">
+            <FormField
+              label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
+              prefix="€"
+              placeholder="read only"
+              name="minimumAmount"
+              disabled
+            />
+          </Col>
+          <Col sm={12} md={6} className="mb-4">
+            <FormField
+              label={<FormattedMessage id="eto.form.section.investment-terms.maximum-amount" />}
+              prefix="€"
+              placeholder="read only"
+              name="maximumAmount"
+              disabled
+            />
+          </Col>
+          <Col sm={12} md={6}>
+            <FormField
+              label={<FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />}
+              prefix="€"
+              placeholder="read only"
+              name="minimumTokenCap"
+              disabled
+            />
+          </Col>
+          <Col sm={12} md={6}>
+            <FormField
+              label={<FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />}
+              prefix="€"
+              placeholder="read only"
+              name="maximumTokenCap"
+              disabled
+            />
+          </Col>
+        </Row>
+      </FormHighlightGroup>
+      <FormTextArea
+        name="tokenDisountForWhitelist"
+        label={
+          <FormattedMessage id="eto.form.section.investment-terms.token-discount-for-whitelisted" />
+        }
+        placeholder=" "
+      />
+      <FormField
+        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
+        placeholder="1"
+        prefix="€"
+        name="shareNominalValue"
+      />
+    </FormSection>
+
+    <FormSection title={<FormattedMessage id="eto.form.section.eto-terms.title" />}>
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
+      </FormLabel>
+      <div className="form-group">
+        <FormRadioButton value="nEuro" name="fundraisingCurrency" label="nEuro" />
+        <FormRadioButton value="ETH" name="fundraisingCurrency" label="ETH" />
+      </div>
+      <div className="form-group">
+        <FormLabel>
+          <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
+        </FormLabel>
+        <Toggle
+          disabledLabel={
+            <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.disabled-label" />
+          }
+          enabledLabel={
+            <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.enabled-label" />
+          }
+          onClick={() => {}}
+        />
+      </div>
+      <div className="form-group">
+        <FormLabel>
+          <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
+        </FormLabel>
+        <FormRange
+          name="preSaleDuration"
+          min={1}
+          unitMin={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />}
+          max={14}
+          unitMax={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />}
+        />
+      </div>
+      <div className="form-group">
+        <FormLabel>
+          <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
+        </FormLabel>
+        <FormRange
+          name="publicOfferDuration"
+          min={0}
+          unit={
+            <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration-duration.unit" />
+          }
+          max={8}
+        />
+      </div>
+      <FormField
+        label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
+        placeholder="1"
+        prefix="€"
+        name="minimumTicketSize"
+      />
+      <div className="form-group">
+        <FormCheckbox
+          name="tokenTransfersEnabledAfterEto"
+          label={
+            <FormattedMessage id="eto.form.section.eto-terms.token-transfers-enabled-after-eto" />
+          }
+        />
+      </div>
+      <div className="form-group">
+        <FormCheckbox
+          name="etoIsNotUnderCrowdfundingRegulation"
+          label={<FormattedMessage id="eto.form.section.eto-terms.eto-is-under-regulation" />}
+        />
+      </div>
+    </FormSection>
+
+    <FormSection title={<FormattedMessage id="eto.form.section.token-holders-rights.title" />}>
+      <FormSelectField
+        values={TOKEN_HOLDERS_RIGHTS}
+        label={
+          <FormattedMessage id="eto.form.section.token-holders-rights.third-party-dependency" />
+        }
+        name="hasDependencyOnThirdParties"
+      />
+      <div className="form-group">
+        <FormLabel>
+          <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
+        </FormLabel>
+        <FormRange name="liquidationPreference" min={0} unit="%" max={200} />
+      </div>
+      <div className="form-group">
+        <FormCheckbox
+          name="hasVotingRightsEnabled"
+          label={
+            <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
+          }
+        />
+      </div>
+    </FormSection>
+
+    <div className="text-right">
       <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        <FormattedMessage id="components.eto.registration.eto-terms.save-and-continue" />
+        <FormattedMessage id="eto.form.save" />
       </Button>
     </div>
   </Form>
@@ -130,7 +270,9 @@ const EtoEnhancedForm = withFormik<IProps, IEtoData>({
 })(EtoForm);
 
 export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
+  <EtoFormWrapper title={<FormattedMessage id="eto.form.eto-terms.title" />} progressPercent={20}>
+    <EtoEnhancedForm {...props} />
+  </EtoFormWrapper>
 );
 
 export const EtoRegistrationTerms = compose<React.SFC>(

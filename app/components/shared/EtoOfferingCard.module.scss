@@ -193,8 +193,6 @@ $card-heigh: px-to-rem(440px);
   }
 
   @include media-breakpoint-down (xs) {
-    // @include line-clamp(2, 1.64);
-
     font-size: px-to-rem(12px);
   }
 

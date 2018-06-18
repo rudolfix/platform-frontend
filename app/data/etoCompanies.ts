@@ -1,9 +1,9 @@
 import { IEtoOfferingProps } from "../components/shared/EtoOfferingCard";
 
-import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
-import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
 import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.png";
 import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
+import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
+import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
 import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
 import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
 import * as brile24hover from "../assets/img/eto_offers/brille_hover.gif";

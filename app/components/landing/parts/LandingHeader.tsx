@@ -1,13 +1,10 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
-import { CommonHtmlProps } from "../../../types";
-import { appRoutes } from "../../appRoutes";
-import { Button } from "../../shared/Buttons";
 import { HiResImage } from "../../shared/HiResImage";
+import { JoinCta } from "./JoinCta";
+
 import * as styles from "./LandingHeader.module.scss";
 
 export const LandingHeader: React.SFC = () => (
@@ -35,23 +32,6 @@ export const LandingHeader: React.SFC = () => (
       </Row>
     </Container>
   </section>
-);
-
-export const JoinCta: React.SFC<CommonHtmlProps> = htmlProps => (
-  <div className={cn("d-flex", htmlProps.className)} style={htmlProps.style}>
-    <Link to={appRoutes.register}>
-      <Button theme="brand">Register NOW</Button>
-    </Link>
-
-    <span className="m-2">or</span>
-
-    <form className={cn("form-inline", styles.email)}>
-      <input type="text" className={styles.emailInput} placeholder="Email me updates" />
-      <button type="submit" className={styles.emailBtn}>
-        Subscribe
-      </button>
-    </form>
-  </div>
 );
 
 const CompanyImages: React.SFC = () => (

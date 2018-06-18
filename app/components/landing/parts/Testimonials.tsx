@@ -2,7 +2,7 @@ import * as React from "react";
 import Slider, { Settings } from "react-slick";
 import { Col, Container, Row } from "reactstrap";
 
-import { JoinCta } from "./LandingHeader";
+import { JoinCta } from "./JoinCta";
 import { PeopleSlider } from "./testimonials/People";
 
 import * as reutersImage from "../../../assets/img/landing/testimonials/reuters.png";

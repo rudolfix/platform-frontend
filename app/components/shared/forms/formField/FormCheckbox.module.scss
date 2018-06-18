@@ -4,7 +4,7 @@ $indicator-size: 16px;
 
 .checkbox {
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
 }
 
 .input {
@@ -28,16 +28,17 @@ $indicator-size: 16px;
 .indicator {
   @include rect($indicator-size);
 
-  border: 1px solid $neu-almost-black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: 1px solid $color-black;
   position: relative;
 
   &::after {
     @include rect(0);
 
-    background-color: $neu-almost-black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $color-green;
     content: "";
     transition: 200ms $ease-out-expo;
     transition-property: width, height;
@@ -49,8 +50,8 @@ $indicator-size: 16px;
 
   color: $neu-slate-grey;
   font-weight: normal;
-  margin-left: px-to-rem(20px);
-  text-transform: uppercase;
+  padding-left: px-to-rem(20px);
+  padding-right: px-to-rem(20px);
   user-select: none;
 
   &::after {

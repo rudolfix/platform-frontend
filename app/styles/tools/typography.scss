@@ -51,7 +51,8 @@
 @mixin font-label {
   font-family: $headings-font-family;
   font-size: px-to-rem(12px);
-  font-weight: $font-weight-bold;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 @mixin font-label-small {

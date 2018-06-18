@@ -1,8 +1,8 @@
 @import "../../../../styles/neufund-theme";
 
 // sass-lint:disable no-vendor-prefixes
-$track-color: $neu-silver !default;
-$thumb-color: $neu-piss-yellow !default;
+$track-color: $color-silver !default;
+$thumb-color: $color-green !default;
 
 $thumb-radius: 8px !default;
 $thumb-height: 16px !default;
@@ -52,8 +52,9 @@ $contrast: 5% !default;
   @include font-label-small;
 
   color: $neu-slate-grey;
-  padding-top: px-to-rem(12px);
   flex-shrink: 0;
+  min-width: px-to-rem(30px);
+  padding-top: px-to-rem(12px);
 }
 
 .label-details {

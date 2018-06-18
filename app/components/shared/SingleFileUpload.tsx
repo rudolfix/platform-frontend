@@ -23,7 +23,7 @@ interface IProps {
   fileUploading: boolean;
   file?: string;
   fileFormatInformation: string;
-  label: string;
+  label: string | React.ReactNode;
   onDropFile: (file: File) => void;
   onDeleteFile: () => void;
 }

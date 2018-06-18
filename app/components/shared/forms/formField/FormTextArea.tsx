@@ -1,12 +1,13 @@
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormGroup, InputGroup, InputGroupAddon, Label } from "reactstrap";
+import { FormGroup, InputGroup, InputGroupAddon } from "reactstrap";
+import { FormLabel } from "./FormLabel";
 
 import { isNonValid } from "./utils";
 
 interface IFieldGroup {
-  label?: string;
+  label?: string | React.ReactNode;
   placeholder?: string;
   prefix?: string;
   suffix?: string;
@@ -23,13 +24,13 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
     const { touched, errors } = formik;
     return (
       <FormGroup>
-        {label && <Label for={name}>{label}</Label>}
+        {label && <FormLabel>{label}</FormLabel>}
         <Field
           name={name}
           render={({ field }: FieldProps) => (
             <InputGroup>
               {prefix && <InputGroupAddon addonType="prepend">{prefix}</InputGroupAddon>}
-              <textarea {...field} value={field.value || ""} placeholder={placeholder || label} />
+              <textarea {...field} value={field.value || ""} placeholder={placeholder} />
               {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
             </InputGroup>
           )}

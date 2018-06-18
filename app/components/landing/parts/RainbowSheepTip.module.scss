@@ -1,0 +1,25 @@
+.sheep-wrapper {
+  overflow: hidden;
+  position: absolute;
+
+  margin-top: 135px;
+  transition: .2s ease-in;
+
+  &.left {
+    left: 0;
+    transform: rotate(0deg) scaleX(-1) translate(20px);
+
+    &.hidden {
+      transform: rotate(25deg) scaleX(-1) translate(70px);
+    }
+  }
+
+  &.right {
+    right: 0;
+    transform: rotate(0deg) translate(20px);
+
+    &.hidden {
+      transform: rotate(25deg) translate(70px);
+    }
+  }
+}

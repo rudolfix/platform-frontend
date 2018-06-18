@@ -1,4 +1,4 @@
- import { effects } from "redux-saga";
+import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
@@ -86,7 +86,6 @@ export async function setupLightWalletPromise(
   seed: string,
 ): Promise<ILightWalletMetadata> {
   try {
-
     const lightWalletVault = await lightWalletUtil.createLightWalletVault({
       password,
       hdPathString: DEFAULT_HD_PATH,
@@ -108,7 +107,7 @@ export async function setupLightWalletPromise(
       email,
       password,
     );
-    
+
     const walletMetadata = lightWallet.getMetadata();
     walletMetadataStorage.set(walletMetadata);
     await web3Manager.plugPersonalWallet(lightWallet);

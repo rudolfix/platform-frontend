@@ -11,7 +11,7 @@ $card-heigh: px-to-rem(440px);
   overflow: hidden;
   position: relative;
 
-  &:not(.teaser.mobile):hover,  //sass-lint:disable-line force-pseudo-nesting
+  &:not(.teaser):not(.mobile):hover,  //sass-lint:disable-line force-pseudo-nesting
   &.flipped {
     .round-label {
       transform: translate(-60%, -60%);
@@ -165,11 +165,7 @@ $card-heigh: px-to-rem(440px);
   @include font-default;
 
   @include media-breakpoint-up(lg) {
-    display: -webkit-box; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-line-clamp: 4; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-box-orient: vertical; // sass-lint:disable-line no-vendor-prefixes
-    height: 4 * 1.64;
-    overflow: hidden;
+    @include line-clamp(4, 1.64);
   }
 
   @include media-breakpoint-only(lg) {
@@ -178,6 +174,14 @@ $card-heigh: px-to-rem(440px);
 
   @include media-breakpoint-only(md) {
     font-size: px-to-rem(14px);
+  }
+
+  @include media-breakpoint-down (md) {
+    @include line-clamp(3, 1.64);
+  }
+
+  @include media-breakpoint-down (xs) {
+    @include line-clamp(2, 1.64);
   }
 
   font-weight: 500;
@@ -206,6 +210,10 @@ $card-heigh: px-to-rem(440px);
   position: absolute;
 
   p {
+    @include media-breakpoint-down(md) {
+      font-size: px-to-rem(12px)
+    }
+
     z-index: $z-index-over-base;
   }
 

@@ -1,0 +1,17 @@
+@import "../../../styles/neufund-theme";
+
+.panel {
+  padding: $spacing-vertical-lg-5 $spacing-vertical-lg-2 $spacing-vertical-lg-2;
+}
+
+.title {
+  @include font-headline-small;
+
+  margin-bottom: $spacing-vertical-lg-2;
+  text-align: center;
+}
+
+.progress-bar {
+  max-width: px-to-rem(450px);
+  margin: 0 auto $spacing-vertical-lg-4;
+}

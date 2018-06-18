@@ -111,7 +111,7 @@ export class EtoOfferingCardComponent extends React.Component<
             styles.card,
             props.className,
             props.teaser && styles.teaser,
-            (props.isMobile && !props.teaser) && styles.mobile,
+            props.isMobile && !props.teaser && styles.mobile,
             isClicked && styles.flipped,
           )}
           onClick={this.onClick}

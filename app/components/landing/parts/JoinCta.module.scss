@@ -25,6 +25,9 @@
     @include media-breakpoint-only(lg) {
       width: px-to-rem(150);
     }
+    @include media-breakpoint-only(xs) {
+      width: px-to-rem(155);
+    }
 
     width: px-to-rem(200px);
     font-size: 14px;

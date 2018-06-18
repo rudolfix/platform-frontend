@@ -194,5 +194,8 @@
 .eto-cards-header {
   text-align: center;
   margin: px-to-rem(48px) auto;
-  max-width: 76%;
+
+  @include media-breakpoint-up(md) {
+    max-width: 76%;
+  }
 }

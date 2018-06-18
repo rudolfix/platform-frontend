@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
 import { InlineIcon } from "../../shared/InlineIcon";
-import { PanelWhite } from "../../shared/Panel";
+import { PanelWhite } from "../../shared/PanelWhite";
 
 import * as styles from "./FounderTeam.module.scss";
 

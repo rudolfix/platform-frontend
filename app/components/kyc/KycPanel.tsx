@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Link } from "react-router-dom";
 import { Button } from "../shared/Buttons";
-import { PanelWhite } from "../shared/Panel";
+import { PanelWhite } from "../shared/PanelWhite";
 import { IVerificationProgressStep, VerificationStatus } from "../shared/VerificationStatus";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";

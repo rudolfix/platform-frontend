@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { PanelWhite } from "../../shared/Panel";
+import { PanelWhite } from "../../shared/PanelWhite";
 
 import * as stylesCommon from "../EtoOverviewCommon.module.scss";
 

@@ -6,7 +6,7 @@ import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
-import { PanelWhite } from "../../shared/Panel";
+import { PanelWhite } from "../../shared/PanelWhite";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";

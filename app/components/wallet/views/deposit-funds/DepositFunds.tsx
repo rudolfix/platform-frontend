@@ -3,7 +3,7 @@ import { Col, Row } from "reactstrap";
 import { actions } from "../../../../modules/actions";
 import { BreadCrumb } from "../../../shared/BreadCrumb";
 import { Button } from "../../../shared/Buttons";
-import { PanelWhite } from "../../../shared/Panel";
+import { PanelWhite } from "../../../shared/PanelWhite";
 import { Tabs } from "../../../shared/Tabs";
 import * as styles from "./DepositFunds.module.scss";
 

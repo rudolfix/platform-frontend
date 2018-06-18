@@ -66,7 +66,7 @@ $card-heigh: px-to-rem(440px);
 .round-label {
   display: flex;
   fill: $color-graphite;
-  min-width: px-to-rem(170px);
+  min-width: px-to-rem(130px);
   width: 36%;
   height: px-to-rem(110px);
   position: relative;
@@ -80,6 +80,10 @@ $card-heigh: px-to-rem(440px);
 
   span {
     @include rect(90%, 1.3em);
+
+    @include media-breakpoint-down (sm) {
+      font-size: px-to-rem(14px);
+    }
 
     color: $color-white;
     text-transform: uppercase;
@@ -146,6 +150,10 @@ $card-heigh: px-to-rem(440px);
 
 .quote,
 .description-wrapper {
+  @include media-breakpoint-down (sm) {
+    padding: 3%;
+  }
+
   padding: 4% px-to-rem(34px);
 }
 
@@ -156,6 +164,10 @@ $card-heigh: px-to-rem(440px);
 
 .name {
   @include font-headline;
+
+  @include media-breakpoint-down (sm) {
+    margin-bottom: 2%;
+  }
 
   color: inherit;
   font-weight: $font-weight-bold;
@@ -181,7 +193,9 @@ $card-heigh: px-to-rem(440px);
   }
 
   @include media-breakpoint-down (xs) {
-    @include line-clamp(2, 1.64);
+    // @include line-clamp(2, 1.64);
+
+    font-size: px-to-rem(12px);
   }
 
   font-weight: 500;
@@ -211,7 +225,7 @@ $card-heigh: px-to-rem(440px);
 
   p {
     @include media-breakpoint-down(md) {
-      font-size: px-to-rem(12px)
+      font-size: px-to-rem(12px);
     }
 
     z-index: $z-index-over-base;

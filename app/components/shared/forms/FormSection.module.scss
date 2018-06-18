@@ -15,6 +15,9 @@
   @include media-breakpoint-down(md) {
     @include make-col-offset(0);
     @include make-col(12);
+
+    position: static;
+    margin-bottom: $spacing-vertical-lg-3;
   }
 
   align-self: flex-start;

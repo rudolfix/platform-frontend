@@ -1,9 +1,10 @@
 .sheep-wrapper {
-  overflow: hidden;
   position: absolute;
 
   margin-top: 135px;
   transition: .2s ease-in;
+
+  cursor: pointer;
 
   &.left {
     left: 0;
@@ -11,6 +12,10 @@
 
     &.hidden {
       transform: rotate(25deg) scaleX(-1) translate(70px);
+    }
+
+    .thoughts-text {
+      transform: scaleX(-1);
     }
   }
 
@@ -21,5 +26,43 @@
     &.hidden {
       transform: rotate(25deg) translate(70px);
     }
+  }
+
+  &.hidden {
+    .thoughts {
+      display: none;
+    }
+  }
+
+  .thoughts {
+    position: absolute;
+    top: -108px;
+    left: -117px;
+    animation: fadeInFromNone .5s ease-out;
+
+    .thoughts-text {
+      position: absolute;
+      left: 16px;
+      top: 28px;
+      width: 74px;
+      text-align: center;
+    }
+  }
+}
+
+@keyframes fadeInFromNone {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
   }
 }

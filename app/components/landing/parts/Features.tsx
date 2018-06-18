@@ -11,7 +11,11 @@ import * as styles from "./Features.module.scss";
 export const Features: React.SFC = () => (
   <div className={styles.features}>
     <Container>
-      <RainbowSheepTip triggerY={700} side="right" />
+      <RainbowSheepTip
+        triggerY={700}
+        side="right"
+        tip={["Better than NASDAQ", "IPO on blockchain"]}
+      />
       <Row>
         <Col xs={12} md={6} className="align-self-center">
           <SpinningEthereum />
@@ -24,7 +28,7 @@ export const Features: React.SFC = () => (
           </p>
         </Col>
       </Row>
-      <RainbowSheepTip triggerY={1000} side="left" />
+      <RainbowSheepTip triggerY={1000} side="left" tip={["Making ICOs legal"]} />
       <Row>
         <Col xs={12} md={6} className="order-xs-2 order-md-1 align-self-center">
           <h2>Legally binding tokens</h2>
@@ -38,7 +42,7 @@ export const Features: React.SFC = () => (
           <SmartContractWindow />
         </Col>
       </Row>
-      <RainbowSheepTip triggerY={1300} side="right" />
+      <RainbowSheepTip triggerY={1300} side="right" tip={["Trade your shares"]} />
       <Row>
         <Col xs={12} md={6} className="align-self-center">
           <Interoperable />

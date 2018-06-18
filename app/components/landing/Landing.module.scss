@@ -1,10 +1,14 @@
 @import "../../styles/neufund-theme";
 
 .landing-wrapper {
+  background-color: $color-white;
+  background-image: url("../../assets/img/dust_bg.svg");
+  background-repeat: repeat-x;
+  background-position: bottom;
   width: 100%;
   min-height: 100%;
   flex-grow: 1;
-  background-color: $color-white;
+  padding-bottom: px-to-rem(236px);
 
   h2 {
     text-transform: uppercase;
@@ -185,4 +189,10 @@
   position: absolute;
   top: 5vh;
   right: 5vw;
+}
+
+.eto-cards-header {
+  text-align: center;
+  margin: px-to-rem(48px) auto;
+  max-width: 76%;
 }

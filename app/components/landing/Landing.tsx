@@ -19,7 +19,7 @@ export const Landing: React.SFC = () => (
       <Container>
         <Row>
           <Col>
-            <h2 className="text-center px-5 my-5">
+            <h2 className={styles.etoCardsHeader}>
               Meet the first off-chain companies tokenizing their shares under German jurisdiction
             </h2>
           </Col>

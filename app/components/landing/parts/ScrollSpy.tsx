@@ -36,8 +36,8 @@ export class ScrollSpy extends React.Component<IProps, IState> {
         isInTarget: newIsInTarget,
       });
 
-      if (!newIsInTarget) {
-        this.props.onHide && this.props.onHide();
+      if (!newIsInTarget && this.props.onHide) {
+        this.props.onHide();
       }
     }
   };

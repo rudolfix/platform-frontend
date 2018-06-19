@@ -53,7 +53,10 @@ export class RainbowSheepTip extends React.Component<IProps> {
     const { open, tipIndex } = this.state;
 
     return (
-      <ScrollSpy condition={y => y > triggerY - TRIGGER_DELTA && y < triggerY + TRIGGER_DELTA} onHide={this.reset} >
+      <ScrollSpy
+        condition={y => y > triggerY - TRIGGER_DELTA && y < triggerY + TRIGGER_DELTA}
+        onHide={this.reset}
+      >
         {visible => (
           <div
             className={cn(styles.sheepWrapper, !visible && styles.hidden, styles[side])}

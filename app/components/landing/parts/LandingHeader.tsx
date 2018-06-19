@@ -1,11 +1,10 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
-import { CommonHtmlProps } from "../../../types";
-import { Button } from "../../shared/Buttons";
 import { HiResImage } from "../../shared/HiResImage";
+import { JoinCta } from "./JoinCta";
+
 import * as styles from "./LandingHeader.module.scss";
 
 export const LandingHeader: React.SFC = () => (
@@ -35,39 +34,24 @@ export const LandingHeader: React.SFC = () => (
   </section>
 );
 
-export const JoinCta: React.SFC<CommonHtmlProps> = htmlProps => (
-  <div className={cn("d-flex", htmlProps.className)} style={htmlProps.style}>
-    <Button theme="brand">Register NOW</Button>
-
-    <span className="m-2">or</span>
-
-    <form className={cn("form-inline", styles.email)}>
-      <input type="text" className={styles.emailInput} placeholder="Email me updates" />
-      <button type="submit" className={styles.emailBtn}>
-        Subscribe
-      </button>
-    </form>
-  </div>
-);
-
 const CompanyImages: React.SFC = () => (
   <div className={styles.images}>
-    <a href="#eto-card-0" className={styles.companyImage}>
+    <a href="#eto-card-2" className={styles.companyImage}>
       <HiResImage partialPath="landing/myswooop" />
     </a>
     <a href="#eto-card-1" className={styles.companyImage}>
       <HiResImage partialPath="landing/uniti" />
     </a>
-    <a href="#eto-card-2" className={styles.companyImage}>
+    <a href="#eto-card-0" className={styles.companyImage}>
       <HiResImage partialPath="landing/brille" />
     </a>
-    <a href="#eto-card-3" className={styles.companyImage}>
+    <a href="#eto-card-5" className={styles.companyImage}>
       <HiResImage partialPath="landing/blockstate" />
     </a>
     <a href="#eto-card-4" className={styles.companyImage}>
       <HiResImage partialPath="landing/emflux" />
     </a>
-    <a href="#eto-card-5" className={styles.companyImage}>
+    <a href="#eto-card-3" className={styles.companyImage}>
       <HiResImage partialPath="landing/BT" />
     </a>
   </div>

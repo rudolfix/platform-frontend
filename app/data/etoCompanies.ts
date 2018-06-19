@@ -1,9 +1,9 @@
 import { IEtoOfferingProps } from "../components/shared/EtoOfferingCard";
 
+import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.png";
+import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
 import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
 import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
-import * as blockstatehover from "../assets/img/eto_offers/blockstatehover@1x.jpg";
-import * as blockstate2hover from "../assets/img/eto_offers/blockstatehover@2x.jpg";
 import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
 import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
 import * as brile24hover from "../assets/img/eto_offers/brille_hover.gif";
@@ -11,13 +11,13 @@ import * as emflux from "../assets/img/eto_offers/emflux@1x.jpg";
 import * as emflux2 from "../assets/img/eto_offers/emflux@2x.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
-import * as myswoop from "../assets/img/eto_offers/myswoop@1x.jpg";
+import * as myswoop from "../assets/img/eto_offers/myswoop.jpg";
 import * as myswoop2 from "../assets/img/eto_offers/myswoop@2x.jpg";
 import * as myswoopbadge from "../assets/img/eto_offers/myswoopbadge@1x.jpg";
 import * as myswoopbadge2 from "../assets/img/eto_offers/myswoopbadge@2x.jpg";
 import * as myswoophover from "../assets/img/eto_offers/myswoophover@1x.jpg";
 import * as myswoop2hover from "../assets/img/eto_offers/myswoophover@2x.jpg";
-import * as nextbigthing from "../assets/img/eto_offers/nextbigthing@1x.jpg";
+import * as nextbigthing from "../assets/img/eto_offers/nextbigthing.jpg";
 import * as nextbigthing2 from "../assets/img/eto_offers/nextbigthing@2x.jpg";
 import * as nextbigthinghover from "../assets/img/eto_offers/nextbigthinghover@1x.jpg";
 import * as nextbigthing2hover from "../assets/img/eto_offers/nextbigthinghover@2x.jpg";

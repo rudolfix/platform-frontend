@@ -12,14 +12,7 @@ export const Features: React.SFC = () => (
   <div className={styles.features}>
     <Container>
       <RainbowSheepTip
-        triggerY={600}
-        responsiveTriggers={{
-          320: 880,
-          576: 660,
-          768: 580,
-          992: 220,
-          1200: 460,
-        }}
+        triggerId="sheep-1"
         side="right"
         tip={["Better than NASDAQ", "IPO on blockchain"]}
       />
@@ -29,17 +22,17 @@ export const Features: React.SFC = () => (
         </Col>
         <Col xs={12} md={6} className="align-self-center">
           <h2>Technologically enhanced shares</h2>
-          <p>
+          <p id="sheep-1">
             Equity Tokens are programmable shares. With Ethereum-based ERC20 tokens we empower
             shareholders and grant them the rights of stakeholders.
           </p>
         </Col>
       </Row>
-      <RainbowSheepTip triggerY={1000} side="left" tip={["Making ICOs legal"]} />
+      <RainbowSheepTip triggerId="sheep-2" side="left" tip={["Making ICOs legal"]} />
       <Row>
         <Col xs={12} md={6} className="order-xs-2 order-md-1 align-self-center">
           <h2>Legally binding tokens</h2>
-          <p>
+          <p id="sheep-2">
             German law is engrained in the code of our legally binding equity tokens. Shareholder
             rights are getting self-executed using smart contracts written by our programmers and
             lawyers.
@@ -49,14 +42,14 @@ export const Features: React.SFC = () => (
           <SmartContractWindow />
         </Col>
       </Row>
-      <RainbowSheepTip triggerY={1300} side="right" tip={["Trade your shares"]} />
+      <RainbowSheepTip triggerId="sheep-3" side="right" tip={["Trade your shares"]} />
       <Row>
         <Col xs={12} md={6} className="align-self-center">
           <Interoperable />
         </Col>
         <Col xs={12} md={6} className="align-self-center">
           <h2>Interoperable assets</h2>
-          <p>
+          <p id="sheep-3">
             Equity Tokens are fully liquid investment assets. They can be traded on secondary
             markets and transferred between parties. Invest globally with ETH or EUR into stage and
             ticket size agnostic offerings.

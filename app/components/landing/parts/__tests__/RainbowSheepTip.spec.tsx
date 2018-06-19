@@ -1,5 +1,5 @@
-import { getTriggerPoint } from "../RainbowSheepTip";
 import { expect } from "chai";
+import { getTriggerPoint } from "../RainbowSheepTip";
 
 describe("getTriggerPoint", () => {
   const breakpoints = {

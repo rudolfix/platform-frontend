@@ -5,14 +5,12 @@ import { ScrollSpy } from "./ScrollSpy";
 
 import * as sheep from "../../../assets/img/landing/rainbowsheep.gif";
 import * as thoughts from "../../../assets/img/landing/thoughts.svg";
-import * as styles from "./RainbowSheepTip.module.scss";
 import { Dictionary } from "../../../types";
-import { last } from "lodash";
+import * as styles from "./RainbowSheepTip.module.scss";
 
 interface IProps {
   side: "left" | "right";
-  triggerY: number;
-  responsiveTriggers?: Dictionary<number>; // width -> y
+  triggerId: string;
   tip: string[];
 }
 
@@ -53,15 +51,22 @@ export class RainbowSheepTip extends React.Component<IProps> {
   };
 
   render(): React.ReactNode {
-    const { side, triggerY, tip, responsiveTriggers } = this.props;
+    const { side, tip, triggerId } = this.props;
     const { open, tipIndex } = this.state;
 
     return (
       <ScrollSpy
-        condition={y => {
-          const triggerPoint = getTriggerPoint(window.innerWidth, responsiveTriggers, triggerY);
+        condition={() => {
+          const triggerPoint: number = (document
+            .getElementById(triggerId)!
+            .getBoundingClientRect() as any).y;
 
-          return y > triggerPoint - TRIGGER_DELTA && y < triggerPoint + TRIGGER_DELTA;
+          const middleOfTheScreen = window.innerHeight / 2;
+
+          return (
+            middleOfTheScreen > triggerPoint - TRIGGER_DELTA &&
+            middleOfTheScreen < triggerPoint + TRIGGER_DELTA
+          );
         }}
         onHide={this.reset}
       >

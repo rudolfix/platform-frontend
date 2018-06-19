@@ -36,67 +36,74 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   return (
     <EtoFormBase title="Product Vision" validator={EtoProductVisionType.toYup()}>
       <Section>
-        {/* TODO: Remove Title and add it to header component */}
         <FormTextArea
           className="my-2"
-          label="WHAT IS THE PROBLEM YOU ARE SOLVING AND HOW?"
+          labelStyle="text-uppercase"
+          label="What is the problem your solving and how?"
           placeholder="Describe"
           name="problemSolved "
         />
 
         <FormTextArea
           className="my-2"
-          label="WHAT IS THE EXACT TARGET CUSTOMER GROUP OF YOUR PRODUCT?"
+          labelStyle="text-uppercase"
+          label="What is the exact target customer of your product?"
           placeholder="Describe"
           name="customerGroup"
         />
 
         <FormTextArea
           className="my-2"
-          label="WHAT IS THE PRODUCT VISION?"
+          labelStyle="text-uppercase"
+          label="What is the product vision?"
           placeholder="Describe"
           name="productVision"
         />
 
         <FormTextArea
           className="my-2"
-          label="WHAT HAS INSPIRED YOU TO START THIS COMPANY?"
+          labelStyle="text-uppercase"
+          label="What has inspired you to start this company?"
           placeholder="Describe"
           name="inspiration"
         />
 
         <FormTextArea
           className="my-2"
-          label="WHAT ARE THE KEY PRODUCT PRIORITIES (I.E. ROADMAP) FOR THE NEXT 12 MOTNHS?"
+          labelStyle="text-uppercase"
+          label="What are the key product priorities (i.e. roadmap) for the next 12 months"
           placeholder="Describe"
           name="keyProductPriorities"
         />
 
         <FormCategoryDistribution
-          label="HOW WILL YOU USE THE RAISED CAPITAL?"
+          label="How will you use the raised capital?"
           name="useOfCapitalList"
           paragraphName="useOfCapital"
-          className="my-3"
+          className="my-3 text-uppercase"
           suggestions={distributionSuggestions}
         />
 
         <FormTextArea
           className="my-2"
-          label="WHAT IS THE SALES MODEL?"
+          labelStyle="text-uppercase"
+          label="What is the sales model?"
           placeholder="Describe"
           name="salesModel"
         />
 
         <FormTextArea
           className="my-2"
-          label="WHAT IS THE MARKETING APPRAOCH?"
+          labelStyle="text-uppercase"
+          label="What is the marketing approach?"
           placeholder="Describe"
           name="marketingApproach"
         />
 
         <FormTextArea
           className="my-2"
-          label="WHAT IS YOUR UNIQUE SELLING PROPOSITION?"
+          labelStyle="text-uppercase"
+          label="What is your unique selling proposition?"
           placeholder="Describe"
           name="sellingProposition"
         />
@@ -106,6 +113,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
           <Button
             layout="primary"
             className="mr-4"
+            type="submit"
             onClick={() => {
               props.saveData(props.values);
             }}

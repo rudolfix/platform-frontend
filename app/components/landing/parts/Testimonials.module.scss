@@ -8,6 +8,10 @@
 
 .media-quote {
   .media-quote-image {
+    @include media-breakpoint-down(md) {
+      margin-bottom: 30px;
+    }
+
     width: 150px;
     margin-left: auto;
     margin-right: auto;
@@ -19,4 +23,10 @@
     font-size: 20px;
     font-weight: 300;
   }
+}
+
+
+.header {
+  margin-top: 30px;
+  margin-bottom: 75px;
 }

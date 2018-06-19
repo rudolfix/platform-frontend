@@ -58,8 +58,8 @@ export class JoinCta extends React.Component<CommonHtmlProps, IState> {
 
     return (
       <div>
-        <div className={cn("d-flex", htmlProps.className)} style={htmlProps.style}>
-          <Link to={appRoutes.register}>
+        <div className={cn(styles.joinCta, htmlProps.className)} style={htmlProps.style}>
+          <Link to={appRoutes.register} className={styles.registerNow}>
             <Button theme="brand">Register NOW</Button>
           </Link>
 

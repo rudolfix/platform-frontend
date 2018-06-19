@@ -22,8 +22,9 @@ interface IDispatchProps {
 
 export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Navbar dark className={styles.bar}>
-    <Link to={appRoutes.root} className="navbar-brand">
-      <img src={logo} className={styles.logo} /> <span className={styles.logoText}>NEUFUND</span>
+    <Link to={appRoutes.root} className={styles.logo}>
+      <img src={logo} className={styles.logoImage} />{" "}
+      <span className={styles.logoText}>NEUFUND</span>
     </Link>
     {props.isAuthorized ? (
       <Button layout="secondary" theme="white" onClick={props.logout} data-test-id="Header-logout">
@@ -33,16 +34,26 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       <div className={styles.buttons}>
         {props.location && props.location.indexOf("eto") !== -1 ? (
           <>
-            <Link data-test-id="Header-register-eto" to={appRoutes.registerEto}>
-              <Button theme="white">REGISTER</Button>
-            </Link>
+            <span>
+              <Link
+                data-test-id="Header-register-eto"
+                className={styles.registerButton}
+                to={appRoutes.registerEto}
+              >
+                <Button theme="white">REGISTER</Button>
+              </Link>
+            </span>
             <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
               <Button theme="white">LOGIN</Button>
             </Link>
           </>
         ) : (
           <>
-            <Link data-test-id="Header-register" to={walletRegisterRoutes.light}>
+            <Link
+              data-test-id="Header-register"
+              className={styles.registerButton}
+              to={walletRegisterRoutes.light}
+            >
               <Button theme="white">REGISTER</Button>
             </Link>
             <Link data-test-id="Header-login" to={loginWalletRoutes.light}>

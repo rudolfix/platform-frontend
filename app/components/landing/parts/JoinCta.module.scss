@@ -1,5 +1,18 @@
 @import "../../../styles/neufund-theme";
 
+.join-cta {
+  @include media-breakpoint-down (md) {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  display: flex;
+}
+
+.register-now {
+  align-self: flex-start;
+}
+
 .email {
   margin: 0;
 
@@ -12,7 +25,11 @@
     @include media-breakpoint-only(lg) {
       width: px-to-rem(150);
     }
-    width: px-to-rem(200);
+    @include media-breakpoint-only(xs) {
+      width: px-to-rem(155);
+    }
+
+    width: px-to-rem(200px);
     font-size: 14px;
     padding-left: 5px;
 

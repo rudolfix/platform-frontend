@@ -42,12 +42,18 @@ export class RainbowSheepTip extends React.Component<IProps> {
     this.timerTask = setTimeout(() => this.setState({ ...this.state, open: false }), TIP_TIMEOUT);
   };
 
+  private reset = () => {
+    this.setState({
+      open: false,
+      tipIndex: -1,
+    });
+  };
   render(): React.ReactNode {
     const { side, triggerY, tip } = this.props;
     const { open, tipIndex } = this.state;
 
     return (
-      <ScrollSpy condition={y => y > triggerY - TRIGGER_DELTA && y < triggerY + TRIGGER_DELTA}>
+      <ScrollSpy condition={y => y > triggerY - TRIGGER_DELTA && y < triggerY + TRIGGER_DELTA} onHide={this.reset} >
         {visible => (
           <div
             className={cn(styles.sheepWrapper, !visible && styles.hidden, styles[side])}

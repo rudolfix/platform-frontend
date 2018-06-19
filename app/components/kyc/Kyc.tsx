@@ -20,7 +20,6 @@ import { KycPanel } from "./KycPanel";
 import { KYCAddDocuments } from "./shared/AddDocuments";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
-import { injectIntlHelpers } from "../../utils/injectIntlHelpers";
 
 export const personalSteps = [
   {
@@ -74,79 +73,85 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const RequestStateInfo = injectIntlHelpers<IProps>(({ intl: { formatIntlMessage }, ...props }) => {
-  const steps = props.pendingRequestType === "business" ? businessSteps : personalSteps;
-  const settingsButton = (
-    <div className="p-4 text-center">
-      <Button
-        layout="secondary"
-        iconPosition="icon-before"
-        svgIcon={arrowLeft}
-        onClick={props.goToWallet}
-      >
-        <FormattedMessage id="kyc.request-state.go-to-wallet" />
-      </Button>
-    </div>
-  );
-  if (!props.requestStatus) {
-    return (
-      <KycPanel steps={steps} description={formatIntlMessage("kyc.request-state.description")}>
-        {settingsButton}
-      </KycPanel>
-    );
+class RequestStateInfo extends React.Component<IProps> {
+  componentDidUpdate (): void {
+
   }
-  if (props.requestStatus === "Pending") {
-    return (
-      <KycPanel
-        title={formatIntlMessage("kyc.request-state.pending.title")}
-        steps={steps}
-        description={formatIntlMessage("kyc.request-state.pending.description")}
-      >
-        {props.pendingRequestType && <KYCAddDocuments uploadType={props.pendingRequestType} />}
-        {settingsButton}
-      </KycPanel>
+
+  render (): React.ReactNode {
+    const steps = this.props.pendingRequestType === "business" ? businessSteps : personalSteps;
+    const settingsButton = (
+      <div className="p-4 text-center">
+        <Button
+          layout="secondary"
+          iconPosition="icon-before"
+          svgIcon={arrowLeft}
+          onClick={this.props.goToWallet}
+        >
+          <FormattedMessage id="kyc.request-state.go-to-wallet" />
+        </Button>
+      </div>
     );
+    if (!this.props.requestStatus) {
+      return (
+      <KycPanel steps={steps} description={<FormattedMessage id="kyc.request-state.description" />}>
+          {settingsButton}
+        </KycPanel>
+      );
+    }
+    if (this.props.requestStatus === "Pending") {
+      return (
+        <KycPanel
+          title={<FormattedMessage id="kyc.request-state.pending.title" />}
+          steps={steps}
+          description={<FormattedMessage id="kyc.request-state.pending.description" />}
+        >
+          {this.props.pendingRequestType && <KYCAddDocuments uploadType={this.props.pendingRequestType} />}
+          {settingsButton}
+        </KycPanel>
+      );
+    }
+    if (this.props.requestStatus === "Accepted") {
+      return (
+        <KycPanel
+          title={<FormattedMessage id="kyc.request-state.accepted.title"/>}
+          steps={steps}
+          description={<FormattedMessage id="kyc.request-state.accepted.description"/>}
+        >
+          {settingsButton}
+        </KycPanel>
+      );
+    }
+    if (this.props.requestStatus === "Rejected") {
+      return (
+        <KycPanel
+          title={<FormattedMessage id="kyc.request-state.rejected.title"/>}
+          steps={steps}
+          description={<FormattedMessage id="kyc.request-state.rejected.description"/>}
+        >
+          {settingsButton}
+        </KycPanel>
+      );
+    }
+    if (this.props.requestStatus === "Outsourced") {
+      return (
+        <KycPanel
+          title={<FormattedMessage id="kyc.request-state.outsourced.title"/>}
+          steps={steps}
+          description={<FormattedMessage id="kyc.request-state.outsourced.description"}
+        >
+          {" "}
+          <div className="p-4 text-center">
+            <a href={this.props.redirectUrl}>
+              <FormattedMessage id="kyc.request-state.click-here-to-continue" />
+            </a>
+          </div>
+        </KycPanel>
+      );
+    }
+    return <div />;
   }
-  if (props.requestStatus === "Accepted") {
-    return (
-      <KycPanel
-        title={formatIntlMessage("kyc.request-state.accepted.title")}
-        steps={steps}
-        description={formatIntlMessage("kyc.request-state.accepted.description")}
-      >
-        {settingsButton}
-      </KycPanel>
-    );
-  }
-  if (props.requestStatus === "Rejected") {
-    return (
-      <KycPanel
-        title={formatIntlMessage("kyc.request-state.rejected.title")}
-        steps={steps}
-        description={formatIntlMessage("kyc.request-state.rejected.description")}
-      >
-        {settingsButton}
-      </KycPanel>
-    );
-  }
-  if (props.requestStatus === "Outsourced") {
-    return (
-      <KycPanel
-        title={formatIntlMessage("kyc.request-state.outsourced.title")}
-        steps={steps}
-        description={formatIntlMessage("kyc.request-state.outsourced.description")}
-      >
-        {" "}
-        <div className="p-4 text-center">
-          <a href={props.redirectUrl}>
-            <FormattedMessage id="kyc.request-state.click-here-to-continue" />
-          </a>
-        </div>
-      </KycPanel>
-    );
-  }
-  return <div />;
-});
+}
 
 export const KycComponent: React.SFC<IProps> = props => {
   const router = props.requestStatus === "Draft" ? <KycRouter /> : <div />;

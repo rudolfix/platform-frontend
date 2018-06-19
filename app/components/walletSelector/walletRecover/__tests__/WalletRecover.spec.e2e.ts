@@ -53,6 +53,7 @@ describe("Wallet recover", () => {
     cy.get(tid("wallet-selector-register-email")).type("john-smith@example.com");
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");
     cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
+    cy.wait(2000);
 
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
 

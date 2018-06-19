@@ -133,7 +133,7 @@ const UnVerifiedUser: React.SFC<{
     </p>
 
     {verifiedEmail && (
-      <Col xs={12} className="d-flex justify-content-center">
+      <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
         <p className="mb-0">
           <b>
             <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}

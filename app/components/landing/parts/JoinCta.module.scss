@@ -16,11 +16,6 @@
 .email {
   margin: 0;
 
-  & > * {
-    height: px-to-rem(34);
-    border: 1px solid $neu-piss-yellow;
-  }
-
   .email-input {
     @include media-breakpoint-only(lg) {
       width: px-to-rem(150);
@@ -29,12 +24,18 @@
       width: px-to-rem(155);
     }
 
+    background-color: transparent;
+    border: 0;
+
+    border-bottom: 2px solid $color-black;
     width: px-to-rem(200px);
     font-size: 14px;
-    padding-left: 5px;
+    height: 38px;
+    padding: 0 10px;
+    margin-right: 15px;
 
     &::placeholder {
-      color: $gray;
+      color: $color-graphite;
     }
   }
 

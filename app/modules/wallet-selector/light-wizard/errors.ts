@@ -19,13 +19,13 @@ export function mapLightWalletErrorToErrorMessage(e: Error): string {
     return `Cannot sign personal message`;
   }
   if (e instanceof LightCreationError) {
-    return "Cannot create new Neufund Wallet";
+    return "Cannot create new Light Wallet";
   }
   if (e instanceof LightDeserializeError) {
     return "Problem with Vault retrieval";
   }
   if (e instanceof LightKeyEncryptError) {
-    return "Problem with Neufund Wallet encryption";
+    return "Problem with Light Wallet encryption";
   }
   if (e instanceof LightWalletWrongPassword) {
     return "Password is not correct";
@@ -34,5 +34,5 @@ export function mapLightWalletErrorToErrorMessage(e: Error): string {
     return "Recovery phrase entered is not correct";
   }
 
-  return "Neufund Wallet is unavailable";
+  return "Light Wallet is unavailable";
 }

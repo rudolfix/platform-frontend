@@ -6,10 +6,13 @@ import { ScrollSpy } from "./ScrollSpy";
 import * as sheep from "../../../assets/img/landing/rainbowsheep.gif";
 import * as thoughts from "../../../assets/img/landing/thoughts.svg";
 import * as styles from "./RainbowSheepTip.module.scss";
+import { Dictionary } from "../../../types";
+import { last } from "lodash";
 
 interface IProps {
   side: "left" | "right";
   triggerY: number;
+  responsiveTriggers?: Dictionary<number>; // width -> y
   tip: string[];
 }
 
@@ -48,13 +51,18 @@ export class RainbowSheepTip extends React.Component<IProps> {
       tipIndex: -1,
     });
   };
+
   render(): React.ReactNode {
-    const { side, triggerY, tip } = this.props;
+    const { side, triggerY, tip, responsiveTriggers } = this.props;
     const { open, tipIndex } = this.state;
 
     return (
       <ScrollSpy
-        condition={y => y > triggerY - TRIGGER_DELTA && y < triggerY + TRIGGER_DELTA}
+        condition={y => {
+          const triggerPoint = getTriggerPoint(window.innerWidth, responsiveTriggers, triggerY);
+
+          return y > triggerPoint - TRIGGER_DELTA && y < triggerPoint + TRIGGER_DELTA;
+        }}
         onHide={this.reset}
       >
         {visible => (
@@ -74,4 +82,22 @@ export class RainbowSheepTip extends React.Component<IProps> {
       </ScrollSpy>
     );
   }
+}
+
+export function getTriggerPoint(
+  windowWidth: number,
+  responsivePoints: Dictionary<number> | undefined,
+  defaultPoint: number,
+): number {
+  if (!responsivePoints) {
+    return defaultPoint;
+  }
+
+  const sortedResponsivePoints = Object.keys(responsivePoints)
+    .map(v => parseFloat(v))
+    .sort((a, b) => a - b);
+
+  const breakpoint = sortedResponsivePoints.filter(b => windowWidth <= b)[0];
+
+  return (breakpoint && responsivePoints[breakpoint]) || defaultPoint;
 }

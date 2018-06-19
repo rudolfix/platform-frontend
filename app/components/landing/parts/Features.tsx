@@ -12,7 +12,14 @@ export const Features: React.SFC = () => (
   <div className={styles.features}>
     <Container>
       <RainbowSheepTip
-        triggerY={700}
+        triggerY={600}
+        responsiveTriggers={{
+          320: 880,
+          576: 660,
+          768: 580,
+          992: 220,
+          1200: 460,
+        }}
         side="right"
         tip={["Better than NASDAQ", "IPO on blockchain"]}
       />

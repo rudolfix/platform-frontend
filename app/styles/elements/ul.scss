@@ -1,24 +1,26 @@
 @import "../neufund-theme";
 
-ul {
-  list-style: none;
-  padding: 0;
+:not(.pure) {
+  ul {
+    list-style: none;
+    padding: 0;
 
-  li {
-    position: relative;
-    padding-left: px-to-rem(40px);
+    li {
+      position: relative;
+      padding-left: px-to-rem(40px);
 
-    &::before {
-      $_point-radius: 2px;
+      &::before {
+        $_point-radius: 2px;
 
-      content: "";
-      width: 2 * $_point-radius;
-      height: 2 * $_point-radius;
-      border-radius: 40px;
-      background-color: currentColor;
-      position: absolute;
-      top: calc(.5em + #{$_point-radius});
-      left: px-to-rem(15px);
+        content: "";
+        width: 2 * $_point-radius;
+        height: 2 * $_point-radius;
+        border-radius: 40px;
+        background-color: currentColor;
+        position: absolute;
+        top: calc(.5em + #{$_point-radius});
+        left: px-to-rem(15px);
+      }
     }
   }
 }

@@ -1,0 +1,48 @@
+@import "../../../styles/neufund-theme";
+
+.join-cta {
+  @include media-breakpoint-down (sm) {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  display: flex;
+}
+
+.register-now {
+  align-self: flex-start;
+}
+
+.email {
+  margin: 0;
+
+  & > * {
+    height: px-to-rem(34);
+    border: 1px solid $neu-piss-yellow;
+  }
+
+  .email-input {
+    @include media-breakpoint-only(lg) {
+      width: px-to-rem(150);
+    }
+    @include media-breakpoint-only(xs) {
+      width: px-to-rem(155);
+    }
+
+    width: px-to-rem(200px);
+    font-size: 14px;
+    padding-left: 5px;
+
+    &::placeholder {
+      color: $gray;
+    }
+  }
+
+  .email-btn {
+    background-color: $neu-piss-yellow;
+    text-transform: uppercase;
+    font-weight: $font-weight-bold;
+
+    cursor: pointer;
+  }
+}

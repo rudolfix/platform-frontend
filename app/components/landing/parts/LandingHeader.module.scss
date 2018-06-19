@@ -1,0 +1,167 @@
+@import "../../../styles/neufund-theme";
+
+.hero {
+  overflow: hidden;
+}
+
+.hero-cta {
+  @include media-breakpoint-up(sm) {
+    padding-top: px-to-rem(100px);
+  }
+
+  padding-top: px-to-rem(40px);
+}
+
+.hero-header {
+  font-size: 2.9rem;
+
+  font-weight: $font-weight-light;
+  text-transform: uppercase;
+  color: $color-graphite;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 30%;
+    height: px-to-rem(4px);
+    background-color: $color-brand;
+    margin-bottom: $spacing-vertical-lg-3;
+    margin-top: $spacing-vertical-lg-1;
+  }
+}
+
+.hero-description {
+  @include media-breakpoint-down (md) {
+    @include font-headline-small;
+
+    text-shadow: $shadow-white;
+  }
+
+  font-size: 1.4rem;
+  letter-spacing: .03125rem;
+  margin-bottom: $spacing-vertical-lg-3;
+  max-width: 476px;
+  width: 100%;
+}
+
+.images {
+  @include media-breakpoint-up(xl) {
+    height: 850px;
+  }
+
+  @include media-breakpoint-only(lg) {
+    height: 700px;
+  }
+
+  position: relative;
+  padding-bottom: 30px;
+
+  .company-image {
+    filter: drop-shadow(5px 5px 5px $gray-shadow);
+    position: absolute;
+    // animation: breathing 10s ease-out infinite normal;
+
+    &:hover {
+      animation: 0;
+      transition: .2s ease-in-out;
+      transform: scale(1.1);
+    }
+
+    // images placement
+    &:nth-of-type(1) {
+      top: -100px;
+      left: 50px;
+    }
+
+    &:nth-of-type(2) {
+      top: -27px;
+      right: -91px;
+    }
+
+    &:nth-of-type(3) {
+      top: 215px;
+      left: 127px;
+    }
+
+    &:nth-of-type(4) {
+      top: 270px;
+      right: -166px;
+    }
+
+    &:nth-of-type(5) {
+      top: 493px;
+      left: 0;
+    }
+
+    &:nth-of-type(6) {
+      top: 546px;
+      right: -39px;
+    }
+
+    @include media-breakpoint-only(lg) {
+      img {
+        height: 200px;
+      }
+
+      &:nth-of-type(1) {
+        top: -37px;
+        left: 50px;
+      }
+
+      &:nth-of-type(2) {
+        top: 17px;
+        right: -55px;
+      }
+
+      &:nth-of-type(3) {
+        top: 182px;
+        left: 129px;
+      }
+
+      &:nth-of-type(4) {
+        top: 257px;
+        right: -114px;
+      }
+
+      &:nth-of-type(5) {
+        top: 394px;
+        left: 0;
+      }
+
+      &:nth-of-type(6) {
+        top: 456px;
+        right: 25px;
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      position: initial;
+      width: 200px;
+      margin-left: 30px;
+      margin-top: 40px;
+    }
+
+    @include media-breakpoint-down(sm) {
+      width: 140px;
+    }
+  }
+}
+
+
+@keyframes breathing {
+  0% {
+    transform: scale(.98);
+  }
+
+  25% {
+    transform: scale(1);
+  }
+
+  60% {
+    transform: scale(.98);
+  }
+
+  100% {
+    transform: scale(.98);
+  }
+}

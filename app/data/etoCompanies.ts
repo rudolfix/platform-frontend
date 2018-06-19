@@ -1,12 +1,12 @@
 import { IEtoOfferingProps } from "../components/shared/EtoOfferingCard";
 
+import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.png";
+import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
 import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
 import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
-import * as blockstatehover from "../assets/img/eto_offers/blockstatehover@1x.jpg";
-import * as blockstate2hover from "../assets/img/eto_offers/blockstatehover@2x.jpg";
 import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
 import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
-import * as brile24hover from "../assets/img/eto_offers/brille24hover.gif";
+import * as brile24hover from "../assets/img/eto_offers/brille_hover.gif";
 import * as emflux from "../assets/img/eto_offers/emflux@1x.jpg";
 import * as emflux2 from "../assets/img/eto_offers/emflux@2x.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
@@ -21,10 +21,9 @@ import * as nextbigthing from "../assets/img/eto_offers/nextbigthing@1x.jpg";
 import * as nextbigthing2 from "../assets/img/eto_offers/nextbigthing@2x.jpg";
 import * as nextbigthinghover from "../assets/img/eto_offers/nextbigthinghover@1x.jpg";
 import * as nextbigthing2hover from "../assets/img/eto_offers/nextbigthinghover@2x.jpg";
+import * as unitihover from "../assets/img/eto_offers/uniti.gif";
 import * as uniti from "../assets/img/eto_offers/uniti@1x.jpg";
 import * as uniti2 from "../assets/img/eto_offers/uniti@2x.jpg";
-import * as unitihover from "../assets/img/eto_offers/unitihover@1x.jpg";
-import * as uniti2hover from "../assets/img/eto_offers/unitihover@2x.jpg";
 
 export type EtoData = { data: IEtoOfferingProps };
 
@@ -62,6 +61,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         alt: "",
       },
       to: "https://itunes.apple.com/de/app/brille24/id1262362205?l=en&mt=8",
+      bannerWithGif: true,
     },
   },
   {
@@ -93,9 +93,10 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       quoteImage: {
         src: uniti,
-        srcSet: `${unitihover} 1x, ${uniti2hover} 2x`,
+        srcSet: `${unitihover}`,
         alt: "",
       },
+      bannerWithGif: true,
       to: "https://www.youtube.com/watch?v=49JASBTng-4",
     },
   },
@@ -157,7 +158,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       name: "NEXT BIG THING",
       description:
-        "As Europe’s premier startup incubator for IoT & blockchain and Germany’s chosen Digital Hub for IoT, Next Big Thing drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models.",
+        "As Europe’s premier startup incubator for IoT & blockchain and Germany’s chosen Digital Hub for IoT, NBT drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models.",
       quote: {
         text:
           "As IoT will significantly change service and industry structures, NBT offers early participation in this disruptive opportunity. They convinced me with their clear focus, proven track record, and professional attitude. The concept and structure are purposefully goal-oriented.",

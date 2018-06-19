@@ -30,6 +30,8 @@ describe("Wallet recover", () => {
     "strike",
   ];
 
+  const generatedAddress = "0x429123b08df32b0006fd1f3b0ef893a8993802f3";
+
   it("should recover wallet from saved phrases", () => {
     cy.visit("/recover/seed");
 
@@ -65,6 +67,12 @@ describe("Wallet recover", () => {
 
       expect(email).to.be.eq(email);
       expect(loginLink).to.contain("salt");
+    });
+
+    cy.get(tid("authorized-layout-settings-button")).click();
+
+    cy.get(tid("your-ether-address-widget-eth-address")).then(address => {
+      expect(address.text()).to.be.eq(generatedAddress);
     });
 
     cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");

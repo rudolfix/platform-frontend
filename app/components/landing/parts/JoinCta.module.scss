@@ -1,7 +1,7 @@
 @import "../../../styles/neufund-theme";
 
 .join-cta {
-  @include media-breakpoint-down (md) {
+  @include media-breakpoint-down (sm) {
     flex-direction: column;
     justify-content: center;
   }

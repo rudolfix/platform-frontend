@@ -15,17 +15,16 @@ interface IPersonInfoProps {
 
 const people: Array<IPersonInfoProps> = [
   {
-    imageSrc: "landing/testimonials/people/Fabian",
-    description: "Ethereum and Mist developer, co-creator of the ERC20 token with Vitalik Buterin",
-    fullName: "FABIAN VOGELSTELLER",
-    link: "https://www.ethereum.org/",
+    imageSrc: "landing/testimonials/people/Julian",
+    fullName: "JULIAN ZAWISTOWSKI",
+    description: "Founder of Golem Project,  one of the first & biggest ICOs",
+    link: "https://golem.network/",
   },
   {
-    imageSrc: "landing/testimonials/people/Frank",
-    description:
-      "Co-founder and CEO at Freigeist Capital. European serial founder, tech investor and TV personality based in Bonn, Germany",
-    fullName: "FRANK THELEN & FREIGEIST CAPITAL",
-    link: "https://freigeist.com/",
+    imageSrc: "landing/testimonials/people/Alexander",
+    fullName: "ALEXANDER LANGE",
+    description: "Investor at Index Ventures, crypto expert and VC, previously at Early Bird VC",
+    link: "https://www.indexventures.com/",
   },
   {
     imageSrc: "landing/testimonials/people/Max",
@@ -78,16 +77,17 @@ const people: Array<IPersonInfoProps> = [
     link: "https://www.ethereum.org/",
   },
   {
-    imageSrc: "landing/testimonials/people/Julian",
-    fullName: "JULIAN ZAWISTOWSKI",
-    description: "Founder of Golem Project,  one of the first & biggest ICOs",
-    link: "https://golem.network/",
+    imageSrc: "landing/testimonials/people/Fabian",
+    description: "Ethereum and Mist developer, co-creator of the ERC20 token with Vitalik Buterin",
+    fullName: "FABIAN VOGELSTELLER",
+    link: "https://www.ethereum.org/",
   },
   {
-    imageSrc: "landing/testimonials/people/Alexander",
-    fullName: "ALEXANDER LANGE",
-    description: "Investor at Index Ventures, crypto expert and VC, previously at Early Bird VC",
-    link: "https://www.indexventures.com/",
+    imageSrc: "landing/testimonials/people/Frank",
+    description:
+      "Co-founder and CEO at Freigeist Capital. European serial founder, tech investor and TV personality based in Bonn, Germany",
+    fullName: "FRANK THELEN & FREIGEIST CAPITAL",
+    link: "https://freigeist.com/",
   },
   {
     imageSrc: "landing/testimonials/people/andreas",

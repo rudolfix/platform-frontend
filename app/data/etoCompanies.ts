@@ -7,8 +7,7 @@ import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
 import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
 import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
 import * as brile24hover from "../assets/img/eto_offers/brille_hover.gif";
-import * as emflux from "../assets/img/eto_offers/emflux@1x.jpg";
-import * as emflux2 from "../assets/img/eto_offers/emflux@2x.jpg";
+import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
 import * as myswoop from "../assets/img/eto_offers/myswoop.jpg";
@@ -202,7 +201,6 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       topImage: {
         src: emflux,
-        srcSet: `${emflux} 1x, ${emflux2} 2x`,
         alt: "",
       },
       quoteImage: {

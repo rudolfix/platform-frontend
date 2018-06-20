@@ -11,7 +11,7 @@ export const EtoList: React.SFC = () => (
       <SectionHeader>ETO Offerings</SectionHeader>
     </Col>
     {etoCompaniesCards.map((eto, index) => (
-      <Col xs={12} lg={6} xl={4} key={index}>
+      <Col xs={12} lg={6} key={index}>
         <EtoCard {...eto} className="responsive" />
       </Col>
     ))}

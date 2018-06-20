@@ -23,25 +23,33 @@
 
   .email-input {
     @include media-breakpoint-only(lg) {
-      width: px-to-rem(150);
+      width: px-to-rem(140);
     }
     @include media-breakpoint-only(xs) {
       width: px-to-rem(155);
     }
 
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid $color-black;
     width: px-to-rem(200px);
     font-size: 14px;
-    padding-left: 5px;
+    height: 38px;
+    padding: 0 10px;
+    margin-right: 15px;
 
     &::placeholder {
-      color: $gray;
+      color: $color-graphite;
     }
   }
 
   .email-btn {
-    background-color: $neu-piss-yellow;
+    height: 38px;
+    background-color: transparent;
+    border: 2px solid $color-black;
     text-transform: uppercase;
     font-weight: $font-weight-bold;
+    padding: 0 12px;
 
     cursor: pointer;
   }

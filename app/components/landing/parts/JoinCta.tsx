@@ -1,4 +1,5 @@
 import * as cn from "classnames";
+import * as queryString from "query-string";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
@@ -13,6 +14,8 @@ interface IState {
   error?: boolean;
   success?: boolean;
 }
+
+type TSubscribeStatus = "success" | "invalid_timestamp" | "invalid_hmac" | "error";
 
 export class JoinCta extends React.Component<CommonHtmlProps, IState> {
   state: IState = {
@@ -55,9 +58,15 @@ export class JoinCta extends React.Component<CommonHtmlProps, IState> {
   render(): React.ReactNode {
     const htmlProps = this.props;
     const { loading, error, success } = this.state;
+    const subscribe: TSubscribeStatus | undefined = (
+      queryString.parse(window.location.search) || {}
+    ).subscribe;
+
+    const subscribeSuccessful = subscribe === "success";
+    const subscribeFailed = subscribe && subscribe !== "success";
 
     return (
-      <div>
+      <div id="newsletter">
         <div className={cn(styles.joinCta, htmlProps.className)} style={htmlProps.style}>
           <Link to={appRoutes.register} className={styles.registerNow}>
             <Button theme="brand">Register NOW</Button>
@@ -81,6 +90,12 @@ export class JoinCta extends React.Component<CommonHtmlProps, IState> {
         <div className="text-center">
           {success && <p className="my-3">Check your email for the confirmation link!</p>}
           {error && <p className="my-3">Ups, something went wrong!</p>}
+          {subscribeSuccessful && (
+            <p className="my-3">You were successfully added to our newsletter!</p>
+          )}
+          {subscribeFailed && (
+            <p className="my-3">There was an error while subscribing to the newsletter!</p>
+          )}
         </div>
       </div>
     );

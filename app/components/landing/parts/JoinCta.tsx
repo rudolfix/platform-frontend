@@ -73,9 +73,9 @@ export class JoinCta extends React.Component<CommonHtmlProps, IState> {
               ref={this.setEmailInputRef}
             />
 
-            <Button type="submit" disabled={loading}>
+            <button type="submit" className={styles.emailBtn} disabled={loading}>
               Subscribe
-            </Button>
+            </button>
           </form>
         </div>
         <div className="text-center">

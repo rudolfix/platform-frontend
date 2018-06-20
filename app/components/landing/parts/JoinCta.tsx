@@ -79,7 +79,7 @@ export class JoinCta extends React.Component<CommonHtmlProps, IState> {
           </form>
         </div>
         <div className="text-center">
-          {success && <p className="my-3">Check you email for the confirmation link!</p>}
+          {success && <p className="my-3">Check your email for the confirmation link!</p>}
           {error && <p className="my-3">Ups, something went wrong!</p>}
         </div>
       </div>

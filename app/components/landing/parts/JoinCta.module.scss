@@ -23,7 +23,7 @@
 
   .email-input {
     @include media-breakpoint-only(lg) {
-      width: px-to-rem(150);
+      width: px-to-rem(140);
     }
     @include media-breakpoint-only(xs) {
       width: px-to-rem(155);

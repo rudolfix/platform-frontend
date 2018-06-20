@@ -7,17 +7,16 @@ import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
 import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
 import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
 import * as brile24hover from "../assets/img/eto_offers/brille_hover.gif";
-import * as emflux from "../assets/img/eto_offers/emflux@1x.jpg";
-import * as emflux2 from "../assets/img/eto_offers/emflux@2x.jpg";
+import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
-import * as myswoop from "../assets/img/eto_offers/myswoop@1x.jpg";
+import * as myswoop from "../assets/img/eto_offers/myswoop.jpg";
 import * as myswoop2 from "../assets/img/eto_offers/myswoop@2x.jpg";
 import * as myswoopbadge from "../assets/img/eto_offers/myswoopbadge@1x.jpg";
 import * as myswoopbadge2 from "../assets/img/eto_offers/myswoopbadge@2x.jpg";
 import * as myswoophover from "../assets/img/eto_offers/myswoophover@1x.jpg";
 import * as myswoop2hover from "../assets/img/eto_offers/myswoophover@2x.jpg";
-import * as nextbigthing from "../assets/img/eto_offers/nextbigthing@1x.jpg";
+import * as nextbigthing from "../assets/img/eto_offers/nextbigthing.jpg";
 import * as nextbigthing2 from "../assets/img/eto_offers/nextbigthing@2x.jpg";
 import * as nextbigthinghover from "../assets/img/eto_offers/nextbigthinghover@1x.jpg";
 import * as nextbigthing2hover from "../assets/img/eto_offers/nextbigthinghover@2x.jpg";
@@ -117,7 +116,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       name: "mySWOOOP",
       description:
-        "Online re-commerce platform buying and selling new and used electronics. With tailored software technology, mySWOOOP automatically determines current market prices in real-time assuring attractive resale-margins.",
+        "Omni-Channel re-commerce platform buying and selling new and used electronics. With tailored software technology, mySWOOOP automatically determines current market prices in real-time assuring attractive resale-margins.",
       quote: {
         text:
           "mySWOOOP performing an innovative trading approach is a key role in our digital agenda. We’re impressed by an average annual sales growth of more than 170% that generated net sales of 4.6 Million in 2017 and we’re looking forward to support growth strategy in 2018.",
@@ -202,7 +201,6 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       topImage: {
         src: emflux,
-        srcSet: `${emflux} 1x, ${emflux2} 2x`,
         alt: "",
       },
       quoteImage: {

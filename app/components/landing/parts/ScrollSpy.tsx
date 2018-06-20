@@ -4,6 +4,7 @@ import { ReactNode } from "react-redux";
 interface IProps {
   condition: (y: number) => boolean;
   children: (visible: boolean) => ReactNode;
+  onHide?: () => any;
 }
 
 interface IState {
@@ -28,12 +29,16 @@ export class ScrollSpy extends React.Component<IProps, IState> {
   }
 
   private scrollSpy = () => {
-    const result = this.props.condition(window.scrollY);
+    const newIsInTarget = this.props.condition(window.scrollY);
 
-    if (result !== this.state.isInTarget) {
+    if (newIsInTarget !== this.state.isInTarget) {
       this.setState({
-        isInTarget: result,
+        isInTarget: newIsInTarget,
       });
+
+      if (!newIsInTarget && this.props.onHide) {
+        this.props.onHide();
+      }
     }
   };
 }

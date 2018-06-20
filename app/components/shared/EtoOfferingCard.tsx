@@ -164,9 +164,11 @@ export class EtoOfferingCardComponent extends React.Component<
           </Proportion>
           {props.bannerWithGif ? (
             <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
-              <a className={styles.navigationArrow} href={props.to} target="_blank">
-                <i className="fa fa-arrow-right" />
-              </a>
+              {props.isMobile && (
+                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                  <i className="fa fa-arrow-right" />
+                </a>
+              )}
               {props.quoteImage && (
                 <div className={styles.imageWrapper}>
                   <img
@@ -184,9 +186,11 @@ export class EtoOfferingCardComponent extends React.Component<
               className={cn(styles.quote, props.teaser && styles.teaser)}
               style={{ background: props.quoteBackground, color: props.quoteColor }}
             >
-              <a className={styles.navigationArrow} href={props.to} target="_blank">
-                <i className="fa fa-arrow-right" />
-              </a>
+              {props.isMobile && (
+                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                  <i className="fa fa-arrow-right" />
+                </a>
+              )}
               {props.quoteImage && (
                 <img
                   className={styles.image}

@@ -69,16 +69,22 @@ interface IStateProps {
 interface IDispatchProps {
   reopenRequest: () => void;
   goToWallet: () => void;
+  showModal: (title: string, text: string) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
 class RequestStateInfo extends React.Component<IProps> {
-  componentDidUpdate (): void {
-
+  componentDidMount(): void {
+    if (this.props.requestStatus === "Pending") {
+      this.props.showModal(
+        "Verification process is completed",
+        "Thank you for completing your identity verification process, our team will check your application and will communicate with you within 1 day. To contact support please click here, to continue deposit click here.",
+      );
+    }
   }
 
-  render (): React.ReactNode {
+  render(): React.ReactNode {
     const steps = this.props.pendingRequestType === "business" ? businessSteps : personalSteps;
     const settingsButton = (
       <div className="p-4 text-center">
@@ -94,7 +100,10 @@ class RequestStateInfo extends React.Component<IProps> {
     );
     if (!this.props.requestStatus) {
       return (
-      <KycPanel steps={steps} description={<FormattedMessage id="kyc.request-state.description" />}>
+        <KycPanel
+          steps={steps}
+          description={<FormattedMessage id="kyc.request-state.description" />}
+        >
           {settingsButton}
         </KycPanel>
       );
@@ -106,7 +115,9 @@ class RequestStateInfo extends React.Component<IProps> {
           steps={steps}
           description={<FormattedMessage id="kyc.request-state.pending.description" />}
         >
-          {this.props.pendingRequestType && <KYCAddDocuments uploadType={this.props.pendingRequestType} />}
+          {this.props.pendingRequestType && (
+            <KYCAddDocuments uploadType={this.props.pendingRequestType} />
+          )}
           {settingsButton}
         </KycPanel>
       );
@@ -114,9 +125,9 @@ class RequestStateInfo extends React.Component<IProps> {
     if (this.props.requestStatus === "Accepted") {
       return (
         <KycPanel
-          title={<FormattedMessage id="kyc.request-state.accepted.title"/>}
+          title={<FormattedMessage id="kyc.request-state.accepted.title" />}
           steps={steps}
-          description={<FormattedMessage id="kyc.request-state.accepted.description"/>}
+          description={<FormattedMessage id="kyc.request-state.accepted.description" />}
         >
           {settingsButton}
         </KycPanel>
@@ -125,9 +136,9 @@ class RequestStateInfo extends React.Component<IProps> {
     if (this.props.requestStatus === "Rejected") {
       return (
         <KycPanel
-          title={<FormattedMessage id="kyc.request-state.rejected.title"/>}
+          title={<FormattedMessage id="kyc.request-state.rejected.title" />}
           steps={steps}
-          description={<FormattedMessage id="kyc.request-state.rejected.description"/>}
+          description={<FormattedMessage id="kyc.request-state.rejected.description" />}
         >
           {settingsButton}
         </KycPanel>
@@ -136,9 +147,9 @@ class RequestStateInfo extends React.Component<IProps> {
     if (this.props.requestStatus === "Outsourced") {
       return (
         <KycPanel
-          title={<FormattedMessage id="kyc.request-state.outsourced.title"/>}
+          title={<FormattedMessage id="kyc.request-state.outsourced.title" />}
           steps={steps}
-          description={<FormattedMessage id="kyc.request-state.outsourced.description"}
+          description={<FormattedMessage id="kyc.request-state.outsourced.description" />}
         >
           {" "}
           <div className="p-4 text-center">
@@ -180,6 +191,8 @@ export const Kyc = compose<React.SFC>(
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},
       goToWallet: () => dispatch(actions.routing.goToWallet()),
+      showModal: (title: string, text: string) =>
+        dispatch(actions.genericModal.showGenericModal(title, text)),
     }),
     options: { pure: false },
   }),

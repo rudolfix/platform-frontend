@@ -5,11 +5,12 @@ import { ScrollSpy } from "./ScrollSpy";
 
 import * as sheep from "../../../assets/img/landing/rainbowsheep.gif";
 import * as thoughts from "../../../assets/img/landing/thoughts.svg";
+import { Dictionary } from "../../../types";
 import * as styles from "./RainbowSheepTip.module.scss";
 
 interface IProps {
   side: "left" | "right";
-  triggerY: number;
+  triggerId: string;
   tip: string[];
 }
 
@@ -42,12 +43,33 @@ export class RainbowSheepTip extends React.Component<IProps> {
     this.timerTask = setTimeout(() => this.setState({ ...this.state, open: false }), TIP_TIMEOUT);
   };
 
+  private reset = () => {
+    this.setState({
+      open: false,
+      tipIndex: -1,
+    });
+  };
+
   render(): React.ReactNode {
-    const { side, triggerY, tip } = this.props;
+    const { side, tip, triggerId } = this.props;
     const { open, tipIndex } = this.state;
 
     return (
-      <ScrollSpy condition={y => y > triggerY - TRIGGER_DELTA && y < triggerY + TRIGGER_DELTA}>
+      <ScrollSpy
+        condition={() => {
+          const triggerPoint: number = (document
+            .getElementById(triggerId)!
+            .getBoundingClientRect() as any).y;
+
+          const middleOfTheScreen = window.innerHeight / 2;
+
+          return (
+            middleOfTheScreen > triggerPoint - TRIGGER_DELTA &&
+            middleOfTheScreen < triggerPoint + TRIGGER_DELTA
+          );
+        }}
+        onHide={this.reset}
+      >
         {visible => (
           <div
             className={cn(styles.sheepWrapper, !visible && styles.hidden, styles[side])}
@@ -65,4 +87,22 @@ export class RainbowSheepTip extends React.Component<IProps> {
       </ScrollSpy>
     );
   }
+}
+
+export function getTriggerPoint(
+  windowWidth: number,
+  responsivePoints: Dictionary<number> | undefined,
+  defaultPoint: number,
+): number {
+  if (!responsivePoints) {
+    return defaultPoint;
+  }
+
+  const sortedResponsivePoints = Object.keys(responsivePoints)
+    .map(v => parseFloat(v))
+    .sort((a, b) => a - b);
+
+  const breakpoint = sortedResponsivePoints.filter(b => windowWidth <= b)[0];
+
+  return (breakpoint && responsivePoints[breakpoint]) || defaultPoint;
 }

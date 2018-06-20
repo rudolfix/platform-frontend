@@ -9,7 +9,7 @@ import * as closeIcon from "../../assets/img/inline_icons/close.svg";
 import * as styles from "./Buttons.module.scss";
 
 type TButtonLayout = "primary" | "secondary";
-type TButtonTheme = "dark" | "white" | "brand";
+type TButtonTheme = "dark" | "white" | "brand" | "silver";
 type TIconPosition = "icon-before" | "icon-after";
 
 export interface IButtonProps {

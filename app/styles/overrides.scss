@@ -19,6 +19,17 @@ body {
 }
 // sass-lint:enable no-vendor-prefixes
 
+a,
+button,
+input,
+textarea {
+  &,
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
 .form-control {
   font-size: $neu-font-size-lg !important;
   border-top: 0 !important;

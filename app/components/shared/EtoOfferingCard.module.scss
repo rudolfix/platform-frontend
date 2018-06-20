@@ -66,7 +66,7 @@ $card-heigh: px-to-rem(440px);
 .round-label {
   display: flex;
   fill: $color-graphite;
-  min-width: px-to-rem(170px);
+  min-width: px-to-rem(130px);
   width: 36%;
   height: px-to-rem(110px);
   position: relative;
@@ -80,6 +80,10 @@ $card-heigh: px-to-rem(440px);
 
   span {
     @include rect(90%, 1.3em);
+
+    @include media-breakpoint-down (sm) {
+      font-size: px-to-rem(14px);
+    }
 
     color: $color-white;
     text-transform: uppercase;
@@ -110,12 +114,19 @@ $card-heigh: px-to-rem(440px);
       width: 60px;
     }
 
+    @include media-breakpoint-down(md) {
+      width: 50px;
+      margin-top: -50%;
+    }
+
     width: 80px;
   }
 }
 
 .tags {
   @include media-breakpoint-down (sm) {
+    padding: px-to-rem(5px);
+
     > * {
       margin-top: px-to-rem(10px);
     }
@@ -141,6 +152,10 @@ $card-heigh: px-to-rem(440px);
 
 .quote,
 .description-wrapper {
+  @include media-breakpoint-down (sm) {
+    padding: 3%;
+  }
+
   padding: 4% px-to-rem(34px);
 }
 
@@ -152,6 +167,10 @@ $card-heigh: px-to-rem(440px);
 .name {
   @include font-headline;
 
+  @include media-breakpoint-down (sm) {
+    margin-bottom: 2%;
+  }
+
   color: inherit;
   font-weight: $font-weight-bold;
 }
@@ -160,11 +179,7 @@ $card-heigh: px-to-rem(440px);
   @include font-default;
 
   @include media-breakpoint-up(lg) {
-    display: -webkit-box; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-line-clamp: 4; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-box-orient: vertical; // sass-lint:disable-line no-vendor-prefixes
-    height: 4 * 1.64;
-    overflow: hidden;
+    @include line-clamp(4, 1.64);
   }
 
   @include media-breakpoint-only(lg) {
@@ -173,6 +188,14 @@ $card-heigh: px-to-rem(440px);
 
   @include media-breakpoint-only(md) {
     font-size: px-to-rem(14px);
+  }
+
+  @include media-breakpoint-down (md) {
+    @include line-clamp(3, 1.64);
+  }
+
+  @include media-breakpoint-down (xs) {
+    font-size: px-to-rem(12px);
   }
 
   font-weight: 500;
@@ -201,6 +224,14 @@ $card-heigh: px-to-rem(440px);
   position: absolute;
 
   p {
+    @include media-breakpoint-down(md) {
+      font-size: px-to-rem(12px);
+    }
+
+    @include media-breakpoint-only(xs) {
+      line-height: 1.4;
+    }
+
     z-index: $z-index-over-base;
   }
 
@@ -239,22 +270,37 @@ $card-heigh: px-to-rem(440px);
       width: 100%;
 
       h3 {
+        @include media-breakpoint-only(xs) {
+          font-size: 10px;
+        }
+
         color: $white;
         padding-top: 10px;
       }
 
       .app-store {
+        @include media-breakpoint-only(xs) {
+          margin-top: 12px;
+        }
+
         height: 80px;
         margin-top: 50px;
       }
 
       .siemens-logo {
+        @include media-breakpoint-only(xs) {
+          margin-top: 10px;
+        }
+
         margin-top: 20px;
       }
     }
   }
 }
 
+.navigation-arrow {
+  display: none;
+}
 
 .mobile {
   .bottom {
@@ -264,6 +310,21 @@ $card-heigh: px-to-rem(440px);
   &.flipped {
     .bottom {
       animation: none;
+    }
+
+    .navigation-arrow {
+      display: block;
+      background-color: $black;
+      opacity: .8;
+      border-radius: 50%;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      padding-top: 12px;
+      color: $white;
     }
   }
 }

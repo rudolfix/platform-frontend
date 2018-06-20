@@ -1,6 +1,6 @@
 
 
-.logo {
+.logo-image {
   @include media-breakpoint-up (lg) {
     margin-left: px-to-rem(32px);
   }
@@ -10,6 +10,11 @@
 }
 
 .logo-text {
+  @include media-breakpoint-down (md) {
+    font-size: 16px;
+  }
+
+  color: $color-white;
   font-weight: $font-weight-light;
   font-size: 24px;
   position: relative;
@@ -24,7 +29,18 @@
 }
 
 .buttons {
+  display: flex;
+  justify-content: space-between;
+
   a {
     margin-left: px-to-rem(20px);
   }
+}
+
+.register-button {
+  @include media-breakpoint-up (md) {
+    display: block;
+  }
+
+  display: none;
 }

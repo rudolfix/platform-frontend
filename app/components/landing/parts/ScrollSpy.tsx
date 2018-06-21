@@ -1,9 +1,11 @@
+import { throttle } from "lodash";
 import * as React from "react";
 import { ReactNode } from "react-redux";
 
 interface IProps {
   condition: (y: number) => boolean;
   children: (visible: boolean) => ReactNode;
+  onHide?: () => any;
 }
 
 interface IState {
@@ -27,13 +29,17 @@ export class ScrollSpy extends React.Component<IProps, IState> {
     window.removeEventListener("scroll", this.scrollSpy);
   }
 
-  private scrollSpy = () => {
-    const result = this.props.condition(window.scrollY);
+  private scrollSpy = throttle(() => {
+    const newIsInTarget = this.props.condition(window.scrollY);
 
-    if (result !== this.state.isInTarget) {
+    if (newIsInTarget !== this.state.isInTarget) {
       this.setState({
-        isInTarget: result,
+        isInTarget: newIsInTarget,
       });
+
+      if (!newIsInTarget && this.props.onHide) {
+        this.props.onHide();
+      }
     }
-  };
+  }, 50);
 }

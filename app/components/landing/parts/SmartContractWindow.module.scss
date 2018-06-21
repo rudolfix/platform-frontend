@@ -1,3 +1,4 @@
+@import "../../../styles/neufund-theme";
 
 $color-2nd: GhostWhite;
 $color-3rd: Gainsboro;
@@ -49,7 +50,8 @@ $color-3rd: Gainsboro;
 }
 
 .window{
-	width:400px;
+	width:100%;
+	max-width:400px;
 	background:$color-2nd;
 	border-radius:0.3rem;
 	box-shadow:0 8px 12px rgba(0,0,0,0.1);
@@ -120,7 +122,12 @@ $color-3rd: Gainsboro;
 			word-wrap: break-word;
 		}
 
-		.code-input{
+		.code-input {
+      // this prevents stealing scrolling context on smaller devices
+      @include media-breakpoint-only(xs) {
+        overflow: hidden;
+      }
+
 			opacity:0.7;
 			margin:0;
 			color:#999;

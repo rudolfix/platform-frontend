@@ -8,6 +8,8 @@
   @include media-breakpoint-up(sm) {
     padding-top: px-to-rem(100px);
   }
+
+  padding-top: px-to-rem(40px);
 }
 
 .hero-header {
@@ -38,36 +40,8 @@
   font-size: 1.4rem;
   letter-spacing: .03125rem;
   margin-bottom: $spacing-vertical-lg-3;
-  width: 476px;
-}
-
-.email {
-  margin: 0;
-
-  & > * {
-    height: px-to-rem(34);
-    border: 1px solid $neu-piss-yellow;
-  }
-
-  .email-input {
-    @include media-breakpoint-only(lg) {
-      width: px-to-rem(150);
-    }
-    width: px-to-rem(200);
-    font-size: 14px;
-
-    &::placeholder {
-      color: $gray;
-    }
-  }
-
-  .email-btn {
-    background-color: $neu-piss-yellow;
-    text-transform: uppercase;
-    font-weight: $font-weight-bold;
-
-    cursor: pointer;
-  }
+  max-width: 476px;
+  width: 100%;
 }
 
 .images {

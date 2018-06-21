@@ -28,7 +28,7 @@
   }
 
   &:global(.ghost-bold) {
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(xs) {
       font-size: .6rem;
       padding: .2rem;
       padding-left: 1rem;
@@ -44,10 +44,6 @@
     &,
     &:hover {
       background-color: transparent;
-    }
-
-    &:hover {
-      opacity: .6;
     }
   }
 

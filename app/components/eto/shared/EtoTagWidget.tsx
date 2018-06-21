@@ -82,7 +82,7 @@ export class EtoTagWidget extends React.Component<IProps & CommonHtmlProps> {
   render(): React.ReactNode {
     const { name, selectedTagsLimit } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const selectedTags = values[name] as string[];
+    const selectedTags: string[] = values[name] || [];
 
     return (
       <Field
@@ -99,8 +99,8 @@ export class EtoTagWidget extends React.Component<IProps & CommonHtmlProps> {
               const listWithRemovedTag = selectedTags.filter(tag => tag !== clickedTag);
               return setFieldValue(name, listWithRemovedTag);
             }}
-            disabled={values[name].length === selectedTagsLimit}
-            values={values[name]}
+            disabled={selectedTags.length === selectedTagsLimit}
+            values={selectedTags}
           />
         )}
       />

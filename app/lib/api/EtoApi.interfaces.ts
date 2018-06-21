@@ -10,13 +10,10 @@ export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 
 const tagsType = YupTS.string();
 
-/* tslint:disable */
-// TODO: Remove tslint disable
 const EtoCapitalListType = YupTS.object({
   description: YupTS.string(),
   percent: YupTS.number(),
 });
-/* tslint:enable */
 
 export const EtoCompanyInformationType = YupTS.object({
   brandName: YupTS.string(),
@@ -36,9 +33,11 @@ export const EtoProductVisionType = YupTS.object({
   inspiration: YupTS.string().optional(),
   keyProductPriorities: YupTS.string().optional(),
   useOfCapital: YupTS.string(),
-  // useOfCapitalList: YupTS.array(EtoCapitalListType.optional()).optional(), // tslint:disable-line
-  // TODO: FIX TYPINGS FOR useOfCapitalList
-  // TODO: add missing fields @see https://github.com/Neufund/platform-backend/issues/601
+  useOfCapitalList: YupTS.array(EtoCapitalListType.optional()).optional(),
+  customerGroup: YupTS.string().optional(),
+  sellingProposition: YupTS.string().optional(),
+  marketingApproach: YupTS.string().optional(),
+  salesModel: YupTS.string().optional(),
 });
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;

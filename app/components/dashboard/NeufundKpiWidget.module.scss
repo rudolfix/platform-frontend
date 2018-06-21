@@ -1,5 +1,3 @@
-@import "../../styles/neufund-theme";
-
 .neufund-kpi-widget {
   @include media-breakpoint-up (lg) {
     padding-right: px-to-rem(30px);

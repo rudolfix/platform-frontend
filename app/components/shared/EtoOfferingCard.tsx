@@ -72,10 +72,10 @@ export class EtoOfferingCardComponent extends React.Component<
   };
 
   private onClick = () => {
-    const { isMobile } = this.props;
+    const { isMobile, teaser } = this.props;
     const { isClicked } = this.state;
 
-    if (!isMobile) return;
+    if (!isMobile || teaser) return;
 
     this.setState({
       ...this.state,
@@ -111,7 +111,7 @@ export class EtoOfferingCardComponent extends React.Component<
             styles.card,
             props.className,
             props.teaser && styles.teaser,
-            props.isMobile && styles.mobile,
+            props.isMobile && !props.teaser && styles.mobile,
             isClicked && styles.flipped,
           )}
           onClick={this.onClick}
@@ -164,6 +164,11 @@ export class EtoOfferingCardComponent extends React.Component<
           </Proportion>
           {props.bannerWithGif ? (
             <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
+              {props.isMobile && (
+                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                  <i className="fa fa-arrow-right" />
+                </a>
+              )}
               {props.quoteImage && (
                 <div className={styles.imageWrapper}>
                   <img
@@ -181,6 +186,11 @@ export class EtoOfferingCardComponent extends React.Component<
               className={cn(styles.quote, props.teaser && styles.teaser)}
               style={{ background: props.quoteBackground, color: props.quoteColor }}
             >
+              {props.isMobile && (
+                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                  <i className="fa fa-arrow-right" />
+                </a>
+              )}
               {props.quoteImage && (
                 <img
                   className={styles.image}

@@ -1,7 +1,7 @@
 // sass-lint:disable no-important
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 @import "./variables";
 @import "./utils";
 @import "./global";
@@ -18,6 +18,17 @@
 
   label {
     display: inline-flex !important;
+  }
+}
+
+a,
+button,
+input,
+textarea {
+  &,
+  &:focus,
+  &:active {
+    outline: none;
   }
 }
 

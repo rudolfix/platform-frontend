@@ -10,21 +10,21 @@ interface IPersonInfoProps {
   fullName: string;
   description: string;
   link: string;
+  setDangerouslyDescription?: boolean;
 }
 
 const people: Array<IPersonInfoProps> = [
   {
-    imageSrc: "landing/testimonials/people/Fabian",
-    description: "Ethereum and Mist developer, co-creator of the ERC20 token with Vitalik Buterin",
-    fullName: "FABIAN VOGELSTELLER",
-    link: "https://www.ethereum.org/",
+    imageSrc: "landing/testimonials/people/Julian",
+    fullName: "JULIAN ZAWISTOWSKI",
+    description: "Founder of Golem Project,  one of the first & biggest ICOs",
+    link: "https://golem.network/",
   },
   {
-    imageSrc: "landing/testimonials/people/Frank",
-    description:
-      "Co-founder and CEO at Freigeist Capital. European serial founder, tech investor and TV personality based in Bonn, Germany.",
-    fullName: "FRANK THELEN & FREIGEIST CAPITAL",
-    link: "https://freigeist.com/",
+    imageSrc: "landing/testimonials/people/Alexander",
+    fullName: "ALEXANDER LANGE",
+    description: "Investor at Index Ventures, crypto expert and VC, previously at Early Bird VC",
+    link: "https://www.indexventures.com/",
   },
   {
     imageSrc: "landing/testimonials/people/Max",
@@ -34,7 +34,7 @@ const people: Array<IPersonInfoProps> = [
   },
   {
     imageSrc: "landing/testimonials/people/philipp",
-    description: "Head of Technology at world’s biggest private equity firms, KKR",
+    description: "Head of Technology at world’s biggest private equity firm, KKR",
     fullName: "PHILIPP FREISE",
     link: "http://www.kkr.com/",
   },
@@ -67,7 +67,7 @@ const people: Array<IPersonInfoProps> = [
   {
     imageSrc: "landing/testimonials/people/udo",
     fullName: "UDO SCHLOEMER",
-    description: "The founder of one of Germany’s first and biggest startup camp, Factory Berlin",
+    description: "The founder of one of Germany’s first and biggest startup camps, Factory Berlin",
     link: "https://factoryberlin.com/",
   },
   {
@@ -77,16 +77,17 @@ const people: Array<IPersonInfoProps> = [
     link: "https://www.ethereum.org/",
   },
   {
-    imageSrc: "landing/testimonials/people/Julian",
-    fullName: "JULIAN ZAWISTOWSKI",
-    description: "Founder of Golem Project,  one of the first & biggest ICOs",
-    link: "https://golem.network/",
+    imageSrc: "landing/testimonials/people/Fabian",
+    description: "Ethereum and Mist developer, co-creator of the ERC20 token with Vitalik Buterin",
+    fullName: "FABIAN VOGELSTELLER",
+    link: "https://www.ethereum.org/",
   },
   {
-    imageSrc: "landing/testimonials/people/Alexander",
-    fullName: "ALEXANDER LANGE",
-    description: "Investor at Index Ventures Crypto expert and VC, previously at Early Bird VC",
-    link: "https://www.indexventures.com/",
+    imageSrc: "landing/testimonials/people/Frank",
+    description:
+      "Co-founder and CEO at Freigeist Capital. European serial founder, tech investor and TV personality based in Bonn, Germany",
+    fullName: "FRANK THELEN & FREIGEIST CAPITAL",
+    link: "https://freigeist.com/",
   },
   {
     imageSrc: "landing/testimonials/people/andreas",
@@ -124,8 +125,9 @@ const people: Array<IPersonInfoProps> = [
   {
     imageSrc: "landing/testimonials/people/Minh Ha Duonh",
     fullName: "MINH HA DUONG",
-    description: "Investment Manager at Project A Ventures",
+    description: "Investment Manager at Project A&nbsp;Ventures",
     link: "https://www.project-a.com/en",
+    setDangerouslyDescription: true,
   },
   {
     imageSrc: "landing/testimonials/people/Adam Stradling",
@@ -137,7 +139,7 @@ const people: Array<IPersonInfoProps> = [
     imageSrc: "landing/testimonials/people/Kerstin Eichmann",
     fullName: "KERSTIN EICHMANN",
     description:
-      "Head of Mashine Economy Lighthouse at Innogy Innovation Hub, a German-based VC aiming to radically innovate energy.",
+      "Head of Machine Economy Lighthouse at Innogy Innovation Hub, a German-based VC aiming to radically innovate energy.",
     link: "https://innovationhub.innogy.com/",
   },
   {
@@ -158,7 +160,7 @@ const people: Array<IPersonInfoProps> = [
     imageSrc: "landing/testimonials/people/KLAAS KERSTIN",
     fullName: "KLAAS KERSTING",
     description:
-      "Co-founder of Flaregames and Gameforge, early stage investor (Supercell, Spacetime Studios and iQU",
+      "Co-founder of Flaregames and Gameforge, early stage investor (Supercell, Spacetime Studios and iQU)",
     link: "https://www.flaregames.com/",
   },
   {
@@ -175,11 +177,21 @@ const people: Array<IPersonInfoProps> = [
   },
 ];
 
-const PersonBox: React.SFC<IPersonInfoProps> = ({ imageSrc, fullName, description, link }) => (
+const PersonBox: React.SFC<IPersonInfoProps> = ({
+  imageSrc,
+  fullName,
+  description,
+  link,
+  setDangerouslyDescription,
+}) => (
   <a href={link} target="_blank" className="text-center">
     <HiResImage partialPath={imageSrc} className={styles.personImage} />
     <h3>{fullName}</h3>
-    <p>{description}</p>
+    {setDangerouslyDescription ? (
+      <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }} />
+    ) : (
+      <p className={styles.description}>{description}</p>
+    )}
   </a>
 );
 

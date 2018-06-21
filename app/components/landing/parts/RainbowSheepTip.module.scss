@@ -1,4 +1,8 @@
 .sheep-wrapper {
+  @include media-breakpoint-only(xs) {
+    margin-top: 306px;
+  }
+
   z-index: 1000;
   position: absolute;
 

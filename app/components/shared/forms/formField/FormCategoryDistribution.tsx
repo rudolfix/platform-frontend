@@ -140,10 +140,9 @@ export class FormCategoryDistribution extends React.Component<
                         arrayHelpers.remove(index);
                         this.suggestions.splice(index, 1);
                       }}
-                      placeholder={this.suggestions[index]}
+                      placeholder={this.suggestions[index] || "Other"}
                       addField={() => {
                         setFieldValue(`${name}.${index + 1}`, this.blankField);
-                        this.suggestions[index + 1] = "Other";
                       }}
                       isFirstElement={isFirstElement}
                       isLastElement={isLastElement}

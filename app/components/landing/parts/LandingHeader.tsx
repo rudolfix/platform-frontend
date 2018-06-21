@@ -19,9 +19,12 @@ export const LandingHeader: React.SFC = () => (
             <p className={styles.heroDescription}>
               Neufund makes it possible to invest in real world equity on the Ethereum Blockchain.
               Our platform enables primary offerings of investment assets through legally binding
-              smart contracts - Equity Token Offerings.
+              smart contracts -{" "}
+              <a href="https://neufund.org/fundraise-with-equity-token" target="_blank">
+                Equity Token Offerings
+              </a>.
             </p>
-            <p className={styles.heroDescription}>The future of fundraising is launching soon.</p>
+            <p className={styles.heroDescription}>The future of fundraising is launching now.</p>
 
             <JoinCta />
           </div>

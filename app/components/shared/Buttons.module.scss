@@ -1,6 +1,5 @@
 // sass-lint:disable force-pseudo-nesting
 // sass-lint:disable nesting-depth
-@import "../../styles/neufund-theme";
 
 $_hover-color: $neu-piss-yellow;
 $_focus-color: $neu-piss-yellow;
@@ -113,6 +112,10 @@ $_active-color: lighten($_hover-color, 20%);
       }
     }
 
+    &.silver {
+      color: $neu-slate-grey;
+    }
+
     // elements
     &.icon-before {
       :global(.inline-icon) {
@@ -134,7 +137,7 @@ $_active-color: lighten($_hover-color, 20%);
   }
 }
 
-.button-close {
+.button-icon {
   cursor: pointer;
   width: 20px;
   height: 20px;

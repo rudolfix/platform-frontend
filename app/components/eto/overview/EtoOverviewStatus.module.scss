@@ -1,5 +1,3 @@
-@import "../../../styles/neufund-theme";
-
 .overview {
   @include media-breakpoint-down (md) {
     flex-direction: column;

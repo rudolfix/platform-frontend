@@ -1,3 +1,4 @@
+import { throttle } from "lodash";
 import * as React from "react";
 import { ReactNode } from "react-redux";
 
@@ -28,7 +29,7 @@ export class ScrollSpy extends React.Component<IProps, IState> {
     window.removeEventListener("scroll", this.scrollSpy);
   }
 
-  private scrollSpy = () => {
+  private scrollSpy = throttle(() => {
     const newIsInTarget = this.props.condition(window.scrollY);
 
     if (newIsInTarget !== this.state.isInTarget) {
@@ -40,5 +41,5 @@ export class ScrollSpy extends React.Component<IProps, IState> {
         this.props.onHide();
       }
     }
-  };
+  }, 50);
 }

@@ -8,11 +8,11 @@ const EtoFounderType = YupTS.object({
 });
 export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 
-const tagsType = YupTS.string();
+const tagsType = YupTS.string().optional();
 
 const EtoCapitalListType = YupTS.object({
-  description: YupTS.string(),
-  percent: YupTS.number(),
+  description: YupTS.string().optional(),
+  percent: YupTS.number().optional(),
 });
 
 export const EtoCompanyInformationType = YupTS.object({
@@ -32,7 +32,7 @@ export const EtoProductVisionType = YupTS.object({
   productVision: YupTS.string().optional(),
   inspiration: YupTS.string().optional(),
   keyProductPriorities: YupTS.string().optional(),
-  useOfCapital: YupTS.string(),
+  useOfCapital: YupTS.string().optional(),
   useOfCapitalList: YupTS.array(EtoCapitalListType.optional()).optional(),
   customerGroup: YupTS.string().optional(),
   sellingProposition: YupTS.string().optional(),

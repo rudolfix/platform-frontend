@@ -82,6 +82,10 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
           paragraphName="useOfCapital"
           className="my-3 text-uppercase"
           suggestions={distributionSuggestions}
+          blankField={{
+            description: "",
+            percent: 0,
+          }}
         />
 
         <FormTextArea

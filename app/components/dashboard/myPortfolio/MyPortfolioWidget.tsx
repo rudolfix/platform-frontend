@@ -66,7 +66,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
       className={className}
       style={style}
     >
-      <Row className={cn(styles.main, "pb-3")}>
+      <Row className={styles.main}>
         {isLoading ? (
           <LoadingIndicator />
         ) : (

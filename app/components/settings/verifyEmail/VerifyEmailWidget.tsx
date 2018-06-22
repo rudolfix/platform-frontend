@@ -21,7 +21,7 @@ import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { FormField } from "../../shared/forms/formField/FormField";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
 interface IStateProps {
@@ -152,7 +152,7 @@ export const VerifyEmailWidgetComponent: React.SFC<
   step,
 }) => {
   return (
-    <PanelDark
+    <Panel
       headerText={formatIntlMessage("settings.verify-email-widget.header", { step })}
       rightComponent={
         isUserEmailVerified ? (
@@ -174,7 +174,7 @@ export const VerifyEmailWidgetComponent: React.SFC<
       ) : (
         <NoEmailUser {...{ addNewEmail, isLocked }} />
       )}
-    </PanelDark>
+    </Panel>
   );
 };
 

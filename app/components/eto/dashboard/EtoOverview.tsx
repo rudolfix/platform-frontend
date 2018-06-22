@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
 import { Money, TCurrency } from "../../shared/Money";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 import { ITag, Tag } from "../../shared/Tag";
 
 import * as styles from "./EtoOverview.module.scss";
@@ -30,7 +30,7 @@ interface IProps {
 
 export const EtoOverview: React.SFC<IProps> = props => {
   return (
-    <PanelWhite>
+    <Panel>
       <Container>
         <Row>
           <Col>
@@ -108,6 +108,6 @@ export const EtoOverview: React.SFC<IProps> = props => {
           </Col>
         </Row>
       </Container>
-    </PanelWhite>
+    </Panel>
   );
 };

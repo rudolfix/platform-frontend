@@ -1,0 +1,41 @@
+.panel {
+  background-color: $color-white;
+  box-shadow: $shadow-bottom-black-light;
+  padding: px-to-rem(25px);
+}
+
+.header,
+.left,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.left,
+.right {
+  flex-shrink: 0;
+}
+
+.header {
+  @include font-button-default;
+
+  color: $color-black;
+  font-weight: $font-weight-bold;
+  justify-content: space-between;
+  margin-bottom: $spacing-vertical-sm-1;
+  text-transform: uppercase;
+}
+
+.left {
+  margin-right: auto;
+}
+
+.right {
+  margin-left: auto;
+}
+
+.icon {
+  @include rect(16px);
+
+  margin-left: px-to-rem(25px);
+}

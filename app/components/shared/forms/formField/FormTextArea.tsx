@@ -12,6 +12,7 @@ interface IFieldGroup {
   prefix?: string;
   suffix?: string;
   className?: string;
+  labelStyle?: string;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 export class FormTextArea extends React.Component<FieldGroupProps> {
@@ -20,12 +21,16 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const { label, placeholder, name, prefix, suffix, className } = this.props;
+    const { label, placeholder, name, prefix, suffix, className, labelStyle } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
     return (
       <FormGroup>
-        {label && <Label for={name}>{label}</Label>}
+        {label && (
+          <Label className={labelStyle} for={name}>
+            {label}
+          </Label>
+        )}
         <Field
           name={name}
           render={({ field }: FieldProps) => (

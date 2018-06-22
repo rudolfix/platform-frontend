@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Link } from "react-router-dom";
 import { Button } from "../shared/Buttons";
-import { PanelWhite } from "../shared/PanelWhite";
+import { Panel } from "../shared/Panel";
 import { IVerificationProgressStep, VerificationStatus } from "../shared/VerificationStatus";
 
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
@@ -26,7 +26,7 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
   isMaxWidth,
 }) => (
   <div className={`${styles.kycPanel} ${isMaxWidth ? styles.kycPanelMax : ""}`}>
-    <PanelWhite className="mt-4">
+    <Panel className="mt-4">
       <header className={styles.header}>
         <h2 className={styles.title}>
           {title || <FormattedMessage id="kyc.panel.verification" />}
@@ -48,6 +48,6 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
           </Link>
         )}
       </footer>
-    </PanelWhite>
+    </Panel>
   </div>
 );

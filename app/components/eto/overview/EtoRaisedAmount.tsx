@@ -6,7 +6,7 @@ import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
@@ -25,7 +25,7 @@ export const EtoRaisedAmount: React.SFC<IProps> = ({
   firstTransactionTime,
   lastTransactionTime,
 }) => (
-  <PanelWhite>
+  <Panel>
     <div className={stylesCommon.container}>
       <Row>
         <Col>
@@ -83,5 +83,5 @@ export const EtoRaisedAmount: React.SFC<IProps> = ({
         </Col>
       </Row>
     </div>
-  </PanelWhite>
+  </Panel>
 );

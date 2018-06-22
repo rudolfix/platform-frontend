@@ -7,8 +7,7 @@ import { SettingsWidgets } from "../settings/SettingsWidgets";
 import { Accordion, AccordionElement } from "../shared/Accordion";
 import { Button } from "../shared/Buttons";
 import { InlineIcon } from "../shared/InlineIcon";
-import { PanelDark } from "../shared/PanelDark";
-import { PanelWhite } from "../shared/PanelWhite";
+import { Panel } from "../shared/Panel";
 import { SectionHeader } from "../shared/SectionHeader";
 import { CompanyDetails } from "./dashboard/CompanyDetails";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
@@ -144,7 +143,7 @@ export const oldEtoDashboard: React.SFC = () => (
 
         <Row className="py-4">
           <Col>
-            <PanelWhite>
+            <Panel>
               <Container className="py-3">
                 <RowLabeledDataSets
                   dataSets={[
@@ -163,7 +162,7 @@ export const oldEtoDashboard: React.SFC = () => (
                   ]}
                 />
               </Container>
-            </PanelWhite>
+            </Panel>
           </Col>
         </Row>
 
@@ -292,7 +291,7 @@ export const oldEtoDashboard: React.SFC = () => (
 
         <Row className="py-4">
           <Col>
-            <PanelWhite className="py-3">
+            <Panel className="py-3">
               <Container>
                 <LinkColumns
                   categories={[
@@ -329,12 +328,12 @@ export const oldEtoDashboard: React.SFC = () => (
                   ]}
                 />
               </Container>
-            </PanelWhite>
+            </Panel>
           </Col>
         </Row>
       </Col>
       <Col className="py-4">
-        <PanelDark
+        <Panel
           headerText={<FormattedMessage id="eto.dashboard.download.header" />}
           rightComponent={
             <Button

@@ -22,7 +22,7 @@ export const Proportion: React.SFC<IProps> = ({
       className={cn(styles.proportion, className, disabledOnMobile && styles.disabledOnMobile)}
       style={{ paddingTop: `${height / width * 100}%` }}
     >
-      <div className={cn(styles.content, "c-proportion-content")}>{children}</div>
+      <div className={styles.content}>{children}</div>
     </div>
   );
 };

@@ -213,7 +213,7 @@ export async function obtainJwtPromise(
 }
 
 // see above
-function* obtainJWT(
+export function* obtainJWT(
   { jwtStorage }: TGlobalDependencies,
   permissions: Array<string> = [],
 ): Iterator<any> {

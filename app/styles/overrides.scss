@@ -1,11 +1,12 @@
 // sass-lint:disable no-important
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 @import "./variables";
 @import "./elements/ul";
 @import "./utils";
 @import "./global";
+@import "./react-slick-overrides";
 
 @import "./elements/a";
 @import "./elements/ul";
@@ -17,6 +18,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 // sass-lint:enable no-vendor-prefixes
+
+a,
+button,
+input,
+textarea {
+  &,
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
 
 .form-control {
   font-size: $neu-font-size-lg !important;

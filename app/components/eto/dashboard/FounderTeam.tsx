@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
 import { InlineIcon } from "../../shared/InlineIcon";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 
 import * as styles from "./FounderTeam.module.scss";
 
@@ -27,7 +27,7 @@ interface IProps {
 
 export const FounderTeam: React.SFC<IProps> = ({ teamMembers }) => {
   return (
-    <PanelWhite>
+    <Panel>
       <Container>
         <Row>
           {teamMembers.map(({ name, title, bioLink, socialProfilesLinks, imageSrc }) => (
@@ -53,6 +53,6 @@ export const FounderTeam: React.SFC<IProps> = ({ teamMembers }) => {
           ))}
         </Row>
       </Container>
-    </PanelWhite>
+    </Panel>
   );
 };

@@ -1,13 +1,6 @@
-@import "../../styles/neufund-theme";
-
 $card-heigh: px-to-rem(440px);
 
 .card {
-  @include media-breakpoint-down (sm) {
-    display: flex;
-    flex-direction: column;
-  }
-
   background-color: $color-white;
   box-shadow: $shadow;
   height: 100%;
@@ -16,65 +9,38 @@ $card-heigh: px-to-rem(440px);
   overflow: hidden;
   position: relative;
 
-  :global(.proportion) {
-    @include media-breakpoint-down(sm) {
-      padding-top: 100% !important; // sass-lint:disable-line no-important
+  &:not(.teaser):not(.mobile):hover,  //sass-lint:disable-line force-pseudo-nesting
+  &.flipped {
+    .round-label {
+      transform: translate(-60%, -60%);
     }
-  }
 
-  &:hover {
-    @include media-breakpoint-up(xl) {
-      .round-label {
-        transform: translate(-60%, -60%);
-      }
-
-      .logo {
-        transform: translate(-50%, -50%) scale(.6);
-      }
-
-      .tags {
-        transform: translate(50%, 50%);
-      }
-
-      .bottom {
-        background-color: $blue-green;
-        color: $neu-white-two;
-        transform: translateY(-56%);
-      }
-
-      .name,
-      .description-proportion {
-        display: none;
-      }
-
-      .quote {
-        display: flex;
-      }
-
-      .badge {
-        z-index: $z-index-under-base;
-      }
+    .logo {
+      transform: translate(-50%, -50%) scale(.6);
     }
-  }
-}
 
-:global(.responsive) {
-  @media (min-width: map-get($grid-breakpoints, "xl")) and (max-width: 1400px) {
-    .description {
-      font-size: 12px;
+    .tags {
+      transform: translate(50%, 50%);
+    }
+
+    .bottom {
+      transform: translateY(-100%);
     }
 
     .quote {
-      font-size: px-to-rem(14px);
-      line-height: px-to-rem(16px);
+      display: flex;
+    }
+
+    .badge {
+      z-index: $z-index-under-base;
     }
   }
 }
 
 .badge {
   position: absolute;
-  top: px-to-rem(10px);
-  right: px-to-rem(10px);
+  top: 0;
+  right: 0;
   z-index: $z-index-base;
 }
 
@@ -98,7 +64,7 @@ $card-heigh: px-to-rem(440px);
 .round-label {
   display: flex;
   fill: $color-graphite;
-  min-width: px-to-rem(170px);
+  min-width: px-to-rem(130px);
   width: 36%;
   height: px-to-rem(110px);
   position: relative;
@@ -112,6 +78,10 @@ $card-heigh: px-to-rem(440px);
 
   span {
     @include rect(90%, 1.3em);
+
+    @include media-breakpoint-down (sm) {
+      font-size: px-to-rem(14px);
+    }
 
     color: $color-white;
     text-transform: uppercase;
@@ -135,16 +105,26 @@ $card-heigh: px-to-rem(440px);
 }
 
 .teaser-message {
-  @include font-headline-medium;
-
-  color: $color-white;
-  width: 90%;
   text-align: center;
-  text-transform: uppercase;
+
+  img {
+    @include media-breakpoint-only(lg) {
+      width: 60px;
+    }
+
+    @include media-breakpoint-down(md) {
+      width: 50px;
+      margin-top: -50%;
+    }
+
+    width: 80px;
+  }
 }
 
 .tags {
   @include media-breakpoint-down (sm) {
+    padding: px-to-rem(5px);
+
     > * {
       margin-top: px-to-rem(10px);
     }
@@ -159,18 +139,6 @@ $card-heigh: px-to-rem(440px);
 }
 
 .bottom {
-  @include media-breakpoint-down(lg) {
-    position: static;
-    flex-grow: 1;
-  }
-
-  @include media-breakpoint-down(lg) {
-    padding: 0;
-    display: flex;
-    flex-direction: column-reverse;
-    height: auto;
-  }
-
   background-color: $neu-white-two;
   transition: 400ms transform, 300ms background-color, 200ms color;
   transition-timing-function: $ease-out-quart;
@@ -178,26 +146,14 @@ $card-heigh: px-to-rem(440px);
   width: 100%;
   height: 100%;
   will-change: transform;
-
-  .image {
-    @include media-breakpoint-down(lg) {
-      position: static;
-    }
-  }
-}
-
-.quote-wrapper {
-  @include media-breakpoint-down(lg) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -80%);
-    width: 90%;
-  }
 }
 
 .quote,
 .description-wrapper {
+  @include media-breakpoint-down (sm) {
+    padding: 3%;
+  }
+
   padding: 4% px-to-rem(34px);
 }
 
@@ -209,6 +165,10 @@ $card-heigh: px-to-rem(440px);
 .name {
   @include font-headline;
 
+  @include media-breakpoint-down (sm) {
+    margin-bottom: 2%;
+  }
+
   color: inherit;
   font-weight: $font-weight-bold;
 }
@@ -217,11 +177,23 @@ $card-heigh: px-to-rem(440px);
   @include font-default;
 
   @include media-breakpoint-up(lg) {
-    display: -webkit-box; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-line-clamp: 4; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-box-orient: vertical; // sass-lint:disable-line no-vendor-prefixes
-    height: 4 * 1.64;
-    overflow: hidden;
+    @include line-clamp(4, 1.64);
+  }
+
+  @include media-breakpoint-only(lg) {
+    font-size: px-to-rem(14px);
+  }
+
+  @include media-breakpoint-only(md) {
+    font-size: px-to-rem(14px);
+  }
+
+  @include media-breakpoint-down (md) {
+    @include line-clamp(3, 1.64);
+  }
+
+  @include media-breakpoint-down (xs) {
+    font-size: px-to-rem(12px);
   }
 
   font-weight: 500;
@@ -238,15 +210,7 @@ $card-heigh: px-to-rem(440px);
 .quote {
   @include font-default;
 
-  @include media-breakpoint-down(lg) {
-    position: static;
-    padding: 0;
-  }
-
-  @include media-breakpoint-up(lg) {
-    height: 100%;
-  }
-
+  height: 100%;
   color: $color-white;
   flex-direction: column;
   justify-content: center;
@@ -257,15 +221,13 @@ $card-heigh: px-to-rem(440px);
   text-transform: uppercase;
   position: absolute;
 
-  &.teaser {
-    @include media-breakpoint-down(lg) {
-      display: none;
-    }
-  }
-
   p {
-    @include media-breakpoint-down(sm) {
-      margin-bottom: 0;
+    @include media-breakpoint-down(md) {
+      font-size: px-to-rem(12px);
+    }
+
+    @include media-breakpoint-only(xs) {
+      line-height: 1.4;
     }
 
     z-index: $z-index-over-base;
@@ -282,4 +244,115 @@ $card-heigh: px-to-rem(440px);
   top: 0;
   left: 0;
   position: absolute;
+}
+
+.quote-description {
+  background-color: $black;
+}
+
+.animated-gif-with-description {
+  padding: 0;
+  height: 100%;
+
+  .image-wrapper {
+    height: 100%;
+    width: 100%;
+
+    .animation {
+      width: 100%;
+    }
+
+    .banner {
+      height: 100%;
+      background-color: $neu-black;
+      width: 100%;
+
+      h3 {
+        @include media-breakpoint-only(xs) {
+          font-size: 10px;
+        }
+
+        color: $white;
+        padding-top: 10px;
+      }
+
+      .app-store {
+        @include media-breakpoint-only(xs) {
+          margin-top: 12px;
+        }
+
+        height: 80px;
+        margin-top: 50px;
+      }
+
+      .siemens-logo {
+        @include media-breakpoint-only(xs) {
+          margin-top: 10px;
+        }
+
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.navigation-arrow {
+  display: none;
+}
+
+.mobile {
+  .bottom {
+    animation: jump 15s ease 0s infinite normal;
+  }
+
+  &.flipped {
+    .bottom {
+      animation: none;
+    }
+
+    .navigation-arrow {
+      display: block;
+      background-color: $black;
+      opacity: .8;
+      border-radius: 50%;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      padding-top: 12px;
+      color: $white;
+    }
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+
+  2% {
+    transform: translateY(0);
+  }
+
+  4% {
+    transform: translateY(-15px);
+  }
+
+  5% {
+    transform: translateY(0);
+  }
+
+  6% {
+    transform: translateY(-7px);
+  }
+
+  8% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }

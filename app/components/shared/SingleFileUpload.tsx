@@ -3,14 +3,14 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
+import { CommonHtmlProps } from "../../types";
+import { dontPropagateEvent } from "../../utils/dontPropagate";
 import { Button } from "../shared/Buttons";
-import { UploadedFiles } from "./UploadedFiles";
 
 import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
 import * as styles from "./SingleFileUpload.module.scss";
 
-type TAcceptedFileType =
+export type TAcceptedFileType =
   | "application/pdf"
   | "image/png"
   | "image/jpg"
@@ -20,28 +20,29 @@ type TAcceptedFileType =
 
 interface IProps {
   acceptedFiles: TAcceptedFileType;
-  className?: string;
   fileUploading: boolean;
-  filesLoading: boolean;
-  files: IKycFileInfo[];
+  file?: string;
   fileFormatInformation: string;
-  uploadCta: string;
+  label: string | React.ReactNode;
   onDropFile: (file: File) => void;
+  onDeleteFile: () => void;
 }
 
-export class SingleFileUpload extends React.Component<IProps> {
+export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> {
   onDrop = (accepted: File[]) => accepted[0] && this.props.onDropFile(accepted[0]);
 
   render(): React.ReactNode {
     const {
       acceptedFiles,
-      className,
-      files,
+      file,
       fileUploading,
       fileFormatInformation,
-      uploadCta,
+      label,
+      className,
+      style,
+      onDeleteFile,
     } = this.props;
-    const hasFiles = !!files.length;
+    const hasFile = !!file;
 
     const dropzoneInner = fileUploading ? (
       <div>
@@ -59,27 +60,28 @@ export class SingleFileUpload extends React.Component<IProps> {
         disabled={fileUploading}
         onDrop={this.onDrop}
         multiple={false}
-        className={cn(styles.dropzone, className)}
         acceptClassName="accept"
         rejectClassName="reject"
         disabledClassName="disabled"
+        className={cn(styles.dropzone, className)}
+        style={style}
       >
         <div className={styles.fakeDropzoneArea}>
-          {hasFiles ? (
-            <img src={files[0] && files[0].preview} alt={files[0].fileName} />
-          ) : (
-            dropzoneInner
-          )}
+          {hasFile ? <img src={file} alt={"File uploaded"} /> : dropzoneInner}
         </div>
         <div className={styles.sideBox}>
-          {hasFiles ? (
-            <UploadedFiles files={files} />
-          ) : (
-            <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
-              {uploadCta}
+          {hasFile ? (
+            <Button layout="secondary" onClick={dontPropagateEvent(onDeleteFile)}>
+              Delete {label}
             </Button>
+          ) : (
+            <>
+              <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
+                {label}
+              </Button>
+              <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
+            </>
           )}
-          <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
         </div>
       </Dropzone>
     );

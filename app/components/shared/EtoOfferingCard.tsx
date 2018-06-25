@@ -1,7 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { withSizes } from "react-sizes";
 
+import * as QuestionMark from "!url-loader!../../assets/img/inline_icons/questionmark_huge.svg";
+import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
+import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
 import { Proportion } from "./Proportion";
 import { ITag, Tag } from "./Tag";
 
@@ -31,6 +34,11 @@ export interface IEtoOfferingProps {
   quoteColor?: string;
   className?: string;
   teaser?: boolean;
+  bannerWithGif?: boolean;
+}
+
+export interface ISizeProps {
+  isMobile: boolean;
 }
 
 interface IPropsRoundLabel {
@@ -51,103 +59,197 @@ const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
   );
 };
 
-export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = props => {
-  const Wrapper: React.SFC = ({ children }) => {
-    if (props.to) {
-      return (
-        <a href={props.to} target="_blank" className={cn(styles.card, props.className)}>
-          {children}
-        </a>
-      );
-    }
+interface IState {
+  isClicked: boolean;
+}
 
-    return <div className={cn(styles.card, props.className)}>{children}</div>;
+export class EtoOfferingCardComponent extends React.Component<
+  IEtoOfferingProps & ISizeProps,
+  IState
+> {
+  state = {
+    isClicked: false,
   };
 
-  return (
-    <Wrapper>
-      <Proportion width={100} height={50}>
-        <div className={styles.top}>
-          {props.badge && (
-            <img
-              className={styles.badge}
-              src={props.badge.src}
-              srcSet={props.badge.srcSet}
-              alt={props.badge.alt}
-            />
+  private onClick = () => {
+    const { isMobile, teaser } = this.props;
+    const { isClicked } = this.state;
+
+    if (!isMobile || teaser) return;
+
+    this.setState({
+      ...this.state,
+      isClicked: !isClicked,
+    });
+  };
+
+  render(): React.ReactNode {
+    const props = this.props;
+    const { isClicked } = this.state;
+
+    const Wrapper: React.SFC = ({ children }) => {
+      if (props.to && !props.isMobile) {
+        return (
+          <a
+            href={props.to}
+            target="_blank"
+            className={cn(
+              styles.card,
+              props.className,
+              props.teaser && styles.teaser,
+              props.isMobile && styles.mobile,
+            )}
+          >
+            {children}
+          </a>
+        );
+      }
+
+      return (
+        <div
+          className={cn(
+            styles.card,
+            props.className,
+            props.teaser && styles.teaser,
+            props.isMobile && !props.teaser && styles.mobile,
+            isClicked && styles.flipped,
           )}
-          {props.topImage && (
-            <img
-              className={styles.image}
-              src={props.topImage.src}
-              srcSet={props.topImage.srcSet}
-              alt={props.topImage.alt}
-            />
-          )}
-          {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
-          {props.logo && (
-            <img className={styles.logo} src={props.logo} alt={`${props.name} logo`} />
-          )}
-          {props.teaser && (
-            <div className={styles.teaserMessage}>
-              <FormattedMessage id="shared-component.eto-offering-card.teaser" />
-            </div>
-          )}
-          <div className={styles.tags}>
-            {props.tags.map((tag, index) => <Tag {...tag} key={index} />)}
-          </div>
-        </div>
-      </Proportion>
-      <div className={styles.bottom}>
-        <Proportion
-          width={10}
-          height={4}
-          className={styles.descriptionProportion}
-          disabledOnMobile={true}
+          onClick={this.onClick}
         >
-          <div className={styles.descriptionWrapper}>
-            {props.name && <h3 className={styles.name}>{props.name}</h3>}
-            <p className={cn(styles.description, props.teaser && styles.teaser)}>
-              {props.description}
-            </p>
+          {children}
+        </div>
+      );
+    };
+
+    return (
+      <Wrapper>
+        <Proportion width={100} height={50}>
+          <div className={styles.top}>
+            {props.badge && (
+              <img
+                className={styles.badge}
+                src={props.badge.src}
+                srcSet={props.badge.srcSet}
+                alt={props.badge.alt}
+              />
+            )}
+            {props.topImage && (
+              <img
+                className={styles.image}
+                src={props.topImage.src}
+                srcSet={props.topImage.srcSet}
+                alt={props.topImage.alt}
+              />
+            )}
+            {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
+            {props.logo && (
+              <img className={styles.logo} src={props.logo} alt={`${props.name} logo`} />
+            )}
+            {props.teaser && (
+              <div className={styles.teaserMessage}>
+                <img src={QuestionMark} />
+              </div>
+            )}
+            <div className={styles.tags}>
+              {props.tags.map((tag, index) => <Tag {...tag} key={index} />)}
+            </div>
           </div>
         </Proportion>
-        <blockquote
-          className={cn(styles.quote, props.teaser && styles.teaser)}
-          style={{ background: props.quoteBackground, color: props.quoteColor }}
-        >
-          {props.quoteImage && (
-            <img
-              className={styles.image}
-              src={props.quoteImage.src}
-              srcSet={props.quoteImage.srcSet}
-              alt={props.quoteImage.alt}
-            />
-          )}
-          {props.teaser ? (
-            <svg width="163" height="265" viewBox="0 0 163 265">
-              <path
-                fill="#FFF"
-                d="M162.98,80.772 L162.98,80.772 C162.993,80.982 163,81.192 163,81.405 C163.008,114.091 143.567,143.504 113.472,156.339 C100.352,161.935 91.872,174.971 91.872,189.55 L91.872,213.63 C91.872,219.357 87.225,224 81.492,224 C75.758,224 71.11,219.357 71.11,213.63 L71.11,189.551 C71.11,166.651 84.539,146.127 105.32,137.264 C127.584,127.768 142.026,106.101 142.236,81.958 C142.226,81.776 142.222,81.592 142.222,81.407 C142.222,47.956 114.978,20.741 81.492,20.741 C48.005,20.741 20.762,47.956 20.762,81.407 C20.762,87.135 16.115,91.777 10.381,91.777 C4.648,91.777 0,87.135 0,81.407 C0,36.52 36.557,0 81.493,0 C126.216,0 162.64,36.174 162.98,80.772 Z M81.5,265 C75.7010101,265 71,260.29899 71,254.5 C71,248.70101 75.7010101,244 81.5,244 C87.2989899,244 92,248.70101 92,254.5 C92,260.29899 87.2989899,265 81.5,265 Z"
-              />
-            </svg>
+        <div className={styles.bottom}>
+          <Proportion width={10} height={3.5} className={styles.descriptionProportion}>
+            <div className={styles.descriptionWrapper}>
+              <h3 className={styles.name}>{props.name || "Announcing soon"}</h3>
+              <p className={cn(styles.description)}>{props.description}</p>
+            </div>
+          </Proportion>
+          {props.bannerWithGif ? (
+            <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
+              {props.isMobile && (
+                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                  <i className="fa fa-arrow-right" />
+                </a>
+              )}
+              {props.quoteImage && (
+                <div className={styles.imageWrapper}>
+                  <img
+                    className={styles.animation}
+                    src={props.quoteImage.src}
+                    srcSet={props.quoteImage.srcSet}
+                    alt={props.quoteImage.alt}
+                  />
+                  <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
+                </div>
+              )}
+            </blockquote>
           ) : (
-            <>
-              {props.quote &&
-                props.quote.text && (
-                  <div className={styles.quoteWrapper}>
-                    <p>
-                      {'"'}
-                      {props.quote.text}
-                      {'"'}
-                    </p>
-                    <p>{props.quote.credits}</p>
-                  </div>
-                )}
-            </>
+            <blockquote
+              className={cn(styles.quote, props.teaser && styles.teaser)}
+              style={{ background: props.quoteBackground, color: props.quoteColor }}
+            >
+              {props.isMobile && (
+                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                  <i className="fa fa-arrow-right" />
+                </a>
+              )}
+              {props.quoteImage && (
+                <img
+                  className={styles.image}
+                  src={props.quoteImage.src}
+                  srcSet={props.quoteImage.srcSet}
+                  alt={props.quoteImage.alt}
+                />
+              )}
+              {!props.teaser && (
+                <>
+                  {props.quote &&
+                    props.quote.text && (
+                      <div className={styles.quoteWrapper}>
+                        <p>
+                          {'"'}
+                          {props.quote.text}
+                          {'"'}
+                        </p>
+                        <p>{props.quote.credits}</p>
+                      </div>
+                    )}
+                </>
+              )}
+            </blockquote>
           )}
-        </blockquote>
-      </div>
-    </Wrapper>
-  );
-};
+        </div>
+      </Wrapper>
+    );
+  }
+
+  private renderBannerComponent(name: string): React.ReactNode {
+    switch (name) {
+      case "BRILLE24":
+        return <BrilleBanner />;
+      case "UNITI":
+        return <UnitiBanner />;
+      default:
+        throw new Error("Unrecognized company name");
+    }
+  }
+}
+
+const mapSizesToProps = ({ width }: any) => ({
+  isMobile: width < 992,
+});
+
+export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = withSizes(mapSizesToProps)(
+  EtoOfferingCardComponent,
+);
+
+const BrilleBanner = () => (
+  <>
+    <img src={AppStoreIcon} className={styles.appStore} />
+  </>
+);
+
+const UnitiBanner = () => (
+  <>
+    <h3>Technological partner:</h3>
+    <img src={SiemensLogo} className={styles.siemensLogo} />
+  </>
+);

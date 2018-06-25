@@ -7,17 +7,17 @@ import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
+import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { FormField } from "../../../shared/forms/forms";
-import { SingleFileUpload } from "../../../shared/SingleFileUpload";
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 interface IStateProps {
   loadingData: boolean;
+  savingData: boolean;
   stateValues: TPartialEtoData;
 }
 
@@ -36,6 +36,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
         <FormField label="Brand Name*" name="brandName" />
         <FormField label="Website*" name="companyWebsite" />
         <FormField label="Company tagline*" name="companyOneliner" />
+
         <FormTextArea
           className="mb-2 mt-2"
           label="Company Description*"
@@ -60,37 +61,20 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
           className="mb-4"
         />
 
-        <SingleFileUpload
+        <FormSingleFileUpload
+          name="companyLogo"
+          label="Logo"
           acceptedFiles="image/*"
-          fileUploading={false}
-          filesLoading={false}
           fileFormatInformation="*150 x 150 png"
-          uploadCta="Upload logo"
-          files={[]}
-          onDropFile={() => {}}
           className="mb-3"
         />
-        <SingleFileUpload
+        <FormSingleFileUpload
+          name="companyBanner"
+          label="Banner"
           acceptedFiles="image/*"
-          fileUploading={false}
-          filesLoading={false}
-          fileFormatInformation="*550 x 300 png"
-          uploadCta="Upload Teaser Image"
-          files={[]}
-          onDropFile={() => {}}
-          className="mb-3"
-        />
-        <SingleFileUpload
-          acceptedFiles="image/*"
-          fileUploading={false}
-          filesLoading={false}
           fileFormatInformation="*1250 x 400 png"
-          uploadCta="Upload Banner"
-          files={[]}
-          onDropFile={() => {}}
           className="mb-3"
         />
-        {/* TODO: Use backend connected SingleFileUpload currently are only place holders */}
       </Section>
       <Col>
         <Row className="justify-content-end">
@@ -102,6 +86,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
               // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
               props.saveData(props.values);
             }}
+            isLoading={props.savingData}
           >
             Save
           </Button>
@@ -125,11 +110,12 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
+      savingData: s.etoFlow.saving,
       stateValues: s.etoFlow.companyData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: any) => {
-        dispatch(actions.etoFlow.saveData({ companyData: data }));
+        dispatch(actions.etoFlow.saveDataStart(data));
       },
     }),
   }),

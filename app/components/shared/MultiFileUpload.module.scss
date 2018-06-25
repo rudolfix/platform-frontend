@@ -1,5 +1,3 @@
-@import "../../styles/neufund-theme";
-
 .upload {
   @include make-row;
 }
@@ -35,7 +33,7 @@
 
 .upload-zone {
   strong {
-    color: $neu-almost-black;
+    color: $color-black;
   }
 }
 

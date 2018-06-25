@@ -4,12 +4,14 @@ import { DeepReadonly } from "../../types";
 
 export interface IEtoFlowState {
   loading: boolean;
+  saving: boolean;
   etoData: TPartialEtoSpecData;
   companyData: TPartialEtoData;
 }
 
 export const etoFlowInitialState: IEtoFlowState = {
   loading: true,
+  saving: false,
   etoData: {},
   companyData: {},
 };
@@ -28,6 +30,7 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
     case "ETO_FLOW_LOAD_DATA":
       return {
         loading: false,
+        saving: false,
         etoData: {
           ...state.etoData,
           ...action.payload.data.etoData,
@@ -36,6 +39,11 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
           ...state.companyData,
           ...action.payload.data.companyData,
         },
+      };
+    case "ETO_FLOW_SAVE_DATA_START":
+      return {
+        ...state,
+        saving: true,
       };
   }
 

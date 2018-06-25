@@ -1,5 +1,3 @@
-@import "../../styles/neufund-theme";
-
 .main-container {
   @include media-breakpoint-up(sm) {
     box-shadow: $shadow;

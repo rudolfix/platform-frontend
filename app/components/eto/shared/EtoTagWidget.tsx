@@ -100,7 +100,7 @@ export class EtoTagWidget extends React.Component<IProps & CommonHtmlProps> {
               return setFieldValue(name, listWithRemovedTag);
             }}
             disabled={selectedTags.length === selectedTagsLimit}
-            values={values[name]}
+            values={selectedTags}
           />
         )}
       />

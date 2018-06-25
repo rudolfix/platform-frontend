@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
 import { TableHeader } from "../../shared/table/TableHeader";
@@ -24,7 +24,7 @@ export const EtoTokenDistribution: React.SFC<IProps> = ({
   giniIndex,
   tokenDistribution,
 }) => (
-  <PanelWhite>
+  <Panel>
     <div className={stylesCommon.container}>
       <Row className="mb-3">
         <Col>
@@ -75,5 +75,5 @@ export const EtoTokenDistribution: React.SFC<IProps> = ({
         </Col>
       </Row>
     </div>
-  </PanelWhite>
+  </Panel>
 );

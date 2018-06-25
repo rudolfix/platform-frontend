@@ -5,7 +5,7 @@ import * as React from "react";
 import * as styles from "./FormCheckbox.module.scss";
 
 interface IProps {
-  label: string;
+  label: string | React.ReactNode;
   name: string;
   value?: any;
   checked?: boolean;

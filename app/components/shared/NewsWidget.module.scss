@@ -1,6 +1,4 @@
 // sass-lint:disable nesting-depth
-@import "../../styles/neufund-theme";
-
 .news-widget {
   display: flex;
   flex-direction: column;
@@ -29,7 +27,7 @@
 }
 
 .news-single {
-  $bg-color: rgba($neu-almost-black, .1);
+  $bg-color: rgba($color-black, .1);
 
   padding: px-to-rem(14px);
   width: calc(100% + #{px-to-rem(12px)});

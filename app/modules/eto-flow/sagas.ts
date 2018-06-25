@@ -8,31 +8,49 @@ import { neuTakeEvery } from "../sagas";
 import { TPartialEtoSpecData } from "./../../lib/api/EtoApi.interfaces";
 import { IAppState } from "./../../store";
 
-export function* loadEtoData({ apiEtoService }: TGlobalDependencies): any {
-  const etoCompanyData: IHttpResponse<TEtoData> = yield apiEtoService.getCompanyData();
-  const etoData: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEtoData();
-  yield put(actions.etoFlow.loadData({ etoData: etoData.body, companyData: etoCompanyData.body }));
+export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
+  try {
+    const etoCompanyData: IHttpResponse<TEtoData> = yield apiEtoService.getCompanyData();
+    const etoData: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEtoData();
+
+    yield put(
+      actions.etoFlow.loadData({ etoData: etoData.body, companyData: etoCompanyData.body }),
+    );
+  } catch (e) {
+    notificationCenter.error(
+      "Could not access ETO data. Make sure you have completed KYC and email verification process.",
+    );
+    yield put(actions.routing.goToDashboard());
+  }
 }
 
-export function* saveEtoData({ apiEtoService }: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "ETO_FLOW_SAVE_DATA") return;
+export function* saveEtoData(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
+  try {
+    const oldCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
+    const oldEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
 
-  const oldCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
-  const oldEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
-
-  const newCompanyData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
-    action.payload.data.companyData || oldCompanyData,
-  );
-  const newEtoData: IHttpResponse<TPartialEtoSpecData> = yield apiEtoService.putEtoData(
-    action.payload.data.etoData || oldEtoData,
-  );
-  yield put(
-    actions.etoFlow.loadData({ etoData: newEtoData.body, companyData: newCompanyData.body }),
-  );
-  yield put(actions.routing.goToDashboard());
+    const newCompanyData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
+      action.payload.data.companyData || oldCompanyData,
+    );
+    const newEtoData: IHttpResponse<TPartialEtoSpecData> = yield apiEtoService.putEtoData(
+      action.payload.data.etoData || oldEtoData,
+    );
+    yield put(
+      actions.etoFlow.loadData({ etoData: newEtoData.body, companyData: newCompanyData.body }),
+    );
+    yield put(actions.routing.goToDashboard());
+  } catch (e) {
+    yield put(actions.etoFlow.loadDataStart());
+    logger.error("Failed to send ETO data", e);
+    notificationCenter.error("Failed to send ETO data");
+  }
 }
 
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
-  yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA", saveEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
 }

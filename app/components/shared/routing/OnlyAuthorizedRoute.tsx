@@ -96,7 +96,7 @@ class OnlyAuthorizedRouteComponent extends React.Component<TProps, IState> {
           />
         );
       default:
-        throw new Error("Unknown user type!");
+        return <div />;
     }
   }
 }

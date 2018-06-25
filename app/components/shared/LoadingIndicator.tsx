@@ -5,10 +5,11 @@ import * as styles from "./LoadingIndicator.module.scss";
 
 interface ILoadingIndicatorProps {
   className?: string;
+  light?: boolean;
 }
 
-export const LoadingIndicator: React.SFC<ILoadingIndicatorProps> = ({ className }) => (
-  <div className={cn(className, styles.spinner)} />
+export const LoadingIndicator: React.SFC<ILoadingIndicatorProps> = ({ className, light }) => (
+  <div className={cn(className, styles.spinner, { [styles.light]: light })} />
 );
 
 LoadingIndicator.displayName = "LoadingIndicator";

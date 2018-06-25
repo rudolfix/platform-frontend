@@ -5,7 +5,7 @@ import { Col, Container, Row } from "reactstrap";
 import { ChartPie, IChartPieData } from "../../shared/charts/ChartPie";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 import { ISocialProfile } from "../../shared/SocialProfilesEditor";
 import { LinkColumns } from "./LinkColumns";
 import { RowLabeledDataSets } from "./RowLabeledDataSets";
@@ -27,7 +27,7 @@ interface IProps {
 
 export const CompanyDetails: React.SFC<IProps> = props => {
   return (
-    <PanelWhite>
+    <Panel>
       <Container className="py-3">
         <RowLabeledDataSets
           dataSets={[
@@ -130,6 +130,6 @@ export const CompanyDetails: React.SFC<IProps> = props => {
           ]}
         />
       </Container>
-    </PanelWhite>
+    </Panel>
   );
 };

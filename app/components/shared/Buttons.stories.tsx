@@ -35,30 +35,31 @@ storiesOf("Button", module)
   ))
   .add("white theme", () => (
     <div>
-      <Button theme="t-white">primary</Button>
+      <Button theme="white">primary</Button>
       <br />
-      <Button theme="t-white" disabled>
+      <Button theme="white" disabled>
         primary disabled
       </Button>
       <br />
-      <Button svgIcon={icon} theme="t-white" iconPosition="icon-before">
+      <Button svgIcon={icon} theme="white" iconPosition="icon-before">
         primary icon before text
       </Button>
       <br />
-      <Button layout="secondary" theme="t-white">
+      <Button layout="secondary" theme="white">
         secondary
       </Button>
       <br />
-      <Button layout="secondary" theme="t-white" disabled>
+      <Button layout="secondary" theme="white" disabled>
         secondary disabled
       </Button>
       <br />
-      <Button layout="secondary" svgIcon={icon} theme="t-white" iconPosition="icon-before">
+      <Button layout="secondary" svgIcon={icon} theme="white" iconPosition="icon-before">
         secondary icon before text
       </Button>
       <br />
-      <Button layout="secondary" svgIcon={icon} theme="t-white" iconPosition="icon-before" disabled>
+      <Button layout="secondary" svgIcon={icon} theme="white" iconPosition="icon-before" disabled>
         secondary icon before text disabled
       </Button>
     </div>
-  ));
+  ))
+  .add("loading", () => <Button isLoading>Primary</Button>);

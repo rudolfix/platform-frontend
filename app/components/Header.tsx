@@ -10,7 +10,7 @@ import { appConnect } from "../store";
 import { appRoutes } from "./appRoutes";
 import * as styles from "./Header.module.scss";
 import { Button } from "./shared/Buttons";
-import { loginWalletRoutes } from "./walletSelector/walletRoutes";
+import { loginWalletRoutes, walletRegisterRoutes } from "./walletSelector/walletRoutes";
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -24,28 +24,49 @@ interface IDispatchProps {
 
 export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Navbar dark className={styles.bar}>
-    <Link to={appRoutes.root} className="navbar-brand">
-      <img src={logo} className={styles.logo} />
+    <Link to={appRoutes.root} className={styles.logo}>
+      <img src={logo} className={styles.logoImage} />{" "}
+      <span className={styles.logoText}>NEUFUND</span>
     </Link>
     {props.isAuthorized ? (
       <Button
         layout="secondary"
-        theme="t-white"
+        theme="white"
         onClick={() => props.logout(props.userType)}
         data-test-id="Header-logout"
       >
         LOGOUT
       </Button>
     ) : (
-      <div>
+      <div className={styles.buttons}>
         {props.location && props.location.indexOf("eto") !== -1 ? (
-          <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
-            <Button theme="t-white">LOGIN</Button>
-          </Link>
+          <>
+            <span>
+              <Link
+                data-test-id="Header-register-eto"
+                className={styles.registerButton}
+                to={appRoutes.registerEto}
+              >
+                <Button theme="white">REGISTER</Button>
+              </Link>
+            </span>
+            <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
+              <Button theme="white">LOGIN</Button>
+            </Link>
+          </>
         ) : (
-          <Link data-test-id="Header-login" to={loginWalletRoutes.light}>
-            <Button theme="t-white">LOGIN</Button>
-          </Link>
+          <>
+            <Link
+              data-test-id="Header-register"
+              className={styles.registerButton}
+              to={walletRegisterRoutes.light}
+            >
+              <Button theme="white">REGISTER</Button>
+            </Link>
+            <Link data-test-id="Header-login" to={loginWalletRoutes.light}>
+              <Button theme="white">LOGIN</Button>
+            </Link>
+          </>
         )}
       </div>
     )}
@@ -56,7 +77,7 @@ export const Header = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
     userType: selectUserType(s.auth)!,
-    location: s.router.location!.pathname,
+    location: s.router.location && s.router.location.pathname,
   }),
   dispatchToProps: dispatch => ({
     logout: (userType: TUserType) => {

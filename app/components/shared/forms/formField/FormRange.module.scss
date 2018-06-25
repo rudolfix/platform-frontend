@@ -1,5 +1,3 @@
-@import "../../../../styles/neufund-theme";
-
 // sass-lint:disable no-vendor-prefixes
 $track-color: $neu-silver !default;
 $thumb-color: $neu-piss-yellow !default;
@@ -74,14 +72,6 @@ $contrast: 5% !default;
     &::-webkit-slider-runnable-track {
       background: lighten($track-color, $contrast);
     }
-
-    &::-ms-fill-lower {
-      background: $track-color;
-    }
-
-    &::-ms-fill-upper {
-      background: lighten($track-color, $contrast);
-    }
   }
 
   &::-webkit-slider-runnable-track {
@@ -93,7 +83,7 @@ $contrast: 5% !default;
 
   &::-webkit-slider-thumb {
     @include thumb;
-    -webkit-appearance: none;
+    appearance: none;
     margin-top: ((-$track-border-width * 2 + $track-height) / 2) - ($thumb-height / 2);
   }
 
@@ -106,30 +96,5 @@ $contrast: 5% !default;
 
   &::-moz-range-thumb {
     @include thumb;
-  }
-
-  &::-ms-track {
-    @include track;
-    background: transparent;
-    border-color: transparent;
-    border-width: ($thumb-height / 2) 0;
-    color: transparent;
-  }
-
-  &::-ms-fill-lower {
-    background: darken($track-color, $contrast);
-    border: $track-border-width solid $track-border-color;
-    border-radius: $track-radius * 2;
-  }
-
-  &::-ms-fill-upper {
-    background: $track-color;
-    border: $track-border-width solid $track-border-color;
-    border-radius: $track-radius * 2;
-  }
-
-  &::-ms-thumb {
-    @include thumb;
-    margin-top: 0;
   }
 }

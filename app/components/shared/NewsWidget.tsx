@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Button } from "./Buttons";
 import { NavLinkConnected } from "./connectedRouting";
 import { InlineIcon } from "./InlineIcon";
-import { PanelWhite } from "./PanelWhite";
+import { Panel } from "./Panel";
 import { Tabs } from "./Tabs";
 
 import * as iconPlus from "../../assets/img/inline_icons/plus.svg";
@@ -40,7 +40,7 @@ export class NewsWidget extends React.Component<IProps> {
     const { activeTab } = this.state;
 
     return (
-      <PanelWhite className={cn(styles.newsWidget, isEditable && "is-editable", className)}>
+      <Panel className={cn(styles.newsWidget, isEditable && "is-editable", className)}>
         <Tabs
           tabs={[
             {
@@ -79,7 +79,7 @@ export class NewsWidget extends React.Component<IProps> {
           </div>
         }
         {activeTab === "twitter" && <div>twitter content</div>}
-      </PanelWhite>
+      </Panel>
     );
   }
 }

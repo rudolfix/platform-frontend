@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 
 import Counter from "../../shared/Counter";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 import { ProjectStatus, TStatus } from "../../shared/ProjectStatus";
 import { EtoTimeline } from "./EtoTimeline";
 
@@ -30,7 +30,7 @@ const inSigningEndDate = publicEndDate + 14 * day;
 const etoEndDate = inSigningEndDate + 7 * day;
 
 export const EtoOverviewStatus: React.SFC<IProps> = props => (
-  <PanelWhite>
+  <Panel>
     <div className={stylesCommon.container}>
       <Row>
         <Col>
@@ -99,5 +99,5 @@ export const EtoOverviewStatus: React.SFC<IProps> = props => (
         </Col>
       </Row>
     </div>
-  </PanelWhite>
+  </Panel>
 );

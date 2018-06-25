@@ -18,7 +18,7 @@ import { Button } from "../../shared/Buttons";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import { CommonHtmlProps } from "../../../types";
@@ -93,7 +93,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               <Button
                 layout="secondary"
                 iconPosition="icon-after"
-                theme="t-white"
+                theme="dark"
                 svgIcon={arrowRight}
                 className={cn(styles.link, "pr-0")}
               >
@@ -113,7 +113,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
   ...props
 }) => {
   return (
-    <PanelDark
+    <Panel
       headerText={
         <FormattedMessage id="components.dashboard.my-wallet.my-wallet-widget.header-text" />
       }
@@ -122,7 +122,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
           <Button
             layout="secondary"
             iconPosition="icon-after"
-            theme="t-white"
+            theme="dark"
             svgIcon={arrowRight}
             className={cn(styles.link, "pr-0")}
           >
@@ -134,7 +134,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
       style={style}
     >
       <MyWalletWidgetComponentBody {...props} />
-    </PanelDark>
+    </Panel>
   );
 };
 

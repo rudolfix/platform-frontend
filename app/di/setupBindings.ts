@@ -23,6 +23,7 @@ import {
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { EtoApi } from "../lib/api/EtoApi";
+import { FileStorageApi } from "../lib/api/FileStorageApi";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
@@ -131,6 +132,10 @@ export function setupBindings(config: IConfig): Container {
     .bind<WalletStorage<TWalletMetadata>>(symbols.walletStorage)
     .to(WalletStorage)
     .inSingletonScope();
+  container
+    .bind(symbols.fileStorageService)
+    .to(FileStorageApi)
+    .inSingletonScope();
 
   // factories
   container
@@ -199,6 +204,7 @@ export const createGlobalDependencies = (container: Container) => ({
   apiEtoService: container.get<EtoApi>(symbols.apiEtoService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
+  fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
 
   intlWrapper: container.get<IntlWrapper>(symbols.intlWrapper),
 });

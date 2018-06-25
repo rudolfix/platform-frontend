@@ -5,24 +5,39 @@ import { TEtoData, TPartialEtoData } from "../../lib/api/EtoApi.interfaces";
 import { actions, TAction } from "../actions";
 import { neuTakeEvery } from "../sagas";
 
-export function* loadEtoData({ apiEtoService }: TGlobalDependencies): any {
-  const etoData: IHttpResponse<TEtoData> = yield apiEtoService.getCompanyData();
+export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
+  try {
+    const etoData: IHttpResponse<TEtoData> = yield apiEtoService.getCompanyData();
 
-  yield put(actions.etoFlow.loadData(etoData.body));
+    yield put(actions.etoFlow.loadData(etoData.body));
+  } catch (e) {
+    notificationCenter.error(
+      "Could not access ETO data. Make sure you have completed KYC and email verification process.",
+    );
+    yield put(actions.routing.goToDashboard());
+  }
 }
 
-export function* saveEtoData({ apiEtoService }: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "ETO_FLOW_SAVE_DATA") return;
+export function* saveEtoData(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
+  try {
+    const newData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
+      action.payload.data,
+    );
 
-  const newData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
-    action.payload.data,
-  );
-  yield put(actions.etoFlow.loadData(newData.body));
-
-  yield put(actions.routing.goToDashboard());
+    yield put(actions.etoFlow.loadData(newData.body));
+    yield put(actions.routing.goToDashboard());
+  } catch (e) {
+    yield put(actions.etoFlow.loadDataStart());
+    logger.error("Failed to send ETO data", e);
+    notificationCenter.error("Failed to send ETO data");
+  }
 }
 
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
-  yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA", saveEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
 }

@@ -9,6 +9,8 @@ import { etoFlowSagas } from "./eto-flow/sagas";
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { settingsSagas } from "./settings/sagas";
+import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
+import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { walletSagas } from "./wallet/sagas";
@@ -29,6 +31,8 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(lightWalletSagas),
     effects.fork(walletSagas),
     effects.fork(etoFlowSagas),
+    effects.fork(formSingleFileUploadSagas),
+    effects.fork(remoteFileSagas),
   ]);
 }
 

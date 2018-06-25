@@ -1,9 +1,17 @@
-@import "../../styles/neufund-theme";
-
 .landing-wrapper {
+  background-color: $color-white;
+  background-image: url("../../assets/img/dust_bg.svg");
+  background-repeat: repeat-x;
+  background-position: bottom;
   width: 100%;
   min-height: 100%;
   flex-grow: 1;
+  padding-bottom: px-to-rem(236px);
+
+  h2 {
+    text-transform: uppercase;
+    font-size: 24px;
+  }
 }
 
 .landing {
@@ -14,7 +22,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: $blue-green url("../../assets/img/fancy_token_bg.svg") -2.6% 0 no-repeat;
+  background-color: $blue-green;
   background-size: px-to-rem(500px);
   padding: px-to-rem(46px) 0;
 }
@@ -90,12 +98,6 @@
   align-content: center;
 }
 
-
-.equity-token-offerings {
-  padding-bottom: $spacing-vertical-lg-1;
-  padding-top: $spacing-vertical-lg-4;
-}
-
 .equity-token-header {
   @include font-headline-medium;
 
@@ -119,4 +121,79 @@
   }
 
   margin-bottom: $spacing-vertical-sm-4;
+}
+
+.benefits {
+  @include media-breakpoint-down (md) {
+    margin-top: $spacing-vertical-lg-3;
+  }
+
+  margin-top: px-to-rem(100px);
+  text-align: center;
+}
+
+.benefits-header {
+  font-size: px-to-rem(30);
+  font-weight: 400;
+  letter-spacing: -.03125rem;
+
+  margin: $spacing-vertical-lg-1 0;
+  color: $color-graphite;
+  text-transform: uppercase;
+}
+
+.benefit {
+  @include media-breakpoint-down (md) {
+    @include font-headline-small;
+
+    text-align: left;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: px-to-rem(6px);
+  }
+
+  font-size: px-to-rem(28);
+  color: $color-graphite;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  &::before,
+  + br,
+  &:last-of-type::after { //sass-lint:disable-line force-pseudo-nesting
+    @include rect(4px, 30px);
+
+    content: "";
+    display: inline-block;
+    background-color: $color-brand;
+    margin: 0 px-to-rem(16px);
+  }
+
+  &:last-of-type::after, //sass-lint:disable-line force-pseudo-nesting
+  + br {
+    @include media-breakpoint-down (md) {
+      display: none;
+    }
+  }
+
+  @include media-breakpoint-down (md) {
+    @include font-headline-small;
+  }
+}
+
+.rainbowsheep {
+  @include rect(20px);
+
+  position: absolute;
+  top: 5vh;
+  right: 5vw;
+}
+
+.eto-cards-header {
+  @include media-breakpoint-up(md) {
+    max-width: 76%;
+  }
+
+  text-align: center;
+  margin: px-to-rem(48px) auto;
 }

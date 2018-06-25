@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -7,7 +6,7 @@ import { selectNeuBalanceEuroAmount } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
@@ -59,14 +58,14 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   data,
 }) => {
   return (
-    <PanelDark
+    <Panel
       headerText={
         <FormattedMessage id="components.dashboard.my-portfolio.my-portfolio-widget.header-text" />
       }
       className={className}
       style={style}
     >
-      <Row className={cn(styles.main, "pb-3")}>
+      <Row className={styles.main}>
         {isLoading ? (
           <LoadingIndicator />
         ) : (
@@ -77,7 +76,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
           />
         )}
       </Row>
-    </PanelDark>
+    </Panel>
   );
 };
 

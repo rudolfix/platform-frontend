@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 
 import * as stylesCommon from "../EtoOverviewCommon.module.scss";
 
@@ -21,7 +21,7 @@ export const EtoTokenIssuance: React.SFC<IProps> = ({
   tokenCreatedBeforeIco,
   tokenCreatedDuringIco,
 }) => (
-  <PanelWhite>
+  <Panel>
     <div className={stylesCommon.container}>
       <Row>
         <Col>
@@ -65,5 +65,5 @@ export const EtoTokenIssuance: React.SFC<IProps> = ({
         </Col>
       </Row>
     </div>
-  </PanelWhite>
+  </Panel>
 );

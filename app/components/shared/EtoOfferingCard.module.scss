@@ -1,13 +1,7 @@
-@import "../../styles/neufund-theme";
-
 $card-heigh: px-to-rem(440px);
 
 .card {
-  @include media-breakpoint-down (md) {
-    display: flex;
-    flex-direction: column;
-  }
-
+  background-color: $color-white;
   box-shadow: $shadow;
   height: 100%;
   width: 100%;
@@ -15,63 +9,46 @@ $card-heigh: px-to-rem(440px);
   overflow: hidden;
   position: relative;
 
-  :global(.proportion) {
-    @include media-breakpoint-down(sm) {
-      padding-top: 100% !important; // sass-lint:disable-line no-important
+  &:not(.teaser):not(.mobile):hover,  //sass-lint:disable-line force-pseudo-nesting
+  &.flipped {
+    .round-label {
+      transform: translate(-60%, -60%);
     }
-  }
 
-  &:hover {
-    @include media-breakpoint-up(lg) {
-      .round-label {
-        transform: translate(-60%, -60%);
-      }
+    .logo {
+      transform: translate(-50%, -50%) scale(.6);
+    }
 
-      .logo {
-        transform: translate(-50%, -50%) scale(.6);
-      }
+    .tags {
+      transform: translate(50%, 50%);
+    }
 
-      .tags {
-        transform: translate(50%, 50%);
-      }
+    .bottom {
+      transform: translateY(-100%);
+    }
 
-      .bottom {
-        background-color: $blue-green;
-        color: $neu-white-two;
-        transform: translateY(-60%);
-      }
+    .quote {
+      display: flex;
+    }
 
-      .name,
-      .description-proportion,
-      :global(.inline-icon) {
-        display: none;
-      }
-
-      .quote {
-        display: flex;
-      }
+    .badge {
+      z-index: $z-index-under-base;
     }
   }
 }
 
-:global(.responsive) {
-  @media (min-width: map-get($grid-breakpoints, "xl")) and (max-width: 1400px) {
-    .description {
-      font-size: 12px;
-    }
-
-    .quote {
-      font-size: px-to-rem(14px);
-      line-height: px-to-rem(16px);
-    }
-  }
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: $z-index-base;
 }
 
 .top {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: $neu-cloudy-blue;
+  background-color: $blue-green;
   height: 100%;
   position: relative;
 }
@@ -85,26 +62,74 @@ $card-heigh: px-to-rem(440px);
 }
 
 .round-label {
-  fill: $blue-green;
-  min-width: px-to-rem(170px);
+  display: flex;
+  fill: $color-graphite;
+  min-width: px-to-rem(130px);
   width: 36%;
+  height: px-to-rem(110px);
+  position: relative;
 
-  text {
-    fill: $neu-white-two;
-    text-transform: uppercase;
+  svg {
     width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  span {
+    @include rect(90%, 1.3em);
+
+    @include media-breakpoint-down (sm) {
+      font-size: px-to-rem(14px);
+    }
+
+    color: $color-white;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 10%;
+    z-index: 1;
+    font-size: px-to-rem(20px);
   }
 }
 
+.teaser-message,
 .logo {
-  max-width: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
 }
 
+.logo {
+  max-width: 50%;
+}
+
+.teaser-message {
+  text-align: center;
+
+  img {
+    @include media-breakpoint-only(lg) {
+      width: 60px;
+    }
+
+    @include media-breakpoint-down(md) {
+      width: 50px;
+      margin-top: -50%;
+    }
+
+    width: 80px;
+  }
+}
+
 .tags {
+  @include media-breakpoint-down (sm) {
+    padding: px-to-rem(5px);
+
+    > * {
+      margin-top: px-to-rem(10px);
+    }
+  }
+
   display: flex;
   justify-content: flex-end;
   padding: px-to-rem(10px);
@@ -114,12 +139,6 @@ $card-heigh: px-to-rem(440px);
 }
 
 .bottom {
-  @include media-breakpoint-down(md) {
-    position: static;
-    flex-grow: 1;
-    padding: 4%;
-  }
-
   background-color: $neu-white-two;
   transition: 400ms transform, 300ms background-color, 200ms color;
   transition-timing-function: $ease-out-quart;
@@ -127,22 +146,14 @@ $card-heigh: px-to-rem(440px);
   width: 100%;
   height: 100%;
   will-change: transform;
-
-  :global(.inline-icon) {
-    @include media-breakpoint-up (lg) {
-      top: px-to-rem(8px);
-    }
-
-    position: absolute;
-    width: px-to-rem(20px);
-    height: px-to-rem(20px);
-    right: 3%;
-    top: px-to-rem(20px);
-  }
 }
 
 .quote,
 .description-wrapper {
+  @include media-breakpoint-down (sm) {
+    padding: 3%;
+  }
+
   padding: 4% px-to-rem(34px);
 }
 
@@ -154,58 +165,194 @@ $card-heigh: px-to-rem(440px);
 .name {
   @include font-headline;
 
+  @include media-breakpoint-down (sm) {
+    margin-bottom: 2%;
+  }
+
   color: inherit;
   font-weight: $font-weight-bold;
-  text-transform: uppercase;
-}
-
-.curvy-background {
-  @include media-breakpoint-down(md) {
-    display: none;
-  }
 }
 
 .description {
   @include font-default;
 
   @include media-breakpoint-up(lg) {
-    display: -webkit-box; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-line-clamp: 4; // sass-lint:disable-line no-vendor-prefixes
-    -webkit-box-orient: vertical; // sass-lint:disable-line no-vendor-prefixes
-    height: 4 * 1.64;
-    overflow: hidden;
+    @include line-clamp(4, 1.64);
+  }
+
+  @include media-breakpoint-only(lg) {
+    font-size: px-to-rem(14px);
+  }
+
+  @include media-breakpoint-only(md) {
+    font-size: px-to-rem(14px);
+  }
+
+  @include media-breakpoint-down (md) {
+    @include line-clamp(3, 1.64);
+  }
+
+  @include media-breakpoint-down (xs) {
+    font-size: px-to-rem(12px);
   }
 
   font-weight: 500;
   font-size: px-to-rem(16px);
   margin: 0;
   opacity: 1;
+
+  &.teaser {
+    text-transform: uppercase;
+    font-weight: $font-weight-bold;
+  }
 }
 
 .quote {
-  @include media-breakpoint-down(md) {
-    @include font-default;
+  @include font-default;
 
-    display: block;
-    flex-grow: 1;
-    margin-top: $spacing-vertical-sm-2;
-    margin-bottom: 0;
-  }
-
+  height: 100%;
+  color: $color-white;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   line-height: px-to-rem(32px);
-  font-size: px-to-rem(22px);
   width: 100%;
-  height: 100%;
   text-transform: uppercase;
   position: absolute;
 
   p {
     @include media-breakpoint-down(md) {
-      margin-bottom: 0;
+      font-size: px-to-rem(12px);
     }
+
+    @include media-breakpoint-only(xs) {
+      line-height: 1.4;
+    }
+
+    z-index: $z-index-over-base;
+  }
+
+  .image {
+    z-index: $z-index-under-base;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.quote-description {
+  background-color: $black;
+}
+
+.animated-gif-with-description {
+  padding: 0;
+  height: 100%;
+
+  .image-wrapper {
+    height: 100%;
+    width: 100%;
+
+    .animation {
+      width: 100%;
+    }
+
+    .banner {
+      height: 100%;
+      background-color: $neu-black;
+      width: 100%;
+
+      h3 {
+        @include media-breakpoint-only(xs) {
+          font-size: 10px;
+        }
+
+        color: $white;
+        padding-top: 10px;
+      }
+
+      .app-store {
+        @include media-breakpoint-only(xs) {
+          margin-top: 12px;
+        }
+
+        height: 80px;
+        margin-top: 50px;
+      }
+
+      .siemens-logo {
+        @include media-breakpoint-only(xs) {
+          margin-top: 10px;
+        }
+
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.navigation-arrow {
+  display: none;
+}
+
+.mobile {
+  .bottom {
+    animation: jump 15s ease 0s infinite normal;
+  }
+
+  &.flipped {
+    .bottom {
+      animation: none;
+    }
+
+    .navigation-arrow {
+      display: block;
+      background-color: $black;
+      opacity: .8;
+      border-radius: 50%;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      padding-top: 12px;
+      color: $white;
+    }
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+
+  2% {
+    transform: translateY(0);
+  }
+
+  4% {
+    transform: translateY(-15px);
+  }
+
+  5% {
+    transform: translateY(0);
+  }
+
+  6% {
+    transform: translateY(-7px);
+  }
+
+  8% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
   }
 }

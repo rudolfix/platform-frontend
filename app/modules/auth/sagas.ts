@@ -125,7 +125,8 @@ function* logoutWatcher(
   userType === "investor"
     ? yield effects.put(actions.routing.goHome())
     : yield effects.put(actions.routing.goEtoHome());
-  yield effects.put(actions.init.start());
+
+  yield effects.put(actions.init.start("appInit"));
 }
 
 function* signInUser(

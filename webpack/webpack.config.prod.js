@@ -2,6 +2,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const merge = require("webpack-merge");
+const path = require("path");
 
 const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
@@ -45,7 +46,17 @@ module.exports = merge(configCommon, {
                     minimize: true,
                   },
                 },
+                {
+                  loader: "postcss-loader",
+                  options: { config: { path: path.join(__dirname, "postcss.config.js") } },
+                },
                 { loader: "sass-loader" },
+                {
+                  loader: "sass-resources-loader",
+                  options: {
+                    resources: [path.join(__dirname, "../app/styles/neufund-theme.scss")],
+                  },
+                },
               ],
             }),
           },
@@ -99,7 +110,7 @@ module.exports = merge(configCommon, {
             include: paths.app,
           },
           {
-            test: /\.(jpg|png|svg)$/,
+            test: /\.(jpg|png|svg|gif)$/,
             loader: "url-loader",
             exclude: paths.inlineIcons,
             options: {

@@ -4,7 +4,7 @@ import * as logo from "../../assets/img/logo_small_black.svg";
 import { ChartBars, IChartBarsData } from "../shared/charts/ChartBars";
 import { ChartPie, IChartPieData } from "../shared/charts/ChartPie";
 import { Money, TCurrency } from "../shared/Money";
-import { PanelWhite } from "../shared/PanelWhite";
+import { Panel } from "../shared/Panel";
 import * as styles from "./NeufundKpiWidget.module.scss";
 
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -40,7 +40,7 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
   totalProceedsToken,
 }) => {
   return (
-    <PanelWhite className={styles.neufundKpiWidget}>
+    <Panel className={styles.neufundKpiWidget}>
       <div>
         <h3 className={styles.header}>
           <img src={logo} alt="neufund logo" />
@@ -123,6 +123,6 @@ export const NeufundKpiWidget: React.SFC<IProps> = ({
           </div>
         </Col>
       </Row>
-    </PanelWhite>
+    </Panel>
   );
 };

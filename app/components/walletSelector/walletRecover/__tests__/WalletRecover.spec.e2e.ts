@@ -82,7 +82,5 @@ describe("Wallet recover", () => {
     cy.get(tid("your-ether-address-widget-eth-address")).then(address => {
       expect(address.text()).to.be.eq(generatedAddress);
     });
-
- 
   });
 });

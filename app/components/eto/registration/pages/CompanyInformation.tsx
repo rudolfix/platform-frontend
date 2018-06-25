@@ -7,7 +7,6 @@ import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";

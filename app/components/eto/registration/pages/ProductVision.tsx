@@ -11,7 +11,6 @@ import {
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
@@ -38,7 +37,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
       <Section>
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What is the problem your solving and how?"
           placeholder="Describe"
           name="problemSolved "
@@ -46,7 +44,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What is the exact target customer of your product?"
           placeholder="Describe"
           name="customerGroup"
@@ -54,7 +51,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What is the product vision?"
           placeholder="Describe"
           name="productVision"
@@ -62,7 +58,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What has inspired you to start this company?"
           placeholder="Describe"
           name="inspiration"
@@ -70,7 +65,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What are the key product priorities (i.e. roadmap) for the next 12 months"
           placeholder="Describe"
           name="keyProductPriorities"
@@ -90,7 +84,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What is the sales model?"
           placeholder="Describe"
           name="salesModel"
@@ -98,7 +91,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What is the marketing approach?"
           placeholder="Describe"
           name="marketingApproach"
@@ -106,7 +98,6 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          labelStyle="text-uppercase"
           label="What is your unique selling proposition?"
           placeholder="Describe"
           name="sellingProposition"

@@ -10,7 +10,9 @@ import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { FormGroup, Input, Label } from "reactstrap";
+import { FormGroup, Input } from "reactstrap";
+
+import { FormLabel } from "./FormLabel";
 
 import { isNonValid } from "./utils";
 
@@ -96,23 +98,25 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
 
     return (
       <FormGroup>
-        {label && <Label for={name}>{label}</Label>}
-        <Field
-          name={name}
-          render={({ field }: FieldProps) => (
-            <Input
-              {...field}
-              onFocus={() => setFieldTouched(name, true)}
-              type="select"
-              value={field.value}
-              valid={isValid(touched, errors, name)}
-              data-test-id={dataTestId}
-              {...inputExtraProps}
-            >
-              {this.renderOptions()}
-            </Input>
-          )}
-        />
+        {label && <FormLabel>{label}</FormLabel>}
+        <div className={styles.customSelect}>
+          <Field
+            name={name}
+            render={({ field }: FieldProps) => (
+              <Input
+                {...field}
+                onFocus={() => setFieldTouched(name, true)}
+                type="select"
+                value={field.value}
+                valid={isValid(touched, errors, name)}
+                data-test-id={dataTestId}
+                {...inputExtraProps}
+              >
+                {this.renderOptions()}
+              </Input>
+            )}
+          />
+        </div>
         {extraMessage ? (
           <div className={styles.noteLabel}>{extraMessage}</div>
         ) : (

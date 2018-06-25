@@ -58,7 +58,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 </InputGroupAddon>
               )}
               <Input
-                className={className}
+                className={cn(className, styles.inputField)}
                 {...field}
                 type={type}
                 value={field.value || ""}

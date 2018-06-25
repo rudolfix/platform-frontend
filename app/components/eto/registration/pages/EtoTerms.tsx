@@ -1,4 +1,4 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -26,9 +26,6 @@ import { FormSection } from "../../../shared/forms/FormSection";
 import { Toggle } from "../../../shared/Toggle";
 import { EtoFormBase } from "../EtoFormBase";
 
-// @todo
-type IEtoData = any;
-
 const TOKEN_HOLDERS_RIGHTS = {
   [NONE_KEY]: "please select",
   [BOOL_TRUE_KEY]: "1",
@@ -47,9 +44,12 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
-    <EtoFormBase title={<FormattedMessage id="eto.form.eto-terms.title"/>} validator={EtoTermsType.toYup()}>
-      <FormSection title={<FormattedMessage id="eto.form.section.equity-token-information.title" />}>
+const EtoForm = () => (
+  <EtoFormBase
+    title={<FormattedMessage id="eto.form.eto-terms.title" />}
+    validator={EtoTermsType.toYup()}
+  >
+    <FormSection title={<FormattedMessage id="eto.form.section.equity-token-information.title" />}>
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
         placeholder="Token name"

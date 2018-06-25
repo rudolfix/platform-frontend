@@ -19,6 +19,6 @@
 
 .input-field {
   &:disabled {
-    background-color: $neu-white-two !important;
+    background-color: $neu-white-two !important; // sass-lint:disable-line no-important
   }
 }

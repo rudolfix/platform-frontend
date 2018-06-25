@@ -19,7 +19,7 @@ export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDepen
 }
 
 export function* saveEtoData(
-  { apiEtoService, notificationCenter }: TGlobalDependencies,
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
@@ -32,6 +32,7 @@ export function* saveEtoData(
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     yield put(actions.etoFlow.loadDataStart());
+    logger.error("Failed to send ETO data", e);
     notificationCenter.error("Failed to send ETO data");
   }
 }

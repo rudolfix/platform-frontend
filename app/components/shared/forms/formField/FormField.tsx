@@ -7,7 +7,6 @@ import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { isNonValid, isValid } from "./utils";
 
-import * as cn from "classnames";
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {

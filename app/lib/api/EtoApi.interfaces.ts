@@ -58,6 +58,5 @@ export const EtoLegalInformationType = YupTS.object({
 });
 type TEtoLegalData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
-export type TEtoData = TEtoTeamData | TEtoLegalData; // | other partial schemas;
-export type TEtoData = TEtoTeamData | TEtoProductVision; // | other partial schemas;
+export type TEtoData = TEtoTeamData | TEtoLegalData | TEtoProductVision; // | other partial schemas;
 export type TPartialEtoData = DeepPartial<TEtoData>;

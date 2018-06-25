@@ -43,7 +43,7 @@ export const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = props
       <span className={styles.label} data-test-id="percentage-indicator-bar-value">
         {percent}%
       </span>
-      <svg width="450" height="38" viewBox="0 0 450 38" preserveAspectRatio="none">
+      <svg width="100%" height="38" viewBox="0 0 450 38" preserveAspectRatio="none">
         <defs>
           <clipPath id="percent-indicator-bar">
             <rect className={styles.background} width="450" height="38" rx={CURVE} ry={CURVE} />

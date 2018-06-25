@@ -5,7 +5,7 @@ import { appRoutes } from "../../appRoutes";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { BreadCrumb } from "../../shared/BreadCrumb";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 import { BackupSeedDisplay } from "./BackupSeedDisplay";
 import { BackupSeedIntro } from "./BackupSeedIntro";
 import { BackupSeedVerify } from "./BackupSeedVerify";
@@ -88,7 +88,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
         />
         <Row>
           <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
-            <PanelWhite>
+            <Panel>
               <HeaderProgressStepper
                 steps={steps}
                 currentStep={this.state.backupStep}
@@ -101,7 +101,7 @@ export class BackupSeedFlowContainer extends React.Component<IProps, IState> {
                 warning
               />
               {this.renderBackupPage()}
-            </PanelWhite>
+            </Panel>
           </Col>
         </Row>
       </LayoutAuthorized>

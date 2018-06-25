@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { PanelWhite } from "../PanelWhite";
+import { Panel } from "../Panel";
 import { PercentageIndicatorBar } from "../PercentageIndicatorBar";
 import * as styles from "./EtoFormWrapper.module.scss";
 
@@ -11,10 +11,10 @@ interface IProps {
 
 export const EtoFormWrapper: React.SFC<IProps> = ({ title, progressPercent, children }) => {
   return (
-    <PanelWhite className={styles.panel}>
+    <Panel className={styles.panel}>
       <h2 className={styles.title}>{title}</h2>
       <PercentageIndicatorBar className={styles.progressBar} percent={progressPercent} />
       {children}
-    </PanelWhite>
+    </Panel>
   );
 };

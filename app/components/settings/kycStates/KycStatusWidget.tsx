@@ -17,7 +17,7 @@ import {
 import { appConnect } from "../../../store";
 import { UnionDictionary } from "../../../types";
 import { Button } from "../../shared/Buttons";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
@@ -170,7 +170,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
   } = props;
 
   return (
-    <PanelDark
+    <Panel
       headerText={<FormattedMessage id="settings.kyc-widget.header" values={{ step }} />}
       rightComponent={
         !isLoading &&
@@ -205,7 +205,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </Col>
         </div>
       )}
-    </PanelDark>
+    </Panel>
   );
 };
 

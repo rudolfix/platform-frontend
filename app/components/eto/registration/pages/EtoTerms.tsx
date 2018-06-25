@@ -5,9 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { appConnect } from "../../../../store";
-import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { Button } from "../../../shared/Buttons";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -17,7 +15,8 @@ import {
   NONE_KEY,
 } from "../../../shared/forms/forms";
 
-import { EtoFormWrapper } from "../../../shared/forms/EtoFormWrapper";
+import { EtoTermsType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { actions } from "../../../../modules/actions";
 import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
@@ -25,6 +24,7 @@ import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingle
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { Toggle } from "../../../shared/Toggle";
+import { EtoFormBase } from "../EtoFormBase";
 
 // @todo
 type IEtoData = any;
@@ -36,19 +36,20 @@ const TOKEN_HOLDERS_RIGHTS = {
 };
 
 interface IStateProps {
-  currentValues: IEtoData;
   loadingData: boolean;
+  savingData: boolean;
+  stateValues: TPartialEtoData;
 }
 
 interface IDispatchProps {
-  submitForm: (values: IEtoData) => void;
+  saveData: (values: TPartialEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
-  <Form>
-    <FormSection title={<FormattedMessage id="eto.form.section.equity-token-information.title" />}>
+    <EtoFormBase title={<FormattedMessage id="eto.form.eto-terms.title"/>} validator={EtoTermsType.toYup()}>
+      <FormSection title={<FormattedMessage id="eto.form.section.equity-token-information.title" />}>
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
         placeholder="Token name"
@@ -146,7 +147,7 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
         </Row>
       </FormHighlightGroup>
       <FormTextArea
-        name="tokenDisountForWhitelist"
+        name="tokenDiscountForWhitelist"
         label={
           <FormattedMessage id="eto.form.section.investment-terms.token-discount-for-whitelisted" />
         }
@@ -252,41 +253,33 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
         />
       </div>
     </FormSection>
-
-    <div className="text-right">
-      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        <FormattedMessage id="eto.form.save" />
-      </Button>
-    </div>
-  </Form>
+  </EtoFormBase>
 );
 
-const EtoEnhancedForm = withFormik<IProps, IEtoData>({
-  // validationSchema: EtoDataSchema,
-  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
-  mapPropsToValues: props => props.currentValues,
-  enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
+  validationSchema: EtoTermsType.toYup(),
+  mapPropsToValues: props => props.stateValues,
+  handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
 export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
-  <EtoFormWrapper title={<FormattedMessage id="eto.form.eto-terms.title" />} progressPercent={20}>
-    <EtoEnhancedForm {...props} />
-  </EtoFormWrapper>
+  <EtoEnhancedForm {...props} />
 );
 
 export const EtoRegistrationTerms = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: _state => ({
-      loadingData: false,
-      currentValues: {},
+    stateToProps: s => ({
+      loadingData: s.etoFlow.loading,
+      savingData: s.etoFlow.saving,
+      stateValues: s.etoFlow.data,
     }),
-    dispatchToProps: _dispatch => ({
-      submitForm: () => {},
+    dispatchToProps: dispatch => ({
+      saveData: (data: any) => {
+        dispatch(actions.etoFlow.saveDataStart(data));
+      },
     }),
   }),
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-  injectIntlHelpers,
 )(EtoRegistrationTermsComponent);

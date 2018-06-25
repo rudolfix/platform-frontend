@@ -77,7 +77,7 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
           ) : (
             <>
               <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
-                Upload {label}
+                {label}
               </Button>
               <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
             </>

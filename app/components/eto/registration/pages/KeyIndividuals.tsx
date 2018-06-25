@@ -1,36 +1,37 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoKeyIndividualsType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 
-import { Button } from "../../../shared/Buttons";
-import { EtoFormWrapper } from "../../../shared/forms/EtoFormWrapper";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormField, FormTextArea } from "../../../shared/forms/forms";
 import { FormSection } from "../../../shared/forms/FormSection";
+import { EtoFormBase } from "../EtoFormBase";
 
-type IEtoData = any;
 interface IStateProps {
   loadingData: boolean;
-  currentValues: IEtoData;
+  savingData: boolean;
+  stateValues: TPartialEtoData;
 }
 
 interface IDispatchProps {
-  submitForm: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => {
-  return (
-    <Form>
-      <FormSection title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}>
+
+const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => (
+  <EtoFormBase
+    title={<FormattedMessage id="eto.form.key-individuals.title" />}
+    validator={EtoKeyIndividualsType.toYup()}>
+    <FormSection title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}>
         <FormHighlightGroup>
           <FormField
             name="teamMemberName"
@@ -195,44 +196,33 @@ const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => {
           />
         </FormHighlightGroup>
       </FormSection>
-
-      <div className="text-right">
-        <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-          <FormattedMessage id="eto.form.save" />
-        </Button>
-      </div>
-    </Form>
-  );
-};
+  </EtoFormBase>
+);
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
-  // validationSchema: EtoCompanyInformationType.toYup(),
-  // isInitialValid: (props: IStateProps) => formikValidator(EtoTeamDataType)(props.currentValues),
-  mapPropsToValues: props => props.currentValues,
-  enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+  validationSchema: EtoKeyIndividualsType.toYup(),
+  mapPropsToValues: props => props.stateValues,
+  handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
-export const EtoRegistrationTeamAndInvestorsComponent: React.SFC<IProps> = props => (
-  <EtoFormWrapper
-    title={<FormattedMessage id="eto.form.key-individuals.title" />}
-    progressPercent={60}
-  >
-    <EtoEnhancedForm {...props} />
-  </EtoFormWrapper>
+export const EtoRegistrationKeyIndividualsComponent: React.SFC<IProps> = props => (
+  <EtoEnhancedForm {...props} />
 );
 
 export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
-      currentValues: s.etoFlow.data,
+      savingData: s.etoFlow.saving,
+      stateValues: s.etoFlow.data,
     }),
-    dispatchToProps: _dispatch => ({
-      submitForm: () => {},
+    dispatchToProps: dispatch => ({
+      saveData: (data: any) => {
+        dispatch(actions.etoFlow.saveDataStart(data));
+      },
     }),
   }),
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-)(EtoRegistrationTeamAndInvestorsComponent);
+)(EtoRegistrationKeyIndividualsComponent);

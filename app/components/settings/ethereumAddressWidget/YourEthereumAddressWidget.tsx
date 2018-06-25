@@ -20,6 +20,7 @@ export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ add
   >
     <div className={styles.panelBody} data-test-id="your-ether-address-widget-eth-address">
       {address}
+    </div>
   </Panel>
 );
 

@@ -1,132 +1,119 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { FormattedMessage } from "react-intl-phraseapp";
+import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
-import { FormField, FormTextArea } from "../../../shared/forms/forms";
-import { HorizontalLine } from "../../../shared/HorizontalLine";
-
-import * as plusIcon from "../../../../assets/img/inline_icons/plus.svg";
-
-// @todo
-type IEtoData = any;
+import { FormFieldDate } from "../../../shared/forms/formField/FormFieldDate";
+import { FormSelectField } from "../../../shared/forms/formField/FormSelectField";
+import { FormField } from "../../../shared/forms/forms";
+import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
+import { EtoFormBase } from "../EtoFormBase";
+import { Section } from "../Shared";
 
 interface IStateProps {
-  currentValues: IEtoData;
   loadingData: boolean;
+  savingData: boolean;
+  stateValues: TPartialEtoData;
 }
 
 interface IDispatchProps {
-  submitForm: (values: IEtoData) => void;
+  saveData: (values: TPartialEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (formikBag: FormikProps<IEtoData> & IProps) => (
-  <Form>
-    <Row className="justify-content-center">
-      <Col xs={12} lg={6}>
-        <div className="mb-4">
-          <FormTextArea label="What is the sales model?" name="salesModel" />
-        </div>
-        <div className="mb-4">
-          <FormTextArea label="What is the marketing approach?" name="marketingApproach" />
-        </div>
-        <div className="mb-4">
-          <FormTextArea label="USP" name="usp" />
-        </div>
-        <div className="mb-4">
-          <FormTextArea label="Who are your key competitors?" name="competitors" />
-        </div>
-      </Col>
-    </Row>
-    <HorizontalLine className="mb-4" />
-    <Row className="justify-content-center">
-      <Col xs={12} lg={6}>
-        <h4>
-          <FormattedMessage id="components.eto.registration.market-information.business-partners" />
-        </h4>
-        <Accordion>
-          <AccordionElement isOpened={true} title="First Name">
-            <FormField label="First name" name="firstName" />
-            <FormField label="Surname" name="surName" />
-          </AccordionElement>
-        </Accordion>
-        <div className="p-4 text-center">
+const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
+  return (
+    <EtoFormBase title="Legal Information" validator={EtoCompanyInformationType.toYup()}>
+      <Section>
+        <FormField label="Legal company name" name="name" disabled />
+        <FormField label="Legal form" name="legalForm" disabled />
+        <FormField label="Company Street Address" name="street" disabled />
+        <FormField label="City / Country" name="country" disabled />
+        <FormField label="Registration number*" name="registrationNumber" />
+        <FormField label="Vat number*" name="vatNumber" />
+        <FormFieldDate label="Company founding date*" name="foundingDate" />
+        <FormSelectField
+          label="Number of employees*"
+          values={{
+            NONE_KEY: <FormattedMessage id="form.select.please-select" />,
+            "1-9": "1-9",
+            "10-99": "10-99",
+            "100-999": "100-999",
+            ">1000": ">1000",
+          }}
+          name="numberOfEmployees"
+        />
+        <FormField label="Number of founders" type="number" name="numberOfFounders" />
+        <FormSelectField
+          label="Last Funding Round*"
+          values={{
+            NONE_KEY: <FormattedMessage id="form.select.please-select" />,
+            pre_seed: "pre seed",
+            seed: "seed",
+            a_round: "a round",
+            b_round: "b round",
+            c_round: "c round",
+            d_round: "d round",
+            e_round: "e round",
+            pre_ipo: "pre ipo",
+            public: "public",
+          }}
+          name="companyStage"
+        />
+        <FormField label="Last Funding Amount" type="number" name="lastFundingSizeEur" />
+        <FormField label="Number of existing shares" type="number" name="companyShares" />
+        {/* TODO: Add pie chart */}
+      </Section>
+      <Col>
+        <Row className="justify-content-end">
           <Button
-            layout="secondary"
-            iconPosition="icon-before"
-            svgIcon={plusIcon}
-            onClick={() => {}}
-            disabled={true}
+            layout="primary"
+            className="mr-4"
+            onClick={() => {
+              props.saveData(props.values);
+            }}
+            isLoading={props.savingData}
           >
-            <FormattedMessage id="components.eto.registration.market-information.add-more" />
+            Save
           </Button>
-        </div>
+        </Row>
       </Col>
-    </Row>
-    <HorizontalLine className="mb-4" />
-    <Row className="justify-content-center">
-      <Col xs={12} lg={6}>
-        <h4>
-          <FormattedMessage id="components.eto.registration.market-information.key-customers" />
-        </h4>
-        <Accordion>
-          <AccordionElement isOpened={true} title="First Name">
-            <FormField label="First name" name="firstName" />
-            <FormField label="Surname" name="surName" />
-          </AccordionElement>
-        </Accordion>
-        <div className="p-4 text-center">
-          <Button
-            layout="secondary"
-            iconPosition="icon-before"
-            svgIcon={plusIcon}
-            onClick={() => {}}
-            disabled={true}
-          >
-            <FormattedMessage id="components.eto.registration.market-information.add-more" />
-          </Button>
-        </div>
-      </Col>
-    </Row>
-    <HorizontalLine className="mb-4" />
-    <div className="p-4 text-center">
-      <Button type="submit" disabled={!formikBag.isValid || formikBag.loadingData}>
-        <FormattedMessage id="components.eto.registration.market-information.submit-and-continue" />
-      </Button>
-    </div>
-  </Form>
-);
+    </EtoFormBase>
+  );
+};
 
-const EtoEnhancedForm = withFormik<IProps, any>({
-  // validationSchema: EtoDataSchema,
-  // isInitialValid: (props: any) => EtoDataSchema.isValidSync(props.currentValues),
-  mapPropsToValues: props => props.currentValues,
-  enableReinitialize: true,
-  handleSubmit: (values, props) => props.props.submitForm(values),
+const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
+  validationSchema: EtoCompanyInformationType.toYup(),
+  mapPropsToValues: props => props.stateValues,
+  handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
-export const EtoRegistrationMarketInformationComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationLegalInformationComponent: React.SFC<IProps> = props => (
   <EtoEnhancedForm {...props} />
 );
 
 export const EtoRegistrationLegalInformation = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: _state => ({
-      loadingData: false,
-      currentValues: {},
+    stateToProps: s => ({
+      loadingData: s.etoFlow.loading,
+      savingData: s.etoFlow.saving,
+      stateValues: s.etoFlow.data,
     }),
-    dispatchToProps: _dispatch => ({
-      submitForm: () => {},
+    dispatchToProps: dispatch => ({
+      saveData: (data: any) => {
+        dispatch(actions.etoFlow.saveDataStart(data));
+      },
     }),
   }),
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-)(EtoRegistrationMarketInformationComponent);
+)(EtoRegistrationLegalInformationComponent);

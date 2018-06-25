@@ -12,6 +12,7 @@ import { Kyc } from "./kyc/Kyc";
 import { appRoutes } from "./appRoutes";
 import { emailVerify } from "./emailVerify";
 import { EtoOverview } from "./eto/EtoOverview";
+import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoRegister } from "./eto/registration/Start";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
@@ -64,6 +65,12 @@ export const AppRouter: React.SFC = () => (
       path={appRoutes.dashboard}
       investorComponent={Dashboard}
       issuerComponent={EtoDashboard}
+      exact
+    />
+    <OnlyAuthorizedRoute
+      path={appRoutes.etoPublicView}
+      investorComponent={EtoPublicView}
+      issuerComponent={EtoPublicView}
       exact
     />
     <OnlyAuthorizedRoute

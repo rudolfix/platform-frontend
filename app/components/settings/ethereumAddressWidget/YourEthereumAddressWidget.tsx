@@ -18,7 +18,9 @@ export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ add
     headerText={<FormattedMessage id="your-ethereum-address-widget.header" />}
     rightComponent={<img src={ethIcon} />}
   >
-    <div className={styles.panelBody}>{address}</div>
+    <div className={styles.panelBody} data-test-id="your-ether-address-widget-eth-address">
+      {address}
+    </div>
   </Panel>
 );
 

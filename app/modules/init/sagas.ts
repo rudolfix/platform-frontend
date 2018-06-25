@@ -56,8 +56,6 @@ function* initApp({ logger }: TGlobalDependencies): any {
       }
     }
 
-    yield neuCall(loadPreviousWallet);
-
     yield put(actions.init.done("appInit"));
   } catch (e) {
     yield put(actions.init.error("appInit", e.message || "Unknown error"));

@@ -10,6 +10,8 @@ if (!applicationEnv.NF_REMOTE_BACKEND_PROXY_ROOT) {
 
 const backendUrl = JSON.parse(applicationEnv.NF_REMOTE_BACKEND_PROXY_ROOT);
 
+console.log("REMOTE_BACKEND_URL: ", backendUrl);
+
 const localDevConfig = merge(devConfig, {
   devServer: {
     proxy: {

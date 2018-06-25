@@ -9,7 +9,7 @@ const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
   "https://localhost:9090/api/"}external-services-mock/`;
 
 export const assertUserInDashboard = () => {
-  cy.url().should("contain", appRoutes.dashboard);
+  return cy.url().should("contain", appRoutes.dashboard);
 };
 
 export const registerWithLightWallet = (email: string, password: string) => {
@@ -31,7 +31,7 @@ export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).click();
 
-  assertUserInDashboard();
+  return assertUserInDashboard();
 };
 
 describe("Light wallet login / register", () => {
@@ -61,6 +61,33 @@ describe("Light wallet login / register", () => {
     loginWithLightWallet(email, password);
 
     assertUserInDashboard();
+  });
+
+  it("should recognize correctly ETO user and save metada correctly", () => {
+    const email = "moe3@test.com";
+    const password = "strongpassword";
+
+    registerWithLightWallet(email, password);
+
+    cy.get(tid("Header-logout")).click();
+
+    loginWithLightWallet(email, password);
+
+    assertUserInDashboard().then(() => {
+      const savedMetadata = window.localStorage.NF_WALLET_METADATA;
+      cy.clearLocalStorage().then(() => {
+        window.localStorage.NF_WALLET_ISSUER_METADATA = savedMetadata;
+
+        cy.visit("eto/login/light");
+        cy.contains(tid("light-wallet-login-with-email-email-field"), email);
+        cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
+        cy.get(tid("wallet-selector-nuewallet.login-button")).click();
+
+        return assertUserInDashboard().then(() => {
+          expect(window.localStorage.NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
+        });
+      });
+    });
   });
 
   // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit

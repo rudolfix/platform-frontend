@@ -11,18 +11,18 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v6-deps-{{ checksum "package.json" }}
-          - v6-deps-
+          - v9-deps-{{ checksum "package.json" }}
+          - v9-deps-
+      - run: mkdir -p /home/circleci/.cache/Cypress && cp -R /home/circleci/.cache/Cypress ~/.cache/Cypress
 
       - run: yarn --frozen-lockfile
 
-      - run: mv ~/.cache/Cypress /home/circleci/.cache/Cypress
-      - run: mv
+      - run: cp -R ~/.cache/Cypress/ /home/circleci/.cache/
       - save_cache:
           paths:
             - node_modules
             - /home/circleci/.cache/Cypress
-          key: v6-deps-{{ checksum "package.json" }}
+          key: v9-deps-{{ checksum "package.json" }}
 
   lint:
     docker:
@@ -33,8 +33,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v6-deps-{{ checksum "package.json" }}
-          - v6-deps-
+          - v9-deps-{{ checksum "package.json" }}
+          - v9-deps-
       - run: yarn prepare
 
       - run: yarn lint
@@ -48,8 +48,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v6-deps-{{ checksum "package.json" }}
-          - v6-deps-
+          - v9-deps-{{ checksum "package.json" }}
+          - v9-deps-
       - run: yarn prepare
 
       - run: yarn test:browser-coverage && yarn test:node
@@ -64,13 +64,11 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo chmod 777 /root/.cache && sudo chown circleci /root/.cache
       - run: ./.circleci/install-yarn.sh
-
       - restore_cache:
           keys:
-          - v6-deps-{{ checksum "package.json" }}
-          - v6-deps-
+          - v9-deps-{{ checksum "package.json" }}
+          - v9-deps-
       - run: yarn prepare
 
       - run: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
@@ -84,8 +82,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v6-deps-{{ checksum "package.json" }}
-          - v6-deps-
+          - v9-deps-{{ checksum "package.json" }}
+          - v9-deps-
       - run: yarn prepare
 
       - run: yarn storybook:screenshots

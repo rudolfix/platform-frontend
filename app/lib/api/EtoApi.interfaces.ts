@@ -95,7 +95,12 @@ export const EtoLegalInformationType = YupTS.object({
 });
 type TEtoLegalData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
-export type TCompanyEtoData = TEtoTeamData | TEtoLegalData | TEtoProductVision | TEtoTermsType; // | other partial schemas;
+export type TCompanyEtoData =
+  | TEtoTeamData
+  | TEtoLegalData
+  | TEtoProductVision
+  | TEtoTermsType
+  | TEtoKeyIndividualsType;
 
 /** ETO SPEC RELATED INTERFACES
  *  only deals with "/etos/me"
@@ -103,7 +108,7 @@ export type TCompanyEtoData = TEtoTeamData | TEtoLegalData | TEtoProductVision |
 
 export const EtoSpecsInformationType = YupTS.object({
   companyId: YupTS.string(),
-  /* companyTokenHolderAgreementIfps: YupTS.string(),
+  companyTokenHolderAgreementIfps: YupTS.string(),
   currencies: YupTS.array(YupTS.string()),
   equityTokenPrecision: YupTS.number(),
   equityTokensPerShare: YupTS.number(),
@@ -130,7 +135,7 @@ export const EtoSpecsInformationType = YupTS.object({
   state: YupTS.string(),
   tagAlongVotingRule: YupTS.string(),
   tokenholdersQuorum: YupTS.number(),
-  whitelistDurationDays: YupTS.number(), */
+  whitelistDurationDays: YupTS.number(),
 });
 
 export type TEtoSpecsData = YupTS.TypeOf<typeof EtoSpecsInformationType>;

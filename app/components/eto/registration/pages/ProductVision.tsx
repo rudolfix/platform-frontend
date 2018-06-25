@@ -6,7 +6,7 @@ import { compose } from "redux";
 import {
   EtoCompanyInformationType,
   EtoProductVisionType,
-  TPartialEtoData,
+  TPartialCompanyEtoData,
 } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
@@ -20,18 +20,18 @@ import { Section } from "../Shared";
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialEtoData;
+  stateValues: TPartialCompanyEtoData;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialCompanyEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
 const distributionSuggestions = ["Development", "ESOP"];
 
-const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
+const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
     <EtoFormBase title="Product Vision" validator={EtoProductVisionType.toYup()}>
       <Section>
@@ -122,7 +122,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   );
 };
 
-const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
+const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   validationSchema: EtoCompanyInformationType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
@@ -141,7 +141,12 @@ export const EtoRegistrationProductVision = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: any) => {
-        dispatch(actions.etoFlow.loadData({ companyData: data }));
+        dispatch(
+          actions.etoFlow.saveDataStart({
+            companyData: data,
+            etoData: {},
+          }),
+        );
       },
     }),
   }),

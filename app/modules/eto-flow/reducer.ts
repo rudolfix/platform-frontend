@@ -1,4 +1,4 @@
-import { TPartialEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
@@ -6,7 +6,7 @@ export interface IEtoFlowState {
   loading: boolean;
   saving: boolean;
   etoData: TPartialEtoSpecData;
-  companyData: TPartialEtoData;
+  companyData: TPartialCompanyEtoData;
 }
 
 export const etoFlowInitialState: IEtoFlowState = {

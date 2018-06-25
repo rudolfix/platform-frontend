@@ -15,7 +15,7 @@ import {
   NONE_KEY,
 } from "../../../shared/forms/forms";
 
-import { EtoTermsType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoTermsType, TPartialCompanyEtoData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
@@ -35,11 +35,11 @@ const TOKEN_HOLDERS_RIGHTS = {
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialEtoData;
+  stateValues: TPartialCompanyEtoData;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialCompanyEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -256,7 +256,7 @@ const EtoForm = () => (
   </EtoFormBase>
 );
 
-const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
+const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   validationSchema: EtoTermsType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
@@ -275,7 +275,7 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: any) => {
-        dispatch(actions.etoFlow.saveDataStart(data));
+        dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
       },
     }),
   }),

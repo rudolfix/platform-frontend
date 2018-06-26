@@ -3,7 +3,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
 
-import { EtoKeyIndividualsType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import {
+  EtoKeyIndividualsType,
+  TPartialCompanyEtoData,
+} from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -17,11 +20,11 @@ import { EtoFormBase } from "../EtoFormBase";
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialEtoData;
+  stateValues: TPartialCompanyEtoData;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialCompanyEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -197,7 +200,7 @@ const EtoForm = () => (
   </EtoFormBase>
 );
 
-const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
+const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   validationSchema: EtoKeyIndividualsType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
@@ -212,11 +215,11 @@ export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.data,
+      stateValues: s.etoFlow.companyData,
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: any) => {
-        dispatch(actions.etoFlow.saveDataStart(data));
+      saveData: (data: TPartialCompanyEtoData) => {
+        dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
       },
     }),
   }),

@@ -41,10 +41,6 @@ textarea {
   padding: 0 px-to-rem(10px) px-to-rem(4px);
   background-color: transparent;
 
-  &::placeholder {
-    color: inherit;
-  }
-
   &:disabled {
     background-color: transparent;
   }
@@ -90,6 +86,7 @@ textarea {
 .form-control {
   appearance: none;
   border-radius: 0;
+  font-size: px-to-rem(20px);
 }
 
 .modal {

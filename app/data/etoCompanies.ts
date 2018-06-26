@@ -4,9 +4,8 @@ import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.p
 import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
 import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
 import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
-import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
-import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
-import * as brile24hover from "../assets/img/eto_offers/brille_hover.gif";
+import * as brile24hover from "../assets/img/eto_offers/brille_animation.gif";
+import * as brile24 from "../assets/img/eto_offers/brille_card.jpg";
 import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
@@ -51,12 +50,10 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       topImage: {
         src: brile24,
-        srcSet: `${brile24} 1x, ${brile242} 2x`,
         alt: "",
       },
       quoteImage: {
         src: brile24hover,
-        srcSet: `${brile24hover} 1x`,
         alt: "",
       },
       to: "https://itunes.apple.com/de/app/brille24/id1262362205?l=en&mt=8",

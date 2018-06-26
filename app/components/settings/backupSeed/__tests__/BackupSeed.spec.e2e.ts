@@ -14,7 +14,7 @@ const navigateToSettings = () => cy.get(tid("authorized-layout-settings-button")
 
 describe("Wallet backup recovery phrase", () => {
   it("should recover wallet from saved phrases", () => {
-    registerWithLightWallet("moe@test.com", "strongpassword");
+    registerWithLightWallet("moe-recover-wallet@test.com", "strongpassword");
 
     navigateToSettings();
 

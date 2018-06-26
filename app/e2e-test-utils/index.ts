@@ -3,7 +3,7 @@ import { appRoutes } from "../components/appRoutes";
 
 export const assertEtoDashboard = () => {
   cy.url().should("contain", "/dashboard");
-  cy.get(tid("eto-dashboard-header")).should("exist");
+  cy.get(tid("eto-dashboard-application")).should("exist");
 };
 
 export const registerWithLightWalletETO = (email: string, password: string) => {

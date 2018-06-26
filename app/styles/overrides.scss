@@ -41,9 +41,9 @@ textarea {
   padding: 0 px-to-rem(10px) px-to-rem(4px);
   background-color: transparent;
 
-  &::placeholder {
-    color: inherit;
-  }
+  // &::placeholder {
+  //   color: inherit;
+  // }
 
   &:disabled {
     background-color: transparent;

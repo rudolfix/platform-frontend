@@ -12,7 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale; // sass-lint:disable-line no-vendor-prefixes
 
   ::selection {
-    background-color: $color-green;
+    background-color: $color-brand;
     color: $color-white;
   }
 }

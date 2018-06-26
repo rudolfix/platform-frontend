@@ -29,7 +29,7 @@ export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> 
 }
 
 export async function loadOrCreateUserPromise(
-  { apiUserService, walletStorage }: TGlobalDependencies,
+  { apiUserService, web3Manager }: TGlobalDependencies,
   userType: TUserType,
 ): Promise<IUser> {
   try {
@@ -41,7 +41,8 @@ export async function loadOrCreateUserPromise(
   }
 
   // for light wallet we need to send slightly different request
-  const walletMetadata = walletStorage.get(userType);
+  // tslint:disable-next-line
+  const walletMetadata = web3Manager.personalWallet!.getMetadata();
   if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
     return apiUserService.createAccount({
       newEmail: walletMetadata.email,

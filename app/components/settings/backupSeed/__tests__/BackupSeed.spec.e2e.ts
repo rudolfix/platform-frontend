@@ -1,5 +1,5 @@
 import { tid } from "../../../../../test/testUtils";
-import { registerWithLightWallet } from "../../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
+import { registerWithLightWallet } from "../../../../e2e-test-utils";
 
 const extractSeedFromDOM = (seed: string): string[] =>
   seed

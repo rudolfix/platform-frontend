@@ -1,5 +1,5 @@
 import { tid } from "../../../../../test/testUtils";
-import { assertEtoDashboard, registerWithLightWalletETO } from "./LightWalletETORegister.spec.e2e";
+import { registerWithLightWalletETO, assertEtoDashboard } from "../../../../e2e-test-utils";
 
 const testEmail = "moe@test.com";
 const password = "strongpassword";

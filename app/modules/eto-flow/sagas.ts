@@ -1,15 +1,25 @@
+import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import { TEtoData, TPartialEtoData } from "../../lib/api/EtoApi.interfaces";
+import {
+  TCompanyEtoData,
+  TEtoSpecsData,
+  TPartialCompanyEtoData,
+} from "../../lib/api/EtoApi.interfaces";
 import { actions, TAction } from "../actions";
 import { neuTakeEvery } from "../sagas";
+import { TPartialEtoSpecData } from "./../../lib/api/EtoApi.interfaces";
+import { IAppState } from "./../../store";
 
 export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
   try {
-    const etoData: IHttpResponse<TEtoData> = yield apiEtoService.getCompanyData();
+    const etoCompanyData: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyData();
+    const etoData: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEtoData();
 
-    yield put(actions.etoFlow.loadData(etoData.body));
+    yield put(
+      actions.etoFlow.loadData({ etoData: etoData.body, companyData: etoCompanyData.body }),
+    );
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO data. Make sure you have completed KYC and email verification process.",
@@ -24,11 +34,22 @@ export function* saveEtoData(
 ): any {
   if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
   try {
-    const newData: IHttpResponse<TPartialEtoData> = yield apiEtoService.putCompanyData(
-      action.payload.data,
-    );
+    const oldCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
+    const oldEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
 
-    yield put(actions.etoFlow.loadData(newData.body));
+    const newCompanyData: IHttpResponse<
+      TPartialCompanyEtoData
+    > = yield apiEtoService.putCompanyData({
+      ...oldCompanyData,
+      ...action.payload.data.companyData,
+    });
+    const newEtoData: IHttpResponse<TPartialEtoSpecData> = yield apiEtoService.putEtoData({
+      ...oldEtoData,
+      ...action.payload.data.etoData,
+    });
+    yield put(
+      actions.etoFlow.loadData({ etoData: newEtoData.body, companyData: newCompanyData.body }),
+    );
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     yield put(actions.etoFlow.loadDataStart());

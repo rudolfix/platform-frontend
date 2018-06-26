@@ -97,12 +97,12 @@ export const ETOFormsProgressSection = compose<React.SFC>(
     stateToProps: s => ({
       companyInformationProgress: selectFormFractionDone(
         EtoCompanyInformationType.toYup(),
-        s.etoFlow.data,
+        s.etoFlow.companyData,
         etoFlowInitialState,
       ),
       productVisionProgress: selectFormFractionDone(
         EtoProductVisionType.toYup(),
-        s.etoFlow.data,
+        s.etoFlow.companyData,
         etoFlowInitialState,
       ),
       loadingData: s.etoFlow.loading,

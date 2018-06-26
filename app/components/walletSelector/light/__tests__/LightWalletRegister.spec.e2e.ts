@@ -8,13 +8,16 @@ import { appRoutes } from "../../../appRoutes";
 export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
   "https://localhost:9090/api/"}external-services-mock/`;
 
-export const registerWithLightWallet = (email: string, password: string) => {
-  cy.visit("/register");
-
+export const typeEmailPassword = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).click();
+};
+
+export const registerWithLightWallet = (email: string, password: string) => {
+  cy.visit("/register");
+  typeEmailPassword(email, password);
 
   cy.url().should("contain", appRoutes.dashboard);
 };
@@ -50,6 +53,20 @@ describe("Light wallet login / register", () => {
     cy.get(tid("light-wallet-login-with-email-password-field")).type(password + "{enter}");
 
     cy.url().should("contain", "/dashboard");
+  });
+
+  it("should return an error when logging with same email", () => {
+    // Special email @see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
+    const email = "0x42912@neufund.org";
+    const password = "strongpassword";
+    const repeatedEmail = "email has already been registered";
+
+    cy.visit("/register");
+    typeEmailPassword(email, password);
+
+    cy
+      .get(tid("components.shared-warning-alert.message"))
+      .then(errorMsg => expect(errorMsg.text()).to.contain(repeatedEmail));
   });
 
   // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit

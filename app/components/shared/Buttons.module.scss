@@ -1,8 +1,8 @@
 // sass-lint:disable force-pseudo-nesting
 // sass-lint:disable nesting-depth
 
-$_hover-color: $color-green;
-$_focus-color: $color-green;
+$_hover-color: $color-brand;
+$_focus-color: $color-brand;
 $_active-color: lighten($_hover-color, 20%);
 
 :global(.button) {
@@ -41,7 +41,7 @@ $_active-color: lighten($_hover-color, 20%);
 
     &:hover {
       .content {
-        color: $color-graphite;
+        color: $color-gray;
         background-color: transparent;
         border-color: currentColor;
       }

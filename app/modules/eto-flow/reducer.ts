@@ -1,19 +1,19 @@
-import { TPartialEtoData } from "../../lib/api/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
 export interface IEtoFlowState {
   loading: boolean;
   saving: boolean;
-  data: TPartialEtoData;
+  etoData: TPartialEtoSpecData;
+  companyData: TPartialCompanyEtoData;
 }
 
 export const etoFlowInitialState: IEtoFlowState = {
   loading: true,
   saving: false,
-  data: {
-    categories: [],
-  },
+  etoData: {},
+  companyData: {},
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (
@@ -31,8 +31,13 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
       return {
         loading: false,
         saving: false,
-        data: {
-          ...action.payload.data,
+        etoData: {
+          ...state.etoData,
+          ...action.payload.data.etoData,
+        },
+        companyData: {
+          ...state.companyData,
+          ...action.payload.data.companyData,
         },
       };
     case "ETO_FLOW_SAVE_DATA_START":

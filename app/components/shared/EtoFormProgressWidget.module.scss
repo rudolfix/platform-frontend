@@ -1,5 +1,5 @@
 .eto-form-progress-widget {
-  @include rect(300px);
+  @include rect(px-to-rem(280px));
 
   align-items: center;
   background-color: $color-white;

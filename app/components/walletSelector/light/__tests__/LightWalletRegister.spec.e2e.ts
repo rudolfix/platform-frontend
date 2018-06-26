@@ -55,7 +55,7 @@ describe("Light wallet login / register", () => {
     cy.url().should("contain", "/dashboard");
   });
 
-  it("should return an error when logging with same email", () => {
+  it.skip("should return an error when logging with same email", () => {
     // Special email @see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
     const email = "0x42912@neufund.org";
     const password = "strongpassword";

@@ -1,6 +1,6 @@
 import { tid } from "../../../../test/testUtils";
-import { kycRoutes } from "../routes";
 import { registerWithLightWallet } from "../../../e2e-test-utils";
+import { kycRoutes } from "../routes";
 
 const email = "test+small-business@neufund.org";
 const password = "superstrongpassword";

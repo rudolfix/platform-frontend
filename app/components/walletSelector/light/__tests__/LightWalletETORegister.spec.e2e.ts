@@ -1,4 +1,3 @@
-import { tid } from "../../../../../test/testUtils";
 import { registerWithLightWalletETO } from "../../../../e2e-test-utils";
 
 describe("Wallet backup e2e recovery phrase", () => {

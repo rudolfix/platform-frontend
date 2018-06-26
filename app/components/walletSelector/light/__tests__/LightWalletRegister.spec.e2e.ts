@@ -1,9 +1,12 @@
 import { get } from "lodash";
 
 import { tid } from "../../../../../test/testUtils";
-import { appRoutes } from "../../../appRoutes";
-import { mockApiUrl, registerWithLightWallet, loginWithLightWallet, assertUserInDashboard } from "../../../../e2e-test-utils";
-
+import {
+  assertUserInDashboard,
+  loginWithLightWallet,
+  mockApiUrl,
+  registerWithLightWallet,
+} from "../../../../e2e-test-utils";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {

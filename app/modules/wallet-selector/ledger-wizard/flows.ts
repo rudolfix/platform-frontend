@@ -1,17 +1,14 @@
 import { toPairs, zip } from "lodash";
-import { WalletStorage } from "./../../../lib/persistence/WalletStorage";
 
 import { tripleZip } from "../../../../typings/modifications";
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
-import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { ContractsService } from "../../../lib/web3/ContractsService";
 import { LedgerNotAvailableError, LedgerWalletConnector } from "../../../lib/web3/LedgerWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { selectUrlUserType } from "../selectors";
 import { mapLedgerErrorToErrorMessage } from "./errors";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
@@ -132,25 +129,13 @@ export const ledgerWizardFlows = {
         dispatch: AppDispatch,
         ledgerConnector: LedgerWalletConnector,
         web3Manager: Web3Manager,
-        walletStorage: WalletStorage<TWalletMetadata>,
-        getState: GetState,
       ) => {
         const ledgerWallet = await ledgerConnector.finishConnecting(derivationPath);
         await web3Manager.plugPersonalWallet(ledgerWallet);
 
-        const userType = selectUrlUserType(getState().router);
-
-        // todo move saving metadata to unified connect functions
-        walletStorage.set(ledgerWallet.getMetadata(), userType);
-        dispatch(actions.walletSelector.connected(userType));
+        dispatch(actions.walletSelector.connected());
       },
-      [
-        symbols.appDispatch,
-        symbols.ledgerWalletConnector,
-        symbols.web3Manager,
-        symbols.walletStorage,
-        symbols.getState,
-      ],
+      [symbols.appDispatch, symbols.ledgerWalletConnector, symbols.web3Manager],
     ),
 
   verifyIfLedgerStillConnected: injectableFn(

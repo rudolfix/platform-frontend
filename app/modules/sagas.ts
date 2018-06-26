@@ -41,9 +41,8 @@ export function* rootSaga(): Iterator<effects.Effect> {
     try {
       yield effects.call(allSagas);
     } catch (e) {
-      try {
-        // @todo add some kind of bugreporting
-      } catch (_) {}
+      // tslint:disable-next-line
+      console.error("ERROR IN TOP LEVEL SAGA HANDLER", e);
     }
   }
 }

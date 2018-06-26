@@ -5,11 +5,7 @@ import { spy } from "sinon";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { Neumark } from "../../../lib/contracts/Neumark";
-import {
-  ILedgerWalletMetadata,
-  TWalletMetadata,
-} from "../../../lib/persistence/WalletMetadataObjectStorage";
-import { WalletStorage } from "../../../lib/persistence/WalletStorage";
+import { ILedgerWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { ContractsService } from "../../../lib/web3/ContractsService";
 import {
   IDerivationPathToAddress,
@@ -20,7 +16,7 @@ import {
 import { Web3Adapter } from "../../../lib/web3/Web3Adapter";
 import { WalletNotConnectedError, Web3Manager } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
-import { DeepPartial, Dictionary } from "../../../types";
+import { Dictionary } from "../../../types";
 import { actions } from "../../actions";
 import { WalletType } from "../../web3/types";
 import { ledgerWizardFlows } from "./flows";
@@ -257,31 +253,18 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         plugPersonalWallet: async () => {},
       });
-      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
-        set: () => {},
-      }) as any;
-      const getStateMock: () => DeepPartial<IAppState> = () => ({
-        router: {
-          location: {
-            pathname: "/login/browser",
-          },
-        },
-      });
 
       await ledgerWizardFlows.finishSettingUpLedgerConnector(expectedDerivationPath)(
         dispatchMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
-        walletStorageMock,
-        getStateMock as any,
       );
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
         expectedDerivationPath,
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(walletStorageMock.set).to.be.calledWithExactly(dummyMetadata, "investor");
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("investor"));
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
 
     it("should work when ledger wallet is connected and user TYPE should be issuer", async () => {
@@ -302,31 +285,18 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         plugPersonalWallet: async () => {},
       });
-      const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
-        set: () => {},
-      }) as any;
-      const getStateMock: () => DeepPartial<IAppState> = () => ({
-        router: {
-          location: {
-            pathname: "eto/login/browser",
-          },
-        },
-      });
 
       await ledgerWizardFlows.finishSettingUpLedgerConnector(expectedDerivationPath)(
         dispatchMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
-        walletStorageMock,
-        getStateMock as any,
       );
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
         expectedDerivationPath,
       );
       expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(walletStorageMock.set).to.be.calledWithExactly(dummyMetadata, "issuer");
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("issuer"));
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
   });
 
@@ -344,31 +314,18 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         throw new WalletNotConnectedError(ledgerWalletMock);
       },
     });
-    const walletStorageMock: WalletStorage<TWalletMetadata> = createMock(WalletStorage, {
-      set: () => {},
-    }) as any;
-    const getStateMock: () => DeepPartial<IAppState> = () => ({
-      router: {
-        location: {
-          pathname: "/eto/login/browser",
-        },
-      },
-    });
 
     await ledgerWizardFlows
       .finishSettingUpLedgerConnector(expectedDerivationPath)(
         navigateToMock,
         ledgerWalletConnectorMock,
         web3ManagerMock,
-        walletStorageMock,
-        getStateMock as any,
       )
       .catch(() => {});
 
     expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
       expectedDerivationPath,
     );
-    expect(walletStorageMock.set).to.not.be.called;
     expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
     expect(navigateToMock).not.be.called;
   });

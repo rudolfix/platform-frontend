@@ -11,6 +11,7 @@ import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
 import { loadKycRequestData } from "../kyc/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { selectUrlUserType } from "../wallet-selector/selectors";
 import {
   selectActivationCodeFromQueryString,
   selectEmailFromQueryString,
@@ -129,14 +130,22 @@ function* logoutWatcher(
   yield effects.put(actions.init.start("appInit"));
 }
 
-function* signInUser(
-  { logger, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
-  { payload: { userType } }: any,
-): Iterator<any> {
+function* signInUser({
+  logger,
+  intlWrapper: { intl: { formatIntlMessage } },
+  walletStorage,
+  web3Manager,
+}: TGlobalDependencies): Iterator<any> {
   try {
+    // we will try to create with user type from URL but it could happen that account already exists and has different user type
+    const probableUserType: TUserType = yield select((s: IAppState) => selectUrlUserType(s.router));
     yield effects.put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT);
-    yield call(loadOrCreateUser, userType);
+    yield call(loadOrCreateUser, probableUserType);
+
+    // tslint:disable-next-line
+    walletStorage.set(web3Manager.personalWallet!.getMetadata());
+
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),
     );

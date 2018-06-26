@@ -2,7 +2,6 @@ import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
-import { TUserType } from "../../../lib/api/users/interfaces";
 import {
   ILightWalletMetadata,
   ILightWalletRetrieveMetadata,
@@ -78,14 +77,7 @@ export function* getWalletMetadata(
 }
 
 export async function setupLightWalletPromise(
-  {
-    lightWalletUtil,
-    vaultApi,
-    lightWalletConnector,
-    walletMetadataStorage,
-    web3Manager,
-    logger,
-  }: TGlobalDependencies,
+  { lightWalletUtil, vaultApi, lightWalletConnector, web3Manager, logger }: TGlobalDependencies,
   email: string,
   password: string,
   seed: string,
@@ -114,7 +106,6 @@ export async function setupLightWalletPromise(
     );
 
     const walletMetadata = lightWallet.getMetadata();
-    walletMetadataStorage.set(walletMetadata);
     await web3Manager.plugPersonalWallet(lightWallet);
 
     if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
@@ -198,14 +189,13 @@ export function* loadSeedFromWalletWatch(): Iterator<any> {
 }
 
 export function* lightWalletLoginWatch(
-  { web3Manager, walletStorage, lightWalletConnector }: TGlobalDependencies,
+  { web3Manager, lightWalletConnector }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "LIGHT_WALLET_LOGIN") {
     return;
   }
   const { password } = action.payload;
-  const userType: TUserType = yield effects.select((s: IAppState) => selectUrlUserType(s.router));
 
   try {
     const walletMetadata: ILightWalletRetrieveMetadata | undefined = yield neuCall(
@@ -229,9 +219,9 @@ export function* lightWalletLoginWatch(
     if (!isValidPassword) {
       throw new LightWalletWrongPassword();
     }
-    walletStorage.set(wallet.getMetadata(), userType);
+
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.walletSelector.connected(userType));
+    yield put(actions.walletSelector.connected());
   } catch (e) {
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),

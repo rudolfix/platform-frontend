@@ -3,44 +3,19 @@ import { spy } from "sinon";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { noopLogger } from "../../../lib/dependencies/Logger";
-import { ObjectStorage } from "../../../lib/persistence/ObjectStorage";
-import {
-  IBrowserWalletMetadata,
-  TWalletMetadata,
-} from "../../../lib/persistence/WalletMetadataObjectStorage";
-import { WalletStorage } from "../../../lib/persistence/WalletStorage";
+import { IBrowserWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   BrowserWallet,
   BrowserWalletConnector,
   BrowserWalletLockedError,
 } from "../../../lib/web3/BrowserWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
-import { IAppState } from "../../../store";
-import { DeepPartial } from "../../../types";
 import { actions } from "../../actions";
 import { WalletType } from "../../web3/types";
 import { walletFlows } from "../flows";
 
 describe("Wallet selector > Browser wizard > actions", () => {
   describe("tryConnectingWithBrowserWallet action", () => {
-    const dummyState: DeepPartial<IAppState> = {
-      ledgerWizardState: {
-        isInitialConnectionInProgress: false,
-        index: 1,
-        numberOfAccountsPerPage: 10,
-        derivationPathPrefix: "44'/60'/0'/",
-        accounts: [],
-        isLoadingAddresses: false,
-        isConnectionEstablished: true,
-        advanced: true,
-      },
-      router: {
-        location: {
-          pathname: "/login/browser",
-        },
-      },
-    };
-
     it("should plug wallet on successful connection", async () => {
       const expectedNetworkId = dummyNetworkId;
       const dummyMetadata: IBrowserWalletMetadata = {
@@ -59,23 +34,15 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
-        set: () => {},
-      }) as any;
-
-      const getStateMock = spy(() => dummyState);
 
       await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,
         noopLogger,
-        walletMetadataStorageMock,
-        getStateMock,
       );
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletMetadataStorageMock.set).to.be.calledWithExactly(dummyMetadata, "investor");
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected("investor"));
+      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
 
     it("should dispatch error action on error", async () => {
@@ -91,22 +58,15 @@ describe("Wallet selector > Browser wizard > actions", () => {
         networkId: expectedNetworkId,
         plugPersonalWallet: async () => {},
       });
-      const walletMetadataStorageMock: WalletStorage<TWalletMetadata> = createMock(ObjectStorage, {
-        set: () => {},
-      }) as any;
-      const getStateMock = spy(() => dummyState);
 
       await walletFlows.tryConnectingWithBrowserWallet(
         dispatchMock,
         browserWalletConnectorMock,
         web3ManagerMock,
         noopLogger,
-        walletMetadataStorageMock,
-        getStateMock,
       );
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(walletMetadataStorageMock.set).to.not.be.called;
       expect(dispatchMock).to.be.calledWithExactly(
         actions.walletSelector.browserWalletConnectionError(
           "Your wallet seems to be locked — we can't access any accounts",

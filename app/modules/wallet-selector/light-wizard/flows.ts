@@ -1,15 +1,11 @@
-import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
 import { VaultApi } from "../../../lib/api/vault/VaultApi";
 import { ILogger } from "../../../lib/dependencies/Logger";
-import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
-import { WalletStorage } from "../../../lib/persistence/WalletStorage";
 import { LightWalletConnector, LightWalletUtil } from "../../../lib/web3/LightWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
-import { selectUrlUserType } from "./../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 
 //Vault nonce should be exactly 24 chars
@@ -41,12 +37,9 @@ export const lightWizardFlows = {
         web3Manager: Web3Manager,
         lightWalletConnector: LightWalletConnector,
         lightWalletUtil: LightWalletUtil,
-        walletStorage: WalletStorage<TWalletMetadata>,
         vaultApi: VaultApi,
         logger: ILogger,
-        getState: GetState,
       ) => {
-        const userType = selectUrlUserType(getState().router);
         try {
           const lightWalletVault = await lightWalletUtil.createLightWalletVault({
             password,
@@ -68,9 +61,9 @@ export const lightWizardFlows = {
             email,
             password,
           );
-          walletStorage.set(lightWallet.getMetadata(), userType);
+
           await web3Manager.plugPersonalWallet(lightWallet);
-          dispatch(actions.walletSelector.connected(userType));
+          dispatch(actions.walletSelector.connected());
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
           //TODO: TRANSLATIONS
@@ -82,10 +75,8 @@ export const lightWizardFlows = {
         symbols.web3Manager,
         symbols.lightWalletConnector,
         symbols.lightWalletUtil,
-        symbols.walletStorage,
         symbols.vaultApi,
         symbols.logger,
-        symbols.getState,
       ],
     ),
 };

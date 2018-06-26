@@ -1,0 +1,6 @@
+.form-label {
+  @include font-label;
+
+  color: $color-graphite;
+  margin-bottom: px-to-rem(8px);
+}

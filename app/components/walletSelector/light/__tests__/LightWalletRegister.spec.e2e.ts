@@ -5,7 +5,7 @@ import { appRoutes } from "../../../appRoutes";
 
 // todo: extract it to separate file
 // do it after moving all e2e tests back into cypress directory
-const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
+export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
   "https://localhost:9090/api/"}external-services-mock/`;
 
 export const assertUserInDashboard = () => {

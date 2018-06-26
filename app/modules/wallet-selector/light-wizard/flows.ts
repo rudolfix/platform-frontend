@@ -15,6 +15,7 @@ import { mapLightWalletErrorToErrorMessage } from "./errors";
 //Vault nonce should be exactly 24 chars
 const VAULT_MSG = "pleaseallowmetointroducemyselfim";
 const GENERATED_KEY_SIZE = 56;
+export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 
 export async function getVaultKey(
   lightWalletUtil: LightWalletUtil,
@@ -33,7 +34,7 @@ export async function getVaultKey(
 }
 
 export const lightWizardFlows = {
-  tryConnectingWithLightWallet: (email: string, password: string, seed?: string) =>
+  tryConnectingWithLightWallet: (email: string, password: string) =>
     injectableFn(
       async (
         dispatch: AppDispatch,
@@ -49,8 +50,7 @@ export const lightWizardFlows = {
         try {
           const lightWalletVault = await lightWalletUtil.createLightWalletVault({
             password,
-            hdPathString: "m/44'/60'/0'",
-            recoverSeed: seed,
+            hdPathString: DEFAULT_HD_PATH,
           });
 
           const walletInstance = await lightWalletUtil.deserializeLightWalletVault(
@@ -70,8 +70,7 @@ export const lightWizardFlows = {
           );
           walletStorage.set(lightWallet.getMetadata(), userType);
           await web3Manager.plugPersonalWallet(lightWallet);
-          if (seed) dispatch(actions.routing.goToSuccessfulRecovery());
-          else dispatch(actions.walletSelector.connected(userType));
+          dispatch(actions.walletSelector.connected(userType));
         } catch (e) {
           logger.warn("Error while trying to connect with light wallet: ", e.message);
           //TODO: TRANSLATIONS

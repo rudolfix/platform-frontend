@@ -1,5 +1,5 @@
 .block {
-  $color-black: rgba($neu-almost-black, .55);
+  $color-black: rgba($color-black, .55);
   $color-navy-blue: #0c6383;
   $color-blue: #78d7dc;
   $color-green: #1fe06d;
@@ -54,5 +54,5 @@
 .date {
   font-size: px-to-rem(12px);
   font-weight: $font-weight-bold;
-  fill: $neu-almost-black;
+  fill: $color-black;
 }

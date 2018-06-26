@@ -12,9 +12,32 @@
 }
 
 .addon > :global(.input-group-text) {
-  background-color: $gray7;
-  padding: 0 px-to-rem(10px);
+  background-color: transparent;
+  padding: 0 0 px-to-rem(4px) px-to-rem(10px);
   border: 0;
+  border-bottom: 1px solid $color-graphite;
+}
+
+.custom-select {
+  position: relative;
+
+  &::after {
+    @include triangle-down(14px, 9px, $color-green);
+
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    content: "";
+  }
+
+  select {
+    // sass-lint:disable no-vendor-prefixes
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
 }
 
 .input-field {

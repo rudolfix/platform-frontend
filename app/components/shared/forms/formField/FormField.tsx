@@ -2,16 +2,18 @@ import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap";
+import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { isNonValid, isValid } from "./utils";
 
+import { FormLabel } from "./FormLabel";
+
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
-  label?: string;
-  placeholder?: string;
+  label?: string | React.ReactNode;
+  placeholder?: string | React.ReactNode;
   type?: InputType;
   prefix?: string;
   suffix?: string;
@@ -45,7 +47,7 @@ export class FormField extends React.Component<FieldGroupProps> {
     } as any;
     return (
       <FormGroup>
-        {label && <Label for={name}>{label}</Label>}
+        {label && <FormLabel>{label}</FormLabel>}
         <Field
           name={name}
           render={({ field }: FieldProps) => (
@@ -73,9 +75,9 @@ export class FormField extends React.Component<FieldGroupProps> {
             </InputGroup>
           )}
         />
-        <div className={styles.errorLabel}>
-          {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
-        </div>
+        {isNonValid(touched, errors, name) && (
+          <div className={styles.errorLabel}>{errors[name]}</div>
+        )}
       </FormGroup>
     );
   }

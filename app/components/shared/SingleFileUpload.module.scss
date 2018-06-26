@@ -41,6 +41,7 @@ $component-height: px-to-rem(120px);
   height: $component-height;
   padding: px-to-rem(12px);
   width: px-to-rem(120px);
+  flex-shrink: 0;
 
   img {
     max-width: 90%;

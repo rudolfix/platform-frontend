@@ -111,7 +111,7 @@ export const EtoRegistrationLegalInformation = compose<React.SFC>(
       stateValues: s.etoFlow.companyData,
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: any) => {
+      saveData: (data: TPartialCompanyEtoData) => {
         dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
       },
     }),

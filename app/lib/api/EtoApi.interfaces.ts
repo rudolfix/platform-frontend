@@ -144,7 +144,7 @@ export type TEtoSpecsData = YupTS.TypeOf<typeof EtoSpecsInformationType>;
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;
 export type TPartialCompanyEtoData = DeepPartial<TCompanyEtoData>;
 
-export type TFullEtoData = {
+export type TGeneralEtoData = {
   etoData: TPartialEtoSpecData;
   companyData: TPartialCompanyEtoData;
 };

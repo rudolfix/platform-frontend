@@ -1,6 +1,7 @@
 import * as queryString from "query-string";
 import { RouterState } from "react-router-redux";
 import { createSelector } from "reselect";
+import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { EthereumAddress } from "../../types";
 import { IConnectedWeb3State, IWeb3State } from "./reducer";
 import { WalletType } from "./types";
@@ -59,6 +60,9 @@ export const selectPreviousLightWalletEmail = (state: IWeb3State): string | unde
     state.previousConnectedWallet.walletType === WalletType.LIGHT &&
     state.previousConnectedWallet.email) ||
   undefined;
+
+export const selectPreviousConnectedWallet = (state: IWeb3State): TWalletMetadata | undefined =>
+  (!state.connected && state.previousConnectedWallet) || undefined;
 
 export const selectLightWalletFromQueryString = (
   state: RouterState,

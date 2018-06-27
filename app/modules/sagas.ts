@@ -12,6 +12,7 @@ import { settingsSagas } from "./settings/sagas";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
+import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { walletSagas } from "./wallet/sagas";
 import { web3Sagas } from "./web3/sagas";
 
@@ -26,6 +27,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(settingsSagas),
     effects.fork(web3Sagas),
     effects.fork(authSagas),
+    effects.fork(walletSelectorSagas),
     effects.fork(lightWalletSagas),
     effects.fork(walletSagas),
     effects.fork(etoFlowSagas),
@@ -39,9 +41,8 @@ export function* rootSaga(): Iterator<effects.Effect> {
     try {
       yield effects.call(allSagas);
     } catch (e) {
-      try {
-        // @todo add some kind of bugreporting
-      } catch (_) {}
+      // tslint:disable-next-line
+      console.error("ERROR IN TOP LEVEL SAGA HANDLER", e);
     }
   }
 }

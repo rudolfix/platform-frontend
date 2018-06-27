@@ -200,20 +200,20 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       </FormHighlightGroup>
     </FormSection>
     <Col>
-        <Row className="justify-content-end">
-          <Button
-            layout="primary"
-            className="mr-4"
-            type="submit"
-            onClick={() => {
-              props.saveData(props.values);
-            }}
-            isLoading={props.savingData}
-          >
-            Save
-          </Button>
-        </Row>
-      </Col>
+      <Row className="justify-content-end">
+        <Button
+          layout="primary"
+          className="mr-4"
+          type="submit"
+          onClick={() => {
+            props.saveData(props.values);
+          }}
+          isLoading={props.savingData}
+        >
+          Save
+        </Button>
+      </Row>
+    </Col>
   </EtoFormBase>
 );
 

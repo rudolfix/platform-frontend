@@ -5,13 +5,13 @@ import { Col, Row } from "reactstrap";
 
 import { CommonHtmlProps } from "../../../../types";
 import { ButtonIcon } from "../../Buttons";
+import { FormHighlightGroup } from "../FormHighlightGroup";
 import { FormField } from "../forms";
 import { FormTextArea } from "./FormTextArea";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 
-import { FormHighlightGroup } from "../FormHighlightGroup";
 
 interface IProps {
   className?: string;

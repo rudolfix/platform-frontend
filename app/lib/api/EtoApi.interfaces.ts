@@ -56,25 +56,22 @@ export const EtoKeyIndividualsType = YupTS.object({
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
 
 export const EtoTermsType = YupTS.object({
-  tokenName: YupTS.string(),
-  tokenSymbol: YupTS.string(),
+  equityTokenName: YupTS.string(),
+  equityTokenSymbol: YupTS.string(),
   // here we are missing image uploading data
   fullyDilutedPreMoneyValuation: YupTS.number(),
-  numberOfExistingShares: YupTS.number(),
-  numberOfShares: YupTS.number(),
-  // here we are missing automatic recalculated data
-  tokenDiscountForWhitelist: YupTS.string(),
-  shareNominalValue: YupTS.number(),
-  fundraisingCurrency: YupTS.string(),
-  // here we are missing prospectus language data
-  preSaleDuration: YupTS.number(),
-  publicOfferDuration: YupTS.number(),
-  minimumTicketSize: YupTS.number(),
-  tokenTransfersEnabledAfterEto: YupTS.boolean(),
-  etoIsNotUnderCrowdfundingRegulation: YupTS.boolean(),
-  dependencyOnThirdParties: YupTS.string(),
-  liquidationPreference: YupTS.number(),
-  hasVotingRightsEnabled: YupTS.boolean(),
+  equityTokensPerShare: YupTS.number(),
+  fullyDilutedPreMoneyValuationEur: YupTS.number(),
+  existingCompanyShares: YupTS.number(),
+  newSharesToIssue: YupTS.number(),
+  discountScheme: YupTS.string(),
+  shareNominalValueEur: YupTS.number(),
+  minTicketEur: YupTS.number(),
+  enableTransferOnSuccess: YupTS.boolean(),
+  riskRegulatedBusiness: YupTS.boolean(),
+  riskThirdParty: YupTS.string(),
+  liquidationPreferenceMultiplier: YupTS.number(),
+  tagAlongVotingRule: YupTS.boolean(),
 });
 
 type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;

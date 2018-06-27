@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
 
 import * as logo from "../../app/assets/img/logo_yellow.svg";
+import { TUserType } from "../lib/api/users/interfaces";
 import { actions } from "../modules/actions";
-import { selectIsAuthorized } from "../modules/auth/selectors";
+import { selectIsAuthorized, selectUserType } from "../modules/auth/selectors";
 import { appConnect } from "../store";
 import { appRoutes } from "./appRoutes";
 import * as styles from "./Header.module.scss";
@@ -13,11 +14,12 @@ import { loginWalletRoutes, walletRegisterRoutes } from "./walletSelector/wallet
 
 interface IStateProps {
   isAuthorized: boolean;
+  userType: TUserType;
   location: any;
 }
 
 interface IDispatchProps {
-  logout: () => void;
+  logout: (userType: TUserType) => void;
 }
 
 export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
@@ -27,7 +29,12 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       <span className={styles.logoText}>NEUFUND</span>
     </Link>
     {props.isAuthorized ? (
-      <Button layout="secondary" theme="white" onClick={props.logout} data-test-id="Header-logout">
+      <Button
+        layout="secondary"
+        theme="white"
+        onClick={() => props.logout(props.userType)}
+        data-test-id="Header-logout"
+      >
         LOGOUT
       </Button>
     ) : (
@@ -69,11 +76,12 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
 export const Header = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
+    userType: selectUserType(s.auth)!,
     location: s.router.location && s.router.location.pathname,
   }),
   dispatchToProps: dispatch => ({
-    logout: () => {
-      dispatch(actions.auth.logout());
+    logout: (userType: TUserType) => {
+      dispatch(actions.auth.logout(userType));
     },
   }),
 })(HeaderComponent);

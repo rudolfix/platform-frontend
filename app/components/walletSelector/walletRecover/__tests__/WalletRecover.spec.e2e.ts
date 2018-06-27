@@ -1,6 +1,6 @@
 import { get } from "lodash";
 import { tid } from "../../../../../test/testUtils";
-import { mockApiUrl } from "./../../light/__tests__/LightWalletRegister.spec.e2e";
+import { mockApiUrl } from "../../../../e2e-test-utils";
 
 describe("Wallet recover", () => {
   const words = [

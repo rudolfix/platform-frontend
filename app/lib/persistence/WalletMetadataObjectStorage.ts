@@ -33,4 +33,5 @@ export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
   derivationPath: string;
 }
 
-export const STORAGE_WALLET_METADATA_KEY = "NF_WALLET_METADATA";
+export const STORAGE_WALLET_METADATA_ISSUER_KEY = "NF_WALLET_ISSUER_METADATA";
+export const STORAGE_WALLET_METADATA_INVESTOR_KEY = "NF_WALLET_METADATA";

@@ -4,7 +4,6 @@ import { Col, Container, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
-import { Accordion, AccordionElement } from "../shared/Accordion";
 import { Button } from "../shared/Buttons";
 import { InlineIcon } from "../shared/InlineIcon";
 import { Panel } from "../shared/Panel";

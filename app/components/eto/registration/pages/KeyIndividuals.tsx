@@ -1,4 +1,4 @@
-import { withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { compose } from "redux";
@@ -11,6 +11,8 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 
+import { Col, Row } from "reactstrap";
+import { Button } from "../../../shared/Buttons";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormField, FormTextArea } from "../../../shared/forms/forms";
@@ -29,7 +31,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = () => (
+const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.key-individuals.title" />}
     validator={EtoKeyIndividualsType.toYup()}
@@ -197,6 +199,21 @@ const EtoForm = () => (
         />
       </FormHighlightGroup>
     </FormSection>
+    <Col>
+        <Row className="justify-content-end">
+          <Button
+            layout="primary"
+            className="mr-4"
+            type="submit"
+            onClick={() => {
+              props.saveData(props.values);
+            }}
+            isLoading={props.savingData}
+          >
+            Save
+          </Button>
+        </Row>
+      </Col>
   </EtoFormBase>
 );
 

@@ -1,4 +1,4 @@
-import { withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -17,6 +17,7 @@ import {
 
 import { EtoTermsType, TPartialCompanyEtoData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { Button } from "../../../shared/Buttons";
 import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
@@ -44,7 +45,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = () => (
+const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-terms.title" />}
     validator={EtoTermsType.toYup()}
@@ -253,6 +254,21 @@ const EtoForm = () => (
         />
       </div>
     </FormSection>
+    <Col>
+        <Row className="justify-content-end">
+          <Button
+            layout="primary"
+            className="mr-4"
+            type="submit"
+            onClick={() => {
+              props.saveData(props.values);
+            }}
+            isLoading={props.savingData}
+          >
+            Save
+          </Button>
+        </Row>
+      </Col>
   </EtoFormBase>
 );
 

@@ -85,7 +85,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
         <Col lg={4} xs={12} className="pt-2">
           <EtoFormProgressWidget
             isLoading={loadingData}
-            to={etoRegisterRoutes.etoTerms}
+            to={etoRegisterRoutes.legalInformation}
             progress={shouldEtoDataLoad ? legalInformationProgress : 0}
             name="Legal Information"
           />

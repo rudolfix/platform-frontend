@@ -14,6 +14,7 @@ export const ChartCircle: React.SFC<IChartCircleProps> = ({ progress, name }) =>
   const indicatorRadius = radius * 0.8;
   const indicatorCircumference = indicatorRadius * 2 * Math.PI;
   const svgCenter = viewBoxSize / 2;
+  const precisionDigit = 3;
 
   return (
     <div className={cn(styles.chartCircle, progress === 1 && "is-completed")}>
@@ -29,7 +30,7 @@ export const ChartCircle: React.SFC<IChartCircleProps> = ({ progress, name }) =>
         />
       </svg>
       <div className={styles.labels}>
-        <div className={styles.percents}>{`${progress * 100}%`}</div>
+        <div className={styles.percents}>{`${(progress * 100).toPrecision(precisionDigit)}%`}</div>
         <div className={styles.name}>{name}</div>
       </div>
     </div>

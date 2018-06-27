@@ -10,7 +10,7 @@ export interface IEtoFlowState {
 }
 
 export const etoFlowInitialState: IEtoFlowState = {
-  loading: true,
+  loading: false,
   saving: false,
   etoData: {},
   companyData: {},

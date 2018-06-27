@@ -64,7 +64,7 @@
     "clean-webpack-plugin": "^0.1.18",
     "codecov": "^3.0.0",
     "css-loader": "^0.28.8",
-    "cypress": "^2.1.0",
+    "cypress": "^3.0.1",
     "danger": "^3.7.10",
     "dotenv": "^4.0.0",
     "express": "^4.16.3",

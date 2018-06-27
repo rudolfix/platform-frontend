@@ -7,7 +7,7 @@ import { CommonHtmlProps } from "../../../types";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
-import { IPanelDarkProps, PanelDark } from "../../shared/PanelDark";
+import { IPanelProps, Panel } from "../../shared/Panel";
 import { TotalEuro } from "../TotalEuro";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
@@ -50,7 +50,7 @@ const computeChartDataForTokens = (euroValues: string[]) => {
   };
 };
 
-export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonHtmlProps> = ({
+export const WalletBalance: React.SFC<IPanelProps & IWalletBalance & CommonHtmlProps> = ({
   data,
   isLoading,
   headerText,
@@ -58,7 +58,7 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
   style,
   theme = "light",
 }) => (
-  <PanelDark
+  <Panel
     className={cn(className, styles.walletBalance, `t-${theme}`)}
     style={style}
     headerText={headerText}
@@ -100,5 +100,5 @@ export const WalletBalance: React.SFC<IPanelDarkProps & IWalletBalance & CommonH
         </div>
       </div>
     )}
-  </PanelDark>
+  </Panel>
 );

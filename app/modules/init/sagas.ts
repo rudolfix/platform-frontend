@@ -1,9 +1,9 @@
+import { LocationChangeAction } from "react-router-redux";
 import { effects } from "redux-saga";
 import { fork, put, select, take } from "redux-saga/effects";
 
-import { LocationChangeAction } from "react-router-redux";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IAppState } from "../../store";
+import { TUserType } from "../../lib/api/users/interfaces";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TAction } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
@@ -11,6 +11,8 @@ import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { detectUserAgent } from "../userAgent/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
+import { IAppState } from "./../../store";
+import { selectUserType } from "./../auth/selectors";
 
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
   try {
@@ -41,6 +43,7 @@ function* initApp({ logger }: TGlobalDependencies): any {
           }
 
           yield loadUser();
+          yield neuCall(loadPreviousWallet);
         } catch (e) {
           yield cleanupAndLogoutSaga();
           logger.error(
@@ -52,8 +55,6 @@ function* initApp({ logger }: TGlobalDependencies): any {
         logger.error("JTW expiring too soon.");
       }
     }
-
-    yield neuCall(loadPreviousWallet);
 
     yield put(actions.init.done("appInit"));
   } catch (e) {
@@ -78,8 +79,11 @@ export function* initStartSaga(_: TGlobalDependencies, action: TAction): Iterato
 }
 
 export function* cleanupAndLogoutSaga(): Iterator<any> {
-  yield put(actions.auth.logout());
-  yield put(actions.routing.goToLogin());
+  const userType: TUserType = yield effects.select((s: IAppState) => selectUserType(s.auth));
+  yield put(actions.auth.logout(userType));
+  userType === "investor"
+    ? yield put(actions.routing.goToLogin())
+    : yield put(actions.routing.goToEtoLogin());
 }
 
 export function* checkIfSmartcontractsInitNeeded(): any {

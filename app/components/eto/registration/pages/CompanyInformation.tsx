@@ -3,11 +3,13 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoCompanyInformationType, TPartialEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import {
+  EtoCompanyInformationType,
+  TPartialCompanyEtoData,
+} from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
@@ -19,18 +21,18 @@ import { Section } from "../Shared";
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialEtoData;
+  stateValues: TPartialCompanyEtoData;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialEtoData) => void;
+  saveData: (values: TPartialCompanyEtoData) => void;
 }
 
 const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
+const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
     <EtoFormBase title="Company Information" validator={EtoCompanyInformationType.toYup()}>
       <Section>
@@ -97,7 +99,7 @@ const EtoForm = (props: FormikProps<TPartialEtoData> & IProps) => {
   );
 };
 
-const EtoEnhancedForm = withFormik<IProps, TPartialEtoData>({
+const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   validationSchema: EtoCompanyInformationType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
@@ -112,11 +114,11 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.data,
+      stateValues: s.etoFlow.companyData,
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: any) => {
-        dispatch(actions.etoFlow.saveDataStart(data));
+      saveData: (data: TPartialCompanyEtoData) => {
+        dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
       },
     }),
   }),

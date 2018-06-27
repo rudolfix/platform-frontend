@@ -23,7 +23,7 @@ export interface IFormValues {
   repeatPassword: string;
 }
 
-interface IProps {
+interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
   currentValues?: IFormValues;
 }
@@ -73,13 +73,13 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   </Form>
 );
 
-const RegisterEnhancedLightWalletForm = withFormik<IProps, IFormValues>({
+const RegisterEnhancedLightWalletForm = withFormik<IDispatchProps, IFormValues>({
   validationSchema: validationSchema,
   mapPropsToValues: props => props.currentValues as IFormValues,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(RegisterLightWalletForm);
 
-export const RegisterWalletComponent: React.SFC<IProps> = props => {
+export const RegisterWalletComponent: React.SFC<IDispatchProps> = props => {
   return (
     <>
       <Row>
@@ -108,7 +108,7 @@ export const RegisterWalletComponent: React.SFC<IProps> = props => {
 };
 
 export const RegisterLightWallet = compose<React.SFC>(
-  appConnect<IProps>({
+  appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>
         dispatch(flows.wallet.tryConnectingWithLightWallet(values.email, values.password)),

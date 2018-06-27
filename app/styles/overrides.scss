@@ -3,21 +3,23 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 @import "./variables";
-@import "./elements/ul";
 @import "./utils";
 @import "./global";
 @import "./react-slick-overrides";
 
 @import "./elements/a";
+@import "./elements/form";
 @import "./elements/ul";
+@import "./elements/textarea";
+@import "./elements/label";
 
-// sass-lint:disable no-vendor-prefixes
-// Enable font smoothing on mac
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.form-group {
+  margin-bottom: $spacing-vertical-lg-1;
+
+  label {
+    display: inline-flex !important;
+  }
 }
-// sass-lint:enable no-vendor-prefixes
 
 a,
 button,
@@ -31,10 +33,23 @@ textarea {
 }
 
 .form-control {
-  font-size: $neu-font-size-lg !important;
-  border-top: 0 !important;
-  border-right: 0 !important;
-  border-left: 0 !important;
+  @include font-default;
+
+  border: 0;
+  border-bottom: 1px solid $color-graphite;
+  color: $color-graphite;
+  padding: 0 px-to-rem(10px) px-to-rem(4px);
+  background-color: transparent;
+
+  &:disabled {
+    background-color: transparent;
+  }
+
+  &:focus,
+  &.is-valid {
+    background-color: transparent;
+    border-color: $color-graphite !important;
+  }
 }
 
 // overrides for default styles of libraries for auto complete: react-select, react-virtualized-select, react-virtualized
@@ -71,6 +86,7 @@ textarea {
 .form-control {
   appearance: none;
   border-radius: 0;
+  font-size: px-to-rem(20px);
 }
 
 .modal {
@@ -84,15 +100,6 @@ textarea {
     justify-content: center;
   }
 }
-
-
-textarea {
-  padding: px-to-rem(10px) px-to-rem(16px);
-  min-height: px-to-rem(100px);
-  width: 100%;
-  outline: none;
-}
-
 
 .form-group {
   label {

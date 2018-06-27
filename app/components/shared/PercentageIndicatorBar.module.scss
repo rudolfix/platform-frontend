@@ -15,10 +15,11 @@
 
   .progress {
     fill: currentColor;
-    transition: 500ms ease-in-out width;
+    transition: 500ms ease-in-out transform;
   }
 
   .background {
+    width: 100%;
     fill: $gray9;
   }
 }

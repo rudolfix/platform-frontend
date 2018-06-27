@@ -25,7 +25,7 @@ export const SettingsWidgetsComponent: React.SFC<IProps> = ({ isLightWallet }) =
       )}
       <Col lg={4} xs={12}>
         <KycStatusWidget step={++settingsStepCounter} />
-      </Col>;
+      </Col>
     </>
   );
 };

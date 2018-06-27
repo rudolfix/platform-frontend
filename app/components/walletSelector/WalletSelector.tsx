@@ -54,14 +54,15 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
             <Tabs
               tabs={compact([
                 (userType === "investor" ||
-                  process.env.NF_ISSUERS_CAN_LOGIN_WITH_NEUFUND_WALLET === "1") && {
+                  process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && {
                   path: `${rootPath}/light`,
                   text: isLoginRoute
                     ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")
                     : formatIntlMessage("wallet-selector.tabs.neuwallet-register"),
                   dataTestId: "wallet-selector-light",
                 },
-                userType === "investor" && {
+                (userType === "investor" ||
+                  process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && {
                   path: `${rootPath}/browser`,
                   text: isLoginRoute
                     ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")

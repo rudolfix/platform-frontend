@@ -74,7 +74,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label="How will you use the raised capital?"
           name="useOfCapitalList"
           paragraphName="useOfCapital"
-          className="my-3 text-uppercase"
           suggestions={distributionSuggestions}
           prefix="%"
           blankField={{

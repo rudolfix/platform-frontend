@@ -9,7 +9,7 @@ export interface IChartCircleProps {
 }
 
 export const ChartCircle: React.SFC<IChartCircleProps> = ({ progress, name }) => {
-  const viewBoxSize = 210;
+  const viewBoxSize = 220;
   const radius = viewBoxSize / 2;
   const indicatorRadius = radius * 0.8;
   const indicatorCircumference = indicatorRadius * 2 * Math.PI;

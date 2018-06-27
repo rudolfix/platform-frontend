@@ -1,9 +1,7 @@
-.eto-form-progress-widget {
-  @include rect(300px);
+.content-wrapper {
+  @include rect(100%);
 
   align-items: center;
-  background-color: $color-white;
-  box-shadow: $shadow;
   display: flex;
   flex-direction: column;
   justify-content: center;

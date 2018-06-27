@@ -3,7 +3,10 @@
 
   &,
   svg {
-    @include rect(210px);
+    @include rect(220px);
+
+    display: block;
+    margin: 0 auto;
   }
 
   &:global(.is-completed) {
@@ -57,7 +60,7 @@
 }
 
 .name {
-  font-size: px-to-rem(24px);
+  font-size: px-to-rem(22px);
   font-weight: $font-weight-light;
   margin-top: -4px;
   max-width: 75%;

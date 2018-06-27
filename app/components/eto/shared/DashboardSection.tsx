@@ -13,13 +13,15 @@ interface IProps {
 }
 
 export const DashboardSection: React.SFC<IProps> = ({ title, children, step }) => (
-  <Row>
-    <Col lg={8} xs={12}>
-      <SectionHeader className="my-4">
-        {step && <>STEP {step}:</>} {title}
-        <InlineIcon onClick={() => {}} svgIcon={editIcon} />
-      </SectionHeader>
-    </Col>
+  <>
+    <Row>
+      <Col lg={8} xs={12}>
+        <SectionHeader className="my-4">
+          {step && <>STEP {step}:</>} {title}
+          <InlineIcon onClick={() => {}} svgIcon={editIcon} />
+        </SectionHeader>
+      </Col>
+    </Row>
     <Row>{children}</Row>
-  </Row>
+  </>
 );

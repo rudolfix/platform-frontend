@@ -19,14 +19,14 @@ import { UnionDictionary } from "../../../types";
 import { Button } from "../../shared/Buttons";
 import { Panel } from "../../shared/Panel";
 
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { WarningAlert } from "../../shared/WarningAlert";
+
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./KycStatusWidget.module.scss";
 
 interface IStateProps {

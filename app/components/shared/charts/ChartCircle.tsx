@@ -29,7 +29,7 @@ export const ChartCircle: React.SFC<IChartCircleProps> = ({ progress, name }) =>
         />
       </svg>
       <div className={styles.labels}>
-        <div className={styles.percents}>{`${progress * 100}%`}</div>
+        <div className={styles.percents}>{`${Math.round(progress* 100)}%`}</div>
         <div className={styles.name}>{name}</div>
       </div>
     </div>

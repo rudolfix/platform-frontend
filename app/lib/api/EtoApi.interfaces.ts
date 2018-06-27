@@ -72,7 +72,7 @@ export const EtoTermsType = YupTS.object({
   minimumTicketSize: YupTS.number(),
   tokenTransfersEnabledAfterEto: YupTS.boolean(),
   etoIsNotUnderCrowdfundingRegulation: YupTS.boolean(),
-  hasDependencyOnThirdParties: YupTS.boolean(),
+  dependencyOnThirdParties: YupTS.string(),
   liquidationPreference: YupTS.number(),
   hasVotingRightsEnabled: YupTS.boolean(),
 });

@@ -6,14 +6,7 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import {
-  BOOL_FALSE_KEY,
-  BOOL_TRUE_KEY,
-  FormField,
-  FormSelectField,
-  FormTextArea,
-  NONE_KEY,
-} from "../../../shared/forms/forms";
+import { FormField, FormSelectField, FormTextArea } from "../../../shared/forms/forms";
 
 import { EtoTermsType, TPartialCompanyEtoData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -28,9 +21,9 @@ import { Toggle } from "../../../shared/Toggle";
 import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
-  [NONE_KEY]: "please select",
-  [BOOL_TRUE_KEY]: "1",
-  [BOOL_FALSE_KEY]: "2",
+  "1": "Nominee",
+  "2": "Neumini UG",
+  "3": "Other",
 };
 
 interface IStateProps {
@@ -237,7 +230,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         label={
           <FormattedMessage id="eto.form.section.token-holders-rights.third-party-dependency" />
         }
-        name="hasDependencyOnThirdParties"
+        name="dependencyOnThirdParties"
       />
       <div className="form-group">
         <FormLabel>

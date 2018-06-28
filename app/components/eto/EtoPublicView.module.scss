@@ -1,0 +1,53 @@
+.documents {
+  [download] {
+    display: flex;
+
+    + [download] {
+      margin-top: 16px;
+    }
+
+    :global(.inline-icon) {
+      display: inline-flex;
+      margin-right: 10px;
+    }
+  }
+}
+
+.people-carousel-wrapper {
+  padding: 0 25px;
+}
+
+.people-carousel-slide-content {
+  display: flex;
+}
+
+.people-carousel-image {
+  @include rect(48px);
+
+  flex-shrink: 0;
+  margin-right: 14px;
+
+  &,
+  img {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+}
+
+.people-carousel-name {
+  @include font-headline-small;
+
+  color: $color-black;
+  font-weight: $font-weight-bold;
+}
+
+.people-carousel-title {
+  @include font-headline-small;
+
+  color: $color-graphite;
+  font-weight: $font-weight-bold;
+}
+
+.people-carousel-bio {
+  color: $color-graphite;
+}

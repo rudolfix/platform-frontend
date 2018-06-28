@@ -41,6 +41,7 @@ $card-heigh: px-to-rem(440px);
   position: absolute;
   top: 0;
   right: 0;
+  width: px-to-rem(81px);
   z-index: $z-index-base;
 }
 

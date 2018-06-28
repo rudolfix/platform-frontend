@@ -10,7 +10,9 @@ export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undef
     state.individualRequestState && state.individualRequestState.status === "Draft"
       ? state.businessRequestState
       : state.individualRequestState;
-  if (requestState) return requestState.status;
+  if (requestState) {
+    return requestState.status;
+  }
   return undefined;
 };
 

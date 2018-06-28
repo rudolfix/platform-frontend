@@ -220,6 +220,8 @@
   "kyc.disclaimer.contents": "The following information will be used to verify your identity in compliance with European Know Your Client and Anti Money Laundering policies.<br/><br/>Your information is always kept confidential and needs to be stored for at least 5 years.<br/><br/>By providing your information and clicking “Continue” you are consenting to your data being processed.",
   "kyc.disclaimer.header": "Why do we need this information?",
   "kyc.modal.submit-description": "Confirm submitting your Verification Process request",
+  "kyc.modal.verification.description": "Thank you for completing your identity verification process, our team will check your application and will communicate with you within 1 day. To contact support please click here, to continue deposit click here.",
+  "kyc.modal.verification.title": "Verification process is completed",
   "kyc.panel.go-back": "BACK",
   "kyc.panel.verification": "Verification",
   "kyc.personal.current.address": "Current address",

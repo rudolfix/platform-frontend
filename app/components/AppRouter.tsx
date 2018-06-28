@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
+import * as queryString from "query-string";
 
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
@@ -23,6 +24,7 @@ import { Wallet } from "./wallet/Wallet";
 import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
 import { WalletSelector } from "./walletSelector/WalletSelector";
 
+
 export const AppRouter: React.SFC = () => (
   <SwitchConnected>
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
@@ -39,12 +41,12 @@ export const AppRouter: React.SFC = () => (
       <OnlyPublicRoute
         key={appRoutes.registerEto}
         path={appRoutes.registerEto}
-        component={WalletSelector}
+        component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
         key={appRoutes.loginEto}
         path={appRoutes.loginEto}
-        component={WalletSelector}
+        component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
         key={appRoutes.recoverEto}
@@ -95,3 +97,22 @@ export const AppRouter: React.SFC = () => (
     <Redirect to={appRoutes.root} />
   </SwitchConnected>
 );
+
+const SecretProtected = (Component: any) =>
+  class extends React.Component<any> {
+    shouldComponentUpdate(): boolean {
+      return false;
+    }
+
+    render(): React.ReactNode {
+      const props = this.props;
+      const params = queryString.parse(window.location.search);
+
+      if (!process.env.NF_ISSUERS_SECRET || params.etoSecret === process.env.NF_ISSUERS_SECRET) {
+        return <Component {...props} />;
+      }
+
+      return <Redirect to="/" />;
+    }
+  };
+const EtoSecretProtectedWalletSelector = SecretProtected(WalletSelector);

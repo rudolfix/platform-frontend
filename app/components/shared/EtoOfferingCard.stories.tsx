@@ -33,13 +33,25 @@ const props: IEtoOfferingProps = {
   },
   topImage: {
     src: "",
-    srcSet: "",
+    srcSet: {
+      "1x": "",
+      "2x": "",
+      "3x": "",
+    },
     alt: "",
+    width: 1,
+    height: 1,
   },
   quoteImage: {
     src: "",
-    srcSet: "",
+    srcSet: {
+      "1x": "",
+      "2x": "",
+      "3x": "",
+    },
     alt: "",
+    width: 1,
+    height: 1,
   },
   logo,
   to: "#0",

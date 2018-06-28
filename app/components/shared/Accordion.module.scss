@@ -5,6 +5,12 @@
 
 .accordion-element {
 
+  &:last-of-type {
+    .content {
+      border-bottom: 0;
+    }
+  }
+
   &:global(.is-closed) {
     .title :global(.inline-icon) {
       transform: rotate(180deg);

@@ -1,9 +1,11 @@
 import * as React from "react";
 
+import { TTranslatedString } from "../../../types";
+
 import * as styles from "./FormSection.module.scss";
 
 interface IProps {
-  title: string | React.ReactNode;
+  title: TTranslatedString;
 }
 
 export const FormSection: React.SFC<IProps> = ({ title, children }) => {

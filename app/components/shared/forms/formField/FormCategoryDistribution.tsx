@@ -12,7 +12,6 @@ import { FormTextArea } from "./FormTextArea";
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 
-
 interface IProps {
   className?: string;
   name: string;

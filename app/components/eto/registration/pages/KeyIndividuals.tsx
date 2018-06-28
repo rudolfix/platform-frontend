@@ -204,9 +204,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         }}
       />
       <KeyIndividualsGroup
-        title={
-          <FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />
-        }
+        title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
         name="keyAlliances"
         blankField={{
           name: "",

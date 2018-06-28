@@ -1,19 +1,16 @@
 import * as cn from "classnames";
+import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 import { compose } from "redux";
-
-import { Form, FormikProps, withFormik } from "formik";
 import * as Yup from "yup";
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notifications/warning.svg";
+
 import { actions } from "../../../modules/actions";
 import {
-  selectDoesEmailExist,
   selectIsThereUnverifiedEmail,
   selectIsUserEmailVerified,
+  selectUnverifiedUserEmail,
   selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
 import { selectIsConnectedButtonLocked } from "../../../modules/verifyEmailWidget/reducer";
@@ -22,13 +19,17 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers"
 import { Button } from "../../shared/Buttons";
 import { FormField } from "../../shared/forms/formField/FormField";
 import { Panel } from "../../shared/Panel";
+
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
 interface IStateProps {
   isUserEmailVerified: boolean;
   isThereUnverifiedEmail: boolean;
-  doesEmailExist: boolean;
-  email?: string;
+  verifiedEmail?: string;
+  unverifiedEmail?: string;
   isLocked?: boolean;
 }
 
@@ -105,36 +106,63 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked }) => (
   </div>
 );
 
-const VerifiedUser: React.SFC<{ email?: string }> = ({ email }) => (
+const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
   <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
     </p>
     <Col xs={12} className="d-flex justify-content-center">
-      <p>{email}</p>
+      <p>
+        <b>
+          <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
+        </b>
+        {verifiedEmail}
+      </p>
     </Col>
   </div>
 );
 
 const UnVerifiedUser: React.SFC<{
-  isThereUnverifiedEmail: boolean;
   resendEmail: () => void;
-}> = ({ isThereUnverifiedEmail, resendEmail }) => (
+  verifiedEmail?: string;
+  unverifiedEmail?: string;
+}> = ({ resendEmail, verifiedEmail, unverifiedEmail }) => (
   <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
-    <p className={cn(styles.text, "pt-2")}>
+    <p className={cn(styles.text, "pt-2 mb-0")}>
       <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
     </p>
-    {isThereUnverifiedEmail && (
-      <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
-        <Button
-          layout="secondary"
-          iconPosition="icon-after"
-          svgIcon={arrowRight}
-          onClick={resendEmail}
-        >
-          <FormattedMessage id="settings.verify-email-widget.resend-link" />
-        </Button>
+
+    {verifiedEmail && (
+      <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
+        <p className="mb-0">
+          <b>
+            <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
+          </b>
+          {verifiedEmail}
+        </p>
       </Col>
+    )}
+    {unverifiedEmail && (
+      <>
+        <Col xs={12} className="d-flex justify-content-center">
+          <p className="mb-0">
+            <b>
+              <FormattedMessage id="settings.verify-email-widget.unverified-email" />:{" "}
+            </b>{" "}
+            {unverifiedEmail}
+          </p>
+        </Col>
+        <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
+          <Button
+            layout="secondary"
+            iconPosition="icon-after"
+            svgIcon={arrowRight}
+            onClick={resendEmail}
+          >
+            <FormattedMessage id="settings.verify-email-widget.resend-link" />
+          </Button>
+        </Col>
+      </>
     )}
   </div>
 );
@@ -144,9 +172,9 @@ export const VerifyEmailWidgetComponent: React.SFC<
   intl: { formatIntlMessage },
   isUserEmailVerified,
   isThereUnverifiedEmail,
-  doesEmailExist,
-  email,
   resendEmail,
+  verifiedEmail,
+  unverifiedEmail,
   addNewEmail,
   isLocked,
   step,
@@ -155,25 +183,24 @@ export const VerifyEmailWidgetComponent: React.SFC<
     <Panel
       headerText={formatIntlMessage("settings.verify-email-widget.header", { step })}
       rightComponent={
-        isUserEmailVerified ? (
+        isUserEmailVerified && !isThereUnverifiedEmail ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
         ) : (
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
     >
-      {doesEmailExist ? (
-        isUserEmailVerified ? (
-          <VerifiedUser {...{ email }} data-test-id="verified-section" />
-        ) : (
-          <UnVerifiedUser
-            {...{ isThereUnverifiedEmail, resendEmail }}
-            data-test-id="unverified-section"
-          />
-        )
-      ) : (
-        <NoEmailUser {...{ addNewEmail, isLocked }} />
+      {!isThereUnverifiedEmail &&
+        isUserEmailVerified && (
+          <VerifiedUser {...{ verifiedEmail }} data-test-id="verified-section" />
+        )}
+      {isThereUnverifiedEmail && (
+        <UnVerifiedUser
+          {...{ resendEmail, verifiedEmail, unverifiedEmail }}
+          data-test-id="unverified-section"
+        />
       )}
+      {!isThereUnverifiedEmail && !verifiedEmail && <NoEmailUser {...{ addNewEmail, isLocked }} />}
     </Panel>
   );
 };
@@ -183,8 +210,8 @@ export const VerifyEmailWidget = compose<React.SFC<IOwnProps>>(
     stateToProps: s => ({
       isUserEmailVerified: selectIsUserEmailVerified(s.auth),
       isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
-      doesEmailExist: selectDoesEmailExist(s.auth),
-      email: selectVerifiedUserEmail(s.auth),
+      verifiedEmail: selectVerifiedUserEmail(s.auth),
+      unverifiedEmail: selectUnverifiedUserEmail(s.auth),
       isLocked: selectIsConnectedButtonLocked(s.verifyEmailWidgetState),
     }),
     dispatchToProps: dispatch => ({

@@ -87,7 +87,7 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
     <MenuEntry
       svgString={iconSettings}
       to={appRoutes.settings}
-      menuName="Settings"
+      menuName={<FormattedMessage id="menu.settings" />}
       actionRequired={actionRequiredSettings}
       data-test-id="authorized-layout-settings-button"
     />

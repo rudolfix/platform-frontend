@@ -145,8 +145,10 @@ export class FormFieldDate extends React.Component<IProps> {
             />
           </div>
         </div>
-        {errors[name] &&
-          touched[name] && <div className={errorStyles.errorLabel}>{errors[name]}</div>}
+        <div className={styles.errorLabel}>
+          {errors[name] &&
+            touched[name] && <div className={errorStyles.errorLabel}>{errors[name]}</div>}
+        </div>
       </FormGroup>
     );
   }

@@ -15,6 +15,7 @@ export const routingActions = {
 
   // default routes
   goHome: () => createRoutingAction("/"),
+  goEtoHome: () => createRoutingAction("/eto-landing"),
 
   //kyc routes
   goToKYCHome: () => createRoutingAction(kycRoutes.start),
@@ -36,6 +37,7 @@ export const routingActions = {
 
   // login
   goToLogin: () => createRoutingAction(appRoutes.login),
+  goToEtoLogin: () => createRoutingAction(appRoutes.loginEto),
 
   // Successful password recovery
   goToSuccessfulRecovery: () => createRoutingAction(recoverRoutes.success),

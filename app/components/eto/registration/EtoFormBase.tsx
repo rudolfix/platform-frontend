@@ -11,7 +11,7 @@ import { Section } from "./Shared";
 import * as styles from "./EtoFormBase.module.scss";
 
 interface IProps {
-  title: string;
+  title: string | React.ReactNode;
 }
 
 interface IFormPercentageDoneProps {
@@ -32,7 +32,7 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
       etoFlowInitialState,
     );
 
-    return <PercentageIndicatorBar fraction={calculatedFraction} className="mb-5" />;
+    return <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />;
   }
 }
 
@@ -42,7 +42,7 @@ export const EtoFormBase: React.SFC<IProps & IFormPercentageDoneProps> = ({
   validator,
 }) => (
   <div>
-    <Form className="py-4">
+    <Form className={styles.form}>
       <h4 className={styles.header}>{title}</h4>
 
       <Section>

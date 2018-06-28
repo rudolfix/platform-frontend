@@ -12,6 +12,7 @@ describe("<HeaderComponent />", () => {
     const component = shallow(
       <HeaderComponent
         isAuthorized={false}
+        userType="investor"
         logout={mockFunction}
         location={appRoutes.etoLanding}
       />,
@@ -23,7 +24,12 @@ describe("<HeaderComponent />", () => {
   it("should render login button when unauthorized and not on ETO landing page", () => {
     const mockFunction = spy();
     const component = shallow(
-      <HeaderComponent isAuthorized={false} logout={mockFunction} location={appRoutes.root} />,
+      <HeaderComponent
+        isAuthorized={false}
+        logout={mockFunction}
+        location={appRoutes.root}
+        userType="investor"
+      />,
     );
 
     expect(component.find(tid("Header-login"))).to.have.length(1);
@@ -32,7 +38,12 @@ describe("<HeaderComponent />", () => {
   it("should not render logout button when unauthorized", () => {
     const mockFunction = spy();
     const component = shallow(
-      <HeaderComponent isAuthorized={false} logout={mockFunction} location={""} />,
+      <HeaderComponent
+        isAuthorized={false}
+        logout={mockFunction}
+        location={""}
+        userType="investor"
+      />,
     );
 
     expect(component.find(tid("Header-logout"))).to.have.length(0);
@@ -41,7 +52,12 @@ describe("<HeaderComponent />", () => {
   it("should render logout button when authorized", () => {
     const mockFunction = spy();
     const component = shallow(
-      <HeaderComponent isAuthorized={true} logout={mockFunction} location={""} />,
+      <HeaderComponent
+        isAuthorized={true}
+        logout={mockFunction}
+        location={""}
+        userType="investor"
+      />,
     );
 
     expect(component.find(tid("Header-logout"))).to.have.length(1);
@@ -50,7 +66,12 @@ describe("<HeaderComponent />", () => {
   it("should simulate a click and logout", () => {
     const mockFunction = spy();
     const component = shallow(
-      <HeaderComponent isAuthorized={true} logout={mockFunction} location={""} />,
+      <HeaderComponent
+        isAuthorized={true}
+        logout={mockFunction}
+        location={""}
+        userType="investor"
+      />,
     );
     const LogoutButton = component.find(tid("Header-logout"));
 

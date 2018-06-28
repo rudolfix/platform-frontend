@@ -1,5 +1,5 @@
 import { tid } from "../../../../test/testUtils";
-import { registerWithLightWallet } from "../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
+import { registerWithLightWallet } from "../../../e2e-test-utils";
 import { kycRoutes } from "../routes";
 
 const email = "test+small-business@neufund.org";

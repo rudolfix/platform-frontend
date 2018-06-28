@@ -47,7 +47,11 @@ const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props
       data-test-id="light-wallet-login-with-email-password-field"
     />
     <div className="text-center">
-      <Button type="submit" disabled={!props.values.password || props.isLoading}>
+      <Button
+        type="submit"
+        disabled={!props.values.password || props.isLoading}
+        data-test-id="wallet-selector-nuewallet.login-button"
+      >
         Login
       </Button>
     </div>

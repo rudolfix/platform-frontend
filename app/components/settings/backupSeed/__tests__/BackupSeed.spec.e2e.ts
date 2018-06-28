@@ -1,5 +1,5 @@
 import { tid } from "../../../../../test/testUtils";
-import { registerWithLightWallet } from "../../../walletSelector/light/__tests__/LightWalletRegister.spec.e2e";
+import { registerWithLightWallet } from "../../../../e2e-test-utils";
 
 const extractSeedFromDOM = (seed: string): string[] =>
   seed
@@ -14,7 +14,7 @@ const navigateToSettings = () => cy.get(tid("authorized-layout-settings-button")
 
 describe("Wallet backup recovery phrase", () => {
   it("should recover wallet from saved phrases", () => {
-    registerWithLightWallet("moe@test.com", "strongpassword");
+    registerWithLightWallet("moe-recover-wallet@test.com", "strongpassword");
 
     navigateToSettings();
 

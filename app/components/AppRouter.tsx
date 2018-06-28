@@ -1,6 +1,6 @@
+import * as queryString from "query-string";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
-import * as queryString from "query-string";
 
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
@@ -23,7 +23,6 @@ import { SwitchConnected } from "./shared/connectedRouting";
 import { Wallet } from "./wallet/Wallet";
 import { WalletRecoverMain } from "./walletSelector/walletRecover/WalletRecoverMain";
 import { WalletSelector } from "./walletSelector/WalletSelector";
-
 
 export const AppRouter: React.SFC = () => (
   <SwitchConnected>

@@ -2,6 +2,25 @@
 set -e
 cd "$(dirname "$0")"
 
+BACKEND_SHA=6c0e3b4586c897be4210657ca6161a97f5c9c502
+
+# we tag images with shorter SHA
+BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}
+
+
+if [[ -z "${REGISTRY_HOST}" ]]; then
+  echo "You need to provide REGISTRY_HOST env var";
+fi
+
+if [[ -z "${REGISTRY_USER}" ]]; then
+  echo "You need to provide REGISTRY_USER env var";
+fi
+
+if [[ -z "${REGISTRY_PASS}" ]]; then
+  echo "You need to provide REGISTRY_PASS env var";
+fi
+
+
 run_backend() {
     # copy config e2e as default .env if doesnt exist
     cp -n ../app/config/.env.e2e ../.env || true
@@ -9,21 +28,30 @@ run_backend() {
     echo "Cloning backend repo..."
     if [[ -z "${BACKEND_DEPLOYMENT_KEY}" ]]; then
         if [ ! -d "./platform-backend" ]; then
-            git clone git@github.com:Neufund/platform-backend.git -b kk/fix-smartcontract-SHA
+            git clone git@github.com:Neufund/platform-backend.git
         fi
+
+        cd ./platform-backend
+        echo "resetting backend to ${BACKEND_SHA}"
+        git pull
+        git reset --hard ${BACKEND_SHA}
+        cd ..
     else
         if [ ! -d "./platform-backend" ]; then
             echo "using env variable"
             echo "${BACKEND_DEPLOYMENT_KEY}" | base64 -d > "./cert"
             chmod 600 ./cert
-            ssh-agent sh -c 'ssh-add ./cert; git clone git@github.com:Neufund/platform-backend.git; cd ./platform-backend; git reset --hard f949ae5f6a5d9fe6e248a37ac04790d226f401a0'
+            ssh-agent sh -c 'ssh-add ./cert; git clone git@github.com:Neufund/platform-backend.git; cd ./platform-backend; git reset --hard ${BACKEND_SHA}'
         fi
     fi
+
+    echo ${REGISTRY_PASS} | docker login ${REGISTRY_HOST} --username ${REGISTRY_USER} --password-stdin
 
     echo "Running backend"
     cd ./platform-backend
 
-    make run
+    make docker-pull tag=dev_latest
+    make run-pure
 
     cd ..
     echo "Backend running"

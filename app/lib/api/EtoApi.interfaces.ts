@@ -46,10 +46,43 @@ export const EtoProductVisionType = YupTS.object({
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
 
+const EtoKeyIndividualType = YupTS.object({
+  name: YupTS.string(),
+  role: YupTS.string(),
+  description: YupTS.string(),
+});
+
 export const EtoKeyIndividualsType = YupTS.object({
-  teamMemberName: YupTS.string(),
-  teamMemberRole: YupTS.string(),
-  teamMemberShortBio: YupTS.string(),
+  team: YupTS.array(YupTS.object({
+    name: YupTS.string(),
+    role: YupTS.string(),
+    description: YupTS.string(),
+  })),
+  boardMembers: YupTS.array(YupTS.object({
+    name: YupTS.string(),
+    role: YupTS.string(),
+    description: YupTS.string(),
+  })),
+  notableInvestors: YupTS.array(YupTS.object({
+    name: YupTS.string(),
+    role: YupTS.string(),
+    description: YupTS.string(),
+  })),
+  keyCustomers: YupTS.array(YupTS.object({
+    name: YupTS.string(),
+    role: YupTS.string(),
+    description: YupTS.string(),
+  })),
+  partners: YupTS.array(YupTS.object({
+    name: YupTS.string(),
+    role: YupTS.string(),
+    description: YupTS.string(),
+  })),
+  keyAlliances: YupTS.array(YupTS.object({
+    name: YupTS.string(),
+    role: YupTS.string(),
+    description: YupTS.string(),
+  }))
   // here we are missing image uploading data
 });
 

@@ -37,7 +37,7 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 class ETOFormsProgressSectionWidget extends React.Component<IProps> {
-  componentDidUpdate(): void {
+  componentDidMount(): void {
     const { kycStatus, isEmailVerified, loadDataStart } = this.props;
 
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;

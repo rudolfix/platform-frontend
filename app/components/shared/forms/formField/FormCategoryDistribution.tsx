@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import { FieldArray, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
@@ -6,13 +5,12 @@ import { Col, Row } from "reactstrap";
 
 import { CommonHtmlProps } from "../../../../types";
 import { ButtonIcon } from "../../Buttons";
+import { FormHighlightGroup } from "../FormHighlightGroup";
 import { FormField } from "../forms";
 import { FormTextArea } from "./FormTextArea";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
-
-import * as styles from "./FormCategoryDistribution.module.scss";
 
 interface IProps {
   className?: string;
@@ -52,28 +50,18 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
     <Row>
       <Col xs={8}>
         <Row className="justify-content-center">
-          <Col xs={1} className="pl-4 pt-2">
+          <Col xs={1} className="pt-2">
             {isLastElement && <ButtonIcon svgIcon={plusIcon} onClick={addField} />}
           </Col>
           <Col>
-            <FormField
-              name={`${props.name}.${formFieldKeys[0]}`}
-              className={styles.containerWidget}
-              placeholder={placeholder}
-            />
+            <FormField name={`${props.name}.${formFieldKeys[0]}`} placeholder={placeholder} />
           </Col>
         </Row>
       </Col>
       <Col>
         <Row>
           <Col xs={9}>
-            <FormField
-              prefix={prefix}
-              type="number"
-              addonStyle={styles.addon}
-              name={`${props.name}.${formFieldKeys[1]}`}
-              className={styles.containerWidget}
-            />
+            <FormField prefix={prefix} name={`${props.name}.${formFieldKeys[1]}`} />
           </Col>
           {!isFirstElement && (
             <span className="pt-2">
@@ -111,49 +99,45 @@ export class FormCategoryDistribution extends React.Component<
     const categoryDistribution = values[name] || [];
     const formFieldKeys = Object.keys(this.blankField);
     return (
-      <Col className={cn(styles.containerWidget, className)}>
-        <Row>
-          <Col>
-            <div className="p-4">{label}</div>
-          </Col>
-        </Row>
-        {paragraphName && (
-          <FormTextArea name={paragraphName} placeholder="Detail" className={styles.textArea} />
-        )}
+      <FormHighlightGroup>
+        <div className={className}>
+          <div className="mb-4 text-uppercase">{label}</div>
+          {paragraphName && <FormTextArea name={paragraphName} placeholder="Detail" />}
 
-        <FieldArray
-          name={name}
-          render={arrayHelpers => (
-            <>
-              {categoryDistribution.map(
-                (_: { description: string; percent: number }, index: number) => {
-                  const isLastElement = !(index < categoryDistribution.length - 1);
-                  const isFirstElement = index === 0;
+          <FieldArray
+            name={name}
+            render={arrayHelpers => (
+              <>
+                {categoryDistribution.map(
+                  (_: { description: string; percent: number }, index: number) => {
+                    const isLastElement = !(index < categoryDistribution.length - 1);
+                    const isFirstElement = index === 0;
 
-                  return (
-                    <SingleCategoryDistributionComponent
-                      key={index}
-                      formFieldKeys={formFieldKeys}
-                      prefix={prefix}
-                      name={`${name}.${index}`}
-                      removeField={() => {
-                        arrayHelpers.remove(index);
-                        this.suggestions.splice(index, 1);
-                      }}
-                      placeholder={this.suggestions[index] || "Other"}
-                      addField={() => {
-                        setFieldValue(`${name}.${index + 1}`, this.blankField);
-                      }}
-                      isFirstElement={isFirstElement}
-                      isLastElement={isLastElement}
-                    />
-                  );
-                },
-              )}
-            </>
-          )}
-        />
-      </Col>
+                    return (
+                      <SingleCategoryDistributionComponent
+                        key={index}
+                        formFieldKeys={formFieldKeys}
+                        prefix={prefix}
+                        name={`${name}.${index}`}
+                        removeField={() => {
+                          arrayHelpers.remove(index);
+                          this.suggestions.splice(index, 1);
+                        }}
+                        placeholder={this.suggestions[index] || "Other"}
+                        addField={() => {
+                          setFieldValue(`${name}.${index + 1}`, this.blankField);
+                        }}
+                        isFirstElement={isFirstElement}
+                        isLastElement={isLastElement}
+                      />
+                    );
+                  },
+                )}
+              </>
+            )}
+          />
+        </div>
+      </FormHighlightGroup>
     );
   }
 }

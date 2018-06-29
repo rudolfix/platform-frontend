@@ -66,7 +66,6 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
   actionRequiredSettings,
 }) => (
   <div className={styles.menu}>
-    <MenuEntry svgString={iconDashboard} to={appRoutes.etoPublicView} menuName="eto public view" />
     <MenuEntry
       svgString={iconDashboard}
       to={appRoutes.dashboard}

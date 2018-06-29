@@ -18,6 +18,7 @@ interface IGeneralButton {
 
 interface IButtonIcon extends IGeneralButton {
   svgIcon: string;
+  className?: string;
 }
 export interface IButtonProps {
   layout?: TButtonLayout;

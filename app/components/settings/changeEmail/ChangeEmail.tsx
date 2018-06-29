@@ -9,7 +9,7 @@ import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
 import { FormField } from "../../shared/forms/formField/FormField";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 
 interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
@@ -50,7 +50,7 @@ export const ChangeEmailComponent: React.SFC<IDispatchProps & IIntlProps> = ({
   ...props
 }) => {
   return (
-    <PanelDark headerText={formatIntlMessage("settings.change-email-component.header")}>
+    <Panel headerText={formatIntlMessage("settings.change-email-component.header")}>
       <Row>
         {/* TODO:  Change according to Marketing requests*/}
         <Col xs={6} className="mt-3">
@@ -62,7 +62,7 @@ export const ChangeEmailComponent: React.SFC<IDispatchProps & IIntlProps> = ({
           <SettingsEnhancedChangeEmailForm {...props} />
         </Col>
       </Row>
-    </PanelDark>
+    </Panel>
   );
 };
 

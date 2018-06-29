@@ -60,7 +60,7 @@ export const RecoverySuccess = compose<React.SFC>(
       userType: selectUrlUserType(s.router),
     }),
     dispatchToProps: dispatch => ({
-      goToDashboard: (userType: TUserType) => dispatch(actions.walletSelector.connected(userType)),
+      goToDashboard: () => dispatch(actions.walletSelector.connected()),
     }),
   }),
 )(RecoverySuccessComponent);

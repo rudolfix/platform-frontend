@@ -1,12 +1,15 @@
-@import "../../../styles/neufund-theme";
-
 .header {
-  margin-top: px-to-rem(60px);
-  margin-bottom: px-to-rem(30px);
+  @include font-headline-small;
+
+  margin-bottom: $spacing-vertical-lg-2;
   text-align: center;
 }
 
 .progress-bar {
-  margin-left: auto;
-  margin-right: auto;
+  max-width: px-to-rem(450px);
+  margin: 0 auto $spacing-vertical-lg-4;
+}
+
+.form {
+  padding: $spacing-vertical-lg-4 $spacing-vertical-lg-2 $spacing-vertical-lg-2;
 }

@@ -9,7 +9,7 @@ import { SingleFileUpload, TAcceptedFileType } from "../../SingleFileUpload";
 
 interface IOwnProps {
   name: string;
-  label: string;
+  label: string | React.ReactNode;
   acceptedFiles: TAcceptedFileType;
   fileFormatInformation: string;
 }

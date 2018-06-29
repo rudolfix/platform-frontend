@@ -46,7 +46,7 @@ const CompanyImages: React.SFC = () => (
       <HiResImage partialPath="landing/uniti" />
     </a>
     <a href="#eto-card-0" className={styles.companyImage}>
-      <HiResImage partialPath="landing/brille" />
+      <HiResImage partialPath="landing/brille" max2x />
     </a>
     <a href="#eto-card-5" className={styles.companyImage}>
       <HiResImage partialPath="landing/blockstate" />

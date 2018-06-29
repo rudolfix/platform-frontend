@@ -1,3 +1,4 @@
+import * as queryString from "query-string";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -11,7 +12,7 @@ import { Kyc } from "./kyc/Kyc";
 
 import { appRoutes } from "./appRoutes";
 import { emailVerify } from "./emailVerify";
-import { EtoOverview } from "./eto/EtoOverview";
+import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoRegister } from "./eto/registration/Start";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
@@ -39,12 +40,12 @@ export const AppRouter: React.SFC = () => (
       <OnlyPublicRoute
         key={appRoutes.registerEto}
         path={appRoutes.registerEto}
-        component={WalletSelector}
+        component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
         key={appRoutes.loginEto}
         path={appRoutes.loginEto}
-        component={WalletSelector}
+        component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
         key={appRoutes.recoverEto}
@@ -58,6 +59,7 @@ export const AppRouter: React.SFC = () => (
 
     {/* only issuers routes */}
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />
+    <OnlyAuthorizedRoute path={appRoutes.etoPublicView} issuerComponent={EtoPublicView} exact />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute
@@ -65,11 +67,6 @@ export const AppRouter: React.SFC = () => (
       investorComponent={Dashboard}
       issuerComponent={EtoDashboard}
       exact
-    />
-    <OnlyAuthorizedRoute
-      path={appRoutes.etoOverview}
-      issuerComponent={EtoOverview}
-      investorComponent={EtoOverview}
     />
     <OnlyAuthorizedRoute
       path={appRoutes.verify}
@@ -95,3 +92,22 @@ export const AppRouter: React.SFC = () => (
     <Redirect to={appRoutes.root} />
   </SwitchConnected>
 );
+
+const SecretProtected = (Component: any) =>
+  class extends React.Component<any> {
+    shouldComponentUpdate(): boolean {
+      return false;
+    }
+
+    render(): React.ReactNode {
+      const props = this.props;
+      const params = queryString.parse(window.location.search);
+
+      if (!process.env.NF_ISSUERS_SECRET || params.etoSecret === process.env.NF_ISSUERS_SECRET) {
+        return <Component {...props} />;
+      }
+
+      return <Redirect to="/" />;
+    }
+  };
+const EtoSecretProtectedWalletSelector = SecretProtected(WalletSelector);

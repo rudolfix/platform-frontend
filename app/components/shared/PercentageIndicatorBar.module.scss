@@ -1,5 +1,3 @@
-@import "../../styles/neufund-theme";
-
 .percentage-indicator-bar {
   align-items: center;
   color: $green2;
@@ -17,10 +15,11 @@
 
   .progress {
     fill: currentColor;
-    transition: 500ms ease-in-out width;
+    transition: 500ms ease-in-out transform;
   }
 
   .background {
+    width: 100%;
     fill: $gray9;
   }
 }

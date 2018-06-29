@@ -17,16 +17,16 @@ import {
 import { appConnect } from "../../../store";
 import { UnionDictionary } from "../../../types";
 import { Button } from "../../shared/Buttons";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
-import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { WarningAlert } from "../../shared/WarningAlert";
+
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./KycStatusWidget.module.scss";
 
 interface IStateProps {
@@ -170,7 +170,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
   } = props;
 
   return (
-    <PanelDark
+    <Panel
       headerText={<FormattedMessage id="settings.kyc-widget.header" values={{ step }} />}
       rightComponent={
         !isLoading &&
@@ -205,7 +205,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </Col>
         </div>
       )}
-    </PanelDark>
+    </Panel>
   );
 };
 

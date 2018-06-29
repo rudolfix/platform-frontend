@@ -11,6 +11,7 @@ Code disabled by feature flag will be entirely stripped from build.
 ```
 NF_FEATURE_EMAIL_CHANGE_ENABLED
 NF_USER_INFO_COMPONENT_ENABLED
-NF_ISSUERS_CAN_LOGIN_WITH_NEUFUND_WALLET
+NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET
 NF_ISSUERS_ENABLED
+NF_ISSUERS_SECRET - if NF_ISSUERS_ENABLED===1 and provided issuer access will be protected by additional secret value
 ```

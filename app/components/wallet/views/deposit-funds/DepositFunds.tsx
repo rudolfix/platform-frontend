@@ -3,7 +3,7 @@ import { Col, Row } from "reactstrap";
 import { actions } from "../../../../modules/actions";
 import { BreadCrumb } from "../../../shared/BreadCrumb";
 import { Button } from "../../../shared/Buttons";
-import { PanelWhite } from "../../../shared/PanelWhite";
+import { Panel } from "../../../shared/Panel";
 import { Tabs } from "../../../shared/Tabs";
 import * as styles from "./DepositFunds.module.scss";
 
@@ -40,7 +40,7 @@ export const DepositFunds = injectIntlHelpers<IProps>(
         </Row>
         <Row>
           <Col xs={12} lg={{ size: 10, offset: 1 }}>
-            <PanelWhite>
+            <Panel>
               <div className={styles.panelContent}>
                 <Tabs
                   className="mb-5"
@@ -60,7 +60,7 @@ export const DepositFunds = injectIntlHelpers<IProps>(
                   <FormattedMessage id="form.button.done" />
                 </DoneButton>
               </div>
-            </PanelWhite>
+            </Panel>
           </Col>
         </Row>
       </>

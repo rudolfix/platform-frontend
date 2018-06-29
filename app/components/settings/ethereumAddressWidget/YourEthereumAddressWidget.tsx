@@ -3,7 +3,7 @@ import * as React from "react";
 import { selectEthereumAddress } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { EthereumAddress } from "../../../types";
-import { PanelDark } from "../../shared/PanelDark";
+import { Panel } from "../../shared/Panel";
 
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
@@ -14,12 +14,14 @@ interface IStateProps {
 }
 
 export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ address }) => (
-  <PanelDark
+  <Panel
     headerText={<FormattedMessage id="your-ethereum-address-widget.header" />}
     rightComponent={<img src={ethIcon} />}
   >
-    <div className={styles.panelBody}>{address}</div>
-  </PanelDark>
+    <div className={styles.panelBody} data-test-id="your-ether-address-widget-eth-address">
+      {address}
+    </div>
+  </Panel>
 );
 
 export const YourEthereumAddressWidget = appConnect<IStateProps>({

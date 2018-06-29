@@ -11,8 +11,8 @@ export interface IGenericModalState {
 export type TIconType = keyof typeof genericModalIcons;
 
 export interface IGenericModal {
-  title: string;
-  description?: string;
+  title: string | React.ReactNode;
+  description?: string | React.ReactNode;
   icon?: TIconType;
 }
 

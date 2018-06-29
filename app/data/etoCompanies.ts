@@ -4,9 +4,8 @@ import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.p
 import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
 import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
 import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
-import * as brile24 from "../assets/img/eto_offers/brille24@1x.jpg";
-import * as brile242 from "../assets/img/eto_offers/brille24@2x.jpg";
-import * as brile24hover from "../assets/img/eto_offers/brille_hover.gif";
+import * as brile24hover from "../assets/img/eto_offers/brille_animation.gif";
+import * as brile24 from "../assets/img/eto_offers/brille_card.jpg";
 import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
@@ -50,14 +49,20 @@ export const etoCompaniesCards: Array<EtoData> = [
         credits: "",
       },
       topImage: {
-        src: brile24,
-        srcSet: `${brile24} 1x, ${brile242} 2x`,
+        srcSet: {
+          "1x": brile24,
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
-        src: brile24hover,
-        srcSet: `${brile24hover} 1x`,
+        srcSet: {
+          "1x": brile24hover,
+        },
         alt: "",
+        height: 270,
+        width: 530,
       },
       to: "https://itunes.apple.com/de/app/brille24/id1262362205?l=en&mt=8",
       bannerWithGif: true,
@@ -86,14 +91,21 @@ export const etoCompaniesCards: Array<EtoData> = [
         credits: "",
       },
       topImage: {
-        src: uniti,
-        srcSet: `${uniti} 1x, ${uniti2} 2x`,
+        srcSet: {
+          "1x": uniti,
+          "2x": uniti2,
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
-        src: uniti,
-        srcSet: `${unitihover}`,
+        srcSet: {
+          "1x": unitihover,
+        },
         alt: "",
+        height: 261,
+        width: 525,
       },
       bannerWithGif: true,
       to: "https://www.youtube.com/watch?v=49JASBTng-4",
@@ -123,19 +135,31 @@ export const etoCompaniesCards: Array<EtoData> = [
         credits: "Rainer Wohlers, Melchers Group",
       },
       topImage: {
-        src: myswoop,
-        srcSet: `${myswoop} 1x, ${myswoop2} 2x`,
+        srcSet: {
+          "1x": myswoop,
+          "2x": myswoop2,
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
-        src: myswoophover,
-        srcSet: `${myswoophover} 1x, ${myswoop2hover} 2x`,
+        srcSet: {
+          "1x": myswoophover,
+          "2x": myswoop2hover,
+        },
         alt: "",
+        height: 35,
+        width: 100,
       },
       badge: {
-        src: myswoopbadge,
-        srcSet: `${myswoopbadge} 1x, ${myswoopbadge2} 2x`,
+        srcSet: {
+          "1x": myswoopbadge,
+          "2x": myswoopbadge2,
+        },
         alt: "",
+        height: 81,
+        width: 71,
       },
       to: "http://www.myswooop.de/",
     },
@@ -164,14 +188,22 @@ export const etoCompaniesCards: Array<EtoData> = [
         credits: "Rudi Ludwig, Investor",
       },
       topImage: {
-        src: nextbigthing,
-        srcSet: `${nextbigthing} 1x, ${nextbigthing2} 2x`,
+        srcSet: {
+          "1x": nextbigthing,
+          "2x": nextbigthing2,
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
-        src: nextbigthinghover,
-        srcSet: `${nextbigthinghover} 1x, ${nextbigthing2hover} 2x`,
+        srcSet: {
+          "1x": nextbigthinghover,
+          "2x": nextbigthing2hover,
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       to: "http://www.nextbigthing.ag/",
     },
@@ -200,13 +232,21 @@ export const etoCompaniesCards: Array<EtoData> = [
         credits: "Meher Roy, co-founder of Chorus One and host at Epicenter.tv",
       },
       topImage: {
-        src: emflux,
+        srcSet: {
+          "1x": emflux,
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
-        src: emfluxhover,
-        srcSet: `${emfluxhover} 1x, ${emflux2hover} 2x`,
+        srcSet: {
+          "1x": emfluxhover,
+          "2x": emflux2hover,
+        },
         alt: "",
+        height: 35,
+        width: 100,
       },
       to: "http://www.emfluxmotors.com/",
     },
@@ -234,14 +274,22 @@ export const etoCompaniesCards: Array<EtoData> = [
         credits: "",
       },
       topImage: {
-        src: blockstate,
-        srcSet: `${blockstate} 1x, ${blockstate2} 2x`,
+        srcSet: {
+          "1x": blockstate,
+          "2x": blockstate2,
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
-        src: blockstatehover,
-        srcSet: `${blockstatehover} 1x, ${blockstate2hover} 2x`,
+        srcSet: {
+          "1x": blockstatehover,
+          "2x": blockstate2hover,
+        },
         alt: "",
+        height: 35,
+        width: 100,
       },
       to: "http://www.blockstate.com",
     },
@@ -269,13 +317,21 @@ export const etoCompaniesCards: Array<EtoData> = [
         "Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
       topImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 35,
+        width: 100,
       },
       teaser: true,
     },
@@ -293,13 +349,21 @@ export const etoCompaniesCards: Array<EtoData> = [
         "German biotech startup introducing precision prevention with DNA healthcare applications. Featuring genome sequencing technologies.",
       topImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 35,
+        width: 100,
       },
       teaser: true,
     },
@@ -317,13 +381,21 @@ export const etoCompaniesCards: Array<EtoData> = [
         "Fintech developing solutions for transacting fiat currencies over blockchains – Smart Money. Coming to Ethereum in 2018.",
       topImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       teaser: true,
     },
@@ -346,13 +418,21 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       topImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 50,
+        width: 100,
       },
       quoteImage: {
         src: "",
-        srcSet: "",
+        srcSet: {
+          "1x": "",
+        },
         alt: "",
+        height: 35,
+        width: 100,
       },
       teaser: true,
     },

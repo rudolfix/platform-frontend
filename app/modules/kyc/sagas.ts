@@ -18,7 +18,7 @@ import {
   TRequestOutsourcedStatus,
   TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
-import { IAppState } from "../../store";
+import { IAppAction, IAppState } from "../../store";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { displayErrorModalSaga } from "../genericModal/sagas";
 import {
@@ -558,6 +558,22 @@ function* submitBusinessRequest(
 export function* loadKycRequestData(): any {
   yield put(actions.kyc.kycLoadIndividualRequest());
   yield put(actions.kyc.kycLoadBusinessRequest());
+
+  // we block init untill both requests are done. This avoids flickering of various elements in the app.
+  yield loadForOneOfTheKYCRequestsToLoad();
+  yield loadForOneOfTheKYCRequestsToLoad();
+}
+
+function* loadForOneOfTheKYCRequestsToLoad(): any {
+  yield take([
+    (action: IAppAction) =>
+      action.type === "KYC_UPDATE_INDIVIDUAL_REQUEST_STATE" &&
+      !action.payload.individualRequestStateLoading,
+
+    (action: IAppAction) =>
+      action.type === "KYC_UPDATE_BUSINESS_REQUEST_STATE" &&
+      !action.payload.businessRequestStateLoading,
+  ]);
 }
 
 export function* kycSagas(): any {

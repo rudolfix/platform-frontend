@@ -1,18 +1,15 @@
-@import "../../../../styles/neufund-theme";
-
 .date-field {
-  @include media-breakpoint-up (lg) {
+  @include media-breakpoint-up(lg) {
     flex-direction: row;
   }
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: px-to-rem(20px);
   flex-direction: column;
 
   input {
-    @include media-breakpoint-up (lg) {
+    @include media-breakpoint-up(lg) {
       width: px-to-rem(80px);
       margin: 0 px-to-rem(10px);
     }
@@ -22,7 +19,7 @@
   }
 
   .label {
-    @include media-breakpoint-up (lg) {
+    @include media-breakpoint-up(lg) {
       align-self: flex-end;
       margin-bottom: 0;
     }
@@ -47,9 +44,16 @@
 .input-wrapper {
   &:last-of-type {
     input {
-      @include media-breakpoint-up (lg) {
+      @include media-breakpoint-up(lg) {
         margin-right: 0;
       }
     }
   }
+}
+
+.error-label {
+  color: $neu-red;
+  min-height: px-to-rem(31px);
+  padding-right: px-to-rem(5px);
+  text-align: right;
 }

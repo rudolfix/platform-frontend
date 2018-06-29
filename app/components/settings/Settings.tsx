@@ -2,22 +2,13 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import { selectIsLightWallet } from "../../modules/web3/selectors";
-import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
-import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereumAddressWidget/YourEthereumAddressWidget";
-import { KycStatusWidget } from "./kycStates/KycStatusWidget";
-import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
+import { SettingsWidgets } from "./SettingsWidgets";
 
-interface IProps {
-  isLightWallet: boolean;
-}
-
-export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
-  let settingsStepCounter = 0;
+export const Settings: React.SFC = () => {
   return (
     <LayoutAuthorized>
       <Row className="row-gutter-top">
@@ -26,20 +17,7 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
             <FormattedMessage id="settings.security-settings.title" />
           </SectionHeader>
         </Col>
-        <Col lg={4} xs={12}>
-          <VerifyEmailWidget step={++settingsStepCounter} />
-        </Col>
-
-        {isLightWallet && (
-          <Col lg={4} xs={12}>
-            <BackupSeedWidget step={++settingsStepCounter} />
-          </Col>
-        )}
-
-        <Col lg={4} xs={12}>
-          <KycStatusWidget step={++settingsStepCounter} />
-        </Col>
-
+        <SettingsWidgets />
         <Col xs={12}>
           <SectionHeader>
             <FormattedMessage id="settings.account-info.title" />
@@ -67,9 +45,3 @@ export const SettingsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
     </LayoutAuthorized>
   );
 };
-
-export const Settings = appConnect<IProps, {}>({
-  stateToProps: s => ({
-    isLightWallet: selectIsLightWallet(s.web3),
-  }),
-})(SettingsComponent);

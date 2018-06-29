@@ -1,5 +1,3 @@
-@import "../../../styles/neufund-theme";
-
 .transaction-list {
   box-shadow: $shadow;
 }
@@ -35,7 +33,7 @@
   &:global(.is-selected),
   &:hover {
     background-color: darken($neu-pale-blue, 2%);
-    color: $neu-almost-black;
+    color: $color-black;
   }
 
   &:global(.is-selected) {

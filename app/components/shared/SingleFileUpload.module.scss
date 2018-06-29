@@ -1,5 +1,3 @@
-@import "../../styles/neufund-theme";
-
 $component-height: px-to-rem(120px);
 
 .single-file-upload {
@@ -7,7 +5,7 @@ $component-height: px-to-rem(120px);
 }
 
 .dropzone {
-  display: inline-flex;
+  display: flex;
   height: $component-height;
   align-items: center;
 
@@ -43,6 +41,7 @@ $component-height: px-to-rem(120px);
   height: $component-height;
   padding: px-to-rem(12px);
   width: px-to-rem(120px);
+  flex-shrink: 0;
 
   img {
     max-width: 90%;

@@ -24,6 +24,8 @@ export const selectUserEmail = (state: IAuthState): string | undefined =>
   state.user && (state.user.unverifiedEmail || state.user.verifiedEmail);
 export const selectVerifiedUserEmail = (state: IAuthState): string | undefined =>
   state.user && state.user.verifiedEmail;
+export const selectUnverifiedUserEmail = (state: IAuthState): string | undefined =>
+  state.user && state.user.unverifiedEmail;
 export const selectUser = (state: IAuthState): IUser | undefined => state.user;
 export const selectBackupCodesVerified = (state: IAuthState): boolean =>
   !!state.user && !!state.user.backupCodesVerified;

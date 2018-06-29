@@ -1,9 +1,8 @@
 // sass-lint:disable force-pseudo-nesting
 // sass-lint:disable nesting-depth
-@import "../../styles/neufund-theme";
 
-$_hover-color: $neu-piss-yellow;
-$_focus-color: $neu-piss-yellow;
+$_hover-color: $color-brand;
+$_focus-color: $color-brand;
 $_active-color: lighten($_hover-color, 20%);
 
 :global(.button) {
@@ -42,7 +41,7 @@ $_active-color: lighten($_hover-color, 20%);
 
     &:hover {
       .content {
-        color: $neu-pale-grey;
+        color: $color-gray;
         background-color: transparent;
         border-color: currentColor;
       }
@@ -63,7 +62,7 @@ $_active-color: lighten($_hover-color, 20%);
       .content {
         background-color: $_hover-color;
         border-color: $_hover-color;
-        color: $neu-almost-black;
+        color: $color-white;
       }
     }
 
@@ -71,7 +70,7 @@ $_active-color: lighten($_hover-color, 20%);
       .content {
         background-color: $_active-color;
         border-color: $_active-color;
-        color: $neu-almost-black;
+        color: $color-white;
       }
     }
   }
@@ -101,7 +100,7 @@ $_active-color: lighten($_hover-color, 20%);
     }
 
     &.dark {
-      color: $neu-almost-black;
+      color: $color-black;
     }
 
     &.brand {
@@ -111,6 +110,10 @@ $_active-color: lighten($_hover-color, 20%);
       :local(.content) {
         border-color: $color-brand;
       }
+    }
+
+    &.silver {
+      color: $neu-slate-grey;
     }
 
     // elements
@@ -134,7 +137,7 @@ $_active-color: lighten($_hover-color, 20%);
   }
 }
 
-.button-close {
+.button-icon {
   cursor: pointer;
   width: 20px;
   height: 20px;

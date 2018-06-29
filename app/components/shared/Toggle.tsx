@@ -6,7 +6,7 @@ interface IProps {
   disabledLabel: string | React.ReactNode;
   enabledLabel: string | React.ReactNode;
   onClick: () => void;
-  checked: boolean;
+  checked?: boolean;
   disabled?: boolean;
 }
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { PanelWhite } from "../../shared/PanelWhite";
+import { Panel } from "../../shared/Panel";
 
 interface IquestionAndAnswer {
   question: string;
@@ -15,7 +15,7 @@ interface IProps {
 
 export const QuestionsAndAnswers: React.SFC<IProps> = ({ questionsAndAnswers }) => {
   return (
-    <PanelWhite>
+    <Panel>
       <Container>
         <Row>
           <Col>
@@ -29,6 +29,6 @@ export const QuestionsAndAnswers: React.SFC<IProps> = ({ questionsAndAnswers }) 
           </Col>
         </Row>
       </Container>
-    </PanelWhite>
+    </Panel>
   );
 };

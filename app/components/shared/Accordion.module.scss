@@ -1,11 +1,15 @@
-@import "../../styles/neufund-theme";
-
 .accordion {
   display: flex;
   flex-direction: column;
 }
 
 .accordion-element {
+
+  &:last-of-type {
+    .content {
+      border-bottom: 0;
+    }
+  }
 
   &:global(.is-closed) {
     .title :global(.inline-icon) {

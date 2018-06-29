@@ -44,7 +44,7 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
         </Row>
 
         <Row className="mb-5 justify-content-center">
-          <p className="-center">
+          <p className={styles.content}>
             {genericModalObj && genericModalObj.icon && genericModalIcons[genericModalObj.icon]}{" "}
             {genericModalObj && genericModalObj.description}
           </p>

@@ -23,9 +23,8 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
   switch (action.type) {
     case "ETO_FLOW_LOAD_DATA_START":
       return {
-        // it will re-load data in the background
-        loading: true,
         ...state,
+        loading: true,
       };
     case "ETO_FLOW_LOAD_DATA":
       return {

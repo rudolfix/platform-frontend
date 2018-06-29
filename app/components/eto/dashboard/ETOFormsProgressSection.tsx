@@ -37,7 +37,7 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 class ETOFormsProgressSectionWidget extends React.Component<IProps> {
-  componentDidUpdate(): void {
+  componentDidMount(): void {
     const { kycStatus, isEmailVerified, loadDataStart } = this.props;
 
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
@@ -87,7 +87,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
         <Col lg={4} xs={12} sm={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
-            to={etoRegisterRoutes.etoTerms}
+            to={etoRegisterRoutes.legalInformation}
             progress={shouldEtoDataLoad ? legalInformationProgress : 0}
             name="Legal Information"
           />

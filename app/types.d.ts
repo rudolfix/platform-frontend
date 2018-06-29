@@ -1,4 +1,5 @@
 import { HTMLAttributes, CSSProperties } from "react";
+import { FormattedMessage } from "react-intl";
 
 type Dictionary<T> = { [id: string]: T };
 type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
@@ -65,3 +66,5 @@ export type CommonHtmlProps = {
 };
 
 export type Size = "narrow" | "wide";
+
+export type TTranslatedString = string | React.ReactElement<FormattedMessage>;

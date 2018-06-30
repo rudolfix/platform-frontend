@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { CommonHtmlProps } from "../../../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { ButtonIcon } from "../../Buttons";
 import { FormHighlightGroup } from "../FormHighlightGroup";
 import { FormField } from "../forms";
@@ -15,7 +15,7 @@ import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 interface IProps {
   className?: string;
   name: string;
-  label?: string;
+  label?: TTranslatedString;
   prefix?: string;
   selectedCategory?: { name: string; percentage: number };
 }
@@ -61,7 +61,10 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
       <Col>
         <Row>
           <Col xs={9}>
-            <FormField prefix={prefix} name={`${props.name}.${formFieldKeys[1]}`} />
+            <FormField
+              prefix={prefix}
+              type="number"
+              name={`${props.name}.${formFieldKeys[1]}`} />
           </Col>
           {!isFirstElement && (
             <span className="pt-2">

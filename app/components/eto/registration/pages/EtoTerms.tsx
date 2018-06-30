@@ -96,6 +96,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder="Number of share"
         name="newSharesToIssue"
       />
+
       <FormHighlightGroup>
         <FormField
           label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
@@ -142,6 +143,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           </Col>
         </Row>
       </FormHighlightGroup>
+
       <FormTextArea
         name="discountScheme"
         label={

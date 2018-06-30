@@ -3,11 +3,12 @@ $_logo-size-sm: 80px;
 
 .cover {
   @include get-out-of-container-layout;
-  @include responsive-size(margin-bottom, 40px, 66px);
+
+  margin-bottom: $spacing-vertical-lg-1;
 }
 
 .company-details {
-  @include responsive-size(margin-top, -100px, $_logo-size-xl * -.64);
+  @include responsive-size(margin-top, $_logo-size-sm *  -1.15, $_logo-size-xl * -1.15);
 
   @include media-breakpoint-up(md) {
     flex-direction: row;
@@ -17,12 +18,13 @@ $_logo-size-sm: 80px;
 
   flex-direction: column;
   display: flex;
-  justify-content: flex-start;
   padding-left: $authorized-layout-horizontal-padding-sm;
   padding-right: $authorized-layout-horizontal-padding-sm;
 }
 
 .identity {
+  @include responsive-size(margin-top, $_logo-size-sm * .3, $_logo-size-xl * .3);
+
   display: flex;
 }
 
@@ -40,6 +42,7 @@ $_logo-size-sm: 80px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  justify-content: center;
   margin-right: 10px;
   z-index: $z-index-base;
 }
@@ -63,18 +66,13 @@ $_logo-size-sm: 80px;
   @include media-breakpoint-up(md) {
     order: 1;
     margin-bottom: 0;
-  }
-
-  @include media-breakpoint-up(sm) {
     display: flex;
   }
 
+  align-items: center;
   display: none;
-  align-items: flex-end;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
   justify-content: flex-end;
-  order: -1;
-  margin-bottom: 10px;
   margin-left: auto;
   z-index: $z-index-base;
 }

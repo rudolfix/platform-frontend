@@ -102,6 +102,10 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
     formik: PropTypes.object,
   };
 
+  private blankNameObject = {
+    members: []
+  };
+
   private blankField = { ...this.props.blankField };
 
   componentWillMount(): void {
@@ -109,14 +113,14 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
     const { name } = this.props;
 
     if (!values[name]) {
-      setFieldValue(`${name}.0`, this.blankField);
+      setFieldValue(name, this.blankNameObject);
     }
   }
 
   render(): React.ReactNode {
     const { title, name } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const individuals = values[name] || [];
+    const individuals = values[name].members || [];
 
     return (
       <FormSection title={title}>
@@ -128,10 +132,10 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
                 <Individual
                   key={index}
                   onRemoveClick={() => {
-                    arrayHelpers.remove(index);
+                    // arrayHelpers.remove(index);
                   }}
                   onAddClick={() => {
-                    setFieldValue(`${name}.${index + 1}`, this.blankField);
+                    setFieldValue(`${name}.members.${index + 1}`, this.blankField);
                   }}
                   index={index}
                   isFirst={!index}
@@ -155,7 +159,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
     >
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
-        name="team"
+        name="founders"
         blankField={{
           name: "",
           role: "",
@@ -183,7 +187,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           image: "",
         }}
       />
-      <KeyIndividualsGroup
+      {/* <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.key-customers.title" />}
         name="keyCustomers"
         blankField={{
@@ -192,7 +196,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           description: "",
           image: "",
         }}
-      />
+      /> */}
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.partners.title" />}
         name="partners"
@@ -203,7 +207,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           image: "",
         }}
       />
-      <KeyIndividualsGroup
+      {/* <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
         name="keyAlliances"
         blankField={{
@@ -212,7 +216,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           description: "",
           image: "",
         }}
-      />
+      /> */}
       <Col>
         <Row className="justify-content-end">
           <Button

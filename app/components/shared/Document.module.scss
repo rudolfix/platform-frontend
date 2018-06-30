@@ -1,0 +1,23 @@
+.document {
+  &:global(.doc) {
+    color: $color-blue;
+  }
+
+  &:global(.pdf) {
+    color: $color-orange;
+  }
+}
+
+.file,
+.text,
+.label {
+  fill: currentColor;
+}
+
+.text {
+  text-transform: uppercase;
+}
+
+.label {
+  opacity: .18;
+}

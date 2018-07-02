@@ -52,92 +52,126 @@
   }
 
   position: relative;
-  padding-bottom: 30px;
+  margin-top: -10%;
 
   .company-image {
+    @include circle(250px);
+    @include responsive-size(height, 40px, 250px);
+    @include responsive-size(width, 40px, 250px);
+
     filter: drop-shadow(5px 5px 5px $gray-shadow);
     position: absolute;
-    // animation: breathing 10s ease-out infinite normal;
+    transition: .2s ease-in-out transform;
+    top: 0;
+    left: 0;
 
     &:hover {
-      animation: 0;
-      transition: .2s ease-in-out;
       transform: scale(1.1);
     }
 
     // images placement
-    &:nth-of-type(1) {
-      top: -100px;
-      left: 50px;
-    }
-
     &:nth-of-type(2) {
-      top: -27px;
-      right: -91px;
+      transform: translateX(120%);
     }
 
     &:nth-of-type(3) {
-      top: 215px;
-      left: 127px;
+      transform: translateX(240%);
     }
 
     &:nth-of-type(4) {
-      top: 270px;
-      right: -166px;
+      transform: translate(65%, 100%);
     }
 
     &:nth-of-type(5) {
-      top: 493px;
-      left: 0;
+      transform: translate(185%, 100%);
     }
 
     &:nth-of-type(6) {
-      top: 546px;
-      right: -39px;
+      transform: translate(130%, 200%);
     }
 
-    @include media-breakpoint-only(lg) {
-      img {
-        height: 200px;
-      }
-
-      &:nth-of-type(1) {
-        top: -37px;
-        left: 50px;
-      }
-
-      &:nth-of-type(2) {
-        top: 17px;
-        right: -55px;
-      }
-
-      &:nth-of-type(3) {
-        top: 182px;
-        left: 129px;
-      }
-
-      &:nth-of-type(4) {
-        top: 257px;
-        right: -114px;
-      }
-
-      &:nth-of-type(5) {
-        top: 394px;
-        left: 0;
-      }
-
-      &:nth-of-type(6) {
-        top: 456px;
-        right: 25px;
-      }
+    &:nth-of-type(7) {
+      transform: translate(250%, 200%);
     }
 
-    @include media-breakpoint-down(md) {
-      position: initial;
-      width: 200px;
-      margin-left: 30px;
-      margin-top: 40px;
-    }
+    // @for $i from 4 to 5 {
+    //   &:nth-of-type(#{$i}) {
+    //     transform: translate($i * 110% + 50%, 100%);
+    //   }
+    // }
+
+    // &:nth-of-type(2) {
+    //   top: 0;
+    //   transform: translateX(110%)
+    // }
+
+    // &:nth-of-type(3) {
+    //   top: 16%;
+    //   left: 96%;
+    // }
+
+    // &:nth-of-type(4) {
+    //   top: 48%;
+    //   left: 96%;
+    // }
+
+    // &:nth-of-type(5) {
+    //   top: 66%;
+    //   left: 50%;
+    // }
+
+    // &:nth-of-type(6) {
+    //   top: 48%;
+    //   left: 3%;
+    // }
+
+    // &:nth-of-type(7) {
+    //   top: 16%;
+    //   left: 3%;
+    // }
+
+    // @include media-breakpoint-only(lg) {
+    //   img {
+    //     height: 200px;
+    //   }
+
+    //   &:nth-of-type(1) {
+    //     top: -37px;
+    //     left: 50px;
+    //   }
+
+    //   &:nth-of-type(2) {
+    //     top: 17px;
+    //     right: -55px;
+    //   }
+
+    //   &:nth-of-type(3) {
+    //     top: 182px;
+    //     left: 129px;
+    //   }
+
+    //   &:nth-of-type(4) {
+    //     top: 257px;
+    //     right: -114px;
+    //   }
+
+    //   &:nth-of-type(5) {
+    //     top: 394px;
+    //     left: 0;
+    //   }
+
+    //   &:nth-of-type(6) {
+    //     top: 456px;
+    //     right: 25px;
+    //   }
+    // }
+
+    // @include media-breakpoint-down(md) {
+    //   position: initial;
+    //   width: 200px;
+    //   margin-left: 30px;
+    //   margin-top: 40px;
+    // }
 
     @include media-breakpoint-down(sm) {
       width: 140px;

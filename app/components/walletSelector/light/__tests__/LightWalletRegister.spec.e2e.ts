@@ -7,6 +7,7 @@ import {
   mockApiUrl,
   registerWithLightWallet,
 } from "../../../../e2e-test-utils";
+import { typeEmailPassword } from "../../../../e2e-test-utils/index";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {
@@ -64,7 +65,7 @@ describe("Light wallet login / register", () => {
     });
   });
 
-  it.skip("should return an error when logging with same email", () => {
+  it("should return an error when logging with same email", () => {
     // Special email @see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
     const email = "0x42912@neufund.org";
     const password = "strongpassword";

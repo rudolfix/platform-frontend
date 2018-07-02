@@ -5,6 +5,10 @@ $_logo-size-sm: 80px;
   @include get-out-of-container-layout;
 
   margin-bottom: $spacing-vertical-lg-1;
+
+  img {
+    user-select: none;
+  }
 }
 
 .company-details {

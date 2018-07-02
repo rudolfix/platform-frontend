@@ -109,7 +109,7 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
       />
       <MenuEntry
         svgString={iconDocuments}
-        to="#0"
+        to={appRoutes.documents}
         menuName={<FormattedMessage id="menu.documents-page" />}
       />
       <MenuEntry

@@ -26,8 +26,13 @@ $lg-width: px-to-rem(140px);
 }
 
 .menu-items {
+  @include media-breakpoint-up (sm) {
+    flex-direction: column;
+  }
+
   top: 20px;
   position: sticky;
+  display: flex;
 }
 
 .menu-item {

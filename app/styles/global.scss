@@ -42,6 +42,10 @@ body {
   padding-right: $authorized-layout-horizontal-padding-sm;
   padding-top: $authorized-layout-vertical-padding-sm;
   -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-vendor-prefixes
+  background-image: url("../assets/img/dust_bg.svg");
+  background-repeat: repeat-x;
+  background-position: bottom;
+  padding-bottom: px-to-rem(236px);
 }
 
 .row-gutter-top {

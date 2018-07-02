@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { TTranslatedString } from "../../../types";
 
-import { Link } from "react-router-dom";
 import { IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
 import { Tag } from "../../shared/Tag";
 
@@ -21,8 +20,8 @@ export const Cover: React.SFC<IProps> = ({ companyBanner, companyName, companyOn
   return (
     <div className={styles.cover}>
       <ResponsiveImage
-        width={1230}
-        height={380}
+        width={1250}
+        height={400}
         srcSet={companyLogo.srcSet}
         alt={companyBanner.alt} />
 

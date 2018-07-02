@@ -264,6 +264,7 @@
   "module.kyc.sagas.problem-uploading": "There was a problem uploading your file. Please try again.",
   "module.kyc.sagas.problem.submitting": "There was a problem submitting your request. Please try again.",
   "module.kyc.sagas.successfully-uploaded": "The file was successfully uploaded",
+  "modules.auth.sagas.sign-in-user.email-already-exists": "It seems like this email has already been registered on Neufund. Please choose a different email address to continue setting up your account",
   "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems": "Our server is experiencing problems connecting with your wallet. Please try again or contact our Support Desk.",
   "modules.auth.sagas.sign-in-user.message-signing-timeout": "Timeout when signing message",
   "modules.auth.sagas.sign-in-user.message-signing-was-rejected": "Message signing was rejected",

@@ -7,6 +7,7 @@ import {
   mockApiUrl,
   registerWithLightWallet,
 } from "../../../../e2e-test-utils";
+import { typeEmailPassword } from "../../../../e2e-test-utils/index";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {
@@ -62,6 +63,20 @@ describe("Light wallet login / register", () => {
         });
       });
     });
+  });
+
+  it.skip("should return an error when logging with same email", () => {
+    // Special email @see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
+    const email = "0x42912@neufund.org";
+    const password = "strongpassword";
+    const repeatedEmail = "email has already been registered";
+
+    cy.visit("/register");
+    typeEmailPassword(email, password);
+
+    cy
+      .get(tid("components.shared-warning-alert.message"))
+      .then(errorMsg => expect(errorMsg.text()).to.contain(repeatedEmail));
   });
 
   // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit

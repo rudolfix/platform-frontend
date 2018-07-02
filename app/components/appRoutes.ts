@@ -14,6 +14,7 @@ export const appRoutes = {
   kyc: "/kyc",
   wallet: "/wallet",
   dashboard: "/dashboard",
+  documents: "/documents",
   settings: "/settings",
   demo: "/demo",
   eto: "/eto",

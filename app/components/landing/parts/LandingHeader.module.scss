@@ -62,8 +62,10 @@
     filter: drop-shadow(5px 5px 5px $gray-shadow);
     position: absolute;
     transition: .2s ease-in-out transform;
+    transform-origin: center;
     top: 0;
     left: 0;
+    will-change: transform;
 
     &:hover {
       transform: scale(1.1);
@@ -72,26 +74,50 @@
     // images placement
     &:nth-of-type(2) {
       transform: translateX(120%);
+
+      &:hover {
+        transform: scale(1.1) translateX(110%);
+      }
     }
 
     &:nth-of-type(3) {
       transform: translateX(240%);
+
+      &:hover {
+        transform: scale(1.1) translateX(220%);
+      }
     }
 
     &:nth-of-type(4) {
       transform: translate(65%, 100%);
+
+      &:hover {
+        transform: scale(1.1) translate(60%, 90%);
+      }
     }
 
     &:nth-of-type(5) {
       transform: translate(185%, 100%);
+
+      &:hover {
+        transform: scale(1.1) translate(170%, 90%);
+      }
     }
 
     &:nth-of-type(6) {
       transform: translate(130%, 200%);
+
+      &:hover {
+        transform: scale(1.1) translate(120%, 180%);
+      }
     }
 
     &:nth-of-type(7) {
       transform: translate(250%, 200%);
+
+      &:hover {
+        transform: scale(1.1) translate(230%, 185%);
+      }
     }
 
     // @for $i from 4 to 5 {

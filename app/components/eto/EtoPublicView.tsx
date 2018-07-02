@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { Settings } from "react-slick";
 import { Col, Row } from "reactstrap";
@@ -12,50 +13,18 @@ import { FUNDING_ROUNDS } from "./registration/pages/LegalInformation";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Accordion, AccordionElement } from "../shared/Accordion";
 import { DocumentsWidget } from "../shared/DocumentsWidget";
+import { MediaLinksWidget } from "../shared/MediaLinksWidget";
 import { NewsWidget } from "../shared/NewsWidget";
 import { Panel } from "../shared/Panel";
 import { SectionHeader } from "../shared/SectionHeader";
 import { Video } from "../shared/Video";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus";
+import { EtoTimeline } from "./overview/EtoTimeline";
 import { Cover } from "./publicView/Cover";
 
-import { FormattedMessage } from "react-intl";
 import * as tokenIcon from "../../assets/img/neu_icon.svg";
 import * as styles from "./EtoPublicView.module.scss";
 
-const coverData = {
-  coverImage: {
-    alt: "",
-    src: "",
-    srcSet: {
-      "1x": "",
-      "2x": "",
-      "3x": "",
-    },
-    width: 1230,
-    height: 380,
-  },
-  company: {
-    name: "name",
-    shortDescription: "short description",
-    website: {
-      title: "www.example.com",
-      url: "www.whatewerworks.in",
-    },
-    logo: {
-      alt: "",
-      src: "",
-      srcSet: {
-        "1x": "",
-        "2x": "",
-        "3x": "",
-      },
-      width: 1,
-      height: 1,
-    },
-    tags: ["incubator", "innovation", "iot", "germany"],
-  },
-};
 
 const documentsData = [
   {
@@ -102,13 +71,20 @@ const documentsData = [
   },
 ];
 
-const tabsData = [
-  { text: "Team", path: "/" },
-  { text: "Investors", path: "/#a" },
-  { text: "Partners", path: "/#b" },
-  { text: "Key customers", path: "/#c" },
-  { text: "Advisors", path: "/#d" },
-];
+const mediaLinksData = [
+  {
+    title: "sample link",
+    url: "url"
+  },
+  {
+    title: "sample link",
+    url: "url"
+  },
+  {
+    title: "sample link",
+    url: "url"
+  },
+]
 
 const sliderSettings: Settings = {
   dots: false,
@@ -136,74 +112,13 @@ const sliderSettings: Settings = {
   ],
 };
 
-const peopleCarouselData = [
-  {
-    image: {
-      "1x": "",
-      "2x": "",
-      "3x": "",
-    },
-    name: "person name",
-    title: "person title",
-    bio:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non tenetur, impedit labore vero eum omnis iusto quaerat ea, facere perferendis quae!",
-  },
-  {
-    image: {
-      "1x": "",
-      "2x": "",
-      "3x": "",
-    },
-    name: "person name",
-    title: "person title",
-    bio:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non tenetur, impedit labore vero eum omnis iusto quaerat ea, facere perferendis quae!",
-  },
-  {
-    image: {
-      "1x": "",
-      "2x": "",
-      "3x": "",
-    },
-    name: "person name",
-    title: "person title",
-    bio:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non tenetur, impedit labore vero eum omnis iusto quaerat ea, facere perferendis quae!",
-  },
-  {
-    image: {
-      "1x": "",
-      "2x": "",
-      "3x": "",
-    },
-    name: "person name",
-    title: "person title",
-    bio:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non tenetur, impedit labore vero eum omnis iusto quaerat ea, facere perferendis quae!",
-  },
-  {
-    image: {
-      "1x": "",
-      "2x": "",
-      "3x": "",
-    },
-    name: "person name",
-    title: "person title",
-    bio:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non tenetur, impedit labore vero eum omnis iusto quaerat ea, facere perferendis quae!",
-  },
-  {
-    image: {
-      "1x": "",
-      "2x": "",
-      "3x": "",
-    },
-    name: "person name",
-    title: "person title",
-    bio:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non tenetur, impedit labore vero eum omnis iusto quaerat ea, facere perferendis quae!",
-  },
-];
+const day = 86400000;
+const etoStartDate = Date.now() - 20 * day;
+const bookBuildingEndDate = etoStartDate + 16 * day;
+const whitelistedEndDate = bookBuildingEndDate + 7 * day;
+const publicEndDate = whitelistedEndDate + 7 * day;
+const inSigningEndDate = publicEndDate + 14 * day;
+const etoEndDate = inSigningEndDate + 7 * day;
 
 interface IProps {
   companyData: any;
@@ -214,7 +129,7 @@ interface ICurrencies {
   [key: string]: string;
 }
 
-const CURRENCIES: ICurrencies = {
+export const CURRENCIES: ICurrencies = {
   eth: "ETH",
   eur_t: "nEUR"
 }
@@ -240,7 +155,6 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
         tags={companyData.categories} />
       <Row>
         <Col className="mb-4">
-          <SectionHeader className="mb-4"><FormattedMessage id="eto.form.eto-timeline" /></SectionHeader>
           <EtoOverviewStatus
             cap="HARD CAP: 750M EDT"
             duration="22.02.2018 to 22.5.2019"
@@ -253,8 +167,25 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
       </Row>
 
       <Row>
+        <Col className="mb-4">
+          <SectionHeader className="mb-4"><FormattedMessage id="eto.public-view.eto-timeline" /></SectionHeader>
+          <Panel>
+            <EtoTimeline
+              bookBuildingEndDate={bookBuildingEndDate}
+              whitelistedEndDate={whitelistedEndDate}
+              publicEndDate={publicEndDate}
+              inSigningEndDate={inSigningEndDate}
+              etoStartDate={etoStartDate}
+              etoEndDate={etoEndDate}
+              status="book-building"
+            />
+          </Panel>
+        </Col>
+      </Row>
+
+      <Row>
         <Col xs={12} md={8} className="mb-4">
-          <SectionHeader className="mb-4">About</SectionHeader>
+          <SectionHeader className="mb-4"><FormattedMessage id="eto.public-view.about" /></SectionHeader>
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription}</p>
             <Link to={companyData.companyWebsite || ""} target="_blank">
@@ -320,25 +251,25 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.pre-money-valuation"/>
                     </span>
-                    <span className={styles.value}>{`€ XX`}</span>
+                    <span className={styles.value}>{`€ ${etoData.fullyDilutedPreMoneyValuationEur}`}</span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.existing-shares"/>
                     </span>
-                    <span className={styles.value}>{`XXX`}</span>
+                    <span className={styles.value}>{etoData.existingCompanyShares}</span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.minimum-new-shares-to-issue"/>
                     </span>
-                    <span className={styles.value}>{`XXX`}</span>
+                    <span className={styles.value}>{etoData.minimumNewSharesToIssue}</span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.share-nominal"/>
                     </span>
-                    <span className={styles.value}>{`XXX`}</span>
+                    <span className={styles.value}>{etoData.shareNominalValueEur}</span>
                   </div>
                 </div>
               </Col>
@@ -367,25 +298,29 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
                   <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.soft-cap"/>
                   </span>
+                  {/* TODO: add soft-cap field */}
                   <span className={styles.value}>€ </span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
+                  {/* TODO: add hard-cap field */}
                     <FormattedMessage id="eto.public-view.token-terms.hard-cap"/>
                   </span>
-                  <span className={styles.value}>€ 2 500 000</span>
+                  <span className={styles.value}>€</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
+                    {/* TODO: add minimum-token-cap field */}
                     <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap"/>
                   </span>
-                  <span className={styles.value}>2 500 000</span>
+                  <span className={styles.value}></span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
+                  {/* TODO: add maximum-token-cap field */}
                   <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap"/>
                   </span>
-                  <span className={styles.value}>2 500 000</span>
+                  <span className={styles.value}></span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
@@ -494,7 +429,6 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
         <Col xs={12} md={8} className="mb-4">
           <SectionHeader className="mb-4"><FormattedMessage id="eto.public-view.product-vision.title"/></SectionHeader>
           <Panel>
-          {console.warn(companyData)}
             <Accordion>
               <AccordionElement title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}>
                 <p>{companyData.problemSolved}</p>
@@ -532,12 +466,11 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-          {/* TODO: Add media links */}
 
           <SectionHeader className="mb-4">
             <FormattedMessage id="eto.form.media-links.title" />
           </SectionHeader>
-          {/* TODO: Add media links */}
+          <MediaLinksWidget links={mediaLinksData}/>
         </Col>
       </Row>
     </LayoutAuthorized>

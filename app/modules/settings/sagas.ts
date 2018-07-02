@@ -2,6 +2,7 @@ import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
 import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { TAction } from "../actions";
@@ -57,9 +58,13 @@ export function* addNewEmail(
     notificationCenter.info(
       formatIntlMessage("modules.settings.sagas.add-new-email.new-email-added"),
     );
-  } catch {
+  } catch (e) {
     yield effects.call(loadUser);
-    notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
+    if (e instanceof EmailAlreadyExists)
+      notificationCenter.error(
+        formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
+      );
+    else notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
   } finally {
     yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
   }

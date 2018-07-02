@@ -1,5 +1,6 @@
 .document {
-  &:global(.doc) {
+  &:global(.doc),
+  &:global(.docx) {
     color: $color-blue;
   }
 
@@ -20,4 +21,27 @@
 
 .label {
   opacity: .18;
+}
+
+.tile {
+  background-color: $color-white;
+  border: 1px solid $color-silver;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+
+  :global(.document-icon) {
+    width: 70px;
+    margin: 0 auto;
+  }
+
+  .title {
+    color: $color-black;
+    font-size: px-to-rem(12px);
+    margin-bottom: 0;
+    margin-top: 20px;
+    text-align: center;
+  }
 }

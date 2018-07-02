@@ -3,7 +3,7 @@ import * as React from 'react';
 import { TTranslatedString } from '../../types';
 import { Panel } from './Panel';
 
-import { Document, TDocumentExtension } from './Document';
+import { Document } from './Document';
 import * as styles from './DocumentsWidget.module.scss'
 
 export interface IDocument {
@@ -31,12 +31,9 @@ export const DocumentsWidget: React.SFC<IProps> = ({groups, className}) => {
             <div className={styles.group}>
               {
                 documents.map(({name, url}) => {
-                  const arr = url.split(".");
-                  const extension = arr[arr.length - 1] as TDocumentExtension;
-
                   return (
                     <div className={styles.document}>
-                      <a href={url} className={styles.documentLink}><Document extension={extension} />{name}</a>
+                      <a href={url} className={styles.documentLink}><Document extension={url} />{name}</a>
                     </div>
                   );
                 })

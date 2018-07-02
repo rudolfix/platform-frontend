@@ -5,7 +5,7 @@ $component-height: px-to-rem(120px);
 }
 
 .dropzone {
-  display: inline-flex;
+  display: flex;
   height: $component-height;
   align-items: center;
 

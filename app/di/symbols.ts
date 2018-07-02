@@ -31,7 +31,8 @@ export const symbols = makeDebugSymbols({
   web3Manager: Symbol(),
 
   // storages
-  walletMetadataStorage: Symbol(),
+  walletStorage: Symbol(),
+
   jwtStorage: Symbol(),
 
   // utils

@@ -42,6 +42,8 @@
 
 .input-field {
   &:disabled {
-    background-color: $neu-white-two !important; // sass-lint:disable-line no-important
+    &::placeholder {
+      color: $color-black;
+    }
   }
 }

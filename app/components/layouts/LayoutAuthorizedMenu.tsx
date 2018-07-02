@@ -15,7 +15,6 @@ import * as iconDocuments from "../../assets/img/inline_icons/icon-menu-document
 import * as iconEto from "../../assets/img/inline_icons/icon-menu-eto.svg";
 import * as iconHelp from "../../assets/img/inline_icons/icon-menu-help.svg";
 import * as iconSettings from "../../assets/img/inline_icons/icon-menu-settings.svg";
-import * as iconEdit from "../../assets/img/inline_icons/icon_edit.svg";
 import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
 import { externalRoutes } from "../externalRoutes";
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
@@ -97,18 +96,13 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
   <div className={styles.menu}>
     <MenuEntry
       svgString={iconDashboard}
-      to={appRoutes.etoOverview}
-      menuName={<FormattedMessage id="menu.overview" />}
+      to={appRoutes.dashboard}
+      menuName={<FormattedMessage id="menu.dashboard" />}
     />
     <MenuEntry
       svgString={iconEto}
-      to={appRoutes.dashboard}
+      to={appRoutes.etoPublicView}
       menuName={<FormattedMessage id="menu.eto-page" />}
-    />
-    <MenuEntry
-      svgString={iconEdit}
-      to={appRoutes.etoRegister}
-      menuName={<FormattedMessage id="menu.edit-page" />}
     />
     <MenuEntry
       svgString={iconDocuments}

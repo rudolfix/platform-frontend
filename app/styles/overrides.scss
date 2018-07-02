@@ -8,6 +8,7 @@
 @import "./react-slick-overrides";
 
 @import "./elements/a";
+@import "./elements/iframe";
 @import "./elements/form";
 @import "./elements/ul";
 @import "./elements/textarea";
@@ -40,10 +41,6 @@ textarea {
   color: $color-graphite;
   padding: 0 px-to-rem(10px) px-to-rem(4px);
   background-color: transparent;
-
-  &::placeholder {
-    color: inherit;
-  }
 
   &:disabled {
     background-color: transparent;
@@ -90,6 +87,7 @@ textarea {
 .form-control {
   appearance: none;
   border-radius: 0;
+  font-size: px-to-rem(20px);
 }
 
 .modal {

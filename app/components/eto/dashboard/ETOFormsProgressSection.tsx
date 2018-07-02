@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
-
 import {
   EtoCompanyInformationType,
+  EtoKeyIndividualsType,
+  EtoLegalInformationType,
   EtoProductVisionType,
+  EtoTermsType,
 } from "../../../lib/api/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
@@ -14,12 +15,15 @@ import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
 import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { Button } from "../../shared/Buttons";
+import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
 
 interface IStateProps {
   companyInformationProgress: number;
   productVisionProgress: number;
+  legalInformationProgress: number;
+  etoKeyIndividualsProgress: number;
+  etoTermsProgress: number;
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;
@@ -33,59 +37,69 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 class ETOFormsProgressSectionWidget extends React.Component<IProps> {
-  componentDidUpdate(): void {
+  componentDidMount(): void {
     const { kycStatus, isEmailVerified, loadDataStart } = this.props;
+
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
     if (shouldEtoDataLoad) loadDataStart();
   }
+
   render(): React.ReactNode {
     const {
       companyInformationProgress,
       productVisionProgress,
+      etoTermsProgress,
+      loadingData,
+      etoKeyIndividualsProgress,
+      legalInformationProgress,
       kycStatus,
       isEmailVerified,
-      loadingData,
     } = this.props;
 
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
 
     return (
       <>
-        <Col md={4} className="pt-2">
-          <Link to={etoRegisterRoutes.companyInformation}>
-            <Button>
-              Company Information
-              {shouldEtoDataLoad && (
-                <>: {loadingData ? <>loading</> : companyInformationProgress}</>
-              )}
-            </Button>
-          </Link>
+        <Col lg={4} xs={12} sm={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.companyInformation}
+            progress={shouldEtoDataLoad ? companyInformationProgress : 0}
+            name="Company Information"
+          />
         </Col>
-        <Col md={4} className="pt-2">
-          <Link to={etoRegisterRoutes.etoTerms}>
-            <Button>ETO TERMS</Button>
-          </Link>
+        <Col lg={4} xs={12} sm={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.etoTerms}
+            progress={shouldEtoDataLoad ? etoTermsProgress : 0}
+            name="ETO Terms"
+          />
         </Col>
-        <Col md={4} className="pt-2">
-          <Link to={etoRegisterRoutes.keyIndividuals}>
-            <Button>Key individuals</Button>
-          </Link>
+        <Col lg={4} xs={12} sm={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.keyIndividuals}
+            progress={shouldEtoDataLoad ? etoKeyIndividualsProgress : 0}
+            name="Key Individuals"
+          />
         </Col>
-        <Col md={4} className="pt-2">
-          <Link to={etoRegisterRoutes.legalInformation}>
-            <Button>Legal information</Button>
-          </Link>
+        <Col lg={4} xs={12} sm={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.legalInformation}
+            progress={shouldEtoDataLoad ? legalInformationProgress : 0}
+            name="Legal Information"
+          />
         </Col>
-        <Col md={4} className="pt-2">
-          <Link to={etoRegisterRoutes.productVision}>
-            <Button>
-              Product Vision
-              {shouldEtoDataLoad && <>: {loadingData ? <>loading</> : productVisionProgress}</>}
-            </Button>
-          </Link>
+        <Col lg={4} xs={12} sm={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.productVision}
+            progress={shouldEtoDataLoad ? productVisionProgress : 0}
+            name="Product Vision"
+          />
         </Col>
-        {/* TODO: ADD PROPER LOADING INDICATOR ONCE CONNECTED TO COMPONENTS */}
-        {/* TODO: CONNECT ALL FORMS */}
         {/* TODO: ADD TRANSLATIONS */}
       </>
     );
@@ -97,6 +111,21 @@ export const ETOFormsProgressSection = compose<React.SFC>(
     stateToProps: s => ({
       companyInformationProgress: selectFormFractionDone(
         EtoCompanyInformationType.toYup(),
+        s.etoFlow.companyData,
+        etoFlowInitialState,
+      ),
+      etoTermsProgress: selectFormFractionDone(
+        EtoTermsType.toYup(),
+        s.etoFlow.companyData,
+        etoFlowInitialState,
+      ),
+      etoKeyIndividualsProgress: selectFormFractionDone(
+        EtoKeyIndividualsType.toYup(),
+        s.etoFlow.companyData,
+        etoFlowInitialState,
+      ),
+      legalInformationProgress: selectFormFractionDone(
+        EtoLegalInformationType.toYup(),
         s.etoFlow.companyData,
         etoFlowInitialState,
       ),

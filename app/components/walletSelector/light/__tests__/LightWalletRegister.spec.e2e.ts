@@ -1,26 +1,12 @@
 import { get } from "lodash";
 
 import { tid } from "../../../../../test/testUtils";
-import { appRoutes } from "../../../appRoutes";
-
-// todo: extract it to separate file
-// do it after moving all e2e tests back into cypress directory
-export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
-  "https://localhost:9090/api/"}external-services-mock/`;
-
-export const typeEmailPassword = (email: string, password: string) => {
-  cy.get(tid("wallet-selector-register-email")).type(email);
-  cy.get(tid("wallet-selector-register-password")).type(password);
-  cy.get(tid("wallet-selector-register-confirm-password")).type(password);
-  cy.get(tid("wallet-selector-register-button")).click();
-};
-
-export const registerWithLightWallet = (email: string, password: string) => {
-  cy.visit("/register");
-  typeEmailPassword(email, password);
-
-  cy.url().should("contain", appRoutes.dashboard);
-};
+import {
+  assertUserInDashboard,
+  loginWithLightWallet,
+  mockApiUrl,
+  registerWithLightWallet,
+} from "../../../../e2e-test-utils";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {
@@ -31,7 +17,6 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.wait(2000);
     cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
       const email = get(r, "body[0].personalizations[0].to[0]") as string | undefined;
 
@@ -47,12 +32,36 @@ describe("Light wallet login / register", () => {
 
     cy.get(tid("Header-logout")).click();
 
-    cy.get(tid("Header-login")).click();
+    loginWithLightWallet(email, password);
 
-    cy.get(tid("light-wallet-login-with-email-email-field")).should("contain", email);
-    cy.get(tid("light-wallet-login-with-email-password-field")).type(password + "{enter}");
+    assertUserInDashboard();
+  });
 
-    cy.url().should("contain", "/dashboard");
+  it("should recognize correctly ETO user and save metada correctly", () => {
+    const email = "moe3@test.com";
+    const password = "strongpassword";
+
+    registerWithLightWallet(email, password);
+
+    cy.get(tid("Header-logout")).click();
+
+    loginWithLightWallet(email, password);
+
+    assertUserInDashboard().then(() => {
+      const savedMetadata = window.localStorage.NF_WALLET_METADATA;
+      cy.clearLocalStorage().then(() => {
+        window.localStorage.NF_WALLET_ISSUER_METADATA = savedMetadata;
+
+        cy.visit("eto/login/light");
+        cy.contains(tid("light-wallet-login-with-email-email-field"), email);
+        cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
+        cy.get(tid("wallet-selector-nuewallet.login-button")).click();
+
+        return assertUserInDashboard().then(() => {
+          expect(window.localStorage.NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
+        });
+      });
+    });
   });
 
   it.skip("should return an error when logging with same email", () => {

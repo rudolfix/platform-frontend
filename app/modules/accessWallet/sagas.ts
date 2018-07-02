@@ -1,6 +1,7 @@
 import { delay } from "bluebird";
 import { Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
@@ -24,7 +25,7 @@ import { selectIsSigning } from "./reducer";
 
 export async function ensureWalletConnection({
   web3Manager,
-  walletMetadataStorage,
+  walletStorage,
   lightWalletConnector,
   ledgerWalletConnector,
   browserWalletConnector,
@@ -32,9 +33,8 @@ export async function ensureWalletConnection({
   if (web3Manager.personalWallet) {
     return;
   }
-
   /* tslint:disable: no-useless-cast */
-  const metadata = walletMetadataStorage.get()!;
+  const metadata = walletStorage.get()!;
   /* tslint:enable: no-useless-cast */
 
   invariant(metadata, "User has JWT but doesn't have wallet metadata!");
@@ -109,7 +109,6 @@ function* unlockLightWallet(): any {
 }
 
 export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): any {
-  // connect wallet
   while (true) {
     try {
       yield neuCall(ensureWalletConnection);

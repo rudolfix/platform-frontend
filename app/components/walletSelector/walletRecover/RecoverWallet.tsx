@@ -22,11 +22,9 @@ interface IFormValues {
   seed?: string;
 }
 
-interface IProps {
+interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
-  seed: string;
 }
-
 interface IMainRecoveryProps {
   submitForm: (values: IFormValues) => void;
 }
@@ -82,12 +80,12 @@ export class RecoveryProcessesComponent extends React.Component<
   }
 }
 
-export const RecoveryProcesses: React.SFC<IProps> = props => {
+export const RecoveryProcesses: React.SFC<IDispatchProps> = props => {
   return <RecoveryProcessesComponent {...props} />;
 };
 
 export const RecoverWallet = compose<React.SFC>(
-  appConnect<IProps>({
+  appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) => {
         dispatch(

@@ -224,10 +224,13 @@ describe("Wallet selector integration", () => {
       createAccount: async () => getDummyUser(),
     });
 
+    const initialRoute = "/register";
+
     const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
       browserWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
+      initialRoute,
     });
     container
       .get<Web3ManagerMock>(symbols.web3Manager)

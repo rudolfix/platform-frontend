@@ -2,7 +2,6 @@ import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
-import { TUserType } from "../../../lib/api/users/interfaces";
 import {
   ILightWalletMetadata,
   ILightWalletRetrieveMetadata,
@@ -20,7 +19,11 @@ import { actions, TAction } from "../../actions";
 import { loadUser, obtainJWT, updateUser, updateUserPromise } from "../../auth/sagas";
 import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { selectIsUnlocked, selectLightWalletFromQueryString } from "../../web3/selectors";
+import {
+  selectIsUnlocked,
+  selectLightWalletFromQueryString,
+  selectPreviousConnectedWallet,
+} from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { TGlobalDependencies } from "./../../../di/setupBindings";
@@ -49,7 +52,7 @@ export async function retrieveMetadataFromVaultAPI(
 }
 
 export function* getWalletMetadata(
-  { walletMetadataStorage }: TGlobalDependencies,
+  _: TGlobalDependencies,
   password: string,
 ): Iterator<any | ILightWalletRetrieveMetadata | undefined> {
   const queryStringWalletInfo: { email: string; salt: string } | undefined = yield select(
@@ -63,8 +66,9 @@ export function* getWalletMetadata(
       queryStringWalletInfo.email,
     );
   }
-
-  const savedMetadata = walletMetadataStorage.get();
+  const savedMetadata = yield effects.select((s: IAppState) =>
+    selectPreviousConnectedWallet(s.web3),
+  );
   if (savedMetadata && savedMetadata.walletType === WalletType.LIGHT) {
     return savedMetadata;
   }
@@ -73,14 +77,7 @@ export function* getWalletMetadata(
 }
 
 export async function setupLightWalletPromise(
-  {
-    lightWalletUtil,
-    vaultApi,
-    lightWalletConnector,
-    walletMetadataStorage,
-    web3Manager,
-    logger,
-  }: TGlobalDependencies,
+  { lightWalletUtil, vaultApi, lightWalletConnector, web3Manager, logger }: TGlobalDependencies,
   email: string,
   password: string,
   seed: string,
@@ -109,7 +106,6 @@ export async function setupLightWalletPromise(
     );
 
     const walletMetadata = lightWallet.getMetadata();
-    walletMetadataStorage.set(walletMetadata);
     await web3Manager.plugPersonalWallet(lightWallet);
 
     if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
@@ -193,14 +189,13 @@ export function* loadSeedFromWalletWatch(): Iterator<any> {
 }
 
 export function* lightWalletLoginWatch(
-  { web3Manager, walletMetadataStorage, lightWalletConnector }: TGlobalDependencies,
+  { web3Manager, lightWalletConnector }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "LIGHT_WALLET_LOGIN") {
     return;
   }
   const { password } = action.payload;
-  const userType: TUserType = yield effects.select((s: IAppState) => selectUrlUserType(s.router));
 
   try {
     const walletMetadata: ILightWalletRetrieveMetadata | undefined = yield neuCall(
@@ -225,9 +220,8 @@ export function* lightWalletLoginWatch(
       throw new LightWalletWrongPassword();
     }
 
-    walletMetadataStorage.set(wallet.getMetadata());
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.walletSelector.connected(userType));
+    yield put(actions.walletSelector.connected());
   } catch (e) {
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),

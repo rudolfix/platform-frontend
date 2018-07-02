@@ -20,9 +20,10 @@
 
   align-self: flex-start;
   color: $color-graphite;
+  margin-bottom: $spacing-vertical-lg-3;
   padding-right: px-to-rem(60px);
-  text-transform: uppercase;
   position: sticky;
+  text-transform: uppercase;
   top: $spacing-vertical-lg-2;
 }
 

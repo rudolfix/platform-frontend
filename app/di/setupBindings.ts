@@ -29,10 +29,8 @@ import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
 import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
-import {
-  STORAGE_WALLET_METADATA_KEY,
-  TWalletMetadata,
-} from "../lib/persistence/WalletMetadataObjectStorage";
+import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage";
+import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { ContractsService } from "../lib/web3/ContractsService";
 import { symbols } from "./symbols";
 
@@ -127,8 +125,12 @@ export function setupBindings(config: IConfig): Container {
     .to(KycApi)
     .inSingletonScope();
   container
-    .bind(symbols.apiEtoService)
+    .bind<EtoApi>(symbols.apiEtoService)
     .to(EtoApi)
+    .inSingletonScope();
+  container
+    .bind<WalletStorage<TWalletMetadata>>(symbols.walletStorage)
+    .to(WalletStorage)
     .inSingletonScope();
   container
     .bind(symbols.fileStorageService)
@@ -141,17 +143,6 @@ export function setupBindings(config: IConfig): Container {
     .toFactory(AsyncIntervalSchedulerFactory);
 
   // dynamic bindings (with inSingletonScope this works like lazy binding)
-  container
-    .bind<ObjectStorage<TWalletMetadata>>(symbols.walletMetadataStorage)
-    .toDynamicValue(
-      ctx =>
-        new ObjectStorage<TWalletMetadata>(
-          ctx.container.get(symbols.storage),
-          ctx.container.get(symbols.logger),
-          STORAGE_WALLET_METADATA_KEY,
-        ),
-    )
-    .inSingletonScope();
   container
     .bind<ObjectStorage<string>>(symbols.jwtStorage)
     .toDynamicValue(
@@ -196,9 +187,7 @@ export const createGlobalDependencies = (container: Container) => ({
   // blockchain & wallets
   contractsService: container.get<ContractsService>(symbols.contractsService),
   web3Manager: container.get<Web3Manager>(symbols.web3Manager),
-  walletMetadataStorage: container.get<ObjectStorage<TWalletMetadata>>(
-    symbols.walletMetadataStorage,
-  ),
+  walletStorage: container.get<WalletStorage<TWalletMetadata>>(symbols.walletStorage),
   lightWalletConnector: container.get<LightWalletConnector>(symbols.lightWalletConnector),
   jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
   lightWalletUtil: container.get<LightWalletUtil>(symbols.lightWalletUtil),

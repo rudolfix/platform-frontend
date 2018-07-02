@@ -153,18 +153,6 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
           }
         }}
         tags={companyData.categories} />
-      <Row>
-        <Col className="mb-4">
-          <EtoOverviewStatus
-            cap="HARD CAP: 750M EDT"
-            duration="22.02.2018 to 22.5.2019"
-            tokensSupply="50000000"
-            tokenName="ABC"
-            tokenImg={tokenIcon}
-            status="book-building"
-          />
-        </Col>
-      </Row>
 
       <Row>
         <Col className="mb-4">
@@ -298,35 +286,31 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
                   <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.soft-cap"/>
                   </span>
-                  {/* TODO: add soft-cap field */}
-                  <span className={styles.value}>€ </span>
+                  <span className={styles.value}></span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
-                  {/* TODO: add hard-cap field */}
                     <FormattedMessage id="eto.public-view.token-terms.hard-cap"/>
                   </span>
-                  <span className={styles.value}>€</span>
+                  <span className={styles.value}></span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
-                    {/* TODO: add minimum-token-cap field */}
                     <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap"/>
                   </span>
-                  <span className={styles.value}></span>
+                  <span className={styles.value}>{etoData.minimumNewSharesToIssue}</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
-                  {/* TODO: add maximum-token-cap field */}
-                  <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap"/>
+                    <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap"/>
                   </span>
-                  <span className={styles.value}></span>
+                  <span className={styles.value}>{}</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.token-discount"/>
-                    Token Discount for whitelist</span>
-                  <span className={styles.value}>{etoData.discount_scheme}</span>
+                    <FormattedMessage id="eto.public-view.token-terms.token-discount"/>
+                  </span>
+                  <span className={styles.value}>{etoData.discountScheme}</span>
                 </div>
               </div>
 
@@ -337,13 +321,13 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
                   <span className={styles.label}>
                     <FormattedMessage id="eto.public-view.token-terms.tokens-per-share"/>
                   </span>
-                  <span className={styles.value}>{etoData.equity_tokens_per_share}</span>
+                  <span className={styles.value}>{etoData.equityTokensPerShare}</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
                     <FormattedMessage id="eto.public-view.token-terms.new-share-price"/>
                   </span>
-                  <span className={styles.value}>€ {etoData.share_nominal_value_eur}</span>
+                  <span className={styles.value}>€ {etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares}</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
@@ -355,7 +339,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
                   <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.minimum-ticket-size"/>
                   </span>
-                  <span className={styles.value}>{etoData.min_ticket_eu}</span>
+                  <span className={styles.value}>{etoData.minTicketEu}</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>
@@ -372,7 +356,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
                   <span className={styles.label}>
                     <FormattedMessage id="eto.public-view.token-terms.pre-sale-duration"/>
                   </span>
-                  <span className={styles.value}>{etoData.whitelist_duration_days} <FormattedMessage id="eto.public-view.token-terms.days"/></span>
+                  <span className={styles.value}>{etoData.whitelistDurationDays} <FormattedMessage id="eto.public-view.token-terms.days"/></span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}><FormattedMessage id="eto.public-view.token-terms.public-offer-duration"/></span>
@@ -384,15 +368,15 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
                   <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.token-transfers"/>
                     Token Transfers after ETO</span>
-                  <span className={styles.value}>{etoData.enable_transfer_on_success ? <FormattedMessage id="eto.public-view.token-terms.enabled"/> : <FormattedMessage id="eto.public-view.token-terms.disabled"/>}</span>
+                  <span className={styles.value}>{etoData.enableTransferOnSuccess ? <FormattedMessage id="eto.public-view.token-terms.enabled"/> : <FormattedMessage id="eto.public-view.token-terms.disabled"/>}</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}>Voting rights</span>
-                  <span className={styles.value}>{etoData.general_voting_rule === "no_voting_rights" || "negative" ? <FormattedMessage id="eto.public-view.token-terms.disabled"/> : <FormattedMessage id="eto.public-view.token-terms.enabled"/>}</span>
+                  <span className={styles.value}>{etoData.generalVotingRule === "no_voting_rights" || "negative" ? <FormattedMessage id="eto.public-view.token-terms.disabled"/> : <FormattedMessage id="eto.public-view.token-terms.enabled"/>}</span>
                 </div>
                 <div className={styles.entry}>
                   <span className={styles.label}><FormattedMessage id="eto.public-view.token-terms.liquidation-preferences"/></span>
-                  <span className={styles.value}>{etoData.liquidation_preference_multiplier !== 0 ? <FormattedMessage id="eto.public-view.token-terms.enabled"/> : <FormattedMessage id="eto.public-view.token-terms.disabled"/>}</span>
+                  <span className={styles.value}>{etoData.liquidationPreferenceMultiplier !== 0 ? <FormattedMessage id="eto.public-view.token-terms.enabled"/> : <FormattedMessage id="eto.public-view.token-terms.disabled"/>}</span>
                 </div>
               </div>
           </Panel>
@@ -466,7 +450,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-
+{console.warn(etoData)}
           <SectionHeader className="mb-4">
             <FormattedMessage id="eto.form.media-links.title" />
           </SectionHeader>

@@ -30,6 +30,7 @@ interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
   stateValues: TPartialCompanyEtoData;
+  etoData: any;
 }
 
 interface IDispatchProps {
@@ -52,7 +53,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
         placeholder="3 - 4 characters"
-        maxlength="4"
+        maxLength="4"
         pattern=".{3,4}"
         name="equityTokenSymbol"
       />
@@ -101,16 +102,17 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         <FormField
           label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
           placeholder="1/1000000 of share price auto complete"
-          name=""
+          name="newShareProce"
+          value={props.etoData.fullyDilutedPreMoneyValuationEur / props.etoData.existingCompanyShares || 0}
           disabled
         />
         <Row>
           <Col sm={12} md={6} className="mb-4">
             <FormField
               label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
-              prefix="€"
               placeholder="read only"
-              name=""
+              name="minNumberOfTokens"
+              value={props.etoData.newSharesToIssue * props.etoData.equityTokensPerShare || 0}
               disabled
             />
           </Col>
@@ -119,7 +121,8 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
               label={<FormattedMessage id="eto.form.section.investment-terms.maximum-amount" />}
               prefix="€"
               placeholder="read only"
-              name=""
+              name="maxNumberOfTokens"
+              value={props.etoData.minimumNewSharesToIssue * props.etoData.equityTokensPerShare || 0}
               disabled
             />
           </Col>
@@ -128,7 +131,8 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
               label={<FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />}
               prefix="€"
               placeholder="read only"
-              name=""
+              name="minCapEur"
+              value={props.etoData.fullyDilutedPreMoneyValuationEur / props.etoData.existingCompanyShares * props.etoData.newSharesToIssue || 0}
               disabled
             />
           </Col>
@@ -137,7 +141,8 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
               label={<FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />}
               prefix="€"
               placeholder="read only"
-              name=""
+              name="maxCapEur"
+              value={props.etoData.fullyDilutedPreMoneyValuationEur / props.etoData.existingCompanyShares * props.etoData.minimumNewSharesToIssue || 0}
               disabled
             />
           </Col>
@@ -285,6 +290,7 @@ export const EtoRegistrationTerms = compose<React.SFC>(
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
       stateValues: s.etoFlow.companyData,
+      etoData: s.etoFlow.etoData
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

@@ -20,7 +20,6 @@ interface IProps {
   prefix?: string;
   selectedCategory?: { name: string; percentage: number };
 }
-// Remove any
 interface IInternalProps {
   addField: () => void;
   removeField: () => void;

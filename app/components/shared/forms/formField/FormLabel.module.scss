@@ -2,6 +2,6 @@
   @include font-label;
 
   color: $color-graphite;
-  display: inline-block;
+  display: inline-flex;
   margin-bottom: px-to-rem(8px);
 }

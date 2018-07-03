@@ -149,11 +149,20 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
       <AccordionElement title={name} isOpened={true}>
         <KYCEnhancedForm {...this.props} />
         <MultiFileUpload
-          layout="individual"
+          uploadType="individual"
+          acceptedFiles="image/*"
+          layout="vertical"
+          requirements={[
+            "Colored photo",
+            "Full name",
+            "Date of birth",
+            "Valid expiration date",
+            "Official document number",
+            "High quality, coloured .png or .jpg files only",
+          ]}
           onDropFile={this.props.onDropFile}
           files={this.props.files}
           fileUploading={this.props.fileUploading}
-          filesLoading={this.props.filesLoading}
         />
         <div className="p-4 text-center">
           <Button

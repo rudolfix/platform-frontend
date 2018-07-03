@@ -11,7 +11,7 @@ import { Testimonials } from "./parts/Testimonials";
 import * as styles from "./Landing.module.scss";
 
 export const Landing: React.SFC = () => (
-  <div className={cn(styles.landingWrapper, "pure")}>
+  <div className={cn(styles.landingWrapper, "pure")} data-test-id="landing-page">
     <LandingHeader />
     <Features />
 

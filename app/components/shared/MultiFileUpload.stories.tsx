@@ -3,8 +3,6 @@ import * as React from "react";
 
 import { MultiFileUpload } from "./MultiFileUpload";
 
-import * as idImage from "../../assets/img/id_img.svg";
-
 const files = [
   {
     id: "test id 1",
@@ -26,11 +24,9 @@ const IndividualRequirements = [
 ];
 
 storiesOf("MultiFileUpload", module)
-  .add("individual default", () => (
+  .add("default", () => (
     <MultiFileUpload
       uploadType="individual"
-      title="Upload ID card or Passport"
-      fileInfo="*Colour copies of both sides of ID card"
       acceptedFiles="image/*"
       onDropFile={() => {}}
       files={[]}
@@ -38,24 +34,31 @@ storiesOf("MultiFileUpload", module)
       fileUploading={false}
     />
   ))
-  .add("with id image", () => (
+  .add("layout: vertical", () => (
     <MultiFileUpload
       uploadType="individual"
-      title="Upload ID card or Passport"
-      fileInfo="*Colour copies of both sides of ID card"
       acceptedFiles="image/*"
-      documentTemplateImage={idImage}
       onDropFile={() => {}}
       files={[]}
+      layout="vertical"
       requirements={IndividualRequirements}
       fileUploading={false}
     />
   ))
-  .add("individual uploading", () => (
+  .add("layout: horizontal", () => (
     <MultiFileUpload
       uploadType="individual"
-      title="Upload ID card or Passport"
-      fileInfo="*Colour copies of both sides of ID card"
+      acceptedFiles="image/*"
+      onDropFile={() => {}}
+      files={[]}
+      layout="horizontal"
+      requirements={IndividualRequirements}
+      fileUploading={false}
+    />
+  ))
+  .add("state: uploading", () => (
+    <MultiFileUpload
+      uploadType="individual"
       acceptedFiles="image/*"
       onDropFile={() => {}}
       files={[]}
@@ -63,11 +66,9 @@ storiesOf("MultiFileUpload", module)
       fileUploading={true}
     />
   ))
-  .add("with files", () => (
+  .add("state: with files", () => (
     <MultiFileUpload
       uploadType="individual"
-      title="Upload ID card or Passport"
-      fileInfo="*Colour copies of both sides of ID card"
       acceptedFiles="image/*"
       onDropFile={() => {}}
       files={files}

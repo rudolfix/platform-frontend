@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -13,15 +14,13 @@ import * as addFileIcon from "../../assets/img/inline_icons/add_file.svg";
 import * as styles from "./MultiFileUpload.module.scss";
 
 interface IProps {
-  title: TTranslatedString;
-  uploadType: TKycRequestType;
+  uploadType: TKycRequestType | TKycRequestType[];
   acceptedFiles: TAcceptedFileType;
-  documentTemplateImage?: string;
   fileUploading: boolean;
-  files?: IKycFileInfo[];
-  fileInfo: TTranslatedString;
-  requirements?: TTranslatedString[];
   onDropFile: (file: File) => void;
+  layout?: "horizontal" | "vertical";
+  files?: IKycFileInfo[];
+  requirements?: TTranslatedString[];
   "data-test-id"?: string;
 }
 
@@ -54,8 +53,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({
   fileUploading,
   requirements,
   files,
-  title,
-  fileInfo,
+  layout,
   "data-test-id": dataTestId,
   ...props
 }) => {
@@ -72,42 +70,34 @@ export const MultiFileUpload: React.SFC<IProps> = ({
   );
 
   return (
-    <>
-      <h3 className={styles.title}>{title}</h3>
-      <h4 className={styles.fileInfo}>{fileInfo}</h4>
-      <div data-test-id={dataTestId} className={styles.multiFileUpload}>
-        {props.documentTemplateImage && (
-          <div className={styles.documentWrapper}>
-            <img src={props.documentTemplateImage} />
+    <div data-test-id={dataTestId} className={cn(styles.multiFileUpload, layout)}>
+      <Dropzone
+        accept={acceptedFiles}
+        onDrop={onDrop}
+        disabled={fileUploading}
+        className={styles.dropzone}
+        {...props}
+      >
+        <InlineIcon svgIcon={addFileIcon} />
+        {files && files.length ? dropzoneWithFilesInner : dropzoneInner}
+      </Dropzone>
+
+      {files && files.length > 0 ? (
+        <UploadedFiles files={files} />
+      ) : (
+        requirements && (
+          <div className={styles.requirements}>
+            <p className={styles.requirementsTitle}>
+              <FormattedMessage id="shared-component.multi-file-upload.requirements.title" />
+            </p>
+            <ul>{requirements.map((r, i) => <li key={i}>{r}</li>)}</ul>
           </div>
-        )}
-
-        <div className={styles.dropzoneWrapper}>
-          <Dropzone
-            accept={acceptedFiles}
-            onDrop={onDrop}
-            disabled={fileUploading}
-            className={styles.dropzone}
-            {...props}
-          >
-            <InlineIcon svgIcon={addFileIcon} width="48px" height="50px" />
-            {files && files.length ? dropzoneWithFilesInner : dropzoneInner}
-          </Dropzone>
-
-          {files && files.length > 0 ? (
-            <UploadedFiles files={files} />
-          ) : (
-            requirements && (
-              <div className={styles.requirements}>
-                <p className={styles.requirementsTitle}>
-                  <FormattedMessage id="shared-component.multi-file-upload.requirements.title" />
-                </p>
-                <ul>{requirements.map((r, i) => <li key={i}>{r}</li>)}</ul>
-              </div>
-            )
-          )}
-        </div>
-      </div>
-    </>
+        )
+      )}
+    </div>
   );
+};
+
+MultiFileUpload.defaultProps = {
+  layout: "horizontal",
 };

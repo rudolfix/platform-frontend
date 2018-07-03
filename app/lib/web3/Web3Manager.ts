@@ -29,6 +29,8 @@ export class SignerError extends Error {}
 export class SignerRejectConfirmationError extends SignerError {}
 export class SignerTimeoutError extends SignerError {}
 
+export class SignerUnknownError extends SignerError {}
+
 export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 5000;
 
 // singleton holding all web3 instances

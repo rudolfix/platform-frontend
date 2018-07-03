@@ -80,3 +80,4 @@ export const lightWizardFlows = {
       ],
     ),
 };
+// TODO: Remove this flow remove tests

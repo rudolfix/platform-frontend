@@ -4,7 +4,11 @@ import { call, Effect, fork, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser, IUserInput, IVerifyEmailUser, TUserType } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";
-import { SignerRejectConfirmationError, SignerTimeoutError } from "../../lib/web3/Web3Manager";
+import {
+  SignerRejectConfirmationError,
+  SignerTimeoutError,
+  SignerUnknownError,
+} from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
@@ -151,16 +155,12 @@ function* logoutWatcher(
   yield effects.put(actions.init.start("appInit"));
 }
 
-function* signInUser({
-  logger,
-  intlWrapper: { intl: { formatIntlMessage } },
-  walletStorage,
-  web3Manager,
-}: TGlobalDependencies): Iterator<any> {
+export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies): Iterator<any> {
   try {
     // we will try to create with user type from URL but it could happen that account already exists and has different user type
     const probableUserType: TUserType = yield select((s: IAppState) => selectUrlUserType(s.router));
     yield effects.put(actions.walletSelector.messageSigning());
+
     yield neuCall(obtainJWT);
     yield call(loadOrCreateUser, probableUserType);
 
@@ -177,6 +177,22 @@ function* signInUser({
     }
   } catch (e) {
     if (e instanceof SignerRejectConfirmationError) {
+      throw e;
+    }
+    if (e instanceof SignerTimeoutError) {
+      throw e;
+    }
+    throw new SignerUnknownError();
+  }
+}
+
+function* handleSignInUser({
+  intlWrapper: { intl: { formatIntlMessage } },
+}: TGlobalDependencies): Iterator<any> {
+  try {
+    yield neuCall(signInUser);
+  } catch (e) {
+    if (e instanceof SignerRejectConfirmationError) {
       yield effects.put(
         actions.walletSelector.messageSigningError(
           formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-was-rejected"),
@@ -188,14 +204,9 @@ function* signInUser({
           formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
         ),
       );
-    } else if (e instanceof EmailAlreadyExists) {
-      yield effects.put(
-        actions.walletSelector.messageSigningError(
-          formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
-        ),
-      );
     } else {
-      logger.error("Error:", e);
+      yield effects.put(actions.walletSelector.reset());
+
       yield effects.put(
         actions.walletSelector.messageSigningError(
           formatIntlMessage(
@@ -293,5 +304,5 @@ export function* ensurePermissionsArePresent(
 export const authSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
   yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
-  yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", signInUser);
+  yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
 };

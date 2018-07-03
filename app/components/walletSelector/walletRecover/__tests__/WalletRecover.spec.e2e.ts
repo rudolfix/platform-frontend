@@ -33,7 +33,7 @@ describe("Wallet recover", () => {
 
   const expectedGeneratedAddress = "0x429123b08df32b0006fd1f3b0ef893a8993802f3";
 
-  it.skip("should recover wallet from saved phrases", () => {
+  it("should recover wallet from saved phrases", () => {
     cy.visit("/recover/seed");
 
     typeLightwalletRecoveryPhrase(words);
@@ -72,7 +72,7 @@ describe("Wallet recover", () => {
     });
   });
 
-  it.skip("should return an error when recovering seed and using an already verified email", () => {
+  it.only("should return an error when recovering seed and using an already verified email", () => {
     const words = [
       "argue",
       "resemble",

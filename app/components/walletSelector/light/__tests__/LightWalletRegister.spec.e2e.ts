@@ -67,16 +67,16 @@ describe("Light wallet login / register", () => {
 
   it.skip("should return an error when logging with same email", () => {
     // Special email @see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
-    const email = "0xE6Ad2@neufund.org";
+    const email = "0xe6ad2@neufund.org";
     const password = "strongpassword";
-    const repeatedEmail = "email has already been registered";
+    const errorMessage = "Error";
 
     cy.visit("/register");
     typeEmailPassword(email, password);
 
     cy
-      .get(tid("components.shared-warning-alert.message"))
-      .then(errorMsg => expect(errorMsg.text()).to.contain(repeatedEmail));
+      .get(tid("components.modals.generic-modal.title"))
+      .then(errorMsg => expect(errorMsg.text()).to.contain(errorMessage));
   });
 
   // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit

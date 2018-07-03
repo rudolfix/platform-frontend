@@ -22,6 +22,23 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
   assertEtoDashboard();
 };
 
+export const typeLightwalletRecoveryPhrase = (words: string[]) => {
+  for (let batch = 0; batch < words.length / 4; batch++) {
+    for (let index = 0; index < 4; index++) {
+      cy
+        .get(tid(`seed-recovery-word-${batch * 4 + index}`, "input"))
+        .type(words[batch * 4 + index], { force: true, timeout: 20 })
+        .type("{enter}", { force: true });
+    }
+
+    if (batch + 1 < words.length / 4) {
+      cy.get(tid("btn-next")).click();
+    }
+  }
+
+  cy.get(tid("btn-send")).click();
+};
+
 // todo: extract it to separate file
 // do it after moving all e2e tests back into cypress directory
 export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||

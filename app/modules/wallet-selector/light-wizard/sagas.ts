@@ -1,7 +1,9 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+import { EmailAlreadyExists } from "./../../../lib/api/users/UsersApi";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
+import { UserNotExisting } from "../../../lib/api/users/UsersApi";
 import {
   ILightWalletMetadata,
   ILightWalletRetrieveMetadata,
@@ -16,7 +18,14 @@ import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { loadUser, obtainJWT, updateUser, updateUserPromise } from "../../auth/sagas";
+import {
+  createUser,
+  loadUser,
+  loadUserPromise,
+  obtainJWT,
+  updateUser,
+  updateUserPromise,
+} from "../../auth/sagas";
 import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import {
@@ -117,7 +126,10 @@ export async function setupLightWalletPromise(
   }
 }
 
-export function* lightWalletRecoverWatch(_: TGlobalDependencies, action: TAction): Iterator<any> {
+export function* lightWalletRecoverWatch(
+  { intlWrapper }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   try {
     const userType = yield select((state: IAppState) => selectUrlUserType(state.router));
 
@@ -126,8 +138,19 @@ export function* lightWalletRecoverWatch(_: TGlobalDependencies, action: TAction
     }
     const { password, email, seed } = action.payload;
     const walletMetadata = yield neuCall(setupLightWalletPromise, email, password, seed, userType);
-
     yield neuCall(obtainJWT, [CHANGE_EMAIL_PERMISSION]);
+
+    try {
+      yield neuCall(loadUserPromise);
+    } catch (e) {
+      if (e instanceof UserNotExisting)
+        yield effects.call(createUser, {
+          newEmail: walletMetadata.email,
+          salt: walletMetadata.salt,
+          backupCodesVerified: false,
+          type: userType,
+        });
+    }
 
     yield effects.call(updateUser, {
       newEmail: email,
@@ -138,9 +161,17 @@ export function* lightWalletRecoverWatch(_: TGlobalDependencies, action: TAction
 
     yield put(actions.routing.goToSuccessfulRecovery());
   } catch (e) {
-    yield put(
-      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
-    );
+    if (e instanceof EmailAlreadyExists)
+      yield put(
+        actions.genericModal.showErrorModal(
+          "Error",
+          intlWrapper.intl.formatIntlMessage(
+            "modules.auth.sagas.sign-in-user.email-already-exists",
+          ),
+        ),
+      );
+    else
+      yield put(actions.genericModal.showErrorModal("Error", mapLightWalletErrorToErrorMessage(e)));
   }
 }
 

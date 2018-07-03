@@ -38,7 +38,7 @@ describe("Light wallet login / register", () => {
     assertUserInDashboard();
   });
 
-  it("should recognize correctly ETO user and save metada correctly", () => {
+  it("should recognize correctly ETO user and save metadata correctly", () => {
     const email = "moe3@test.com";
     const password = "strongpassword";
 
@@ -67,7 +67,7 @@ describe("Light wallet login / register", () => {
 
   it.skip("should return an error when logging with same email", () => {
     // Special email @see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
-    const email = "0x42912@neufund.org";
+    const email = "0xE6Ad2@neufund.org";
     const password = "strongpassword";
     const repeatedEmail = "email has already been registered";
 

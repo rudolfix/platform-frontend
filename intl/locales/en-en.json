@@ -372,7 +372,7 @@
   "shared-component.multi-file-upload.requirements.individual.high-quality": "High quality, coloured .png or .jpg files only",
   "shared-component.multi-file-upload.requirements.individual.official-document-number": "Official document number",
   "shared-component.multi-file-upload.requirements.individual.valid-expiration-date": "Valid expiration date",
-  "shared-component.multi-file-upload.requirements.title": "Document upload needs to include:",
+  "shared-component.multi-file-upload.requirements.title": "Valid documents must include:",
   "shared-component.multi-file-upload.upload-cta": "Drag file or click to upload",
   "shared-component.multi-file-upload.uploading": "Uploading a File",
   "shared-component.range.max": "Max",

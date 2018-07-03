@@ -9,6 +9,11 @@ import * as brile24 from "../assets/img/eto_offers/brille_card.jpg";
 import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
+import * as foundersbank from "../assets/img/eto_offers/foundersbank.png";
+import * as foundersbank2 from "../assets/img/eto_offers/foundersbank@2x.png";
+import * as foundersbankhover from "../assets/img/eto_offers/foundersbankhover.png";
+import * as foundersbankhover2 from "../assets/img/eto_offers/foundersbankhover@2x.png";
+import * as foundersbankhover3 from "../assets/img/eto_offers/foundersbankhover@3x.png";
 import * as myswoop from "../assets/img/eto_offers/myswoop.jpg";
 import * as myswoop2 from "../assets/img/eto_offers/myswoop@2x.jpg";
 import * as myswoopbadge from "../assets/img/eto_offers/myswoopbadge@1x.jpg";
@@ -313,12 +318,14 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
+      name: "Founders Bank",
       description:
-        "Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
+        "The first ever decentralized and community-owned bank is here. Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
       topImage: {
-        src: "",
+        src: foundersbank,
         srcSet: {
-          "1x": "",
+          "1x": foundersbank,
+          "2x": foundersbank2,
         },
         alt: "",
         height: 50,
@@ -327,13 +334,14 @@ export const etoCompaniesCards: Array<EtoData> = [
       quoteImage: {
         src: "",
         srcSet: {
-          "1x": "",
+          "1x": foundersbankhover,
+          "2x": foundersbankhover2,
+          "3x": foundersbankhover3,
         },
-        alt: "",
+        alt: "Founders bank",
         height: 35,
         width: 100,
       },
-      teaser: true,
     },
   },
   {

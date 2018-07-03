@@ -13,6 +13,6 @@ export const WarningAlert: React.SFC<IWarningAlertProps> = ({ children, classNam
     <Col xs="auto">
       <i className={cn("fa fa-exclamation-circle mr-2", styles.icon)} aria-hidden="true" />
     </Col>
-    <Col>{children}</Col>
+    <Col data-test-id="components.shared-warning-alert.message">{children}</Col>
   </Row>
 );

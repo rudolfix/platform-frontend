@@ -30,8 +30,6 @@ import {
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 
-import * as idImage from "../../../assets/img/id_img.svg";
-
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
   [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
@@ -152,8 +150,6 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
         <KYCEnhancedForm {...this.props} />
         <MultiFileUpload
           uploadType="individual"
-          title="Upload ID card or Passport"
-          fileInfo="*Colour copies of both sides of ID card"
           acceptedFiles="image/*"
           requirements={[
             "Colored photo",
@@ -163,7 +159,6 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
             "Official document number",
             "High quality, coloured .png or .jpg files only",
           ]}
-          documentTemplateImage={idImage}
           onDropFile={this.props.onDropFile}
           files={this.props.files}
           fileUploading={this.props.fileUploading}

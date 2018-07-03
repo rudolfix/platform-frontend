@@ -1,0 +1,45 @@
+.upload {
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    @include font-default;
+
+    color: $color-graphite-light;
+    text-transform: uppercase;
+  }
+
+  .hint {
+    @include font-default;
+
+    color: $color-gray;
+  }
+
+  .upload-informations-wrapper {
+    padding-right: 40px;
+    margin-right: 40px;
+    border-right: 1px solid $color-silver;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .images-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .id-wrapper,
+  .bank-statement-wrapper {
+    width: 46%;
+  }
+
+  .bank-statement-wrapper {
+    img {
+      width: 100%;
+    }
+  }
+}

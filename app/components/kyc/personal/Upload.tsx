@@ -15,9 +15,6 @@ import { individualRequirements, MultiFileUpload } from "../../shared/MultiFileU
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
-import * as bankStatementTemplate from "../../../assets/img/bank-statement-template.svg";
-import * as idImg from "../../../assets/img/id_img.svg";
-
 export const personalSteps = [
   {
     label: <FormattedMessage id="kyc.steps.representation" />,
@@ -60,8 +57,6 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
       backLink={kycRoutes.individualStart}
     >
       <MultiFileUpload
-        title="Upload ID card or Passport"
-        fileInfo="*Colour copies of both sides of ID card"
         acceptedFiles="image/*"
         uploadType="individual"
         onDropFile={props.onDropFile}
@@ -69,15 +64,11 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
         fileUploading={props.fileUploading}
         data-test-id="kyc-personal-upload-dropzone"
         requirements={individualRequirements}
-        documentTemplateImage={idImg}
       />
 
       <HorizontalLine className="my-5" />
 
       <MultiFileUpload
-        documentTemplateImage={bankStatementTemplate}
-        title={"upload Utility Bill or bank statement "}
-        fileInfo={"*If ID card has address then no extra proof of address is needed"}
         acceptedFiles="image/*"
         uploadType="individual"
         onDropFile={props.onDropFile}

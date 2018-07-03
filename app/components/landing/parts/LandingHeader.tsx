@@ -12,9 +12,9 @@ import * as blockstateImage2x from "../../../assets/img/landing/blockstate@2x.pn
 import * as blockstateImage3x from "../../../assets/img/landing/blockstate@3x.png";
 import * as brilleImage from "../../../assets/img/landing/brille.png";
 import * as brilleImage2x from "../../../assets/img/landing/brille@2x.png";
-import * as btImage from "../../../assets/img/landing/bt.png";
-import * as btImage2x from "../../../assets/img/landing/bt@2x.png";
-import * as btImage3x from "../../../assets/img/landing/bt@3x.png";
+import * as btImage from "../../../assets/img/landing/BT.png";
+import * as btImage2x from "../../../assets/img/landing/BT@2x.png";
+import * as btImage3x from "../../../assets/img/landing/BT@3x.png";
 import * as emfluxImage from "../../../assets/img/landing/emflux.png";
 import * as emfluxImage2x from "../../../assets/img/landing/emflux@2x.png";
 import * as emfluxImage3x from "../../../assets/img/landing/emflux@3x.png";

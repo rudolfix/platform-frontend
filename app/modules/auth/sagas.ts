@@ -108,6 +108,20 @@ export function* loadOrCreateUser(userType: TUserType): Iterator<any> {
   yield neuCall(loadKycRequestData);
 }
 
+export async function createUserPromise(
+  { apiUserService }: TGlobalDependencies,
+  user: IUserInput,
+): Promise<IUser> {
+  return apiUserService.createAccount(user);
+}
+
+export function* createUser(newUser: IUserInput): Iterator<any> {
+  const user: IUser = yield neuCall(createUserPromise, newUser);
+  yield effects.put(actions.auth.loadUser(user));
+
+  yield neuCall(loadKycRequestData);
+}
+
 export function* loadUser(): Iterator<any> {
   const user: IUser = yield neuCall(loadUserPromise);
   yield effects.put(actions.auth.loadUser(user));

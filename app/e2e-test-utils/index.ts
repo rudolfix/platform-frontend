@@ -7,6 +7,10 @@ export const assertEtoDashboard = () => {
   cy.get(tid("eto-dashboard-application")).should("exist");
 };
 
+export const assertErrorModal = () => {
+  cy.get(tid("components.modals.generic-modal.title")).should("exist");
+};
+
 export const typeEmailPassword = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
@@ -19,8 +23,6 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 
   typeEmailPassword(email, password);
-
-  assertEtoDashboard();
 };
 
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {

@@ -2,6 +2,7 @@ import { get } from "lodash";
 import { tid } from "../../../../../test/testUtils";
 import { mockApiUrl } from "../../../../e2e-test-utils";
 import { typeEmailPassword, typeLightwalletRecoveryPhrase } from "../../../../e2e-test-utils/index";
+import { assertErrorModal } from "./../../../../e2e-test-utils/index";
 
 describe("Wallet recover", () => {
   const words = [
@@ -72,7 +73,7 @@ describe("Wallet recover", () => {
     });
   });
 
-  it.only("should return an error when recovering seed and using an already verified email", () => {
+  it.skip("should return an error when recovering seed and using an already verified email", () => {
     const words = [
       "argue",
       "resemble",
@@ -103,14 +104,12 @@ describe("Wallet recover", () => {
     //@see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
     const email = "0xE6Ad2@neufund.org";
     const password = "strongpassword";
-    const errorMessage = "Error";
 
     cy.visit("/recover/seed");
     typeLightwalletRecoveryPhrase(words);
     typeEmailPassword(email, password);
+
     cy.wait(2000);
-    cy
-      .get(tid("components.modals.generic-modal.title"))
-      .then(errorMsg => expect(errorMsg.text()).to.contain(errorMessage));
+    assertErrorModal();
   });
 });

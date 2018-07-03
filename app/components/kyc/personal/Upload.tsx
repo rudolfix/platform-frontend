@@ -10,9 +10,13 @@ import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interface
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
-import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { HorizontalLine } from "../../shared/HorizontalLine";
+import { individualRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
+
+import * as bankStatementTemplate from "../../../assets/img/bank-statement-template.svg";
+import * as idImg from "../../../assets/img/id_img.svg";
 
 export const personalSteps = [
   {
@@ -56,12 +60,31 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
       backLink={kycRoutes.individualStart}
     >
       <MultiFileUpload
+        title="Upload ID card or Passport"
+        fileInfo="*Colour copies of both sides of ID card"
+        acceptedFiles="image/*"
+        uploadType="individual"
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
-        layout="individual"
         data-test-id="kyc-personal-upload-dropzone"
+        requirements={individualRequirements}
+        documentTemplateImage={idImg}
+      />
+
+      <HorizontalLine className="my-5" />
+
+      <MultiFileUpload
+        documentTemplateImage={bankStatementTemplate}
+        title={"upload Utility Bill or bank statement "}
+        fileInfo={"*If ID card has address then no extra proof of address is needed"}
+        acceptedFiles="image/*"
+        uploadType="individual"
+        onDropFile={props.onDropFile}
+        files={props.files}
+        fileUploading={props.fileUploading}
+        data-test-id="kyc-personal-upload-dropzone"
+        requirements={individualRequirements}
       />
       <div className="p-4 text-center">
         <Button

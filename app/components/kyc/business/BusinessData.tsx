@@ -134,12 +134,22 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
       <FormattedMessage id="kyc.business.business-data.upload-documents" />
       <br />
       <MultiFileUpload
+        uploadType="business"
+        title="Upload Files"
+        acceptedFiles="image/*"
+        fileInfo=""
         data-test-id="kyc-company-business-supporting-documents"
-        layout="business"
+        requirements={[
+          "Upload more documents",
+          "Proof of address (non-German entities only)",
+          "Article of association",
+          "Commercial register entry",
+          "Partnership agreement",
+          "Required documents",
+        ]}
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
       />
     </div>
   );

@@ -1,6 +1,7 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -20,7 +21,6 @@ import {
 
 import { KYCBeneficialOwners } from "./BeneficialOwners";
 
-import { Col, Row } from "reactstrap";
 import {
   IKycBusinessData,
   IKycFileInfo,
@@ -32,10 +32,18 @@ import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
-import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { HorizontalLine } from "../../shared/HorizontalLine";
+import {
+  addressRequirements,
+  individualRequirements,
+  MultiFileUpload,
+} from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
+
+import * as bankStatementTemplate from "../../../assets/img/bank-statement-template.svg";
+import * as idImage from "../../../assets/img/id_img.svg";
 
 export const businessSteps = [
   {
@@ -169,12 +177,31 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   return (
     <div>
       <MultiFileUpload
+        uploadType="individual"
+        title="Upload ID card or Passport"
+        acceptedFiles="image/*"
+        fileInfo="*Colour copies of both sides of ID card"
         data-test-id="kyc-company-legal-representative-documents"
-        layout="individual"
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
+        requirements={individualRequirements}
+        documentTemplateImage={idImage}
+      />
+
+      <HorizontalLine className="my-5" />
+
+      <MultiFileUpload
+        documentTemplateImage={bankStatementTemplate}
+        title={"upload Utility Bill or bank statement "}
+        fileInfo={"*If ID card has address then no extra proof of address is needed"}
+        acceptedFiles="image/*"
+        uploadType="individual"
+        onDropFile={props.onDropFile}
+        files={props.files}
+        fileUploading={props.fileUploading}
+        data-test-id="kyc-personal-upload-dropzone"
+        requirements={addressRequirements}
       />
     </div>
   );

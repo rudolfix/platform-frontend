@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Modal, Row } from "reactstrap";
+import { Col, Modal, Row } from "reactstrap";
 
 import { actions } from "../../modules/actions";
 import {
@@ -40,14 +40,16 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
     <Modal isOpen={isOpen} toggle={onDismiss}>
       <ModalComponentBody onClose={onDismiss}>
         <Row className="mt-5 justify-content-center">
-          <h5>{genericModalObj && genericModalObj.title}</h5>
+          <h5 data-test-id="components.modals.generic-modal.title">
+            {genericModalObj && genericModalObj.title}
+          </h5>
         </Row>
 
         <Row className="mb-5 justify-content-center">
-          <p className={styles.content}>
+          <Col xs="auto" className="pr-0">
             {genericModalObj && genericModalObj.icon && genericModalIcons[genericModalObj.icon]}{" "}
-            {genericModalObj && genericModalObj.description}
-          </p>
+          </Col>
+          <Col className={styles.content}>{genericModalObj && genericModalObj.description}</Col>
         </Row>
 
         <Row className="mb-5 justify-content-center">

@@ -66,12 +66,21 @@ const CompanyImages: React.SFC = () => (
         alt="MySwoop"
       />
     </a>
-    <a href="#eto-card-3" className={styles.companyImage}>
-      <ResponsiveImage
-        srcSet={{ "1x": foundersbankImage, "2x": foundersbankImage2x, "3x": foundersbankImage3x }}
-        alt="Founders bank"
-      />
-    </a>
+    {process.env.NF_FOUNDERS_BANK_VISIBLE ? (
+      <a href="#eto-card-3" className={styles.companyImage}>
+        <ResponsiveImage
+          srcSet={{ "1x": foundersbankImage, "2x": foundersbankImage2x, "3x": foundersbankImage3x }}
+          alt="Founders bank"
+        />
+      </a>
+    ) : (
+      <a href="#eto-card-4" className={styles.companyImage}>
+        <ResponsiveImage
+          srcSet={{ "1x": emfluxImage, "2x": emfluxImage2x, "3x": emfluxImage3x }}
+          alt="Emflux"
+        />
+      </a>
+    )}
     <a href="#eto-card-5" className={styles.companyImage}>
       <ResponsiveImage
         srcSet={{ "1x": blockstateImage, "2x": blockstateImage2x, "3x": blockstateImage3x }}

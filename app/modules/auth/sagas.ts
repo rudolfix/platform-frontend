@@ -176,13 +176,11 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
       yield effects.put(actions.routing.goToDashboard());
     }
   } catch (e) {
-    if (e instanceof SignerRejectConfirmationError) {
+    if (e instanceof SignerRejectConfirmationError || e instanceof SignerTimeoutError) {
       throw e;
+    } else {
+      throw new SignerUnknownError();
     }
-    if (e instanceof SignerTimeoutError) {
-      throw e;
-    }
-    throw new SignerUnknownError();
   }
 }
 
@@ -205,8 +203,6 @@ function* handleSignInUser({
         ),
       );
     } else {
-      yield effects.put(actions.walletSelector.reset());
-
       yield effects.put(
         actions.walletSelector.messageSigningError(
           formatIntlMessage(

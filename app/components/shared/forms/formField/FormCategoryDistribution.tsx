@@ -11,6 +11,7 @@ import { FormTextArea } from "./FormTextArea";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
+import { FormTransformingField } from "./FormTransformingField";
 
 interface IProps {
   className?: string;
@@ -19,7 +20,6 @@ interface IProps {
   prefix?: string;
   selectedCategory?: { name: string; percentage: number };
 }
-
 interface IInternalProps {
   addField: () => void;
   removeField: () => void;
@@ -61,10 +61,11 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
       <Col>
         <Row>
           <Col xs={9}>
-            <FormField
+            <FormTransformingField
               prefix={prefix}
-              type="number"
-              name={`${props.name}.${formFieldKeys[1]}`} />
+              name={`${props.name}.${formFieldKeys[1]}`}
+              ratio={100}
+            />
           </Col>
           {!isFirstElement && (
             <span className="pt-2">
@@ -101,6 +102,7 @@ export class FormCategoryDistribution extends React.Component<
 
     const categoryDistribution = values[name] || [];
     const formFieldKeys = Object.keys(this.blankField);
+
     return (
       <FormHighlightGroup>
         <div className={className}>

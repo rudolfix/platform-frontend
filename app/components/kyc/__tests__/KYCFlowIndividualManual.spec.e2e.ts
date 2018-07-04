@@ -1,5 +1,5 @@
 import { tid } from "../../../../test/testUtils";
-import { registerWithLightWallet } from "../../../e2e-test-utils";
+import { registerWithLightWallet, verifyLatestUserEmail } from "../../../e2e-test-utils";
 import { kycRoutes } from "../routes";
 
 const email = "test+individual@neufund.org";
@@ -96,7 +96,8 @@ const uploadDocumentAndSubmitForm = () => {
 
 describe("KYC Personal flow with manual verification", () => {
   it("went through KYC flow with personal data", () => {
-    registerWithLightWallet(email, password);
+    registerWithLightWallet(email, password, true);
+    verifyLatestUserEmail();
     goToIndividualKYCFlow();
     submitIndividualKYCForm(personData);
     goToIndividualManualVerification();

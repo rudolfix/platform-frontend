@@ -9,6 +9,7 @@ const USER_API_ROOT = "/api/user";
 
 export class UserApiError extends Error {}
 export class UserNotExisting extends UserApiError {}
+export class EmailAlreadyExists extends UserApiError {}
 
 @injectable()
 export class UsersApi {
@@ -19,14 +20,16 @@ export class UsersApi {
 
   public async createAccount(newUser?: IUserInput): Promise<IUser> {
     this.logger.info("Creating account for email: ", newUser && newUser.newEmail);
-
     const response = await this.httpClient.post<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/",
       responseSchema: UserValidator,
       body: newUser || {},
+      allowedStatusCodes: [409],
     });
-
+    if (response.statusCode === 409) {
+      throw new EmailAlreadyExists();
+    }
     return response.body;
   }
 
@@ -41,7 +44,6 @@ export class UsersApi {
     if (response.statusCode === 404) {
       throw new UserNotExisting();
     }
-
     return response.body;
   }
 
@@ -50,12 +52,15 @@ export class UsersApi {
       baseUrl: USER_API_ROOT,
       url: "/user/me/email-verification",
       responseSchema: UserValidator,
-      allowedStatusCodes: [404],
+      allowedStatusCodes: [404, 409],
       body: userCode,
     });
 
     if (response.statusCode === 404) {
       throw new UserNotExisting();
+    }
+    if (response.statusCode === 409) {
+      throw new EmailAlreadyExists();
     }
 
     return response.body;
@@ -66,12 +71,15 @@ export class UsersApi {
       baseUrl: USER_API_ROOT,
       url: "/user/me",
       responseSchema: UserValidator,
-      allowedStatusCodes: [404],
+      allowedStatusCodes: [404, 409],
       body: updatedUser,
     });
 
     if (response.statusCode === 404) {
       throw new UserNotExisting();
+    }
+    if (response.statusCode === 409) {
+      throw new EmailAlreadyExists();
     }
 
     return response.body;

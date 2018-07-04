@@ -8,7 +8,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { FormField, FormSelectField, FormTextArea } from "../../../shared/forms/forms";
 
-import { EtoTermsType, TPartialCompanyEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
@@ -29,17 +29,22 @@ const TOKEN_HOLDERS_RIGHTS = {
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialCompanyEtoData;
-  etoData: any;
+  stateValues: TPartialEtoSpecData;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialCompanyEtoData) => void;
+  saveData: (values: TPartialEtoSpecData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
+const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
+  const fullyDilutedPreMoneyValuationEur = props.stateValues.fullyDilutedPreMoneyValuationEur || 1;
+  const existingCompanyShares = props.stateValues.existingCompanyShares || 1;
+  const newSharesToIssue = props.stateValues.newSharesToIssue || 1;
+  const equityTokensPerShare = props.stateValues.equityTokensPerShare || 1;
+
+  return (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-terms.title" />}
     validator={EtoTermsType.toYup()}
@@ -84,11 +89,13 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder=" "
         prefix="€"
         name="fullyDilutedPreMoneyValuationEur"
+        type="number"
       />
       <FormField
         label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
         placeholder="Number of existing shares"
         name="existingCompanyShares"
+        type="number"
       />
       <FormField
         label={
@@ -96,6 +103,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         }
         placeholder="Number of share"
         name="newSharesToIssue"
+        type="number"
       />
 
       <FormHighlightGroup>
@@ -103,7 +111,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
           placeholder="1/1000000 of share price auto complete"
           name="newShareProce"
-          value={props.etoData.fullyDilutedPreMoneyValuationEur / props.etoData.existingCompanyShares || 0}
+          value={ fullyDilutedPreMoneyValuationEur / existingCompanyShares }
           disabled
         />
         <Row>
@@ -112,7 +120,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
               label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
               placeholder="read only"
               name="minNumberOfTokens"
-              value={props.etoData.newSharesToIssue * props.etoData.equityTokensPerShare || 0}
+              value={newSharesToIssue * equityTokensPerShare}
               disabled
             />
           </Col>
@@ -122,7 +130,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
               prefix="€"
               placeholder="read only"
               name="maxNumberOfTokens"
-              value={props.etoData.minimumNewSharesToIssue * props.etoData.equityTokensPerShare || 0}
+              value={newSharesToIssue * equityTokensPerShare}
               disabled
             />
           </Col>
@@ -132,7 +140,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
               prefix="€"
               placeholder="read only"
               name="minCapEur"
-              value={props.etoData.fullyDilutedPreMoneyValuationEur / props.etoData.existingCompanyShares * props.etoData.newSharesToIssue || 0}
+              value={fullyDilutedPreMoneyValuationEur / existingCompanyShares * newSharesToIssue}
               disabled
             />
           </Col>
@@ -142,7 +150,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
               prefix="€"
               placeholder="read only"
               name="maxCapEur"
-              value={props.etoData.fullyDilutedPreMoneyValuationEur / props.etoData.existingCompanyShares * props.etoData.minimumNewSharesToIssue || 0}
+              value={fullyDilutedPreMoneyValuationEur / existingCompanyShares * newSharesToIssue}
               disabled
             />
           </Col>
@@ -161,6 +169,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder="1"
         prefix="€"
         name="shareNominalValueEur"
+        type="number"
       />
     </FormSection>
 
@@ -171,6 +180,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       <div className="form-group">
         <FormRadioButton value="nEuro" name="" label="nEuro" />
         <FormRadioButton value="ETH" name="" label="ETH" />
+        {/* TODO: Connect this component */}
       </div>
       <div className="form-group">
         <FormLabel>
@@ -184,6 +194,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
             <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.enabled-label" />
           }
           onClick={() => {}}
+          // TODO: Connect this Component
         />
       </div>
       <div className="form-group">
@@ -191,7 +202,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
         </FormLabel>
         <FormRange
-          name="preSaleDuration"
+          name="whitelistDurationDays"
           min={1}
           unitMin={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />}
           max={14}
@@ -203,7 +214,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
         </FormLabel>
         <FormRange
-          name="publicOfferDuration"
+          name="publicDurationDays"
           min={0}
           unit={
             <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration-duration.unit" />
@@ -216,6 +227,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder="1"
         prefix="€"
         name="minTicketEur"
+        type="number"
       />
       <div className="form-group">
         <FormCheckbox
@@ -253,6 +265,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           label={
             <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
           }
+          // TODO: Should be disabled
         />
       </div>
     </FormSection>
@@ -272,9 +285,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       </Row>
     </Col>
   </EtoFormBase>
-);
+)};
 
-const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
+const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
   validationSchema: EtoTermsType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
@@ -289,12 +302,16 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
-      etoData: s.etoFlow.etoData
+      stateValues: s.etoFlow.etoData,
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TPartialCompanyEtoData) => {
-        dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
+      saveData: (data: TPartialEtoSpecData) => {
+        dispatch(
+          actions.etoFlow.saveDataStart({
+            companyData: {},
+            etoData: data,
+          }),
+        );
       },
     }),
   }),

@@ -73,7 +73,7 @@ describe("Wallet recover", () => {
     });
   });
 
-  it.skip("should return an error when recovering seed and using an already verified email", () => {
+  it("should return an error when recovering seed and using an already verified email", () => {
     const words = [
       "argue",
       "resemble",

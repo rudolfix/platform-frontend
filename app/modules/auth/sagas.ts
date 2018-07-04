@@ -18,6 +18,7 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { WalletType } from "../web3/types";
+import { EmailAlreadyExists } from "./../../lib/api/users/UsersApi";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -81,9 +82,14 @@ export async function verifyUserEmailPromise(
       formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-verified"),
     );
   } catch (e) {
-    notificationCenter.error(
-      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.failed-email-verify"),
-    );
+    if (e instanceof EmailAlreadyExists)
+      notificationCenter.error(
+        formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
+      );
+    else
+      notificationCenter.error(
+        formatIntlMessage("modules.auth.sagas.verify-user-email-promise.failed-email-verify"),
+      );
   }
 }
 
@@ -166,6 +172,12 @@ function* signInUser({
       yield effects.put(
         actions.walletSelector.messageSigningError(
           formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
+        ),
+      );
+    } else if (e instanceof EmailAlreadyExists) {
+      yield effects.put(
+        actions.walletSelector.messageSigningError(
+          formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
         ),
       );
     } else {

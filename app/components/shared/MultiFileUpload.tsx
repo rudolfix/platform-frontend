@@ -112,11 +112,13 @@ MultiFileUploadComponent.defaultProps = {
   layout: "horizontal",
 };
 
-export const MultiFileUpload: React.SFC<Partial<IProps>> = ({
+export const MultiFileUpload: React.SFC<IProps> = ({
   fileUploading,
   files,
   onDropFile,
   uploadType,
+  layout,
+  "data-test-id": dataTestId
 }) => {
   const isIndividual = uploadType === "individual";
   const computedRequirements = isIndividual ? individualRequirements : businessRequirements;
@@ -161,14 +163,15 @@ export const MultiFileUpload: React.SFC<Partial<IProps>> = ({
           </div>
         </div>
       )}
-      <MultiFileUpload
+      <MultiFileUploadComponent
         requirements={computedRequirements}
         acceptedFiles="image/*"
         onDropFile={onDropFile}
         files={files}
         fileUploading={fileUploading}
         uploadType={uploadType}
-        layout="vertical"
+        layout={layout}
+        data-test-id={dataTestId}
       />
     </div>
   );

@@ -24,7 +24,7 @@ const IndividualRequirements = [
 ];
 
 storiesOf("MultiFileUpload", module)
-  .add("default", () => (
+  .add("individual", () => (
     <MultiFileUpload
       uploadType="individual"
       acceptedFiles="image/*"
@@ -34,9 +34,9 @@ storiesOf("MultiFileUpload", module)
       fileUploading={false}
     />
   ))
-  .add("layout: vertical", () => (
+  .add("business layout: vertical", () => (
     <MultiFileUpload
-      uploadType="individual"
+      uploadType="business"
       acceptedFiles="image/*"
       onDropFile={() => {}}
       files={[]}
@@ -45,9 +45,9 @@ storiesOf("MultiFileUpload", module)
       fileUploading={false}
     />
   ))
-  .add("layout: horizontal", () => (
+  .add("business layout: horizontal", () => (
     <MultiFileUpload
-      uploadType="individual"
+      uploadType="business"
       acceptedFiles="image/*"
       onDropFile={() => {}}
       files={[]}
@@ -56,9 +56,9 @@ storiesOf("MultiFileUpload", module)
       fileUploading={false}
     />
   ))
-  .add("state: uploading", () => (
+  .add("business state: uploading", () => (
     <MultiFileUpload
-      uploadType="individual"
+      uploadType="business"
       acceptedFiles="image/*"
       onDropFile={() => {}}
       files={[]}
@@ -66,9 +66,9 @@ storiesOf("MultiFileUpload", module)
       fileUploading={true}
     />
   ))
-  .add("state: with files", () => (
+  .add("business state: with files", () => (
     <MultiFileUpload
-      uploadType="individual"
+      uploadType="business"
       acceptedFiles="image/*"
       onDropFile={() => {}}
       files={files}

@@ -14,7 +14,7 @@ import {
   LightWalletUtil,
   LightWalletWrongPassword,
 } from "../../../lib/web3/LightWallet";
-import { SignerUnknownError } from "../../../lib/web3/Web3Manager";
+import { SignerError } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../accessWallet/sagas";
@@ -157,7 +157,7 @@ export function* lightWalletRegisterWatch(
         ),
       );
     else {
-      if (e instanceof SignerUnknownError) {
+      if (e instanceof SignerError) {
         yield put(
           actions.genericModal.showErrorModal(
             "Error",

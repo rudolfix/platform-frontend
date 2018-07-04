@@ -40,7 +40,9 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
     <Modal isOpen={isOpen} toggle={onDismiss}>
       <ModalComponentBody onClose={onDismiss}>
         <Row className="mt-5 justify-content-center">
-          <h5>{genericModalObj && genericModalObj.title}</h5>
+          <h5 data-test-id="components.modals.generic-modal.title">
+            {genericModalObj && genericModalObj.title}
+          </h5>
         </Row>
 
         <Row className="mb-5 justify-content-center">

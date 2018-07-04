@@ -8,4 +8,5 @@ export const etoRegisterRoutes = {
   keyIndividuals: parentRoute + "/key-individuals",
   productVision: parentRoute + "/product-vision",
   etoTerms: parentRoute + "/eto-terms",
+  etoMedia: parentRoute + "/eto-media",
 };

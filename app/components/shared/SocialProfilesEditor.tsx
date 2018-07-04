@@ -1,10 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 import { Input } from "reactstrap";
 import { InlineIcon } from "./InlineIcon";
 
-import { Link } from "react-router-dom";
 import * as linkIcon from "../../assets/img/inline_icons/social_link.svg";
 import * as styles from "./SocialProfilesEditor.module.scss";
 
@@ -16,6 +16,7 @@ export interface ISocialProfile {
 }
 
 interface IProps {
+  className?: string;
   profiles: ISocialProfile[];
 }
 
@@ -25,10 +26,10 @@ export class SocialProfilesEditor extends React.Component<IProps> {
   }
 
   render(): React.ReactNode {
-    const { profiles } = this.props;
+    const { profiles, className } = this.props;
 
     return (
-      <div className={styles.socialProfilesEditor}>
+      <div className={cn(styles.socialProfilesEditor, className)}>
         <div className={styles.tabs}>
           {profiles.map(({ url, name, svgIcon }) => (
             <div
@@ -41,15 +42,17 @@ export class SocialProfilesEditor extends React.Component<IProps> {
           ))}
         </div>
         {profiles.map(({ name, label, url }) => (
-          <div className={cn(Boolean(url) && "is-visible", styles.inputWrapper)}>
+          <div className={cn(Boolean(url) && "is-visible", styles.inputWrapper)} key={name}>
             <Input
               name={`socialProfile${name}`}
               placeholder={label || `${name} profile`}
               value={url || ""}
             />
-            <Link to={url || "#0"} className={styles.linkWrapper} target="_blank">
-              <InlineIcon svgIcon={linkIcon} />
-            </Link>
+            {
+              url && <a href={url || "#0"} className={styles.linkWrapper} target="_blank">
+                <InlineIcon svgIcon={linkIcon} />
+              </a>
+            }
           </div>
         ))}
       </div>

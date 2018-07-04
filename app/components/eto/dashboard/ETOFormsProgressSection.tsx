@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 import {
@@ -99,6 +100,9 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             progress={shouldEtoDataLoad ? productVisionProgress : 0}
             name="Product Vision"
           />
+        </Col>
+        <Col lg={4} xs={12} sm={6} className="mb-4">
+          <Link to={etoRegisterRoutes.etoMedia}>media</Link>
         </Col>
         {/* TODO: ADD TRANSLATIONS */}
       </>

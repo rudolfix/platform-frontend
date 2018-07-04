@@ -144,6 +144,16 @@ type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
 export type TEtoSpecsData = TEtoTermsType;
 
+export const EtoMediaType = YupTS.object({
+  socialChannels: YupTS.array(
+    YupTS.object({
+      type: YupTS.string(),
+      url: YupTS.string()
+    })
+  ),
+  bitcoinTalkLink: YupTS.string()
+});
+
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;
 export type TPartialCompanyEtoData = DeepPartial<TCompanyEtoData>;

@@ -116,7 +116,7 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       ),
       etoTermsProgress: selectFormFractionDone(
         EtoTermsType.toYup(),
-        s.etoFlow.companyData,
+        s.etoFlow.etoData,
         etoFlowInitialState,
       ),
       etoKeyIndividualsProgress: selectFormFractionDone(

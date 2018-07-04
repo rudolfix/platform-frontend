@@ -94,27 +94,6 @@ export const EtoKeyIndividualsType = YupTS.object({
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
 
-export const EtoTermsType = YupTS.object({
-  equityTokenName: YupTS.string(),
-  equityTokenSymbol: YupTS.string(),
-  // here we are missing image uploading data
-  fullyDilutedPreMoneyValuation: YupTS.number(),
-  equityTokensPerShare: YupTS.number(),
-  fullyDilutedPreMoneyValuationEur: YupTS.number(),
-  existingCompanyShares: YupTS.number(),
-  newSharesToIssue: YupTS.number(),
-  discountScheme: YupTS.string(),
-  shareNominalValueEur: YupTS.number(),
-  minTicketEur: YupTS.number(),
-  enableTransferOnSuccess: YupTS.boolean(),
-  riskRegulatedBusiness: YupTS.boolean(),
-  riskThirdParty: YupTS.string(),
-  liquidationPreferenceMultiplier: YupTS.number(),
-  tagAlongVotingRule: YupTS.boolean(),
-});
-
-type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
-
 export const EtoLegalInformationType = YupTS.object({
   name: YupTS.string(),
   legalForm: YupTS.string(),
@@ -135,15 +114,51 @@ export type TCompanyEtoData =
   | TEtoTeamData
   | TEtoLegalData
   | TEtoProductVision
-  | TEtoTermsType
   | TEtoKeyIndividualsType;
 
 /** ETO SPEC RELATED INTERFACES
  *  only deals with "/etos/me"
  */
 
+export const EtoTermsType = YupTS.object({
+  equityTokenName: YupTS.string(),
+  equityTokenSymbol: YupTS.string(),
+  equityTokenImage: YupTS.string(),
+  fullyDilutedPreMoneyValuation: YupTS.number(),
+  equityTokensPerShare: YupTS.number(),
+  fullyDilutedPreMoneyValuationEur: YupTS.number(),
+  existingCompanyShares: YupTS.number(),
+  newSharesToIssue: YupTS.number(),
+  discountScheme: YupTS.string(),
+  shareNominalValueEur: YupTS.number(),
+  publicDurationDays: YupTS.number(),
+
+  minTicketEur: YupTS.number(),
+  enableTransferOnSuccess: YupTS.boolean(),
+  riskRegulatedBusiness: YupTS.boolean(),
+  riskThirdParty: YupTS.string(),
+  liquidationPreferenceMultiplier: YupTS.number(),
+  tagAlongVotingRule: YupTS.boolean(),
+  whitelistDurationDays: YupTS.number(),
+});
+
+type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
+
 export const EtoSpecsInformationType = YupTS.object({
   companyId: YupTS.string(),
+  equityTokenName: YupTS.string(),
+  equityTokenSymbol: YupTS.string(),
+  // riskLoansExist:
+  equityTokenImage: YupTS.string(),
+  fullyDilutedPreMoneyValuationEur: YupTS.number(),
+  existingCompanyShares: YupTS.number(),
+  newSharesToIssue: YupTS.number(),
+  shareNominalValueEur: YupTS.number(),
+  discountScheme: YupTS.string(),
+  riskRegulatedBusiness: YupTS.string().optional(),
+  enableTransferOnSuccess: YupTS.boolean(),
+  riskThirdParty: YupTS.string(),
+  liquidationPreferenceMultiplier: YupTS.number(),
   companyTokenHolderAgreementIfps: YupTS.string(),
   currencies: YupTS.array(YupTS.string()),
   equityTokenPrecision: YupTS.number(),
@@ -174,7 +189,9 @@ export const EtoSpecsInformationType = YupTS.object({
   whitelistDurationDays: YupTS.number(),
 });
 
-export type TEtoSpecsData = YupTS.TypeOf<typeof EtoSpecsInformationType>;
+export type EtoSpecsInformationTypeData = YupTS.TypeOf<typeof EtoSpecsInformationType>;
+
+export type TEtoSpecsData = TEtoTermsType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;

@@ -8,7 +8,12 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { FormField, FormSelectField, FormTextArea } from "../../../shared/forms/forms";
 
-import { EtoTermsType, TPartialCompanyEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import {
+  EtoTermsType,
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
+  EtoSpecsInformationType,
+} from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
@@ -29,16 +34,16 @@ const TOKEN_HOLDERS_RIGHTS = {
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialCompanyEtoData;
+  stateValues: TPartialEtoSpecData;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialCompanyEtoData) => void;
+  saveData: (values: TPartialEtoSpecData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
+const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-terms.title" />}
     validator={EtoTermsType.toYup()}
@@ -83,11 +88,13 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder=" "
         prefix="€"
         name="fullyDilutedPreMoneyValuationEur"
+        type="number"
       />
       <FormField
         label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
         placeholder="Number of existing shares"
         name="existingCompanyShares"
+        type="number"
       />
       <FormField
         label={
@@ -95,6 +102,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         }
         placeholder="Number of share"
         name="newSharesToIssue"
+        type="number"
       />
       <FormHighlightGroup>
         <FormField
@@ -142,6 +150,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           </Col>
         </Row>
       </FormHighlightGroup>
+
       <FormTextArea
         name="discountScheme"
         label={
@@ -154,6 +163,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder="1"
         prefix="€"
         name="shareNominalValueEur"
+        type="number"
       />
     </FormSection>
 
@@ -164,6 +174,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       <div className="form-group">
         <FormRadioButton value="nEuro" name="" label="nEuro" />
         <FormRadioButton value="ETH" name="" label="ETH" />
+        {/* TODO: Connect this component */}
       </div>
       <div className="form-group">
         <FormLabel>
@@ -177,6 +188,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
             <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.enabled-label" />
           }
           onClick={() => {}}
+          // TODO: Connect this Component
         />
       </div>
       <div className="form-group">
@@ -184,7 +196,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
         </FormLabel>
         <FormRange
-          name="preSaleDuration"
+          name="whitelistDurationDays"
           min={1}
           unitMin={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />}
           max={14}
@@ -196,7 +208,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
         </FormLabel>
         <FormRange
-          name="publicOfferDuration"
+          name="publicDurationDays"
           min={0}
           unit={
             <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration-duration.unit" />
@@ -209,6 +221,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder="1"
         prefix="€"
         name="minTicketEur"
+        type="number"
       />
       <div className="form-group">
         <FormCheckbox
@@ -267,8 +280,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
   </EtoFormBase>
 );
 
-const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoTermsType.toYup(),
+const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
+  // TODO: REMOVE ANY
+  validationSchema: EtoSpecsInformationType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
@@ -282,11 +296,53 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
+      stateValues: s.etoFlow.etoData,
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TPartialCompanyEtoData) => {
-        dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
+      saveData: (data: TPartialEtoSpecData) => {
+        const {
+          equityTokenName,
+          equityTokenSymbol,
+          equityTokenImage,
+          equityTokensPerShare,
+          fullyDilutedPreMoneyValuationEur,
+          existingCompanyShares,
+          newSharesToIssue,
+          discountScheme,
+          shareNominalValueEur,
+          whitelistDurationDays,
+          publicDurationDays,
+          minTicketEur,
+          riskRegulatedBusiness,
+          tagAlongVotingRule,
+          enableTransferOnSuccess,
+          riskThirdParty,
+          liquidationPreferenceMultiplier,
+        } = data;
+        dispatch(
+          actions.etoFlow.saveDataStart({
+            companyData: {},
+            etoData: {
+              equityTokenName,
+              equityTokenSymbol,
+              equityTokenImage,
+              equityTokensPerShare,
+              fullyDilutedPreMoneyValuationEur,
+              existingCompanyShares,
+              newSharesToIssue,
+              discountScheme,
+              shareNominalValueEur,
+              whitelistDurationDays,
+              publicDurationDays,
+              minTicketEur,
+              enableTransferOnSuccess,
+              // riskRegulatedBusiness, BACKEND FAILS
+              tagAlongVotingRule,
+              liquidationPreferenceMultiplier,
+              // riskThirdParty, BACKEND FAILS
+            },
+          }),
+        );
       },
     }),
   }),

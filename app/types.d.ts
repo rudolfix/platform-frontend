@@ -68,3 +68,11 @@ export type CommonHtmlProps = {
 export type Size = "narrow" | "wide";
 
 export type TTranslatedString = string | React.ReactElement<FormattedMessage>;
+
+export type TAcceptedFileType =
+  | "application/pdf"
+  | "image/png"
+  | "image/jpg"
+  | "image/jpeg"
+  | "image/svg+xml"
+  | "image/*";

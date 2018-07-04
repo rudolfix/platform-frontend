@@ -3,9 +3,12 @@ import { get } from "lodash";
 import { tid } from "../../../../../test/testUtils";
 import {
   assertUserInDashboard,
+  convertToUniqueEmail,
   loginWithLightWallet,
+  logoutViaTopRightButton,
   mockApiUrl,
   registerWithLightWallet,
+  verifyLatestUserEmail,
 } from "../../../../e2e-test-utils";
 import { typeEmailPassword } from "../../../../e2e-test-utils/index";
 
@@ -65,12 +68,20 @@ describe("Light wallet login / register", () => {
     });
   });
 
-  it.skip("should return an error when logging with same email", () => {
-    // Special email @see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
-    const email = "0x42912@neufund.org";
+  it("should return an error when logging with same email", () => {
+    const email = convertToUniqueEmail("dave@neufund.org");
     const password = "strongpassword";
     const repeatedEmail = "email has already been registered";
 
+    // register once and then verify email account
+    cy.visit("/register");
+    typeEmailPassword(email, password);
+    assertUserInDashboard();
+    verifyLatestUserEmail();
+    logoutViaTopRightButton();
+    cy.clearLocalStorage();
+
+    // register again with the same email, this should show a warning
     cy.visit("/register");
     typeEmailPassword(email, password);
 

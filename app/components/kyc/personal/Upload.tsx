@@ -67,16 +67,6 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
       />
 
       <HorizontalLine className="my-5" />
-
-      <MultiFileUpload
-        acceptedFiles="image/*"
-        uploadType="individual"
-        onDropFile={props.onDropFile}
-        files={props.files}
-        fileUploading={props.fileUploading}
-        data-test-id="kyc-personal-upload-dropzone"
-        requirements={individualRequirements}
-      />
       <div className="p-4 text-center">
         <Button
           onClick={props.onDone}

@@ -170,6 +170,7 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
     <div>
       <MultiFileUpload
         uploadType="individual"
+        layout="vertical"
         acceptedFiles="image/*"
         data-test-id="kyc-company-legal-representative-documents"
         onDropFile={props.onDropFile}

@@ -151,6 +151,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
         <MultiFileUpload
           uploadType="individual"
           acceptedFiles="image/*"
+          layout="vertical"
           requirements={[
             "Colored photo",
             "Full name",

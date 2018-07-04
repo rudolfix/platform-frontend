@@ -64,6 +64,7 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
         fileUploading={props.fileUploading}
         data-test-id="kyc-personal-upload-dropzone"
         requirements={individualRequirements}
+        layout="vertical"
       />
 
       <HorizontalLine className="my-5" />

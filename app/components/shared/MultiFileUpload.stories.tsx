@@ -32,6 +32,7 @@ storiesOf("MultiFileUpload", module)
       files={[]}
       requirements={IndividualRequirements}
       fileUploading={false}
+      layout="vertical"
     />
   ))
   .add("business layout: vertical", () => (

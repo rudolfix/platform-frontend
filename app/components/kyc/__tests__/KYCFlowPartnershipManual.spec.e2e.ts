@@ -1,5 +1,5 @@
 import { tid } from "../../../../test/testUtils";
-import { registerWithLightWallet } from "../../../e2e-test-utils";
+import { registerWithLightWallet, verifyLatestUserEmail } from "../../../e2e-test-utils";
 import { kycRoutes } from "../routes";
 
 const email = "test+partnership@neufund.org";
@@ -139,7 +139,8 @@ const submitLegalRepresentativeForm = () => {
 
 describe("KYC Small Business flow with manual verification", () => {
   it("went through KYC Small Business flow", () => {
-    registerWithLightWallet(email, password);
+    registerWithLightWallet(email, password, true);
+    verifyLatestUserEmail();
     goToCorporationFlow();
     submitSmallBusinessKYCForm(smallBusinessData);
     uploadSupportingDocumentsAndSubmitForm();

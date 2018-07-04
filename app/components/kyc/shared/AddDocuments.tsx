@@ -5,11 +5,11 @@ import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interface
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
+
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 interface IStateProps {
   fileUploading: boolean;
-  filesLoading: boolean;
   files: IKycFileInfo[];
 }
 
@@ -24,18 +24,20 @@ interface IOwnProps {
 export const KYCAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & IOwnProps> = ({
   onDropFile,
   files,
-  filesLoading,
   fileUploading,
   uploadType,
-}) => (
-  <MultiFileUpload
-    onDropFile={onDropFile}
-    files={files}
-    fileUploading={fileUploading}
-    filesLoading={filesLoading}
-    layout={uploadType}
-  />
-);
+}) => {
+  return (
+    <MultiFileUpload
+      acceptedFiles="image/*"
+      onDropFile={onDropFile}
+      files={files}
+      fileUploading={fileUploading}
+      uploadType={uploadType}
+      layout="vertical"
+    />
+  );
+};
 
 export const KYCAddDocuments = compose<React.SFC<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
@@ -50,6 +52,7 @@ export const KYCAddDocuments = compose<React.SFC<IOwnProps>>(
         ownProps.uploadType === "individual"
           ? !!state.kyc.individualFileUploading
           : !!state.kyc.businessFileUploading,
+      title: "",
     }),
     dispatchToProps: (dispatch, ownProps) => ({
       onDropFile: (file: File) =>

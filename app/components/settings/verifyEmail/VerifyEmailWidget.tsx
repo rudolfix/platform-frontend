@@ -111,7 +111,7 @@ const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) 
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
     </p>
-    <Col xs={12} className="d-flex justify-content-center">
+    <Col xs={12} className="d-flex justify-content-center" data-test-id="email-verified">
       <p>
         <b>
           <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}

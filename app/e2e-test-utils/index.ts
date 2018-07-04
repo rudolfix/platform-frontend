@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import { tid } from "../../test/testUtils";
 import { appRoutes } from "../components/appRoutes";
 
@@ -27,11 +28,41 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
 export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
   "https://localhost:9090/api/"}external-services-mock/`;
 
+export const verifyLatestUserEmail = () => {
+  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
+    const activationLink = get(r, "body[0].personalizations[0].substitutions.-activationLink-") as
+      | string
+      | undefined;
+    if (activationLink) {
+      // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
+      const cleanedActivationLink = activationLink.replace("platform.neufund.io", "localhost:9090");
+      cy.visit(cleanedActivationLink);
+      cy.get(tid("email-verified")); // wait for the email verified button to show
+    }
+  });
+};
+
 export const assertUserInDashboard = () => {
   return cy.url().should("contain", appRoutes.dashboard);
 };
 
-export const registerWithLightWallet = (email: string, password: string) => {
+export const convertToUniqueEmail = (email: string) => {
+  const splitEmail = email.split("@");
+  const randomString = Math.random()
+    .toString(36)
+    .slice(2);
+  return `${splitEmail[0]}-${randomString}@${splitEmail[1]}`;
+};
+
+export const registerWithLightWallet = (
+  email: string,
+  password: string,
+  uniqueEmail: boolean = false,
+) => {
+  if (uniqueEmail) {
+    email = convertToUniqueEmail(email);
+  }
+
   cy.visit("/register");
 
   cy.get(tid("wallet-selector-register-email")).type(email);
@@ -40,6 +71,11 @@ export const registerWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-button")).click();
 
   assertUserInDashboard();
+};
+
+export const logoutViaTopRightButton = () => {
+  cy.get(tid("Header-logout")).click();
+  cy.get(tid("landing-page")); // wait for landing page to show
 };
 
 export const loginWithLightWallet = (email: string, password: string) => {

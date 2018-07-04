@@ -118,7 +118,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({
   onDropFile,
   uploadType,
   layout,
-  "data-test-id": dataTestId
+  "data-test-id": dataTestId,
 }) => {
   const isIndividual = uploadType === "individual";
   const computedRequirements = isIndividual ? individualRequirements : businessRequirements;

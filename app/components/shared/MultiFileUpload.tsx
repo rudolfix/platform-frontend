@@ -70,8 +70,9 @@ export const MultiFileUpload: React.SFC<IProps> = ({
   );
 
   return (
-    <div data-test-id={dataTestId} className={cn(styles.multiFileUpload, layout)}>
+    <div className={cn(styles.multiFileUpload, layout)}>
       <Dropzone
+        data-test-id={dataTestId}
         accept={acceptedFiles}
         onDrop={onDrop}
         disabled={fileUploading}

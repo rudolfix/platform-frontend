@@ -124,7 +124,6 @@ export const EtoTermsType = YupTS.object({
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
   equityTokenImage: YupTS.string(),
-  fullyDilutedPreMoneyValuation: YupTS.number(),
   equityTokensPerShare: YupTS.number(),
   fullyDilutedPreMoneyValuationEur: YupTS.number(),
   existingCompanyShares: YupTS.number(),
@@ -132,64 +131,16 @@ export const EtoTermsType = YupTS.object({
   discountScheme: YupTS.string(),
   shareNominalValueEur: YupTS.number(),
   publicDurationDays: YupTS.number(),
-
   minTicketEur: YupTS.number(),
   enableTransferOnSuccess: YupTS.boolean(),
   riskRegulatedBusiness: YupTS.boolean(),
-  riskThirdParty: YupTS.string(),
+  riskThirdParty: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
   tagAlongVotingRule: YupTS.boolean(),
   whitelistDurationDays: YupTS.number(),
 });
 
 type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
-
-export const EtoSpecsInformationType = YupTS.object({
-  companyId: YupTS.string(),
-  equityTokenName: YupTS.string(),
-  equityTokenSymbol: YupTS.string(),
-  // riskLoansExist:
-  equityTokenImage: YupTS.string(),
-  fullyDilutedPreMoneyValuationEur: YupTS.number(),
-  existingCompanyShares: YupTS.number(),
-  newSharesToIssue: YupTS.number(),
-  shareNominalValueEur: YupTS.number(),
-  discountScheme: YupTS.string(),
-  riskRegulatedBusiness: YupTS.string().optional(),
-  enableTransferOnSuccess: YupTS.boolean(),
-  riskThirdParty: YupTS.string(),
-  liquidationPreferenceMultiplier: YupTS.number(),
-  companyTokenHolderAgreementIfps: YupTS.string(),
-  currencies: YupTS.array(YupTS.string()),
-  equityTokenPrecision: YupTS.number(),
-  equityTokensPerShare: YupTS.number(),
-  etoId: YupTS.string(),
-  generalVotingDurationDays: YupTS.number(),
-  generalVotingRule: YupTS.string(),
-  hasDragAlongRights: YupTS.boolean(),
-  hasFoundersVesting: YupTS.boolean(),
-  hasGeneralInformationRights: YupTS.boolean(),
-  hasTagAlongRights: YupTS.boolean(),
-  investmentAndShareholderAgreementIfps: YupTS.string(),
-  isBookbuilding: YupTS.boolean(),
-  isCrowdfunding: YupTS.boolean(),
-  maxTicketEur: YupTS.number(),
-  minTicketEur: YupTS.number(),
-  pamphletTemplateIpfs: YupTS.string(),
-  previewCode: YupTS.string(),
-  prospectusTemplateIfps: YupTS.string(),
-  publicDurationDays: YupTS.number(),
-  reservationAndAcquisitionAgreementIfps: YupTS.string(),
-  restrictedActVotingDurationDays: YupTS.number(),
-  shareNominalValueRur: YupTS.number(),
-  signingDurationDays: YupTS.number(),
-  state: YupTS.string(),
-  tagAlongVotingRule: YupTS.string(),
-  tokenholdersQuorum: YupTS.number(),
-  whitelistDurationDays: YupTS.number(),
-});
-
-export type EtoSpecsInformationTypeData = YupTS.TypeOf<typeof EtoSpecsInformationType>;
 
 export type TEtoSpecsData = TEtoTermsType;
 

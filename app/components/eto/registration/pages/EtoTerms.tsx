@@ -8,12 +8,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { FormField, FormSelectField, FormTextArea } from "../../../shared/forms/forms";
 
-import {
-  EtoTermsType,
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-  EtoSpecsInformationType,
-} from "../../../../lib/api/EtoApi.interfaces";
+import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
@@ -259,6 +254,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => (
           label={
             <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
           }
+          // TODO: Should be disabled
         />
       </div>
     </FormSection>
@@ -281,8 +277,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => (
 );
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
-  // TODO: REMOVE ANY
-  validationSchema: EtoSpecsInformationType.toYup(),
+  validationSchema: EtoTermsType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
@@ -300,47 +295,10 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        const {
-          equityTokenName,
-          equityTokenSymbol,
-          equityTokenImage,
-          equityTokensPerShare,
-          fullyDilutedPreMoneyValuationEur,
-          existingCompanyShares,
-          newSharesToIssue,
-          discountScheme,
-          shareNominalValueEur,
-          whitelistDurationDays,
-          publicDurationDays,
-          minTicketEur,
-          riskRegulatedBusiness,
-          tagAlongVotingRule,
-          enableTransferOnSuccess,
-          riskThirdParty,
-          liquidationPreferenceMultiplier,
-        } = data;
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
-            etoData: {
-              equityTokenName,
-              equityTokenSymbol,
-              equityTokenImage,
-              equityTokensPerShare,
-              fullyDilutedPreMoneyValuationEur,
-              existingCompanyShares,
-              newSharesToIssue,
-              discountScheme,
-              shareNominalValueEur,
-              whitelistDurationDays,
-              publicDurationDays,
-              minTicketEur,
-              enableTransferOnSuccess,
-              // riskRegulatedBusiness, BACKEND FAILS
-              tagAlongVotingRule,
-              liquidationPreferenceMultiplier,
-              // riskThirdParty, BACKEND FAILS
-            },
+            etoData: data,
           }),
         );
       },

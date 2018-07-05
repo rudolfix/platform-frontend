@@ -115,32 +115,6 @@ const mediaLinksData = [
   },
 ]
 
-// const sliderSettings: Settings = {
-//   dots: false,
-//   infinite: true,
-//   autoplay: false,
-//   speed: 500,
-//   slidesToShow: 3,
-//   slidesToScroll: 3,
-//   arrows: true,
-//   responsive: [
-//     {
-//       breakpoint: 500,
-//       settings: {
-//         slidesToShow: 1,
-//         slidesToScroll: 1,
-//       },
-//     },
-//     {
-//       breakpoint: 900,
-//       settings: {
-//         slidesToShow: 2,
-//         slidesToScroll: 2,
-//       },
-//     },
-//   ],
-// };
-
 const day = 86400000;
 const etoStartDate = Date.now() - 20 * day;
 const bookBuildingEndDate = etoStartDate + 16 * day;

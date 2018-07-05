@@ -19,12 +19,6 @@ interface IProps {
   status: TStatus;
 }
 
-// const day = 86400000;
-// const etoStartDate = Date.now() - 20 * day;
-// const bookBuildingEndDate = etoStartDate + 16 * day;
-// const whitelistedEndDate = bookBuildingEndDate + 7 * day;
-// const publicEndDate = whitelistedEndDate + 7 * day;
-
 export const EtoOverviewStatus: React.SFC<IProps> = props => (
   <Panel>
     <div className={stylesCommon.container}>

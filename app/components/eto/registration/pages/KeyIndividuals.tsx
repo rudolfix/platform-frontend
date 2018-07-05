@@ -103,7 +103,7 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   };
 
   private blankNameObject = {
-    members: []
+    members: [],
   };
 
   private blankField = { ...this.props.blankField };

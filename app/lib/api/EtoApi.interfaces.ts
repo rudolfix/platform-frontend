@@ -54,7 +54,7 @@ export const EtoKeyIndividualsType = YupTS.object({
         name: YupTS.string(),
         role: YupTS.string(),
         description: YupTS.string(),
-      })
+      }),
     ),
   }),
   boardMembers: YupTS.object({
@@ -64,7 +64,7 @@ export const EtoKeyIndividualsType = YupTS.object({
         name: YupTS.string(),
         role: YupTS.string(),
         description: YupTS.string(),
-      })
+      }),
     ),
   }),
   notableInvestors: YupTS.object({
@@ -74,7 +74,7 @@ export const EtoKeyIndividualsType = YupTS.object({
         name: YupTS.string(),
         role: YupTS.string(),
         description: YupTS.string(),
-      })
+      }),
     ),
   }),
   // keyCustomers: YupTS.array(
@@ -91,7 +91,7 @@ export const EtoKeyIndividualsType = YupTS.object({
         name: YupTS.string(),
         role: YupTS.string(),
         description: YupTS.string(),
-      })
+      }),
     ),
   }),
   // keyAlliances: YupTS.array(

@@ -15,7 +15,13 @@ interface IProps {
   tags: TTranslatedString[];
 }
 
-export const Cover: React.SFC<IProps> = ({ companyBanner, companyName, companyOneliner, companyLogo, tags }) => {
+export const Cover: React.SFC<IProps> = ({
+  companyBanner,
+  companyName,
+  companyOneliner,
+  companyLogo,
+  tags,
+}) => {
   const initialTags = tags || [];
   return (
     <div className={styles.cover}>
@@ -23,15 +29,13 @@ export const Cover: React.SFC<IProps> = ({ companyBanner, companyName, companyOn
         width={1250}
         height={400}
         srcSet={companyLogo.srcSet}
-        alt={companyBanner.alt} />
+        alt={companyBanner.alt}
+      />
 
       <div className={styles.companyDetails}>
         <div className={styles.identity}>
           <div className={styles.logo}>
-            <ResponsiveImage
-              srcSet={companyLogo.srcSet}
-              alt={companyLogo.alt}
-              theme="light" />
+            <ResponsiveImage srcSet={companyLogo.srcSet} alt={companyLogo.alt} theme="light" />
           </div>
           <div className={styles.details}>
             <h2 className={styles.name}>{companyName}</h2>
@@ -39,7 +43,9 @@ export const Cover: React.SFC<IProps> = ({ companyBanner, companyName, companyOn
           </div>
         </div>
         <div className={styles.tags}>
-          {initialTags.map((tag, index) => <Tag text={tag} layout="ghost-bold" theme="white" key={index} />)}
+          {initialTags.map((tag, index) => (
+            <Tag text={tag} layout="ghost-bold" theme="white" key={index} />
+          ))}
         </div>
       </div>
       {/* TODO: Add social media icons */}

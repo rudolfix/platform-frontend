@@ -40,7 +40,7 @@ export const FUNDING_ROUNDS: IRounds = {
   e_round: "e round",
   pre_ipo: "pre ipo",
   public: "public",
-}
+};
 
 interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
@@ -71,11 +71,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           name="numberOfEmployees"
         />
         <FormField label="Number of founders" type="number" name="numberOfFounders" />
-        <FormSelectField
-          label="Last Funding Round*"
-          values={FUNDING_ROUNDS}
-          name="companyStage"
-        />
+        <FormSelectField label="Last Funding Round*" values={FUNDING_ROUNDS} name="companyStage" />
         <FormField label="Last Funding Amount" type="number" name="lastFundingSizeEur" />
         <FormField label="Number of existing shares" type="number" name="companyShares" />
         {/* TODO: Add pie chart */}

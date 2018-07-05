@@ -318,14 +318,12 @@ export const etoCompaniesCards: Array<EtoData> = [
           theme: "white",
         },
       ],
-      name: "Founders Bank",
       description:
-        "The first ever decentralized and community-owned bank is here. Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
+        "Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
       topImage: {
-        src: foundersbank,
+        src: "",
         srcSet: {
-          "1x": foundersbank,
-          "2x": foundersbank2,
+          "1x": "",
         },
         alt: "",
         height: 50,
@@ -334,14 +332,13 @@ export const etoCompaniesCards: Array<EtoData> = [
       quoteImage: {
         src: "",
         srcSet: {
-          "1x": foundersbankhover,
-          "2x": foundersbankhover2,
-          "3x": foundersbankhover3,
+          "1x": "",
         },
-        alt: "Founders bank",
+        alt: "",
         height: 35,
         width: 100,
       },
+      teaser: true,
     },
   },
   {
@@ -446,3 +443,51 @@ export const etoCompaniesCards: Array<EtoData> = [
     },
   },
 ];
+
+if (process.env.NF_FOUNDERS_BANK_VISIBLE) {
+  etoCompaniesCards[6] = {
+    data: {
+      tags: [
+        {
+          text: "community",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "banking",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "crypto",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      name: "Founders Bank",
+      description:
+        "The first ever decentralized and community-owned bank is here. Founders focused bank empowering tech and crypto. Progressive banking solutions for investors and inventors.",
+      topImage: {
+        src: foundersbank,
+        srcSet: {
+          "1x": foundersbank,
+          "2x": foundersbank2,
+        },
+        alt: "",
+        height: 50,
+        width: 100,
+      },
+      quoteImage: {
+        src: "",
+        srcSet: {
+          "1x": foundersbankhover,
+          "2x": foundersbankhover2,
+          "3x": foundersbankhover3,
+        },
+        alt: "Founders bank",
+        height: 35,
+        width: 100,
+      },
+    },
+  };
+}

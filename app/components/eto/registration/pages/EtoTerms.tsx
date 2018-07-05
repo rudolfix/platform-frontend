@@ -319,10 +319,15 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
+        delete (data as any)["undefined"] // TODO fix the currency form field element
+        delete (data as any)["riskRegulatedBusiness"] // TODO fix the regulated business form field element
+        data.liquidationPreferenceMultiplier = 1 // TODO fix form field for this
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
-            etoData: data,
+            etoData: {
+              ...data
+            },
           }),
         );
       },

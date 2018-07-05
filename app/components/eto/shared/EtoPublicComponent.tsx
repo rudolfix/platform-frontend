@@ -23,6 +23,8 @@ import * as redditIcon from "../../../assets/img/inline_icons/social_reddit.svg"
 import * as telegramIcon from "../../../assets/img/inline_icons/social_telegram.svg";
 import * as styles from "./EtoPublicComponent.module.scss";
 
+const DEFAULT_PLACEHOLDER = "N/A";
+
 const profilesData = [
   {
     name: "LinkedIn",
@@ -177,10 +179,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <FormattedMessage id="eto.public-view.about" />
           </SectionHeader>
           <Panel className="mb-4">
-            <p className="mb-4">{companyData.companyDescription}</p>
+            <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
             <div className="d-flex justify-content-between">
               <Link to={companyData.companyWebsite || ""} target="_blank">
-                {companyData.companyWebsite}
+                {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
               </Link>
               <SocialProfilesList profiles={profilesData} />
             </div>
@@ -196,43 +198,59 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.legal-company-name" />
                     </span>
-                    <span className={styles.value}>{companyData.name}</span>
+                    <span className={styles.value}>{companyData.name || DEFAULT_PLACEHOLDER}</span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.incorporation-date" />
                     </span>
-                    <span className={styles.value}>{companyData.foundingDate}</span>
+                    <span className={styles.value}>
+                      {companyData.foundingDate || DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.registration-number" />
                     </span>
-                    <span className={styles.value}>{companyData.registrationNumber}</span>
+                    <span className={styles.value}>
+                      {companyData.registrationNumber || DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.number-of-founders" />
                     </span>
-                    <span className={styles.value}>{companyData.numberOfFounders}</span>
+                    <span className={styles.value}>
+                      {companyData.numberOfFounders || DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.number-of-employees" />
                     </span>
-                    <span className={styles.value}>{companyData.numberOfEmployees}</span>
+                    <span className={styles.value}>
+                      {companyData.numberOfEmployees || DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.last-founding-amount" />
                     </span>
-                    <span className={styles.value}>{`€ ${companyData.lastFundingSizeEur}`}</span>
+                    <span className={styles.value}>
+                      {companyData.lastFundingSizeEur
+                        ? `€ ${companyData.lastFundingSizeEur}`
+                        : DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.last-founding-round" />
                     </span>
-                    <span className={styles.value}>{FUNDING_ROUNDS[companyData.companyStage]}</span>
+                    <span className={styles.value}>
+                      {companyData.companyStage
+                        ? FUNDING_ROUNDS[companyData.companyStage]
+                        : DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                 </div>
               </Col>
@@ -243,27 +261,35 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.pre-money-valuation" />
                     </span>
-                    <span className={styles.value}>{`€ ${
-                      etoData.fullyDilutedPreMoneyValuationEur
-                    }`}</span>
+                    <span className={styles.value}>
+                      {etoData.fullyDilutedPreMoneyValuationEur
+                        ? `€ ${etoData.fullyDilutedPreMoneyValuationEur}`
+                        : DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.existing-shares" />
                     </span>
-                    <span className={styles.value}>{etoData.existingCompanyShares}</span>
+                    <span className={styles.value}>
+                      {etoData.existingCompanyShares || DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.minimum-new-shares-to-issue" />
                     </span>
-                    <span className={styles.value}>{etoData.minimumNewSharesToIssue}</span>
+                    <span className={styles.value}>
+                      {etoData.minimumNewSharesToIssue || DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                   <div className={styles.entry}>
                     <span className={styles.label}>
                       <FormattedMessage id="eto.public-view.legal-information.share-nominal" />
                     </span>
-                    <span className={styles.value}>{etoData.shareNominalValueEur}</span>
+                    <span className={styles.value}>
+                      {etoData.shareNominalValueEur || DEFAULT_PLACEHOLDER}
+                    </span>
                   </div>
                 </div>
               </Col>
@@ -300,7 +326,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap" />
                 </span>
-                <span className={styles.value}>{etoData.minimumNewSharesToIssue}</span>
+                <span className={styles.value}>
+                  {etoData.minimumNewSharesToIssue || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
@@ -312,7 +340,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.token-discount" />
                 </span>
-                <span className={styles.value}>{etoData.discountScheme}</span>
+                <span className={styles.value}>
+                  {etoData.discountScheme || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
             </div>
 
@@ -323,14 +353,19 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
                 </span>
-                <span className={styles.value}>{etoData.equityTokensPerShare}</span>
+                <span className={styles.value}>
+                  {etoData.equityTokensPerShare || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
                 </span>
                 <span className={styles.value}>
-                  € {etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares}
+                  €{" "}
+                  {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
+                    ? etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
+                    : DEFAULT_PLACEHOLDER}
                 </span>
               </div>
               <div className={styles.entry}>
@@ -338,15 +373,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <FormattedMessage id="eto.public-view.token-terms.fundraising-currency" />
                 </span>
                 <span className={styles.value}>
-                  {etoData.currencies &&
-                    etoData.currencies.map((currency: string) => CURRENCIES[currency]).join(" / ")}
+                  {etoData.currencies
+                    ? etoData.currencies.map((currency: string) => CURRENCIES[currency]).join(" / ")
+                    : DEFAULT_PLACEHOLDER}
                 </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.minimum-ticket-size" />
                 </span>
-                <span className={styles.value}>{etoData.minTicketEu}</span>
+                <span className={styles.value}>{etoData.minTicketEu || DEFAULT_PLACEHOLDER}</span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
@@ -366,7 +402,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <FormattedMessage id="eto.public-view.token-terms.pre-sale-duration" />
                 </span>
                 <span className={styles.value}>
-                  {etoData.whitelistDurationDays}{" "}
+                  {etoData.whitelistDurationDays || DEFAULT_PLACEHOLDER}{" "}
                   <FormattedMessage id="eto.public-view.token-terms.days" />
                 </span>
               </div>
@@ -381,7 +417,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.token-transfers" />
-                  Token Transfers after ETO
                 </span>
                 <span className={styles.value}>
                   {etoData.enableTransferOnSuccess ? (
@@ -454,38 +489,38 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
               >
-                <p>{companyData.problemSolved}</p>
+                <p>{companyData.problemSolved || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
               >
-                <p>{companyData.customerGroup}</p>
+                <p>{companyData.customerGroup || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.product-vision" />}
               >
-                <p>{companyData.productVision}</p>
+                <p>{companyData.productVision || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.inspiration" />}
               >
-                <p>{companyData.inspiration}</p>
+                <p>{companyData.inspiration || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
               >
-                <p>{companyData.keyProductPriorities}</p>
+                <p>{companyData.keyProductPriorities || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
               >
-                <p>{companyData.useOfCapital}</p>
+                <p>{companyData.useOfCapital || DEFAULT_PLACEHOLDER}</p>
                 {/* TODO: Add chart */}
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.sales-model" />}
               >
-                <p>{companyData.salesModel}</p>
+                <p>{companyData.salesModel || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
@@ -495,7 +530,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
               >
-                <p>{companyData.sellingProposition}</p>
+                <p>{companyData.sellingProposition || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
             </Accordion>
           </Panel>

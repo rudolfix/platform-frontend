@@ -74,7 +74,14 @@
   }
 
   .label {
+    text-transform: uppercase;
     flex-basis: 70%;
+  }
+}
+
+.legalInformation {
+  .label {
+    text-transform: uppercase;
   }
 }
 

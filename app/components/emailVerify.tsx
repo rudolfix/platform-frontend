@@ -8,17 +8,22 @@ interface IEmailVerifyDispatchProps {
   verifyEmail: () => void;
 }
 
-export const emailVerifyComponent: React.SFC<IEmailVerifyDispatchProps> = ({ verifyEmail }) => {
-  verifyEmail();
-  return (
-    <Container>
-      <LoadingIndicator />
-    </Container>
-  );
-};
+export class EmailVerifyComponent extends React.Component<IEmailVerifyDispatchProps> {
+  componentWillMount(): void {
+    this.props.verifyEmail();
+  }
 
-export const emailVerify = appConnect<IEmailVerifyDispatchProps>({
+  render(): React.ReactNode {
+    return (
+      <Container>
+        <LoadingIndicator />
+      </Container>
+    );
+  }
+}
+
+export const EmailVerify = appConnect<IEmailVerifyDispatchProps>({
   dispatchToProps: dispatch => ({
     verifyEmail: () => dispatch(actions.auth.verifyEmail()),
   }),
-})(emailVerifyComponent);
+})(EmailVerifyComponent);

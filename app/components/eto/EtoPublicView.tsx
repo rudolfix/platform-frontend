@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
-import { Settings } from "react-slick";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -17,13 +16,43 @@ import { MediaLinksWidget } from "../shared/MediaLinksWidget";
 import { NewsWidget } from "../shared/NewsWidget";
 import { Panel } from "../shared/Panel";
 import { SectionHeader } from "../shared/SectionHeader";
+import { SocialProfilesList } from "../shared/SocialProfilesList";
 import { Video } from "../shared/Video";
-import { EtoOverviewStatus } from "./overview/EtoOverviewStatus";
 import { EtoTimeline } from "./overview/EtoTimeline";
 import { Cover } from "./publicView/Cover";
 
-import * as tokenIcon from "../../assets/img/neu_icon.svg";
+import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
+import * as linkedinIcon from "../../assets/img/inline_icons/social_linkedin.svg";
+import * as mediumIcon from "../../assets/img/inline_icons/social_medium.svg";
+import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
+import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
 import * as styles from "./EtoPublicView.module.scss";
+
+const profilesData = [
+  {
+    name: "LinkedIn",
+    url: "linkedin.com",
+    svgIcon: linkedinIcon,
+  },
+  {
+    name: "Facebook",
+    url: "facebook.com",
+    svgIcon: facebookIcon,
+  },
+  {
+    name: "Medium",
+    svgIcon: mediumIcon,
+  },
+  {
+    name: "Reddit",
+    url: "reddit.com",
+    svgIcon: redditIcon,
+  },
+  {
+    name: "Telegram",
+    svgIcon: telegramIcon,
+  },
+];
 
 
 const documentsData = [
@@ -86,31 +115,31 @@ const mediaLinksData = [
   },
 ]
 
-const sliderSettings: Settings = {
-  dots: false,
-  infinite: true,
-  autoplay: false,
-  speed: 500,
-  slidesToShow: 3,
-  slidesToScroll: 3,
-  arrows: true,
-  responsive: [
-    {
-      breakpoint: 500,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-      },
-    },
-    {
-      breakpoint: 900,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
-      },
-    },
-  ],
-};
+// const sliderSettings: Settings = {
+//   dots: false,
+//   infinite: true,
+//   autoplay: false,
+//   speed: 500,
+//   slidesToShow: 3,
+//   slidesToScroll: 3,
+//   arrows: true,
+//   responsive: [
+//     {
+//       breakpoint: 500,
+//       settings: {
+//         slidesToShow: 1,
+//         slidesToScroll: 1,
+//       },
+//     },
+//     {
+//       breakpoint: 900,
+//       settings: {
+//         slidesToShow: 2,
+//         slidesToScroll: 2,
+//       },
+//     },
+//   ],
+// };
 
 const day = 86400000;
 const etoStartDate = Date.now() - 20 * day;
@@ -176,10 +205,12 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
           <SectionHeader className="mb-4"><FormattedMessage id="eto.public-view.about" /></SectionHeader>
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription}</p>
-            <Link to={companyData.companyWebsite || ""} target="_blank">
-              {companyData.companyWebsite}
-            </Link>
-            {/* TODO: add social channels */}
+            <div className="d-flex justify-content-between">
+              <Link to={companyData.companyWebsite || ""} target="_blank">
+                {companyData.companyWebsite}
+              </Link>
+              <SocialProfilesList profiles={profilesData} />
+            </div>
           </Panel>
           <SectionHeader className="mb-4">
             <FormattedMessage id="eto.public-view.legal-information.title"/>
@@ -450,7 +481,6 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-{console.warn(etoData)}
           <SectionHeader className="mb-4">
             <FormattedMessage id="eto.form.media-links.title" />
           </SectionHeader>

@@ -132,7 +132,7 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
                 <Individual
                   key={index}
                   onRemoveClick={() => {
-                    // arrayHelpers.remove(index);
+                    arrayHelpers.remove(index);
                   }}
                   onAddClick={() => {
                     setFieldValue(`${name}.members.${index + 1}`, this.blankField);

@@ -13,6 +13,7 @@ import * as styles from "./SocialProfilesEditor.module.scss";
 import * as closeIcon from "../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../assets/img/inline_icons/round_plus.svg";
 import * as linkIcon from "../../assets/img/inline_icons/social_link.svg";
+import { DevConsoleLogger } from "../../lib/dependencies/Logger";
 
 interface ISingleMediaLinkFieldInternalProps {
   isLastElement?: boolean;
@@ -23,8 +24,30 @@ interface ISingleMediaLinkFieldInternalProps {
   placeholder: string;
   name: string;
   url?: string;
-  onChange: () => void;
 }
+
+const SocialMediaTags: React.SFC<{
+  profiles: ISocialProfile[];
+  className?: string;
+  onClick: (index: number) => void;
+}> = props => {
+  const { profiles, className, onClick } = props;
+  return (
+    <div className={cn(styles.socialProfilesEditor, className)}>
+      <div className={styles.tabs}>
+        {profiles.map(({ placeholder, name, svgIcon }, index) => (
+          <div
+            onClick={() => onClick(index)}
+            className={cn(Boolean(placeholder) && "is-selected", styles.tab)}
+            key={name}
+          >
+            <InlineIcon svgIcon={svgIcon} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const SingleMediaLinkField: React.SFC<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
@@ -36,7 +59,6 @@ const SingleMediaLinkField: React.SFC<
     isLastElement,
     placeholder,
     formFieldKey,
-    onChange,
     url,
   } = props;
 
@@ -66,7 +88,6 @@ export interface ISocialProfile {
   name: string;
   svgIcon: string;
   placeholder?: string;
-  label?: string;
   url?: string;
 }
 
@@ -76,81 +97,78 @@ interface IProps {
   name: string;
 }
 
-export class SocialProfilesEditor extends React.Component<IProps, any> {
-  // ADD Types
+export class SocialProfilesEditor extends React.Component<IProps, { selectedFields: boolean[] }> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = { selectedFields: [] };
+  }
+
   static contextTypes = {
     formik: PropTypes.object,
   };
-  constructor(props: IProps) {
-    // REMOVE ABOVE
-    super(props);
-    const selectedField: boolean[] = this.props.profiles.map(() => false);
-    const toggledField: ISocialProfile[] = [];
-    this.state = { selectedField, toggledField };
+
+  componentDidMount(): void {
+    const { values } = this.context.formik as FormikProps<any>;
+    const { name, profiles } = this.props;
+    const alreadyFilledFields = profiles.map(
+      (_, index) =>
+        !!values[name][index] && values[name][index].url && values[name][index].url !== "",
+    );
+    this.setState({ ...this.state, selectedFields: alreadyFilledFields });
   }
 
-  toggleProfileVisibility = (index: any): void => {
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+  toggleProfileVisibility = (index: number): void => {
+    const { setFieldValue } = this.context.formik as FormikProps<any>;
     const { name } = this.props;
-    const Field = this.state.selectedField as boolean[];
-    Field[index] = !this.state.selectedField[index];
-    const toggledField = Field.filter(singleField => singleField === true);
-    toggledField.forEach((_, index) =>
+
+    const updatedSelectedFields = this.state.selectedFields;
+    updatedSelectedFields[index] = !this.state.selectedFields[index];
+
+    const filteredFields = updatedSelectedFields.filter(
+      (singleField, index) => singleField === true,
+    );
+    filteredFields.forEach((_, index) =>
       setFieldValue(`${name}.${index}.type`, this.props.profiles[index].name),
     );
-    this.setState({ ...this.state, selectedField: Field, toggledField });
+
+    this.setState({ selectedFields: updatedSelectedFields });
   };
 
   render(): React.ReactNode {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
     const { profiles, className, name } = this.props;
-    const { selectedField, toggledField } = this.state;
-    console.log(values)
+    const { selectedFields } = this.state;
+    
+    console.log(values);
     return (
       <>
-        <div className={cn(styles.socialProfilesEditor, className)} key={1}>
-          <div className={styles.tabs}>
-            {profiles.map(({ placeholder, name, svgIcon }, index) => (
-              <div
-                onClick={() => this.toggleProfileVisibility(index)}
-                className={cn(Boolean(placeholder) && "is-selected", styles.tab)}
-                key={name}
-              >
-                <InlineIcon svgIcon={svgIcon} />
-              </div>
-            ))}
-          </div>
-        </div>
-
+        <SocialMediaTags
+          profiles={profiles}
+          className={className}
+          onClick={this.toggleProfileVisibility}
+        />
         <FieldArray
           name={name}
-          key={2}
-          render={arrayHelpers => (
-            <>
-              {toggledField.map((singleField: boolean, index: number) => {
-                const isLastElement = !(index < selectedField.length - 1);
-                const isFirstElement = index === 0;
-                return (
-                  <div key={index}>
-                    {singleField && (
-                      <SingleMediaLinkField
-                        placeholder={profiles[index].placeholder || ""}
-                        name={`${name}.${index}`}
-                        formFieldKey={"url"}
-                        onRemoveClick={() => {
-                          arrayHelpers.remove(index);
-                        }}
-                        onChange={() => {}}
-                        onAddClick={() => {}}
-                        isFirstElement={true}
-                        isLastElement={false}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </>
-          )}
+          render={arrayHelpers =>
+            selectedFields.map((singleField: boolean, index: number) => (
+              <>
+                {singleField && (
+                  <SingleMediaLinkField
+                    key={index}
+                    placeholder={profiles[index].placeholder || ""}
+                    name={`${name}.${index}`}
+                    formFieldKey={"url"}
+                    onRemoveClick={() => {
+                      arrayHelpers.remove(index);
+                    }}
+                    onAddClick={() => {}}
+                    isFirstElement={true}
+                    isLastElement={false}
+                  />
+                )}
+              </>
+            ))
+          }
         />
       </>
     );

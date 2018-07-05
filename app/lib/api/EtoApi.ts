@@ -56,7 +56,7 @@ export class EtoApi {
   ): Promise<IHttpResponse<TPartialCompanyEtoData>> {
     return await this.httpClient.put<TPartialCompanyEtoData>({
       baseUrl: BASE_PATH,
-      url: COMPANIES_DATA_PATH,
+      url: COMPANIES_ME_DATA_PATH,
       body: data,
     });
   }

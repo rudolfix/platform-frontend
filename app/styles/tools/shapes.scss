@@ -4,10 +4,13 @@
 }
 
 
-@mixin circle ($d) {
-  @include rect($d);
+@mixin circle ($d: false) {
+  @if $d {
+    @include rect($d);
+  }
 
   border-radius: 50%;
+  flex-shrink: 0;
   overflow: hidden;
 
   img {

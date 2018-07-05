@@ -25,12 +25,6 @@
   // layouts
   &:global(.large) {
     @include font-headline;
-
-    &:not(:global(.active)) {
-      @include font-headline-small;
-
-      font-weight: $font-weight-light;
-    }
   }
 
   // themes
@@ -58,7 +52,11 @@
     }
   }
 
-  + .tab {
+  & + .tab {
+    @include responsive-size(margin-left, 20px, 110px);
+  }
+
+  &:global(.has-divider) + .tab {
     margin-left: px-to-rem(21px);
     position: relative;
 

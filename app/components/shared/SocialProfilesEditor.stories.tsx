@@ -73,5 +73,5 @@ const profiles = [
 ];
 
 storiesOf("SocialProfilesEditor", module).add("default", () => (
-  <SocialProfilesEditor profiles={profiles} />
+  <SocialProfilesEditor profiles={profiles} name="name"/>
 ));

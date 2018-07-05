@@ -11,6 +11,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Accordion, AccordionElement } from "../shared/Accordion";
 
 import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
+import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IStateProps {
   companyData?: TPartialCompanyEtoData;
@@ -31,15 +32,17 @@ class EtoPreviewComponent extends React.Component<IProps> {
   }
 
   render(): React.ReactNode {
+    if (this.props.loading || !this.props.companyData || !this.props.etoData) {
+      return (
+        <LayoutAuthorized>
+          <LoadingIndicator />
+        </LayoutAuthorized>
+      );
+    }
+
     return (
       <LayoutAuthorized>
-        <h1> Preview ETO </h1>
-        {this.props.loading ? <LoadingIndicator /> : undefined}
-        <br />
-        <h2>
-          Company: {this.props.companyData ? (this.props.companyData as any).name : undefined}
-        </h2>
-        <h2>ETO Terms: </h2>
+        <EtoPublicComponent companyData={this.props.companyData} etoData={this.props.etoData} />
       </LayoutAuthorized>
     );
   }

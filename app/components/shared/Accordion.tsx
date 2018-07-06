@@ -1,11 +1,14 @@
 import * as React from "react";
-import * as styles from "./Accordion.module.scss";
+
+import { TTranslatedString } from "../../types";
+
 import { InlineIcon } from "./InlineIcon";
 
 import * as indicatorIcon from "../../assets/img/inline_icons/accordion_arrow.svg";
+import * as styles from "./Accordion.module.scss";
 
 interface IAccordionElementProps {
-  title: string | React.ReactNode;
+  title: TTranslatedString;
   children: any;
   isOpened?: boolean;
 }
@@ -34,7 +37,7 @@ export class AccordionElement extends React.Component<
       <div className={`${styles.accordionElement} ${isOpened ? "" : "is-closed"}`}>
         <h4 className={styles.title} onClick={this.toggleClose}>
           <span>{title}</span>
-          <InlineIcon width="22px" height="22px" svgIcon={indicatorIcon} />
+          <InlineIcon width="16px" height="16px" svgIcon={indicatorIcon} />
         </h4>
         <div className={styles.content}>{children}</div>
       </div>

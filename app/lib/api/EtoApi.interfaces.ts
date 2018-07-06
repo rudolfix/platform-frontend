@@ -47,27 +47,36 @@ export const EtoProductVisionType = YupTS.object({
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
 
 export const EtoKeyIndividualsType = YupTS.object({
-  team: YupTS.array(
-    YupTS.object({
-      name: YupTS.string(),
-      role: YupTS.string(),
-      description: YupTS.string(),
-    }),
-  ),
-  boardMembers: YupTS.array(
-    YupTS.object({
-      name: YupTS.string(),
-      role: YupTS.string(),
-      description: YupTS.string(),
-    }),
-  ),
-  notableInvestors: YupTS.array(
-    YupTS.object({
-      name: YupTS.string(),
-      role: YupTS.string(),
-      description: YupTS.string(),
-    }),
-  ),
+  founders: YupTS.object({
+    description: YupTS.string(),
+    members: YupTS.array(
+      YupTS.object({
+        name: YupTS.string(),
+        role: YupTS.string(),
+        description: YupTS.string(),
+      }),
+    ),
+  }),
+  boardMembers: YupTS.object({
+    description: YupTS.string(),
+    members: YupTS.array(
+      YupTS.object({
+        name: YupTS.string(),
+        role: YupTS.string(),
+        description: YupTS.string(),
+      }),
+    ),
+  }),
+  notableInvestors: YupTS.object({
+    description: YupTS.string(),
+    members: YupTS.array(
+      YupTS.object({
+        name: YupTS.string(),
+        role: YupTS.string(),
+        description: YupTS.string(),
+      }),
+    ),
+  }),
   keyCustomers: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
@@ -75,13 +84,16 @@ export const EtoKeyIndividualsType = YupTS.object({
       description: YupTS.string(),
     }),
   ),
-  partners: YupTS.array(
-    YupTS.object({
-      name: YupTS.string(),
-      role: YupTS.string(),
-      description: YupTS.string(),
-    }),
-  ),
+  partners: YupTS.object({
+    description: YupTS.string(),
+    members: YupTS.array(
+      YupTS.object({
+        name: YupTS.string(),
+        role: YupTS.string(),
+        description: YupTS.string(),
+      }),
+    ),
+  }),
   keyAlliances: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
@@ -89,7 +101,6 @@ export const EtoKeyIndividualsType = YupTS.object({
       description: YupTS.string(),
     }),
   ),
-  // here we are missing image uploading data
 });
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;

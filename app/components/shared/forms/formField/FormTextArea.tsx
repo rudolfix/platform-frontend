@@ -4,11 +4,11 @@ import * as React from "react";
 import { FormGroup, InputGroup, InputGroupAddon } from "reactstrap";
 import { FormLabel } from "./FormLabel";
 
-import { CommonHtmlProps } from "../../../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { isNonValid } from "./utils";
 
 interface IFieldGroup {
-  label?: string | React.ReactNode;
+  label?: TTranslatedString;
   placeholder?: string;
   prefix?: string;
   suffix?: string;

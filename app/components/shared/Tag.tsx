@@ -1,7 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Col, Row } from "reactstrap";
+
+import { TTranslatedString } from "../../types";
 
 import { InlineIcon } from "./InlineIcon";
 
@@ -12,7 +13,7 @@ type TLayout = "ghost" | "ghost-bold";
 type TSize = "small";
 
 export interface ITag {
-  text: string;
+  text: TTranslatedString;
   to?: string;
   layout?: TLayout;
   size?: TSize;

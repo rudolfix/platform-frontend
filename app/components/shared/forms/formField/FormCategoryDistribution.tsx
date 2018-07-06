@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { CommonHtmlProps } from "../../../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { ButtonIcon } from "../../Buttons";
 import { FormHighlightGroup } from "../FormHighlightGroup";
 import { FormField } from "../forms";
@@ -16,7 +16,7 @@ import { FormTransformingField } from "./FormTransformingField";
 interface IProps {
   className?: string;
   name: string;
-  label?: string;
+  label?: TTranslatedString;
   prefix?: string;
   selectedCategory?: { name: string; percentage: number };
 }

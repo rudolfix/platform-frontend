@@ -10,10 +10,12 @@ export const appRoutes = {
   recover: "/recover",
   recoverEto: "/eto/recover",
   etoPublicView: "/eto-public-view",
+  etoPreview: "/eto-preview/:previewCode",
 
   kyc: "/kyc",
   wallet: "/wallet",
   dashboard: "/dashboard",
+  documents: "/documents",
   settings: "/settings",
   demo: "/demo",
   eto: "/eto",

@@ -72,9 +72,9 @@ class OnlyAuthorizedRouteComponent extends React.Component<TProps, IState> {
         return (
           <Route
             {...rest}
-            render={() =>
+            render={props =>
               InvestorComponentAsAny ? (
-                <InvestorComponentAsAny />
+                <InvestorComponentAsAny {...props} />
               ) : (
                 <Redirect to={appRoutes.dashboard} />
               )
@@ -86,9 +86,9 @@ class OnlyAuthorizedRouteComponent extends React.Component<TProps, IState> {
         return (
           <Route
             {...rest}
-            render={() =>
+            render={props =>
               IssuerComponentAsAny ? (
-                <IssuerComponentAsAny />
+                <IssuerComponentAsAny {...props} />
               ) : (
                 <Redirect to={appRoutes.dashboard} />
               )

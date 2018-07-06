@@ -40,46 +40,44 @@ export class NewsWidget extends React.Component<IProps> {
     const { activeTab } = this.state;
 
     return (
-      <Panel className={cn(styles.newsWidget, isEditable && "is-editable", className)}>
+      <div className={cn(styles.newsWidget, isEditable && "is-editable", className)}>
         <Tabs
           tabs={[
-            {
-              text: <FormattedMessage id="shared-component-news-widget-tab-latest" />,
-              handleClick: () => this.toggleContent("news"),
-              isActive: activeTab === "news",
-            },
             {
               text: "Twitter",
               handleClick: () => this.toggleContent("twitter"),
               isActive: activeTab === "twitter",
             },
+            {
+              text: <FormattedMessage id="shared-component.news-widget.tab.company-updates" />,
+              handleClick: () => this.toggleContent("news"),
+              isActive: activeTab === "news",
+            },
           ]}
         />
-        {
-          <div className={styles.contentWrapper}>
-            {activeTab === "news" &&
-              news.map(({ url, title }) => (
-                <div className={styles.newsSingle} key={url}>
-                  <NavLinkConnected to={{ pathname: url || "#0", search: location.search }}>
-                    {title}
-                  </NavLinkConnected>
-                  {isEditable && <InlineIcon svgIcon={iconTrash} />}
-                </div>
-              ))}
-            {isEditable && (
-              <Button
-                svgIcon={iconPlus}
-                className={styles.addNews}
-                layout="secondary"
-                iconPosition="icon-before"
-              >
-                <FormattedMessage id="shared-component-news-widget-add-news" />
-              </Button>
-            )}
-          </div>
-        }
-        {activeTab === "twitter" && <div>twitter content</div>}
-      </Panel>
+        <Panel className={styles.contentWrapper}>
+          {activeTab === "news" &&
+            news.map(({ url, title }) => (
+              <div className={styles.newsSingle} key={url}>
+                <NavLinkConnected to={{ pathname: url || "#0", search: location.search }}>
+                  {title}
+                </NavLinkConnected>
+                {isEditable && <InlineIcon svgIcon={iconTrash} />}
+              </div>
+            ))}
+          {isEditable && (
+            <Button
+              svgIcon={iconPlus}
+              className={styles.addNews}
+              layout="secondary"
+              iconPosition="icon-before"
+            >
+              <FormattedMessage id="shared-component-news-widget-add-news" />
+            </Button>
+          )}
+          {activeTab === "twitter" && <div>twitter content</div>}
+        </Panel>
+      </div>
     );
   }
 }

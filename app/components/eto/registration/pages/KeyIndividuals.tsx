@@ -116,7 +116,7 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   render(): React.ReactNode {
     const { title, name } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const individuals = values[name] || [];
+    const individuals = values[name].members || [];
 
     return (
       <FormSection title={title}>
@@ -131,7 +131,7 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
                     arrayHelpers.remove(index);
                   }}
                   onAddClick={() => {
-                    setFieldValue(`${name}.${index + 1}`, this.blankField);
+                    setFieldValue(`${name}.members.${index + 1}`, this.blankField);
                   }}
                   index={index}
                   isFirst={!index}
@@ -155,7 +155,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
     >
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
-        name="team"
+        name="founders"
         blankField={{
           name: "",
           role: "",

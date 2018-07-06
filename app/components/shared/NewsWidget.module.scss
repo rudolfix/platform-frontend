@@ -2,7 +2,6 @@
 .news-widget {
   display: flex;
   flex-direction: column;
-  padding: px-to-rem(20px) px-to-rem(14px);
 
   &:global(.is-editable) {
     .news-single {

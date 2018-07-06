@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 import {
   EtoCompanyInformationType,
   EtoKeyIndividualsType,
   EtoLegalInformationType,
+  EtoMediaType,
   EtoProductVisionType,
   EtoTermsType,
 } from "../../../lib/api/EtoApi.interfaces";
@@ -102,7 +102,12 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
           />
         </Col>
         <Col lg={4} xs={12} sm={6} className="mb-4">
-          <Link to={etoRegisterRoutes.etoMedia}>media</Link>
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.etoMedia}
+            progress={shouldEtoDataLoad ? productVisionProgress : 0}
+            name="Media"
+          />
         </Col>
         {/* TODO: ADD TRANSLATIONS */}
       </>
@@ -135,6 +140,11 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       ),
       productVisionProgress: selectFormFractionDone(
         EtoProductVisionType.toYup(),
+        s.etoFlow.companyData,
+        etoFlowInitialState,
+      ),
+      etoMediaProgress: selectFormFractionDone(
+        EtoMediaType.toYup(),
         s.etoFlow.companyData,
         etoFlowInitialState,
       ),

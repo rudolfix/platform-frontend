@@ -79,12 +79,6 @@
   }
 }
 
-.legalInformation {
-  .label {
-    text-transform: uppercase;
-  }
-}
-
 .group {
   flex-shrink: 0;
   width: 100%;
@@ -101,6 +95,10 @@
     .label,
     .value {
       flex-basis: 60%;
+    }
+
+    .label {
+      text-transform: uppercase;
     }
 
     .value {

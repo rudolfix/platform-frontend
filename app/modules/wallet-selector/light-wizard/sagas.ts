@@ -144,6 +144,7 @@ export function* lightWalletRegisterWatch(
     }
 
     yield neuCall(setupLightWalletPromise, email, password);
+    yield put(actions.walletSelector.messageSigning());
     yield neuCall(signInUser);
   } catch (e) {
     yield effects.put(actions.walletSelector.reset());

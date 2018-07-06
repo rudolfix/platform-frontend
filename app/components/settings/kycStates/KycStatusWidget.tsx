@@ -6,7 +6,7 @@ import { compose } from "redux";
 
 import { TRequestOutsourcedStatus, TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
+import { selectIsUserEmailVerified, selectUserType } from "../../../modules/auth/selectors";
 import {
   selectExternalKycUrl,
   selectKycRequestOutsourcedStatus,
@@ -27,6 +27,7 @@ import { WarningAlert } from "../../shared/WarningAlert";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
+import { TUserType } from "../../../lib/api/users/interfaces";
 import * as styles from "./KycStatusWidget.module.scss";
 
 interface IStateProps {
@@ -36,6 +37,7 @@ interface IStateProps {
   isLoading: boolean;
   error?: string;
   externalKycUrl?: string;
+  userType: TUserType;
 }
 
 interface IOwnProps {
@@ -107,9 +109,10 @@ const ActionButton = ({
   onGoToKycHome,
   isUserEmailVerified,
   externalKycUrl,
+  userType,
   onGoToWallet,
 }: IKycStatusWidgetProps) => {
-  if (requestStatus === "Accepted") {
+  if (requestStatus === "Accepted" && userType === "investor") {
     return (
       <Button
         layout="secondary"
@@ -213,6 +216,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: s => ({
       isUserEmailVerified: selectIsUserEmailVerified(s.auth),
+      userType: selectUserType(s.auth)!,
       requestStatus: selectKycRequestStatus(s.kyc),
       requestOutsourcedStatus: selectKycRequestOutsourcedStatus(s.kyc),
       externalKycUrl: selectExternalKycUrl(s.kyc),

@@ -77,13 +77,13 @@ export const EtoKeyIndividualsType = YupTS.object({
       }),
     ),
   }),
-  // keyCustomers: YupTS.array(
-  //   YupTS.object({
-  //     name: YupTS.string(),
-  //     role: YupTS.string(),
-  //     description: YupTS.string(),
-  //   }),
-  // ),
+  keyCustomers: YupTS.array(
+    YupTS.object({
+      name: YupTS.string(),
+      role: YupTS.string(),
+      description: YupTS.string(),
+    }),
+  ),
   partners: YupTS.object({
     description: YupTS.string(),
     members: YupTS.array(
@@ -94,13 +94,13 @@ export const EtoKeyIndividualsType = YupTS.object({
       }),
     ),
   }),
-  // keyAlliances: YupTS.array(
-  //   YupTS.object({
-  //     name: YupTS.string(),
-  //     role: YupTS.string(),
-  //     description: YupTS.string(),
-  //   }),
-  // ),
+  keyAlliances: YupTS.array(
+    YupTS.object({
+      name: YupTS.string(),
+      role: YupTS.string(),
+      description: YupTS.string(),
+    }),
+  ),
 });
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;

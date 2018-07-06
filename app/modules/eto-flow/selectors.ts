@@ -21,5 +21,7 @@ export const selectFormFractionDone = (
     return 1;
   }
 
-  return 1 - errors / maximumErrors;
+  const result = 1 - errors / maximumErrors;
+  if (result < 0) return 0;
+  return result;
 };

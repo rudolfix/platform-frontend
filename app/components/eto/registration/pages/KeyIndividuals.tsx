@@ -219,9 +219,6 @@ export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
-        delete (data as any)["keyCustomers"];
-        delete (data as any)["team"];
-        delete (data as any)["keyAlliances"]; // TODO remove these three lines when backend is updated
         dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
       },
     }),

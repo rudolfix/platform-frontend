@@ -3,6 +3,7 @@
   text-transform: uppercase;
   align-items: baseline;
   flex-wrap: wrap;
+  color: $color-black;
 }
 
 .tab {
@@ -25,6 +26,9 @@
   // layouts
   &:global(.large) {
     @include font-headline;
+
+    padding-left: 10px;
+    padding-right: 10px
   }
 
   // themes
@@ -52,8 +56,12 @@
     }
   }
 
+  &:first-of-type {
+    @include responsive-size(margin-left, 20px, 40px);
+  }
+
   & + .tab {
-    @include responsive-size(margin-left, 20px, 110px);
+    @include responsive-size(margin-left, 20px, 60px);
   }
 
   &:global(.has-divider) + .tab {

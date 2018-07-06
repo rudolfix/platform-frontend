@@ -45,6 +45,10 @@
     }
   }
 
+  &:global(.bold) {
+    text-transform: uppercase;
+  }
+
   &:global(.ghost) {
     border: 1px solid currentColor;
     border-radius: 0;

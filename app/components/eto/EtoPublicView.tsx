@@ -119,7 +119,6 @@ const mediaLinksData = [
 
 const swiperSingleRowSettings = {
   slidesPerView: 5,
-  loop: true,
   spaceBetween: 50,
   navigation: {
     nextEl: 'swiper-single-row-button-next',
@@ -143,7 +142,6 @@ const swiperMultiRowSettings = {
   slidesPerView: 3,
   slidesPerColumn: 2,
   spaceBetween: 30,
-  loop: true,
   navigation: {
     nextEl: 'swiper-multi-row-button-next',
     prevEl: 'swiper-multi-row-button-prev'
@@ -326,7 +324,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader className="mb-4"><FormattedMessage id="eto.public-view.eto-timeline" /></SectionHeader>
+          <SectionHeader hasDecorator={false} className="mb-4"><FormattedMessage id="eto.public-view.eto-timeline" /></SectionHeader>
           <Panel>
             <EtoTimeline
               bookBuildingEndDate={bookBuildingEndDate}
@@ -343,7 +341,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
 
       <Row>
         <Col xs={12} md={8} className="mb-4">
-          <SectionHeader className="mb-4"><FormattedMessage id="eto.public-view.about" /></SectionHeader>
+          <SectionHeader hasDecorator={false} className="mb-4"><FormattedMessage id="eto.public-view.about" /></SectionHeader>
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription}</p>
             <div className="d-flex justify-content-between">
@@ -353,7 +351,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
               <SocialProfilesList profiles={profilesData} />
             </div>
           </Panel>
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.legal-information.title"/>
           </SectionHeader>
           <Panel className={styles.legalInformation}>
@@ -449,7 +447,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.token-terms.title"/>
           </SectionHeader>
           <Panel className={styles.tokenTerms}>
@@ -583,7 +581,7 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
 
       <Row>
         <Col xs={12} md={8} className="mb-4">
-          <SectionHeader className="mb-4"><FormattedMessage id="eto.public-view.product-vision.title"/></SectionHeader>
+          <SectionHeader hasDecorator={false} className="mb-4"><FormattedMessage id="eto.public-view.product-vision.title"/></SectionHeader>
           <Panel>
             <Accordion>
               <AccordionElement title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}>
@@ -618,11 +616,11 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
           </Panel>
         </Col>
         <Col xs={12} md={4}>
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.media-links.title" />
           </SectionHeader>
           <MediaLinksWidget links={mediaLinksData}/>

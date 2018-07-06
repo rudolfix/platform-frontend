@@ -20,57 +20,55 @@ interface IProps {
 }
 
 export const EtoOverviewStatus: React.SFC<IProps> = props => (
-  <Panel>
-    <div className={stylesCommon.container}>
-      <Row>
-        <Col>
-          <div className={styles.overview}>
-            <div className={styles.left}>
-              <div className={cn(styles.divided, "cn-2")}>
-                <strong className={stylesCommon.label}>
-                  <FormattedMessage id="eto.overview.overview-status.status-of-your-eto" />
-                </strong>
-                <ProjectStatus status={props.status} />
-              </div>
-              <div className={styles.divided}>
-                <strong className={cn(stylesCommon.label, "mb-2")}>
-                  <FormattedMessage id="eto.overview.overview-status.time-to-end-of-the-round" />
-                </strong>
-                <Counter />
-              </div>
+  <div className={styles.etoOverviewStatus}>
+    <Row>
+      <Col>
+        <div className={styles.overview}>
+          <div className={styles.left}>
+            <div className={cn(styles.divided, "cn-2")}>
+              <strong className={stylesCommon.label}>
+                <FormattedMessage id="eto.overview.overview-status.status-of-your-eto" />
+              </strong>
+              <ProjectStatus status={props.status} />
             </div>
-            <div className={styles.right}>
-              <div className={styles.details}>
-                <strong className={cn(stylesCommon.label, "mb-1")}>
-                  <FormattedMessage id="eto.overview.overview-status.list.declared-cap" />
-                </strong>
-                <span>{props.cap}</span>
-              </div>
-              <div className={styles.details}>
-                <strong className={cn(stylesCommon.label, "mb-1")}>
-                  <FormattedMessage id="eto.overview.overview-status.list.declared-duration" />
-                </strong>
-                <span>{props.duration}</span>
-              </div>
-              <div className={styles.details}>
-                <strong className={cn(stylesCommon.label, "mb-1")}>
-                  <FormattedMessage id="eto.overview.overview-status.list.tokens-supply" />
-                </strong>
-                <span>{props.tokensSupply}</span>
-              </div>
-              <div className={styles.details}>
-                <strong className={cn(stylesCommon.label, "mb-1")}>
-                  <FormattedMessage id="eto.overview.overview-status.list.token-symbol" />
-                </strong>
-                <span className={styles.token}>
-                  <img src={props.tokenImg} />
-                  {props.tokenName}
-                </span>
-              </div>
+            <div className={styles.divided}>
+              <strong className={cn(stylesCommon.label, "mb-2")}>
+                <FormattedMessage id="eto.overview.overview-status.time-to-end-of-the-round" />
+              </strong>
+              <Counter />
             </div>
           </div>
-        </Col>
-      </Row>
-    </div>
-  </Panel>
+          <div className={styles.right}>
+            <div className={styles.details}>
+              <strong className={cn(stylesCommon.label, "mb-1")}>
+                <FormattedMessage id="eto.overview.overview-status.list.declared-cap" />
+              </strong>
+              <span>{props.cap}</span>
+            </div>
+            <div className={styles.details}>
+              <strong className={cn(stylesCommon.label, "mb-1")}>
+                <FormattedMessage id="eto.overview.overview-status.list.declared-duration" />
+              </strong>
+              <span>{props.duration}</span>
+            </div>
+            <div className={styles.details}>
+              <strong className={cn(stylesCommon.label, "mb-1")}>
+                <FormattedMessage id="eto.overview.overview-status.list.tokens-supply" />
+              </strong>
+              <span>{props.tokensSupply}</span>
+            </div>
+            <div className={styles.details}>
+              <strong className={cn(stylesCommon.label, "mb-1")}>
+                <FormattedMessage id="eto.overview.overview-status.list.token-symbol" />
+              </strong>
+              <span className={styles.token}>
+                <img src={props.tokenImg} />
+                {props.tokenName}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Col>
+    </Row>
+  </div>
 );

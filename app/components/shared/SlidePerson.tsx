@@ -22,9 +22,11 @@ export const SlidePerson: React.SFC<IProps> = ({srcSet, name, title, bio, layout
           srcSet={srcSet}
           alt={name}/>
       </div>
-      <h5 className={styles.name}>{name}</h5>
-      {title && <h6 className={styles.title}>{title}</h6>}
-      <p className={styles.bio}>{bio}</p>
+      <div>
+        <h5 className={styles.name}>{name}</h5>
+        {title && <h6 className={styles.title}>{title}</h6>}
+        <p className={styles.bio}>{bio}</p>
+      </div>
     </div>
   )
 }

@@ -44,7 +44,7 @@ export const Cover: React.SFC<IProps> = ({
         </div>
         <div className={styles.tags}>
           {initialTags.map((tag, index) => (
-            <Tag text={tag} layout="ghost-bold" theme="white" key={index} />
+            <Tag text={tag} layout="bold" theme="dark" key={index} />
           ))}
         </div>
       </div>

@@ -7,11 +7,11 @@ describe("Validators", () => {
   describe("derivationPathPrefixValidator", () => {
     const correctPrefix = DEFAULT_DERIVATION_PATH_PREFIX;
     const incorrectPrefix = [
-      "44'/60'/0'",
-      "44'/60'/'/",
-      "44'/60'/0'/1",
-      "44'/61'/0'/",
-      "45'/61'/0'/",
+      "44'/60'/0'/2/",
+      "44'/62'/0'/0",
+      "44'/60'/0'/0a",
+      "a44'/60'/0'/0",
+      "44'/60'/0'/0'/s",
     ];
 
     it("should return null for correct prefix path", () => {

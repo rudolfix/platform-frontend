@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
@@ -25,7 +25,9 @@ describe("<DPChooserComponent />", () => {
   });
 
   it("should render error message if its present", () => {
-    const component = shallow(<DPChooserComponent {...defaultProps()} />);
+    const component = mount(<DPChooserComponent {...defaultProps()} />);
+
+    expect(component.find('input[name="derivationPathPrefix"]').hasClass("is-invalid")).to.be.true;
     expect(
       component
         .find(tid("dpChooser-error-msg"))

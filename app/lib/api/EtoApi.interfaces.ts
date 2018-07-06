@@ -147,11 +147,17 @@ export type TEtoSpecsData = TEtoTermsType;
 export const EtoMediaType = YupTS.object({
   socialChannels: YupTS.array(
     YupTS.object({
-      type: YupTS.string(),
-      url: YupTS.string()
-    })
+      type: YupTS.string().optional(),
+      url: YupTS.string().optional(),
+    }),
   ),
-  bitcoinTalkLink: YupTS.string()
+  companyNews: YupTS.array(
+    YupTS.object({
+      type: YupTS.string().optional(),
+      url: YupTS.string().optional(),
+    }),
+  ),
+  disableTwitterFeed: YupTS.boolean(),
 });
 
 /*General Interfaces */

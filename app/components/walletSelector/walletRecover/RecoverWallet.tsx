@@ -8,6 +8,7 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { RegisterWalletComponent } from "../light/RegisterLightWallet";
+import { WalletMessageSigner } from "../WalletMessageSigner";
 import { recoverRoutes } from "./recoverRoutes";
 import { WalletLightSeedRecoveryComponent } from "./SeedRecovery";
 
@@ -27,7 +28,9 @@ interface IDispatchProps {
 }
 interface IMainRecoveryProps {
   submitForm: (values: IFormValues) => void;
+  isMessageSigning?: boolean;
 }
+
 export class RecoveryProcessesComponent extends React.Component<
   IMainRecoveryProps,
   IMainRecoveryState
@@ -42,7 +45,11 @@ export class RecoveryProcessesComponent extends React.Component<
   };
 
   render(): React.ReactNode {
-    return (
+    return this.props.isMessageSigning ? (
+      <div>
+        <WalletMessageSigner rootPath={"/"} />
+      </div>
+    ) : (
       <div>
         {this.state.seed ? (
           <div>
@@ -85,7 +92,10 @@ export const RecoveryProcesses: React.SFC<IDispatchProps> = props => {
 };
 
 export const RecoverWallet = compose<React.SFC>(
-  appConnect<IDispatchProps>({
+  appConnect<any, IDispatchProps>({
+    stateToProps: s => ({
+      isMessageSigning: s.walletSelector.isMessageSigning,
+    }),
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) => {
         dispatch(

@@ -21,7 +21,7 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent & IIntlProps> = (
   intl: { formatIntlMessage },
 }) => (
   <Row>
-    <Col md="5">
+    <Col>
       <FormGroup>
         <Input
           name="derivationPathPrefix"
@@ -30,7 +30,8 @@ export const DPChooserComponent: React.SFC<IDPChooserComponent & IIntlProps> = (
           placeholder={formatIntlMessage(
             "wallet-selector.ledger.derivation-path-selector.placeholder",
           )}
-          valid={errorMessage === null ? undefined : false}
+          invalid={errorMessage !== null}
+          className="col-md-5"
         />
         <FormFeedback data-test-id="dpChooser-error-msg">{errorMessage}</FormFeedback>
       </FormGroup>
@@ -62,14 +63,17 @@ export class WalletLedgerDPChooser extends React.Component<IDPChooserProps, IDPC
   }
 
   debouncedOnChange = debounce((derivationPathPrefix: string): void => {
-    const errorMessage = derivationPathPrefixValidator(derivationPathPrefix);
+    const fixedDp = derivationPathPrefix.endsWith("/")
+      ? derivationPathPrefix
+      : derivationPathPrefix + "/";
+    const errorMessage = derivationPathPrefixValidator(fixedDp);
     this.setState({
       errorMessage,
     });
     if (errorMessage) {
       this.props.onDerivationPathPrefixError();
     } else {
-      this.props.onDerivationPathPrefixChange(derivationPathPrefix);
+      this.props.onDerivationPathPrefixChange(fixedDp);
     }
   }, DEBOUNCE_DELAY);
 

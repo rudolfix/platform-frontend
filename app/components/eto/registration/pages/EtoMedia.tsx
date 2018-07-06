@@ -41,7 +41,7 @@ const socialProfiles = [
   },
   {
     name: "gplus",
-    placeholder: "goolge plus",
+    placeholder: "google plus",
     svgIcon: googleIcon,
   },
   {
@@ -103,6 +103,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         <FormattedMessage id="eto.form.eto-media.social-channels" />
       </p>
       <SocialProfilesEditor profiles={socialProfiles} name="socialChannels" className="mt-4" />
+      <p className="offset-1 mb-2 font-weight-bold">
+        <FormattedMessage id="eto.form.eto-media.social-channels-others" />
+      </p>
       <MediaLinksEditor
         name="companyNews"
         placeholder="Media Link"

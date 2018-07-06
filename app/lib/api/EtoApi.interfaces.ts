@@ -139,7 +139,6 @@ export const EtoMediaType = YupTS.object({
 
 type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
-
 export type TCompanyEtoData =
   | TEtoTeamData
   | TEtoLegalData

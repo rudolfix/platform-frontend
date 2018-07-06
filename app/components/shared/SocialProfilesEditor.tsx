@@ -8,12 +8,8 @@ import { InlineIcon } from "./InlineIcon";
 import { CommonHtmlProps } from "../../types";
 import { FormField } from "./forms/formField/FormField";
 import * as styles from "./SocialProfilesEditor.module.scss";
-
-interface ISingleMediaLinkFieldInternalProps {
-  formFieldKey: string;
-  placeholder: string;
-  name: string;
-}
+import { find } from "lodash";
+import SlideInChild from "material-ui/internal/SlideInChild";
 
 const SocialMediaTags: React.SFC<{
   profiles: ISocialProfile[];
@@ -39,15 +35,21 @@ const SocialMediaTags: React.SFC<{
   );
 };
 
+interface ISingleMediaLinkFieldInternalProps {
+  name: string;
+  profile: ISocialProfile;
+  visible: boolean;
+}
+
 const SingleMediaLinkField: React.SFC<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
 > = props => {
-  const { placeholder, formFieldKey, name } = props;
+  const { profile, name } = props;
 
   return (
     <Row className="my-4 justify-content-center">
       <Col xs={10}>
-        <FormField name={`${name}.${formFieldKey}`} placeholder={placeholder} />
+        <FormField name={`${name}.url`} placeholder={profile.placeholder} />
       </Col>
     </Row>
   );
@@ -82,40 +84,34 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
   };
 
   componentDidMount(): void {
-    const { values } = this.context.formik as FormikProps<any>;
+    const { values, setFieldValue } = this.context.formik as FormikProps<any>;
     const { name, profiles } = this.props;
 
     const socialMediaValues = values[name] || [];
-    const alreadyFilledFields = profiles.map(
-      (_, index) =>
-        !!(
-          socialMediaValues[index] &&
-          socialMediaValues[index].url &&
-          socialMediaValues[index].url !== ""
-        ),
-    );
-    this.setState({ ...this.state, selectedFields: alreadyFilledFields });
+    const selectedFields: boolean[] = [];
+
+    profiles.forEach((profile, index) => {
+      const value: string = socialMediaValues[index] ? socialMediaValues[index].url : "";
+      setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
+      selectedFields[index] = !!value;
+    });
+
+    this.setState({ ...this.state, selectedFields });
   }
 
   toggleProfileVisibility = (index: number): void => {
-    const { setFieldValue } = this.context.formik as FormikProps<any>;
     const { name } = this.props;
-    const updatedSelectedFields = this.state.selectedFields;
-    updatedSelectedFields[index] = !this.state.selectedFields[index];
-
-    const filteredFields = updatedSelectedFields.filter(singleField => singleField === true);
-    filteredFields.forEach((_, index) =>
-      setFieldValue(`${name}.${index}.type`, this.props.profiles[index].name),
-    );
-
-    this.setState({ selectedFields: updatedSelectedFields, filteredFields });
+    const { selectedFields } = this.state;
+    selectedFields[index] = !this.state.selectedFields[index];
+    this.setState({ selectedFields });
   };
 
   render(): React.ReactNode {
     const { values } = this.context.formik as FormikProps<any>;
 
     const { profiles, className, name } = this.props;
-    const { selectedFields, filteredFields } = this.state;
+    const { selectedFields } = this.state;
+
     return (
       <div className={className}>
         <SocialMediaTags
@@ -126,18 +122,17 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
         <FieldArray
           name={name}
           render={_ =>
-            filteredFields.map((singleField: boolean, index: number) => (
-              <>
-                {singleField && (
+            selectedFields.map(
+              (singleField: boolean, index: number) =>
+                singleField && (
                   <SingleMediaLinkField
                     key={index}
-                    placeholder={profiles[index].placeholder || ""}
+                    visible={singleField}
                     name={`${name}.${index}`}
-                    formFieldKey={"url"}
+                    profile={profiles[index]}
                   />
-                )}
-              </>
-            ))
+                ),
+            )
           }
         />
       </div>

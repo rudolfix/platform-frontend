@@ -63,7 +63,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
   componentDidMount(): void {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
     const { name } = this.props;
-    if (values[name] && !values[name][0]) setFieldValue(`${name}.0`, this.props.blankField);
+    if (!values[name]) setFieldValue(`${name}.0`, this.props.blankField);
   }
 
   render(): React.ReactNode {
@@ -71,6 +71,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
 
     const { name, placeholder, blankField } = this.props;
     const mediaLinks: object[] = values[name] || [blankField];
+    console.log(values)
     return (
       <FieldArray
         name={name}

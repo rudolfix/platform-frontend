@@ -8,8 +8,6 @@ import { InlineIcon } from "./InlineIcon";
 import { CommonHtmlProps } from "../../types";
 import { FormField } from "./forms/formField/FormField";
 import * as styles from "./SocialProfilesEditor.module.scss";
-import { find } from "lodash";
-import SlideInChild from "material-ui/internal/SlideInChild";
 
 const SocialMediaTags: React.SFC<{
   profiles: ISocialProfile[];
@@ -38,7 +36,6 @@ const SocialMediaTags: React.SFC<{
 interface ISingleMediaLinkFieldInternalProps {
   name: string;
   profile: ISocialProfile;
-  visible: boolean;
 }
 
 const SingleMediaLinkField: React.SFC<
@@ -100,15 +97,12 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
   }
 
   toggleProfileVisibility = (index: number): void => {
-    const { name } = this.props;
     const { selectedFields } = this.state;
     selectedFields[index] = !this.state.selectedFields[index];
     this.setState({ selectedFields });
   };
 
   render(): React.ReactNode {
-    const { values } = this.context.formik as FormikProps<any>;
-
     const { profiles, className, name } = this.props;
     const { selectedFields } = this.state;
 
@@ -127,7 +121,6 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
                 singleField && (
                   <SingleMediaLinkField
                     key={index}
-                    visible={singleField}
                     name={`${name}.${index}`}
                     profile={profiles[index]}
                   />

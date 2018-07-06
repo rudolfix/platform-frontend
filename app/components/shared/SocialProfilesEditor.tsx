@@ -66,10 +66,15 @@ interface IProps {
   name: string;
 }
 
-export class SocialProfilesEditor extends React.Component<IProps, { selectedFields: boolean[] }> {
+interface IState {
+  selectedFields: boolean[];
+  filteredFields: boolean[];
+}
+
+export class SocialProfilesEditor extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = { selectedFields: [] };
+    this.state = { selectedFields: [], filteredFields: [] };
   }
 
   static contextTypes = {
@@ -79,9 +84,15 @@ export class SocialProfilesEditor extends React.Component<IProps, { selectedFiel
   componentDidMount(): void {
     const { values } = this.context.formik as FormikProps<any>;
     const { name, profiles } = this.props;
+
+    const socialMediaValues = values[name] || [];
     const alreadyFilledFields = profiles.map(
       (_, index) =>
-        !!values[name][index] && values[name][index].url && values[name][index].url !== "",
+        !!(
+          socialMediaValues[index] &&
+          socialMediaValues[index].url &&
+          socialMediaValues[index].url !== ""
+        ),
     );
     this.setState({ ...this.state, selectedFields: alreadyFilledFields });
   }
@@ -89,7 +100,6 @@ export class SocialProfilesEditor extends React.Component<IProps, { selectedFiel
   toggleProfileVisibility = (index: number): void => {
     const { setFieldValue } = this.context.formik as FormikProps<any>;
     const { name } = this.props;
-
     const updatedSelectedFields = this.state.selectedFields;
     updatedSelectedFields[index] = !this.state.selectedFields[index];
 
@@ -98,13 +108,14 @@ export class SocialProfilesEditor extends React.Component<IProps, { selectedFiel
       setFieldValue(`${name}.${index}.type`, this.props.profiles[index].name),
     );
 
-    this.setState({ selectedFields: updatedSelectedFields });
+    this.setState({ selectedFields: updatedSelectedFields, filteredFields });
   };
 
   render(): React.ReactNode {
-    const { profiles, className, name } = this.props;
-    const { selectedFields } = this.state;
+    const { values } = this.context.formik as FormikProps<any>;
 
+    const { profiles, className, name } = this.props;
+    const { selectedFields, filteredFields } = this.state;
     return (
       <div className={className}>
         <SocialMediaTags
@@ -115,7 +126,7 @@ export class SocialProfilesEditor extends React.Component<IProps, { selectedFiel
         <FieldArray
           name={name}
           render={_ =>
-            selectedFields.map((singleField: boolean, index: number) => (
+            filteredFields.map((singleField: boolean, index: number) => (
               <>
                 {singleField && (
                   <SingleMediaLinkField

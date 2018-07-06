@@ -71,7 +71,6 @@ export class MediaLinksEditor extends React.Component<IProps> {
 
     const { name, placeholder, blankField } = this.props;
     const mediaLinks: object[] = values[name] || [blankField];
-    console.log(values)
     return (
       <FieldArray
         name={name}

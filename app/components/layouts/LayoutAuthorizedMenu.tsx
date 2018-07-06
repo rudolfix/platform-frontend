@@ -66,61 +66,65 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
   actionRequiredSettings,
 }) => (
   <div className={styles.menu}>
-    <MenuEntry
-      svgString={iconDashboard}
-      to={appRoutes.dashboard}
-      menuName={<FormattedMessage id="menu.start" />}
-    />
-    <MenuEntry
-      svgString={iconWallet}
-      to={appRoutes.wallet}
-      menuName={<FormattedMessage id="menu.wallet" />}
-    />
-    <MenuEntry
-      svgString={iconHelp}
-      to={externalRoutes.freshdesk}
-      menuName={<FormattedMessage id="menu.help" />}
-      target="_blank"
-    />
-    <MenuEntry
-      svgString={iconSettings}
-      to={appRoutes.settings}
-      menuName={<FormattedMessage id="menu.settings" />}
-      actionRequired={actionRequiredSettings}
-      data-test-id="authorized-layout-settings-button"
-    />
+    <div className={styles.menuItems}>
+      <MenuEntry
+        svgString={iconDashboard}
+        to={appRoutes.dashboard}
+        menuName={<FormattedMessage id="menu.start" />}
+      />
+      <MenuEntry
+        svgString={iconWallet}
+        to={appRoutes.wallet}
+        menuName={<FormattedMessage id="menu.wallet" />}
+      />
+      <MenuEntry
+        svgString={iconHelp}
+        to={externalRoutes.freshdesk}
+        menuName={<FormattedMessage id="menu.help" />}
+        target="_blank"
+      />
+      <MenuEntry
+        svgString={iconSettings}
+        to={appRoutes.settings}
+        menuName={<FormattedMessage id="menu.settings" />}
+        actionRequired={actionRequiredSettings}
+        data-test-id="authorized-layout-settings-button"
+      />
+    </div>
   </div>
 );
 
 const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequiredSettings }) => (
   <div className={styles.menu}>
-    <MenuEntry
-      svgString={iconDashboard}
-      to={appRoutes.dashboard}
-      menuName={<FormattedMessage id="menu.dashboard" />}
-    />
-    <MenuEntry
-      svgString={iconEto}
-      to={appRoutes.etoPublicView}
-      menuName={<FormattedMessage id="menu.eto-page" />}
-    />
-    <MenuEntry
-      svgString={iconDocuments}
-      to="#0"
-      menuName={<FormattedMessage id="menu.documents-page" />}
-    />
-    <MenuEntry
-      svgString={iconHelp}
-      to="https://neufund.freshdesk.com/support/home"
-      menuName={<FormattedMessage id="menu.help" />}
-      target="_blank"
-    />
-    <MenuEntry
-      svgString={iconSettings}
-      to={appRoutes.settings}
-      menuName={<FormattedMessage id="menu.settings" />}
-      actionRequired={actionRequiredSettings}
-    />
+    <div className={styles.menuItems}>
+      <MenuEntry
+        svgString={iconDashboard}
+        to={appRoutes.dashboard}
+        menuName={<FormattedMessage id="menu.dashboard" />}
+      />
+      <MenuEntry
+        svgString={iconEto}
+        to={appRoutes.etoPublicView}
+        menuName={<FormattedMessage id="menu.eto-page" />}
+      />
+      <MenuEntry
+        svgString={iconDocuments}
+        to={appRoutes.documents}
+        menuName={<FormattedMessage id="menu.documents-page" />}
+      />
+      <MenuEntry
+        svgString={iconHelp}
+        to="https://neufund.freshdesk.com/support/home"
+        menuName={<FormattedMessage id="menu.help" />}
+        target="_blank"
+      />
+      <MenuEntry
+        svgString={iconSettings}
+        to={appRoutes.settings}
+        menuName={<FormattedMessage id="menu.settings" />}
+        actionRequired={actionRequiredSettings}
+      />
+    </div>
   </div>
 );
 

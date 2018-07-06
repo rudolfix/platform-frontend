@@ -7,6 +7,10 @@ export const assertEtoDashboard = () => {
   cy.get(tid("eto-dashboard-application")).should("exist");
 };
 
+export const assertErrorModal = () => {
+  cy.get(tid("components.modals.generic-modal.title")).should("exist");
+};
+
 export const typeEmailPassword = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
@@ -19,8 +23,23 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 
   typeEmailPassword(email, password);
+};
 
-  assertEtoDashboard();
+export const typeLightwalletRecoveryPhrase = (words: string[]) => {
+  for (let batch = 0; batch < words.length / 4; batch++) {
+    for (let index = 0; index < 4; index++) {
+      cy
+        .get(tid(`seed-recovery-word-${batch * 4 + index}`, "input"))
+        .type(words[batch * 4 + index], { force: true, timeout: 20 })
+        .type("{enter}", { force: true });
+    }
+
+    if (batch + 1 < words.length / 4) {
+      cy.get(tid("btn-next")).click();
+    }
+  }
+
+  cy.get(tid("btn-send")).click();
 };
 
 // todo: extract it to separate file

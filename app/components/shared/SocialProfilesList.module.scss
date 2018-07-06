@@ -1,0 +1,14 @@
+.social-profiles-list {
+  display: flex;
+}
+
+.profile {
+  @include rect(30px);
+
+  flex-shrink: 0;
+  margin-right: 20px;
+
+  a {
+    color: inherit;
+  }
+}

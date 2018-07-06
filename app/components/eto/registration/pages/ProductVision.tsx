@@ -1,5 +1,6 @@
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -37,41 +38,41 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
       <Section>
         <FormTextArea
           className="my-2"
-          label="What is the problem your solving and how?"
+          label={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
           placeholder="Describe"
-          name="problemSolved "
+          name="problemSolved"
         />
 
         <FormTextArea
           className="my-2"
-          label="What is the exact target customer of your product?"
+          label={<FormattedMessage id="eto.form.product-vision.customer-group" />}
           placeholder="Describe"
           name="customerGroup"
         />
 
         <FormTextArea
           className="my-2"
-          label="What is the product vision?"
+          label={<FormattedMessage id="eto.form.product-vision.product-vision" />}
           placeholder="Describe"
           name="productVision"
         />
 
         <FormTextArea
           className="my-2"
-          label="What has inspired you to start this company?"
+          label={<FormattedMessage id="eto.form.product-vision.inspiration" />}
           placeholder="Describe"
           name="inspiration"
         />
 
         <FormTextArea
           className="my-2"
-          label="What are the key product priorities (i.e. roadmap) for the next 12 months"
+          label={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
           placeholder="Describe"
           name="keyProductPriorities"
         />
 
         <FormCategoryDistribution
-          label="How will you use the raised capital?"
+          label={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
           name="useOfCapitalList"
           paragraphName="useOfCapital"
           suggestions={distributionSuggestions}
@@ -84,21 +85,21 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label="What is the sales model?"
+          label={<FormattedMessage id="eto.form.product-vision.sales-model" />}
           placeholder="Describe"
           name="salesModel"
         />
 
         <FormTextArea
           className="my-2"
-          label="What is the marketing approach?"
+          label={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
           placeholder="Describe"
           name="marketingApproach"
         />
 
         <FormTextArea
           className="my-2"
-          label="What is your unique selling proposition?"
+          label={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
           placeholder="Describe"
           name="sellingProposition"
         />

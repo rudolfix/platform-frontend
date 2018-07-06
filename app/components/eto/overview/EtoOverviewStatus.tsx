@@ -4,10 +4,8 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import Counter from "../../shared/Counter";
-import { HorizontalLine } from "../../shared/HorizontalLine";
 import { Panel } from "../../shared/Panel";
 import { ProjectStatus, TStatus } from "../../shared/ProjectStatus";
-import { EtoTimeline } from "./EtoTimeline";
 
 import * as stylesCommon from "../EtoOverviewCommon.module.scss";
 import * as styles from "./EtoOverviewStatus.module.scss";
@@ -20,14 +18,6 @@ interface IProps {
   tokenImg: string;
   status: TStatus;
 }
-
-const day = 86400000;
-const etoStartDate = Date.now() - 20 * day;
-const bookBuildingEndDate = etoStartDate + 16 * day;
-const whitelistedEndDate = bookBuildingEndDate + 7 * day;
-const publicEndDate = whitelistedEndDate + 7 * day;
-const inSigningEndDate = publicEndDate + 14 * day;
-const etoEndDate = inSigningEndDate + 7 * day;
 
 export const EtoOverviewStatus: React.SFC<IProps> = props => (
   <Panel>
@@ -78,23 +68,6 @@ export const EtoOverviewStatus: React.SFC<IProps> = props => (
                 </span>
               </div>
             </div>
-          </div>
-          <HorizontalLine className="my-3 d-none d-lg-block" />
-          <div>
-            <strong className="d-none d-lg-block">
-              <span className={cn(stylesCommon.label, "mb-3")}>
-                <FormattedMessage id="eto.overview.overview-status.time" />
-              </span>
-              <EtoTimeline
-                bookBuildingEndDate={bookBuildingEndDate}
-                whitelistedEndDate={whitelistedEndDate}
-                publicEndDate={publicEndDate}
-                inSigningEndDate={inSigningEndDate}
-                etoStartDate={etoStartDate}
-                etoEndDate={etoEndDate}
-                status={props.status}
-              />
-            </strong>
           </div>
         </Col>
       </Row>

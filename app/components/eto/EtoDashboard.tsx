@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Col, Container, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/SettingsWidgets";

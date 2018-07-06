@@ -11,7 +11,7 @@ import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 
-import { flows } from "../../../modules/flows";
+import { actions } from "../../../modules/actions";
 
 const EMAIL = "email";
 const PASSWORD = "password";
@@ -111,7 +111,7 @@ export const RegisterLightWallet = compose<React.SFC>(
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>
-        dispatch(flows.wallet.tryConnectingWithLightWallet(values.email, values.password)),
+        dispatch(actions.walletSelector.lightWalletRegister(values.email, values.password)),
     }),
   }),
 )(RegisterWalletComponent);

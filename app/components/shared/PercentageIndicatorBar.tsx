@@ -46,7 +46,7 @@ export const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = props
       <svg width="100%" height="38">
         <defs>
           <clipPath id="percent-indicator-bar">
-            <rect className={styles.background} width="100%" height="38" rx={CURVE} ry={CURVE} />
+            <rect width="100%" height="38" rx={CURVE} ry={CURVE} />
           </clipPath>
         </defs>
         <g clipPath="url(#percent-indicator-bar)">

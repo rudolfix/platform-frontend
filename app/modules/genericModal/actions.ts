@@ -1,4 +1,4 @@
-import { createAction, createSimpleAction } from "./../actionsUtils";
+import { createAction, createSimpleAction } from "../actionsUtils";
 import { TIconType } from "./reducer";
 
 export const genericModalActions = {

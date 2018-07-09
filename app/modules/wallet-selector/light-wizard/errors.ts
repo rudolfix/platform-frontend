@@ -1,14 +1,12 @@
 import {
   LightCreationError,
+  LightDeserializeError,
   LightKeyEncryptError,
   LightSignMessageError,
   LightWalletWrongMnemonic,
   LightWalletWrongPassword,
-} from "../../../lib/web3/LightWallet";
-import {
-  LightDeserializeError,
   LightWrongPasswordSaltError,
-} from "./../../../lib/web3/LightWallet";
+} from "../../../lib/web3/LightWallet";
 
 //TODO: ADD TRANSLATIONS
 export function mapLightWalletErrorToErrorMessage(e: Error): string {

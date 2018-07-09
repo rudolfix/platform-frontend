@@ -59,7 +59,7 @@
   margin-top: -10%;
 
   .company-image {
-    @include circle(250px);
+    @include circle;
     @include responsive-size(height, 40px, 250px);
     @include responsive-size(width, 40px, 250px);
 

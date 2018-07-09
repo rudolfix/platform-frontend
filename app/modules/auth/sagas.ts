@@ -3,7 +3,7 @@ import { call, Effect, fork, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser, IUserInput, IVerifyEmailUser, TUserType } from "../../lib/api/users/interfaces";
-import { UserNotExisting } from "../../lib/api/users/UsersApi";
+import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
 import {
   SignerRejectConfirmationError,
   SignerTimeoutError,
@@ -22,7 +22,6 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { EmailAlreadyExists } from "./../../lib/api/users/UsersApi";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {

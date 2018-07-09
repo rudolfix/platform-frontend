@@ -2,10 +2,10 @@ import { delay, Task } from "redux-saga";
 import { call, cancel, fork, put } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { TUserType } from "../../lib/api/users/interfaces";
 import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { TUserType } from "./../../lib/api/users/interfaces";
 import { WalletType } from "./types";
 
 let lockWalletTask: Task | undefined;

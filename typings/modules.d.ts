@@ -15,3 +15,6 @@ declare module "tweetnacl";
 
 declare module "@storybook/addon-actions";
 declare module "react-sizes";
+
+declare module "react-id-swiper";
+declare module "react-id-swiper/lib/custom";

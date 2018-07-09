@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
 import { symbols } from "../../di/symbols";
 import { selectUserType } from "../../modules/auth/selectors";
+import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
+import { TUserType } from "../api/users/interfaces";
 import { ILogger } from "../dependencies/Logger";
-import { IAppState } from "./../../store";
-import { TUserType } from "./../api/users/interfaces";
 import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 

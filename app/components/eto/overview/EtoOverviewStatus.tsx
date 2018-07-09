@@ -1,14 +1,15 @@
-
+import * as cn from "classnames";
 import { Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import Counter from "../../shared/Counter";
+import { CommonHtmlProps } from "../../../types";
 import { ProjectStatus, TStatus } from "../../shared/ProjectStatus";
 import { Tag } from "../../shared/Tag";
 
 import { Button } from "../../shared/Buttons";
+import Counter from "../../shared/Counter";
 import { FormField } from "../../shared/forms/forms";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
@@ -41,7 +42,7 @@ interface IProps {
   campaigningWidget?: ICampaigningWidget;
 }
 
-  const CampaigningWidget: React.SFC<ICampaigningWidget> = ({amountBacked, investorsBacked}) => {
+const CampaigningWidget: React.SFC<ICampaigningWidget> = ({ amountBacked, investorsBacked }) => {
   return (
     <div className={styles.widgetCampaigning}>
       <div className={styles.group}>
@@ -64,28 +65,28 @@ interface IProps {
                 <FormField name="" prefix="€" />
               </Col>
               <Col xs={12} lg={6}>
-                <Button type="submit"><FormattedMessage id="shared-component.eto-overview.back-now" /></Button>
+                <Button type="submit">
+                  <FormattedMessage id="shared-component.eto-overview.back-now" />
+                </Button>
               </Col>
             </Row>
-            )}
+          )}
         </Formik>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const ClaimWidget: React.SFC<{tokenName: string}> = ({tokenName}) => (
+const ClaimWidget: React.SFC<{ tokenName: string }> = ({ tokenName }) => (
   <div className={styles.widgetClaim}>
     <div className={styles.message}>
       <FormattedMessage id="shared-component.eto-overview.success" />
     </div>
     <Button>
-      <FormattedMessage id="shared-component.eto-overview.claim-your-token"/>
-      {" "}
-      {tokenName}
+      <FormattedMessage id="shared-component.eto-overview.claim-your-token" /> {tokenName}
     </Button>
   </div>
-)
+);
 
 const RefundWidget: React.SFC = () => (
   <div className={styles.widgetClaim}>
@@ -93,12 +94,27 @@ const RefundWidget: React.SFC = () => (
       <FormattedMessage id="shared-component.eto-overview.refund" />
     </div>
     <Button>
-      <FormattedMessage id="shared-component.eto-overview.claim-your-eth-neur"/>
+      <FormattedMessage id="shared-component.eto-overview.claim-your-eth-neur" />
     </Button>
   </div>
-)
+);
 
-const PublicEtoWidget: React.SFC<IPublicWidget> = ({ endInDays, investorsBacked, tokensGoal, raisedTokens }) => {
+const PreEtoWidget: React.SFC = () => (
+  <div className={styles.widgetPreEto}>
+    <div className={styles.title}>
+      <FormattedMessage id="shared-component.eto-overview.count-down-to-eto" />
+    </div>
+    <div className={styles.zone}>UTC 22/07/2019</div>
+    <Counter />
+  </div>
+);
+
+const PublicEtoWidget: React.SFC<IPublicWidget> = ({
+  endInDays,
+  investorsBacked,
+  tokensGoal,
+  raisedTokens,
+}) => {
   return (
     <div className={styles.widgetPublicEto}>
       <div className={styles.header}>
@@ -107,13 +123,10 @@ const PublicEtoWidget: React.SFC<IPublicWidget> = ({ endInDays, investorsBacked,
           <span>{investorsBacked}</span>
         </span>
         <span>
-          <FormattedMessage
-            id="shared-component.eto-overview.ends-in"
-            values={{ endInDays }}
-          />
+          <FormattedMessage id="shared-component.eto-overview.ends-in" values={{ endInDays }} />
         </span>
       </div>
-      <PercentageIndicatorBar className="my-2" fraction={raisedTokens/tokensGoal} />
+      <PercentageIndicatorBar className="my-2" fraction={raisedTokens / tokensGoal} />
       <div>
         {raisedTokens} / {tokensGoal} nEUR
       </div>
@@ -124,23 +137,24 @@ const PublicEtoWidget: React.SFC<IPublicWidget> = ({ endInDays, investorsBacked,
               <FormField name="" prefix="€" />
             </Col>
             <Col xs={12} lg={6}>
-              <Button type="submit"><FormattedMessage id="shared-component.eto-overview.invest-now" /></Button>
+              <Button type="submit">
+                <FormattedMessage id="shared-component.eto-overview.invest-now" />
+              </Button>
             </Col>
           </Row>
-          )}
+        )}
       </Formik>
     </div>
-  )
-}
+  );
+};
 
-export const EtoOverviewStatus: React.SFC<IProps> = props => (
-  <div className={styles.etoOverviewStatus}>
+export const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => (
+  <div className={cn(styles.etoOverviewStatus, props.className)}>
     <div className={styles.overviewWrapper}>
-
       <div className={styles.statusWrapper}>
         <div className={styles.statusOfEto}>
           <span className={styles.title}>
-            <FormattedMessage id="shared-component.eto-overview.status-of-eto"/>
+            <FormattedMessage id="shared-component.eto-overview.status-of-eto" />
           </span>
           <ProjectStatus status={props.status} />
         </div>
@@ -154,18 +168,22 @@ export const EtoOverviewStatus: React.SFC<IProps> = props => (
           </div>
         </div>
         <div>
-          {props.prospectusApproved && <Tag
-            size="small"
-            theme="green"
-            layout="ghost"
-            text={<FormattedMessage id="shared-component.eto-overview.company-valuation" />}
-          />}
-          {props.onchain && <Tag
-            size="small"
-            theme="green"
-            layout="ghost"
-            text={<FormattedMessage id="shared-component.eto-overview.company-onchain" />}
-          />}
+          {props.prospectusApproved && (
+            <Tag
+              size="small"
+              theme="green"
+              layout="ghost"
+              text={<FormattedMessage id="shared-component.eto-overview.company-valuation" />}
+            />
+          )}
+          {props.onchain && (
+            <Tag
+              size="small"
+              theme="green"
+              layout="ghost"
+              text={<FormattedMessage id="shared-component.eto-overview.company-onchain" />}
+            />
+          )}
         </div>
       </div>
 
@@ -201,45 +219,33 @@ export const EtoOverviewStatus: React.SFC<IProps> = props => (
       <div className={styles.divider} />
 
       <div className={styles.stageContentWrapper}>
-        {
-          props.status === "campaigning" && props.campaigningWidget && (
+        {props.status === "campaigning" &&
+          props.campaigningWidget && (
             <CampaigningWidget
               amountBacked={props.campaigningWidget.amountBacked}
               investorsBacked={props.campaigningWidget.investorsBacked}
             />
-          )
-        }
-        {
-          props.status === "claim" && (
-            <ClaimWidget tokenName={props.tokenName} />
-          )
-        }
-        {
-          props.status === "refund" && (
-            <RefundWidget />
-          )
-        }
-        {
-          props.status === "public-eto" && (
-            <PublicEtoWidget
-              endInDays={props.publicWidget!.endInDays}
-              investorsBacked={props.publicWidget!.investorsBacked}
-              tokensGoal={props.publicWidget!.tokensGoal}
-              raisedTokens={props.publicWidget!.raisedTokens}
-            />
-          )
-        }
-        {
-          props.status === "pre-eto" && (
-            <PublicEtoWidget
-              endInDays={props.publicWidget!.endInDays}
-              investorsBacked={props.publicWidget!.investorsBacked}
-              tokensGoal={props.publicWidget!.tokensGoal}
-              raisedTokens={props.publicWidget!.raisedTokens}
-            />
-          )
-        }
+          )}
+        {props.status === "pre-eto" && <PreEtoWidget />}
+        {props.status === "public-eto" && (
+          <PublicEtoWidget
+            endInDays={props.publicWidget!.endInDays}
+            investorsBacked={props.publicWidget!.investorsBacked}
+            tokensGoal={props.publicWidget!.tokensGoal}
+            raisedTokens={props.publicWidget!.raisedTokens}
+          />
+        )}
+        {props.status === "in-signing" && (
+          <PublicEtoWidget
+            endInDays={props.publicWidget!.endInDays}
+            investorsBacked={props.publicWidget!.investorsBacked}
+            tokensGoal={props.publicWidget!.tokensGoal}
+            raisedTokens={props.publicWidget!.raisedTokens}
+          />
+        )}
+        {props.status === "claim" && <ClaimWidget tokenName={props.tokenName} />}
+        {props.status === "refund" && <RefundWidget />}
       </div>
     </div>
   </div>
-  )
+);

@@ -4,13 +4,13 @@ import * as React from "react";
 import { EtoOverviewStatus } from "./EtoOverviewStatus";
 
 const props = {
-  tokenName:"token name",
+  tokenName: "token name",
   tokenSymbol: "token symbol",
   image: {
     srcSet: {
-      "1x": ""
+      "1x": "",
     },
-    alt: "token image alt"
+    alt: "token image alt",
   },
   prospectusApproved: true,
   onchain: true,
@@ -18,7 +18,7 @@ const props = {
   declaredCap: "declared cap",
   companyEquity: "company equity",
   tokenPrice: "token price",
-}
+};
 
 storiesOf("EtoOverviewStatus", module)
   .add("status: campaigning", () => (
@@ -28,17 +28,7 @@ storiesOf("EtoOverviewStatus", module)
       status="campaigning"
     />
   ))
-  .add("status: pre-eto", () => (
-    <EtoOverviewStatus
-      {...props}
-      status="pre-eto"
-      publicWidget={{
-        endInDays: 5,
-        investorsBacked: 10,
-        tokensGoal: 20,
-        raisedTokens: 1
-      }}
-    />))
+  .add("status: pre-eto", () => <EtoOverviewStatus {...props} status="pre-eto" />)
   .add("status: public-eto", () => (
     <EtoOverviewStatus
       {...props}
@@ -47,9 +37,21 @@ storiesOf("EtoOverviewStatus", module)
         endInDays: 5,
         investorsBacked: 10,
         tokensGoal: 20,
-        raisedTokens: 1
+        raisedTokens: 1,
       }}
-    />))
-  .add("status: in-signing", () => <EtoOverviewStatus {...props} status="in-signing" />)
+    />
+  ))
+  .add("status: in-signing", () => (
+    <EtoOverviewStatus
+      {...props}
+      status="in-signing"
+      publicWidget={{
+        endInDays: 5,
+        investorsBacked: 10,
+        tokensGoal: 20,
+        raisedTokens: 1,
+      }}
+    />
+  ))
   .add("status: claim", () => <EtoOverviewStatus {...props} status="claim" />)
-  .add("status: refund", () => <EtoOverviewStatus {...props} status="refund" />)
+  .add("status: refund", () => <EtoOverviewStatus {...props} status="refund" />);

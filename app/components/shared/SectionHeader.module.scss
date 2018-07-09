@@ -1,21 +1,26 @@
 .section-header {
   @include font-headline-small;
+  @include responsive-size(margin-left, 20px, 40px);
 
   text-transform: uppercase;
-  padding-left: px-to-rem(10px);
   position: relative;
   font-weight: $font-weight-bold;
   display: flex;
   align-items: center;
 
-  &::before {
-    position: absolute;
-    content: "";
-    background-color: $neu-piss-yellow;
-    height: 100%;
-    width: 2px;
-    left: 0;
-    top: 0;
+  &:global(.has-decorator) {
+    margin-left: 0;
+    padding-left: px-to-rem(10px);
+
+    &::before {
+      position: absolute;
+      content: "";
+      background-color: $neu-piss-yellow;
+      height: 100%;
+      width: 2px;
+      left: 0;
+      top: 0;
+    }
   }
 
   :global(.inline-icon) {

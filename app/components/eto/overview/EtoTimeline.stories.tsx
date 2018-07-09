@@ -51,8 +51,9 @@ const payOffProps = {
 };
 
 storiesOf("EtoTimeline", module)
-  .add("book building", () => <EtoTimeline {...bookBuildingProps} status="book-building" />)
-  .add("whitelisted", () => <EtoTimeline {...whitelistedProps} status="whitelisted" />)
-  .add("public", () => <EtoTimeline {...publicProps} status="public" />)
-  .add("in signing", () => <EtoTimeline {...inSigningProps} status="in-signing" />)
-  .add("pay off", () => <EtoTimeline {...payOffProps} status="pay-off" />);
+  .add("status: campaigning", () => <EtoTimeline {...bookBuildingProps} status="campaigning" />)
+  .add("status: pre-eto", () => <EtoTimeline {...whitelistedProps} status="pre-eto" />)
+  .add("status: public-eto", () => <EtoTimeline {...publicProps} status="public-eto" />)
+  .add("status: in-signing", () => <EtoTimeline {...inSigningProps} status="in-signing" />)
+  .add("status: claim", () => <EtoTimeline {...payOffProps} status="claim" />)
+  .add("status: refund", () => <EtoTimeline {...payOffProps} status="refund" />);

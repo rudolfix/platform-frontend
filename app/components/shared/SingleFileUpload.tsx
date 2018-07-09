@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps, TAcceptedFileType } from "../../types";
 import { dontPropagateEvent } from "../../utils/dontPropagate";
-import { Button } from "../shared/Buttons";
+import { Button } from "./Buttons";
 
 import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
 import * as styles from "./SingleFileUpload.module.scss";

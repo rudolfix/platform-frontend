@@ -7,9 +7,9 @@ import { compose } from "redux";
 import * as Yup from "yup";
 import { InfoBlock } from "../../shared/InfoBlock";
 
-import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
+import { FormField } from "../../shared/forms/forms";
 
 import { actions } from "../../../modules/actions";
 

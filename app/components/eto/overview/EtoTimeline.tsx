@@ -7,6 +7,8 @@ import { TStatus } from "../../shared/ProjectStatus";
 
 import * as styles from "./EtoTimeline.module.scss";
 
+type TBlockTheme = "blue" | "fluorescent-blue" | "green" | "gray";
+type TDatePointType = "short";
 interface IProps {
   bookBuildingEndDate: number;
   whitelistedEndDate: number;
@@ -20,78 +22,95 @@ interface IProps {
 interface IDatePointProps {
   date: number;
   blockWidth: number;
+  type?: TDatePointType;
+  isConfirmed?: boolean;
+  isDeadline?: boolean;
 }
-
-const DatePoint: React.SFC<IDatePointProps> = ({ date, blockWidth }) => {
-  return (
-    <g transform={`translate(${blockWidth - 33})`}>
-      <text className={styles.date}>
-        <tspan x="7.293" y="67">
-          <FormattedDate value={date} />
-        </tspan>
-      </text>
-      <rect width="1" height="46" x="32" fill="#979797" />
-    </g>
-  );
-};
-
-type TBlockTheme = "navy-blue" | "blue" | "green" | "gray";
 
 interface IBlockProps {
   title: string | React.ReactNode;
   theme: TBlockTheme;
   width: number;
-  date: number;
+  date?: number;
+  type?: "arrow";
+  datePointType?: TDatePointType;
 }
 
-const Block: React.SFC<IBlockProps> = ({ title, date, theme, width }) => {
+const DatePoint: React.SFC<IDatePointProps> = ({
+  date,
+  blockWidth,
+  type,
+  isConfirmed,
+  isDeadline,
+}) => {
+  return (
+    <g transform={`translate(${blockWidth - 33})`}>
+      <text className={styles.date}>
+        <tspan x="7.293" y="50">
+          <FormattedDate value={date} />
+        </tspan>
+      </text>
+      <rect
+        width="1"
+        height={type === "short" ? "16" : "32"}
+        x="32"
+        y={type === "short" ? "20" : "4"}
+        className={cn(
+          styles.datePoint,
+          type,
+          isConfirmed && "is-confirmed",
+          isDeadline && "is-deadline",
+        )}
+      />
+    </g>
+  );
+};
+
+const Block: React.SFC<IBlockProps> = ({ title, date, datePointType, theme, width, type }) => {
   return (
     <>
-      <g transform="translate(0 8)" className={cn(styles.block, theme)}>
-        <rect className={styles.blockBackground} width={width} height="30" />
+      <g transform={type === "arrow" ? "" : "translate(0 8)"} className={cn(styles.block, theme)}>
+        <rect className={styles.blockBackground} width={width} height="19" />
+        {type === "arrow" ? (
+          <polygon
+            fill="#AABCCA"
+            fill-opacity=".7"
+            fill-rule="nonzero"
+            points="0 26 160 26 172.996 28 160 30 0 30"
+            transform="translate(0, -7)"
+          />
+        ) : (
+          <rect
+            className={styles.blockBorderBottom}
+            width={width}
+            height="4"
+            y="19"
+            fill="#1FE06D"
+          />
+        )}
         <text
           className={styles.blockText}
-          fill="#FFF"
-          fontSize="12"
-          fontWeight="400"
           textAnchor="middle"
-          transform={`translate(${width / 2} 19)`}
+          transform={`translate(${width / 2} 14)`}
         >
           {title}
         </text>
       </g>
-      <DatePoint date={date} blockWidth={width} />
+      {date && <DatePoint date={date} blockWidth={width} type={datePointType} />}
     </>
   );
 };
 
-const BlockPayOff: React.SFC = () => {
+const Pointer: React.SFC = () => {
   return (
-    <>
-      <polygon className={styles.blockBackground} points="0 0 160 0 172.996 15 160 30 0 30" />
-      <text className={styles.blockText}>
-        <tspan x="60.91" y="19">
-          <FormattedMessage id="eto-timeline.pay-off" />
-        </tspan>
-      </text>
-    </>
-  );
-};
-
-interface IPointerProps {
-  date: number;
-}
-
-const Pointer: React.SFC<IPointerProps> = ({ date }) => {
-  return (
-    <g transform="translate(10 10)">
+    <g transform="translate(10 29)">
       <path
-        fill="#979797"
+        className={styles.pointer}
         d="M26,29.9775785 C23.19675,29.7249641 21,27.3690213 21,24.5 C21,21.4624339 23.4624339,19 26.5,19 C29.5375661,19 32,21.4624339 32,24.5 C32,27.3690213 29.80325,29.7249641 27,29.9775785 L27,65 L26,65 L26,29.9775785 Z M26.5,29 C28.9852814,29 31,26.9852814 31,24.5 C31,22.0147186 28.9852814,20 26.5,20 C24.0147186,20 22,22.0147186 22,24.5 C22,26.9852814 24.0147186,29 26.5,29 Z"
       />
       <text className={styles.date}>
-        <tspan x="1.293" y="11">
-          <FormattedDate value={date} />
+        <tspan x="11" y="12">
+          <FormattedMessage id="shared-component.eto-timeline.today" />
         </tspan>
       </text>
     </g>
@@ -136,23 +155,24 @@ export class EtoTimeline extends React.Component<IProps> {
           <g transform="translate(35 67)">
             <g transform="translate(1)">
               <Block
-                title={<FormattedMessage id="eto-timeline.book-building" />}
+                title={<FormattedMessage id="eto-timeline.campaining" />}
                 date={this.props.bookBuildingEndDate}
                 width={bookBuildingWidth}
-                theme="navy-blue"
+                theme="blue"
               />
             </g>
             <g transform={`translate(${bookBuildingWidth + 1})`}>
               <Block
-                title={<FormattedMessage id="eto-timeline.whitelisted" />}
+                title={<FormattedMessage id="eto-timeline.pre-eto" />}
                 date={this.props.whitelistedEndDate}
                 width={whitelistedWidth}
-                theme="blue"
+                theme="fluorescent-blue"
+                datePointType="short"
               />
             </g>
             <g transform={`translate(${bookBuildingWidth + whitelistedWidth + 1})`}>
               <Block
-                title={<FormattedMessage id="eto-timeline.public" />}
+                title={<FormattedMessage id="eto-timeline.public-eto" />}
                 date={this.props.publicEndDate}
                 width={publicWidth}
                 theme="green"
@@ -167,12 +187,18 @@ export class EtoTimeline extends React.Component<IProps> {
               />
             </g>
             <g transform="translate(801 8)">
-              <BlockPayOff />
+              <Block
+                title={<FormattedMessage id="eto-timeline.claim" />}
+                theme="gray"
+                width={162}
+                type="arrow"
+                datePointType="short"
+              />
             </g>
             <DatePoint date={this.props.etoStartDate} blockWidth={1} />
           </g>
           <g transform={`translate(${this.state.pointerPosition})`}>
-            <Pointer date={Date.now()} />
+            <Pointer />
           </g>
         </g>
       </svg>

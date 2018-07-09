@@ -2,15 +2,16 @@ import { get } from "lodash";
 
 import { tid } from "../../../../../test/testUtils";
 import {
+  assertErrorModal,
   assertUserInDashboard,
   convertToUniqueEmail,
   loginWithLightWallet,
   logoutViaTopRightButton,
   mockApiUrl,
   registerWithLightWallet,
+  typeEmailPassword,
   verifyLatestUserEmail,
 } from "../../../../e2e-test-utils";
-import { assertErrorModal, typeEmailPassword } from "../../../../e2e-test-utils/index";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {

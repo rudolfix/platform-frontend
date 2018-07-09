@@ -1,8 +1,11 @@
 import { get } from "lodash";
 import { tid } from "../../../../../test/testUtils";
-import { mockApiUrl } from "../../../../e2e-test-utils";
-import { typeEmailPassword, typeLightwalletRecoveryPhrase } from "../../../../e2e-test-utils/index";
-import { assertErrorModal } from "./../../../../e2e-test-utils/index";
+import {
+  assertErrorModal,
+  mockApiUrl,
+  typeEmailPassword,
+  typeLightwalletRecoveryPhrase,
+} from "../../../../e2e-test-utils";
 
 describe("Wallet recover", () => {
   const words = [

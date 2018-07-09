@@ -1,7 +1,7 @@
 import { AppActionTypes, AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../auth/selectors";
 import { routingActions } from "../routing/actions";
-import { selectBackupCodesVerified, selectIsUserEmailVerified } from "./../auth/selectors";
 import { notificationActions } from "./actions";
 
 export enum NotificationType {

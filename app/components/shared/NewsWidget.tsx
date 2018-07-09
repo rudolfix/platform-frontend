@@ -42,6 +42,8 @@ export class NewsWidget extends React.Component<IProps> {
     return (
       <div className={cn(styles.newsWidget, isEditable && "is-editable", className)}>
         <Tabs
+          size="large"
+          hasDivider={false}
           tabs={[
             {
               text: "Twitter",

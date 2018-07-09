@@ -74,8 +74,8 @@ Button.defaultProps = {
   disabled: false,
 };
 
-export const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, ...props }) => (
-  <div className={styles.buttonIcon} onClick={onClick}>
+export const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
+  <div className={cn(styles.buttonIcon, className)} onClick={onClick}>
     <InlineIcon {...props} width="20px" height="20px" />
   </div>
 );

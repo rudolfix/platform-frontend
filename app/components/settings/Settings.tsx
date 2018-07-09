@@ -2,28 +2,33 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
+import { selectIsLightWallet } from "../../modules/web3/selectors";
+import { appConnect } from "../../store";
+import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereumAddressWidget/YourEthereumAddressWidget";
 import { SettingsWidgets } from "./SettingsWidgets";
 
-export const Settings: React.SFC = () => {
+interface IStateProps {
+  isLightWallet: boolean;
+}
+
+export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet }) => {
   return (
     <LayoutAuthorized>
       <Row className="row-gutter-top">
-        <Col xs={12}>
-          <SectionHeader>
-            <FormattedMessage id="settings.security-settings.title" />
-          </SectionHeader>
-        </Col>
-        <SettingsWidgets />
-        <Col xs={12}>
-          <SectionHeader>
-            <FormattedMessage id="settings.account-info.title" />
-          </SectionHeader>
-        </Col>
+        <DashboardSection
+          title={<FormattedMessage id="settings.security-settings.title" />}
+          data-test-id="eto-dashboard-application"
+        />
+        <SettingsWidgets isDynamic={false} isLightWallet={isLightWallet} />
 
+        <DashboardSection
+          title={<FormattedMessage id="settings.account-info.title" />}
+          data-test-id="eto-dashboard-application"
+        />
         <Col lg={4} xs={12}>
           <YourEthereumAddressWidget />
         </Col>
@@ -45,3 +50,9 @@ export const Settings: React.SFC = () => {
     </LayoutAuthorized>
   );
 };
+
+export const Settings = appConnect<IStateProps>({
+  stateToProps: s => ({
+    isLightWallet: selectIsLightWallet(s.web3),
+  }),
+})(SettingsComponent);

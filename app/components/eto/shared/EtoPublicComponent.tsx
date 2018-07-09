@@ -117,12 +117,31 @@ const people = [
 const swiperSingleRowSettings = {
   slidesPerView: 5,
   spaceBetween: 100,
+  breakpoints: {
+    640: {
+      slidesPerView: 1,
+    },
+    1200: {
+      slidesPerView: 3,
+      spaceBetween: 0,
+    },
+  },
 };
 
 const swiperMultiRowSettings = {
   slidesPerView: 3,
   slidesPerColumn: 2,
   spaceBetween: 80,
+  breakpoints: {
+    640: {
+      slidesPerView: 1,
+      spaceBetween: 10,
+    },
+    1200: {
+      slidesPerView: 2,
+      spaceBetween: 20,
+    },
+  },
 };
 
 const profilesData = [

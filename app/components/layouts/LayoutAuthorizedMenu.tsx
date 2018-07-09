@@ -123,6 +123,7 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
         to={appRoutes.settings}
         menuName={<FormattedMessage id="menu.settings" />}
         actionRequired={actionRequiredSettings}
+        data-test-id="authorized-layout-settings-button"
       />
     </div>
   </div>

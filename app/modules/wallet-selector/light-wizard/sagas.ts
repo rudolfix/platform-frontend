@@ -1,9 +1,9 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
-import { EmailAlreadyExists } from "./../../../lib/api/users/UsersApi";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
-import { UserNotExisting } from "../../../lib/api/users/UsersApi";
+import { TGlobalDependencies } from "../../../di/setupBindings";
+import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
 import {
   ILightWalletMetadata,
   ILightWalletRetrieveMetadata,
@@ -37,7 +37,6 @@ import {
 } from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
-import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
 

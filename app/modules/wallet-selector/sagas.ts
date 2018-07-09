@@ -1,9 +1,9 @@
 import { effects } from "redux-saga";
 import { fork } from "redux-saga/effects";
+import { TUserType } from "../../lib/api/users/interfaces";
+import { IAppState } from "../../store";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { loadPreviousWallet } from "../web3/sagas";
-import { TUserType } from "./../../lib/api/users/interfaces";
-import { IAppState } from "./../../store";
 import { selectUrlUserType } from "./selectors";
 
 export function* loadWalletFromUrl(): Iterator<any> {

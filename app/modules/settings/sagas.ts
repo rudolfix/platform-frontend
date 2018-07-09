@@ -5,13 +5,12 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
 import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
-import { TAction } from "../actions";
+import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectWalletType } from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { actions } from "./../actions";
 
 export function* addNewEmail(
   { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,

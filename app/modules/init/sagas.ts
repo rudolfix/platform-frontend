@@ -4,15 +4,15 @@ import { fork, put, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TUserType } from "../../lib/api/users/interfaces";
+import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TAction } from "../actions";
 import { loadJwt, loadUser } from "../auth/sagas";
+import { selectUserType } from "../auth/selectors";
 import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { detectUserAgent } from "../userAgent/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
-import { IAppState } from "./../../store";
-import { selectUserType } from "./../auth/selectors";
 
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
   try {

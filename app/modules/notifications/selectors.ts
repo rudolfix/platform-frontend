@@ -3,7 +3,7 @@ import { some } from "lodash";
 import { appRoutes } from "../../components/appRoutes";
 import { IAppState } from "../../store";
 import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../auth/selectors";
-import { selectKycRequestStatus, selectWidgetLoading } from "./../kyc/selectors";
+import { selectKycRequestStatus, selectWidgetLoading } from "../kyc/selectors";
 import { settingsNotification } from "./reducer";
 
 export const selectIsActionRequiredSettings = (state: IAppState): boolean => {

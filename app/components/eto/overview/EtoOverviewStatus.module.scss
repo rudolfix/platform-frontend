@@ -158,3 +158,23 @@
     margin-bottom: px-to-rem(20px);
   }
 }
+
+.widget-pre-eto {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  .title {
+    @include font-default;
+
+    margin-bottom: px-to-rem(8px);
+    text-transform: uppercase;
+  }
+
+  .zone {
+    @include font-label;
+
+    color: $color-orange;
+    margin-bottom: px-to-rem(8px);
+  }
+}

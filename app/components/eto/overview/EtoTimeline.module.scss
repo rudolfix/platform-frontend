@@ -1,46 +1,54 @@
 .block {
   $color-black: rgba($color-black, .55);
-  $color-navy-blue: #0c6383;
-  $color-blue: #78d7dc;
-  $color-green: #1fe06d;
+  $color-blue: #0c6383;
+  $color-fluorescent-blue: #78d7dc;
+  $color-green-transparent: rgba($color-green-dark, .1);
   $color-gray: #aabcca;
 
-  &:global(.navy-blue) {
-    .block-background {
-      fill: $color-navy-blue;
-    }
-  }
-
   &:global(.blue) {
-    .block-text {
-      fill: $color-black;
+    .block-background {
+      fill: $neu-pale-blue;
     }
 
-    .block-background {
+    .block-border-bottom {
       fill: $color-blue;
     }
   }
 
-  &:global(.green) {
-    .block-text {
-      fill: $color-black;
+  &:global(.fluorescent-blue) {
+    .block-background {
+      fill: $color-green-transparent;
     }
 
+    .block-border-bottom {
+      fill: $color-fluorescent-blue;
+    }
+  }
+
+  &:global(.green) {
     .block-background {
-      fill: $color-green;
+      fill: $color-green-transparent;
+    }
+
+    .block-border-bottom {
+      fill: $color-green-dark;
     }
   }
 
   &:global(.gray) {
     .block-background {
+      fill: $neu-pale-blue;
+    }
+
+    .block-border-bottom {
       fill: $color-gray;
     }
   }
 }
 
 .block-text {
-  fill: $neu-white-two;
-  font-size: px-to-rem(12px);
+  fill: $color-graphite-light;
+  font-size: px-to-rem(10px);
   font-weight: $font-weight-bold;
   text-transform: uppercase;
 }
@@ -48,11 +56,30 @@
 .block-background {
   $color-gray-light: #c3d0d9;
 
-  fill: $color-gray-light;
+  fill: $color-green-dark;
+
+  &:global(.is-confirmed) {
+    fill: $color-green;
+  }
+
+  &:global(.is-deadline) {
+    fill: $color-orange;
+  }
+}
+
+.pointer {
+  fill: $color-graphite-light;
 }
 
 .date {
-  font-size: px-to-rem(12px);
-  font-weight: $font-weight-bold;
+  font-size: px-to-rem(10px);
   fill: $color-black;
+}
+
+.date-point {
+  fill: $color-green-dark;
+
+  &:global(.short) {
+    fill: $color-graphite-light;
+  }
 }

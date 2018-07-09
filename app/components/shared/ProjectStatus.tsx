@@ -11,12 +11,12 @@ export interface IProps {
 }
 
 export const messages = {
-  "campaigning": <FormattedMessage id="project-status.campaigning" />,
+  campaigning: <FormattedMessage id="project-status.campaigning" />,
   "pre-eto": <FormattedMessage id="project-status.pre-eto" />,
   "public-eto": <FormattedMessage id="project-status.public-eto" />,
   "in-signing": <FormattedMessage id="project-status.in-signing" />,
-  "claim": <FormattedMessage id="project-status.claim" />,
-  "refund": <FormattedMessage id="project-status.refund" />,
+  claim: <FormattedMessage id="project-status.claim" />,
+  refund: <FormattedMessage id="project-status.refund" />,
 };
 
 export const ProjectStatus: React.SFC<IProps> = ({ status }) => (

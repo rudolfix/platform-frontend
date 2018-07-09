@@ -6,9 +6,6 @@ import { invariant } from "../../utils/invariant";
 
 import * as styles from "./PercentageIndicatorBar.module.scss";
 
-type TTheme = "green";
-type TSize = "narrow";
-
 type IProps =
   | {
       percent: number;

@@ -10,8 +10,10 @@ import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
 import { NewsWidget } from "../../shared/NewsWidget";
 import { Panel } from "../../shared/Panel";
+import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { SocialProfilesList } from "../../shared/SocialProfilesList";
+import { Tabs } from "../../shared/Tabs";
 import { Video } from "../../shared/Video";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
@@ -21,9 +23,107 @@ import * as linkedinIcon from "../../../assets/img/inline_icons/social_linkedin.
 import * as mediumIcon from "../../../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../../../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../../../assets/img/inline_icons/social_telegram.svg";
+import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
+
+const tabsData = [
+  { text: "tab 1", isActive: true, onClick: () => {} },
+  { text: "tab 2", onClick: () => {} },
+  { text: "tab 3", onClick: () => {} },
+];
+
+const people = [
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+  {
+    name: "name",
+    image: "image",
+    description:
+      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
+    role: "role",
+  },
+];
+
+const swiperSingleRowSettings = {
+  slidesPerView: 5,
+  spaceBetween: 100,
+};
+
+const swiperMultiRowSettings = {
+  slidesPerView: 3,
+  slidesPerColumn: 2,
+  spaceBetween: 80,
+};
 
 const profilesData = [
   {
@@ -152,6 +252,35 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           },
         }}
         tags={companyData.categories}
+      />
+
+      <EtoOverviewStatus
+        image={{
+          srcSet: {
+            "1x": "",
+          },
+          alt: "",
+        }}
+        className="mb-4"
+        prospectusApproved={true}
+        onchain={false}
+        tokenPrice="10000"
+        companyEquity=""
+        companyValuation="10000000"
+        declaredCap="100000"
+        status="campaigning"
+        tokenName={companyData.equityTokenName}
+        tokenSymbol={companyData.equityTokenName}
+        campaigningWidget={{
+          amountBacked: "20",
+          investorsBacked: 2,
+        }}
+        publicWidget={{
+          endInDays: 5,
+          investorsBacked: 20,
+          tokensGoal: 30,
+          raisedTokens: 12,
+        }}
       />
 
       <Row>
@@ -453,31 +582,23 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Col>
       </Row>
 
-      {/* <Row>
+      <Row>
         <Col className="mb-4">
-          <Tabs tabs={tabsData} size="large" className="mb-4" />
+          <Tabs tabs={tabsData} hasDivider={false} size="large" className="mb-4" />
           <Panel>
-            <div className={styles.peopleCarouselWrapper}>
-              <Slider {...sliderSettings}>
-                {peopleCarouselData.map(({ image, name, title, bio }) => (
-                  <div key={name}>
-                    <div className={styles.peopleCarouselSlideContent}>
-                      <div className={styles.peopleCarouselImage}>
-                        <ResponsiveImage srcSet={image} alt={name} />
-                      </div>
-                      <div>
-                        <h4 className={styles.peopleCarouselName}>{name}</h4>
-                        <h5 className={styles.peopleCarouselTitle}>{title}</h5>
-                        <p className={styles.peopleCarouselBio}>{bio}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </Slider>
-            </div>
+            <PeopleSwiperWidget {...swiperMultiRowSettings} people={people} />
           </Panel>
         </Col>
-      </Row> */}
+      </Row>
+
+      <Row>
+        <Col className="mb-4">
+          <Tabs tabs={tabsData} hasDivider={false} size="large" className="mb-4" />
+          <Panel>
+            <PeopleSwiperWidget {...swiperSingleRowSettings} people={people} layout="vertical" />
+          </Panel>
+        </Col>
+      </Row>
 
       <Row>
         <Col xs={12} md={8} className="mb-4">

@@ -38,7 +38,11 @@ export const Tabs: React.SFC<IProps> = ({ tabs, theme, size, className, hasDivid
             <div>{text}</div>
           </NavLinkConnected>
         ) : (
-          <div onClick={handleClick} className={cn(styles.tab, size, isActive && "active", hasDivider && "has-divider")} key={index}>
+          <div
+            onClick={handleClick}
+            className={cn(styles.tab, size, isActive && "active", hasDivider && "has-divider")}
+            key={index}
+          >
             {text}
           </div>
         ),

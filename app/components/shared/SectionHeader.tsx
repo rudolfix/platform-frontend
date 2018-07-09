@@ -9,9 +9,11 @@ interface IProps {
 }
 
 export const SectionHeader: React.SFC<IProps> = ({ children, className, hasDecorator }) => (
-  <h3 className={cn(styles.sectionHeader, className, hasDecorator && "has-decorator")}>{children}</h3>
+  <h3 className={cn(styles.sectionHeader, className, hasDecorator && "has-decorator")}>
+    {children}
+  </h3>
 );
 
 SectionHeader.defaultProps = {
   hasDecorator: true,
-}
+};

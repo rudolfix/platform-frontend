@@ -61,7 +61,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
 
     return (
       <>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.companyInformation}
@@ -69,7 +69,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="Company Information"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.etoTerms}
@@ -77,7 +77,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="ETO Terms"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.keyIndividuals}
@@ -85,7 +85,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="Key Individuals"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.legalInformation}
@@ -93,7 +93,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="Legal Information"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.productVision}
@@ -101,7 +101,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="Product Vision"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.etoMedia}

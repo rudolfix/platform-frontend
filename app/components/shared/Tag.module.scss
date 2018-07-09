@@ -3,7 +3,6 @@
 
   $color-tag-base: rgb(196, 213, 236);
   $color-tag-bg: rgba($color-tag-base, .14);
-  $color-tag-bg-hover: rgba($color-tag-base, .36);
 
   color: $neu-black;
   cursor: pointer;
@@ -21,10 +20,6 @@
     margin-left: px-to-rem(10px);
   }
 
-  &:hover {
-    background-color: $color-tag-bg-hover;
-  }
-
   &:global(.ghost-bold) {
     @include media-breakpoint-down(xs) {
       font-size: .6rem;
@@ -38,11 +33,7 @@
     text-transform: uppercase;
     padding-left: px-to-rem(24px);
     padding-right: px-to-rem(24px);
-
-    &,
-    &:hover {
-      background-color: transparent;
-    }
+    background-color: transparent;
   }
 
   &:global(.bold) {
@@ -52,15 +43,7 @@
   &:global(.ghost) {
     border: 1px solid currentColor;
     border-radius: 0;
-
-    &,
-    &:hover {
-      background-color: transparent;
-    }
-
-    &:hover {
-      opacity: .6;
-    }
+    background-color: transparent;
   }
 
   &:global(.small) {
@@ -75,10 +58,6 @@
   &:global(.dark) {
     background-color: $neu-charcoal-grey;
     color: $neu-white-two;
-
-    &:hover {
-      background-color: lighten($neu-charcoal-grey, 8%);
-    }
   }
 
   &:global(.white) {

@@ -9,29 +9,6 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
-const peopleNodes = peopleCarouselData.map(person => {
-  return (
-    <SlidePerson
-      key={person.name}
-      name={person.name}
-      title={person.title}
-      bio={person.bio}
-      srcSet={person.image}
-      layout="vertical" />
-  )
-})
-
-const peopleNodesMultiRow = peopleCarouselData.map(person => {
-  return (
-    <SlidePerson
-      key={person.name}
-      name={person.name}
-      title={person.title}
-      bio={person.bio}
-      srcSet={person.image}
-      layout="horizontal" />
-  )
-})
 interface IProps {
   companyData: any;
   etoData: any;

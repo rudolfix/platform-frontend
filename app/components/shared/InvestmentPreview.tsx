@@ -124,7 +124,7 @@ export const InvestmentPreview: React.SFC<IProps> = ({
                     other={<FormattedMessage id="general.word.days" />}
                   />
                 </div>
-                <PercentageIndicatorBar percent={25} />
+                <PercentageIndicatorBar percent={25} className="my-2" />
                 <strong>
                   <Money currency="eur_token" value="123456000000000000000000" theme="t-green" />
                 </strong>

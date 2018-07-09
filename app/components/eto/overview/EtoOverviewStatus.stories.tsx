@@ -3,15 +3,53 @@ import * as React from "react";
 
 import { EtoOverviewStatus } from "./EtoOverviewStatus";
 
-const tokenIcon = "../../../assets/img/nEUR_icon.svg";
+const props = {
+  tokenName:"token name",
+  tokenSymbol: "token symbol",
+  image: {
+    srcSet: {
+      "1x": ""
+    },
+    alt: "token image alt"
+  },
+  prospectusApproved: true,
+  onchain: true,
+  companyValuation: "company valuation",
+  declaredCap: "declared cap",
+  companyEquity: "company equity",
+  tokenPrice: "token price",
+}
 
-storiesOf("EtoOverviewStatus", module).add("default", () => (
-  <EtoOverviewStatus
-    cap="HARD CAP: 750M EDT"
-    duration="22.02.2018 to 22.5.2019"
-    tokensSupply="50000000"
-    tokenName="ABC"
-    tokenImg={tokenIcon}
-    status="book-building"
-  />
-));
+storiesOf("EtoOverviewStatus", module)
+  .add("status: campaigning", () => (
+    <EtoOverviewStatus
+      {...props}
+      campaigningWidget={{ amountBacked: "amountBacked", investorsBacked: 22 }}
+      status="campaigning"
+    />
+  ))
+  .add("status: pre-eto", () => (
+    <EtoOverviewStatus
+      {...props}
+      status="pre-eto"
+      publicWidget={{
+        endInDays: 5,
+        investorsBacked: 10,
+        tokensGoal: 20,
+        raisedTokens: 1
+      }}
+    />))
+  .add("status: public-eto", () => (
+    <EtoOverviewStatus
+      {...props}
+      status="public-eto"
+      publicWidget={{
+        endInDays: 5,
+        investorsBacked: 10,
+        tokensGoal: 20,
+        raisedTokens: 1
+      }}
+    />))
+  .add("status: in-signing", () => <EtoOverviewStatus {...props} status="in-signing" />)
+  .add("status: claim", () => <EtoOverviewStatus {...props} status="claim" />)
+  .add("status: refund", () => <EtoOverviewStatus {...props} status="refund" />)

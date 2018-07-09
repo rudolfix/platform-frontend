@@ -4,18 +4,19 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import * as styles from "./ProjectStatus.module.scss";
 
-export type TStatus = "book-building" | "whitelisted" | "public" | "in-signing" | "pay-off";
+export type TStatus = "campaigning" | "pre-eto" | "public-eto" | "in-signing" | "claim" | "refund";
 
 export interface IProps {
   status: TStatus;
 }
 
 export const messages = {
-  "book-building": <FormattedMessage id="project-status.book-building" />,
-  whitelisted: <FormattedMessage id="project-status.whitelisted" />,
-  public: <FormattedMessage id="project-status.public" />,
+  "campaigning": <FormattedMessage id="project-status.campaigning" />,
+  "pre-eto": <FormattedMessage id="project-status.pre-eto" />,
+  "public-eto": <FormattedMessage id="project-status.public-eto" />,
   "in-signing": <FormattedMessage id="project-status.in-signing" />,
-  "pay-off": <FormattedMessage id="project-status.pay-off" />,
+  "claim": <FormattedMessage id="project-status.claim" />,
+  "refund": <FormattedMessage id="project-status.refund" />,
 };
 
 export const ProjectStatus: React.SFC<IProps> = ({ status }) => (

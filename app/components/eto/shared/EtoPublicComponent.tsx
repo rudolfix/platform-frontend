@@ -156,7 +156,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.eto-timeline" />
           </SectionHeader>
           <Panel>
@@ -167,7 +167,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               inSigningEndDate={inSigningEndDate}
               etoStartDate={etoStartDate}
               etoEndDate={etoEndDate}
-              status="book-building"
+              status="campaigning"
             />
           </Panel>
         </Col>
@@ -175,7 +175,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
       <Row>
         <Col xs={12} md={8} className="mb-4">
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.about" />
           </SectionHeader>
           <Panel className="mb-4">
@@ -187,7 +187,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <SocialProfilesList profiles={profilesData} />
             </div>
           </Panel>
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.legal-information.title" />
           </SectionHeader>
           <Panel className={styles.legalInformation}>
@@ -305,7 +305,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.token-terms.title" />
           </SectionHeader>
           <Panel className={styles.tokenTerms}>
@@ -481,7 +481,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
       <Row>
         <Col xs={12} md={8} className="mb-4">
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.product-vision.title" />
           </SectionHeader>
           <Panel>
@@ -536,11 +536,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Panel>
         </Col>
         <Col xs={12} md={4}>
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-          <SectionHeader className="mb-4">
+          <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.media-links.title" />
           </SectionHeader>
           <MediaLinksWidget links={mediaLinksData} />

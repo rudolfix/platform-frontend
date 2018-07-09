@@ -20,10 +20,10 @@ interface ICurrencies {
 
 export const CURRENCIES: ICurrencies = {
   eth: "ETH",
-  eur_t: "nEUR"
-}
+  eur_t: "nEUR",
+};
 
-const Page: React.SFC<IProps> = ({companyData, etoData}) => {
+const Page: React.SFC<IProps> = ({ companyData, etoData }) => {
   return (
     <LayoutAuthorized>
       <EtoPublicComponent companyData={companyData} etoData={etoData} />
@@ -31,18 +31,16 @@ const Page: React.SFC<IProps> = ({companyData, etoData}) => {
   );
 };
 
-export const EtoPublicViewComponent: React.SFC<IProps> = props => (
-  <EtoPublicView {...props} />
-);
+export const EtoPublicViewComponent: React.SFC<IProps> = props => <EtoPublicView {...props} />;
 
 export const EtoPublicView = compose<React.SFC>(
   appConnect({
     stateToProps: s => ({
       companyData: s.etoFlow.companyData,
-      etoData: s.etoFlow.etoData
+      etoData: s.etoFlow.etoData,
     }),
   }),
   onEnterAction({
-    actionCreator: dispatch => dispatch(actions.etoFlow.loadDataStart())
+    actionCreator: dispatch => dispatch(actions.etoFlow.loadDataStart()),
   }),
 )(Page);

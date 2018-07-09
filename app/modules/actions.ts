@@ -6,6 +6,7 @@ import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
 import { etoFlowActions } from "./eto-flow/actions";
+import { etoActions } from "./eto/actions";
 import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
@@ -35,6 +36,7 @@ export const actions = {
   wallet: walletActions,
   notifications: notificationActions,
   etoFlow: etoFlowActions,
+  eto: etoActions,
   formSingleFileUpload: formSingleFileUploadActions,
   remoteFile: remoteFileActions,
 };
@@ -58,6 +60,7 @@ export const allActions = {
   ...walletActions,
   ...notificationActions,
   ...etoFlowActions,
+  ...etoActions,
   ...formSingleFileUploadActions,
   ...remoteFileActions,
 };

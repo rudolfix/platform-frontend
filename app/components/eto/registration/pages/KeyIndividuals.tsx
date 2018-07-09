@@ -49,8 +49,14 @@ interface IIndividual {
 interface IKeyIndividualsGroup {
   name: string;
   title: TTranslatedString;
-  blankField: object;
 }
+
+const blankMember = {
+  name: "",
+  role: "",
+  description: "",
+  image: "",
+};
 
 const Individual: React.SFC<IIndividual> = props => {
   const { onAddClick, onRemoveClick, isLast, isFirst, index, groupFieldName } = props;
@@ -62,23 +68,23 @@ const Individual: React.SFC<IIndividual> = props => {
           <ButtonIcon svgIcon={closeIcon} onClick={onRemoveClick} className={styles.removeButton} />
         )}
         <FormField
-          name={`${groupFieldName}.${index}.name`}
+          name={`${groupFieldName}.members.${index}.name`}
           label={<FormattedMessage id="eto.form.key-individuals.name" />}
           placeholder="name"
         />
         <FormField
-          name={`${groupFieldName}.${index}.role`}
+          name={`${groupFieldName}.members.${index}.role`}
           label={<FormattedMessage id="eto.form.key-individuals.role" />}
           placeholder="role"
         />
         <FormTextArea
-          name={`${groupFieldName}.${index}.description`}
+          name={`${groupFieldName}.members.${index}.description`}
           label={<FormattedMessage id="eto.form.key-individuals.short-bio" />}
           placeholder=" "
         />
         <FormSingleFileUpload
           label={<FormattedMessage id="eto.form.key-individuals.image" />}
-          name={`${groupFieldName}.${index}.image`}
+          name={`${groupFieldName}.members.${index}.image`}
           acceptedFiles="image/*"
           fileFormatInformation="*150 x 150px png"
         />
@@ -102,25 +108,19 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
     formik: PropTypes.object,
   };
 
-  private blankNameObject = {
-    members: [],
-  };
-
-  private blankField = { ...this.props.blankField };
-
   componentWillMount(): void {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
     const { name } = this.props;
 
     if (!values[name]) {
-      setFieldValue(name, this.blankNameObject);
+      setFieldValue(`${name}.members.0`, blankMember);
     }
   }
 
   render(): React.ReactNode {
     const { title, name } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const individuals = values[name].members || [];
+    const individuals = values[name] && values[name].members ? values[name].members : [blankMember];
 
     return (
       <FormSection title={title}>
@@ -132,10 +132,10 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
                 <Individual
                   key={index}
                   onRemoveClick={() => {
-                    arrayHelpers.remove(index);
+                    arrayHelpers.remove(index); // TODO this does not work right...
                   }}
                   onAddClick={() => {
-                    setFieldValue(`${name}.members.${index + 1}`, this.blankField);
+                    setFieldValue(`${name}.members.${index + 1}`, blankMember);
                   }}
                   index={index}
                   isFirst={!index}
@@ -160,63 +160,27 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
         name="founders"
-        blankField={{
-          name: "",
-          role: "",
-          description: "",
-          image: "",
-        }}
       />
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.board-members.title" />}
         name="boardMembers"
-        blankField={{
-          name: "",
-          role: "",
-          description: "",
-          image: "",
-        }}
       />
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.notable-investors.title" />}
         name="notableInvestors"
-        blankField={{
-          name: "",
-          role: "",
-          description: "",
-          image: "",
-        }}
       />
-      {/* <KeyIndividualsGroup
+      <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.key-customers.title" />}
         name="keyCustomers"
-        blankField={{
-          name: "",
-          role: "",
-          description: "",
-          image: "",
-        }}
-      /> */}
+      />
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.partners.title" />}
         name="partners"
-        blankField={{
-          name: "",
-          role: "",
-          description: "",
-          image: "",
-        }}
       />
-      {/* <KeyIndividualsGroup
+      <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
         name="keyAlliances"
-        blankField={{
-          name: "",
-          role: "",
-          description: "",
-          image: "",
-        }}
-      /> */}
+      />
       <Col>
         <Row className="justify-content-end">
           <Button

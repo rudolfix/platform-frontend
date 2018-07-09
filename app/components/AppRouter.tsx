@@ -12,7 +12,8 @@ import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 
 import { appRoutes } from "./appRoutes";
-import { emailVerify } from "./emailVerify";
+import { EmailVerify } from "./emailVerify";
+import { EtoPreview } from "./eto/EtoPreview";
 import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoRegister } from "./eto/registration/Start";
 import { Landing } from "./landing/Landing";
@@ -74,8 +75,8 @@ export const AppRouter: React.SFC = () => (
     />
     <OnlyAuthorizedRoute
       path={appRoutes.verify}
-      investorComponent={emailVerify}
-      issuerComponent={emailVerify}
+      investorComponent={EmailVerify}
+      issuerComponent={EmailVerify}
     />
     <OnlyAuthorizedRoute
       path={appRoutes.settings}
@@ -90,6 +91,11 @@ export const AppRouter: React.SFC = () => (
       exact
     />
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} issuerComponent={Kyc} />
+    <OnlyAuthorizedRoute
+      path={appRoutes.etoPreview}
+      investorComponent={EtoPreview}
+      issuerComponent={EtoPreview}
+    />
 
     <Route path={appRoutes.demo} component={Demo} />
 

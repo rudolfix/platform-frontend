@@ -77,13 +77,13 @@ export const EtoKeyIndividualsType = YupTS.object({
       }),
     ),
   }),
-  // keyCustomers: YupTS.array(
-  //   YupTS.object({
-  //     name: YupTS.string(),
-  //     role: YupTS.string(),
-  //     description: YupTS.string(),
-  //   }),
-  // ),
+  keyCustomers: YupTS.array(
+    YupTS.object({
+      name: YupTS.string(),
+      role: YupTS.string(),
+      description: YupTS.string(),
+    }),
+  ),
   partners: YupTS.object({
     description: YupTS.string(),
     members: YupTS.array(
@@ -94,13 +94,13 @@ export const EtoKeyIndividualsType = YupTS.object({
       }),
     ),
   }),
-  // keyAlliances: YupTS.array(
-  //   YupTS.object({
-  //     name: YupTS.string(),
-  //     role: YupTS.string(),
-  //     description: YupTS.string(),
-  //   }),
-  // ),
+  keyAlliances: YupTS.array(
+    YupTS.object({
+      name: YupTS.string(),
+      role: YupTS.string(),
+      description: YupTS.string(),
+    }),
+  ),
 });
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
@@ -121,11 +121,30 @@ export const EtoLegalInformationType = YupTS.object({
 });
 type TEtoLegalData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
+export const EtoMediaType = YupTS.object({
+  socialChannels: YupTS.array(
+    YupTS.object({
+      type: YupTS.string().optional(),
+      url: YupTS.string().optional(),
+    }),
+  ).optional(),
+  companyNews: YupTS.array(
+    YupTS.object({
+      title: YupTS.string().optional(),
+      url: YupTS.string().optional(),
+    }),
+  ).optional(),
+  disableTwitterFeed: YupTS.boolean().optional(),
+});
+
+type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
+
 export type TCompanyEtoData =
   | TEtoTeamData
   | TEtoLegalData
   | TEtoProductVision
-  | TEtoKeyIndividualsType;
+  | TEtoKeyIndividualsType
+  | TEtoMediaData;
 
 /** ETO SPEC RELATED INTERFACES
  *  only deals with "/etos/me"

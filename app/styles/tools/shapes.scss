@@ -8,10 +8,11 @@
 @mixin circle ($d: false) {
   @if $d {
     @include rect($d);
+
+    flex-shrink: 0;
   }
 
   border-radius: 50%;
-  flex-shrink: 0;
   overflow: hidden;
 
   img {

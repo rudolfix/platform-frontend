@@ -25,6 +25,7 @@ interface IStateProps {
   legalInformationProgress: number;
   etoKeyIndividualsProgress: number;
   etoTermsProgress: number;
+  etoMediaProgress: number;
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;
@@ -53,6 +54,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
       loadingData,
       etoKeyIndividualsProgress,
       legalInformationProgress,
+      etoMediaProgress,
       kycStatus,
       isEmailVerified,
     } = this.props;
@@ -105,7 +107,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.etoMedia}
-            progress={shouldEtoDataLoad ? productVisionProgress : 0}
+            progress={shouldEtoDataLoad ? etoMediaProgress : 0}
             name="Media"
           />
         </Col>

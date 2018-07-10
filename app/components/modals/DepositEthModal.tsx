@@ -6,7 +6,6 @@ import { actions } from "../../modules/actions";
 import { selectEthereumAddress } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { AccountAddress } from "../shared/AccountAddress";
-import { Proportion } from "../shared/Proportion";
 import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as styles from "./DepositEthModal.module.scss";
@@ -25,9 +24,7 @@ const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props 
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>
         <div className={styles.contentWrapper}>
-          <div className={styles.qrCodeWrapper}>
-            <Proportion />
-          </div>
+          <div className={styles.qrCodeWrapper} />
           <h2 className={styles.title}>
             <FormattedMessage id="modal.deposit-eth.title" />
           </h2>

@@ -1,0 +1,27 @@
+.account-address {
+  display: inline-flex;
+}
+
+.avatar {
+  @include circle(32px);
+
+  margin-right: px-to-rem(12px);
+}
+
+.address {
+  @include font-label;
+
+  color: $color-graphite-light;
+  text-transform: none;
+}
+
+.transaction-history {
+  @include font-label-small;
+
+  color: $color-silver;
+  text-transform: none;
+}
+
+.address-wrapper {
+  margin-right: px-to-rem(20px);
+}

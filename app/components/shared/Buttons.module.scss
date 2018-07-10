@@ -116,16 +116,16 @@ $_active-color: lighten($_hover-color, 20%);
       color: $neu-slate-grey;
     }
 
-    // elements
+    elements
     &.icon-before {
       :global(.inline-icon) {
-        margin-right: px-to-rem(10px);
+        margin-right: auto;
       }
     }
 
     &.icon-after {
       :global(.inline-icon) {
-        margin-left: px-to-rem(10px);
+        margin-left: auto;
       }
     }
   }
@@ -141,4 +141,10 @@ $_active-color: lighten($_hover-color, 20%);
   cursor: pointer;
   width: 20px;
   height: 20px;
+
+  &:hover {
+    :global(.inline-icon) {
+      color: $color-brand;
+    }
+  }
 }

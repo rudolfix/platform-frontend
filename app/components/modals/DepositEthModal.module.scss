@@ -1,0 +1,30 @@
+.qr-code-wrapper {
+  @include rect(145px);
+
+  background-color: $color-silver;
+  margin-bottom: $spacing-vertical-lg-2;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  @include font-label;
+
+  text-align: center;
+}
+
+.description {
+  @include font-label;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: px-to-rem(24px);
+  max-width: px-to-rem(330px);
+  text-align: center;
+  text-transform: none;
+}
+
+.content-wrapper {
+  padding-bottom: $spacing-vertical-lg-3;
+  text-align: center;
+}

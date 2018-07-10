@@ -22,7 +22,7 @@ export const Panel: React.SFC<IPanelProps & CommonHtmlProps> = ({
   const hasHeader = !!(headerText || rightComponent || icon);
 
   return (
-    <div {...props} className={cn(styles.panel, className)}>
+    <div {...props} className={cn(styles.panel, className, hasHeader && "has-header")}>
       {hasHeader && (
         <header className={styles.header}>
           {headerText && <div className={styles.left}>{headerText}</div>}

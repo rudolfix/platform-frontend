@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
 
-import { InlineIcon } from "../shared/InlineIcon";
+import { InlineIcon } from "./InlineIcon";
 import { ResponsiveImage } from "./ResponsiveImage";
 import { UploadedFiles } from "./UploadedFiles";
 

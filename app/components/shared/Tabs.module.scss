@@ -3,6 +3,7 @@
   text-transform: uppercase;
   align-items: baseline;
   flex-wrap: wrap;
+  color: $color-black;
 }
 
 .tab {
@@ -26,11 +27,8 @@
   &:global(.large) {
     @include font-headline;
 
-    &:not(:global(.active)) {
-      @include font-headline-small;
-
-      font-weight: $font-weight-light;
-    }
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   // themes
@@ -58,7 +56,15 @@
     }
   }
 
-  + .tab {
+  &:first-of-type {
+    @include responsive-size(margin-left, 20px, 40px);
+  }
+
+  & + .tab {
+    @include responsive-size(margin-left, 20px, 60px);
+  }
+
+  &:global(.has-divider) + .tab {
     margin-left: px-to-rem(21px);
     position: relative;
 

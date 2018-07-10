@@ -4,9 +4,9 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
-import { FormField } from "../../../components/shared/forms/forms";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
+import { FormField } from "../../shared/forms/forms";
 
 import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../modules/actions";

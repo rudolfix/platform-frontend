@@ -11,7 +11,7 @@ import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { mapLedgerErrorToErrorMessage } from "./errors";
 
-export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
+export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/0'/0", "44'/60'/0'/0/0"]; // TODO this should be taken from config
 
 export const ledgerWizardFlows = {
   tryEstablishingConnectionWithLedger: injectableFn(

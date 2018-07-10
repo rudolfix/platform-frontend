@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { Proportion } from "./Proportion";
+
 import * as styles from "./ResponsiveImage.module.scss";
 
 export interface ISrcSet {

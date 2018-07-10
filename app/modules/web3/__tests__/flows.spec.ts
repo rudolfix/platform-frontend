@@ -4,8 +4,8 @@ import { spy } from "sinon";
 import { createMock } from "../../../../test/testUtils";
 import { NotificationCenter } from "../../../lib/dependencies/NotificationCenter";
 import { IAppState } from "../../../store";
+import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { web3Flows } from "../flows";
-import { dummyIntl } from "./../../../utils/injectIntlHelpers.fixtures";
 import {
   getDummyBrowserWalletMetadata,
   getDummyLedgerWalletMetadata,

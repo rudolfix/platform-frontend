@@ -189,6 +189,7 @@ export const VerifyEmailWidgetComponent: React.SFC<
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
+      data-test-id="settings.verify-email-widget"
     >
       {!isThereUnverifiedEmail &&
         isUserEmailVerified && (

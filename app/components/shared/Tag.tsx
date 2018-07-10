@@ -1,18 +1,19 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Col, Row } from "reactstrap";
+
+import { TTranslatedString } from "../../types";
 
 import { InlineIcon } from "./InlineIcon";
 
 import * as styles from "./Tag.module.scss";
 
 type TTheme = "dark" | "green" | "white" | "default";
-type TLayout = "ghost" | "ghost-bold";
+type TLayout = "ghost" | "ghost-bold" | "bold";
 type TSize = "small";
 
 export interface ITag {
-  text: string;
+  text: TTranslatedString;
   to?: string;
   layout?: TLayout;
   size?: TSize;

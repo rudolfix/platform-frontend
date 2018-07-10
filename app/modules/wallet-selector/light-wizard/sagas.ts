@@ -2,6 +2,8 @@ import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
+import { TGlobalDependencies } from "../../../di/setupBindings";
+import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
 import {
   ILightWalletMetadata,
   ILightWalletRetrieveMetadata,
@@ -12,11 +14,20 @@ import {
   LightWalletUtil,
   LightWalletWrongPassword,
 } from "../../../lib/web3/LightWallet";
+import { SignerError } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { loadUser, obtainJWT, updateUser, updateUserPromise } from "../../auth/sagas";
+import {
+  createUser,
+  loadUser,
+  loadUserPromise,
+  obtainJWT,
+  signInUser,
+  updateUser,
+  updateUserPromise,
+} from "../../auth/sagas";
 import { displayInfoModalSaga } from "../../genericModal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import {
@@ -26,7 +37,6 @@ import {
 } from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
-import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
 
@@ -117,7 +127,64 @@ export async function setupLightWalletPromise(
   }
 }
 
-export function* lightWalletRecoverWatch(_: TGlobalDependencies, action: TAction): Iterator<any> {
+export function* lightWalletRegisterWatch(
+  { intlWrapper }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
+  try {
+    if (action.type !== "LIGHT_WALLET_REGISTER") {
+      return;
+    }
+    const { password, email } = action.payload;
+    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
+
+    if (!isEmailAvailable) {
+      throw new EmailAlreadyExists();
+    }
+
+    yield neuCall(setupLightWalletPromise, email, password);
+    yield put(actions.walletSelector.messageSigning());
+    yield neuCall(signInUser);
+  } catch (e) {
+    yield effects.put(actions.walletSelector.reset());
+    if (e instanceof EmailAlreadyExists)
+      yield put(
+        actions.genericModal.showErrorModal(
+          "Error",
+          intlWrapper.intl.formatIntlMessage(
+            "modules.auth.sagas.sign-in-user.email-already-exists",
+          ),
+        ),
+      );
+    else {
+      if (e instanceof SignerError) {
+        yield put(
+          actions.genericModal.showErrorModal(
+            "Error",
+            intlWrapper.intl.formatIntlMessage(
+              "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+            ),
+          ),
+        );
+      } else
+        yield put(
+          actions.genericModal.showErrorModal("Error", mapLightWalletErrorToErrorMessage(e)),
+        );
+    }
+  }
+}
+async function checkEmailPromise(
+  { apiUserService }: TGlobalDependencies,
+  email: string,
+): Promise<boolean> {
+  const emailStatus = await apiUserService.emailStatus(email);
+  return emailStatus.isAvailable;
+}
+
+export function* lightWalletRecoverWatch(
+  { intlWrapper, logger }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
   try {
     const userType = yield select((state: IAppState) => selectUrlUserType(state.router));
 
@@ -125,9 +192,26 @@ export function* lightWalletRecoverWatch(_: TGlobalDependencies, action: TAction
       return;
     }
     const { password, email, seed } = action.payload;
-    const walletMetadata = yield neuCall(setupLightWalletPromise, email, password, seed, userType);
+    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
+    if (!isEmailAvailable) {
+      throw new EmailAlreadyExists();
+    }
 
+    const walletMetadata = yield neuCall(setupLightWalletPromise, email, password, seed, userType);
+    yield put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT, [CHANGE_EMAIL_PERMISSION]);
+
+    try {
+      yield neuCall(loadUserPromise);
+    } catch (e) {
+      if (e instanceof UserNotExisting)
+        yield effects.call(createUser, {
+          newEmail: walletMetadata.email,
+          salt: walletMetadata.salt,
+          backupCodesVerified: false,
+          type: userType,
+        });
+    }
 
     yield effects.call(updateUser, {
       newEmail: email,
@@ -138,9 +222,28 @@ export function* lightWalletRecoverWatch(_: TGlobalDependencies, action: TAction
 
     yield put(actions.routing.goToSuccessfulRecovery());
   } catch (e) {
-    yield put(
-      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
-    );
+    yield effects.put(actions.walletSelector.reset());
+    if (e instanceof EmailAlreadyExists)
+      yield put(
+        actions.genericModal.showErrorModal(
+          "Error",
+          intlWrapper.intl.formatIntlMessage(
+            "modules.auth.sagas.sign-in-user.email-already-exists",
+          ),
+        ),
+      );
+    else {
+      logger.error(mapLightWalletErrorToErrorMessage(e));
+
+      yield put(
+        actions.genericModal.showErrorModal(
+          "Error",
+          intlWrapper.intl.formatIntlMessage(
+            "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+          ),
+        ),
+      );
+    }
   }
 }
 
@@ -221,8 +324,9 @@ export function* lightWalletLoginWatch(
     }
 
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.walletSelector.connected());
+    yield neuCall(signInUser);
   } catch (e) {
+    yield effects.put(actions.walletSelector.reset());
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
     );
@@ -231,6 +335,7 @@ export function* lightWalletLoginWatch(
 
 export function* lightWalletSagas(): Iterator<any> {
   yield fork(neuTakeEvery, "LIGHT_WALLET_LOGIN", lightWalletLoginWatch);
+  yield fork(neuTakeEvery, "LIGHT_WALLET_REGISTER", lightWalletRegisterWatch);
   yield fork(neuTakeEvery, "LIGHT_WALLET_BACKUP", lightWalletBackupWatch);
   yield fork(neuTakeEvery, "LIGHT_WALLET_RECOVER", lightWalletRecoverWatch);
   yield fork(neuTakeEvery, "WEB3_FETCH_SEED", loadSeedFromWalletWatch);

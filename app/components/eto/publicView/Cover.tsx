@@ -1,46 +1,54 @@
 import * as React from "react";
 
-import { Link } from "react-router-dom";
+import { TTranslatedString } from "../../../types";
+
 import { IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
 import { Tag } from "../../shared/Tag";
+
 import * as styles from "./Cover.module.scss";
 
 interface IProps {
-  coverImage: IResponsiveImage;
-  company: {
-    name: string | React.ReactNode;
-    shortDescription: string | React.ReactNode;
-    website: {
-      title: string | React.ReactNode;
-      url: string;
-    };
-    logo: IResponsiveImage;
-    tags: string[];
-  };
+  companyBanner: IResponsiveImage;
+  companyName: TTranslatedString;
+  companyOneliner: TTranslatedString;
+  companyLogo: IResponsiveImage;
+  tags: TTranslatedString[];
 }
 
-export const Cover: React.SFC<IProps> = ({ coverImage, company }) => {
+export const Cover: React.SFC<IProps> = ({
+  companyBanner,
+  companyName,
+  companyOneliner,
+  companyLogo,
+  tags,
+}) => {
+  const initialTags = tags || [];
   return (
     <div className={styles.cover}>
-      <ResponsiveImage width={1230} height={380} srcSet={coverImage.srcSet} alt={coverImage.alt} />
+      <ResponsiveImage
+        width={1250}
+        height={400}
+        srcSet={companyLogo.srcSet}
+        alt={companyBanner.alt}
+      />
 
       <div className={styles.companyDetails}>
         <div className={styles.identity}>
           <div className={styles.logo}>
-            <ResponsiveImage srcSet={company.logo.srcSet} alt={company.logo.alt} theme="light" />
+            <ResponsiveImage srcSet={companyLogo.srcSet} alt={companyLogo.alt} theme="light" />
           </div>
           <div className={styles.details}>
-            <h2 className={styles.name}>{company.name}</h2>
-            <h3 className={styles.shortDescription}>{company.shortDescription}</h3>
-            <Link className={styles.websiteLink} target="_blank" to={company.website.url}>
-              {company.website.title}
-            </Link>
+            <h2 className={styles.name}>{companyName}</h2>
+            <h3 className={styles.shortDescription}>{companyOneliner}</h3>
           </div>
         </div>
         <div className={styles.tags}>
-          {company.tags.map(tag => <Tag text={tag} layout="ghost-bold" theme="white" key={tag} />)}
+          {initialTags.map((tag, index) => (
+            <Tag text={tag} layout="bold" theme="dark" key={index} />
+          ))}
         </div>
       </div>
+      {/* TODO: Add social media icons */}
     </div>
   );
 };

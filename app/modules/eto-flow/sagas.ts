@@ -6,11 +6,11 @@ import {
   TCompanyEtoData,
   TEtoSpecsData,
   TPartialCompanyEtoData,
+  TPartialEtoSpecData,
 } from "../../lib/api/EtoApi.interfaces";
+import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { neuTakeEvery } from "../sagas";
-import { TPartialEtoSpecData } from "./../../lib/api/EtoApi.interfaces";
-import { IAppState } from "./../../store";
 
 export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
   try {

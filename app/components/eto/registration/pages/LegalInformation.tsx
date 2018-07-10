@@ -10,13 +10,12 @@ import {
 } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
+import { TTranslatedString } from "../../../../types";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { Accordion, AccordionElement } from "../../../shared/Accordion";
 import { Button } from "../../../shared/Buttons";
 import { FormFieldDate } from "../../../shared/forms/formField/FormFieldDate";
 import { FormSelectField } from "../../../shared/forms/formField/FormSelectField";
 import { FormField } from "../../../shared/forms/forms";
-import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -25,6 +24,23 @@ interface IStateProps {
   savingData: boolean;
   stateValues: TPartialCompanyEtoData;
 }
+
+interface IRounds {
+  [key: string]: TTranslatedString;
+}
+
+export const FUNDING_ROUNDS: IRounds = {
+  NONE_KEY: <FormattedMessage id="form.select.please-select" />,
+  pre_seed: "pre seed",
+  seed: "seed",
+  a_round: "a round",
+  b_round: "b round",
+  c_round: "c round",
+  d_round: "d round",
+  e_round: "e round",
+  pre_ipo: "pre ipo",
+  public: "public",
+};
 
 interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
@@ -55,22 +71,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           name="numberOfEmployees"
         />
         <FormField label="Number of founders" type="number" name="numberOfFounders" />
-        <FormSelectField
-          label="Last Funding Round*"
-          values={{
-            NONE_KEY: <FormattedMessage id="form.select.please-select" />,
-            pre_seed: "pre seed",
-            seed: "seed",
-            a_round: "a round",
-            b_round: "b round",
-            c_round: "c round",
-            d_round: "d round",
-            e_round: "e round",
-            pre_ipo: "pre ipo",
-            public: "public",
-          }}
-          name="companyStage"
-        />
+        <FormSelectField label="Last Funding Round*" values={FUNDING_ROUNDS} name="companyStage" />
         <FormField label="Last Funding Amount" type="number" name="lastFundingSizeEur" />
         <FormField label="Number of existing shares" type="number" name="companyShares" />
         {/* TODO: Add pie chart */}

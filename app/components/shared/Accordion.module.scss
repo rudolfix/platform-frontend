@@ -24,6 +24,8 @@
 }
 
 .title {
+  @include font-button-default;
+
   align-items: center;
   cursor: pointer;
   display: flex;

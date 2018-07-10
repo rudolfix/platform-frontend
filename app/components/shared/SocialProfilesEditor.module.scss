@@ -1,6 +1,7 @@
 .social-profiles-editor {
   .tabs {
     display: flex;
+    justify-content: center;
     margin-bottom: px-to-rem(16px);
   }
 
@@ -37,24 +38,22 @@
 }
 
 .tab {
-  height: px-to-rem(30px);
-  width: px-to-rem(30px);
+  @include rect(30px);
+
   color: $neu-cloudy-blue;
   cursor: pointer;
+  margin-right: px-to-rem(20px);
+  transition: $ease-out-expo 300ms color;
 
   &:global(.is-selected) {
-    color: $neu-charcoal-grey;
+    color: $color-blue-dark;
 
     &:hover {
-      color: lighten($neu-charcoal-grey, 10%);
+      color: lighten($color-blue-dark, 10%);
     }
   }
 
   &:hover {
-    color: lighten($neu-cloudy-blue, 5%);
-  }
-
-  + .tab {
-    margin-left: px-to-rem(10px);
+    color: lighten($color-blue-dark, 5%);
   }
 }

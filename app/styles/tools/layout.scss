@@ -33,10 +33,10 @@
   @include media-breakpoint-up(md) {
     margin-left: -$authorized-layout-horizontal-padding-lg;
     margin-right: -$authorized-layout-horizontal-padding-lg;
-    width: calc(100% + 2 * $authorized-layout-horizontal-padding-lg);
+    width: calc(100% + 2 * #{$authorized-layout-horizontal-padding-lg});
   }
 
   margin-left: -$authorized-layout-horizontal-padding-sm;
   margin-right: -$authorized-layout-horizontal-padding-sm;
-  width: calc(100% + 2 * $authorized-layout-horizontal-padding-sm);
+  width: calc(100% + 2 * #{$authorized-layout-horizontal-padding-sm});
 }

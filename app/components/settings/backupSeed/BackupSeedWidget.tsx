@@ -39,6 +39,7 @@ export const BackupSeedWidgetComponent: React.SFC<
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
+      data-test-id="settings.backup-seed-widget"
     >
       {backupCodesVerified ? (
         <div

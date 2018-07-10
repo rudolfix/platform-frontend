@@ -18,7 +18,7 @@ interface IFieldGroup {
   prefix?: string;
   suffix?: string;
   addonStyle?: string;
-  maxlength?: string;
+  maxLength?: string;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 

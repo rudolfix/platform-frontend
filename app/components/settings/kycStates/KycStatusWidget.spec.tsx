@@ -16,6 +16,7 @@ describe("<KycStatusWidgetComponent />", () => {
         requestStatus="Accepted"
         isUserEmailVerified={true}
         isLoading={false}
+        userType="investor"
       />,
     );
 
@@ -32,6 +33,7 @@ describe("<KycStatusWidgetComponent />", () => {
         requestStatus="Draft"
         isUserEmailVerified={true}
         isLoading={false}
+        userType="investor"
       />,
     );
 
@@ -47,6 +49,7 @@ describe("<KycStatusWidgetComponent />", () => {
         onGoToWallet={() => {}}
         isUserEmailVerified={true}
         isLoading={true}
+        userType="investor"
       />,
     );
     expect(component.find(LoadingIndicator)).to.have.length(1);

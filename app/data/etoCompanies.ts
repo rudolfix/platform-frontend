@@ -488,6 +488,7 @@ if (process.env.NF_FOUNDERS_BANK_VISIBLE) {
         height: 35,
         width: 100,
       },
+      to: "https://www.foundersbank.org",
     },
   };
 }

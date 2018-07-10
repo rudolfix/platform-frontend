@@ -35,7 +35,8 @@ $_active-color: lighten($_hover-color, 20%);
 
   &:disabled,
   &:global(.primary):disabled, // sass-lint:disable-line force-pseudo-nesting
-  &:global(.secondary):disabled { // sass-lint:disable-line force-pseudo-nesting
+  &:global(.secondary):disabled, // sass-lint:disable-line force-pseudo-nesting
+  &:global(.simple):disabled { // sass-lint:disable-line force-pseudo-nesting
     color: $neu-pale-grey;
     cursor: not-allowed;
 
@@ -89,6 +90,17 @@ $_active-color: lighten($_hover-color, 20%);
     }
   }
 
+  &:global(.simple) {
+    @include font-label;
+
+    font-weight: normal;
+
+    .content {
+      padding: 0;
+      justify-content: flex-end;
+    }
+  }
+
   &:global(.wide) {
     min-width: px-to-rem(220px);
   }
@@ -101,6 +113,10 @@ $_active-color: lighten($_hover-color, 20%);
 
     &.dark {
       color: $color-black;
+    }
+
+    &.graphite {
+      color: $color-graphite-light;
     }
 
     &.brand {
@@ -119,13 +135,13 @@ $_active-color: lighten($_hover-color, 20%);
     elements
     &.icon-before {
       :global(.inline-icon) {
-        margin-right: auto;
+        margin-right: 10px;
       }
     }
 
     &.icon-after {
       :global(.inline-icon) {
-        margin-left: auto;
+        margin-left: 10px;
       }
     }
   }

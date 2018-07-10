@@ -4,7 +4,7 @@ import { makeTid } from "../../utils/tidUtils";
 import { Money, TCurrency } from "./Money";
 import * as styles from "./MoneySuiteWidget.module.scss";
 
-interface IMoneySuiteWidgetProps {
+export interface IMoneySuiteWidgetProps {
   icon: string;
   currency: TCurrency;
   currencyTotal: TCurrency;

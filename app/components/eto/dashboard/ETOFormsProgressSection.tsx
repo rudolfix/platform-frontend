@@ -111,6 +111,14 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="Media"
           />
         </Col>
+        <Col lg={4} xs={12} md={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.etoRiskAssesment}
+            progress={shouldEtoDataLoad ? etoMediaProgress : 0 /* add progress */}
+            name="Risk Assesment"
+          />
+        </Col>
         {/* TODO: ADD TRANSLATIONS */}
       </>
     );

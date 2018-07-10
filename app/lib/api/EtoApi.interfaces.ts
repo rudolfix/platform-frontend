@@ -46,6 +46,19 @@ export const EtoProductVisionType = YupTS.object({
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
 
+export const EtoRiskAssesmentType = YupTS.object({
+  riskRegulatedBusiness: YupTS.boolean(),
+  riskThirdParty: YupTS.boolean(),
+  riskLoansExist: YupTS.boolean(),
+  riskLiquidityDescription: YupTS.string().optional(),
+  riskThirdPartyDescription: YupTS.string().optional(),
+  riskThirdPartySharesFinancing: YupTS.string().optional(),
+  riskChangingAgreementDescription: YupTS.string().optional(),
+  riskMaxDescription: YupTS.string().optional(),
+});
+
+type TEtoRiskAssesment = YupTS.TypeOf<typeof EtoRiskAssesmentType>;
+
 export const EtoKeyIndividualsType = YupTS.object({
   founders: YupTS.object({
     description: YupTS.string(),
@@ -143,6 +156,7 @@ export type TCompanyEtoData =
   | TEtoTeamData
   | TEtoLegalData
   | TEtoProductVision
+  | TEtoRiskAssesment
   | TEtoKeyIndividualsType
   | TEtoMediaData;
 

@@ -11,15 +11,6 @@ import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as styles from "./DepositEthModal.module.scss";
 
-const mockedAvatar = {
-  srcSet: {
-    "1x": "",
-    "2x": "",
-    "3x": "",
-  },
-  alt: "",
-};
-
 interface IStateProps {
   isOpen: boolean;
   address: string;
@@ -43,7 +34,7 @@ const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props 
           <p className={styles.description}>
             <FormattedMessage id="modal.deposit-eth.description" />
           </p>
-          <AccountAddress avatar={mockedAvatar} address={props.address} />
+          <AccountAddress address={props.address} />
         </div>
       </ModalComponentBody>
     </Modal>

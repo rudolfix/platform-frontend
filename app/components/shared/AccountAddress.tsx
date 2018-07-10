@@ -1,18 +1,17 @@
 import * as cn from "classnames";
 import * as React from 'react';
+import Blockies from 'react-blockies';
 import { toast } from 'react-toastify';
 
 import { FormattedMessage } from 'react-intl-phraseapp';
 import { CommonHtmlProps } from '../../types';
 import { ButtonIcon } from './Buttons';
-import { IResponsiveImage, ResponsiveImage } from './ResponsiveImage';
 
 import * as clipboardIcon from "../../assets/img/inline_icons/icon-clipboard.svg";
 import * as styles from './AccountAddress.module.scss';
 
 export interface IAccountAddressProps {
   address: string;
-  avatar: IResponsiveImage;
 }
 
 export class AccountAddress extends React.Component<IAccountAddressProps & CommonHtmlProps> {
@@ -27,15 +26,12 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
   }
 
   render ():React.ReactNode {
-    const { avatar, address, className } = this.props;
+    const { address, className } = this.props;
 
     return (
       <div className={cn(styles.accountAddress, className)}>
         <div className={styles.avatar}>
-          <ResponsiveImage
-            srcSet={avatar.srcSet}
-            alt={avatar.alt}
-          />
+          <Blockies seed={address} />
         </div>
 
         <div className={styles.addressWrapper}>

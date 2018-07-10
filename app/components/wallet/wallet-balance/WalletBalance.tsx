@@ -6,12 +6,12 @@ import { appConnect } from "../../../store";
 import { AccountAddress, IAccountAddressProps } from "../../shared/AccountAddress";
 import { Button } from "../../shared/Buttons";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
-import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { IPanelProps, Panel } from "../../shared/Panel";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
 import { actions } from "../../../modules/actions";
+import { AccountBalance } from "../../shared/AccountBalance";
 import * as styles from "./WalletBalance.module.scss";
 
 export interface IWalletValues {
@@ -45,7 +45,6 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
   isLoading,
   headerText,
   address,
-  avatar,
   data,
   isIcbmLocked,
   depositEth,
@@ -56,40 +55,20 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
       <h4 className={styles.title}>
         <FormattedMessage id="shared-component.wallet-balance.title.account-address" />
       </h4>
-      <AccountAddress avatar={avatar} address={address} />
+      <AccountAddress address={address} />
 
-      <div className={styles.accountBalanceWrapper}>
-        <div>
-          <h4 className={styles.title}>
-            <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
-          </h4>
-          <MoneySuiteWidget
-            icon={ethIcon}
-            currency="eth"
-            currencyTotal="eur"
-            largeNumber={data!.ethAmount}
-            value={data!.ethEuroAmount}
-          />
-        </div>
-        <div className={styles.buttonsWrapper}>
-          <Button
-            layout="secondary"
-            iconPosition="icon-after"
-            svgIcon={arrowRightIcon}
-            onClick={withdrawEth}
-          >
-            <FormattedMessage id="shared-component.wallet-balance.withdraw" />
-          </Button>
-          <Button
-            layout="secondary"
-            iconPosition="icon-after"
-            svgIcon={arrowRightIcon}
-            onClick={depositEth}
-          >
-            <FormattedMessage id="shared-component.wallet-balance.deposit" />
-          </Button>
-        </div>
-      </div>
+      <h4 className={styles.title}>
+        <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
+      </h4>
+      <AccountBalance
+        icon={ethIcon}
+        currency="eth"
+        currencyTotal="eur"
+        largeNumber={data!.ethAmount}
+        value={data!.ethEuroAmount}
+        onWithdrawClick={withdrawEth}
+        onDepositClick={depositEth}
+      />
     </div>
   );
 
@@ -99,9 +78,10 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
         ICBM investors please upgrade your wallet to continue using the platform{" "}
       </p>
       <Button
-        layout="secondary"
+        layout="simple"
         iconPosition="icon-after"
         svgIcon={arrowRightIcon}
+        theme="graphite"
         onClick={() => {}}
       >
         Upgrade wallet

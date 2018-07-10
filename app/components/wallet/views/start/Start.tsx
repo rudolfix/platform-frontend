@@ -32,16 +32,10 @@ interface IDispatchProps {
 
 type TProps = IStateProps & IDispatchProps;
 
-const mockAvatar = {
-  srcSet: { "1x": "" },
-  alt: "",
-};
-
 export const WalletStartComponent: React.SFC<TProps> = props => (
   <Row className="row-gutter-top">
     <Col lg={6} xs={12}>
       <WalletBalance
-        avatar={mockAvatar}
         isLocked={false}
         headerText={<FormattedMessage id="components.wallet.start.my-wallet" />}
         isLoading={props.isLoading}
@@ -52,7 +46,6 @@ export const WalletStartComponent: React.SFC<TProps> = props => (
     {!props.isLoading && (
       <Col lg={6} xs={12}>
         <WalletBalance
-          avatar={mockAvatar}
           isLocked={true}
           headerText={<FormattedMessage id="components.wallet.start.icbm-wallet" />}
           isLoading={props.isLoading}

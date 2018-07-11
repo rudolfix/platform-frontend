@@ -1,4 +1,3 @@
-import { get } from "lodash";
 import { tid } from "../../../../../test/testUtils";
 import {
   assertErrorModal,
@@ -6,6 +5,8 @@ import {
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
+import { assertUserInDashboard } from "../../../../e2e-test-utils/index";
+import { assertLatestEmailSent } from "./../../../../e2e-test-utils/index";
 
 describe("Wallet recover", () => {
   const words = [
@@ -38,28 +39,24 @@ describe("Wallet recover", () => {
   const expectedGeneratedAddress = "0x429123b08df32b0006fd1f3b0ef893a8993802f3";
 
   it("should recover wallet from saved phrases", () => {
+    const email = "john-smith@example.com";
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+
     cy.visit("/recover/seed");
 
     typeLightwalletRecoveryPhrase(words);
 
     cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
 
-    cy.get(tid("wallet-selector-register-email")).type("john-smith@example.com");
+    cy.get(tid("wallet-selector-register-email")).type(email);
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");
     cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
     cy.wait(2000);
 
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-      const email = get(r, "body[0].personalizations[0].to[0]") as string | undefined;
-      const loginLink = get(r, "body[0].personalizations[0].substitutions.-loginLink-") as
-        | string
-        | undefined;
-
-      expect(email).to.be.eq(email);
-      expect(loginLink).to.contain("salt");
-    });
+    cy.wait(5000);
+    assertLatestEmailSent(email);
 
     cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
 
@@ -115,5 +112,101 @@ describe("Wallet recover", () => {
 
     cy.wait(2000);
     assertErrorModal();
+  });
+
+  it("should recover user with same email if its the same user", () => {
+    //@see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
+    const words = [
+      "juice",
+      "chest",
+      "position",
+      "grace",
+      "weather",
+      "matter",
+      "turn",
+      "delay",
+      "space",
+      "abuse",
+      "winter",
+      "slice",
+      "tell",
+      "flip",
+      "use",
+      "between",
+      "crouch",
+      "shop",
+      "open",
+      "leg",
+      "elegant",
+      "bracket",
+      "lamp",
+      "day",
+    ];
+
+    const email = "0xE6Ad2@neufund.org";
+    const password = "strongpassword";
+
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+
+    cy.visit("/recover/seed");
+    typeLightwalletRecoveryPhrase(words);
+    typeEmailPassword(email, password);
+
+    cy.wait(5000);
+    assertLatestEmailSent(email.toLowerCase());
+
+    cy.get(tid("recovery-success-btn-go-dashboard")).click();
+
+    assertUserInDashboard();
+  });
+
+  it("should recover existing user with verified email from saved phrases and change email", () => {
+    //@see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
+    const words = [
+      "juice",
+      "chest",
+      "position",
+      "grace",
+      "weather",
+      "matter",
+      "turn",
+      "delay",
+      "space",
+      "abuse",
+      "winter",
+      "slice",
+      "tell",
+      "flip",
+      "use",
+      "between",
+      "crouch",
+      "shop",
+      "open",
+      "leg",
+      "elegant",
+      "bracket",
+      "lamp",
+      "day",
+    ];
+    const email = "john-smith@example.com";
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+
+    cy.visit("/recover/seed");
+
+    typeLightwalletRecoveryPhrase(words);
+
+    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+
+    cy.get(tid("wallet-selector-register-email")).type(email);
+    cy.get(tid("wallet-selector-register-password")).type("strongpassword");
+    cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
+    cy.wait(2000);
+
+    cy.get(tid("recovery-success-btn-go-dashboard")).click();
+
+    cy.wait(5000);
+    assertLatestEmailSent(email);
+
+    assertUserInDashboard();
   });
 });

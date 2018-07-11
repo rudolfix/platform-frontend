@@ -46,7 +46,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <div className="form-group">
           <FormCheckbox
-            name="riskThirdParty"
+            name="riskNoThirdPartyDependency"
             label={
               <FormattedMessage id="eto.form.risk-assesment.no-third-parties" />
             }
@@ -83,14 +83,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <div className="form-group">
           <FormCheckbox
-            name="riskRegulatedBusiness"
+            name="riskNotRegulatedBusiness"
             label={ <FormattedMessage id="eto.form.risk-assesment.no-regulation" /> }
           />
         </div>
 
         <div className="form-group">
           <FormCheckbox
-            name="riskLoansExist"
+            name="riskNoLoansExist"
             label={ <FormattedMessage id="eto.form.risk-assesment.no-loans" /> }
           />
         </div>
@@ -115,7 +115,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoCompanyInformationType.toYup(),
+  validationSchema: EtoRiskAssesmentType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);

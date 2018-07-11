@@ -57,7 +57,7 @@
     }
 
     &:global(.large) {
-      &:after {
+      &::after {
         @include responsive-size(right, -$_space-between-tabs-layout-small, -$_space-between-tabs-layout-large);
       }
     }

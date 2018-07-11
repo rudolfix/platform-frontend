@@ -51,25 +51,39 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
         <>
           <Row className="justify-content-center mb-4 mt-4">
             <Tabs>
-              {(userType === "investor" || process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && (
+              {(userType === "investor" ||
+                process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && (
                 <TabContent
+                  data-test-id="wallet-selector-light"
                   routerPath={`${rootPath}/light`}
-                  tab={isLoginRoute
-                        ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")
-                        : formatIntlMessage("wallet-selector.tabs.neuwallet-register")}
+                  tab={
+                    isLoginRoute
+                      ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")
+                      : formatIntlMessage("wallet-selector.tabs.neuwallet-register")
+                  }
                 />
               )}
-              {(userType === "investor" || process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && (
+              {(userType === "investor" ||
+                process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && (
                 <TabContent
+                  data-test-id="wallet-selector-browser"
                   routerPath={`${rootPath}/browser`}
-                  tab={isLoginRoute
-                        ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
-                        : formatIntlMessage("wallet-selector.tabs.browser-wallet-register")}
+                  tab={
+                    isLoginRoute
+                      ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
+                      : formatIntlMessage("wallet-selector.tabs.browser-wallet-register")
+                  }
                 />
               )}
-              <TabContent routerPath={`${rootPath}/ledger`} tab={isLoginRoute
-                      ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
-                      : formatIntlMessage("wallet-selector.tabs.browser-wallet-register")} />
+              <TabContent
+                data-test-id="wallet-selector-ledger"
+                routerPath={`${rootPath}/ledger`}
+                tab={
+                  isLoginRoute
+                    ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
+                    : formatIntlMessage("wallet-selector.tabs.browser-wallet-register")
+                }
+              />
             </Tabs>
           </Row>
           <Row>

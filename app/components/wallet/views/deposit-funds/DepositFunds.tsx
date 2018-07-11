@@ -44,8 +44,14 @@ export const DepositFunds = injectIntlHelpers<IProps>(
             <Panel>
               <div className={styles.panelContent}>
                 <Tabs>
-                  <TabContent tab={formatIntlMessage("wallet.deposit-funds.menu.eur")} routerPath={walletRoutes.euroToken} />
-                  <TabContent tab={formatIntlMessage("wallet.deposit-funds.menu.eth")} routerPath={walletRoutes.eth} />
+                  <TabContent
+                    tab={formatIntlMessage("wallet.deposit-funds.menu.eur")}
+                    routerPath={walletRoutes.euroToken}
+                  />
+                  <TabContent
+                    tab={formatIntlMessage("wallet.deposit-funds.menu.eth")}
+                    routerPath={walletRoutes.eth}
+                  />
                 </Tabs>
                 {children}
                 <DoneButton>

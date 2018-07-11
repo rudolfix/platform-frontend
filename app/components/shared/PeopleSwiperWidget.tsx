@@ -37,23 +37,20 @@ export class PeopleSwiperWidget extends React.Component<IProps> {
     if (this.swiper) {
       this.swiper.slideNext();
     }
-  }
+  };
 
   goPrev = () => {
     if (this.swiper) {
       this.swiper.slidePrev();
     }
-  }
+  };
 
   render(): React.ReactNode {
     const { people, navigation, layout, ...config } = this.props;
 
     return (
       <div className={styles.swiperWidget}>
-        <Swiper
-          {...config}
-          ref={this.swiperRef}
-        >
+        <Swiper {...config} ref={this.swiperRef}>
           {people.map(({ image, name, description, role }, i) => (
             <div key={i}>
               <SlidePerson

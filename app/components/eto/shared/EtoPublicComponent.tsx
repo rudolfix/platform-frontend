@@ -518,34 +518,38 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <Row>
         <Col className="mb-4">
           <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
-            {(companyData.founders && companyData.founders.members.length) && (
-              <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
-                <Panel>
-                  <PeopleSwiperWidget
-                    {...swiperMultiRowSettings}
-                    people={companyData.founders && companyData.founders.members || []}
-                    navigation={{
-                      nextEl: "people-swiper-founders-next",
-                      prevEl: "people-swiper-founders-prev"
-                    }}
-                    layout="vertical" />
-                </Panel>
-              </TabContent>
-            )}
-            {(companyData.team && companyData.team.members.length) && (
-              <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
-                <Panel>
-                  <PeopleSwiperWidget
-                    {...swiperMultiRowSettings}
-                    people={companyData.team && companyData.team.members || []}
-                    navigation={{
-                      nextEl: "people-swiper-team-next",
-                      prevEl: "people-swiper-team-prev"
-                    }}
-                    layout="vertical" />
-                </Panel>
-              </TabContent>
-            )}
+            {companyData.founders &&
+              companyData.founders.members.length && (
+                <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
+                  <Panel>
+                    <PeopleSwiperWidget
+                      {...swiperMultiRowSettings}
+                      people={(companyData.founders && companyData.founders.members) || []}
+                      navigation={{
+                        nextEl: "people-swiper-founders-next",
+                        prevEl: "people-swiper-founders-prev",
+                      }}
+                      layout="vertical"
+                    />
+                  </Panel>
+                </TabContent>
+              )}
+            {companyData.team &&
+              companyData.team.members.length && (
+                <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
+                  <Panel>
+                    <PeopleSwiperWidget
+                      {...swiperMultiRowSettings}
+                      people={(companyData.team && companyData.team.members) || []}
+                      navigation={{
+                        nextEl: "people-swiper-team-next",
+                        prevEl: "people-swiper-team-prev",
+                      }}
+                      layout="vertical"
+                    />
+                  </Panel>
+                </TabContent>
+              )}
           </Tabs>
         </Col>
       </Row>
@@ -553,59 +557,68 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <Row>
         <Col className="mb-4">
           <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
-            {(companyData.notableInvestors  && companyData.notableInvestors.members.length) && (
-              <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}>
-                <Panel>
-                  <PeopleSwiperWidget
-                    {...swiperSingleRowSettings}
-                    people={companyData.notableInvestors && companyData.notableInvestors.members || []}
-                    navigation={{
-                      nextEl: "people-swiper-investors-next",
-                      prevEl: "people-swiper-investors-prev"
-                    }}
-                    layout="vertical" />
-                </Panel>
-              </TabContent>
-            )}
-            {(companyData.partners  && companyData.partners.members.length || []) && (
+            {companyData.notableInvestors &&
+              companyData.notableInvestors.members.length && (
+                <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}>
+                  <Panel>
+                    <PeopleSwiperWidget
+                      {...swiperSingleRowSettings}
+                      people={
+                        (companyData.notableInvestors && companyData.notableInvestors.members) || []
+                      }
+                      navigation={{
+                        nextEl: "people-swiper-investors-next",
+                        prevEl: "people-swiper-investors-prev",
+                      }}
+                      layout="vertical"
+                    />
+                  </Panel>
+                </TabContent>
+              )}
+            {((companyData.partners && companyData.partners.members.length) || []) && (
               <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
                 <Panel>
                   <PeopleSwiperWidget
                     {...swiperSingleRowSettings}
                     navigation={{
                       nextEl: "people-swiper-partners-next",
-                      prevEl: "people-swiper-partners-prev"
+                      prevEl: "people-swiper-partners-prev",
                     }}
-                    people={companyData.partners && companyData.partners.members || []}
-                    layout="vertical" />
+                    people={(companyData.partners && companyData.partners.members) || []}
+                    layout="vertical"
+                  />
                 </Panel>
               </TabContent>
             )}
-            {(companyData.keyCustomers  && companyData.keyCustomers.members.length || []) && (
-              <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}>
+            {((companyData.keyCustomers && companyData.keyCustomers.members.length) || []) && (
+              <TabContent
+                tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}
+              >
                 <Panel>
                   <PeopleSwiperWidget
                     {...swiperSingleRowSettings}
                     navigation={{
                       nextEl: "people-swiper-partners-next",
-                      prevEl: "people-swiper-partners-prev"
+                      prevEl: "people-swiper-partners-prev",
                     }}
-                    people={companyData.keyCustomers && companyData.keyCustomers.members || []}
-                    layout="vertical" />
+                    people={(companyData.keyCustomers && companyData.keyCustomers.members) || []}
+                    layout="vertical"
+                  />
                 </Panel>
               </TabContent>
             )}
-            {(companyData.boardMembers  && companyData.boardMembers.members.length || []) && (
+            {((companyData.boardMembers && companyData.boardMembers.members.length) || []) && (
               <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
                 <Panel>
                   <PeopleSwiperWidget
                     navigation={{
                       nextEl: "people-swiper-board-members-next",
-                      prevEl: "people-swiper-board-members-prev"
+                      prevEl: "people-swiper-board-members-prev",
                     }}
                     {...swiperSingleRowSettings}
-                    people={companyData.boardMembers && companyData.boardMembers.members || []}
-                    layout="vertical" />
+                    people={(companyData.boardMembers && companyData.boardMembers.members) || []}
+                    layout="vertical"
+                  />
                 </Panel>
               </TabContent>
             )}

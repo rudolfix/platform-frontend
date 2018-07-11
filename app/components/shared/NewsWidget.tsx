@@ -24,7 +24,6 @@ interface IProps {
 }
 
 export class NewsWidget extends React.Component<IProps> {
-
   render(): React.ReactNode {
     const { news, isEditable, className } = this.props;
 
@@ -36,17 +35,18 @@ export class NewsWidget extends React.Component<IProps> {
               <div>twitter content</div>
             </Panel>
           </TabContent>
-          <TabContent tab={<FormattedMessage id="shared-component.news-widget.tab.company-updates" />}>
+          <TabContent
+            tab={<FormattedMessage id="shared-component.news-widget.tab.company-updates" />}
+          >
             <Panel className={styles.contentWrapper}>
-              {
-                news.map(({ url, title }) => (
-                  <div className={styles.newsSingle} key={url}>
-                    <NavLinkConnected to={{ pathname: url || "#0", search: location.search }}>
-                      {title}
-                    </NavLinkConnected>
-                    {isEditable && <InlineIcon svgIcon={iconTrash} />}
-                  </div>))
-              }
+              {news.map(({ url, title }) => (
+                <div className={styles.newsSingle} key={url}>
+                  <NavLinkConnected to={{ pathname: url || "#0", search: location.search }}>
+                    {title}
+                  </NavLinkConnected>
+                  {isEditable && <InlineIcon svgIcon={iconTrash} />}
+                </div>
+              ))}
               {isEditable && (
                 <Button
                   svgIcon={iconPlus}

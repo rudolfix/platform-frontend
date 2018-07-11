@@ -1,5 +1,3 @@
-import { get } from "lodash";
-
 import { tid } from "../../../../../test/testUtils";
 import {
   assertErrorModal,
@@ -12,6 +10,7 @@ import {
   typeEmailPassword,
   verifyLatestUserEmail,
 } from "../../../../e2e-test-utils";
+import { assertLatestEmailSent } from "./../../../../e2e-test-utils/index";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {
@@ -22,11 +21,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-      const email = get(r, "body[0].personalizations[0].to[0]") as string | undefined;
-
-      expect(email).to.be.eq(email);
-    });
+    assertLatestEmailSent(email);
   });
 
   it("should remember light wallet details after logout", () => {

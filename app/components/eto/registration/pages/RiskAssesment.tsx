@@ -45,22 +45,20 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         />
 
         <div className="form-group">
-        {/* TODO: negate value */}
           <FormCheckbox
             name="riskThirdParty"
             label={
               <FormattedMessage id="eto.form.risk-assesment.no-third-parties" />
             }
           />
-
-          <FormTextArea
-            className="my-2"
-            label={<FormattedMessage id="eto.form.risk-assesment.third-parties-description" />}
-            placeholder="Describe"
-            name="riskThirdPartyDescription"
-          />
         </div>
 
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.risk-assesment.third-parties-description" />}
+          placeholder="Describe"
+          name="riskThirdPartyDescription"
+        />
 
         <FormTextArea
           className="my-2"
@@ -84,7 +82,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         />
 
         <div className="form-group">
-        {/* TODO: negate value */}
           <FormCheckbox
             name="riskRegulatedBusiness"
             label={ <FormattedMessage id="eto.form.risk-assesment.no-regulation" /> }
@@ -92,7 +89,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         </div>
 
         <div className="form-group">
-        {/* TODO: negate value */}
           <FormCheckbox
             name="riskLoansExist"
             label={ <FormattedMessage id="eto.form.risk-assesment.no-loans" /> }

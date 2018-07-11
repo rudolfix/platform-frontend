@@ -50,11 +50,11 @@ export const EtoRiskAssesmentType = YupTS.object({
   riskRegulatedBusiness: YupTS.boolean(),
   riskThirdParty: YupTS.boolean(),
   riskLoansExist: YupTS.boolean(),
-  riskLiquidityDescription: YupTS.string().optional(),
-  riskThirdPartyDescription: YupTS.string().optional(),
-  riskThirdPartySharesFinancing: YupTS.string().optional(),
-  riskChangingAgreementDescription: YupTS.string().optional(),
-  riskMaxDescription: YupTS.string().optional(),
+  riskLiquidityDescription: YupTS.string(),
+  riskThirdPartyDescription: YupTS.string(),
+  riskThirdPartySharesFinancing: YupTS.string(),
+  riskChangingAgreementDescription: YupTS.string(),
+  riskMaxDescription: YupTS.string(),
 });
 
 type TEtoRiskAssesment = YupTS.TypeOf<typeof EtoRiskAssesmentType>;
@@ -177,7 +177,9 @@ export const EtoTermsType = YupTS.object({
   publicDurationDays: YupTS.number(),
   minTicketEur: YupTS.number(),
   enableTransferOnSuccess: YupTS.boolean(),
+  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
   riskRegulatedBusiness: YupTS.boolean(),
+  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
   riskThirdParty: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
   tagAlongVotingRule: YupTS.boolean(),

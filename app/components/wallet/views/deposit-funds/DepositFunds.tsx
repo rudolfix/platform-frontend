@@ -4,14 +4,15 @@ import { actions } from "../../../../modules/actions";
 import { BreadCrumb } from "../../../shared/BreadCrumb";
 import { Button } from "../../../shared/Buttons";
 import { Panel } from "../../../shared/Panel";
-import { Tabs } from "../../../shared/Tabs";
-import * as styles from "./DepositFunds.module.scss";
 
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 import { appConnect } from "../../../../store";
 import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { TabContent, Tabs } from "../../../shared/Tabs";
 import { walletRoutes } from "../../routes";
+
+import * as styles from "./DepositFunds.module.scss";
 
 const DoneButton = compose<React.SFC>(
   appConnect<IProps>({
@@ -42,19 +43,10 @@ export const DepositFunds = injectIntlHelpers<IProps>(
           <Col xs={12} lg={{ size: 10, offset: 1 }}>
             <Panel>
               <div className={styles.panelContent}>
-                <Tabs
-                  className="mb-5"
-                  tabs={[
-                    {
-                      text: formatIntlMessage("wallet.deposit-funds.menu.eur"),
-                      path: walletRoutes.euroToken,
-                    },
-                    {
-                      text: formatIntlMessage("wallet.deposit-funds.menu.eth"),
-                      path: walletRoutes.eth,
-                    },
-                  ]}
-                />
+                <Tabs>
+                  <TabContent tab={formatIntlMessage("wallet.deposit-funds.menu.eur")} routerPath={walletRoutes.euroToken} />
+                  <TabContent tab={formatIntlMessage("wallet.deposit-funds.menu.eth")} routerPath={walletRoutes.eth} />
+                </Tabs>
                 {children}
                 <DoneButton>
                   <FormattedMessage id="form.button.done" />

@@ -3,6 +3,7 @@ import { call, fork, put, select } from "redux-saga/effects";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
+import { IUser } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
 import {
   ILightWalletMetadata,
@@ -37,6 +38,7 @@ import {
 } from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
+import { LightError } from "./../../../lib/web3/LightWallet";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
 
@@ -182,7 +184,7 @@ async function checkEmailPromise(
 }
 
 export function* lightWalletRecoverWatch(
-  { intlWrapper, logger }: TGlobalDependencies,
+  { intlWrapper }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   try {
@@ -192,17 +194,31 @@ export function* lightWalletRecoverWatch(
       return;
     }
     const { password, email, seed } = action.payload;
-    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
-    if (!isEmailAvailable) {
-      throw new EmailAlreadyExists();
-    }
 
     const walletMetadata = yield neuCall(setupLightWalletPromise, email, password, seed, userType);
+
     yield put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT, [CHANGE_EMAIL_PERMISSION]);
 
     try {
-      yield neuCall(loadUserPromise);
+      const isEmailAvailable = yield neuCall(checkEmailPromise, email);
+      const user: IUser = yield neuCall(loadUserPromise);
+      if (isEmailAvailable) {
+        yield effects.call(updateUser, {
+          newEmail: walletMetadata.email,
+          salt: walletMetadata.salt,
+          backupCodesVerified: false,
+          type: userType,
+        });
+      } else {
+        if (user.verifiedEmail === email.toLowerCase())
+          yield effects.call(updateUser, {
+            salt: walletMetadata.salt,
+            backupCodesVerified: false,
+            type: userType,
+          });
+        else throw new EmailAlreadyExists();
+      }
     } catch (e) {
       if (e instanceof UserNotExisting)
         yield effects.call(createUser, {
@@ -211,14 +227,8 @@ export function* lightWalletRecoverWatch(
           backupCodesVerified: false,
           type: userType,
         });
+      else throw e;
     }
-
-    yield effects.call(updateUser, {
-      newEmail: email,
-      salt: walletMetadata.salt,
-      backupCodesVerified: false,
-      type: userType,
-    });
 
     yield put(actions.routing.goToSuccessfulRecovery());
   } catch (e) {
@@ -233,16 +243,19 @@ export function* lightWalletRecoverWatch(
         ),
       );
     else {
-      logger.error(mapLightWalletErrorToErrorMessage(e));
-
-      yield put(
-        actions.genericModal.showErrorModal(
-          "Error",
-          intlWrapper.intl.formatIntlMessage(
-            "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+      if (e instanceof LightError)
+        yield put(
+          actions.genericModal.showErrorModal("Error", mapLightWalletErrorToErrorMessage(e)),
+        );
+      else
+        yield put(
+          actions.genericModal.showErrorModal(
+            "Error",
+            intlWrapper.intl.formatIntlMessage(
+              "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+            ),
           ),
-        ),
-      );
+        );
     }
   }
 }

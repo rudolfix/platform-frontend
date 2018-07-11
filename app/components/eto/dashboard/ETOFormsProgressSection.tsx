@@ -134,32 +134,26 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       companyInformationProgress: selectFormFractionDone(
         EtoCompanyInformationType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       etoTermsProgress: selectFormFractionDone(
         EtoTermsType.toYup(),
         s.etoFlow.etoData,
-        etoFlowInitialState,
       ),
       etoKeyIndividualsProgress: selectFormFractionDone(
         EtoKeyIndividualsType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       legalInformationProgress: selectFormFractionDone(
         EtoLegalInformationType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       productVisionProgress: selectFormFractionDone(
         EtoProductVisionType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       etoMediaProgress: selectFormFractionDone(
         EtoMediaType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       etoRiskProgress: selectFormFractionDone(
         EtoRiskAssesmentType.toYup(),

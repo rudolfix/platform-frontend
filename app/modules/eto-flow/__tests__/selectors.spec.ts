@@ -9,13 +9,13 @@ describe("eto-flow > selectors", () => {
       const validator = Yup.object({
         name: Yup.string().required(),
         age: Yup.number().required(),
+        surname: Yup.string(),
       });
       const formState = { name: "test" };
-      const initialFormState = {};
 
-      const fractionDone = selectFormFractionDone(validator, formState, initialFormState);
+      const fractionDone = selectFormFractionDone(validator, formState);
 
-      expect(fractionDone).to.be.eq(0.5);
+      expect(fractionDone).to.be.closeTo(1 / 3, 0.001);
     });
 
     it("should work with nested schema", () => {
@@ -29,11 +29,26 @@ describe("eto-flow > selectors", () => {
         age: Yup.number().required(),
       });
       const formState = { details: { name: "test" } };
-      const initialFormState = {};
 
-      const fractionDone = selectFormFractionDone(validator, formState, initialFormState);
+      const fractionDone = selectFormFractionDone(validator, formState);
 
-      expect(fractionDone).to.be.closeTo(1 / 3, 0.001);
+      expect(fractionDone).to.be.closeTo(0.25, 0.001);
+    });
+
+    it("should work with arrays", () => {
+      const nameValidator = Yup.array().of(Yup.object({
+        name: Yup.string().required(),
+        lastName: Yup.string()
+      }));
+      const validator = Yup.object({
+        details: nameValidator,
+        age: Yup.number().required(),
+      });
+      const formState = { details: [{ name: "test" }, {}, {}] };
+
+      const fractionDone = selectFormFractionDone(validator, formState);
+
+      expect(fractionDone).to.be.closeTo(1/7, 0.0001);
     });
   });
 });

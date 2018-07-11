@@ -29,7 +29,6 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
     const calculatedFraction = selectFormFractionDone(
       this.props.validator,
       values,
-      etoFlowInitialState,
     );
 
     return <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />;

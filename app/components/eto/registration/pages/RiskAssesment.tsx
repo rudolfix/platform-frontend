@@ -5,7 +5,6 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import {
-  EtoCompanyInformationType,
   EtoRiskAssesmentType,
   TPartialCompanyEtoData,
 } from "../../../../lib/api/EtoApi.interfaces";
@@ -13,7 +12,6 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
-import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { EtoFormBase } from "../EtoFormBase";
@@ -31,8 +29,6 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const distributionSuggestions = ["Development", "ESOP"];
-
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
     <EtoFormBase title="Risk Assesment" validator={EtoRiskAssesmentType.toYup()}>
@@ -47,9 +43,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <div className="form-group">
           <FormCheckbox
             name="riskNoThirdPartyDependency"
-            label={
-              <FormattedMessage id="eto.form.risk-assesment.no-third-parties" />
-            }
+            label={<FormattedMessage id="eto.form.risk-assesment.no-third-parties" />}
           />
         </div>
 
@@ -62,7 +56,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-assesment.third-party-financing-description" />}
+          label={
+            <FormattedMessage id="eto.form.risk-assesment.third-party-financing-description" />
+          }
           placeholder="Describe"
           name="riskThirdPartySharesFinancing"
         />
@@ -84,14 +80,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <div className="form-group">
           <FormCheckbox
             name="riskNotRegulatedBusiness"
-            label={ <FormattedMessage id="eto.form.risk-assesment.no-regulation" /> }
+            label={<FormattedMessage id="eto.form.risk-assesment.no-regulation" />}
           />
         </div>
 
         <div className="form-group">
           <FormCheckbox
             name="riskNoLoansExist"
-            label={ <FormattedMessage id="eto.form.risk-assesment.no-loans" /> }
+            label={<FormattedMessage id="eto.form.risk-assesment.no-loans" />}
           />
         </div>
       </Section>

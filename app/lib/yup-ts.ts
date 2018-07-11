@@ -114,12 +114,11 @@ class TrueYTS extends YTS<true> {
   }
 
   toYup(): Yup.Schema {
-    const validator = Yup.boolean()
-      .test(
-        'isTrue',
-        'This field is required',
-        value => value === undefined || value === true
-      )
+    const validator = Yup.boolean().test(
+      "isTrue",
+      "This field is required",
+      value => value === undefined || value === true,
+    );
 
     if (this.isRequired) {
       return validator.required("This field is required");

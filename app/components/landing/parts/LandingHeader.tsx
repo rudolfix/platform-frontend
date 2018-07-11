@@ -67,7 +67,7 @@ const CompanyImages: React.SFC = () => (
       />
     </a>
     {process.env.NF_FOUNDERS_BANK_VISIBLE ? (
-      <a href="#eto-card-3" className={styles.companyImage}>
+      <a href="#eto-card-6" className={styles.companyImage}>
         <ResponsiveImage
           srcSet={{ "1x": foundersbankImage, "2x": foundersbankImage2x, "3x": foundersbankImage3x }}
           alt="Founders bank"

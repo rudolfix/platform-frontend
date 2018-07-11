@@ -11,6 +11,18 @@ export const goToDashboard = () => {
   cy.visit("/");
 };
 
+export const assertLatestEmailSent = (userEmail: string) => {
+  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
+    const response = get(r, "body[0].personalizations[0].to[0]") as { email: string | undefined };
+    const loginLink = get(r, "body[0].personalizations[0].substitutions.-loginLink-") as
+      | string
+      | undefined;
+
+    expect(response && response.email).to.be.eq(userEmail);
+    expect(loginLink).to.contain("salt");
+  });
+};
+
 export const assertEmailActivationWidgetVisible = (shouldNotExist?: boolean) => {
   cy.get(tid("settings.verify-email-widget")).should(shouldNotExist ? "not.exist" : "exist");
 };

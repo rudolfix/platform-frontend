@@ -8,9 +8,6 @@ import { BackupSeedWidgetComponent } from "./settings/backupSeed/BackupSeedWidge
 import { ChangeEmailComponent } from "./settings/changeEmail/ChangeEmail";
 import { VerifyEmailWidgetComponent } from "./settings/verifyEmail/VerifyEmailWidget";
 import { InvestmentPreview } from "./shared/InvestmentPreview";
-import { NavigationButton, NavigationLink } from "./shared/Navigation";
-import { NewsWidget } from "./shared/NewsWidget";
-import { Tabs } from "./shared/Tabs";
 
 import * as styles from "./Demo.module.scss";
 
@@ -164,67 +161,6 @@ export const Demo: React.SFC = () => (
           },
         ]}
       />
-    </Container>
-    <Container>
-      <Tabs
-        theme="dark"
-        tabs={[
-          { text: "tab 1", path: "/demo" },
-          { text: "tab 2", path: "" },
-          { text: "tab 3", path: "" },
-        ]}
-      />
-      <Tabs
-        style={{ background: "black" }}
-        theme="light"
-        tabs={[
-          { text: "tab 1", path: "" },
-          { text: "tab 2", path: "" },
-          { text: "tab 3", path: "" },
-        ]}
-      />
-    </Container>
-    <Container>
-      <Row>
-        <Col>
-          <NewsWidget
-            className="h-100"
-            isEditable={true}
-            activeTab="news"
-            news={[
-              {
-                title:
-                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta",
-                url: "asdf asdfffa sad",
-              },
-              {
-                title:
-                  "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?",
-                url: "asdf asdad as sdd",
-              },
-            ]}
-          />
-        </Col>
-        <Col>
-          <NewsWidget
-            className="h-100"
-            isEditable={false}
-            activeTab="twitter"
-            news={[
-              {
-                title:
-                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo ea dicta",
-                url: "asdf asdfffa sad",
-              },
-              {
-                title:
-                  "inventore natus aliquam beatae unde? Tenetur consequatur optio a consequuntur, earum nihil autem nemo rem aliquam! Perspiciatis, debitis iure?",
-                url: "asdf asdad as sdd",
-              },
-            ]}
-          />
-        </Col>
-      </Row>
     </Container>
   </div>
 );

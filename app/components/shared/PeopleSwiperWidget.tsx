@@ -29,24 +29,28 @@ interface IProps {
 export class PeopleSwiperWidget extends React.Component<IProps> {
   swiper: any = null;
 
-  private goNext(): void {
+  swiperRef = (ref: any) => {
+    this.swiper = ref.swiper;
+  };
+
+  goNext = () => {
     if (this.swiper) {
       this.swiper.slideNext();
     }
-  }
+  };
 
-  private goPrev(): void {
+  goPrev = () => {
     if (this.swiper) {
       this.swiper.slidePrev();
     }
-  }
+  };
 
   render(): React.ReactNode {
     const { people, navigation, layout, ...config } = this.props;
 
     return (
       <div className={styles.swiperWidget}>
-        <Swiper {...config} ref={(node: any) => node && (this.swiper = node.swiper)}>
+        <Swiper {...config} ref={this.swiperRef}>
           {people.map(({ image, name, description, role }, i) => (
             <div key={i}>
               <SlidePerson

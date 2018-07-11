@@ -80,8 +80,8 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
                 routerPath={`${rootPath}/ledger`}
                 tab={
                   isLoginRoute
-                    ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
-                    : formatIntlMessage("wallet-selector.tabs.browser-wallet-register")
+                    ? formatIntlMessage("wallet-selector.tabs.ledger-login")
+                    : formatIntlMessage("wallet-selector.tabs.ledger-register")
                 }
               />
             </Tabs>

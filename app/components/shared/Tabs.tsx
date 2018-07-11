@@ -51,20 +51,24 @@ export class Tabs extends React.Component<ITabsProps & CommonHtmlProps> {
 
   private renderTab = (index: number, tabContent: TComponent) => {
     const { layoutSize, layoutOrnament } = this.props;
-
-    const isActive = index === this.state.activeIndex ? "is-active" : "";
     const hasOrnament = layoutOrnament ? "has-ornament" : "";
-    const commonProps = {
-      className: cn(styles.tab, layoutSize, hasOrnament, isActive),
-      onClick: () => this.handleClick(index),
-      "data-test-id": tabContent.props["data-test-id"],
-    };
+    const hasRouterPath = !!tabContent && tabContent.props.routerPath;
 
     if (!tabContent) {
       return;
     }
 
-    return tabContent && tabContent.props.routerPath ? (
+    const isActive = hasRouterPath
+      ? window.location.pathname.includes(tabContent.props.routerPath || "") ? "is-active" : ""
+      : index === this.state.activeIndex ? "is-active" : "";
+
+    const commonProps = {
+      className: cn(styles.tab, layoutSize, hasOrnament, isActive),
+      onClick: () => this.handleClick(index),
+      "data-test-id": tabContent && tabContent.props["data-test-id"],
+    };
+
+    return hasRouterPath ? (
       <NavLinkConnected
         {...commonProps}
         to={{ pathname: tabContent.props.routerPath, search: window.location.search }}
@@ -82,6 +86,10 @@ export class Tabs extends React.Component<ITabsProps & CommonHtmlProps> {
   render(): React.ReactNode {
     const { children, layoutSize, layoutPosition, className } = this.props;
     const { activeIndex } = this.state;
+
+    if (!children) {
+      return;
+    }
 
     return (
       <div>

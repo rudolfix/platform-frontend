@@ -15,7 +15,7 @@ import { verifyLatestUserEmail } from "./../../../../e2e-test-utils/index";
 const password = "strongpassword";
 
 describe("Light Wallet ETO Dashboard", () => {
-  it.only("should register verify an email and assert that the dashboard is changing", () => {
+  it("should register verify an email and assert that the dashboard is changing", () => {
     const testEmail = convertToUniqueEmail("moe@test.com");
 
     registerWithLightWalletETO(testEmail, password);

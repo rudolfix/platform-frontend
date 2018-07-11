@@ -47,9 +47,9 @@ export const EtoProductVisionType = YupTS.object({
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
 
 export const EtoRiskAssesmentType = YupTS.object({
-  riskNotRegulatedBusiness: YupTS.boolean(),
-  riskNoThirdPartyDependency: YupTS.boolean(),
-  riskNoLoansExist: YupTS.boolean(),
+  riskNotRegulatedBusiness: YupTS.onlyTrue(),
+  riskNoThirdPartyDependency: YupTS.onlyTrue(),
+  riskNoLoansExist: YupTS.onlyTrue(),
   riskLiquidityDescription: YupTS.string(),
   riskThirdPartyDescription: YupTS.string(),
   riskThirdPartySharesFinancing: YupTS.string(),

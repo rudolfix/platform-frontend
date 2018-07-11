@@ -63,7 +63,7 @@ describe("Wallet recover", () => {
 
     cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
 
-    cy.contains(tid("my-wallet-widget-eur-token-large-value"), "nEUR0.00");
+    cy.contains(tid("my-wallet-widget-eur-token-large-value"), "0.00 nEUR");
     cy.contains(tid("my-wallet-widget-eur-token-value"), "0.00 EUR");
 
     // remove this for now...

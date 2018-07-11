@@ -7,6 +7,7 @@ import {
   EtoLegalInformationType,
   EtoMediaType,
   EtoProductVisionType,
+  EtoRiskAssesmentType,
   EtoTermsType,
 } from "../../../lib/api/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
@@ -26,6 +27,7 @@ interface IStateProps {
   etoKeyIndividualsProgress: number;
   etoTermsProgress: number;
   etoMediaProgress: number;
+  etoRiskProgress: number;
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;
@@ -55,6 +57,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
       etoKeyIndividualsProgress,
       legalInformationProgress,
       etoMediaProgress,
+      etoRiskProgress,
       kycStatus,
       isEmailVerified,
     } = this.props;
@@ -115,7 +118,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.etoRiskAssesment}
-            progress={shouldEtoDataLoad ? etoMediaProgress : 0 /* add progress */}
+            progress={shouldEtoDataLoad ? etoRiskProgress : 0 }
             name="Risk Assesment"
           />
         </Col>
@@ -155,6 +158,11 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       ),
       etoMediaProgress: selectFormFractionDone(
         EtoMediaType.toYup(),
+        s.etoFlow.companyData,
+        etoFlowInitialState,
+      ),
+      etoRiskProgress: selectFormFractionDone(
+        EtoRiskAssesmentType.toYup(),
         s.etoFlow.companyData,
         etoFlowInitialState,
       ),

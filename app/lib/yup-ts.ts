@@ -7,6 +7,7 @@ export const string = () => new StringYTS();
 export const array = <T extends YTS<any>>(shape: T) => new ArrayYTS(shape);
 export const number = () => new NumberYTS();
 export const boolean = () => new BooleanYTS();
+export const onlyTrue = () => new TrueYTS();
 
 export type TypeOf<T extends YTS<any>> = T["_T"];
 type TypeOfProps<P extends Dictionary<any>> = { [K in keyof P]: TypeOf<P[K]> };
@@ -102,6 +103,32 @@ class BooleanYTS extends YTS<boolean> {
 
   optional(): YTS<boolean | undefined> {
     return new BooleanYTS(false);
+  }
+}
+
+class TrueYTS extends YTS<true> {
+  __TYPE__!: Unique<"boolean">;
+
+  constructor(private isRequired: boolean = true) {
+    super();
+  }
+
+  toYup(): Yup.Schema {
+    const validator = Yup.boolean()
+      .test(
+        'isTrue',
+        'This field is required',
+        value => value === undefined || value === true
+      )
+
+    if (this.isRequired) {
+      return validator.required("This field is required");
+    }
+    return validator;
+  }
+
+  optional(): YTS<true | undefined> {
+    return new TrueYTS(false);
   }
 }
 

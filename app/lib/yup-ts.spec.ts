@@ -57,4 +57,23 @@ describe("yup-ts", () => {
     // tslint:disable-next-line
     const t: assert<TValidatorType> = true;
   });
+
+  describe('onlyTrue', () => {
+
+    it('allows only true', () => {
+      const spec = YupTS.onlyTrue()
+      const validator = spec.toYup()
+      expect(validator.isValidSync(true)).to.be.true
+      expect(validator.isValidSync(false)).to.be.false
+      expect(validator.isValidSync(undefined)).to.be.false
+    })
+
+    it('allows optional true', () => {
+      const spec = YupTS.onlyTrue().optional()
+      const validator = spec.toYup()
+      expect(validator.isValidSync(true)).to.be.true
+      expect(validator.isValidSync(false)).to.be.false
+      expect(validator.isValidSync(undefined)).to.be.true
+    })
+  })
 });

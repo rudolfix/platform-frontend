@@ -1,42 +1,36 @@
-import EthereumQRPlugin from 'ethereum-qr-code'
-import { uniqueId } from 'lodash';
-import * as React from 'react';
+import * as QRCode from "qrcode";
+import * as React from "react";
 
 interface IProps {
-  uriScheme?: string,
-  to: string,
-  value: number,
-  gas: number,
+  address: string;
+  value?: number;
+  gas?: number;
 }
 
 export class EthereumQRCode extends React.Component<IProps> {
+  private qrCode = "";
 
-  private generator = new EthereumQRPlugin();
+  generateQRCode(): void {
+    const { address, value, gas } = this.props;
+    const computedValue = value && `?value=${value}`;
+    const computedGas = gas && `?gas=${gas}`;
 
-  private id = uniqueId('qrCode');
+    const url = `ethereum:${address}${computedValue}${computedGas}`;
 
-  componentDidMount ():void {
-    this.generateQRCode();
-  }
+    QRCode.toString(url, (err: any, string: string) => {
+      if (err) {
+        throw err;
+      }
 
-  componentDidUpdate ():void {
-    this.generateQRCode();
-  }
-
-  generateQRCode ():void {
-    const { to, value, gas, uriScheme } = this.props;
-    const sendDetails = uriScheme
-      ? this.generator.readStringToJSON(uriScheme)
-      : { to, value, gas };
-
-    const qrCode = this.generator.toCanvas(sendDetails, {
-      selector: `#${this.id}`,
+      this.qrCode = string;
     });
   }
 
-  render (): React.ReactNode {
-    return (
-      <div id={this.id}></div>
-    );
+  componentDidUpdate(): void {
+    this.generateQRCode();
+  }
+
+  render(): React.ReactNode {
+    return <div dangerouslySetInnerHTML={{ __html: this.qrCode }} />;
   }
 }

@@ -2800,6 +2800,12 @@ camelcase@^4.0.0, camelcase@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
+can-promise@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/can-promise/-/can-promise-0.0.1.tgz#7a7597ad801fb14c8b22341dfec314b6bd6ad8d3"
+  dependencies:
+    window-or-global "^1.0.1"
+
 caniuse-api@^1.5.2:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/caniuse-api/-/caniuse-api-1.6.1.tgz#b534e7c734c4f81ec5fbe8aca2ad24354b962c6c"
@@ -4605,13 +4611,6 @@ ethereum-common@^0.0.18:
 ethereum-qr-code@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/ethereum-qr-code/-/ethereum-qr-code-0.2.1.tgz#421649f69ebd9ab6f9b6eb1ea6a530b9047e0386"
-  dependencies:
-    bignumber.js "4.1.0"
-    qrcode "0.9.0"
-
-ethereum-qr-code@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/ethereum-qr-code/-/ethereum-qr-code-0.3.0.tgz#fac1d031a847c4f038bd7c6910c6114829edd51a"
   dependencies:
     bignumber.js "4.1.0"
     qrcode "0.9.0"
@@ -8683,7 +8682,7 @@ pngjs@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-2.3.1.tgz#11d1e12b9cb64d63e30c143a330f4c1f567da85f"
 
-pngjs@^3.0.0, pngjs@^3.2.0:
+pngjs@^3.0.0, pngjs@^3.2.0, pngjs@^3.3.0:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.3.3.tgz#85173703bde3edac8998757b96e5821d0966a21b"
 
@@ -9257,6 +9256,16 @@ qrcode@0.9.0:
     dijkstrajs "^1.0.1"
     isarray "^2.0.1"
     pngjs "^2.3.1"
+
+qrcode@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/qrcode/-/qrcode-1.2.0.tgz#330d24313fbf8d429a806091af9525250239e44a"
+  dependencies:
+    can-promise "^0.0.1"
+    dijkstrajs "^1.0.1"
+    isarray "^2.0.1"
+    pngjs "^3.3.0"
+    yargs "^8.0.2"
 
 qs@6.5.1, qs@~6.5.1:
   version "6.5.1"
@@ -12352,6 +12361,10 @@ widest-line@^2.0.0:
   resolved "https://registry.yarnpkg.com/widest-line/-/widest-line-2.0.0.tgz#0142a4e8a243f8882c0233aa0e0281aa76152273"
   dependencies:
     string-width "^2.1.1"
+
+window-or-global@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/window-or-global/-/window-or-global-1.0.1.tgz#dbe45ba2a291aabc56d62cf66c45b7fa322946de"
 
 window-size@0.1.0:
   version "0.1.0"

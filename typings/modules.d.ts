@@ -20,8 +20,5 @@ declare module "react-id-swiper";
 declare module "react-id-swiper/lib/custom";
 
 declare module "react-blockies";
-<<<<<<< HEAD
-=======
 
-declare module "ethereum-qr-code";
->>>>>>> 3f6e07a2... Add EthereumQRCode component
+declare module "qrcode";

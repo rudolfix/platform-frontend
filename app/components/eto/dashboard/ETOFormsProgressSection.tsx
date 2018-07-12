@@ -157,8 +157,7 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       ),
       etoRiskProgress: selectFormFractionDone(
         EtoRiskAssesmentType.toYup(),
-        s.etoFlow.companyData,
-        etoFlowInitialState,
+        s.etoFlow.companyData
       ),
       loadingData: s.etoFlow.loading,
       kycStatus: selectKycRequestStatus(s.kyc),

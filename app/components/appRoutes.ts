@@ -22,4 +22,6 @@ export const appRoutes = {
   etoLanding: "/eto-landing",
 
   etoRegister: "/eto/registration",
+
+  portfolio: "/portfolio",
 };

@@ -15,6 +15,7 @@ import * as iconDocuments from "../../assets/img/inline_icons/icon-menu-document
 import * as iconEto from "../../assets/img/inline_icons/icon-menu-eto.svg";
 import * as iconHelp from "../../assets/img/inline_icons/icon-menu-help.svg";
 import * as iconSettings from "../../assets/img/inline_icons/icon-menu-settings.svg";
+import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_inactive.svg"
 import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
 import { externalRoutes } from "../externalRoutes";
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
@@ -70,7 +71,12 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
       <MenuEntry
         svgString={iconDashboard}
         to={appRoutes.dashboard}
-        menuName={<FormattedMessage id="menu.start" />}
+        menuName={<FormattedMessage id="menu.dashboard" />}
+      />
+      <MenuEntry
+        svgString={iconPortfolio}
+        to={appRoutes.portfolio}
+        menuName={<FormattedMessage id="menu.portfolio" />}
       />
       <MenuEntry
         svgString={iconWallet}

@@ -46,6 +46,19 @@ export const EtoProductVisionType = YupTS.object({
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
 
+export const EtoRiskAssesmentType = YupTS.object({
+  riskNotRegulatedBusiness: YupTS.onlyTrue(),
+  riskNoThirdPartyDependency: YupTS.onlyTrue(),
+  riskNoLoansExist: YupTS.onlyTrue(),
+  riskLiquidityDescription: YupTS.string(),
+  riskThirdPartyDescription: YupTS.string(),
+  riskThirdPartySharesFinancing: YupTS.string(),
+  riskChangingAgreementDescription: YupTS.string(),
+  riskMaxDescription: YupTS.string(),
+});
+
+type TEtoRiskAssesment = YupTS.TypeOf<typeof EtoRiskAssesmentType>;
+
 export const EtoKeyIndividualsType = YupTS.object({
   founders: YupTS.object({
     description: YupTS.string(),
@@ -143,6 +156,7 @@ export type TCompanyEtoData =
   | TEtoTeamData
   | TEtoLegalData
   | TEtoProductVision
+  | TEtoRiskAssesment
   | TEtoKeyIndividualsType
   | TEtoMediaData;
 
@@ -163,7 +177,9 @@ export const EtoTermsType = YupTS.object({
   publicDurationDays: YupTS.number(),
   minTicketEur: YupTS.number(),
   enableTransferOnSuccess: YupTS.boolean(),
+  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
   riskRegulatedBusiness: YupTS.boolean(),
+  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
   riskThirdParty: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
   tagAlongVotingRule: YupTS.boolean(),

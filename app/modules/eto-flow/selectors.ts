@@ -9,10 +9,15 @@ function getErrorsNumber(validator: Yup.Schema, data?: any): number {
   }
 }
 
+
+export interface IProgressOptions {
+  ignore: any
+}
+
 export const selectFormFractionDone = (
   validator: Yup.Schema,
   formState: any,
-  opts?: {ignore: any}
+  opts?: IProgressOptions
 ): number => {
   const strictValidator = validator.clone()
 
@@ -50,3 +55,11 @@ export const selectFormFractionDone = (
   if (result < 0) return 0;
   return result;
 };
+
+
+export const etoMediaProgressOptions: IProgressOptions = {
+  ignore: {
+    socialChannels: true,
+    companyNews: true
+  }
+}

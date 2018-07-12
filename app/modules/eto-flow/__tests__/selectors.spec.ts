@@ -51,7 +51,7 @@ describe("eto-flow > selectors", () => {
       expect(fractionDone).to.be.closeTo(1/7, 0.0001);
     });
 
-    it.only('should be able to ignore some properties, except explicitly specified as required', () => {
+    it('should be able to ignore some properties, except explicitly specified as required', () => {
       const arrayValidator = Yup.array().of(Yup.object({
         name: Yup.string(),
         lastName: Yup.string()
@@ -68,7 +68,7 @@ describe("eto-flow > selectors", () => {
       const fractionDone4 = selectFormFractionDone(validator, formState, { ignore: { details: [{ lastName: true }] } });
 
       expect(fractionDone1).to.be.closeTo(1/7, 0.0001);
-      expect(fractionDone3).to.be.closeTo(0, 0.0001);
+      expect(fractionDone3).to.be.closeTo(0/2, 0.0001);
       expect(fractionDone2).to.be.closeTo(1/6, 0.0001);
       expect(fractionDone4).to.be.closeTo(1/4, 0.0001);
     })

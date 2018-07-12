@@ -14,7 +14,7 @@ import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
 import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
-import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import { etoMediaProgressOptions, selectFormFractionDone } from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
@@ -154,6 +154,7 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       etoMediaProgress: selectFormFractionDone(
         EtoMediaType.toYup(),
         s.etoFlow.companyData,
+        etoMediaProgressOptions
       ),
       etoRiskProgress: selectFormFractionDone(
         EtoRiskAssesmentType.toYup(),

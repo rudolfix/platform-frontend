@@ -6,6 +6,7 @@ import { actions } from "../../modules/actions";
 import { selectEthereumAddress } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { AccountAddress } from "../shared/AccountAddress";
+import { EthereumQRCode } from "../shared/EthereumQRCode";
 import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as styles from "./DepositEthModal.module.scss";
@@ -24,7 +25,17 @@ const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props 
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>
         <div className={styles.contentWrapper}>
+<<<<<<< HEAD
           <div className={styles.qrCodeWrapper} />
+=======
+          <div className={styles.qrCodeWrapper}>
+            <EthereumQRCode
+              to={props.address}
+              value={0}
+              gas={0}
+            />
+          </div>
+>>>>>>> 3f6e07a2... Add EthereumQRCode component
           <h2 className={styles.title}>
             <FormattedMessage id="modal.deposit-eth.title" />
           </h2>

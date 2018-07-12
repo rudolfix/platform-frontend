@@ -9,7 +9,7 @@ describe("eto-flow > selectors", () => {
       const validator = Yup.object({
         name: Yup.string(),
         age: Yup.number(),
-        happy: Yup.boolean().required()
+        happy: Yup.boolean().required(),
       });
       const formState = { name: "test" };
 
@@ -22,7 +22,7 @@ describe("eto-flow > selectors", () => {
       const nameValidator = Yup.object({
         name: Yup.string(),
         secondName: Yup.string(),
-        lastName: Yup.string()
+        lastName: Yup.string(),
       });
       const validator = Yup.object({
         details: nameValidator,
@@ -36,10 +36,12 @@ describe("eto-flow > selectors", () => {
     });
 
     it("should work with arrays", () => {
-      const arrayValidator = Yup.array().of(Yup.object({
-        name: Yup.string(),
-        lastName: Yup.string()
-      }));
+      const arrayValidator = Yup.array().of(
+        Yup.object({
+          name: Yup.string(),
+          lastName: Yup.string(),
+        }),
+      );
       const validator = Yup.object({
         details: arrayValidator,
         age: Yup.number(),
@@ -48,14 +50,16 @@ describe("eto-flow > selectors", () => {
 
       const fractionDone = selectFormFractionDone(validator, formState);
 
-      expect(fractionDone).to.be.closeTo(1/7, 0.0001);
+      expect(fractionDone).to.be.closeTo(1 / 7, 0.0001);
     });
 
-    it('should be able to ignore some properties, except explicitly specified as required', () => {
-      const arrayValidator = Yup.array().of(Yup.object({
-        name: Yup.string(),
-        lastName: Yup.string()
-      }));
+    it("should be able to ignore some properties, except explicitly specified as required", () => {
+      const arrayValidator = Yup.array().of(
+        Yup.object({
+          name: Yup.string(),
+          lastName: Yup.string(),
+        }),
+      );
       const validator = Yup.object({
         details: arrayValidator,
         age: Yup.number(),
@@ -64,13 +68,17 @@ describe("eto-flow > selectors", () => {
 
       const fractionDone1 = selectFormFractionDone(validator, formState);
       const fractionDone2 = selectFormFractionDone(validator, formState, { ignore: { age: true } });
-      const fractionDone3 = selectFormFractionDone(validator, formState, { ignore: { details: true } });
-      const fractionDone4 = selectFormFractionDone(validator, formState, { ignore: { details: [{ lastName: true }] } });
+      const fractionDone3 = selectFormFractionDone(validator, formState, {
+        ignore: { details: true },
+      });
+      const fractionDone4 = selectFormFractionDone(validator, formState, {
+        ignore: { details: [{ lastName: true }] },
+      });
 
-      expect(fractionDone1).to.be.closeTo(1/7, 0.0001);
-      expect(fractionDone3).to.be.closeTo(0/2, 0.0001);
-      expect(fractionDone2).to.be.closeTo(1/6, 0.0001);
-      expect(fractionDone4).to.be.closeTo(1/4, 0.0001);
-    })
+      expect(fractionDone1).to.be.closeTo(1 / 7, 0.0001);
+      expect(fractionDone3).to.be.closeTo(0 / 2, 0.0001);
+      expect(fractionDone2).to.be.closeTo(1 / 6, 0.0001);
+      expect(fractionDone4).to.be.closeTo(1 / 4, 0.0001);
+    });
   });
 });

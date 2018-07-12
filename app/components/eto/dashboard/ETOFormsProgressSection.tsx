@@ -13,8 +13,10 @@ import {
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
-import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
-import { etoMediaProgressOptions, selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import {
+  etoMediaProgressOptions,
+  selectFormFractionDone,
+} from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
@@ -135,10 +137,7 @@ export const ETOFormsProgressSection = compose<React.SFC>(
         EtoCompanyInformationType.toYup(),
         s.etoFlow.companyData,
       ),
-      etoTermsProgress: selectFormFractionDone(
-        EtoTermsType.toYup(),
-        s.etoFlow.etoData,
-      ),
+      etoTermsProgress: selectFormFractionDone(EtoTermsType.toYup(), s.etoFlow.etoData),
       etoKeyIndividualsProgress: selectFormFractionDone(
         EtoKeyIndividualsType.toYup(),
         s.etoFlow.companyData,
@@ -154,12 +153,9 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       etoMediaProgress: selectFormFractionDone(
         EtoMediaType.toYup(),
         s.etoFlow.companyData,
-        etoMediaProgressOptions
+        etoMediaProgressOptions,
       ),
-      etoRiskProgress: selectFormFractionDone(
-        EtoRiskAssesmentType.toYup(),
-        s.etoFlow.companyData
-      ),
+      etoRiskProgress: selectFormFractionDone(EtoRiskAssesmentType.toYup(), s.etoFlow.companyData),
       loadingData: s.etoFlow.loading,
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),

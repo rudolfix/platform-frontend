@@ -1,5 +1,6 @@
 import { accessWalletReducer } from "./accessWallet/reducer";
 import { authReducer } from "./auth/reducer";
+import { depositEthModalReducer } from "./depositEthModal/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
 import { etoReducer } from "./eto/reducer";
 import { genericModalReducer } from "./genericModal/reducer";
@@ -7,6 +8,7 @@ import { initReducer } from "./init/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
+import { sendEthModalReducer } from "./sendEthModal/reducer";
 import { browserReducer } from "./userAgent/reducer";
 import { verifyEmailWidgetReducer } from "./verifyEmailWidget/reducer";
 import { browserWalletWizardReducer } from "./wallet-selector/browser-wizard/reducer";
@@ -35,4 +37,6 @@ export const appReducers = {
   notifications: notificationsReducer,
   etoFlow: etoFlowReducer,
   eto: etoReducer,
+  depositEthModal: depositEthModalReducer,
+  sendEthModal: sendEthModalReducer,
 };

@@ -10,7 +10,9 @@ import {
 } from "../../lib/api/EtoApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
-import { neuTakeEvery } from "../sagas";
+import { ensurePermissionsArePresent } from "../auth/sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
+import { SUBMIT_ETO_PERMISSION } from "./../../config/constants";
 
 export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
   try {
@@ -59,12 +61,23 @@ export function* saveEtoData(
 }
 
 export function* submitEtoData(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  {
+    apiEtoService,
+    notificationCenter,
+    logger,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "ETO_FLOW_SUBMIT_DATA_START") return;
   try {
+    yield neuCall(
+      ensurePermissionsArePresent,
+      [SUBMIT_ETO_PERMISSION],
+      formatIntlMessage("eto.modal.submit-description"),
+    );
     yield apiEtoService.submitCompanyAndEtoData();
+    notificationCenter.info("ETO Successfully submitted");
   } catch (e) {
     logger.error("Failed to send ETO data", e);
     notificationCenter.error("Failed to send ETO data");

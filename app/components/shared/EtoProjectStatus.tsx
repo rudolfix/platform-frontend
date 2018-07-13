@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./EtoProjectStatus.module.scss";
-import { ProjectStatus, TStatus } from './ProjectStatus';
+import { ProjectStatus, TStatus } from "./ProjectStatus";
 
 interface IProps {
   status: TStatus;

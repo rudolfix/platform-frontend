@@ -19,7 +19,6 @@ import {
   selectIsUserEmailVerified,
   selectVerifiedUserEmail,
 } from "../../modules/auth/selectors";
-import { etoFlowInitialState } from "../../modules/eto-flow/reducer";
 import { selectEtoState, selectFormFractionDone } from "../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
@@ -37,18 +36,28 @@ interface IStateProps {
   verifiedEmail?: string;
   backupCodesVerified?: boolean;
   requestStatus?: TRequestStatus;
-  etoFormProgress?: number;
   isEmailVerified?: boolean;
   etoState?: EtoState;
+  kycStatus?: TRequestStatus;
+  etoFormProgress?: number;
+  productVisionProgress?: number;
+  legalInformationProgress?: number;
+  etoKeyIndividualsProgress?: number;
+  etoTermsProgress?: number;
+  companyInformationProgress?: number;
+  etoMediaProgress?: number;
+  etoRiskProgress?: number;
+  loadingData: boolean;
+  businessRequestStateLoading: boolean;
 }
 
 interface IDispatchProps {
   loadDataStart: () => void;
 }
 
-type IProps = IStateProps;
+type IProps = IStateProps & IDispatchProps;
 
-class EtoDashboardComponent extends React.Component<any> {
+class EtoDashboardComponent extends React.Component<IProps> {
   // TODO: REMOVE ANY
   componentDidMount(): void {
     const { kycStatus, isEmailVerified, loadDataStart } = this.props;
@@ -64,20 +73,40 @@ class EtoDashboardComponent extends React.Component<any> {
       verifiedEmail,
       backupCodesVerified,
       requestStatus,
-      etoFormProgress,
-      loadDataStart,
       kycStatus,
       isEmailVerified,
       etoState,
+      etoFormProgress,
+      productVisionProgress,
+      legalInformationProgress,
+      etoKeyIndividualsProgress,
+      etoTermsProgress,
+      companyInformationProgress,
+      etoMediaProgress,
+      etoRiskProgress,
+      loadingData,
+      businessRequestStateLoading,
     } = this.props;
+
+    const etoProgressProps = {
+      companyInformationProgress: companyInformationProgress ? companyInformationProgress : 0,
+      productVisionProgress: productVisionProgress ? productVisionProgress : 0,
+      legalInformationProgress: legalInformationProgress ? legalInformationProgress : 0,
+      etoKeyIndividualsProgress: etoKeyIndividualsProgress ? etoKeyIndividualsProgress : 0,
+      etoTermsProgress: etoTermsProgress ? etoTermsProgress : 0,
+      etoMediaProgress: etoMediaProgress ? etoMediaProgress : 0,
+      etoRiskProgress: etoRiskProgress ? etoRiskProgress : 0,
+      loadingData,
+      businessRequestStateLoading,
+      kycStatus,
+      isEmailVerified,
+    };
 
     const isVerificationSectionDone = !!(
       verifiedEmail &&
       backupCodesVerified &&
       requestStatus === "Accepted"
     );
-
-    const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
 
     return (
       <LayoutAuthorized>
@@ -92,7 +121,8 @@ class EtoDashboardComponent extends React.Component<any> {
               <SettingsWidgets isDynamic={true} {...this.props} />
             </>
           )}
-          {etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD &&
+          {etoFormProgress &&
+            etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD &&
             etoState === "preview" && (
               <>
                 <DashboardSection
@@ -112,7 +142,7 @@ class EtoDashboardComponent extends React.Component<any> {
                 title="ETO APPLICATION"
                 data-test-id="eto-dashboard-application"
               />
-              <ETOFormsProgressSection {...this.props} />
+              <ETOFormsProgressSection {...etoProgressProps} />
             </>
           )}
         </Row>
@@ -128,10 +158,7 @@ export const EtoDashboard = compose<React.SFC>(
         EtoCompanyInformationType.toYup(),
         s.etoFlow.companyData,
       ),
-      etoTermsProgress: selectFormFractionDone(
-        EtoTermsType.toYup(),
-        s.etoFlow.etoData,
-      ),
+      etoTermsProgress: selectFormFractionDone(EtoTermsType.toYup(), s.etoFlow.etoData),
       etoKeyIndividualsProgress: selectFormFractionDone(
         EtoKeyIndividualsType.toYup(),
         s.etoFlow.companyData,
@@ -144,14 +171,11 @@ export const EtoDashboard = compose<React.SFC>(
         EtoProductVisionType.toYup(),
         s.etoFlow.companyData,
       ),
-      etoMediaProgress: selectFormFractionDone(
-        EtoMediaType.toYup(),
-        s.etoFlow.companyData,
-      ),
-      etoFormProgress: selectFormFractionDone(
-        TGeneralEtoDataType.toYup(),
-        { ...s.etoFlow.companyData, ...s.etoFlow.etoData },
-      ),
+      etoMediaProgress: selectFormFractionDone(EtoMediaType.toYup(), s.etoFlow.companyData),
+      etoFormProgress: selectFormFractionDone(TGeneralEtoDataType.toYup(), {
+        ...s.etoFlow.companyData,
+        ...s.etoFlow.etoData,
+      }),
       loadingData: s.etoFlow.loading,
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),

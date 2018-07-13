@@ -152,6 +152,7 @@
   "eto.form.section.token-holders-rights.title": "Token holders rights",
   "eto.form.section.token-holders-rights.voting-rights-enabled": "Voting rights enabled",
   "eto.ico-monitor": "ICO Monitor",
+  "eto.modal.submit-description": "Confirm submitting your ETO request",
   "eto.overview.funds-distribution.number-of-investors": "Number of investors",
   "eto.overview.funds-distribution.number-of-transactions": "Number of transactions",
   "eto.overview.funds-distribution.table.header": "Investors",

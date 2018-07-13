@@ -40,7 +40,7 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         },
       };
     case "ETO_FLOW_SAVE_DATA_START":
-    case "ETO_FLOW_SUBMIT_DATA_START":    
+    case "ETO_FLOW_SUBMIT_DATA_START":
       return {
         ...state,
         saving: true,

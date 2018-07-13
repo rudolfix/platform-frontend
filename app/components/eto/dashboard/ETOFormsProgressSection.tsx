@@ -25,7 +25,7 @@ interface IProps {
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;
-  isEmailVerified: boolean;
+  isEmailVerified?: boolean;
 }
 
 export const ETOFormsProgressSection: React.SFC<IProps> = ({

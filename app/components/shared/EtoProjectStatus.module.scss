@@ -1,0 +1,19 @@
+.status-of-eto {
+  display: flex;
+  flex-basis: 26%;
+  flex-direction: column;
+  justify-content: space-between;
+  @include media-breakpoint-up(sm) {
+    flex-direction: row;
+  }
+
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+
+  .title {
+    @include font-label;
+
+    margin-right: px-to-rem(10px);
+  }
+}

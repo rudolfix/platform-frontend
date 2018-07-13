@@ -13,8 +13,10 @@ import {
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
-import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
-import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import {
+  etoMediaProgressOptions,
+  selectFormFractionDone,
+} from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
@@ -134,38 +136,26 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       companyInformationProgress: selectFormFractionDone(
         EtoCompanyInformationType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
-      etoTermsProgress: selectFormFractionDone(
-        EtoTermsType.toYup(),
-        s.etoFlow.etoData,
-        etoFlowInitialState,
-      ),
+      etoTermsProgress: selectFormFractionDone(EtoTermsType.toYup(), s.etoFlow.etoData),
       etoKeyIndividualsProgress: selectFormFractionDone(
         EtoKeyIndividualsType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       legalInformationProgress: selectFormFractionDone(
         EtoLegalInformationType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       productVisionProgress: selectFormFractionDone(
         EtoProductVisionType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       etoMediaProgress: selectFormFractionDone(
         EtoMediaType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
+        etoMediaProgressOptions,
       ),
-      etoRiskProgress: selectFormFractionDone(
-        EtoRiskAssesmentType.toYup(),
-        s.etoFlow.companyData,
-        etoFlowInitialState,
-      ),
+      etoRiskProgress: selectFormFractionDone(EtoRiskAssesmentType.toYup(), s.etoFlow.companyData),
       loadingData: s.etoFlow.loading,
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),

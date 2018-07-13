@@ -1,4 +1,6 @@
 .panel {
+  @include rect(100%);
+
   background-color: $color-white;
   box-shadow: $shadow-bottom-black;
   padding: px-to-rem(14px) px-to-rem(25px) px-to-rem(25px);
@@ -17,13 +19,22 @@
 }
 
 .header {
-  @include font-button-default;
+  @include font-label;
 
   color: $color-black;
   font-weight: $font-weight-bold;
   justify-content: space-between;
   margin-bottom: $spacing-vertical-sm-1;
   text-transform: uppercase;
+  position: relative;
+
+  &::before {
+    @include rect(2px, 12px);
+
+    background-color: $color-brand;
+    content: "";
+    margin-right: 12px;
+  }
 }
 
 .left {

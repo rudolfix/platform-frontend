@@ -27,6 +27,7 @@ import * as redditIcon from "../../../../assets/img/inline_icons/social_reddit.s
 import * as slackIcon from "../../../../assets/img/inline_icons/social_slack.svg";
 import * as telegramIcon from "../../../../assets/img/inline_icons/social_telegram.svg";
 import * as socialTwitter from "../../../../assets/img/inline_icons/social_twitter.svg";
+import { etoMediaProgressOptions } from "../../../../modules/eto-flow/selectors";
 
 const socialProfiles = [
   {
@@ -97,6 +98,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-media.title" />}
     validator={EtoMediaType.toYup()}
+    progressOptions={etoMediaProgressOptions}
   >
     <Section>
       <p className="offset-1 mb-2 font-weight-bold">

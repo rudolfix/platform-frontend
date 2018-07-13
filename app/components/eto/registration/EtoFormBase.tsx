@@ -3,8 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as Yup from "yup";
 
-import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
-import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import { IProgressOptions, selectFormFractionDone } from "../../../modules/eto-flow/selectors";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
 
@@ -16,6 +15,7 @@ interface IProps {
 
 interface IFormPercentageDoneProps {
   validator: Yup.Schema;
+  progressOptions?: IProgressOptions;
 }
 
 class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
@@ -29,7 +29,7 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
     const calculatedFraction = selectFormFractionDone(
       this.props.validator,
       values,
-      etoFlowInitialState,
+      this.props.progressOptions,
     );
 
     return <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />;
@@ -40,13 +40,14 @@ export const EtoFormBase: React.SFC<IProps & IFormPercentageDoneProps> = ({
   children,
   title,
   validator,
+  progressOptions,
 }) => (
   <div>
     <Form className={styles.form}>
       <h4 className={styles.header}>{title}</h4>
 
       <Section>
-        <PercentageFormDone validator={validator} />
+        <PercentageFormDone validator={validator} progressOptions={progressOptions} />
       </Section>
 
       {children}

@@ -14,9 +14,9 @@ import * as iconDashboard from "../../assets/img/inline_icons/icon-menu-dashboar
 import * as iconDocuments from "../../assets/img/inline_icons/icon-menu-documents.svg";
 import * as iconEto from "../../assets/img/inline_icons/icon-menu-eto.svg";
 import * as iconHelp from "../../assets/img/inline_icons/icon-menu-help.svg";
+import * as iconPortfolio from "../../assets/img/inline_icons/icon-menu-portfolio.svg";
 import * as iconSettings from "../../assets/img/inline_icons/icon-menu-settings.svg";
-import * as iconPortfolio from "../../assets/img/inline_icons/icon_portfolio_inactive.svg"
-import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
+import * as iconWallet from "../../assets/img/inline_icons/icon-menu-wallet.svg";
 import { externalRoutes } from "../externalRoutes";
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
 

@@ -7,23 +7,24 @@ interface IProps {
   gas?: number;
 }
 
-export class EthereumQRCode extends React.Component<IProps> {
-  private qrCode = "";
+export class EthereumQRCode extends React.PureComponent<IProps> {
+  state = {
+    qrCodeImage: "",
+  };
 
-  generateQRCode(): void {
+  private generateQRCode(): void {
     const { address, value, gas } = this.props;
     const computedValue = value && `?value=${value}`;
     const computedGas = gas && `?gas=${gas}`;
-
     const url = `ethereum:${address}${computedValue}${computedGas}`;
 
-    QRCode.toString(url, (err: any, string: string) => {
-      if (err) {
-        throw err;
-      }
-
-      this.qrCode = string;
+    QRCode.toString(url, { margin: 0 }).then((svg: string) => {
+      this.setState({ qrCodeImage: `data:image/svg+xml;base64,${btoa(svg)}` });
     });
+  }
+
+  componentDidMount(): void {
+    this.generateQRCode();
   }
 
   componentDidUpdate(): void {
@@ -31,6 +32,6 @@ export class EthereumQRCode extends React.Component<IProps> {
   }
 
   render(): React.ReactNode {
-    return <div dangerouslySetInnerHTML={{ __html: this.qrCode }} />;
+    return <img src={this.state.qrCodeImage} alt={this.props.address} title={this.props.address} />;
   }
 }

@@ -4,8 +4,8 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { FormattedMessage } from "react-intl-phraseapp";
+import { EtoLegalInformationType } from '../../../../lib/api/EtoApi.interfaces';
 import {
-  EtoCompanyInformationType,
   TPartialCompanyEtoData,
 } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -50,7 +50,7 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
-    <EtoFormBase title="Legal Information" validator={EtoCompanyInformationType.toYup()}>
+    <EtoFormBase title="Legal Information" validator={EtoLegalInformationType.toYup()}>
       <Section>
         <FormField label="Legal company name" name="name" disabled />
         <FormField label="Legal form" name="legalForm" disabled />
@@ -95,7 +95,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoCompanyInformationType.toYup(),
+  validationSchema: EtoLegalInformationType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);

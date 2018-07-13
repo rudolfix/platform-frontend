@@ -13,3 +13,4 @@ cypress/screenshots
 __screenshots__
 e2e/platform-backend
 .reg
+.vscode

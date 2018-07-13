@@ -4,15 +4,13 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import {
   EtoCompanyInformationType,
-  EtoState,
-  TGeneralEtoDataType,
-} from "../../lib/api/EtoApi.interfaces";
-import {
   EtoKeyIndividualsType,
   EtoLegalInformationType,
   EtoMediaType,
   EtoProductVisionType,
+  EtoState,
   EtoTermsType,
+  TGeneralEtoDataType,
 } from "../../lib/api/EtoApi.interfaces";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";

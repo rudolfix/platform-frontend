@@ -6,6 +6,7 @@ import {
   EtoLegalInformationType,
   EtoMediaType,
   EtoProductVisionType,
+  EtoRiskAssesmentType,
   EtoTermsType,
 } from "../../../lib/api/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
@@ -19,6 +20,8 @@ interface IProps {
   legalInformationProgress: number;
   etoKeyIndividualsProgress: number;
   etoTermsProgress: number;
+  etoMediaProgress: number;
+  etoRiskProgress: number;
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;

@@ -13,7 +13,6 @@ import { Panel } from "../../shared/Panel";
 import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { SocialProfilesList } from "../../shared/SocialProfilesList";
-import { Tabs } from "../../shared/Tabs";
 import { Video } from "../../shared/Video";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
@@ -23,96 +22,11 @@ import * as linkedinIcon from "../../../assets/img/inline_icons/social_linkedin.
 import * as mediumIcon from "../../../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../../../assets/img/inline_icons/social_reddit.svg";
 import * as telegramIcon from "../../../assets/img/inline_icons/social_telegram.svg";
+import { TabContent, Tabs } from "../../shared/Tabs";
 import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
-
-const tabsData = [
-  { text: "tab 1", isActive: true, onClick: () => {} },
-  { text: "tab 2", onClick: () => {} },
-  { text: "tab 3", onClick: () => {} },
-];
-
-const people = [
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-];
 
 const swiperSingleRowSettings = {
   slidesPerView: 5,
@@ -446,7 +360,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Col>
         <Col xs={12} md={4} className="mb-4">
           <Video youTubeId="aqz-KE-bpKQ" className="mb-4" />
-          <NewsWidget isEditable={false} activeTab="news" news={[]} />
+          <NewsWidget isEditable={false} news={[]} />
           {/* TODO: Add news */}
         </Col>
       </Row>
@@ -601,26 +515,137 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Col>
       </Row>
 
-      <Row>
-        <Col className="mb-4">
-          <Tabs tabs={tabsData} hasDivider={false} size="large" className="mb-4" />
-          <Panel>
-            <PeopleSwiperWidget {...swiperMultiRowSettings} people={people} />
-          </Panel>
-        </Col>
-      </Row>
+      {((companyData.founders && companyData.founders.members.length) ||
+        (companyData.team && companyData.team.members.length)) && (
+        <Row>
+          <Col className="mb-4">
+            <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+              {companyData.founders &&
+                companyData.founders.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperMultiRowSettings}
+                        people={(companyData.founders && companyData.founders.members) || []}
+                        navigation={{
+                          nextEl: "people-swiper-founders-next",
+                          prevEl: "people-swiper-founders-prev",
+                        }}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.team &&
+                companyData.team.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperMultiRowSettings}
+                        people={(companyData.team && companyData.team.members) || []}
+                        navigation={{
+                          nextEl: "people-swiper-team-next",
+                          prevEl: "people-swiper-team-prev",
+                        }}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+            </Tabs>
+          </Col>
+        </Row>
+      )}
+
+      {((companyData.notableInvestors && companyData.notableInvestors.members.length) ||
+        (companyData.partners && companyData.partners.members.length) ||
+        (companyData.keyCustomers && companyData.keyCustomers.members.length) ||
+        (companyData.boardMembers && companyData.boardMembers.members.length)) && (
+        <Row>
+          <Col className="mb-4">
+            <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+              {companyData.notableInvestors &&
+                companyData.notableInvestors.members.length && (
+                  <TabContent
+                    tab={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}
+                  >
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperSingleRowSettings}
+                        people={
+                          (companyData.notableInvestors && companyData.notableInvestors.members) ||
+                          []
+                        }
+                        navigation={{
+                          nextEl: "people-swiper-investors-next",
+                          prevEl: "people-swiper-investors-prev",
+                        }}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.partners &&
+                companyData.partners.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperSingleRowSettings}
+                        navigation={{
+                          nextEl: "people-swiper-partners-next",
+                          prevEl: "people-swiper-partners-prev",
+                        }}
+                        people={(companyData.partners && companyData.partners.members) || []}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.keyCustomers &&
+                companyData.keyCustomers.members.length && (
+                  <TabContent
+                    tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}
+                  >
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperSingleRowSettings}
+                        navigation={{
+                          nextEl: "people-swiper-partners-next",
+                          prevEl: "people-swiper-partners-prev",
+                        }}
+                        people={
+                          (companyData.keyCustomers && companyData.keyCustomers.members) || []
+                        }
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.boardMembers &&
+                companyData.boardMembers.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        navigation={{
+                          nextEl: "people-swiper-board-members-next",
+                          prevEl: "people-swiper-board-members-prev",
+                        }}
+                        {...swiperSingleRowSettings}
+                        people={
+                          (companyData.boardMembers && companyData.boardMembers.members) || []
+                        }
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+            </Tabs>
+          </Col>
+        </Row>
+      )}
 
       <Row>
-        <Col className="mb-4">
-          <Tabs tabs={tabsData} hasDivider={false} size="large" className="mb-4" />
-          <Panel>
-            <PeopleSwiperWidget {...swiperSingleRowSettings} people={people} layout="vertical" />
-          </Panel>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={12} md={8} className="mb-4">
+        <Col sm={12} md={8} className="mb-4">
           <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.product-vision.title" />
           </SectionHeader>
@@ -675,7 +700,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Accordion>
           </Panel>
         </Col>
-        <Col xs={12} md={4}>
+        <Col sm={12} md={4}>
           <SectionHeader hasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>

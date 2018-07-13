@@ -3,6 +3,11 @@ $indicator-size: 16px;
 .checkbox {
   cursor: pointer;
   display: inline-flex;
+
+  :global(.form-group) & {
+    align-items: start;
+    flex-wrap: nowrap;
+  }
 }
 
 .input {

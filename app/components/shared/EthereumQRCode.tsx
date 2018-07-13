@@ -7,7 +7,7 @@ interface IProps {
   gas?: number;
 }
 
-export class EthereumQRCode extends React.PureComponent<IProps> {
+export class EthereumQRCode extends React.Component<IProps> {
   state = {
     qrCodeImage: "",
   };
@@ -24,10 +24,6 @@ export class EthereumQRCode extends React.PureComponent<IProps> {
   }
 
   componentDidMount(): void {
-    this.generateQRCode();
-  }
-
-  componentDidUpdate(): void {
     this.generateQRCode();
   }
 

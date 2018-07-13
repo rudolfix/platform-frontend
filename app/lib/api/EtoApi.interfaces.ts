@@ -150,6 +150,8 @@ export type TCompanyEtoData =
  *  only deals with "/etos/me"
  */
 
+export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
+
 export const EtoTermsType = YupTS.object({
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
@@ -170,9 +172,13 @@ export const EtoTermsType = YupTS.object({
   whitelistDurationDays: YupTS.number(),
 });
 
-type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
+export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
-export type TEtoSpecsData = TEtoTermsType;
+interface IAdditionalEtoType {
+  state: EtoState;
+}
+
+export type TEtoSpecsData = TEtoTermsType & IAdditionalEtoType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;
@@ -182,3 +188,12 @@ export type TGeneralEtoData = {
   etoData: TPartialEtoSpecData;
   companyData: TPartialCompanyEtoData;
 };
+
+export const TGeneralEtoDataType = YupTS.object({
+  ...EtoTermsType.shape,
+  ...EtoMediaType.shape,
+  ...EtoLegalInformationType.shape,
+  // ...EtoKeyIndividualsType.shape,
+  ...EtoProductVisionType.shape,
+  ...EtoCompanyInformationType.shape,
+});

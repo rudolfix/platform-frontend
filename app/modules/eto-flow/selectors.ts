@@ -1,4 +1,6 @@
 import * as Yup from "yup";
+import { EtoState } from "../../lib/api/EtoApi.interfaces";
+import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data: any): number {
   try {
@@ -25,3 +27,6 @@ export const selectFormFractionDone = (
   if (result < 0) return 0;
   return result;
 };
+
+export const selectEtoState = (state: IEtoFlowState): EtoState | undefined =>
+  state.etoData && state.etoData.state;

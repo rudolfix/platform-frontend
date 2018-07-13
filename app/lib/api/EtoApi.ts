@@ -2,12 +2,13 @@ import { inject, injectable } from "inversify";
 
 import { symbols } from "../../di/symbols";
 import { IHttpClient, IHttpResponse } from "./client/IHttpClient";
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "./EtoApi.interfaces";
+import { TGeneralEtoData, TPartialCompanyEtoData, TPartialEtoSpecData } from "./EtoApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/";
 const COMPANIES_ME_DATA_PATH = "/companies/me";
 const COMPANIES_DATA_PATH = "/companies/";
 const ETO_DATA_PATH = "/etos/me";
+const ETO_SUBMISSION_PATH = "/etos/me/submission";
 const ETO_PREVIEW_PATH = "/eto-previews/";
 
 @injectable()
@@ -58,6 +59,13 @@ export class EtoApi {
       baseUrl: BASE_PATH,
       url: COMPANIES_ME_DATA_PATH,
       body: data,
+    });
+  }
+
+  public async submitCompanyAndEtoData(): Promise<IHttpResponse<TGeneralEtoData>> {
+    return await this.httpClient.post<TGeneralEtoData>({
+      baseUrl: BASE_PATH,
+      url: ETO_SUBMISSION_PATH,
     });
   }
 }

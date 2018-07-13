@@ -58,7 +58,24 @@ export function* saveEtoData(
   }
 }
 
+export function* submitEtoData(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_SUBMIT_DATA_START") return;
+  try {
+    yield apiEtoService.submitCompanyAndEtoData();
+  } catch (e) {
+    logger.error("Failed to send ETO data", e);
+    notificationCenter.error("Failed to send ETO data");
+  } finally {
+    yield put(actions.etoFlow.loadDataStart());
+    yield put(actions.routing.goToDashboard());
+  }
+}
+
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
 }

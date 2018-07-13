@@ -30,9 +30,10 @@ $lg-width: px-to-rem(140px);
     flex-direction: column;
   }
 
+  color: $color-white;
+  display: flex;
   top: 20px;
   position: sticky;
-  display: flex;
 }
 
 .menu-item {
@@ -43,7 +44,6 @@ $lg-width: px-to-rem(140px);
   flex-shrink: 0;
   position: relative;
   height: px-to-rem(60px);
-  color: $color-silver;
   display: flex;
   align-items: center;
 
@@ -56,7 +56,6 @@ $lg-width: px-to-rem(140px);
     background-color: $neu-charcoal-grey;
     border-color: $neu-piss-yellow;
     text-decoration: none;
-    color: $color-silver;
   }
 
   &:focus {

@@ -5,6 +5,7 @@ import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
+import { depositModalActions } from "./depositEthModal/actions";
 import { etoFlowActions } from "./eto-flow/actions";
 import { etoActions } from "./eto/actions";
 import { genericModalActions } from "./genericModal/actions";
@@ -12,6 +13,7 @@ import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
+import { sendModalActions } from "./sendEthModal/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
 import { userAgentActions } from "./userAgent/actions";
@@ -39,6 +41,8 @@ export const actions = {
   eto: etoActions,
   formSingleFileUpload: formSingleFileUploadActions,
   remoteFile: remoteFileActions,
+  depositEthModal: depositModalActions,
+  sendEthModal: sendModalActions,
 };
 
 /**
@@ -63,6 +67,8 @@ export const allActions = {
   ...etoActions,
   ...formSingleFileUploadActions,
   ...remoteFileActions,
+  ...depositModalActions,
+  ...sendModalActions,
 };
 
 /**

@@ -10,7 +10,6 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers"
 import { ButtonArrowRight } from "../../shared/Buttons";
 import { Panel } from "../../shared/Panel";
 
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./SubmitProposalWidget.module.scss";
 
 interface IStateProps {

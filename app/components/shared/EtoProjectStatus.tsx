@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { FormattedMessage } from "react-intl-phraseapp";
-import { EtoState } from "../../lib/api/EtoApi.interfaces";
 import * as styles from "./EtoProjectStatus.module.scss";
 import { ProjectStatus, TStatus } from './ProjectStatus';
 

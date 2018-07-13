@@ -5,6 +5,7 @@ import { Size } from "../../types";
 import { InlineIcon } from "./InlineIcon";
 import { LoadingIndicator } from "./LoadingIndicator";
 
+import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
 import * as closeIcon from "../../assets/img/inline_icons/close.svg";
 import * as styles from "./Buttons.module.scss";
 
@@ -82,4 +83,8 @@ export const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...prop
 
 export const ButtonClose: React.SFC<IGeneralButton> = props => (
   <ButtonIcon {...props} svgIcon={closeIcon} />
+);
+
+export const ButtonArrowRight: React.SFC<any> = props => (
+  <Button layout="secondary" {...props} iconPosition="icon-after" svgIcon={arrowRight} />
 );

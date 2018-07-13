@@ -4,8 +4,8 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { FormattedMessage } from "react-intl-phraseapp";
-import { EtoLegalInformationType } from '../../../../lib/api/EtoApi.interfaces';
 import {
+  EtoLegalInformationType,
   TPartialCompanyEtoData,
 } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";

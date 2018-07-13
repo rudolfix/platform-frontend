@@ -380,6 +380,8 @@
   "settings.kyc-widget.header": "{step} VERIFICATION PROCESS",
   "settings.personal-settings.title": "Personal Settings",
   "settings.security-settings.title": "Account Settings",
+  "settings.submit-proposal-widget.completed-fields": "You have completed all the required fields and can now submit your proposal for review",
+  "settings.submit-your-proposal.header": "SUBMIT YOUR PROPOSAL",
   "settings.verify-email-widget.email-is-verified": "Your email address is verified.",
   "settings.verify-email-widget.email-placeholder": "Email Address",
   "settings.verify-email-widget.enter-email": "Please enter your email",

@@ -1,13 +1,7 @@
 .panel {
-  @include rect(100%);
-
   background-color: $color-white;
   box-shadow: $shadow-bottom-black;
-  padding: px-to-rem(25px);
-
-  &:global(.has-header) {
-    padding-top: px-to-rem(14px);
-  }
+  padding: px-to-rem(14px) px-to-rem(25px) px-to-rem(25px);
 }
 
 .header,

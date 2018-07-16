@@ -10,6 +10,7 @@ import { Demo } from "./Demo";
 import { Documents } from "./Documents";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
+import { Portfolio } from "./Portfolio";
 
 import { appRoutes } from "./appRoutes";
 import { EmailVerify } from "./emailVerify";
@@ -57,12 +58,9 @@ export const AppRouter: React.SFC = () => (
     ]}
 
     {/* only investors routes */}
+    <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
-
-    {/* only investors routes */}
     <OnlyAuthorizedRoute path={appRoutes.documents} issuerComponent={Documents} />
-
-    {/* only issuers routes */}
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />
     <OnlyAuthorizedRoute path={appRoutes.etoPublicView} issuerComponent={EtoPublicView} exact />
 

@@ -1,8 +1,12 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { makeTid } from "../../utils/tidUtils";
 import { Money, TCurrency } from "./Money";
 import * as styles from "./MoneySuiteWidget.module.scss";
+
+export type TTheme = "light";
+export type TSize = "large";
 
 export interface IMoneySuiteWidgetProps {
   icon: string;
@@ -12,6 +16,8 @@ export interface IMoneySuiteWidgetProps {
   value: string;
   percentage?: string;
   "data-test-id"?: string;
+  theme?: TTheme;
+  size?: TSize;
 }
 
 export const MoneySuiteWidget: React.SFC<
@@ -24,9 +30,11 @@ export const MoneySuiteWidget: React.SFC<
   value,
   percentage,
   "data-test-id": dataTestId,
+  theme,
+  size,
 }) => (
   <>
-    <div className={styles.moneySuiteWidget}>
+    <div className={cn(styles.moneySuiteWidget, theme, size)}>
       <img className={styles.icon} src={icon} />
       <div>
         <div className={styles.money} data-test-id={makeTid(dataTestId, "-large-value")}>

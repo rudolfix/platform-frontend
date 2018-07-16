@@ -75,7 +75,7 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
       />
       <MenuEntry
         svgString={iconPortfolio}
-        to="#0"
+        to={appRoutes.portfolio}
         menuName={<FormattedMessage id="menu.portfolio" />}
       />
       <MenuEntry

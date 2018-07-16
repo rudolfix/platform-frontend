@@ -1,6 +1,23 @@
 .money-suite-widget {
   display: flex;
 
+  &:global(.light) {
+    :local(.money),
+    :local(.total-money) {
+      color: $color-white;
+    }
+  }
+
+  &:global(.large) {
+    :local(.money) {
+      font-size: px-to-rem(22px);
+    }
+
+    :local(.total-money) {
+      font-size: px-to-rem(20px);
+    }
+  }
+
   .icon {
     @include rect(34px);
 

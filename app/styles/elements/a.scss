@@ -1,7 +1,8 @@
 a {
   font-weight: $font-weight-bold;
 
-  &[href^="http"] {
+  &[href^="http"],
+  &[download] {
     text-decoration: underline;
   }
 

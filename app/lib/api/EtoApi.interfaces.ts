@@ -174,6 +174,7 @@ export const EtoTermsType = YupTS.object({
   fullyDilutedPreMoneyValuationEur: YupTS.number(),
   existingCompanyShares: YupTS.number(),
   newSharesToIssue: YupTS.number(),
+  maximumNewSharesToIssue: YupTS.number(),
   discountScheme: YupTS.string(),
   shareNominalValueEur: YupTS.number(),
   publicDurationDays: YupTS.number(),

@@ -27,6 +27,8 @@ import * as redditIcon from "../../../../assets/img/inline_icons/social_reddit.s
 import * as slackIcon from "../../../../assets/img/inline_icons/social_slack.svg";
 import * as telegramIcon from "../../../../assets/img/inline_icons/social_telegram.svg";
 import * as socialTwitter from "../../../../assets/img/inline_icons/social_twitter.svg";
+import { etoMediaProgressOptions } from "../../../../modules/eto-flow/selectors";
+import { FormField } from "../../../shared/forms/forms";
 
 const socialProfiles = [
   {
@@ -97,11 +99,22 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-media.title" />}
     validator={EtoMediaType.toYup()}
+    progressOptions={etoMediaProgressOptions}
   >
     <Section>
       <p className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.social-channels" />
       </p>
+      <Row>
+        <Col className="offset-1" xs={10}>
+          <FormField
+            name="companyVideo.url"
+            placeholder="Media Link"
+            label={<FormattedMessage id="eto.form.eto-media.you-tube-video" />}
+            additionalObjValue={{ name: "companyVideo.title", value: "youtube" }}
+          />
+        </Col>
+      </Row>
       <SocialProfilesEditor profiles={socialProfiles} name="socialChannels" className="mt-4" />
       <p className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.social-channels-others" />

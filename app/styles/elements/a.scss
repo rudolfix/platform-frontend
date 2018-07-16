@@ -1,6 +1,17 @@
 a {
   font-weight: $font-weight-bold;
 
+  &[href^="http"],
+  &[download] {
+    text-decoration: underline;
+  }
+
+  &,
+  &:visited {
+    color: inherit;
+    transition: color 350ms $ease-out-expo;
+  }
+
   &:hover,
   &:focus {
     text-decoration: none;

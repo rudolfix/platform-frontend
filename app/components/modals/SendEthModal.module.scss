@@ -1,0 +1,13 @@
+.content-wrapper {
+  padding-bottom: $spacing-vertical-lg-3;
+}
+
+.spinning-eth-wrapper {
+  margin-bottom: $spacing-vertical-lg-3;
+}
+
+.title {
+  @include font-label;
+
+  text-align: center;
+}

@@ -1,0 +1,42 @@
+.table-wrapper {
+  overflow: scroll;
+
+  &:not(:global(.keep-rhythm)) {
+    .cell {
+      &:last-of-type {
+        text-align: end;
+      }
+    }
+  }
+}
+
+.table {
+  @include media-breakpoint-up (md) {
+    width: 100%;
+    min-width: 0;
+  }
+
+  min-width: 200%;
+  table-layout: fixed;
+
+  :global(.document-icon),
+  :global(.icon) {
+    @include rect(20px);
+
+    margin-right: 12px;
+  }
+}
+
+.header {
+  @include font-label;
+}
+
+.row {
+  border-top: 1px solid $color-silver;
+  padding: 10px 0;
+}
+
+.cell {
+  padding: 10px;
+  vertical-align: top;
+}

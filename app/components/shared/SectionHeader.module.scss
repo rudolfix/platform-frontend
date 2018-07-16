@@ -1,6 +1,5 @@
 .section-header {
   @include font-headline-small;
-  @include responsive-size(margin-left, 20px, 40px);
 
   text-transform: uppercase;
   position: relative;

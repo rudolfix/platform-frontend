@@ -17,6 +17,7 @@ import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg
 import * as twitterIcon from "../../assets/img/inline_icons/social_twitter.svg";
 import * as xingIcon from "../../assets/img/inline_icons/social_xing.svg";
 import * as youtubeIcon from "../../assets/img/inline_icons/social_youtube.svg";
+import { formWrapper } from "./forms/formField/form-utils";
 
 const profiles = [
   {
@@ -72,6 +73,6 @@ const profiles = [
   },
 ];
 
-storiesOf("SocialProfilesEditor", module).add("default", () => (
-  <SocialProfilesEditor profiles={profiles} name="name" />
-));
+storiesOf("SocialProfilesEditor", module).add("default", () =>
+  formWrapper({ name: [] })(() => <SocialProfilesEditor profiles={profiles} name="name" />),
+);

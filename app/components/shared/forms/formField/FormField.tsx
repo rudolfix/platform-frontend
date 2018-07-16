@@ -15,8 +15,8 @@ interface IFieldGroup {
   label?: string | React.ReactNode;
   placeholder?: string | React.ReactNode;
   type?: InputType;
-  prefix?: string;
-  suffix?: string;
+  prefix?: string | React.ReactNode;
+  suffix?: string | React.ReactNode;
   addonStyle?: string;
   maxLength?: string;
 }

@@ -4,6 +4,6 @@ import * as styles from './Alerts.module.scss'
 
 export const InfoAlert: React.SFC = ({ children }) => {
   return (
-    <Alert className={styles.alert}>{children}</Alert>
+    <div className={'alert ' + styles.alert}>{children}</div>
   )
 }

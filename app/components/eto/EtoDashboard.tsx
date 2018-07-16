@@ -30,6 +30,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { BookBuildingWidget } from "../settings/bookBuildingWidget/BookBuildingWidget";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
 import { SubmitProposalWidget } from "../settings/submitProposalWidget/SubmitProposalWidget";
+import { UploadProspectusWidget } from "../settings/uploadProspectusWidget/UploadProspectusWidget";
 import { EtoProjectState } from "../shared/EtoProjectStatus";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
@@ -146,9 +147,13 @@ class EtoDashboardComponent extends React.Component<IProps> {
                     data-test-id="eto-dashboard-application"
                   />
                   <Col lg={4} xs={12}>
+                    {/* TODO: Add visibility logic for BookBuildingWidget*/}
                     <BookBuildingWidget />
                   </Col>
-
+                  <Col lg={4} xs={12}>
+                    {/* TODO: Add visibility logic for UploadProspectusWidget*/}
+                    <UploadProspectusWidget />
+                  </Col>
                   <Col xs={12}>
                     <FormattedMessage id="eto-dashboard-application-description" />
                   </Col>

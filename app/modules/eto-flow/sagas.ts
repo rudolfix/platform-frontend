@@ -5,6 +5,7 @@ import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   TCompanyEtoData,
   TEtoSpecsData,
+  TGeneralEtoData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/EtoApi.interfaces";
@@ -36,21 +37,28 @@ export function* saveEtoData(
 ): any {
   if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
   try {
-    const oldCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
-    const oldEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
+    const currentCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
+    const currentEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
 
-    const newCompanyData: IHttpResponse<
-      TPartialCompanyEtoData
-    > = yield apiEtoService.putCompanyData({
-      ...oldCompanyData,
+    let newCompanyData: IHttpResponse<TPartialCompanyEtoData> = currentCompanyData;
+    let newEtoData: IHttpResponse<TPartialEtoSpecData> = currentEtoData;
+
+    newCompanyData = yield apiEtoService.putCompanyData({
+      ...currentCompanyData,
       ...action.payload.data.companyData,
     });
-    const newEtoData: IHttpResponse<TPartialEtoSpecData> = yield apiEtoService.putEtoData({
-      ...oldEtoData,
-      ...action.payload.data.etoData,
-    });
+
+    if (currentEtoData.status === "preview")
+      newEtoData = yield apiEtoService.putEtoData({
+        ...currentEtoData,
+        ...action.payload.data.etoData,
+      });
+
     yield put(
-      actions.etoFlow.loadData({ etoData: newEtoData.body, companyData: newCompanyData.body }),
+      actions.etoFlow.loadData({
+        etoData: newEtoData.body || newEtoData,
+        companyData: newCompanyData.body || newCompanyData,
+      }),
     );
     yield put(actions.routing.goToDashboard());
   } catch (e) {

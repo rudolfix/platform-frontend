@@ -18,6 +18,7 @@ import { FormSelectField } from "../../../shared/forms/formField/FormSelectField
 import { FormField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import { EtoLegalInformationType } from '../../../../lib/api/EtoApi.interfaces';
 
 interface IStateProps {
   loadingData: boolean;

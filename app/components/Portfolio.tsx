@@ -90,6 +90,7 @@ export const Portfolio: React.SFC = () => (
     <Row>
       <Col className="mb-4">
         <NewTable
+          keepRhythm={true}
           titles={[
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.token" />,
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.balance" />,
@@ -169,6 +170,7 @@ export const Portfolio: React.SFC = () => (
     <Row>
       <Col className="mb-4">
         <NewTable
+          keepRhythm={true}
           titles={[
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.token" />,
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.balance" />,

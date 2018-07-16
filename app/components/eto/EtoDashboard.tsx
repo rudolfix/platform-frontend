@@ -133,10 +133,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
                 )}
               {etoState === "preview" && (
                 <>
-                  <DashboardSection
-                    step={2}
-                    title="ETO APPLICATION"
-                  />
+                  <DashboardSection step={2} title="ETO APPLICATION" />
                   <ETOFormsProgressSection {...etoProgressProps} />
                 </>
               )}
@@ -146,19 +143,22 @@ class EtoDashboardComponent extends React.Component<IProps> {
                     hasDecorator={false}
                     title={<EtoProjectState status={etoState} />}
                   />
-                  <Col lg={4} xs={12}>
-                    {/* TODO: Add visibility logic for BookBuildingWidget*/}
-                    <BookBuildingWidget />
-                  </Col>
-                  <Col lg={4} xs={12}>
-                    {/* TODO: Add visibility logic for UploadProspectusWidget*/}
-                    <UploadProspectusWidget />
-                  </Col>
-                  {/* TODO: Add visibility logic for ChoosePreEtoDateWidget*/}
-                  <Col lg={4} xs={12}>
-                    <ChoosePreEtoDateWidget />
-                  </Col>
-
+                  {etoState === "listed" && (
+                    <>
+                      <Col lg={4} xs={12}>
+                        {/* TODO: Add visibility logic for BookBuildingWidget*/}
+                        <BookBuildingWidget />
+                      </Col>
+                      <Col lg={4} xs={12}>
+                        {/* TODO: Add visibility logic for UploadProspectusWidget*/}
+                        <UploadProspectusWidget />
+                      </Col>
+                      {/* TODO: Add visibility logic for ChoosePreEtoDateWidget*/}
+                      <Col lg={4} xs={12}>
+                        <ChoosePreEtoDateWidget />
+                      </Col>
+                    </>
+                  )}
                   <Col xs={12}>
                     <FormattedMessage id="eto-dashboard-application-description" />
                   </Col>

@@ -463,7 +463,7 @@
   "shared-component.eto-overview.status-in-preview": "ETO application",
   "shared-component.eto-overview.status-in-review": "Proposal in review",
   "shared-component.eto-overview.status-listed": "Proposal accepted",
-  "shared-component.eto-overview.status-of-eto": "",
+  "shared-component.eto-overview.status-of-eto": "STATUS OF ETO",
   "shared-component.eto-overview.success": "The ETO has been successful please claim your tokens below ",
   "shared-component.eto-timeline.today": "Today",
   "shared-component.investment-preview.current-valuation": "Current Valuation",

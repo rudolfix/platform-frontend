@@ -17,7 +17,7 @@ export const DashboardSection: React.SFC<IProps> = ({
   hasDecorator,
 }) => (
   <Col xs={12} data-test-id={dataTestId}>
-    <SectionHeader className="my-4" hasDecorator={hasDecorator}>
+    <SectionHeader className="my-4" layoutHasDecorator={hasDecorator}>
       {step && <>STEP {step}:</>} {title}
     </SectionHeader>
   </Col>

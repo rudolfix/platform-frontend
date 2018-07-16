@@ -69,6 +69,7 @@ export const selectFormFractionDone = (
 
 export const etoMediaProgressOptions: IProgressOptions = {
   ignore: {
+    companyVideo: true,
     socialChannels: true,
     companyNews: true,
   },

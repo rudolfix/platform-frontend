@@ -139,7 +139,7 @@ export const EtoMediaType = YupTS.object({
   companyVideo: YupTS.string().optional(),
   socialChannels: YupTS.array(
     YupTS.object({
-      type: YupTS.string().optional(),
+      title: YupTS.string().optional(),
       url: YupTS.string().optional(),
     }),
   ).optional(),

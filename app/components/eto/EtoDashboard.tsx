@@ -28,6 +28,7 @@ import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { BookBuildingWidget } from "../settings/bookBuildingWidget/BookBuildingWidget";
+import { ChoosePreEtoDateWidget } from "../settings/choosePreEtoDateWidget/ChoosePreEtoDateWidget";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
 import { SubmitProposalWidget } from "../settings/submitProposalWidget/SubmitProposalWidget";
 import { UploadProspectusWidget } from "../settings/uploadProspectusWidget/UploadProspectusWidget";
@@ -143,6 +144,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
               {(etoState === "pending" || etoState === "listed") && (
                 <>
                   <DashboardSection
+                    hasDecorator={false}
                     title={<EtoProjectState status={etoState} />}
                     data-test-id="eto-dashboard-application"
                   />
@@ -154,6 +156,11 @@ class EtoDashboardComponent extends React.Component<IProps> {
                     {/* TODO: Add visibility logic for UploadProspectusWidget*/}
                     <UploadProspectusWidget />
                   </Col>
+                  {/* TODO: Add visibility logic for ChoosePreEtoDateWidget*/}
+                  <Col lg={4} xs={12}>
+                    <ChoosePreEtoDateWidget />
+                  </Col>
+
                   <Col xs={12}>
                     <FormattedMessage id="eto-dashboard-application-description" />
                   </Col>

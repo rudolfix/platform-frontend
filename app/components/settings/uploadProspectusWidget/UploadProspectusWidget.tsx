@@ -3,19 +3,15 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
-import { compose } from "redux";
 import { appRoutes } from "../../appRoutes";
 
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { ButtonArrowRight } from "../../shared/Buttons";
 import { Panel } from "../../shared/Panel";
 
 import * as styles from "./UploadProspectusWidget.module.scss";
 
-
-export const UploadProspectusWidgetComponent: React.SFC<IIntlProps> = ({
-  intl: { formatIntlMessage },
-}) => {
+export const UploadProspectusWidget = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
   return (
     <Panel headerText={formatIntlMessage("settings.upload-prospectus.title")}>
       <div className={styles.content}>
@@ -32,8 +28,4 @@ export const UploadProspectusWidgetComponent: React.SFC<IIntlProps> = ({
       </div>
     </Panel>
   );
-};
-
-export const UploadProspectusWidget = compose<React.SFC>(injectIntlHelpers)(
-  UploadProspectusWidgetComponent,
-);
+});

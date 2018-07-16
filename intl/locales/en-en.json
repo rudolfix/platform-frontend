@@ -389,6 +389,8 @@
   "settings.book-building-widget.stop-book-building": "stop bookbuilding",
   "settings.change-email-component.header": "CHANGE MY EMAIL ADDRESS",
   "settings.change-email-component.text": "Lorem ipsum dolor sit amet, consetetur, sadpcsi and then that is how you get the email",
+  "settings.choose-pre-eto-date": "Choose PRE-ETO Date",
+  "settings.choose-pre-eto-date.book-building-will-stop": "Bookbuilding will stop automatically 2 weeks before your chosen pre-ETO date",
   "settings.kyc-status-widget.continue-external-kyc": "Continue Verification Process",
   "settings.kyc-status-widget.start-kyc-process": "Start verification process",
   "settings.kyc-status-widget.status.accepted": "Congratulations! We have successfully verified your identity.",

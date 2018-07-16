@@ -12,11 +12,11 @@ import { Panel } from "../../shared/Panel";
 
 import * as styles from "./SubmitProposalWidget.module.scss";
 
-interface IStateProps {
+interface IDispatchProps {
   submitProposal: () => void;
 }
 
-export const SubmitProposalWidgetComponent: React.SFC<IStateProps & IIntlProps> = ({
+export const SubmitProposalWidgetComponent: React.SFC<IDispatchProps & IIntlProps> = ({
   submitProposal,
   intl: { formatIntlMessage },
 }) => {
@@ -35,7 +35,7 @@ export const SubmitProposalWidgetComponent: React.SFC<IStateProps & IIntlProps> 
 };
 
 export const SubmitProposalWidget = compose<React.SFC>(
-  appConnect<IStateProps>({
+  appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
       submitProposal: () => dispatch(actions.etoFlow.submitDataStart()),
     }),

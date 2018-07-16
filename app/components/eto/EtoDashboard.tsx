@@ -27,6 +27,7 @@ import { selectKycRequestStatus, selectWidgetLoading } from "../../modules/kyc/s
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { BookBuildingWidget } from "../settings/bookBuildingWidget/BookBuildingWidget";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
 import { SubmitProposalWidget } from "../settings/submitProposalWidget/SubmitProposalWidget";
 import { EtoProjectState } from "../shared/EtoProjectStatus";
@@ -144,6 +145,10 @@ class EtoDashboardComponent extends React.Component<IProps> {
                     title={<EtoProjectState status={etoState} />}
                     data-test-id="eto-dashboard-application"
                   />
+                  <Col lg={4} xs={12}>
+                    <BookBuildingWidget />
+                  </Col>
+
                   <Col xs={12}>
                     <FormattedMessage id="eto-dashboard-application-description" />
                   </Col>

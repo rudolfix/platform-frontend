@@ -212,7 +212,7 @@ export const TGeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,
   ...EtoMediaType.shape,
   ...EtoLegalInformationType.shape,
-  // ...EtoKeyIndividualsType.shape,
+  ...EtoKeyIndividualsType.shape,
   ...EtoProductVisionType.shape,
   ...EtoCompanyInformationType.shape,
   ...EtoRiskAssessmentType.shape,

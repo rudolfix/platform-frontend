@@ -6,6 +6,7 @@ import {
   EtoLegalInformationType,
   EtoMediaType,
   EtoProductVisionType,
+  EtoRiskAssessmentType,
   EtoTermsType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
@@ -48,6 +49,11 @@ export const ETOFormsProgressSection: React.SFC<IProps> = ({
   );
   const productVisionProgress = selectFormFractionDone(EtoProductVisionType.toYup(), companyData);
   const etoMediaProgress = selectFormFractionDone(EtoMediaType.toYup(), companyData);
+  const etoRiskAssessmentProgress = selectFormFractionDone(
+    EtoRiskAssessmentType.toYup(),
+    companyData,
+  );
+
   return (
     <>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -96,6 +102,14 @@ export const ETOFormsProgressSection: React.SFC<IProps> = ({
           to={etoRegisterRoutes.etoMedia}
           progress={shouldEtoDataLoad ? etoMediaProgress : 0}
           name="Media"
+        />
+      </Col>
+      <Col lg={4} xs={12} md={6} className="mb-4">
+        <EtoFormProgressWidget
+          isLoading={loadingData}
+          to={etoRegisterRoutes.etoRiskAssessment}
+          progress={shouldEtoDataLoad ? etoRiskAssessmentProgress : 0}
+          name="Risk Assessment"
         />
       </Col>
       {/* TODO: ADD TRANSLATIONS */}

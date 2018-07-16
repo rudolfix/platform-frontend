@@ -136,6 +136,7 @@ export const EtoLegalInformationType = YupTS.object({
 type TEtoLegalData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
 export const EtoMediaType = YupTS.object({
+  companyVideo: YupTS.string().optional(),
   socialChannels: YupTS.array(
     YupTS.object({
       type: YupTS.string().optional(),

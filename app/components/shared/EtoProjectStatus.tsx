@@ -1,18 +1,27 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { FormattedMessage } from "react-intl-phraseapp";
-import * as styles from "./EtoProjectStatus.module.scss";
+import { EtoState } from "../../lib/api/EtoApi.interfaces";
 import { ProjectStatus, TStatus } from "./ProjectStatus";
 
+import * as styles from "./EtoProjectStatus.module.scss";
+
 interface IProps {
-  status: TStatus;
+  status: EtoState;
 }
 
-export const EtoProjectState = (props: IProps) => (
+export const messages = {
+  preview: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
+  pending: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
+  listed: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
+  prospectus_approved: "",
+  on_chain: "",
+};
+
+export const EtoProjectState: React.SFC<IProps> = ({ status }) => (
   <div className={styles.statusOfEto}>
-    <span className={styles.title}>
-      <FormattedMessage id="shared-component.eto-overview.status-of-eto" />
-    </span>
-    <ProjectStatus status={props.status} />
+    <div className={cn(styles.projectStatus, status)} />
+    <span className={styles.title}>{messages[status]}</span>
   </div>
 );

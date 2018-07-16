@@ -5,7 +5,6 @@ import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   TCompanyEtoData,
   TEtoSpecsData,
-  TGeneralEtoData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/EtoApi.interfaces";
@@ -47,8 +46,7 @@ export function* saveEtoData(
       ...currentCompanyData,
       ...action.payload.data.companyData,
     });
-
-    if (currentEtoData.status === "preview")
+    if (currentEtoData.state === "preview")
       newEtoData = yield apiEtoService.putEtoData({
         ...currentEtoData,
         ...action.payload.data.etoData,

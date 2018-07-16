@@ -1,17 +1,46 @@
 .status-of-eto {
   display: flex;
-  flex-basis: 26%;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  @include media-breakpoint-up(sm) {
-    flex-direction: row;
-  }
-
   text-transform: uppercase;
+  font-weight: $font-weight-medium;
+  color: $neu-black;
 
   .title {
-    @include font-label;
+    @include font-headline-small;
 
     margin-right: px-to-rem(10px);
+  }
+}
+
+.project-status {
+  @include font-label;
+
+  text-transform: uppercase;
+  font-weight: $font-weight-medium;
+  color: $neu-black;
+  display: flex;
+  align-items: center;
+
+  &::before {
+    display: block;
+    content: "";
+    width: px-to-rem(14px);
+    height: px-to-rem(14px);
+    margin-right: px-to-rem(10px);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &:global(.listed) {
+    &::before {
+      background-color: $blue-light;
+    }
+  }
+
+  &:global(.pending) {
+    &::before {
+      background-color: $neu-bright-orange;
+    }
   }
 }

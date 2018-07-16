@@ -1,7 +1,8 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
-
 import { compose } from "redux";
+
 import {
   EtoState,
   TGeneralEtoDataType,
@@ -28,11 +29,12 @@ import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
 import { SubmitProposalWidget } from "../settings/submitProposalWidget/SubmitProposalWidget";
+import { EtoProjectState } from "../shared/EtoProjectStatus";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
 import { DashboardSection } from "./shared/DashboardSection";
 
-const SUBMIT_PROPOSAL_THRESHOLD = 0.9;
+const SUBMIT_PROPOSAL_THRESHOLD = 0.5;
 
 interface IStateProps {
   isLightWallet: boolean;
@@ -133,6 +135,18 @@ class EtoDashboardComponent extends React.Component<IProps> {
                     title="ETO APPLICATION"
                     data-test-id="eto-dashboard-application"
                   />
+                  <ETOFormsProgressSection {...etoProgressProps} />
+                </>
+              )}
+              {(etoState === "pending" || etoState === "listed") && (
+                <>
+                  <DashboardSection
+                    title={<EtoProjectState status={etoState} />}
+                    data-test-id="eto-dashboard-application"
+                  />
+                  <Col xs={12}>
+                    <FormattedMessage id="eto-dashboard-application-description" />
+                  </Col>
                   <ETOFormsProgressSection {...etoProgressProps} />
                 </>
               )}

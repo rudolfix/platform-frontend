@@ -102,7 +102,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
     );
     return (
       <LayoutAuthorized>
-        <Row className="row-gutter-top">
+        <Row className="row-gutter-top" data-test-id="eto-dashboard-application">
           {loadingData ? (
             <LoadingIndicator />
           ) : (
@@ -136,7 +136,6 @@ class EtoDashboardComponent extends React.Component<IProps> {
                   <DashboardSection
                     step={2}
                     title="ETO APPLICATION"
-                    data-test-id="eto-dashboard-application"
                   />
                   <ETOFormsProgressSection {...etoProgressProps} />
                 </>
@@ -146,7 +145,6 @@ class EtoDashboardComponent extends React.Component<IProps> {
                   <DashboardSection
                     hasDecorator={false}
                     title={<EtoProjectState status={etoState} />}
-                    data-test-id="eto-dashboard-application"
                   />
                   <Col lg={4} xs={12}>
                     {/* TODO: Add visibility logic for BookBuildingWidget*/}

@@ -106,6 +106,14 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
             <FormattedMessage id="eto.form.section.investment-terms.minimum-new-shares-to-issue" />
           }
           placeholder="Number of share"
+          name="minimumNewSharesToIssue"
+          type="number"
+        />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue" />
+          }
+          placeholder="Number of share"
           name="newSharesToIssue"
           type="number"
         />

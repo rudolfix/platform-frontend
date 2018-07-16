@@ -136,9 +136,10 @@ export const EtoLegalInformationType = YupTS.object({
 type TEtoLegalData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
 export const EtoMediaType = YupTS.object({
+  companyVideo: YupTS.string().optional(),
   socialChannels: YupTS.array(
     YupTS.object({
-      type: YupTS.string().optional(),
+      title: YupTS.string().optional(),
       url: YupTS.string().optional(),
     }),
   ).optional(),
@@ -175,6 +176,7 @@ export const EtoTermsType = YupTS.object({
   fullyDilutedPreMoneyValuationEur: YupTS.number(),
   existingCompanyShares: YupTS.number(),
   newSharesToIssue: YupTS.number(),
+  maximumNewSharesToIssue: YupTS.number(),
   discountScheme: YupTS.string(),
   shareNominalValueEur: YupTS.number(),
   publicDurationDays: YupTS.number(),

@@ -19,6 +19,7 @@ interface IFieldGroup {
   suffix?: string;
   addonStyle?: string;
   maxLength?: string;
+  additionalObjValue?: { name: string; value: string };
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 
@@ -26,6 +27,14 @@ export class FormField extends React.Component<FieldGroupProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
+
+  componentDidMount(): void {
+    const formik: FormikProps<any> = this.context.formik;
+
+    if (this.props.additionalObjValue) {
+      formik.setFieldValue(this.props.additionalObjValue.name, this.props.additionalObjValue.value);
+    }
+  }
 
   render(): React.ReactChild {
     const {
@@ -37,6 +46,7 @@ export class FormField extends React.Component<FieldGroupProps> {
       suffix,
       className,
       addonStyle,
+      additionalObjValue,
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;

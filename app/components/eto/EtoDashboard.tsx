@@ -3,14 +3,10 @@ import { Col, Row } from "reactstrap";
 
 import { compose } from "redux";
 import {
-  EtoCompanyInformationType,
-  EtoKeyIndividualsType,
-  EtoLegalInformationType,
-  EtoMediaType,
-  EtoProductVisionType,
   EtoState,
-  EtoTermsType,
   TGeneralEtoDataType,
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
 } from "../../lib/api/EtoApi.interfaces";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
@@ -19,13 +15,20 @@ import {
   selectIsUserEmailVerified,
   selectVerifiedUserEmail,
 } from "../../modules/auth/selectors";
-import { selectEtoState, selectFormFractionDone } from "../../modules/eto-flow/selectors";
+import {
+  selectCombinedEtoCompanyData,
+  selectCompanyData,
+  selectEtoData,
+  selectEtoState,
+  selectFormFractionDone,
+} from "../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
 import { SubmitProposalWidget } from "../settings/submitProposalWidget/SubmitProposalWidget";
+import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
 import { DashboardSection } from "./shared/DashboardSection";
 
@@ -40,15 +43,10 @@ interface IStateProps {
   etoState?: EtoState;
   kycStatus?: TRequestStatus;
   etoFormProgress?: number;
-  productVisionProgress?: number;
-  legalInformationProgress?: number;
-  etoKeyIndividualsProgress?: number;
-  etoTermsProgress?: number;
-  companyInformationProgress?: number;
-  etoMediaProgress?: number;
-  etoRiskProgress?: number;
   loadingData: boolean;
   businessRequestStateLoading: boolean;
+  companyData: TPartialCompanyEtoData;
+  etoData: TPartialEtoSpecData;
 }
 
 interface IDispatchProps {
@@ -58,7 +56,6 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 class EtoDashboardComponent extends React.Component<IProps> {
-  // TODO: REMOVE ANY
   componentDidMount(): void {
     const { kycStatus, isEmailVerified, loadDataStart } = this.props;
 
@@ -76,73 +73,69 @@ class EtoDashboardComponent extends React.Component<IProps> {
       kycStatus,
       isEmailVerified,
       etoState,
+      isLightWallet,
       etoFormProgress,
-      productVisionProgress,
-      legalInformationProgress,
-      etoKeyIndividualsProgress,
-      etoTermsProgress,
-      companyInformationProgress,
-      etoMediaProgress,
-      etoRiskProgress,
       loadingData,
+      companyData,
+      etoData,
       businessRequestStateLoading,
     } = this.props;
 
     const etoProgressProps = {
-      companyInformationProgress: companyInformationProgress ? companyInformationProgress : 0,
-      productVisionProgress: productVisionProgress ? productVisionProgress : 0,
-      legalInformationProgress: legalInformationProgress ? legalInformationProgress : 0,
-      etoKeyIndividualsProgress: etoKeyIndividualsProgress ? etoKeyIndividualsProgress : 0,
-      etoTermsProgress: etoTermsProgress ? etoTermsProgress : 0,
-      etoMediaProgress: etoMediaProgress ? etoMediaProgress : 0,
-      etoRiskProgress: etoRiskProgress ? etoRiskProgress : 0,
       loadingData,
       businessRequestStateLoading,
       kycStatus,
       isEmailVerified,
+      companyData,
+      etoData,
     };
 
     const isVerificationSectionDone = !!(
       verifiedEmail &&
-      backupCodesVerified &&
+      (backupCodesVerified || !isLightWallet) &&
       requestStatus === "Accepted"
     );
-
     return (
       <LayoutAuthorized>
         <Row className="row-gutter-top">
-          {!isVerificationSectionDone && (
+          {loadingData ? (
+            <LoadingIndicator />
+          ) : (
             <>
-              <DashboardSection
-                step={1}
-                title="VERIFICATION"
-                data-test-id="eto-dashboard-verification"
-              />
-              <SettingsWidgets isDynamic={true} {...this.props} />
-            </>
-          )}
-          {etoFormProgress &&
-            etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD &&
-            etoState === "preview" && (
-              <>
-                <DashboardSection
-                  step={3}
-                  title="SUBMIT PROPOSAL"
-                  data-test-id="eto-dashboard-verification"
-                />
-                <Col lg={4} xs={12}>
-                  <SubmitProposalWidget />
-                </Col>
-              </>
-            )}
-          {etoState === "preview" && (
-            <>
-              <DashboardSection
-                step={2}
-                title="ETO APPLICATION"
-                data-test-id="eto-dashboard-application"
-              />
-              <ETOFormsProgressSection {...etoProgressProps} />
+              {!isVerificationSectionDone && (
+                <>
+                  <DashboardSection
+                    step={1}
+                    title="VERIFICATION"
+                    data-test-id="eto-dashboard-verification"
+                  />
+                  <SettingsWidgets isDynamic={true} {...this.props} />
+                </>
+              )}
+              {etoState === "preview" &&
+                etoFormProgress &&
+                etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD && (
+                  <>
+                    <DashboardSection
+                      step={3}
+                      title="SUBMIT PROPOSAL"
+                      data-test-id="eto-dashboard-verification"
+                    />
+                    <Col lg={4} xs={12}>
+                      <SubmitProposalWidget />
+                    </Col>
+                  </>
+                )}
+              {etoState === "preview" && (
+                <>
+                  <DashboardSection
+                    step={2}
+                    title="ETO APPLICATION"
+                    data-test-id="eto-dashboard-application"
+                  />
+                  <ETOFormsProgressSection {...etoProgressProps} />
+                </>
+              )}
             </>
           )}
         </Row>
@@ -154,28 +147,12 @@ class EtoDashboardComponent extends React.Component<IProps> {
 export const EtoDashboard = compose<React.SFC>(
   appConnect<any, IDispatchProps>({
     stateToProps: s => ({
-      companyInformationProgress: selectFormFractionDone(
-        EtoCompanyInformationType.toYup(),
-        s.etoFlow.companyData,
+      etoFormProgress: selectFormFractionDone(
+        TGeneralEtoDataType.toYup(),
+        selectCombinedEtoCompanyData(s.etoFlow),
       ),
-      etoTermsProgress: selectFormFractionDone(EtoTermsType.toYup(), s.etoFlow.etoData),
-      etoKeyIndividualsProgress: selectFormFractionDone(
-        EtoKeyIndividualsType.toYup(),
-        s.etoFlow.companyData,
-      ),
-      legalInformationProgress: selectFormFractionDone(
-        EtoLegalInformationType.toYup(),
-        s.etoFlow.companyData,
-      ),
-      productVisionProgress: selectFormFractionDone(
-        EtoProductVisionType.toYup(),
-        s.etoFlow.companyData,
-      ),
-      etoMediaProgress: selectFormFractionDone(EtoMediaType.toYup(), s.etoFlow.companyData),
-      etoFormProgress: selectFormFractionDone(TGeneralEtoDataType.toYup(), {
-        ...s.etoFlow.companyData,
-        ...s.etoFlow.etoData,
-      }),
+      companyData: selectCompanyData(s.etoFlow),
+      etoData: selectEtoData(s.etoFlow),
       loadingData: s.etoFlow.loading,
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),

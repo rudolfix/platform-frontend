@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import { EtoState } from "../../lib/api/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData } from "./../../lib/api/EtoApi.interfaces";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {
@@ -78,3 +79,15 @@ export const etoMediaProgressOptions: IProgressOptions = {
 
 export const selectEtoState = (state: IEtoFlowState): EtoState | undefined =>
   state.etoData && state.etoData.state;
+
+export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData =>
+  state.companyData;
+
+export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
+
+export const selectCombinedEtoCompanyData = (
+  state: IEtoFlowState,
+): TPartialEtoSpecData & TPartialCompanyEtoData => ({
+  ...selectCompanyData(state),
+  ...selectEtoData(state),
+});

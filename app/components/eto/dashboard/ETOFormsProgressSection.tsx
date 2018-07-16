@@ -6,40 +6,48 @@ import {
   EtoLegalInformationType,
   EtoMediaType,
   EtoProductVisionType,
-  EtoRiskAssesmentType,
   EtoTermsType,
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
 } from "../../../lib/api/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
+import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
 
 interface IProps {
-  companyInformationProgress: number;
-  productVisionProgress: number;
-  legalInformationProgress: number;
-  etoKeyIndividualsProgress: number;
-  etoTermsProgress: number;
-  etoMediaProgress: number;
-  etoRiskProgress: number;
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;
   isEmailVerified?: boolean;
+  companyData: TPartialCompanyEtoData;
+  etoData: TPartialEtoSpecData;
 }
 
 export const ETOFormsProgressSection: React.SFC<IProps> = ({
-  companyInformationProgress,
-  productVisionProgress,
-  etoTermsProgress,
   loadingData,
-  etoKeyIndividualsProgress,
-  legalInformationProgress,
   kycStatus,
   isEmailVerified,
+  companyData,
+  etoData,
 }) => {
   const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
-
+  const companyInformationProgress = selectFormFractionDone(
+    EtoCompanyInformationType.toYup(),
+    companyData,
+  );
+  const etoTermsProgress = selectFormFractionDone(EtoTermsType.toYup(), etoData);
+  const etoKeyIndividualsProgress = selectFormFractionDone(
+    EtoKeyIndividualsType.toYup(),
+    companyData,
+  );
+  const legalInformationProgress = selectFormFractionDone(
+    EtoLegalInformationType.toYup(),
+    companyData,
+  );
+  const productVisionProgress = selectFormFractionDone(EtoProductVisionType.toYup(), companyData);
+  const etoMediaProgress = selectFormFractionDone(EtoMediaType.toYup(), companyData);
   return (
     <>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -86,7 +94,7 @@ export const ETOFormsProgressSection: React.SFC<IProps> = ({
         <EtoFormProgressWidget
           isLoading={loadingData}
           to={etoRegisterRoutes.etoMedia}
-          progress={shouldEtoDataLoad ? productVisionProgress : 0}
+          progress={shouldEtoDataLoad ? etoMediaProgress : 0}
           name="Media"
         />
       </Col>

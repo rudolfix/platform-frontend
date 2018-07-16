@@ -47,7 +47,7 @@ export const EtoProductVisionType = YupTS.object({
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
 
-export const EtoRiskAssesmentType = YupTS.object({
+export const EtoRiskAssessmentType = YupTS.object({
   riskNotRegulatedBusiness: YupTS.onlyTrue(),
   riskNoThirdPartyDependency: YupTS.onlyTrue(),
   riskNoLoansExist: YupTS.onlyTrue(),
@@ -58,7 +58,7 @@ export const EtoRiskAssesmentType = YupTS.object({
   riskMaxDescription: YupTS.string(),
 });
 
-type TEtoRiskAssesment = YupTS.TypeOf<typeof EtoRiskAssesmentType>;
+type TEtoRiskAssessment = YupTS.TypeOf<typeof EtoRiskAssessmentType>;
 
 export const EtoKeyIndividualsType = YupTS.object({
   founders: YupTS.object({
@@ -158,7 +158,7 @@ export type TCompanyEtoData =
   | TEtoTeamData
   | TEtoLegalData
   | TEtoProductVision
-  | TEtoRiskAssesment
+  | TEtoRiskAssessment
   | TEtoKeyIndividualsType
   | TEtoMediaData;
 
@@ -182,9 +182,9 @@ export const EtoTermsType = YupTS.object({
   publicDurationDays: YupTS.number(),
   minTicketEur: YupTS.number(),
   enableTransferOnSuccess: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
+  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
   riskRegulatedBusiness: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
+  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
   riskThirdParty: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
   tagAlongVotingRule: YupTS.boolean(),
@@ -215,4 +215,5 @@ export const TGeneralEtoDataType = YupTS.object({
   // ...EtoKeyIndividualsType.shape,
   ...EtoProductVisionType.shape,
   ...EtoCompanyInformationType.shape,
+  ...EtoRiskAssessmentType.shape,
 });

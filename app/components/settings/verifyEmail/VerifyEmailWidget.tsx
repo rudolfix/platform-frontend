@@ -23,6 +23,7 @@ import { Panel } from "../../shared/Panel";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
+import { selectIsCancelEmail } from "../../../modules/settings/reducer";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
 interface IStateProps {
@@ -31,6 +32,7 @@ interface IStateProps {
   verifiedEmail?: string;
   unverifiedEmail?: string;
   isLocked?: boolean;
+  isEmailTemporaryCancelled: boolean;
 }
 
 interface IOwnProps {
@@ -44,6 +46,7 @@ interface IEnhancedFormProps {
 interface IDispatchProps {
   resendEmail: () => void;
   addNewEmail: (values: { email: string }) => void;
+  cancelEmail: () => void;
 }
 
 interface IFormValues {
@@ -126,7 +129,8 @@ const UnVerifiedUser: React.SFC<{
   resendEmail: () => void;
   verifiedEmail?: string;
   unverifiedEmail?: string;
-}> = ({ resendEmail, verifiedEmail, unverifiedEmail }) => (
+  cancelEmail: () => void;
+}> = ({ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }) => (
   <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
     <p className={cn(styles.text, "pt-2 mb-0")}>
       <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
@@ -145,14 +149,17 @@ const UnVerifiedUser: React.SFC<{
     {unverifiedEmail && (
       <>
         <Col xs={12} className="d-flex justify-content-center">
-          <p className="mb-0">
+          <p className="mb-0 text-center">
             <b>
               <FormattedMessage id="settings.verify-email-widget.unverified-email" />:{" "}
             </b>{" "}
             {unverifiedEmail}
           </p>
         </Col>
-        <Col xs={12} className="d-flex justify-content-center" data-test-id="resend-link">
+        <Col xs={12} className="d-flex justify-content-between" data-test-id="resend-link">
+          <Button layout="secondary" iconPosition="icon-after" onClick={cancelEmail}>
+            <FormattedMessage id="settings.verify-email-widget.change-email" />
+          </Button>
           <Button
             layout="secondary"
             iconPosition="icon-after"
@@ -177,8 +184,15 @@ export const VerifyEmailWidgetComponent: React.SFC<
   unverifiedEmail,
   addNewEmail,
   isLocked,
+  cancelEmail,
+  isEmailTemporaryCancelled,
   step,
 }) => {
+  const shouldViewVerifiedUser =
+    !isThereUnverifiedEmail && !isEmailTemporaryCancelled && isUserEmailVerified;
+  const shouldViewUnVerifiedUser = isThereUnverifiedEmail && !isEmailTemporaryCancelled;
+  const shouldViewNoEmail =
+    (!isThereUnverifiedEmail && !verifiedEmail) || isEmailTemporaryCancelled;
   return (
     <Panel
       headerText={formatIntlMessage("settings.verify-email-widget.header", { step })}
@@ -191,17 +205,16 @@ export const VerifyEmailWidgetComponent: React.SFC<
       }
       data-test-id="settings.verify-email-widget"
     >
-      {!isThereUnverifiedEmail &&
-        isUserEmailVerified && (
-          <VerifiedUser {...{ verifiedEmail }} data-test-id="verified-section" />
-        )}
-      {isThereUnverifiedEmail && (
+      {shouldViewVerifiedUser && (
+        <VerifiedUser {...{ verifiedEmail }} data-test-id="verified-section" />
+      )}
+      {shouldViewUnVerifiedUser && (
         <UnVerifiedUser
-          {...{ resendEmail, verifiedEmail, unverifiedEmail }}
+          {...{ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }}
           data-test-id="unverified-section"
         />
       )}
-      {!isThereUnverifiedEmail && !verifiedEmail && <NoEmailUser {...{ addNewEmail, isLocked }} />}
+      {shouldViewNoEmail && <NoEmailUser {...{ addNewEmail, isLocked }} />}
     </Panel>
   );
 };
@@ -214,6 +227,7 @@ export const VerifyEmailWidget = compose<React.SFC<IOwnProps>>(
       verifiedEmail: selectVerifiedUserEmail(s.auth),
       unverifiedEmail: selectUnverifiedUserEmail(s.auth),
       isLocked: selectIsConnectedButtonLocked(s.verifyEmailWidgetState),
+      isEmailTemporaryCancelled: selectIsCancelEmail(s.settings),
     }),
     dispatchToProps: dispatch => ({
       resendEmail: () => {
@@ -221,6 +235,9 @@ export const VerifyEmailWidget = compose<React.SFC<IOwnProps>>(
       },
       addNewEmail: (values: { email: string }) => {
         dispatch(actions.settings.addNewEmail(values.email));
+      },
+      cancelEmail: () => {
+        dispatch(actions.settings.cancelEmail());
       },
     }),
   }),

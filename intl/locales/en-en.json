@@ -415,6 +415,7 @@
   "settings.kyc-widget.header": "{step} VERIFICATION PROCESS",
   "settings.personal-settings.title": "Personal Settings",
   "settings.security-settings.title": "Account Settings",
+  "settings.verify-email-widget.change-email": "Change Email",
   "settings.verify-email-widget.email-is-verified": "Your email address is verified.",
   "settings.verify-email-widget.email-placeholder": "Email Address",
   "settings.verify-email-widget.enter-email": "Please enter your email",

@@ -76,6 +76,8 @@ export const Demo: React.SFC = () => (
             step={1}
             isUserEmailVerified={false}
             isThereUnverifiedEmail={true}
+            isEmailTemporaryCancelled={false}
+            cancelEmail={() => {}}
             resendEmail={() => {}}
             addNewEmail={() => {}}
             intl={dummyIntl}
@@ -85,8 +87,10 @@ export const Demo: React.SFC = () => (
           <VerifyEmailWidgetComponent
             step={1}
             isUserEmailVerified={true}
+            cancelEmail={() => {}}
             isThereUnverifiedEmail={true}
             resendEmail={() => {}}
+            isEmailTemporaryCancelled={false}
             addNewEmail={() => {}}
             intl={dummyIntl}
           />

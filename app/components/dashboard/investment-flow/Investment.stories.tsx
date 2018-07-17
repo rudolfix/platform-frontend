@@ -4,9 +4,17 @@ import * as React from "react";
 import { InvestmentSelectionForm } from "./Investment";
 
 
+const wallets = [{
+  balance: 300, id: 'foo', name: 'lalala'
+}, {
+  balance: 400, id: 'bar', name: 'fufufu'
+}]
+
 storiesOf("InvestmentSelectionForm", module)
   .add("default", () => (
-    <Formik initialValues={{amount: 300}} onSubmit={() => {}}>
-      <InvestmentSelectionForm stateValues={{ amount: 300 }} />
+    <Formik initialValues={{ wallet: 'bar', amount: 0 }} onSubmit={(vals) => { console.log(vals) }}>
+      {(props) => (
+        <InvestmentSelectionForm {...props as any} wallets={wallets} />
+      )}
     </Formik>
   ))

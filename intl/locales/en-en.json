@@ -253,6 +253,7 @@
   "investment-flow.amount-input-label": "Amount you would like to invest (includes {transactionCost} transaction cost)",
   "investment-flow.equity-tokens": "Equity Tokens",
   "investment-flow.estimated-neu-tokens": "Estimated NEU Tokens",
+  "investment-flow.invest": "invest",
   "investment-flow.invest-entire-balance": "Invest Entire Wallet Balance",
   "investment-flow.invest-funds": "invest funds",
   "investment-flow.select-wallet-and-currency": "select wallet and currency",

@@ -2,25 +2,6 @@
   font-size: 2em
 }
 
-.header {
-  @include font-label;
-
-  color: $color-black;
-  font-weight: $font-weight-bold;
-  justify-content: space-between;
-  margin-bottom: $spacing-vertical-sm-1;
-  text-transform: uppercase;
-  position: relative;
-
-  &::before {
-    @include rect(2px, 1em);
-    display: inline-block;
-    background-color: $color-brand;
-    content: "";
-    margin-right: 12px;
-  }
-}
-
 .icon {
   height: 1.5em;
   width: 1.5em;

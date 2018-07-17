@@ -9,6 +9,7 @@ import { IIntlProps, injectIntlHelpers } from '../../../utils/injectIntlHelpers'
 import { InfoAlert } from "../../shared/Alerts";
 import { Button } from "../../shared/Buttons";
 import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImportant";
+import { Heading } from "../../shared/modals/Heading";
 import { Money } from "../../shared/Money";
 import * as styles from './Investment.module.scss'
 import { WalletSelector } from './WalletSelector'
@@ -54,9 +55,9 @@ export const InvestmentSelectionForm = injectIntlHelpers((props: FormikProps<IFo
 
   return (
     <Form>
-      <h4 className={styles.header}><FormattedMessage id="investment-flow.select-wallet-and-currency" /></h4>
+      <Heading><FormattedMessage id="investment-flow.select-wallet-and-currency" /></Heading>
       <WalletSelector wallets={props.wallets} name="wallet"></WalletSelector>
-      <h4 className={styles.header}><FormattedMessage id="investment-flow.invest-funds" /></h4>
+      <Heading><FormattedMessage id="investment-flow.invest-funds" /></Heading>
       <FormGroup className="m-0">
         <Label><FormattedMessage id="investment-flow.amount-input-label" values={{ transactionCost: (<Money currency="eth" value="20000000000000000" theme="t-orange" />) }} /></Label>
         <FormFieldImportant

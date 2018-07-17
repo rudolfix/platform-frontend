@@ -1,0 +1,17 @@
+.info-row {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.5rem;
+
+  &:nth-child(2n+1) {
+    background-color: $neu-pale-blue
+  }
+}
+
+.info-cell {
+  flex-grow: 1;
+
+  &:first-child {
+    text-align: right
+  }
+}

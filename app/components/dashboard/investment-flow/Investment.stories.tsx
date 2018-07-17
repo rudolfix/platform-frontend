@@ -12,7 +12,7 @@ const wallets = [{
 
 storiesOf("InvestmentSelectionForm", module)
   .add("default", () => (
-    <Formik initialValues={{ wallet: 'bar', amount: 0 }} onSubmit={(vals) => { console.log(vals) }}>
+    <Formik initialValues={{ wallet: 'bar', amount: 0 }} onSubmit={(vals) => {}}>
       {(props) => (
         <InvestmentSelectionForm {...props as any} wallets={wallets} />
       )}

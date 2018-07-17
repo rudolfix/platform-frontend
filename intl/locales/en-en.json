@@ -258,6 +258,7 @@
   "investment-flow.invest-entire-balance": "Invest Entire Wallet Balance",
   "investment-flow.invest-funds": "invest funds",
   "investment-flow.max-invest": "invest maximum",
+  "investment-flow.min-ticket-size": "Min ticket size 1ETH",
   "investment-flow.select-wallet-and-currency": "select wallet and currency",
   "kyc.business.beneficial-owner.add-new-beneficial-owner": "Add new beneficial owner",
   "kyc.business.beneficial-owner.beneficial-owners": "Beneficial owners",

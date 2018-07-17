@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, FormGroup, Label, Row } from "reactstrap";
 import * as neuIcon from "../../../assets/img/neu_icon.svg"
 import * as tokenIcon from "../../../assets/img/token_icon.svg"
+import { IIntlProps, injectIntlHelpers } from '../../../utils/injectIntlHelpers';
 import { InfoAlert } from "../../shared/Alerts";
 import { Button } from "../../shared/Buttons";
 import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImportant";
@@ -33,7 +34,7 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 
-export const InvestmentSelectionForm = injectIntl((props: FormikProps<IFormState> & IProps & InjectedIntlProps) => {
+export const InvestmentSelectionForm = injectIntlHelpers((props: FormikProps<IFormState> & IProps & IIntlProps) => {
   const failureTooltip = (
     <div>
       <p>
@@ -60,7 +61,7 @@ export const InvestmentSelectionForm = injectIntl((props: FormikProps<IFormState
         <Label><FormattedMessage id="investment-flow.amount-input-label" values={{ transactionCost: (<Money currency="eth" value="20000000000000000" theme="t-orange" />) }} /></Label>
         <FormFieldImportant
           name="amount"
-          placeholder={props.intl.formatMessage({ id: "investment-flow.min-ticket-size" })}
+          placeholder={props.intl.formatIntlMessage("investment-flow.min-ticket-size")}
           errorMessage={failureTooltip} />
         <a href="#" onClick={el => el.preventDefault()}><FormattedMessage id="investment-flow.invest-entire-balance" /></a>
       </FormGroup>

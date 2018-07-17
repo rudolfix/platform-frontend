@@ -20,6 +20,8 @@ import { userAgentActions } from "./userAgent/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
 import { walletActions } from "./wallet/actions";
 import { web3Actions } from "./web3/actions";
+import { txMonitorActions } from "./tx/monitor/actions";
+import { txSenderActions } from "./tx/sender/actions";
 
 /** You should add new actions also here (with a namespace).*/
 export const actions = {
@@ -43,6 +45,8 @@ export const actions = {
   remoteFile: remoteFileActions,
   depositEthModal: depositModalActions,
   sendEthModal: sendModalActions,
+  txMonitor: txMonitorActions,
+  txSender: txSenderActions,
 };
 
 /**
@@ -69,6 +73,8 @@ export const allActions = {
   ...remoteFileActions,
   ...depositModalActions,
   ...sendModalActions,
+  ...txMonitorActions,
+  ...txSenderActions,
 };
 
 /**

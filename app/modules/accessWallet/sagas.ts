@@ -132,7 +132,7 @@ export function* accessWalletAndRunEffect(
   title: string = "",
   message: string = "",
 ): any {
-  // guard against multple modals
+  // guard against multiple modals
   const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.accessWallet));
   if (isSigning) {
     throw new Error("Signing already in progress");

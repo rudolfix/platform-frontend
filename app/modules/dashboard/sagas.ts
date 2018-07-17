@@ -4,6 +4,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { signMessage } from "../accessWallet/sagas";
 import { TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { txSendSaga } from "../tx/sender/sagas";
 
 function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterator<any> {
   if (action.type !== "DASHBOARD_SIGN_DUMMY_MESSAGE") {
@@ -28,6 +29,15 @@ function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterato
   }
 }
 
+function* sendDummyTx(_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "DASHBOARD_SEND_DUMMY_TX") {
+    return;
+  }
+
+  yield txSendSaga("WITHDRAW");
+}
+
 export const dashboardSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "DASHBOARD_SIGN_DUMMY_MESSAGE", signDummyMessage);
+  yield fork(neuTakeEvery, "DASHBOARD_SEND_DUMMY_TX", sendDummyTx);
 };

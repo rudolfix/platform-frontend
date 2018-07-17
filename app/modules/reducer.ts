@@ -17,6 +17,7 @@ import { lightWalletWizardReducer } from "./wallet-selector/light-wizard/reducer
 import { walletSelectorReducer } from "./wallet-selector/reducer";
 import { walletReducer } from "./wallet/reducer";
 import { web3Reducer } from "./web3/reducer";
+import { txSenderReducer } from "./tx/sender/reducer";
 
 // add new app reducers here. They must be AppReducer<T> type
 export const appReducers = {
@@ -39,4 +40,5 @@ export const appReducers = {
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
   sendEthModal: sendEthModalReducer,
+  txSender: txSenderReducer,
 };

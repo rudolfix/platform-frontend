@@ -16,10 +16,10 @@ module.exports = merge(configCommon, {
     historyApiFallback: true,
     headers: {
       "Content-Security-Policy":
-        "default-src 'self'; script-src 'self' 'unsafe-eval'; " +
+        "default-src 'self'; script-src 'self' 'unsafe-eval' www.googletagmanager.com/gtag/js www.google-analytics.com/analytics.js; " +
         "style-src fonts.googleapis.com 'self' 'unsafe-inline'; " +
         "font-src 'self' fonts.gstatic.com; " +
-        "img-src 'self' data: documents.neufund.io documents.neufund.net;" +
+        "img-src 'self' data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net;" +
         "connect-src 'self' wss://localhost:9090", // needed for hot reload
     },
     proxy: {

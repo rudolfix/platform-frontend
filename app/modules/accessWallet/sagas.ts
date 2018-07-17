@@ -157,6 +157,10 @@ export function* accessWalletAndRunEffect(
   return result;
 }
 
+export function* accessWallet(title: string): any {
+  yield accessWalletAndRunEffect(call(() => {}), title);
+}
+
 /**
  * Main Message signing entry point
  * Can be moved elsewhere later

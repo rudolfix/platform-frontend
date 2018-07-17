@@ -64,6 +64,10 @@ export class BrowserWallet implements IPersonalWallet {
     }
   }
 
+  public async sendTransaction(data: Web3.TxData): Promise<string> {
+    return this.web3Adapter.sendTransaction(data);
+  }
+
   public getMetadata(): IBrowserWalletMetadata {
     return {
       address: this.ethereumAddress,

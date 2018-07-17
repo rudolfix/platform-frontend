@@ -65,6 +65,12 @@ export class Web3Adapter {
 
     return resultData.result;
   }
+
+  public async sendTransaction(txData: Web3.TxData): Promise<string> {
+    const send = promisify<any, any>(this.web3.eth.sendTransaction.bind(this.web3.currentProvider));
+
+    return await send(txData);
+  }
 }
 
 interface ITypedDataToSign {

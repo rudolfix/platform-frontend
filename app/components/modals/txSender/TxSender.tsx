@@ -45,7 +45,13 @@ function renderBody({ state, confirm, details }: Props): React.ReactNode {
       return (
         <div>
           Here we need forms.<br />
-          <Button onClick={() => confirm("0x0", "100000")}>Confirm</Button>
+          <Button
+            onClick={() =>
+              confirm("0x627d795782f653c8ea5e7a63b9cdfe5cb6846d9f", "1000000000000000")
+            }
+          >
+            Confirm
+          </Button>
         </div>
       );
     case "SUMMARY":

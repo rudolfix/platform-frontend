@@ -40,7 +40,7 @@
 
 .checked {
   width: 3em;
-  padding: 0 1em;
+  padding: 0 0.75em;
   visibility: hidden;
   input:checked + .box > & {
     visibility: visible

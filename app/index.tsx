@@ -13,7 +13,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import "reflect-metadata";
-import { installGoogleTagManager } from "./utils/googleTagManager.js";
+import * as gtm from "./utils/googleTagManager.js";
 
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
@@ -107,7 +107,7 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
   return { store, container };
 }
 
-installGoogleTagManager();
+gtm.installGoogleTagManager();
 
 const history = createHistory();
 const { store, container } = startupApp(history);

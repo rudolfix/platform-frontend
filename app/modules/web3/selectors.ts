@@ -61,6 +61,13 @@ export const selectPreviousLightWalletEmail = (state: IWeb3State): string | unde
     state.previousConnectedWallet.email) ||
   undefined;
 
+export const selectPreviousLightWalletSalt = (state: IWeb3State): string | undefined =>
+  (!state.connected &&
+    state.previousConnectedWallet &&
+    state.previousConnectedWallet.walletType === WalletType.LIGHT &&
+    state.previousConnectedWallet.salt) ||
+  undefined;
+
 export const selectPreviousConnectedWallet = (state: IWeb3State): TWalletMetadata | undefined =>
   (!state.connected && state.previousConnectedWallet) || undefined;
 

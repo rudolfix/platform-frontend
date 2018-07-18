@@ -27,13 +27,13 @@ export class WalletSelector extends React.Component<IProps> {
 
   render (): React.ReactNode {
     const { wallets, name } = this.props
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+    const { setFieldValue } = this.context.formik as FormikProps<any>;
     return <FormGroup>
       {wallets.map((w) => (
         <FormGroup key={w.id}>
           <Field
             name={name}
-            render={(props) => {
+            render={() => {
               return (
                 <label className={styles.wrapper}>
                   <input

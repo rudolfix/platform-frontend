@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react";
-import { Formik, withFormik } from "formik";
+import { Formik } from "formik";
 import * as React from "react";
 import { InvestmentSelectionForm } from "./Investment";
 
@@ -12,9 +12,9 @@ const wallets = [{
 
 storiesOf("InvestmentSelectionForm", module)
   .add("default", () => (
-    <Formik initialValues={{ wallet: 'bar', amount: 0 }} onSubmit={(vals) => {}}>
-      {(props) => (
-        <InvestmentSelectionForm {...props as any} wallets={wallets} />
+    <Formik initialValues={{ wallet: 'bar', amount: 0 }} onSubmit={() => {}}>
+      {(props: any) => (
+        <InvestmentSelectionForm {...props} wallets={wallets} />
       )}
     </Formik>
   ))

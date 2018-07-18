@@ -2,7 +2,7 @@ import { Form, FormikProps } from 'formik'
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Container, FormGroup, Label, Row } from "reactstrap";
+import { Container, FormGroup, Label, Row } from "reactstrap";
 import * as neuIcon from "../../../assets/img/neu_icon.svg"
 import * as tokenIcon from "../../../assets/img/token_icon.svg"
 import { IIntlProps, injectIntlHelpers } from '../../../utils/injectIntlHelpers';

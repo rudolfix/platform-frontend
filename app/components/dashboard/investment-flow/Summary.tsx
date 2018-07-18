@@ -1,20 +1,14 @@
-import { spawn } from 'child_process';
-import * as cn from 'classnames'
 import { Form, FormikProps } from 'formik'
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Container, FormGroup, Label, ListGroup, ListGroupItem, Row } from "reactstrap";
+import { Container, ListGroup, ListGroupItem, Row } from "reactstrap";
 import * as neuIcon from "../../../assets/img/neu_icon.svg"
 import * as tokenIcon from "../../../assets/img/token_icon.svg"
-import { InfoAlert } from "../../shared/Alerts";
 import { Button } from "../../shared/Buttons";
 import { Document } from "../../shared/Document";
-import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImportant";
 import { Heading } from "../../shared/modals/Heading";
-import { Money } from "../../shared/Money";
 import * as styles from './Summary.module.scss'
-import { WalletSelector } from './WalletSelector'
 
 
 interface IStateProps {
@@ -57,7 +51,7 @@ export const InvestmentSummary = injectIntl(({ investmentData: data }: IProps & 
         <Heading><FormattedMessage id="investment-flow.investment-summary" /></Heading>
       </Row>
 
-      <Row noGutters={false}>
+      <Row>
         <ListGroup className={styles.infoTable}>
           <InfoRow translation={<FormattedMessage id="investment-flow.summary.company" />} value={data.companyName} />
           <InfoRow translation={<FormattedMessage id="investment-flow.summary.token-price" />} value={data.tokenPrice} />

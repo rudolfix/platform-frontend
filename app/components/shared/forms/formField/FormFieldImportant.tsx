@@ -2,10 +2,9 @@ import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormGroup, Input, InputGroup, InputGroupAddon, Label } from "reactstrap";
+import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 import { CommonHtmlProps } from "../../../../types";
 import {Tooltip} from '../../Tooltip'
-import { FormLabel } from "./FormLabel";
 import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormFieldImportant.module.scss";
@@ -48,7 +47,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;
-    const { touched, errors } = formik;
+    const { errors } = formik;
 
     return (
       <Field

@@ -22,7 +22,7 @@ storiesOf("FormFieldImportant", module)
       <Formik initialValues={{ value: 'sadf' }} onSubmit={() => { }}>
         {() => (
           <Form>
-            <FormFieldImportant validate={val => 'Wrong!!'} placeholder="Form field" name="value" errorMessage={errorMessage}/>
+            <FormFieldImportant validate={() => 'Wrong!!'} placeholder="Form field" name="value" errorMessage={errorMessage}/>
           </Form>
         )}
       </Formik>

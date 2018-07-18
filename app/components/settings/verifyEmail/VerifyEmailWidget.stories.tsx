@@ -67,7 +67,7 @@ storiesOf("VerifyEmailWidgetComponent", module)
       isUserEmailVerified={false}
       revertCancelEmail={() => {}}
       cancelEmail={() => {}}
-      isThereUnverifiedEmail={false}
+      isThereUnverifiedEmail={true}
       isEmailTemporaryCancelled={true}
       resendEmail={() => {}}
       addNewEmail={() => {}}

@@ -42,6 +42,7 @@ interface IEnhancedFormProps {
   handleSubmit: (values: IFormValues) => void;
   isLocked?: boolean;
   revertCancelEmail: () => void;
+  isThereUnverifiedEmail?: boolean;
 }
 
 interface IDispatchProps {
@@ -58,6 +59,7 @@ interface IFormValues {
 interface INoEMailUser {
   addNewEmail: (values: { email: string }) => void;
   isLocked?: boolean;
+  isThereUnverifiedEmail?: boolean;
   revertCancelEmail: () => void;
 }
 
@@ -77,11 +79,10 @@ const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormVal
       <FormField
         placeholder={formatIntlMessage("settings.verify-email-widget.email-placeholder")}
         name="email"
-        // className="mb-3"
         data-test-id="verify-email-widget-form-email-input"
       />
       <div className={cn("d-flex justify-content-end text-center flex-wrap", styles.buttons)}>
-        <div className="">
+        {props.isThereUnverifiedEmail && (
           <Button
             data-test-id="verify-email-widget-form-cancel"
             layout="secondary"
@@ -89,17 +90,15 @@ const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormVal
           >
             <FormattedMessage id="form.button.cancel" />
           </Button>
-        </div>
-        <div className="">
-          <Button
-            type="submit"
-            layout="secondary"
-            disabled={!isValid(props) || props.isLocked}
-            data-test-id="verify-email-widget-form-submit"
-          >
-            <FormattedMessage id="form.button.submit" />
-          </Button>
-        </div>
+        )}
+        <Button
+          type="submit"
+          layout="secondary"
+          disabled={!isValid(props) || props.isLocked}
+          data-test-id="verify-email-widget-form-submit"
+        >
+          <FormattedMessage id="form.button.submit" />
+        </Button>
       </div>
     </Form>
   ),
@@ -116,7 +115,12 @@ const SetEmailEnhancedForm = withFormik<IEnhancedFormProps, IFormValues>({
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
-const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked, revertCancelEmail }) => (
+const NoEmailUser: React.SFC<INoEMailUser> = ({
+  addNewEmail,
+  isLocked,
+  revertCancelEmail,
+  isThereUnverifiedEmail,
+}) => (
   <div className={styles.content} data-test-id="settings.verify-email-widget.no-email-state">
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
@@ -125,6 +129,7 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked, revertCan
       handleSubmit={addNewEmail}
       isLocked={isLocked}
       revertCancelEmail={revertCancelEmail}
+      isThereUnverifiedEmail={isThereUnverifiedEmail}
     />
   </div>
 );
@@ -248,7 +253,9 @@ export const VerifyEmailWidgetComponent: React.SFC<
           data-test-id="unverified-section"
         />
       )}
-      {shouldViewNoEmail && <NoEmailUser {...{ addNewEmail, isLocked, revertCancelEmail }} />}
+      {shouldViewNoEmail && (
+        <NoEmailUser {...{ addNewEmail, isLocked, revertCancelEmail, isThereUnverifiedEmail }} />
+      )}
     </Panel>
   );
 };

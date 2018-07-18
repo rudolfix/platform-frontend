@@ -8,15 +8,16 @@ interface IProps {
 }
 
 export const Video: React.SFC<IProps> = ({ youTubeUrl, className }) => {
-  const youtubeId =
+  let youtubeId =
     youTubeUrl &&
     youTubeUrl
       .split("?")
       .filter(string => string.startsWith("v="))[0]
-      .slice(2);
 
   if (!youtubeId) {
     return null;
+  } else {
+    youtubeId = youtubeId.slice(2);
   }
 
   return (

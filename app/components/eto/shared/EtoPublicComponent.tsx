@@ -203,7 +203,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <Row>
         <Col
           xs={12}
-          md={!etoData.disableTwitterFeed || etoData.companyVideo ? 8 : 12}
+          md={!etoData.disableTwitterFeed || (etoData.companyVideo && etoData.companyVideo.url.length) ? 8 : 12}
           className="mb-4"
         >
           <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -329,16 +329,18 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        {(!etoData.disableTwitterFeed || etoData.companyVideo) && (
+        {(!etoData.disableTwitterFeed || (etoData.companyVideo && etoData.companyVideo.url.length)) && (
           <Col xs={12} md={4} className="mb-4">
             <Video
               youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
               className="mb-4 mt-5"
             />
+            {!etoData.disableTwitterFeed && <>
             <SectionHeader layoutHasDecorator={false} className="mb-4">
               Twitter
             </SectionHeader>
             <Panel>{/* TODO: ADD TWITTER */}</Panel>
+            </>}
           </Col>
         )}
       </Row>

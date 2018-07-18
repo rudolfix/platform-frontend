@@ -8,7 +8,6 @@ import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
-import { NewsWidget } from "../../shared/NewsWidget";
 import { Panel } from "../../shared/Panel";
 import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
@@ -52,7 +51,6 @@ const swiperMultiRowSettings = {
     },
   },
 };
-
 
 const documentsData = [
   {
@@ -122,6 +120,18 @@ export const CURRENCIES: ICurrencies = {
 };
 
 export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+  const fullyDilutedPreMoneyValuationEur = etoData.fullyDilutedPreMoneyValuationEur || 1;
+  const existingCompanyShares = etoData.existingCompanyShares || 1;
+  const newSharesToIssue = etoData.newSharesToIssue || 1;
+  const equityTokensPerShare = etoData.equityTokensPerShare || 1;
+  const minimumNewSharesToIssue = etoData.minimumNewSharesToIssue || 1;
+
+  const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
+  const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
+  const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
+  const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
+  const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
+
   return (
     <div>
       <Cover
@@ -191,7 +201,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       </Row>
 
       <Row>
-        <Col xs={12} md={8} className="mb-4">
+        <Col
+          xs={12}
+          md={!etoData.disableTwitterFeed || etoData.companyVideo ? 8 : 12}
+          className="mb-4"
+        >
           <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.about" />
           </SectionHeader>
@@ -315,15 +329,18 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        {!etoData.disableTwitterFeed && <Col xs={12} md={4} className="mb-4">
-          <Video youTubeId="" className="mb-4 mt-5"/>
-          <SectionHeader layoutHasDecorator={false} className="mb-4">
-            Twitter
-          </SectionHeader>
-          <Panel>
-            {/* TODO: ADD TWITTER */}
-          </Panel>
-        </Col>}
+        {(!etoData.disableTwitterFeed || etoData.companyVideo) && (
+          <Col xs={12} md={4} className="mb-4">
+            <Video
+              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
+              className="mb-4 mt-5"
+            />
+            <SectionHeader layoutHasDecorator={false} className="mb-4">
+              Twitter
+            </SectionHeader>
+            <Panel>{/* TODO: ADD TWITTER */}</Panel>
+          </Col>
+        )}
       </Row>
 
       <Row>
@@ -337,12 +354,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.soft-cap" />
                 </span>
+                {computedMinCapEur || DEFAULT_PLACEHOLDER}
                 <span className={styles.value} />
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.hard-cap" />
                 </span>
+                {computedMaxCapEur || DEFAULT_PLACEHOLDER}
                 <span className={styles.value} />
               </div>
               <div className={styles.entry}>
@@ -350,14 +369,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap" />
                 </span>
                 <span className={styles.value}>
-                  {etoData.minimumNewSharesToIssue || DEFAULT_PLACEHOLDER}
+                  {computedMinNumberOfTokens || DEFAULT_PLACEHOLDER}
                 </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap" />
                 </span>
-                <span className={styles.value}>{}</span>
+                <span className={styles.value}>
+                  {computedMaxNumberOfTokens || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
@@ -387,7 +408,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.value}>
                   €{" "}
                   {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
-                    ? (etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares).toPrecision(4)
+                    ? (
+                        etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
+                      ).toPrecision(4)
                     : DEFAULT_PLACEHOLDER}
                 </span>
               </div>
@@ -649,7 +672,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <p>{companyData.salesModel || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
-                title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+                title={
+                  <FormattedMessage id="eto.form.product-vision.marketing-approach" /> ||
+                  DEFAULT_PLACEHOLDER
+                }
               >
                 <p>{companyData.marketingApproach}</p>
               </AccordionElement>
@@ -666,10 +692,17 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-          <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.form.media-links.title" />
-          </SectionHeader>
-          <MediaLinksWidget links={companyData.companyNews || []} />
+
+          {companyData.companyNews &&
+            companyData.companyNews.length && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <FormattedMessage id="eto.form.media-links.title" />
+                </SectionHeader>
+
+                <MediaLinksWidget links={companyData.companyNews || []} />
+              </>
+            )}
         </Col>
       </Row>
     </div>

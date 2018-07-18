@@ -110,28 +110,35 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           <FormField
             name="companyVideo.url"
             placeholder="url"
-            label={<FormattedMessage id="eto.form.eto-media.you-tube-video" />}
             additionalObjValue={{ name: "companyVideo.title", value: "youtube" }}
           />
         </Col>
       </Row>
-      <SocialProfilesEditor profiles={socialProfiles} name="socialChannels" className="mt-4" />
+
       <p className="offset-1 mb-2 font-weight-bold">
-        <FormattedMessage id="eto.form.eto-media.media-links" />
+        <FormattedMessage id="eto.form.eto-media.social-channels" />
       </p>
-      <MediaLinksEditor
-        name="companyNews"
-        placeholder="Media Link"
-        blankField={{ url: "", title: "" }}
-      />
       <Row>
-        <Col className="offset-1">
+        <Col className="offset-1 mt-3">
           <FormCheckbox
             name="disableTwitterFeed"
             label={<FormattedMessage id="eto.form.eto-media.enable-twitter-feed" />}
           />
         </Col>
       </Row>
+      <SocialProfilesEditor profiles={socialProfiles} name="socialChannels" className="mt-4" />
+
+      <p className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
+        <FormattedMessage id="eto.form.eto-media.media-links" />
+      </p>
+      <p className="offset-1 mb-3">
+        <FormattedMessage id="eto.form.eto-media.media-links-description" />
+      </p>
+      <MediaLinksEditor
+        name="companyNews"
+        placeholder="Media Link"
+        blankField={{ url: "", title: "" }}
+      />
     </Section>
     <Col>
       <Row className="justify-content-end">

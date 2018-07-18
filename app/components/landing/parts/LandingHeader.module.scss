@@ -30,7 +30,7 @@
 
 .hero-description {
   @include media-breakpoint-down (md) {
-    @include font-headline-small;
+    @include font-headline-medium;
 
     text-shadow: $shadow-white;
   }

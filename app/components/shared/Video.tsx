@@ -8,11 +8,7 @@ interface IProps {
 }
 
 export const Video: React.SFC<IProps> = ({ youTubeUrl, className }) => {
-  let youtubeId =
-    youTubeUrl &&
-    youTubeUrl
-      .split("?")
-      .filter(string => string.startsWith("v="))[0]
+  let youtubeId = youTubeUrl && youTubeUrl.split("?").filter(string => string.startsWith("v="))[0];
 
   if (!youtubeId) {
     return null;

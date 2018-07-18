@@ -6,7 +6,7 @@ import { Container, ListGroup, ListGroupItem, Row } from "reactstrap";
 import * as neuIcon from "../../../assets/img/neu_icon.svg"
 import * as tokenIcon from "../../../assets/img/token_icon.svg"
 import { Button } from "../../shared/Buttons";
-import { Document } from "../../shared/Document";
+import { DocumentLink } from "../../shared/DocumentLink";
 import { Heading } from "../../shared/modals/Heading";
 import * as styles from './Summary.module.scss'
 
@@ -22,6 +22,7 @@ interface IStateProps {
     estimatedReward: number
     transactionValue: number
   }
+  agreementUrl: string
 }
 
 interface IDispatchProps {
@@ -42,7 +43,7 @@ export const InfoRow: React.SFC<IInfoRowProps> = ({ translation, value }) => (
   </ListGroupItem>
 )
 
-export const InvestmentSummary = injectIntl(({ investmentData: data }: IProps & InjectedIntlProps) => {
+export const InvestmentSummary = injectIntl(({ investmentData: data, agreementUrl }: IProps & InjectedIntlProps) => {
   const equityTokens = (<span><img src={tokenIcon} /> {data.equityTokens}</span>)
   const estimatedReward = (<span><img src={neuIcon} /> {data.estimatedReward}</span>)
   return (
@@ -65,7 +66,7 @@ export const InvestmentSummary = injectIntl(({ investmentData: data }: IProps & 
       </Row>
 
       <Row className="justify-content-center">
-        <a className={styles.downloadLink} href="" target="_blank"><Document extension="pdf" /><FormattedMessage id="investment-flow.summary.download-agreement" /></a>
+        <DocumentLink url={agreementUrl} name={<FormattedMessage id="investment-flow.summary.download-agreement" />} />
       </Row>
 
       <Row className="justify-content-center">

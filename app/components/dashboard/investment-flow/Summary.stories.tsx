@@ -17,5 +17,5 @@ const data: any = {
 
 storiesOf("InvestmentSummary", module)
   .add("default", () => (
-    <InvestmentSummary investmentData={data} submit={() => {}}/>
+    <InvestmentSummary investmentData={data} agreementUrl="somePDF.pdf" submit={() => {}}/>
   ))

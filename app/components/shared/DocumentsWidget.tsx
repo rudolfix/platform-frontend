@@ -3,7 +3,7 @@ import * as React from "react";
 import { TTranslatedString } from "../../types";
 import { Panel } from "./Panel";
 
-import { Document } from "./Document";
+import { DocumentLink } from "./DocumentLink";
 import * as styles from "./DocumentsWidget.module.scss";
 
 export interface IDocument {
@@ -31,10 +31,7 @@ export const DocumentsWidget: React.SFC<IProps> = ({ groups, className }) => {
             {documents.map(({ name, url }) => {
               return (
                 <div className={styles.document}>
-                  <a href={url} className={styles.documentLink}>
-                    <Document extension={url} />
-                    {name}
-                  </a>
+                  <DocumentLink url={url} name={name}/>
                 </div>
               );
             })}

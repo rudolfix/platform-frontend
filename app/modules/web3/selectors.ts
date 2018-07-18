@@ -50,6 +50,13 @@ export const selectIsLightWallet = (state: IWeb3State): boolean => {
   );
 };
 
+export const selectLightWalletSalt = (state: IWeb3State): string | undefined =>
+  (state.connected &&
+    state.wallet &&
+    state.wallet.walletType === WalletType.LIGHT &&
+    state.wallet.salt) ||
+  undefined;
+
 export const selectIsUnlocked = (state: IWeb3State): boolean => {
   return state.connected && state.isUnlocked;
 };

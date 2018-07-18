@@ -9,7 +9,11 @@ import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { selectPreviousLightWalletSalt, selectWalletType } from "../web3/selectors";
+import {
+  selectLightWalletSalt,
+  selectPreviousLightWalletSalt,
+  selectWalletType,
+} from "../web3/selectors";
 import { WalletType } from "../web3/types";
 
 export function* addNewEmail(
@@ -21,7 +25,9 @@ export function* addNewEmail(
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
   const walletType = yield select((s: IAppState) => selectWalletType(s.web3));
-  const salt = yield select((s: IAppState) => selectPreviousLightWalletSalt(s.web3));
+  const salt = yield select(
+    (s: IAppState) => selectLightWalletSalt(s.web3) || selectPreviousLightWalletSalt(s.web3),
+  );
 
   let addEmailMessage;
 
@@ -50,22 +56,21 @@ export function* addNewEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Add email",
+      "Email Update",
       addEmailMessage,
     );
-
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
     notificationCenter.info(
       formatIntlMessage("modules.settings.sagas.add-new-email.new-email-added"),
     );
   } catch (e) {
-    yield effects.call(loadUser);
     if (e instanceof EmailAlreadyExists)
       notificationCenter.error(
         formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
       );
     else notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
   } finally {
+    yield effects.call(loadUser);
     yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
   }
 }

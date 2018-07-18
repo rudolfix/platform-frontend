@@ -101,7 +101,7 @@ const SetEmailEnhancedForm = withFormik<IEnhancedFormProps, IFormValues>({
 })(SetEmailForm);
 
 const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked }) => (
-  <div className={styles.content}>
+  <div className={styles.content} data-test-id="settings.verify-email-widget.no-email-state">
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
     </p>
@@ -110,7 +110,10 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked }) => (
 );
 
 const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
-  <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
+  <div
+    className={cn(styles.content, "d-flex flex-wrap align-content-around")}
+    data-test-id="settings.verify-email-widget.verified-email-state"
+  >
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
     </p>
@@ -131,14 +134,17 @@ const UnVerifiedUser: React.SFC<{
   unverifiedEmail?: string;
   cancelEmail: () => void;
 }> = ({ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }) => (
-  <div className={cn(styles.content, "d-flex flex-wrap align-content-around")}>
+  <div
+    className={cn(styles.content, "d-flex flex-wrap align-content-around")}
+    data-test-id="settings.verify-email-widget.unverified-email-state"
+  >
     <p className={cn(styles.text, "pt-2 mb-0")}>
       <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
     </p>
 
     {verifiedEmail && (
       <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
-        <p className="mb-0">
+        <p className="mb-0 text-center">
           <b>
             <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
           </b>
@@ -156,15 +162,22 @@ const UnVerifiedUser: React.SFC<{
             {unverifiedEmail}
           </p>
         </Col>
-        <Col xs={12} className="d-flex justify-content-between" data-test-id="resend-link">
-          <Button layout="secondary" iconPosition="icon-after" onClick={cancelEmail}>
+        <Col xs={12} className="d-flex justify-content-between px-0">
+          <Button
+            layout="secondary"
+            className="p-0"
+            onClick={cancelEmail}
+            data-test-id="verify-email-widget.change-email.button"
+          >
             <FormattedMessage id="settings.verify-email-widget.change-email" />
           </Button>
           <Button
             layout="secondary"
+            className="p-0"
             iconPosition="icon-after"
             svgIcon={arrowRight}
             onClick={resendEmail}
+            data-test-id="resend-link"
           >
             <FormattedMessage id="settings.verify-email-widget.resend-link" />
           </Button>
@@ -206,7 +219,7 @@ export const VerifyEmailWidgetComponent: React.SFC<
       data-test-id="settings.verify-email-widget"
     >
       {shouldViewVerifiedUser && (
-        <VerifiedUser {...{ verifiedEmail }} data-test-id="verified-section" />
+        <VerifiedUser {...{ verifiedEmail, cancelEmail }} data-test-id="verified-section" />
       )}
       {shouldViewUnVerifiedUser && (
         <UnVerifiedUser

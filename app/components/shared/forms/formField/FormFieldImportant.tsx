@@ -4,7 +4,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 import { CommonHtmlProps } from "../../../../types";
-import {Tooltip} from '../../Tooltip'
+import { Tooltip } from "../../Tooltip";
 import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormFieldImportant.module.scss";
@@ -25,8 +25,8 @@ type InputType =
   | "time";
 
 interface IFieldGroup {
-  placeholder?: string
-  errorMessage?: string | React.ReactNode
+  placeholder?: string;
+  errorMessage?: string | React.ReactNode;
   type?: InputType;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
@@ -37,15 +37,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const {
-      type,
-      placeholder,
-      name,
-      className,
-      errorMessage,
-      validate,
-      ...props
-    } = this.props;
+    const { type, placeholder, name, className, errorMessage, validate, ...props } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { errors } = formik;
 
@@ -64,7 +56,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
               {...props as any}
             />
             <InputGroupAddon addonType="append" className={formStyles.addon}>
-              {!!errors[name] && (<Tooltip content={errorMessage} />)}
+              {!!errors[name] && <Tooltip content={errorMessage} />}
             </InputGroupAddon>
           </InputGroup>
         )}

@@ -6,7 +6,7 @@ import { FormFieldImportant } from "./FormFieldImportant";
 
 storiesOf("FormFieldImportant", module)
   .add("default", () => (
-    <Formik initialValues={{}} onSubmit={() => { }}>
+    <Formik initialValues={{}} onSubmit={() => {}}>
       {() => (
         <Form>
           <FormFieldImportant placeholder="Form field" name="value" />
@@ -15,16 +15,19 @@ storiesOf("FormFieldImportant", module)
     </Formik>
   ))
   .add("with validation error message", () => {
-    const errorMessage = (
-      <div>There is an error</div>
-    )
+    const errorMessage = <div>There is an error</div>;
     return (
-      <Formik initialValues={{ value: 'sadf' }} onSubmit={() => { }}>
+      <Formik initialValues={{ value: "sadf" }} onSubmit={() => {}}>
         {() => (
           <Form>
-            <FormFieldImportant validate={() => 'Wrong!!'} placeholder="Form field" name="value" errorMessage={errorMessage}/>
+            <FormFieldImportant
+              validate={() => "Wrong!!"}
+              placeholder="Form field"
+              name="value"
+              errorMessage={errorMessage}
+            />
           </Form>
         )}
       </Formik>
-    )
-  })
+    );
+  });

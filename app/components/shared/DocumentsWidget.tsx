@@ -31,7 +31,7 @@ export const DocumentsWidget: React.SFC<IProps> = ({ groups, className }) => {
             {documents.map(({ name, url }) => {
               return (
                 <div className={styles.document}>
-                  <DocumentLink url={url} name={name}/>
+                  <DocumentLink url={url} name={name} />
                 </div>
               );
             })}

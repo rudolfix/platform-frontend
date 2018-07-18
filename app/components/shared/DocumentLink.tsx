@@ -1,9 +1,7 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { TTranslatedString } from "../../types";
 import { Document } from "./Document";
 import * as styles from "./DocumentLink.module.scss";
-
 
 export interface IDocumentLinkProps {
   url: string;

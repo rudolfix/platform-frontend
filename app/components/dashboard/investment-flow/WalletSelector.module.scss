@@ -20,7 +20,7 @@
 
 .label {
   flex-grow: 1;
-  padding: 0.75rem 1.25rem;
+  padding: .75rem 1.25rem;
   min-width: 50%;
 }
 
@@ -34,6 +34,7 @@
 
 .icon {
   margin-right: 2em;
+
   img {
     height: 2.4em;
   }
@@ -45,16 +46,19 @@
   line-height: 1.1;
 
   .balance-eur {
-    font-size: 0.8em;
+    font-size: .8em;
     color: $neu-pale-grey;
   }
 }
 
 .checked {
   width: 3em;
-  padding: 0 0.75em;
+  padding: 0 .75em;
   visibility: hidden;
-  input:checked + .box > & {
-    visibility: visible
+}
+
+input {
+  &:checked + .box > .checked {
+    visibility: visible;
   }
 }

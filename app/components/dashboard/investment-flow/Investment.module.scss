@@ -5,29 +5,38 @@
 }
 
 .invest-input {
-  margin-bottom: 0;
-
-  label {
-    margin-bottom: 0.25rem;
+  &:global(.form-group) {
+    margin-bottom: 0;
   }
 
-  a, a:visited {
+  label {
+    margin-bottom: .25rem;
+  }
+
+  a {
     display: inline-block;
-    margin-top: 0.25rem;
-    font-size: 0.85em;
+    margin-top: .25rem;
+    font-size: .85em;
     font-weight: normal;
     color: $neu-blue;
+
+    &:visited {
+      color: $neu-blue;
+    }
   }
 }
 
 .icon {
   height: 1.5em;
   width: 1.5em;
-  margin-right: 0.5em;
+  margin-right: .5em;
 }
 
 .equals {
   justify-content: center;
   font-size: 2.5em;
-  margin: 0 !important;
+
+  &:global(.row) {
+    margin: 0;
+  }
 }

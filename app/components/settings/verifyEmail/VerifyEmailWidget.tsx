@@ -41,12 +41,14 @@ interface IOwnProps {
 interface IEnhancedFormProps {
   handleSubmit: (values: IFormValues) => void;
   isLocked?: boolean;
+  revertCancelEmail: () => void;
 }
 
 interface IDispatchProps {
   resendEmail: () => void;
   addNewEmail: (values: { email: string }) => void;
   cancelEmail: () => void;
+  revertCancelEmail: () => void;
 }
 
 interface IFormValues {
@@ -56,6 +58,7 @@ interface IFormValues {
 interface INoEMailUser {
   addNewEmail: (values: { email: string }) => void;
   isLocked?: boolean;
+  revertCancelEmail: () => void;
 }
 
 /**
@@ -70,20 +73,33 @@ function isValid(props: FormikProps<IFormValues>): boolean {
 
 const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormValues>>(
   ({ intl: { formatIntlMessage }, ...props }) => (
-    <Form className={cn(styles.content, "mt-0 pt-0 mb-0")}>
+    <Form className={cn("mt-2 pt-0 mb-0")}>
       <FormField
         placeholder={formatIntlMessage("settings.verify-email-widget.email-placeholder")}
         name="email"
+        // className="mb-3"
         data-test-id="verify-email-widget-form-email-input"
       />
-      <div className="text-center">
-        <Button
-          type="submit"
-          disabled={!isValid(props) || props.isLocked}
-          data-test-id="verify-email-widget-form-submit"
-        >
-          <FormattedMessage id="form.button.submit" />
-        </Button>
+      <div className={cn("d-flex justify-content-end text-center flex-wrap", styles.buttons)}>
+        <div className="">
+          <Button
+            data-test-id="verify-email-widget-form-cancel"
+            layout="secondary"
+            onClick={props.revertCancelEmail}
+          >
+            <FormattedMessage id="form.button.cancel" />
+          </Button>
+        </div>
+        <div className="">
+          <Button
+            type="submit"
+            layout="secondary"
+            disabled={!isValid(props) || props.isLocked}
+            data-test-id="verify-email-widget-form-submit"
+          >
+            <FormattedMessage id="form.button.submit" />
+          </Button>
+        </div>
       </div>
     </Form>
   ),
@@ -100,12 +116,16 @@ const SetEmailEnhancedForm = withFormik<IEnhancedFormProps, IFormValues>({
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
-const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked }) => (
+const NoEmailUser: React.SFC<INoEMailUser> = ({ addNewEmail, isLocked, revertCancelEmail }) => (
   <div className={styles.content} data-test-id="settings.verify-email-widget.no-email-state">
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
     </p>
-    <SetEmailEnhancedForm handleSubmit={addNewEmail} isLocked={isLocked} />
+    <SetEmailEnhancedForm
+      handleSubmit={addNewEmail}
+      isLocked={isLocked}
+      revertCancelEmail={revertCancelEmail}
+    />
   </div>
 );
 
@@ -141,7 +161,6 @@ const UnVerifiedUser: React.SFC<{
     <p className={cn(styles.text, "pt-2 mb-0")}>
       <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
     </p>
-
     {verifiedEmail && (
       <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
         <p className="mb-0 text-center">
@@ -162,28 +181,29 @@ const UnVerifiedUser: React.SFC<{
             {unverifiedEmail}
           </p>
         </Col>
-        <Col xs={12} className="d-flex justify-content-between px-0">
-          <Button
-            layout="secondary"
-            className="p-0"
-            onClick={cancelEmail}
-            data-test-id="verify-email-widget.change-email.button"
-          >
-            <FormattedMessage id="settings.verify-email-widget.change-email" />
-          </Button>
-          <Button
-            layout="secondary"
-            className="p-0"
-            iconPosition="icon-after"
-            svgIcon={arrowRight}
-            onClick={resendEmail}
-            data-test-id="resend-link"
-          >
-            <FormattedMessage id="settings.verify-email-widget.resend-link" />
-          </Button>
-        </Col>
       </>
     )}
+
+    <Col xs={12} className="d-flex justify-content-between px-0">
+      <Button
+        layout="secondary"
+        className="p-0"
+        onClick={cancelEmail}
+        data-test-id="verify-email-widget.change-email.button"
+      >
+        <FormattedMessage id="settings.verify-email-widget.change-email" />
+      </Button>
+      <Button
+        layout="secondary"
+        className="p-0"
+        iconPosition="icon-after"
+        svgIcon={arrowRight}
+        onClick={resendEmail}
+        data-test-id="resend-link"
+      >
+        <FormattedMessage id="settings.verify-email-widget.resend-link" />
+      </Button>
+    </Col>
   </div>
 );
 export const VerifyEmailWidgetComponent: React.SFC<
@@ -200,6 +220,7 @@ export const VerifyEmailWidgetComponent: React.SFC<
   cancelEmail,
   isEmailTemporaryCancelled,
   step,
+  revertCancelEmail,
 }) => {
   const shouldViewVerifiedUser =
     !isThereUnverifiedEmail && !isEmailTemporaryCancelled && isUserEmailVerified;
@@ -223,11 +244,11 @@ export const VerifyEmailWidgetComponent: React.SFC<
       )}
       {shouldViewUnVerifiedUser && (
         <UnVerifiedUser
-          {...{ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }}
+          {...{ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail, revertCancelEmail }}
           data-test-id="unverified-section"
         />
       )}
-      {shouldViewNoEmail && <NoEmailUser {...{ addNewEmail, isLocked }} />}
+      {shouldViewNoEmail && <NoEmailUser {...{ addNewEmail, isLocked, revertCancelEmail }} />}
     </Panel>
   );
 };
@@ -252,6 +273,7 @@ export const VerifyEmailWidget = compose<React.SFC<IOwnProps>>(
       cancelEmail: () => {
         dispatch(actions.settings.cancelEmail());
       },
+      revertCancelEmail: () => dispatch(actions.settings.revertCancelEmail()),
     }),
   }),
   injectIntlHelpers,

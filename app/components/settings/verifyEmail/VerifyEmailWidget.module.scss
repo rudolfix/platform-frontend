@@ -1,5 +1,3 @@
-
-
 .content {
   min-height: px-to-rem(178px);
   max-height: px-to-rem(178px);
@@ -9,12 +7,16 @@
   padding-top: px-to-rem(12px);
 }
 
+.buttons {
+  padding-top: px-to-rem(35px);
+}
+
 .icon {
   height: px-to-rem(16px);
   width: px-to-rem(16px);
 }
 
 .text {
-  min-height: px-to-rem(100px);
-  max-height: px-to-rem(108px);
+  min-height: px-to-rem(68px);
+  max-height: px-to-rem(68px);
 }

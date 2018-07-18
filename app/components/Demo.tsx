@@ -74,6 +74,7 @@ export const Demo: React.SFC = () => (
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
             step={1}
+            revertCancelEmail={() => {}}
             isUserEmailVerified={false}
             isThereUnverifiedEmail={true}
             isEmailTemporaryCancelled={false}
@@ -86,6 +87,7 @@ export const Demo: React.SFC = () => (
         <Col lg={6} xs={12}>
           <VerifyEmailWidgetComponent
             step={1}
+            revertCancelEmail={() => {}}
             isUserEmailVerified={true}
             cancelEmail={() => {}}
             isThereUnverifiedEmail={true}

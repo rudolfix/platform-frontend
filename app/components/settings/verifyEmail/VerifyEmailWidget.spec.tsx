@@ -13,6 +13,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const verifyEmailWidget = shallow(
       <VerifyEmailWidgetComponent
         step={1}
+        revertCancelEmail={() => {}}
         isThereUnverifiedEmail={false}
         isUserEmailVerified={true}
         resendEmail={() => {}}
@@ -33,6 +34,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         isThereUnverifiedEmail={true}
         isUserEmailVerified={false}
         cancelEmail={() => {}}
+        revertCancelEmail={() => {}}
         isEmailTemporaryCancelled={false}
         resendEmail={() => {}}
         addNewEmail={() => {}}
@@ -50,6 +52,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         isThereUnverifiedEmail={false}
         isEmailTemporaryCancelled={false}
         isUserEmailVerified={false}
+        revertCancelEmail={() => {}}
         cancelEmail={() => {}}
         resendEmail={() => {}}
         addNewEmail={() => {}}
@@ -68,6 +71,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
           isThereUnverifiedEmail={true}
           isUserEmailVerified={false}
           unverifiedEmail="test@test.com"
+          revertCancelEmail={() => {}}
           cancelEmail={() => {}}
           resendEmail={() => {}}
           addNewEmail={() => {}}
@@ -89,6 +93,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
             cancelEmail={() => {}}
             isUserEmailVerified={false}
             resendEmail={() => {}}
+            revertCancelEmail={() => {}}
             addNewEmail={() => {}}
             intl={dummyIntl}
           />,
@@ -112,6 +117,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
             isEmailTemporaryCancelled={false}
+            revertCancelEmail={() => {}}
             cancelEmail={() => {}}
             resendEmail={() => {}}
             addNewEmail={addNewEmailSpy}
@@ -152,6 +158,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
             isThereUnverifiedEmail={false}
             cancelEmail={() => {}}
             isUserEmailVerified={false}
+            revertCancelEmail={() => {}}
             isEmailTemporaryCancelled={false}
             resendEmail={() => {}}
             addNewEmail={() => {}}

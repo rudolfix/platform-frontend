@@ -20,6 +20,7 @@ export const settingsReducer: AppReducer<ISettings> = (
         isEmailTemporaryCancelled: true,
       };
     case "SETTINGS_ADD_NEW_EMAIL":
+    case "SETTINGS_REVERT_CANCEL_EMAIL":
       return {
         ...state,
         isEmailTemporaryCancelled: false,

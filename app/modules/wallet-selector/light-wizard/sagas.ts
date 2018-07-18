@@ -15,7 +15,6 @@ import {
   LightWalletUtil,
   LightWalletWrongPassword,
 } from "../../../lib/web3/LightWallet";
-import { SignerError } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../accessWallet/sagas";
@@ -159,7 +158,11 @@ export function* lightWalletRegisterWatch(
         ),
       );
     else {
-      if (e instanceof SignerError) {
+      if (e instanceof LightError)
+        yield put(
+          actions.genericModal.showErrorModal("Error", mapLightWalletErrorToErrorMessage(e)),
+        );
+      else
         yield put(
           actions.genericModal.showErrorModal(
             "Error",
@@ -168,13 +171,10 @@ export function* lightWalletRegisterWatch(
             ),
           ),
         );
-      } else
-        yield put(
-          actions.genericModal.showErrorModal("Error", mapLightWalletErrorToErrorMessage(e)),
-        );
     }
   }
 }
+
 async function checkEmailPromise(
   { apiUserService }: TGlobalDependencies,
   email: string,

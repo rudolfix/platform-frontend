@@ -16,12 +16,12 @@ import { routingActions } from "./routing/actions";
 import { sendModalActions } from "./sendEthModal/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
+import { txMonitorActions } from "./tx/monitor/actions";
+import { txSenderActions } from "./tx/sender/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
 import { walletActions } from "./wallet/actions";
 import { web3Actions } from "./web3/actions";
-import { txMonitorActions } from "./tx/monitor/actions";
-import { txSenderActions } from "./tx/sender/actions";
 
 /** You should add new actions also here (with a namespace).*/
 export const actions = {

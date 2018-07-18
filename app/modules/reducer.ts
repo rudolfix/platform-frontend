@@ -9,6 +9,7 @@ import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { sendEthModalReducer } from "./sendEthModal/reducer";
+import { txSenderReducer } from "./tx/sender/reducer";
 import { browserReducer } from "./userAgent/reducer";
 import { verifyEmailWidgetReducer } from "./verifyEmailWidget/reducer";
 import { browserWalletWizardReducer } from "./wallet-selector/browser-wizard/reducer";
@@ -17,7 +18,6 @@ import { lightWalletWizardReducer } from "./wallet-selector/light-wizard/reducer
 import { walletSelectorReducer } from "./wallet-selector/reducer";
 import { walletReducer } from "./wallet/reducer";
 import { web3Reducer } from "./web3/reducer";
-import { txSenderReducer } from "./tx/sender/reducer";
 
 // add new app reducers here. They must be AppReducer<T> type
 export const appReducers = {

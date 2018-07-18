@@ -34,7 +34,7 @@ function* sendDummyTx(_: TGlobalDependencies, action: TAction): any {
     return;
   }
 
-  yield txSendSaga("WITHDRAW");
+  yield neuCall(txSendSaga, "WITHDRAW");
 }
 
 export const dashboardSagas = function*(): Iterator<effects.Effect> {

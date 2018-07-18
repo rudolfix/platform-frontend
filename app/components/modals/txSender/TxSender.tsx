@@ -4,28 +4,30 @@ import { Modal } from "reactstrap";
 import { Button } from "../../shared/Buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
 
-import { appConnect } from "../../../store";
-import { actions } from "../../../modules/actions";
-import { TxSenderType, TxSenderState, ITxData } from "../../../modules/tx/sender/reducer";
-import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { TxData } from "web3";
+import { actions } from "../../../modules/actions";
+import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
+import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
+import { appConnect } from "../../../store";
 
 interface IStateProps {
   isOpen: boolean;
   state: TxSenderState;
   type?: TxSenderType;
   details?: ITxData;
+  blockId?: number;
 }
 
 interface IDispatchProps {
   onCancel: () => any;
-  confirm: (to: string, value: string) => any;
+  acceptDraft: (to: string, value: string) => any;
+  accept: () => any;
 }
 
 type Props = IStateProps & IDispatchProps;
 
 export const TxSenderModalComponent: React.SFC<Props> = props => {
-  const { isOpen, type, state, onCancel, confirm } = props;
+  const { isOpen, type, state, onCancel, acceptDraft } = props;
 
   return (
     <Modal isOpen={isOpen} toggle={onCancel}>
@@ -39,7 +41,7 @@ export const TxSenderModalComponent: React.SFC<Props> = props => {
   );
 };
 
-function renderBody({ state, confirm, details }: Props): React.ReactNode {
+function renderBody({ state, acceptDraft, accept, details, blockId }: Props): React.ReactNode {
   switch (state) {
     case "INIT":
       return (
@@ -47,10 +49,10 @@ function renderBody({ state, confirm, details }: Props): React.ReactNode {
           Here we need forms.<br />
           <Button
             onClick={() =>
-              confirm("0x627d795782f653c8ea5e7a63b9cdfe5cb6846d9f", "1000000000000000")
+              acceptDraft("0x627d795782f653c8ea5e7a63b9cdfe5cb6846d9f", "1000000000000000")
             }
           >
-            Confirm
+            NEXT
           </Button>
         </div>
       );
@@ -58,10 +60,11 @@ function renderBody({ state, confirm, details }: Props): React.ReactNode {
       return (
         <div>
           <h3>Details:</h3>To: {details!.to}
+          <Button onClick={() => accept()}>Confirm</Button>
         </div>
       );
-    // case ""
-    // default: throw new Error(`Unrecognized tx sender state: ${state}`);
+    case "MINING":
+      return <div>{blockId}</div>;
   }
 }
 
@@ -71,9 +74,12 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
     state: state.txSender.state,
     type: state.txSender.type,
     details: state.txSender.txDetails,
+    blockId: state.txSender.blockId,
   }),
   dispatchToProps: d => ({
     onCancel: () => d(actions.txSender.txSenderHideModal()),
-    confirm: (to: string, value: string) => d(actions.txSender.txSenderConfirm({ to, value })),
+    acceptDraft: (to: string, value: string) =>
+      d(actions.txSender.txSenderAcceptDraft({ to, value })),
+    accept: () => d(actions.txSender.txSenderAccept()),
   }),
 })(TxSenderModalComponent);

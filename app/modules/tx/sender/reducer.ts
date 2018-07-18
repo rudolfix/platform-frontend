@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
+import { TxData } from "web3";
 import { AppReducer } from "../../../store";
 import { EthereumAddress } from "../../../types";
-import { TxData } from "web3";
 
 export type TxSenderType = "WITHDRAW";
-export type TxSenderState = "UNINITIALIZED" | "INIT" | "SUMMARY" | "MINING" | "DONE" | "REVERTED";
+export type TxSenderState = "UNINITIALIZED" | "INIT" | "SUMMARY" | "SIGNING" | "MINING" | "DONE" | "REVERTED";
 
 export interface ITxData {
   to?: string;
@@ -21,6 +21,7 @@ export interface ITxSenderState {
   state: TxSenderState;
   type?: TxSenderType;
   txDetails?: ITxData;
+  blockId?: number;
 }
 
 const initialState: ITxSenderState = {
@@ -41,10 +42,10 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
 
     case "TX_SENDER_HIDE_MODAL":
       return {
-        ...initialState
+        ...initialState,
       };
 
-    case "TX_SENDER_CONFIRM":
+    case "TX_SENDER_ACCEPT_DRAFT":
       return {
         ...state,
         state: "SUMMARY",
@@ -52,6 +53,30 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
           ...state.txDetails,
           ...action.payload,
         },
+      };
+
+    case "TX_SENDER_ACCEPT":
+      return {
+        ...state,
+        state: "SIGNING",
+      };
+
+    case "TX_SENDER_SIGNED":
+      return {
+        ...state,
+        state: "MINING",
+      };
+
+    case "TX_SENDER_REPORT_BLOCK":
+      return {
+        ...state,
+        blockId: action.payload,
+      };
+
+    case "TX_SENDER_TX_MINED":
+      return {
+        ...state,
+        state: "DONE",
       };
   }
 

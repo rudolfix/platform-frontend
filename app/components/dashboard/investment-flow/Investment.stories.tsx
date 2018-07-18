@@ -5,9 +5,9 @@ import { InvestmentSelectionForm } from "./Investment";
 
 
 const wallets = [{
-  balance: 300, id: 'foo', name: 'lalala'
+  balanceEth: '300000000', id: 'foo', name: 'ICBM Wallet'
 }, {
-  balance: 400, id: 'bar', name: 'fufufu'
+  balanceEth: '400000000', balanceEur: '456', id: 'bar', name: 'Light Wallet'
 }]
 
 storiesOf("InvestmentSelectionForm", module)

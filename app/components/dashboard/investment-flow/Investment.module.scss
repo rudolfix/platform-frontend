@@ -1,8 +1,33 @@
-.equals {
-  font-size: 2em
+.container {
+  :global(.row) {
+    margin: 1.5rem 0;
+  }
+}
+
+.invest-input {
+  margin-bottom: 0;
+
+  label {
+    margin-bottom: 0.25rem;
+  }
+
+  a, a:visited {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-size: 0.85em;
+    font-weight: normal;
+    color: $neu-blue;
+  }
 }
 
 .icon {
   height: 1.5em;
   width: 1.5em;
+  margin-right: 0.5em;
+}
+
+.equals {
+  justify-content: center;
+  font-size: 2.5em;
+  margin: 0 !important;
 }

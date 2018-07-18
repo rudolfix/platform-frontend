@@ -1,13 +1,15 @@
+import { spawn } from 'child_process';
 import * as cn from 'classnames'
 import { Form, FormikProps } from 'formik'
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, FormGroup, Label, ListGroup, ListGroupItem, Row } from "reactstrap";
+import { Col, Container, FormGroup, Label, ListGroup, ListGroupItem, Row } from "reactstrap";
 import * as neuIcon from "../../../assets/img/neu_icon.svg"
 import * as tokenIcon from "../../../assets/img/token_icon.svg"
 import { InfoAlert } from "../../shared/Alerts";
 import { Button } from "../../shared/Buttons";
+import { Document } from "../../shared/Document";
 import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImportant";
 import { Heading } from "../../shared/modals/Heading";
 import { Money } from "../../shared/Money";
@@ -47,20 +49,30 @@ export const InfoRow: React.SFC<IInfoRowProps> = ({ translation, value }) => (
 )
 
 export const InvestmentSummary = injectIntl(({ investmentData: data }: IProps & InjectedIntlProps) => {
+  const equityTokens = (<span><img src={tokenIcon} /> {data.equityTokens}</span>)
+  const estimatedReward = (<span><img src={neuIcon} /> {data.estimatedReward}</span>)
   return (
-    <section>
-      <Heading><FormattedMessage id="investment-flow.investment-summary" /></Heading>
+    <Container className={styles.container}>
+      <Row >
+        <Heading><FormattedMessage id="investment-flow.investment-summary" /></Heading>
+      </Row>
 
-      <ListGroup className={styles.infoTable}>
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.company" />} value={data.companyName} />
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.token-price" />} value={data.tokenPrice} />
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.eto-address" />} value={data.etoAddress} />
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.your-investment" />} value={data.investment} />
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.transaction-cost" />} value={data.transactionCost} />
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.equity-tokens" />} value={data.equityTokens} />
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.estimated-reward" />} value={data.estimatedReward} />
-        <InfoRow translation={<FormattedMessage id="investment-flow.summary.transaction-value" />} value={data.transactionValue} />
-      </ListGroup>
+      <Row noGutters={false}>
+        <ListGroup className={styles.infoTable}>
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.company" />} value={data.companyName} />
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.token-price" />} value={data.tokenPrice} />
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.eto-address" />} value={data.etoAddress} />
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.your-investment" />} value={data.investment} />
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.transaction-cost" />} value={data.transactionCost} />
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.equity-tokens" />} value={equityTokens} />
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.estimated-reward" />} value={estimatedReward} />
+          <InfoRow translation={<FormattedMessage id="investment-flow.summary.transaction-value" />} value={data.transactionValue} />
+        </ListGroup>
+      </Row>
+
+      <Row className="justify-content-center">
+        <a className={styles.downloadLink} href="" target="_blank"><Document extension="pdf" /><FormattedMessage id="investment-flow.summary.download-agreement" /></a>
+      </Row>
 
       <Row className="justify-content-center">
         <Button
@@ -68,10 +80,10 @@ export const InvestmentSummary = injectIntl(({ investmentData: data }: IProps & 
           className="mr-4"
           type="submit"
         >
-          <FormattedMessage id="investment-flow.invest" />
+          <FormattedMessage id="investment-flow.confirm" />
         </Button>
       </Row>
-    </section>
+    </Container>
   )
 })
 

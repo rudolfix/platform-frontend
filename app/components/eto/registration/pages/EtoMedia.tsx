@@ -109,7 +109,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         <Col className="offset-1" xs={10}>
           <FormField
             name="companyVideo.url"
-            placeholder="Media Link"
+            placeholder="url"
             label={<FormattedMessage id="eto.form.eto-media.you-tube-video" />}
             additionalObjValue={{ name: "companyVideo.title", value: "youtube" }}
           />
@@ -117,12 +117,12 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       </Row>
       <SocialProfilesEditor profiles={socialProfiles} name="socialChannels" className="mt-4" />
       <p className="offset-1 mb-2 font-weight-bold">
-        <FormattedMessage id="eto.form.eto-media.social-channels-others" />
+        <FormattedMessage id="eto.form.eto-media.media-links" />
       </p>
       <MediaLinksEditor
         name="companyNews"
         placeholder="Media Link"
-        blankField={{ url: "", title: "media link" }}
+        blankField={{ url: "", title: "" }}
       />
       <Row>
         <Col className="offset-1">

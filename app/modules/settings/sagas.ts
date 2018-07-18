@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+
 import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
@@ -15,6 +16,7 @@ import {
   selectWalletType,
 } from "../web3/selectors";
 import { WalletType } from "../web3/types";
+import { selectDoesEmailExist } from "./../auth/selectors";
 
 export function* addNewEmail(
   { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
@@ -28,6 +30,9 @@ export function* addNewEmail(
   const salt = yield select(
     (s: IAppState) => selectLightWalletSalt(s.web3) || selectPreviousLightWalletSalt(s.web3),
   );
+  const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
+
+  const emailModalTitle = isEmailAvailable ? "Email Update" : "Add Email";
 
   let addEmailMessage;
 
@@ -56,7 +61,7 @@ export function* addNewEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Email Update",
+      emailModalTitle,
       addEmailMessage,
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });

@@ -423,7 +423,7 @@
   "settings.verify-email-widget.resend-link": "Resend link",
   "settings.verify-email-widget.unverified-email": "unverified email",
   "settings.verify-email-widget.verified-email": "verified email",
-  "settings.verify-email-widget.you-need-to-verify-email": "Once you have verified your email address we will send you an Access Link to your Light Wallet.",
+  "settings.verify-email-widget.you-need-to-verify-email": "A verification email has been sent.",
   "shared-component-news-widget-add-news": "Add news",
   "shared-component.account-balance.deposit": "Deposit",
   "shared-component.account-balance.withdraw": "Withdraw",

@@ -1,6 +1,7 @@
 import { FieldArray, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 
 import * as closeIcon from "../../assets/img/inline_icons/round_close.svg";
@@ -15,7 +16,6 @@ interface ISingleMediaLinkFieldInternalProps {
   formFieldKey: string;
   onAddClick: () => void;
   onRemoveClick: () => void;
-  placeholder: string;
   name: string;
   url?: string;
 }
@@ -23,20 +23,22 @@ interface ISingleMediaLinkFieldInternalProps {
 const SingleMediaLinkField: React.SFC<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
 > = props => {
-  const {
-    isFirstElement,
-    onAddClick,
-    onRemoveClick,
-    isLastElement,
-    placeholder,
-    formFieldKey,
-  } = props;
+  const { isFirstElement, onAddClick, onRemoveClick, isLastElement } = props;
 
   return (
     <Row className="my-4">
       <Col xs={1}>{isLastElement && <ButtonIcon svgIcon={plusIcon} onClick={onAddClick} />}</Col>
       <Col xs={10}>
-        <FormField name={`${props.name}.${formFieldKey}`} placeholder={placeholder} />
+        <FormField
+          name={`${props.name}.url`}
+          label={<FormattedMessage id="shared-component.media-links-editor.url" />}
+          placeholder="url"
+        />
+        <FormField
+          name={`${props.name}.title`}
+          label={<FormattedMessage id="shared-component.media-links-editor.title" />}
+          placeholder="title"
+        />
       </Col>
       {!isFirstElement && (
         <Col xs={1}>
@@ -69,7 +71,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
   render(): React.ReactNode {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
-    const { name, placeholder, blankField } = this.props;
+    const { name, blankField } = this.props;
     const mediaLinks: object[] = values[name] || [blankField];
     return (
       <FieldArray
@@ -81,7 +83,6 @@ export class MediaLinksEditor extends React.Component<IProps> {
             return (
               <>
                 <SingleMediaLinkField
-                  placeholder={placeholder}
                   name={`${name}.${index}`}
                   formFieldKey={"url"}
                   onRemoveClick={() => {

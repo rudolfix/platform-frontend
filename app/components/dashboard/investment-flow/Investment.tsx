@@ -3,16 +3,18 @@ import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, FormGroup, Label, Row } from "reactstrap";
-import * as neuIcon from "../../../assets/img/neu_icon.svg";
-import * as tokenIcon from "../../../assets/img/token_icon.svg";
+
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { InfoAlert } from "../../shared/Alerts";
 import { Button } from "../../shared/Buttons";
 import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImportant";
 import { Heading } from "../../shared/modals/Heading";
 import { Money } from "../../shared/Money";
-import * as styles from "./Investment.module.scss";
 import { WalletSelector } from "./WalletSelector";
+
+import * as neuIcon from "../../../assets/img/neu_icon.svg";
+import * as tokenIcon from "../../../assets/img/token_icon.svg";
+import * as styles from "./Investment.module.scss";
 
 interface IFormState {
   amount: number;

@@ -3,11 +3,13 @@ import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, ListGroup, ListGroupItem, Row } from "reactstrap";
-import * as neuIcon from "../../../assets/img/neu_icon.svg";
-import * as tokenIcon from "../../../assets/img/token_icon.svg";
+
 import { Button } from "../../shared/Buttons";
 import { DocumentLink } from "../../shared/DocumentLink";
 import { Heading } from "../../shared/modals/Heading";
+
+import * as neuIcon from "../../../assets/img/neu_icon.svg";
+import * as tokenIcon from "../../../assets/img/token_icon.svg";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {

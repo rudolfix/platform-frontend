@@ -5,9 +5,8 @@ import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
-import { isNonValid, isValid } from "./utils";
-
 import { FormLabel } from "./FormLabel";
+import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 

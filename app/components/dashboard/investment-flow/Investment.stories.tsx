@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import { Formik } from "formik";
 import * as React from "react";
+
 import { InvestmentSelectionForm } from "./Investment";
 
 const wallets = [

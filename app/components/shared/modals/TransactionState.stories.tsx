@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+
 import { DocumentLink } from "../DocumentLink";
 import { TransactionState } from "./TransactionState";
 

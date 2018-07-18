@@ -2,10 +2,12 @@ import { Field, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup } from "reactstrap";
-import * as ethIcon from "../../../assets/img/eth_icon2.svg";
-import * as checkIcon from "../../../assets/img/inline_icons/check.svg";
+
 import { InlineIcon } from "../../shared/InlineIcon";
 import { Money } from "../../shared/Money";
+
+import * as ethIcon from "../../../assets/img/eth_icon2.svg";
+import * as checkIcon from "../../../assets/img/inline_icons/check.svg";
 import * as styles from "./WalletSelector.module.scss";
 
 interface IProps {

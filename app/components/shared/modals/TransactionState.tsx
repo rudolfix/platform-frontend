@@ -2,9 +2,11 @@ import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
-import * as revertedImg from '../../../assets/img/ether_fail.svg';
+
 import { TTranslatedString } from "../../../types";
 import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
+
+import * as revertedImg from '../../../assets/img/ether_fail.svg';
 import * as styles from "./TransactionState.module.scss";
 
 export type TransactionStateType = "pending" | "reverted" | "confirmed";

@@ -2,6 +2,7 @@ import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
+import * as revertedImg from '../../../assets/img/ether_fail.svg';
 import { TTranslatedString } from "../../../types";
 import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
 import * as styles from "./TransactionState.module.scss";
@@ -24,7 +25,7 @@ export const TransactionState: React.SFC<IProps> = props => {
       heading = <FormattedMessage id="transaction-state.pending" />;
       break;
     case "reverted":
-      animation = <SpinningEthereum />;
+      animation = <img src={revertedImg} />;
       heading = <FormattedMessage id="transaction-state.reverted" />;
       break;
     case "confirmed":

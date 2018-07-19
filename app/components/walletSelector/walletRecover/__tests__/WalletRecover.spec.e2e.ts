@@ -70,8 +70,8 @@ describe("Wallet recover", () => {
     cy.get(tid("authorized-layout-settings-button")).click();
     cy.wait(5000);
 
-    cy.get(tid("your-ether-address-widget-eth-address")).then(address => {
-      expect(address.text()).to.be.eq(expectedGeneratedAddress);
+    cy.get(tid("your-ether-address-widget-eth-address")).contains(expectedGeneratedAddress).then(address => {
+      expect(address).to.be.eq(true);
     });
   });
 

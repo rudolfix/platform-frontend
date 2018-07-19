@@ -98,7 +98,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
                 ) : (
                   <>
                     <FormattedMessage id="wallet-selector.register.help-link" />{" "}
-                    <a href="https://neufund.freshdesk.com/support/home">
+                    <a href="https://support.neufund.org/support/home">
                       <FormattedMessage id="wallet-selector.help-link.label" />
                     </a>
                   </>

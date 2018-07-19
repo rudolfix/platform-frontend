@@ -58,7 +58,9 @@ export const AppRouter: React.SFC = () => (
     ]}
 
     {/* only investors routes */}
-    <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
+    {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
+      <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
+    )}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
     <OnlyAuthorizedRoute path={appRoutes.documents} issuerComponent={Documents} />
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />

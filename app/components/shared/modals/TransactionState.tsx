@@ -6,7 +6,7 @@ import { Container, Row } from "reactstrap";
 import { TTranslatedString } from "../../../types";
 import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
 
-import * as revertedImg from '../../../assets/img/ether_fail.svg';
+import * as revertedImg from "../../../assets/img/ether_fail.svg";
 import * as styles from "./TransactionState.module.scss";
 
 export type TransactionStateType = "pending" | "reverted" | "confirmed";

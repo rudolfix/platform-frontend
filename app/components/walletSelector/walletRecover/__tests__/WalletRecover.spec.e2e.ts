@@ -6,7 +6,7 @@ import {
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
 import { assertUserInDashboard } from "../../../../e2e-test-utils/index";
-import { assertLatestEmailSent } from "./../../../../e2e-test-utils/index";
+import { assertLatestEmailSentWithSalt } from "./../../../../e2e-test-utils/index";
 
 describe("Wallet recover", () => {
   const words = [
@@ -56,7 +56,7 @@ describe("Wallet recover", () => {
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
 
     cy.wait(5000);
-    assertLatestEmailSent(email);
+    assertLatestEmailSentWithSalt(email);
 
     cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
 
@@ -153,7 +153,7 @@ describe("Wallet recover", () => {
     typeEmailPassword(email, password);
 
     cy.wait(5000);
-    assertLatestEmailSent(email.toLowerCase());
+    assertLatestEmailSentWithSalt(email.toLowerCase());
 
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
 
@@ -205,7 +205,7 @@ describe("Wallet recover", () => {
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
 
     cy.wait(5000);
-    assertLatestEmailSent(email);
+    assertLatestEmailSentWithSalt(email);
 
     assertUserInDashboard();
   });

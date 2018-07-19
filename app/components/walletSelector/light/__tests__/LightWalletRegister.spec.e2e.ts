@@ -10,7 +10,7 @@ import {
   typeEmailPassword,
   verifyLatestUserEmail,
 } from "../../../../e2e-test-utils";
-import { assertLatestEmailSent } from "./../../../../e2e-test-utils/index";
+import { assertLatestEmailSentWithSalt } from "./../../../../e2e-test-utils/index";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {
@@ -21,7 +21,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    assertLatestEmailSent(email);
+    assertLatestEmailSentWithSalt(email);
   });
 
   it("should remember light wallet details after logout", () => {

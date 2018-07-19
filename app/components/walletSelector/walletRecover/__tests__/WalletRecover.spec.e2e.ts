@@ -68,6 +68,7 @@ describe("Wallet recover", () => {
     // cy.contains(tid("my-wallet-widget-eth-token-value"), "483 930 410.24 EUR");
 
     cy.get(tid("authorized-layout-settings-button")).click();
+    cy.wait(5000);
 
     cy.get(tid("your-ether-address-widget-eth-address")).then(address => {
       expect(address.text()).to.be.eq(expectedGeneratedAddress);

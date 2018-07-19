@@ -62,7 +62,7 @@ export const LoginHelp: React.SFC<void> = () => (
         <Link className="" to={loginWalletRoutes.light}>
           <i className="fa fa-lg fa-angle-left mr-1" /> BACK
         </Link>
-        <a href="https://neufund.freshdesk.com/support/home">
+        <a href="https://support.neufund.org/support/home">
           <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />{" "}
           <i className="fa fa-lg fa-angle-right ml-1" />
         </a>

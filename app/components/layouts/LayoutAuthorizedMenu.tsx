@@ -122,7 +122,7 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
       />
       <MenuEntry
         svgString={iconHelp}
-        to="https://neufund.freshdesk.com/support/home"
+        to="https://support.neufund.org/support/home"
         menuName={<FormattedMessage id="menu.help" />}
         target="_blank"
       />

@@ -150,7 +150,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
         <KYCEnhancedForm {...this.props} />
         <MultiFileUpload
           uploadType="individual"
-          acceptedFiles="image/*"
+          acceptedFiles="image/*,application/pdf"
           layout="vertical"
           requirements={[
             "Colored photo",
@@ -158,7 +158,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
             "Date of birth",
             "Valid expiration date",
             "Official document number",
-            "High quality, coloured .png or .jpg files only",
+            "High quality, coloured .png, .jpg or .pdf files only",
           ]}
           onDropFile={this.props.onDropFile}
           files={this.props.files}

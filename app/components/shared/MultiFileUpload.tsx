@@ -165,7 +165,7 @@ export const MultiFileUpload: React.SFC<IProps> = ({
       )}
       <MultiFileUploadComponent
         requirements={computedRequirements}
-        acceptedFiles="image/*"
+        acceptedFiles="image/*,application/pdf"
         onDropFile={onDropFile}
         files={files}
         fileUploading={fileUploading}

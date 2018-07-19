@@ -1,11 +1,12 @@
 import * as React from "react";
 
+import { FormattedMessage } from "react-intl-phraseapp";
 import { selectEthereumAddress } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { EthereumAddress } from "../../../types";
+import { AccountAddress } from "../../shared/AccountAddress";
 import { Panel } from "../../shared/Panel";
 
-import { FormattedMessage } from "react-intl-phraseapp";
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as styles from "./YourEthereumAddressWidget.module.scss";
 
@@ -19,7 +20,7 @@ export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ add
     rightComponent={<img src={ethIcon} />}
   >
     <div className={styles.panelBody} data-test-id="your-ether-address-widget-eth-address">
-      {address}
+      <AccountAddress address={address} />
     </div>
   </Panel>
 );

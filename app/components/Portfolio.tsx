@@ -16,6 +16,7 @@ import * as styles from "./Portfolio.module.scss";
 
 export const Portfolio: React.SFC = () => (
   <LayoutAuthorized>
+    { process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && <>
     <SectionHeader layoutHasDecorator={false} className="mb-4">
       <FormattedMessage id="portfolio.section.asset-portfolio.title" />
     </SectionHeader>
@@ -258,5 +259,6 @@ export const Portfolio: React.SFC = () => (
         </NewTable>
       </Col>
     </Row>
+    </>}
   </LayoutAuthorized>
 );

@@ -45,6 +45,7 @@ body {
 
   min-height: 100%;
   max-width: 100%;
+  flex: 1;
   padding-bottom: px-to-rem(236px);
   padding-left: $authorized-layout-horizontal-padding-sm;
   padding-right: $authorized-layout-horizontal-padding-sm;

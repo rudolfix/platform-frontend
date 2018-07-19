@@ -14,5 +14,6 @@ export function installGA() {
   })(window, document, "script", "https://www.google-analytics.com/analytics.js", "ga");
 
   ga("create", process.env.NF_GOOGLE_TAG_ID, "auto");
+  ga("set", "location", "/");
   ga("send", "pageview");
 }

@@ -478,7 +478,7 @@
   "shared-component.multi-file-upload.requirements.individual.colored-photo": "Colored photo",
   "shared-component.multi-file-upload.requirements.individual.date-of-birth": "Date of birth",
   "shared-component.multi-file-upload.requirements.individual.full-name": "Full name",
-  "shared-component.multi-file-upload.requirements.individual.high-quality": "High quality, coloured .png or .jpg files only",
+  "shared-component.multi-file-upload.requirements.individual.high-quality": "High quality, coloured .png, .jpg or pdf files only",
   "shared-component.multi-file-upload.requirements.individual.official-document-number": "Official document number",
   "shared-component.multi-file-upload.requirements.individual.valid-expiration-date": "Valid expiration date",
   "shared-component.multi-file-upload.requirements.title": "Valid documents must include:",

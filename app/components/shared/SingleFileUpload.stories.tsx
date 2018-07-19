@@ -8,7 +8,7 @@ import * as image from "!!url-loader!../../assets/img/header/social_logo.png";
 storiesOf("SingleFileUpload", module)
   .add("default", () => (
     <SingleFileUpload
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       fileUploading={false}
       fileFormatInformation=".png, .svg"
       label="Some image"
@@ -18,7 +18,7 @@ storiesOf("SingleFileUpload", module)
   ))
   .add("with file", () => (
     <SingleFileUpload
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       fileUploading={false}
       fileFormatInformation=".png, .svg"
       label="Some image"

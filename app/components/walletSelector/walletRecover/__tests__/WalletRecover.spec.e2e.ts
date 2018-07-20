@@ -68,14 +68,10 @@ describe("Wallet recover", () => {
     // cy.contains(tid("my-wallet-widget-eth-token-value"), "483 930 410.24 EUR");
 
     cy.get(tid("authorized-layout-settings-button")).click();
-    cy.wait(5000);
 
     cy
       .get(tid("your-ether-address-widget-eth-address"))
-      .contains(expectedGeneratedAddress)
-      .then(address => {
-        expect(address).to.be.eq(true);
-      });
+      .should("have.value", expectedGeneratedAddress);
   });
 
   it("should return an error when recovering seed and using an already verified email", () => {

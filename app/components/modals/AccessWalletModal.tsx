@@ -38,7 +38,7 @@ const GenericSignPrompt = ({ onCancel }: { onCancel: () => void }) => (
 const AccessWalletModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Modal isOpen={props.isOpen} toggle={props.onCancel}>
     <ModalComponentBody onClose={props.onCancel}>
-      <div className="text-md-center">
+      <div className="text-center">
         <h1>{props.title}</h1>
         <p>{props.message}</p>
         <img src={lockIcon} className="mb-3" />

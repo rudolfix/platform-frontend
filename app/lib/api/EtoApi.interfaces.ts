@@ -187,6 +187,7 @@ export const EtoTermsType = YupTS.object({
   liquidationPreferenceMultiplier: YupTS.number(),
   tagAlongVotingRule: YupTS.boolean(),
   whitelistDurationDays: YupTS.number(),
+  minimumNewSharesToIssue: YupTS.number(),
 });
 
 type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;

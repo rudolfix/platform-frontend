@@ -66,7 +66,7 @@ $_dropzone-size-sm: 120px;
     flex-direction: column;
 
     :local(.requirements-title) {
-      margin-top: 14px;
+      margin: $spacing-vertical-lg-1 0 $spacing-vertical-lg-2;
     }
 
     :local(.dropzone) {

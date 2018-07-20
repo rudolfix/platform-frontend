@@ -70,9 +70,12 @@ describe("Wallet recover", () => {
     cy.get(tid("authorized-layout-settings-button")).click();
     cy.wait(5000);
 
-    cy.get(tid("your-ether-address-widget-eth-address")).contains(expectedGeneratedAddress).then(address => {
-      expect(address).to.be.eq(true);
-    });
+    cy
+      .get(tid("your-ether-address-widget-eth-address"))
+      .contains(expectedGeneratedAddress)
+      .then(address => {
+        expect(address).to.be.eq(true);
+      });
   });
 
   it("should return an error when recovering seed and using an already verified email", () => {

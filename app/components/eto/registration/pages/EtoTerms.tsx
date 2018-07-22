@@ -43,6 +43,13 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
   const existingCompanyShares = props.stateValues.existingCompanyShares || 1;
   const newSharesToIssue = props.stateValues.newSharesToIssue || 1;
   const equityTokensPerShare = props.stateValues.equityTokensPerShare || 1;
+  const minimumNewSharesToIssue = props.stateValues.minimumNewSharesToIssue || 1;
+
+  const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
+  const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
+  const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
+  const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
+  const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
 
   return (
     <EtoFormBase
@@ -122,8 +129,8 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
           <FormField
             label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
             placeholder="1/1000000 of share price auto complete"
-            name="newShareProce"
-            value={fullyDilutedPreMoneyValuationEur / existingCompanyShares}
+            name="newSharePrice"
+            value={computedNewSharePrice}
             disabled
           />
           <Row>
@@ -132,7 +139,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
                 label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
                 placeholder="read only"
                 name="minNumberOfTokens"
-                value={newSharesToIssue * equityTokensPerShare}
+                value={computedMinNumberOfTokens}
                 disabled
               />
             </Col>
@@ -142,7 +149,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
                 prefix="€"
                 placeholder="read only"
                 name="maxNumberOfTokens"
-                value={newSharesToIssue * equityTokensPerShare}
+                value={computedMaxNumberOfTokens}
                 disabled
               />
             </Col>
@@ -154,7 +161,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
                 prefix="€"
                 placeholder="read only"
                 name="minCapEur"
-                value={fullyDilutedPreMoneyValuationEur / existingCompanyShares * newSharesToIssue}
+                value={computedMinCapEur}
                 disabled
               />
             </Col>
@@ -166,7 +173,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
                 prefix="€"
                 placeholder="read only"
                 name="maxCapEur"
-                value={fullyDilutedPreMoneyValuationEur / existingCompanyShares * newSharesToIssue}
+                value={computedMaxCapEur}
                 disabled
               />
             </Col>
@@ -239,7 +246,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
             unit={
               <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration-duration.unit" />
             }
-            max={8}
+            max={14}
           />
         </div>
         <FormField

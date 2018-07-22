@@ -1,14 +1,16 @@
 .social-profiles-editor {
   .tabs {
+    @include make-col(10);
+    @include make-col-offset(1);
+
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
     margin-bottom: px-to-rem(16px);
   }
 
   .input-wrapper {
     display: none;
     position: relative;
-    align-items: center;
 
     &:global(.is-visible) {
       display: flex;

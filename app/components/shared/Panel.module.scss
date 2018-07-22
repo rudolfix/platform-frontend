@@ -26,6 +26,12 @@
   text-transform: uppercase;
   position: relative;
 
+  &:global(.has-icon) {
+    &::before {
+      display: none;
+    }
+  }
+
   &::before {
     @include rect(2px, 12px);
 
@@ -44,7 +50,8 @@
 }
 
 .icon {
-  @include rect(16px);
+  @include rect(22px);
 
-  margin-left: px-to-rem(25px);
+  margin-right: px-to-rem(10px);
+  margin-left: px-to-rem(-14px);
 }

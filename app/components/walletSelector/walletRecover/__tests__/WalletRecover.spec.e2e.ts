@@ -69,9 +69,9 @@ describe("Wallet recover", () => {
 
     cy.get(tid("authorized-layout-settings-button")).click();
 
-    cy.get(tid("your-ether-address-widget-eth-address")).then(address => {
-      expect(address.text()).to.be.eq(expectedGeneratedAddress);
-    });
+    cy
+      .get(tid("your-ether-address-widget-eth-address"))
+      .should("have.value", expectedGeneratedAddress);
   });
 
   it("should return an error when recovering seed and using an already verified email", () => {

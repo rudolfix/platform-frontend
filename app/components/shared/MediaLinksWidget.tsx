@@ -16,13 +16,21 @@ interface IProps {
 }
 
 export const MediaLinksWidget: React.SFC<IProps> = ({ links }) => {
+  if (!links.length) {
+    return null;
+  }
+
   return (
     <Panel>
-      {links.map(({ title, url }) => (
-        <div className={styles.link}>
-          <a href={url}>{title}</a>
-        </div>
-      ))}
+      {links.map(
+        ({ title, url }, i) =>
+          url &&
+          title && (
+            <div className={styles.link} key={i}>
+              <a href={url}>{title}</a>
+            </div>
+          ),
+      )}
     </Panel>
   );
 };

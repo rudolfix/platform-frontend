@@ -132,7 +132,7 @@ $_active-color: lighten($_hover-color, 20%);
       color: $neu-slate-grey;
     }
 
-    elements
+    // elements
     &.icon-before {
       :global(.inline-icon) {
         margin-right: 10px;

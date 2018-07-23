@@ -1,3 +1,4 @@
+const { join } = require("path");
 const { mapValues } = require("lodash");
 const dotenv = require("dotenv");
 
@@ -12,7 +13,7 @@ function updateParsedEnvsWithProcessEnvs(parsedEnvs = {}, processEnvs) {
 }
 
 module.exports = function loadAppEnv(processEnv) {
-  const dotEnvFileVariables = dotenv.load().parsed;
+  const dotEnvFileVariables = dotenv.load({ path: join(__dirname, "../.env") }).parsed;
   const envs = updateParsedEnvsWithProcessEnvs(dotEnvFileVariables, processEnv);
 
   const getEnvBundle = () => {

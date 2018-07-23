@@ -4,9 +4,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { Panel } from "../../shared/Panel";
+import { appConnect } from "../../../../store";
+import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { Panel } from "../../../shared/Panel";
 
 import * as styles from "./ChoosePreEtoDateWidget.module.scss";
 
@@ -23,7 +23,10 @@ export const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlPr
         <p className={cn(styles.text, "pt-2")}>
           <FormattedMessage id="settings.choose-pre-eto-date.book-building-will-stop" />
         </p>
-        <Col className="d-flex justify-content-center">{/* <Date timestamp/> */}</Col>
+        <Col className="d-flex justify-content-center">
+          {/* <DatePicker /> */}
+          <p>test</p>
+        </Col>
       </div>
     </Panel>
   );

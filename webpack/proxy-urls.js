@@ -50,6 +50,11 @@ function generateProxyConfig(backendUrl) {
       targetRemote: backendUrl + "newsletter",
       pathRewrite: { "^/api/newsletter": "" },
     },
+    "/api/external-services-mock": {
+      targetLocal: "http://localhost:1337",
+      targetRemote: backendUrl + "external-services-mock",
+      pathRewrite: { "^/api/external-services-mock": "" },
+    },
   };
 
   return mapValues(base, value => {

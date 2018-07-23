@@ -99,8 +99,7 @@ export const confirmAccessModal = (password: string) => {
 
 // todo: extract it to separate file
 // do it after moving all e2e tests back into cypress directory
-export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
-  "https://localhost:9090/api/"}external-services-mock/`;
+export const mockApiUrl = "https://localhost:9090/api/external-services-mock/";
 
 export const verifyLatestUserEmail = () => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {

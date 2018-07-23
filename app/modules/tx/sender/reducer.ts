@@ -5,9 +5,11 @@ export type TxSenderState =
   | "UNINITIALIZED"
   | "INIT"
   | "SUMMARY"
+  | "ACCESSING_WALLET"
   | "SIGNING"
   | "MINING"
   | "DONE"
+  | "ERROR_SIGN"
   | "REVERTED";
 
 export interface ITxData {
@@ -48,6 +50,12 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...initialState,
       };
 
+    case "TX_SENDER_ERROR":
+      return {
+        ...initialState,
+        state: "ERROR_SIGN",
+      };
+
     case "TX_SENDER_ACCEPT_DRAFT":
       return {
         ...state,
@@ -59,6 +67,12 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       };
 
     case "TX_SENDER_ACCEPT":
+      return {
+        ...state,
+        state: "ACCESSING_WALLET",
+      };
+
+    case "TX_SENDER_WALLET_PLUGGED":
       return {
         ...state,
         state: "SIGNING",

@@ -5,7 +5,7 @@ import * as Web3 from "web3";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IAppState } from "../../../store";
 import { EthereumAddress } from "../../../types";
-import { accessWallet } from "../../accessWallet/sagas";
+import { connectWallet } from "../../accessWallet/sagas";
 import { actions } from "../../actions";
 import { neuCall } from "../../sagas";
 import { selectEthereumAddress } from "../../web3/selectors";
@@ -35,7 +35,8 @@ export function* txSendProcess(
 
   yield take("TX_SENDER_ACCEPT");
 
-  yield call(accessWallet, "Send funds!");
+  yield call(connectWallet, "Send funds!");
+  yield put(actions.txSender.txSenderWalletPlugged());
 
   const txData: Web3.TxData | undefined = yield select((s: IAppState) => s.txSender.txDetails);
   if (!txData) {

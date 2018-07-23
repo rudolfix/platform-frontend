@@ -120,6 +120,9 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
   while (true) {
     try {
       yield neuCall(ensureWalletConnection);
+
+      yield effects.put(actions.signMessageModal.clearSigningError());
+
       const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3));
       if (isLightWallet) {
         yield call(unlockLightWallet);
@@ -165,8 +168,11 @@ export function* accessWalletAndRunEffect(
   return result;
 }
 
-export function* accessWallet(title: string): any {
-  yield accessWalletAndRunEffect(call(() => {}), title);
+/**
+ * Use only as a part of another saga. This won't trigger modal.
+ */
+export function* connectWallet(): any {
+  yield connectWalletAndRunEffect(call(() => {}));
 }
 
 /**

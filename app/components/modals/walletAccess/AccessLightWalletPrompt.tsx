@@ -2,15 +2,15 @@ import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Button } from "../shared/Buttons";
-import { FormField } from "../shared/forms/forms";
+import { Button } from "../../shared/Buttons";
+import { FormField } from "../../shared/forms/forms";
 
 interface IStateProps {
   isUnlocked: boolean;
 }
 
 interface IOwnProps {
-  onCancel: () => void;
+  onCancel?: () => void;
   onAccept: (password?: string) => void;
 }
 
@@ -37,9 +37,11 @@ const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => 
         {" "}
         <FormattedMessage id="modal.light-wallet.button.accept" />
       </Button>
-      <Button layout="secondary" onClick={formikBag.onCancel}>
-        <FormattedMessage id="modal.light-wallet.button.reject" />
-      </Button>
+      {formikBag.onCancel && (
+        <Button layout="secondary" onClick={formikBag.onCancel}>
+          <FormattedMessage id="modal.light-wallet.button.reject" />
+        </Button>
+      )}
     </div>
   </Form>
 );

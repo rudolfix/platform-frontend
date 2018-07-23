@@ -3,11 +3,13 @@ import { Modal } from "reactstrap";
 
 import { Button } from "../../shared/Buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
+import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
 
 import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
 
 interface IStateProps {
   isOpen: boolean;
@@ -31,8 +33,8 @@ export const TxSenderModalComponent: React.SFC<Props> = props => {
   return (
     <Modal isOpen={isOpen} toggle={onCancel}>
       <ModalComponentBody onClose={onCancel}>
-        <h2>Type: {type}</h2>
-        <h2>State: {state}</h2>
+        <p>Type: {type}</p>
+        <p>State: {state}</p>
 
         {renderBody(props)}
       </ModalComponentBody>
@@ -45,7 +47,7 @@ function renderBody({ state, acceptDraft, accept, details, blockId }: Props): Re
     case "INIT":
       return (
         <div>
-          Here we need forms.<br />
+          <p>Forms...</p>
           <Button
             onClick={() =>
               acceptDraft("0x627d795782f653c8ea5e7a63b9cdfe5cb6846d9f", "1000000000000000")
@@ -58,10 +60,22 @@ function renderBody({ state, acceptDraft, accept, details, blockId }: Props): Re
     case "SUMMARY":
       return (
         <div>
-          <h3>Details:</h3>To: {details!.to}
+          <h3>Tx details:</h3>
+          <p>{JSON.stringify(details)}</p>
+
           <Button onClick={() => accept()}>Confirm</Button>
         </div>
       );
+    case "ACCESSING_WALLET":
+      return (
+        <div>
+          <AccessWalletContainer />
+        </div>
+      );
+
+    case "SIGNING":
+      return <LoadingIndicator />;
+
     case "MINING":
       return <div>{blockId}</div>;
   }

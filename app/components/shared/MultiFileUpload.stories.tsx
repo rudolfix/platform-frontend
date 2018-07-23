@@ -20,14 +20,14 @@ const IndividualRequirements = [
   "Date of birth",
   "Valid expiration date",
   "Official document number",
-  "High quality, coloured .png or .jpg files only",
+  "High quality, coloured .png, .jpg or pdf files only",
 ];
 
 storiesOf("MultiFileUpload", module)
   .add("individual", () => (
     <MultiFileUpload
       uploadType="individual"
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
       requirements={IndividualRequirements}
@@ -38,7 +38,7 @@ storiesOf("MultiFileUpload", module)
   .add("business layout: vertical", () => (
     <MultiFileUpload
       uploadType="business"
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
       layout="vertical"
@@ -49,7 +49,7 @@ storiesOf("MultiFileUpload", module)
   .add("business layout: horizontal", () => (
     <MultiFileUpload
       uploadType="business"
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
       layout="horizontal"
@@ -60,7 +60,7 @@ storiesOf("MultiFileUpload", module)
   .add("business state: uploading", () => (
     <MultiFileUpload
       uploadType="business"
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
       requirements={IndividualRequirements}
@@ -70,7 +70,7 @@ storiesOf("MultiFileUpload", module)
   .add("business state: with files", () => (
     <MultiFileUpload
       uploadType="business"
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={files}
       requirements={IndividualRequirements}

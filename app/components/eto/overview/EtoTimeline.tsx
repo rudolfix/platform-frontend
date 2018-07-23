@@ -74,8 +74,8 @@ const Block: React.SFC<IBlockProps> = ({ title, date, datePointType, theme, widt
         {type === "arrow" ? (
           <polygon
             fill="#AABCCA"
-            fill-opacity=".7"
-            fill-rule="nonzero"
+            fillOpacity=".7"
+            fillRule="nonzero"
             points="0 26 160 26 172.996 28 160 30 0 30"
             transform="translate(0, -7)"
           />

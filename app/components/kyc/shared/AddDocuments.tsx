@@ -29,7 +29,7 @@ export const KYCAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & 
 }) => {
   return (
     <MultiFileUpload
-      acceptedFiles="image/*"
+      acceptedFiles="image/*,application/pdf"
       onDropFile={onDropFile}
       files={files}
       fileUploading={fileUploading}

@@ -8,8 +8,9 @@ import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./AccountBalance.module.scss";
 
 interface IProps {
-  onWithdrawClick: () => void;
-  onDepositClick: () => void;
+  onWithdrawClick?: () => void;
+  onDepositClick?: () => void;
+  onUpgradeClick?: () => void;
 }
 
 export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
@@ -20,6 +21,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
   value,
   onWithdrawClick,
   onDepositClick,
+  onUpgradeClick,
 }) => {
   return (
     <div className={styles.accountBalance}>
@@ -31,24 +33,41 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
         value={value}
       />
       <div className={styles.buttons}>
-        <Button
-          layout="simple"
-          iconPosition="icon-after"
-          theme="graphite"
-          svgIcon={arrowRightIcon}
-          onClick={onWithdrawClick}
-        >
-          <FormattedMessage id="shared-component.account-balance.withdraw" />
-        </Button>
-        <Button
-          layout="simple"
-          iconPosition="icon-after"
-          theme="graphite"
-          svgIcon={arrowRightIcon}
-          onClick={onDepositClick}
-        >
-          <FormattedMessage id="shared-component.account-balance.deposit" />
-        </Button>
+        {onUpgradeClick ? (
+          <Button
+            layout="simple"
+            iconPosition="icon-after"
+            theme="graphite"
+            svgIcon={arrowRightIcon}
+            onClick={onWithdrawClick}
+            disabled
+          >
+            <FormattedMessage id="shared-component.account-balance.upgrade" />
+          </Button>
+        ) : (
+          <>
+            <Button
+              layout="simple"
+              iconPosition="icon-after"
+              theme="graphite"
+              svgIcon={arrowRightIcon}
+              onClick={onWithdrawClick}
+              disabled
+            >
+              <FormattedMessage id="shared-component.account-balance.withdraw" />
+            </Button>
+            <Button
+              layout="simple"
+              iconPosition="icon-after"
+              theme="graphite"
+              svgIcon={arrowRightIcon}
+              onClick={onDepositClick}
+              disabled
+            >
+              <FormattedMessage id="shared-component.account-balance.deposit" />
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

@@ -29,12 +29,17 @@ function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterato
   }
 }
 
-function* sendDummyTx(_: TGlobalDependencies, action: TAction): any {
+function* sendDummyTx({ logger }: TGlobalDependencies, action: TAction): any {
   if (action.type !== "DASHBOARD_SEND_DUMMY_TX") {
     return;
   }
 
-  yield neuCall(txSendSaga, "WITHDRAW");
+  try {
+    yield neuCall(txSendSaga, "WITHDRAW");
+    logger.info("SUCESS!");
+  } catch (e) {
+    logger.error("Error while sending tx :(", e);
+  }
 }
 
 export const dashboardSagas = function*(): Iterator<effects.Effect> {

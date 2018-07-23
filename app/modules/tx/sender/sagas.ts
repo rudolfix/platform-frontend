@@ -1,5 +1,5 @@
 import { END, eventChannel } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
+import { call, put, race, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -11,7 +11,26 @@ import { neuCall } from "../../sagas";
 import { selectEthereumAddress } from "../../web3/selectors";
 import { TxSenderType } from "./reducer";
 
-export function* txSendSaga({ web3Manager, logger }: TGlobalDependencies, type: TxSenderType): any {
+export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
+  const { result, cancel } = yield race({
+    result: neuCall(txSendProcess, type),
+    cancel: take("TX_SENDER_HIDE_MODAL"),
+  });
+
+  if (cancel) {
+    throw new Error("TX_SENDING_CANCELLED");
+  }
+
+  // we need to wait for modal to close anyway
+  yield take("HIDE_ACCESS_WALLET_MODAL");
+
+  return result;
+}
+
+export function* txSendProcess(
+  { web3Manager, logger }: TGlobalDependencies,
+  type: TxSenderType,
+): any {
   yield put(actions.txSender.txSenderShowModal(type));
 
   yield take("TX_SENDER_ACCEPT");
@@ -25,7 +44,14 @@ export function* txSendSaga({ web3Manager, logger }: TGlobalDependencies, type: 
   const address: EthereumAddress = yield select((s: IAppState) => selectEthereumAddress(s.web3));
   const finalData = { ...txData, from: address };
 
-  const txHash: string = yield web3Manager.sendTransaction(finalData);
+  let txHash: string;
+  try {
+    txHash = yield web3Manager.sendTransaction(finalData);
+  } catch (e) {
+    yield put(actions.txSender.txSenderError("Tx was rejected"));
+    throw e;
+  }
+
   yield put(actions.txSender.txSenderSigned());
 
   const watchTxChannel = yield neuCall(createWatchTxChannel, txHash);

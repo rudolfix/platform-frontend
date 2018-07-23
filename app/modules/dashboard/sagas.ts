@@ -36,7 +36,7 @@ function* sendDummyTx({ logger }: TGlobalDependencies, action: TAction): any {
 
   try {
     yield neuCall(txSendSaga, "WITHDRAW");
-    logger.info("SUCESS!");
+    logger.info("TX SENT SUCCESSFULLY!!");
   } catch (e) {
     logger.error("Error while sending tx :(", e);
   }

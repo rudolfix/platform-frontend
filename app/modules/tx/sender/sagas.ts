@@ -22,15 +22,12 @@ export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
   }
 
   // we need to wait for modal to close anyway
-  yield take("HIDE_ACCESS_WALLET_MODAL");
+  yield take("TX_SENDER_HIDE_MODAL");
 
   return result;
 }
 
-export function* txSendProcess(
-  { web3Manager, logger }: TGlobalDependencies,
-  type: TxSenderType,
-): any {
+export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any {
   yield put(actions.txSender.txSenderShowModal(type));
 
   yield take("TX_SENDER_ACCEPT");
@@ -38,6 +35,12 @@ export function* txSendProcess(
   yield call(connectWallet, "Send funds!");
   yield put(actions.txSender.txSenderWalletPlugged());
 
+  const txHash = yield neuCall(sendTxSubSaga);
+
+  yield neuCall(watchTxSubSaga, txHash);
+}
+
+function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
   const txData: Web3.TxData | undefined = yield select((s: IAppState) => s.txSender.txDetails);
   if (!txData) {
     throw new Error("Tx data is not defined");
@@ -45,20 +48,21 @@ export function* txSendProcess(
   const address: EthereumAddress = yield select((s: IAppState) => selectEthereumAddress(s.web3));
   const finalData = { ...txData, from: address };
 
-  let txHash: string;
   try {
-    txHash = yield web3Manager.sendTransaction(finalData);
+    const txHash = yield web3Manager.sendTransaction(finalData);
+    yield put(actions.txSender.txSenderSigned());
+
+    return txHash;
   } catch (e) {
     yield put(actions.txSender.txSenderError("Tx was rejected"));
     throw e;
   }
+}
 
-  yield put(actions.txSender.txSenderSigned());
-
+function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
   const watchTxChannel = yield neuCall(createWatchTxChannel, txHash);
 
-  let done = false;
-  while (!done) {
+  while (true) {
     const result: TEventEmitterChannelEvents = yield take(watchTxChannel);
 
     switch (result.type) {
@@ -66,13 +70,10 @@ export function* txSendProcess(
         yield put(actions.txSender.txSenderReportBlock(result.blockId));
         break;
       case "TX_MINED":
-        yield put(actions.txSender.txSenderTxMined());
-        done = true;
-        break;
+        return yield put(actions.txSender.txSenderTxMined());
       case "ERROR":
-        logger.error(result.error);
-        done = true;
-        break;
+        logger.error("Error while tx watching: ", result.error);
+        return yield put(actions.txSender.txSenderError("Error while watching tx."));
     }
   }
 }

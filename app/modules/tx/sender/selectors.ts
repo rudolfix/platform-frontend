@@ -1,4 +1,3 @@
-import { IAppState } from "../../../store";
 import { ITxSenderState } from "./reducer";
 
 export const selectTxSenderModalOpened = (state: ITxSenderState): boolean =>

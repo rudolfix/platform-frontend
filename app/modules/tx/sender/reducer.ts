@@ -1,11 +1,14 @@
-import { ReactNode } from "react";
-
-import { TxData } from "web3";
 import { AppReducer } from "../../../store";
-import { EthereumAddress } from "../../../types";
 
 export type TxSenderType = "WITHDRAW";
-export type TxSenderState = "UNINITIALIZED" | "INIT" | "SUMMARY" | "SIGNING" | "MINING" | "DONE" | "REVERTED";
+export type TxSenderState =
+  | "UNINITIALIZED"
+  | "INIT"
+  | "SUMMARY"
+  | "SIGNING"
+  | "MINING"
+  | "DONE"
+  | "REVERTED";
 
 export interface ITxData {
   to?: string;

@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ITxData, TxSenderType } from "./reducer";
 

@@ -20,7 +20,7 @@ import { neuCall } from "../sagas";
 import { unlockWallet } from "../web3/sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { mapSignMessageErrorToErrorMessage } from "./errors";
+import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
 
 export async function ensureWalletConnection({
@@ -54,6 +54,14 @@ export async function ensureWalletConnection({
       return invariant(false, "Wallet type unrecognized");
   }
 
+  // verify if wallet address is the same as before. Mismatch can happen for multiple reasons:
+  //  - select different wallet in user interface (metamask)
+  //  - attach different ledger device
+  const isSameAddress = wallet.ethereumAddress === metadata.address;
+  if (!isSameAddress) {
+    throw new MismatchedWalletAddressError(metadata.address, wallet.ethereumAddress);
+  }
+
   await web3Manager.plugPersonalWallet(wallet);
 }
 
@@ -70,7 +78,7 @@ async function connectBrowser(
   browserWalletConnector: BrowserWalletConnector,
   web3Manager: Web3Manager,
   // tslint:disable-next-line
-  metadata: IBrowserWalletMetadata, // todo browser wallet should verify connected address
+  metadata: IBrowserWalletMetadata,
 ): Promise<IPersonalWallet> {
   return await browserWalletConnector.connect(web3Manager.networkId);
 }

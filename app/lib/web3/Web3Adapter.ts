@@ -94,12 +94,14 @@ export class Web3Adapter {
         } catch (e) {
           reject(e);
         }
-      });
+      }).catch(reject);
     });
   }
 
   // onNewBlock should return true to finish observing
-  public async watchNewBlock(onNewBlock: (blockId: number) => Promise<boolean | void>) {
+  public async watchNewBlock(
+    onNewBlock: (blockId: number) => Promise<boolean | void>,
+  ): Promise<void> {
     let lastBlockId = -1;
 
     while (true) {

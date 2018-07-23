@@ -4,7 +4,6 @@ import { Modal } from "reactstrap";
 import { Button } from "../../shared/Buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
 
-import { TxData } from "web3";
 import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
@@ -27,7 +26,7 @@ interface IDispatchProps {
 type Props = IStateProps & IDispatchProps;
 
 export const TxSenderModalComponent: React.SFC<Props> = props => {
-  const { isOpen, type, state, onCancel, acceptDraft } = props;
+  const { isOpen, type, state, onCancel } = props;
 
   return (
     <Modal isOpen={isOpen} toggle={onCancel}>

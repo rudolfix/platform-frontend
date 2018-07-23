@@ -1,7 +1,7 @@
 import { fork } from "redux-saga/effects";
 import { neuTakeEvery } from "../../sagas";
 
-function * txMonitor(): any {
+function* txMonitor(): any {
   // 1. ask api
   // 2. query tx statuses with blockchain
   // 3. put them into state

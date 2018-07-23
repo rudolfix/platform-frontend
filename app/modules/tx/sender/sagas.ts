@@ -2,7 +2,6 @@ import { END, eventChannel } from "redux-saga";
 import { call, put, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
 
-import { TxData } from "web3";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IAppState } from "../../../store";
 import { EthereumAddress } from "../../../types";
@@ -19,7 +18,7 @@ export function* txSendSaga({ web3Manager, logger }: TGlobalDependencies, type: 
 
   yield call(accessWallet, "Send funds!");
 
-  const txData: TxData | undefined = yield select((s: IAppState) => s.txSender.txDetails);
+  const txData: Web3.TxData | undefined = yield select((s: IAppState) => s.txSender.txDetails);
   if (!txData) {
     throw new Error("Tx data is not defined");
   }
@@ -38,12 +37,13 @@ export function* txSendSaga({ web3Manager, logger }: TGlobalDependencies, type: 
     switch (result.type) {
       case "NEW_BLOCK":
         yield put(actions.txSender.txSenderReportBlock(result.blockId));
+        break;
       case "TX_MINED":
         yield put(actions.txSender.txSenderTxMined());
         done = true;
         break;
       case "ERROR":
-        console.error(result.error);
+        logger.error(result.error);
         done = true;
         break;
     }

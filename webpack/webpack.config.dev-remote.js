@@ -15,7 +15,7 @@ console.log("REMOTE_BACKEND_URL: ", backendUrl);
 
 const localDevConfig = merge(devConfig, {
   devServer: {
-    proxy: generateProxyConfig("remote", backendUrl),
+    proxy: generateProxyConfig(backendUrl),
   },
 });
 

@@ -4,12 +4,11 @@ const { mapValues } = require("lodash");
  * Unified local proxy configuration. Add new urls here.
  *
  * Params:
- * type: "local" | "remote"
  * backendUrl: string
  *
- * NOTE: if backendUrl === http://localhost we always assume it's local setup
+ * NOTE: if backendUrl === http://localhost we assume it's local setup and links are slightly different (services run on different ports)
  */
-function generateProxyConfig(type, backendUrl) {
+function generateProxyConfig(backendUrl) {
   const base = {
     "/node": {
       targetLocal: "http://localhost:8545",
@@ -54,7 +53,7 @@ function generateProxyConfig(type, backendUrl) {
   };
 
   return mapValues(base, value => {
-    const isRemote = type === "remote" && backendUrl !== "http://localhost";
+    const isRemote = backendUrl !== "http://localhost";
 
     const proxyConfig = {
       pathRewrite: value.pathRewrite,

@@ -23,7 +23,7 @@ module.exports = merge(configCommon, {
         "img-src 'self' data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net;" +
         "connect-src 'self' wss://localhost:9090", // needed for hot reload
     },
-    proxy: generateProxyConfig("local"),
+    proxy: generateProxyConfig("http://localhost"),
   },
   entry: [
     "react-hot-loader/patch",

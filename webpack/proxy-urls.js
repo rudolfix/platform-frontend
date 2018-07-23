@@ -5,6 +5,9 @@ const { mapValues } = require("lodash");
  *
  * Params:
  * type: "local" | "remote"
+ * backendUrl: string
+ *
+ * NOTE: if backendUrl === http://localhost we always assume it's local setup
  */
 function generateProxyConfig(type, backendUrl) {
   const base = {
@@ -51,12 +54,14 @@ function generateProxyConfig(type, backendUrl) {
   };
 
   return mapValues(base, value => {
+    const isRemote = type === "remote" && backendUrl !== "http://localhost";
+
     const proxyConfig = {
       pathRewrite: value.pathRewrite,
-      target: type === "remote" ? value.targetRemote : value.targetLocal,
+      target: isRemote ? value.targetRemote : value.targetLocal,
     };
 
-    if (type === "remote") {
+    if (isRemote) {
       proxyConfig.changeOrigin = true;
     }
 

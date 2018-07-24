@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Modal } from "reactstrap";
 
+import { InvestmentSelection } from "../../dashboard/investment-flow/Investment";
 import { Button } from "../../shared/Buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
@@ -47,7 +48,7 @@ function renderBody({ state, acceptDraft, accept, details, blockId }: Props): Re
     case "INIT":
       return (
         <div>
-          <p>Forms...</p>
+          <InvestmentSelection />
           <Button
             onClick={() =>
               acceptDraft("0x627d795782f653c8ea5e7a63b9cdfe5cb6846d9f", "1000000000000000")

@@ -1,4 +1,4 @@
-import { Form, FormikProps } from "formik";
+import { Form, Formik, FormikProps } from "formik";
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -112,3 +112,25 @@ export const InvestmentSelectionForm = injectIntlHelpers(
     );
   },
 );
+
+const wallets = [
+  {
+    balanceEth: "300000000",
+    id: "foo",
+    name: "ICBM Wallet",
+  },
+  {
+    balanceEth: "400000000",
+    balanceEur: "456",
+    id: "bar",
+    name: "Light Wallet",
+  },
+];
+
+export const InvestmentSelection: React.SFC = () => {
+  return (
+    <Formik initialValues={{ wallet: "bar", amount: 0 }} onSubmit={() => {}}>
+      {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}
+    </Formik>
+  );
+};

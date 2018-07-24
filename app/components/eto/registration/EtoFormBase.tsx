@@ -1,4 +1,5 @@
 import { Form, FormikProps } from "formik";
+import {throttle} from 'lodash'
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as Yup from "yup";
@@ -27,9 +28,9 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
 
   constructor (props: IFormPercentageDoneProps) {
     super(props)
-    this.calculate = getFormFractionDoneCalculator(
+    this.calculate = throttle(getFormFractionDoneCalculator(
       props.validator, props.progressOptions
-    )
+    ), 300)
   }
 
   render(): React.ReactNode {

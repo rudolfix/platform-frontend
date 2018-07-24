@@ -22,6 +22,9 @@ import {
   selectCompanyData,
   selectEtoData,
   selectEtoState,
+  selectIsPamphletSubmitted,
+  selectIsProspectusSubmitted,
+  selectIsTermSheetSubmitted,
   selectRequiredFormFractionDone,
 } from "../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../modules/kyc/selectors";
@@ -59,20 +62,36 @@ interface IStateProps {
   businessRequestStateLoading: boolean;
   companyData: TPartialCompanyEtoData;
   etoData: TPartialEtoSpecData;
+  isTermSheetSubmitted?: boolean;
+  isPamphletSubmitted?: boolean;
+  isProspectusSubmitted?: boolean;
 }
 
 interface IDispatchProps {
   loadDataStart: () => void;
+  loadFileDataStart: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-const SubmitDashBoardSection: React.SFC = () => (
+const SubmitDashBoardSection: React.SFC<{ isTermSheetSubmitted?: boolean }> = ({
+  isTermSheetSubmitted,
+}) => (
   <>
-    <DashboardSection step={3} title="SUBMIT PROPOSAL" data-test-id="eto-dashboard-verification" />
-    <Col lg={4} xs={12}>
-      <SubmitProposalWidget />
-    </Col>
+    <DashboardSection
+      step={3}
+      title="UPLOAD FILES / SUBMIT PROPOSAL"
+      data-test-id="eto-dashboard-verification"
+    />
+    {isTermSheetSubmitted ? (
+      <Col lg={4} xs={12}>
+        <SubmitProposalWidget />
+      </Col>
+    ) : (
+      <Col lg={4} xs={12}>
+        <UploadTermSheetWidget />
+      </Col>
+    )}
   </>
 );
 
@@ -85,11 +104,12 @@ const EtoProgressDashboardSection: React.SFC<IEtoFormsProgressSectionProps> = pr
 
 class EtoDashboardComponent extends React.Component<IProps> {
   componentDidMount(): void {
-    const { kycStatus, isEmailVerified, loadDataStart } = this.props;
+    const { kycStatus, isEmailVerified, loadDataStart, loadFileDataStart } = this.props;
 
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
     if (shouldEtoDataLoad) {
       loadDataStart();
+      loadFileDataStart();
     }
   }
 
@@ -107,6 +127,9 @@ class EtoDashboardComponent extends React.Component<IProps> {
       companyData,
       etoData,
       businessRequestStateLoading,
+      isTermSheetSubmitted,
+      isPamphletSubmitted,
+      isProspectusSubmitted,
     } = this.props;
 
     const etoProgressProps = {
@@ -126,7 +149,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
     return (
       <LayoutAuthorized>
         <Row className="row-gutter-top" data-test-id="eto-dashboard-application">
-          {loadingData ? (
+          {loadingData || !etoState ? (
             <LoadingIndicator />
           ) : (
             <>
@@ -140,40 +163,49 @@ class EtoDashboardComponent extends React.Component<IProps> {
                   <SettingsWidgets isDynamic={true} {...this.props} />
                 </>
               )}
+
               {etoState === "preview" && (
                 <>
                   {etoFormProgress &&
-                    etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD && <SubmitDashBoardSection />}
+                    etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD && (
+                      <>
+                        <SubmitDashBoardSection isTermSheetSubmitted={isTermSheetSubmitted} />
+                      </>
+                    )}
                   <EtoProgressDashboardSection {...etoProgressProps} />
                 </>
               )}
-              {(etoState === "pending" || etoState === "listed") && (
+              {(etoState === "pending" ||
+                etoState === "listed" ||
+                etoState === "prospectus_approved") && (
                 <>
                   <DashboardSection
                     hasDecorator={false}
                     title={<EtoProjectState status={etoState} />}
                   />
-                  {etoState === "listed" && (
+                  {(etoState === "listed" || etoState === "prospectus_approved") && (
                     <>
                       <Col lg={4} xs={12}>
                         {/* TODO: Add visibility logic for BookBuildingWidget*/}
                         <BookBuildingWidget />
                       </Col>
-                      <Col lg={4} xs={12}>
-                        {/* TODO: Add visibility logic for UploadProspectusWidget*/}
-                        <UploadProspectusWidget />
-                      </Col>
-                      {/* TODO: Add visibility logic for ChoosePreEtoDateWidget*/}
-                      <Col lg={4} xs={12}>
-                        <ChoosePreEtoDateWidget />
-                      </Col>
-                      <Col lg={4} xs={12}>
-                        <UploadPamphletWidget />
-                      </Col>
-                      <Col lg={4} xs={12}>
-                        <UploadTermSheetWidget />
-                      </Col>
+                      {!isPamphletSubmitted && (
+                        <Col lg={4} xs={12}>
+                          {/* TODO: Add visibility logic for UploadProspectusWidget*/}
+                          <UploadProspectusWidget />
+                        </Col>
+                      )}
+                      {!isProspectusSubmitted && (
+                        <Col lg={4} xs={12}>
+                          <UploadPamphletWidget />
+                        </Col>
+                      )}
                     </>
+                  )}
+                  {etoState === "prospectus_approved" && (
+                    <Col lg={4} xs={12}>
+                      <ChoosePreEtoDateWidget />
+                    </Col>
                   )}
                   <Col xs={12}>
                     <FormattedMessage id="eto-dashboard-application-description" />
@@ -208,9 +240,13 @@ export const EtoDashboard = compose<React.SFC>(
       backupCodesVerified: selectBackupCodesVerified(s.auth),
       requestStatus: selectKycRequestStatus(s.kyc),
       etoState: selectEtoState(s.etoFlow),
+      isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoFlow),
+      isPamphletSubmitted: selectIsPamphletSubmitted(s.etoFlow),
+      isProspectusSubmitted: selectIsProspectusSubmitted(s.etoFlow),
     }),
     dispatchToProps: dispatch => ({
       loadDataStart: () => dispatch(actions.etoFlow.loadDataStart()),
+      loadFileDataStart: () => dispatch(actions.etoFlow.loadFileDataStart()),
     }),
   }),
 )(EtoDashboardComponent);

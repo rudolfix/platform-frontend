@@ -8,7 +8,7 @@ export const getSampleEtoFiles = (): object => ({
     status: "locked",
   },
   termSheet: {
-    url: "",
+    url: "url",
     status: "locked",
   },
   infoBlatt: {
@@ -25,7 +25,7 @@ export const getSampleEtoFiles = (): object => ({
   },
 });
 
-export interface IEtoFile {
+export interface IEtoSingleFile {
   url: string;
   status: fileStates;
 }

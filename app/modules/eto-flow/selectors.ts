@@ -93,6 +93,36 @@ export const etoMediaProgressOptions: IProgressOptions = {
   },
 };
 
+export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.termSheet &&
+    state.etoFileData.termSheet.url &&
+    state.etoFileData.termSheet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.pamphlet &&
+    state.etoFileData.pamphlet.url &&
+    state.etoFileData.pamphlet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.pamphlet &&
+    state.etoFileData.pamphlet.url &&
+    state.etoFileData.pamphlet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsBookBuilding = (state: IEtoFlowState): boolean | undefined =>
+  state.etoData && state.etoData.isBookbuilding;
+
 export const selectEtoState = (state: IEtoFlowState): EtoState | undefined =>
   state.etoData && state.etoData.state;
 

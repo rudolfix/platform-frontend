@@ -8,6 +8,7 @@ import {
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFile } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
@@ -25,6 +26,22 @@ export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDepen
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO data. Make sure you have completed KYC and email verification process.",
+    );
+    yield put(actions.routing.goToDashboard());
+  }
+}
+
+export function* loadEtoFileData({
+  notificationCenter,
+  apiEtoFileService,
+}: TGlobalDependencies): any {
+  try {
+    const etoFileData: IEtoFile = yield apiEtoFileService.getFileEtoData();
+
+    yield put(actions.etoFlow.loadFileData(etoFileData));
+  } catch (e) {
+    notificationCenter.error(
+      "Could not access ETO files data. Make sure you have completed KYC and email verification process.",
     );
     yield put(actions.routing.goToDashboard());
   }
@@ -95,6 +112,7 @@ export function* submitEtoData(
 
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_FILE_DATA_START", loadEtoFileData);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
 }

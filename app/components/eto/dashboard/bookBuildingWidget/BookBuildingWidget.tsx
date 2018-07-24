@@ -9,6 +9,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpe
 import { ButtonArrowRight } from "../../../shared/Buttons";
 import { Panel } from "../../../shared/Panel";
 
+import { selectIsBookBuilding } from "../../../../modules/eto-flow/selectors";
 import * as styles from "./BookBuildingWidget.module.scss";
 
 interface IDispatchProps {
@@ -17,7 +18,7 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  bookBuildingState: boolean;
+  bookBuildingState?: boolean;
 }
 
 type IProps = IDispatchProps & IStateProps & IIntlProps;
@@ -73,18 +74,16 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   intl,
 }) => {
   return bookBuildingState ? (
-    <StartBookBuildingComponent startBookBuilding={startBookBuilding} intl={intl} />
-  ) : (
     <StopBookBuildingComponent stopBookBuilding={stopBookBuilding} intl={intl} />
+  ) : (
+    <StartBookBuildingComponent startBookBuilding={startBookBuilding} intl={intl} />
   );
 };
 
 export const BookBuildingWidget = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: () => ({
-      // TODO: Connect with backend
-      // @See https://github.com/Neufund/platform-backend/issues/672
-      bookBuildingState: true,
+    stateToProps: state => ({
+      bookBuildingState: selectIsBookBuilding(state.etoFlow),
     }),
     dispatchToProps: () => ({
       startBookBuilding: () => {},

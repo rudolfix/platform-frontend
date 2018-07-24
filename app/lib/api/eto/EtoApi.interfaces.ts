@@ -196,6 +196,7 @@ export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
 interface IAdditionalEtoType {
   state: EtoState;
+  isBookbuilding: boolean;
 }
 
 export type TEtoSpecsData = TEtoTermsType & IAdditionalEtoType;

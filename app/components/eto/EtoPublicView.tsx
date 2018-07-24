@@ -9,7 +9,6 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 
 import { FormattedMessage } from "react-intl";
 import { Button } from "../shared/Buttons";
-import { ViewSubHeaderPanel } from "../shared/ViewSubHeaderPanel";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IProps {
@@ -29,11 +28,6 @@ export const CURRENCIES: ICurrencies = {
 const Page: React.SFC<IProps> = ({ companyData, etoData }) => {
   return (
     <LayoutAuthorized>
-      <ViewSubHeaderPanel>
-        <Button>
-          <FormattedMessage id="eto.ico-monitor" />
-        </Button>
-      </ViewSubHeaderPanel>
       <EtoPublicComponent companyData={companyData} etoData={etoData} />
     </LayoutAuthorized>
   );

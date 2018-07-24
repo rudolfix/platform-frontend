@@ -26,6 +26,22 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
 
+    const computedValue = (value: string | undefined, limit: number | undefined): string => {
+      if (!value) {
+        return "";
+      }
+
+      if (!limit) {
+        return value;
+      }
+
+      return value.length > limit ? value.slice(0, charactersLimit) : value;
+    };
+
+    const countedCharacters = (value: string | undefined, limit: number | undefined): string => {
+      return `${computedValue(value, limit).length}/${limit}`;
+    };
+
     return (
       <FormGroup>
         {label && <FormLabel>{label}</FormLabel>}
@@ -33,10 +49,6 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
           name={name}
           render={({ field }: FieldProps) => {
             const { value } = field;
-            const computedValue =
-              (!!charactersLimit &&
-                (value.length > charactersLimit ? value.slice(0, charactersLimit) : value)) ||
-              value;
 
             return (
               <>
@@ -48,7 +60,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
                   )}
                   <textarea
                     {...field}
-                    value={computedValue}
+                    value={computedValue(value, charactersLimit)}
                     placeholder={placeholder}
                     className={className}
                   />
@@ -56,9 +68,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
                 </InputGroup>
                 <div className="mt-2">
                   {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
-                  {!!charactersLimit && (
-                    <div>{`${computedValue.length || 0}/${charactersLimit}`}</div>
-                  )}
+                  {charactersLimit && <div>{countedCharacters(value, charactersLimit)}</div>}
                 </div>
               </>
             );

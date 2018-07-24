@@ -1,3 +1,4 @@
+import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -136,11 +137,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const { socialChannels, companyVideo, disableTwitterFeed } = companyData;
 
   const isTwitterFeedEnabled =
-    !!(
-      !!socialChannels &&
-      socialChannels.filter((channel: any) => channel.type === "twitter" && channel.url.length)
-        .length
-    ) && !disableTwitterFeed;
+    some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
+    !disableTwitterFeed;
   const isYouTubeVideoAvailable = companyVideo !== undefined ? companyVideo.url.length : false;
 
   return (

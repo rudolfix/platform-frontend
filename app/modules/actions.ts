@@ -16,6 +16,8 @@ import { routingActions } from "./routing/actions";
 import { sendModalActions } from "./sendEthModal/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
+import { txMonitorActions } from "./tx/monitor/actions";
+import { txSenderActions } from "./tx/sender/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
 import { walletActions } from "./wallet/actions";
@@ -43,6 +45,8 @@ export const actions = {
   remoteFile: remoteFileActions,
   depositEthModal: depositModalActions,
   sendEthModal: sendModalActions,
+  txMonitor: txMonitorActions,
+  txSender: txSenderActions,
 };
 
 /**
@@ -69,6 +73,8 @@ export const allActions = {
   ...remoteFileActions,
   ...depositModalActions,
   ...sendModalActions,
+  ...txMonitorActions,
+  ...txSenderActions,
 };
 
 /**

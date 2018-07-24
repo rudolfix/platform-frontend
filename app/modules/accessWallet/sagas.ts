@@ -20,7 +20,7 @@ import { neuCall } from "../sagas";
 import { unlockWallet } from "../web3/sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { mapSignMessageErrorToErrorMessage } from "./errors";
+import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
 
 export async function ensureWalletConnection({
@@ -54,6 +54,14 @@ export async function ensureWalletConnection({
       return invariant(false, "Wallet type unrecognized");
   }
 
+  // verify if newly plugged wallet address is the same as before. Mismatch can happen for multiple reasons:
+  //  - user selects different wallet in user interface (metamask)
+  //  - user attaches different ledger device
+  const isSameAddress = wallet.ethereumAddress === metadata.address;
+  if (!isSameAddress) {
+    throw new MismatchedWalletAddressError(metadata.address, wallet.ethereumAddress);
+  }
+
   await web3Manager.plugPersonalWallet(wallet);
 }
 
@@ -70,7 +78,7 @@ async function connectBrowser(
   browserWalletConnector: BrowserWalletConnector,
   web3Manager: Web3Manager,
   // tslint:disable-next-line
-  metadata: IBrowserWalletMetadata, // todo browser wallet should verify connected address
+  metadata: IBrowserWalletMetadata,
 ): Promise<IPersonalWallet> {
   return await browserWalletConnector.connect(web3Manager.networkId);
 }
@@ -112,6 +120,9 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
   while (true) {
     try {
       yield neuCall(ensureWalletConnection);
+
+      yield effects.put(actions.signMessageModal.clearSigningError());
+
       const isLightWallet = yield select((s: IAppState) => selectIsLightWallet(s.web3));
       if (isLightWallet) {
         yield call(unlockLightWallet);
@@ -132,7 +143,7 @@ export function* accessWalletAndRunEffect(
   title: string = "",
   message: string = "",
 ): any {
-  // guard against multple modals
+  // guard against multiple modals
   const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.accessWallet));
   if (isSigning) {
     throw new Error("Signing already in progress");
@@ -155,6 +166,13 @@ export function* accessWalletAndRunEffect(
   }
 
   return result;
+}
+
+/**
+ * Use only as a part of another saga. This won't trigger modal.
+ */
+export function* connectWallet(): any {
+  yield connectWalletAndRunEffect(call(() => {}));
 }
 
 /**

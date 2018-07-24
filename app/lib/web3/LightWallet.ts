@@ -211,6 +211,10 @@ export class LightWallet implements IPersonalWallet {
     }
   }
 
+  public async sendTransaction(data: Web3.TxData): Promise<string> {
+    return this.web3Adapter.sendTransaction(data);
+  }
+
   public async getSeed(): Promise<string> {
     if (!this.password) {
       throw new LightWalletMissingPassword();

@@ -167,6 +167,7 @@ export type TCompanyEtoData =
  */
 
 export const EtoTermsType = YupTS.object({
+  currencies: YupTS.array(YupTS.string()),
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
   equityTokenImage: YupTS.string(),

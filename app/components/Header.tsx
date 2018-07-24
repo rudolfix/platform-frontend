@@ -2,15 +2,17 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
 
-import * as logo from "../../app/assets/img/logo_yellow.svg";
 import { TUserType } from "../lib/api/users/interfaces";
 import { actions } from "../modules/actions";
 import { selectIsAuthorized, selectUserType } from "../modules/auth/selectors";
 import { appConnect } from "../store";
 import { appRoutes } from "./appRoutes";
-import * as styles from "./Header.module.scss";
 import { Button } from "./shared/Buttons";
 import { loginWalletRoutes, walletRegisterRoutes } from "./walletSelector/walletRoutes";
+
+import * as logo from "../../app/assets/img/logo_yellow.svg";
+import * as logoText from "../../app/assets/img/neufund-logo.svg";
+import * as styles from "./Header.module.scss";
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -25,8 +27,8 @@ interface IDispatchProps {
 export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
   <Navbar dark className={styles.bar}>
     <Link to={appRoutes.root} className={styles.logo}>
-      <img src={logo} className={styles.logoImage} />{" "}
-      <span className={styles.logoText}>NEUFUND</span>
+      <img src={logo} className={styles.logoImage} />
+      <img src={logoText} alt="NEUFUND" className={styles.logoText} />
     </Link>
     {props.isAuthorized ? (
       <Button

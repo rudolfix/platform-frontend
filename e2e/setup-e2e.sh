@@ -10,14 +10,17 @@ BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}
 
 if [[ -z "${REGISTRY_HOST}" ]]; then
   echo "You need to provide REGISTRY_HOST env var";
+  exit 1;
 fi
 
 if [[ -z "${REGISTRY_USER}" ]]; then
   echo "You need to provide REGISTRY_USER env var";
+  exit 1;
 fi
 
 if [[ -z "${REGISTRY_PASS}" ]]; then
   echo "You need to provide REGISTRY_PASS env var";
+  exit 1;
 fi
 
 

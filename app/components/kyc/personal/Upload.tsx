@@ -10,7 +10,8 @@ import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interface
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
-import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { HorizontalLine } from "../../shared/HorizontalLine";
+import { individualRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
@@ -56,13 +57,17 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
       backLink={kycRoutes.individualStart}
     >
       <MultiFileUpload
+        acceptedFiles="image/*,application/pdf"
+        uploadType="individual"
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
-        layout="individual"
         data-test-id="kyc-personal-upload-dropzone"
+        requirements={individualRequirements}
+        layout="vertical"
       />
+
+      <HorizontalLine className="my-5" />
       <div className="p-4 text-center">
         <Button
           onClick={props.onDone}

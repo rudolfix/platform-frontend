@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { CommonHtmlProps } from "../../../../types";
-import { SingleFileUpload, TAcceptedFileType } from "../../SingleFileUpload";
+import { CommonHtmlProps, TAcceptedFileType } from "../../../../types";
+import { SingleFileUpload } from "../../SingleFileUpload";
 
 interface IOwnProps {
   name: string;

@@ -14,9 +14,9 @@ import * as iconDashboard from "../../assets/img/inline_icons/icon-menu-dashboar
 import * as iconDocuments from "../../assets/img/inline_icons/icon-menu-documents.svg";
 import * as iconEto from "../../assets/img/inline_icons/icon-menu-eto.svg";
 import * as iconHelp from "../../assets/img/inline_icons/icon-menu-help.svg";
+import * as iconPortfolio from "../../assets/img/inline_icons/icon-menu-portfolio.svg";
 import * as iconSettings from "../../assets/img/inline_icons/icon-menu-settings.svg";
-import * as iconEdit from "../../assets/img/inline_icons/icon_edit.svg";
-import * as iconWallet from "../../assets/img/inline_icons/icon_wallet_inactive.svg";
+import * as iconWallet from "../../assets/img/inline_icons/icon-menu-wallet.svg";
 import { externalRoutes } from "../externalRoutes";
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
@@ -67,66 +67,73 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
   actionRequiredSettings,
 }) => (
   <div className={styles.menu}>
-    <MenuEntry
-      svgString={iconDashboard}
-      to={appRoutes.dashboard}
-      menuName={<FormattedMessage id="menu.start" />}
-    />
-    <MenuEntry
-      svgString={iconWallet}
-      to={appRoutes.wallet}
-      menuName={<FormattedMessage id="menu.wallet" />}
-    />
-    <MenuEntry
-      svgString={iconHelp}
-      to={externalRoutes.freshdesk}
-      menuName={<FormattedMessage id="menu.help" />}
-      target="_blank"
-    />
-    <MenuEntry
-      svgString={iconSettings}
-      to={appRoutes.settings}
-      menuName={<FormattedMessage id="menu.settings" />}
-      actionRequired={actionRequiredSettings}
-      data-test-id="authorized-layout-settings-button"
-    />
+    <div className={styles.menuItems}>
+      <MenuEntry
+        svgString={iconDashboard}
+        to={appRoutes.dashboard}
+        menuName={<FormattedMessage id="menu.dashboard" />}
+      />
+      {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
+        <MenuEntry
+          svgString={iconPortfolio}
+          to={appRoutes.portfolio}
+          menuName={<FormattedMessage id="menu.portfolio" />}
+        />
+      )}
+      <MenuEntry
+        svgString={iconWallet}
+        to={appRoutes.wallet}
+        menuName={<FormattedMessage id="menu.wallet" />}
+      />
+      <MenuEntry
+        svgString={iconHelp}
+        to={externalRoutes.freshdesk}
+        menuName={<FormattedMessage id="menu.help" />}
+        target="_blank"
+      />
+      <MenuEntry
+        svgString={iconSettings}
+        to={appRoutes.settings}
+        menuName={<FormattedMessage id="menu.settings" />}
+        actionRequired={actionRequiredSettings}
+        data-test-id="authorized-layout-settings-button"
+      />
+    </div>
   </div>
 );
 
 const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequiredSettings }) => (
   <div className={styles.menu}>
-    <MenuEntry
-      svgString={iconDashboard}
-      to={appRoutes.etoOverview}
-      menuName={<FormattedMessage id="menu.overview" />}
-    />
-    <MenuEntry
-      svgString={iconEto}
-      to={appRoutes.dashboard}
-      menuName={<FormattedMessage id="menu.eto-page" />}
-    />
-    <MenuEntry
-      svgString={iconEdit}
-      to={appRoutes.etoRegister}
-      menuName={<FormattedMessage id="menu.edit-page" />}
-    />
-    <MenuEntry
-      svgString={iconDocuments}
-      to="#0"
-      menuName={<FormattedMessage id="menu.documents-page" />}
-    />
-    <MenuEntry
-      svgString={iconHelp}
-      to="https://neufund.freshdesk.com/support/home"
-      menuName={<FormattedMessage id="menu.help" />}
-      target="_blank"
-    />
-    <MenuEntry
-      svgString={iconSettings}
-      to={appRoutes.settings}
-      menuName={<FormattedMessage id="menu.settings" />}
-      actionRequired={actionRequiredSettings}
-    />
+    <div className={styles.menuItems}>
+      <MenuEntry
+        svgString={iconDashboard}
+        to={appRoutes.dashboard}
+        menuName={<FormattedMessage id="menu.dashboard" />}
+      />
+      <MenuEntry
+        svgString={iconEto}
+        to={appRoutes.etoPublicView}
+        menuName={<FormattedMessage id="menu.eto-page" />}
+      />
+      <MenuEntry
+        svgString={iconDocuments}
+        to={appRoutes.documents}
+        menuName={<FormattedMessage id="menu.documents-page" />}
+      />
+      <MenuEntry
+        svgString={iconHelp}
+        to="https://support.neufund.org/support/home"
+        menuName={<FormattedMessage id="menu.help" />}
+        target="_blank"
+      />
+      <MenuEntry
+        svgString={iconSettings}
+        to={appRoutes.settings}
+        menuName={<FormattedMessage id="menu.settings" />}
+        actionRequired={actionRequiredSettings}
+        data-test-id="authorized-layout-settings-button"
+      />
+    </div>
   </div>
 );
 

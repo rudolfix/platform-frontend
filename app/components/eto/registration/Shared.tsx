@@ -10,7 +10,7 @@ interface ISectionProps {
 export const Section: React.SFC<ISectionProps> = ({ line, children }) => (
   <>
     <Row className="justify-content-center">
-      <Col xs={12} lg={10} xl={6}>
+      <Col xs={12} lg={10} xl={10}>
         {children}
       </Col>
     </Row>

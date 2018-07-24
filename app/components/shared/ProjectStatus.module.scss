@@ -23,13 +23,14 @@
     }
   }
 
-  &:global(.whitelisted) {
+  &:global(.campaigning) {
     &::before {
       background-color: $blue-light;
     }
   }
 
-  &:global(.public) {
+  &:global(.pre-eto),
+  &:global(.public-eto) {
     &::before {
       background-color: $neu-seaweed;
     }
@@ -41,7 +42,8 @@
     }
   }
 
-  &:global(.pay-off) {
+  &:global(.claim),
+  &:global(.refund) {
     &::before {
       background-color: $neu-slate-grey;
     }

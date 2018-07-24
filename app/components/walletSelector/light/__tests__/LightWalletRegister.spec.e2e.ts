@@ -1,12 +1,16 @@
-import { get } from "lodash";
-
 import { tid } from "../../../../../test/testUtils";
 import {
+  assertErrorModal,
   assertUserInDashboard,
+  convertToUniqueEmail,
   loginWithLightWallet,
+  logoutViaTopRightButton,
   mockApiUrl,
   registerWithLightWallet,
+  typeEmailPassword,
+  verifyLatestUserEmail,
 } from "../../../../e2e-test-utils";
+import { assertLatestEmailSentWithSalt } from "./../../../../e2e-test-utils/index";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {
@@ -17,11 +21,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-      const email = get(r, "body[0].personalizations[0].to[0]") as string | undefined;
-
-      expect(email).to.be.eq(email);
-    });
+    assertLatestEmailSentWithSalt(email);
   });
 
   it("should remember light wallet details after logout", () => {
@@ -37,7 +37,7 @@ describe("Light wallet login / register", () => {
     assertUserInDashboard();
   });
 
-  it("should recognize correctly ETO user and save metada correctly", () => {
+  it("should recognize correctly ETO user and save metadata correctly", () => {
     const email = "moe3@test.com";
     const password = "strongpassword";
 
@@ -62,6 +62,24 @@ describe("Light wallet login / register", () => {
         });
       });
     });
+  });
+
+  it("should return an error when logging with same email", () => {
+    const email = convertToUniqueEmail("dave@neufund.org");
+    const password = "strongpassword";
+
+    // register once and then verify email account
+    cy.visit("/register");
+    typeEmailPassword(email, password);
+    assertUserInDashboard();
+    verifyLatestUserEmail();
+    logoutViaTopRightButton();
+    cy.clearLocalStorage();
+
+    // register again with the same email, this should show a warning
+    cy.visit("/register");
+    typeEmailPassword(email, password);
+    assertErrorModal();
   });
 
   // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit

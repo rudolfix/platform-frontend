@@ -1,104 +1,148 @@
-import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
-import { Q18 } from "../../../config/constants";
+import { actions } from "../../../modules/actions";
+import { selectEthereumAddress } from "../../../modules/web3/selectors";
+import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
-import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
+import { AccountAddress, IAccountAddressProps } from "../../shared/AccountAddress";
+import { AccountBalance } from "../../shared/AccountBalance";
+import { HorizontalLine } from "../../shared/HorizontalLine";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
-import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { IPanelProps, Panel } from "../../shared/Panel";
 import { TotalEuro } from "../TotalEuro";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
-import * as moneyIcon from "../../../assets/img/nEUR_icon.svg";
+import * as neuroIcon from "../../../assets/img/nEUR_icon.svg";
 import * as styles from "./WalletBalance.module.scss";
 
-export type TWalletBalance = "light" | "dark";
-
 export interface IWalletValues {
-  euroTokenAmount: string;
-  euroTokenEuroAmount: string;
   ethAmount: string;
   ethEuroAmount: string;
+  neuroAmount: string;
+  neuroEuroAmount: string;
   totalEuroAmount: string;
 }
 
-interface IWalletBalance {
-  depositEuroTokenFunds: () => void;
-  depositEthFunds: () => void;
-  theme?: TWalletBalance;
+interface IWalletBalanceProps {
   isLoading: boolean;
   data?: IWalletValues;
   isLocked: boolean;
 }
 
-const computeChartDataForTokens = (euroValues: string[]) => {
-  const simplifiedValues = euroValues
-    .map(s => new BigNumber(s))
-    .map(b => b.div(Q18))
-    .map(b => b.round(2).toNumber());
+interface IStateProps {
+  address: string;
+}
 
-  return {
-    labels: ["ETH", "nEUR"],
-    datasets: [
-      {
-        data: simplifiedValues,
-        backgroundColor: ["#e3eaf5", "#394651"],
-      },
-    ],
-  };
-};
+interface IDispatchProps {
+  depositEth: () => void;
+  withdrawEth: () => void;
+}
 
-export const WalletBalance: React.SFC<IPanelProps & IWalletBalance & CommonHtmlProps> = ({
-  data,
+type IProps = IPanelProps &
+  IWalletBalanceProps &
+  IStateProps &
+  IDispatchProps &
+  IAccountAddressProps &
+  CommonHtmlProps;
+
+const WalletBalanceComponent: React.SFC<IProps> = ({
   isLoading,
   headerText,
+  address,
+  data,
+  depositEth,
+  withdrawEth,
+  isLocked,
   className,
-  style,
-  theme = "light",
-}) => (
-  <Panel
-    className={cn(className, styles.walletBalance, `t-${theme}`)}
-    style={style}
-    headerText={headerText}
-    rightComponent={data && <TotalEuro totalEurValue={data.totalEuroAmount} />}
-  >
-    {isLoading ? (
-      <LoadingIndicator />
-    ) : (
-      <div className={styles.walletBalanceWrapper}>
-        {data!.euroTokenAmount !== "0" &&
-          data!.ethAmount !== "0" && (
-            <div className={styles.chartWrapper}>
-              <ChartDoughnut
-                data={computeChartDataForTokens([data!.ethEuroAmount, data!.euroTokenEuroAmount])}
-              />
-            </div>
-          )}
-        <div className={styles.walletBalanceActions}>
-          <div className={styles.moneySuiteWrapper}>
-            <MoneySuiteWidget
-              currency="eur_token"
-              largeNumber={data!.euroTokenAmount}
-              value={data!.euroTokenEuroAmount}
-              icon={moneyIcon}
-              data-test-id="euro-widget"
-              currencyTotal="eur"
-            />
-          </div>
-          <div className={styles.moneySuiteWrapper}>
-            <MoneySuiteWidget
-              currency="eth"
-              largeNumber={data!.ethAmount}
-              value={data!.ethEuroAmount}
-              icon={ethIcon}
-              data-test-id="euro-widget"
-              currencyTotal="eur"
-            />
-          </div>
-        </div>
+}) => {
+  const unlockedWallet = (
+    <div className={styles.accountWithAddressWrapper}>
+      <div>
+        <h4 className={styles.title}>
+          <FormattedMessage id="shared-component.wallet-balance.title.account-address" />
+        </h4>
+        <AccountAddress address={address} />
       </div>
-    )}
-  </Panel>
-);
+
+      <div>
+        <h4 className={styles.title}>
+          <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
+        </h4>
+        <AccountBalance
+          icon={neuroIcon}
+          currency="neu"
+          currencyTotal="eur"
+          largeNumber={data!.neuroAmount}
+          value={data!.neuroEuroAmount}
+          onWithdrawClick={withdrawEth}
+          onDepositClick={depositEth}
+        />
+
+        <HorizontalLine className="my-3" />
+
+        <AccountBalance
+          icon={ethIcon}
+          currency="eth"
+          currencyTotal="eur"
+          largeNumber={data!.ethAmount}
+          value={data!.ethEuroAmount}
+          onWithdrawClick={withdrawEth}
+          onDepositClick={depositEth}
+        />
+      </div>
+    </div>
+  );
+
+  const IcbmLocked = (
+    <div className={styles.icbmLockedWallet}>
+      <p className={styles.message}>
+        <FormattedMessage id="shared-component.wallet-icbm.upgrade-message" />
+      </p>
+
+      <h4 className={styles.title}>
+        <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
+      </h4>
+      <AccountBalance
+        icon={neuroIcon}
+        currency="neu"
+        currencyTotal="eur"
+        largeNumber={data!.neuroAmount}
+        value={data!.neuroEuroAmount}
+        onUpgradeClick={() => {}}
+      />
+
+      <HorizontalLine className="my-3" />
+
+      <AccountBalance
+        icon={ethIcon}
+        currency="eth"
+        currencyTotal="eur"
+        largeNumber={data!.ethAmount}
+        value={data!.ethEuroAmount}
+        onUpgradeClick={() => {}}
+      />
+    </div>
+  );
+
+  return (
+    <Panel
+      headerText={headerText}
+      rightComponent={data && <TotalEuro totalEurValue={data.totalEuroAmount} />}
+      className={cn(className, "d-flex flex-column")}
+    >
+      {isLoading ? <LoadingIndicator /> : isLocked ? IcbmLocked : unlockedWallet}
+    </Panel>
+  );
+};
+
+export const WalletBalance = appConnect<IStateProps, IDispatchProps>({
+  stateToProps: state => ({
+    address: selectEthereumAddress(state.web3),
+  }),
+  dispatchToProps: dispatch => ({
+    depositEth: () => dispatch(actions.depositEthModal.showDepositEthModal()),
+    withdrawEth: () => dispatch(actions.sendEthModal.showSendEthModal()),
+  }),
+})(WalletBalanceComponent);

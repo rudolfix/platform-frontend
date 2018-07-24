@@ -1,147 +1,178 @@
 import * as cn from "classnames";
 import * as React from "react";
 import Dropzone from "react-dropzone";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
 
-import { InlineIcon } from "../shared/InlineIcon";
+import { InlineIcon } from "./InlineIcon";
+import { ResponsiveImage } from "./ResponsiveImage";
 import { UploadedFiles } from "./UploadedFiles";
 
-import * as addFileIcon from "../../assets/img/add_file.svg";
-import * as idImage from "../../assets/img/id_img.svg";
+import { TAcceptedFileType, TTranslatedString } from "../../types";
+
+import * as bankStatementTemplate from "../../assets/img/bank-statement-template.svg";
+import * as documentBothSidesImage from "../../assets/img/document-both-side.jpg";
+import * as documentBothSidesImage2x from "../../assets/img/document-both-side@2x.jpg";
+import * as documentBothSidesImage3x from "../../assets/img/document-both-side@3x.jpg";
+import * as documentFrontImage from "../../assets/img/document-front.jpg";
+import * as documentFrontImage2x from "../../assets/img/document-front@2x.jpg";
+import * as documentFrontImage3x from "../../assets/img/document-front@3x.jpg";
+import * as addFileIcon from "../../assets/img/inline_icons/add_file.svg";
 import * as styles from "./MultiFileUpload.module.scss";
 
-const ACCEPTED_FILES = "application/pdf, image/*";
-
-import * as plusIcon from "../../assets/img/inline_icons/plus.svg";
-
 interface IProps {
-  className?: string;
+  uploadType: TKycRequestType | TKycRequestType[];
+  acceptedFiles: TAcceptedFileType;
   fileUploading: boolean;
-  filesLoading: boolean;
-  files: IKycFileInfo[];
-  layout: TKycRequestType;
   onDropFile: (file: File) => void;
+  layout?: "horizontal" | "vertical";
+  files?: IKycFileInfo[];
+  requirements?: TTranslatedString[];
+  "data-test-id"?: string;
 }
 
-export const MultiFileUpload: React.SFC<IProps> = ({ files, layout, ...props }) => {
-  const onDrop = (accepted: File[]) => accepted[0] && props.onDropFile(accepted[0]);
+export const individualRequirements = [
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.individual.colored-photo" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.individual.full-name" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.individual.date-of-birth" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.individual.valid-expiration-date" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.individual.official-document-number" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.individual.high-quality" />,
+];
 
-  const dropzoneInner = props.fileUploading ? (
-    <>
-      <img src={addFileIcon} />
-      <div>
-        <FormattedMessage id="shared-component.multi-file-upload.uploading" />
-      </div>
-    </>
+export const businessRequirements = [
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.business.proof-of-address" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.business.article-of-association" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.business.commercial-register-entry" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.business.partnership-agreement" />,
+];
+
+export const addressRequirements = [
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.address.full-name" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.address.current-address" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.address.date" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.address.issuing-company" />,
+  <FormattedMessage id="shared-component.multi-file-upload.requirements.address.high-quality" />,
+];
+
+const MultiFileUploadComponent: React.SFC<IProps> = ({
+  acceptedFiles,
+  fileUploading,
+  requirements,
+  files,
+  layout,
+  onDropFile,
+  "data-test-id": dataTestId,
+  ...props
+}) => {
+  const onDrop = (accepted: File[]) => accepted[0] && onDropFile(accepted[0]);
+
+  const dropzoneInner = fileUploading ? (
+    <FormattedMessage id="shared-component.multi-file-upload.uploading" />
   ) : (
-    <>
-      <img src={addFileIcon} />
-      <FormattedHTMLMessage tagName="span" id="shared-component.multi-file-upload.upload-cta" />
-    </>
+    <FormattedMessage id="shared-component.multi-file-upload.upload-cta" />
   );
 
   const dropzoneWithFilesInner = (
-    <>
-      <InlineIcon svgIcon={plusIcon} />
-      {layout === "individual" && (
-        <span>
-          <FormattedMessage id="shared-component.multi-file-upload.individual.add-more" />
-        </span>
-      )}
-      {layout === "business" && (
-        <span>
-          <FormattedMessage id="shared-component.multi-file-upload.business.add-more" />
-        </span>
-      )}
-    </>
+    <FormattedMessage id="shared-component.multi-file-upload.add-more" />
   );
-  const dropzoneStyle = {
-    width: "210px",
-    height: "210px",
-    display: "flex",
-    cursor: "pointer",
-  };
-  const dropzoneWithFilesStyle = {
-    color: "#000",
-    display: "flex",
-    cursor: "pointer",
-  };
 
   return (
-    <div className={cn(styles.upload, layout, props.className)}>
-      <div className={styles.uploadDescription}>
-        {layout === "individual" && (
-          <h3 className={styles.title}>
-            <FormattedMessage id="shared-component.multi-file-upload.individual.images-must-be-included" />
-          </h3>
-        )}
-        {layout === "business" && (
-          <h3 className={styles.title}>
-            <FormattedMessage id="shared-component.multi-file-upload.business.required-documents" />
-          </h3>
-        )}
-        {layout === "individual" && <img className={styles.sampleDocumentId} src={idImage} />}
-        <div>
-          {layout === "individual" && (
-            <ul className={styles.documentRequirements}>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.individual.id.colored-photo" />
-              </li>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.individual.id.full-name" />
-              </li>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.individual.id.date-of-birth" />
-              </li>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.individual.id.expiration-date" />
-              </li>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.individual.id.number" />
-              </li>
-            </ul>
-          )}
+    <div className={cn(styles.multiFileUpload, layout)}>
+      <Dropzone
+        data-test-id={dataTestId}
+        accept={acceptedFiles}
+        onDrop={onDrop}
+        disabled={fileUploading}
+        className={styles.dropzone}
+        {...props}
+      >
+        <InlineIcon svgIcon={addFileIcon} />
+        {files && files.length ? dropzoneWithFilesInner : dropzoneInner}
+      </Dropzone>
 
-          {layout === "business" && (
-            <ul className={styles.documentRequirements}>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.business.id.commercial-register" />
-              </li>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.business.id.association" />
-              </li>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.business.id.partnership" />
-              </li>
-              <li>
-                <FormattedMessage id="shared-component.multi-file-upload.business.id.address" />
-              </li>
-            </ul>
-          )}
+      {files && files.length > 0 ? (
+        <UploadedFiles files={files} />
+      ) : (
+        requirements && (
+          <div className={styles.requirements}>
+            <p className={styles.requirementsTitle}>
+              <FormattedMessage id="shared-component.multi-file-upload.requirements.title" />
+            </p>
+            <ul>{requirements.map((r, i) => <li key={i}>{r}</li>)}</ul>
+          </div>
+        )
+      )}
+    </div>
+  );
+};
+
+MultiFileUploadComponent.defaultProps = {
+  layout: "horizontal",
+};
+
+export const MultiFileUpload: React.SFC<IProps> = ({
+  fileUploading,
+  files,
+  onDropFile,
+  uploadType,
+  layout,
+  "data-test-id": dataTestId,
+}) => {
+  const isIndividual = uploadType === "individual";
+  const computedRequirements = isIndividual ? individualRequirements : businessRequirements;
+
+  return (
+    <div className={styles.upload}>
+      {isIndividual && (
+        <div className={styles.uploadInformationsWrapper}>
+          <h3 className={styles.title}>
+            Option 1 - If ID card has proof of address you only need to upload this document{" "}
+          </h3>
+          <h4 className={cn(styles.hint, "mb-3")}>*Coloured copy of both sides</h4>
+          <ResponsiveImage
+            srcSet={{
+              "1x": documentBothSidesImage,
+              "2x": documentBothSidesImage2x,
+              "3x": documentBothSidesImage3x,
+            }}
+            alt="ID"
+            width={344}
+            height={111}
+          />
+          <h3 className={cn(styles.title, "my-4")}>
+            Option 2 - Upload ID card / Passport + Utility bill / Bank statement{" "}
+          </h3>
+          <div className={styles.imagesWrapper}>
+            <div className={styles.bankStatementWrapper}>
+              <img src={bankStatementTemplate} alt="bank statement" />
+            </div>
+            <div className={styles.idWrapper}>
+              <ResponsiveImage
+                srcSet={{
+                  "1x": documentFrontImage,
+                  "2x": documentFrontImage2x,
+                  "3x": documentFrontImage3x,
+                }}
+                alt="ID"
+                width={133}
+                height={94}
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className={styles.uploadZone}>
-        <h3 className={styles.title}>
-          <FormattedMessage id="shared-component.multi-file-upload.upload-documents" />
-        </h3>
-        {files.length > 0 && <UploadedFiles files={files} />}
-        <div className={files.length ? styles.dropzoneWithFilesWrapper : styles.dropzoneWrapper}>
-          <Dropzone
-            accept={ACCEPTED_FILES}
-            onDrop={onDrop}
-            disabled={props.fileUploading}
-            style={files.length ? dropzoneWithFilesStyle : dropzoneStyle}
-            {...props}
-          >
-            {files.length ? dropzoneWithFilesInner : dropzoneInner}
-          </Dropzone>
-        </div>
-        <div className={styles.documentRequirements}>
-          <FormattedMessage id="shared-component.multi-file-upload.allowed-documents" />
-        </div>
-      </div>
+      )}
+      <MultiFileUploadComponent
+        requirements={computedRequirements}
+        acceptedFiles="image/*,application/pdf"
+        onDropFile={onDropFile}
+        files={files}
+        fileUploading={fileUploading}
+        uploadType={uploadType}
+        layout={layout}
+        data-test-id={dataTestId}
+      />
     </div>
   );
 };

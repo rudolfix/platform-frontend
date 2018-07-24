@@ -1,6 +1,7 @@
 // tslint:disable-next-line: no-submodule-imports
 import createHistory from "history/createBrowserHistory";
 import { Container } from "inversify";
+import { compact } from "lodash";
 // tslint:disable-next-line: no-submodule-imports
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -25,10 +26,10 @@ import {
 import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { rootSaga } from "./modules/sagas";
 import { IAppState, reducers } from "./store";
+import * as ga from "./utils/googleAnalitycs.js";
 import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
-import { compact } from "lodash";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "../node_modules/font-awesome/scss/font-awesome.scss";
@@ -105,6 +106,8 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
 
   return { store, container };
 }
+
+ga.installGA();
 
 const history = createHistory();
 const { store, container } = startupApp(history);

@@ -5,14 +5,18 @@ import {
   EtoCompanyInformationType,
   EtoKeyIndividualsType,
   EtoLegalInformationType,
+  EtoMediaType,
   EtoProductVisionType,
+  EtoRiskAssesmentType,
   EtoTermsType,
 } from "../../../lib/api/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
-import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
-import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import {
+  etoMediaProgressOptions,
+  selectFormFractionDone,
+} from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
@@ -24,6 +28,8 @@ interface IStateProps {
   legalInformationProgress: number;
   etoKeyIndividualsProgress: number;
   etoTermsProgress: number;
+  etoMediaProgress: number;
+  etoRiskProgress: number;
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;
@@ -37,11 +43,13 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 class ETOFormsProgressSectionWidget extends React.Component<IProps> {
-  componentDidUpdate(): void {
+  componentDidMount(): void {
     const { kycStatus, isEmailVerified, loadDataStart } = this.props;
+
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
     if (shouldEtoDataLoad) loadDataStart();
   }
+
   render(): React.ReactNode {
     const {
       companyInformationProgress,
@@ -50,6 +58,8 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
       loadingData,
       etoKeyIndividualsProgress,
       legalInformationProgress,
+      etoMediaProgress,
+      etoRiskProgress,
       kycStatus,
       isEmailVerified,
     } = this.props;
@@ -58,7 +68,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
 
     return (
       <>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.companyInformation}
@@ -66,7 +76,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="Company Information"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.etoTerms}
@@ -74,7 +84,7 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="ETO Terms"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.keyIndividuals}
@@ -82,20 +92,36 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
             name="Key Individuals"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
-            to={etoRegisterRoutes.etoTerms}
+            to={etoRegisterRoutes.legalInformation}
             progress={shouldEtoDataLoad ? legalInformationProgress : 0}
             name="Legal Information"
           />
         </Col>
-        <Col lg={4} xs={12} sm={6} className="mb-4">
+        <Col lg={4} xs={12} md={6} className="mb-4">
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={etoRegisterRoutes.productVision}
             progress={shouldEtoDataLoad ? productVisionProgress : 0}
             name="Product Vision"
+          />
+        </Col>
+        <Col lg={4} xs={12} md={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.etoMedia}
+            progress={shouldEtoDataLoad ? etoMediaProgress : 0}
+            name="Media"
+          />
+        </Col>
+        <Col lg={4} xs={12} md={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={etoRegisterRoutes.etoRiskAssesment}
+            progress={shouldEtoDataLoad ? etoRiskProgress : 0}
+            name="Risk Assesment"
           />
         </Col>
         {/* TODO: ADD TRANSLATIONS */}
@@ -110,28 +136,26 @@ export const ETOFormsProgressSection = compose<React.SFC>(
       companyInformationProgress: selectFormFractionDone(
         EtoCompanyInformationType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
-      etoTermsProgress: selectFormFractionDone(
-        EtoTermsType.toYup(),
-        s.etoFlow.companyData,
-        etoFlowInitialState,
-      ),
+      etoTermsProgress: selectFormFractionDone(EtoTermsType.toYup(), s.etoFlow.etoData),
       etoKeyIndividualsProgress: selectFormFractionDone(
         EtoKeyIndividualsType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       legalInformationProgress: selectFormFractionDone(
         EtoLegalInformationType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
       productVisionProgress: selectFormFractionDone(
         EtoProductVisionType.toYup(),
         s.etoFlow.companyData,
-        etoFlowInitialState,
       ),
+      etoMediaProgress: selectFormFractionDone(
+        EtoMediaType.toYup(),
+        s.etoFlow.companyData,
+        etoMediaProgressOptions,
+      ),
+      etoRiskProgress: selectFormFractionDone(EtoRiskAssesmentType.toYup(), s.etoFlow.companyData),
       loadingData: s.etoFlow.loading,
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),

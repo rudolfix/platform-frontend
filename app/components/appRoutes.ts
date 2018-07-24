@@ -9,15 +9,19 @@ export const appRoutes = {
   loginEto: "/eto/login",
   recover: "/recover",
   recoverEto: "/eto/recover",
-  etoOverview: "/eto-overview",
+  etoPublicView: "/eto-public-view",
+  etoPreview: "/eto-preview/:previewCode",
 
   kyc: "/kyc",
   wallet: "/wallet",
   dashboard: "/dashboard",
+  documents: "/documents",
   settings: "/settings",
   demo: "/demo",
   eto: "/eto",
   etoLanding: "/eto-landing",
 
   etoRegister: "/eto/registration",
+
+  portfolio: "/portfolio",
 };

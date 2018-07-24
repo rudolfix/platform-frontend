@@ -28,6 +28,7 @@ export class WalletNotConnectedError extends Error {
 export class SignerError extends Error {}
 export class SignerRejectConfirmationError extends SignerError {}
 export class SignerTimeoutError extends SignerError {}
+export class SignerUnknownError extends SignerError {}
 
 export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 5000;
 
@@ -87,6 +88,14 @@ export class Web3Manager {
   public async sign(message: string): Promise<string> {
     if (this.personalWallet) {
       return this.personalWallet.signMessage(message);
+    } else {
+      throw new Error("No wallet!");
+    }
+  }
+
+  public async sendTransaction(tx: Web3.TxData): Promise<string> {
+    if (this.personalWallet) {
+      return this.personalWallet.sendTransaction(tx);
     } else {
       throw new Error("No wallet!");
     }

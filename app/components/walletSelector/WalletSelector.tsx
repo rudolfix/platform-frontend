@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { compact } from "lodash";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { compose } from "redux";
@@ -17,7 +16,7 @@ import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { appRoutes } from "../appRoutes";
 import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
-import { Tabs } from "../shared/Tabs";
+import { TabContent, Tabs } from "../shared/Tabs";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
 
@@ -51,34 +50,41 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
       ) : (
         <>
           <Row className="justify-content-center mb-4 mt-4">
-            <Tabs
-              tabs={compact([
-                (userType === "investor" ||
-                  process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && {
-                  path: `${rootPath}/light`,
-                  text: isLoginRoute
-                    ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")
-                    : formatIntlMessage("wallet-selector.tabs.neuwallet-register"),
-                  dataTestId: "wallet-selector-light",
-                },
-                (userType === "investor" ||
-                  process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && {
-                  path: `${rootPath}/browser`,
-                  text: isLoginRoute
-                    ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
-                    : formatIntlMessage("wallet-selector.tabs.browser-wallet-register"),
-
-                  dataTestId: "wallet-selector-browser",
-                },
-                {
-                  path: `${rootPath}/ledger`,
-                  text: isLoginRoute
+            <Tabs>
+              {(userType === "investor" ||
+                process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && (
+                <TabContent
+                  data-test-id="wallet-selector-light"
+                  routerPath={`${rootPath}/light`}
+                  tab={
+                    isLoginRoute
+                      ? formatIntlMessage("wallet-selector.tabs.neuwallet-login")
+                      : formatIntlMessage("wallet-selector.tabs.neuwallet-register")
+                  }
+                />
+              )}
+              {(userType === "investor" ||
+                process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET === "1") && (
+                <TabContent
+                  data-test-id="wallet-selector-browser"
+                  routerPath={`${rootPath}/browser`}
+                  tab={
+                    isLoginRoute
+                      ? formatIntlMessage("wallet-selector.tabs.browser-wallet-login")
+                      : formatIntlMessage("wallet-selector.tabs.browser-wallet-register")
+                  }
+                />
+              )}
+              <TabContent
+                data-test-id="wallet-selector-ledger"
+                routerPath={`${rootPath}/ledger`}
+                tab={
+                  isLoginRoute
                     ? formatIntlMessage("wallet-selector.tabs.ledger-login")
-                    : formatIntlMessage("wallet-selector.tabs.ledger-register"),
-                  dataTestId: "wallet-selector-ledger",
-                },
-              ])}
-            />
+                    : formatIntlMessage("wallet-selector.tabs.ledger-register")
+                }
+              />
+            </Tabs>
           </Row>
           <Row>
             <Col>
@@ -98,7 +104,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
                 ) : (
                   <>
                     <FormattedMessage id="wallet-selector.register.help-link" />{" "}
-                    <a href="https://neufund.freshdesk.com/support/home">
+                    <a href="https://support.neufund.org/support/home">
                       <FormattedMessage id="wallet-selector.help-link.label" />
                     </a>
                   </>

@@ -10,6 +10,10 @@ export interface IUser {
   type: TUserType;
 }
 
+export interface IEmailStatus {
+  isAvailable: boolean;
+}
+
 export interface IUserInput {
   newEmail?: string;
   salt?: string;
@@ -31,3 +35,7 @@ export const UserValidator = Yup.object()
     type: Yup.string().oneOf(["investor", "issuer"]),
   })
   .required();
+
+export const emailStatus = Yup.object().shape({
+  isAvailable: Yup.boolean(),
+});

@@ -9,10 +9,15 @@ interface IWarningAlertProps {
 }
 
 export const WarningAlert: React.SFC<IWarningAlertProps> = ({ children, className }) => (
-  <Row className={cn("m-2 align-items-center", styles.warningAlert, className)} noGutters>
+  <Row
+    className={cn("m-2 align-items-center justify-content-center", styles.warningAlert, className)}
+    noGutters
+  >
     <Col xs="auto">
       <i className={cn("fa fa-exclamation-circle mr-2", styles.icon)} aria-hidden="true" />
     </Col>
-    <Col>{children}</Col>
+    <Col xs="auto" data-test-id="components.shared-warning-alert.message">
+      {children}
+    </Col>
   </Row>
 );

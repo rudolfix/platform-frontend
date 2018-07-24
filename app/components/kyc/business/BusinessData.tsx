@@ -15,7 +15,7 @@ import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
-import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { businessRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 import { KycDisclaimer } from "../shared/KycDisclaimer";
@@ -134,12 +134,13 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
       <FormattedMessage id="kyc.business.business-data.upload-documents" />
       <br />
       <MultiFileUpload
+        uploadType="business"
+        acceptedFiles="image/*,application/pdf"
         data-test-id="kyc-company-business-supporting-documents"
-        layout="business"
+        requirements={businessRequirements}
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
       />
     </div>
   );

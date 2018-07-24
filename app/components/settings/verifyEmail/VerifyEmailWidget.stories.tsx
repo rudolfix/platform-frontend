@@ -10,7 +10,10 @@ storiesOf("VerifyEmailWidgetComponent", module)
       intl={dummyIntl}
       isUserEmailVerified={true}
       isThereUnverifiedEmail={false}
+      isEmailTemporaryCancelled={false}
       resendEmail={() => {}}
+      revertCancelEmail={() => {}}
+      cancelEmail={() => {}}
       addNewEmail={() => {}}
       step={1}
       verifiedEmail="email@test.com"
@@ -20,8 +23,11 @@ storiesOf("VerifyEmailWidgetComponent", module)
     <VerifyEmailWidgetComponent
       intl={dummyIntl}
       isUserEmailVerified={true}
+      isEmailTemporaryCancelled={false}
       isThereUnverifiedEmail={true}
+      revertCancelEmail={() => {}}
       resendEmail={() => {}}
+      cancelEmail={() => {}}
       addNewEmail={() => {}}
       step={1}
       unverifiedEmail="email@test.com"
@@ -32,6 +38,9 @@ storiesOf("VerifyEmailWidgetComponent", module)
     <VerifyEmailWidgetComponent
       intl={dummyIntl}
       isUserEmailVerified={false}
+      isEmailTemporaryCancelled={false}
+      revertCancelEmail={() => {}}
+      cancelEmail={() => {}}
       isThereUnverifiedEmail={true}
       resendEmail={() => {}}
       addNewEmail={() => {}}
@@ -42,8 +51,24 @@ storiesOf("VerifyEmailWidgetComponent", module)
   .add("no email", () => (
     <VerifyEmailWidgetComponent
       intl={dummyIntl}
+      cancelEmail={() => {}}
       isUserEmailVerified={false}
+      revertCancelEmail={() => {}}
       isThereUnverifiedEmail={false}
+      isEmailTemporaryCancelled={false}
+      resendEmail={() => {}}
+      addNewEmail={() => {}}
+      step={1}
+    />
+  ))
+  .add("Cancellation in process", () => (
+    <VerifyEmailWidgetComponent
+      intl={dummyIntl}
+      isUserEmailVerified={false}
+      revertCancelEmail={() => {}}
+      cancelEmail={() => {}}
+      isThereUnverifiedEmail={true}
+      isEmailTemporaryCancelled={true}
       resendEmail={() => {}}
       addNewEmail={() => {}}
       step={1}

@@ -24,10 +24,16 @@
   letter-spacing: px-to-rem(-.3px);
 }
 
-@mixin font-headline-small {
-  font-family: $headings-font-family;
+@mixin font-headline-medium {
+  @include font-headline;
+
   font-size: px-to-rem(18px);
-  letter-spacing: px-to-rem(-.3px);
+}
+
+@mixin font-headline-small {
+  @include font-headline;
+
+  font-size: px-to-rem(16px);
 }
 
 @mixin font-button-default {
@@ -51,6 +57,7 @@
 @mixin font-label {
   font-family: $headings-font-family;
   font-size: px-to-rem(12px);
+  letter-spacing: -.2px;
   line-height: 1.4;
   text-transform: uppercase;
 }

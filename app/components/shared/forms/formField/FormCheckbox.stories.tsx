@@ -18,6 +18,29 @@ storiesOf("FormCheckbox && FormRadioButton", module)
     )),
   )
   .add(
+    "checkbox with long labels",
+    formWrapper({ bwm: false, audi: false, ford: true, volvo: true })(() => (
+      <>
+        <div className="form-group">
+          <FormCheckbox
+            name="bmw"
+            label=" No shareholder loans exist and at Closing Date the Company does not have any outstanding liabilities vis-à-vis Existing Shareholders or related parties. asdf asdf asdf asdf asdf asdf asdf l(kj(lkj asdf asdf as df asdf)) bmw"
+          />
+        </div>
+        <div className="form-group">
+          <FormCheckbox name="bmw" label="bmw" />
+          <FormCheckbox name="audi" label="audi" />
+          <FormCheckbox name="ford" label="ford" />
+          <FormCheckbox name="volvo" label="volvo" />
+          <FormCheckbox
+            name="bmw"
+            label=" No shareholder loans exist and at Closing Date the Company does not have any outstanding liabilities vis-à-vis Existing Shareholders or related parties. asdf asdf asdf asdf asdf asdf asdf l(kj(lkj asdf asdf as df asdf)) bmw"
+          />
+        </div>
+      </>
+    )),
+  )
+  .add(
     "radio button",
     formWrapper({ car: "bmw" })(() => (
       <>

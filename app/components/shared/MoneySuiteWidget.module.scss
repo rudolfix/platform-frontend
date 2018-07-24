@@ -1,24 +1,40 @@
 .money-suite-widget {
   display: flex;
 
+  &:global(.light) {
+    :local(.money),
+    :local(.total-money) {
+      color: $color-white;
+    }
+  }
+
+  &:global(.large) {
+    :local(.money) {
+      font-size: px-to-rem(22px);
+    }
+
+    :local(.total-money) {
+      font-size: px-to-rem(20px);
+    }
+  }
+
   .icon {
-    width: px-to-rem(28px);
-    height: px-to-rem(28px);
+    @include rect(34px);
+
     margin-right: px-to-rem(10px);
     margin-top: .2em;
   }
 
   .money {
-    @include font-headline;
-    color: $color-black;
-  }
+    @include font-default;
 
-  .currency {
-    margin-right: px-to-rem(4px);
+    color: $color-graphite-light;
   }
 
   .total-money {
     @include font-tab;
+
+    color: $color-silver;
     margin-left: px-to-rem(10px);
   }
 

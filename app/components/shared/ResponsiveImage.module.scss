@@ -1,9 +1,18 @@
 .responsive-image {
-  background-color: $color-silver;
+  &:global {
+    &.dark {
+      background-color: $color-silver;
+    }
+
+    &.light {
+      background-color: $color-white;
+    }
+  }
 }
 
 .image {
   @include rect(100%);
 
   display: block;
+  font-style: italic;
 }

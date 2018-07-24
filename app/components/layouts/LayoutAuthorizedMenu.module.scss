@@ -4,24 +4,36 @@ $sm-width: px-to-rem(65px);
 $lg-width: px-to-rem(140px);
 
 .menu {
+  @include rect(100%, $header-height);
+
   @include media-breakpoint-up(sm) {
+    @include rect($sm-width, 100%);
+
     display: block;
     padding-top: map-get($spacers, 3);
     justify-content: flex-start;
-    width: $sm-width;
-    height: 100%;
   }
 
   @include media-breakpoint-up(lg) {
     width: $lg-width;
   }
 
-  height: $header-height;
   background-color: $color-blue-dark;
   border-top: 2px solid $color-blue-dark;
   display: flex;
   flex-shrink: 0;
-  width: 100%;
+  position: relative;
+}
+
+.menu-items {
+  @include media-breakpoint-up (sm) {
+    flex-direction: column;
+  }
+
+  color: $color-white;
+  display: flex;
+  top: 20px;
+  position: sticky;
 }
 
 .menu-item {
@@ -32,7 +44,6 @@ $lg-width: px-to-rem(140px);
   flex-shrink: 0;
   position: relative;
   height: px-to-rem(60px);
-  color: $color-silver;
   display: flex;
   align-items: center;
 
@@ -45,12 +56,11 @@ $lg-width: px-to-rem(140px);
     background-color: $neu-charcoal-grey;
     border-color: $neu-piss-yellow;
     text-decoration: none;
-    color: $color-silver;
   }
 
   &:focus {
     background-color: lighten($neu-charcoal-grey, 8%);
-    color: $neu-white-two;
+    color: $color-white;
   }
 
   @include media-breakpoint-down(xs) {

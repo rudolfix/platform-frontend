@@ -9,9 +9,13 @@
 
 @import "./elements/a";
 @import "./elements/form";
+@import "./elements/iframe";
+@import "./elements/input";
 @import "./elements/ul";
+@import "./elements/table";
 @import "./elements/textarea";
 @import "./elements/label";
+@import "./elements/img";
 
 .form-group {
   margin-bottom: $spacing-vertical-lg-1;

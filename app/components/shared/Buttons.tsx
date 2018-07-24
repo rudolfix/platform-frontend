@@ -8,8 +8,8 @@ import { LoadingIndicator } from "./LoadingIndicator";
 import * as closeIcon from "../../assets/img/inline_icons/close.svg";
 import * as styles from "./Buttons.module.scss";
 
-type TButtonLayout = "primary" | "secondary";
-type TButtonTheme = "dark" | "white" | "brand" | "silver";
+type TButtonLayout = "primary" | "secondary" | "simple";
+type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite";
 type TIconPosition = "icon-before" | "icon-after";
 
 interface IGeneralButton {
@@ -18,6 +18,7 @@ interface IGeneralButton {
 
 interface IButtonIcon extends IGeneralButton {
   svgIcon: string;
+  className?: string;
 }
 export interface IButtonProps {
   layout?: TButtonLayout;
@@ -73,8 +74,8 @@ Button.defaultProps = {
   disabled: false,
 };
 
-export const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, ...props }) => (
-  <div className={styles.buttonIcon} onClick={onClick}>
+export const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
+  <div className={cn(styles.buttonIcon, className)} onClick={onClick}>
     <InlineIcon {...props} width="20px" height="20px" />
   </div>
 );

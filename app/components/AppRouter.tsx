@@ -1,3 +1,4 @@
+import * as queryString from "query-string";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -6,12 +7,15 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 
 import { Dashboard } from "./dashboard/Dashboard";
 import { Demo } from "./Demo";
+import { Documents } from "./Documents";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
+import { Portfolio } from "./Portfolio";
 
 import { appRoutes } from "./appRoutes";
-import { emailVerify } from "./emailVerify";
-import { EtoOverview } from "./eto/EtoOverview";
+import { EmailVerify } from "./emailVerify";
+import { EtoPreview } from "./eto/EtoPreview";
+import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoRegister } from "./eto/registration/Start";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
@@ -39,12 +43,12 @@ export const AppRouter: React.SFC = () => (
       <OnlyPublicRoute
         key={appRoutes.registerEto}
         path={appRoutes.registerEto}
-        component={WalletSelector}
+        component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
         key={appRoutes.loginEto}
         path={appRoutes.loginEto}
-        component={WalletSelector}
+        component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
         key={appRoutes.recoverEto}
@@ -54,10 +58,13 @@ export const AppRouter: React.SFC = () => (
     ]}
 
     {/* only investors routes */}
+    {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
+      <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
+    )}
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
-
-    {/* only issuers routes */}
+    <OnlyAuthorizedRoute path={appRoutes.documents} issuerComponent={Documents} />
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />
+    <OnlyAuthorizedRoute path={appRoutes.etoPublicView} issuerComponent={EtoPublicView} exact />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute
@@ -67,14 +74,9 @@ export const AppRouter: React.SFC = () => (
       exact
     />
     <OnlyAuthorizedRoute
-      path={appRoutes.etoOverview}
-      issuerComponent={EtoOverview}
-      investorComponent={EtoOverview}
-    />
-    <OnlyAuthorizedRoute
       path={appRoutes.verify}
-      investorComponent={emailVerify}
-      issuerComponent={emailVerify}
+      investorComponent={EmailVerify}
+      issuerComponent={EmailVerify}
     />
     <OnlyAuthorizedRoute
       path={appRoutes.settings}
@@ -89,9 +91,33 @@ export const AppRouter: React.SFC = () => (
       exact
     />
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} issuerComponent={Kyc} />
+    <OnlyAuthorizedRoute
+      path={appRoutes.etoPreview}
+      investorComponent={EtoPreview}
+      issuerComponent={EtoPreview}
+    />
 
     <Route path={appRoutes.demo} component={Demo} />
 
     <Redirect to={appRoutes.root} />
   </SwitchConnected>
 );
+
+const SecretProtected = (Component: any) =>
+  class extends React.Component<any> {
+    shouldComponentUpdate(): boolean {
+      return false;
+    }
+
+    render(): React.ReactNode {
+      const props = this.props;
+      const params = queryString.parse(window.location.search);
+
+      if (!process.env.NF_ISSUERS_SECRET || params.etoSecret === process.env.NF_ISSUERS_SECRET) {
+        return <Component {...props} />;
+      }
+
+      return <Redirect to="/" />;
+    }
+  };
+const EtoSecretProtectedWalletSelector = SecretProtected(WalletSelector);

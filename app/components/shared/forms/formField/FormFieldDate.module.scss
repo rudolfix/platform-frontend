@@ -19,6 +19,8 @@
   }
 
   .label {
+    @include font-label;
+
     @include media-breakpoint-up(lg) {
       align-self: flex-end;
       margin-bottom: 0;

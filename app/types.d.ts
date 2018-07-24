@@ -1,4 +1,5 @@
 import { HTMLAttributes, CSSProperties } from "react";
+import { FormattedMessage } from "react-intl";
 
 type Dictionary<T> = { [id: string]: T };
 type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
@@ -25,7 +26,7 @@ export type TDictionaryValues<T> = T extends Dictionary<infer U> ? U : never;
 export type primitive = string | number | boolean | undefined | null;
 export type DeepReadonly<T> = T extends primitive
   ? T
-  : T extends Array<infer U> ? ReadonlyArray<U> : DeepReadonlyObject<T>;
+  : T extends Array<infer U> ? ReadonlyArray<U> : T extends Function ? T : DeepReadonlyObject<T>;
 
 export type DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
 
@@ -65,3 +66,15 @@ export type CommonHtmlProps = {
 };
 
 export type Size = "narrow" | "wide";
+
+export type TTranslatedString = string | React.ReactElement<FormattedMessage>;
+
+export type TAcceptedFileType =
+  | string
+  | "application/pdf"
+  | "image/png"
+  | "image/jpg"
+  | "image/jpeg"
+  | "image/svg+xml"
+  | "image/*";
+// TODO: Correct TAcceptedFileType types it can contain more than one type

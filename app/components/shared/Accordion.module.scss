@@ -4,6 +4,11 @@
 }
 
 .accordion-element {
+  &:last-of-type {
+    .content {
+      border-bottom: 0;
+    }
+  }
 
   &:global(.is-closed) {
     .title :global(.inline-icon) {
@@ -13,11 +18,12 @@
     .content {
       height: 0;
     }
-
   }
 }
 
 .title {
+  @include font-button-default;
+
   align-items: center;
   cursor: pointer;
   display: flex;

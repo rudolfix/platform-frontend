@@ -1,37 +1,46 @@
 import * as React from "react";
 import { Col } from "reactstrap";
 
-import { selectIsLightWallet } from "../../modules/web3/selectors";
-import { appConnect } from "../../store";
+import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
 import { KycStatusWidget } from "./kycStates/KycStatusWidget";
 import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";
 
 interface IProps {
-  isLightWallet: boolean;
+  isDynamic: boolean;
+  isLightWallet?: boolean;
+  verifiedEmail?: string;
+  backupCodesVerified?: boolean;
+  requestStatus?: TRequestStatus;
 }
 
-export const SettingsWidgetsComponent: React.SFC<IProps> = ({ isLightWallet }) => {
+export const SettingsWidgets: React.SFC<IProps> = ({
+  isLightWallet,
+  backupCodesVerified,
+  verifiedEmail,
+  isDynamic,
+  requestStatus,
+}) => {
   let settingsStepCounter = 0;
   return (
     <>
-      <Col lg={4} xs={12}>
-        <VerifyEmailWidget step={++settingsStepCounter} />
-      </Col>
-      {isLightWallet && (
+      {(!isDynamic || !verifiedEmail) && (
         <Col lg={4} xs={12}>
-          <BackupSeedWidget step={++settingsStepCounter} />
+          <VerifyEmailWidget step={++settingsStepCounter} />
         </Col>
       )}
-      <Col lg={4} xs={12}>
-        <KycStatusWidget step={++settingsStepCounter} />
-      </Col>
+      {(!isDynamic || !backupCodesVerified) &&
+        isLightWallet && (
+          <Col lg={4} xs={12}>
+            <BackupSeedWidget step={++settingsStepCounter} />
+          </Col>
+        )}
+      {(!isDynamic || requestStatus !== "Accepted") && (
+        <Col lg={4} xs={12}>
+          <KycStatusWidget step={++settingsStepCounter} />
+        </Col>
+      )}
     </>
   );
 };
-
-export const SettingsWidgets = appConnect<IProps, {}>({
-  stateToProps: s => ({
-    isLightWallet: selectIsLightWallet(s.web3),
-  }),
-})(SettingsWidgetsComponent);

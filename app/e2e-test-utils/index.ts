@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import { tid } from "../../test/testUtils";
 import { appRoutes } from "../components/appRoutes";
 
@@ -6,27 +7,135 @@ export const assertEtoDashboard = () => {
   cy.get(tid("eto-dashboard-application")).should("exist");
 };
 
-export const registerWithLightWalletETO = (email: string, password: string) => {
-  cy.visit("eto/register/light");
+export const goToDashboard = () => {
+  cy.visit("/");
+};
 
+export const goToSettings = () => {
+  cy.visit("/settings");
+};
+
+export const clearEmailServer = () => {
+  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+};
+
+export const assertLatestEmailSentWithSalt = (userEmail: string) => {
+  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
+    const response = get(r, "body[0].personalizations[0].to[0]") as { email: string | undefined };
+    const loginLink = get(r, "body[0].personalizations[0].substitutions.-loginLink-") as
+      | string
+      | undefined;
+
+    expect(response && response.email).to.be.eq(userEmail);
+    expect(loginLink).to.contain("salt");
+  });
+};
+
+export const assertVerifyEmailWidgetIsInUnverifiedEmailState = (shouldNotExist?: boolean) => {
+  cy
+    .get(tid("settings.verify-email-widget.unverified-email-state"))
+    .should(shouldNotExist ? "not.exist" : "exist");
+};
+
+export const assertVerifyEmailWidgetIsInNoEmailState = (shouldNotExist?: boolean) => {
+  cy
+    .get(tid("settings.verify-email-widget.no-email-state"))
+    .should(shouldNotExist ? "not.exist" : "exist");
+};
+
+export const assertVerifyEmailWidgetIsInVerfiedEmailState = (shouldNotExist?: boolean) => {
+  cy
+    .get(tid("settings.verify-email-widget.verified-email-state"))
+    .should(shouldNotExist ? "not.exist" : "exist");
+};
+
+export const assertEmailActivationWidgetVisible = (shouldNotExist?: boolean) => {
+  cy.get(tid("settings.verify-email-widget")).should(shouldNotExist ? "not.exist" : "exist");
+};
+
+export const assertBackupSeedWidgetVisible = (shouldNotExist?: boolean) => {
+  cy.get(tid("settings.backup-seed-widget")).should(shouldNotExist ? "not.exist" : "exist");
+};
+
+export const assertErrorModal = () => {
+  cy.get(tid("components.modals.generic-modal.title")).should("exist");
+};
+
+export const typeEmailPassword = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
-  cy.get(tid("wallet-selector-register-button")).click();
 
-  assertEtoDashboard();
+  cy.get(tid("wallet-selector-register-button")).click();
+};
+
+export const registerWithLightWalletETO = (email: string, password: string) => {
+  cy.visit("eto/register/light");
+
+  typeEmailPassword(email, password);
+};
+
+export const typeLightwalletRecoveryPhrase = (words: string[]) => {
+  for (let batch = 0; batch < words.length / 4; batch++) {
+    for (let index = 0; index < 4; index++) {
+      cy
+        .get(tid(`seed-recovery-word-${batch * 4 + index}`, "input"))
+        .type(words[batch * 4 + index], { force: true, timeout: 20 })
+        .type("{enter}", { force: true });
+    }
+
+    if (batch + 1 < words.length / 4) {
+      cy.get(tid("btn-next")).click();
+    }
+  }
+
+  cy.get(tid("btn-send")).click();
+};
+
+export const confirmAccessModal = (password: string) => {
+  cy.get(tid("access-light-wallet-password-input")).type(password);
+  cy.get(tid("access-light-wallet-confirm")).click();
 };
 
 // todo: extract it to separate file
 // do it after moving all e2e tests back into cypress directory
-export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
-  "https://localhost:9090/api/"}external-services-mock/`;
+export const mockApiUrl = "https://localhost:9090/api/external-services-mock/";
+
+export const verifyLatestUserEmail = () => {
+  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
+    const activationLink = get(r, "body[0].personalizations[0].substitutions.-activationLink-") as
+      | string
+      | undefined;
+    if (activationLink) {
+      // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
+      const cleanedActivationLink = activationLink.replace("platform.neufund.io", "localhost:9090");
+      cy.visit(cleanedActivationLink);
+      cy.get(tid("email-verified")); // wait for the email verified button to show
+    }
+  });
+};
 
 export const assertUserInDashboard = () => {
   return cy.url().should("contain", appRoutes.dashboard);
 };
 
-export const registerWithLightWallet = (email: string, password: string) => {
+export const convertToUniqueEmail = (email: string) => {
+  const splitEmail = email.split("@");
+  const randomString = Math.random()
+    .toString(36)
+    .slice(2);
+  return `${splitEmail[0]}-${randomString}@${splitEmail[1]}`;
+};
+
+export const registerWithLightWallet = (
+  email: string,
+  password: string,
+  uniqueEmail: boolean = false,
+) => {
+  if (uniqueEmail) {
+    email = convertToUniqueEmail(email);
+  }
+
   cy.visit("/register");
 
   cy.get(tid("wallet-selector-register-email")).type(email);
@@ -35,6 +144,11 @@ export const registerWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-button")).click();
 
   assertUserInDashboard();
+};
+
+export const logoutViaTopRightButton = () => {
+  cy.get(tid("Header-logout")).click();
+  cy.get(tid("landing-page")); // wait for landing page to show
 };
 
 export const loginWithLightWallet = (email: string, password: string) => {

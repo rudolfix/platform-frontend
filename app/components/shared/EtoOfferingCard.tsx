@@ -6,15 +6,10 @@ import * as QuestionMark from "!url-loader!../../assets/img/inline_icons/questio
 import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
 import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
 import { Proportion } from "./Proportion";
+import { IResponsiveImage, ResponsiveImage } from "./ResponsiveImage";
 import { ITag, Tag } from "./Tag";
 
 import * as styles from "./EtoOfferingCard.module.scss";
-
-export interface IResponsiveImage {
-  alt: string;
-  src: string;
-  srcSet?: string;
-}
 
 export interface IEtoOfferingProps {
   roundName?: string;
@@ -126,19 +121,24 @@ export class EtoOfferingCardComponent extends React.Component<
         <Proportion width={100} height={50}>
           <div className={styles.top}>
             {props.badge && (
-              <img
-                className={styles.badge}
-                src={props.badge.src}
-                srcSet={props.badge.srcSet}
-                alt={props.badge.alt}
-              />
+              <div className={styles.badge}>
+                <ResponsiveImage
+                  src={props.badge.src}
+                  srcSet={props.badge.srcSet}
+                  alt={props.badge.alt}
+                  width={props.badge.width}
+                  height={props.badge.height}
+                />
+              </div>
             )}
             {props.topImage && (
-              <img
+              <ResponsiveImage
                 className={styles.image}
                 src={props.topImage.src}
                 srcSet={props.topImage.srcSet}
                 alt={props.topImage.alt}
+                width={props.topImage.width}
+                height={props.topImage.height}
               />
             )}
             {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
@@ -171,11 +171,13 @@ export class EtoOfferingCardComponent extends React.Component<
               )}
               {props.quoteImage && (
                 <div className={styles.imageWrapper}>
-                  <img
+                  <ResponsiveImage
                     className={styles.animation}
                     src={props.quoteImage.src}
                     srcSet={props.quoteImage.srcSet}
                     alt={props.quoteImage.alt}
+                    width={props.quoteImage.width}
+                    height={props.quoteImage.height}
                   />
                   <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
                 </div>
@@ -192,11 +194,13 @@ export class EtoOfferingCardComponent extends React.Component<
                 </a>
               )}
               {props.quoteImage && (
-                <img
+                <ResponsiveImage
                   className={styles.image}
                   src={props.quoteImage.src}
                   srcSet={props.quoteImage.srcSet}
                   alt={props.quoteImage.alt}
+                  height={props.quoteImage.height}
+                  width={props.quoteImage.width}
                 />
               )}
               {!props.teaser && (

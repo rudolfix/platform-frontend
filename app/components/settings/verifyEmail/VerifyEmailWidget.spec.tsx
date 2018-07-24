@@ -13,9 +13,12 @@ describe("<VerifyEmailWidgetComponent />", () => {
     const verifyEmailWidget = shallow(
       <VerifyEmailWidgetComponent
         step={1}
+        revertCancelEmail={() => {}}
         isThereUnverifiedEmail={false}
         isUserEmailVerified={true}
         resendEmail={() => {}}
+        isEmailTemporaryCancelled={false}
+        cancelEmail={() => {}}
         addNewEmail={() => {}}
         intl={dummyIntl}
       />,
@@ -30,6 +33,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
         step={1}
         isThereUnverifiedEmail={true}
         isUserEmailVerified={false}
+        cancelEmail={() => {}}
+        revertCancelEmail={() => {}}
+        isEmailTemporaryCancelled={false}
         resendEmail={() => {}}
         addNewEmail={() => {}}
         intl={dummyIntl}
@@ -44,7 +50,10 @@ describe("<VerifyEmailWidgetComponent />", () => {
       <VerifyEmailWidgetComponent
         step={1}
         isThereUnverifiedEmail={false}
+        isEmailTemporaryCancelled={false}
         isUserEmailVerified={false}
+        revertCancelEmail={() => {}}
+        cancelEmail={() => {}}
         resendEmail={() => {}}
         addNewEmail={() => {}}
         intl={dummyIntl}
@@ -58,9 +67,12 @@ describe("<VerifyEmailWidgetComponent />", () => {
       wrapWithIntl(
         <VerifyEmailWidgetComponent
           step={1}
+          isEmailTemporaryCancelled={false}
           isThereUnverifiedEmail={true}
           isUserEmailVerified={false}
           unverifiedEmail="test@test.com"
+          revertCancelEmail={() => {}}
+          cancelEmail={() => {}}
           resendEmail={() => {}}
           addNewEmail={() => {}}
           intl={dummyIntl}
@@ -77,8 +89,11 @@ describe("<VerifyEmailWidgetComponent />", () => {
           <VerifyEmailWidgetComponent
             step={1}
             isThereUnverifiedEmail={false}
+            isEmailTemporaryCancelled={false}
+            cancelEmail={() => {}}
             isUserEmailVerified={false}
             resendEmail={() => {}}
+            revertCancelEmail={() => {}}
             addNewEmail={() => {}}
             intl={dummyIntl}
           />,
@@ -101,6 +116,9 @@ describe("<VerifyEmailWidgetComponent />", () => {
             step={1}
             isThereUnverifiedEmail={false}
             isUserEmailVerified={false}
+            isEmailTemporaryCancelled={false}
+            revertCancelEmail={() => {}}
+            cancelEmail={() => {}}
             resendEmail={() => {}}
             addNewEmail={addNewEmailSpy}
             intl={dummyIntl}
@@ -138,7 +156,10 @@ describe("<VerifyEmailWidgetComponent />", () => {
           <VerifyEmailWidgetComponent
             step={1}
             isThereUnverifiedEmail={false}
+            cancelEmail={() => {}}
             isUserEmailVerified={false}
+            revertCancelEmail={() => {}}
+            isEmailTemporaryCancelled={false}
             resendEmail={() => {}}
             addNewEmail={() => {}}
             intl={dummyIntl}

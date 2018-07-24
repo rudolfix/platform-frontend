@@ -1,16 +1,22 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
+
 import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
 import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
-import { TAction } from "../actions";
+import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { selectWalletType } from "../web3/selectors";
+import {
+  selectLightWalletSalt,
+  selectPreviousLightWalletSalt,
+  selectWalletType,
+} from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { actions } from "./../actions";
+import { selectDoesEmailExist } from "./../auth/selectors";
 
 export function* addNewEmail(
   { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
@@ -21,6 +27,12 @@ export function* addNewEmail(
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
   const walletType = yield select((s: IAppState) => selectWalletType(s.web3));
+  const salt = yield select(
+    (s: IAppState) => selectLightWalletSalt(s.web3) || selectPreviousLightWalletSalt(s.web3),
+  );
+  const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
+
+  const emailModalTitle = isEmailAvailable ? "Email Update" : "Add Email";
 
   let addEmailMessage;
 
@@ -49,18 +61,21 @@ export function* addNewEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      "Add email",
+      emailModalTitle,
       addEmailMessage,
     );
-
-    yield effects.call(updateUser, { ...user, new_email: email });
+    yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
     notificationCenter.info(
       formatIntlMessage("modules.settings.sagas.add-new-email.new-email-added"),
     );
-  } catch {
-    yield effects.call(loadUser);
-    notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
+  } catch (e) {
+    if (e instanceof EmailAlreadyExists)
+      notificationCenter.error(
+        formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
+      );
+    else notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
   } finally {
+    yield effects.call(loadUser);
     yield effects.put(actions.verifyEmail.freeVerifyEmailButton());
   }
 }

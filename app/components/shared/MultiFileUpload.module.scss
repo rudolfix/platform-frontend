@@ -1,78 +1,128 @@
+$_dropzone-size-xl: 200px;
+$_dropzone-size-sm: 120px;
+
 .upload {
-  @include make-row;
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    @include font-default;
+
+    color: $color-graphite-light;
+    text-transform: uppercase;
+  }
+
+  .hint {
+    @include font-default;
+
+    color: $color-gray;
+  }
+
+  .upload-informations-wrapper {
+    padding-right: 40px;
+    margin-right: 40px;
+    border-right: 1px solid $color-silver;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .images-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .id-wrapper,
+  .bank-statement-wrapper {
+    width: 46%;
+  }
+
+  .bank-statement-wrapper {
+    img {
+      width: 100%;
+    }
+  }
+}
+
+
+.multi-file-upload {
+  display: flex;
+
+  &:global(.horizontal) {
+    flex-direction: row;
+
+    :local(.dropzone) {
+      @include responsive-size(height, $_dropzone-size-sm, $_dropzone-size-xl);
+      @include responsive-size(width, $_dropzone-size-sm, $_dropzone-size-xl);
+
+      margin-right: 20px;
+    }
+  }
+
+  &:global(.vertical) {
+    flex-direction: column;
+
+    :local(.requirements-title) {
+      margin: $spacing-vertical-lg-1 0 $spacing-vertical-lg-2;
+    }
+
+    :local(.dropzone) {
+      @include rect($_dropzone-size-xl);
+    }
+  }
 }
 
 .title {
-  font-size: px-to-rem(12px);
-  color: $neu-slate-grey;
-  text-transform: uppercase;
-  margin-bottom: px-to-rem(20px);
+  @include font-label;
+
+  color: $color-graphite-light;
 }
 
-.document-requirements {
-  margin-top: px-to-rem(20px);
+.file-info {
+  color: $color-gray;
+  font-size: 10px;
+  line-height: 2.4;
 }
 
-.upload-description,
-.upload-zone {
-  @include make-col-ready;
-  @include make-col(1, 1);
+.dropzone {
+  align-items: center;
+  border: px-to-rem(2px) dashed $neu-silver;
+  color: $color-graphite-light;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-size: px-to-rem(10px);
+  justify-content: space-around;
+  padding: 10px;
+  text-align: center;
+  flex-shrink: 0;
 
-  @include media-breakpoint-up(md) {
-    @include make-col(1, 2);
+  :global {
+    .inline-icon {
+      @include responsive-size(width, 50px, 100px);
+      @include responsive-size(height, 50px, 96px);
+
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.document-wrapper {
+  @include media-breakpoint-up (md) {
+    padding-right: 20px;
   }
 
-  margin-top: px-to-rem(24px);
-}
-
-.upload-description {
-  @include media-breakpoint-up(md) {
-    border-right: 1px solid $neu-light-blue-grey;
-  }
-}
-
-.upload-zone {
-  strong {
-    color: $color-black;
-  }
+  padding-bottom: 20px;
 }
 
 .dropzone-wrapper {
-  margin: 0 auto;
-
-  > * {
-    margin-right: px-to-rem(18px);
-    background-color: $neu-pale-blue;
-    border: 1px dashed $neu-cloudy-blue;
-    border-radius: 3px;
-    flex-direction: column;
-    display: flex;
-    padding: px-to-rem(22px);
-    justify-content: space-between;
-    align-items: center;
-    transition: 150ms ease-out transform;
-
-    &:hover {
-      transform: scale(.96);
-    }
-  }
+  display: flex;
 }
 
-.sample-document-id {
-  max-width: 100%;
+.requirements-title {
+  margin-bottom: 4px;
 }
 
-.dropzone-with-files-wrapper {
-  > * {
-    background-color: transparent;
-    border: 0;
-    flex-direction: row;
-    margin-left: px-to-rem(6px);
-    font-weight: 600;
-
-    :global(.inline-icon) {
-      width: px-to-rem(20px);
-      margin-right: px-to-rem(12px);
-    }
-  }
-}

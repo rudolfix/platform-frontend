@@ -1,6 +1,7 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { appConnect } from "../../../store";
@@ -20,7 +21,6 @@ import {
 
 import { KYCBeneficialOwners } from "./BeneficialOwners";
 
-import { Col, Row } from "reactstrap";
 import {
   IKycBusinessData,
   IKycFileInfo,
@@ -32,7 +32,7 @@ import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
-import { MultiFileUpload } from "../../shared/MultiFileUpload";
+import { individualRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
@@ -169,12 +169,14 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   return (
     <div>
       <MultiFileUpload
+        uploadType="individual"
+        layout="vertical"
+        acceptedFiles="image/*,application/pdf"
         data-test-id="kyc-company-legal-representative-documents"
-        layout="individual"
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
-        filesLoading={props.filesLoading}
+        requirements={individualRequirements}
       />
     </div>
   );

@@ -63,21 +63,26 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           name="categories"
           className="mb-4"
         />
-
-        <FormSingleFileUpload
-          name="companyLogo"
-          label="Logo"
-          acceptedFiles="image/*"
-          fileFormatInformation="*150 x 150 png"
-          className="mb-3"
-        />
-        <FormSingleFileUpload
-          name="companyBanner"
-          label="Banner"
-          acceptedFiles="image/*"
-          fileFormatInformation="*1250 x 400 png"
-          className="mb-3"
-        />
+        <Row>
+          <Col>
+            <FormSingleFileUpload
+              name="companyLogo"
+              label="Logo"
+              acceptedFiles="image/*"
+              fileFormatInformation="*150 x 150 png"
+              className="mb-3"
+            />
+          </Col>
+          <Col>
+            <FormSingleFileUpload
+              name="companyBanner"
+              label="Banner"
+              acceptedFiles="image/*"
+              fileFormatInformation="*1250 x 400 png"
+              className="mb-3"
+            />
+          </Col>
+        </Row>
       </Section>
       <Col>
         <Row className="justify-content-end">

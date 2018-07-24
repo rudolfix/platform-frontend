@@ -40,7 +40,9 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
       <MessageSignPrompt />
       {errorMsg ? (
         <Row className="justify-content-center">
-          <WarningAlert className="my-4">{errorMsg}</WarningAlert>
+          <Col>
+            <WarningAlert className="my-4 text-center">{errorMsg}</WarningAlert>
+          </Col>
         </Row>
       ) : (
         <LoadingIndicator className={styles.spinner} />

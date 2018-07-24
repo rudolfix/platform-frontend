@@ -1,6 +1,7 @@
 const merge = require("webpack-merge");
 const devConfig = require("./webpack.config.dev");
 
+const generateProxyConfig = require("./proxy-urls");
 const loadAppEnv = require("./loadAppEnv");
 const applicationEnv = loadAppEnv(process.env);
 
@@ -14,47 +15,7 @@ console.log("REMOTE_BACKEND_URL: ", backendUrl);
 
 const localDevConfig = merge(devConfig, {
   devServer: {
-    proxy: {
-      "/node": {
-        target: "http://localhost:8545",
-        pathRewrite: { "^/node": "" },
-      },
-      "/api/signature": {
-        target: backendUrl + "signature",
-        pathRewrite: { "^/api/signature": "" },
-        changeOrigin: true,
-      },
-      "/api/wallet": {
-        target: backendUrl + "wallet",
-        pathRewrite: { "^/api/wallet": "" },
-        changeOrigin: true,
-      },
-      "/api/user": {
-        target: backendUrl + "user",
-        pathRewrite: { "^/api/user": "" },
-        changeOrigin: true,
-      },
-      "/api/kyc": {
-        target: backendUrl + "kyc",
-        pathRewrite: { "^/api/kyc": "" },
-        changeOrigin: true,
-      },
-      "/api/eto-listing": {
-        target: backendUrl + "eto-listing",
-        pathRewrite: { "^/api/eto-listing": "" },
-        changeOrigin: true,
-      },
-      "/api/document-storage": {
-        target: backendUrl + "document-storage",
-        pathRewrite: { "^/api/document-storage": "" },
-        changeOrigin: true,
-      },
-      "/api/newsletter": {
-        target: backendUrl + "newsletter",
-        pathRewrite: { "^/api/newsletter": "" },
-        changeOrigin: true,
-      },
-    },
+    proxy: generateProxyConfig(backendUrl),
   },
 });
 

@@ -8,7 +8,7 @@ import {
   TGeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "../../lib/api/EtoApi.interfaces";
+} from "../../lib/api/eto/EtoApi.interfaces";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import {

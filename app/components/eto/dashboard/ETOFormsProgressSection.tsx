@@ -10,7 +10,7 @@ import {
   EtoTermsType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "../../../lib/api/EtoApi.interfaces";
+} from "../../../lib/api/eto/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";

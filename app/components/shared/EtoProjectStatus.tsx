@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { FormattedMessage } from "react-intl-phraseapp";
-import { EtoState } from "../../lib/api/EtoApi.interfaces";
+import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { ProjectStatus, TStatus } from "./ProjectStatus";
 
 import * as styles from "./EtoProjectStatus.module.scss";

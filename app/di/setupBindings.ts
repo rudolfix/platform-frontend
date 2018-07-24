@@ -22,7 +22,7 @@ import {
 } from "../utils/AsyncIntervalScheduler";
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
-import { EtoApi } from "../lib/api/EtoApi";
+import { EtoApi } from "../lib/api/eto/EtoApi";
 import { FileStorageApi } from "../lib/api/FileStorageApi";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";

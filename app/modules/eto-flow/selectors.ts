@@ -1,6 +1,6 @@
 import * as Yup from "yup";
-import { EtoState } from "../../lib/api/EtoApi.interfaces";
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "./../../lib/api/EtoApi.interfaces";
+import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData } from "./../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {

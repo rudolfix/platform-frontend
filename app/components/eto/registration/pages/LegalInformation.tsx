@@ -7,7 +7,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import {
   EtoLegalInformationType,
   TPartialCompanyEtoData,
-} from "../../../../lib/api/EtoApi.interfaces";
+} from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";

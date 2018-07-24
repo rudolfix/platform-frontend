@@ -7,7 +7,7 @@ import {
   TEtoSpecsData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "../../lib/api/EtoApi.interfaces";
+} from "../../lib/api/eto/EtoApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";

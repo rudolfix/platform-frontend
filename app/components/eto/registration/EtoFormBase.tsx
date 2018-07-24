@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as Yup from "yup";
 
-import { IProgressOptions, selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import { getFormFractionDoneCalculator, IProgressOptions, ProgressCalculator } from "../../../modules/eto-flow/selectors";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
 
@@ -23,15 +23,18 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
     formik: PropTypes.object,
   };
 
+  calculate: ProgressCalculator
+
+  constructor (props: IFormPercentageDoneProps) {
+    super(props)
+    this.calculate = getFormFractionDoneCalculator(
+      props.validator, props.progressOptions
+    )
+  }
+
   render(): React.ReactNode {
     const { values } = this.context.formik as FormikProps<any>;
-
-    const calculatedFraction = selectFormFractionDone(
-      this.props.validator,
-      values,
-      this.props.progressOptions,
-    );
-
+    const calculatedFraction = this.calculate(values)
     return <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />;
   }
 }

@@ -292,6 +292,7 @@
   "kyc.request-state.accepted.title": "Verification Process request approved",
   "kyc.request-state.click-here-to-continue": "Click here to continue",
   "kyc.request-state.description": "Loading...",
+  "kyc.request-state.go-to-dashboard": "Back to Dashboard",
   "kyc.request-state.go-to-wallet": "Go to Wallet",
   "kyc.request-state.outsourced.description": "If you're not automatically forwarded to idNow, please click the link below to continue.",
   "kyc.request-state.outsourced.title": "Instant identification started",

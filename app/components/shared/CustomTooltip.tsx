@@ -5,30 +5,37 @@ import { Tooltip, TooltipProps } from 'reactstrap'
 import { CommonHtmlProps } from "../../types";
 
 import * as icon from "../../assets/img/inline_icons/icon_questionmark.svg";
-import * as styles from "./Tooltip.module.scss";
+import * as styles from "./CustomTooltip.module.scss";
 
 interface IProps {
-  targetNode: React.ReactNode
 }
 
-export class CustomTooltip extends React.Component<Partial<TooltipProps> & IProps> {
+export class CustomTooltip extends React.Component<TooltipProps & IProps> {
   state = {
     tooltipOpen: false
   }
 
   toggle = () => {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen
-    });
+    if (!this.props.isOpen) {
+      this.setState({
+        tooltipOpen: !this.state.tooltipOpen
+      });
+    }
   }
 
-  targetRef = React.createRef<HTMLSpanElement>()
+  componentDidMount (): void {
+    if (this.props.isOpen) {
+      this.setState({
+        tooltipOpen: true
+      });
+    }
+  }
 
   render (): React.ReactChild {
-    const { target, className, isOpen, toggle, children, targetNode, ...props } = this.props
+    const { target, className, isOpen, toggle, children, ...props } = this.props
     return (
       <>
-        <Tooltip target={this.targetRef.current as any} isOpen={isOpen || this.state.tooltipOpen} toggle={toggle || this.toggle} {...props}>
+        <Tooltip className={styles.tooltip} target={target} isOpen={this.state.tooltipOpen} toggle={toggle || this.toggle} {...props}>
           {children}
         </Tooltip>
       </>

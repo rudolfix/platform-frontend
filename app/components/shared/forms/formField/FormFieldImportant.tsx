@@ -5,6 +5,7 @@ import * as React from "react";
 import { Input, InputGroup, InputGroupAddon, Tooltip } from "reactstrap";
 
 import { CommonHtmlProps } from "../../../../types";
+import { CustomTooltip } from "../../CustomTooltip"
 import { isNonValid, isValid } from "./utils";
 
 import * as icon from "../../../../assets/img/notifications/warning.svg"
@@ -57,7 +58,12 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
               {...props as any}
             />
             <InputGroupAddon addonType="append" className={formStyles.addon}>
-              {!!errors[name] && undefined}
+              {!!errors[name] && (<>
+                <img id={name + "_error_notification"} src={icon}/>
+                <CustomTooltip target={name + "_error_notification"}>
+                  {errorMessage}
+                </CustomTooltip>
+              </>)}
             </InputGroupAddon>
           </InputGroup>
         )}

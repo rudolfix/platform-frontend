@@ -6,7 +6,7 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { FormField, FormSelectField, FormTextArea } from "../../../shared/forms/forms";
+import { FormField, FormSelectField, FormTextArea, NONE_KEY, BOOL_TRUE_KEY } from "../../../shared/forms/forms";
 
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -21,9 +21,8 @@ import { Toggle } from "../../../shared/Toggle";
 import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
-  "1": "Nominee",
-  "2": "Neumini UG",
-  "3": "Other",
+  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
+  [BOOL_TRUE_KEY]: "Nominee",
 };
 
 interface IStateProps {
@@ -272,7 +271,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
         </div>
       </FormSection>
 
-      <FormSection title={<FormattedMessage id="eto.form.section.token-holders-rights.title" />}>
+      <FormSection title={<FormattedMessage id="eto.form.section.token-holder-representative.title" />}>
         <FormSelectField
           values={TOKEN_HOLDERS_RIGHTS}
           label={

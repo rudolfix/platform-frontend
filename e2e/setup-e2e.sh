@@ -54,6 +54,7 @@ run_backend() {
     cd ./platform-backend
 
     make docker-pull tag=dev_latest
+    make prerequisites-dev
     make run-pure
 
     cd ..

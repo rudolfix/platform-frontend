@@ -13,13 +13,10 @@ export interface IProgressOptions {
   ignore: any;
 }
 
-export type ProgressCalculator = (formState: any, initialData?: any) => number
+export type ProgressCalculator = (formState: any, initialData?: any) => number;
 
 // recursivly clones a YUP Schema and makes number and string properties required
-function updateValidator (
-  objectSchema: any,
-  ignore: any,
-): any {
+function updateValidator(objectSchema: any, ignore: any): any {
   const type = objectSchema._type;
   if (ignore !== true) {
     switch (type) {
@@ -27,16 +24,13 @@ function updateValidator (
         for (const prop in objectSchema.fields) {
           // need to clone before change
           const schema = (objectSchema.fields[prop] = objectSchema.fields[prop].clone());
-          updateValidator(
-            schema,
-            ignore && ignore[prop],
-          );
+          updateValidator(schema, ignore && ignore[prop]);
         }
         break;
       case "array":
         // need to clone before change
         objectSchema._subType = objectSchema._subType.clone();
-        updateValidator(objectSchema._subType, ignore && ignore[0])
+        updateValidator(objectSchema._subType, ignore && ignore[0]);
         break;
       case "string":
       case "number":
@@ -46,40 +40,33 @@ function updateValidator (
 }
 
 // recursivly create initial data from current values
-function updateInitialData (
-  initialData: any,
-  currentValue: any,
-): any {
+function updateInitialData(initialData: any, currentValue: any): any {
   if (Array.isArray(currentValue)) {
     return currentValue.map((_, i) => updateInitialData({}, currentValue[i]));
-
-  } else if (typeof currentValue === 'object') {
+  } else if (typeof currentValue === "object") {
     for (const prop in currentValue) {
       if (currentValue.hasOwnProperty(prop)) {
-        initialData[prop] = updateInitialData(
-          {},
-          currentValue && currentValue[prop]
-        );
+        initialData[prop] = updateInitialData({}, currentValue && currentValue[prop]);
       }
     }
-    return initialData
+    return initialData;
   }
 }
 
-export function getInitialDataForFractionCalculation ( formState: any): any {
-  return updateInitialData({}, formState)
+export function getInitialDataForFractionCalculation(formState: any): any {
+  return updateInitialData({}, formState);
 }
 
-export function getFormFractionDoneCalculator (
+export function getFormFractionDoneCalculator(
   validator: Yup.Schema,
   opts?: IProgressOptions,
 ): ProgressCalculator {
   const strictValidator = validator.clone();
   const ignore = opts && opts.ignore;
-  updateValidator(strictValidator, ignore)
+  updateValidator(strictValidator, ignore);
 
   return (formState: any, initialData?: any) => {
-    if (typeof initialData === 'undefined') {
+    if (typeof initialData === "undefined") {
       initialData = updateInitialData({}, formState);
     }
 
@@ -89,7 +76,7 @@ export function getFormFractionDoneCalculator (
     const result = 1 - errors / maxErrors;
     if (result < 0) return 0;
     return result;
-  }
+  };
 }
 
 export const etoMediaProgressOptions: IProgressOptions = {

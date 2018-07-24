@@ -133,55 +133,43 @@ class ETOFormsProgressSectionWidget extends React.Component<IProps> {
 
 const getCompanyInformationProgress = getFormFractionDoneCalculator(
   EtoCompanyInformationType.toYup(),
-)
-const getEtoTermsProgress = getFormFractionDoneCalculator(
-  EtoTermsType.toYup()
-)
-const getEtoKeyIndividualsProgress = getFormFractionDoneCalculator(
-  EtoKeyIndividualsType.toYup()
-)
-const getLegalInformationProgress = getFormFractionDoneCalculator(
-  EtoLegalInformationType.toYup()
-)
-const getProductVisionProgress = getFormFractionDoneCalculator(
-  EtoProductVisionType.toYup(),
-)
+);
+const getEtoTermsProgress = getFormFractionDoneCalculator(EtoTermsType.toYup());
+const getEtoKeyIndividualsProgress = getFormFractionDoneCalculator(EtoKeyIndividualsType.toYup());
+const getLegalInformationProgress = getFormFractionDoneCalculator(EtoLegalInformationType.toYup());
+const getProductVisionProgress = getFormFractionDoneCalculator(EtoProductVisionType.toYup());
 const getEtoMediaProgress = getFormFractionDoneCalculator(
-  EtoMediaType.toYup(), etoMediaProgressOptions
-)
-const getEtoRiskProgress = getFormFractionDoneCalculator(
-  EtoRiskAssesmentType.toYup()
-)
+  EtoMediaType.toYup(),
+  etoMediaProgressOptions,
+);
+const getEtoRiskProgress = getFormFractionDoneCalculator(EtoRiskAssesmentType.toYup());
 
 export const ETOFormsProgressSection = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => {
-      const initialCompanyData = getInitialDataForFractionCalculation(s.etoFlow.companyData)
+      const initialCompanyData = getInitialDataForFractionCalculation(s.etoFlow.companyData);
       return {
         companyInformationProgress: getCompanyInformationProgress(
-          s.etoFlow.companyData, initialCompanyData
+          s.etoFlow.companyData,
+          initialCompanyData,
         ),
         etoTermsProgress: getEtoTermsProgress(s.etoFlow.etoData),
         etoKeyIndividualsProgress: getEtoKeyIndividualsProgress(
-          s.etoFlow.companyData, initialCompanyData
+          s.etoFlow.companyData,
+          initialCompanyData,
         ),
         legalInformationProgress: getLegalInformationProgress(
-          s.etoFlow.companyData, initialCompanyData
+          s.etoFlow.companyData,
+          initialCompanyData,
         ),
-        productVisionProgress: getProductVisionProgress(
-          s.etoFlow.companyData, initialCompanyData
-        ),
-        etoMediaProgress: getEtoMediaProgress(
-          s.etoFlow.companyData, initialCompanyData
-        ),
-        etoRiskProgress: getEtoRiskProgress(
-          s.etoFlow.companyData, initialCompanyData
-        ),
+        productVisionProgress: getProductVisionProgress(s.etoFlow.companyData, initialCompanyData),
+        etoMediaProgress: getEtoMediaProgress(s.etoFlow.companyData, initialCompanyData),
+        etoRiskProgress: getEtoRiskProgress(s.etoFlow.companyData, initialCompanyData),
         loadingData: s.etoFlow.loading,
         kycStatus: selectKycRequestStatus(s.kyc),
         isEmailVerified: selectIsUserEmailVerified(s.auth),
         businessRequestStateLoading: selectWidgetLoading(s.kyc),
-      }
+      };
     },
     dispatchToProps: dispatch => ({
       loadDataStart: () => dispatch(actions.etoFlow.loadDataStart()),

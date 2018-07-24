@@ -66,14 +66,14 @@ describe("eto-flow > selectors", () => {
       });
       const formState = { details: [{ name: "test" }, {}, {}] };
 
-      const calculate1 = getFormFractionDoneCalculator(validator)
-      const calculate2 = getFormFractionDoneCalculator(validator, { ignore: { age: true } })
+      const calculate1 = getFormFractionDoneCalculator(validator);
+      const calculate2 = getFormFractionDoneCalculator(validator, { ignore: { age: true } });
       const calculate3 = getFormFractionDoneCalculator(validator, {
         ignore: { details: true },
-      })
+      });
       const calculate4 = getFormFractionDoneCalculator(validator, {
         ignore: { details: [{ lastName: true }] },
-      })
+      });
       const fractionDone1 = calculate1(formState);
       const fractionDone2 = calculate2(formState);
       const fractionDone3 = calculate3(formState);
@@ -86,28 +86,25 @@ describe("eto-flow > selectors", () => {
     });
   });
 
-  describe('getInitialDataForFractionCalculation', () => {
-    it('generates empty object with the same form as the input data', () => {
+  describe("getInitialDataForFractionCalculation", () => {
+    it("generates empty object with the same form as the input data", () => {
       const data = getInitialDataForFractionCalculation({
         foo: 1234,
         bar: "asdff",
-        arr: [
-          {foo: 1234},
-          {bar: 1234}
-        ],
+        arr: [{ foo: 1234 }, { bar: 1234 }],
         obj: {
           foo: {
-            bar: false
-          }
-        }
-      })
+            bar: false,
+          },
+        },
+      });
 
       expect(data).to.deep.equal({
         foo: undefined,
         bar: undefined,
-        arr: [{foo: undefined}, {bar: undefined}],
-        obj: {foo: {bar: undefined}}
-      })
-    })
-  })
+        arr: [{ foo: undefined }, { bar: undefined }],
+        obj: { foo: { bar: undefined } },
+      });
+    });
+  });
 });

@@ -53,7 +53,7 @@ run_backend() {
     echo "Running backend"
     cd ./platform-backend
 
-    make docker-pull tag=${BACKEND_SHORT_SHA}
+    make docker-pull tag=dev_${BACKEND_SHORT_SHA}
     echo "Pulling images done."
 
     make prerequisites-dev

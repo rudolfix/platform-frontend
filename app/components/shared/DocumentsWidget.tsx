@@ -24,13 +24,13 @@ interface IProps {
 export const DocumentsWidget: React.SFC<IProps> = ({ groups, className }) => {
   return (
     <Panel className={className}>
-      {groups.map(({ name, documents }) => (
-        <>
+      {groups.map(({ name, documents }, i) => (
+        <div key={i}>
           <div className={styles.groupName}>{name}</div>
           <div className={styles.group}>
-            {documents.map(({ name, url }) => {
+            {documents.map(({ name, url }, i) => {
               return (
-                <div className={styles.document}>
+                <div className={styles.document} key={i}>
                   <a href={url} className={styles.documentLink}>
                     <Document extension={url} />
                     {name}
@@ -39,7 +39,7 @@ export const DocumentsWidget: React.SFC<IProps> = ({ groups, className }) => {
               );
             })}
           </div>
-        </>
+        </div>
       ))}
     </Panel>
   );

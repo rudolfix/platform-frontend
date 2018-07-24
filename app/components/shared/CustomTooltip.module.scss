@@ -1,0 +1,57 @@
+.tooltip-wrapper {
+  position: relative;
+}
+
+.tooltip {
+  @include media-breakpoint-down (md) {
+    display: none;
+  }
+
+  display: inline-block;
+  cursor: help;
+
+  &:hover {
+    + .tooltip-text {
+      transform: translate(-50%, -110%) scale(1);
+      opacity: 1;
+    }
+  }
+
+  :global(.inline-icon) {
+    height: px-to-rem(18px);
+    width: px-to-rem(18px);
+  }
+}
+
+.tooltip-text {
+  @include media-breakpoint-down (md) {
+    position: static;
+    opacity: 1;
+    background-color: transparent;
+    transform: none;
+    color: inherit;
+    padding: 0;
+    box-shadow: none;
+    margin-top: px-to-rem(8px);
+    padding-left: px-to-rem(8px);
+    font-size: px-to-rem(12px);
+    max-width: none;
+    width: 100%;
+  }
+
+  background-color: $neu-charcoal-grey;
+  color: $neu-white-two;
+  padding: px-to-rem(14px);
+  position: absolute;
+  top: 0;
+  left: px-to-rem(30px);
+  max-width: px-to-rem(340px);
+  box-shadow: $shadow;
+  opacity: 0;
+  transform: translate(-50%, -100%) scale(.8);
+  transition: 100ms ease-out;
+  transform-origin: center bottom;
+  will-change: transform opacity;
+  pointer-events: none;
+  width: 90vw;
+}

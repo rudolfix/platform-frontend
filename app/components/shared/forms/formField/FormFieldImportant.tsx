@@ -2,11 +2,12 @@ import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { Input, InputGroup, InputGroupAddon } from "reactstrap";
+import { Input, InputGroup, InputGroupAddon, Tooltip } from "reactstrap";
+
 import { CommonHtmlProps } from "../../../../types";
-import { Tooltip } from "../../Tooltip";
 import { isNonValid, isValid } from "./utils";
 
+import * as icon from "../../../../assets/img/notifications/warning.svg"
 import * as styles from "./FormFieldImportant.module.scss";
 import * as formStyles from "./FormStyles.module.scss";
 
@@ -34,7 +35,7 @@ type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 export class FormFieldImportant extends React.Component<FieldGroupProps> {
   static contextTypes = {
     formik: PropTypes.object,
-  };
+  }
 
   render(): React.ReactChild {
     const { type, placeholder, name, className, errorMessage, validate, ...props } = this.props;
@@ -56,7 +57,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
               {...props as any}
             />
             <InputGroupAddon addonType="append" className={formStyles.addon}>
-              {!!errors[name] && <Tooltip content={errorMessage} />}
+              {!!errors[name] && undefined}
             </InputGroupAddon>
           </InputGroup>
         )}

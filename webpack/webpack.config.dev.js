@@ -2,6 +2,7 @@ const merge = require("webpack-merge");
 const webpack = require("webpack");
 const path = require("path");
 
+const generateProxyConfig = require("./proxy-urls");
 const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
 
@@ -16,42 +17,13 @@ module.exports = merge(configCommon, {
     historyApiFallback: true,
     headers: {
       "Content-Security-Policy":
-        "default-src 'self'; script-src 'self' 'unsafe-eval'; " +
+        "default-src 'self'; script-src 'self' 'unsafe-eval' www.google-analytics.com/analytics.js; " +
         "style-src fonts.googleapis.com 'self' 'unsafe-inline'; " +
         "font-src 'self' fonts.gstatic.com; " +
-        "img-src 'self' data: documents.neufund.io documents.neufund.net;" +
+        "img-src 'self' data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net;" +
         "connect-src 'self' wss://localhost:9090", // needed for hot reload
     },
-    proxy: {
-      "/node": {
-        target: "http://localhost:8545",
-        pathRewrite: { "^/node": "" },
-      },
-      "/api/signature": {
-        target: "http://localhost:5000",
-        pathRewrite: { "^/api/signature": "" },
-      },
-      "/api/wallet": {
-        target: "http://localhost:5001",
-        pathRewrite: { "^/api/wallet": "" },
-      },
-      "/api/user": {
-        target: "http://localhost:5002",
-        pathRewrite: { "^/api/user": "" },
-      },
-      "/api/kyc": {
-        target: "http://localhost:5003",
-        pathRewrite: { "^/api/kyc": "" },
-      },
-      "/api/eto-listing": {
-        target: "http://localhost:5009",
-        pathRewrite: { "^/api/eto-listing": "" },
-      },
-      "/api/document-storage": {
-        target: "http://localhost:5015",
-        pathRewrite: { "^/api/document-storage": "" },
-      },
-    },
+    proxy: generateProxyConfig("http://localhost"),
   },
   entry: [
     "react-hot-loader/patch",

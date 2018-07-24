@@ -9,6 +9,7 @@ import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { sendEthModalReducer } from "./sendEthModal/reducer";
+import { settingsReducer } from "./settings/reducer";
 import { txSenderReducer } from "./tx/sender/reducer";
 import { browserReducer } from "./userAgent/reducer";
 import { verifyEmailWidgetReducer } from "./verifyEmailWidget/reducer";
@@ -31,6 +32,7 @@ export const appReducers = {
   genericModal: genericModalReducer,
   accessWallet: accessWalletReducer,
   kyc: kycReducer,
+  settings: settingsReducer,
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,
   money: moneyReducer,

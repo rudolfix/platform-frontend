@@ -73,11 +73,13 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
         to={appRoutes.dashboard}
         menuName={<FormattedMessage id="menu.dashboard" />}
       />
-      <MenuEntry
-        svgString={iconPortfolio}
-        to="#0"
-        menuName={<FormattedMessage id="menu.portfolio" />}
-      />
+      {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
+        <MenuEntry
+          svgString={iconPortfolio}
+          to={appRoutes.portfolio}
+          menuName={<FormattedMessage id="menu.portfolio" />}
+        />
+      )}
       <MenuEntry
         svgString={iconWallet}
         to={appRoutes.wallet}
@@ -120,7 +122,7 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
       />
       <MenuEntry
         svgString={iconHelp}
-        to="https://neufund.freshdesk.com/support/home"
+        to="https://support.neufund.org/support/home"
         menuName={<FormattedMessage id="menu.help" />}
         target="_blank"
       />

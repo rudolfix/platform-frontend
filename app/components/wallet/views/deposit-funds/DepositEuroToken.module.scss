@@ -42,7 +42,7 @@
 }
 
 .value {
-  @include font-headline-small;
+  @include font-headline-medium;
 
   color: $neu-black;
   font-weight: $neu-black;
@@ -74,7 +74,7 @@
 }
 
 .exchange-rate {
-  @include font-headline-small;
+  @include font-headline-medium;
 
   font-weight: $font-weight-bold;
   color: $neu-seaweed;

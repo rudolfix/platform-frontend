@@ -144,7 +144,7 @@
 
 .benefit {
   @include media-breakpoint-down (md) {
-    @include font-headline-small;
+    @include font-headline-medium;
 
     text-align: left;
     display: flex;
@@ -177,7 +177,7 @@
   }
 
   @include media-breakpoint-down (md) {
-    @include font-headline-small;
+    @include font-headline-medium;
   }
 }
 

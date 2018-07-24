@@ -70,9 +70,11 @@ export type Size = "narrow" | "wide";
 export type TTranslatedString = string | React.ReactElement<FormattedMessage>;
 
 export type TAcceptedFileType =
+  | string
   | "application/pdf"
   | "image/png"
   | "image/jpg"
   | "image/jpeg"
   | "image/svg+xml"
   | "image/*";
+// TODO: Correct TAcceptedFileType types it can contain more than one type

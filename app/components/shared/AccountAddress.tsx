@@ -12,6 +12,7 @@ import * as styles from "./AccountAddress.module.scss";
 
 export interface IAccountAddressProps {
   address: string;
+  "data-test-id"?: string;
 }
 
 export class AccountAddress extends React.Component<IAccountAddressProps & CommonHtmlProps> {
@@ -26,7 +27,7 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
   };
 
   render(): React.ReactNode {
-    const { address, className } = this.props;
+    const { address, className, "data-test-id": dataTestId } = this.props;
 
     return (
       <div className={cn(styles.accountAddress, className)}>
@@ -36,6 +37,7 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
 
         <div className={styles.addressWrapper}>
           <input
+            data-test-id={dataTestId}
             type="text"
             className={styles.address}
             ref={this.addressRef}

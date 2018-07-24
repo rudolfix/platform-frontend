@@ -8,7 +8,6 @@ import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
-import { NewsWidget } from "../../shared/NewsWidget";
 import { Panel } from "../../shared/Panel";
 import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
@@ -17,11 +16,6 @@ import { Video } from "../../shared/Video";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
 
-import * as facebookIcon from "../../../assets/img/inline_icons/social_facebook.svg";
-import * as linkedinIcon from "../../../assets/img/inline_icons/social_linkedin.svg";
-import * as mediumIcon from "../../../assets/img/inline_icons/social_medium.svg";
-import * as redditIcon from "../../../assets/img/inline_icons/social_reddit.svg";
-import * as telegramIcon from "../../../assets/img/inline_icons/social_telegram.svg";
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import * as styles from "./EtoPublicComponent.module.scss";
@@ -57,32 +51,6 @@ const swiperMultiRowSettings = {
     },
   },
 };
-
-const profilesData = [
-  {
-    name: "LinkedIn",
-    url: "linkedin.com",
-    svgIcon: linkedinIcon,
-  },
-  {
-    name: "Facebook",
-    url: "facebook.com",
-    svgIcon: facebookIcon,
-  },
-  {
-    name: "Medium",
-    svgIcon: mediumIcon,
-  },
-  {
-    name: "Reddit",
-    url: "reddit.com",
-    svgIcon: redditIcon,
-  },
-  {
-    name: "Telegram",
-    svgIcon: telegramIcon,
-  },
-];
 
 const documentsData = [
   {
@@ -129,21 +97,6 @@ const documentsData = [
   },
 ];
 
-const mediaLinksData = [
-  {
-    title: "sample link",
-    url: "url",
-  },
-  {
-    title: "sample link",
-    url: "url",
-  },
-  {
-    title: "sample link",
-    url: "url",
-  },
-];
-
 const day = 86400000;
 const etoStartDate = Date.now() - 20 * day;
 const bookBuildingEndDate = etoStartDate + 16 * day;
@@ -167,6 +120,18 @@ export const CURRENCIES: ICurrencies = {
 };
 
 export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+  const fullyDilutedPreMoneyValuationEur = etoData.fullyDilutedPreMoneyValuationEur || 1;
+  const existingCompanyShares = etoData.existingCompanyShares || 1;
+  const newSharesToIssue = etoData.newSharesToIssue || 1;
+  const equityTokensPerShare = etoData.equityTokensPerShare || 1;
+  const minimumNewSharesToIssue = etoData.minimumNewSharesToIssue || 1;
+
+  const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
+  const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
+  const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
+  const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
+  const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
+
   return (
     <div>
       <Cover
@@ -218,7 +183,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.eto-timeline" />
           </SectionHeader>
           <Panel>
@@ -236,8 +201,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       </Row>
 
       <Row>
-        <Col xs={12} md={8} className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+        <Col
+          xs={12}
+          md={
+            !etoData.disableTwitterFeed || (etoData.companyVideo && etoData.companyVideo.url.length)
+              ? 8
+              : 12
+          }
+          className="mb-4"
+        >
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.about" />
           </SectionHeader>
           <Panel className="mb-4">
@@ -246,12 +219,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <Link to={companyData.companyWebsite || ""} target="_blank">
                 {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
               </Link>
-              <SocialProfilesList profiles={profilesData} />
+              <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
           </Panel>
-          <SectionHeader hasDecorator={false} className="mb-4">
+
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.legal-information.title" />
           </SectionHeader>
+
           <Panel className={styles.legalInformation}>
             <Row>
               <Col>
@@ -358,16 +333,28 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        <Col xs={12} md={4} className="mb-4">
-          <Video youTubeId="aqz-KE-bpKQ" className="mb-4" />
-          <NewsWidget isEditable={false} news={[]} />
-          {/* TODO: Add news */}
-        </Col>
+        {(!etoData.disableTwitterFeed ||
+          (etoData.companyVideo && etoData.companyVideo.url.length)) && (
+          <Col xs={12} md={4} className="mb-4">
+            <Video
+              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
+              className="mb-4 mt-5"
+            />
+            {!etoData.disableTwitterFeed && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  Twitter
+                </SectionHeader>
+                <Panel>{/* TODO: ADD TWITTER */}</Panel>
+              </>
+            )}
+          </Col>
+        )}
       </Row>
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.token-terms.title" />
           </SectionHeader>
           <Panel className={styles.tokenTerms}>
@@ -376,12 +363,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.soft-cap" />
                 </span>
+                {computedMinCapEur || DEFAULT_PLACEHOLDER}
                 <span className={styles.value} />
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.hard-cap" />
                 </span>
+                {computedMaxCapEur || DEFAULT_PLACEHOLDER}
                 <span className={styles.value} />
               </div>
               <div className={styles.entry}>
@@ -389,14 +378,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap" />
                 </span>
                 <span className={styles.value}>
-                  {etoData.minimumNewSharesToIssue || DEFAULT_PLACEHOLDER}
+                  {computedMinNumberOfTokens || DEFAULT_PLACEHOLDER}
                 </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap" />
                 </span>
-                <span className={styles.value}>{}</span>
+                <span className={styles.value}>
+                  {computedMaxNumberOfTokens || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
@@ -426,7 +417,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.value}>
                   €{" "}
                   {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
-                    ? etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
+                    ? (
+                        etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
+                      ).toPrecision(4)
                     : DEFAULT_PLACEHOLDER}
                 </span>
               </div>
@@ -646,7 +639,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
       <Row>
         <Col sm={12} md={8} className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.product-vision.title" />
           </SectionHeader>
           <Panel>
@@ -688,7 +681,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <p>{companyData.salesModel || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
-                title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+                title={
+                  <FormattedMessage id="eto.form.product-vision.marketing-approach" /> ||
+                  DEFAULT_PLACEHOLDER
+                }
               >
                 <p>{companyData.marketingApproach}</p>
               </AccordionElement>
@@ -701,14 +697,21 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Panel>
         </Col>
         <Col sm={12} md={4}>
-          <SectionHeader hasDecorator={false} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-          <SectionHeader hasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.form.media-links.title" />
-          </SectionHeader>
-          <MediaLinksWidget links={mediaLinksData} />
+
+          {companyData.companyNews &&
+            companyData.companyNews.length && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <FormattedMessage id="eto.form.media-links.title" />
+                </SectionHeader>
+
+                <MediaLinksWidget links={companyData.companyNews || []} />
+              </>
+            )}
         </Col>
       </Row>
     </div>

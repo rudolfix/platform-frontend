@@ -57,7 +57,7 @@ export const KYCUploadComponent = injectIntlHelpers<IProps & IStateProps & IDisp
       backLink={kycRoutes.individualStart}
     >
       <MultiFileUpload
-        acceptedFiles="image/*"
+        acceptedFiles="image/*,application/pdf"
         uploadType="individual"
         onDropFile={props.onDropFile}
         files={props.files}

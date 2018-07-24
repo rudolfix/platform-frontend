@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 
-BACKEND_SHA=6c0e3b4586c897be4210657ca6161a97f5c9c502
+BACKEND_SHA=2dbaeb76f178d3dff983fb1ee897a7805b222b06
 
 # we tag images with shorter SHA
 BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}
@@ -53,7 +53,9 @@ run_backend() {
     echo "Running backend"
     cd ./platform-backend
 
-    make docker-pull tag=dev_latest
+    make docker-pull tag=${BACKEND_SHORT_SHA}
+    echo "Pulling images done."
+
     make prerequisites-dev
     make run-pure
 

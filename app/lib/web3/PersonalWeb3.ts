@@ -1,3 +1,5 @@
+import { TxData } from "web3";
+
 import { WalletSubType, WalletType } from "../../modules/web3/types";
 import { EthereumAddress, EthereumNetworkId } from "../../types";
 import { TWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
@@ -21,6 +23,8 @@ export interface IPersonalWallet {
 
   // sign message with the best available method for a given wallet
   signMessage(data: string): Promise<string>;
+
+  sendTransaction(txData: TxData): Promise<string>;
 
   getMetadata(): TWalletMetadata;
 }

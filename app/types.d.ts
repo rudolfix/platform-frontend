@@ -26,7 +26,7 @@ export type TDictionaryValues<T> = T extends Dictionary<infer U> ? U : never;
 export type primitive = string | number | boolean | undefined | null;
 export type DeepReadonly<T> = T extends primitive
   ? T
-  : T extends Array<infer U> ? ReadonlyArray<U> : DeepReadonlyObject<T>;
+  : T extends Array<infer U> ? ReadonlyArray<U> : T extends Function ? T : DeepReadonlyObject<T>;
 
 export type DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
 

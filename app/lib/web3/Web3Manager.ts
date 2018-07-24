@@ -93,6 +93,14 @@ export class Web3Manager {
     }
   }
 
+  public async sendTransaction(tx: Web3.TxData): Promise<string> {
+    if (this.personalWallet) {
+      return this.personalWallet.sendTransaction(tx);
+    } else {
+      throw new Error("No wallet!");
+    }
+  }
+
   private watchConnection = async () => {
     this.logger.verbose("Checking web3 status...");
     if (!this.personalWallet) {

@@ -1,3 +1,4 @@
+import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -12,18 +13,19 @@ import { Panel } from "../../shared/Panel";
 import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { SocialProfilesList } from "../../shared/SocialProfilesList";
+import { TabContent, Tabs } from "../../shared/Tabs";
 import { Video } from "../../shared/Video";
+import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
 
-import { TabContent, Tabs } from "../../shared/Tabs";
-import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
 const swiperSingleRowSettings = {
   slidesPerView: 5,
+  observer: true,
   spaceBetween: 100,
   breakpoints: {
     640: {
@@ -37,8 +39,8 @@ const swiperSingleRowSettings = {
 };
 
 const swiperMultiRowSettings = {
-  slidesPerView: 3,
-  slidesPerColumn: 2,
+  slidesPerView: 5,
+  observer: true,
   spaceBetween: 80,
   breakpoints: {
     640: {
@@ -132,6 +134,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
   const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
 
+  const { socialChannels, companyVideo, disableTwitterFeed } = companyData;
+
+  const isTwitterFeedEnabled =
+    some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
+    !disableTwitterFeed;
+  const isYouTubeVideoAvailable = companyVideo !== undefined ? companyVideo.url.length : false;
+
   return (
     <div>
       <Cover
@@ -155,9 +164,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <EtoOverviewStatus
         image={{
           srcSet: {
-            "1x": "",
+            "1x": etoData.equityTokenImage,
           },
-          alt: "",
+          alt: `${etoData.equityTokenSymbol} - ${etoData.equityTokenName}`,
         }}
         className="mb-4"
         prospectusApproved={true}
@@ -167,8 +176,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         companyValuation="10000000"
         declaredCap="100000"
         status="campaigning"
-        tokenName={companyData.equityTokenName}
-        tokenSymbol={companyData.equityTokenName}
+        tokenName={etoData.equityTokenName}
+        tokenSymbol={etoData.equityTokenSymbol}
         campaigningWidget={{
           amountBacked: "20",
           investorsBacked: 2,
@@ -201,15 +210,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       </Row>
 
       <Row>
-        <Col
-          xs={12}
-          md={
-            !etoData.disableTwitterFeed || (etoData.companyVideo && etoData.companyVideo.url.length)
-              ? 8
-              : 12
-          }
-          className="mb-4"
-        >
+        <Col xs={12} md={isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12} className="mb-4">
           <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.about" />
           </SectionHeader>
@@ -333,14 +334,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        {(!etoData.disableTwitterFeed ||
-          (etoData.companyVideo && etoData.companyVideo.url.length)) && (
+        {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
           <Col xs={12} md={4} className="mb-4">
             <Video
               youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
               className="mb-4 mt-5"
             />
-            {!etoData.disableTwitterFeed && (
+            {isTwitterFeedEnabled && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   Twitter
@@ -363,15 +363,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.soft-cap" />
                 </span>
-                {computedMinCapEur || DEFAULT_PLACEHOLDER}
-                <span className={styles.value} />
+                <span className={styles.value}>{computedMinCapEur || DEFAULT_PLACEHOLDER}</span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.hard-cap" />
                 </span>
-                {computedMaxCapEur || DEFAULT_PLACEHOLDER}
-                <span className={styles.value} />
+                <span className={styles.value}>{computedMaxCapEur || DEFAULT_PLACEHOLDER}</span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
@@ -437,14 +435,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.minimum-ticket-size" />
                 </span>
-                <span className={styles.value}>{etoData.minTicketEu || DEFAULT_PLACEHOLDER}</span>
+                <span className={styles.value}>
+                  € {etoData.minTicketEur || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.maximum-ticket-size" />
                 </span>
                 <span className={styles.value}>
-                  <FormattedMessage id="eto.public-view.token-terms.unlimited" />
+                  € {etoData.maxTicketEur || DEFAULT_PLACEHOLDER}
                 </span>
               </div>
             </div>

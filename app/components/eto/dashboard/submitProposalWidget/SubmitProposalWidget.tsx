@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 
-import { actions } from '../../../../modules/actions';
+import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { ButtonArrowRight } from "../../../shared/Buttons";

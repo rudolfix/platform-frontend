@@ -1,11 +1,9 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { appRoutes } from "../../appRoutes";
-import { DashboardLinkWidget } from '../../shared/DashboardLinkWidget/DashboardLinkWidget';
-
+import { DashboardLinkWidget } from "../../shared/DashboardLinkWidget/DashboardLinkWidget";
 
 export const UploadPamphletWidget = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
   return (

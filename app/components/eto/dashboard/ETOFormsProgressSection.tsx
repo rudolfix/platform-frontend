@@ -17,7 +17,7 @@ import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/ky
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
 
-interface IProps {
+export interface IEtoFormsProgressSectionProps {
   loadingData: boolean;
   businessRequestStateLoading: boolean;
   kycStatus?: TRequestStatus;
@@ -26,7 +26,7 @@ interface IProps {
   etoData: TPartialEtoSpecData;
 }
 
-export const ETOFormsProgressSection: React.SFC<IProps> = ({
+export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> = ({
   loadingData,
   kycStatus,
   isEmailVerified,
@@ -61,7 +61,15 @@ export const ETOFormsProgressSection: React.SFC<IProps> = ({
           isLoading={loadingData}
           to={etoRegisterRoutes.companyInformation}
           progress={shouldEtoDataLoad ? companyInformationProgress : 0}
-          name="Company Information"
+          name="Company Info"
+        />
+      </Col>
+      <Col lg={4} xs={12} md={6} className="mb-4">
+        <EtoFormProgressWidget
+          isLoading={loadingData}
+          to={etoRegisterRoutes.legalInformation}
+          progress={shouldEtoDataLoad ? legalInformationProgress : 0}
+          name="Legal Info"
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -78,14 +86,6 @@ export const ETOFormsProgressSection: React.SFC<IProps> = ({
           to={etoRegisterRoutes.keyIndividuals}
           progress={shouldEtoDataLoad ? etoKeyIndividualsProgress : 0}
           name="Key Individuals"
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.legalInformation}
-          progress={shouldEtoDataLoad ? legalInformationProgress : 0}
-          name="Legal Information"
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">

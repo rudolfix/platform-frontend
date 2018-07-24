@@ -16,28 +16,35 @@ import {
   selectIsUserEmailVerified,
   selectVerifiedUserEmail,
 } from "../../modules/auth/selectors";
+import { etoFlowInitialState } from "../../modules/eto-flow/reducer";
 import {
   selectCombinedEtoCompanyData,
   selectCompanyData,
   selectEtoData,
   selectEtoState,
-  selectFormFractionDone,
+  selectRequiredFormFractionDone,
 } from "../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { BookBuildingWidget } from "../settings/bookBuildingWidget/BookBuildingWidget";
-import { ChoosePreEtoDateWidget } from "../settings/choosePreEtoDateWidget/ChoosePreEtoDateWidget";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
-import { SubmitProposalWidget } from "../settings/submitProposalWidget/SubmitProposalWidget";
-import { UploadProspectusWidget } from "../settings/uploadProspectusWidget/UploadProspectusWidget";
 import { EtoProjectState } from "../shared/EtoProjectStatus";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
-import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
+import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
+import { ChoosePreEtoDateWidget } from "./dashboard/choosePreEtoDateWidget/ChoosePreEtoDateWidget";
+import {
+  ETOFormsProgressSection,
+  IEtoFormsProgressSectionProps,
+} from "./dashboard/ETOFormsProgressSection";
+import { SubmitProposalWidget } from "./dashboard/submitProposalWidget/SubmitProposalWidget";
+import { UploadPamphletWidget } from "./dashboard/UploadPamphletWidget";
+import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
+import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
 
 const SUBMIT_PROPOSAL_THRESHOLD = 0.5;
+// TODO: CHANGE TO 100% !!!
 
 interface IStateProps {
   isLightWallet: boolean;
@@ -59,6 +66,22 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
+
+const SubmitDashBoardSection: React.SFC = () => (
+  <>
+    <DashboardSection step={3} title="SUBMIT PROPOSAL" data-test-id="eto-dashboard-verification" />
+    <Col lg={4} xs={12}>
+      <SubmitProposalWidget />
+    </Col>
+  </>
+);
+
+const EtoProgressDashboardSection: React.SFC<IEtoFormsProgressSectionProps> = props => (
+  <>
+    <DashboardSection step={2} title="ETO APPLICATION" />
+    <ETOFormsProgressSection {...props} />
+  </>
+);
 
 class EtoDashboardComponent extends React.Component<IProps> {
   componentDidMount(): void {
@@ -117,24 +140,11 @@ class EtoDashboardComponent extends React.Component<IProps> {
                   <SettingsWidgets isDynamic={true} {...this.props} />
                 </>
               )}
-              {etoState === "preview" &&
-                etoFormProgress &&
-                etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD && (
-                  <>
-                    <DashboardSection
-                      step={3}
-                      title="SUBMIT PROPOSAL"
-                      data-test-id="eto-dashboard-verification"
-                    />
-                    <Col lg={4} xs={12}>
-                      <SubmitProposalWidget />
-                    </Col>
-                  </>
-                )}
               {etoState === "preview" && (
                 <>
-                  <DashboardSection step={2} title="ETO APPLICATION" />
-                  <ETOFormsProgressSection {...etoProgressProps} />
+                  {etoFormProgress &&
+                    etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD && <SubmitDashBoardSection />}
+                  <EtoProgressDashboardSection {...etoProgressProps} />
                 </>
               )}
               {(etoState === "pending" || etoState === "listed") && (
@@ -157,6 +167,12 @@ class EtoDashboardComponent extends React.Component<IProps> {
                       <Col lg={4} xs={12}>
                         <ChoosePreEtoDateWidget />
                       </Col>
+                      <Col lg={4} xs={12}>
+                        <UploadPamphletWidget />
+                      </Col>
+                      <Col lg={4} xs={12}>
+                        <UploadTermSheetWidget />
+                      </Col>
                     </>
                   )}
                   <Col xs={12}>
@@ -174,11 +190,12 @@ class EtoDashboardComponent extends React.Component<IProps> {
 }
 
 export const EtoDashboard = compose<React.SFC>(
-  appConnect<any, IDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      etoFormProgress: selectFormFractionDone(
+      etoFormProgress: selectRequiredFormFractionDone(
         TGeneralEtoDataType.toYup(),
         selectCombinedEtoCompanyData(s.etoFlow),
+        etoFlowInitialState,
       ),
       companyData: selectCompanyData(s.etoFlow),
       etoData: selectEtoData(s.etoFlow),

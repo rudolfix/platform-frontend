@@ -85,6 +85,6 @@ export const ButtonClose: React.SFC<IGeneralButton> = props => (
   <ButtonIcon {...props} svgIcon={closeIcon} />
 );
 
-export const ButtonArrowRight: React.SFC<any> = props => (
+export const ButtonArrowRight: React.SFC<IGeneralButton> = props => (
   <Button layout="secondary" {...props} iconPosition="icon-after" svgIcon={arrowRight} />
 );

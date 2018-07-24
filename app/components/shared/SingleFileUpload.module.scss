@@ -9,17 +9,15 @@ $component-height: px-to-rem(120px);
   height: $component-height;
   align-items: center;
 
-  &:global {
-    &.reject {
-      :local(.fake-dropzone-area) {
-        color: $neu-red;
-      }
+  &:global(.reject) {
+    .fake-dropzone-area {
+      color: $neu-red;
     }
+  }
 
-    &.disabled {
-      :local(.fake-dropzone-area) {
-        opacity: .6;
-      }
+  &:global(.disabled) {
+    .fake-dropzone-area {
+      opacity: .6;
     }
   }
 

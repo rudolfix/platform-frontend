@@ -29,5 +29,8 @@ storiesOf("Money", module)
     <>
       <p>t-green</p>
       <Money currency="eur" value={value} theme="t-green" />
+      <br />
+      <p>t-orange</p>
+      <Money currency="eth" value="20000000000000000" theme="t-orange" />
     </>
   ));

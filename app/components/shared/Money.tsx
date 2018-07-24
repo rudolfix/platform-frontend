@@ -8,7 +8,7 @@ export type TCurrency = "neu" | "eur" | "eur_token" | "eth";
 
 export type TMoneyTransfer = "income" | "outcome";
 
-type TTheme = "t-green";
+type TTheme = "t-green" | "t-orange";
 
 interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currency: TCurrency;

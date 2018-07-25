@@ -13,8 +13,8 @@ import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { AccessWalletModal } from "./modals/AccessWalletModal";
 import { GenericModal } from "./modals/GenericModal";
+import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 
 interface IStateProps {

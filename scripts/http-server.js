@@ -5,6 +5,9 @@ const proxy = require("http-proxy-middleware");
 const fallback = require("express-history-api-fallback");
 const fs = require("fs");
 
+const webpackDevConfig = require("../webpack/webpack.config.dev-remote");
+const routesConfig = webpackDevConfig.devServer.proxy;
+
 const sslOptions = {
   key: fs.readFileSync("key.pem"),
   cert: fs.readFileSync("cert.pem"),
@@ -14,47 +17,12 @@ const PORT = 9090;
 
 const app = express();
 
-app.use(
-  "/node",
-  proxy({ target: "http://localhost:8545", pathRewrite: { "^/node": "" }, changeOrigin: true }),
-);
+Object.keys(routesConfig).forEach(path => {
+  const config = routesConfig[path];
 
-app.use(
-  "/api/signature",
-  proxy({
-    target: "http://localhost:5000/",
-    pathRewrite: { "^/api/signature": "" },
-    changeOrigin: true,
-  }),
-);
-
-app.use(
-  "/api/wallet",
-  proxy({
-    target: "http://localhost:5001/",
-    pathRewrite: { "^/api/wallet": "" },
-    changeOrigin: true,
-  }),
-);
-
-app.use(
-  "/api/user",
-  proxy({ target: "http://localhost:5002", pathRewrite: { "^/api/user": "" }, changeOrigin: true }),
-);
-
-app.use(
-  "/api/kyc",
-  proxy({ target: "http://localhost:5003/", pathRewrite: { "^/api/kyc": "" }, changeOrigin: true }),
-);
-
-app.use(
-  "/api/external-services-mock",
-  proxy({
-    target: "http://localhost:1337/",
-    pathRewrite: { "^/api/external-services-mock": "" },
-    changeOrigin: true,
-  }),
-);
+  // webpack-dev-server uses under the hood http-proxy-middleware, so we can just pass config object without any changes
+  app.use(path, proxy(config));
+});
 
 // match only main route
 app.use("/", express.static(join(__dirname, "../dist"), { extensions: ["html"] }));

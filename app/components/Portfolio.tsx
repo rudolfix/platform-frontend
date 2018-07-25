@@ -54,10 +54,8 @@ export const Portfolio: React.SFC = () => (
           ]}
         >
           <NewTableRow>
-            <>
-              <img src={neuIcon} alt="neu token" className={cn("mr-2", styles.tokenSmall)} />
-              <FormattedMessage id="portfolio.section.reserved-assets.table.header.neu-reward" />
-            </>
+            <img src={neuIcon} alt="neu token" className={cn("mr-2", styles.tokenSmall)} />
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.neu-reward" />
             <span>balance</span>
             <span>value</span>
             {""}

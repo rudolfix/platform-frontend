@@ -42,6 +42,7 @@ $component-height: px-to-rem(120px);
   flex-shrink: 0;
 
   img {
+    max-height: 90%;
     max-width: 90%;
   }
 }

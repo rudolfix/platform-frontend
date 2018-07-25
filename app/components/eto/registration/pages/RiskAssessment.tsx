@@ -35,7 +35,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
       <Section>
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-Assessment.liquidity-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.liquidity-description" />}
           placeholder="Describe"
           name="riskLiquidityDescription"
         />
@@ -43,13 +43,13 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <div className="form-group">
           <FormCheckbox
             name="riskNoThirdPartyDependency"
-            label={<FormattedMessage id="eto.form.risk-Assessment.no-third-parties" />}
+            label={<FormattedMessage id="eto.form.risk-assessment.no-third-parties" />}
           />
         </div>
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-Assessment.third-parties-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.third-parties-description" />}
           placeholder="Describe"
           name="riskThirdPartyDescription"
         />
@@ -57,7 +57,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <FormTextArea
           className="my-2"
           label={
-            <FormattedMessage id="eto.form.risk-Assessment.third-party-financing-description" />
+            <FormattedMessage id="eto.form.risk-assessment.third-party-financing-description" />
           }
           placeholder="Describe"
           name="riskThirdPartySharesFinancing"
@@ -65,14 +65,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-Assessment.changing-agreement-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.changing-agreement-description" />}
           placeholder="Describe"
           name="riskChangingAgreementDescription"
         />
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-Assessment.max-risk-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.max-risk-description" />}
           placeholder="Describe"
           name="riskMaxDescription"
         />
@@ -80,14 +80,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <div className="form-group">
           <FormCheckbox
             name="riskNotRegulatedBusiness"
-            label={<FormattedMessage id="eto.form.risk-Assessment.no-regulation" />}
+            label={<FormattedMessage id="eto.form.risk-assessment.no-regulation" />}
           />
         </div>
 
         <div className="form-group">
           <FormCheckbox
             name="riskNoLoansExist"
-            label={<FormattedMessage id="eto.form.risk-Assessment.no-loans" />}
+            label={<FormattedMessage id="eto.form.risk-assessment.no-loans" />}
           />
         </div>
       </Section>

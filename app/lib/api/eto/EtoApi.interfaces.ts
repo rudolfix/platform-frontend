@@ -133,7 +133,7 @@ export const EtoLegalInformationType = YupTS.object({
   lastFundingSizeEur: YupTS.number().optional(),
   companyShares: YupTS.number(),
 });
-type TEtoLegalData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
+type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
 
 export const EtoMediaType = YupTS.object({
   companyVideo: YupTS.string().optional(),

@@ -51,12 +51,12 @@ interface IKeyIndividualsGroup {
   title: TTranslatedString;
 }
 
-const blankMember = {
+const getBlankMember = () => ({
   name: "",
   role: "",
   description: "",
   image: "",
-};
+});
 
 const Individual: React.SFC<IIndividual> = props => {
   const { onAddClick, onRemoveClick, isLast, isFirst, index, groupFieldName } = props;
@@ -114,30 +114,27 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
     const { name } = this.props;
 
     if (!values[name]) {
-      setFieldValue(`${name}.members.0`, blankMember);
+      setFieldValue(`${name}.members.0`, getBlankMember());
     }
   }
 
   render(): React.ReactNode {
     const { title, name } = this.props;
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const individuals = values[name] && values[name].members ? values[name].members : [blankMember];
+    const { values } = this.context.formik as FormikProps<any>;
+    const individuals =
+      values[name] && values[name].members ? values[name].members : [getBlankMember()];
 
     return (
       <FormSection title={title}>
         <FieldArray
-          name={name}
+          name={`${name}.members`}
           render={arrayHelpers =>
             individuals.map((_: {}, index: number) => {
               return (
                 <Individual
                   key={index}
-                  onRemoveClick={() => {
-                    arrayHelpers.remove(index); // TODO this does not work right...
-                  }}
-                  onAddClick={() => {
-                    setFieldValue(`${name}.members.${index + 1}`, blankMember);
-                  }}
+                  onRemoveClick={() => arrayHelpers.remove(index)}
+                  onAddClick={() => arrayHelpers.push(getBlankMember())}
                   index={index}
                   isFirst={!index}
                   isLast={index === individuals.length - 1}

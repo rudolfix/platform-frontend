@@ -141,6 +141,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
       etoData,
     };
 
+    const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
     const isVerificationSectionDone = !!(
       verifiedEmail &&
       (backupCodesVerified || !isLightWallet) &&
@@ -149,7 +150,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
     return (
       <LayoutAuthorized>
         <Row className="row-gutter-top" data-test-id="eto-dashboard-application">
-          {loadingData || !etoState ? (
+          {loadingData || (shouldEtoDataLoad && !etoState) ? (
             <LoadingIndicator />
           ) : (
             <>

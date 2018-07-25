@@ -1,7 +1,6 @@
 import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";

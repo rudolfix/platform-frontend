@@ -1,6 +1,6 @@
+import { FieldArray, FormikProps, withFormik } from "formik";
 import { includes } from "lodash";
 import * as PropTypes from "prop-types";
-import { FormikProps, withFormik, FieldArray } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -8,7 +8,7 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { FormField, FormSelectField, FormTextArea, NONE_KEY, BOOL_TRUE_KEY } from "../../../shared/forms/forms";
+import { BOOL_TRUE_KEY, FormField, FormSelectField, FormTextArea, NONE_KEY } from "../../../shared/forms/forms";
 
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -20,8 +20,8 @@ import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingle
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { Toggle } from "../../../shared/Toggle";
-import { EtoFormBase } from "../EtoFormBase";
 import { CURRENCIES } from "../../EtoPublicView";
+import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,

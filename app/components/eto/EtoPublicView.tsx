@@ -7,8 +7,6 @@ import { onEnterAction } from "../../utils/OnEnterAction";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 
-import { FormattedMessage } from "react-intl";
-import { Button } from "../shared/Buttons";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IProps {

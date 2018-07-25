@@ -17,7 +17,14 @@ interface IProps {
   layout?: TSlidePersonLayout;
 }
 
-export const SlidePerson: React.SFC<IProps> = ({ srcSet, name, role, description, layout, socialChannels }) => {
+export const SlidePerson: React.SFC<IProps> = ({
+  srcSet,
+  name,
+  role,
+  description,
+  layout,
+  socialChannels,
+}) => {
   return (
     <div className={cn(styles.slidePerson, layout)}>
       <div className={styles.image}>

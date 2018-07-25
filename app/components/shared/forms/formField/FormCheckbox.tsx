@@ -9,7 +9,7 @@ interface IProps {
   name: string;
   value?: any;
   checked?: boolean;
-  onChange?: () => void,
+  onChange?: () => void;
   "data-test-id"?: string;
 }
 

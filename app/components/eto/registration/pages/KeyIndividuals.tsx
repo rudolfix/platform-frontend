@@ -60,9 +60,6 @@ const blankMember = {
   image: "",
 };
 
-
-
-
 const Individual: React.SFC<IIndividual> = props => {
   const { onAddClick, onRemoveClick, isLast, isFirst, index, groupFieldName } = props;
 
@@ -116,9 +113,6 @@ const Individual: React.SFC<IIndividual> = props => {
   );
 };
 
-
-
-
 class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   static contextTypes = {
     formik: PropTypes.object,
@@ -166,10 +160,6 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
     );
   }
 }
-
-
-
-
 
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
@@ -219,9 +209,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
     </EtoFormBase>
   );
 };
-
-
-
 
 const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   validationSchema: EtoKeyIndividualsType.toYup(),

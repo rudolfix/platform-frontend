@@ -44,7 +44,11 @@ export const SOCIAL_PROFILES: {
   twitter,
 };
 
-export const SocialProfilesList: React.SFC<IProps> = ({ profiles, layoutIconSize, layoutIconsPosition }) => {
+export const SocialProfilesList: React.SFC<IProps> = ({
+  profiles,
+  layoutIconSize,
+  layoutIconsPosition,
+}) => {
   return (
     <div className={cn(styles.socialProfilesList, layoutIconSize, layoutIconsPosition)}>
       {profiles.map(

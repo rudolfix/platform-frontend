@@ -1,5 +1,4 @@
 import { FieldArray, FormikProps, withFormik } from "formik";
-import { includes } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,7 +7,13 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { BOOL_TRUE_KEY, FormField, FormSelectField, FormTextArea, NONE_KEY } from "../../../shared/forms/forms";
+import {
+  BOOL_TRUE_KEY,
+  FormField,
+  FormSelectField,
+  FormTextArea,
+  NONE_KEY,
+} from "../../../shared/forms/forms";
 
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -45,17 +50,16 @@ const currencies = ["eth", "eur_t"];
 class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
   static contextTypes = {
     formik: PropTypes.object,
-  }
-  
-  render (): React.ReactNode {
-    const { setFieldValue } = this.context.formik as FormikProps<any>;
+  };
+
+  render(): React.ReactNode {
     const { stateValues } = this.props;
     const fullyDilutedPreMoneyValuationEur = stateValues.fullyDilutedPreMoneyValuationEur || 1;
     const existingCompanyShares = stateValues.existingCompanyShares || 1;
     const newSharesToIssue = stateValues.newSharesToIssue || 1;
     const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
     const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 1;
-  
+
     const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
     const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
     const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
@@ -87,7 +91,9 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
             </FormLabel>
             <FormSingleFileUpload
-              label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+              label={
+                <FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />
+              }
               name="equityTokenImage"
               acceptedFiles="image/png"
               fileFormatInformation="*200 x 150px png"
@@ -102,7 +108,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             disabled
           />
         </FormSection>
-  
+
         <FormSection title={<FormattedMessage id="eto.form.section.investment-terms.title" />}>
           <FormField
             label={
@@ -135,7 +141,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             name="newSharesToIssue"
             type="number"
           />
-  
+
           <FormHighlightGroup>
             <FormField
               label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
@@ -190,7 +196,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               </Col>
             </Row>
           </FormHighlightGroup>
-  
+
           <FormTextArea
             name="discountScheme"
             label={
@@ -206,28 +212,29 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             type="number"
           />
         </FormSection>
-  
+
         <FormSection title={<FormattedMessage id="eto.form.section.eto-terms.title" />}>
           <FormLabel>
             <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
           </FormLabel>
           <div className="form-group">
-          <FieldArray
-            name="currencies"
-            render={arrayHelpers => (
-              currencies.map((currency, i) => {
-
-                return (<FormCheckbox
-                  key={currency}
-                  label={CURRENCIES[currency]}
-                  name={`currencies.${i}`}
-                  onChange={() => {
-                    // setFieldValue(`currencies.${i}`, currency)
-                  }}
-                />)
-            })
-            )}
-          />
+            <FieldArray
+              name="currencies"
+              render={() =>
+                currencies.map((currency, i) => {
+                  return (
+                    <FormCheckbox
+                      key={currency}
+                      label={CURRENCIES[currency]}
+                      name={`currencies.${i}`}
+                      onChange={() => {
+                        // setFieldValue(`currencies.${i}`, currency)
+                      }}
+                    />
+                  );
+                })
+              }
+            />
           </div>
           <div className="form-group">
             <FormLabel>
@@ -295,8 +302,10 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             />
           </div>
         </FormSection>
-  
-        <FormSection title={<FormattedMessage id="eto.form.section.token-holder-representative.title" />}>
+
+        <FormSection
+          title={<FormattedMessage id="eto.form.section.token-holder-representative.title" />}
+        >
           <FormSelectField
             values={TOKEN_HOLDERS_RIGHTS}
             label={

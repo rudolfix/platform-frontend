@@ -8,7 +8,6 @@ import { CommonHtmlProps } from "../../types";
 import { FormField } from "./forms/formField/FormField";
 import { InlineIcon } from "./InlineIcon";
 
-import * as styles from "./SocialProfilesEditor.module.scss";
 import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
 import * as githubIcon from "../../assets/img/inline_icons/social_github.svg";
 import * as googleIcon from "../../assets/img/inline_icons/social_google_plus.svg";
@@ -19,6 +18,7 @@ import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
 import * as slackIcon from "../../assets/img/inline_icons/social_slack.svg";
 import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
 import * as socialTwitter from "../../assets/img/inline_icons/social_twitter.svg";
+import * as styles from "./SocialProfilesEditor.module.scss";
 
 export const SOCIAL_PROFILES_ICONS = [
   {
@@ -89,7 +89,7 @@ export const SOCIAL_PROFILES_PERSON = [
     placeholder: "linkedin",
     svgIcon: linkedinIcon,
   },
-]
+];
 
 const SocialMediaTags: React.SFC<{
   profiles: ISocialProfile[];

@@ -216,12 +216,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
             <div className="d-flex justify-content-between">
-              {
-                companyData.companyWebsite &&
+              {companyData.companyWebsite && (
                 <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
                   {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
                 </a>
-              }
+              )}
               <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
           </Panel>

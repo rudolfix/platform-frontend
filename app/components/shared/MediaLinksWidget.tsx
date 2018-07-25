@@ -15,7 +15,13 @@ interface IProps {
   links: ILink[];
 }
 
-export const normalizedUrl = (url: string) => url.trim().toLowerCase().startsWith('http') ? url : `http://${url}`;
+export const normalizedUrl = (url: string) =>
+  url
+    .trim()
+    .toLowerCase()
+    .startsWith("http")
+    ? url
+    : `http://${url}`;
 
 export const MediaLinksWidget: React.SFC<IProps> = ({ links }) => {
   if (!links.length) {
@@ -24,15 +30,18 @@ export const MediaLinksWidget: React.SFC<IProps> = ({ links }) => {
 
   return (
     <Panel>
-      {links.map(
-        ({ title, url }, i) => {
-          return (url && title && (
+      {links.map(({ title, url }, i) => {
+        return (
+          url &&
+          title && (
             <div className={styles.link} key={i}>
-              <a href={normalizedUrl(url)} target="_blank">{title}</a>
+              <a href={normalizedUrl(url)} target="_blank">
+                {title}
+              </a>
             </div>
-          ))
-        }
-      )}
+          )
+        );
+      })}
     </Panel>
   );
 };

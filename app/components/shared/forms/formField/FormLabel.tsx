@@ -1,4 +1,4 @@
-import * as cn from "classnames"
+import * as cn from "classnames";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../../../types";

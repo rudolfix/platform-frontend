@@ -2,7 +2,7 @@ import { Field, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import * as styles from "./Toggle.module.scss";
+import * as styles from "./FormToggle.module.scss";
 
 interface IProps {
   disabledLabel: string | React.ReactNode;

@@ -4,18 +4,20 @@ import * as React from "react";
 /**
  * Use only for testing / in storyboard.
  */
-export const formWrapper = (formState: any, onSubmit: (values: any) => any = () => {}) => (
+export const formWrapper = (formState: any, onSubmit?: (values: any) => any) => (
   Component: React.SFC,
 ) => () => (
-  <Formik initialValues={formState} onSubmit={onSubmit}>
+  <Formik initialValues={formState} onSubmit={onSubmit || (() => {})}>
     {({ submitForm }) => {
       return (
         <Form>
           <Component />
 
-          <button data-test-id="test-form-submit" onClick={submitForm}>
-            Submit
-          </button>
+          {onSubmit && (
+            <button data-test-id="test-form-submit" onClick={submitForm}>
+              Submit
+            </button>
+          )}
         </Form>
       );
     }}

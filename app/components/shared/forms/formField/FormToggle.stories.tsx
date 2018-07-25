@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { formWrapper } from "./forms/formField/form-utils";
-import { FormToggle } from "./Toggle";
+import { formWrapper } from "./form-utils";
+import { FormToggle } from "./FormToggle";
 
-storiesOf("Toggle", module)
+storiesOf("FormToggle", module)
   .add(
     "on",
     formWrapper({ toggle: true })(() => (

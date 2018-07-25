@@ -3,10 +3,10 @@ import { mount } from "enzyme";
 import * as React from "react";
 
 import { spy } from "sinon";
-import { clickFirstTid } from "../../../test/integrationTestUtils";
-import { tid } from "../../../test/testUtils";
-import { formWrapper } from "./forms/formField/form-utils";
-import { FormToggle } from "./Toggle";
+import { clickFirstTid } from "../../../../../../test/integrationTestUtils";
+import { tid } from "../../../../../../test/testUtils";
+import { formWrapper } from "../../../forms/formField/form-utils";
+import { FormToggle } from "../FormToggle";
 
 describe("Toggle", () => {
   const TRUE_VALUE = "TRUE VALUE";

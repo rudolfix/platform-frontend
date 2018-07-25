@@ -15,9 +15,9 @@ import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/F
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
+import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
-import { FormToggle } from "../../../shared/Toggle";
 import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {

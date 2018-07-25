@@ -1,18 +1,37 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Toggle } from "./Toggle";
+import { formWrapper } from "./forms/formField/form-utils";
+import { FormToggle } from "./Toggle";
 
 storiesOf("Toggle", module)
-  .add("on", () => (
-    <Toggle enabledLabel="on" disabledLabel="off" checked={true} onClick={() => {}} />
-  ))
-  .add("off", () => (
-    <Toggle enabledLabel="on" disabledLabel="off" checked={false} onClick={() => {}} />
-  ))
-  .add("disabled on", () => (
-    <Toggle enabledLabel="on" disabledLabel="off" checked={true} onClick={() => {}} disabled />
-  ))
-  .add("disabled off", () => (
-    <Toggle enabledLabel="on" disabledLabel="off" checked={false} onClick={() => {}} disabled />
-  ));
+  .add(
+    "on",
+    formWrapper({ toggle: true })(() => (
+      <FormToggle
+        name="toggle"
+        enabledLabel="on"
+        disabledLabel="off"
+        trueValue="TRUE VALUE"
+        falseValue="FALSE VAL"
+      />
+    )),
+  )
+  .add(
+    "off",
+    formWrapper({ toggle: false })(() => (
+      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" />
+    )),
+  )
+  .add(
+    "disabled on",
+    formWrapper({ toggle: true })(() => (
+      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" disabled />
+    )),
+  )
+  .add(
+    "disabled off",
+    formWrapper({ toggle: false })(() => (
+      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" disabled />
+    )),
+  );

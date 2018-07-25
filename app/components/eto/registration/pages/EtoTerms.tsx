@@ -17,7 +17,7 @@ import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
-import { Toggle } from "../../../shared/Toggle";
+import { FormToggle } from "../../../shared/Toggle";
 import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
@@ -200,26 +200,30 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
         <FormLabel>
           <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
         </FormLabel>
+
         <div className="form-group">
           <FormRadioButton value="nEuro" name="" label="nEuro" />
           <FormRadioButton value="ETH" name="" label="ETH" />
           {/* TODO: Connect this component */}
         </div>
+
         <div className="form-group">
           <FormLabel>
             <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
           </FormLabel>
-          <Toggle
+          <FormToggle
+            name="prospectusLanguage"
+            trueValue="de"
+            falseValue="en"
             disabledLabel={
               <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.disabled-label" />
             }
             enabledLabel={
               <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.enabled-label" />
             }
-            onClick={() => {}}
-            // TODO: Connect this Component
           />
         </div>
+
         <div className="form-group">
           <FormLabel>
             <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
@@ -236,6 +240,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
             }
           />
         </div>
+
         <div className="form-group">
           <FormLabel>
             <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
@@ -249,6 +254,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
             max={14}
           />
         </div>
+
         <FormField
           label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
           placeholder="1"
@@ -256,6 +262,7 @@ const EtoForm = (props: FormikProps<TPartialEtoSpecData> & IProps) => {
           name="minTicketEur"
           type="number"
         />
+
         <div className="form-group">
           <FormCheckbox
             name="enableTransferOnSuccess"

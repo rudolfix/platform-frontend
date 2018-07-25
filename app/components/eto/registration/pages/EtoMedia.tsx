@@ -32,14 +32,14 @@ import { FormField } from "../../../shared/forms/forms";
 
 const socialProfiles = [
   {
-    name: "slack",
-    placeholder: "slack",
-    svgIcon: slackIcon,
-  },
-  {
     name: "twitter",
     placeholder: "twitter",
     svgIcon: socialTwitter,
+  },
+  {
+    name: "slack",
+    placeholder: "slack",
+    svgIcon: slackIcon,
   },
   {
     name: "gplus",

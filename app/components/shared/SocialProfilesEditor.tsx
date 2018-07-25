@@ -90,7 +90,8 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
     profiles.forEach((profile, index) => {
       const value: string = socialMediaValues[index] ? socialMediaValues[index].url : "";
       setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
-      selectedFields[index] = !!value;
+      //always enable twitter
+      selectedFields[index] = (profile.name === 'twitter') ? true : !!value;
     });
 
     this.setState({ ...this.state, selectedFields });

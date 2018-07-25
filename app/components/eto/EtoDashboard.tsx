@@ -165,7 +165,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
                 </>
               )}
 
-              {etoState === "preview" && (
+              {(etoState === "preview" || !etoState) && (
                 <>
                   {etoFormProgress &&
                     etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD && (

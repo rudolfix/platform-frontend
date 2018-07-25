@@ -12,11 +12,7 @@ import {
   TPartialEtoSpecData,
 } from "../../../lib/api/eto/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
-import { actions } from "../../../modules/actions";
-import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
-import {
-  getFormFractionDoneCalculator,
-} from "../../../modules/eto-flow/selectors";
+import { getFormFractionDoneCalculator } from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
@@ -64,6 +60,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           isLoading={loadingData}
           to={etoRegisterRoutes.companyInformation}
           progress={shouldEtoDataLoad ? companyInformationProgress : 0}
+          disabled={!shouldEtoDataLoad}
           name="Company Info"
         />
       </Col>
@@ -72,6 +69,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           isLoading={loadingData}
           to={etoRegisterRoutes.legalInformation}
           progress={shouldEtoDataLoad ? legalInformationProgress : 0}
+          disabled={!shouldEtoDataLoad}
           name="Legal Info"
         />
       </Col>
@@ -80,6 +78,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           isLoading={loadingData}
           to={etoRegisterRoutes.etoTerms}
           progress={shouldEtoDataLoad ? etoTermsProgress : 0}
+          disabled={!shouldEtoDataLoad}
           name="ETO Terms"
         />
       </Col>
@@ -88,6 +87,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           isLoading={loadingData}
           to={etoRegisterRoutes.keyIndividuals}
           progress={shouldEtoDataLoad ? etoKeyIndividualsProgress : 0}
+          disabled={!shouldEtoDataLoad}
           name="Key Individuals"
         />
       </Col>
@@ -96,6 +96,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           isLoading={loadingData}
           to={etoRegisterRoutes.productVision}
           progress={shouldEtoDataLoad ? productVisionProgress : 0}
+          disabled={!shouldEtoDataLoad}
           name="Product Vision"
         />
       </Col>
@@ -104,6 +105,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           isLoading={loadingData}
           to={etoRegisterRoutes.etoMedia}
           progress={shouldEtoDataLoad ? etoMediaProgress : 0}
+          disabled={!shouldEtoDataLoad}
           name="Media"
         />
       </Col>
@@ -112,6 +114,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           isLoading={loadingData}
           to={etoRegisterRoutes.etoRiskAssessment}
           progress={shouldEtoDataLoad ? etoRiskAssessmentProgress : 0}
+          disabled={!shouldEtoDataLoad}
           name="Risk Assessment"
         />
       </Col>

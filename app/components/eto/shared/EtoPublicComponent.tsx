@@ -6,11 +6,12 @@ import { Col, Row } from "reactstrap";
 
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 
+import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
-import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
+import { ILink, MediaLinksWidget } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
-import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
+import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { SocialProfilesList } from "../../shared/SocialProfilesList";
 import { TabContent, Tabs } from "../../shared/Tabs";
@@ -108,8 +109,8 @@ const inSigningEndDate = publicEndDate + 14 * day;
 const etoEndDate = inSigningEndDate + 7 * day;
 
 interface IProps {
-  companyData: any;
-  etoData: any;
+  companyData: TCompanyEtoData;
+  etoData: TEtoSpecsData;
 }
 
 interface ICurrencies {
@@ -139,7 +140,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
     !disableTwitterFeed;
-  const isYouTubeVideoAvailable = companyVideo !== undefined ? companyVideo.url.length : false;
+  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length
+  const twitterUrl = isTwitterFeedEnabled && socialChannels ? (socialChannels.find(c => c.type === 'twitter') as any).url : ''
 
   return (
     <div>
@@ -149,13 +151,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         companyLogo={{
           alt: companyData.brandName,
           srcSet: {
-            "1x": companyData.companyLogo,
+            "1x": companyData.companyLogo as string,
           },
         }}
         companyBanner={{
           alt: companyData.brandName,
           srcSet: {
-            "1x": companyData.companyBanner,
+            "1x": companyData.companyBanner as string,
           },
         }}
         tags={companyData.categories}
@@ -337,7 +339,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
           <Col xs={12} md={4} className="mb-4">
             <Video
-              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
+              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url as string}
               className="mb-4 mt-5"
             />
             {isTwitterFeedEnabled && (
@@ -345,7 +347,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   Twitter
                 </SectionHeader>
-                <Panel>{/* TODO: ADD TWITTER */}</Panel>
+                <Panel>
+                  <a className="twitter-timeline" href="">Tweets by trivialspace</a> <script async src="https://platform.twitter.com/widgets.js"></script>
+                </Panel>
               </>
             )}
           </Col>
@@ -514,12 +518,12 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Col className="mb-4">
             <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
               {companyData.founders &&
-                companyData.founders.members.length && (
+                companyData.founders.members.length > 0 && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
                     <Panel>
                       <PeopleSwiperWidget
                         {...swiperMultiRowSettings}
-                        people={(companyData.founders && companyData.founders.members) || []}
+                        people={companyData.founders.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-founders-next",
                           prevEl: "people-swiper-founders-prev",
@@ -530,12 +534,12 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </TabContent>
                 )}
               {companyData.team &&
-                companyData.team.members.length && (
+                companyData.team.members.length > 0 && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
                     <Panel>
                       <PeopleSwiperWidget
                         {...swiperMultiRowSettings}
-                        people={(companyData.team && companyData.team.members) || []}
+                        people={companyData.team.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-team-next",
                           prevEl: "people-swiper-team-prev",
@@ -558,7 +562,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Col className="mb-4">
             <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
               {companyData.notableInvestors &&
-                companyData.notableInvestors.members.length && (
+                companyData.notableInvestors.members.length > 0 && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}
                   >
@@ -566,8 +570,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                       <PeopleSwiperWidget
                         {...swiperSingleRowSettings}
                         people={
-                          (companyData.notableInvestors && companyData.notableInvestors.members) ||
-                          []
+                          companyData.notableInvestors.members as IPerson[]
                         }
                         navigation={{
                           nextEl: "people-swiper-investors-next",
@@ -579,7 +582,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </TabContent>
                 )}
               {companyData.partners &&
-                companyData.partners.members.length && (
+                companyData.partners.members.length > 0 && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
                     <Panel>
                       <PeopleSwiperWidget
@@ -588,14 +591,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
                         }}
-                        people={(companyData.partners && companyData.partners.members) || []}
+                        people={companyData.partners.members as IPerson[]}
                         layout="vertical"
                       />
                     </Panel>
                   </TabContent>
                 )}
               {companyData.keyCustomers &&
-                companyData.keyCustomers.members.length && (
+                companyData.keyCustomers.members.length > 0 && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}
                   >
@@ -607,7 +610,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                           prevEl: "people-swiper-partners-prev",
                         }}
                         people={
-                          (companyData.keyCustomers && companyData.keyCustomers.members) || []
+                          companyData.keyCustomers.members as IPerson[]
                         }
                         layout="vertical"
                       />
@@ -615,7 +618,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </TabContent>
                 )}
               {companyData.boardMembers &&
-                companyData.boardMembers.members.length && (
+                companyData.boardMembers.members.length > 0 && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
                     <Panel>
                       <PeopleSwiperWidget
@@ -625,7 +628,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                         }}
                         {...swiperSingleRowSettings}
                         people={
-                          (companyData.boardMembers && companyData.boardMembers.members) || []
+                          companyData.boardMembers.members as IPerson[]
                         }
                         layout="vertical"
                       />
@@ -703,13 +706,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <DocumentsWidget className="mb-4" groups={documentsData} />
 
           {companyData.companyNews &&
-            companyData.companyNews.length && (
+            companyData.companyNews.length > 0 && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.media-links.title" />
                 </SectionHeader>
 
-                <MediaLinksWidget links={companyData.companyNews || []} />
+                <MediaLinksWidget links={companyData.companyNews as ILink[]} />
               </>
             )}
         </Col>

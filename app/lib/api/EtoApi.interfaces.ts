@@ -12,7 +12,7 @@ const EtoFounderType = YupTS.object({
 });
 export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 
-const tagsType = YupTS.string().optional();
+const tagsType = YupTS.string()
 
 const EtoCapitalListType = YupTS.object({
   description: YupTS.string().optional(),
@@ -60,61 +60,26 @@ export const EtoRiskAssesmentType = YupTS.object({
 
 type TEtoRiskAssesment = YupTS.TypeOf<typeof EtoRiskAssesmentType>;
 
+const groupType = YupTS.object({
+  description: YupTS.string(),
+  members: YupTS.array(
+    YupTS.object({
+      name: YupTS.string(),
+      role: YupTS.string().optional(),
+      image: YupTS.string().optional(),
+      description: YupTS.string(),
+    })
+  )
+})
+
 export const EtoKeyIndividualsType = YupTS.object({
-  founders: YupTS.object({
-    description: YupTS.string(),
-    members: YupTS.array(
-      YupTS.object({
-        name: YupTS.string(),
-        role: YupTS.string(),
-        description: YupTS.string(),
-      }),
-    ),
-  }),
-  boardMembers: YupTS.object({
-    description: YupTS.string(),
-    members: YupTS.array(
-      YupTS.object({
-        name: YupTS.string(),
-        role: YupTS.string(),
-        description: YupTS.string(),
-      }),
-    ),
-  }),
-  notableInvestors: YupTS.object({
-    description: YupTS.string(),
-    members: YupTS.array(
-      YupTS.object({
-        name: YupTS.string(),
-        role: YupTS.string(),
-        description: YupTS.string(),
-      }),
-    ),
-  }),
-  keyCustomers: YupTS.array(
-    YupTS.object({
-      name: YupTS.string(),
-      role: YupTS.string(),
-      description: YupTS.string(),
-    }),
-  ),
-  partners: YupTS.object({
-    description: YupTS.string(),
-    members: YupTS.array(
-      YupTS.object({
-        name: YupTS.string(),
-        role: YupTS.string(),
-        description: YupTS.string(),
-      }),
-    ),
-  }),
-  keyAlliances: YupTS.array(
-    YupTS.object({
-      name: YupTS.string(),
-      role: YupTS.string(),
-      description: YupTS.string(),
-    }),
-  ),
+  team: groupType,
+  founders: groupType,
+  boardMembers: groupType,
+  notableInvestors: groupType,
+  keyCustomers: groupType,
+  partners: groupType,
+  keyAlliances: groupType,
 });
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
@@ -133,34 +98,34 @@ export const EtoLegalInformationType = YupTS.object({
   lastFundingSizeEur: YupTS.number().optional(),
   companyShares: YupTS.number(),
 });
-type TEtoLegalData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
+type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
+
+const linkType = YupTS.object({
+  title: YupTS.string().optional(),
+  url: YupTS.string().optional(),
+})
 
 export const EtoMediaType = YupTS.object({
-  companyVideo: YupTS.string().optional(),
+  companyVideo: linkType,
   socialChannels: YupTS.array(
     YupTS.object({
-      title: YupTS.string().optional(),
+      type: YupTS.string().optional(),
       url: YupTS.string().optional(),
     }),
   ).optional(),
-  companyNews: YupTS.array(
-    YupTS.object({
-      title: YupTS.string().optional(),
-      url: YupTS.string().optional(),
-    }),
-  ).optional(),
+  companyNews: YupTS.array(linkType).optional(),
   disableTwitterFeed: YupTS.boolean().optional(),
 });
 
 type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
 export type TCompanyEtoData =
-  | TEtoTeamData
-  | TEtoLegalData
-  | TEtoProductVision
-  | TEtoRiskAssesment
-  | TEtoKeyIndividualsType
-  | TEtoMediaData;
+  & TEtoTeamData
+  & TEtoLegalData
+  & TEtoProductVision
+  & TEtoRiskAssesment
+  & TEtoKeyIndividualsType
+  & TEtoMediaData;
 
 /** ETO SPEC RELATED INTERFACES
  *  only deals with "/etos/me"
@@ -179,6 +144,7 @@ export const EtoTermsType = YupTS.object({
   shareNominalValueEur: YupTS.number(),
   publicDurationDays: YupTS.number(),
   minTicketEur: YupTS.number(),
+  maxTicketEur: YupTS.number().optional(),
   enableTransferOnSuccess: YupTS.boolean(),
   // TODO: This fields moved to Risk Assesment and needs to be disconnected here
   riskRegulatedBusiness: YupTS.boolean(),
@@ -192,7 +158,14 @@ export const EtoTermsType = YupTS.object({
 
 type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
-export type TEtoSpecsData = TEtoTermsType;
+export const EtoGeneralType = YupTS.object({
+  currencies: YupTS.array(YupTS.string()),
+  generalVotingRule: YupTS.string().optional()
+})
+
+type TEtoGeneralType = YupTS.TypeOf<typeof EtoGeneralType>;
+
+export type TEtoSpecsData = TEtoTermsType & TEtoGeneralType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;

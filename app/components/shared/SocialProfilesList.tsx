@@ -14,8 +14,8 @@ import * as telegram from "../../assets/img/inline_icons/social_telegram.svg";
 import * as twitter from "../../assets/img/inline_icons/social_twitter.svg";
 
 interface IEtoSocialProfile {
-  type: string;
-  url: string;
+  type?: string;
+  url?: string;
 }
 
 import * as styles from "./SocialProfilesList.module.scss";
@@ -47,7 +47,7 @@ export const SocialProfilesList: React.SFC<IProps> = ({ profiles }) => {
           url && (
             <div className={styles.profile} key={type}>
               <a href={url} target="_blank" title={url}>
-                <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+                <InlineIcon svgIcon={SOCIAL_PROFILES[type as string]} />
               </a>
             </div>
           ),

@@ -9,7 +9,7 @@ import * as prevIcon from "../../assets/img/inline_icons/arrow_left.svg";
 import * as nextIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./PeopleSwiperWidget.module.scss";
 
-interface IPerson {
+export interface IPerson {
   name: string;
   image: string;
   description: string;

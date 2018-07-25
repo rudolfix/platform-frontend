@@ -6,7 +6,7 @@ import { Panel } from "./Panel";
 
 import * as styles from "./MediaLinksWidget.module.scss";
 
-interface ILink {
+export interface ILink {
   title: TTranslatedString;
   url: string;
 }

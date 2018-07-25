@@ -1,10 +1,14 @@
 import { Form, FormikProps } from "formik";
+import { throttle } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as Yup from "yup";
 
-import { etoFlowInitialState } from "../../../modules/eto-flow/reducer";
-import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import {
+  getFormFractionDoneCalculator,
+  IProgressOptions,
+  ProgressCalculator,
+} from "../../../modules/eto-flow/selectors";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
 
@@ -16,6 +20,7 @@ interface IProps {
 
 interface IFormPercentageDoneProps {
   validator: Yup.Schema;
+  progressOptions?: IProgressOptions;
 }
 
 class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
@@ -23,15 +28,19 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
     formik: PropTypes.object,
   };
 
+  calculate: ProgressCalculator;
+
+  constructor(props: IFormPercentageDoneProps) {
+    super(props);
+    this.calculate = throttle(
+      getFormFractionDoneCalculator(props.validator, props.progressOptions),
+      300,
+    );
+  }
+
   render(): React.ReactNode {
     const { values } = this.context.formik as FormikProps<any>;
-
-    const calculatedFraction = selectFormFractionDone(
-      this.props.validator,
-      values,
-      etoFlowInitialState,
-    );
-
+    const calculatedFraction = this.calculate(values);
     return <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />;
   }
 }
@@ -40,13 +49,14 @@ export const EtoFormBase: React.SFC<IProps & IFormPercentageDoneProps> = ({
   children,
   title,
   validator,
+  progressOptions,
 }) => (
   <div>
     <Form className={styles.form}>
       <h4 className={styles.header}>{title}</h4>
 
       <Section>
-        <PercentageFormDone validator={validator} />
+        <PercentageFormDone validator={validator} progressOptions={progressOptions} />
       </Section>
 
       {children}

@@ -1,3 +1,4 @@
+import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -8,114 +9,23 @@ import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
-import { NewsWidget } from "../../shared/NewsWidget";
 import { Panel } from "../../shared/Panel";
 import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { SocialProfilesList } from "../../shared/SocialProfilesList";
-import { Tabs } from "../../shared/Tabs";
+import { TabContent, Tabs } from "../../shared/Tabs";
 import { Video } from "../../shared/Video";
+import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
 
-import * as facebookIcon from "../../../assets/img/inline_icons/social_facebook.svg";
-import * as linkedinIcon from "../../../assets/img/inline_icons/social_linkedin.svg";
-import * as mediumIcon from "../../../assets/img/inline_icons/social_medium.svg";
-import * as redditIcon from "../../../assets/img/inline_icons/social_reddit.svg";
-import * as telegramIcon from "../../../assets/img/inline_icons/social_telegram.svg";
-import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
-const tabsData = [
-  { text: "tab 1", isActive: true, onClick: () => {} },
-  { text: "tab 2", onClick: () => {} },
-  { text: "tab 3", onClick: () => {} },
-];
-
-const people = [
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-  {
-    name: "name",
-    image: "image",
-    description:
-      "Nunc dictum erat velit, a fermentum felis sagittis nec. Maecenas imperdiet mauris sit amet dignissim viverra. Maecenas auctor, eros non viverra tincidunt, tellus.",
-    role: "role",
-  },
-];
-
 const swiperSingleRowSettings = {
   slidesPerView: 5,
+  observer: true,
   spaceBetween: 100,
   breakpoints: {
     640: {
@@ -129,8 +39,8 @@ const swiperSingleRowSettings = {
 };
 
 const swiperMultiRowSettings = {
-  slidesPerView: 3,
-  slidesPerColumn: 2,
+  slidesPerView: 5,
+  observer: true,
   spaceBetween: 80,
   breakpoints: {
     640: {
@@ -143,32 +53,6 @@ const swiperMultiRowSettings = {
     },
   },
 };
-
-const profilesData = [
-  {
-    name: "LinkedIn",
-    url: "linkedin.com",
-    svgIcon: linkedinIcon,
-  },
-  {
-    name: "Facebook",
-    url: "facebook.com",
-    svgIcon: facebookIcon,
-  },
-  {
-    name: "Medium",
-    svgIcon: mediumIcon,
-  },
-  {
-    name: "Reddit",
-    url: "reddit.com",
-    svgIcon: redditIcon,
-  },
-  {
-    name: "Telegram",
-    svgIcon: telegramIcon,
-  },
-];
 
 const documentsData = [
   {
@@ -215,21 +99,6 @@ const documentsData = [
   },
 ];
 
-const mediaLinksData = [
-  {
-    title: "sample link",
-    url: "url",
-  },
-  {
-    title: "sample link",
-    url: "url",
-  },
-  {
-    title: "sample link",
-    url: "url",
-  },
-];
-
 const day = 86400000;
 const etoStartDate = Date.now() - 20 * day;
 const bookBuildingEndDate = etoStartDate + 16 * day;
@@ -253,6 +122,25 @@ export const CURRENCIES: ICurrencies = {
 };
 
 export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+  const fullyDilutedPreMoneyValuationEur = etoData.fullyDilutedPreMoneyValuationEur || 1;
+  const existingCompanyShares = etoData.existingCompanyShares || 1;
+  const newSharesToIssue = etoData.newSharesToIssue || 1;
+  const equityTokensPerShare = etoData.equityTokensPerShare || 1;
+  const minimumNewSharesToIssue = etoData.minimumNewSharesToIssue || 1;
+
+  const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
+  const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
+  const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
+  const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
+  const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
+
+  const { socialChannels, companyVideo, disableTwitterFeed } = companyData;
+
+  const isTwitterFeedEnabled =
+    some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
+    !disableTwitterFeed;
+  const isYouTubeVideoAvailable = companyVideo !== undefined ? companyVideo.url.length : false;
+
   return (
     <div>
       <Cover
@@ -276,9 +164,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <EtoOverviewStatus
         image={{
           srcSet: {
-            "1x": "",
+            "1x": etoData.equityTokenImage,
           },
-          alt: "",
+          alt: `${etoData.equityTokenSymbol} - ${etoData.equityTokenName}`,
         }}
         className="mb-4"
         prospectusApproved={true}
@@ -288,8 +176,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         companyValuation="10000000"
         declaredCap="100000"
         status="campaigning"
-        tokenName={companyData.equityTokenName}
-        tokenSymbol={companyData.equityTokenName}
+        tokenName={etoData.equityTokenName}
+        tokenSymbol={etoData.equityTokenSymbol}
         campaigningWidget={{
           amountBacked: "20",
           investorsBacked: 2,
@@ -304,7 +192,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.eto-timeline" />
           </SectionHeader>
           <Panel>
@@ -322,8 +210,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       </Row>
 
       <Row>
-        <Col xs={12} md={8} className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+        <Col xs={12} md={isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.about" />
           </SectionHeader>
           <Panel className="mb-4">
@@ -332,12 +220,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <Link to={companyData.companyWebsite || ""} target="_blank">
                 {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
               </Link>
-              <SocialProfilesList profiles={profilesData} />
+              <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
           </Panel>
-          <SectionHeader hasDecorator={false} className="mb-4">
+
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.legal-information.title" />
           </SectionHeader>
+
           <Panel className={styles.legalInformation}>
             <Row>
               <Col>
@@ -444,16 +334,27 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        <Col xs={12} md={4} className="mb-4">
-          <Video youTubeId="aqz-KE-bpKQ" className="mb-4" />
-          <NewsWidget isEditable={false} activeTab="news" news={[]} />
-          {/* TODO: Add news */}
-        </Col>
+        {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
+          <Col xs={12} md={4} className="mb-4">
+            <Video
+              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
+              className="mb-4 mt-5"
+            />
+            {isTwitterFeedEnabled && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  Twitter
+                </SectionHeader>
+                <Panel>{/* TODO: ADD TWITTER */}</Panel>
+              </>
+            )}
+          </Col>
+        )}
       </Row>
 
       <Row>
         <Col className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.token-terms.title" />
           </SectionHeader>
           <Panel className={styles.tokenTerms}>
@@ -462,27 +363,29 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.soft-cap" />
                 </span>
-                <span className={styles.value} />
+                <span className={styles.value}>{computedMinCapEur || DEFAULT_PLACEHOLDER}</span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.hard-cap" />
                 </span>
-                <span className={styles.value} />
+                <span className={styles.value}>{computedMaxCapEur || DEFAULT_PLACEHOLDER}</span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap" />
                 </span>
                 <span className={styles.value}>
-                  {etoData.minimumNewSharesToIssue || DEFAULT_PLACEHOLDER}
+                  {computedMinNumberOfTokens || DEFAULT_PLACEHOLDER}
                 </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap" />
                 </span>
-                <span className={styles.value}>{}</span>
+                <span className={styles.value}>
+                  {computedMaxNumberOfTokens || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
@@ -512,7 +415,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.value}>
                   €{" "}
                   {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
-                    ? etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
+                    ? (
+                        etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
+                      ).toPrecision(4)
                     : DEFAULT_PLACEHOLDER}
                 </span>
               </div>
@@ -530,14 +435,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.minimum-ticket-size" />
                 </span>
-                <span className={styles.value}>{etoData.minTicketEu || DEFAULT_PLACEHOLDER}</span>
+                <span className={styles.value}>
+                  € {etoData.minTicketEur || DEFAULT_PLACEHOLDER}
+                </span>
               </div>
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.maximum-ticket-size" />
                 </span>
                 <span className={styles.value}>
-                  <FormattedMessage id="eto.public-view.token-terms.unlimited" />
+                  € {etoData.maxTicketEur || DEFAULT_PLACEHOLDER}
                 </span>
               </div>
             </div>
@@ -601,27 +508,138 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Col>
       </Row>
 
-      <Row>
-        <Col className="mb-4">
-          <Tabs tabs={tabsData} hasDivider={false} size="large" className="mb-4" />
-          <Panel>
-            <PeopleSwiperWidget {...swiperMultiRowSettings} people={people} />
-          </Panel>
-        </Col>
-      </Row>
+      {((companyData.founders && companyData.founders.members.length) ||
+        (companyData.team && companyData.team.members.length)) && (
+        <Row>
+          <Col className="mb-4">
+            <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+              {companyData.founders &&
+                companyData.founders.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperMultiRowSettings}
+                        people={(companyData.founders && companyData.founders.members) || []}
+                        navigation={{
+                          nextEl: "people-swiper-founders-next",
+                          prevEl: "people-swiper-founders-prev",
+                        }}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.team &&
+                companyData.team.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperMultiRowSettings}
+                        people={(companyData.team && companyData.team.members) || []}
+                        navigation={{
+                          nextEl: "people-swiper-team-next",
+                          prevEl: "people-swiper-team-prev",
+                        }}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+            </Tabs>
+          </Col>
+        </Row>
+      )}
+
+      {((companyData.notableInvestors && companyData.notableInvestors.members.length) ||
+        (companyData.partners && companyData.partners.members.length) ||
+        (companyData.keyCustomers && companyData.keyCustomers.members.length) ||
+        (companyData.boardMembers && companyData.boardMembers.members.length)) && (
+        <Row>
+          <Col className="mb-4">
+            <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+              {companyData.notableInvestors &&
+                companyData.notableInvestors.members.length && (
+                  <TabContent
+                    tab={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}
+                  >
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperSingleRowSettings}
+                        people={
+                          (companyData.notableInvestors && companyData.notableInvestors.members) ||
+                          []
+                        }
+                        navigation={{
+                          nextEl: "people-swiper-investors-next",
+                          prevEl: "people-swiper-investors-prev",
+                        }}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.partners &&
+                companyData.partners.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperSingleRowSettings}
+                        navigation={{
+                          nextEl: "people-swiper-partners-next",
+                          prevEl: "people-swiper-partners-prev",
+                        }}
+                        people={(companyData.partners && companyData.partners.members) || []}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.keyCustomers &&
+                companyData.keyCustomers.members.length && (
+                  <TabContent
+                    tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}
+                  >
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperSingleRowSettings}
+                        navigation={{
+                          nextEl: "people-swiper-partners-next",
+                          prevEl: "people-swiper-partners-prev",
+                        }}
+                        people={
+                          (companyData.keyCustomers && companyData.keyCustomers.members) || []
+                        }
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+              {companyData.boardMembers &&
+                companyData.boardMembers.members.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        navigation={{
+                          nextEl: "people-swiper-board-members-next",
+                          prevEl: "people-swiper-board-members-prev",
+                        }}
+                        {...swiperSingleRowSettings}
+                        people={
+                          (companyData.boardMembers && companyData.boardMembers.members) || []
+                        }
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
+            </Tabs>
+          </Col>
+        </Row>
+      )}
 
       <Row>
-        <Col className="mb-4">
-          <Tabs tabs={tabsData} hasDivider={false} size="large" className="mb-4" />
-          <Panel>
-            <PeopleSwiperWidget {...swiperSingleRowSettings} people={people} layout="vertical" />
-          </Panel>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={12} md={8} className="mb-4">
-          <SectionHeader hasDecorator={false} className="mb-4">
+        <Col sm={12} md={8} className="mb-4">
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.product-vision.title" />
           </SectionHeader>
           <Panel>
@@ -663,7 +681,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <p>{companyData.salesModel || DEFAULT_PLACEHOLDER}</p>
               </AccordionElement>
               <AccordionElement
-                title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+                title={
+                  <FormattedMessage id="eto.form.product-vision.marketing-approach" /> ||
+                  DEFAULT_PLACEHOLDER
+                }
               >
                 <p>{companyData.marketingApproach}</p>
               </AccordionElement>
@@ -675,15 +696,22 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Accordion>
           </Panel>
         </Col>
-        <Col xs={12} md={4}>
-          <SectionHeader hasDecorator={false} className="mb-4">
+        <Col sm={12} md={4}>
+          <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
           <DocumentsWidget className="mb-4" groups={documentsData} />
-          <SectionHeader hasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.form.media-links.title" />
-          </SectionHeader>
-          <MediaLinksWidget links={mediaLinksData} />
+
+          {companyData.companyNews &&
+            companyData.companyNews.length && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <FormattedMessage id="eto.form.media-links.title" />
+                </SectionHeader>
+
+                <MediaLinksWidget links={companyData.companyNews || []} />
+              </>
+            )}
         </Col>
       </Row>
     </div>

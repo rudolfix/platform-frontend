@@ -1,0 +1,14 @@
+.token {
+  @include rect(18px);
+}
+
+.token-small {
+  @include rect(16px);
+}
+
+.document-link {
+  display: inline-flex;
+  align-content: center;
+  margin-right: 12px;
+  margin-bottom: 12px;
+}

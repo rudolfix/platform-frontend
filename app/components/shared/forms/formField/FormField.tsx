@@ -5,9 +5,8 @@ import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
-import { isNonValid, isValid } from "./utils";
-
 import { FormLabel } from "./FormLabel";
+import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -15,10 +14,11 @@ interface IFieldGroup {
   label?: string | React.ReactNode;
   placeholder?: string | React.ReactNode;
   type?: InputType;
-  prefix?: string;
-  suffix?: string;
+  prefix?: string | React.ReactNode;
+  suffix?: string | React.ReactNode;
   addonStyle?: string;
   maxLength?: string;
+  additionalObjValue?: { name: string; value: string };
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 
@@ -26,6 +26,14 @@ export class FormField extends React.Component<FieldGroupProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
+
+  componentDidMount(): void {
+    const formik: FormikProps<any> = this.context.formik;
+
+    if (this.props.additionalObjValue) {
+      formik.setFieldValue(this.props.additionalObjValue.name, this.props.additionalObjValue.value);
+    }
+  }
 
   render(): React.ReactChild {
     const {
@@ -37,6 +45,7 @@ export class FormField extends React.Component<FieldGroupProps> {
       suffix,
       className,
       addonStyle,
+      additionalObjValue,
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;

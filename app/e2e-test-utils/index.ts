@@ -11,7 +11,15 @@ export const goToDashboard = () => {
   cy.visit("/");
 };
 
-export const assertLatestEmailSent = (userEmail: string) => {
+export const goToSettings = () => {
+  cy.visit("/settings");
+};
+
+export const clearEmailServer = () => {
+  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+};
+
+export const assertLatestEmailSentWithSalt = (userEmail: string) => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
     const response = get(r, "body[0].personalizations[0].to[0]") as { email: string | undefined };
     const loginLink = get(r, "body[0].personalizations[0].substitutions.-loginLink-") as
@@ -21,6 +29,24 @@ export const assertLatestEmailSent = (userEmail: string) => {
     expect(response && response.email).to.be.eq(userEmail);
     expect(loginLink).to.contain("salt");
   });
+};
+
+export const assertVerifyEmailWidgetIsInUnverifiedEmailState = (shouldNotExist?: boolean) => {
+  cy
+    .get(tid("settings.verify-email-widget.unverified-email-state"))
+    .should(shouldNotExist ? "not.exist" : "exist");
+};
+
+export const assertVerifyEmailWidgetIsInNoEmailState = (shouldNotExist?: boolean) => {
+  cy
+    .get(tid("settings.verify-email-widget.no-email-state"))
+    .should(shouldNotExist ? "not.exist" : "exist");
+};
+
+export const assertVerifyEmailWidgetIsInVerfiedEmailState = (shouldNotExist?: boolean) => {
+  cy
+    .get(tid("settings.verify-email-widget.verified-email-state"))
+    .should(shouldNotExist ? "not.exist" : "exist");
 };
 
 export const assertEmailActivationWidgetVisible = (shouldNotExist?: boolean) => {
@@ -66,10 +92,14 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
   cy.get(tid("btn-send")).click();
 };
 
+export const confirmAccessModal = (password: string) => {
+  cy.get(tid("access-light-wallet-password-input")).type(password);
+  cy.get(tid("access-light-wallet-confirm")).click();
+};
+
 // todo: extract it to separate file
 // do it after moving all e2e tests back into cypress directory
-export const mockApiUrl = `${process.env.NF_REMOTE_BACKEND_PROXY_ROOT ||
-  "https://localhost:9090/api/"}external-services-mock/`;
+export const mockApiUrl = "https://localhost:9090/api/external-services-mock/";
 
 export const verifyLatestUserEmail = () => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {

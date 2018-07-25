@@ -30,7 +30,7 @@ setIntlConfig({
 addDecorator(initScreenshot());
 addDecorator(
   withScreenshot({
-    delay: 10000,
+    delay: 1000,
     viewport: [
       {
         width: 1280,

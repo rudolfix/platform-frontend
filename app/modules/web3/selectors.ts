@@ -50,6 +50,13 @@ export const selectIsLightWallet = (state: IWeb3State): boolean => {
   );
 };
 
+export const selectLightWalletSalt = (state: IWeb3State): string | undefined =>
+  (state.connected &&
+    state.wallet &&
+    state.wallet.walletType === WalletType.LIGHT &&
+    state.wallet.salt) ||
+  undefined;
+
 export const selectIsUnlocked = (state: IWeb3State): boolean => {
   return state.connected && state.isUnlocked;
 };
@@ -59,6 +66,13 @@ export const selectPreviousLightWalletEmail = (state: IWeb3State): string | unde
     state.previousConnectedWallet &&
     state.previousConnectedWallet.walletType === WalletType.LIGHT &&
     state.previousConnectedWallet.email) ||
+  undefined;
+
+export const selectPreviousLightWalletSalt = (state: IWeb3State): string | undefined =>
+  (!state.connected &&
+    state.previousConnectedWallet &&
+    state.previousConnectedWallet.walletType === WalletType.LIGHT &&
+    state.previousConnectedWallet.salt) ||
   undefined;
 
 export const selectPreviousConnectedWallet = (state: IWeb3State): TWalletMetadata | undefined =>

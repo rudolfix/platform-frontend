@@ -10,6 +10,7 @@ import { EtoRegistrationTerms } from "./pages/EtoTerms";
 import { EtoRegistrationKeyIndividuals } from "./pages/KeyIndividuals";
 import { EtoRegistrationLegalInformation } from "./pages/LegalInformation";
 import { EtoRegistrationProductVision } from "./pages/ProductVision";
+import { EtoRegistrationRiskAssesment } from "./pages/RiskAssesment";
 
 export const EtoRegisterRouter: React.SFC = () => (
   <SwitchConnected>
@@ -29,6 +30,11 @@ export const EtoRegisterRouter: React.SFC = () => (
       exact
     />
     <Route path={etoRegisterRoutes.productVision} component={EtoRegistrationProductVision} exact />
+    <Route
+      path={etoRegisterRoutes.etoRiskAssesment}
+      component={EtoRegistrationRiskAssesment}
+      exact
+    />
     <Route path={etoRegisterRoutes.etoTerms} component={EtoRegistrationTerms} exact />
     <Route path={etoRegisterRoutes.etoMedia} component={EtoRegistrationMedia} exact />
     <Redirect to={etoRegisterRoutes.companyInformation} />

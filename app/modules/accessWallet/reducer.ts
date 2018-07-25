@@ -35,6 +35,7 @@ export const accessWalletReducer: AppReducer<ISignMessageModalState> = (
         ...state,
         modalErrorMsg: action.payload.errorMsg,
       };
+    case "ACCESS_WALLET_CLEAR_SIGNING_ERROR":
     case "ACCESS_WALLET_ACCEPT":
       return {
         ...state,

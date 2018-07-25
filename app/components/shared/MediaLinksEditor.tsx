@@ -15,7 +15,6 @@ interface ISingleMediaLinkFieldInternalProps {
   formFieldKey: string;
   onAddClick: () => void;
   onRemoveClick: () => void;
-  placeholder: string;
   name: string;
   url?: string;
 }
@@ -23,25 +22,21 @@ interface ISingleMediaLinkFieldInternalProps {
 const SingleMediaLinkField: React.SFC<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
 > = props => {
-  const {
-    isFirstElement,
-    onAddClick,
-    onRemoveClick,
-    isLastElement,
-    placeholder,
-    formFieldKey,
-  } = props;
+  const { isFirstElement, onAddClick, onRemoveClick, isLastElement } = props;
 
   return (
     <Row className="my-4">
-      <Col xs={1}>{isLastElement && <ButtonIcon svgIcon={plusIcon} onClick={onAddClick} />}</Col>
+      <Col xs={1}>
+        {isLastElement && <ButtonIcon className="mt-2" svgIcon={plusIcon} onClick={onAddClick} />}
+      </Col>
       <Col xs={10}>
-        <FormField name={`${props.name}.${formFieldKey}`} placeholder={placeholder} />
+        <FormField name={`${props.name}.title`} placeholder="Title" />
+        <FormField name={`${props.name}.url`} placeholder="Url" />
       </Col>
       {!isFirstElement && (
         <Col xs={1}>
           <span className="pt-2">
-            <ButtonIcon svgIcon={closeIcon} onClick={onRemoveClick} />
+            <ButtonIcon className="mt-2" svgIcon={closeIcon} onClick={onRemoveClick} />
           </span>
         </Col>
       )}
@@ -69,7 +64,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
   render(): React.ReactNode {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
-    const { name, placeholder, blankField } = this.props;
+    const { name, blankField } = this.props;
     const mediaLinks: object[] = values[name] || [blankField];
     return (
       <FieldArray
@@ -79,21 +74,19 @@ export class MediaLinksEditor extends React.Component<IProps> {
             const isLastElement = !(index < mediaLinks.length - 1);
             const isFirstElement = index === 0;
             return (
-              <>
-                <SingleMediaLinkField
-                  placeholder={placeholder}
-                  name={`${name}.${index}`}
-                  formFieldKey={"url"}
-                  onRemoveClick={() => {
-                    arrayHelpers.remove(index);
-                  }}
-                  onAddClick={() => {
-                    setFieldValue(`${name}.${index + 1}`, blankField);
-                  }}
-                  isFirstElement={isFirstElement}
-                  isLastElement={isLastElement}
-                />
-              </>
+              <SingleMediaLinkField
+                name={`${name}.${index}`}
+                formFieldKey={"url"}
+                onRemoveClick={() => {
+                  arrayHelpers.remove(index);
+                }}
+                onAddClick={() => {
+                  setFieldValue(`${name}.${index + 1}`, blankField);
+                }}
+                isFirstElement={isFirstElement}
+                isLastElement={isLastElement}
+                key={`${name}.${index}`}
+              />
             );
           })
         }

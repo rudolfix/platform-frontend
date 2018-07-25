@@ -1,12 +1,10 @@
 .section-header {
   @include font-headline-small;
-  @include responsive-size(margin-left, 20px, 40px);
 
+  align-items: center;
+  display: flex;
   text-transform: uppercase;
   position: relative;
-  font-weight: $font-weight-bold;
-  display: flex;
-  align-items: center;
 
   &:global(.has-decorator) {
     margin-left: 0;

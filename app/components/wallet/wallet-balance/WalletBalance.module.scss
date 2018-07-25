@@ -1,67 +1,43 @@
-.wallet-balance {
-  &:global {
-    &.t-dark {
-      background-color: $neu-cloudy-blue;
-    }
-  }
+.title {
+  @include font-label;
+  @include responsive-size(margin-top, $spacing-vertical-sm-1, $spacing-vertical-lg-1);
+
+  text-transform: none;
 }
 
-.wallet-balance-wrapper {
-  @include media-breakpoint-up (lg) {
-    padding-bottom: px-to-rem(36px);
-    padding-top: px-to-rem(36px);
+.account-with-address-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.account-balance-wrapper {
+  @include media-breakpoint-up (md) {
+    flex-direction: row;
   }
 
   display: flex;
-}
-
-.chart-wrapper {
-  @include media-breakpoint-up (xl) {
-    display: block;
-  }
-
-  display: none;
-  flex-shrink: 0;
-  width: 30%;
-
-  > canvas {
-    max-height: px-to-rem(180px);
-    max-width: px-to-rem(180px);
-  }
-}
-
-.money-suite-wrapper {
-  $_border-color: rgba($neu-slate-grey, .1);
-  display: flex;
-  align-items: center;
-
-  & + #{&} {
-    border-top: 1px solid $_border-color;
-  }
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .buttons-wrapper {
+  margin-top: px-to-rem(10px);
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-
-  :global(.button) {
-    margin-left: auto;
-    text-align: right;
-  }
 }
 
-.wallet-balance-actions {
-  @include media-breakpoint-up (lg) {
-    margin-left: px-to-rem(20px);
-  }
+.icbm-locked-wallet {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 30px);
+  justify-content: center;
 
-  flex: 1;
-
-  > * {
-    @include make-col(1, 1);
-
-    padding-bottom: px-to-rem(20px);
-    padding-top: px-to-rem(20px);
+  .message {
+    align-self: center;
+    max-width: 50%;
+    padding: $spacing-vertical-lg-1 0;
+    text-align: center;
   }
 }

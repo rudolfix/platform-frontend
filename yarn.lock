@@ -581,6 +581,10 @@
   version "4.14.87"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.87.tgz#55f92183b048c2c64402afe472f8333f4e319a6b"
 
+"@types/lodash@^4.14.113":
+  version "4.14.113"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.113.tgz#1d1cb063f17fec4cc46f1a90d978ebf441113061"
+
 "@types/lodash@^4.14.92":
   version "4.14.92"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.92.tgz#6e3cb0b71a1e12180a47a42a744e856c3ae99a57"
@@ -674,9 +678,9 @@
   version "2.3.7"
   resolved "https://registry.yarnpkg.com/@types/react-intl/-/react-intl-2.3.7.tgz#40bae586f11d19894621ed40170dd75c3e0f5708"
 
-"@types/react-redux@^5.0.6":
-  version "5.0.14"
-  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-5.0.14.tgz#f3fc30dcbb2d20455a714f591cc27f77b4df09bb"
+"@types/react-redux@5.0.20":
+  version "5.0.20"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-5.0.20.tgz#a332f2a97043d6127159956a4639a9fb5dc1f5dc"
   dependencies:
     "@types/react" "*"
     redux "^3.6.0"
@@ -11667,9 +11671,9 @@ types-ethereumjs-util@^0.0.5:
     buffer "^5.0.6"
     rlp "^2.0.0"
 
-typescript@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.1.tgz#6160e4f8f195d5ba81d4876f9c0cc1fbc0820624"
+typescript@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
 
 typestrict@^0.0.8:
   version "0.0.8"

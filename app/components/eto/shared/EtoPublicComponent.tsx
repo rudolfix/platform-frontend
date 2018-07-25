@@ -20,6 +20,7 @@ import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
 
+import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
@@ -348,7 +349,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   Twitter
                 </SectionHeader>
                 <Panel>
-                  <a className="twitter-timeline" href="">Tweets by trivialspace</a> <script async src="https://platform.twitter.com/widgets.js"></script>
+                  <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName}/>
                 </Panel>
               </>
             )}

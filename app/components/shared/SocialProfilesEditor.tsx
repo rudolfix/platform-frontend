@@ -18,43 +18,30 @@ import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
 import * as slackIcon from "../../assets/img/inline_icons/social_slack.svg";
 import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
 import * as socialTwitter from "../../assets/img/inline_icons/social_twitter.svg";
+import * as xingIcon from "../../assets/img/inline_icons/social_xing.svg";
+import * as youtubeIcon from "../../assets/img/inline_icons/social_youtube.svg";
 import * as styles from "./SocialProfilesEditor.module.scss";
 
 export const SOCIAL_PROFILES_ICONS = [
   {
-    name: "slack",
-    placeholder: "slack",
-    svgIcon: slackIcon,
-  },
-  {
-    name: "twitter",
-    placeholder: "twitter",
-    svgIcon: socialTwitter,
-  },
-  {
-    name: "gplus",
-    placeholder: "google plus",
-    svgIcon: googleIcon,
-  },
-  {
-    name: "instagram",
-    placeholder: "instagram",
-    svgIcon: instagramIcon,
-  },
-  {
-    name: "github",
-    placeholder: "github",
-    svgIcon: githubIcon,
+    name: "facebook",
+    placeholder: "Facebook",
+    svgIcon: facebookIcon,
   },
   {
     name: "linkedin",
-    placeholder: "linkedin",
+    placeholder: "LinkedIn",
     svgIcon: linkedinIcon,
   },
   {
-    name: "facebook",
-    placeholder: "facebook",
-    svgIcon: facebookIcon,
+    name: "twitter",
+    placeholder: "Twitter",
+    svgIcon: socialTwitter,
+  },
+  {
+    name: "slack",
+    placeholder: "Slack",
+    svgIcon: slackIcon,
   },
   {
     name: "medium",
@@ -63,13 +50,38 @@ export const SOCIAL_PROFILES_ICONS = [
   },
   {
     name: "reddit",
-    placeholder: "reddit",
+    placeholder: "Reddit",
     svgIcon: redditIcon,
   },
   {
     name: "telegram",
     placeholder: "Telegram",
     svgIcon: telegramIcon,
+  },
+  {
+    name: "github",
+    placeholder: "Github",
+    svgIcon: githubIcon,
+  },
+  {
+    name: "instagram",
+    placeholder: "Instagram",
+    svgIcon: instagramIcon,
+  },
+  {
+    name: "gplus",
+    placeholder: "Google plus",
+    svgIcon: googleIcon,
+  },
+  {
+    name: "youtube",
+    placeholder: "YoutTube",
+    svgIcon: youtubeIcon,
+  },
+  {
+    name: "xing",
+    placeholder: "Xing",
+    svgIcon: xingIcon,
   },
 ];
 
@@ -81,12 +93,12 @@ export const SOCIAL_PROFILES_PERSON = [
   },
   {
     name: "twitter",
-    placeholder: "twitter",
+    placeholder: "Twitter",
     svgIcon: socialTwitter,
   },
   {
     name: "linkedin",
-    placeholder: "linkedin",
+    placeholder: "LinkedIn",
     svgIcon: linkedinIcon,
   },
 ];
@@ -127,7 +139,7 @@ const SingleMediaLinkField: React.SFC<
 
   return (
     <Row className="my-4 justify-content-center">
-      <Col xs={10}>
+      <Col>
         <FormField name={`${name}.url`} placeholder={profile.placeholder} />
       </Col>
     </Row>

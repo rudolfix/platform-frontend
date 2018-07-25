@@ -41,6 +41,7 @@
 
   color: $neu-cloudy-blue;
   cursor: pointer;
+  margin-bottom: px-to-rem(15px);
   margin-right: px-to-rem(20px);
   transition: $ease-out-expo 300ms color;
 

@@ -63,11 +63,15 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           />
         </Col>
       </Row>
-      <SocialProfilesEditor
-        profiles={SOCIAL_PROFILES_ICONS}
-        name="socialChannels"
-        className="mt-4"
-      />
+      <Row>
+        <Col className="offset-1" xs={10}>
+          <SocialProfilesEditor
+            profiles={SOCIAL_PROFILES_ICONS}
+            name="socialChannels"
+            className="mt-4"
+          />
+        </Col>
+      </Row>
 
       <p className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
         <FormattedMessage id="eto.form.eto-media.media-links" />

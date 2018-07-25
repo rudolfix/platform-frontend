@@ -16,9 +16,9 @@ storiesOf("CustomTooltip", module).add("default", () => {
 
   return (
     <div>
-      <img id="tooltip-target" src={icon} />
-      <CustomTooltip isOpen={true} target="tooltip-target">
-        <div>
+      <div style={{ margin: '0 10em 10em' }}>
+        <img id="tooltip-target1" src={icon} />
+        <CustomTooltip isOpen={true} target="tooltip-target1">
           <p>
             <FormattedMessage id="investment-flow.amount-exceeds-investment" />
           </p>
@@ -27,8 +27,29 @@ storiesOf("CustomTooltip", module).add("default", () => {
               <FormattedMessage id="investment-flow.max-invest" />
             </Button>
           </div>
-        </div>
-      </CustomTooltip>
+        </CustomTooltip>
+      </div>
+
+      <div style={{ margin: '10em' }}>
+        <img id="tooltip-target2" src={icon} />
+        <CustomTooltip isOpen={true} target="tooltip-target2" placement="right">
+          <FormattedMessage id="investment-flow.amount-exceeds-investment" />
+        </CustomTooltip>
+      </div>
+
+      <div style={{ margin: '10em' }}>
+        <img id="tooltip-target3" src={icon} style={{ marginLeft: '20em' }} />
+        <CustomTooltip isOpen={true} target="tooltip-target3" placement="left">
+          <FormattedMessage id="investment-flow.amount-exceeds-investment" />
+        </CustomTooltip>
+      </div>
+
+      <div style={{ margin: '10em' }}>
+        <img id="tooltip-target4" src={icon} />
+        <CustomTooltip isOpen={true} target="tooltip-target4" placement="top">
+          <FormattedMessage id="investment-flow.amount-exceeds-investment" />
+        </CustomTooltip>
+      </div>
     </div>
   )
 });

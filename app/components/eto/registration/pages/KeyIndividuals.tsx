@@ -15,10 +15,12 @@ import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Col, Row } from "reactstrap";
 import { TTranslatedString } from "../../../../types";
 import { Button, ButtonIcon } from "../../../shared/Buttons";
+import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormField, FormTextArea } from "../../../shared/forms/forms";
 import { FormSection } from "../../../shared/forms/FormSection";
+import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { EtoFormBase } from "../EtoFormBase";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
@@ -58,6 +60,9 @@ const blankMember = {
   image: "",
 };
 
+
+
+
 const Individual: React.SFC<IIndividual> = props => {
   const { onAddClick, onRemoveClick, isLast, isFirst, index, groupFieldName } = props;
 
@@ -89,6 +94,13 @@ const Individual: React.SFC<IIndividual> = props => {
           acceptedFiles="image/*"
           fileFormatInformation="*150 x 150px png"
         />
+        <FormLabel className="mt-4 mb-2">
+          <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
+        </FormLabel>
+        <SocialProfilesEditor
+          profiles={SOCIAL_PROFILES_PERSON}
+          name={`${groupFieldName}.members.${index}.socialChannels`}
+        />
       </FormHighlightGroup>
       {isLast && (
         <Button
@@ -103,6 +115,9 @@ const Individual: React.SFC<IIndividual> = props => {
     </>
   );
 };
+
+
+
 
 class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   static contextTypes = {
@@ -152,6 +167,10 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   }
 }
 
+
+
+
+
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
     <EtoFormBase
@@ -200,6 +219,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
     </EtoFormBase>
   );
 };
+
+
+
 
 const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   validationSchema: EtoKeyIndividualsType.toYup(),

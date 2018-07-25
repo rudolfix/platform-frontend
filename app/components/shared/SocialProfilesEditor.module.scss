@@ -1,8 +1,5 @@
 .social-profiles-editor {
   .tabs {
-    @include make-col(10);
-    @include make-col-offset(1);
-
     display: flex;
     flex-wrap: wrap;
     margin-bottom: px-to-rem(16px);

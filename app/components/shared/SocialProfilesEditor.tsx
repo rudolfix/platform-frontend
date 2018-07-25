@@ -3,11 +3,93 @@ import { FieldArray, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
-import { InlineIcon } from "./InlineIcon";
 
 import { CommonHtmlProps } from "../../types";
 import { FormField } from "./forms/formField/FormField";
+import { InlineIcon } from "./InlineIcon";
+
 import * as styles from "./SocialProfilesEditor.module.scss";
+import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
+import * as githubIcon from "../../assets/img/inline_icons/social_github.svg";
+import * as googleIcon from "../../assets/img/inline_icons/social_google_plus.svg";
+import * as instagramIcon from "../../assets/img/inline_icons/social_instagram.svg";
+import * as linkedinIcon from "../../assets/img/inline_icons/social_linkedin.svg";
+import * as mediumIcon from "../../assets/img/inline_icons/social_medium.svg";
+import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
+import * as slackIcon from "../../assets/img/inline_icons/social_slack.svg";
+import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
+import * as socialTwitter from "../../assets/img/inline_icons/social_twitter.svg";
+
+export const SOCIAL_PROFILES_ICONS = [
+  {
+    name: "slack",
+    placeholder: "slack",
+    svgIcon: slackIcon,
+  },
+  {
+    name: "twitter",
+    placeholder: "twitter",
+    svgIcon: socialTwitter,
+  },
+  {
+    name: "gplus",
+    placeholder: "google plus",
+    svgIcon: googleIcon,
+  },
+  {
+    name: "instagram",
+    placeholder: "instagram",
+    svgIcon: instagramIcon,
+  },
+  {
+    name: "github",
+    placeholder: "github",
+    svgIcon: githubIcon,
+  },
+  {
+    name: "linkedin",
+    placeholder: "linkedin",
+    svgIcon: linkedinIcon,
+  },
+  {
+    name: "facebook",
+    placeholder: "facebook",
+    svgIcon: facebookIcon,
+  },
+  {
+    name: "medium",
+    placeholder: "Medium",
+    svgIcon: mediumIcon,
+  },
+  {
+    name: "reddit",
+    placeholder: "reddit",
+    svgIcon: redditIcon,
+  },
+  {
+    name: "telegram",
+    placeholder: "Telegram",
+    svgIcon: telegramIcon,
+  },
+];
+
+export const SOCIAL_PROFILES_PERSON = [
+  {
+    name: "medium",
+    placeholder: "Medium",
+    svgIcon: mediumIcon,
+  },
+  {
+    name: "twitter",
+    placeholder: "twitter",
+    svgIcon: socialTwitter,
+  },
+  {
+    name: "linkedin",
+    placeholder: "linkedin",
+    svgIcon: linkedinIcon,
+  },
+]
 
 const SocialMediaTags: React.SFC<{
   profiles: ISocialProfile[];

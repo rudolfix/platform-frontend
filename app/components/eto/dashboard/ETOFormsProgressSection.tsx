@@ -12,7 +12,13 @@ import {
   TPartialEtoSpecData,
 } from "../../../lib/api/eto/EtoApi.interfaces";
 import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
-import { selectFormFractionDone } from "../../../modules/eto-flow/selectors";
+import { actions } from "../../../modules/actions";
+import { selectIsUserEmailVerified } from "../../../modules/auth/selectors";
+import {
+  etoMediaProgressOptions,
+  getFormFractionDoneCalculator,
+  getInitialDataForFractionCalculation,
+} from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";

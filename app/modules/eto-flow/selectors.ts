@@ -31,59 +31,71 @@ export const selectRequiredFormFractionDone = (
   return 1 - errors / maximumErrors;
 };
 
-export const selectFormFractionDone = (
-  validator: Yup.Schema,
-  formState: any,
-  opts?: IProgressOptions,
-): number => {
-  const strictValidator = validator.clone();
+export type ProgressCalculator = (formState: any, initialData?: any) => number;
 
-  const ignore = opts && opts.ignore;
-
-  const updateValidatorAndInitialData = (
-    objectSchema: any,
-    initialData: any,
-    currentValue: any,
-    ignore: any,
-  ): any => {
-    const type = objectSchema._type;
-    if (ignore !== true) {
-      switch (type) {
-        case "object":
-          for (const prop in objectSchema.fields) {
-            // need to clone before change
-            const schema = (objectSchema.fields[prop] = objectSchema.fields[prop].clone());
-            initialData[prop] = updateValidatorAndInitialData(
-              schema,
-              {},
-              currentValue && currentValue[prop],
-              ignore && ignore[prop],
-            );
-          }
-          return initialData;
-        case "array":
-          const arr = Array.isArray(currentValue) ? currentValue : [];
+// recursivly clones a YUP Schema and makes number and string properties required
+function updateValidator(objectSchema: any, ignore: any): any {
+  const type = objectSchema._type;
+  if (ignore !== true) {
+    switch (type) {
+      case "object":
+        for (const prop in objectSchema.fields) {
           // need to clone before change
-          objectSchema._subType = objectSchema._subType.clone();
-          return arr.map((_, i) =>
-            updateValidatorAndInitialData(objectSchema._subType, {}, arr[i], ignore && ignore[0]),
-          );
-        case "string":
-        case "number":
-          objectSchema.withMutation((schema: any) => schema.required());
+          const schema = (objectSchema.fields[prop] = objectSchema.fields[prop].clone());
+          updateValidator(schema, ignore && ignore[prop]);
+        }
+        break;
+      case "array":
+        // need to clone before change
+        objectSchema._subType = objectSchema._subType.clone();
+        updateValidator(objectSchema._subType, ignore && ignore[0]);
+        break;
+      case "string":
+      case "number":
+        objectSchema.withMutation((schema: any) => schema.required());
+    }
+  }
+}
+
+// recursivly create initial data from current values
+function updateInitialData(initialData: any, currentValue: any): any {
+  if (Array.isArray(currentValue)) {
+    return currentValue.map((_, i) => updateInitialData({}, currentValue[i]));
+  } else if (typeof currentValue === "object") {
+    for (const prop in currentValue) {
+      if (currentValue.hasOwnProperty(prop)) {
+        initialData[prop] = updateInitialData({}, currentValue && currentValue[prop]);
       }
     }
+    return initialData;
+  }
+}
+
+export function getInitialDataForFractionCalculation(formState: any): any {
+  return updateInitialData({}, formState);
+}
+
+export function getFormFractionDoneCalculator(
+  validator: Yup.Schema,
+  opts?: IProgressOptions,
+): ProgressCalculator {
+  const strictValidator = validator.clone();
+  const ignore = opts && opts.ignore;
+  updateValidator(strictValidator, ignore);
+
+  return (formState: any, initialData?: any) => {
+    if (typeof initialData === "undefined") {
+      initialData = updateInitialData({}, formState);
+    }
+
+    const errors = getErrorsNumber(strictValidator, formState) || 0;
+    const maxErrors = getErrorsNumber(strictValidator, initialData) || 1;
+
+    const result = 1 - errors / maxErrors;
+    if (result < 0) return 0;
+    return result;
   };
-
-  const initialData = updateValidatorAndInitialData(strictValidator, {}, formState, ignore);
-
-  const errors = getErrorsNumber(strictValidator, formState) || 0;
-  const maxErrors = getErrorsNumber(strictValidator, initialData) || 1;
-
-  const result = 1 - errors / maxErrors;
-  if (result < 0) return 0;
-  return result;
-};
+}
 
 export const etoMediaProgressOptions: IProgressOptions = {
   ignore: {

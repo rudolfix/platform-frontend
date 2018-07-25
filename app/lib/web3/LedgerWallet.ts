@@ -87,6 +87,10 @@ export class LedgerWallet implements IPersonalWallet {
       derivationPath: this.derivationPath,
     };
   }
+
+  public async sendTransaction(data: Web3.TxData): Promise<string> {
+    return this.web3Adapter.sendTransaction(data);
+  }
 }
 
 @injectable()

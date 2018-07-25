@@ -6,7 +6,9 @@ import { compose } from "redux";
 import { KycRouter } from "./Router";
 
 import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
+import { selectUserType } from "../../modules/auth/selectors";
 import {
   selectKycOutSourcedURL,
   selectKycRequestStatus,
@@ -61,6 +63,7 @@ export const businessSteps = [
 
 interface IStateProps {
   requestLoading?: boolean;
+  userType: TUserType;
   requestStatus?: TRequestStatus;
   redirectUrl: string;
   pendingRequestType: TKycRequestType | undefined;
@@ -69,6 +72,7 @@ interface IStateProps {
 interface IDispatchProps {
   reopenRequest: () => void;
   goToWallet: () => void;
+  goToDashboard: () => void;
   showModal: (title: string | React.ReactNode, text: string | React.ReactNode) => void;
 }
 
@@ -92,9 +96,15 @@ class RequestStateInfo extends React.Component<IProps> {
           layout="secondary"
           iconPosition="icon-before"
           svgIcon={arrowLeft}
-          onClick={this.props.goToWallet}
+          onClick={
+            this.props.userType === "investor" ? this.props.goToWallet : this.props.goToDashboard
+          }
         >
-          <FormattedMessage id="kyc.request-state.go-to-wallet" />
+          {this.props.userType === "investor" ? (
+            <FormattedMessage id="kyc.request-state.go-to-wallet" />
+          ) : (
+            <FormattedMessage id="kyc.request-state.go-to-dashboard" />
+          )}
         </Button>
       </div>
     );
@@ -187,10 +197,12 @@ export const Kyc = compose<React.SFC>(
       requestStatus: selectKycRequestStatus(state.kyc),
       redirectUrl: selectKycOutSourcedURL(state.kyc),
       pendingRequestType: selectPendingKycRequestType(state.kyc),
+      userType: selectUserType(state.auth)!,
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},
       goToWallet: () => dispatch(actions.routing.goToWallet()),
+      goToDashboard: () => dispatch(actions.routing.goToDashboard()),
       showModal: (title: string | React.ReactNode, text: string | React.ReactNode) =>
         dispatch(actions.genericModal.showGenericModal(title, text)),
     }),

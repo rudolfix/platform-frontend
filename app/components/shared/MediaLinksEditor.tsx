@@ -74,20 +74,19 @@ export class MediaLinksEditor extends React.Component<IProps> {
             const isLastElement = !(index < mediaLinks.length - 1);
             const isFirstElement = index === 0;
             return (
-              <>
-                <SingleMediaLinkField
-                  name={`${name}.${index}`}
-                  formFieldKey={"url"}
-                  onRemoveClick={() => {
-                    arrayHelpers.remove(index);
-                  }}
-                  onAddClick={() => {
-                    setFieldValue(`${name}.${index + 1}`, blankField);
-                  }}
-                  isFirstElement={isFirstElement}
-                  isLastElement={isLastElement}
-                />
-              </>
+              <SingleMediaLinkField
+                name={`${name}.${index}`}
+                formFieldKey={"url"}
+                onRemoveClick={() => {
+                  arrayHelpers.remove(index);
+                }}
+                onAddClick={() => {
+                  setFieldValue(`${name}.${index + 1}`, blankField);
+                }}
+                isFirstElement={isFirstElement}
+                isLastElement={isLastElement}
+                key={`${name}.${index}`}
+              />
             );
           })
         }

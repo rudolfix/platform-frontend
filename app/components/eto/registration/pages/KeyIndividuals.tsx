@@ -81,6 +81,7 @@ const Individual: React.SFC<IIndividual> = props => {
           name={`${groupFieldName}.members.${index}.description`}
           label={<FormattedMessage id="eto.form.key-individuals.short-bio" />}
           placeholder=" "
+          charactersLimit={250}
         />
         <FormSingleFileUpload
           label={<FormattedMessage id="eto.form.key-individuals.image" />}

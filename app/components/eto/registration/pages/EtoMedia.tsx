@@ -103,7 +103,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
   >
     <Section>
       <p className="offset-1 mb-2 font-weight-bold">
-        <FormattedMessage id="eto.form.eto-media.social-channels" />
+        <FormattedMessage id="eto.form.eto-media.youtube-video" />
       </p>
       <Row>
         <Col className="offset-1" xs={10}>

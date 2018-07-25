@@ -10,6 +10,7 @@ import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { sendEthModalReducer } from "./sendEthModal/reducer";
 import { settingsReducer } from "./settings/reducer";
+import { txSenderReducer } from "./tx/sender/reducer";
 import { browserReducer } from "./userAgent/reducer";
 import { verifyEmailWidgetReducer } from "./verifyEmailWidget/reducer";
 import { browserWalletWizardReducer } from "./wallet-selector/browser-wizard/reducer";
@@ -41,4 +42,5 @@ export const appReducers = {
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
   sendEthModal: sendEthModalReducer,
+  txSender: txSenderReducer,
 };

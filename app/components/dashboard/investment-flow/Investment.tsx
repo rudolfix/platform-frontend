@@ -11,13 +11,14 @@ import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImport
 import { Heading } from "../../shared/modals/Heading";
 import { Money } from "../../shared/Money";
 import { WalletSelector } from "./WalletSelector";
+import { IInitComponentProps } from "../../modals/txSender/TxSender";
 
 import * as neuIcon from "../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../assets/img/token_icon.svg";
 import * as styles from "./Investment.module.scss";
 
 interface IFormState {
-  amount: number;
+  value: number;
   wallet: string;
 }
 
@@ -113,6 +114,10 @@ export const InvestmentSelectionForm = injectIntlHelpers(
   },
 );
 
+/**
+ * @todo real wallet data is missing!
+ */
+
 const wallets = [
   {
     balanceEth: "300000000",
@@ -127,9 +132,9 @@ const wallets = [
   },
 ];
 
-export const InvestmentSelection: React.SFC = () => {
+export const InvestmentSelection: React.SFC<IInitComponentProps> = ({ onAccept }) => {
   return (
-    <Formik initialValues={{ wallet: "bar", amount: 0 }} onSubmit={() => {}}>
+    <Formik<{}, IFormState> initialValues={{ wallet: wallets[0].name, value: 0 }} onSubmit={v => onAccept({value: v.value})}>
       {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}
     </Formik>
   );

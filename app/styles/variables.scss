@@ -61,6 +61,7 @@ $neu-font-size-lg: px-to-rem(20px);
 $shadow: 0 px-to-rem(2px) px-to-rem(4px) 0 rgba(0, 0, 0, .1);
 $shadow-white: 0 px-to-rem(2px) px-to-rem(4px) 0 rgba(255, 255, 255, .1);
 $shadow1: 0 3px 1px 0 rgba(0, 0, 0, .1), 0 1px 1px 0 rgba(0, 0, 0, .16), 0 3px 8px 0 rgba(0, 0, 0, .15);
+$shadow-tooltip: 0 px-to-rem(1px) px-to-rem(4px) 0 rgba(0, 0, 0, 0.38);
 
 // Bootstrap variable overrides
 //colors

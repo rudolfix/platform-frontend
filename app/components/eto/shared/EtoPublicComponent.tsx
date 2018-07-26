@@ -1,3 +1,4 @@
+import * as cn from 'classnames'
 import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
@@ -212,7 +213,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Col>
       </Row>
 
-      <Row>
+      <Row className="align-items-stretch">
         <Col xs={12} md={isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12} className="mb-4">
           <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.public-view.about" />
@@ -338,7 +339,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Panel>
         </Col>
         {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
-          <Col xs={12} md={4} className="mb-4">
+          <Col xs={12} md={4} className="mb-4 flex-column d-flex">
             <Video
               youTubeUrl={companyData.companyVideo && companyData.companyVideo.url as string}
               className="mb-4 mt-5"
@@ -348,7 +349,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   Twitter
                 </SectionHeader>
-                <Panel>
+                <Panel narrow className={cn(styles.twitterPanel, 'align-self-stretch', 'flex-grow-1')} >
                   <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName}/>
                 </Panel>
               </>

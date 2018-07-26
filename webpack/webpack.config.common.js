@@ -18,7 +18,7 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { from: './app/twitter.html', to: './' },
+      { from: './app/twitter-iframe.html', to: './' },
     ]),
     new HtmlWebpackPlugin({
       inject: true,

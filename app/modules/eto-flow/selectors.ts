@@ -1,6 +1,15 @@
 import * as Yup from "yup";
 import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { EtoCompanyInformationType, TGeneralEtoDataType } from "../../lib/api/EtoApi.interfaces";
 import { TPartialCompanyEtoData, TPartialEtoSpecData } from "./../../lib/api/eto/EtoApi.interfaces";
+import {
+  EtoKeyIndividualsType,
+  EtoLegalInformationType,
+  EtoMediaType,
+  EtoProductVisionType,
+  EtoRiskAssessmentType,
+  EtoTermsType,
+} from "./../../lib/api/EtoApi.interfaces";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {
@@ -15,21 +24,6 @@ function getErrorsNumber(validator: Yup.Schema, data?: any): number {
 export interface IProgressOptions {
   ignore: any;
 }
-
-export const selectRequiredFormFractionDone = (
-  validator: Yup.Schema,
-  formState: any,
-  initialFormState: any,
-): number => {
-  const errors = getErrorsNumber(validator, formState);
-  const maximumErrors = getErrorsNumber(validator, initialFormState.data);
-
-  if (maximumErrors === 0) {
-    return 1;
-  }
-
-  return 1 - errors / maximumErrors;
-};
 
 export type ProgressCalculator = (formState: any, initialData?: any) => number;
 
@@ -74,6 +68,28 @@ function updateInitialData(initialData: any, currentValue: any): any {
 export function getInitialDataForFractionCalculation(formState: any): any {
   return updateInitialData({}, formState);
 }
+
+export const calculateCompanyInformationProgress = getFormFractionDoneCalculator(
+  EtoCompanyInformationType.toYup(),
+);
+export const calculateEtoTermsProgress = getFormFractionDoneCalculator(EtoTermsType.toYup());
+export const calculateEtoKeyIndividualsProgress = getFormFractionDoneCalculator(
+  EtoKeyIndividualsType.toYup(),
+);
+export const calculateLegalInformationProgress = getFormFractionDoneCalculator(
+  EtoLegalInformationType.toYup(),
+);
+export const calculateProductVisionProgress = getFormFractionDoneCalculator(
+  EtoProductVisionType.toYup(),
+);
+export const calculateEtoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup());
+export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
+  EtoRiskAssessmentType.toYup(),
+);
+
+export const calculateGeneralEtoData = getFormFractionDoneCalculator(TGeneralEtoDataType.toYup(), {
+  ignore: true,
+});
 
 export function getFormFractionDoneCalculator(
   validator: Yup.Schema,

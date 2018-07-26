@@ -11,48 +11,33 @@ import {
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../../lib/api/eto/EtoApi.interfaces";
-import { TRequestStatus } from "../../../lib/api/KycApi.interfaces";
-import { getFormFractionDoneCalculator } from "../../../modules/eto-flow/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
 
 export interface IEtoFormsProgressSectionProps {
   loadingData: boolean;
-  businessRequestStateLoading: boolean;
-  kycStatus?: TRequestStatus;
-  isEmailVerified?: boolean;
-  companyData: TPartialCompanyEtoData;
-  etoData: TPartialEtoSpecData;
+  shouldEtoDataLoad: boolean;
+  companyInformationProgress: number;
+  legalInformationProgress: number;
+  etoTermsProgress: number;
+  etoKeyIndividualsProgress: number;
+  productVisionProgress: number;
+  etoMediaProgress: number;
+  etoRiskAssessmentProgress: number;
 }
 
 export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> = ({
   loadingData,
-  kycStatus,
-  isEmailVerified,
-  companyData,
-  etoData,
+  shouldEtoDataLoad,
+  companyInformationProgress,
+  legalInformationProgress,
+  etoTermsProgress,
+  etoKeyIndividualsProgress,
+  productVisionProgress,
+  etoMediaProgress,
+  etoRiskAssessmentProgress,
 }) => {
-  const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
-
-  const companyInformationProgress = getFormFractionDoneCalculator(
-    EtoCompanyInformationType.toYup(),
-  )(companyData);
-  const etoTermsProgress = getFormFractionDoneCalculator(EtoTermsType.toYup())(etoData);
-  const etoKeyIndividualsProgress = getFormFractionDoneCalculator(EtoKeyIndividualsType.toYup())(
-    companyData,
-  );
-  const legalInformationProgress = getFormFractionDoneCalculator(EtoLegalInformationType.toYup())(
-    companyData,
-  );
-  const productVisionProgress = getFormFractionDoneCalculator(EtoProductVisionType.toYup())(
-    companyData,
-  );
-  const etoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup())(companyData);
-  const etoRiskAssessmentProgress = getFormFractionDoneCalculator(EtoRiskAssessmentType.toYup())(
-    companyData,
-  );
-
   return (
     <>
       <Col lg={4} xs={12} md={6} className="mb-4">

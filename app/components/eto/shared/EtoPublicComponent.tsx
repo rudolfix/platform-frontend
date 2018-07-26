@@ -7,6 +7,7 @@ import { Col, Row } from "reactstrap";
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 
 import { Accordion, AccordionElement } from "../../shared/Accordion";
+import { ChartPie } from "../../shared/charts/ChartPie";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
@@ -22,6 +23,8 @@ import { Cover } from "../publicView/Cover";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
+
+const CHART_COLORS = ["#394651", "#c4c5c6", "#2fb194", "#50e3c2", "#4a90e2", "#0b0e11"];
 
 const swiperSingleRowSettings = {
   slidesPerView: 5,
@@ -294,7 +297,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 </div>
               </Col>
               <Col>
-                {/* TODO: Add chart */}
                 <div className={styles.group}>
                   <div className={styles.entry}>
                     <span className={styles.label}>
@@ -673,8 +675,35 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
               >
-                <p>{companyData.useOfCapital || DEFAULT_PLACEHOLDER}</p>
-                {/* TODO: Add chart */}
+                <Row>
+                  <Col>
+                    <p>{companyData.useOfCapital || DEFAULT_PLACEHOLDER}</p>
+                  </Col>
+
+                  {companyData.useOfCapitalList && (
+                    <Col>
+                      <ChartPie
+                        data={{
+                          datasets: [
+                            {
+                              data: companyData.useOfCapitalList.map(
+                                (d: { percent: number; label: string }) => d.percent,
+                              ),
+                              // tslint:disable-next-line
+                              backgroundColor: companyData.useOfCapitalList.map(
+                                (d: { percent: number; label: string }, i: number) =>
+                                  CHART_COLORS[i],
+                              ),
+                            },
+                          ],
+                          labels: (companyData.useOfCapitalList || []).map(
+                            (d: any) => d.description,
+                          ),
+                        }}
+                      />
+                    </Col>
+                  )}
+                </Row>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.sales-model" />}

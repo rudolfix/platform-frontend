@@ -86,7 +86,8 @@ jobs:
           - v10-deps-
       - run: yarn prepare
 
-      - run: yarn storybook:screenshots
+      # - run: yarn storybook:screenshots
+      # Re-enable storybook:screenshots
       - run: (export BASE_KEY=$(git rev-parse origin/master)  && export CURRENT_KEY=${CIRCLE_SHA1} && ./.circleci/vis-reg-run.sh)
       - run: yarn danger ci
 

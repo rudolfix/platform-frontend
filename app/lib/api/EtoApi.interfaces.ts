@@ -68,6 +68,12 @@ export const EtoKeyIndividualsType = YupTS.object({
         name: YupTS.string(),
         role: YupTS.string(),
         description: YupTS.string(),
+        socialChannels: YupTS.array(
+          YupTS.object({
+            title: YupTS.string().optional(),
+            url: YupTS.string().optional(),
+          }),
+        ).optional(),
       }),
     ),
   }),
@@ -169,6 +175,7 @@ export type TCompanyEtoData =
 export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
 
 export const EtoTermsType = YupTS.object({
+  currencies: YupTS.array(YupTS.string()),
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
   equityTokenImage: YupTS.string(),

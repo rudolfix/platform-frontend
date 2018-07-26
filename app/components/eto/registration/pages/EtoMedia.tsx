@@ -11,77 +11,14 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
-import { SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
+import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 
 import { Button } from "../../../shared/Buttons";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
 import { Section } from "../Shared";
 
-import * as facebookIcon from "../../../../assets/img/inline_icons/social_facebook.svg";
-import * as githubIcon from "../../../../assets/img/inline_icons/social_github.svg";
-import * as googleIcon from "../../../../assets/img/inline_icons/social_google_plus.svg";
-import * as instagramIcon from "../../../../assets/img/inline_icons/social_instagram.svg";
-import * as linkedinIcon from "../../../../assets/img/inline_icons/social_linkedin.svg";
-import * as mediumIcon from "../../../../assets/img/inline_icons/social_medium.svg";
-import * as redditIcon from "../../../../assets/img/inline_icons/social_reddit.svg";
-import * as slackIcon from "../../../../assets/img/inline_icons/social_slack.svg";
-import * as telegramIcon from "../../../../assets/img/inline_icons/social_telegram.svg";
-import * as socialTwitter from "../../../../assets/img/inline_icons/social_twitter.svg";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/selectors";
 import { FormField } from "../../../shared/forms/forms";
-
-const socialProfiles = [
-  {
-    name: "slack",
-    placeholder: "slack",
-    svgIcon: slackIcon,
-  },
-  {
-    name: "twitter",
-    placeholder: "twitter",
-    svgIcon: socialTwitter,
-  },
-  {
-    name: "gplus",
-    placeholder: "google plus",
-    svgIcon: googleIcon,
-  },
-  {
-    name: "instagram",
-    placeholder: "instagram",
-    svgIcon: instagramIcon,
-  },
-  {
-    name: "github",
-    placeholder: "github",
-    svgIcon: githubIcon,
-  },
-  {
-    name: "linkedin",
-    placeholder: "linkedin",
-    svgIcon: linkedinIcon,
-  },
-  {
-    name: "facebook",
-    placeholder: "facebook",
-    svgIcon: facebookIcon,
-  },
-  {
-    name: "medium",
-    placeholder: "Medium",
-    svgIcon: mediumIcon,
-  },
-  {
-    name: "reddit",
-    placeholder: "reddit",
-    svgIcon: redditIcon,
-  },
-  {
-    name: "telegram",
-    placeholder: "Telegram",
-    svgIcon: telegramIcon,
-  },
-];
 
 interface IStateProps {
   loadingData: boolean;
@@ -126,7 +63,15 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           />
         </Col>
       </Row>
-      <SocialProfilesEditor profiles={socialProfiles} name="socialChannels" className="mt-4" />
+      <Row>
+        <Col className="offset-1" xs={10}>
+          <SocialProfilesEditor
+            profiles={SOCIAL_PROFILES_ICONS}
+            name="socialChannels"
+            className="mt-4"
+          />
+        </Col>
+      </Row>
 
       <p className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
         <FormattedMessage id="eto.form.eto-media.media-links" />
@@ -151,7 +96,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           }}
           isLoading={false}
         >
-          Save
+          <FormattedMessage id="form.button.save" />
         </Button>
       </Row>
     </Col>

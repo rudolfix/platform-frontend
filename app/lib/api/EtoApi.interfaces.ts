@@ -60,6 +60,13 @@ export const EtoRiskAssesmentType = YupTS.object({
 
 type TEtoRiskAssesment = YupTS.TypeOf<typeof EtoRiskAssesmentType>;
 
+const socialChannelsType = YupTS.array(
+  YupTS.object({
+    type: YupTS.string().optional(),
+    url: YupTS.string().optional(),
+  }),
+)
+
 const groupType = YupTS.object({
   description: YupTS.string(),
   members: YupTS.array(
@@ -68,6 +75,7 @@ const groupType = YupTS.object({
       role: YupTS.string().optional(),
       image: YupTS.string().optional(),
       description: YupTS.string(),
+      socialChannels: socialChannelsType.optional()
     })
   )
 })
@@ -107,12 +115,7 @@ const linkType = YupTS.object({
 
 export const EtoMediaType = YupTS.object({
   companyVideo: linkType,
-  socialChannels: YupTS.array(
-    YupTS.object({
-      type: YupTS.string().optional(),
-      url: YupTS.string().optional(),
-    }),
-  ).optional(),
+  socialChannels: socialChannelsType.optional(),
   companyNews: YupTS.array(linkType).optional(),
   disableTwitterFeed: YupTS.boolean().optional(),
 });

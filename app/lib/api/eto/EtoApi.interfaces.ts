@@ -1,5 +1,5 @@
-import { DeepPartial } from "../../types";
-import * as YupTS from "../yup-ts";
+import { DeepPartial } from "../../../types";
+import * as YupTS from "../../yup-ts";
 
 /** COMPANY ETO RELATED INTERFACES
  *  only deals with "/companies/me"
@@ -47,7 +47,7 @@ export const EtoProductVisionType = YupTS.object({
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
 
-export const EtoRiskAssesmentType = YupTS.object({
+export const EtoRiskAssessmentType = YupTS.object({
   riskNotRegulatedBusiness: YupTS.onlyTrue(),
   riskNoThirdPartyDependency: YupTS.onlyTrue(),
   riskNoLoansExist: YupTS.onlyTrue(),
@@ -58,7 +58,7 @@ export const EtoRiskAssesmentType = YupTS.object({
   riskMaxDescription: YupTS.string(),
 });
 
-type TEtoRiskAssesment = YupTS.TypeOf<typeof EtoRiskAssesmentType>;
+type TEtoRiskAssessment = YupTS.TypeOf<typeof EtoRiskAssessmentType>;
 
 const socialChannelsType = YupTS.array(
   YupTS.object({
@@ -126,7 +126,7 @@ type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 export type TCompanyEtoData = TEtoTeamData &
   TEtoLegalData &
   TEtoProductVision &
-  TEtoRiskAssesment &
+  TEtoRiskAssessment &
   TEtoKeyIndividualsType &
   TEtoMediaData;
 
@@ -134,8 +134,9 @@ export type TCompanyEtoData = TEtoTeamData &
  *  only deals with "/etos/me"
  */
 
+export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
+
 export const EtoTermsType = YupTS.object({
-  currencies: YupTS.array(YupTS.string()),
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
   equityTokenImage: YupTS.string(),
@@ -150,9 +151,9 @@ export const EtoTermsType = YupTS.object({
   minTicketEur: YupTS.number(),
   maxTicketEur: YupTS.number().optional(),
   enableTransferOnSuccess: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
+  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
   riskRegulatedBusiness: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assesment and needs to be disconnected here
+  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
   riskThirdParty: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
   tagAlongVotingRule: YupTS.boolean(),
@@ -160,16 +161,16 @@ export const EtoTermsType = YupTS.object({
   minimumNewSharesToIssue: YupTS.number(),
 });
 
-type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
+export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
-export const EtoGeneralType = YupTS.object({
-  currencies: YupTS.array(YupTS.string()),
-  generalVotingRule: YupTS.string().optional(),
-});
+interface IAdditionalEtoType {
+  state: EtoState;
+  isBookbuilding: boolean;
+  currencies: string[]
+  generalVotingRule?: string
+}
 
-type TEtoGeneralType = YupTS.TypeOf<typeof EtoGeneralType>;
-
-export type TEtoSpecsData = TEtoTermsType & TEtoGeneralType;
+export type TEtoSpecsData = TEtoTermsType & IAdditionalEtoType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;
@@ -179,3 +180,13 @@ export type TGeneralEtoData = {
   etoData: TPartialEtoSpecData;
   companyData: TPartialCompanyEtoData;
 };
+
+export const GeneralEtoDataType = YupTS.object({
+  ...EtoTermsType.shape,
+  ...EtoMediaType.shape,
+  ...EtoLegalInformationType.shape,
+  ...EtoKeyIndividualsType.shape,
+  ...EtoProductVisionType.shape,
+  ...EtoCompanyInformationType.shape,
+  ...EtoRiskAssessmentType.shape,
+});

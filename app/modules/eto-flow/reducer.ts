@@ -1,4 +1,5 @@
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
@@ -7,13 +8,16 @@ export interface IEtoFlowState {
   saving: boolean;
   etoData: TPartialEtoSpecData;
   companyData: TPartialCompanyEtoData;
+  etoFileData: IEtoFiles;
 }
+// TODO: Add correct type for etoFileData once backend is connected
 
 export const etoFlowInitialState: IEtoFlowState = {
   loading: false,
   saving: false,
   etoData: {},
   companyData: {},
+  etoFileData: {},
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (
@@ -22,12 +26,14 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
 ): DeepReadonly<IEtoFlowState> => {
   switch (action.type) {
     case "ETO_FLOW_LOAD_DATA_START":
+    case "ETO_FLOW_LOAD_FILE_DATA_START":
       return {
         ...state,
         loading: true,
       };
     case "ETO_FLOW_LOAD_DATA":
       return {
+        ...state,
         loading: false,
         saving: false,
         etoData: {
@@ -39,7 +45,17 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
           ...action.payload.data.companyData,
         },
       };
+    case "ETO_FLOW_LOAD_FILE_DATA":
+      return {
+        ...state,
+        loading: false,
+        saving: false,
+        etoFileData: {
+          ...action.payload.etoFileData,
+        },
+      };
     case "ETO_FLOW_SAVE_DATA_START":
+    case "ETO_FLOW_SUBMIT_DATA_START":
       return {
         ...state,
         saving: true,

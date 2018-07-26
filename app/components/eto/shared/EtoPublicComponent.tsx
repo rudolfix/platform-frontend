@@ -6,7 +6,7 @@ import { Col, Row } from "reactstrap";
 
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 
-import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/EtoApi.interfaces";
+import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartPie } from "../../shared/charts/ChartPie";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";

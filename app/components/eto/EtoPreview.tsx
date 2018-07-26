@@ -12,7 +12,7 @@ import {
   TEtoSpecsData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "../../lib/api/EtoApi.interfaces";
+} from "../../lib/api/eto/EtoApi.interfaces";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Accordion, AccordionElement } from "../shared/Accordion";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";

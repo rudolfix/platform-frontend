@@ -1,4 +1,18 @@
 import * as Yup from "yup";
+import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import {
+  EtoCompanyInformationType,
+  EtoKeyIndividualsType,
+  EtoLegalInformationType,
+  EtoMediaType,
+  EtoProductVisionType,
+  EtoRiskAssessmentType,
+  EtoTermsType,
+  GeneralEtoDataType,
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
+} from "./../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {
   try {
@@ -57,6 +71,28 @@ export function getInitialDataForFractionCalculation(formState: any): any {
   return updateInitialData({}, formState);
 }
 
+export const calculateCompanyInformationProgress = getFormFractionDoneCalculator(
+  EtoCompanyInformationType.toYup(),
+);
+export const calculateEtoTermsProgress = getFormFractionDoneCalculator(EtoTermsType.toYup());
+export const calculateEtoKeyIndividualsProgress = getFormFractionDoneCalculator(
+  EtoKeyIndividualsType.toYup(),
+);
+export const calculateLegalInformationProgress = getFormFractionDoneCalculator(
+  EtoLegalInformationType.toYup(),
+);
+export const calculateProductVisionProgress = getFormFractionDoneCalculator(
+  EtoProductVisionType.toYup(),
+);
+export const calculateEtoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup());
+export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
+  EtoRiskAssessmentType.toYup(),
+);
+
+export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {
+  ignore: true,
+});
+
 export function getFormFractionDoneCalculator(
   validator: Yup.Schema,
   opts?: IProgressOptions,
@@ -86,3 +122,48 @@ export const etoMediaProgressOptions: IProgressOptions = {
     companyNews: true,
   },
 };
+
+export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.termSheet &&
+    state.etoFileData.termSheet.url &&
+    state.etoFileData.termSheet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.pamphlet &&
+    state.etoFileData.pamphlet.url &&
+    state.etoFileData.pamphlet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.pamphlet &&
+    state.etoFileData.pamphlet.url &&
+    state.etoFileData.pamphlet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsBookBuilding = (state: IEtoFlowState): boolean | undefined =>
+  state.etoData && state.etoData.isBookbuilding;
+
+export const selectEtoState = (state: IEtoFlowState): EtoState | undefined =>
+  state.etoData && state.etoData.state;
+
+export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData =>
+  state.companyData;
+
+export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
+
+export const selectCombinedEtoCompanyData = (
+  state: IEtoFlowState,
+): TPartialEtoSpecData & TPartialCompanyEtoData => ({
+  ...selectCompanyData(state),
+  ...selectEtoData(state),
+});

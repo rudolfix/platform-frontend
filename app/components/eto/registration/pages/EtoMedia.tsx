@@ -6,7 +6,7 @@ import { EtoFormBase } from "../EtoFormBase";
 
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
-import { EtoMediaType, TPartialCompanyEtoData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoMediaType, TPartialCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";

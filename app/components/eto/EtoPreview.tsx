@@ -47,6 +47,7 @@ class EtoPreviewComponent extends React.Component<IProps> {
     return (
       <LayoutAuthorized>
         <EtoPublicComponent
+          // TODO: type casting needs to be resolved, but EtoPublicComponent required the full data, not the partial type
           companyData={this.props.companyData as TCompanyEtoData}
           etoData={this.props.etoData as TEtoSpecsData}
         />

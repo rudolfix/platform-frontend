@@ -7,10 +7,14 @@ import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 
+import {
+  TCompanyEtoData,
+  TEtoSpecsData,
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
+} from "../../lib/api/EtoApi.interfaces";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Accordion, AccordionElement } from "../shared/Accordion";
-
-import { TCompanyEtoData, TEtoSpecsData, TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IStateProps {
@@ -42,7 +46,10 @@ class EtoPreviewComponent extends React.Component<IProps> {
 
     return (
       <LayoutAuthorized>
-        <EtoPublicComponent companyData={this.props.companyData as TCompanyEtoData} etoData={this.props.etoData as TEtoSpecsData} />
+        <EtoPublicComponent
+          companyData={this.props.companyData as TCompanyEtoData}
+          etoData={this.props.etoData as TEtoSpecsData}
+        />
       </LayoutAuthorized>
     );
   }

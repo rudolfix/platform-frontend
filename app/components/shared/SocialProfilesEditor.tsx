@@ -7,6 +7,7 @@ import { InlineIcon } from "./InlineIcon";
 
 import { CommonHtmlProps } from "../../types";
 import { FormField } from "./forms/formField/FormField";
+
 import * as styles from "./SocialProfilesEditor.module.scss";
 
 const SocialMediaTags: React.SFC<{
@@ -91,7 +92,7 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
       const value: string = socialMediaValues[index] ? socialMediaValues[index].url : "";
       setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
       //always enable twitter
-      selectedFields[index] = (profile.name === 'twitter') ? true : !!value;
+      selectedFields[index] = profile.name === "twitter" ? true : !!value;
     });
 
     this.setState({ ...this.state, selectedFields });

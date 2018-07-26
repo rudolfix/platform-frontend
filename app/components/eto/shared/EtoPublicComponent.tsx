@@ -1,4 +1,4 @@
-import * as cn from 'classnames'
+import * as cn from "classnames";
 import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
@@ -10,7 +10,7 @@ import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
-import { InlineIcon } from '../../shared/InlineIcon';
+import { InlineIcon } from "../../shared/InlineIcon";
 import { ILink, MediaLinksWidget } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
@@ -144,15 +144,22 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
     !disableTwitterFeed;
-  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length
-  const twitterUrl = isTwitterFeedEnabled && socialChannels ? (socialChannels.find(c => c.type === 'twitter') as any).url : ''
+  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length;
+  const twitterUrl =
+    isTwitterFeedEnabled && socialChannels
+      ? (socialChannels.find(c => c.type === "twitter") as any).url
+      : "";
 
   const marketingLinks = companyData.marketingLinks && {
-    documents: companyData.marketingLinks.map(l => ({url: l.url as string, name: l.title as string, icon: <InlineIcon svgIcon={icon_link}/>})),
-    name: <FormattedMessage id="eto.public-view.documents.marketing-documents" />
-  }
+    documents: companyData.marketingLinks.map(l => ({
+      url: l.url as string,
+      name: l.title as string,
+      icon: <InlineIcon svgIcon={icon_link} />,
+    })),
+    name: <FormattedMessage id="eto.public-view.documents.marketing-documents" />,
+  };
 
-  const documents = marketingLinks ? [marketingLinks].concat(documentsData as any) : documentsData
+  const documents = marketingLinks ? [marketingLinks].concat(documentsData as any) : documentsData;
 
   return (
     <div>
@@ -350,7 +357,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
           <Col xs={12} md={4} className="mb-4 flex-column d-flex">
             <Video
-              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url as string}
+              youTubeUrl={companyData.companyVideo && (companyData.companyVideo.url as string)}
               className="mb-4 mt-5"
             />
             {isTwitterFeedEnabled && (
@@ -358,8 +365,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   Twitter
                 </SectionHeader>
-                <Panel narrow className={cn(styles.twitterPanel, 'align-self-stretch', 'flex-grow-1')} >
-                  <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName}/>
+                <Panel
+                  narrow
+                  className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
+                >
+                  <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
                 </Panel>
               </>
             )}
@@ -580,9 +590,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                     <Panel>
                       <PeopleSwiperWidget
                         {...swiperSingleRowSettings}
-                        people={
-                          companyData.notableInvestors.members as IPerson[]
-                        }
+                        people={companyData.notableInvestors.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-investors-next",
                           prevEl: "people-swiper-investors-prev",
@@ -620,9 +628,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
                         }}
-                        people={
-                          companyData.keyCustomers.members as IPerson[]
-                        }
+                        people={companyData.keyCustomers.members as IPerson[]}
                         layout="vertical"
                       />
                     </Panel>
@@ -638,9 +644,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                           prevEl: "people-swiper-board-members-prev",
                         }}
                         {...swiperSingleRowSettings}
-                        people={
-                          companyData.boardMembers.members as IPerson[]
-                        }
+                        people={companyData.boardMembers.members as IPerson[]}
                         layout="vertical"
                       />
                     </Panel>

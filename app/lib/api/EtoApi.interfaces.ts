@@ -12,7 +12,7 @@ const EtoFounderType = YupTS.object({
 });
 export type TEtoFounder = YupTS.TypeOf<typeof EtoFounderType>;
 
-const tagsType = YupTS.string()
+const tagsType = YupTS.string();
 
 const EtoCapitalListType = YupTS.object({
   description: YupTS.string().optional(),
@@ -65,7 +65,7 @@ const socialChannelsType = YupTS.array(
     type: YupTS.string().optional(),
     url: YupTS.string().optional(),
   }),
-)
+);
 
 const groupType = YupTS.object({
   description: YupTS.string(),
@@ -75,10 +75,10 @@ const groupType = YupTS.object({
       role: YupTS.string().optional(),
       image: YupTS.string().optional(),
       description: YupTS.string(),
-      socialChannels: socialChannelsType.optional()
-    })
-  )
-})
+      socialChannels: socialChannelsType.optional(),
+    }),
+  ),
+});
 
 export const EtoKeyIndividualsType = YupTS.object({
   team: groupType,
@@ -111,7 +111,7 @@ type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
 const linkType = YupTS.object({
   title: YupTS.string().optional(),
   url: YupTS.string().optional(),
-})
+});
 
 export const EtoMediaType = YupTS.object({
   companyVideo: linkType,
@@ -123,13 +123,12 @@ export const EtoMediaType = YupTS.object({
 
 type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
-export type TCompanyEtoData =
-  & TEtoTeamData
-  & TEtoLegalData
-  & TEtoProductVision
-  & TEtoRiskAssesment
-  & TEtoKeyIndividualsType
-  & TEtoMediaData;
+export type TCompanyEtoData = TEtoTeamData &
+  TEtoLegalData &
+  TEtoProductVision &
+  TEtoRiskAssesment &
+  TEtoKeyIndividualsType &
+  TEtoMediaData;
 
 /** ETO SPEC RELATED INTERFACES
  *  only deals with "/etos/me"
@@ -164,8 +163,8 @@ type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
 export const EtoGeneralType = YupTS.object({
   currencies: YupTS.array(YupTS.string()),
-  generalVotingRule: YupTS.string().optional()
-})
+  generalVotingRule: YupTS.string().optional(),
+});
 
 type TEtoGeneralType = YupTS.TypeOf<typeof EtoGeneralType>;
 

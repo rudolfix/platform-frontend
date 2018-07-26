@@ -15,11 +15,7 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
       <LayoutAuthorizedMenu />
     </div>
     <div className="layout-container">
-      <Row>
-        <Col>
-          <NotificationWidget />
-        </Col>
-      </Row>
+      <NotificationWidget />
       <Row>
         <Col className={styles.content}>{children}</Col>
       </Row>

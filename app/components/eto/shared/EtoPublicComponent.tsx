@@ -2,16 +2,16 @@ import * as cn from "classnames";
 import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 
 import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
+import { ChartPie } from "../../shared/charts/ChartPie";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { ILink, MediaLinksWidget } from "../../shared/MediaLinksWidget";
+import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
@@ -28,6 +28,8 @@ import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
+const CHART_COLORS = ["#394651", "#c4c5c6", "#2fb194", "#50e3c2", "#4a90e2", "#0b0e11"];
+
 const swiperSingleRowSettings = {
   slidesPerView: 5,
   observer: true,
@@ -43,9 +45,10 @@ const swiperSingleRowSettings = {
   },
 };
 
-const swiperMultiRowSettings = {
+const swiperTeamSettings = {
   slidesPerView: 5,
   observer: true,
+  centeredSlides: true,
   spaceBetween: 80,
   breakpoints: {
     640: {
@@ -237,9 +240,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
             <div className="d-flex justify-content-between">
-              <Link to={companyData.companyWebsite || ""} target="_blank">
-                {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
-              </Link>
+              {companyData.companyWebsite && (
+                <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
+                  {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
+                </a>
+              )}
               <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
           </Panel>
@@ -313,7 +318,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 </div>
               </Col>
               <Col>
-                {/* TODO: Add chart */}
                 <div className={styles.group}>
                   <div className={styles.entry}>
                     <span className={styles.label}>
@@ -543,7 +547,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperMultiRowSettings}
+                        {...swiperTeamSettings}
                         people={companyData.founders.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-founders-next",
@@ -559,7 +563,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperMultiRowSettings}
+                        {...swiperTeamSettings}
                         people={companyData.team.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-team-next",
@@ -690,8 +694,34 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
               >
-                <p>{companyData.useOfCapital || DEFAULT_PLACEHOLDER}</p>
-                {/* TODO: Add chart */}
+                <Row>
+                  <Col>
+                    <p>{companyData.useOfCapital || DEFAULT_PLACEHOLDER}</p>
+                  </Col>
+
+                  {companyData.useOfCapitalList && (
+                    <Col>
+                      <ChartPie
+                        data={{
+                          datasets: [
+                            {
+                              data: companyData.useOfCapitalList.map(
+                                d => d && d.percent,
+                              ) as number[],
+                              /* tslint:disable:no-unused-variable */
+                              backgroundColor: companyData.useOfCapitalList.map(
+                                (_, i: number) => CHART_COLORS[i],
+                              ),
+                            },
+                          ],
+                          labels: (companyData.useOfCapitalList || []).map(
+                            d => d && d.description,
+                          ) as string[],
+                        }}
+                      />
+                    </Col>
+                  )}
+                </Row>
               </AccordionElement>
               <AccordionElement
                 title={<FormattedMessage id="eto.form.product-vision.sales-model" />}

@@ -3,11 +3,12 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import * as closeIcon from "../../assets/img/inline_icons/round_close.svg";
-import * as plusIcon from "../../assets/img/inline_icons/round_plus.svg";
 import { CommonHtmlProps } from "../../types";
 import { ButtonIcon } from "./Buttons";
 import { FormField } from "./forms/formField/FormField";
+
+import * as closeIcon from "../../assets/img/inline_icons/round_close.svg";
+import * as plusIcon from "../../assets/img/inline_icons/round_plus.svg";
 
 interface ISingleMediaLinkFieldInternalProps {
   isLastElement?: boolean;

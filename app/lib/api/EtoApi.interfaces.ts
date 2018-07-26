@@ -81,13 +81,13 @@ const groupType = YupTS.object({
 });
 
 export const EtoKeyIndividualsType = YupTS.object({
-  team: groupType,
-  founders: groupType,
-  boardMembers: groupType,
-  notableInvestors: groupType,
-  keyCustomers: groupType,
-  partners: groupType,
-  keyAlliances: groupType,
+  team: groupType.optional(),
+  founders: groupType.optional(),
+  boardMembers: groupType.optional(),
+  notableInvestors: groupType.optional(),
+  keyCustomers: groupType.optional(),
+  partners: groupType.optional(),
+  keyAlliances: groupType.optional(),
 });
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
@@ -135,6 +135,7 @@ export type TCompanyEtoData = TEtoTeamData &
  */
 
 export const EtoTermsType = YupTS.object({
+  currencies: YupTS.array(YupTS.string()),
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
   equityTokenImage: YupTS.string(),

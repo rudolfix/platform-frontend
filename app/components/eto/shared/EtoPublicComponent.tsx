@@ -120,6 +120,9 @@ interface IProps {
   etoData: TEtoSpecsData;
 }
 
+// TODO: There are lots of castings right now in this file, cause formerly the types of IProps was "any"
+// The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
+
 interface ICurrencies {
   [key: string]: string;
 }

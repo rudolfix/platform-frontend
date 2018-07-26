@@ -68,6 +68,12 @@ export const EtoKeyIndividualsType = YupTS.object({
         name: YupTS.string(),
         role: YupTS.string(),
         description: YupTS.string(),
+        socialChannels: YupTS.array(
+          YupTS.object({
+            title: YupTS.string().optional(),
+            url: YupTS.string().optional(),
+          }),
+        ).optional(),
       }),
     ),
   }),
@@ -167,6 +173,7 @@ export type TCompanyEtoData =
  */
 
 export const EtoTermsType = YupTS.object({
+  currencies: YupTS.array(YupTS.string()),
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
   equityTokenImage: YupTS.string(),

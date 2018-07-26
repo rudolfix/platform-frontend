@@ -1,7 +1,6 @@
 import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
@@ -9,7 +8,7 @@ import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartPie } from "../../shared/charts/ChartPie";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
-import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
+import { MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
@@ -221,9 +220,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
             <div className="d-flex justify-content-between">
-              <Link to={companyData.companyWebsite || ""} target="_blank">
-                {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
-              </Link>
+              {companyData.companyWebsite && (
+                <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
+                  {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
+                </a>
+              )}
               <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
           </Panel>

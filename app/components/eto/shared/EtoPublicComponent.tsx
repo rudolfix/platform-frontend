@@ -37,9 +37,10 @@ const swiperSingleRowSettings = {
   },
 };
 
-const swiperMultiRowSettings = {
+const swiperTeamSettings = {
   slidesPerView: 5,
   observer: true,
+  centeredSlides: true,
   spaceBetween: 80,
   breakpoints: {
     640: {
@@ -519,7 +520,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperMultiRowSettings}
+                        {...swiperTeamSettings}
                         people={(companyData.founders && companyData.founders.members) || []}
                         navigation={{
                           nextEl: "people-swiper-founders-next",
@@ -535,7 +536,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperMultiRowSettings}
+                        {...swiperTeamSettings}
                         people={(companyData.team && companyData.team.members) || []}
                         navigation={{
                           nextEl: "people-swiper-team-next",

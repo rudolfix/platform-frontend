@@ -2,7 +2,6 @@ import * as cn from "classnames";
 import * as H from "history";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Col } from "reactstrap";
 
 import { ButtonArrowRight } from "../Buttons";
 import { Panel } from "../Panel";

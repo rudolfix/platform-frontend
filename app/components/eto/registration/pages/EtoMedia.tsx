@@ -139,6 +139,17 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
         placeholder="Media Link"
         blankField={{ url: "", title: "" }}
       />
+      <p className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
+        <FormattedMessage id="eto.form.eto-media.campaigning-links" />
+      </p>
+      <p className="offset-1 mb-3">
+        <FormattedMessage id="eto.form.eto-media.campaigning-links-description" />
+      </p>
+      <MediaLinksEditor
+        name="marketingLinks"
+        placeholder="Document Link"
+        blankField={{ url: "", title: "" }}
+      />
     </Section>
     <Col>
       <Row className="justify-content-end">

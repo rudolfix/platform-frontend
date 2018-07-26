@@ -117,6 +117,7 @@ export const EtoMediaType = YupTS.object({
   companyVideo: linkType,
   socialChannels: socialChannelsType.optional(),
   companyNews: YupTS.array(linkType).optional(),
+  marketingLinks: YupTS.array(linkType).optional(),
   disableTwitterFeed: YupTS.boolean().optional(),
 });
 

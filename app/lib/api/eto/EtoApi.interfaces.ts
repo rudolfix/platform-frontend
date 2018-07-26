@@ -62,13 +62,13 @@ type TEtoRiskAssessment = YupTS.TypeOf<typeof EtoRiskAssessmentType>;
 
 const socialChannelsType = YupTS.array(
   YupTS.object({
-    type: YupTS.string().optional(),
-    url: YupTS.string().optional(),
+    type: YupTS.string(),
+    url: YupTS.string(),
   }),
 );
 
 const groupType = YupTS.object({
-  description: YupTS.string(),
+  description: YupTS.string().optional(),
   members: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
@@ -109,8 +109,8 @@ export const EtoLegalInformationType = YupTS.object({
 type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
 
 const linkType = YupTS.object({
-  title: YupTS.string().optional(),
-  url: YupTS.string().optional(),
+  title: YupTS.string(),
+  url: YupTS.string(),
 });
 
 export const EtoMediaType = YupTS.object({
@@ -166,8 +166,8 @@ export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
-  currencies: string[]
-  generalVotingRule?: string
+  currencies: string[];
+  generalVotingRule?: string;
 }
 
 export type TEtoSpecsData = TEtoTermsType & IAdditionalEtoType;

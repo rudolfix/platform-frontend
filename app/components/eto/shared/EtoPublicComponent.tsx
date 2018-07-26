@@ -158,8 +158,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
   const marketingLinks = companyData.marketingLinks && {
     documents: companyData.marketingLinks.map(l => ({
-      url: l.url as string,
-      name: l.title as string,
+      url: l.url,
+      name: l.title,
       icon: <InlineIcon svgIcon={icon_link} />,
     })),
     name: <FormattedMessage id="eto.public-view.documents.marketing-documents" />,
@@ -364,7 +364,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
           <Col xs={12} md={4} className="mb-4 flex-column d-flex">
             <Video
-              youTubeUrl={companyData.companyVideo && (companyData.companyVideo.url as string)}
+              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
               className="mb-4 mt-5"
             />
             {isTwitterFeedEnabled && (

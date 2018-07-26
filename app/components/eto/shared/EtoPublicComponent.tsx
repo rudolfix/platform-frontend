@@ -690,7 +690,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                               data: companyData.useOfCapitalList.map(
                                 (d: { percent: number; label: string }) => d.percent,
                               ),
-                              // tslint:disable-next-line
+                              /* tslint:disable:no-unused-variable */
                               backgroundColor: companyData.useOfCapitalList.map(
                                 (d: { percent: number; label: string }, i: number) =>
                                   CHART_COLORS[i],

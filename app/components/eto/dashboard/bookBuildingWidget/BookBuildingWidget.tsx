@@ -4,13 +4,13 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 
+import { selectIsBookBuilding } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { ButtonArrowRight } from "../../../shared/Buttons";
 import { Panel } from "../../../shared/Panel";
 
-import { selectIsBookBuilding } from "../../../../modules/eto-flow/selectors";
-import * as styles from "./BookBuildingWidget.module.scss";
+import * as styles from "../../etoContentWidget.module.scss";
 
 interface IDispatchProps {
   startBookBuilding: () => void;

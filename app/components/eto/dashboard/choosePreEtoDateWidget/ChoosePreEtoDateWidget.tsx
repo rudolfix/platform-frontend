@@ -8,7 +8,7 @@ import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { Panel } from "../../../shared/Panel";
 
-import * as styles from "./ChoosePreEtoDateWidget.module.scss";
+import * as styles from "../../etoContentWidget.module.scss";
 
 interface IDispatchProps {
   setEtoDate: () => void;

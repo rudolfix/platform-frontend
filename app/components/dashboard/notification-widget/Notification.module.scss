@@ -1,12 +1,24 @@
+.widget {
+  @include make-row;
+  @include media-breakpoint-up (md) {
+    padding-top: $authorized-layout-vertical-padding-lg;
+    padding-bottom: $authorized-layout-vertical-padding-lg;
+  }
+
+  padding-top: $authorized-layout-vertical-padding-sm;
+  padding-bottom: $authorized-layout-vertical-padding-sm;
+}
+
 .notification {
+  @include make-col(1, 1);
   @include font-default;
 
   @include media-breakpoint-up (md) {
     flex-direction: row;
   }
 
-  border: 1px solid currentColor;
-  color: $neu-slate-grey;
+  box-shadow: $shadow-bottom-black-light;
+  color: $color-white;
   display: flex;
   flex-direction: column;
   padding: px-to-rem(10px) px-to-rem(12px);
@@ -17,14 +29,12 @@
       $_color-bg: rgba($blue-light, .15);
 
       background-color: $_color-bg;
-      border-color: $blue-light;
     }
 
     &.warning {
-      $_color-bg: rgba($neu-bright-orange, .26);
+      $_color-bg: rgba($color-orange, .54);
 
       background-color: $_color-bg;
-      border-color: $neu-bright-orange;
     }
   }
 
@@ -39,14 +49,11 @@
 
 
   .icon-notification-type {
+    @include circle(24px);
     @include media-breakpoint-up (md) {
       display: block;
     }
 
-    flex-shrink: 0;
-    width: px-to-rem(24px);
-    height: px-to-rem(24px);
-    border-radius: 50%;
     margin-right: px-to-rem(12px);
     display: none;
   }

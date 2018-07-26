@@ -10,18 +10,20 @@ import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
+import { InlineIcon } from '../../shared/InlineIcon';
 import { ILink, MediaLinksWidget } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { SocialProfilesList } from "../../shared/SocialProfilesList";
 import { TabContent, Tabs } from "../../shared/Tabs";
+import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
 import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
 
-import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
+import * as icon_link from "../../../assets/img/inline_icons/icon_link.svg";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
@@ -144,6 +146,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
     !disableTwitterFeed;
   const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length
   const twitterUrl = isTwitterFeedEnabled && socialChannels ? (socialChannels.find(c => c.type === 'twitter') as any).url : ''
+
+  const marketingLinks = companyData.marketingLinks && {
+    documents: companyData.marketingLinks.map(l => ({url: l.url as string, name: l.title as string, icon: <InlineIcon svgIcon={icon_link}/>})),
+    name: <FormattedMessage id="eto.public-view.documents.marketing-documents" />
+  }
+
+  const documents = marketingLinks ? [marketingLinks].concat(documentsData as any) : documentsData
 
   return (
     <div>
@@ -705,7 +714,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <SectionHeader layoutHasDecorator={false} className="mb-4">
             <FormattedMessage id="eto.form.documents.title" />
           </SectionHeader>
-          <DocumentsWidget className="mb-4" groups={documentsData} />
+          <DocumentsWidget className="mb-4" groups={documents} />
 
           {companyData.companyNews &&
             companyData.companyNews.length > 0 && (

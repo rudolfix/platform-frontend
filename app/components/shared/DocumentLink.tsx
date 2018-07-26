@@ -8,12 +8,13 @@ import * as styles from "./DocumentLink.module.scss";
 export interface IDocumentLinkProps {
   url: string;
   name: TTranslatedString;
+  altIcon?: React.ReactNode
 }
 
-export const DocumentLink: React.SFC<IDocumentLinkProps> = ({ url, name }) => {
+export const DocumentLink: React.SFC<IDocumentLinkProps> = ({ url, name, altIcon }) => {
   return (
     <a href={url} className={styles.documentLink}>
-      <Document extension={url} />
+      {altIcon || <Document extension={url} />}
       {name}
     </a>
   );

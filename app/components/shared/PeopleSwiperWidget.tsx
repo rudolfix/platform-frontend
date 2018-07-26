@@ -4,6 +4,7 @@ import Swiper from "react-id-swiper/lib/custom";
 
 import { ButtonIcon } from "./Buttons";
 import { SlidePerson, TSlidePersonLayout } from "./SlidePerson";
+import { IEtoSocialProfile } from "./SocialProfilesList";
 
 import * as prevIcon from "../../assets/img/inline_icons/arrow_left.svg";
 import * as nextIcon from "../../assets/img/inline_icons/arrow_right.svg";
@@ -15,6 +16,7 @@ interface IPerson {
   description: string;
   layout?: TSlidePersonLayout;
   role?: string;
+  socialChannels: IEtoSocialProfile[];
 }
 
 interface IProps {
@@ -45,15 +47,24 @@ export class PeopleSwiperWidget extends React.Component<IProps> {
     }
   };
 
+  componentDidMount(): void {
+    const numberOfSlides = this.props.people.length;
+
+    if (numberOfSlides % 2) {
+      this.swiper.slideTo(Math.round(numberOfSlides / 2) - 1);
+    }
+  }
+
   render(): React.ReactNode {
     const { people, navigation, layout, ...config } = this.props;
 
     return (
       <div className={styles.swiperWidget}>
         <Swiper {...config} ref={this.swiperRef}>
-          {people.map(({ image, name, description, role }, i) => (
+          {people.map(({ image, name, description, role, socialChannels }, i) => (
             <div key={i}>
               <SlidePerson
+                socialChannels={socialChannels}
                 role={role}
                 description={description}
                 name={name}

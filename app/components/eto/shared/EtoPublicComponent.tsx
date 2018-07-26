@@ -1,14 +1,13 @@
 import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
-import { MediaLinksWidget } from "../../shared/MediaLinksWidget";
+import { MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
@@ -38,9 +37,10 @@ const swiperSingleRowSettings = {
   },
 };
 
-const swiperMultiRowSettings = {
+const swiperTeamSettings = {
   slidesPerView: 5,
   observer: true,
+  centeredSlides: true,
   spaceBetween: 80,
   breakpoints: {
     640: {
@@ -217,9 +217,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
             <div className="d-flex justify-content-between">
-              <Link to={companyData.companyWebsite || ""} target="_blank">
-                {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
-              </Link>
+              {companyData.companyWebsite && (
+                <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
+                  {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
+                </a>
+              )}
               <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
           </Panel>
@@ -518,7 +520,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperMultiRowSettings}
+                        {...swiperTeamSettings}
                         people={(companyData.founders && companyData.founders.members) || []}
                         navigation={{
                           nextEl: "people-swiper-founders-next",
@@ -534,7 +536,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperMultiRowSettings}
+                        {...swiperTeamSettings}
                         people={(companyData.team && companyData.team.members) || []}
                         navigation={{
                           nextEl: "people-swiper-team-next",

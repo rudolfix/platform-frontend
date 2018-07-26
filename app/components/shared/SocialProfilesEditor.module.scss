@@ -1,8 +1,5 @@
 .social-profiles-editor {
   .tabs {
-    @include make-col(10);
-    @include make-col-offset(1);
-
     display: flex;
     flex-wrap: wrap;
     margin-bottom: px-to-rem(16px);
@@ -44,6 +41,7 @@
 
   color: $neu-cloudy-blue;
   cursor: pointer;
+  margin-bottom: px-to-rem(15px);
   margin-right: px-to-rem(20px);
   transition: $ease-out-expo 300ms color;
 

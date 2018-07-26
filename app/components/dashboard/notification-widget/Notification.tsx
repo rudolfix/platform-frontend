@@ -2,16 +2,16 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { NotificationType } from "../../../modules/notifications/reducer";
+import { TTranslatedString } from "../../../types";
 import { ButtonClose } from "../../shared/Buttons";
-
-import * as styles from "./Notification.module.scss";
 
 import * as infoIcon from "../../../assets/img/notifications/info.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
+import * as styles from "./Notification.module.scss";
 
 export interface INotificationProps {
   type: NotificationType;
-  text: string;
+  text: TTranslatedString;
   actionLinkText?: string;
   onClick: () => void;
 }

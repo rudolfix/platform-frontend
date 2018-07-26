@@ -36,7 +36,6 @@ body {
   @include media-breakpoint-up (md) {
     padding-left: $authorized-layout-horizontal-padding-lg;
     padding-right: $authorized-layout-horizontal-padding-lg;
-    padding-top: $authorized-layout-vertical-padding-lg;
   }
 
   @include media-breakpoint-up(lg) {
@@ -49,7 +48,6 @@ body {
   padding-bottom: px-to-rem(266px);
   padding-left: $authorized-layout-horizontal-padding-sm;
   padding-right: $authorized-layout-horizontal-padding-sm;
-  padding-top: $authorized-layout-vertical-padding-sm;
   -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-vendor-prefixes
   background-image: url("../assets/img/dust_bg.svg");
   background-repeat: repeat-x;

@@ -45,6 +45,14 @@ export class PeopleSwiperWidget extends React.Component<IProps> {
     }
   };
 
+  componentDidMount(): void {
+    const numberOfSlides = this.props.people.length;
+
+    if (numberOfSlides % 2) {
+      this.swiper.slideTo(Math.round(numberOfSlides / 2) - 1);
+    }
+  }
+
   render(): React.ReactNode {
     const { people, navigation, layout, ...config } = this.props;
 

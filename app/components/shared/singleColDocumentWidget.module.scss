@@ -1,0 +1,36 @@
+.group-name {
+    @include font-label;
+  
+    margin-bottom: $spacing-vertical-lg-1;
+  }
+  
+  .group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .document {
+    flex-basis: 100%;
+  }
+
+  .icon {
+    width: px-to-rem(30);
+    height: px-to-rem(30);
+    color: #656b72;
+  }
+
+  .document-link {
+    // align-items: center;
+    // display: inline-flex;
+    font-weight: $font-weight-light;
+    margin-bottom: $spacing-vertical-lg-1;
+    text-decoration: underline;
+  
+    :global {
+      .document-icon {
+        width: 18px;
+        margin-right: 10px;
+      }
+    }
+  }
+  

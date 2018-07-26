@@ -6,72 +6,87 @@ import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
 import { DocumentTile } from "./shared/Document";
 import { SectionHeader } from "./shared/SectionHeader";
 
+import * as styles from "./Documents.module.scss";
+import { SingleColDocumentsWidget } from "./shared/singleColDocumentWidget";
+
 const documents = [
   {
-    title: "example pdf",
+    title: "Term Sheat",
     url: "example.pdf",
   },
   {
-    title: "example doc",
+    title: "Info Blatt",
     url: "example.doc",
   },
   {
-    title: "example",
-    url: "example.docx",
+    title: "Bafin Prospectus",
+    url: "",
   },
 ];
+const documentsData = [
+  {
+    name: "AGREEMENT AND PROSPECTUS TEMPLATES",
+    documents: [
+      {
+        name: "test file sdafasdf asd",
+        url: "",
+      },
+      {
+        name: "test file fdag hasf",
+        url: "test.pdf",
+      },
+      {
+        name: "test file asdf gasd",
+        url: "test.doc",
+      },
+      {
+        name: "test file",
+        url: "test.pdf",
+      },
+    ],
+  },
+];
+
+export const GeneratedDocuments: React.SFC<{ title: string; url: string }> = ({ title, url }) => {
+  return (
+    <Col xs={6} md={3} key={url} className="mb-4">
+      <DocumentTile title={title} extension={url} />
+    </Col>
+  );
+};
 
 export const Documents: React.SFC = () => (
   <LayoutAuthorized>
     <Row>
-      <Col xs={12} md={7}>
+      <Col xs={12} md={8}>
         <SectionHeader className="my-4">
-          <FormattedMessage id="documents.templates" />
+          <FormattedMessage id="documents.legal-documents" />
         </SectionHeader>
 
         <Row>
-          {documents.map(({ title, url }) => (
-            <Col xs={6} md={4} key={url} className="mb-4">
-              <DocumentTile title={title} extension={url} />
-            </Col>
-          ))}
+          <Col xs={12} className={styles.groupName}>
+            GENERATED DOCUMENTS
+          </Col>
+          {[documents[1]].map(({ title, url }) => <GeneratedDocuments {...{ title, url }} />)}
         </Row>
 
-        <SectionHeader className="my-4">
-          <FormattedMessage id="documents.need-to-upload-these-files" />
-        </SectionHeader>
-
         <Row>
-          {documents.map(({ title, url }) => (
-            <Col xs={6} md={4} key={url} className="mb-4">
-              <DocumentTile title={title} extension={url} />
-            </Col>
-          ))}
-        </Row>
-
-        <SectionHeader className="my-4">
-          <FormattedMessage id="documents.marketing-files" />
-        </SectionHeader>
-
-        <Row>
-          {documents.map(({ title, url }) => (
-            <Col xs={6} md={4} key={url} className="mb-4">
-              <DocumentTile title={title} extension={url} />
+          <Col xs={12} className={styles.groupName}>
+            APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
+          </Col>
+          {[...documents, documents[0]].map(({ title, url }) => (
+            <Col xs={6} md={3} key={url} className="mb-4">
+              <DocumentTile title={title} extension={url} blank={url === "" ? true : false} />
+              {/* TODO: Add correct condition for when a file is empty */}
             </Col>
           ))}
         </Row>
       </Col>
-      <Col xs={12} md={5}>
-        <SectionHeader className="my-4">
-          <FormattedMessage id="documents.automatically-generated-files" />
-        </SectionHeader>
+      <Col xs={12} md={3}>
+        <SectionHeader className="my-4" layoutHasDecorator={false} />
 
         <Row>
-          {documents.map(({ title, url }) => (
-            <Col xs={6} key={url} className="mb-4">
-              <DocumentTile title={title} extension={url} />
-            </Col>
-          ))}
+          <SingleColDocumentsWidget groups={documentsData} className={styles.documents} />
         </Row>
       </Col>
     </Row>

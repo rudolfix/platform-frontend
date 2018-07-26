@@ -20,17 +20,20 @@
 }
 
 .label {
-  opacity: .18;
+  opacity: 0.18;
 }
 
 .tile {
   background-color: $color-white;
-  border: 1px solid $color-silver;
+  color: #aabcca;
+  border: 1px solid #bbcad5;
+
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 24px;
+  padding: px-to-rem(20px);
+  padding-bottom: px-to-rem(5px);
 
   :global(.document-icon) {
     width: 70px;
@@ -44,4 +47,24 @@
     margin-top: 20px;
     text-align: center;
   }
+  .disabled-title {
+    color: #bbcad5;
+    justify-content: center;
+  }
+}
+
+.sub-title {
+  color: #bbcad5;
+  justify-content: center;
+  font-size: px-to-rem(8px);
+  margin-bottom: 0;
+}
+
+.border-document {
+  width: 160px;
+  height: 139.6px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  background-color: var(--white-two);
+  border: solid 4px rgba($blue-light, .15);
 }

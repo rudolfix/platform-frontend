@@ -1,15 +1,17 @@
 import * as Yup from "yup";
 import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
-import { EtoCompanyInformationType, TGeneralEtoDataType } from "../../lib/api/EtoApi.interfaces";
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "./../../lib/api/eto/EtoApi.interfaces";
 import {
+  EtoCompanyInformationType,
   EtoKeyIndividualsType,
   EtoLegalInformationType,
   EtoMediaType,
   EtoProductVisionType,
   EtoRiskAssessmentType,
   EtoTermsType,
-} from "./../../lib/api/EtoApi.interfaces";
+  GeneralEtoDataType,
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
+} from "./../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {
@@ -87,7 +89,7 @@ export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
   EtoRiskAssessmentType.toYup(),
 );
 
-export const calculateGeneralEtoData = getFormFractionDoneCalculator(TGeneralEtoDataType.toYup(), {
+export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {
   ignore: true,
 });
 

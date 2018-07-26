@@ -1,6 +1,6 @@
 import { TGeneralEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
-import { IEtoFile } from "./../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoFiles } from "./../../lib/api/eto/EtoFileApi.interfaces";
 
 export const etoFlowActions = {
   loadDataStart: () => createSimpleAction("ETO_FLOW_LOAD_DATA_START"),
@@ -8,6 +8,7 @@ export const etoFlowActions = {
   loadData: (data: Partial<TGeneralEtoData>) => createAction("ETO_FLOW_LOAD_DATA", { data }),
   saveDataStart: (data: Partial<TGeneralEtoData>) =>
     createAction("ETO_FLOW_SAVE_DATA_START", { data }),
-  loadFileData: (etoFileData: IEtoFile) => createAction("ETO_FLOW_LOAD_FILE_DATA", { etoFileData }),
+  loadFileData: (etoFileData: IEtoFiles) =>
+    createAction("ETO_FLOW_LOAD_FILE_DATA", { etoFileData }),
   loadFileDataStart: () => createSimpleAction("ETO_FLOW_LOAD_FILE_DATA_START"),
 };

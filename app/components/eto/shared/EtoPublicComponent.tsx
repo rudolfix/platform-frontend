@@ -540,8 +540,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Col>
       </Row>
 
-      {((companyData.founders && companyData.founders.members.length) ||
-        (companyData.team && companyData.team.members.length)) && (
+      {((companyData.founders && companyData.founders.members[0].name.length) ||
+        (companyData.team && companyData.team.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
             <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
@@ -582,10 +582,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Row>
       )}
 
-      {((companyData.notableInvestors && companyData.notableInvestors.members.length) ||
-        (companyData.partners && companyData.partners.members.length) ||
-        (companyData.keyCustomers && companyData.keyCustomers.members.length) ||
-        (companyData.boardMembers && companyData.boardMembers.members.length)) && (
+      {((companyData.notableInvestors && !!companyData.notableInvestors.members[0].name.length) ||
+        (companyData.partners && !!companyData.partners.members[0].name.length) ||
+        (companyData.keyCustomers && !!companyData.keyCustomers.members[0].name.length) ||
+        (companyData.boardMembers && !!companyData.boardMembers.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
             <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>

@@ -18,12 +18,12 @@ module.exports = merge(configCommon, {
     headers: {
       "Content-Security-Policy":
         "default-src 'self'; script-src 'self' 'unsafe-eval' www.google-analytics.com/analytics.js " +
-        "'unsafe-inline' *; frame-src *; " + // this should be only enabled for twitter.html
+        "'unsafe-inline' *; frame-src *; " + // this should be only enabled for twitter-iframe.html
         "style-src fonts.googleapis.com 'self' 'unsafe-inline' " +
-        "*; " + // this should be only enabled for twitter.html
+        "*; " + // this should be only enabled for twitter-iframe.html
         "font-src 'self' fonts.gstatic.com; " +
         "img-src 'self' data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net " +
-        "*; " + // this should be only enabled for twitter.html
+        "*; " + // this should be only enabled for twitter-iframe.html
         "connect-src 'self' wss://localhost:9090", // needed for hot reload
     },
     proxy: generateProxyConfig("http://localhost"),

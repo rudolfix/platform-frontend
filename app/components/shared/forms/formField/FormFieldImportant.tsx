@@ -6,10 +6,11 @@ import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { Avatar } from "../../Avatar";
-import { Tooltip } from "../../Tooltip";
+import { CustomTooltip } from "../../CustomTooltip";
 import { FormLabel } from "./FormLabel";
 import { isNonValid, isValid } from "./utils";
 
+import * as icon from "../../../../assets/img/notifications/warning.svg";
 import * as styles from "./FormFieldImportant.module.scss";
 import * as formStyles from "./FormStyles.module.scss";
 
@@ -55,6 +56,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { errors } = formik;
+    const tooltipId = `${name}_error_notification`;
 
     return (
       <>
@@ -74,7 +76,12 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
                   {...props as any}
                 />
                 <InputGroupAddon addonType="append" className={formStyles.addon}>
-                  {!!errors[name] && <Tooltip content={errorMessage} />}
+                  {!!errors[name] && (
+                    <>
+                      <img id={tooltipId} src={icon} />
+                      <CustomTooltip target={tooltipId}>{errorMessage}</CustomTooltip>
+                    </>
+                  )}
                 </InputGroupAddon>
               </InputGroup>
               {hasAvatar && (

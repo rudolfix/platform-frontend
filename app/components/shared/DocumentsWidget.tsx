@@ -9,6 +9,7 @@ import * as styles from "./DocumentsWidget.module.scss";
 export interface IDocument {
   url: string;
   name: TTranslatedString;
+  icon?: React.ReactNode;
 }
 
 export interface IDocumentsGroup {
@@ -28,10 +29,10 @@ export const DocumentsWidget: React.SFC<IProps> = ({ groups, className }) => {
         <div key={i}>
           <div className={styles.groupName}>{name}</div>
           <div className={styles.group}>
-            {documents.map(({ name, url }, i) => {
+            {documents.map(({ name, url, icon }, i) => {
               return (
                 <div className={styles.document} key={i}>
-                  <DocumentLink url={url} name={name} />
+                  <DocumentLink url={url} name={name} altIcon={icon} />
                 </div>
               );
             })}

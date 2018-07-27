@@ -1,94 +1,125 @@
 import * as React from "react";
-import { Col, Row } from "reactstrap";
-
 import { FormattedMessage } from "react-intl";
+import { Col, Row } from "reactstrap";
+import { compose } from "redux";
+
+import { IEtoFiles, TEtoUploadFile } from "../lib/api/eto/EtoFileApi.interfaces";
+import { actions } from "../modules/actions";
+import { selectEtoFileData, selectEtoLoadingData } from "../modules/eto-flow/selectors";
+import { appConnect } from "../store";
+import { ETOAddDocuments } from "./eto/shared/EtoAddDocument";
 import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
 import { DocumentTile } from "./shared/Document";
+import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
-
-import * as styles from "./Documents.module.scss";
 import { SingleColDocumentsWidget } from "./shared/singleColDocumentWidget";
 
-const documents = [
-  {
-    title: "Term Sheat",
-    url: "example.pdf",
-  },
-  {
-    title: "Info Blatt",
-    url: "example.doc",
-  },
-  {
-    title: "Bafin Prospectus",
-    url: "",
-  },
-];
-const documentsData = [
-  {
-    name: "AGREEMENT AND PROSPECTUS TEMPLATES",
-    documents: [
-      {
-        name: "test file sdafasdf asd",
-        url: "",
-      },
-      {
-        name: "test file fdag hasf",
-        url: "test.pdf",
-      },
-      {
-        name: "test file asdf gasd",
-        url: "test.doc",
-      },
-      {
-        name: "test file",
-        url: "test.pdf",
-      },
-    ],
-  },
-];
+import * as styles from "./Documents.module.scss";
 
 export const GeneratedDocuments: React.SFC<{ title: string; url: string }> = ({ title, url }) => {
   return (
     <Col xs={6} md={3} key={url} className="mb-4">
-      <DocumentTile title={title} extension={url} />
+      {/* TODO: add download icon missing svg */}
+      <a href={url} target="_blank">
+        <DocumentTile title={title} extension={url} />
+      </a>
     </Col>
   );
 };
 
-export const Documents: React.SFC = () => (
-  <LayoutAuthorized>
-    <Row>
-      <Col xs={12} md={8}>
-        <SectionHeader className="my-4">
-          <FormattedMessage id="documents.legal-documents" />
-        </SectionHeader>
+class DocumentsComponent extends React.Component<IProps> {
+  componentDidMount(): void {
+    const { loadFileDataStart } = this.props;
+    loadFileDataStart();
+  }
+  render(): React.ReactNode {
+    const { loadingData, etoFilesData } = this.props;
+    const { links, generatedDocuments, uploadedDocuments } = etoFilesData;
+    // TODO: Add view where you are not allowed to load eto data
+    return (
+      <LayoutAuthorized>
+        {loadingData ? (
+          <LoadingIndicator />
+        ) : (
+          <Row>
+            <Col xs={12} md={8}>
+              <SectionHeader className="my-4">
+                <FormattedMessage id="documents.legal-documents" />
+              </SectionHeader>
 
-        <Row>
-          <Col xs={12} className={styles.groupName}>
-            GENERATED DOCUMENTS
-          </Col>
-          {[documents[1]].map(({ title, url }) => <GeneratedDocuments {...{ title, url }} />)}
-        </Row>
+              <Row>
+                <Col xs={12} className={styles.groupName}>
+                  GENERATED DOCUMENTS
+                </Col>
+                {generatedDocuments.map(({ title, url }, index) => {
+                  return (
+                    url && url !== "" && <GeneratedDocuments key={index} {...{ title, url }} />
+                  );
+                })}
+              </Row>
 
-        <Row>
-          <Col xs={12} className={styles.groupName}>
-            APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
-          </Col>
-          {[...documents, documents[0]].map(({ title, url }) => (
-            <Col xs={6} md={3} key={url} className="mb-4">
-              <DocumentTile title={title} extension={url} blank={url === "" ? true : false} />
-              {/* TODO: Add correct condition for when a file is empty */}
+              <Row>
+                <Col xs={12} className={styles.groupName}>
+                  APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
+                </Col>
+                {Object.keys(uploadedDocuments).map(fileName => (
+                  <Col xs={6} md={3} key={fileName} className="mb-4">
+                    <ETOAddDocuments fileName={fileName as TEtoUploadFile}>
+                      <DocumentTile
+                        title={fileName as TEtoUploadFile}
+                        extension={
+                          uploadedDocuments[fileName as TEtoUploadFile]&& 
+                          uploadedDocuments[fileName as TEtoUploadFile]!.file &&
+                          uploadedDocuments[fileName as TEtoUploadFile]!.file!.name ||
+                          uploadedDocuments[fileName as TEtoUploadFile]!.url
+                        }
+                        blank={
+                          uploadedDocuments[fileName as TEtoUploadFile]!.url === "" ? true : false
+                        }
+                      />
+                    </ETOAddDocuments>
+
+                    {/* TODO: Add correct condition for when a file is empty */}
+                  </Col>
+                ))}
+              </Row>
             </Col>
-          ))}
-        </Row>
-      </Col>
-      <Col xs={12} md={3}>
-        <SectionHeader className="my-4" layoutHasDecorator={false} />
+            <Col xs={12} md={4}>
+              <SectionHeader className="my-4" layoutHasDecorator={false} />
+              <Row>
+                <SingleColDocumentsWidget
+                  documents={links}
+                  name="AGREEMENT AND PROSPECTUS TEMPLATES"
+                  className={styles.documents}
+                />
+              </Row>
+            </Col>
+          </Row>
+        )}
+      </LayoutAuthorized>
+    );
+  }
+}
 
-        <Row>
-          <SingleColDocumentsWidget groups={documentsData} className={styles.documents} />
-        </Row>
-      </Col>
-    </Row>
-  </LayoutAuthorized>
-);
+type IProps = IStateProps & IDispatchProps;
+
+interface IStateProps {
+  etoFilesData: IEtoFiles;
+  loadingData: boolean;
+}
+
+interface IDispatchProps {
+  loadFileDataStart: () => void;
+}
+
+export const Documents = compose<React.SFC>(
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: s => ({
+      etoFilesData: selectEtoFileData(s.etoFlow),
+      loadingData: selectEtoLoadingData(s.etoFlow),
+    }),
+    dispatchToProps: dispatch => ({
+      loadFileDataStart: () => dispatch(actions.etoFlow.loadFileDataStart()),
+    }),
+  }),
+)(DocumentsComponent);

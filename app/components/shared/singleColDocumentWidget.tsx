@@ -15,36 +15,28 @@ export interface IDocument {
   name: TTranslatedString;
 }
 
-export interface IDocumentsGroup {
-  name: TTranslatedString;
-  documents: IDocument[];
-}
-
 interface IProps {
-  groups: IDocumentsGroup[];
+  documents: IDocument[];
+  name: TTranslatedString;
   className?: string;
 }
 
-export const SingleColDocumentsWidget: React.SFC<IProps> = ({ groups, className }) => {
+export const SingleColDocumentsWidget: React.SFC<IProps> = ({ documents, className, name }) => {
   return (
     <Panel className={className}>
-      {groups.map(({ name, documents }, i) => (
-        <div key={i}>
-          <Col className={styles.groupName}>{name}</Col>
-          <div className={styles.group}>
-            {documents.map(({ name, url }, i) => {
-              return (
-                <Col xs={12} className={styles.document} key={i}>
-                  <InlineIcon svgIcon={attachmentIcon} className={styles.icon} width="30"/>
-                  <a href={url} className={styles.documentLink}>
-                    {name}
-                  </a>
-                </Col>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+      <Col className={styles.groupName}>{name}</Col>
+      <div className={styles.group}>
+        {documents.map(({ name, url }, i) => {
+          return (
+            <Col xs={12} className={styles.document} key={i}>
+              <InlineIcon svgIcon={attachmentIcon} className={styles.icon} width="30" />
+              <a href={url} className={styles.documentLink}>
+                {name}
+              </a>
+            </Col>
+          );
+        })}
+      </div>
     </Panel>
   );
 };

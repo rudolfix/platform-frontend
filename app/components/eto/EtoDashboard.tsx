@@ -31,6 +31,7 @@ import {
   selectIsPamphletSubmitted,
   selectIsProspectusSubmitted,
   selectIsTermSheetSubmitted,
+  selectEtoLoadingData,
 } from "../../modules/eto-flow/selectors";
 
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
@@ -252,7 +253,7 @@ export const EtoDashboard = compose<React.SFC>(
     stateToProps: s => ({
       companyData: selectCompanyData(s.etoFlow),
       etoData: selectEtoData(s.etoFlow),
-      loadingData: s.etoFlow.loading,
+      loadingData: selectEtoLoadingData(s.etoFlow),
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),
       isLightWallet: selectIsLightWallet(s.web3),

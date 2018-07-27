@@ -3,11 +3,7 @@ import { fork, put } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import {
-  TCompanyEtoData,
-  TEtoSpecsData,
-  TPartialEtoSpecData,
-} from "../../lib/api/eto/EtoApi.interfaces";
+import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
@@ -37,8 +33,7 @@ export function* loadEtoFileData({
 }: TGlobalDependencies): any {
   try {
     const etoFileData: IEtoFiles = yield apiEtoFileService.getFileEtoData();
-
-    yield put(actions.etoFlow.loadFileData(etoFileData));
+    yield put(actions.etoFlow.loadEtoFileData(etoFileData));
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO files data. Make sure you have completed KYC and email verification process.",
@@ -56,29 +51,21 @@ export function* saveEtoData(
     const currentCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
     const currentEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
 
-    let newEtoData: IHttpResponse<TPartialEtoSpecData> = currentEtoData;
-
-    const newCompanyData = yield apiEtoService.putCompanyData({
+    yield apiEtoService.putCompanyData({
       ...currentCompanyData,
       ...action.payload.data.companyData,
     });
     if (currentEtoData.state === "preview")
-      newEtoData = yield apiEtoService.putEtoData({
+      yield apiEtoService.putEtoData({
         ...currentEtoData,
         ...action.payload.data.etoData,
       });
-
-    yield put(
-      actions.etoFlow.loadData({
-        etoData: newEtoData.body || newEtoData,
-        companyData: newCompanyData.body || newCompanyData,
-      }),
-    );
-    yield put(actions.routing.goToDashboard());
   } catch (e) {
-    yield put(actions.etoFlow.loadDataStart());
     logger.error("Failed to send ETO data", e);
     notificationCenter.error("Failed to send ETO data");
+  } finally {
+    yield put(actions.etoFlow.loadDataStart());
+    yield put(actions.routing.goToDashboard());
   }
 }
 
@@ -109,9 +96,32 @@ export function* submitEtoData(
   }
 }
 
+function* uploadEtoFile(
+  {
+    apiEtoFileService,
+    notificationCenter,
+    logger,
+    intlWrapper: { intl: { formatIntlMessage } },
+  }: TGlobalDependencies,
+  action: TAction,
+): Iterator<any> {
+  if (action.type !== "ETO_FLOW_UPLOAD_DOCUMENT_START") return;
+  const { file, name } = action.payload;
+  try {
+    const etoFiles = yield apiEtoFileService.putFileEtoData(file, name);
+    yield put(actions.etoFlow.loadEtoFileData(etoFiles));
+    notificationCenter.info("Yes you did it");
+  } catch (e) {
+    yield put(actions.etoFlow.loadFileDataStart());
+    logger.error("Failed to send ETO data", e);
+    notificationCenter.error("Failed to send ETO file");
+  }
+}
+
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_FILE_DATA_START", loadEtoFileData);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_UPLOAD_DOCUMENT_START", uploadEtoFile);
 }

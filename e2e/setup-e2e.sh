@@ -7,6 +7,8 @@ BACKEND_SHA=d9d9d1e38e38968cee410ab4a93e2057fd9bf3e1
 # we tag images with shorter SHA
 BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}
 
+echo "BACKEND_SHA: ${BACKEND_SHA}";
+echo "BACKEND_SHORT_SHA: ${BACKEND_SHORT_SHA}";
 
 if [[ -z "${REGISTRY_HOST}" ]]; then
   echo "You need to provide REGISTRY_HOST env var";
@@ -57,7 +59,7 @@ run_backend() {
     echo "Pulling images done."
 
     make prerequisites-dev
-    make run-pure
+    make run-remote-dev-without-build
 
     cd ..
     echo "Backend running"

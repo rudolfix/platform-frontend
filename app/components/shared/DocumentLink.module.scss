@@ -6,7 +6,8 @@
   text-decoration: underline;
 
   :global {
-    .document-icon {
+    .document-icon,
+    .inline-icon {
       width: 18px;
       margin-right: 10px;
     }

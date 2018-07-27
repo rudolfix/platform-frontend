@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const paths = require("./paths");
 const loadAppEnv = require("./loadAppEnv");
@@ -16,6 +17,7 @@ module.exports = {
     publicPath: "/",
   },
   plugins: [
+    new CopyWebpackPlugin([{ from: "./app/twitter-iframe.html", to: "./" }]),
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,

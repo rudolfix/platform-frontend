@@ -2,13 +2,13 @@ import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { Input, InputGroup, InputGroupAddon, Tooltip } from "reactstrap";
+import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps } from "../../../../types";
-import { CustomTooltip } from "../../CustomTooltip"
+import { CustomTooltip } from "../../CustomTooltip";
 import { isNonValid, isValid } from "./utils";
 
-import * as icon from "../../../../assets/img/notifications/warning.svg"
+import * as icon from "../../../../assets/img/notifications/warning.svg";
 import * as styles from "./FormFieldImportant.module.scss";
 import * as formStyles from "./FormStyles.module.scss";
 
@@ -36,12 +36,13 @@ type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 export class FormFieldImportant extends React.Component<FieldGroupProps> {
   static contextTypes = {
     formik: PropTypes.object,
-  }
+  };
 
   render(): React.ReactChild {
     const { type, placeholder, name, className, errorMessage, validate, ...props } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { errors } = formik;
+    const tooltipId = `${name}_error_notification`;
 
     return (
       <Field
@@ -58,12 +59,12 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
               {...props as any}
             />
             <InputGroupAddon addonType="append" className={formStyles.addon}>
-              {!!errors[name] && (<>
-                <img id={name + "_error_notification"} src={icon}/>
-                <CustomTooltip target={name + "_error_notification"}>
-                  {errorMessage}
-                </CustomTooltip>
-              </>)}
+              {!!errors[name] && (
+                <>
+                  <img id={tooltipId} src={icon} />
+                  <CustomTooltip target={tooltipId}>{errorMessage}</CustomTooltip>
+                </>
+              )}
             </InputGroupAddon>
           </InputGroup>
         )}

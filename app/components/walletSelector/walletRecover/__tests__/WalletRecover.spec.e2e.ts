@@ -58,14 +58,13 @@ describe("Wallet recover", () => {
     cy.wait(5000);
     assertLatestEmailSentWithSalt(email);
 
-    cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
+    cy.contains(tid("my-neu-widget-neumark-balance"), "10487.9455 NEU");
 
     cy.contains(tid("my-wallet-widget-eur-token-large-value"), "0.00 nEUR");
     cy.contains(tid("my-wallet-widget-eur-token-value"), "0.00 EUR");
 
-    // remove this for now...
-    // cy.contains(tid("my-wallet-widget-eth-token-large-value"), "ETH999 938.8591");
-    // cy.contains(tid("my-wallet-widget-eth-token-value"), "483 930 410.24 EUR");
+    cy.contains(tid("my-wallet-widget-eth-token-large-value"), "ETH10 033.0748");
+    cy.contains(tid("my-wallet-widget-eth-token-value"), "4 855 606.86 EUR");
 
     cy.get(tid("authorized-layout-settings-button")).click();
 

@@ -6,13 +6,13 @@ import { InvestmentSelectionForm } from "./Investment";
 
 const wallets = [
   {
-    balanceEth: "300000000",
+    balanceEth: "30000000000000000000",
     id: "foo",
     name: "ICBM Wallet",
   },
   {
-    balanceEth: "400000000",
-    balanceEur: "456",
+    balanceEth: "40000000000000000000",
+    balanceEur: "45600000000000000000",
     id: "bar",
     name: "Light Wallet",
   },

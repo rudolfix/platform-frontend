@@ -110,11 +110,11 @@ function* uploadEtoFile(
   try {
     const etoFiles = yield apiEtoFileService.putFileEtoData(file, name);
     yield put(actions.etoFlow.loadEtoFileData(etoFiles));
-    notificationCenter.info("Yes you did it");
+    notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));
   } catch (e) {
     yield put(actions.etoFlow.loadFileDataStart());
     logger.error("Failed to send ETO data", e);
-    notificationCenter.error("Failed to send ETO file");
+    notificationCenter.error(formatIntlMessage("eto.modal.file-upload-failed"));
   }
 }
 

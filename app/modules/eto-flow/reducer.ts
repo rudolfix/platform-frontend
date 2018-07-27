@@ -17,7 +17,17 @@ export const etoFlowInitialState: IEtoFlowState = {
   saving: false,
   etoData: {},
   companyData: {},
-  etoFileData: { links: [], generatedDocuments: [], uploadedDocuments: {} },
+  etoFileData: {
+    links: [],
+    generatedDocuments: [],
+    uploadedDocuments: {
+      pamphlet: {},
+      termSheet: {},
+      infoBlatt: {},
+      bafinProspectus: {},
+      signedAgreement: {},
+    },
+  },
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (

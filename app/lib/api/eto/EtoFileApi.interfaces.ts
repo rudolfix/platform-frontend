@@ -26,29 +26,29 @@ export interface IEtoFiles {
   links: IEtoLinkFile[];
   generatedDocuments: IEtoGeneratedFile[];
   uploadedDocuments: {
-    pamphlet?: {
-      url: string;
-      status: string;
+    pamphlet: {
+      url?: string;
+      status?: string;
       file?: File;
     };
-    termSheet?: {
-      url: string;
-      status: string;
+    termSheet: {
+      url?: string;
+      status?: string;
       file?: File;
     };
-    infoBlatt?: {
-      url: string;
-      status: string;
+    infoBlatt: {
+      url?: string;
+      status?: string;
       file?: File;
     };
-    bafinProspectus?: {
-      url: string;
-      status: string;
+    bafinProspectus: {
+      url?: string;
+      status?: string;
       file?: File;
     };
-    signedAgreement?: {
-      url: string;
-      status: string;
+    signedAgreement: {
+      url?: string;
+      status?: string;
       file?: File;
     };
   };

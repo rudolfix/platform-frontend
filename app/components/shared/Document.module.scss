@@ -20,15 +20,17 @@
 }
 
 .label {
-  opacity: 0.18;
+  opacity: .18;
 }
 
 .tile {
   background-color: $color-white;
-  color: #aabcca;
-  border: 1px solid #bbcad5;
+  color: $gray5;
+  border: 1px solid $gray10;
+  width: px-to-rem(160px);
+  height: px-to-rem(139.6px);
 
-  border-radius: 5px;
+  border-radius: px-to-rem(5px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,7 +38,7 @@
   padding-bottom: px-to-rem(5px);
 
   :global(.document-icon) {
-    width: 70px;
+    width: px-to-rem(70px);
     margin: 0 auto;
   }
 
@@ -44,27 +46,24 @@
     color: $color-black;
     font-size: px-to-rem(12px);
     margin-bottom: 0;
-    margin-top: 20px;
+    margin-top: px-to-rem(20px);
     text-align: center;
   }
+
   .disabled-title {
-    color: #bbcad5;
+    color: $gray10;
     justify-content: center;
   }
+
 }
 
 .sub-title {
-  color: #bbcad5;
+  color: $gray10;
   justify-content: center;
   font-size: px-to-rem(8px);
   margin-bottom: 0;
 }
 
-.border-document {
-  width: 160px;
-  height: 139.6px;
-  border-radius: 5px;
-  background-color: #ffffff;
-  background-color: var(--white-two);
-  border: solid 4px rgba($blue-light, .15);
+.active {
+  border: 1px solid $green-light;
 }

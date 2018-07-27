@@ -4,19 +4,27 @@ import { IEtoFiles } from "./EtoFileApi.interfaces";
 export const getSampleEtoFiles = (): IEtoFiles => ({
   links: [
     {
-      name: "test file sdafasdf asd",
+      name: "Term Sheet",
       url: "",
     },
     {
-      name: "test file fdag hasf",
+      name: "Prospectus EN",
       url: "test.pdf",
     },
     {
-      name: "test file asdf gasd",
+      name: "Prospectus DE",
       url: "test.doc",
     },
     {
-      name: "test file",
+      name: "Reservation Agreement",
+      url: "test.pdf",
+    },
+    {
+      name: "Token Holder Agreement",
+      url: "test.pdf",
+    },
+    {
+      name: "Investor Agreement",
       url: "test.pdf",
     },
   ],
@@ -37,11 +45,11 @@ export const getSampleEtoFiles = (): IEtoFiles => ({
   uploadedDocuments: {
     pamphlet: {
       url: "",
-      status: "locked",
+      status: "canReplace",
     },
     termSheet: {
       url: "",
-      status: "locked",
+      status: "canReplace",
     },
     infoBlatt: {
       url: "",

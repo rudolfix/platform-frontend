@@ -19,7 +19,6 @@ import * as styles from "./Documents.module.scss";
 export const GeneratedDocuments: React.SFC<{ title: string; url: string }> = ({ title, url }) => {
   return (
     <Col xs={6} md={3} key={url} className="mb-4">
-      {/* TODO: add download icon missing svg */}
       <a href={url} target="_blank">
         <DocumentTile title={title} extension={url} />
       </a>
@@ -35,7 +34,6 @@ class DocumentsComponent extends React.Component<IProps> {
   render(): React.ReactNode {
     const { loadingData, etoFilesData } = this.props;
     const { links, generatedDocuments, uploadedDocuments } = etoFilesData;
-    // TODO: Add view where you are not allowed to load eto data
     return (
       <LayoutAuthorized>
         {loadingData ? (
@@ -62,26 +60,32 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
-                {Object.keys(uploadedDocuments).map(fileName => (
-                  <Col xs={6} md={3} key={fileName} className="mb-4">
-                    <ETOAddDocuments fileName={fileName as TEtoUploadFile}>
-                      <DocumentTile
-                        title={fileName as TEtoUploadFile}
-                        extension={
-                          uploadedDocuments[fileName as TEtoUploadFile]&& 
-                          uploadedDocuments[fileName as TEtoUploadFile]!.file &&
-                          uploadedDocuments[fileName as TEtoUploadFile]!.file!.name ||
-                          uploadedDocuments[fileName as TEtoUploadFile]!.url
+                {Object.keys(uploadedDocuments).map(fileName => {
+                  const typedFileName = fileName as TEtoUploadFile;
+                  return (
+                    <Col xs={6} md={3} key={fileName} className="mb-4">
+                      <ETOAddDocuments
+                        fileName={typedFileName}
+                        disabled={
+                          uploadedDocuments[typedFileName].status === "canReplace" ? false : true
                         }
-                        blank={
-                          uploadedDocuments[fileName as TEtoUploadFile]!.url === "" ? true : false
-                        }
-                      />
-                    </ETOAddDocuments>
-
-                    {/* TODO: Add correct condition for when a file is empty */}
-                  </Col>
-                ))}
+                      >
+                        <DocumentTile
+                          title={typedFileName}
+                          extension={
+                            (uploadedDocuments[typedFileName].file &&
+                              uploadedDocuments[typedFileName].file!.name) ||
+                            ""
+                          }
+                          active={
+                            uploadedDocuments[typedFileName].status === "canReplace" ? true : false
+                          }
+                          blank={uploadedDocuments[typedFileName].url === "" ? true : false}
+                        />
+                      </ETOAddDocuments>
+                    </Col>
+                  );
+                })}
               </Row>
             </Col>
             <Col xs={12} md={4}>

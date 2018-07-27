@@ -27,11 +27,11 @@ import {
   selectCombinedEtoCompanyData,
   selectCompanyData,
   selectEtoData,
+  selectEtoLoadingData,
   selectEtoState,
   selectIsPamphletSubmitted,
   selectIsProspectusSubmitted,
   selectIsTermSheetSubmitted,
-  selectEtoLoadingData,
 } from "../../modules/eto-flow/selectors";
 
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";

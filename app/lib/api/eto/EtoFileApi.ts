@@ -14,8 +14,8 @@ export class EtoFileApi {
   }
 
   public async putFileEtoData(file: File, name: TEtoUploadFile): Promise<IEtoFiles> {
-    this.etoFiles.uploadedDocuments[name]!.url = "IPFS url";
-    this.etoFiles.uploadedDocuments[name]!.file = file;
+    this.etoFiles.uploadedDocuments[name].url = "IPFS url";
+    this.etoFiles.uploadedDocuments[name].file = file;
     return Promise.resolve(this.etoFiles);
   }
 }

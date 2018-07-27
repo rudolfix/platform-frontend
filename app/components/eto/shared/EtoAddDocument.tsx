@@ -9,10 +9,6 @@ import { appConnect } from "../../../store";
 
 import * as styles from "./EtoAddDocument.module.scss";
 
-interface IStateProps {
-  fileUploading?: boolean;
-}
-
 interface IDispatchProps {
   onDropFile: (file: File, fileName: TEtoUploadFile) => void;
 }
@@ -20,12 +16,13 @@ interface IDispatchProps {
 interface IOwnProps {
   children: React.ReactNode;
   fileName: TEtoUploadFile;
+  disabled?: boolean;
 }
-export const ETOAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & IOwnProps> = ({
+export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = ({
   onDropFile,
-  fileUploading,
   children,
   fileName,
+  disabled,
 }) => {
   const onDrop = (accepted: File[]) => accepted[0] && onDropFile(accepted[0], fileName);
   return (
@@ -37,6 +34,7 @@ export const ETOAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & 
       rejectClassName={styles.invisible}
       disabledClassName={styles.invisible}
       className={styles.invisible}
+      disabled={disabled}
     >
       {children}
     </Dropzone>
@@ -44,8 +42,7 @@ export const ETOAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & 
 };
 
 export const ETOAddDocuments = compose<React.SFC<IOwnProps>>(
-  appConnect<IStateProps, IDispatchProps, IOwnProps>({
-    stateToProps: () => ({}),
+  appConnect<{}, IDispatchProps, IOwnProps>({
     dispatchToProps: dispatch => ({
       onDropFile: (file: File, fileName: TEtoUploadFile) =>
         dispatch(actions.etoFlow.etoUploadDocument(file, fileName)),

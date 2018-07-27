@@ -1,13 +1,10 @@
+import * as cn from "classnames";
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 
 import { TTranslatedString } from "../../types";
-import { DocumentLink } from "./DocumentLink";
-import { InlineIcon } from "./InlineIcon";
 import { Panel } from "./Panel";
 
-import * as attachmentIcon from "../../assets/img/inline_icons/social_link.svg";
 import * as styles from "./singleColDocumentWidget.module.scss";
 
 export interface IDocument {
@@ -29,7 +26,7 @@ export const SingleColDocumentsWidget: React.SFC<IProps> = ({ documents, classNa
         {documents.map(({ name, url }, i) => {
           return (
             <Col xs={12} className={styles.document} key={i}>
-              <InlineIcon svgIcon={attachmentIcon} className={styles.icon} width="30" />
+              <i className={cn("fa fa-link", styles.documentIcon)} />
               <a href={url} className={styles.documentLink}>
                 {name}
               </a>

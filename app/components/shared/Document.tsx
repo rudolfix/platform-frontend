@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { Col } from "reactstrap";
 
 import * as styles from "./Document.module.scss";
 
@@ -12,6 +13,7 @@ interface IDocumentTileProps {
   title: string;
   className?: string;
   blank?: boolean;
+  active?: boolean;
 }
 
 export const Document: React.SFC<IDocumentProps> = ({ extension, blank }) => {
@@ -45,12 +47,13 @@ export const DocumentTile: React.SFC<IDocumentProps & IDocumentTileProps> = ({
   title,
   className,
   blank,
+  active,
 }) => {
   return (
-    <div className={cn(styles.tile,styles.borderDocument, className)}>
+    <Col className={cn(styles.tile, styles.container, active && styles.active, className)}>
       <Document extension={extension} blank={blank} />
       <p className={cn(styles.title, blank && styles.blankTitle)}>{title}</p>
       <p className={cn(styles.subTitle)}>Drag and drop or Click to upload high quality PDF</p>
-    </div>
+    </Col>
   );
 };

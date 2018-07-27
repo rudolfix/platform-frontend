@@ -582,10 +582,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         </Row>
       )}
 
-      {((companyData.notableInvestors && companyData.notableInvestors.members[0].name.length) ||
-        (companyData.partners && companyData.partners.members[0].name.length) ||
-        (companyData.keyCustomers && companyData.keyCustomers.members[0].name.length) ||
-        (companyData.boardMembers && companyData.boardMembers.members[0].name.length)) && (
+      {((companyData.notableInvestors && !!companyData.notableInvestors.members[0].name.length) ||
+        (companyData.partners && !!companyData.partners.members[0].name.length) ||
+        (companyData.keyCustomers && !!companyData.keyCustomers.members[0].name.length) ||
+        (companyData.boardMembers && !!companyData.boardMembers.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
             <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>

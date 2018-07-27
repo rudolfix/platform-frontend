@@ -150,7 +150,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
     !disableTwitterFeed;
-  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length;
+  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length > 0;
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
       ? (socialChannels.find(c => c.type === "twitter") as any).url

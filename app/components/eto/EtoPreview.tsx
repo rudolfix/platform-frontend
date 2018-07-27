@@ -10,7 +10,7 @@ import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Accordion, AccordionElement } from "../shared/Accordion";
 
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IStateProps {

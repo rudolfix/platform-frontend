@@ -15,7 +15,7 @@ import {
   NONE_KEY,
 } from "../../../shared/forms/forms";
 
-import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/EtoApi.interfaces";
+import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";

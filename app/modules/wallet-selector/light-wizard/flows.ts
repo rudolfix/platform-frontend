@@ -22,4 +22,3 @@ export async function getVaultKey(
 }
 
 export const lightWizardFlows = {};
-// TODO: Remove this flow remove tests

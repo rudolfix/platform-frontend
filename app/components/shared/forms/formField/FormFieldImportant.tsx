@@ -65,19 +65,24 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
           render={({ field }: FieldProps) => (
             <>
               <InputGroup className={styles.inputGroup}>
-                  <Input
-                    className={cn(className, formStyles.inputField, styles.input)}
-                    {...field}
-                    type={type}
-                    value={field.value || ""}
-                    placeholder={placeholder || ""}
-                    {...props as any}
-                  />
+                <Input
+                  className={cn(className, formStyles.inputField, styles.input)}
+                  {...field}
+                  type={type}
+                  value={field.value || ""}
+                  placeholder={placeholder || ""}
+                  {...props as any}
+                />
                 <InputGroupAddon addonType="append" className={formStyles.addon}>
                   {!!errors[name] && <Tooltip content={errorMessage} />}
                 </InputGroupAddon>
               </InputGroup>
-              {hasAvatar && <Avatar seed={field.value || ""} style={{position: "absolute", right: "36px", top: "-40px"}}/>}
+              {hasAvatar && (
+                <Avatar
+                  seed={field.value || ""}
+                  style={{ position: "absolute", right: "36px", top: "-40px" }}
+                />
+              )}
             </>
           )}
         />

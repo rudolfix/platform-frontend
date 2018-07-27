@@ -27,10 +27,11 @@ const WithdrawComponent: React.SFC<IStateProps & IDispatchProps> = props => {
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>
         <div className={styles.contentWrapper}>
-
           <SpinningEthereum />
 
-          <h3 className={styles.title}><FormattedMessage id="modal.sent-eth.title" /></h3>
+          <h3 className={styles.title}>
+            <FormattedMessage id="modal.sent-eth.title" />
+          </h3>
 
           <Formik initialValues={{}} onSubmit={() => {}}>
             {() => (

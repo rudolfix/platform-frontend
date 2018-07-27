@@ -16,8 +16,8 @@ import * as twitter from "../../assets/img/inline_icons/social_twitter.svg";
 import * as styles from "./SocialProfilesList.module.scss";
 
 export interface IEtoSocialProfile {
-  type: string;
-  url: string;
+  type?: string;
+  url?: string;
 }
 
 type TLayoutSize = "small";
@@ -56,7 +56,7 @@ export const SocialProfilesList: React.SFC<IProps> = ({
           url && (
             <div className={styles.profile} key={type}>
               <a href={url} target="_blank" title={url}>
-                <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+                <InlineIcon svgIcon={SOCIAL_PROFILES[type as string]} />
               </a>
             </div>
           ),

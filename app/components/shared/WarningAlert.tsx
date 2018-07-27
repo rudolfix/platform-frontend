@@ -13,10 +13,8 @@ export const WarningAlert: React.SFC<IWarningAlertProps> = ({ children, classNam
     className={cn("m-2 align-items-center justify-content-center", styles.warningAlert, className)}
     noGutters
   >
-    <Col xs="auto">
+    <Col xs={10}>
       <i className={cn("fa fa-exclamation-circle mr-2", styles.icon)} aria-hidden="true" />
-    </Col>
-    <Col xs="auto" data-test-id="components.shared-warning-alert.message">
       {children}
     </Col>
   </Row>

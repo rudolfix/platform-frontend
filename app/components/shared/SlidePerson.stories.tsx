@@ -18,6 +18,7 @@ const person = {
 storiesOf("SlidePerson", module)
   .add("layout: vartical", () => (
     <SlidePerson
+      socialChannels={[]}
       key={person.name}
       name={person.name}
       role={person.role}
@@ -28,6 +29,7 @@ storiesOf("SlidePerson", module)
   ))
   .add("layout: horizontal", () => (
     <SlidePerson
+      socialChannels={[]}
       key={person.name}
       name={person.name}
       role={person.role}

@@ -8,7 +8,7 @@ import {
   EtoCompanyInformationType,
   EtoProductVisionType,
   TPartialCompanyEtoData,
-} from "../../../../lib/api/EtoApi.interfaces";
+} from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";

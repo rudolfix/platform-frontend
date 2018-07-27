@@ -18,5 +18,15 @@ module.exports = (baseConfig, env, config) => {
 
   config.resolve.extensions = devConfig.resolve.extensions;
 
+  const isMakingScreenshots = process.env.npm_lifecycle_event === "storybook:screenshots";
+  if (isMakingScreenshots) {
+    config.entry.preview = config.entry.preview.filter(
+      x => x.indexOf("webpack-hot-middleware") === -1,
+    );
+    config.plugins = config.plugins.filter(
+      plugin => plugin.constructor.name !== "HotModuleReplacementPlugin",
+    );
+  }
+
   return config;
 };

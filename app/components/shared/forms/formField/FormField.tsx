@@ -5,9 +5,8 @@ import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
-import { isNonValid, isValid } from "./utils";
-
 import { FormLabel } from "./FormLabel";
+import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -15,8 +14,8 @@ interface IFieldGroup {
   label?: string | React.ReactNode;
   placeholder?: string | React.ReactNode;
   type?: InputType;
-  prefix?: string;
-  suffix?: string;
+  prefix?: string | React.ReactNode;
+  suffix?: string | React.ReactNode;
   addonStyle?: string;
   maxLength?: string;
   additionalObjValue?: { name: string; value: string };
@@ -72,7 +71,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 className={cn(className, styles.inputField)}
                 {...field}
                 type={type}
-                value={field.value || ""}
+                value={field.value || (this.props.additionalObjValue && " ") || ""}
                 valid={isValid(touched, errors, name)}
                 placeholder={placeholder || label}
                 {...inputExtraProps}

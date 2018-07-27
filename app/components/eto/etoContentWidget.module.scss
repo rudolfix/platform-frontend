@@ -1,0 +1,18 @@
+.content {
+  min-height: px-to-rem(178px);
+  max-height: px-to-rem(178px);
+
+  .loading {
+    margin: px-to-rem(50px) auto 0;
+  }
+}
+
+.icon {
+  height: px-to-rem(16px);
+  width: px-to-rem(16px);
+}
+
+.text {
+  min-height: px-to-rem(108px);
+  max-height: px-to-rem(108px);
+}

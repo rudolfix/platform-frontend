@@ -139,7 +139,7 @@ const people: Array<IPersonInfoProps> = [
     imageSrc: "landing/testimonials/people/Kerstin Eichmann",
     fullName: "KERSTIN EICHMANN",
     description:
-      "Head of Machine Economy Lighthouse at Innogy Innovation Hub, a German-based VC aiming to radically innovate energy.",
+      "Head of Machine Economy Lighthouse at Innogy Innovation Hub, a German-based VC aiming to radically innovate energy",
     link: "https://innovationhub.innogy.com/",
   },
   {

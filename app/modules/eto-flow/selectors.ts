@@ -1,4 +1,18 @@
 import * as Yup from "yup";
+import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import {
+  EtoCompanyInformationType,
+  EtoKeyIndividualsType,
+  EtoLegalInformationType,
+  EtoMediaType,
+  EtoProductVisionType,
+  EtoRiskAssessmentType,
+  EtoTermsType,
+  GeneralEtoDataType,
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
+} from "./../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {
   try {
@@ -13,59 +27,93 @@ export interface IProgressOptions {
   ignore: any;
 }
 
-export const selectFormFractionDone = (
-  validator: Yup.Schema,
-  formState: any,
-  opts?: IProgressOptions,
-): number => {
-  const strictValidator = validator.clone();
+export type ProgressCalculator = (formState: any, initialData?: any) => number;
 
-  const ignore = opts && opts.ignore;
-
-  const updateValidatorAndInitialData = (
-    objectSchema: any,
-    initialData: any,
-    currentValue: any,
-    ignore: any,
-  ): any => {
-    const type = objectSchema._type;
-    if (ignore !== true) {
-      switch (type) {
-        case "object":
-          for (const prop in objectSchema.fields) {
-            // need to clone before change
-            const schema = (objectSchema.fields[prop] = objectSchema.fields[prop].clone());
-            initialData[prop] = updateValidatorAndInitialData(
-              schema,
-              {},
-              currentValue && currentValue[prop],
-              ignore && ignore[prop],
-            );
-          }
-          return initialData;
-        case "array":
-          const arr = Array.isArray(currentValue) ? currentValue : [];
+// recursivly clones a YUP Schema and makes number and string properties required
+function updateValidator(objectSchema: any, ignore: any): any {
+  const type = objectSchema._type;
+  if (ignore !== true) {
+    switch (type) {
+      case "object":
+        for (const prop in objectSchema.fields) {
           // need to clone before change
-          objectSchema._subType = objectSchema._subType.clone();
-          return arr.map((_, i) =>
-            updateValidatorAndInitialData(objectSchema._subType, {}, arr[i], ignore && ignore[0]),
-          );
-        case "string":
-        case "number":
-          objectSchema.withMutation((schema: any) => schema.required());
+          const schema = (objectSchema.fields[prop] = objectSchema.fields[prop].clone());
+          updateValidator(schema, ignore && ignore[prop]);
+        }
+        break;
+      case "array":
+        // need to clone before change
+        objectSchema._subType = objectSchema._subType.clone();
+        updateValidator(objectSchema._subType, ignore && ignore[0]);
+        break;
+      case "string":
+      case "number":
+        objectSchema.withMutation((schema: any) => schema.required());
+    }
+  }
+}
+
+// recursivly create initial data from current values
+function updateInitialData(initialData: any, currentValue: any): any {
+  if (Array.isArray(currentValue)) {
+    return currentValue.map((_, i) => updateInitialData({}, currentValue[i]));
+  } else if (typeof currentValue === "object") {
+    for (const prop in currentValue) {
+      if (currentValue.hasOwnProperty(prop)) {
+        initialData[prop] = updateInitialData({}, currentValue && currentValue[prop]);
       }
     }
+    return initialData;
+  }
+}
+
+export function getInitialDataForFractionCalculation(formState: any): any {
+  return updateInitialData({}, formState);
+}
+
+export const calculateCompanyInformationProgress = getFormFractionDoneCalculator(
+  EtoCompanyInformationType.toYup(),
+);
+export const calculateEtoTermsProgress = getFormFractionDoneCalculator(EtoTermsType.toYup());
+export const calculateEtoKeyIndividualsProgress = getFormFractionDoneCalculator(
+  EtoKeyIndividualsType.toYup(),
+);
+export const calculateLegalInformationProgress = getFormFractionDoneCalculator(
+  EtoLegalInformationType.toYup(),
+);
+export const calculateProductVisionProgress = getFormFractionDoneCalculator(
+  EtoProductVisionType.toYup(),
+);
+export const calculateEtoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup());
+export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
+  EtoRiskAssessmentType.toYup(),
+);
+
+export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {
+  ignore: true,
+});
+
+export function getFormFractionDoneCalculator(
+  validator: Yup.Schema,
+  opts?: IProgressOptions,
+): ProgressCalculator {
+  const strictValidator = validator.clone();
+  const ignore = opts && opts.ignore;
+  updateValidator(strictValidator, ignore);
+
+  return (formState: any, initialData?: any) => {
+    if (typeof initialData === "undefined") {
+      initialData = updateInitialData({}, formState);
+    }
+
+    const errors = getErrorsNumber(strictValidator, formState) || 0;
+    const maxErrors = getErrorsNumber(strictValidator, initialData) || 1;
+
+    const result = 1 - errors / maxErrors;
+    if (result < 0) return 0;
+    return result;
   };
-
-  const initialData = updateValidatorAndInitialData(strictValidator, {}, formState, ignore);
-
-  const errors = getErrorsNumber(strictValidator, formState) || 0;
-  const maxErrors = getErrorsNumber(strictValidator, initialData) || 1;
-
-  const result = 1 - errors / maxErrors;
-  if (result < 0) return 0;
-  return result;
-};
+}
 
 export const etoMediaProgressOptions: IProgressOptions = {
   ignore: {
@@ -74,3 +122,48 @@ export const etoMediaProgressOptions: IProgressOptions = {
     companyNews: true,
   },
 };
+
+export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.termSheet &&
+    state.etoFileData.termSheet.url &&
+    state.etoFileData.termSheet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.pamphlet &&
+    state.etoFileData.pamphlet.url &&
+    state.etoFileData.pamphlet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  !!(
+    state.etoFileData &&
+    state.etoFileData.pamphlet &&
+    state.etoFileData.pamphlet.url &&
+    state.etoFileData.pamphlet.url !== ""
+  );
+// TODO: unmock and connect with backend
+
+export const selectIsBookBuilding = (state: IEtoFlowState): boolean | undefined =>
+  state.etoData && state.etoData.isBookbuilding;
+
+export const selectEtoState = (state: IEtoFlowState): EtoState | undefined =>
+  state.etoData && state.etoData.state;
+
+export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData =>
+  state.companyData;
+
+export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
+
+export const selectCombinedEtoCompanyData = (
+  state: IEtoFlowState,
+): TPartialEtoSpecData & TPartialCompanyEtoData => ({
+  ...selectCompanyData(state),
+  ...selectEtoData(state),
+});

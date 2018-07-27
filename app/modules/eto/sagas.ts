@@ -1,7 +1,8 @@
 import { fork, put } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
 import { actions, TAction } from "../actions";
 import { neuTakeEvery } from "../sagas";
 

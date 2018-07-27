@@ -3,11 +3,12 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import * as closeIcon from "../../assets/img/inline_icons/round_close.svg";
-import * as plusIcon from "../../assets/img/inline_icons/round_plus.svg";
 import { CommonHtmlProps } from "../../types";
 import { ButtonIcon } from "./Buttons";
 import { FormField } from "./forms/formField/FormField";
+
+import * as closeIcon from "../../assets/img/inline_icons/round_close.svg";
+import * as plusIcon from "../../assets/img/inline_icons/round_plus.svg";
 
 interface ISingleMediaLinkFieldInternalProps {
   isLastElement?: boolean;
@@ -17,12 +18,13 @@ interface ISingleMediaLinkFieldInternalProps {
   onRemoveClick: () => void;
   name: string;
   url?: string;
+  placeholder: string;
 }
 
 const SingleMediaLinkField: React.SFC<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
 > = props => {
-  const { isFirstElement, onAddClick, onRemoveClick, isLastElement } = props;
+  const { isFirstElement, onAddClick, onRemoveClick, isLastElement, placeholder } = props;
 
   return (
     <Row className="my-4">
@@ -31,7 +33,7 @@ const SingleMediaLinkField: React.SFC<
       </Col>
       <Col xs={10}>
         <FormField name={`${props.name}.title`} placeholder="Title" />
-        <FormField name={`${props.name}.url`} placeholder="Url" />
+        <FormField name={`${props.name}.url`} placeholder={placeholder || "Url"} />
       </Col>
       {!isFirstElement && (
         <Col xs={1}>
@@ -64,7 +66,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
   render(): React.ReactNode {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
-    const { name, blankField } = this.props;
+    const { name, blankField, placeholder } = this.props;
     const mediaLinks: object[] = values[name] || [blankField];
     return (
       <FieldArray
@@ -83,6 +85,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
                 onAddClick={() => {
                   setFieldValue(`${name}.${index + 1}`, blankField);
                 }}
+                placeholder={placeholder}
                 isFirstElement={isFirstElement}
                 isLastElement={isLastElement}
                 key={`${name}.${index}`}

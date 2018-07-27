@@ -5,9 +5,9 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import {
-  EtoRiskAssesmentType,
+  EtoRiskAssessmentType,
   TPartialCompanyEtoData,
-} from "../../../../lib/api/EtoApi.interfaces";
+} from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -31,11 +31,11 @@ type IProps = IStateProps & IDispatchProps;
 
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
-    <EtoFormBase title="Risk Assesment" validator={EtoRiskAssesmentType.toYup()}>
+    <EtoFormBase title="Risk Assessment" validator={EtoRiskAssessmentType.toYup()}>
       <Section>
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-assesment.liquidity-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.liquidity-description" />}
           placeholder="Describe"
           name="riskLiquidityDescription"
         />
@@ -43,13 +43,13 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <div className="form-group">
           <FormCheckbox
             name="riskNoThirdPartyDependency"
-            label={<FormattedMessage id="eto.form.risk-assesment.no-third-parties" />}
+            label={<FormattedMessage id="eto.form.risk-assessment.no-third-parties" />}
           />
         </div>
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-assesment.third-parties-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.third-parties-description" />}
           placeholder="Describe"
           name="riskThirdPartyDescription"
         />
@@ -57,7 +57,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <FormTextArea
           className="my-2"
           label={
-            <FormattedMessage id="eto.form.risk-assesment.third-party-financing-description" />
+            <FormattedMessage id="eto.form.risk-assessment.third-party-financing-description" />
           }
           placeholder="Describe"
           name="riskThirdPartySharesFinancing"
@@ -65,14 +65,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-assesment.changing-agreement-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.changing-agreement-description" />}
           placeholder="Describe"
           name="riskChangingAgreementDescription"
         />
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-assesment.max-risk-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.max-risk-description" />}
           placeholder="Describe"
           name="riskMaxDescription"
         />
@@ -80,14 +80,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <div className="form-group">
           <FormCheckbox
             name="riskNotRegulatedBusiness"
-            label={<FormattedMessage id="eto.form.risk-assesment.no-regulation" />}
+            label={<FormattedMessage id="eto.form.risk-assessment.no-regulation" />}
           />
         </div>
 
         <div className="form-group">
           <FormCheckbox
             name="riskNoLoansExist"
-            label={<FormattedMessage id="eto.form.risk-assesment.no-loans" />}
+            label={<FormattedMessage id="eto.form.risk-assessment.no-loans" />}
           />
         </div>
       </Section>
@@ -111,16 +111,16 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 };
 
 const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoRiskAssesmentType.toYup(),
+  validationSchema: EtoRiskAssessmentType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
-export const EtoRegistrationRiskAssesmentComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationRiskAssessmentComponent: React.SFC<IProps> = props => (
   <EtoEnhancedForm {...props} />
 );
 
-export const EtoRegistrationRiskAssesment = compose<React.SFC>(
+export const EtoRegistrationRiskAssessment = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -141,4 +141,4 @@ export const EtoRegistrationRiskAssesment = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-)(EtoRegistrationRiskAssesmentComponent);
+)(EtoRegistrationRiskAssessmentComponent);

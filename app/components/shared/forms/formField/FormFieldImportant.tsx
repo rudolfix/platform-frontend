@@ -5,6 +5,7 @@ import * as React from "react";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
+import { Avatar } from "../../Avatar";
 import { Tooltip } from "../../Tooltip";
 import { FormLabel } from "./FormLabel";
 import { isNonValid, isValid } from "./utils";
@@ -31,6 +32,7 @@ interface IFieldGroup {
   placeholder?: string;
   errorMessage?: string | React.ReactNode;
   type?: InputType;
+  hasAvatar?: boolean;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 
@@ -48,6 +50,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
       errorMessage,
       validate,
       label,
+      hasAvatar,
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;
@@ -60,19 +63,22 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
           name={name}
           validate={validate}
           render={({ field }: FieldProps) => (
-            <InputGroup className={styles.inputGroup}>
-              <Input
-                className={cn(className, formStyles.inputField, styles.input)}
-                {...field}
-                type={type}
-                value={field.value || ""}
-                placeholder={placeholder || ""}
-                {...props as any}
-              />
-              <InputGroupAddon addonType="append" className={formStyles.addon}>
-                {!!errors[name] && <Tooltip content={errorMessage} />}
-              </InputGroupAddon>
-            </InputGroup>
+            <>
+              <InputGroup className={styles.inputGroup}>
+                  <Input
+                    className={cn(className, formStyles.inputField, styles.input)}
+                    {...field}
+                    type={type}
+                    value={field.value || ""}
+                    placeholder={placeholder || ""}
+                    {...props as any}
+                  />
+                <InputGroupAddon addonType="append" className={formStyles.addon}>
+                  {!!errors[name] && <Tooltip content={errorMessage} />}
+                </InputGroupAddon>
+              </InputGroup>
+              {hasAvatar && <Avatar seed={field.value || ""} style={{position: "absolute", right: "36px", top: "-40px"}}/>}
+            </>
           )}
         />
       </>

@@ -1,0 +1,5 @@
+.avatar {
+  @include circle(32px);
+
+  margin-right: px-to-rem(12px);
+}

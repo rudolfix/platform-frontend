@@ -21,7 +21,7 @@
 .bar {
   height: px-to-rem(60px);
   background-color: $neu-charcoal-grey;
-  z-index: 1000;
+  z-index: $z-index-over-content;
   padding-left: .75rem;
 }
 

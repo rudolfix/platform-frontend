@@ -698,13 +698,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
               >
                 <Row>
-                  <Col>
-                    <p>{companyData.useOfCapital || DEFAULT_PLACEHOLDER}</p>
-                  </Col>
+                  {companyData.useOfCapital && (
+                    <Col>
+                      <p>{companyData.useOfCapital}</p>
+                    </Col>
+                  )}
 
                   {companyData.useOfCapitalList && (
-                    <Col>
+                    <Col md={12} lg={6}>
                       <ChartPie
+                        className="pr-5 pb-4"
                         data={{
                           datasets: [
                             {

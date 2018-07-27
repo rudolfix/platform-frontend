@@ -74,15 +74,20 @@ describe("eto-flow > selectors", () => {
       const calculate4 = getFormFractionDoneCalculator(validator, {
         ignore: { details: [{ lastName: true }] },
       });
+      const calculate5 = getFormFractionDoneCalculator(validator, {
+        ignore: true,
+      });
       const fractionDone1 = calculate1(formState);
       const fractionDone2 = calculate2(formState);
       const fractionDone3 = calculate3(formState);
       const fractionDone4 = calculate4(formState);
+      const fractionDone5 = calculate5(formState);
 
       expect(fractionDone1).to.be.closeTo(1 / 7, 0.0001);
       expect(fractionDone3).to.be.closeTo(0 / 2, 0.0001);
       expect(fractionDone2).to.be.closeTo(1 / 6, 0.0001);
       expect(fractionDone4).to.be.closeTo(1 / 4, 0.0001);
+      expect(fractionDone5).to.be.closeTo(1, 0.0001);
     });
   });
 

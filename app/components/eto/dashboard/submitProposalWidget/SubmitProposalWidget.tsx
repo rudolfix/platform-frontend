@@ -10,7 +10,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpe
 import { ButtonArrowRight } from "../../../shared/Buttons";
 import { Panel } from "../../../shared/Panel";
 
-import * as styles from "./SubmitProposalWidget.module.scss";
+import * as styles from "../../etoContentWidget.module.scss";
 
 interface IDispatchProps {
   submitProposal: () => void;

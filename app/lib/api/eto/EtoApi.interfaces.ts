@@ -210,7 +210,7 @@ export type TGeneralEtoData = {
   companyData: TPartialCompanyEtoData;
 };
 
-export const TGeneralEtoDataType = YupTS.object({
+export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,
   ...EtoMediaType.shape,
   ...EtoLegalInformationType.shape,

@@ -1,4 +1,4 @@
-export interface IEtoFile {
+export interface IEtoFiles {
   pamphlet?: {
     url: string;
     status: string;

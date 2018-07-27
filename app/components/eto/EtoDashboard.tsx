@@ -5,7 +5,6 @@ import { compose } from "redux";
 
 import {
   EtoState,
-  TGeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
@@ -16,8 +15,15 @@ import {
   selectIsUserEmailVerified,
   selectVerifiedUserEmail,
 } from "../../modules/auth/selectors";
-import { etoFlowInitialState } from "../../modules/eto-flow/reducer";
 import {
+  calculateCompanyInformationProgress,
+  calculateEtoKeyIndividualsProgress,
+  calculateEtoMediaProgress,
+  calculateEtoRiskAssessmentProgress,
+  calculateEtoTermsProgress,
+  calculateGeneralEtoData,
+  calculateLegalInformationProgress,
+  calculateProductVisionProgress,
   selectCombinedEtoCompanyData,
   selectCompanyData,
   selectEtoData,
@@ -25,9 +31,9 @@ import {
   selectIsPamphletSubmitted,
   selectIsProspectusSubmitted,
   selectIsTermSheetSubmitted,
-  selectRequiredFormFractionDone,
 } from "../../modules/eto-flow/selectors";
-import { selectKycRequestStatus, selectWidgetLoading } from "../../modules/kyc/selectors";
+
+import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
@@ -47,7 +53,7 @@ import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
 
 const SUBMIT_PROPOSAL_THRESHOLD = 0.5;
-// TODO: CHANGE TO 100% !!!
+// TODO: CHANGE TO 100% when data model in interfaces represents swagger
 
 interface IStateProps {
   isLightWallet: boolean;
@@ -59,12 +65,18 @@ interface IStateProps {
   kycStatus?: TRequestStatus;
   etoFormProgress?: number;
   loadingData: boolean;
-  businessRequestStateLoading: boolean;
   companyData: TPartialCompanyEtoData;
   etoData: TPartialEtoSpecData;
   isTermSheetSubmitted?: boolean;
   isPamphletSubmitted?: boolean;
   isProspectusSubmitted?: boolean;
+  companyInformationProgress: number;
+  etoTermsProgress: number;
+  etoKeyIndividualsProgress: number;
+  legalInformationProgress: number;
+  productVisionProgress: number;
+  etoMediaProgress: number;
+  etoRiskAssessmentProgress: number;
 }
 
 interface IDispatchProps {
@@ -124,21 +136,27 @@ class EtoDashboardComponent extends React.Component<IProps> {
       isLightWallet,
       etoFormProgress,
       loadingData,
-      companyData,
-      etoData,
-      businessRequestStateLoading,
       isTermSheetSubmitted,
       isPamphletSubmitted,
       isProspectusSubmitted,
+      companyInformationProgress,
+      etoTermsProgress,
+      etoKeyIndividualsProgress,
+      legalInformationProgress,
+      productVisionProgress,
+      etoMediaProgress,
+      etoRiskAssessmentProgress,
     } = this.props;
 
     const etoProgressProps = {
       loadingData,
-      businessRequestStateLoading,
-      kycStatus,
-      isEmailVerified,
-      companyData,
-      etoData,
+      companyInformationProgress,
+      etoTermsProgress,
+      etoKeyIndividualsProgress,
+      legalInformationProgress,
+      productVisionProgress,
+      etoMediaProgress,
+      etoRiskAssessmentProgress,
     };
 
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
@@ -147,6 +165,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
       (backupCodesVerified || !isLightWallet) &&
       requestStatus === "Accepted"
     );
+
     return (
       <LayoutAuthorized>
         <Row className="row-gutter-top" data-test-id="eto-dashboard-application">
@@ -173,7 +192,10 @@ class EtoDashboardComponent extends React.Component<IProps> {
                         <SubmitDashBoardSection isTermSheetSubmitted={isTermSheetSubmitted} />
                       </>
                     )}
-                  <EtoProgressDashboardSection {...etoProgressProps} />
+                  <EtoProgressDashboardSection
+                    {...etoProgressProps}
+                    shouldEtoDataLoad={shouldEtoDataLoad!}
+                  />
                 </>
               )}
               {(etoState === "pending" ||
@@ -211,7 +233,10 @@ class EtoDashboardComponent extends React.Component<IProps> {
                   <Col xs={12}>
                     <FormattedMessage id="eto-dashboard-application-description" />
                   </Col>
-                  <ETOFormsProgressSection {...etoProgressProps} />
+                  <ETOFormsProgressSection
+                    {...etoProgressProps}
+                    shouldEtoDataLoad={shouldEtoDataLoad!}
+                  />
                 </>
               )}
             </>
@@ -225,17 +250,11 @@ class EtoDashboardComponent extends React.Component<IProps> {
 export const EtoDashboard = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      etoFormProgress: selectRequiredFormFractionDone(
-        TGeneralEtoDataType.toYup(),
-        selectCombinedEtoCompanyData(s.etoFlow),
-        etoFlowInitialState,
-      ),
       companyData: selectCompanyData(s.etoFlow),
       etoData: selectEtoData(s.etoFlow),
       loadingData: s.etoFlow.loading,
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),
-      businessRequestStateLoading: selectWidgetLoading(s.kyc),
       isLightWallet: selectIsLightWallet(s.web3),
       verifiedEmail: selectVerifiedUserEmail(s.auth),
       backupCodesVerified: selectBackupCodesVerified(s.auth),
@@ -244,6 +263,14 @@ export const EtoDashboard = compose<React.SFC>(
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoFlow),
       isPamphletSubmitted: selectIsPamphletSubmitted(s.etoFlow),
       isProspectusSubmitted: selectIsProspectusSubmitted(s.etoFlow),
+      companyInformationProgress: calculateCompanyInformationProgress(selectCompanyData(s.etoFlow)),
+      etoTermsProgress: calculateEtoTermsProgress(selectEtoData(s.etoFlow)),
+      etoKeyIndividualsProgress: calculateEtoKeyIndividualsProgress(selectCompanyData(s.etoFlow)),
+      legalInformationProgress: calculateLegalInformationProgress(selectCompanyData(s.etoFlow)),
+      productVisionProgress: calculateProductVisionProgress(selectCompanyData(s.etoFlow)),
+      etoMediaProgress: calculateEtoMediaProgress(selectCompanyData(s.etoFlow)),
+      etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectCompanyData(s.etoFlow)),
+      etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s.etoFlow)),
     }),
     dispatchToProps: dispatch => ({
       loadDataStart: () => dispatch(actions.etoFlow.loadDataStart()),

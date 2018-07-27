@@ -1,19 +1,19 @@
 import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   TCompanyEtoData,
   TEtoSpecsData,
-  TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFile } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { SUBMIT_ETO_PERMISSION } from "./../../config/constants";
+import { IEtoFiles } from "./../../lib/api/eto/EtoFileApi.interfaces";
 
 export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
   try {
@@ -36,7 +36,7 @@ export function* loadEtoFileData({
   apiEtoFileService,
 }: TGlobalDependencies): any {
   try {
-    const etoFileData: IEtoFile = yield apiEtoFileService.getFileEtoData();
+    const etoFileData: IEtoFiles = yield apiEtoFileService.getFileEtoData();
 
     yield put(actions.etoFlow.loadFileData(etoFileData));
   } catch (e) {
@@ -56,10 +56,9 @@ export function* saveEtoData(
     const currentCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
     const currentEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
 
-    let newCompanyData: IHttpResponse<TPartialCompanyEtoData> = currentCompanyData;
     let newEtoData: IHttpResponse<TPartialEtoSpecData> = currentEtoData;
 
-    newCompanyData = yield apiEtoService.putCompanyData({
+    const newCompanyData = yield apiEtoService.putCompanyData({
       ...currentCompanyData,
       ...action.payload.data.companyData,
     });

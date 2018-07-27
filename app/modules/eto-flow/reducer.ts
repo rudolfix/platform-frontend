@@ -1,5 +1,5 @@
 import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFile } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
@@ -8,7 +8,7 @@ export interface IEtoFlowState {
   saving: boolean;
   etoData: TPartialEtoSpecData;
   companyData: TPartialCompanyEtoData;
-  etoFileData: IEtoFile;
+  etoFileData: IEtoFiles;
 }
 // TODO: Add correct type for etoFileData once backend is connected
 

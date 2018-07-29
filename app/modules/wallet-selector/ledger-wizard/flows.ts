@@ -140,7 +140,7 @@ export const ledgerWizardFlows = {
 
   verifyIfLedgerStillConnected: injectableFn(
     async (dispatch: AppDispatch, ledgerConnector: LedgerWalletConnector) => {
-      if (!await ledgerConnector.testConnection()) {
+      if (!(await ledgerConnector.testConnection())) {
         dispatch(
           actions.walletSelector.ledgerConnectionEstablishedError(
             mapLedgerErrorToErrorMessage(new LedgerNotAvailableError()),

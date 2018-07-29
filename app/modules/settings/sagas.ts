@@ -19,7 +19,12 @@ import { WalletType } from "../web3/types";
 import { selectDoesEmailExist } from "./../auth/selectors";
 
 export function* addNewEmail(
-  { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
+  {
+    notificationCenter,
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;
@@ -81,7 +86,12 @@ export function* addNewEmail(
 }
 
 export function* resendEmail(
-  { notificationCenter, intlWrapper: { intl: { formatIntlMessage } } }: TGlobalDependencies,
+  {
+    notificationCenter,
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
+  }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "SETTINGS_RESEND_EMAIL") return;
@@ -106,7 +116,9 @@ export function* resendEmail(
 }
 
 export function* loadSeedOrReturnToSettings({
-  intlWrapper: { intl: { formatIntlMessage } },
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
 }: TGlobalDependencies): Iterator<any> {
   // unlock wallet
   try {

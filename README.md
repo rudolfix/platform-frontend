@@ -8,8 +8,8 @@
 
 ### Prerequisites
 
-* running ethereum node on port `8545`. To start local instance just run `yarn ganache`
-* running `signature_auth_api` on port `5000`
+- running ethereum node on port `8545`. To start local instance just run `yarn ganache`
+- running `signature_auth_api` on port `5000`
 
 ```sh
 yarn
@@ -60,8 +60,8 @@ yarn intl:extract
 
 ### Docs
 
-* [Component Development Guidelines](./docs/component-development-guidelines.md)
-* [React Guidelines](./docs/react-guidelines.md)
-* [Testing production build](./docs/testing-prod-build.md)
-* [Working with Intl](./docs/working-with-intl.md)
-* [Feature flags](./docs/feature-flags.md)
+- [Component Development Guidelines](./docs/component-development-guidelines.md)
+- [React Guidelines](./docs/react-guidelines.md)
+- [Testing production build](./docs/testing-prod-build.md)
+- [Working with Intl](./docs/working-with-intl.md)
+- [Feature flags](./docs/feature-flags.md)

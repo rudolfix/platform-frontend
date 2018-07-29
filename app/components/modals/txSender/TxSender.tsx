@@ -29,7 +29,7 @@ interface IDispatchProps {
 type Props = IStateProps & IDispatchProps;
 
 export const TxSenderModalComponent: React.SFC<Props> = props => {
-  const { isOpen, type, state, onCancel } = props;
+  const { isOpen, onCancel } = props;
 
   return (
     <Modal isOpen={isOpen} toggle={onCancel}>

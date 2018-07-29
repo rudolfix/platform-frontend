@@ -5,13 +5,13 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, FormGroup, Label, Row } from "reactstrap";
 
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
+import { IInitComponentProps } from "../../modals/txSender/TxSender";
 import { InfoAlert } from "../../shared/Alerts";
 import { Button } from "../../shared/Buttons";
 import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImportant";
 import { Heading } from "../../shared/modals/Heading";
 import { Money } from "../../shared/Money";
 import { WalletSelector } from "./WalletSelector";
-import { IInitComponentProps } from "../../modals/txSender/TxSender";
 
 import * as neuIcon from "../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../assets/img/token_icon.svg";
@@ -134,7 +134,10 @@ const wallets = [
 
 export const InvestmentSelection: React.SFC<IInitComponentProps> = ({ onAccept }) => {
   return (
-    <Formik<{}, IFormState> initialValues={{ wallet: wallets[0].name, value: 0 }} onSubmit={v => onAccept({value: v.value})}>
+    <Formik<{}, IFormState>
+      initialValues={{ wallet: wallets[0].name, value: 0 }}
+      onSubmit={v => onAccept({ value: v.value })}
+    >
       {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}
     </Formik>
   );

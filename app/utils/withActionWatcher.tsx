@@ -27,9 +27,12 @@ export const withActionWatcher: (
 ) => (
   WrappedComponent: React.ComponentType,
 ) => React.ComponentClass = options => WrappedComponent =>
-  connect<{}, IActionWatcherDispatchProps>(undefined, dispatch => ({
-    watchAction: () => options.actionCreator(dispatch),
-  }))(
+  connect<{}, IActionWatcherDispatchProps>(
+    undefined,
+    dispatch => ({
+      watchAction: () => options.actionCreator(dispatch),
+    }),
+  )(
     class ActionWatcher extends React.Component<IActionWatcherDispatchProps> {
       private asyncIntervalScheduler: AsyncIntervalScheduler;
       static contextTypes = {

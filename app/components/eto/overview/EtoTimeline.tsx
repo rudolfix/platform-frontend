@@ -124,8 +124,7 @@ export class EtoTimeline extends React.Component<IProps> {
 
   componentWillMount(): void {
     const pointerPosition =
-      (Date.now() - this.props.etoStartDate) *
-      800 /
+      ((Date.now() - this.props.etoStartDate) * 800) /
       (this.props.inSigningEndDate - this.props.etoStartDate);
 
     this.setState({ pointerPosition });
@@ -135,7 +134,7 @@ export class EtoTimeline extends React.Component<IProps> {
     const timePeriod = this.props.inSigningEndDate - this.props.etoStartDate;
 
     const calculateWidth = (endTime: number, startTime: number): number => {
-      return (endTime - startTime) / timePeriod * 800;
+      return ((endTime - startTime) / timePeriod) * 800;
     };
 
     const bookBuildingWidth = calculateWidth(

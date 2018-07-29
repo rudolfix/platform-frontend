@@ -9,21 +9,20 @@
 
 .logo-text {
   @include media-breakpoint-down (md) {
-    font-size: 16px;
+    height: 15px;
+    left: .75rem;
   }
 
-  color: $color-white;
-  font-weight: $font-weight-light;
-  font-size: 24px;
+  height: 22px;
   position: relative;
-  top: 3px;
-  left: 8px;
+  left: 1rem;
 }
 
 .bar {
   height: px-to-rem(60px);
   background-color: $neu-charcoal-grey;
-  z-index: 1000;
+  z-index: $z-index-over-content;
+  padding-left: .75rem;
 }
 
 .buttons {

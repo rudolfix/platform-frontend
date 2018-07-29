@@ -5,11 +5,9 @@ import * as React from "react";
 
 import { SocialProfilesEditor } from "./SocialProfilesEditor";
 
-import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
 import * as githubIcon from "../../assets/img/inline_icons/social_github.svg";
 import * as googlePlusIcon from "../../assets/img/inline_icons/social_google_plus.svg";
 import * as instagramIcon from "../../assets/img/inline_icons/social_instagram.svg";
-import * as linkedinIcon from "../../assets/img/inline_icons/social_linkedin.svg";
 import * as mediumIcon from "../../assets/img/inline_icons/social_medium.svg";
 import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
 import * as slackIcon from "../../assets/img/inline_icons/social_slack.svg";
@@ -17,21 +15,23 @@ import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg
 import * as twitterIcon from "../../assets/img/inline_icons/social_twitter.svg";
 import * as xingIcon from "../../assets/img/inline_icons/social_xing.svg";
 import * as youtubeIcon from "../../assets/img/inline_icons/social_youtube.svg";
+import { formWrapper } from "./forms/formField/form-utils";
 
-const profiles = [
+const socialProfiles = [
   {
-    name: "Facebook",
-    url: "facebook.com",
-    svgIcon: facebookIcon,
+    name: "slack",
+    placeholder: "slack",
+    svgIcon: slackIcon,
   },
   {
-    name: "LinkedIn",
-    url: "linkedin.com",
-    svgIcon: linkedinIcon,
-  },
-  {
-    name: "Twitter",
+    name: "twitter",
+    placeholder: "twitter",
     svgIcon: twitterIcon,
+  },
+  {
+    name: "gplus",
+    placeholder: "google plus",
+    svgIcon: googlePlusIcon,
   },
   {
     name: "Slack",
@@ -72,6 +72,6 @@ const profiles = [
   },
 ];
 
-storiesOf("SocialProfilesEditor", module).add("default", () => (
-  <SocialProfilesEditor profiles={profiles} name="name" />
-));
+storiesOf("SocialProfilesEditor", module).add("default", () =>
+  formWrapper({})(() => <SocialProfilesEditor profiles={socialProfiles} name="name" />),
+);

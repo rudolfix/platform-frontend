@@ -1,6 +1,10 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { Pie } from "react-chartjs-2";
+
+import { CommonHtmlProps } from "../../../types";
 import { ChartLegned } from "./ChartLegned";
+
 import * as styles from "./ChartPie.module.scss";
 
 interface IDataset {
@@ -17,9 +21,9 @@ interface IProps {
   data: IChartPieData;
 }
 
-export const ChartPie: React.SFC<IProps> = ({ data }) => {
+export const ChartPie: React.SFC<IProps & CommonHtmlProps> = ({ data, className }) => {
   return (
-    <div className={styles.chartPie}>
+    <div className={cn(styles.chartPie, className)}>
       <div className={styles.chartWrapper}>
         <Pie data={data} height={100} width={100} legend={{ display: false }} />
       </div>

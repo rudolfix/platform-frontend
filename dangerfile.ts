@@ -29,4 +29,5 @@ function reportVisualRegression() {
 }
 
 checkPackageLock();
-reportVisualRegression();
+// reportVisualRegression();
+// TODO: Check Visual Regression

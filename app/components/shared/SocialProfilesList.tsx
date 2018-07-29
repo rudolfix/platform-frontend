@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { InlineIcon } from "./InlineIcon";
@@ -12,16 +13,20 @@ import * as reddit from "../../assets/img/inline_icons/social_reddit.svg";
 import * as slack from "../../assets/img/inline_icons/social_slack.svg";
 import * as telegram from "../../assets/img/inline_icons/social_telegram.svg";
 import * as twitter from "../../assets/img/inline_icons/social_twitter.svg";
+import * as styles from "./SocialProfilesList.module.scss";
 
-interface IEtoSocialProfile {
-  type: string;
-  url: string;
+export interface IEtoSocialProfile {
+  type?: string;
+  url?: string;
 }
 
-import * as styles from "./SocialProfilesList.module.scss";
+type TLayoutSize = "small";
+type TLayoutPosition = "center";
 
 interface IProps {
   profiles: IEtoSocialProfile[];
+  layoutIconSize?: TLayoutSize;
+  layoutIconsPosition?: TLayoutPosition;
 }
 
 export const SOCIAL_PROFILES: {
@@ -39,15 +44,19 @@ export const SOCIAL_PROFILES: {
   twitter,
 };
 
-export const SocialProfilesList: React.SFC<IProps> = ({ profiles }) => {
+export const SocialProfilesList: React.SFC<IProps> = ({
+  profiles,
+  layoutIconSize,
+  layoutIconsPosition,
+}) => {
   return (
-    <div className={styles.socialProfilesList}>
+    <div className={cn(styles.socialProfilesList, layoutIconSize, layoutIconsPosition)}>
       {profiles.map(
         ({ type, url }) =>
           url && (
             <div className={styles.profile} key={type}>
               <a href={url} target="_blank" title={url}>
-                <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+                <InlineIcon svgIcon={SOCIAL_PROFILES[type as string]} />
               </a>
             </div>
           ),

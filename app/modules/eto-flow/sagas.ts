@@ -119,6 +119,8 @@ function* uploadEtoFile(
     yield put(actions.etoFlow.loadFileDataStart());
     logger.error("Failed to send ETO data", e);
     notificationCenter.error(formatIntlMessage("eto.modal.file-upload-failed"));
+  } finally {
+    yield put(actions.etoFlow.hideIpfsModal());
   }
 }
 

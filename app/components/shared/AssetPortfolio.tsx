@@ -43,13 +43,15 @@ export const AssetPortfolio: React.SFC<IProps> = props => {
         <div className={styles.eur}>
           <Money value={props.moneyValue} currency="eur" />
           <span className={cn(props.moneyChange < 0 ? styles.red : styles.green, "ml-2")}>
-            ({props.moneyChange}%)
+            ({props.moneyChange}
+            %)
           </span>
         </div>
         <div className={styles.className}>
           <Money value={props.tokenValue} currency="eth" />
           <span className={cn(props.tokenChange < 0 ? styles.red : styles.green, "ml-2")}>
-            ({props.tokenChange}%)
+            ({props.tokenChange}
+            %)
           </span>
         </div>
       </div>

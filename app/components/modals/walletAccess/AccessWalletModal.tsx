@@ -78,7 +78,7 @@ interface IModalDispatchProps {
 }
 
 const AccessWalletModalComponent: React.SFC<IModalStateProps & IModalDispatchProps> = props => (
-  <Modal isOpen={props.isOpen} toggle={props.onCancel}>
+  <Modal isOpen={props.isOpen} toggle={props.onCancel} centered>
     <ModalComponentBody onClose={props.onCancel}>
       <AccessWalletContainer onCancel={props.onCancel} />
     </ModalComponentBody>

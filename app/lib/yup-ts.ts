@@ -30,7 +30,7 @@ class ObjectYTS<T> extends YTS<TypeOfProps<T>> {
   }
 
   toYup(): Yup.Schema {
-    const validator = Yup.object(mapValues(this.shape, s => s.toYup()));
+    const validator = Yup.object(mapValues(this.shape as any, s => s.toYup()));
 
     if (this.isRequired) {
       return validator.required("This field is required");

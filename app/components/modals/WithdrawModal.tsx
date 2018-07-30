@@ -7,10 +7,11 @@ import { actions } from "../../modules/actions";
 import { selectEthereumAddress } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
+import { FormFieldImportant } from "../shared/forms/formField/FormFieldImportant";
 import { ModalComponentBody } from "./ModalComponentBody";
 
-import { FormField } from "../shared/forms/forms";
-import * as styles from "./SendEthModal.module.scss";
+import { SpinningEthereum } from "../landing/parts/SpinningEthereum";
+import * as styles from "./WithdrawModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
@@ -21,29 +22,37 @@ interface IDispatchProps {
   onCancel: () => void;
 }
 
-const SendEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props => {
+const WithdrawComponent: React.SFC<IStateProps & IDispatchProps> = props => {
   return (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>
         <div className={styles.contentWrapper}>
-          <h2 className={styles.title}>
+          <SpinningEthereum />
+
+          <h3 className={styles.title}>
             <FormattedMessage id="modal.sent-eth.title" />
-          </h2>
+          </h3>
 
           <Formik initialValues={{}} onSubmit={() => {}}>
             {() => (
               <Row>
-                <Col xs={12}>
-                  <FormField name="" label={<FormattedMessage id="modal.sent-eth.to-address" />} />
+                <Col xs={12} className="mb-3">
+                  <FormFieldImportant
+                    name=""
+                    label={<FormattedMessage id="modal.sent-eth.to-address" />}
+                  />
                 </Col>
-                <Col xs={12}>
-                  <FormField
+                <Col xs={12} className="mb-3">
+                  <FormFieldImportant
                     name=""
                     label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
                   />
                 </Col>
-                <Col xs={12}>
-                  <FormField name="" label={<FormattedMessage id="modal.sent-eth.gas-limit" />} />
+                <Col xs={12} className="mb-4">
+                  <FormFieldImportant
+                    name=""
+                    label={<FormattedMessage id="modal.sent-eth.gas-limit" />}
+                  />
                 </Col>
                 <Col xs={12} className="text-center">
                   <Button type="submit">
@@ -59,7 +68,7 @@ const SendEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props => 
   );
 };
 
-export const SendEthModal = appConnect<IStateProps, IDispatchProps>({
+export const WithdrawModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: state.sendEthModal.isOpen,
     address: selectEthereumAddress(state.web3),
@@ -67,4 +76,4 @@ export const SendEthModal = appConnect<IStateProps, IDispatchProps>({
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.sendEthModal.hideSendEthModal()),
   }),
-})(SendEthModalComponent);
+})(WithdrawComponent);

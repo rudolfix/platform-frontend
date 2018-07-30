@@ -14,8 +14,8 @@ export class EthereumQRCode extends React.Component<IProps> {
 
   private generateQRCode(): void {
     const { address, value, gas } = this.props;
-    const computedValue = value && `?value=${value}`;
-    const computedGas = gas && `?gas=${gas}`;
+    const computedValue = value ? `?value=${value}` : "";
+    const computedGas = gas ? `?gas=${gas}` : "";
     const url = `ethereum:${address}${computedValue}${computedGas}`;
 
     QRCode.toString(url, { margin: 0 }).then((svg: string) => {

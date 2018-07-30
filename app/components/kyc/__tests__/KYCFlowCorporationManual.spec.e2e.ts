@@ -130,8 +130,7 @@ const uploadSupportingDocuments = () => {
 };
 
 const addAndDeleteBeneficialOwnerAndSubmitFormForLegalRepresentation = () => {
-  cy
-    .get(tid("kyc-beneficial-owner-add-new"))
+  cy.get(tid("kyc-beneficial-owner-add-new"))
     .wait(1500)
     .click();
   cy.get(tid("kyc-beneficial-owner-delete")).click();

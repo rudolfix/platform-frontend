@@ -9,7 +9,7 @@ import * as styles from "./Tabs.module.scss";
 type TComponent = React.ReactElement<TabContent>;
 
 interface ITabsProps {
-  children: (TComponent | boolean)[];
+  children: (TComponent | boolean | undefined)[];
   selectedIndex?: number;
   layoutSize?: "small" | "large";
   layoutOrnament?: boolean;
@@ -59,8 +59,12 @@ export class Tabs extends React.Component<ITabsProps & CommonHtmlProps> {
     }
 
     const isActive = hasRouterPath
-      ? window.location.pathname.includes(tabContent.props.routerPath || "") ? "is-active" : ""
-      : index === this.state.activeIndex ? "is-active" : "";
+      ? window.location.pathname.includes(tabContent.props.routerPath || "")
+        ? "is-active"
+        : ""
+      : index === this.state.activeIndex
+        ? "is-active"
+        : "";
 
     const commonProps = {
       className: cn(styles.tab, layoutSize, hasOrnament, isActive),
@@ -96,7 +100,7 @@ export class Tabs extends React.Component<ITabsProps & CommonHtmlProps> {
         <div className={cn(styles.tabsWrapper, layoutSize, className)}>
           <div className={cn(styles.tabsOverflowWrapper, layoutPosition)}>
             {children.map((child, index) => {
-              return typeof child !== "boolean" && this.renderTab(index, child);
+              return child && typeof child !== "boolean" && this.renderTab(index, child);
             })}
           </div>
         </div>

@@ -15,7 +15,11 @@ export const CenteredListWithTitle: React.SFC<IProps> = ({ title, list }) => {
     <Col xs={12} md={6} className="py-4">
       <h3 className={styles.title}>{title}</h3>
       <HorizontalLine theme="yellow" size="narrow" className="my-3" />
-      <div>{list.map((listElement, index) => <div key={index}>{listElement}</div>)}</div>
+      <div>
+        {list.map((listElement, index) => (
+          <div key={index}>{listElement}</div>
+        ))}
+      </div>
     </Col>
   );
 };

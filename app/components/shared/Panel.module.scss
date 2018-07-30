@@ -2,6 +2,10 @@
   background-color: $color-white;
   box-shadow: $shadow-bottom-black;
   padding: px-to-rem(14px) px-to-rem(25px) px-to-rem(25px);
+
+  &.narrow {
+    padding: px-to-rem(10px);
+  }
 }
 
 .header,

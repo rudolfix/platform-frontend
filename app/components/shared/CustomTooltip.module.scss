@@ -1,0 +1,7 @@
+.tooltip {
+  :global(.tooltip-inner) {
+    padding: 1rem .5rem;
+    box-shadow: $shadow-tooltip;
+    text-align: center;
+  }
+}

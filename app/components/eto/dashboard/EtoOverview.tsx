@@ -44,7 +44,11 @@ export const EtoOverview: React.SFC<IProps> = props => {
                 <div>
                   <h4>{props.companyName}</h4>
                   <p>{props.description}</p>
-                  <div>{props.tags.map(({ text }, index) => <Tag text={text} key={index} />)}</div>
+                  <div>
+                    {props.tags.map(({ text }, index) => (
+                      <Tag text={text} key={index} />
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className={styles.detailsWrapper}>

@@ -17,7 +17,7 @@ module.exports = {
     publicPath: "/",
   },
   plugins: [
-    new CopyWebpackPlugin([{ from: "./app/twitter-iframe.html", to: "./" }]),
+    new CopyWebpackPlugin([{ from: "./app/external/*", to: "./external/" }]),
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,

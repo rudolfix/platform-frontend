@@ -59,8 +59,12 @@ export class Tabs extends React.Component<ITabsProps & CommonHtmlProps> {
     }
 
     const isActive = hasRouterPath
-      ? window.location.pathname.includes(tabContent.props.routerPath || "") ? "is-active" : ""
-      : index === this.state.activeIndex ? "is-active" : "";
+      ? window.location.pathname.includes(tabContent.props.routerPath || "")
+        ? "is-active"
+        : ""
+      : index === this.state.activeIndex
+        ? "is-active"
+        : "";
 
     const commonProps = {
       className: cn(styles.tab, layoutSize, hasOrnament, isActive),

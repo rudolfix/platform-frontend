@@ -151,7 +151,9 @@ export class EtoOfferingCardComponent extends React.Component<
               </div>
             )}
             <div className={styles.tags}>
-              {props.tags.map((tag, index) => <Tag {...tag} key={index} />)}
+              {props.tags.map((tag, index) => (
+                <Tag {...tag} key={index} />
+              ))}
             </div>
           </div>
         </Proportion>

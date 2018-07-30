@@ -32,21 +32,21 @@ export const assertLatestEmailSentWithSalt = (userEmail: string) => {
 };
 
 export const assertVerifyEmailWidgetIsInUnverifiedEmailState = (shouldNotExist?: boolean) => {
-  cy
-    .get(tid("settings.verify-email-widget.unverified-email-state"))
-    .should(shouldNotExist ? "not.exist" : "exist");
+  cy.get(tid("settings.verify-email-widget.unverified-email-state")).should(
+    shouldNotExist ? "not.exist" : "exist",
+  );
 };
 
 export const assertVerifyEmailWidgetIsInNoEmailState = (shouldNotExist?: boolean) => {
-  cy
-    .get(tid("settings.verify-email-widget.no-email-state"))
-    .should(shouldNotExist ? "not.exist" : "exist");
+  cy.get(tid("settings.verify-email-widget.no-email-state")).should(
+    shouldNotExist ? "not.exist" : "exist",
+  );
 };
 
 export const assertVerifyEmailWidgetIsInVerfiedEmailState = (shouldNotExist?: boolean) => {
-  cy
-    .get(tid("settings.verify-email-widget.verified-email-state"))
-    .should(shouldNotExist ? "not.exist" : "exist");
+  cy.get(tid("settings.verify-email-widget.verified-email-state")).should(
+    shouldNotExist ? "not.exist" : "exist",
+  );
 };
 
 export const assertEmailActivationWidgetVisible = (shouldNotExist?: boolean) => {
@@ -78,8 +78,7 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {
   for (let batch = 0; batch < words.length / 4; batch++) {
     for (let index = 0; index < 4; index++) {
-      cy
-        .get(tid(`seed-recovery-word-${batch * 4 + index}`, "input"))
+      cy.get(tid(`seed-recovery-word-${batch * 4 + index}`, "input"))
         .type(words[batch * 4 + index], { force: true, timeout: 20 })
         .type("{enter}", { force: true });
     }

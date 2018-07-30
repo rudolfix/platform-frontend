@@ -94,10 +94,6 @@ textarea {
 }
 
 .modal {
-  &.show .modal-dialog {
-    transform: translate(0, 22vh);
-  }
-
   .modal-dialog {
     max-width: px-to-rem(600px);
     display: flex;

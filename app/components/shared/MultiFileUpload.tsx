@@ -100,7 +100,11 @@ const MultiFileUploadComponent: React.SFC<IProps> = ({
             <p className={styles.requirementsTitle}>
               <FormattedMessage id="shared-component.multi-file-upload.requirements.title" />
             </p>
-            <ul>{requirements.map((r, i) => <li key={i}>{r}</li>)}</ul>
+            <ul>
+              {requirements.map((r, i) => (
+                <li key={i}>{r}</li>
+              ))}
+            </ul>
           </div>
         )
       )}

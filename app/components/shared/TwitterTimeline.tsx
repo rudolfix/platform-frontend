@@ -11,7 +11,7 @@ export class TwitterTimelineEmbed extends React.Component<IProps> {
   render(): React.ReactNode {
     return (
       <iframe
-        src={`/twitter-iframe.html?user=${this.props.userName}&url=${this.props.url}`}
+        src={`/external/twitter-iframe.html?user=${this.props.userName}&url=${this.props.url}`}
         className={styles.twitter}
         width="100%"
         height="100%"

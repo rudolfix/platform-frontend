@@ -18,7 +18,7 @@ interface IInternalProps {
   onChange: (e: React.ChangeEvent<any>) => any;
 }
 
-const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
+export const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
   name,
   label,
   value,
@@ -34,7 +34,7 @@ const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
         type="checkbox"
         name={name}
         value={value}
-        defaultChecked={checked}
+        checked={checked}
         data-test-id={dataTestId}
       />
       <div className={styles.indicator} />

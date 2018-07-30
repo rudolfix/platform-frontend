@@ -1,5 +1,7 @@
 import * as Yup from "yup";
+
 import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import {
   EtoCompanyInformationType,
   EtoKeyIndividualsType,
@@ -126,27 +128,30 @@ export const etoMediaProgressOptions: IProgressOptions = {
 export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
   !!(
     state.etoFileData &&
-    state.etoFileData.termSheet &&
-    state.etoFileData.termSheet.url &&
-    state.etoFileData.termSheet.url !== ""
+    state.etoFileData.uploadedDocuments &&
+    state.etoFileData.uploadedDocuments.termSheet &&
+    state.etoFileData.uploadedDocuments.termSheet.url &&
+    state.etoFileData.uploadedDocuments.termSheet.url !== ""
   );
 // TODO: unmock and connect with backend
 
 export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined =>
   !!(
     state.etoFileData &&
-    state.etoFileData.pamphlet &&
-    state.etoFileData.pamphlet.url &&
-    state.etoFileData.pamphlet.url !== ""
+    state.etoFileData.uploadedDocuments &&
+    state.etoFileData.uploadedDocuments.pamphlet &&
+    state.etoFileData.uploadedDocuments.pamphlet.url &&
+    state.etoFileData.uploadedDocuments.pamphlet.url !== ""
   );
 // TODO: unmock and connect with backend
 
 export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined =>
   !!(
     state.etoFileData &&
-    state.etoFileData.pamphlet &&
-    state.etoFileData.pamphlet.url &&
-    state.etoFileData.pamphlet.url !== ""
+    state.etoFileData.uploadedDocuments &&
+    state.etoFileData.uploadedDocuments.bafinProspectus &&
+    state.etoFileData.uploadedDocuments.bafinProspectus.url &&
+    state.etoFileData.uploadedDocuments.bafinProspectus.url !== ""
   );
 // TODO: unmock and connect with backend
 
@@ -161,9 +166,13 @@ export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData 
 
 export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
 
+export const selectEtoLoadingData = (state: IEtoFlowState): boolean => state.loading;
+
 export const selectCombinedEtoCompanyData = (
   state: IEtoFlowState,
 ): TPartialEtoSpecData & TPartialCompanyEtoData => ({
   ...selectCompanyData(state),
   ...selectEtoData(state),
 });
+
+export const selectEtoFileData = (state: IEtoFlowState): IEtoFiles => state.etoFileData;

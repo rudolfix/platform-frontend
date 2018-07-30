@@ -17,7 +17,17 @@ export const etoFlowInitialState: IEtoFlowState = {
   saving: false,
   etoData: {},
   companyData: {},
-  etoFileData: {},
+  etoFileData: {
+    links: [],
+    generatedDocuments: [],
+    uploadedDocuments: {
+      pamphlet: {},
+      termSheet: {},
+      infoBlatt: {},
+      bafinProspectus: {},
+      signedAgreement: {},
+    },
+  },
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (
@@ -45,17 +55,16 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
           ...action.payload.data.companyData,
         },
       };
-    case "ETO_FLOW_LOAD_FILE_DATA":
+    case "ETO_FLOW_LOAD_ETO_FILE_DATA":
       return {
         ...state,
         loading: false,
         saving: false,
-        etoFileData: {
-          ...action.payload.etoFileData,
-        },
+        etoFileData: { ...state.etoFileData, ...action.payload.data },
       };
     case "ETO_FLOW_SAVE_DATA_START":
     case "ETO_FLOW_SUBMIT_DATA_START":
+    case "ETO_FLOW_UPLOAD_DOCUMENT_START":
       return {
         ...state,
         saving: true,

@@ -25,15 +25,20 @@
 
 .tile {
   background-color: $color-white;
-  border: 1px solid $color-silver;
-  border-radius: 5px;
+  color: $gray5;
+  border: 1px solid $gray10;
+  width: px-to-rem(160px);
+  height: px-to-rem(139.6px);
+
+  border-radius: px-to-rem(5px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 24px;
+  padding: px-to-rem(20px);
+  padding-bottom: px-to-rem(5px);
 
   :global(.document-icon) {
-    width: 70px;
+    width: px-to-rem(70px);
     margin: 0 auto;
   }
 
@@ -41,7 +46,24 @@
     color: $color-black;
     font-size: px-to-rem(12px);
     margin-bottom: 0;
-    margin-top: 20px;
+    margin-top: px-to-rem(20px);
     text-align: center;
   }
+
+  .disabled-title {
+    color: $gray10;
+    justify-content: center;
+  }
+
+}
+
+.sub-title {
+  color: $gray10;
+  justify-content: center;
+  font-size: px-to-rem(8px);
+  margin-bottom: 0;
+}
+
+.active {
+  border: 1px solid $green-light;
 }

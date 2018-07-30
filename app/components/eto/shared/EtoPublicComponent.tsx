@@ -25,27 +25,13 @@ import { Cover } from "../publicView/Cover";
 
 import * as icon_link from "../../../assets/img/inline_icons/icon_link.svg";
 import * as styles from "./EtoPublicComponent.module.scss";
+import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
 const CHART_COLORS = ["#394651", "#c4c5c6", "#2fb194", "#50e3c2", "#4a90e2", "#0b0e11"];
 
-const swiperSingleRowSettings = {
-  slidesPerView: 5,
-  observer: true,
-  spaceBetween: 100,
-  breakpoints: {
-    640: {
-      slidesPerView: 1,
-    },
-    1200: {
-      slidesPerView: 3,
-      spaceBetween: 0,
-    },
-  },
-};
-
-const swiperTeamSettings = {
+const swiperSettings = {
   slidesPerView: 5,
   observer: true,
   centeredSlides: true,
@@ -544,13 +530,18 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         (companyData.team && companyData.team.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
-            <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+            <Tabs
+              className="mb-4"
+              layoutSize="large"
+              layoutOrnament={false}
+              selectedIndex={selectActiveCarouselTab([companyData.founders, companyData.team])}
+            >
               {companyData.founders &&
                 companyData.founders.members.length > 0 && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperTeamSettings}
+                        {...swiperSettings}
                         people={companyData.founders.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-founders-next",
@@ -566,7 +557,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperTeamSettings}
+                        {...swiperSettings}
                         people={companyData.team.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-team-next",
@@ -588,15 +579,26 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         (companyData.boardMembers && !!companyData.boardMembers.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
-            <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+            <Tabs
+              className="mb-4"
+              layoutSize="large"
+              layoutOrnament={false}
+              selectedIndex={selectActiveCarouselTab([
+                companyData.notableInvestors,
+                companyData.partners,
+                companyData.keyCustomers,
+                companyData.boardMembers,
+              ])}
+            >
               {companyData.notableInvestors &&
-                companyData.notableInvestors.members.length > 0 && (
+                companyData.notableInvestors.members.length > 0 &&
+                !!companyData.notableInvestors.members[0].name.length && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperSingleRowSettings}
+                        {...swiperSettings}
                         people={companyData.notableInvestors.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-investors-next",
@@ -608,11 +610,12 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </TabContent>
                 )}
               {companyData.partners &&
-                companyData.partners.members.length > 0 && (
+                companyData.partners.members.length > 0 &&
+                !!companyData.partners.members[0].name.length && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperSingleRowSettings}
+                        {...swiperSettings}
                         navigation={{
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
@@ -624,13 +627,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </TabContent>
                 )}
               {companyData.keyCustomers &&
-                companyData.keyCustomers.members.length > 0 && (
+                companyData.keyCustomers.members.length > 0 &&
+                !!companyData.keyCustomers.members[0].name.length && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperSingleRowSettings}
+                        {...swiperSettings}
                         navigation={{
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
@@ -642,7 +646,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </TabContent>
                 )}
               {companyData.boardMembers &&
-                companyData.boardMembers.members.length > 0 && (
+                companyData.boardMembers.members.length > 0 &&
+                !!companyData.boardMembers.members[0].name.length && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
                     <Panel>
                       <PeopleSwiperWidget
@@ -650,7 +655,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                           nextEl: "people-swiper-board-members-next",
                           prevEl: "people-swiper-board-members-prev",
                         }}
-                        {...swiperSingleRowSettings}
+                        {...swiperSettings}
                         people={companyData.boardMembers.members as IPerson[]}
                         layout="vertical"
                       />

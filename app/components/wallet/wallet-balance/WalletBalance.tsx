@@ -72,7 +72,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
         </h4>
         <AccountBalance
           icon={neuroIcon}
-          currency="neu"
+          currency="eur_token"
           currencyTotal="eur"
           largeNumber={data!.neuroAmount}
           value={data!.neuroEuroAmount}
@@ -106,7 +106,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
       </h4>
       <AccountBalance
         icon={neuroIcon}
-        currency="neu"
+        currency="eur_token"
         currencyTotal="eur"
         largeNumber={data!.neuroAmount}
         value={data!.neuroEuroAmount}

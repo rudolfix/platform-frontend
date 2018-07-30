@@ -13,7 +13,7 @@ export interface IDocumentLinkProps {
 
 export const DocumentLink: React.SFC<IDocumentLinkProps> = ({ url, name, altIcon }) => {
   return (
-    <a href={url} className={styles.documentLink}>
+    <a href={url} className={styles.documentLink} target="_blank">
       {altIcon || <Document extension={url} />}
       {name}
     </a>

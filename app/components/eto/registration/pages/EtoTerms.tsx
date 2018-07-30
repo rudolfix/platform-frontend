@@ -34,7 +34,7 @@ import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
-  [BOOL_TRUE_KEY]: "Neuminee",
+  [BOOL_TRUE_KEY]: "Neumini UG",
 };
 
 interface IStateProps {

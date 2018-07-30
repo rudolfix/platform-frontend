@@ -3,8 +3,8 @@ import { Col, Row } from "reactstrap";
 
 import { NotificationWidget } from "../dashboard/notification-widget/NotificationWidget";
 import { DepositEthModal } from "../modals/DepositEthModal";
-import { SendEthModal } from "../modals/SendEthModal";
 import { TxSenderModal } from "../modals/txSender/TxSender";
+import { WithdrawModal } from "../modals/WithdrawModal";
 import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 
 import * as styles from "./LayoutAuthorized.module.scss";
@@ -21,7 +21,7 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
       </Row>
     </div>
     <DepositEthModal />
-    <SendEthModal />
+    <WithdrawModal />
     <TxSenderModal />
   </>
 );

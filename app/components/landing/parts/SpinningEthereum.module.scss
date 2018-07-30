@@ -2,28 +2,24 @@ $size: 10em;
 $scale: .65;
 
 .wrapper {
-  width: $size;
-  margin-left: auto;
-  margin-right: auto;
-  height: 300px;
-  padding-left: 30px;
+  @include rect(100%, 2 * $size);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .eth {
-  position: absolute;
-  left: calc(50% - $size / 2);
-  top: calc(50% - 4em);
-  width: $size;
-  height: $size;
-  font-size: 1em * $scale;
+  @include rect($size);
 
-  margin-left: auto;
-  margin-right: auto;
+  font-size: 1em * $scale;
+  margin: 0 auto;
+  position: relative;
 
   .top, .bottom{
     width: $size;
     height: $size;
-    background: rgba(213, 216, 10, 0.11);
+    background: rgba($color-brand, .11);
     transform: rotateX(65deg) rotateZ(45deg);
     transform-style: preserve-3d;
     position: absolute;
@@ -76,11 +72,12 @@ $scale: .65;
 
   .top {
     left: 0;
-    top: 0;
+    top: -.75em;
   }
+
   .bottom {
     left: 0;
-    top: 1.5em;
+    top: .75em;
     background: rgba(213, 226, 15, 0.19);
     .left, .right {
       border-bottom: 15em solid rgba(213, 226, 15, 0.10);

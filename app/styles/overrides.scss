@@ -108,3 +108,17 @@ textarea {
     flex-wrap: wrap;
   }
 }
+
+
+.modal-content {
+  border: 0;
+  border-top: 3px solid $color-brand;
+}
+
+.modal-backdrop {
+  background-color: $color-blue-dark;
+
+  &:global(.show) {
+    opacity: .75;
+  }
+}

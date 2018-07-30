@@ -43,7 +43,8 @@ export const LandingHeader: React.SFC = () => (
               smart contracts -{" "}
               <a href="https://neufund.org/fundraise-with-equity-token" target="_blank">
                 Equity Token Offerings
-              </a>.
+              </a>
+              .
             </p>
             <p className={styles.heroDescription}>The future of fundraising is launching now.</p>
 

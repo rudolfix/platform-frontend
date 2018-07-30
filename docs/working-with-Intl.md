@@ -15,10 +15,10 @@ prop to it.
 
 To make you code extractable you need to:
 
-* always import `react-intl-phraseapp` when using `<FormattedHTMLMessage>` or `<FormattedMessage>`
-* always use literals so no variables etc
-* create FormattedMessage component with `id` prop
-* if you need to pass translated value as a string use `injectIntlHelpers` HoC and then call
+- always import `react-intl-phraseapp` when using `<FormattedHTMLMessage>` or `<FormattedMessage>`
+- always use literals so no variables etc
+- create FormattedMessage component with `id` prop
+- if you need to pass translated value as a string use `injectIntlHelpers` HoC and then call
   `formatIntlMessage` function (this name should not be used for non intl things) and pass id as a
   first arg
 

@@ -13,7 +13,7 @@ export const Proportion: React.SFC<IProps> = ({ width = 1, height = 1, children,
   return (
     <div
       className={cn(styles.proportion, className)}
-      style={{ paddingTop: `${height / width * 100}%` }}
+      style={{ paddingTop: `${(height / width) * 100}%` }}
     >
       <div className={styles.content}>{children}</div>
     </div>

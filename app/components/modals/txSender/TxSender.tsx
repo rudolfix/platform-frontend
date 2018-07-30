@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Modal } from "reactstrap";
 
+import { InvestmentSelection } from "../../dashboard/investment-flow/Investment";
 import { Button } from "../../shared/Buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
@@ -21,40 +22,32 @@ interface IStateProps {
 
 interface IDispatchProps {
   onCancel: () => any;
-  acceptDraft: (to: string, value: string) => any;
+  acceptDraft: (tx: Partial<ITxData>) => any;
   accept: () => any;
 }
 
 type Props = IStateProps & IDispatchProps;
 
 export const TxSenderModalComponent: React.SFC<Props> = props => {
-  const { isOpen, type, state, onCancel } = props;
+  const { isOpen, onCancel } = props;
 
   return (
     <Modal isOpen={isOpen} toggle={onCancel}>
-      <ModalComponentBody onClose={onCancel}>
-        <p>Type: {type}</p>
-        <p>State: {state}</p>
-
-        {renderBody(props)}
-      </ModalComponentBody>
+      <ModalComponentBody onClose={onCancel}>{renderBody(props)}</ModalComponentBody>
     </Modal>
   );
 };
+
+export interface IInitComponentProps {
+  onAccept: (tx: Partial<ITxData>) => any;
+}
 
 function renderBody({ state, acceptDraft, accept, details, blockId }: Props): React.ReactNode {
   switch (state) {
     case "INIT":
       return (
         <div>
-          <p>Forms...</p>
-          <Button
-            onClick={() =>
-              acceptDraft("0x627d795782f653c8ea5e7a63b9cdfe5cb6846d9f", "1000000000000000")
-            }
-          >
-            NEXT
-          </Button>
+          <InvestmentSelection onAccept={acceptDraft} />
         </div>
       );
     case "SUMMARY":
@@ -91,8 +84,7 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
   }),
   dispatchToProps: d => ({
     onCancel: () => d(actions.txSender.txSenderHideModal()),
-    acceptDraft: (to: string, value: string) =>
-      d(actions.txSender.txSenderAcceptDraft({ to, value })),
+    acceptDraft: (tx: Partial<ITxData>) => d(actions.txSender.txSenderAcceptDraft(tx)),
     accept: () => d(actions.txSender.txSenderAccept()),
   }),
 })(TxSenderModalComponent);

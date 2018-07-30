@@ -87,7 +87,9 @@ export function* submitEtoData(
     apiEtoService,
     notificationCenter,
     logger,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   action: TAction,
 ): any {

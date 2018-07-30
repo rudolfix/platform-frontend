@@ -34,8 +34,7 @@ export const backupLightWalletSeed = () => {
         const randomEnt = extractRandomWordIndexFromDOM(randomWords.text());
         randomEnt.shift();
         for (let index = 0; index < 4; index++) {
-          cy
-            .get(tid(`backup-seed-verify-word-${index}`, "input"))
+          cy.get(tid(`backup-seed-verify-word-${index}`, "input"))
             .type(seed[Number.parseInt(randomEnt[index]) - 1], { force: true, timeout: 20 })
             .wait(1000)
             .type("{enter}", { force: true });

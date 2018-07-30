@@ -16,7 +16,7 @@ interface IProps {
 }
 
 function formatPercent(value: number, numbers: number[]): string {
-  return `${Math.round(value / numbers.reduce((a, b) => a + b) * 100)}%`;
+  return `${Math.round((value / numbers.reduce((a, b) => a + b)) * 100)}%`;
 }
 
 export const ChartLegned: React.SFC<IProps> = ({ data }) => {

@@ -1,4 +1,4 @@
-import { FieldArray, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -19,6 +19,10 @@ import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoAp
 import { actions } from "../../../../modules/actions";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
+import {
+  FormFieldCheckbox,
+  FormFieldCheckboxGroup,
+} from "../../../shared/forms/formField/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
@@ -218,23 +222,11 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
           </FormLabel>
           <div className="form-group">
-            <FieldArray
-              name="currencies"
-              render={() =>
-                currencies.map((currency, i) => {
-                  return (
-                    <FormCheckbox
-                      key={currency}
-                      label={CURRENCIES[currency]}
-                      name={`currencies.${i}`}
-                      onChange={() => {
-                        // setFieldValue(`currencies.${i}`, currency)
-                      }}
-                    />
-                  );
-                })
-              }
-            />
+            <FormFieldCheckboxGroup name="currencies">
+              {currencies.map(currency => (
+                <FormFieldCheckbox key={currency} label={CURRENCIES[currency]} value={currency} />
+              ))}
+            </FormFieldCheckboxGroup>
           </div>
           <div className="form-group">
             <FormLabel>

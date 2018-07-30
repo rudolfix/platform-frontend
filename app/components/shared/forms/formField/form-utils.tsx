@@ -8,7 +8,12 @@ export const formWrapper = (formState: any, onSubmit?: (values: any) => any) => 
   Component: React.SFC,
 ) => () => (
   <Formik initialValues={formState} onSubmit={onSubmit || (() => {})}>
-    {({ submitForm }) => {
+    {({ submitForm, values }) => {
+      if (process.env.STORYBOOK_GIT_BRANCH) {
+        // tslint:disable-next-line
+        console.log(JSON.stringify(values));
+      }
+
       return (
         <Form>
           <Component />

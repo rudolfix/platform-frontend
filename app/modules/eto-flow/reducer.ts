@@ -6,9 +6,11 @@ import { DeepReadonly } from "../../types";
 export interface IEtoFlowState {
   loading: boolean;
   saving: boolean;
+  showIpfsModal: boolean;
   etoData: TPartialEtoSpecData;
   companyData: TPartialCompanyEtoData;
   etoFileData: IEtoFiles;
+  uploadAction?: () => void;
 }
 // TODO: Add correct type for etoFileData once backend is connected
 
@@ -28,6 +30,7 @@ export const etoFlowInitialState: IEtoFlowState = {
       signedAgreement: {},
     },
   },
+  showIpfsModal: false,
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (
@@ -68,6 +71,18 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
       return {
         ...state,
         saving: true,
+      };
+    case "ETO_FLOW_IPFS_MODAL_SHOW":
+      return {
+        ...state,
+        uploadAction: action.payload.fileUploadAction,
+        showIpfsModal: true,
+      };
+    case "ETO_FLOW_IPFS_MODAL_HIDE":
+      return {
+        ...state,
+        uploadAction: undefined,
+        showIpfsModal: false,
       };
   }
 

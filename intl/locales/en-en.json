@@ -350,6 +350,8 @@
   "modal.deposit-eth.description": "Scan this QR code to recieve Ethereum payments or use the following address to deposit ETH into your wallet: ",
   "modal.deposit-eth.title": "Deposit ether",
   "modal.generic.button.dismiss": "Ok",
+  "modal.ipfs-eto.button.continue": "Continue",
+  "modal.ipfs-eto.description": "  Ready to go? Once uploaded, your legal document is public and immutable which means you won’t be able to delete it. We use IPFS, a p2p distributed file system, that gives each document a unique hash and timestamp which we link to the smart contracts to make them legally binding.",
   "modal.light-wallet.button.accept": "Confirm",
   "modal.light-wallet.button.reject": "Cancel",
   "modal.light-wallet.message": "Please enter your Light Wallet password to confirm",

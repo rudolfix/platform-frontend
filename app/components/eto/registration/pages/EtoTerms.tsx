@@ -12,7 +12,6 @@ import {
   FormField,
   FormSelectField,
   FormTextArea,
-  NONE_KEY,
 } from "../../../shared/forms/forms";
 
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
@@ -33,8 +32,8 @@ import { CURRENCIES } from "../../EtoPublicView";
 import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
-  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
   [BOOL_TRUE_KEY]: "Neumini UG",
+  // [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
 };
 
 interface IStateProps {
@@ -309,7 +308,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             label={
               <FormattedMessage id="eto.form.section.token-holders-rights.third-party-dependency" />
             }
-            name="riskThirdParty"
+            name="nominee"
           />
           <div className="form-group">
             <FormLabel>

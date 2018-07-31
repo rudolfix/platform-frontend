@@ -270,7 +270,21 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               name="publicDurationDays"
               min={0}
               unit={
-                <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration-duration.unit" />
+                <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />
+              }
+              max={14}
+            />
+          </div>
+
+          <div className="form-group">
+            <FormLabel>
+              <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
+            </FormLabel>
+            <FormRange
+              name="signingDurationDays"
+              min={0}
+              unit={
+                <FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />
               }
               max={14}
             />
@@ -281,6 +295,14 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             placeholder="1"
             prefix="€"
             name="minTicketEur"
+            type="number"
+          />
+
+          <FormField
+            label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
+            placeholder="1"
+            prefix="€"
+            name="maxTicketEur"
             type="number"
           />
 
@@ -315,7 +337,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             <FormLabel>
               <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
             </FormLabel>
-            <FormRange name="liquidationPreferenceMultiplier" min={0} unit="%" max={200} />
+            <FormRange name="liquidationPreferenceMultiplier" min={0} unit="x" max={2} step={.5} />
           </div>
           <div className="form-group">
             <FormCheckbox
@@ -323,7 +345,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               label={
                 <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
               }
-              // TODO: Should be disabled
             />
           </div>
         </FormSection>
@@ -369,7 +390,6 @@ export const EtoRegistrationTerms = compose<React.SFC>(
         delete (data as any)["undefined"]; // TODO fix the currency form field element
         delete (data as any)["riskRegulatedBusiness"]; // TODO fix the regulated business form field element
         delete (data as any)["riskThirdParty"]; // TODO fix the regulated business form field element
-        data.liquidationPreferenceMultiplier = 1; // TODO fix form field for this
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

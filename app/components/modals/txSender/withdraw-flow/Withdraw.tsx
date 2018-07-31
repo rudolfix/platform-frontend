@@ -3,11 +3,11 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
-import { Button } from "../../shared/Buttons";
-import { FormFieldImportant } from "../../shared/forms/formField/FormFieldImportant";
+import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
+import { Button } from "../../../shared/Buttons";
+import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImportant";
 
-import { ITxData } from "../../../modules/tx/sender/reducer";
+import { ITxData } from "../../../../modules/tx/sender/reducer";
 import * as styles from "./Withdraw.module.scss";
 
 interface IWithdrawProps {

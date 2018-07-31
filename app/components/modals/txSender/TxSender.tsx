@@ -4,14 +4,13 @@ import { Modal } from "reactstrap";
 import { Button } from "../../shared/Buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
-
 import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
 import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
-import { Withdraw } from "./Withdraw";
+import { Withdraw } from "./withdraw-flow/Withdraw";
 
 interface IStateProps {
   isOpen: boolean;

@@ -9,6 +9,7 @@ import { ModalComponentBody } from "../../modals/ModalComponentBody";
 import { ButtonArrowRight } from "../../shared/Buttons";
 
 import * as ipfsImage from "../../../assets/img/ipfs.png";
+import { ResponsiveImage } from "../../shared/ResponsiveImage";
 import * as styles from "./EtoFileIpfsModal.module.scss";
 
 interface IStateProps {
@@ -30,7 +31,13 @@ export const EtoFileIpfsModalComponent: React.SFC<IStateProps & IDispatchProps> 
       <ModalComponentBody onClose={onDismiss}>
         <Row className="mb-5 justify-content-center">
           <Col xs={11} className="d-flex justify-content-center">
-            <img src={ipfsImage} className={styles.image} />
+            <ResponsiveImage
+              srcSet={{ "1x": ipfsImage }}
+              alt="ipfs Image"
+              theme="light"
+              width={375}
+              height={208}
+            />
           </Col>
         </Row>
         <Row className="mb-3 justify-content-center">

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Modal, Row } from "reactstrap";
+import { Col, Modal, Row } from "reactstrap";
 
 import { actions } from "../../../modules/actions";
 import { selectFileUploadAction, selectIsIpfsModalOpen } from "../../../modules/eto-flow/selectors";
@@ -8,6 +8,8 @@ import { appConnect } from "../../../store";
 import { ModalComponentBody } from "../../modals/ModalComponentBody";
 import { ButtonArrowRight } from "../../shared/Buttons";
 
+import * as ipfsImage from "../../../assets/img/ipfs.png";
+import { ResponsiveImage } from "../../shared/ResponsiveImage";
 import * as styles from "./EtoFileIpfsModal.module.scss";
 
 interface IStateProps {
@@ -28,12 +30,22 @@ export const EtoFileIpfsModalComponent: React.SFC<IStateProps & IDispatchProps> 
     <Modal isOpen={isOpen} toggle={onDismiss} centered>
       <ModalComponentBody onClose={onDismiss}>
         <Row className="mb-5 justify-content-center">
-          <div className={styles.content}>
-            <FormattedMessage id="modal.ipfs-eto.description" />
-          </div>
+          <Col xs={11} className="d-flex justify-content-center">
+            <ResponsiveImage
+              srcSet={{ "1x": ipfsImage }}
+              alt="ipfs Image"
+              theme="light"
+              width={375}
+              height={208}
+            />
+          </Col>
         </Row>
-
-        <Row className="mb-5 justify-content-center">
+        <Row className="mb-3 justify-content-center">
+          <Col xs={11} className={styles.content}>
+            <FormattedMessage id="modal.ipfs-eto.description" />
+          </Col>
+        </Row>
+        <Row className="mb-3 justify-content-center">
           <ButtonArrowRight onClick={onContinue} data-test-id="generic-modal-dismiss-button">
             <FormattedMessage id="modal.ipfs-eto.button.continue" />
           </ButtonArrowRight>

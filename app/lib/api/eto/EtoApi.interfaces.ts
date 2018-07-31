@@ -155,8 +155,9 @@ export const EtoTermsType = YupTS.object({
   riskRegulatedBusiness: YupTS.boolean(),
   // TODO: This fields moved to Risk Assessment and needs to be disconnected here
   nominee: YupTS.string(),
+  isCrowdfunding: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
-  tagAlongVotingRule: YupTS.boolean(),
+  tagAlongVotingRule: YupTS.string(),
   whitelistDurationDays: YupTS.number(),
   minimumNewSharesToIssue: YupTS.number(),
 });

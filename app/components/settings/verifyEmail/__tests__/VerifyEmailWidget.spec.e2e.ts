@@ -1,5 +1,6 @@
 import { tid } from "../../../../../test/testUtils";
 import {
+  assertLatestEmailSentWithSalt,
   assertUserInDashboard,
   assertVerifyEmailWidgetIsInNoEmailState,
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
@@ -9,11 +10,8 @@ import {
   convertToUniqueEmail,
   goToSettings,
   registerWithLightWallet,
-} from "../../../../e2e-test-utils/index";
-import {
-  assertLatestEmailSentWithSalt,
   verifyLatestUserEmail,
-} from "./../../../../e2e-test-utils/index";
+} from "../../../../e2e-test-utils";
 
 describe("Verify Email Widget", () => {
   it("should change user email after register", () => {

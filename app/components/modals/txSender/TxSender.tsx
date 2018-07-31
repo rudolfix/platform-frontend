@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Modal } from "reactstrap";
 
-import { InvestmentSelection } from "../../dashboard/investment-flow/Investment";
 import { Button } from "../../shared/Buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
@@ -10,7 +9,9 @@ import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
+import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
+import { Withdraw } from "./Withdraw";
 
 interface IStateProps {
   isOpen: boolean;
@@ -47,7 +48,7 @@ function renderBody({ state, acceptDraft, accept, details, blockId }: Props): Re
     case "INIT":
       return (
         <div>
-          <InvestmentSelection onAccept={acceptDraft} />
+          <Withdraw onAccept={acceptDraft} />
         </div>
       );
     case "SUMMARY":
@@ -71,6 +72,20 @@ function renderBody({ state, acceptDraft, accept, details, blockId }: Props): Re
 
     case "MINING":
       return <div>{blockId}</div>;
+
+    case "DONE":
+      return (
+        <div>
+          <SpinningEthereum />
+          <h2>Done!</h2>
+        </div>
+      );
+
+    case "ERROR_SIGN":
+      return <div>Error occured!</div>;
+
+    case "REVERTED":
+      return <div>Error: Tx reverted!</div>;
   }
 }
 

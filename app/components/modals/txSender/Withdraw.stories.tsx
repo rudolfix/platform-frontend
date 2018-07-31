@@ -3,4 +3,4 @@ import * as React from "react";
 
 import { Withdraw } from "./Withdraw";
 
-storiesOf("Withdraw", module).add("default", () => <Withdraw />);
+storiesOf("Withdraw", module).add("default", () => <Withdraw onAccept={() => {}} />);

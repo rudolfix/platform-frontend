@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { WalletType, WalletSubType } from "../../../modules/web3/types";
 
 export type TUserType = "investor" | "issuer";
 
@@ -20,6 +21,9 @@ export interface IUserInput {
   language?: string;
   backupCodesVerified?: boolean;
   type: TUserType;
+  walletType: WalletType;
+  WalletSubtype?: WalletSubType;
+  // TODO:MAKE WalletSubtype required
 }
 
 export interface IVerifyEmailUser {

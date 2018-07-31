@@ -209,6 +209,7 @@ export function* lightWalletRecoverWatch(
           salt: walletMetadata.salt,
           backupCodesVerified: false,
           type: userType,
+          walletType: walletMetadata.walletType,
         });
       } else {
         if (user.verifiedEmail === email.toLowerCase())
@@ -216,6 +217,7 @@ export function* lightWalletRecoverWatch(
             salt: walletMetadata.salt,
             backupCodesVerified: false,
             type: userType,
+            walletType: walletMetadata.walletType,
           });
         else throw new EmailAlreadyExists();
       }
@@ -226,6 +228,7 @@ export function* lightWalletRecoverWatch(
           salt: walletMetadata.salt,
           backupCodesVerified: false,
           type: userType,
+          walletType: walletMetadata.walletType,
         });
       else throw e;
     }

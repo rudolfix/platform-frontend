@@ -8,6 +8,7 @@ import { actions } from "../modules/actions";
 import { selectEtoFileData, selectEtoLoadingData } from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
 import { ETOAddDocuments } from "./eto/shared/EtoAddDocument";
+import { EtoFileIpfsModal } from "./eto/shared/EtoFileIpfsModal";
 import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
 import { DocumentTile } from "./shared/Document";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
@@ -40,6 +41,7 @@ class DocumentsComponent extends React.Component<IProps> {
           <LoadingIndicator />
         ) : (
           <Row>
+            <EtoFileIpfsModal />
             <Col xs={12} md={8}>
               <SectionHeader className="my-4">
                 <FormattedMessage id="documents.legal-documents" />

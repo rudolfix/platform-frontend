@@ -2,13 +2,13 @@ import { Form, FormikProps } from "formik";
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Container, ListGroup, Row } from "reactstrap";
+import { Container, Row } from "reactstrap";
 
 import { Button } from "../../../shared/Buttons";
 import { DocumentLink } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
-import { InfoRow } from "../shared/InfoRow";
 import { InfoList } from "../shared/InfoList";
+import { InfoRow } from "../shared/InfoRow";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";

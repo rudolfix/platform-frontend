@@ -5,12 +5,12 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, FormGroup, Label, Row } from "reactstrap";
 
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
-import { IInitComponentProps } from "../TxSender";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button } from "../../../shared/Buttons";
 import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImportant";
 import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
+import { IInitComponentProps } from "../TxSender";
 import { WalletSelector } from "./WalletSelector";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";

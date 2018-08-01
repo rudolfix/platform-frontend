@@ -629,5 +629,10 @@
   "wallet.deposit-funds.name": "Deposit funds / Receive",
   "wallet.name": "Wallet",
   "wallet.total": "Total",
+  "withdraw-flow.cost": "Cost",
+  "withdraw-flow.gas": "Gas",
+  "withdraw-flow.gasPrice": "Gas Price",
+  "withdraw-flow.summary": "Withdraw Summary",
+  "withdraw-flow.to": "To",
   "your-ethereum-address-widget.header": "Your ethereum address"
 }

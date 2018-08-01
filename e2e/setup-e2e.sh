@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 
-BACKEND_SHA=d9d9d1e38e38968cee410ab4a93e2057fd9bf3e1
+BACKEND_SHA=f0b360b4730be597c260bce966d73ac2657d8cc4
 
 # we tag images with shorter SHA
 BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}
@@ -96,5 +96,3 @@ if [[ $frontend_pid -ne 0 ]]; then
     echo "Killing frontend server..."
     kill -9 $frontend_pid
 fi
-
-

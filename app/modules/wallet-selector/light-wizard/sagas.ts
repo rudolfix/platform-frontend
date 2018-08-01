@@ -208,8 +208,10 @@ export function* lightWalletRecoverWatch(
           backupCodesVerified: false,
           type: userType,
           walletType: walletMetadata.walletType,
-          walletSubtype: walletMetadata.walletType === WalletType.BROWSER ? walletMetadata.walletSubType : undefined
-          
+          walletSubtype:
+            walletMetadata.walletType === WalletType.BROWSER
+              ? walletMetadata.walletSubType
+              : undefined,
         });
       } else {
         if (user.verifiedEmail === email.toLowerCase())
@@ -218,7 +220,10 @@ export function* lightWalletRecoverWatch(
             backupCodesVerified: false,
             type: userType,
             walletType: walletMetadata.walletType,
-            walletSubtype: walletMetadata.walletType === WalletType.BROWSER ? walletMetadata.walletSubType : undefined
+            walletSubtype:
+              walletMetadata.walletType === WalletType.BROWSER
+                ? walletMetadata.walletSubType
+                : undefined,
           });
         else throw new EmailAlreadyExists();
       }
@@ -230,7 +235,10 @@ export function* lightWalletRecoverWatch(
           backupCodesVerified: false,
           type: userType,
           walletType: walletMetadata.walletType,
-          walletSubtype: walletMetadata.walletType === WalletType.BROWSER ? walletMetadata.walletSubType : undefined
+          walletSubtype:
+            walletMetadata.walletType === WalletType.BROWSER
+              ? walletMetadata.walletSubType
+              : undefined,
         });
       else throw e;
     }

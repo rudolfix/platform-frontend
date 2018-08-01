@@ -1,7 +1,7 @@
 import { expect } from "chai";
+import { WalletSubType, WalletType } from "../web3/types";
 import { IAuthState } from "./reducer";
 import { selectIsAuthorized, selectUserEmail } from "./selectors";
-import { WalletType, WalletSubType } from "../web3/types";
 
 describe("auth > selectors", () => {
   describe("selectIsAuthorized", () => {

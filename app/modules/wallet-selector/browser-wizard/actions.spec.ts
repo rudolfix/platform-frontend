@@ -11,7 +11,7 @@ import {
 } from "../../../lib/web3/BrowserWallet";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { actions } from "../../actions";
-import { WalletType, WalletSubType } from "../../web3/types";
+import { WalletSubType, WalletType } from "../../web3/types";
 import { walletFlows } from "../flows";
 
 describe("Wallet selector > Browser wizard > actions", () => {

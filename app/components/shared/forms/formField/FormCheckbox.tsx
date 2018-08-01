@@ -9,6 +9,7 @@ interface IProps {
   name: string;
   value?: any;
   checked?: boolean;
+  disabled?: boolean;
   onChange?: () => void;
   "data-test-id"?: string;
 }
@@ -74,7 +75,7 @@ export class FormCheckbox extends React.Component<IProps> {
   };
 
   render(): React.ReactNode {
-    const { name } = this.props;
+    const { name, checked, disabled } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     return (
@@ -85,8 +86,9 @@ export class FormCheckbox extends React.Component<IProps> {
             <CheckboxComponent
               {...this.props}
               {...field}
-              checked={values[name]}
+              checked={checked || values[name]}
               onChange={() => setFieldValue(name, !values[name])}
+              disabled={disabled}
             />
           );
         }}
@@ -101,7 +103,7 @@ export class FormRadioButton extends React.Component<IProps> {
   };
 
   render(): React.ReactNode {
-    const { name } = this.props;
+    const { name, checked, disabled } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     return (
@@ -115,8 +117,9 @@ export class FormRadioButton extends React.Component<IProps> {
             <RadioButtonComponent
               {...this.props}
               {...field}
-              checked={values[name] === value}
+              checked={checked || values[name] === value}
               onChange={() => setFieldValue(name, value)}
+              disabled={disabled}
             />
           );
         }}

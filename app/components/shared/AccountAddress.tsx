@@ -34,16 +34,15 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
         <Avatar seed={address} />
 
         <div className={styles.addressWrapper}>
-          <input
+          <textarea
             data-test-id={dataTestId}
-            type="text"
             className={styles.address}
             ref={this.addressRef}
-            value={address}
             readOnly={true}
             spellCheck={false}
-            size={46}
-          />
+          >
+            {address}
+          </textarea>
           <div className={styles.transactionHistory}>
             <FormattedMessage id="shared-components.account-address.transaction-history" />{" "}
             <a href={`https://etherscan.io/address/${address}`} target="_blank">

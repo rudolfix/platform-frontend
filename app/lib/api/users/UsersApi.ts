@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
+import { WalletSubType, WalletType } from "../../../modules/web3/types";
 import { ILogger } from "../../dependencies/Logger";
 import { IHttpClient } from "../client/IHttpClient";
 import {
@@ -18,6 +19,11 @@ export class UserApiError extends Error {}
 export class UserNotExisting extends UserApiError {}
 export class EmailAlreadyExists extends UserApiError {}
 
+const upperCaseWalletTypesInUser = (userApiResponse: IUser): IUser => ({
+  ...userApiResponse,
+  walletType: userApiResponse.walletType.toUpperCase() as WalletType,
+  walletSubtype: userApiResponse.walletSubtype.toUpperCase() as WalletSubType,
+});
 @injectable()
 export class UsersApi {
   constructor(
@@ -27,17 +33,25 @@ export class UsersApi {
 
   public async createAccount(newUser?: IUserInput): Promise<IUser> {
     this.logger.info("Creating account for email: ", newUser && newUser.newEmail);
+    // Backend expects walletType and walletSubType values as lower case
+    const modifiedNewUser = newUser
+      ? {
+          ...newUser,
+          walletType: newUser.walletType.toLowerCase(),
+          walletSubtype: newUser.walletSubtype ? newUser.walletSubtype.toLowerCase() : undefined,
+        }
+      : {};
     const response = await this.httpClient.post<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/",
       responseSchema: UserValidator,
-      body: newUser || {},
+      body: modifiedNewUser,
       allowedStatusCodes: [409],
     });
     if (response.statusCode === 409) {
       throw new EmailAlreadyExists();
     }
-    return response.body;
+    return upperCaseWalletTypesInUser(response.body);
   }
 
   public async me(): Promise<IUser> {
@@ -51,7 +65,7 @@ export class UsersApi {
     if (response.statusCode === 404) {
       throw new UserNotExisting();
     }
-    return response.body;
+    return upperCaseWalletTypesInUser(response.body);
   }
 
   public async emailStatus(userEmail: string): Promise<any> {
@@ -79,16 +93,25 @@ export class UsersApi {
       throw new EmailAlreadyExists();
     }
 
-    return response.body;
+    return upperCaseWalletTypesInUser(response.body);
   }
 
   public async updateUser(updatedUser: IUserInput): Promise<IUser> {
+    const modifiedUpdatedUser = updatedUser
+      ? {
+          ...updatedUser,
+          walletType: updatedUser.walletType.toLocaleLowerCase(),
+          walletSubtype: updatedUser.walletSubtype
+            ? updatedUser.walletSubtype.toLocaleLowerCase()
+            : undefined,
+        }
+      : {};
     const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me",
       responseSchema: UserValidator,
       allowedStatusCodes: [404, 409],
-      body: updatedUser,
+      body: modifiedUpdatedUser,
     });
 
     if (response.statusCode === 404) {
@@ -98,6 +121,6 @@ export class UsersApi {
       throw new EmailAlreadyExists();
     }
 
-    return response.body;
+    return upperCaseWalletTypesInUser(response.body);
   }
 }

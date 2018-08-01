@@ -43,7 +43,6 @@ export async function loadOrCreateUserPromise(
       throw e;
     }
   }
-
   // for light wallet we need to send slightly different request
   // tslint:disable-next-line
   const walletMetadata = web3Manager.personalWallet!.getMetadata();
@@ -54,12 +53,15 @@ export async function loadOrCreateUserPromise(
       backupCodesVerified: false,
       type: userType,
       walletType: walletMetadata.walletType,
+      walletSubtype: undefined,
     });
   } else {
     return apiUserService.createAccount({
       backupCodesVerified: true,
       type: userType,
       walletType: walletMetadata.walletType,
+      walletSubtype:
+        walletMetadata.walletType === WalletType.BROWSER ? walletMetadata.walletSubType : undefined,
     });
   }
 }
@@ -68,7 +70,9 @@ export async function verifyUserEmailPromise(
   {
     apiUserService,
     notificationCenter,
-    intlWrapper: { intl: { formatIntlMessage } },
+    intlWrapper: {
+      intl: { formatIntlMessage },
+    },
   }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
@@ -164,7 +168,6 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
 
     yield neuCall(obtainJWT);
     yield call(loadOrCreateUser, probableUserType);
-
     // tslint:disable-next-line
     walletStorage.set(web3Manager.personalWallet!.getMetadata());
 
@@ -186,7 +189,9 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
 }
 
 function* handleSignInUser({
-  intlWrapper: { intl: { formatIntlMessage } },
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
 }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(signInUser);
@@ -240,12 +245,9 @@ export async function obtainJwtPromise(
   /* tslint:enable: no-useless-cast */
 
   logger.info("Obtaining auth challenge from api");
-  const { body: { challenge } } = await signatureAuthApi.challenge(
-    address,
-    salt,
-    signerType,
-    permissions,
-  );
+  const {
+    body: { challenge },
+  } = await signatureAuthApi.challenge(address, salt, signerType, permissions);
 
   logger.info("Signing challenge");
   /* tslint:disable: no-useless-cast */
@@ -253,11 +255,9 @@ export async function obtainJwtPromise(
   /* tslint:enable: no-useless-cast */
 
   logger.info("Sending signed challenge back to api");
-  const { body: { jwt } } = await signatureAuthApi.createJwt(
-    challenge,
-    signedChallenge,
-    signerType,
-  );
+  const {
+    body: { jwt },
+  } = await signatureAuthApi.createJwt(challenge, signedChallenge, signerType);
 
   return jwt;
 }

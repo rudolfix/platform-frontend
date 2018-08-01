@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { WalletType, WalletSubType } from "../../../modules/web3/types";
+import { WalletSubType, WalletType } from "../../../modules/web3/types";
 
 export type TUserType = "investor" | "issuer";
 
@@ -9,6 +9,8 @@ export interface IUser {
   unverifiedEmail?: string;
   verifiedEmail?: string;
   type: TUserType;
+  walletType: WalletType;
+  walletSubtype: WalletSubType;
 }
 
 export interface IEmailStatus {
@@ -22,8 +24,7 @@ export interface IUserInput {
   backupCodesVerified?: boolean;
   type: TUserType;
   walletType: WalletType;
-  WalletSubtype?: WalletSubType;
-  // TODO:MAKE WalletSubtype required
+  walletSubtype?: WalletSubType;
 }
 
 export interface IVerifyEmailUser {
@@ -37,6 +38,8 @@ export const UserValidator = Yup.object()
     unverifiedEmail: Yup.string(),
     verifiedEmail: Yup.string(),
     type: Yup.string().oneOf(["investor", "issuer"]),
+    walletType: Yup.string().oneOf(Object.keys(WalletType).map(type => type.toLowerCase())),
+    walletSubtype: Yup.string().oneOf(Object.keys(WalletSubType).map(type => type.toLowerCase())),
   })
   .required();
 

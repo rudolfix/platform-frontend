@@ -42,7 +42,7 @@ const GenericSignPrompt = ({ onCancel }: { onCancel?: () => void }) => (
 export const AccessWalletContainerComponent: React.SFC<
   IStateProps & IDispatchProps & IOwnProps
 > = props => (
-  <div className="text-md-center">
+  <div className="text-center">
     <h1>{props.title}</h1>
     <p>{props.message}</p>
     <img src={lockIcon} className="mb-3" />

@@ -4,16 +4,17 @@ import { appRoutes } from "../../components/appRoutes";
 import { IAppState } from "../../store";
 import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../auth/selectors";
 import { selectKycRequestStatus, selectWidgetLoading } from "../kyc/selectors";
+import { selectWalletType } from "../web3/selectors";
+import { WalletType } from "../web3/types";
 import { settingsNotification } from "./reducer";
 
 export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
   if (selectWidgetLoading(state.kyc)) {
     return false;
   }
-
   return (
     !selectIsUserEmailVerified(state.auth) ||
-    !selectBackupCodesVerified(state.auth) ||
+    (!selectBackupCodesVerified(state.auth) && selectWalletType(state.web3) === WalletType.LIGHT) ||
     selectKycRequestStatus(state.kyc) !== "Accepted"
   );
 };

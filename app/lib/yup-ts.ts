@@ -4,6 +4,7 @@ import { Dictionary } from "../types";
 
 export const object = <T>(objectShape: T) => new ObjectYTS(objectShape);
 export const string = () => new StringYTS();
+export const url = () => new UrlYTS();
 export const array = <T extends YTS<any>>(shape: T) => new ArrayYTS(shape);
 export const number = () => new NumberYTS();
 export const boolean = () => new BooleanYTS();
@@ -61,6 +62,27 @@ class StringYTS extends YTS<string> {
 
   optional(): YTS<string | undefined> {
     return new StringYTS(false);
+  }
+}
+
+class UrlYTS extends YTS<string> {
+  __TYPE__!: Unique<"string">;
+
+  constructor(private isRequired: boolean = true) {
+    super();
+  }
+
+  toYup(): Yup.Schema {
+    const validator = Yup.string().url();
+
+    if (this.isRequired) {
+      return validator.required("This field is required");
+    }
+    return validator;
+  }
+
+  optional(): YTS<string | undefined> {
+    return new UrlYTS(false);
   }
 }
 

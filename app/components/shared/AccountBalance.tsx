@@ -39,7 +39,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
             iconPosition="icon-after"
             theme="graphite"
             svgIcon={arrowRightIcon}
-            onClick={onWithdrawClick}
+            onClick={() => {}}
             disabled
           >
             <FormattedMessage id="shared-component.account-balance.upgrade" />
@@ -52,7 +52,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
               theme="graphite"
               svgIcon={arrowRightIcon}
               onClick={onWithdrawClick}
-              disabled
+              disabled={parseFloat(largeNumber) === 0 ? false : true}
             >
               <FormattedMessage id="shared-component.account-balance.withdraw" />
             </Button>
@@ -62,7 +62,6 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
               theme="graphite"
               svgIcon={arrowRightIcon}
               onClick={onDepositClick}
-              disabled
             >
               <FormattedMessage id="shared-component.account-balance.deposit" />
             </Button>

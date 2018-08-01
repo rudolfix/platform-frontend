@@ -1,18 +1,18 @@
 .account-address {
   display: inline-flex;
-}
-
-.avatar {
-  @include circle(32px);
-
-  margin-right: px-to-rem(12px);
+  width: 100%;
 }
 
 .address {
   @include font-label;
 
+  border: 0;
   color: $color-graphite-light;
+  min-height: 1em;
   text-transform: none;
+  padding: 0;
+  resize: none;
+  width: 100%;
 }
 
 .transaction-history {
@@ -23,5 +23,6 @@
 }
 
 .address-wrapper {
+  flex: 1;
   margin-right: px-to-rem(20px);
 }

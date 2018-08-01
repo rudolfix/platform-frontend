@@ -58,7 +58,7 @@ describe("Wallet recover", () => {
     cy.wait(5000);
     assertLatestEmailSentWithSalt(email);
 
-    cy.contains(tid("my-neu-widget-neumark-balance"), "57611.8506 NEU");
+    cy.contains(tid("my-neu-widget-neumark-balance"), "10487.9455 NEU");
 
     cy.contains(tid("my-wallet-widget-eur-token-large-value"), "0.00 nEUR");
     cy.contains(tid("my-wallet-widget-eur-token-value"), "0.00 EUR");
@@ -69,9 +69,10 @@ describe("Wallet recover", () => {
 
     cy.get(tid("authorized-layout-settings-button")).click();
 
-    cy
-      .get(tid("your-ether-address-widget-eth-address"))
-      .should("have.value", expectedGeneratedAddress);
+    cy.get(tid("your-ether-address-widget-eth-address")).should(
+      "have.value",
+      expectedGeneratedAddress,
+    );
   });
 
   it("should return an error when recovering seed and using an already verified email", () => {

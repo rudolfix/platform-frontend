@@ -18,6 +18,7 @@ export const symbols = makeDebugSymbols({
   usersApi: Symbol(),
   apiKycService: Symbol(),
   apiEtoService: Symbol(),
+  apiEtoFileService: Symbol(),
   fileStorageService: Symbol(),
 
   // contracts
@@ -52,5 +53,5 @@ export const symbols = makeDebugSymbols({
  * Adds automatically symbols name values which makes debugging easier
  */
 export function makeDebugSymbols<T>(symbols: T): T {
-  return mapValues(symbols, (_val, key) => Symbol.for(key)) as any;
+  return mapValues(symbols as any, (_val, key) => Symbol.for(key)) as any;
 }

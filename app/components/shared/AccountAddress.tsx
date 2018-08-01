@@ -1,10 +1,10 @@
 import * as cn from "classnames";
 import * as React from "react";
-import Blockies from "react-blockies";
 import { toast } from "react-toastify";
 
 import { FormattedMessage } from "react-intl-phraseapp";
 import { CommonHtmlProps } from "../../types";
+import { Avatar } from "./Avatar";
 import { ButtonIcon } from "./Buttons";
 
 import * as clipboardIcon from "../../assets/img/inline_icons/icon-clipboard.svg";
@@ -31,21 +31,18 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
 
     return (
       <div className={cn(styles.accountAddress, className)}>
-        <div className={styles.avatar}>
-          <Blockies seed={address} />
-        </div>
+        <Avatar seed={address} />
 
         <div className={styles.addressWrapper}>
-          <input
+          <textarea
             data-test-id={dataTestId}
-            type="text"
             className={styles.address}
             ref={this.addressRef}
-            value={address}
             readOnly={true}
             spellCheck={false}
-            size={46}
-          />
+          >
+            {address}
+          </textarea>
           <div className={styles.transactionHistory}>
             <FormattedMessage id="shared-components.account-address.transaction-history" />{" "}
             <a href={`https://etherscan.io/address/${address}`} target="_blank">

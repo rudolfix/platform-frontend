@@ -14,6 +14,7 @@ import { Panel } from "./Panel";
 interface IProps {
   to: string;
   isLoading: boolean;
+  disabled?: boolean;
 }
 
 export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
@@ -21,6 +22,7 @@ export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
   progress,
   name,
   isLoading,
+  disabled,
 }) => {
   return (
     <Panel>
@@ -31,12 +33,17 @@ export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
           ) : (
             <>
               <ChartCircle progress={progress} name={name} />
-              <Link to={to} className={styles.linkWrapper}>
+              <Link
+                to={to}
+                className={styles.linkWrapper}
+                onClick={e => (disabled ? e.preventDefault() : e)}
+              >
                 <Button
                   theme="silver"
                   layout="secondary"
                   iconPosition="icon-after"
                   svgIcon={arrowRightIcon}
+                  disabled={disabled}
                 >
                   {progress < 1 ? (
                     <FormattedMessage id="shared-component.eto-form-progress-widget.complete" />

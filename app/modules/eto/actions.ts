@@ -1,4 +1,4 @@
-import { TGeneralEtoData } from "../../lib/api/EtoApi.interfaces";
+import { TGeneralEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction } from "../actionsUtils";
 
 export const etoActions = {

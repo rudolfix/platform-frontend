@@ -45,7 +45,8 @@ export const MoneySuiteWidget: React.SFC<
           {percentage && (
             <span className={`${parseInt(percentage, 10) > 0 ? styles.green : styles.red}`}>
               {" "}
-              ({percentage}%)
+              ({percentage}
+              %)
             </span>
           )}
         </div>

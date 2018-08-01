@@ -22,7 +22,7 @@ import {
 } from "../utils/AsyncIntervalScheduler";
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
-import { EtoApi } from "../lib/api/EtoApi";
+import { EtoApi } from "../lib/api/eto/EtoApi";
 import { FileStorageApi } from "../lib/api/FileStorageApi";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
@@ -32,6 +32,7 @@ import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { ContractsService } from "../lib/web3/ContractsService";
+import { EtoFileApi } from "./../lib/api/eto/EtoFileApi";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;
@@ -129,6 +130,10 @@ export function setupBindings(config: IConfig): Container {
     .to(EtoApi)
     .inSingletonScope();
   container
+    .bind<EtoFileApi>(symbols.apiEtoFileService)
+    .to(EtoFileApi)
+    .inSingletonScope();
+  container
     .bind<WalletStorage<TWalletMetadata>>(symbols.walletStorage)
     .to(WalletStorage)
     .inSingletonScope();
@@ -202,6 +207,7 @@ export const createGlobalDependencies = (container: Container) => ({
   signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),
   apiKycService: container.get<KycApi>(symbols.apiKycService),
   apiEtoService: container.get<EtoApi>(symbols.apiEtoService),
+  apiEtoFileService: container.get<EtoFileApi>(symbols.apiEtoFileService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),

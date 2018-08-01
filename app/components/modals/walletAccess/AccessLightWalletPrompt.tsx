@@ -22,15 +22,18 @@ export interface IFormValues {
 
 const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => (
   <Form>
-    <FormField
-      type="password"
-      placeholder="Password"
-      name="password"
-      data-test-id="access-light-wallet-password-input"
-    />
+    <div className="ml-sm-5 mr-sm-5">
+      <FormField
+        type="password"
+        placeholder="Password"
+        name="password"
+        data-test-id="access-light-wallet-password-input"
+      />
+    </div>
     <div className="mt-3">
       <Button
         type="submit"
+        layout="secondary"
         disabled={!formikBag.values.password}
         data-test-id="access-light-wallet-confirm"
       >
@@ -55,6 +58,7 @@ export const AccessLightWalletPrompt: React.SFC<IProps> = props =>
     <div className="mt-3">
       <Button
         onClick={() => props.onAccept()}
+        layout="secondary"
         data-test-id="access-light-wallet-prompt-accept-button"
       >
         <FormattedMessage id="modal.light-wallet.button.accept" />

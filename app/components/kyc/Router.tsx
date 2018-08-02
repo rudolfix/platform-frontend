@@ -10,7 +10,6 @@ import { TUserType } from "../../lib/api/users/interfaces";
 import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { invariant } from "../../utils/invariant";
-import { ScrollToTop } from "../shared/ScrollToTop";
 import { KYCBeneficialOwners } from "./business/BeneficialOwners";
 import { KycBusinessData } from "./business/BusinessData";
 import { KycLegalRepresentative } from "./business/LegalRepresentative";
@@ -25,22 +24,20 @@ interface IStateProps {
 
 export const NormalKycRouter: React.SFC = () => (
   <SwitchConnected>
-    <ScrollToTop>
-      <Route path={kycRoutes.start} component={KYCStart} exact />
+    <Route path={kycRoutes.start} component={KYCStart} exact />
 
-      {/* Personal */}
-      <Route path={kycRoutes.individualStart} component={KYCPersonalStart} />
-      <Route path={kycRoutes.individualInstantId} component={KycPersonalInstantId} />
-      <Route path={kycRoutes.individualUpload} component={KYCPersonalUpload} />
+    {/* Personal */}
+    <Route path={kycRoutes.individualStart} component={KYCPersonalStart} />
+    <Route path={kycRoutes.individualInstantId} component={KycPersonalInstantId} />
+    <Route path={kycRoutes.individualUpload} component={KYCPersonalUpload} />
 
-      {/* Business */}
-      <Route path={kycRoutes.businessStart} component={KycBusinessStart} />
-      <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
-      <Route path={kycRoutes.businessData} component={KycBusinessData} />
-      <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
+    {/* Business */}
+    <Route path={kycRoutes.businessStart} component={KycBusinessStart} />
+    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
+    <Route path={kycRoutes.businessData} component={KycBusinessData} />
+    <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
 
-      <Redirect to={kycRoutes.start} />
-    </ScrollToTop>
+    <Redirect to={kycRoutes.start} />
   </SwitchConnected>
 );
 

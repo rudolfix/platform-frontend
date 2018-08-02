@@ -1,9 +1,11 @@
 import * as React from "react";
 import { RouteProps } from "react-router";
 
-export class ScrollToTop extends React.Component<RouteProps> {
+import { appConnect } from "../../store";
+
+class ScrollToTopComponent extends React.Component<RouteProps> {
   componentDidUpdate(prevProps: RouteProps): void {
-    if (this.props.location !== prevProps.location) {
+    if (prevProps.location!.pathname !== this.props.location!.pathname) {
       window.scrollTo(0, 0);
     }
   }
@@ -12,3 +14,7 @@ export class ScrollToTop extends React.Component<RouteProps> {
     return this.props.children;
   }
 }
+
+export const ScrollToTop = appConnect({
+  stateToProps: s => ({ location: s.router.location }),
+})(ScrollToTopComponent as any);

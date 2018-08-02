@@ -21,8 +21,13 @@ export class EmailAlreadyExists extends UserApiError {}
 
 const upperCaseWalletTypesInUser = (userApiResponse: IUser): IUser => ({
   ...userApiResponse,
-  walletType: userApiResponse.walletType.toUpperCase() as WalletType,
-  walletSubtype: userApiResponse.walletSubtype.toUpperCase() as WalletSubType,
+  walletType:
+    (userApiResponse.walletType && (userApiResponse.walletType.toUpperCase() as WalletType)) ||
+    undefined,
+  walletSubtype:
+    (userApiResponse.walletType &&
+      (userApiResponse.walletSubtype.toUpperCase() as WalletSubType)) ||
+    undefined,
 });
 @injectable()
 export class UsersApi {

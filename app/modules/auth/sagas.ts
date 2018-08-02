@@ -21,7 +21,7 @@ import {
   selectEmailFromQueryString,
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
-import { WalletType } from "../web3/types";
+import { WalletSubType, WalletType } from "../web3/types";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -53,7 +53,7 @@ export async function loadOrCreateUserPromise(
       backupCodesVerified: false,
       type: userType,
       walletType: walletMetadata.walletType,
-      walletSubtype: undefined,
+      walletSubtype: WalletSubType.UNKNOWN,
     });
   } else {
     return apiUserService.createAccount({
@@ -61,7 +61,9 @@ export async function loadOrCreateUserPromise(
       type: userType,
       walletType: walletMetadata.walletType,
       walletSubtype:
-        walletMetadata.walletType === WalletType.BROWSER ? walletMetadata.walletSubType : undefined,
+        walletMetadata.walletType === WalletType.BROWSER
+          ? walletMetadata.walletSubType
+          : WalletSubType.UNKNOWN,
     });
   }
 }

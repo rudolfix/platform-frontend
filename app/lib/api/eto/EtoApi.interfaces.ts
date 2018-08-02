@@ -157,7 +157,6 @@ export const EtoTermsType = YupTS.object({
   nominee: YupTS.string(),
   isCrowdfunding: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
-  tagAlongVotingRule: YupTS.string(),
   whitelistDurationDays: YupTS.number(),
   minimumNewSharesToIssue: YupTS.number(),
 });

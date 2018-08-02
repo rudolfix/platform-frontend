@@ -13,6 +13,7 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
 ): ILightWalletWizardState => {
   switch (action.type) {
     case "LIGHT_WALLET_LOGIN":
+    case "LIGHT_WALLET_REGISTER":
       return {
         ...state,
         errorMsg: undefined,
@@ -25,6 +26,7 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
         isLoading: false,
       };
     case "WALLET_SELECTOR_CONNECTED":
+    case "WALLET_SELECTOR_RESET":
       return {
         ...state,
         isLoading: false,

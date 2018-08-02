@@ -14,4 +14,7 @@ export const etoFlowActions = {
   loadEtoFileData: (data: IEtoFiles) => createAction("ETO_FLOW_LOAD_ETO_FILE_DATA", { data }),
   etoUploadDocument: (file: File, name: TEtoUploadFile) =>
     createAction("ETO_FLOW_UPLOAD_DOCUMENT_START", { file, name }),
+  showIpfsModal: (fileUploadAction: () => void) =>
+    createAction("ETO_FLOW_IPFS_MODAL_SHOW", { fileUploadAction }),
+  hideIpfsModal: () => createSimpleAction("ETO_FLOW_IPFS_MODAL_HIDE"),
 };

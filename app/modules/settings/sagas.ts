@@ -126,9 +126,7 @@ export function* loadSeedOrReturnToSettings({
       accessWalletAndRunEffect,
       signEffect,
       formatIntlMessage("modules.settings.sagas.load-seed-return-settings.access-recovery-phrase"),
-      formatIntlMessage(
-        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description",
-      ),
+      "",
     );
   } catch {
     yield put(actions.routing.goToSettings());

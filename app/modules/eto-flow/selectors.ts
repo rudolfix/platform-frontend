@@ -155,6 +155,11 @@ export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | und
   );
 // TODO: unmock and connect with backend
 
+export const selectIsIpfsModalOpen = (state: IEtoFlowState): boolean => state.showIpfsModal;
+
+export const selectFileUploadAction = (state: IEtoFlowState): (() => void) | undefined =>
+  state.uploadAction;
+
 export const selectIsBookBuilding = (state: IEtoFlowState): boolean | undefined =>
   state.etoData && state.etoData.isBookbuilding;
 

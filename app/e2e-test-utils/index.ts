@@ -141,7 +141,7 @@ export const registerWithLightWallet = (
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).click();
-
+  cy.get(tid("wallet-selector-register-button")).should("be.disabled");
   assertUserInDashboard();
 };
 
@@ -157,6 +157,7 @@ export const loginWithLightWallet = (email: string, password: string) => {
   cy.contains(tid("light-wallet-login-with-email-email-field"), email);
   cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).click();
+  cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
 
   return assertUserInDashboard();
 };

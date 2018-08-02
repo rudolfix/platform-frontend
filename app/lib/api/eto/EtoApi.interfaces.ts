@@ -21,7 +21,7 @@ const EtoCapitalListType = YupTS.object({
 
 export const EtoCompanyInformationType = YupTS.object({
   brandName: YupTS.string(),
-  companyWebsite: YupTS.string(),
+  companyWebsite: YupTS.url(),
   companyOneliner: YupTS.string(),
   companyDescription: YupTS.string(),
   keyQuoteFounder: YupTS.string(),
@@ -63,7 +63,7 @@ type TEtoRiskAssessment = YupTS.TypeOf<typeof EtoRiskAssessmentType>;
 const socialChannelsType = YupTS.array(
   YupTS.object({
     type: YupTS.string(),
-    url: YupTS.string(),
+    url: YupTS.url(),
   }),
 );
 
@@ -110,7 +110,7 @@ type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
 
 const linkType = YupTS.object({
   title: YupTS.string(),
-  url: YupTS.string(),
+  url: YupTS.url(),
 });
 
 export const EtoMediaType = YupTS.object({
@@ -155,8 +155,9 @@ export const EtoTermsType = YupTS.object({
   riskRegulatedBusiness: YupTS.boolean(),
   // TODO: This fields moved to Risk Assessment and needs to be disconnected here
   nominee: YupTS.string(),
+  isCrowdfunding: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
-  tagAlongVotingRule: YupTS.boolean(),
+  tagAlongVotingRule: YupTS.string(),
   whitelistDurationDays: YupTS.number(),
   minimumNewSharesToIssue: YupTS.number(),
 });

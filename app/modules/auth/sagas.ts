@@ -21,7 +21,7 @@ import {
   selectEmailFromQueryString,
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
-import { WalletType } from "../web3/types";
+import { WalletSubType, WalletType } from "../web3/types";
 import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -43,7 +43,6 @@ export async function loadOrCreateUserPromise(
       throw e;
     }
   }
-
   // for light wallet we need to send slightly different request
   // tslint:disable-next-line
   const walletMetadata = web3Manager.personalWallet!.getMetadata();
@@ -53,11 +52,18 @@ export async function loadOrCreateUserPromise(
       salt: walletMetadata.salt,
       backupCodesVerified: false,
       type: userType,
+      walletType: walletMetadata.walletType,
+      walletSubtype: WalletSubType.UNKNOWN,
     });
   } else {
     return apiUserService.createAccount({
       backupCodesVerified: true,
       type: userType,
+      walletType: walletMetadata.walletType,
+      walletSubtype:
+        walletMetadata.walletType === WalletType.BROWSER
+          ? walletMetadata.walletSubType
+          : WalletSubType.UNKNOWN,
     });
   }
 }
@@ -164,7 +170,6 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
 
     yield neuCall(obtainJWT);
     yield call(loadOrCreateUser, probableUserType);
-
     // tslint:disable-next-line
     walletStorage.set(web3Manager.personalWallet!.getMetadata());
 

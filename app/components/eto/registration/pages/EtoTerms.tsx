@@ -33,7 +33,11 @@ import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
   [BOOL_TRUE_KEY]: "Neumini UG",
-  // [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
+};
+
+const GENERAL_VOTING_RULE = {
+  positive: <FormattedMessage id="form.select.yes" />,
+  no_voting_rights: <FormattedMessage id="form.select.no" />,
 };
 
 interface IStateProps {
@@ -268,9 +272,19 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             <FormRange
               name="publicDurationDays"
               min={0}
-              unit={
-                <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration-duration.unit" />
-              }
+              unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
+              max={14}
+            />
+          </div>
+
+          <div className="form-group">
+            <FormLabel>
+              <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
+            </FormLabel>
+            <FormRange
+              name="signingDurationDays"
+              min={0}
+              unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
               max={14}
             />
           </div>
@@ -282,6 +296,22 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             name="minTicketEur"
             type="number"
           />
+
+          <FormField
+            label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
+            placeholder="1"
+            prefix="€"
+            name="maxTicketEur"
+            type="number"
+          />
+
+          <div className="form-group">
+            <FormCheckbox
+              name="isCrowdfunding"
+              label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
+              checked
+            />
+          </div>
 
           <div className="form-group">
             <FormCheckbox
@@ -314,17 +344,16 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             <FormLabel>
               <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
             </FormLabel>
-            <FormRange name="liquidationPreferenceMultiplier" min={0} unit="%" max={200} />
+            <FormRange name="liquidationPreferenceMultiplier" min={0} unit="x" max={2} step={0.5} />
           </div>
-          <div className="form-group">
-            <FormCheckbox
-              name="tagAlongVotingRule"
-              label={
-                <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
-              }
-              // TODO: Should be disabled
-            />
-          </div>
+
+          <FormSelectField
+            values={GENERAL_VOTING_RULE}
+            label={
+              <FormattedMessage id="eto.form.section.token-holders-rights.general-voting-rule" />
+            }
+            name="generalVotingRule"
+          />
         </FormSection>
         <Col>
           <Row className="justify-content-end">
@@ -365,10 +394,7 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        delete (data as any)["undefined"]; // TODO fix the currency form field element
-        delete (data as any)["riskRegulatedBusiness"]; // TODO fix the regulated business form field element
-        delete (data as any)["riskThirdParty"]; // TODO fix the regulated business form field element
-        data.liquidationPreferenceMultiplier = 1; // TODO fix form field for this
+        data.isCrowdfunding = false; // Temporary solution - overrides checked value
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

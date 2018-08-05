@@ -72,6 +72,7 @@ export class BrowserWallet implements IPersonalWallet {
     return {
       address: this.ethereumAddress,
       walletType: WalletType.BROWSER,
+      walletSubType: this.walletSubType,
     };
   }
 }

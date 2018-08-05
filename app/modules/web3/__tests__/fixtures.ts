@@ -4,7 +4,7 @@ import {
   ILedgerWalletMetadata,
   ILightWalletMetadata,
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
-import { WalletType } from "../types";
+import { WalletSubType, WalletType } from "../types";
 
 export const getDummyLightWalletMetadata = (): ILightWalletMetadata => ({
   walletType: WalletType.LIGHT,
@@ -17,6 +17,7 @@ export const getDummyLightWalletMetadata = (): ILightWalletMetadata => ({
 export const getDummyBrowserWalletMetadata = (): IBrowserWalletMetadata => ({
   walletType: WalletType.BROWSER,
   address: dummyEthereumAddress,
+  walletSubType: WalletSubType.METAMASK,
 });
 
 export const getDummyLedgerWalletMetadata = (): ILedgerWalletMetadata => ({

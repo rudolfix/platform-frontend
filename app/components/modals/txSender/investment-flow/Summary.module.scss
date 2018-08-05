@@ -1,0 +1,16 @@
+.download-link {
+  svg {
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: top;
+    margin-right: .5em;
+  }
+}
+
+.container {
+  :global(.row) {
+    margin: 2rem 0;
+  }
+}
+
+

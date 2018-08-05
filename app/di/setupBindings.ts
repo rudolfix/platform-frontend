@@ -23,6 +23,7 @@ import {
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { EtoApi } from "../lib/api/eto/EtoApi";
+import { EtoFileApi } from "../lib/api/eto/EtoFileApi";
 import { FileStorageApi } from "../lib/api/FileStorageApi";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
@@ -32,7 +33,6 @@ import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { ContractsService } from "../lib/web3/ContractsService";
-import { EtoFileApi } from "./../lib/api/eto/EtoFileApi";
 import { symbols } from "./symbols";
 
 export type NavigateTo = (path: string) => void;

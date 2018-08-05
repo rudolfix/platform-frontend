@@ -10,6 +10,7 @@ import {
   ILightWalletRetrieveMetadata,
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
+  LightError,
   LightWallet,
   LightWalletLocked,
   LightWalletUtil,
@@ -37,7 +38,6 @@ import {
 } from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
-import { LightError } from "./../../../lib/web3/LightWallet";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
 

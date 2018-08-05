@@ -1,10 +1,5 @@
-
-.info-table {
-  list-style: none;
-  width: 100%;
-  margin: 0;
-
-  .info-row {
+li {
+  &.info-row {
     display: flex;
     flex-direction: row;
     margin: 0;
@@ -30,7 +25,6 @@
       margin-right: .5em;
     }
   }
-
 }
 
 .info-cell {
@@ -45,20 +39,3 @@
     padding: 0 .5rem;
   }
 }
-
-.download-link {
-  svg {
-    width: 1.5em;
-    height: 1.5em;
-    vertical-align: top;
-    margin-right: .5em;
-  }
-}
-
-.container {
-  :global(.row) {
-    margin: 2rem 0;
-  }
-}
-
-

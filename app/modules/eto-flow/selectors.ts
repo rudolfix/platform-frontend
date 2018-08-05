@@ -1,7 +1,5 @@
 import * as Yup from "yup";
 
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import {
   EtoCompanyInformationType,
   EtoKeyIndividualsType,
@@ -9,11 +7,13 @@ import {
   EtoMediaType,
   EtoProductVisionType,
   EtoRiskAssessmentType,
+  EtoState,
   EtoTermsType,
   GeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "./../../lib/api/eto/EtoApi.interfaces";
+} from "../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {

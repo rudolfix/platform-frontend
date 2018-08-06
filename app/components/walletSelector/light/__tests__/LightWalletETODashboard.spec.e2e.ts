@@ -1,16 +1,13 @@
 import {
-  assertEtoDashboard,
-  convertToUniqueEmail,
-  registerWithLightWalletETO,
-} from "../../../../e2e-test-utils";
-import {
   assertBackupSeedWidgetVisible,
   assertEmailActivationWidgetVisible,
+  assertEtoDashboard,
+  convertToUniqueEmail,
   goToDashboard,
-} from "../../../../e2e-test-utils/index";
-
+  registerWithLightWalletETO,
+  verifyLatestUserEmail,
+} from "../../../../e2e-test-utils";
 import { backupLightWalletSeed } from "../../../settings/backupSeed/__tests__/BackupSeed.spec.e2e";
-import { verifyLatestUserEmail } from "./../../../../e2e-test-utils/index";
 
 const password = "strongpassword";
 

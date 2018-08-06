@@ -1,12 +1,13 @@
 import { tid } from "../../../../../test/testUtils";
 import {
   assertErrorModal,
+  assertLatestEmailSentWithSalt,
+  assertUserInDashboard,
+  clearEmailServer,
   mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
-import { assertUserInDashboard, clearEmailServer } from "../../../../e2e-test-utils/index";
-import { assertLatestEmailSentWithSalt } from "./../../../../e2e-test-utils/index";
 
 describe("Wallet recover", () => {
   const words = [

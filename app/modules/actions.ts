@@ -13,7 +13,6 @@ import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
-import { sendModalActions } from "./sendEthModal/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
 import { txMonitorActions } from "./tx/monitor/actions";
@@ -44,7 +43,6 @@ export const actions = {
   formSingleFileUpload: formSingleFileUploadActions,
   remoteFile: remoteFileActions,
   depositEthModal: depositModalActions,
-  sendEthModal: sendModalActions,
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
 };
@@ -72,7 +70,6 @@ export const allActions = {
   ...formSingleFileUploadActions,
   ...remoteFileActions,
   ...depositModalActions,
-  ...sendModalActions,
   ...txMonitorActions,
   ...txSenderActions,
 };

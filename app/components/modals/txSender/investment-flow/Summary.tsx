@@ -2,14 +2,16 @@ import { Form, FormikProps } from "formik";
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Container, ListGroup, ListGroupItem, Row } from "reactstrap";
+import { Container, Row } from "reactstrap";
 
-import { Button } from "../../shared/Buttons";
-import { DocumentLink } from "../../shared/DocumentLink";
-import { Heading } from "../../shared/modals/Heading";
+import { Button } from "../../../shared/Buttons";
+import { DocumentLink } from "../../../shared/DocumentLink";
+import { Heading } from "../../../shared/modals/Heading";
+import { InfoList } from "../shared/InfoList";
+import { InfoRow } from "../shared/InfoRow";
 
-import * as neuIcon from "../../../assets/img/neu_icon.svg";
-import * as tokenIcon from "../../../assets/img/token_icon.svg";
+import * as neuIcon from "../../../../assets/img/neu_icon.svg";
+import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
@@ -32,18 +34,6 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-interface IInfoRowProps {
-  translation: React.ReactNode;
-  value: string | React.ReactNode;
-}
-
-export const InfoRow: React.SFC<IInfoRowProps> = ({ translation, value }) => (
-  <ListGroupItem className={styles.infoRow}>
-    <div className={styles.infoCell}>{translation}</div>
-    <div className={styles.infoCell}>{value}</div>
-  </ListGroupItem>
-);
-
 export const InvestmentSummary = injectIntl(
   ({ investmentData: data, agreementUrl }: IProps & InjectedIntlProps) => {
     const equityTokens = (
@@ -65,40 +55,40 @@ export const InvestmentSummary = injectIntl(
         </Row>
 
         <Row>
-          <ListGroup className={styles.infoTable}>
+          <InfoList>
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.company" />}
+              caption={<FormattedMessage id="investment-flow.summary.company" />}
               value={data.companyName}
             />
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.token-price" />}
+              caption={<FormattedMessage id="investment-flow.summary.token-price" />}
               value={data.tokenPrice}
             />
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.eto-address" />}
+              caption={<FormattedMessage id="investment-flow.summary.eto-address" />}
               value={data.etoAddress}
             />
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.your-investment" />}
+              caption={<FormattedMessage id="investment-flow.summary.your-investment" />}
               value={data.investment}
             />
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
+              caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
               value={data.transactionCost}
             />
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.equity-tokens" />}
+              caption={<FormattedMessage id="investment-flow.summary.equity-tokens" />}
               value={equityTokens}
             />
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.estimated-reward" />}
+              caption={<FormattedMessage id="investment-flow.summary.estimated-reward" />}
               value={estimatedReward}
             />
             <InfoRow
-              translation={<FormattedMessage id="investment-flow.summary.transaction-value" />}
+              caption={<FormattedMessage id="investment-flow.summary.transaction-value" />}
               value={data.transactionValue}
             />
-          </ListGroup>
+          </InfoList>
         </Row>
 
         <Row className="justify-content-center">

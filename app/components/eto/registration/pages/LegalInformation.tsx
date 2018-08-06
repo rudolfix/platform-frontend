@@ -33,13 +33,13 @@ export const FUNDING_ROUNDS: IRounds = {
   NONE_KEY: <FormattedMessage id="form.select.please-select" />,
   pre_seed: "pre seed",
   seed: "seed",
-  a_round: "a round",
-  b_round: "b round",
-  c_round: "c round",
-  d_round: "d round",
-  e_round: "e round",
-  pre_ipo: "pre ipo",
-  public: "public",
+  a_round: "A Round",
+  b_round: "B Round",
+  c_round: "C Round",
+  d_round: "D Round",
+  e_round: "E Round",
+  pre_ipo: "Pre Ipo",
+  public: "Public",
 };
 
 interface IDispatchProps {

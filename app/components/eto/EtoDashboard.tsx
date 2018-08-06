@@ -166,6 +166,9 @@ class EtoDashboardComponent extends React.Component<IProps> {
       (backupCodesVerified || !isLightWallet) &&
       requestStatus === "Accepted"
     );
+    const shouldViewSubmissionSection = !!(
+      etoFormProgress && etoFormProgress >= SUBMIT_PROPOSAL_THRESHOLD
+    );
 
     return (
       <LayoutAuthorized>
@@ -187,12 +190,9 @@ class EtoDashboardComponent extends React.Component<IProps> {
 
               {(etoState === "preview" || !etoState) && (
                 <>
-                  {etoFormProgress &&
-                    etoFormProgress > SUBMIT_PROPOSAL_THRESHOLD && (
-                      <>
-                        <SubmitDashBoardSection isTermSheetSubmitted={isTermSheetSubmitted} />
-                      </>
-                    )}
+                  {shouldViewSubmissionSection && (
+                    <SubmitDashBoardSection isTermSheetSubmitted={isTermSheetSubmitted} />
+                  )}
                   <EtoProgressDashboardSection
                     {...etoProgressProps}
                     shouldEtoDataLoad={shouldEtoDataLoad!}

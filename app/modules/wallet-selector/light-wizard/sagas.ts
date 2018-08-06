@@ -10,6 +10,7 @@ import {
   ILightWalletRetrieveMetadata,
 } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
+  LightError,
   LightWallet,
   LightWalletLocked,
   LightWalletUtil,
@@ -37,7 +38,6 @@ import {
 } from "../../web3/selectors";
 import { WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
-import { LightError } from "./../../../lib/web3/LightWallet";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
 
@@ -142,9 +142,7 @@ export function* lightWalletRegisterWatch(
     if (!isEmailAvailable) {
       throw new EmailAlreadyExists();
     }
-
     yield neuCall(setupLightWalletPromise, email, password);
-    yield put(actions.walletSelector.messageSigning());
     yield neuCall(signInUser);
   } catch (e) {
     yield effects.put(actions.walletSelector.reset());
@@ -209,6 +207,11 @@ export function* lightWalletRecoverWatch(
           salt: walletMetadata.salt,
           backupCodesVerified: false,
           type: userType,
+          walletType: walletMetadata.walletType,
+          walletSubtype:
+            walletMetadata.walletType === WalletType.BROWSER
+              ? walletMetadata.walletSubType
+              : undefined,
         });
       } else {
         if (user.verifiedEmail === email.toLowerCase())
@@ -216,6 +219,11 @@ export function* lightWalletRecoverWatch(
             salt: walletMetadata.salt,
             backupCodesVerified: false,
             type: userType,
+            walletType: walletMetadata.walletType,
+            walletSubtype:
+              walletMetadata.walletType === WalletType.BROWSER
+                ? walletMetadata.walletSubType
+                : undefined,
           });
         else throw new EmailAlreadyExists();
       }
@@ -226,6 +234,11 @@ export function* lightWalletRecoverWatch(
           salt: walletMetadata.salt,
           backupCodesVerified: false,
           type: userType,
+          walletType: walletMetadata.walletType,
+          walletSubtype:
+            walletMetadata.walletType === WalletType.BROWSER
+              ? walletMetadata.walletSubType
+              : undefined,
         });
       else throw e;
     }

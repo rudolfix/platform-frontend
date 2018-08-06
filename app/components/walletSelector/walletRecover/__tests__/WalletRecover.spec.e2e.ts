@@ -1,12 +1,13 @@
 import { tid } from "../../../../../test/testUtils";
 import {
   assertErrorModal,
+  assertLatestEmailSentWithSalt,
+  assertUserInDashboard,
+  clearEmailServer,
   mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
-import { assertUserInDashboard } from "../../../../e2e-test-utils/index";
-import { assertLatestEmailSentWithSalt } from "./../../../../e2e-test-utils/index";
 
 describe("Wallet recover", () => {
   const words = [
@@ -40,13 +41,13 @@ describe("Wallet recover", () => {
 
   it("should recover wallet from saved phrases", () => {
     const email = "john-smith@example.com";
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+    clearEmailServer();
 
     cy.visit("/recover/seed");
 
     typeLightwalletRecoveryPhrase(words);
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+    clearEmailServer();
 
     cy.get(tid("wallet-selector-register-email")).type(email);
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");

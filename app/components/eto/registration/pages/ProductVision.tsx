@@ -30,7 +30,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const distributionSuggestions = ["Development", "ESOP"];
+const distributionSuggestions = ["Development", "Other"];
 
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (

@@ -6,11 +6,11 @@ import { Formik } from "formik";
 import { actions } from "../../modules/actions";
 import { selectEthereumAddress } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
+import { SpinningEthereum } from "../landing/parts/SpinningEthereum";
 import { Button } from "../shared/Buttons";
-import { FormFieldImportant } from "../shared/forms/formField/FormFieldImportant";
+import { FormFieldColorful } from "../shared/forms/formField/FormFieldColorful";
 import { ModalComponentBody } from "./ModalComponentBody";
 
-import { SpinningEthereum } from "../landing/parts/SpinningEthereum";
 import * as styles from "./WithdrawModal.module.scss";
 
 interface IStateProps {
@@ -37,19 +37,20 @@ const WithdrawComponent: React.SFC<IStateProps & IDispatchProps> = props => {
             {() => (
               <Row>
                 <Col xs={12} className="mb-3">
-                  <FormFieldImportant
+                  <FormFieldColorful
                     name=""
                     label={<FormattedMessage id="modal.sent-eth.to-address" />}
+                    showAvatar
                   />
                 </Col>
                 <Col xs={12} className="mb-3">
-                  <FormFieldImportant
+                  <FormFieldColorful
                     name=""
                     label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
                   />
                 </Col>
                 <Col xs={12} className="mb-4">
-                  <FormFieldImportant
+                  <FormFieldColorful
                     name=""
                     label={<FormattedMessage id="modal.sent-eth.gas-limit" />}
                   />

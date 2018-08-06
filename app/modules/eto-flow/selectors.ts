@@ -1,10 +1,6 @@
 import * as Yup from "yup";
 import { IAppState } from "./../../store";
 
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { selectIsUserEmailVerified } from "../auth/selectors";
-import { selectKycRequestStatus } from "../kyc/selectors";
 import {
   EtoCompanyInformationType,
   EtoKeyIndividualsType,
@@ -19,6 +15,8 @@ import {
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { selectIsUserEmailVerified } from "../auth/selectors";
+import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {

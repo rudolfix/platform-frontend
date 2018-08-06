@@ -4,7 +4,6 @@ import * as YupTS from "../yup-ts";
 import { symbols } from "../../di/symbols";
 import { Web3Manager } from "../web3/Web3Manager";
 import { IHttpClient, IHttpResponse } from "./client/IHttpClient";
-import { FileDescriptionValidator, TFileDescription, TFileType } from "./FileStorage.interfaces";
 
 const BASE_PATH = "/api/gas/";
 const GET_GAS_PATH = "/gas";

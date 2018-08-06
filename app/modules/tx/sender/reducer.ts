@@ -29,6 +29,7 @@ export interface ITxSenderState {
   type?: TxSenderType;
   txDetails?: ITxData;
   blockId?: number;
+  txHash?: string;
 }
 
 const initialState: ITxSenderState = {
@@ -87,6 +88,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...state,
         state: "MINING",
+        txHash: action.payload.txHash,
       };
 
     case "TX_SENDER_REPORT_BLOCK":

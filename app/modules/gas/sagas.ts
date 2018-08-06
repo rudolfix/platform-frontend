@@ -1,4 +1,4 @@
-import { fork, put, select } from "../../../node_modules/redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { GasModelShape } from "../../lib/api/GasApi";

@@ -64,7 +64,7 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
 
   try {
     const txHash = yield web3Manager.sendTransaction(finalData);
-    yield put(actions.txSender.txSenderSigned());
+    yield put(actions.txSender.txSenderSigned(txHash));
 
     return txHash;
   } catch (e) {

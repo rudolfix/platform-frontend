@@ -174,14 +174,15 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
   };
 
   componentDidMount(): void {
-    const { values, setFieldValue } = this.context.formik as FormikProps<any>;
+    const { values, setFieldValue } = this.context.formik as FormikProps<{[key: string]: Array<{url: string, type: string}>}>;
     const { name, profiles } = this.props;
 
     const socialMediaValues = values[name] || [];
     const selectedFields: boolean[] = [];
 
     profiles.forEach((profile, index) => {
-      const value: string = socialMediaValues[index] ? socialMediaValues[index].url : "";
+      const previousLink = socialMediaValues.find(v => v.type === profile.name)
+      const value: string = previousLink ? previousLink.url : "";
       setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
       //always enable twitter
       selectedFields[index] = profile.name === "twitter" ? true : !!value;

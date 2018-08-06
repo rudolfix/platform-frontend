@@ -87,7 +87,7 @@ export const SOCIAL_PROFILES_ICONS = [
     name: "bitcointalk",
     placeholder: "Bitcointalk",
     svgIcon: iconChat,
-  }
+  },
 ];
 
 export const SOCIAL_PROFILES_PERSON = [
@@ -180,14 +180,16 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
   };
 
   componentDidMount(): void {
-    const { values, setFieldValue } = this.context.formik as FormikProps<{[key: string]: Array<{url: string, type: string}>}>;
+    const { values, setFieldValue } = this.context.formik as FormikProps<{
+      [key: string]: Array<{ url: string; type: string }>;
+    }>;
     const { name, profiles } = this.props;
 
     const socialMediaValues = values[name] || [];
     const selectedFields: boolean[] = [];
 
     profiles.forEach((profile, index) => {
-      const previousLink = socialMediaValues.find(v => v.type === profile.name)
+      const previousLink = socialMediaValues.find(v => v.type === profile.name);
       const value: string = previousLink ? previousLink.url : "";
       setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
       //always enable twitter

@@ -230,7 +230,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
             {companyData.keyQuoteFounder && <p className="mb-4">"{companyData.keyQuoteFounder}"</p>}
-            {companyData.keyQuoteInvestor && <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>}
+            {companyData.keyQuoteInvestor && (
+              <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>
+            )}
             <div className="d-flex justify-content-between">
               {companyData.companyWebsite && (
                 <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">

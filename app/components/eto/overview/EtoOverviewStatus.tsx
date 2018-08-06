@@ -59,7 +59,7 @@ const CampaigningWidget: React.SFC<ICampaigningWidget> = ({ amountBacked, invest
       </div>
       <div>
         {/* TODO: change this dummy data once the logic is available */}
-        <Formik initialValues={{amount: 100}} onSubmit={() => {}}>
+        <Formik initialValues={{ amount: 100 }} onSubmit={() => {}}>
           {() => (
             <Row>
               <Col xs={12} lg={6}>

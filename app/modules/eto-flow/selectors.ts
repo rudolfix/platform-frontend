@@ -96,7 +96,10 @@ export const calculateLegalInformationProgress = getFormFractionDoneCalculator(
 export const calculateProductVisionProgress = getFormFractionDoneCalculator(
   EtoProductVisionType.toYup(),
 );
-export const calculateEtoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup(), etoMediaProgressOptions);
+export const calculateEtoMediaProgress = getFormFractionDoneCalculator(
+  EtoMediaType.toYup(),
+  etoMediaProgressOptions,
+);
 export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
   EtoRiskAssessmentType.toYup(),
 );

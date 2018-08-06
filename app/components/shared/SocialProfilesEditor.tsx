@@ -8,6 +8,7 @@ import { CommonHtmlProps } from "../../types";
 import { FormField } from "./forms/formField/FormField";
 import { InlineIcon } from "./InlineIcon";
 
+import * as iconChat from "../../assets/img/inline_icons/icon-menu-help.svg";
 import * as facebookIcon from "../../assets/img/inline_icons/social_facebook.svg";
 import * as githubIcon from "../../assets/img/inline_icons/social_github.svg";
 import * as googleIcon from "../../assets/img/inline_icons/social_google_plus.svg";
@@ -82,6 +83,11 @@ export const SOCIAL_PROFILES_ICONS = [
   //   placeholder: "Xing",
   //   svgIcon: xingIcon,
   // },
+  {
+    name: "bitcointalk",
+    placeholder: "Bitcointalk",
+    svgIcon: iconChat,
+  }
 ];
 
 export const SOCIAL_PROFILES_PERSON = [

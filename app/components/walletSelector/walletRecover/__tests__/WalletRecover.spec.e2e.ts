@@ -3,6 +3,7 @@ import {
   assertErrorModal,
   assertLatestEmailSentWithSalt,
   assertUserInDashboard,
+  clearEmailServer,
   mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
@@ -40,13 +41,13 @@ describe("Wallet recover", () => {
 
   it("should recover wallet from saved phrases", () => {
     const email = "john-smith@example.com";
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+    clearEmailServer();
 
     cy.visit("/recover/seed");
 
     typeLightwalletRecoveryPhrase(words);
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
+    clearEmailServer();
 
     cy.get(tid("wallet-selector-register-email")).type(email);
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");

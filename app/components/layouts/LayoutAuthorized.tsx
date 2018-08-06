@@ -5,7 +5,6 @@ import { NotificationWidget } from "../dashboard/notification-widget/Notificatio
 import { DepositEthModal } from "../modals/DepositEthModal";
 import { IcbmWalletBalanceModal } from "../modals/IcbmWalletBalanceModal";
 import { TxSenderModal } from "../modals/txSender/TxSender";
-import { WithdrawModal } from "../modals/WithdrawModal";
 import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 
 import * as styles from "./LayoutAuthorized.module.scss";
@@ -22,7 +21,6 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
       </Row>
     </div>
     <DepositEthModal />
-    <WithdrawModal />
     <TxSenderModal />
     <IcbmWalletBalanceModal />
   </>

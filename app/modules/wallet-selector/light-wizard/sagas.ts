@@ -142,9 +142,7 @@ export function* lightWalletRegisterWatch(
     if (!isEmailAvailable) {
       throw new EmailAlreadyExists();
     }
-
     yield neuCall(setupLightWalletPromise, email, password);
-    yield put(actions.walletSelector.messageSigning());
     yield neuCall(signInUser);
   } catch (e) {
     yield effects.put(actions.walletSelector.reset());
@@ -209,6 +207,11 @@ export function* lightWalletRecoverWatch(
           salt: walletMetadata.salt,
           backupCodesVerified: false,
           type: userType,
+          walletType: walletMetadata.walletType,
+          walletSubtype:
+            walletMetadata.walletType === WalletType.BROWSER
+              ? walletMetadata.walletSubType
+              : undefined,
         });
       } else {
         if (user.verifiedEmail === email.toLowerCase())
@@ -216,6 +219,11 @@ export function* lightWalletRecoverWatch(
             salt: walletMetadata.salt,
             backupCodesVerified: false,
             type: userType,
+            walletType: walletMetadata.walletType,
+            walletSubtype:
+              walletMetadata.walletType === WalletType.BROWSER
+                ? walletMetadata.walletSubType
+                : undefined,
           });
         else throw new EmailAlreadyExists();
       }
@@ -226,6 +234,11 @@ export function* lightWalletRecoverWatch(
           salt: walletMetadata.salt,
           backupCodesVerified: false,
           type: userType,
+          walletType: walletMetadata.walletType,
+          walletSubtype:
+            walletMetadata.walletType === WalletType.BROWSER
+              ? walletMetadata.walletSubType
+              : undefined,
         });
       else throw e;
     }

@@ -7,7 +7,6 @@ import {
   registerWithLightWalletETO,
   verifyLatestUserEmail,
 } from "../../../../e2e-test-utils";
-
 import { backupLightWalletSeed } from "../../../settings/backupSeed/__tests__/BackupSeed.spec.e2e";
 
 const password = "strongpassword";

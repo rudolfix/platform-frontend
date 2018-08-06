@@ -1,16 +1,16 @@
 import * as React from "react";
 import { Modal } from "reactstrap";
 
-import { InvestmentSelection } from "../../dashboard/investment-flow/Investment";
-import { Button } from "../../shared/Buttons";
-import { ModalComponentBody } from "../ModalComponentBody";
-import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
-
 import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
+import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
+import { ModalComponentBody } from "../ModalComponentBody";
+import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
+import { WithdrawSummary } from "./withdraw-flow/Summary";
+import { Withdraw } from "./withdraw-flow/Withdraw";
 
 interface IStateProps {
   isOpen: boolean;
@@ -42,35 +42,41 @@ export interface IInitComponentProps {
   onAccept: (tx: Partial<ITxData>) => any;
 }
 
-function renderBody({ state, acceptDraft, accept, details, blockId }: Props): React.ReactNode {
+export interface ISummaryComponentProps {
+  onAccept: () => any;
+  data: ITxData;
+}
+
+function renderBody({ state, acceptDraft, accept, blockId, details }: Props): React.ReactNode {
   switch (state) {
     case "INIT":
-      return (
-        <div>
-          <InvestmentSelection onAccept={acceptDraft} />
-        </div>
-      );
-    case "SUMMARY":
-      return (
-        <div>
-          <h3>Tx details:</h3>
-          <p>{JSON.stringify(details)}</p>
+      return <Withdraw onAccept={acceptDraft} />;
 
-          <Button onClick={() => accept()}>Confirm</Button>
-        </div>
-      );
+    case "SUMMARY":
+      return <WithdrawSummary data={details!} onAccept={accept} />;
+
     case "ACCESSING_WALLET":
-      return (
-        <div>
-          <AccessWalletContainer />
-        </div>
-      );
+      return <AccessWalletContainer />;
 
     case "SIGNING":
       return <LoadingIndicator />;
 
     case "MINING":
       return <div>{blockId}</div>;
+
+    case "DONE":
+      return (
+        <div>
+          <SpinningEthereum />
+          <h2>Done!</h2>
+        </div>
+      );
+
+    case "ERROR_SIGN":
+      return <div>Error occured!</div>;
+
+    case "REVERTED":
+      return <div>Error: Tx reverted!</div>;
   }
 }
 

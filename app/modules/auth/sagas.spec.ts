@@ -9,7 +9,7 @@ import { BrowserWallet } from "../../lib/web3/BrowserWallet";
 import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
-import { WalletType } from "../web3/types";
+import { WalletSubType, WalletType } from "../web3/types";
 import { obtainJwtPromise } from "./sagas";
 
 describe("Jwt actions", () => {
@@ -27,6 +27,7 @@ describe("Jwt actions", () => {
           wallet: {
             address: dummyEthereumAddress,
             walletType: WalletType.BROWSER,
+            walletSubType: WalletSubType.METAMASK,
           },
           isUnlocked: true,
         },

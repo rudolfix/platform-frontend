@@ -16,6 +16,7 @@ import { Header } from "./Header";
 import { GenericModal } from "./modals/GenericModal";
 import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
+import { ScrollToTop } from "./shared/ScrollToTop";
 
 interface IStateProps {
   inProgress: boolean;
@@ -37,7 +38,9 @@ class AppComponent extends React.Component<IStateProps> {
       <>
         <Header />
         <div className="wrapper">
-          <AppRouter />
+          <ScrollToTop>
+            <AppRouter />
+          </ScrollToTop>
         </div>
         <Footer />
         <AccessWalletModal />

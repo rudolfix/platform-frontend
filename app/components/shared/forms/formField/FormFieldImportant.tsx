@@ -5,10 +5,8 @@ import * as React from "react";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
-import { Avatar } from "../../Avatar";
 import { CustomTooltip } from "../../CustomTooltip";
 import { FormLabel } from "./FormLabel";
-import { isNonValid, isValid } from "./utils";
 
 import * as icon from "../../../../assets/img/notifications/warning.svg";
 import * as styles from "./FormFieldImportant.module.scss";
@@ -84,12 +82,6 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
                   )}
                 </InputGroupAddon>
               </InputGroup>
-              {hasAvatar && (
-                <Avatar
-                  seed={field.value || ""}
-                  style={{ position: "absolute", right: "36px", top: "-40px" }}
-                />
-              )}
             </>
           )}
         />

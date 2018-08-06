@@ -3,6 +3,7 @@ export enum WalletType {
   LEDGER = "LEDGER",
   BROWSER = "BROWSER",
   LIGHT = "LIGHT",
+  UNKNOWN = "UNKNOWN",
 }
 export enum WalletSubType {
   METAMASK = "METAMASK",

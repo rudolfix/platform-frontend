@@ -4,7 +4,7 @@ import { createSelector } from "reselect";
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { EthereumAddress } from "../../types";
 import { IConnectedWeb3State, IWeb3State } from "./reducer";
-import { WalletType } from "./types";
+import { WalletSubType, WalletType } from "./types";
 import { makeEthereumAddressChecksummed } from "./utils";
 
 export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {
@@ -35,11 +35,6 @@ export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>
     state.previousConnectedWallet.vault
   );
 
-export const selectWalletType = (state: IWeb3State): WalletType | undefined =>
-  state.connected
-    ? state.wallet.walletType
-    : state.previousConnectedWallet && state.previousConnectedWallet.walletType;
-
 /**
  * Works both when wallet is connected or not.
  */
@@ -49,6 +44,19 @@ export const selectIsLightWallet = (state: IWeb3State): boolean => {
     isLightWalletReadyToLogin(state)
   );
 };
+
+export const selectWalletSubType = (state: IWeb3State): WalletSubType | undefined =>
+  state.connected
+    ? (state.wallet.walletType === WalletType.BROWSER && state.wallet.walletSubType) || undefined
+    : (state.previousConnectedWallet &&
+        (state.previousConnectedWallet.walletType === WalletType.BROWSER &&
+          state.previousConnectedWallet.walletSubType)) ||
+      undefined;
+
+export const selectWalletType = (state: IWeb3State): WalletType | undefined =>
+  state.connected
+    ? state.wallet.walletType
+    : state.previousConnectedWallet && state.previousConnectedWallet.walletType;
 
 export const selectLightWalletSalt = (state: IWeb3State): string | undefined =>
   (state.connected &&

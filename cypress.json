@@ -3,5 +3,6 @@
   "defaultCommandTimeout": 10000,
   "integrationFolder": "./app/",
   "testFiles": "**/*.spec.e2e.ts",
-  "projectId": "y5m5cy"
+  "projectId": "y5m5cy",
+  "videoUploadOnPasses": false
 }

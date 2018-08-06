@@ -35,11 +35,6 @@ const TOKEN_HOLDERS_RIGHTS = {
   [BOOL_TRUE_KEY]: "Neumini UG",
 };
 
-const TAG_ALONG_VOTING_RULE = {
-  no_voting_rights: <FormattedMessage id="form.select.no" />,
-  negative: <FormattedMessage id="form.select.yes" />,
-};
-
 const GENERAL_VOTING_RULE = {
   positive: <FormattedMessage id="form.select.yes" />,
   no_voting_rights: <FormattedMessage id="form.select.no" />,
@@ -358,14 +353,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               <FormattedMessage id="eto.form.section.token-holders-rights.general-voting-rule" />
             }
             name="generalVotingRule"
-          />
-
-          <FormSelectField
-            values={TAG_ALONG_VOTING_RULE}
-            label={
-              <FormattedMessage id="eto.form.section.token-holders-rights.tag-along-voting-rule" />
-            }
-            name="tagAlongVotingRule"
           />
         </FormSection>
         <Col>

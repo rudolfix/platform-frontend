@@ -2,6 +2,7 @@ import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ITxData, TxSenderType } from "./reducer";
 
 export const txSenderActions = {
+  withdrawEth: () => createSimpleAction("WITHDRAW_ETH"),
   txSenderShowModal: (type: TxSenderType) => createAction("TX_SENDER_SHOW_MODAL", { type }),
   txSenderHideModal: () => createSimpleAction("TX_SENDER_HIDE_MODAL"),
   txSenderAcceptDraft: (txData: Partial<ITxData>) => createAction("TX_SENDER_ACCEPT_DRAFT", txData),

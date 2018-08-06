@@ -1,7 +1,6 @@
 import * as Yup from "yup";
+import { IAppState } from "./../../store";
 
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import {
   EtoCompanyInformationType,
   EtoKeyIndividualsType,
@@ -9,11 +8,15 @@ import {
   EtoMediaType,
   EtoProductVisionType,
   EtoRiskAssessmentType,
+  EtoState,
   EtoTermsType,
   GeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-} from "./../../lib/api/eto/EtoApi.interfaces";
+} from "../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { selectIsUserEmailVerified } from "../auth/selectors";
+import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {
@@ -181,3 +184,8 @@ export const selectCombinedEtoCompanyData = (
 });
 
 export const selectEtoFileData = (state: IEtoFlowState): IEtoFiles => state.etoFileData;
+
+/* General Selector */
+
+export const selectShouldEtoDataLoad = (state: IAppState) =>
+  selectKycRequestStatus(state.kyc) === "Accepted" && selectIsUserEmailVerified(state.auth);

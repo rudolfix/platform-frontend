@@ -10,6 +10,7 @@ import { invariant } from "../../utils/invariant";
 import { appRoutes } from "../appRoutes";
 import { InlineIcon } from "../shared/InlineIcon";
 
+import * as cn from "classnames";
 import * as iconDashboard from "../../assets/img/inline_icons/icon-menu-dashboard.svg";
 import * as iconDocuments from "../../assets/img/inline_icons/icon-menu-documents.svg";
 import * as iconEto from "../../assets/img/inline_icons/icon-menu-eto.svg";
@@ -17,6 +18,7 @@ import * as iconHelp from "../../assets/img/inline_icons/icon-menu-help.svg";
 import * as iconPortfolio from "../../assets/img/inline_icons/icon-menu-portfolio.svg";
 import * as iconSettings from "../../assets/img/inline_icons/icon-menu-settings.svg";
 import * as iconWallet from "../../assets/img/inline_icons/icon-menu-wallet.svg";
+import { selectShouldEtoDataLoad } from "../../modules/eto-flow/selectors";
 import { externalRoutes } from "../externalRoutes";
 import * as styles from "./LayoutAuthorizedMenu.module.scss";
 
@@ -25,22 +27,25 @@ interface IMenuEntry {
   menuName: string | React.ReactNode;
   actionRequired?: boolean;
   to: string;
+  disabled?: boolean;
 }
 
 interface IStateProps {
   userType?: TUserType;
   actionRequiredSettings: boolean;
+  shouldEtoDataLoad: boolean;
 }
 
 const MenuEntryContent: React.SFC<IMenuEntry & NavLinkProps> = ({
   actionRequired,
   menuName,
   svgString,
+  disabled,
   ...props
 }) => {
   return (
     <>
-      <span className={styles.icon} {...props}>
+      <span className={disabled ? cn(styles.icon, styles.disabledItem) : styles.icon} {...props}>
         <InlineIcon svgIcon={svgString} />
         {actionRequired && <div className={styles.actionIndicator} />}
       </span>
@@ -49,13 +54,17 @@ const MenuEntryContent: React.SFC<IMenuEntry & NavLinkProps> = ({
   );
 };
 
-const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({ to, svgString, ...props }) => {
+const MenuEntry: React.SFC<IMenuEntry & NavLinkProps> = ({ to, svgString, disabled, ...props }) => {
   const isAbsoluteLink = /^https?:\/\//.test(to);
 
   return isAbsoluteLink ? (
     <a href={to} target="_blank" className={styles.menuItem}>
       <MenuEntryContent {...props} to={to} svgString={svgString} />
     </a>
+  ) : disabled ? (
+    <div className={styles.menuItem}>
+      <MenuEntryContent {...props} to={to} svgString={svgString} disabled={disabled} />
+    </div>
   ) : (
     <NavLink to={to} className={styles.menuItem}>
       <MenuEntryContent {...props} to={to} svgString={svgString} />
@@ -102,7 +111,10 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
   </div>
 );
 
-const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequiredSettings }) => (
+const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad: boolean }> = ({
+  actionRequiredSettings,
+  shouldEtoDataLoad,
+}) => (
   <div className={styles.menu}>
     <div className={styles.menuItems}>
       <MenuEntry
@@ -113,11 +125,13 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({ actionRequ
       <MenuEntry
         svgString={iconEto}
         to={appRoutes.etoPublicView}
+        disabled={!shouldEtoDataLoad}
         menuName={<FormattedMessage id="menu.eto-page" />}
       />
       <MenuEntry
         svgString={iconDocuments}
         to={appRoutes.documents}
+        disabled={!shouldEtoDataLoad}
         menuName={<FormattedMessage id="menu.documents-page" />}
       />
       <MenuEntry
@@ -152,5 +166,6 @@ export const LayoutAuthorizedMenu = appConnect<IStateProps, {}>({
   stateToProps: s => ({
     userType: selectUserType(s.auth),
     actionRequiredSettings: selectIsActionRequiredSettings(s),
+    shouldEtoDataLoad: selectShouldEtoDataLoad(s),
   }),
 })(LayoutAuthorizedMenuComponent);

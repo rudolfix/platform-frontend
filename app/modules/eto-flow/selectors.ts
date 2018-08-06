@@ -73,6 +73,13 @@ export function getInitialDataForFractionCalculation(formState: any): any {
   return updateInitialData({}, formState);
 }
 
+export const etoMediaProgressOptions: IProgressOptions = {
+  ignore: {
+    companyVideo: true,
+    socialChannels: true,
+  },
+};
+
 export const calculateCompanyInformationProgress = getFormFractionDoneCalculator(
   EtoCompanyInformationType.toYup(),
 );
@@ -86,7 +93,7 @@ export const calculateLegalInformationProgress = getFormFractionDoneCalculator(
 export const calculateProductVisionProgress = getFormFractionDoneCalculator(
   EtoProductVisionType.toYup(),
 );
-export const calculateEtoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup());
+export const calculateEtoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup(), etoMediaProgressOptions);
 export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
   EtoRiskAssessmentType.toYup(),
 );
@@ -116,14 +123,6 @@ export function getFormFractionDoneCalculator(
     return result;
   };
 }
-
-export const etoMediaProgressOptions: IProgressOptions = {
-  ignore: {
-    companyVideo: true,
-    socialChannels: true,
-    companyNews: true,
-  },
-};
 
 export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
   !!(

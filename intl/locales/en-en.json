@@ -359,6 +359,7 @@
   "modal.sent-eth.amount-to-send": "Amount to send",
   "modal.sent-eth.button": "Send transaction",
   "modal.sent-eth.gas-limit": "Gas limit",
+  "modal.sent-eth.gas-price": "Gas price",
   "modal.sent-eth.title": "Withdraw ether",
   "modal.sent-eth.to-address": "To address",
   "module.kyc.sagas.beneficial-owners": "Your beneficial owners have a combined ownership of more than 100%. Please make sure this is 100% or less.",

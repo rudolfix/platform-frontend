@@ -47,7 +47,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         type: action.payload.type,
         txDetails: {
           gasPrice: TMP_GAS_PRICE,
-        }
+        },
       };
 
     case "TX_SENDER_HIDE_MODAL":

@@ -5,7 +5,7 @@ import * as React from "react";
 import { spy } from "sinon";
 import { clickFirstTid } from "../../../../../../test/integrationTestUtils";
 import { tid } from "../../../../../../test/testUtils";
-import { formWrapper } from "../../../forms/formField/form-utils";
+import { formWrapper } from "../form-utils";
 import { FormToggle } from "../FormToggle";
 
 describe("Toggle", () => {

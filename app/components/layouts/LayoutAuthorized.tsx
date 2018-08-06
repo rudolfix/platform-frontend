@@ -3,6 +3,7 @@ import { Col, Row } from "reactstrap";
 
 import { NotificationWidget } from "../dashboard/notification-widget/NotificationWidget";
 import { DepositEthModal } from "../modals/DepositEthModal";
+import { IcbmWalletBalanceModal } from "../modals/IcbmWalletBalanceModal";
 import { TxSenderModal } from "../modals/txSender/TxSender";
 import { WithdrawModal } from "../modals/WithdrawModal";
 import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
@@ -23,5 +24,6 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
     <DepositEthModal />
     <WithdrawModal />
     <TxSenderModal />
+    <IcbmWalletBalanceModal />
   </>
 );

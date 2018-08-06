@@ -8,7 +8,7 @@ import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
-import { selectUser } from "../auth/selectors";
+import { selectDoesEmailExist, selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import {
   selectLightWalletSalt,
@@ -16,7 +16,6 @@ import {
   selectWalletType,
 } from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { selectDoesEmailExist } from "./../auth/selectors";
 
 export function* addNewEmail(
   {

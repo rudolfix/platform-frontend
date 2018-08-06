@@ -1,15 +1,15 @@
 import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
 
+import { SUBMIT_ETO_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { SUBMIT_ETO_PERMISSION } from "./../../config/constants";
-import { IEtoFiles } from "./../../lib/api/eto/EtoFileApi.interfaces";
 
 export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
   try {

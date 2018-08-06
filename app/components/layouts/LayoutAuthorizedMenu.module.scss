@@ -26,7 +26,7 @@ $lg-width: px-to-rem(140px);
 }
 
 .menu-items {
-  @include media-breakpoint-up (sm) {
+  @include media-breakpoint-up(sm) {
     flex-direction: column;
   }
 
@@ -37,11 +37,12 @@ $lg-width: px-to-rem(140px);
 }
 
 .menu-item {
-  @include media-breakpoint-up (sm) {
+  @include media-breakpoint-up(sm) {
     padding-right: px-to-rem(5px);
   }
 
   flex-shrink: 0;
+  user-select: none;
   position: relative;
   height: px-to-rem(60px);
   display: flex;
@@ -49,6 +50,10 @@ $lg-width: px-to-rem(140px);
 
   .icon {
     color: $color-brand;
+  }
+
+  .disabled-item {
+    color: $color-white;
   }
 
   &:hover,
@@ -82,7 +87,7 @@ $lg-width: px-to-rem(140px);
 }
 
 .icon {
-  @include media-breakpoint-up (sm) {
+  @include media-breakpoint-up(sm) {
     margin-left: 20px;
     margin-right: 10px;
   }
@@ -96,7 +101,7 @@ $lg-width: px-to-rem(140px);
 }
 
 .name {
-  @include media-breakpoint-down (md) {
+  @include media-breakpoint-down(md) {
     display: none;
   }
 

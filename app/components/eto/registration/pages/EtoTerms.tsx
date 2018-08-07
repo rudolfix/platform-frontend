@@ -18,9 +18,7 @@ import {
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
-import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { FormField, FormTextArea } from "../../../shared/forms/forms";
-import { FormSection } from "../../../shared/forms/FormSection";
+import { FormField } from "../../../shared/forms/forms";
 import { CURRENCIES } from "../../EtoPublicView";
 import { EtoFormBase } from "../EtoFormBase";
 
@@ -43,240 +41,114 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
     formik: PropTypes.object,
   };
 
-  render(): React.ReactNode {
-    const { stateValues } = this.props;
-    const fullyDilutedPreMoneyValuationEur = stateValues.fullyDilutedPreMoneyValuationEur || 1;
-    const existingCompanyShares = stateValues.existingCompanyShares || 1;
-    const newSharesToIssue = stateValues.newSharesToIssue || 1;
-    const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
-    const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 0;
-
-    const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
-    const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
-    const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
-    const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
-    const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
-
+  render (): React.ReactNode {
     return (
       <EtoFormBase
         title={<FormattedMessage id="eto.form.eto-terms.title" />}
         validator={EtoTermsType.toYup()}
       >
-        <FormSection title={<FormattedMessage id="eto.form.section.investment-terms.title" />}>
-          <FormField
-            label={
-              <FormattedMessage id="eto.form.section.investment-terms.fully-diluted-pre-money-valuation" />
-            }
-            placeholder=" "
-            prefix="€"
-            name="fullyDilutedPreMoneyValuationEur"
-            type="number"
-            min="1"
-          />
-          <FormField
-            label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
-            placeholder="Number of existing shares"
-            name="existingCompanyShares"
-            type="number"
-            min="1"
-          />
-          <FormField
-            label={
-              <FormattedMessage id="eto.form.section.investment-terms.minimum-new-shares-to-issue" />
-            }
-            placeholder="Number of share"
-            name="minimumNewSharesToIssue"
-            type="number"
-            min="0"
-          />
-          <FormField
-            label={
-              <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue" />
-            }
-            placeholder="Number of share"
-            name="newSharesToIssue"
-            type="number"
-            min="1"
-          />
-
-          <FormHighlightGroup>
-            <FormField
-              label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
-              placeholder="1/1000000 of share price auto complete"
-              name="newSharePrice"
-              value={computedNewSharePrice}
-              disabled
-            />
-            <Row>
-              <Col sm={12} md={6} className="mb-4">
-                <FormField
-                  label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
-                  prefix="€"
-                  placeholder="read only"
-                  name="minNumberOfTokens"
-                  value={computedMinNumberOfTokens}
-                  disabled
-                />
-              </Col>
-              <Col sm={12} md={6} className="mb-4">
-                <FormField
-                  label={<FormattedMessage id="eto.form.section.investment-terms.maximum-amount" />}
-                  prefix="€"
-                  placeholder="read only"
-                  name="maxNumberOfTokens"
-                  value={computedMaxNumberOfTokens}
-                  disabled
-                />
-              </Col>
-              <Col sm={12} md={6}>
-                <FormField
-                  label={
-                    <FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />
-                  }
-                  prefix="€"
-                  placeholder="read only"
-                  name="minCapEur"
-                  value={computedMinCapEur}
-                  disabled
-                />
-              </Col>
-              <Col sm={12} md={6}>
-                <FormField
-                  label={
-                    <FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />
-                  }
-                  prefix="€"
-                  placeholder="read only"
-                  name="maxCapEur"
-                  value={computedMaxCapEur}
-                  disabled
-                />
-              </Col>
-            </Row>
-          </FormHighlightGroup>
-
-          <FormTextArea
-            name="discountScheme"
-            label={
-              <FormattedMessage id="eto.form.section.investment-terms.token-discount-for-whitelisted" />
-            }
-            placeholder=" "
-            charactersLimit={250}
-          />
-          <FormField
-            label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
-            placeholder="1"
-            prefix="€"
-            name="shareNominalValueEur"
-            type="number"
-            min="1"
-          />
-        </FormSection>
-
-        <FormSection title={<FormattedMessage id="eto.form.section.eto-terms.title" />}>
+        <FormLabel>
+          <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
+        </FormLabel>
+        <div className="form-group">
+          <FormFieldCheckboxGroup name="currencies">
+            {currencies.map(currency => (
+              <FormFieldCheckbox key={currency} label={CURRENCIES[currency]} value={currency} />
+            ))}
+          </FormFieldCheckboxGroup>
+        </div>
+        <div className="form-group">
           <FormLabel>
-            <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
+            <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
           </FormLabel>
-          <div className="form-group">
-            <FormFieldCheckboxGroup name="currencies">
-              {currencies.map(currency => (
-                <FormFieldCheckbox key={currency} label={CURRENCIES[currency]} value={currency} />
-              ))}
-            </FormFieldCheckboxGroup>
-          </div>
-          <div className="form-group">
-            <FormLabel>
-              <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
-            </FormLabel>
-            <FormToggle
-              name="prospectusLanguage"
-              trueValue="de"
-              falseValue="en"
-              disabledLabel={
-                <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.disabled-label" />
-              }
-              enabledLabel={
-                <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.enabled-label" />
-              }
-            />
-          </div>
-
-          <div className="form-group">
-            <FormLabel>
-              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
-            </FormLabel>
-            <FormRange
-              name="whitelistDurationDays"
-              min={1}
-              unitMin={
-                <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />
-              }
-              max={14}
-              unitMax={
-                <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />
-              }
-            />
-          </div>
-
-          <div className="form-group">
-            <FormLabel>
-              <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
-            </FormLabel>
-            <FormRange
-              name="publicDurationDays"
-              min={14}
-              unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
-              max={60}
-            />
-          </div>
-
-          <div className="form-group">
-            <FormLabel>
-              <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
-            </FormLabel>
-            <FormRange
-              name="signingDurationDays"
-              min={14}
-              unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
-              max={30}
-            />
-          </div>
-
-          <FormField
-            label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
-            placeholder="1"
-            prefix="€"
-            name="minTicketEur"
-            type="number"
-            min="1"
+          <FormToggle
+            name="prospectusLanguage"
+            trueValue="de"
+            falseValue="en"
+            disabledLabel={
+              <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.disabled-label" />
+            }
+            enabledLabel={
+              <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.enabled-label" />
+            }
           />
+        </div>
 
-          <FormField
-            label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
-            placeholder="1"
-            prefix="€"
-            name="maxTicketEur"
-            type="number"
-            min="1"
+        <div className="form-group">
+          <FormLabel>
+            <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
+          </FormLabel>
+          <FormRange
+            name="whitelistDurationDays"
+            min={1}
+            unitMin={
+              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />
+            }
+            max={14}
+            unitMax={
+              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />
+            }
           />
+        </div>
 
-          <div className="form-group">
-            <FormCheckbox
-              name="isCrowdfunding"
-              label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
-              checked
-            />
-          </div>
+        <div className="form-group">
+          <FormLabel>
+            <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
+          </FormLabel>
+          <FormRange
+            name="publicDurationDays"
+            min={14}
+            unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
+            max={60}
+          />
+        </div>
 
-          <div className="form-group">
-            <FormCheckbox
-              name="enableTransferOnSuccess"
-              label={
-                <FormattedMessage id="eto.form.section.eto-terms.token-transfers-enabled-after-eto" />
-              }
-            />
-          </div>
-        </FormSection>
+        <div className="form-group">
+          <FormLabel>
+            <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
+          </FormLabel>
+          <FormRange
+            name="signingDurationDays"
+            min={14}
+            unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
+            max={30}
+          />
+        </div>
+
+        <FormField
+          label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
+          placeholder="1"
+          prefix="€"
+          name="minTicketEur"
+          type="number"
+          min="1"
+        />
+
+        <FormField
+          label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
+          placeholder="1"
+          prefix="€"
+          name="maxTicketEur"
+          type="number"
+          min="1"
+        />
+
+        <div className="form-group">
+          <FormCheckbox
+            name="isCrowdfunding"
+            label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
+            checked
+          />
+        </div>
+
+        <div className="form-group">
+          <FormCheckbox
+            name="enableTransferOnSuccess"
+            label={
+              <FormattedMessage id="eto.form.section.eto-terms.token-transfers-enabled-after-eto" />
+            }
+          />
+        </div>
 
         <Col>
           <Row className="justify-content-end">
@@ -330,6 +202,6 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => {},
+    actionCreator: _dispatch => { },
   }),
 )(EtoRegistrationTermsComponent);

@@ -17,10 +17,12 @@ import {
 } from "../../modules/auth/selectors";
 import {
   calculateCompanyInformationProgress,
+  calculateEtoEquityTokenInfoProgress,
   calculateEtoKeyIndividualsProgress,
   calculateEtoMediaProgress,
   calculateEtoRiskAssessmentProgress,
   calculateEtoTermsProgress,
+  calculateEtoVotingRightProgress,
   calculateGeneralEtoData,
   calculateLegalInformationProgress,
   calculateProductVisionProgress,
@@ -78,6 +80,8 @@ interface IStateProps {
   productVisionProgress: number;
   etoMediaProgress: number;
   etoRiskAssessmentProgress: number;
+  etoEquityTokenInfoProgress: number
+  etoVotingRightProgress: number
 }
 
 interface IDispatchProps {
@@ -147,6 +151,8 @@ class EtoDashboardComponent extends React.Component<IProps> {
       productVisionProgress,
       etoMediaProgress,
       etoRiskAssessmentProgress,
+      etoEquityTokenInfoProgress,
+      etoVotingRightProgress,
     } = this.props;
 
     const etoProgressProps = {
@@ -158,6 +164,8 @@ class EtoDashboardComponent extends React.Component<IProps> {
       productVisionProgress,
       etoMediaProgress,
       etoRiskAssessmentProgress,
+      etoEquityTokenInfoProgress,
+      etoVotingRightProgress,
     };
 
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
@@ -270,6 +278,8 @@ export const EtoDashboard = compose<React.SFC>(
       legalInformationProgress: calculateLegalInformationProgress(selectCompanyData(s.etoFlow)),
       productVisionProgress: calculateProductVisionProgress(selectCompanyData(s.etoFlow)),
       etoMediaProgress: calculateEtoMediaProgress(selectCompanyData(s.etoFlow)),
+      etoVotingRightProgress: calculateEtoVotingRightProgress(selectEtoData(s.etoFlow)),
+      etoEquityTokenInfoProgress: calculateEtoEquityTokenInfoProgress(selectEtoData(s.etoFlow)),
       etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectCompanyData(s.etoFlow)),
       etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s.etoFlow)),
     }),

@@ -78,44 +78,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
         title={<FormattedMessage id="eto.form.eto-terms.title" />}
         validator={EtoTermsType.toYup()}
       >
-        <FormSection
-          title={<FormattedMessage id="eto.form.section.equity-token-information.title" />}
-        >
-          <FormField
-            label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
-            placeholder="Token name"
-            name="equityTokenName"
-          />
-          <FormField
-            label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
-            placeholder="3 - 4 characters"
-            maxLength="4"
-            pattern=".{3,4}"
-            name="equityTokenSymbol"
-          />
-          <div className="form-group">
-            <FormLabel>
-              <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
-            </FormLabel>
-            <FormSingleFileUpload
-              label={
-                <FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />
-              }
-              name="equityTokenImage"
-              acceptedFiles="image/png"
-              fileFormatInformation="*200 x 200px png"
-            />
-          </div>
-          <FormField
-            label={
-              <FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />
-            }
-            placeholder="1000000"
-            name="equityTokensPerShare"
-            disabled
-          />
-        </FormSection>
-
         <FormSection title={<FormattedMessage id="eto.form.section.investment-terms.title" />}>
           <FormField
             label={
@@ -332,31 +294,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           </div>
         </FormSection>
 
-        <FormSection
-          title={<FormattedMessage id="eto.form.section.token-holder-representative.title" />}
-        >
-          <FormSelectField
-            values={TOKEN_HOLDERS_RIGHTS}
-            label={
-              <FormattedMessage id="eto.form.section.token-holders-rights.third-party-dependency" />
-            }
-            name="nominee"
-          />
-          <div className="form-group">
-            <FormLabel>
-              <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
-            </FormLabel>
-            <FormRange name="liquidationPreferenceMultiplier" min={0} unit="x" max={2} step={0.5} />
-          </div>
-
-          <FormSelectField
-            values={GENERAL_VOTING_RULE}
-            label={
-              <FormattedMessage id="eto.form.section.token-holders-rights.general-voting-rule" />
-            }
-            name="generalVotingRule"
-          />
-        </FormSection>
         <Col>
           <Row className="justify-content-end">
             <Button

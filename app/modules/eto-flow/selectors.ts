@@ -3,6 +3,7 @@ import { IAppState } from "./../../store";
 
 import {
   EtoCompanyInformationType,
+  EtoEquityTokenInfoType,
   EtoKeyIndividualsType,
   EtoLegalInformationType,
   EtoMediaType,
@@ -10,6 +11,7 @@ import {
   EtoRiskAssessmentType,
   EtoState,
   EtoTermsType,
+  EtoVotingRightsType,
   GeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
@@ -102,6 +104,12 @@ export const calculateEtoMediaProgress = getFormFractionDoneCalculator(
 );
 export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
   EtoRiskAssessmentType.toYup(),
+);
+export const calculateEtoVotingRightProgress = getFormFractionDoneCalculator(
+  EtoVotingRightsType.toYup(),
+);
+export const calculateEtoEquityTokenInfoProgress = getFormFractionDoneCalculator(
+  EtoEquityTokenInfoType.toYup(),
 );
 
 export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {

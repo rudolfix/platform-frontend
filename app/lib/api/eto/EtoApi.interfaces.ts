@@ -141,10 +141,6 @@ export type TCompanyEtoData = TEtoTeamData &
 export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
 
 export const EtoTermsType = YupTS.object({
-  equityTokenName: YupTS.string(),
-  equityTokenSymbol: YupTS.string(),
-  equityTokenImage: YupTS.string(),
-  equityTokensPerShare: YupTS.number(),
   fullyDilutedPreMoneyValuationEur: YupTS.number(),
   existingCompanyShares: YupTS.number(),
   newSharesToIssue: YupTS.number(),
@@ -157,24 +153,37 @@ export const EtoTermsType = YupTS.object({
   enableTransferOnSuccess: YupTS.boolean(),
   // TODO: This fields moved to Risk Assessment and needs to be disconnected here
   riskRegulatedBusiness: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
-  nominee: YupTS.string(),
   isCrowdfunding: YupTS.boolean(),
-  liquidationPreferenceMultiplier: YupTS.number(),
   whitelistDurationDays: YupTS.number(),
   minimumNewSharesToIssue: YupTS.number(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
+export const EtoEquityTokenInfoType = YupTS.object({
+  equityTokenName: YupTS.string(),
+  equityTokenSymbol: YupTS.string(),
+  equityTokenImage: YupTS.string(),
+  equityTokensPerShare: YupTS.number(),
+});
+
+export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType>;
+
+export const EtoVotingRightsType = YupTS.object({
+  nominee: YupTS.string(),
+  liquidationPreferenceMultiplier: YupTS.number(),
+  generalVotingRule: YupTS.string().optional()
+});
+
+export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
+
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
   currencies: string[];
-  generalVotingRule?: string;
 }
 
-export type TEtoSpecsData = TEtoTermsType & IAdditionalEtoType;
+export type TEtoSpecsData = TEtoTermsType & TEtoEquityTokenInfoType & TEtoVotingRightsType & IAdditionalEtoType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;
@@ -187,6 +196,8 @@ export type TGeneralEtoData = {
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,
+  ...EtoEquityTokenInfoType.shape,
+  ...EtoVotingRightsType.shape,
   ...EtoMediaType.shape,
   ...EtoLegalInformationType.shape,
   ...EtoKeyIndividualsType.shape,

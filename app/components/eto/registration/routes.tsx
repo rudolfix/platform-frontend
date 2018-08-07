@@ -9,5 +9,7 @@ export const etoRegisterRoutes = {
   productVision: parentRoute + "/product-vision",
   etoTerms: parentRoute + "/eto-terms",
   etoMedia: parentRoute + "/eto-media",
+  etoVotingRight: parentRoute + "/eto-voting-right",
+  etoEquityTokenInfo: parentRoute + "/eto-equity-token-info",
   etoRiskAssessment: parentRoute + "/eto-risk",
 };

@@ -65,7 +65,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
     const existingCompanyShares = stateValues.existingCompanyShares || 1;
     const newSharesToIssue = stateValues.newSharesToIssue || 1;
     const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
-    const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 1;
+    const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 0;
 
     const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
     const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
@@ -141,7 +141,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             placeholder="Number of share"
             name="minimumNewSharesToIssue"
             type="number"
-            min="1"
+            min="0"
           />
           <FormField
             label={
@@ -165,6 +165,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               <Col sm={12} md={6} className="mb-4">
                 <FormField
                   label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
+                  prefix="€"
                   placeholder="read only"
                   name="minNumberOfTokens"
                   value={computedMinNumberOfTokens}
@@ -277,9 +278,9 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             </FormLabel>
             <FormRange
               name="publicDurationDays"
-              min={0}
+              min={14}
               unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
-              max={14}
+              max={60}
             />
           </div>
 
@@ -289,7 +290,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             </FormLabel>
             <FormRange
               name="signingDurationDays"
-              min={0}
+              min={14}
               unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
               max={30}
             />

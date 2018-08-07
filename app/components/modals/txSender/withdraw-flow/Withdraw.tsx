@@ -81,7 +81,11 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
 
 export const GasComponent: React.SFC<IGasState> = ({ gasPrice, error }) => {
   if (error) {
-    return <WarningAlert>Error occured while getting optimal GAS price.</WarningAlert>;
+    return (
+      <WarningAlert>
+        <FormattedMessage id="tx-sender.withdraw.error" />
+      </WarningAlert>
+    );
   }
 
   if (gasPrice) {

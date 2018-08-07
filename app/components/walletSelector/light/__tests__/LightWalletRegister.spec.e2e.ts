@@ -1,6 +1,7 @@
 import { tid } from "../../../../../test/testUtils";
 import {
   assertErrorModal,
+  assertLatestEmailSentWithSalt,
   assertUserInDashboard,
   convertToUniqueEmail,
   loginWithLightWallet,
@@ -10,7 +11,6 @@ import {
   typeEmailPassword,
   verifyLatestUserEmail,
 } from "../../../../e2e-test-utils";
-import { assertLatestEmailSentWithSalt } from "./../../../../e2e-test-utils/index";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {

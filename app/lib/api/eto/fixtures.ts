@@ -16,7 +16,7 @@ export const getSampleEtoFiles = (): IEtoFiles => ({
       url: "test.doc",
     },
     {
-      name: "Reservation Agreement",
+      name: "Reservation and Acquisition Agreement",
       url: "test.pdf",
     },
     {
@@ -24,7 +24,7 @@ export const getSampleEtoFiles = (): IEtoFiles => ({
       url: "test.pdf",
     },
     {
-      name: "Investor Agreement",
+      name: "Investment and Shareholder Agreement",
       url: "test.pdf",
     },
   ],

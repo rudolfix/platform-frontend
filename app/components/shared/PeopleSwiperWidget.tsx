@@ -32,7 +32,7 @@ export class PeopleSwiperWidget extends React.Component<IProps> {
   swiper: any = null;
 
   swiperRef = (ref: any) => {
-    this.swiper = ref.swiper;
+    if (ref) this.swiper = ref.swiper;
   };
 
   goNext = () => {

@@ -71,7 +71,9 @@ export class FormField extends React.Component<FieldGroupProps> {
                 className={cn(className, styles.inputField)}
                 {...field}
                 type={type}
-                value={field.value || (this.props.additionalObjValue && " ") || ""}
+                value={
+                  this.props.additionalObjValue ? this.props.additionalObjValue && " " : field.value
+                }
                 valid={isValid(touched, errors, name)}
                 placeholder={placeholder || label}
                 {...inputExtraProps}

@@ -195,6 +195,7 @@ describe("Wallet selector integration", () => {
       getMetadata: (): IBrowserWalletMetadata => ({
         walletType: WalletType.BROWSER,
         address: expectedAddress,
+        walletSubType: WalletSubType.METAMASK,
       }),
     });
     const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
@@ -289,6 +290,7 @@ describe("Wallet selector integration", () => {
         {
           walletType: WalletType.BROWSER,
           address: expectedAddress,
+          walletSubType: WalletSubType.METAMASK,
         },
         true,
       ),

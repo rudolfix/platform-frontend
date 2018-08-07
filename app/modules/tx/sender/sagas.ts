@@ -1,5 +1,5 @@
 import { END, eventChannel } from "redux-saga";
-import { call, put, race, select, take } from "redux-saga/effects";
+import { call, fork, put, race, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -7,9 +7,22 @@ import { IAppState } from "../../../store";
 import { EthereumAddress } from "../../../types";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions } from "../../actions";
-import { neuCall } from "../../sagas";
+import { neuCall, neuTakeEvery } from "../../sagas";
 import { selectEthereumAddress } from "../../web3/selectors";
 import { TxSenderType } from "./reducer";
+
+export function* withdrawSaga({ logger }: TGlobalDependencies): any {
+  try {
+    yield neuCall(txSendSaga, "WITHDRAW");
+    logger.info("Withdrawing successful");
+  } catch (e) {
+    logger.warn("Withdrawing cancelled", e);
+  }
+}
+
+export const txSendingSagasWatcher = function*(): Iterator<any> {
+  yield fork(neuTakeEvery, "WITHDRAW_ETH", withdrawSaga);
+};
 
 export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
   const { result, cancel } = yield race({

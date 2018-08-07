@@ -16,7 +16,7 @@ describe("Web3 > reducer", () => {
     const initialState = web3InitialState;
     const actionPayload = {
       type: WalletType.BROWSER,
-      subtype: WalletSubType.METAMASK,
+      subType: WalletSubType.METAMASK,
       ethereumAddress: dummyEthereumAddress,
       isUnlocked: true,
     };
@@ -27,6 +27,7 @@ describe("Web3 > reducer", () => {
         {
           walletType: WalletType.BROWSER,
           address: dummyEthereumAddress,
+          walletSubType: WalletSubType.METAMASK,
         },
         actionPayload.isUnlocked,
       ),
@@ -36,6 +37,7 @@ describe("Web3 > reducer", () => {
       connected: true,
       wallet: {
         walletType: WalletType.BROWSER,
+        walletSubType: WalletSubType.METAMASK,
         address: dummyEthereumAddress,
       },
       isUnlocked: true,
@@ -48,6 +50,7 @@ describe("Web3 > reducer", () => {
       wallet: {
         walletType: WalletType.BROWSER,
         address: dummyEthereumAddress,
+        walletSubType: WalletSubType.METAMASK,
       },
       isUnlocked: true,
     };
@@ -58,6 +61,7 @@ describe("Web3 > reducer", () => {
       connected: false,
       previousConnectedWallet: {
         walletType: WalletType.BROWSER,
+        walletSubType: WalletSubType.METAMASK,
         address: dummyEthereumAddress,
       },
     });
@@ -81,6 +85,7 @@ describe("Web3 > reducer", () => {
         wallet: {
           walletType: WalletType.BROWSER,
           address: dummyEthereumAddress,
+          walletSubType: WalletSubType.METAMASK,
         },
         isUnlocked: true,
       };
@@ -91,6 +96,7 @@ describe("Web3 > reducer", () => {
         connected: true,
         wallet: {
           walletType: WalletType.BROWSER,
+          walletSubType: WalletSubType.METAMASK,
           address: dummyEthereumAddress,
         },
         isUnlocked: false,

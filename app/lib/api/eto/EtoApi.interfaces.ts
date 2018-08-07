@@ -62,7 +62,7 @@ type TEtoRiskAssessment = YupTS.TypeOf<typeof EtoRiskAssessmentType>;
 
 const socialChannelsType = YupTS.array(
   YupTS.object({
-    type: YupTS.string(),
+    type: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
     url: YupTS.url(),
   }),
 );
@@ -114,7 +114,11 @@ const linkType = YupTS.object({
 });
 
 export const EtoMediaType = YupTS.object({
-  companyVideo: linkType,
+  companyVideo: YupTS.object({
+    title: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
+    url: YupTS.url(),
+  }),
+
   socialChannels: socialChannelsType.optional(),
   companyNews: YupTS.array(linkType).optional(),
   marketingLinks: YupTS.array(linkType).optional(),
@@ -157,7 +161,6 @@ export const EtoTermsType = YupTS.object({
   nominee: YupTS.string(),
   isCrowdfunding: YupTS.boolean(),
   liquidationPreferenceMultiplier: YupTS.number(),
-  tagAlongVotingRule: YupTS.string(),
   whitelistDurationDays: YupTS.number(),
   minimumNewSharesToIssue: YupTS.number(),
 });

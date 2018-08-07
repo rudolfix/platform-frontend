@@ -23,6 +23,11 @@ export interface IFormValues {
   repeatPassword: string;
 }
 
+export interface IStateProps {
+  isLoading?: boolean;
+  errorMsg?: string;
+}
+
 interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
   currentValues?: IFormValues;
@@ -40,9 +45,9 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref(PASSWORD)], "Passwords are not equal"),
 });
 
-const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
+const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues> & IStateProps) => (
   <Form>
-    {/* TODO: ADD TRANSALTIONS */}
+    {/* TODO: ADD TRANSLATIONS */}
     <FormField
       placeholder="Email Address"
       type="email"
@@ -64,7 +69,7 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
     <div className="text-center">
       <Button
         type="submit"
-        disabled={!formikBag.isValid}
+        disabled={!formikBag.isValid || formikBag.isLoading}
         data-test-id="wallet-selector-register-button"
       >
         <FormattedMessage id="wallet-selector.neuwallet.register" />
@@ -73,13 +78,13 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues>) => (
   </Form>
 );
 
-const RegisterEnhancedLightWalletForm = withFormik<IDispatchProps, IFormValues>({
+const RegisterEnhancedLightWalletForm = withFormik<IDispatchProps & IStateProps, IFormValues>({
   validationSchema: validationSchema,
   mapPropsToValues: props => props.currentValues as IFormValues,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(RegisterLightWalletForm);
 
-export const RegisterWalletComponent: React.SFC<IDispatchProps> = props => {
+export const RegisterWalletComponent: React.SFC<IDispatchProps & IStateProps> = props => {
   return (
     <>
       <Row>
@@ -108,7 +113,11 @@ export const RegisterWalletComponent: React.SFC<IDispatchProps> = props => {
 };
 
 export const RegisterLightWallet = compose<React.SFC>(
-  appConnect<IDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => ({
+      errorMsg: state.lightWalletWizard.errorMsg,
+      isLoading: state.lightWalletWizard.isLoading,
+    }),
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) =>
         dispatch(actions.walletSelector.lightWalletRegister(values.email, values.password)),

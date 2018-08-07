@@ -8,7 +8,6 @@ import { initReducer } from "./init/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
-import { sendEthModalReducer } from "./sendEthModal/reducer";
 import { settingsReducer } from "./settings/reducer";
 import { txSenderReducer } from "./tx/sender/reducer";
 import { browserReducer } from "./userAgent/reducer";
@@ -41,6 +40,5 @@ export const appReducers = {
   etoFlow: etoFlowReducer,
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
-  sendEthModal: sendEthModalReducer,
   txSender: txSenderReducer,
 };

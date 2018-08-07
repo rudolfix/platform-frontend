@@ -116,7 +116,15 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
 
 const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   validationSchema: EtoMediaType.toYup(),
-  mapPropsToValues: props => props.stateValues,
+  mapPropsToValues: props => {
+    const values = props.stateValues
+    // set initial values to prevent server errors on saving without filled out video
+    values.companyVideo = {
+      url: (values.companyVideo && values.companyVideo.url) || "",
+      title: (values.companyVideo && values.companyVideo.title) || ""
+    }
+    return values;
+  },
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 

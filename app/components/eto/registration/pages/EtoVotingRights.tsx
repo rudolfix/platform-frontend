@@ -5,30 +5,17 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { EtoVotingRightsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
+import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import {
-  BOOL_TRUE_KEY,
-  FormField,
-  FormSelectField,
-  FormTextArea,
-} from "../../../shared/forms/forms";
-
-import { EtoTermsType, EtoVotingRightsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
-import { actions } from "../../../../modules/actions";
 import { Button } from "../../../shared/Buttons";
-import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
-import {
-  FormFieldCheckbox,
-  FormFieldCheckboxGroup,
-} from "../../../shared/forms/formField/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
-import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
-import { FormToggle } from "../../../shared/forms/formField/FormToggle";
-import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { FormSection } from "../../../shared/forms/FormSection";
-import { CURRENCIES } from "../../EtoPublicView";
+import {
+  BOOL_TRUE_KEY,
+  FormSelectField,
+} from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
@@ -52,7 +39,6 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const currencies = ["eth", "eur_t"];
 
 class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
   static contextTypes = {
@@ -60,19 +46,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
   };
 
   render(): React.ReactNode {
-    const { stateValues } = this.props;
-    const fullyDilutedPreMoneyValuationEur = stateValues.fullyDilutedPreMoneyValuationEur || 1;
-    const existingCompanyShares = stateValues.existingCompanyShares || 1;
-    const newSharesToIssue = stateValues.newSharesToIssue || 1;
-    const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
-    const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 0;
-
-    const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
-    const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
-    const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
-    const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
-    const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
-
     return (
       <EtoFormBase
         title={<FormattedMessage id="eto.form.eto-voting-rights.title" />}

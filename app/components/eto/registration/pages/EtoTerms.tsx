@@ -5,17 +5,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
-import {
-  BOOL_TRUE_KEY,
-  FormField,
-  FormSelectField,
-  FormTextArea,
-} from "../../../shared/forms/forms";
-
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { appConnect } from "../../../../store";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
 import {
@@ -24,21 +17,17 @@ import {
 } from "../../../shared/forms/formField/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
-import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
+import {
+  FormField,
+  FormTextArea,
+} from "../../../shared/forms/forms";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { CURRENCIES } from "../../EtoPublicView";
 import { EtoFormBase } from "../EtoFormBase";
 
-const TOKEN_HOLDERS_RIGHTS = {
-  [BOOL_TRUE_KEY]: "Neumini UG",
-};
 
-const GENERAL_VOTING_RULE = {
-  positive: <FormattedMessage id="form.select.yes" />,
-  no_voting_rights: <FormattedMessage id="form.select.no" />,
-};
 
 interface IStateProps {
   loadingData: boolean;

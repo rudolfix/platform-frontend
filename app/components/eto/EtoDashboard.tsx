@@ -80,8 +80,8 @@ interface IStateProps {
   productVisionProgress: number;
   etoMediaProgress: number;
   etoRiskAssessmentProgress: number;
-  etoEquityTokenInfoProgress: number
-  etoVotingRightProgress: number
+  etoEquityTokenInfoProgress: number;
+  etoVotingRightProgress: number;
 }
 
 interface IDispatchProps {

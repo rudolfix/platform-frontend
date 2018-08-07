@@ -5,19 +5,18 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoEquityTokenInfoType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
+import {
+  EtoEquityTokenInfoType,
+  TPartialEtoSpecData,
+} from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
-import {
-  FormField,
-} from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
-
-
 
 interface IStateProps {
   loadingData: boolean;
@@ -30,7 +29,6 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
-
 
 class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
   static contextTypes = {
@@ -60,9 +58,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
           </FormLabel>
           <FormSingleFileUpload
-            label={
-              <FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />
-            }
+            label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
             name="equityTokenImage"
             acceptedFiles="image/png"
             fileFormatInformation="*200 x 200px png"

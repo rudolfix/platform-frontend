@@ -5,17 +5,17 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoVotingRightsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
+import {
+  EtoVotingRightsType,
+  TPartialEtoSpecData,
+} from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
-import {
-  BOOL_TRUE_KEY,
-  FormSelectField,
-} from "../../../shared/forms/forms";
+import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
 
 const TOKEN_HOLDERS_RIGHTS = {
@@ -38,7 +38,6 @@ interface IDispatchProps {
 }
 
 type IProps = IStateProps & IDispatchProps;
-
 
 class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
   static contextTypes = {
@@ -98,9 +97,7 @@ const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
-export const EtoVotingRightsComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
-);
+export const EtoVotingRightsComponent: React.SFC<IProps> = props => <EtoEnhancedForm {...props} />;
 
 export const EtoVotingRights = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
@@ -124,6 +121,6 @@ export const EtoVotingRights = compose<React.SFC>(
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoVotingRightsComponent);

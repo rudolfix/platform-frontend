@@ -19,15 +19,10 @@ import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import {
-  FormField,
-  FormTextArea,
-} from "../../../shared/forms/forms";
+import { FormField, FormTextArea } from "../../../shared/forms/forms";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { CURRENCIES } from "../../EtoPublicView";
 import { EtoFormBase } from "../EtoFormBase";
-
-
 
 interface IStateProps {
   loadingData: boolean;

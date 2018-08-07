@@ -26,8 +26,8 @@ export interface IEtoFormsProgressSectionProps {
   productVisionProgress: number;
   etoMediaProgress: number;
   etoRiskAssessmentProgress: number;
-  etoEquityTokenInfoProgress: number
-  etoVotingRightProgress: number
+  etoEquityTokenInfoProgress: number;
+  etoVotingRightProgress: number;
 }
 
 export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> = ({
@@ -41,7 +41,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
   etoMediaProgress,
   etoRiskAssessmentProgress,
   etoEquityTokenInfoProgress,
-  etoVotingRightProgress
+  etoVotingRightProgress,
 }) => {
   return (
     <>

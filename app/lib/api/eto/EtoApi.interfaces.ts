@@ -172,7 +172,7 @@ export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType
 export const EtoVotingRightsType = YupTS.object({
   nominee: YupTS.string(),
   liquidationPreferenceMultiplier: YupTS.number(),
-  generalVotingRule: YupTS.string().optional()
+  generalVotingRule: YupTS.string().optional(),
 });
 
 export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
@@ -183,7 +183,10 @@ interface IAdditionalEtoType {
   currencies: string[];
 }
 
-export type TEtoSpecsData = TEtoTermsType & TEtoEquityTokenInfoType & TEtoVotingRightsType & IAdditionalEtoType;
+export type TEtoSpecsData = TEtoTermsType &
+  TEtoEquityTokenInfoType &
+  TEtoVotingRightsType &
+  IAdditionalEtoType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;

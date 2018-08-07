@@ -22,10 +22,11 @@ import { Video } from "../../shared/Video";
 import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
 import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
+import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
 
 import * as icon_link from "../../../assets/img/inline_icons/icon_link.svg";
+import * as token_icon from "../../../assets/img/token_icon.svg";
 import * as styles from "./EtoPublicComponent.module.scss";
-import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
@@ -176,7 +177,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <EtoOverviewStatus
         image={{
           srcSet: {
-            "1x": etoData.equityTokenImage,
+            "1x": etoData.equityTokenImage || token_icon,
           },
           alt: `${etoData.equityTokenSymbol} - ${etoData.equityTokenName}`,
         }}
@@ -228,6 +229,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </SectionHeader>
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
+            {companyData.keyQuoteFounder && <p className="mb-4">"{companyData.keyQuoteFounder}"</p>}
+            {companyData.keyQuoteInvestor && (
+              <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>
+            )}
             <div className="d-flex justify-content-between">
               {companyData.companyWebsite && (
                 <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">

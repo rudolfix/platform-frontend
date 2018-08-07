@@ -41,6 +41,7 @@ export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
 }
 
 export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any {
+  yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.txSenderShowModal(type));
 
   yield take("TX_SENDER_ACCEPT");
@@ -63,7 +64,7 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
 
   try {
     const txHash = yield web3Manager.sendTransaction(finalData);
-    yield put(actions.txSender.txSenderSigned());
+    yield put(actions.txSender.txSenderSigned(txHash));
 
     return txHash;
   } catch (e) {

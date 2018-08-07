@@ -1,5 +1,7 @@
 import { AppReducer } from "../../../store";
 
+const TMP_GAS_PRICE = 2700000000;
+
 export type TxSenderType = "WITHDRAW";
 export type TxSenderState =
   | "UNINITIALIZED"
@@ -27,6 +29,7 @@ export interface ITxSenderState {
   type?: TxSenderType;
   txDetails?: ITxData;
   blockId?: number;
+  txHash?: string;
 }
 
 const initialState: ITxSenderState = {
@@ -43,6 +46,9 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...state,
         state: "INIT",
         type: action.payload.type,
+        txDetails: {
+          gasPrice: TMP_GAS_PRICE,
+        },
       };
 
     case "TX_SENDER_HIDE_MODAL":
@@ -82,6 +88,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...state,
         state: "MINING",
+        txHash: action.payload.txHash,
       };
 
     case "TX_SENDER_REPORT_BLOCK":

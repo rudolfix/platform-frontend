@@ -8,6 +8,7 @@ import { dashboardActions } from "./dashboard/actions";
 import { depositModalActions } from "./depositEthModal/actions";
 import { etoFlowActions } from "./eto-flow/actions";
 import { etoActions } from "./eto/actions";
+import { gasActions } from "./gas/actions";
 import { genericModalActions } from "./genericModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
@@ -45,6 +46,7 @@ export const actions = {
   depositEthModal: depositModalActions,
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
+  gas: gasActions,
 };
 
 /**
@@ -72,6 +74,7 @@ export const allActions = {
   ...depositModalActions,
   ...txMonitorActions,
   ...txSenderActions,
+  ...gasActions,
 };
 
 /**

@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { IAppState } from "./../../store";
 
 import {
   EtoCompanyInformationType,
@@ -14,6 +15,8 @@ import {
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { selectIsUserEmailVerified } from "../auth/selectors";
+import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./reducer";
 
 function getErrorsNumber(validator: Yup.Schema, data?: any): number {
@@ -73,6 +76,13 @@ export function getInitialDataForFractionCalculation(formState: any): any {
   return updateInitialData({}, formState);
 }
 
+export const etoMediaProgressOptions: IProgressOptions = {
+  ignore: {
+    companyVideo: true,
+    socialChannels: true,
+  },
+};
+
 export const calculateCompanyInformationProgress = getFormFractionDoneCalculator(
   EtoCompanyInformationType.toYup(),
 );
@@ -86,7 +96,10 @@ export const calculateLegalInformationProgress = getFormFractionDoneCalculator(
 export const calculateProductVisionProgress = getFormFractionDoneCalculator(
   EtoProductVisionType.toYup(),
 );
-export const calculateEtoMediaProgress = getFormFractionDoneCalculator(EtoMediaType.toYup());
+export const calculateEtoMediaProgress = getFormFractionDoneCalculator(
+  EtoMediaType.toYup(),
+  etoMediaProgressOptions,
+);
 export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
   EtoRiskAssessmentType.toYup(),
 );
@@ -116,14 +129,6 @@ export function getFormFractionDoneCalculator(
     return result;
   };
 }
-
-export const etoMediaProgressOptions: IProgressOptions = {
-  ignore: {
-    companyVideo: true,
-    socialChannels: true,
-    companyNews: true,
-  },
-};
 
 export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
   !!(
@@ -181,3 +186,8 @@ export const selectCombinedEtoCompanyData = (
 });
 
 export const selectEtoFileData = (state: IEtoFlowState): IEtoFiles => state.etoFileData;
+
+/* General Selector */
+
+export const selectShouldEtoDataLoad = (state: IAppState) =>
+  selectKycRequestStatus(state.kyc) === "Accepted" && selectIsUserEmailVerified(state.auth);

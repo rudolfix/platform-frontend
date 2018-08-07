@@ -103,7 +103,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               }
               name="equityTokenImage"
               acceptedFiles="image/png"
-              fileFormatInformation="*200 x 150px png"
+              fileFormatInformation="*200 x 200px png"
             />
           </div>
           <FormField
@@ -125,12 +125,14 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             prefix="€"
             name="fullyDilutedPreMoneyValuationEur"
             type="number"
+            min="1"
           />
           <FormField
             label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
             placeholder="Number of existing shares"
             name="existingCompanyShares"
             type="number"
+            min="1"
           />
           <FormField
             label={
@@ -139,6 +141,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             placeholder="Number of share"
             name="minimumNewSharesToIssue"
             type="number"
+            min="1"
           />
           <FormField
             label={
@@ -147,6 +150,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             placeholder="Number of share"
             name="newSharesToIssue"
             type="number"
+            min="1"
           />
 
           <FormHighlightGroup>
@@ -210,6 +214,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               <FormattedMessage id="eto.form.section.investment-terms.token-discount-for-whitelisted" />
             }
             placeholder=" "
+            charactersLimit={250}
           />
           <FormField
             label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
@@ -217,6 +222,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             prefix="€"
             name="shareNominalValueEur"
             type="number"
+            min="1"
           />
         </FormSection>
 
@@ -285,7 +291,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               name="signingDurationDays"
               min={0}
               unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
-              max={14}
+              max={30}
             />
           </div>
 
@@ -295,6 +301,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             prefix="€"
             name="minTicketEur"
             type="number"
+            min="1"
           />
 
           <FormField
@@ -303,6 +310,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             prefix="€"
             name="maxTicketEur"
             type="number"
+            min="1"
           />
 
           <div className="form-group">
@@ -319,13 +327,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
               label={
                 <FormattedMessage id="eto.form.section.eto-terms.token-transfers-enabled-after-eto" />
               }
-            />
-          </div>
-
-          <div className="form-group">
-            <FormCheckbox
-              name="riskRegulatedBusiness"
-              label={<FormattedMessage id="eto.form.section.eto-terms.eto-is-under-regulation" />}
             />
           </div>
         </FormSection>

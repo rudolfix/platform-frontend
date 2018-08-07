@@ -35,7 +35,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
         return value;
       }
 
-      return value.length > limit ? value.slice(0, charactersLimit) : value;
+      return charactersLimit && value.length > limit ? value.slice(0, charactersLimit - 1) : value;
     };
 
     const countedCharacters = (value: string | undefined, limit: number | undefined): string => {

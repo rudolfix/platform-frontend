@@ -12,7 +12,7 @@ function generateProxyConfig(backendUrl) {
   const base = {
     "/node": {
       targetLocal: "http://localhost:8545",
-      targetRemote: "https://platform.neufund.io/nodes/private",
+      targetRemote: "http://localhost:8545",
       pathRewrite: { "^/node": "" },
     },
     "/api/signature": {

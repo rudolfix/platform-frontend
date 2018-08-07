@@ -19,6 +19,8 @@ import * as redditIcon from "../../assets/img/inline_icons/social_reddit.svg";
 import * as slackIcon from "../../assets/img/inline_icons/social_slack.svg";
 import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg";
 import * as socialTwitter from "../../assets/img/inline_icons/social_twitter.svg";
+import * as xingIcon from "../../assets/img/inline_icons/social_xing.svg";
+import * as youtubeIcon from "../../assets/img/inline_icons/social_youtube.svg";
 import * as styles from "./SocialProfilesEditor.module.scss";
 
 export const SOCIAL_PROFILES_ICONS = [
@@ -72,17 +74,16 @@ export const SOCIAL_PROFILES_ICONS = [
     placeholder: "Google plus",
     svgIcon: googleIcon,
   },
-  // TODO: 'youtube' and 'xing' are not accepted by swagger api
-  // {
-  //   name: "youtube",
-  //   placeholder: "YoutTube",
-  //   svgIcon: youtubeIcon,
-  // },
-  // {
-  //   name: "xing",
-  //   placeholder: "Xing",
-  //   svgIcon: xingIcon,
-  // },
+  {
+    name: "youtube",
+    placeholder: "YoutTube",
+    svgIcon: youtubeIcon,
+  },
+  {
+    name: "xing",
+    placeholder: "Xing",
+    svgIcon: xingIcon,
+  },
   {
     name: "bitcointalk",
     placeholder: "Bitcointalk",

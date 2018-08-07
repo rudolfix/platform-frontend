@@ -1,44 +1,52 @@
+import * as cn from "classnames";
 import * as React from "react";
+
+import { SpinningEthereum } from "./SpinningEthereum";
+
+import * as styles from "./ConfettiEthereum.module.scss";
 
 export const ConfettiEthereum: React.SFC = () => {
   return (
-    <div className="cannon">
-      <div className="cannon__path cannon__path--sm cannon__path--angle-2">
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-3" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-1" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-2" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-1" />
-        <div className="cannon__confetti-spacer" />
-      </div>
-      <div className="cannon__path cannon__path--md cannon__path--angle-1">
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-2" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-2" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-3" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-1" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-4" />
-        <div className="cannon__confetti-spacer" />
-      </div>
-      <div className="cannon__path cannon__path--lg cannon__path--angle0">
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-1" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-4" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-2" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-3" />
-        <div className="cannon__confetti-spacer" />
-      </div>
-      <div className="cannon__path cannon__path--md cannon__path--angle1">
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-3" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-1" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-4" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-3" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-2" />
-        <div className="cannon__confetti-spacer" />
-      </div>
-      <div className="cannon__path cannon__path--sm cannon__path--angle2">
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-2" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-3" />
-        <div className="cannon__confetti cannon__confetti--flake cannon__confetti--color-4" />
-        <div className="cannon__confetti cannon__confetti--ribbon cannon__confetti--color-1" />
-        <div className="cannon__confetti-spacer" />
+    <div className={styles.wrapper}>
+      <SpinningEthereum />
+      <div className={cn(styles.cannon)}>
+        <div className={cn(styles.path, styles.pathSm, styles.pathAngleM2)}>
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor3)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor1)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor2)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor1)} />
+          <div className={cn(styles.confettiSpacer)} />
+        </div>
+        <div className={cn(styles.path, styles.pathMd, styles.pathAngleM1)}>
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor2)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor2)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor3)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor1)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor4)} />
+          <div className={cn(styles.confettiSpacer)} />
+        </div>
+        <div className={cn(styles.path, styles.pathLg, styles.pathAngle0)}>
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor1)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor4)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor2)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor3)} />
+          <div className={cn(styles.confettiSpacer)} />
+        </div>
+        <div className={cn(styles.path, styles.pathMd, styles.pathAngle1)}>
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor3)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor1)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor4)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor3)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor2)} />
+          <div className={cn(styles.confettiSpacer)} />
+        </div>
+        <div className={cn(styles.path, styles.pathSm, styles.pathAngle2)}>
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor2)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor3)} />
+          <div className={cn(styles.confetti, styles.confettiFlake, styles.confettiColor4)} />
+          <div className={cn(styles.confetti, styles.confettiRibbon, styles.confettiColor1)} />
+          <div className={cn(styles.confettiSpacer)} />
+        </div>
       </div>
     </div>
   );

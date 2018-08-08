@@ -732,7 +732,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               )}
               {companyData.customerGroup && (
                 <AccordionElement
-                title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
+                  title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
                 >
                   <p>{companyData.customerGroup}</p>
                 </AccordionElement>
@@ -748,9 +748,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               {((companyData.useOfCapitalList &&
                 companyData.useOfCapitalList.some((e: any) => e.percent > 0)) ||
                 companyData.useOfCapital) && (
-                  <AccordionElement
+                <AccordionElement
                   title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
-                  >
+                >
                   <Row>
                     {companyData.useOfCapital && (
                       <Col>
@@ -778,7 +778,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                               d => d && d.description,
                             ) as string[],
                           }}
-                          />
+                        />
                       </Col>
                     )}
                   </Row>
@@ -786,21 +786,21 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               )}
               {companyData.marketingApproach && (
                 <AccordionElement
-                title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+                  title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
                 >
                   <p>{companyData.marketingApproach}</p>
                 </AccordionElement>
               )}
               {companyData.salesModel && (
                 <AccordionElement
-                title={<FormattedMessage id="eto.form.product-vision.sales-model" />}
+                  title={<FormattedMessage id="eto.form.product-vision.sales-model" />}
                 >
                   <p>{companyData.salesModel}</p>
                 </AccordionElement>
               )}
               {companyData.keyProductPriorities && (
                 <AccordionElement
-                title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+                  title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
                 >
                   <p>{companyData.keyProductPriorities}</p>
                 </AccordionElement>

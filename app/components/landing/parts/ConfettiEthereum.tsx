@@ -3,11 +3,12 @@ import * as React from "react";
 
 import { SpinningEthereum } from "./SpinningEthereum";
 
+import { CommonHtmlProps } from "../../../types";
 import * as styles from "./ConfettiEthereum.module.scss";
 
-export const ConfettiEthereum: React.SFC = () => {
+export const ConfettiEthereum: React.SFC<CommonHtmlProps> = ({ className, style }) => {
   return (
-    <div className={styles.wrapper}>
+    <div className={cn([styles.wrapper, className])} style={style}>
       <SpinningEthereum />
       <div className={cn(styles.cannon)}>
         <div className={cn(styles.path, styles.pathSm, styles.pathAngleM2)}>

@@ -22,6 +22,7 @@ import {
 } from "../../../../modules/wallet/selectors";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
 import { IWalletValues, WalletBalance } from "../../wallet-balance/WalletBalance";
 
@@ -42,52 +43,55 @@ interface IDispatchProps {
 
 type TProps = IStateProps & IDispatchProps;
 
-export const WalletStartComponent: React.SFC<TProps> = props => (
-  <>
-    <Row className="row-gutter-top">
-      <Col lg={6} xs={12}>
-        <WalletBalance
-          className="h-100"
-          isLocked={false}
-          headerText={<FormattedMessage id="components.wallet.start.my-wallet" />}
-          isLoading={props.isLoading}
-          data={props.liquidWalletData}
-        />
-      </Col>
+export const WalletStartComponent: React.SFC<TProps> = props =>
+  props.isLoading ? (
+    <LoadingIndicator />
+  ) : (
+    <>
+      <Row className="row-gutter-top">
+        <Col lg={6} xs={12}>
+          <WalletBalance
+            className="h-100"
+            isLocked={false}
+            headerText={<FormattedMessage id="components.wallet.start.my-wallet" />}
+            isLoading={props.isLoading}
+            data={props.liquidWalletData}
+          />
+        </Col>
 
-      {!props.isLoading &&
-        props.lockedWalletData!.hasFunds && (
-          <Col lg={6} xs={12}>
-            <WalletBalance
-              className="h-100"
-              isLocked={true}
-              headerText={<FormattedMessage id="components.wallet.start.locked-wallet" />}
-              isLoading={props.isLoading}
-              data={props.lockedWalletData}
-            />
-          </Col>
-        )}
+        {!props.isLoading &&
+          props.lockedWalletData!.hasFunds && (
+            <Col lg={6} xs={12}>
+              <WalletBalance
+                className="h-100"
+                isLocked={true}
+                headerText={<FormattedMessage id="components.wallet.start.locked-wallet" />}
+                isLoading={props.isLoading}
+                data={props.lockedWalletData}
+              />
+            </Col>
+          )}
 
-      {!props.isLoading &&
-        props.icbmWalletData!.hasFunds && (
-          <Col lg={6} xs={12}>
-            <WalletBalance
-              className="h-100"
-              isLocked={true}
-              headerText={<FormattedMessage id="components.wallet.start.icbm-wallet" />}
-              isLoading={props.isLoading}
-              data={props.icbmWalletData}
-            />
-          </Col>
-        )}
-    </Row>
-    <Row>
-      <Col className="my-4">
-        <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
-      </Col>
-    </Row>
-  </>
-);
+        {!props.isLoading &&
+          props.icbmWalletData!.hasFunds && (
+            <Col lg={6} xs={12}>
+              <WalletBalance
+                className="h-100"
+                isLocked={true}
+                headerText={<FormattedMessage id="components.wallet.start.icbm-wallet" />}
+                isLoading={props.isLoading}
+                data={props.icbmWalletData}
+              />
+            </Col>
+          )}
+      </Row>
+      <Row>
+        <Col className="my-4">
+          <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
+        </Col>
+      </Row>
+    </>
+  );
 
 export const WalletStart = compose<React.SFC>(
   onEnterAction({

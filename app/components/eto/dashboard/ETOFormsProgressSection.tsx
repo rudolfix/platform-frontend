@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 import { Col } from "reactstrap";
 import {
   EtoCompanyInformationType,
@@ -46,7 +47,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           to={etoRegisterRoutes.companyInformation}
           progress={shouldEtoDataLoad ? companyInformationProgress : 0}
           disabled={!shouldEtoDataLoad}
-          name="Company Info"
+          name={<FormattedMessage id="eto.form-progress-widget.about" />}
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -55,7 +56,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           to={etoRegisterRoutes.legalInformation}
           progress={shouldEtoDataLoad ? legalInformationProgress : 0}
           disabled={!shouldEtoDataLoad}
-          name="Legal Info"
+          name={<FormattedMessage id="eto.form-progress-widget.legal-info" />}
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -64,7 +65,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           to={etoRegisterRoutes.etoTerms}
           progress={shouldEtoDataLoad ? etoTermsProgress : 0}
           disabled={!shouldEtoDataLoad}
-          name="ETO Terms"
+          name={<FormattedMessage id="eto.form-progress-widget.eto-terms" />}
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -73,7 +74,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           to={etoRegisterRoutes.keyIndividuals}
           progress={shouldEtoDataLoad ? etoKeyIndividualsProgress : 0}
           disabled={!shouldEtoDataLoad}
-          name="Key Individuals"
+          name={<FormattedMessage id="eto.form-progress-widget.key-individuals" />}
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -82,7 +83,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           to={etoRegisterRoutes.productVision}
           progress={shouldEtoDataLoad ? productVisionProgress : 0}
           disabled={!shouldEtoDataLoad}
-          name="Product Vision"
+          name={<FormattedMessage id="eto.form-progress-widget.product-vision" />}
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -91,7 +92,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           to={etoRegisterRoutes.etoMedia}
           progress={shouldEtoDataLoad ? etoMediaProgress : 0}
           disabled={!shouldEtoDataLoad}
-          name="Media"
+          name={<FormattedMessage id="eto.form-progress-widget.media" />}
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -100,10 +101,9 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           to={etoRegisterRoutes.etoRiskAssessment}
           progress={shouldEtoDataLoad ? etoRiskAssessmentProgress : 0}
           disabled={!shouldEtoDataLoad}
-          name="Risk Assessment"
+          name={<FormattedMessage id="eto.form-progress-widget.risk-assessment" />}
         />
       </Col>
-      {/* TODO: ADD TRANSLATIONS */}
     </>
   );
 };

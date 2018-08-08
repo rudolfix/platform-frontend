@@ -5,10 +5,11 @@ import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
-import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
+import { TxPending } from "./shared/TxPending";
+import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
 
@@ -18,6 +19,7 @@ interface IStateProps {
   type?: TxSenderType;
   details?: ITxData;
   blockId?: number;
+  txHash?: string;
 }
 
 interface IDispatchProps {
@@ -47,7 +49,14 @@ export interface ISummaryComponentProps {
   data: ITxData;
 }
 
-function renderBody({ state, acceptDraft, accept, blockId, details }: Props): React.ReactNode {
+function renderBody({
+  state,
+  acceptDraft,
+  accept,
+  blockId,
+  details,
+  txHash,
+}: Props): React.ReactNode {
   switch (state) {
     case "INIT":
       return <Withdraw onAccept={acceptDraft} />;
@@ -62,15 +71,10 @@ function renderBody({ state, acceptDraft, accept, blockId, details }: Props): Re
       return <LoadingIndicator />;
 
     case "MINING":
-      return <div>{blockId}</div>;
+      return <TxPending blockId={blockId!} txHash={txHash!} />;
 
     case "DONE":
-      return (
-        <div>
-          <SpinningEthereum />
-          <h2>Done!</h2>
-        </div>
-      );
+      return <WithdrawSuccess />;
 
     case "ERROR_SIGN":
       return <div>Error occured!</div>;
@@ -86,6 +90,7 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
     state: state.txSender.state,
     type: state.txSender.type,
     details: state.txSender.txDetails,
+    txHash: state.txSender.txHash,
     blockId: state.txSender.blockId,
   }),
   dispatchToProps: d => ({

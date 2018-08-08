@@ -3,6 +3,7 @@ import { authReducer } from "./auth/reducer";
 import { depositEthModalReducer } from "./depositEthModal/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
 import { etoReducer } from "./eto/reducer";
+import { gasReducer } from "./gas/reducer";
 import { genericModalReducer } from "./genericModal/reducer";
 import { initReducer } from "./init/reducer";
 import { kycReducer } from "./kyc/reducer";
@@ -41,4 +42,5 @@ export const appReducers = {
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
   txSender: txSenderReducer,
+  gas: gasReducer,
 };

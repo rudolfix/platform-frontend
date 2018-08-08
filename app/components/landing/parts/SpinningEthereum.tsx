@@ -1,9 +1,11 @@
+import * as cn from "classnames";
 import * as React from "react";
 
+import { CommonHtmlProps } from "../../../types";
 import * as styles from "./SpinningEthereum.module.scss";
 
-export const SpinningEthereum: React.SFC = () => (
-  <div className={styles.wrapper}>
+export const SpinningEthereum: React.SFC<CommonHtmlProps> = ({ className, style }) => (
+  <div className={cn(styles.wrapper, className)} style={style}>
     <div className={styles.eth}>
       <div className={styles.bottom}>
         <div className={styles.left} />

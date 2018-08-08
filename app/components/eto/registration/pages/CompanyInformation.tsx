@@ -45,16 +45,19 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label="Company Description*"
           placeholder="Describe your company 250 Characters"
           name="companyDescription"
+          charactersLimit={750}
         />
         <FormTextArea
           label="Founders Quote"
           placeholder="Key Quote from Founder 250 Characters"
           name="keyQuoteFounder"
+          charactersLimit={250}
         />
         <FormTextArea
           label="Founders Investor"
           placeholder="Key Quote from Investor 250 Characters"
           name="keyQuoteInvestor"
+          charactersLimit={250}
         />
 
         <EtoTagWidget

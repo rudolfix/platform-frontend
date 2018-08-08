@@ -52,7 +52,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
               theme="graphite"
               svgIcon={arrowRightIcon}
               onClick={onWithdrawClick}
-              disabled={parseFloat(largeNumber) === 0}
+              disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || parseFloat(largeNumber) === 0}
             >
               <FormattedMessage id="shared-component.account-balance.withdraw" />
             </Button>

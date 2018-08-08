@@ -5,11 +5,11 @@ import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
-import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
 import { TxPending } from "./shared/TxPending";
+import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
 
@@ -74,12 +74,7 @@ function renderBody({
       return <TxPending blockId={blockId!} txHash={txHash!} />;
 
     case "DONE":
-      return (
-        <div>
-          <SpinningEthereum />
-          <h2>Done!</h2>
-        </div>
-      );
+      return <WithdrawSuccess />;
 
     case "ERROR_SIGN":
       return <div>Error occured!</div>;

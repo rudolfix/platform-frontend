@@ -709,18 +709,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </SectionHeader>
           <Panel>
             <Accordion>
-              {companyData.problemSolved && (
+              {companyData.inspiration && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
+                  title={<FormattedMessage id="eto.form.product-vision.inspiration" />}
                 >
-                  <p>{companyData.problemSolved}</p>
-                </AccordionElement>
-              )}
-              {companyData.customerGroup && (
-                <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
-                >
-                  <p>{companyData.customerGroup}</p>
+                  <p>{companyData.inspiration}</p>
                 </AccordionElement>
               )}
               {companyData.productVision && (
@@ -730,27 +723,34 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <p>{companyData.productVision}</p>
                 </AccordionElement>
               )}
-              {companyData.inspiration && (
+              {companyData.problemSolved && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.inspiration" />}
+                  title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
                 >
-                  <p>{companyData.inspiration}</p>
+                  <p>{companyData.problemSolved}</p>
                 </AccordionElement>
               )}
-              {companyData.keyProductPriorities && (
+              {companyData.customerGroup && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+                title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
                 >
-                  <p>{companyData.keyProductPriorities}</p>
+                  <p>{companyData.customerGroup}</p>
+                </AccordionElement>
+              )}
+              {companyData.sellingProposition && (
+                <AccordionElement
+                  title={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
+                >
+                  <p>{companyData.sellingProposition}</p>
                 </AccordionElement>
               )}
 
               {((companyData.useOfCapitalList &&
                 companyData.useOfCapitalList.some((e: any) => e.percent > 0)) ||
                 companyData.useOfCapital) && (
-                <AccordionElement
+                  <AccordionElement
                   title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
-                >
+                  >
                   <Row>
                     {companyData.useOfCapital && (
                       <Col>
@@ -778,31 +778,31 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                               d => d && d.description,
                             ) as string[],
                           }}
-                        />
+                          />
                       </Col>
                     )}
                   </Row>
                 </AccordionElement>
               )}
-              {companyData.salesModel && (
-                <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.sales-model" />}
-                >
-                  <p>{companyData.salesModel}</p>
-                </AccordionElement>
-              )}
               {companyData.marketingApproach && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+                title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
                 >
                   <p>{companyData.marketingApproach}</p>
                 </AccordionElement>
               )}
-              {companyData.sellingProposition && (
+              {companyData.salesModel && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
+                title={<FormattedMessage id="eto.form.product-vision.sales-model" />}
                 >
-                  <p>{companyData.sellingProposition}</p>
+                  <p>{companyData.salesModel}</p>
+                </AccordionElement>
+              )}
+              {companyData.keyProductPriorities && (
+                <AccordionElement
+                title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+                >
+                  <p>{companyData.keyProductPriorities}</p>
                 </AccordionElement>
               )}
             </Accordion>

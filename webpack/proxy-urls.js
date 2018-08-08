@@ -55,6 +55,11 @@ function generateProxyConfig(backendUrl) {
       targetRemote: backendUrl + "external-services-mock",
       pathRewrite: { "^/api/external-services-mock": "" },
     },
+    "/api/immutable-storage": {
+      targetLocal: "http://localhost:5012",
+      targetRemote: backendUrl + "immutable-storage",
+      pathRewrite: { "^/api/immutable-storage": "" },
+    },
   };
 
   return mapValues(base, value => {

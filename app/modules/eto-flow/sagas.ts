@@ -30,10 +30,45 @@ export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDepen
 export function* loadEtoFileData({
   notificationCenter,
   apiEtoFileService,
+  apiImmutableStorage,
 }: TGlobalDependencies): any {
   try {
+    const fileInfo = yield apiEtoFileService.getEtoFileInfo();
+    const test = yield apiImmutableStorage.getFile({
+      ipfsHash: "QmcVyJXxGqkv7ucZGXTtzxAb95TYz5nPnRt1uVDWe31miG",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      // placeholders: {},
+      asPdf: true,
+    });
     const etoFileData: IEtoFiles = yield apiEtoFileService.getFileEtoData();
-    yield put(actions.etoFlow.loadEtoFileData(etoFileData));
+    yield put(actions.etoFlow.loadDataStart());
+    yield put(
+      actions.etoFlow.loadEtoFileData({
+        generatedDocuments: etoFileData,
+        uploadedDocuments: {
+          pamphlet: {
+            url: "",
+            status: "canReplace",
+          },
+          termSheet: {
+            url: "",
+            status: "canReplace",
+          },
+          infoBlatt: {
+            url: "",
+            status: "locked",
+          },
+          bafinProspectus: {
+            url: "",
+            status: "locked",
+          },
+          signedAgreement: {
+            url: "",
+            status: "locked",
+          },
+        },
+      }),
+    );
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO files data. Make sure you have completed KYC and email verification process.",

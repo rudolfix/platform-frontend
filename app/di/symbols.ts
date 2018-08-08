@@ -11,6 +11,7 @@ export const symbols = makeDebugSymbols({
   ethereumNetworkConfig: Symbol(),
 
   // apis
+  apiImmutableStorage: Symbol(),
   jsonHttpClient: Symbol(),
   authorizedHttpClient: Symbol(),
   signatureAuthApi: Symbol(),

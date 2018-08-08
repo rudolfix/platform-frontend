@@ -136,6 +136,17 @@ export type TCompanyEtoData = TEtoTeamData &
 
 export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
 
+export type templates = {
+  documentType: string;
+  form: string;
+  ipfsHash: string;
+  mimeType: string;
+  name: string;
+  // TODO: add correct data model
+};
+
+export type TEtoDocumentTemplates = { [key: string]: templates };
+
 export const EtoTermsType = YupTS.object({
   equityTokenName: YupTS.string(),
   equityTokenSymbol: YupTS.string(),
@@ -168,6 +179,7 @@ interface IAdditionalEtoType {
   isBookbuilding: boolean;
   currencies: string[];
   generalVotingRule?: string;
+  templates: { [key: string]: templates };
 }
 
 export type TEtoSpecsData = TEtoTermsType & IAdditionalEtoType;

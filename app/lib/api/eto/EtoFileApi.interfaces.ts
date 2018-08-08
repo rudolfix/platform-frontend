@@ -23,8 +23,7 @@ export type TEtoUploadFile =
   | "signedAgreement";
 
 export interface IEtoFiles {
-  links: IEtoLinkFile[];
-  generatedDocuments: IEtoGeneratedFile[];
+  generatedDocuments: any;
   uploadedDocuments: {
     pamphlet: {
       url?: string;

@@ -5,6 +5,7 @@ import { DeepReadonly } from "../../types";
 
 export interface IEtoFlowState {
   loading: boolean;
+  etoFileLoading: boolean;
   saving: boolean;
   showIpfsModal: boolean;
   etoData: TPartialEtoSpecData;
@@ -16,11 +17,11 @@ export interface IEtoFlowState {
 
 export const etoFlowInitialState: IEtoFlowState = {
   loading: false,
+  etoFileLoading: false,
   saving: false,
   etoData: {},
   companyData: {},
   etoFileData: {
-    links: [],
     generatedDocuments: [],
     uploadedDocuments: {
       pamphlet: {},
@@ -39,16 +40,18 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
 ): DeepReadonly<IEtoFlowState> => {
   switch (action.type) {
     case "ETO_FLOW_LOAD_DATA_START":
-    case "ETO_FLOW_LOAD_FILE_DATA_START":
       return {
         ...state,
         loading: true,
       };
+    case "ETO_FLOW_LOAD_FILE_DATA_START":
+      return {
+        ...state,
+        etoFileLoading: true,
+      };
     case "ETO_FLOW_LOAD_DATA":
       return {
         ...state,
-        loading: false,
-        saving: false,
         etoData: {
           ...state.etoData,
           ...action.payload.data.etoData,
@@ -57,13 +60,15 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
           ...state.companyData,
           ...action.payload.data.companyData,
         },
+        loading: false,
+        saving: false,
       };
     case "ETO_FLOW_LOAD_ETO_FILE_DATA":
       return {
         ...state,
-        loading: false,
-        saving: false,
         etoFileData: { ...state.etoFileData, ...action.payload.data },
+        etoFileLoading: false,
+        saving: false,
       };
     case "ETO_FLOW_SAVE_DATA_START":
     case "ETO_FLOW_SUBMIT_DATA_START":

@@ -27,7 +27,7 @@ import {
   selectCombinedEtoCompanyData,
   selectCompanyData,
   selectEtoData,
-  selectEtoLoadingData,
+  selectEtoLoadingFile,
   selectEtoState,
   selectIsPamphletSubmitted,
   selectIsProspectusSubmitted,
@@ -253,7 +253,7 @@ export const EtoDashboard = compose<React.SFC>(
     stateToProps: s => ({
       companyData: selectCompanyData(s.etoFlow),
       etoData: selectEtoData(s.etoFlow),
-      loadingData: selectEtoLoadingData(s.etoFlow),
+      loadingData: selectEtoLoadingFile(s.etoFlow),
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),
       isLightWallet: selectIsLightWallet(s.web3),

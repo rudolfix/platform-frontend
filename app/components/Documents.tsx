@@ -3,10 +3,17 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { TEtoDocumentTemplates } from "../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles, TEtoUploadFile } from "../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../modules/actions";
-import { selectEtoFileData, selectEtoLoadingData } from "../modules/eto-flow/selectors";
+import {
+  selectDocumentTemplates,
+  selectEtoFileData,
+  selectEtoLoading,
+  selectEtoLoadingFile,
+} from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
+import { onEnterAction } from "../utils/OnEnterAction";
 import { ETOAddDocuments } from "./eto/shared/EtoAddDocument";
 import { EtoFileIpfsModal } from "./eto/shared/EtoFileIpfsModal";
 import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
@@ -19,7 +26,7 @@ import * as styles from "./Documents.module.scss";
 
 export const GeneratedDocuments: React.SFC<{ title: string; url: string }> = ({ title, url }) => {
   return (
-    <Col xs={6} md={3} key={url} className="mb-4">
+    <Col xs={6} lg={3} key={url} className="mb-4">
       <a href={url} target="_blank">
         <DocumentTile title={title} extension={url} />
       </a>
@@ -28,21 +35,18 @@ export const GeneratedDocuments: React.SFC<{ title: string; url: string }> = ({ 
 };
 
 class DocumentsComponent extends React.Component<IProps> {
-  componentDidMount(): void {
-    const { loadFileDataStart } = this.props;
-    loadFileDataStart();
-  }
   render(): React.ReactNode {
-    const { loadingData, etoFilesData } = this.props;
-    const { links, generatedDocuments, uploadedDocuments } = etoFilesData;
+    const { loadingData, etoFilesData, etoDocumentTemplates, etoFileLoading } = this.props;
+    const { generatedDocuments, uploadedDocuments } = etoFilesData;
+
     return (
       <LayoutAuthorized>
-        {loadingData ? (
+        {loadingData || etoFileLoading ? (
           <LoadingIndicator />
         ) : (
           <Row>
             <EtoFileIpfsModal />
-            <Col xs={12} md={8}>
+            <Col xs={12} lg={8}>
               <SectionHeader className="my-4">
                 <FormattedMessage id="documents.legal-documents" />
               </SectionHeader>
@@ -51,11 +55,11 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   GENERATED DOCUMENTS
                 </Col>
-                {generatedDocuments.map(({ title, url }, index) => {
+               {/*  {generatedDocuments.map(({ title, url }, index) => {
                   return (
                     url && url !== "" && <GeneratedDocuments key={index} {...{ title, url }} />
                   );
-                })}
+                })} */}
               </Row>
 
               <Row>
@@ -65,7 +69,7 @@ class DocumentsComponent extends React.Component<IProps> {
                 {Object.keys(uploadedDocuments).map(fileName => {
                   const typedFileName = fileName as TEtoUploadFile;
                   return (
-                    <Col xs={6} md={3} key={fileName} className="mb-4">
+                    <Col xs={6} lg={3} key={fileName} className="mb-4">
                       <ETOAddDocuments
                         fileName={typedFileName}
                         disabled={
@@ -90,11 +94,13 @@ class DocumentsComponent extends React.Component<IProps> {
                 })}
               </Row>
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={12} lg={4}>
               <SectionHeader className="my-4" layoutHasDecorator={false} />
               <Row>
                 <SingleColDocumentsWidget
-                  documents={links}
+                  documents={Object.keys(etoDocumentTemplates).map(
+                    key => etoDocumentTemplates[key],
+                  )}
                   name="AGREEMENT AND PROSPECTUS TEMPLATES"
                   className={styles.documents}
                 />
@@ -112,6 +118,9 @@ type IProps = IStateProps & IDispatchProps;
 interface IStateProps {
   etoFilesData: IEtoFiles;
   loadingData: boolean;
+  etoFileLoading: boolean;
+  etoDocumentTemplates: any;
+  // TODO: remove any
 }
 
 interface IDispatchProps {
@@ -119,13 +128,13 @@ interface IDispatchProps {
 }
 
 export const Documents = compose<React.SFC>(
+  onEnterAction({ actionCreator: d => d(actions.etoFlow.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       etoFilesData: selectEtoFileData(s.etoFlow),
-      loadingData: selectEtoLoadingData(s.etoFlow),
-    }),
-    dispatchToProps: dispatch => ({
-      loadFileDataStart: () => dispatch(actions.etoFlow.loadFileDataStart()),
+      etoDocumentTemplates: selectDocumentTemplates(s.etoFlow),
+      loadingData: selectEtoLoading(s.etoFlow),
+      etoFileLoading: selectEtoLoadingFile(s.etoFlow),
     }),
   }),
 )(DocumentsComponent);

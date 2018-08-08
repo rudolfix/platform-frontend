@@ -25,6 +25,7 @@ import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { EtoApi } from "../lib/api/eto/EtoApi";
 import { EtoFileApi } from "../lib/api/eto/EtoFileApi";
 import { FileStorageApi } from "../lib/api/FileStorageApi";
+import { ImmutableStorageApi } from "../lib/api/ImmutableStorageApi";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
@@ -141,6 +142,10 @@ export function setupBindings(config: IConfig): Container {
     .bind(symbols.fileStorageService)
     .to(FileStorageApi)
     .inSingletonScope();
+  container
+    .bind(symbols.apiImmutableStorage)
+    .to(ImmutableStorageApi)
+    .inSingletonScope();
 
   // factories
   container
@@ -211,6 +216,7 @@ export const createGlobalDependencies = (container: Container) => ({
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
+  apiImmutableStorage: container.get<ImmutableStorageApi>(symbols.apiImmutableStorage),
 
   intlWrapper: container.get<IntlWrapper>(symbols.intlWrapper),
 });

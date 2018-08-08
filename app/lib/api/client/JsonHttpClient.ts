@@ -150,7 +150,7 @@ export class JsonHttpClient implements IHttpClient {
 
     let responseJson: any = {};
 
-    if (!config.expectsNoResponse) {
+    if (!config.expectsNoResponse && !config.expectsNonJSON) {
       responseJson = await response.json().catch(() => {
         throw new ResponseParsingError("Response is not a json");
       });

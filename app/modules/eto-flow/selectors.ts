@@ -11,10 +11,12 @@ import {
   EtoState,
   EtoTermsType,
   GeneralEtoDataType,
+  TEtoDocumentTemplates,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { DeepPartial } from "../../types";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./reducer";
@@ -173,8 +175,14 @@ export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData 
   state.companyData;
 
 export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
+// { [key: string]: templates } | undefined
 
-export const selectEtoLoadingData = (state: IEtoFlowState): boolean => state.loading;
+export const selectDocumentTemplates = (state: IEtoFlowState): DeepPartial<TEtoDocumentTemplates> | undefined =>
+  state.etoData && state.etoData.templates;
+
+export const selectEtoLoadingFile = (state: IEtoFlowState): boolean => state.etoFileLoading;
+
+export const selectEtoLoading = (state: IEtoFlowState): boolean => state.loading;
 
 export const selectCombinedEtoCompanyData = (
   state: IEtoFlowState,

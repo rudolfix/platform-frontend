@@ -11,6 +11,7 @@ export interface IHttpRequestCommon {
   body?: any;
   formData?: FormData;
   expectsNoResponse?: boolean;
+  expectsNonJSON?: boolean;
   allowedStatusCodes?: number[]; // 20x are always allowed
 }
 

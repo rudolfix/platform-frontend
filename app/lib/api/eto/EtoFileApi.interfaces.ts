@@ -52,3 +52,24 @@ export interface IEtoFiles {
     };
   };
 }
+type etoDocumentType =
+  | "reservation_and_acquisition_agreement"
+  | "company_token_holder_agreement"
+  | "investment_and_shareholder_agreement"
+  | "prospectus_template"
+  | "pamphlet_template"
+  | "termsheet_template"
+  | "bafin_approved_prospectus"
+  | "bafin_approved_pamphlet"
+  | "signed_investment_and_shareholder_agreement"
+  | "other";
+
+type etoFormType = "document" | "template";
+export interface IEtoDocument {
+  documentType: etoDocumentType;
+  form: etoFormType;
+  ipfsHash: string;
+  mimeType: string;
+  name: string;
+  placeholders: { [key: string]: string };
+}

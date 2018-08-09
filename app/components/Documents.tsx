@@ -3,8 +3,8 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { TEtoDocumentTemplates } from "../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles, TEtoUploadFile } from "../lib/api/eto/EtoFileApi.interfaces";
+import { ImmutableFileId } from "../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../modules/actions";
 import {
   selectDocumentTemplates,
@@ -20,7 +20,7 @@ import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
 import { DocumentTile } from "./shared/Document";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
-import { SingleColDocumentsWidget } from "./shared/singleColDocumentWidget";
+import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
 import * as styles from "./Documents.module.scss";
 
@@ -36,7 +36,12 @@ export const GeneratedDocuments: React.SFC<{ title: string; url: string }> = ({ 
 
 class DocumentsComponent extends React.Component<IProps> {
   render(): React.ReactNode {
-    const { loadingData, etoFilesData, etoDocumentTemplates, etoFileLoading } = this.props;
+    const {
+      loadingData,
+      etoFilesData,
+      etoDocumentTemplates,
+      etoFileLoading,
+    } = this.props;
     const { generatedDocuments, uploadedDocuments } = etoFilesData;
 
     return (
@@ -55,7 +60,7 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   GENERATED DOCUMENTS
                 </Col>
-               {/*  {generatedDocuments.map(({ title, url }, index) => {
+                {/*  {generatedDocuments.map(({ title, url }, index) => {
                   return (
                     url && url !== "" && <GeneratedDocuments key={index} {...{ title, url }} />
                   );
@@ -97,7 +102,7 @@ class DocumentsComponent extends React.Component<IProps> {
             <Col xs={12} lg={4}>
               <SectionHeader className="my-4" layoutHasDecorator={false} />
               <Row>
-                <SingleColDocumentsWidget
+                <SingleColDocuments
                   documents={Object.keys(etoDocumentTemplates).map(
                     key => etoDocumentTemplates[key],
                   )}
@@ -124,7 +129,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  loadFileDataStart: () => void;
+  downloadImmutableFile: (fileId: ImmutableFileId) => void;
 }
 
 export const Documents = compose<React.SFC>(
@@ -135,6 +140,10 @@ export const Documents = compose<React.SFC>(
       etoDocumentTemplates: selectDocumentTemplates(s.etoFlow),
       loadingData: selectEtoLoading(s.etoFlow),
       etoFileLoading: selectEtoLoadingFile(s.etoFlow),
+    }),
+    dispatchToProps: dispatch => ({
+      downloadImmutableFile: fileId =>
+        dispatch(actions.immutableStorage.downloadImmutableFile(fileId)),
     }),
   }),
 )(DocumentsComponent);

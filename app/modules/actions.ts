@@ -1,6 +1,3 @@
-import { settingsActions } from "./settings/actions";
-import { verifyEmailActions } from "./verifyEmailWidget/actions";
-
 import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
@@ -10,15 +7,18 @@ import { etoFlowActions } from "./eto-flow/actions";
 import { etoActions } from "./eto/actions";
 import { gasActions } from "./gas/actions";
 import { genericModalActions } from "./genericModal/actions";
+import { immutableStorageActions } from "./immutableFile/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";
+import { settingsActions } from "./settings/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
 import { txMonitorActions } from "./tx/monitor/actions";
 import { txSenderActions } from "./tx/sender/actions";
 import { userAgentActions } from "./userAgent/actions";
+import { verifyEmailActions } from "./verifyEmailWidget/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
 import { walletActions } from "./wallet/actions";
 import { web3Actions } from "./web3/actions";
@@ -27,6 +27,7 @@ import { web3Actions } from "./web3/actions";
 export const actions = {
   dashboard: dashboardActions,
   settings: settingsActions,
+  immutableStorage: immutableStorageActions,
   verifyEmail: verifyEmailActions,
   genericModal: genericModalActions,
   signMessageModal: accessWalletActions,
@@ -67,6 +68,7 @@ export const allActions = {
   ...authActions,
   ...walletActions,
   ...notificationActions,
+  ...immutableStorageActions,
   ...etoFlowActions,
   ...etoActions,
   ...formSingleFileUploadActions,

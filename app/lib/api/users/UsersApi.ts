@@ -32,7 +32,7 @@ const upperCaseWalletTypesInUser = (userApiResponse: IUser): IUser => ({
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(symbols.authorizedHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 

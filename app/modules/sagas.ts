@@ -1,13 +1,14 @@
 import { effects } from "redux-saga";
-import { TAction } from "./actions";
 
 import { call, spawn, takeEvery } from "redux-saga/effects";
 import { TGlobalDependencies } from "../di/setupBindings";
+import { TAction } from "./actions";
 import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
+import { immutableFileSagas } from './immutableFile/sagas';
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { settingsSagas } from "./settings/sagas";
@@ -34,6 +35,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(lightWalletSagas),
     effects.fork(walletSagas),
     effects.fork(etoFlowSagas),
+    effects.fork(immutableFileSagas),
     effects.fork(etoSagas),
     effects.fork(formSingleFileUploadSagas),
     effects.fork(remoteFileSagas),

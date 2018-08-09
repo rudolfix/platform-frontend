@@ -11,7 +11,10 @@ const UPLOAD_DOCUMENT_PATH = "/upload";
 
 @injectable()
 export class ImmutableStorageApi {
-  constructor(@inject(symbols.authorizedHttpClient) private httpClient: IHttpClient) {}
+  constructor(
+    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authorizedBinaryHttpClient) private binaryHttpClient: IHttpClient,
+  ) {}
 
   public async uploadFile(
     mime_type: TFileType,
@@ -35,7 +38,7 @@ export class ImmutableStorageApi {
     placeholders,
     asPdf,
   }: ImmutableFileId): Promise<IHttpResponse<TFileDescription>> {
-    return await this.httpClient.get<any>({
+    return await this.binaryHttpClient.get<any>({
       baseUrl: BASE_PATH,
       url: DOWNLOAD_DOCUMENT_PATH + ipfsHash,
       queryParams: {
@@ -43,7 +46,6 @@ export class ImmutableStorageApi {
         // placeholders: placeholders && JSON.stringify(placeholders),
         as_pdf: asPdf.toString(),
       },
-      expectsNonJSON:true,
       // responseSchema: FileDescriptionValidator,
     });
   }

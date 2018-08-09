@@ -115,7 +115,6 @@ export const EtoVotingRights = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        data.isCrowdfunding = false; // Temporary solution - overrides checked value
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

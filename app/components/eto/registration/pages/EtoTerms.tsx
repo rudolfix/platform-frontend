@@ -18,7 +18,7 @@ import {
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
-import { FormField } from "../../../shared/forms/forms";
+import { FormField, FormTextArea } from "../../../shared/forms/forms";
 import { CURRENCIES } from "../../EtoPublicView";
 import { EtoFormBase } from "../EtoFormBase";
 
@@ -34,7 +34,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const currencies = ["eth", "eur_t"];
+const currencies = ["eur_t", "eth"];
 
 class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
   static contextTypes = {
@@ -57,6 +57,39 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             ))}
           </FormFieldCheckboxGroup>
         </div>
+
+        <Row>
+          <Col>
+            <FormField
+              label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
+              placeholder="1"
+              prefix="€"
+              name="minTicketEur"
+              type="number"
+              min="1"
+            />
+          </Col>
+          <Col>
+            <FormField
+              label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
+              placeholder="Unlimited"
+              prefix="€"
+              name="maxTicketEur"
+              type="number"
+              min="1"
+            />
+          </Col>
+        </Row>
+
+        <div className="form-group">
+          <FormCheckbox
+            name="notUnderCrowdfundingRegulations"
+            label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
+            checked
+          />
+        </div>
+
+
         <div className="form-group">
           <FormLabel>
             <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
@@ -115,40 +148,22 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           />
         </div>
 
-        <FormField
-          label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
-          placeholder="1"
-          prefix="€"
-          name="minTicketEur"
-          type="number"
-          min="1"
-        />
-
-        <FormField
-          label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
-          placeholder="1"
-          prefix="€"
-          name="maxTicketEur"
-          type="number"
-          min="1"
-        />
-
         <div className="form-group">
-          <FormCheckbox
-            name="isCrowdfunding"
-            label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
-            checked
-          />
-        </div>
-
-        <div className="form-group">
-          <FormCheckbox
+          <FormLabel>
+            <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
+          </FormLabel>
+          <FormToggle
             name="enableTransferOnSuccess"
-            label={
-              <FormattedMessage id="eto.form.section.eto-terms.token-transfers-enabled-after-eto" />
-            }
+            disabledLabel={ <FormattedMessage id="form.select.asap" /> }
+            enabledLabel={ <FormattedMessage id="eto.form.eto-terms.future-date" /> }
           />
         </div>
+
+        <FormTextArea
+          className="mb-2 mt-2"
+          label={<FormattedMessage id="eto.form.other"/>}
+          name="additionalTerms"
+        />
 
         <Col>
           <Row className="justify-content-end">
@@ -189,7 +204,7 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        data.isCrowdfunding = false; // Temporary solution - overrides checked value
+        data.notUnderCrowdfundingRegulations = true; // Temporary solution - overrides checked value
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

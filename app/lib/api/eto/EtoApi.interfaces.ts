@@ -141,51 +141,52 @@ export type TCompanyEtoData = TEtoTeamData &
 export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
 
 export const EtoTermsType = YupTS.object({
-  fullyDilutedPreMoneyValuationEur: YupTS.number(),
-  existingCompanyShares: YupTS.number(),
-  newSharesToIssue: YupTS.number(),
-  maximumNewSharesToIssue: YupTS.number(),
+  currencies: YupTS.array(YupTS.string()).optional(),
   discountScheme: YupTS.string(),
-  shareNominalValueEur: YupTS.number(),
   publicDurationDays: YupTS.number(),
   minTicketEur: YupTS.number(),
   maxTicketEur: YupTS.number().optional(),
   enableTransferOnSuccess: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
-  riskRegulatedBusiness: YupTS.boolean(),
-  isCrowdfunding: YupTS.boolean(),
+  notUnderCrowdfundingRegulations: YupTS.onlyTrue(),
   whitelistDurationDays: YupTS.number(),
-  minimumNewSharesToIssue: YupTS.number(),
+  additionalTerms: YupTS.string().optional(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
 export const EtoEquityTokenInfoType = YupTS.object({
-  equityTokenName: YupTS.string(),
-  equityTokenSymbol: YupTS.string(),
-  equityTokenImage: YupTS.string(),
-  equityTokensPerShare: YupTS.number(),
+  equityTokenName: YupTS.string().optional(),
+  equityTokenSymbol: YupTS.string().optional(),
+  equityTokenImage: YupTS.string().optional(),
 });
 
 export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType>;
 
 export const EtoVotingRightsType = YupTS.object({
-  nominee: YupTS.string(),
-  liquidationPreferenceMultiplier: YupTS.number(),
+  nominee: YupTS.string().optional(),
+  liquidationPreferenceMultiplier: YupTS.number().optional(),
   generalVotingRule: YupTS.string().optional(),
 });
 
 export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
 export const EtoInvestmentTermsType = YupTS.object({
+  equityTokensPerShare: YupTS.number().optional(),
+  shareNominalValueEur: YupTS.number().optional(),
+  fullyDilutedPreMoneyValuationEur: YupTS.number().optional(),
+  existingCompanyShares: YupTS.number().optional(),
+  authorizedCapitalShares: YupTS.number().optional(),
+  newSharesToIssue: YupTS.number().optional(),
+  minimumNewSharesToIssue: YupTS.number().optional(),
+  newSharesToIssuePreETO: YupTS.number(), // missing !!
+  whitelistDiscountFraction: YupTS.number().optional(),
 });
 
-export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
+export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
 
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
-  currencies: string[];
 }
 
 export type TEtoSpecsData = TEtoTermsType &

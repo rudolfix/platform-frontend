@@ -75,7 +75,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                   this.props.additionalObjValue ? this.props.additionalObjValue && " " : field.value
                 }
                 valid={isValid(touched, errors, name)}
-                placeholder={placeholder || label}
+                placeholder={placeholder}
                 {...inputExtraProps}
                 {...props}
               />

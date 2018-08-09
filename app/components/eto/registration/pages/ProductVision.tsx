@@ -82,6 +82,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           paragraphName="useOfCapital"
           suggestions={distributionSuggestions}
           prefix="%"
+          transformRatio={100}
           blankField={{
             description: "",
             percent: 0,

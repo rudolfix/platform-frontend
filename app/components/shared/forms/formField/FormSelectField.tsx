@@ -48,9 +48,10 @@ interface IOwnProps {
 }
 interface IFieldGroup {
   label?: string | React.ReactNode;
-  values: {
+  values?: {
     [key: string]: string | React.ReactNode;
   };
+  customOptions?: React.ReactNode[]
   disabledValues?: {
     [key: string]: boolean;
   };
@@ -66,7 +67,7 @@ const isValid = (
 ): boolean | undefined => {
   if (touched && touched[name] !== true) {
     return undefined;
-  }
+}
 
   return !(errors && errors[name]);
 };
@@ -77,6 +78,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
   };
 
   renderOptions = () =>
+    this.props.customOptions ? this.props.customOptions :
     map(this.props.values, (value, key) => (
       <option
         key={key}

@@ -20,6 +20,8 @@ import {
   AsyncIntervalSchedulerFactory,
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/AsyncIntervalScheduler";
+import { AuthorizedBinaryHttpClient } from './../lib/api/client/AuthBinaryHttpClient';
+import { BinaryHttpClient } from "./../lib/api/client/BinaryHttpClient";
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { EtoApi } from "../lib/api/eto/EtoApi";
@@ -69,8 +71,16 @@ export function setupBindings(config: IConfig): Container {
     .to(JsonHttpClient)
     .inSingletonScope();
   container
-    .bind<IHttpClient>(symbols.authorizedHttpClient)
+    .bind<IHttpClient>(symbols.binaryHttpClient)
+    .to(BinaryHttpClient)
+    .inSingletonScope();
+  container
+    .bind<IHttpClient>(symbols.authorizedJsonHttpClient)
     .to(AuthorizedJsonHttpClient)
+    .inSingletonScope();
+  container
+    .bind<IHttpClient>(symbols.authorizedBinaryHttpClient)
+    .to(AuthorizedBinaryHttpClient)
     .inSingletonScope();
 
   // singletons
@@ -210,8 +220,10 @@ export const createGlobalDependencies = (container: Container) => ({
   ledgerWalletConnector: container.get<LedgerWalletConnector>(symbols.ledgerWalletConnector),
 
   // network layer
+  binaryHttpClient: container.get<BinaryHttpClient>(symbols.binaryHttpClient),
   jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),
-  authorizedHttpClient: container.get<AuthorizedJsonHttpClient>(symbols.authorizedHttpClient),
+  authorizedJsonHttpClient: container.get<AuthorizedJsonHttpClient>(symbols.authorizedJsonHttpClient),
+  authorizedBinaryHttpClient: container.get<AuthorizedBinaryHttpClient>(symbols.authorizedBinaryHttpClient),
 
   // apis
   signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),

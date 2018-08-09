@@ -41,7 +41,7 @@ const BENEFICIAL_OWNER_DOCUMENT_PATH = "/beneficial-owner/{boid}/document";
 @injectable()
 export class KycApi {
   // tslint:disable-next-line
-  constructor(@inject(symbols.authorizedHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
   // tslint:disable-next-line
 
   /**

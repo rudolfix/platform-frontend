@@ -1,3 +1,4 @@
+import { NetworkingError, ResponseStatusError, ResponseParsingError } from './HttpClient';
 import { expect } from "chai";
 import * as fetchMock from "fetch-mock";
 import * as Yup from "yup";
@@ -6,9 +7,6 @@ import { expectToBeRejected } from "../../../../test/testUtils";
 import { getSampleMalformedProducts, getSampleProducts, IProduct, productSchema } from "./fixtures";
 import {
   JsonHttpClient,
-  NetworkingError,
-  ResponseParsingError,
-  ResponseStatusError,
 } from "./JsonHttpClient";
 
 describe("JsonHttpClient", () => {

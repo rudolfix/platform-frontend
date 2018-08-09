@@ -13,7 +13,9 @@ export const symbols = makeDebugSymbols({
   // apis
   apiImmutableStorage: Symbol(),
   jsonHttpClient: Symbol(),
-  authorizedHttpClient: Symbol(),
+  binaryHttpClient: Symbol(),
+  authorizedJsonHttpClient: Symbol(),
+  authorizedBinaryHttpClient: Symbol(),
   signatureAuthApi: Symbol(),
   vaultApi: Symbol(),
   usersApi: Symbol(),

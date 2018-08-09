@@ -11,7 +11,7 @@ const GET_GAS_PATH = "/gas";
 @injectable()
 export class GasApi {
   constructor(
-    @inject(symbols.authorizedHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
     @inject(symbols.web3Manager) private web3: Web3Manager,
   ) {}
 

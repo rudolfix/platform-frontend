@@ -14,7 +14,6 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
-import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
@@ -24,7 +23,7 @@ const TOKEN_HOLDERS_RIGHTS = {
   [BOOL_TRUE_KEY]: "Neumini UG",
 };
 
-const LIQUIDATION_PREFERENCE_VALUES = [ 0, 1, 1.5, 2, ]
+const LIQUIDATION_PREFERENCE_VALUES = [0, 1, 1.5, 2];
 
 interface IStateProps {
   loadingData: boolean;
@@ -51,14 +50,16 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
       >
         <FormSelectField
           values={TOKEN_HOLDERS_RIGHTS}
-          label={
-            <FormattedMessage id="eto.form.section.token-holders-rights.nominee" />
-          }
+          label={<FormattedMessage id="eto.form.section.token-holders-rights.nominee" />}
           name="nominee"
         />
 
         <FormSelectField
-          customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => <option key={n} value={n}>{n}</option>)}
+          customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => (
+            <option key={n} value={n}>
+              {n}
+            </option>
+          ))}
           label={
             <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
           }
@@ -73,8 +74,8 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             name="generalVotingRule"
             trueValue="positive"
             falseValue="no_voting_rights"
-            disabledLabel={ <FormattedMessage id="form.select.no" /> }
-            enabledLabel={ <FormattedMessage id="form.select.yes" /> }
+            disabledLabel={<FormattedMessage id="form.select.no" />}
+            enabledLabel={<FormattedMessage id="form.select.yes" />}
           />
         </div>
 

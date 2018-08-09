@@ -83,7 +83,7 @@ interface IStateProps {
   etoRiskAssessmentProgress: number;
   etoEquityTokenInfoProgress: number;
   etoVotingRightProgress: number;
-  etoInvestmentTermsProgress: number
+  etoInvestmentTermsProgress: number;
 }
 
 interface IDispatchProps {

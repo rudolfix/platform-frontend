@@ -11,7 +11,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { FormField, FormTextArea } from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IStateProps {
@@ -26,13 +26,12 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-
 class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
 
-  render (): React.ReactNode {
+  render(): React.ReactNode {
     const { stateValues } = this.props;
     const fullyDilutedPreMoneyValuationEur = stateValues.fullyDilutedPreMoneyValuationEur || 1;
     const existingCompanyShares = stateValues.existingCompanyShares || 1;
@@ -120,9 +119,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           min="1"
         />
         <FormField
-          label={
-            <FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />
-          }
+          label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
           placeholder=" "
           name="whitelistDiscountFraction"
           type="number"
@@ -231,7 +228,7 @@ export const EtoInvestmentTerms = compose<React.SFC>(
       saveData: (data: TPartialEtoSpecData) => {
         // just use fractions between 0 and 1, not percentage
         if (data.whitelistDiscountFraction && data.whitelistDiscountFraction >= 1) {
-          data.whitelistDiscountFraction /= 100
+          data.whitelistDiscountFraction /= 100;
         }
         dispatch(
           actions.etoFlow.saveDataStart({
@@ -245,6 +242,6 @@ export const EtoInvestmentTerms = compose<React.SFC>(
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoInvestmentTermsComponent);

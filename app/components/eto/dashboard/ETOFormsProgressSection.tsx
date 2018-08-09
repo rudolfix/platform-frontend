@@ -28,7 +28,7 @@ export interface IEtoFormsProgressSectionProps {
   etoRiskAssessmentProgress: number;
   etoEquityTokenInfoProgress: number;
   etoVotingRightProgress: number;
-  etoInvestmentTermsProgress: number
+  etoInvestmentTermsProgress: number;
 }
 
 export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> = ({

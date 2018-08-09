@@ -51,7 +51,7 @@ interface IFieldGroup {
   values?: {
     [key: string]: string | React.ReactNode;
   };
-  customOptions?: React.ReactNode[]
+  customOptions?: React.ReactNode[];
   disabledValues?: {
     [key: string]: boolean;
   };
@@ -67,7 +67,7 @@ const isValid = (
 ): boolean | undefined => {
   if (touched && touched[name] !== true) {
     return undefined;
-}
+  }
 
   return !(errors && errors[name]);
 };
@@ -78,16 +78,17 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
   };
 
   renderOptions = () =>
-    this.props.customOptions ? this.props.customOptions :
-    map(this.props.values, (value, key) => (
-      <option
-        key={key}
-        value={key}
-        disabled={this.props.disabledValues && this.props.disabledValues[key]}
-      >
-        {value}
-      </option>
-    ));
+    this.props.customOptions
+      ? this.props.customOptions
+      : map(this.props.values, (value, key) => (
+          <option
+            key={key}
+            value={key}
+            disabled={this.props.disabledValues && this.props.disabledValues[key]}
+          >
+            {value}
+          </option>
+        ));
 
   render(): React.ReactChild {
     const { label, name, extraMessage, "data-test-id": dataTestId } = this.props;

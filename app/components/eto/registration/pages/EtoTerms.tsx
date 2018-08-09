@@ -41,7 +41,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
     formik: PropTypes.object,
   };
 
-  render (): React.ReactNode {
+  render(): React.ReactNode {
     return (
       <EtoFormBase
         title={<FormattedMessage id="eto.form.eto-terms.title" />}
@@ -88,7 +88,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             checked
           />
         </div>
-
 
         <div className="form-group">
           <FormLabel>
@@ -154,14 +153,14 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           </FormLabel>
           <FormToggle
             name="enableTransferOnSuccess"
-            disabledLabel={ <FormattedMessage id="form.select.asap" /> }
-            enabledLabel={ <FormattedMessage id="eto.form.eto-terms.future-date" /> }
+            disabledLabel={<FormattedMessage id="form.select.asap" />}
+            enabledLabel={<FormattedMessage id="eto.form.eto-terms.future-date" />}
           />
         </div>
 
         <FormTextArea
           className="mb-2 mt-2"
-          label={<FormattedMessage id="eto.form.other"/>}
+          label={<FormattedMessage id="eto.form.other" />}
           name="additionalTerms"
         />
 
@@ -216,6 +215,6 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
   }),
   onEnterAction({
-    actionCreator: _dispatch => { },
+    actionCreator: _dispatch => {},
   }),
 )(EtoRegistrationTermsComponent);

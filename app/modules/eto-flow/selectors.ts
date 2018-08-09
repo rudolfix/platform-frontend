@@ -4,6 +4,7 @@ import { IAppState } from "./../../store";
 import {
   EtoCompanyInformationType,
   EtoEquityTokenInfoType,
+  EtoInvestmentTermsType,
   EtoKeyIndividualsType,
   EtoLegalInformationType,
   EtoMediaType,
@@ -15,7 +16,6 @@ import {
   GeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
-  EtoInvestmentTermsType,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsUserEmailVerified } from "../auth/selectors";

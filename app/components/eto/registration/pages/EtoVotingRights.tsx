@@ -15,17 +15,16 @@ import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
+import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
 
+// TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
 const TOKEN_HOLDERS_RIGHTS = {
   [BOOL_TRUE_KEY]: "Neumini UG",
 };
 
-const GENERAL_VOTING_RULE = {
-  positive: <FormattedMessage id="form.select.yes" />,
-  no_voting_rights: <FormattedMessage id="form.select.no" />,
-};
+const LIQUIDATION_PREFERENCE_VALUES = [ 0, 1, 1.5, 2, ]
 
 interface IStateProps {
   loadingData: boolean;
@@ -53,24 +52,32 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
         <FormSelectField
           values={TOKEN_HOLDERS_RIGHTS}
           label={
-            <FormattedMessage id="eto.form.section.token-holders-rights.third-party-dependency" />
+            <FormattedMessage id="eto.form.section.token-holders-rights.nominee" />
           }
           name="nominee"
         />
-        <div className="form-group">
-          <FormLabel>
-            <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
-          </FormLabel>
-          <FormRange name="liquidationPreferenceMultiplier" min={0} unit="x" max={2} step={0.5} />
-        </div>
 
         <FormSelectField
-          values={GENERAL_VOTING_RULE}
+          customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => <option key={n} value={n}>{n}</option>)}
           label={
-            <FormattedMessage id="eto.form.section.token-holders-rights.general-voting-rule" />
+            <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
           }
-          name="generalVotingRule"
+          name="liquidationPreferenceMultiplier"
         />
+
+        <div className="form-group">
+          <FormLabel>
+            <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
+          </FormLabel>
+          <FormToggle
+            name="generalVotingRule"
+            trueValue="positive"
+            falseValue="no_voting_rights"
+            disabledLabel={ <FormattedMessage id="form.select.no" /> }
+            enabledLabel={ <FormattedMessage id="form.select.yes" /> }
+          />
+        </div>
+
         <Col>
           <Row className="justify-content-end">
             <Button

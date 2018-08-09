@@ -166,10 +166,9 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
         />
 
         <Col>
-          <Row className="justify-content-end">
+          <Row className="justify-content-center">
             <Button
               layout="primary"
-              className="mr-4"
               type="submit"
               onClick={() => {
                 this.props.saveData(this.props.values);

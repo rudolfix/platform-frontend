@@ -64,19 +64,10 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             fileFormatInformation="*200 x 200px png"
           />
         </div>
-        <FormField
-          label={
-            <FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />
-          }
-          placeholder="1000000"
-          name="equityTokensPerShare"
-          disabled
-        />
         <Col>
-          <Row className="justify-content-end">
+          <Row className="justify-content-center">
             <Button
               layout="primary"
-              className="mr-4"
               type="submit"
               onClick={() => {
                 this.props.saveData(this.props.values);
@@ -111,7 +102,6 @@ export const EtoEquityTokenInfo = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        data.isCrowdfunding = false; // Temporary solution - overrides checked value
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

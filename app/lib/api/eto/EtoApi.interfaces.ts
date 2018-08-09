@@ -178,7 +178,7 @@ export const EtoInvestmentTermsType = YupTS.object({
   authorizedCapitalShares: YupTS.number().optional(),
   newSharesToIssue: YupTS.number().optional(),
   minimumNewSharesToIssue: YupTS.number().optional(),
-  newSharesToIssuePreETO: YupTS.number(), // missing !!
+  newSharesToIssueInWhitelist: YupTS.number().optional(),
   whitelistDiscountFraction: YupTS.number().optional(),
 });
 

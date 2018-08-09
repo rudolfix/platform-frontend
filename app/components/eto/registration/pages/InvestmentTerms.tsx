@@ -41,16 +41,34 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
     const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 0;
 
     const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
-    const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
-    const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
-    const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
-    const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
+    const computedMaxNumberOfTokens = newSharesToIssue * equityTokensPerShare;
+    const computedMinNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
+    const computedMaxCapEur = computedNewSharePrice * newSharesToIssue;
+    const computedMinCapEur = computedNewSharePrice * minimumNewSharesToIssue;
+
+    const computedTokenPrice = computedNewSharePrice / equityTokensPerShare;
 
     return (
       <EtoFormBase
         title={<FormattedMessage id="eto.form.investment-terms.title" />}
         validator={EtoTermsType.toYup()}
       >
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />
+          }
+          placeholder="1000000"
+          name="equityTokensPerShare"
+          disabled
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
+          placeholder="1"
+          prefix="€"
+          name="shareNominalValueEur"
+          type="number"
+          min="1"
+        />
         <FormField
           label={
             <FormattedMessage id="eto.form.section.investment-terms.fully-diluted-pre-money-valuation" />
@@ -67,6 +85,12 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           name="existingCompanyShares"
           type="number"
           min="1"
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
+          placeholder="Number of shares"
+          name="authorizedCapitalShares"
+          type="number"
         />
         <FormField
           label={
@@ -86,6 +110,24 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           type="number"
           min="1"
         />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue-pre-eto" />
+          }
+          placeholder="Number of share"
+          name="newSharesToIssueInWhitelist"
+          type="number"
+          min="1"
+        />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />
+          }
+          placeholder=" "
+          name="whitelistDiscountFraction"
+          type="number"
+          prefix="%"
+        />
 
         <FormHighlightGroup>
           <FormField
@@ -95,11 +137,18 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             value={computedNewSharePrice}
             disabled
           />
+          <FormField
+            label={<FormattedMessage id="eto.form.section.investment-terms.equity-token-price" />}
+            name="equityTokenPrice"
+            prefix="€"
+            placeholder="read only"
+            value={computedTokenPrice}
+            disabled
+          />
           <Row>
             <Col sm={12} md={6} className="mb-4">
               <FormField
                 label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
-                prefix="€"
                 placeholder="read only"
                 name="minNumberOfTokens"
                 value={computedMinNumberOfTokens}
@@ -108,10 +157,9 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             </Col>
             <Col sm={12} md={6} className="mb-4">
               <FormField
-                label={<FormattedMessage id="eto.form.section.investment-terms.maximum-amount" />}
-                prefix="€"
+                label={<FormattedMessage id="eto.form.section.investment-terms.total-investment" />}
                 placeholder="read only"
-                name="maxNumberOfTokens"
+                name="totalInvestment"
                 value={computedMaxNumberOfTokens}
                 disabled
               />
@@ -143,27 +191,10 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           </Row>
         </FormHighlightGroup>
 
-        <FormTextArea
-          name="discountScheme"
-          label={
-            <FormattedMessage id="eto.form.section.investment-terms.token-discount-for-whitelisted" />
-          }
-          placeholder=" "
-          charactersLimit={250}
-        />
-        <FormField
-          label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
-          placeholder="1"
-          prefix="€"
-          name="shareNominalValueEur"
-          type="number"
-          min="1"
-        />
         <Col>
-          <Row className="justify-content-end">
+          <Row className="justify-content-center">
             <Button
               layout="primary"
-              className="mr-4"
               type="submit"
               onClick={() => {
                 this.props.saveData(this.props.values);
@@ -198,7 +229,10 @@ export const EtoInvestmentTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        data.isCrowdfunding = false; // Temporary solution - overrides checked value
+        // just use fractions between 0 and 1, not percentage
+        if (data.whitelistDiscountFraction && data.whitelistDiscountFraction >= 1) {
+          data.whitelistDiscountFraction /= 100
+        }
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

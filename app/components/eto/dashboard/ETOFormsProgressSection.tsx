@@ -28,6 +28,7 @@ export interface IEtoFormsProgressSectionProps {
   etoRiskAssessmentProgress: number;
   etoEquityTokenInfoProgress: number;
   etoVotingRightProgress: number;
+  etoInvestmentTermsProgress: number
 }
 
 export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> = ({
@@ -42,6 +43,7 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
   etoRiskAssessmentProgress,
   etoEquityTokenInfoProgress,
   etoVotingRightProgress,
+  etoInvestmentTermsProgress,
 }) => {
   return (
     <>
@@ -124,6 +126,15 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           progress={shouldEtoDataLoad ? etoVotingRightProgress : 0}
           disabled={!shouldEtoDataLoad}
           name={<FormattedMessage id="eto.form-progress-widget.voting-right" />}
+        />
+      </Col>
+      <Col lg={4} xs={12} md={6} className="mb-4">
+        <EtoFormProgressWidget
+          isLoading={loadingData}
+          to={etoRegisterRoutes.etoInvestmentTerms}
+          progress={shouldEtoDataLoad ? etoInvestmentTermsProgress : 0}
+          disabled={!shouldEtoDataLoad}
+          name={<FormattedMessage id="eto.form-progress-widget.investment-terms" />}
         />
       </Col>
     </>

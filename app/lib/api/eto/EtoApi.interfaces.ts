@@ -177,6 +177,11 @@ export const EtoVotingRightsType = YupTS.object({
 
 export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
+export const EtoInvestmentTermsType = YupTS.object({
+});
+
+export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
+
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
@@ -186,6 +191,7 @@ interface IAdditionalEtoType {
 export type TEtoSpecsData = TEtoTermsType &
   TEtoEquityTokenInfoType &
   TEtoVotingRightsType &
+  TEtoInvestmentTermsType &
   IAdditionalEtoType;
 
 /*General Interfaces */

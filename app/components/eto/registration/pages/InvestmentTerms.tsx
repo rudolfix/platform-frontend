@@ -185,11 +185,11 @@ const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
-export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
+export const EtoInvestmentTermsComponent: React.SFC<IProps> = props => (
   <EtoEnhancedForm {...props} />
 );
 
-export const EtoRegistrationTerms = compose<React.SFC>(
+export const EtoInvestmentTerms = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -213,4 +213,4 @@ export const EtoRegistrationTerms = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => { },
   }),
-)(EtoRegistrationTermsComponent);
+)(EtoInvestmentTermsComponent);

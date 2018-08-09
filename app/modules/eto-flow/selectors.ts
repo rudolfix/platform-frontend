@@ -15,6 +15,7 @@ import {
   GeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
+  EtoInvestmentTermsType,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsUserEmailVerified } from "../auth/selectors";
@@ -110,6 +111,9 @@ export const calculateEtoVotingRightProgress = getFormFractionDoneCalculator(
 );
 export const calculateEtoEquityTokenInfoProgress = getFormFractionDoneCalculator(
   EtoEquityTokenInfoType.toYup(),
+);
+export const calculateInvestmentTermsProgress = getFormFractionDoneCalculator(
+  EtoInvestmentTermsType.toYup(),
 );
 
 export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {

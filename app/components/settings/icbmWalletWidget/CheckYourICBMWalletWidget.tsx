@@ -67,6 +67,9 @@ class CheckYourICBMWalletWidgetComponent extends React.Component<IDispatchProps>
 
 export const CheckYourICBMWalletWidget = appConnect<IDispatchProps>({
   dispatchToProps: dispatch => ({
-    onSubmit: () => dispatch(actions.icbmWalletBalanceModal.showIcbmWalletBalanceModal("address")),
+    onSubmit: () => {
+      dispatch(actions.icbmWalletBalanceModal.showIcbmWalletBalanceModal("0x8e75544b848f0a32a1ab119e3916ec7138f3bed2"))
+      dispatch(actions.wallet.getWalletData("0x8e75544b848f0a32a1ab119e3916ec7138f3bed2"))
+    },
   }),
 })(CheckYourICBMWalletWidgetComponent);

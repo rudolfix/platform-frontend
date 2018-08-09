@@ -15,7 +15,7 @@ import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { txSendingSagasWatcher } from "./tx/sender/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
-import { walletSagas } from "./wallet/sagas";
+import { walletGetDataSaga, walletSagas } from "./wallet/sagas";
 import { web3Sagas } from "./web3/sagas";
 
 /**
@@ -32,6 +32,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(walletSelectorSagas),
     effects.fork(lightWalletSagas),
     effects.fork(walletSagas),
+    effects.fork(walletGetDataSaga),
     effects.fork(etoFlowSagas),
     effects.fork(etoSagas),
     effects.fork(formSingleFileUploadSagas),

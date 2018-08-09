@@ -54,3 +54,11 @@ async function loadWalletDataAsync(
 export function* walletSagas(): any {
   yield fork(neuTakeEvery, "WALLET_START_LOADING", loadWalletDataSaga);
 }
+
+function getWalletData (ethAddress: string): any {
+  return neuCall(loadWalletDataAsync, ethAddress);
+}
+
+export function* walletGetDataSaga(): any {
+  yield fork(neuTakeEvery, "WALLET_GET_DATA_FOR_ADDRESS", getWalletData as any);
+}

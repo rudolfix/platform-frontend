@@ -17,11 +17,14 @@ import {
 } from "../../modules/auth/selectors";
 import {
   calculateCompanyInformationProgress,
+  calculateEtoEquityTokenInfoProgress,
   calculateEtoKeyIndividualsProgress,
   calculateEtoMediaProgress,
   calculateEtoRiskAssessmentProgress,
   calculateEtoTermsProgress,
+  calculateEtoVotingRightProgress,
   calculateGeneralEtoData,
+  calculateInvestmentTermsProgress,
   calculateLegalInformationProgress,
   calculateProductVisionProgress,
   selectCombinedEtoCompanyData,
@@ -78,6 +81,9 @@ interface IStateProps {
   productVisionProgress: number;
   etoMediaProgress: number;
   etoRiskAssessmentProgress: number;
+  etoEquityTokenInfoProgress: number;
+  etoVotingRightProgress: number;
+  etoInvestmentTermsProgress: number;
 }
 
 interface IDispatchProps {
@@ -147,6 +153,9 @@ class EtoDashboardComponent extends React.Component<IProps> {
       productVisionProgress,
       etoMediaProgress,
       etoRiskAssessmentProgress,
+      etoEquityTokenInfoProgress,
+      etoVotingRightProgress,
+      etoInvestmentTermsProgress,
     } = this.props;
 
     const etoProgressProps = {
@@ -158,6 +167,9 @@ class EtoDashboardComponent extends React.Component<IProps> {
       productVisionProgress,
       etoMediaProgress,
       etoRiskAssessmentProgress,
+      etoEquityTokenInfoProgress,
+      etoVotingRightProgress,
+      etoInvestmentTermsProgress,
     };
 
     const shouldEtoDataLoad = kycStatus === "Accepted" && isEmailVerified;
@@ -270,7 +282,10 @@ export const EtoDashboard = compose<React.SFC>(
       legalInformationProgress: calculateLegalInformationProgress(selectCompanyData(s.etoFlow)),
       productVisionProgress: calculateProductVisionProgress(selectCompanyData(s.etoFlow)),
       etoMediaProgress: calculateEtoMediaProgress(selectCompanyData(s.etoFlow)),
+      etoVotingRightProgress: calculateEtoVotingRightProgress(selectEtoData(s.etoFlow)),
+      etoEquityTokenInfoProgress: calculateEtoEquityTokenInfoProgress(selectEtoData(s.etoFlow)),
       etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectCompanyData(s.etoFlow)),
+      etoInvestmentTermsProgress: calculateInvestmentTermsProgress(selectEtoData(s.etoFlow)),
       etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s.etoFlow)),
     }),
     dispatchToProps: dispatch => ({

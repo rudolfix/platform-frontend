@@ -1,9 +1,10 @@
 import * as Yup from "yup";
-import { TEtoDocumentTemplates } from "./../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "./../../store";
 
 import {
   EtoCompanyInformationType,
+  EtoEquityTokenInfoType,
+  EtoInvestmentTermsType,
   EtoKeyIndividualsType,
   EtoLegalInformationType,
   EtoMediaType,
@@ -11,6 +12,7 @@ import {
   EtoRiskAssessmentType,
   EtoState,
   EtoTermsType,
+  EtoVotingRightsType,
   GeneralEtoDataType,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
@@ -104,6 +106,15 @@ export const calculateEtoMediaProgress = getFormFractionDoneCalculator(
 export const calculateEtoRiskAssessmentProgress = getFormFractionDoneCalculator(
   EtoRiskAssessmentType.toYup(),
 );
+export const calculateEtoVotingRightProgress = getFormFractionDoneCalculator(
+  EtoVotingRightsType.toYup(),
+);
+export const calculateEtoEquityTokenInfoProgress = getFormFractionDoneCalculator(
+  EtoEquityTokenInfoType.toYup(),
+);
+export const calculateInvestmentTermsProgress = getFormFractionDoneCalculator(
+  EtoInvestmentTermsType.toYup(),
+);
 
 export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {
   ignore: true,
@@ -141,10 +152,6 @@ export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData 
   state.companyData;
 
 export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
-
-export const selectDocumentTemplates = (
-  state: IEtoFlowState,
-): DeepPartial<TEtoDocumentTemplates> | undefined => state.etoData && state.etoData.templates;
 
 export const selectEtoLoading = (state: IEtoFlowState): boolean => state.loading;
 

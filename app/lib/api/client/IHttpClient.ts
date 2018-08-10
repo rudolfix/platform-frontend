@@ -15,10 +15,6 @@ export interface IHttpRequestCommon {
   allowedStatusCodes?: number[]; // 20x are always allowed
 }
 
-export interface IHttpGetRequest extends IHttpRequestCommon {
-  queryParams?: Dictionary<string>;
-}
-
 export interface IHttpClientErrorDocument {
   status: number; // http status goes here
   title: string; // human readable string goes here
@@ -27,7 +23,12 @@ export interface IHttpClientErrorDocument {
   // @todo add space for failed validation here
 }
 
-export interface IHttpPostRequest extends IHttpRequestCommon {}
+export interface IHttpGetRequest extends IHttpRequestCommon {
+  queryParams?: Dictionary<string>;
+}
+export interface IHttpPostRequest extends IHttpRequestCommon {
+  queryParams?: Dictionary<string>;
+}
 export interface IHttpPutRequest extends IHttpRequestCommon {}
 export interface IHttpPatchRequest extends IHttpRequestCommon {}
 export interface IHttpDeleteRequest extends IHttpRequestCommon {}

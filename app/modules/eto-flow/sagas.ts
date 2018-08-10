@@ -3,7 +3,7 @@ import { fork, put } from "redux-saga/effects";
 import { etoDocumentType } from "./../../lib/api/eto/EtoFileApi.interfaces";
 
 import { saveAs } from "file-saver";
-import { SUBMIT_ETO_PERMISSION } from "../../config/constants";
+import { SUBMIT_ETO_PERMISSION, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
@@ -67,10 +67,8 @@ export function* loadEtoFileData({
 }: TGlobalDependencies): any {
   try {
     const fileInfo = yield apiEtoFileService.getEtoFileStateInfo();
-    // const etoFileData: IEtoFiles = yield apiEtoFileService.getAllEtoDocuments();
+    const etoDocumentData: IEtoFiles = yield apiEtoFileService.getAllEtoDocuments();
     const etoTemplatesData = yield apiEtoFileService.getAllEtoTemplates();
-    debugger;
-    yield put(actions.etoFlow.loadDataStart());
     yield put(
       actions.etoFlow.loadEtoFileData({
         etoTemplates: etoTemplatesData,
@@ -174,9 +172,14 @@ function* uploadEtoFile(
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "ETO_FLOW_UPLOAD_DOCUMENT_START") return;
-  const { file, name } = action.payload;
+  const { file, document } = action.payload;
   try {
-    const etoFiles = yield apiEtoFileService.uploadEtoDocument(undefined as any);
+    yield neuCall(
+      ensurePermissionsArePresent,
+      [UPLOAD_IMMUTABLE_DOCUMENT],
+      formatIntlMessage("eto.modal.submit-description"),
+    );
+    const etoFiles = yield apiEtoFileService.uploadEtoDocument(file, document);
     // TODO Fix any!
     yield put(actions.etoFlow.loadEtoFileData(etoFiles));
     notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));

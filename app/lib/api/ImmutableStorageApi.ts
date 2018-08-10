@@ -40,6 +40,7 @@ export class ImmutableStorageApi {
     asPdf,
   }: ImmutableFileId): Promise<IHttpResponse<TFileDescription>> {
     const placeHolder = placeholders ? JSON.stringify(placeholders) : "";
+    debugger;
     return await this.binaryHttpClient.get<any>({
       baseUrl: BASE_PATH,
       url: DOWNLOAD_DOCUMENT_PATH + ipfsHash,

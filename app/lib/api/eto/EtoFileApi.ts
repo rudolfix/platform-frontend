@@ -5,6 +5,7 @@ import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import { TPartialEtoSpecData } from "./EtoApi.interfaces";
 import { IEtoDocument } from "./EtoFileApi.interfaces";
 import { getSampleEtoFiles } from "./fixtures";
+import { Data } from "reactstrap/lib/Popper";
 
 const BASE_PATH = "/api/eto-listing/etos";
 const ETO_DOCUMENTS_PATH = "/me/documents";
@@ -21,10 +22,25 @@ export class EtoFileApi {
     });
   }
 
-  public async uploadEtoDocument(Document: IEtoDocument): Promise<any> {
+  public async uploadEtoDocument(file: File, document: IEtoDocument): Promise<any> {
+    const data = new FormData();
+    // debugger;
+    data.append("file", file);
+    data.append(
+      "document_data",
+      JSON.stringify({
+        mime_type: "application/pdf",
+        document_type: document.documentType,
+        ipfs_hash: document.ipfsHash,
+        name: document.documentType,
+        form: "document",
+      }),
+    );
+
     return await this.httpClient.post<IEtoDocument>({
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_PATH,
+      formData: data,
     });
   }
   // REMOVE ANY!!

@@ -43,12 +43,7 @@ export const GeneratedDocuments: React.SFC<{
 
 class DocumentsComponent extends React.Component<IProps> {
   render(): React.ReactNode {
-    const {
-      loadingData,
-      etoFilesData,
-      generateTemplate,
-      etoFileLoading,
-    } = this.props;
+    const { loadingData, etoFilesData, generateTemplate, etoFileLoading } = this.props;
     const { etoTemplates, uploadedDocuments } = etoFilesData;
 
     return (
@@ -82,27 +77,27 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
-                {Object.keys(uploadedDocuments).map(fileName => {
-                  const typedFileName = fileName as TEtoUploadFile;
+                {Object.keys(etoTemplates).map(key => {
+                  const typedFileName = etoTemplates[key].name;
                   return (
-                    <Col xs={6} lg={3} key={fileName} className="mb-4">
+                    <Col xs={6} lg={3} key={etoTemplates[key].name} className="mb-4">
                       <ETOAddDocuments
-                        fileName={typedFileName}
+                        document={etoTemplates[key]}
                         disabled={
-                          uploadedDocuments[typedFileName].status === "canReplace" ? false : true
+                          false
+                          /* uploadedDocuments[typedFileName].status === "canReplace" ? false : true */
                         }
                       >
                         <DocumentTile
                           title={typedFileName}
-                          extension={
-                            (uploadedDocuments[typedFileName].file &&
-                              uploadedDocuments[typedFileName].file!.name) ||
-                            ""
-                          }
+                          extension={".pdf"}
                           active={
-                            uploadedDocuments[typedFileName].status === "canReplace" ? true : false
+                            true
+                            // uploadedDocuments[typedFileName].status === "canReplace" ? true : false
                           }
-                          blank={uploadedDocuments[typedFileName].url === "" ? true : false}
+                          blank={
+                            /* uploadedDocuments[typedFileName].url === "" ? true : false */ false
+                          }
                         />
                       </ETOAddDocuments>
                     </Col>
@@ -114,9 +109,7 @@ class DocumentsComponent extends React.Component<IProps> {
               <SectionHeader className="my-4" layoutHasDecorator={false} />
               <Row>
                 <SingleColDocuments
-                  documents={Object.keys(etoTemplates).map(
-                    key => etoTemplates[key],
-                  )}
+                  documents={Object.keys(etoTemplates).map(key => etoTemplates[key])}
                   name="AGREEMENT AND PROSPECTUS TEMPLATES"
                   className={styles.documents}
                 />

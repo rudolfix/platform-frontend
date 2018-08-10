@@ -313,6 +313,23 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               </Col>
 
               <Col>
+                {companyData.shareholders && (
+                  <ChartPie
+                    className="mb-3"
+                    data={{
+                      datasets: [
+                        {
+                          data: companyData.shareholders.map(d => d && d.shares),
+                          /* tslint:disable:no-unused-variable */
+                          backgroundColor: companyData.shareholders.map(
+                            (_, i: number) => CHART_COLORS[i],
+                          ),
+                        },
+                      ],
+                      labels: (companyData.shareholders || []).map(d => d && d.fullName),
+                    }}
+                  />
+                )}
                 <div className={styles.group}>
                   {etoData.fullyDilutedPreMoneyValuationEur && (
                     <div className={styles.entry}>

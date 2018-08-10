@@ -97,7 +97,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                     charactersLimit,
                   )}
                   valid={isValid(touched, errors, name)}
-                  placeholder={placeholder || label}
+                  placeholder={placeholder}
                   {...inputExtraProps}
                   {...props}
                 />

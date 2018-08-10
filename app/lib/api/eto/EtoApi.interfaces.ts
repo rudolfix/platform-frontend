@@ -105,6 +105,12 @@ export const EtoLegalInformationType = YupTS.object({
   numberOfFounders: YupTS.number(),
   lastFundingSizeEur: YupTS.number().optional(),
   companyShares: YupTS.number(),
+  shareholders: YupTS.array(
+    YupTS.object({
+      fullName: YupTS.string(),
+      shares: YupTS.number(),
+    }),
+  ),
 });
 type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
 

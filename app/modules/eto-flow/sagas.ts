@@ -1,13 +1,10 @@
 import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
-import { etoDocumentType } from "./../../lib/api/eto/EtoFileApi.interfaces";
 
-import { saveAs } from "file-saver";
 import { SUBMIT_ETO_PERMISSION, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
@@ -44,17 +41,16 @@ export function* generateTemplate(
       ipfsHash: immutableFileId.ipfsHash,
       mimeType: immutableFileId.mimeType,
     });
-    const template = templates.body;
-    const test = yield apiImmutableStorage.getFile({
+    const generatedDocument = yield apiImmutableStorage.getFile({
       ...{
-        ipfsHash: template.ipfs_hash,
-        mimeType: template.mime_type,
-        name: template.name,
-        placeholders: template.placeholders,
+        ipfsHash: templates.ipfs_hash,
+        mimeType: templates.mime_type,
+        name: templates.name,
+        placeholders: templates.placeholders,
       },
       asPdf: true,
     });
-    yield neuCall(downloadLink, test.body, immutableFileId.name, true);
+    yield neuCall(downloadLink, generatedDocument, immutableFileId.name, true);
   } catch (e) {
     logger.debug(e);
     notificationCenter.error("Failed to download file from IPFS");

@@ -20,7 +20,7 @@ import {
   AsyncIntervalSchedulerFactory,
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/AsyncIntervalScheduler";
-import { AuthorizedBinaryHttpClient } from './../lib/api/client/AuthBinaryHttpClient';
+import { AuthorizedBinaryHttpClient } from "./../lib/api/client/AuthBinaryHttpClient";
 import { BinaryHttpClient } from "./../lib/api/client/BinaryHttpClient";
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
@@ -222,8 +222,12 @@ export const createGlobalDependencies = (container: Container) => ({
   // network layer
   binaryHttpClient: container.get<BinaryHttpClient>(symbols.binaryHttpClient),
   jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),
-  authorizedJsonHttpClient: container.get<AuthorizedJsonHttpClient>(symbols.authorizedJsonHttpClient),
-  authorizedBinaryHttpClient: container.get<AuthorizedBinaryHttpClient>(symbols.authorizedBinaryHttpClient),
+  authorizedJsonHttpClient: container.get<AuthorizedJsonHttpClient>(
+    symbols.authorizedJsonHttpClient,
+  ),
+  authorizedBinaryHttpClient: container.get<AuthorizedBinaryHttpClient>(
+    symbols.authorizedBinaryHttpClient,
+  ),
 
   // apis
   signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),

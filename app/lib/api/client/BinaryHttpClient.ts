@@ -33,7 +33,6 @@ export class BinaryHttpClient extends HttpClient {
         throw new ResponseParsingError("Response is not a blob");
       });
     }
-
     return {
       statusCode: response.status,
       body: binaryResponse as any,

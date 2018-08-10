@@ -132,13 +132,26 @@ export function getFormFractionDoneCalculator(
   };
 }
 
-export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined => true;
-// TODO: unmock and connect with backend
+export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  state.etoFileData &&
+  state.etoFileData.uploadedDocuments &&
+  Object.keys(state.etoFileData.uploadedDocuments).some(
+    key => state.etoFileData.uploadedDocuments[key].documentType === "termsheet_template",
+  );
 
-export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined => true;
-// TODO: unmock and connect with backend
+export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  state.etoFileData &&
+  state.etoFileData.uploadedDocuments &&
+  Object.keys(state.etoFileData.uploadedDocuments).some(
+    key => state.etoFileData.uploadedDocuments[key].documentType === "pamphlet_template",
+  );
 
-export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined => true; // TODO: unmock and connect with backend
+export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined =>
+  state.etoFileData &&
+  state.etoFileData.uploadedDocuments &&
+  Object.keys(state.etoFileData.uploadedDocuments).some(
+    key => state.etoFileData.uploadedDocuments[key].documentType === "bafin_approved_prospectus",
+  );
 
 export const selectIsIpfsModalOpen = (state: IEtoFlowState): boolean => state.showIpfsModal;
 

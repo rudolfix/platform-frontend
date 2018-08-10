@@ -16,13 +16,6 @@ export interface IEtoGeneratedFile {
   title: string;
 }
 
-export type TEtoUploadFile =
-  | "pamphlet"
-  | "termSheet"
-  | "infoBlatt"
-  | "bafinProspectus"
-  | "signedAgreement";
-
 export type etoDocumentType =
   | "reservation_and_acquisition_agreement"
   | "company_token_holder_agreement"

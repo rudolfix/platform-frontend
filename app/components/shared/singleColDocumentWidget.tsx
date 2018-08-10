@@ -11,8 +11,6 @@ import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { Panel } from "./Panel";
 
-const IPFS_LINK = "https://ipfs.io/ipfs/";
-
 interface IOwnProps {
   documents: IEtoDocument[];
   name: TTranslatedString;

@@ -6,10 +6,8 @@ import { symbols } from "../../../di/symbols";
 
 import { inject, injectable } from "inversify";
 import { ObjectStorage } from "../../persistence/ObjectStorage";
-import { AuthorizedHttpClient } from './AuthHttpClient';
-import {
-  IHttpClient,
-} from "./IHttpClient";
+import { AuthorizedHttpClient } from "./AuthHttpClient";
+import { IHttpClient } from "./IHttpClient";
 
 //@see https://github.com/inversify/InversifyJS/blob/master/wiki/inheritance.md#workaround-d-inject-into-the-derived-class
 @injectable()

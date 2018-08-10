@@ -1,7 +1,6 @@
 import { TGeneralEtoData } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoDocument, IEtoFiles, TEtoUploadFile } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoDocument, IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
-import { ImmutableFileId } from "./../../lib/api/ImmutableStorage.interfaces";
 
 export const etoFlowActions = {
   // Company & ETO API

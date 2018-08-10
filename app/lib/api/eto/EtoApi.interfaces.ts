@@ -1,6 +1,6 @@
 import { DeepPartial } from "../../../types";
 import * as YupTS from "../../yup-ts";
-import { TEtoDocumentTemplates } from './EtoFileApi.interfaces';
+import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
 /** COMPANY ETO RELATED INTERFACES
  *  only deals with "/companies/me"

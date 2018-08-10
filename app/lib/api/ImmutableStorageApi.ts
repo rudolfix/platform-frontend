@@ -48,7 +48,6 @@ export class ImmutableStorageApi {
         placeholders: placeHolder,
         as_pdf: asPdf.toString(),
       },
-      // responseSchema: FileDescriptionValidator,
     });
   }
 }

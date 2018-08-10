@@ -50,7 +50,15 @@ export const DocumentTile: React.SFC<IDocumentProps & IDocumentTileProps> = ({
   active,
 }) => {
   return (
-    <Col className={cn(styles.tile, styles.container, active && styles.active, className)}>
+    <Col
+      className={cn(
+        styles.tile,
+        styles.container,
+        active && styles.active,
+        blank || styles.enabled,
+        className,
+      )}
+    >
       <Document extension={extension} blank={blank} />
       <p className={cn(styles.title, blank && styles.blankTitle)}>{title}</p>
       <p className={cn(styles.subTitle)}>Drag and drop or Click to upload high quality PDF</p>

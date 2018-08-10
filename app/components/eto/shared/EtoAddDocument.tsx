@@ -6,8 +6,8 @@ import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interface
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
+import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import * as styles from "./EtoAddDocument.module.scss";
-import { IEtoDocument } from '../../../lib/api/eto/EtoFileApi.interfaces';
 
 interface IDispatchProps {
   onDropFile: (file: File, document: IEtoDocument) => void;

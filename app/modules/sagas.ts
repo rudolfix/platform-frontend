@@ -8,7 +8,7 @@ import { dashboardSagas } from "./dashboard/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
-import { immutableFileSagas } from './immutableFile/sagas';
+import { immutableFileSagas } from "./immutableFile/sagas";
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { settingsSagas } from "./settings/sagas";

@@ -3,11 +3,11 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { IEtoDocument, IEtoFiles, TEtoUploadFile } from "../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoDocument, IEtoFiles } from "../lib/api/eto/EtoFileApi.interfaces";
 import { immutableDocumentName, ImmutableFileId } from "../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../modules/actions";
 import {
-  selectDocumentTemplates,
+  selectCurrentEtoState,
   selectEtoFileData,
   selectEtoLoading,
   selectEtoLoadingFile,
@@ -22,11 +22,9 @@ import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
 import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
-import * as styles from "./Documents.module.scss";
-import { selectCurrentEtoState } from "../modules/eto-flow/selectors";
-import { IEtoState } from "../modules/eto/reducer";
-import { EtoState } from "../lib/api/eto/EtoApi.interfaces";
 import { camelCase } from "lodash";
+import { EtoState } from "../lib/api/eto/EtoApi.interfaces";
+import * as styles from "./Documents.module.scss";
 
 export const GeneratedDocuments: React.SFC<{
   document: IEtoDocument;
@@ -39,7 +37,11 @@ export const GeneratedDocuments: React.SFC<{
           generateTemplate(document);
         }}
       >
-        <DocumentTile title={immutableDocumentName[document.name]} extension={".pdf"} />
+        <DocumentTile
+          title={immutableDocumentName[document.name]}
+          extension={".pdf"}
+          blank={false}
+        />
       </div>
     </Col>
   );
@@ -82,7 +84,7 @@ class DocumentsComponent extends React.Component<IProps> {
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
                 {Object.keys(etoTemplates).map(key => {
-                  const typedFileName = etoTemplates[key].name;
+                  const typedFileName = immutableDocumentName[etoTemplates[key].name];
                   const isFileUploaded =
                     stateInfo &&
                     stateInfo.canUploadInStates[etoState].some(

@@ -1,9 +1,7 @@
 import { saveAs } from "file-saver";
-import { effects } from "redux-saga";
 import { fork } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
-import { signMessage } from "../accessWallet/sagas";
 import { TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 

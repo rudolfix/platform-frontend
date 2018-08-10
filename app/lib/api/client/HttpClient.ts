@@ -1,4 +1,3 @@
-import { IHttpDeleteRequest, IHttpPatchRequest, IHttpPutRequest } from "./IHttpClient";
 /**
  * Handel's general requests
  *
@@ -16,8 +15,11 @@ import {
   HttpMethod,
   IHttpClient,
   IHttpClientErrorDocument,
+  IHttpDeleteRequest,
   IHttpGetRequest,
+  IHttpPatchRequest,
   IHttpPostRequest,
+  IHttpPutRequest,
   IHttpRequestCommon,
   IHttpResponse,
 } from "./IHttpClient";

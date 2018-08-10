@@ -66,36 +66,17 @@ export function* loadEtoFileData({
   apiEtoFileService,
 }: TGlobalDependencies): any {
   try {
-    const fileInfo = yield apiEtoFileService.getEtoFileStateInfo();
-    const etoDocumentData: IEtoFiles = yield apiEtoFileService.getAllEtoDocuments();
-    const etoTemplatesData = yield apiEtoFileService.getAllEtoTemplates();
+    const stateInfo = yield apiEtoFileService.getEtoFileStateInfo();
+    const uploadedDocuments = yield apiEtoFileService.getAllEtoDocuments();
+    const etoTemplates = yield apiEtoFileService.getAllEtoTemplates();
     yield put(
       actions.etoFlow.loadEtoFileData({
-        etoTemplates: etoTemplatesData,
-        uploadedDocuments: {
-          pamphlet: {
-            url: "",
-            status: "canReplace",
-          },
-          termSheet: {
-            url: "",
-            status: "canReplace",
-          },
-          infoBlatt: {
-            url: "",
-            status: "locked",
-          },
-          bafinProspectus: {
-            url: "",
-            status: "locked",
-          },
-          signedAgreement: {
-            url: "",
-            status: "locked",
-          },
-        },
+        etoTemplates,
+        uploadedDocuments,
+        stateInfo,
       }),
     );
+    yield put(actions.etoFlow.loadDataStart());
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO files data. Make sure you have completed KYC and email verification process.",

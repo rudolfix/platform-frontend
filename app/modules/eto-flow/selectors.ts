@@ -132,35 +132,13 @@ export function getFormFractionDoneCalculator(
   };
 }
 
-export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
-  !!(
-    state.etoFileData &&
-    state.etoFileData.uploadedDocuments &&
-    state.etoFileData.uploadedDocuments.termSheet &&
-    state.etoFileData.uploadedDocuments.termSheet.url &&
-    state.etoFileData.uploadedDocuments.termSheet.url !== ""
-  );
+export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined => true;
 // TODO: unmock and connect with backend
 
-export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined =>
-  !!(
-    state.etoFileData &&
-    state.etoFileData.uploadedDocuments &&
-    state.etoFileData.uploadedDocuments.pamphlet &&
-    state.etoFileData.uploadedDocuments.pamphlet.url &&
-    state.etoFileData.uploadedDocuments.pamphlet.url !== ""
-  );
+export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined => true;
 // TODO: unmock and connect with backend
 
-export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined =>
-  !!(
-    state.etoFileData &&
-    state.etoFileData.uploadedDocuments &&
-    state.etoFileData.uploadedDocuments.bafinProspectus &&
-    state.etoFileData.uploadedDocuments.bafinProspectus.url &&
-    state.etoFileData.uploadedDocuments.bafinProspectus.url !== ""
-  );
-// TODO: unmock and connect with backend
+export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined => true; // TODO: unmock and connect with backend
 
 export const selectIsIpfsModalOpen = (state: IEtoFlowState): boolean => state.showIpfsModal;
 
@@ -177,7 +155,6 @@ export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData 
   state.companyData;
 
 export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
-// { [key: string]: templates } | undefined
 
 export const selectDocumentTemplates = (
   state: IEtoFlowState,
@@ -193,6 +170,9 @@ export const selectCombinedEtoCompanyData = (
   ...selectCompanyData(state),
   ...selectEtoData(state),
 });
+
+export const selectCurrentEtoState = (state: IEtoFlowState): EtoState | undefined =>
+  state.etoData && state.etoData.state;
 
 export const selectEtoFileData = (state: IEtoFlowState): IEtoFiles => state.etoFileData;
 

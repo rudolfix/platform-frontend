@@ -1,3 +1,4 @@
+import { EtoState } from "./EtoApi.interfaces";
 type fileStates = "canReplace" | "locked" | "readOnly";
 
 export interface IEtoSingleFile {
@@ -22,36 +23,6 @@ export type TEtoUploadFile =
   | "bafinProspectus"
   | "signedAgreement";
 
-export interface IEtoFiles {
-  etoTemplates: any;
-  uploadedDocuments: {
-    pamphlet: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    termSheet: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    infoBlatt: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    bafinProspectus: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    signedAgreement: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-  };
-}
 export type etoDocumentType =
   | "reservation_and_acquisition_agreement"
   | "company_token_holder_agreement"
@@ -72,6 +43,18 @@ export interface IEtoDocument {
   mimeType: string;
   name: string;
   placeholders?: { [key: string]: string };
+}
+
+type IFileInfo =
+  | "canDeleteInStates"
+  | "canUploadInStates"
+  | "requiredTemplates"
+  | "uploadable_documents";
+
+export interface IEtoFiles {
+  etoTemplates: { [key: string]: IEtoDocument };
+  uploadedDocuments: { [key: string]: IEtoDocument };
+  stateInfo?: { [key in IFileInfo]: { [key in EtoState]: etoDocumentType[] } };
 }
 
 export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };

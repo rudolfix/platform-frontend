@@ -2,10 +2,7 @@ import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
-import { TPartialEtoSpecData } from "./EtoApi.interfaces";
 import { IEtoDocument } from "./EtoFileApi.interfaces";
-import { getSampleEtoFiles } from "./fixtures";
-import { Data } from "reactstrap/lib/Popper";
 
 const BASE_PATH = "/api/eto-listing/etos";
 const ETO_DOCUMENTS_PATH = "/me/documents";
@@ -16,15 +13,15 @@ export class EtoFileApi {
   constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
 
   public async getAllEtoDocuments(): Promise<IHttpResponse<any>> {
-    return await this.httpClient.get<any>({
+    const response = await this.httpClient.get<any>({
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_PATH,
     });
+    return response.body;
   }
 
   public async uploadEtoDocument(file: File, document: IEtoDocument): Promise<any> {
     const data = new FormData();
-    // debugger;
     data.append("file", file);
     data.append(
       "document_data",
@@ -37,19 +34,21 @@ export class EtoFileApi {
       }),
     );
 
-    return await this.httpClient.post<IEtoDocument>({
+    const response = await this.httpClient.post<IEtoDocument>({
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_PATH,
       formData: data,
     });
+    return response.body;
   }
   // REMOVE ANY!!
 
   public async getEtoFileStateInfo(): Promise<IHttpResponse<any>> {
-    return await this.httpClient.get<any>({
+    const response = await this.httpClient.get<any>({
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_INFO_PATH,
     });
+    return response.body;
   }
   // TODO: Change Object type
 
@@ -62,14 +61,12 @@ export class EtoFileApi {
   }
 
   public async getEtoTemplate(etoDocument: IEtoDocument): Promise<IHttpResponse<any>> {
-    return await this.httpClient.get<any>({
+    const response = await this.httpClient.get<any>({
       baseUrl: BASE_PATH,
       url: `${ETO_TEMPLATES_PATH}/${etoDocument.documentType}`,
       skipResponseParsing: true,
-      /* queryParams: {
-        input: JSON.stringify(etoDocument),
-      }, */
     });
+    return response.body;
   }
 
   public async getSpecificEtoTemplate(

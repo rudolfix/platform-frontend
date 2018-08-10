@@ -2,20 +2,7 @@ import * as Yup from "yup";
 import { IEtoFiles } from "./EtoFileApi.interfaces";
 
 export const getSampleEtoFiles = (): IEtoFiles => ({
-  generatedDocuments: [
-    {
-      title: "Term Sheat",
-      url: "example.pdf",
-    },
-    {
-      title: "Info Blatt",
-      url: "example.doc",
-    },
-    {
-      title: "Bafin Prospectus",
-      url: "",
-    },
-  ],
+  etoTemplates: {},
   uploadedDocuments: {
     pamphlet: {
       url: "",
@@ -38,9 +25,4 @@ export const getSampleEtoFiles = (): IEtoFiles => ({
       status: "locked",
     },
   },
-});
-
-export const etoFileSchema = Yup.object().shape({
-  url: Yup.string().required(),
-  status: Yup.string().required(),
 });

@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../di/symbols";
+import { } from "../../utils/transformObjectKeys";
 import { IHttpClient, IHttpResponse } from "./client/IHttpClient";
 import { FileDescriptionValidator, TFileDescription, TFileType } from "./FileStorage.interfaces";
 import { ImmutableFileId } from "./ImmutableStorage.interfaces";
@@ -38,12 +39,13 @@ export class ImmutableStorageApi {
     placeholders,
     asPdf,
   }: ImmutableFileId): Promise<IHttpResponse<TFileDescription>> {
+    const placeHolder = placeholders ? JSON.stringify(placeholders) : "";
     return await this.binaryHttpClient.get<any>({
       baseUrl: BASE_PATH,
       url: DOWNLOAD_DOCUMENT_PATH + ipfsHash,
       queryParams: {
         mime_type: mimeType,
-        // placeholders: placeholders && JSON.stringify(placeholders),
+        placeholders: placeHolder,
         as_pdf: asPdf.toString(),
       },
       // responseSchema: FileDescriptionValidator,

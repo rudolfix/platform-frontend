@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { TEtoDocumentTemplates } from "./../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "./../../store";
 
 import {
@@ -11,7 +12,6 @@ import {
   EtoState,
   EtoTermsType,
   GeneralEtoDataType,
-  TEtoDocumentTemplates,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
@@ -179,8 +179,9 @@ export const selectCompanyData = (state: IEtoFlowState): TPartialCompanyEtoData 
 export const selectEtoData = (state: IEtoFlowState): TPartialEtoSpecData => state.etoData;
 // { [key: string]: templates } | undefined
 
-export const selectDocumentTemplates = (state: IEtoFlowState): DeepPartial<TEtoDocumentTemplates> | undefined =>
-  state.etoData && state.etoData.templates;
+export const selectDocumentTemplates = (
+  state: IEtoFlowState,
+): DeepPartial<TEtoDocumentTemplates> | undefined => state.etoData && state.etoData.templates;
 
 export const selectEtoLoadingFile = (state: IEtoFlowState): boolean => state.etoFileLoading;
 

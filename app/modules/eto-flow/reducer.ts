@@ -22,7 +22,7 @@ export const etoFlowInitialState: IEtoFlowState = {
   etoData: {},
   companyData: {},
   etoFileData: {
-    generatedDocuments: [],
+    etoTemplates: [],
     uploadedDocuments: {
       pamphlet: {},
       termSheet: {},

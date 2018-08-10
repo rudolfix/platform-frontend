@@ -3,7 +3,7 @@ import { inject, injectable } from "inversify";
 import { symbols } from "../../../di/symbols";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import { TPartialEtoSpecData } from "./EtoApi.interfaces";
-import {  IEtoDocument } from "./EtoFileApi.interfaces";
+import { IEtoDocument } from "./EtoFileApi.interfaces";
 import { getSampleEtoFiles } from "./fixtures";
 
 const BASE_PATH = "/api/eto-listing/etos";
@@ -38,20 +38,21 @@ export class EtoFileApi {
   // TODO: Change Object type
 
   public async getAllEtoTemplates(): Promise<IHttpResponse<any>> {
-    return await this.httpClient.get<any>({
+    const response = await this.httpClient.get<any>({
       baseUrl: BASE_PATH,
       url: ETO_TEMPLATES_PATH,
     });
+    return response.body;
   }
 
   public async getEtoTemplate(etoDocument: IEtoDocument): Promise<IHttpResponse<any>> {
     return await this.httpClient.get<any>({
       baseUrl: BASE_PATH,
-      url: ETO_TEMPLATES_PATH,
-      queryParams: {
-        documentType: etoDocument.documentType,
+      url: `${ETO_TEMPLATES_PATH}/${etoDocument.documentType}`,
+      skipResponseParsing: true,
+      /* queryParams: {
         input: JSON.stringify(etoDocument),
-      },
+      }, */
     });
   }
 

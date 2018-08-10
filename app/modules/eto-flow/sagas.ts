@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
+import { etoDocumentType } from "./../../lib/api/eto/EtoFileApi.interfaces";
 
 import { saveAs } from "file-saver";
 import { SUBMIT_ETO_PERMISSION } from "../../config/constants";
@@ -10,6 +11,7 @@ import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
+import { downloadLink } from "../immutableFile/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
 
 export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
@@ -28,19 +30,50 @@ export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDepen
   }
 }
 
+export function* generateTemplate(
+  { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_GENERATE_TEMPLATE") return;
+  try {
+    const immutableFileId = action.payload.immutableFileId;
+    const templates = yield apiEtoFileService.getEtoTemplate({
+      documentType: immutableFileId.documentType,
+      name: immutableFileId.name,
+      form: "template",
+      ipfsHash: immutableFileId.ipfsHash,
+      mimeType: immutableFileId.mimeType,
+    });
+    const template = templates.body;
+    const test = yield apiImmutableStorage.getFile({
+      ...{
+        ipfsHash: template.ipfs_hash,
+        mimeType: template.mime_type,
+        name: template.name,
+        placeholders: template.placeholders,
+      },
+      asPdf: true,
+    });
+    yield neuCall(downloadLink, test.body, immutableFileId.name, true);
+  } catch (e) {
+    logger.debug(e);
+    notificationCenter.error("Failed to download file from IPFS");
+  }
+}
+
 export function* loadEtoFileData({
   notificationCenter,
   apiEtoFileService,
 }: TGlobalDependencies): any {
   try {
     const fileInfo = yield apiEtoFileService.getEtoFileStateInfo();
-    const etoFileData: IEtoFiles = yield apiEtoFileService.getAllEtoDocuments();
-    const test = yield apiEtoFileService.getAllEtoTemplates();
+    // const etoFileData: IEtoFiles = yield apiEtoFileService.getAllEtoDocuments();
+    const etoTemplatesData = yield apiEtoFileService.getAllEtoTemplates();
     debugger;
     yield put(actions.etoFlow.loadDataStart());
     yield put(
       actions.etoFlow.loadEtoFileData({
-        generatedDocuments: etoFileData,
+        etoTemplates: etoTemplatesData,
         uploadedDocuments: {
           pamphlet: {
             url: "",
@@ -157,6 +190,7 @@ function* uploadEtoFile(
 }
 
 export function* etoFlowSagas(): any {
+  yield fork(neuTakeEvery, "ETO_FLOW_GENERATE_TEMPLATE", generateTemplate);
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_FILE_DATA_START", loadEtoFileData);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);

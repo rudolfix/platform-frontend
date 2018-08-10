@@ -1,6 +1,7 @@
 import { TGeneralEtoData } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles, TEtoUploadFile } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoDocument, IEtoFiles, TEtoUploadFile } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
+import { ImmutableFileId } from "./../../lib/api/ImmutableStorage.interfaces";
 
 export const etoFlowActions = {
   // Company & ETO API
@@ -12,6 +13,8 @@ export const etoFlowActions = {
   // ETO File API
   loadFileDataStart: () => createSimpleAction("ETO_FLOW_LOAD_FILE_DATA_START"),
   loadEtoFileData: (data: IEtoFiles) => createAction("ETO_FLOW_LOAD_ETO_FILE_DATA", { data }),
+  generateTemplate: (immutableFileId: IEtoDocument) =>
+    createAction("ETO_FLOW_GENERATE_TEMPLATE", { immutableFileId }),
   etoUploadDocument: (file: File, name: TEtoUploadFile) =>
     createAction("ETO_FLOW_UPLOAD_DOCUMENT_START", { file, name }),
   showIpfsModal: (fileUploadAction: () => void) =>

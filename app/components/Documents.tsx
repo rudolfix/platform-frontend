@@ -3,8 +3,8 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { IEtoFiles, TEtoUploadFile } from "../lib/api/eto/EtoFileApi.interfaces";
-import { ImmutableFileId } from "../lib/api/ImmutableStorage.interfaces";
+import { IEtoDocument, IEtoFiles, TEtoUploadFile } from "../lib/api/eto/EtoFileApi.interfaces";
+import { immutableDocumentName, ImmutableFileId } from "../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../modules/actions";
 import {
   selectDocumentTemplates,
@@ -24,12 +24,19 @@ import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
 import * as styles from "./Documents.module.scss";
 
-export const GeneratedDocuments: React.SFC<{ title: string; url: string }> = ({ title, url }) => {
+export const GeneratedDocuments: React.SFC<{
+  document: IEtoDocument;
+  generateTemplate: (document: IEtoDocument) => void;
+}> = ({ document, generateTemplate }) => {
   return (
-    <Col xs={6} lg={3} key={url} className="mb-4">
-      <a href={url} target="_blank">
-        <DocumentTile title={title} extension={url} />
-      </a>
+    <Col xs={6} lg={3} key={"url"} className="mb-4">
+      <div
+        onClick={() => {
+          generateTemplate(document);
+        }}
+      >
+        <DocumentTile title={immutableDocumentName[document.name]} extension={".pdf"} />
+      </div>
     </Col>
   );
 };
@@ -39,10 +46,10 @@ class DocumentsComponent extends React.Component<IProps> {
     const {
       loadingData,
       etoFilesData,
-      etoDocumentTemplates,
+      generateTemplate,
       etoFileLoading,
     } = this.props;
-    const { generatedDocuments, uploadedDocuments } = etoFilesData;
+    const { etoTemplates, uploadedDocuments } = etoFilesData;
 
     return (
       <LayoutAuthorized>
@@ -60,11 +67,15 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   GENERATED DOCUMENTS
                 </Col>
-                {/*  {generatedDocuments.map(({ title, url }, index) => {
+                {Object.keys(etoTemplates).map((key, index) => {
                   return (
-                    url && url !== "" && <GeneratedDocuments key={index} {...{ title, url }} />
+                    <GeneratedDocuments
+                      key={index}
+                      document={etoTemplates[key]}
+                      generateTemplate={generateTemplate}
+                    />
                   );
-                })} */}
+                })}
               </Row>
 
               <Row>
@@ -103,8 +114,8 @@ class DocumentsComponent extends React.Component<IProps> {
               <SectionHeader className="my-4" layoutHasDecorator={false} />
               <Row>
                 <SingleColDocuments
-                  documents={Object.keys(etoDocumentTemplates).map(
-                    key => etoDocumentTemplates[key],
+                  documents={Object.keys(etoTemplates).map(
+                    key => etoTemplates[key],
                   )}
                   name="AGREEMENT AND PROSPECTUS TEMPLATES"
                   className={styles.documents}
@@ -124,12 +135,11 @@ interface IStateProps {
   etoFilesData: IEtoFiles;
   loadingData: boolean;
   etoFileLoading: boolean;
-  etoDocumentTemplates: any;
-  // TODO: remove any
 }
 
 interface IDispatchProps {
   downloadImmutableFile: (fileId: ImmutableFileId) => void;
+  generateTemplate: (document: IEtoDocument) => void;
 }
 
 export const Documents = compose<React.SFC>(
@@ -137,13 +147,13 @@ export const Documents = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       etoFilesData: selectEtoFileData(s.etoFlow),
-      etoDocumentTemplates: selectDocumentTemplates(s.etoFlow),
       loadingData: selectEtoLoading(s.etoFlow),
       etoFileLoading: selectEtoLoadingFile(s.etoFlow),
     }),
     dispatchToProps: dispatch => ({
       downloadImmutableFile: fileId =>
         dispatch(actions.immutableStorage.downloadImmutableFile(fileId)),
+      generateTemplate: document => dispatch(actions.etoFlow.generateTemplate(document)),
     }),
   }),
 )(DocumentsComponent);

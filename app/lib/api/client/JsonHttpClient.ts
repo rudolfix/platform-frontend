@@ -41,8 +41,10 @@ export class JsonHttpClient extends HttpClient {
       });
     }
 
-    let finalResponseJson: T = toCamelCase(responseJson);
-    if (config.responseSchema && response.ok) {
+    let finalResponseJson: T = config.skipResponseParsing
+      ? responseJson
+      : toCamelCase(responseJson);
+    if (config.responseSchema && response.ok && !config.skipResponseParsing) {
       // we dont validate response on non success statuses
       try {
         finalResponseJson = config.responseSchema.validateSync<T>(toCamelCase(responseJson), {

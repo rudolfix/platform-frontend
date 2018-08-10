@@ -4,22 +4,17 @@ import { Col } from "reactstrap";
 import * as styles from "./singleColDocumentWidget.module.scss";
 
 import { compose } from "redux";
-import { templates } from "../../lib/api/eto/EtoApi.interfaces";
-import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
+import { etoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { immutableDocumentName, ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { Panel } from "./Panel";
 
-
 const IPFS_LINK = "https://ipfs.io/ipfs/";
-export interface IDocument {
-  url: string;
-  name: TTranslatedString;
-}
 
 interface IOwnProps {
-  documents: templates[];
+  documents: IEtoDocument[];
   name: TTranslatedString;
   className?: string;
 }
@@ -28,15 +23,6 @@ interface IDispatchProps {
 }
 
 type IProps = IOwnProps & IDispatchProps;
-
-const documentName: { [key: string]: string } = {
-  company_token_holder_agreement: "Company Token Holder Agreement",
-  investment_and_shareholder_agreement: "Investment and Shareholder Agreement",
-  pamphlet_template_en: "Pamphlet Template en",
-  prospectus_template_en: "prospectus Template en",
-  reservation_and_acquisition_agreement: "Reservation and Acquisition Agreement",
-  termsheet_template: "Termsheet Template",
-};
 
 export const SingleColDocumentsWidget: React.SFC<IProps> = ({
   documents,
@@ -53,16 +39,16 @@ export const SingleColDocumentsWidget: React.SFC<IProps> = ({
             <Col xs={12} className={styles.document} key={i}>
               <i className={cn("fa fa-link", styles.documentIcon)} />
               <div
-                /* href={IPFS_LINK + ipfsHash} */ className={styles.documentLink}
+                className={styles.documentLink}
                 onClick={() =>
                   downloadImmutableFile({
-                    ...{ ipfsHash, mimeType, name },
+                    ...{ ipfsHash, mimeType, name: name as etoDocumentType },
                     // Links should never be downloaded pdf
                     asPdf: false,
                   })
                 }
               >
-                {documentName[name]}
+                {immutableDocumentName[name]}
               </div>
             </Col>
           );

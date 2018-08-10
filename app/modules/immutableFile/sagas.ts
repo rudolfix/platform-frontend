@@ -8,7 +8,7 @@ import { TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 
 export function* downloadFile(
-  { apiImmutableStorage, notificationCenter,logger }: TGlobalDependencies,
+  { apiImmutableStorage, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "IMMUTABLE_STORAGE_DOWNLOAD_FILE") return;
@@ -17,10 +17,14 @@ export function* downloadFile(
     const test = yield apiImmutableStorage.getFile(immutableFileId);
     yield neuCall(downloadLink, test.body, immutableFileId.name, immutableFileId.asPdf);
   } catch (e) {
-    logger.debug(e)
-    notificationCenter.error("Failed to download file from IPFS")
+    logger.debug(e);
+    notificationCenter.error("Failed to download file from IPFS");
   }
 }
+
+export const immutableFileSagas = function*(): any {
+  yield fork(neuTakeEvery, "IMMUTABLE_STORAGE_DOWNLOAD_FILE", downloadFile);
+};
 
 export function downloadLink(
   _deps: TGlobalDependencies,
@@ -31,8 +35,3 @@ export function downloadLink(
   const fileExtention = isPdf ? ".pdf" : ".docx";
   saveAs(blob, name + fileExtention);
 }
-
-//
-export const immutableFileSagas = function*(): any {
-  yield fork(neuTakeEvery, "IMMUTABLE_STORAGE_DOWNLOAD_FILE", downloadFile);
-};

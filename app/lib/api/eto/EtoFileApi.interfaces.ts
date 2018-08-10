@@ -23,7 +23,7 @@ export type TEtoUploadFile =
   | "signedAgreement";
 
 export interface IEtoFiles {
-  generatedDocuments: any;
+  etoTemplates: any;
   uploadedDocuments: {
     pamphlet: {
       url?: string;
@@ -52,7 +52,7 @@ export interface IEtoFiles {
     };
   };
 }
-type etoDocumentType =
+export type etoDocumentType =
   | "reservation_and_acquisition_agreement"
   | "company_token_holder_agreement"
   | "investment_and_shareholder_agreement"
@@ -71,5 +71,7 @@ export interface IEtoDocument {
   ipfsHash: string;
   mimeType: string;
   name: string;
-  placeholders: { [key: string]: string };
+  placeholders?: { [key: string]: string };
 }
+
+export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };

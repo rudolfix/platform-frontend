@@ -6,12 +6,7 @@ import { compose } from "redux";
 import { IEtoDocument, IEtoFiles } from "../lib/api/eto/EtoFileApi.interfaces";
 import { immutableDocumentName, ImmutableFileId } from "../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../modules/actions";
-import {
-  selectCurrentEtoState,
-  selectEtoFileData,
-  selectEtoLoading,
-  selectEtoLoadingFile,
-} from "../modules/eto-flow/selectors";
+import { selectCurrentEtoState, selectEtoLoading } from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { ETOAddDocuments } from "./eto/shared/EtoAddDocument";
@@ -24,6 +19,10 @@ import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
 import { camelCase } from "lodash";
 import { EtoState } from "../lib/api/eto/EtoApi.interfaces";
+import {
+  selectEtoDocumentData,
+  selectEtoDocumentLoading,
+} from "../modules/eto-documents/selectors";
 import * as styles from "./Documents.module.scss";
 
 export const GeneratedDocuments: React.SFC<{
@@ -144,18 +143,18 @@ interface IDispatchProps {
 }
 
 export const Documents = compose<React.SFC>(
-  onEnterAction({ actionCreator: d => d(actions.etoFlow.loadFileDataStart()) }),
+  onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      etoFilesData: selectEtoFileData(s.etoFlow),
+      etoFilesData: selectEtoDocumentData(s.etoDocuments),
       loadingData: selectEtoLoading(s.etoFlow),
-      etoFileLoading: selectEtoLoadingFile(s.etoFlow),
+      etoFileLoading: selectEtoDocumentLoading(s.etoDocuments),
       etoState: selectCurrentEtoState(s.etoFlow),
     }),
     dispatchToProps: dispatch => ({
       downloadImmutableFile: fileId =>
         dispatch(actions.immutableStorage.downloadImmutableFile(fileId)),
-      generateTemplate: document => dispatch(actions.etoFlow.generateTemplate(document)),
+      generateTemplate: document => dispatch(actions.etoDocuments.generateTemplate(document)),
     }),
   }),
 )(DocumentsComponent);

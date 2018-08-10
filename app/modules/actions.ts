@@ -3,6 +3,7 @@ import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { dashboardActions } from "./dashboard/actions";
 import { depositModalActions } from "./depositEthModal/actions";
+import { etoDocumentsActions } from "./eto-documents/actions";
 import { etoFlowActions } from "./eto-flow/actions";
 import { etoActions } from "./eto/actions";
 import { gasActions } from "./gas/actions";
@@ -41,6 +42,7 @@ export const actions = {
   wallet: walletActions,
   notifications: notificationActions,
   etoFlow: etoFlowActions,
+  etoDocuments: etoDocumentsActions,
   eto: etoActions,
   formSingleFileUpload: formSingleFileUploadActions,
   remoteFile: remoteFileActions,
@@ -55,6 +57,7 @@ export const actions = {
  */
 export const allActions = {
   ...dashboardActions,
+  ...etoDocumentsActions,
   ...verifyEmailActions,
   ...settingsActions,
   ...genericModalActions,

@@ -27,13 +27,15 @@ import {
   selectCombinedEtoCompanyData,
   selectCompanyData,
   selectEtoData,
-  selectEtoLoadingFile,
   selectEtoState,
+} from "../../modules/eto-flow/selectors";
+
+import {
+  selectEtoDocumentLoading,
   selectIsPamphletSubmitted,
   selectIsProspectusSubmitted,
   selectIsTermSheetSubmitted,
-} from "../../modules/eto-flow/selectors";
-
+} from "../../modules/eto-documents/selectors";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -253,7 +255,7 @@ export const EtoDashboard = compose<React.SFC>(
     stateToProps: s => ({
       companyData: selectCompanyData(s.etoFlow),
       etoData: selectEtoData(s.etoFlow),
-      loadingData: selectEtoLoadingFile(s.etoFlow),
+      loadingData: selectEtoDocumentLoading(s.etoDocuments),
       kycStatus: selectKycRequestStatus(s.kyc),
       isEmailVerified: selectIsUserEmailVerified(s.auth),
       isLightWallet: selectIsLightWallet(s.web3),
@@ -261,9 +263,9 @@ export const EtoDashboard = compose<React.SFC>(
       backupCodesVerified: selectBackupCodesVerified(s.auth),
       requestStatus: selectKycRequestStatus(s.kyc),
       etoState: selectEtoState(s.etoFlow),
-      isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoFlow),
-      isPamphletSubmitted: selectIsPamphletSubmitted(s.etoFlow),
-      isProspectusSubmitted: selectIsProspectusSubmitted(s.etoFlow),
+      isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoDocuments),
+      isPamphletSubmitted: selectIsPamphletSubmitted(s.etoDocuments),
+      isProspectusSubmitted: selectIsProspectusSubmitted(s.etoDocuments),
       companyInformationProgress: calculateCompanyInformationProgress(selectCompanyData(s.etoFlow)),
       etoTermsProgress: calculateEtoTermsProgress(selectEtoData(s.etoFlow)),
       etoKeyIndividualsProgress: calculateEtoKeyIndividualsProgress(selectCompanyData(s.etoFlow)),
@@ -275,7 +277,7 @@ export const EtoDashboard = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       loadDataStart: () => dispatch(actions.etoFlow.loadDataStart()),
-      loadFileDataStart: () => dispatch(actions.etoFlow.loadFileDataStart()),
+      loadFileDataStart: () => dispatch(actions.etoDocuments.loadFileDataStart()),
     }),
   }),
 )(EtoDashboardComponent);

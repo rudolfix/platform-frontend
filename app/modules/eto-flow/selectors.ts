@@ -15,7 +15,6 @@ import {
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { DeepPartial } from "../../types";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
@@ -132,32 +131,6 @@ export function getFormFractionDoneCalculator(
   };
 }
 
-export const selectIsTermSheetSubmitted = (state: IEtoFlowState): boolean | undefined =>
-  state.etoFileData &&
-  state.etoFileData.uploadedDocuments &&
-  Object.keys(state.etoFileData.uploadedDocuments).some(
-    key => state.etoFileData.uploadedDocuments[key].documentType === "termsheet_template",
-  );
-
-export const selectIsPamphletSubmitted = (state: IEtoFlowState): boolean | undefined =>
-  state.etoFileData &&
-  state.etoFileData.uploadedDocuments &&
-  Object.keys(state.etoFileData.uploadedDocuments).some(
-    key => state.etoFileData.uploadedDocuments[key].documentType === "pamphlet_template",
-  );
-
-export const selectIsProspectusSubmitted = (state: IEtoFlowState): boolean | undefined =>
-  state.etoFileData &&
-  state.etoFileData.uploadedDocuments &&
-  Object.keys(state.etoFileData.uploadedDocuments).some(
-    key => state.etoFileData.uploadedDocuments[key].documentType === "bafin_approved_prospectus",
-  );
-
-export const selectIsIpfsModalOpen = (state: IEtoFlowState): boolean => state.showIpfsModal;
-
-export const selectFileUploadAction = (state: IEtoFlowState): (() => void) | undefined =>
-  state.uploadAction;
-
 export const selectIsBookBuilding = (state: IEtoFlowState): boolean | undefined =>
   state.etoData && state.etoData.isBookbuilding;
 
@@ -173,8 +146,6 @@ export const selectDocumentTemplates = (
   state: IEtoFlowState,
 ): DeepPartial<TEtoDocumentTemplates> | undefined => state.etoData && state.etoData.templates;
 
-export const selectEtoLoadingFile = (state: IEtoFlowState): boolean => state.etoFileLoading;
-
 export const selectEtoLoading = (state: IEtoFlowState): boolean => state.loading;
 
 export const selectCombinedEtoCompanyData = (
@@ -186,8 +157,6 @@ export const selectCombinedEtoCompanyData = (
 
 export const selectCurrentEtoState = (state: IEtoFlowState): EtoState | undefined =>
   state.etoData && state.etoData.state;
-
-export const selectEtoFileData = (state: IEtoFlowState): IEtoFiles => state.etoFileData;
 
 /* General Selector */
 

@@ -5,6 +5,7 @@ import { TGlobalDependencies } from "../di/setupBindings";
 import { TAction } from "./actions";
 import { authSagas } from "./auth/sagas";
 import { dashboardSagas } from "./dashboard/sagas";
+import { etoDocumentsSagas } from "./eto-documents/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
@@ -42,6 +43,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(txSendingSagasWatcher),
     effects.fork(txSendingSagasWatcher),
     effects.fork(gasApiSagas),
+    effects.fork(etoDocumentsSagas),
   ]);
 }
 

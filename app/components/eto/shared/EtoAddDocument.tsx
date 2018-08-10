@@ -46,8 +46,8 @@ export const ETOAddDocuments = compose<React.SFC<IOwnProps>>(
     dispatchToProps: dispatch => ({
       onDropFile: (file: File, document: IEtoDocument) =>
         dispatch(
-          actions.etoFlow.showIpfsModal(() =>
-            dispatch(actions.etoFlow.etoUploadDocument(file, document)),
+          actions.etoDocuments.showIpfsModal(() =>
+            dispatch(actions.etoDocuments.etoUploadDocument(file, document)),
           ),
         ),
     }),

@@ -19,6 +19,7 @@ interface IFieldGroup {
   addonStyle?: string;
   maxLength?: string;
   additionalObjValue?: { name: string; value: string };
+  charactersLimit?: number;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 
@@ -46,10 +47,27 @@ export class FormField extends React.Component<FieldGroupProps> {
       className,
       addonStyle,
       additionalObjValue,
+      charactersLimit,
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;
     const { touched, errors } = formik;
+
+    const computedValue = (value: string | undefined, limit: number | undefined): string => {
+      if (!value) {
+        return "";
+      }
+
+      if (!limit) {
+        return value;
+      }
+
+      return charactersLimit && value.length > limit ? value.slice(0, charactersLimit - 1) : value;
+    };
+
+    const countedCharacters = (value: string | undefined, limit: number | undefined): string => {
+      return `${computedValue(value, limit).length}/${limit}`;
+    };
 
     //This is done due to the difference between reactstrap and @typings/reactstrap
     const inputExtraProps = {
@@ -61,33 +79,41 @@ export class FormField extends React.Component<FieldGroupProps> {
         <Field
           name={name}
           render={({ field }: FieldProps) => (
-            <InputGroup>
-              {prefix && (
-                <InputGroupAddon addonType="prepend" className={cn(styles.addon, addonStyle)}>
-                  {prefix}
-                </InputGroupAddon>
+            <>
+              <InputGroup>
+                {prefix && (
+                  <InputGroupAddon addonType="prepend" className={cn(styles.addon, addonStyle)}>
+                    {prefix}
+                  </InputGroupAddon>
+                )}
+                <Input
+                  className={cn(className, styles.inputField)}
+                  {...field}
+                  type={type}
+                  value={computedValue(
+                    this.props.additionalObjValue
+                      ? this.props.additionalObjValue && " "
+                      : field.value,
+                    charactersLimit,
+                  )}
+                  valid={isValid(touched, errors, name)}
+                  placeholder={placeholder}
+                  {...inputExtraProps}
+                  {...props}
+                />
+                {suffix && (
+                  <InputGroupAddon addonType="append" className={styles.addon}>
+                    {suffix}
+                  </InputGroupAddon>
+                )}
+              </InputGroup>
+              {isNonValid(touched, errors, name) && (
+                <div className={styles.errorLabel}>{errors[name]}</div>
               )}
-              <Input
-                className={cn(className, styles.inputField)}
-                {...field}
-                type={type}
-                value={field.value || (this.props.additionalObjValue && " ") || ""}
-                valid={isValid(touched, errors, name)}
-                placeholder={placeholder || label}
-                {...inputExtraProps}
-                {...props}
-              />
-              {suffix && (
-                <InputGroupAddon addonType="append" className={styles.addon}>
-                  {suffix}
-                </InputGroupAddon>
-              )}
-            </InputGroup>
+              {charactersLimit && <div>{countedCharacters(field.value, charactersLimit)}</div>}
+            </>
           )}
         />
-        {isNonValid(touched, errors, name) && (
-          <div className={styles.errorLabel}>{errors[name]}</div>
-        )}
       </FormGroup>
     );
   }

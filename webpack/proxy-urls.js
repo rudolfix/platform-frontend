@@ -8,11 +8,11 @@ const { mapValues } = require("lodash");
  *
  * NOTE: if backendUrl === http://localhost we assume it's local setup and links are slightly different (services run on different ports)
  */
-function generateProxyConfig(backendUrl) {
+function generateProxyConfig(backendUrl, nodeUrl) {
   const base = {
     "/node": {
       targetLocal: "http://localhost:8545",
-      targetRemote: "http://localhost:8545",
+      targetRemote: nodeUrl,
       pathRewrite: { "^/node": "" },
     },
     "/api/signature": {
@@ -54,6 +54,11 @@ function generateProxyConfig(backendUrl) {
       targetLocal: "http://localhost:1337",
       targetRemote: backendUrl + "external-services-mock",
       pathRewrite: { "^/api/external-services-mock": "" },
+    },
+    "/api/gas": {
+      targetLocal: "http://localhost:5013",
+      targetRemote: backendUrl + "gas",
+      pathRewrite: { "^/api/gas": "" },
     },
   };
 

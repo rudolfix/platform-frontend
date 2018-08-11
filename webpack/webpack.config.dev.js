@@ -26,7 +26,7 @@ module.exports = merge(configCommon, {
         "*; " + // this should be only enabled for twitter-iframe.html
         "connect-src 'self' wss://localhost:9090", // needed for hot reload
     },
-    proxy: generateProxyConfig("http://localhost"),
+    proxy: generateProxyConfig("http://localhost", "http://localhost:8545"),
   },
   entry: [
     "react-hot-loader/patch",

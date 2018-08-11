@@ -19,6 +19,7 @@ interface IProps {
   label?: TTranslatedString;
   prefix?: string;
   selectedCategory?: { name: string; percentage: number };
+  transformRatio?: number;
 }
 interface IInternalProps {
   addField: () => void;
@@ -44,6 +45,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
     addField,
     formFieldKeys,
     prefix,
+    transformRatio,
   } = props;
 
   return (
@@ -61,11 +63,21 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
       <Col>
         <Row>
           <Col xs={9}>
-            <FormTransformingField
-              prefix={prefix}
-              name={`${props.name}.${formFieldKeys[1]}`}
-              ratio={100}
-            />
+            {transformRatio ? (
+              <FormTransformingField
+                min="0"
+                prefix={prefix}
+                name={`${props.name}.${formFieldKeys[1]}`}
+                ratio={transformRatio}
+              />
+            ) : (
+              <FormField
+                min="0"
+                prefix={prefix}
+                name={`${props.name}.${formFieldKeys[1]}`}
+                type="number"
+              />
+            )}
           </Col>
           {!isFirstElement && (
             <span className="pt-2">
@@ -97,7 +109,7 @@ export class FormCategoryDistribution extends React.Component<
   }
 
   render(): React.ReactNode {
-    const { name, label, className, paragraphName, prefix } = this.props;
+    const { name, label, className, paragraphName, prefix, transformRatio } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     const categoryDistribution = values[name] || [];
@@ -134,6 +146,7 @@ export class FormCategoryDistribution extends React.Component<
                         }}
                         isFirstElement={isFirstElement}
                         isLastElement={isLastElement}
+                        transformRatio={transformRatio}
                       />
                     );
                   },

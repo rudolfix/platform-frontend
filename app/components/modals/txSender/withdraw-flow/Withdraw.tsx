@@ -10,12 +10,13 @@ import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { Button } from "../../../shared/Buttons";
 import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImportant";
 
+import * as Web3Utils from "web3-utils";
 import { appConnect } from "../../../../store";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
-import * as Web3Utils from "web3-utils";
 
+import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import * as styles from "./Withdraw.module.scss";
 
 interface IWithdrawOwnProps {
@@ -24,6 +25,7 @@ interface IWithdrawOwnProps {
 
 interface IWithdrawStateProps {
   gas: IGasState;
+  address: string;
 }
 
 const withdrawFormSchema = YupTS.object({
@@ -36,6 +38,7 @@ const withdrawFormValidator = withdrawFormSchema.toYup();
 export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProps> = ({
   onAccept,
   gas,
+  address,
 }) => (
   <div>
     <SpinningEthereum />
@@ -50,9 +53,10 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
       initialValues={{ gas: "21000" }}
       onSubmit={data => {
         const gasPrice = gas.gasPrice!.standard;
-        const value = Web3Utils.toWei(data.value!, "ether");
+        const value = Web3Utils.toWei(data.value, "ether");
+        const from = address;
 
-        onAccept({ ...data, gasPrice, value });
+        onAccept({ ...data, gasPrice, value, from });
       }}
     >
       {({ isValid }) => (
@@ -119,6 +123,7 @@ export const GasComponent: React.SFC<IGasState> = ({ gasPrice, error }) => {
 export const Withdraw = appConnect<IWithdrawStateProps, {}, IWithdrawOwnProps>({
   stateToProps: state => ({
     gas: state.gas,
+    address: selectEthereumAddress(state.web3),
   }),
 })(WithdrawComponent);
 

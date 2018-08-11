@@ -4,10 +4,10 @@ import { Col, Row } from "reactstrap";
 
 import { Button } from "../../../shared/Buttons";
 import { Heading } from "../../../shared/modals/Heading";
+import { Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ISummaryComponentProps } from "../TxSender";
-import { Money } from "../../../shared/Money";
 import { GweiFormatter } from "./Withdraw";
 
 export const WithdrawSummary: React.SFC<ISummaryComponentProps> = ({ data, onAccept }) => (

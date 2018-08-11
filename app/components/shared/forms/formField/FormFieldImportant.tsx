@@ -8,7 +8,7 @@ import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { Avatar } from "../../Avatar";
 import { CustomTooltip } from "../../CustomTooltip";
 import { FormLabel } from "./FormLabel";
-import { isNonValid, isValid } from "./utils";
+import { isNonValid } from "./utils";
 
 import * as icon from "../../../../assets/img/notifications/warning.svg";
 import * as styles from "./FormFieldImportant.module.scss";

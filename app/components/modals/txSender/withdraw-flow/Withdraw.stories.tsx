@@ -10,7 +10,7 @@ const gas: IGasState = {
     fast: "0",
     fastest: "0",
     safeLow: "0",
-    standard: "23",
+    standard: "23000000000",
   },
 };
 

@@ -55,7 +55,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;
-    const { errors } = formik;
+    const { errors, touched } = formik;
     const tooltipId = `${name}_error_notification`;
 
     return (
@@ -76,7 +76,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
                   {...props as any}
                 />
                 <InputGroupAddon addonType="append" className={formStyles.addon}>
-                  {!!errors[name] && (
+                  {isNonValid(touched, errors, name) && (
                     <>
                       <img id={tooltipId} src={icon} />
                       <CustomTooltip target={tooltipId}>{errorMessage}</CustomTooltip>

@@ -3,6 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
+import * as YupTS from "../../../../lib/yup-ts";
 import { IGasState } from "../../../../modules/gas/reducer";
 import { ITxData } from "../../../../modules/tx/sender/reducer";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
@@ -13,6 +14,8 @@ import { appConnect } from "../../../../store";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
+import * as Web3Utils from "web3-utils";
+
 import * as styles from "./Withdraw.module.scss";
 
 interface IWithdrawOwnProps {
@@ -22,6 +25,13 @@ interface IWithdrawOwnProps {
 interface IWithdrawStateProps {
   gas: IGasState;
 }
+
+const withdrawFormSchema = YupTS.object({
+  to: YupTS.string(),
+  value: YupTS.string(),
+  gas: YupTS.string(),
+});
+const withdrawFormValidator = withdrawFormSchema.toYup();
 
 export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProps> = ({
   onAccept,
@@ -34,11 +44,18 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
       <FormattedMessage id="modal.sent-eth.title" />
     </h3>
 
-    <Formik
+    <Formik<{}, Partial<ITxData>>
+      validationSchema={withdrawFormValidator}
+      isInitialValid={false}
       initialValues={{ gas: "21000" }}
-      onSubmit={data => onAccept({ ...data, gasPrice: gas.gasPrice!.standard })}
+      onSubmit={data => {
+        const gasPrice = gas.gasPrice!.standard;
+        const value = Web3Utils.toWei(data.value!, "ether");
+
+        onAccept({ ...data, gasPrice, value });
+      }}
     >
-      {() => (
+      {({ isValid }) => (
         <Form>
           <Row>
             <Col xs={12} className="mb-3">
@@ -48,27 +65,31 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
                 placeholder="0x0"
               />
             </Col>
+
             <Col xs={12} className="mb-3">
               <FormFieldImportant
                 name="value"
                 label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
-                placeholder="1000"
+                placeholder="10.5"
               />
             </Col>
+
             <Col xs={12} className="mb-4">
               <FormFieldImportant
                 name="gas"
                 label={<FormattedMessage id="modal.sent-eth.gas-limit" />}
               />
             </Col>
+
             <Col xs={12} className="mb-4">
               <FormLabel>
                 <FormattedMessage id="modal.sent-eth.gas-price" />
               </FormLabel>
               <GasComponent {...gas} />
             </Col>
+
             <Col xs={12} className="text-center">
-              <Button type="submit" disabled={gas.loading && !gas.error}>
+              <Button type="submit" disabled={(gas.loading && !gas.error) || !isValid}>
                 <FormattedMessage id="modal.sent-eth.button" />
               </Button>
             </Col>
@@ -89,7 +110,7 @@ export const GasComponent: React.SFC<IGasState> = ({ gasPrice, error }) => {
   }
 
   if (gasPrice) {
-    return <div>{gasPrice.standard}</div>;
+    return <GweiFormatter value={gasPrice.standard} />;
   }
 
   return <LoadingIndicator light />;
@@ -100,3 +121,7 @@ export const Withdraw = appConnect<IWithdrawStateProps, {}, IWithdrawOwnProps>({
     gas: state.gas,
   }),
 })(WithdrawComponent);
+
+export const GweiFormatter: React.SFC<{ value: string }> = ({ value }) => (
+  <div>{Web3Utils.fromWei(value, "gwei")} Gwei</div>
+);

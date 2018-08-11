@@ -18,7 +18,7 @@ import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./Investment.module.scss";
 
 interface IFormState {
-  value: number;
+  value: string;
   wallet: string;
 }
 
@@ -135,7 +135,7 @@ const wallets = [
 export const InvestmentSelection: React.SFC<IInitComponentProps> = ({ onAccept }) => {
   return (
     <Formik<{}, IFormState>
-      initialValues={{ wallet: wallets[0].name, value: 0 }}
+      initialValues={{ wallet: wallets[0].name, value: "0" }}
       onSubmit={v => onAccept({ value: v.value })}
     >
       {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}

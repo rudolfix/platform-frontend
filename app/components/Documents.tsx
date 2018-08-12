@@ -3,10 +3,19 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { IEtoDocument, IEtoFiles } from "../lib/api/eto/EtoFileApi.interfaces";
-import { immutableDocumentName, ImmutableFileId } from "../lib/api/ImmutableStorage.interfaces";
+import {
+  etoDocumentType,
+  IEtoDocument,
+  IEtoFiles,
+  immutableDocumentName,
+  TEtoDocumentTemplates,
+} from "../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../modules/actions";
-import { selectCurrentEtoState, selectEtoLoading } from "../modules/eto-flow/selectors";
+import {
+  selectCurrentEtoState,
+  selectCurrentEtoTemplates,
+  selectEtoLoading,
+} from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { ETOAddDocuments } from "./eto/shared/EtoAddDocument";
@@ -17,12 +26,12 @@ import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
 import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
-import { camelCase } from "lodash";
 import { EtoState } from "../lib/api/eto/EtoApi.interfaces";
 import {
   selectEtoDocumentData,
   selectEtoDocumentLoading,
 } from "../modules/eto-documents/selectors";
+import { DeepPartial } from "../types";
 import * as styles from "./Documents.module.scss";
 
 export const GeneratedDocuments: React.SFC<{
@@ -37,8 +46,8 @@ export const GeneratedDocuments: React.SFC<{
         }}
       >
         <DocumentTile
-          title={immutableDocumentName[document.name]}
-          extension={".pdf"}
+          title={immutableDocumentName[document.documentType]}
+          extension={".doc"}
           blank={false}
         />
       </div>
@@ -48,8 +57,18 @@ export const GeneratedDocuments: React.SFC<{
 
 class DocumentsComponent extends React.Component<IProps> {
   render(): React.ReactNode {
-    const { loadingData, etoFilesData, generateTemplate, etoFileLoading, etoState } = this.props;
+    const {
+      loadingData,
+      etoFilesData,
+      generateTemplate,
+      etoFileLoading,
+      etoState,
+      etoLinks,
+    } = this.props;
     const { etoTemplates, uploadedDocuments, stateInfo } = etoFilesData;
+    const generalUploadables = stateInfo
+      ? ([] as etoDocumentType[]).concat(stateInfo.requiredTemplates, stateInfo.uploadableDocuments)
+      : [];
     return (
       <LayoutAuthorized>
         {loadingData || etoFileLoading || !etoState ? (
@@ -75,31 +94,33 @@ class DocumentsComponent extends React.Component<IProps> {
                     />
                   );
                 })}
-                {!!(Object.keys(etoTemplates).length === 0) && <div className="mb-2">No files</div>}
+                {!!(Object.keys(etoTemplates).length === 0) && (
+                  <Col className="mb-2">
+                    <div>Please fill the ETO forms in order to generate templates</div>
+                  </Col>
+                )}
               </Row>
 
               <Row>
                 <Col xs={12} className={styles.groupName}>
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
-                {Object.keys(etoTemplates).map(key => {
-                  const typedFileName = immutableDocumentName[etoTemplates[key].name];
+                {generalUploadables.map((key: etoDocumentType, index: number) => {
+                  const typedFileName = immutableDocumentName[key];
                   const isFileUploaded =
                     stateInfo &&
-                    stateInfo.canUploadInStates[etoState].some(
-                      fileName => camelCase(fileName) === key,
-                    );
+                    stateInfo.canUploadInStates[etoState].some(fileName => fileName === key);
+
                   return (
-                    <Col xs={6} lg={3} key={etoTemplates[key].name} className="mb-2">
-                      <ETOAddDocuments document={etoTemplates[key]} disabled={!isFileUploaded}>
+                    <Col xs={6} lg={3} key={index} className="mb-2">
+                      <ETOAddDocuments documentType={key} disabled={!isFileUploaded}>
                         <DocumentTile
                           title={typedFileName}
                           extension={".pdf"}
                           active={isFileUploaded}
                           blank={
                             !Object.keys(uploadedDocuments).some(
-                              uploadedKey =>
-                                camelCase(uploadedDocuments[uploadedKey].documentType) === key,
+                              uploadedKey => uploadedDocuments[uploadedKey].documentType === key,
                             )
                           }
                         />
@@ -107,18 +128,20 @@ class DocumentsComponent extends React.Component<IProps> {
                     </Col>
                   );
                 })}
-                {!!(Object.keys(etoTemplates).length === 0) && <div className="mb-4">No files</div>}
               </Row>
             </Col>
             <Col xs={12} lg={4}>
               <SectionHeader className="my-4" layoutHasDecorator={false} />
               <Row>
-                {/* TODO: CONNECT WITH TEMPLATES */}
-                <SingleColDocuments
-                  documents={Object.keys(etoTemplates).map(key => etoTemplates[key])}
-                  name="AGREEMENT AND PROSPECTUS TEMPLATES"
-                  className={styles.documents}
-                />
+                {etoLinks && (
+                  <SingleColDocuments
+                    documents={Object.keys(etoLinks).map(key => {
+                      return etoLinks[key] as IEtoDocument;
+                    })}
+                    title="AGREEMENT AND PROSPECTUS TEMPLATES"
+                    className={styles.documents}
+                  />
+                )}
               </Row>
             </Col>
           </Row>
@@ -135,10 +158,10 @@ interface IStateProps {
   loadingData: boolean;
   etoFileLoading: boolean;
   etoState?: EtoState;
+  etoLinks?: DeepPartial<TEtoDocumentTemplates>;
 }
 
 interface IDispatchProps {
-  downloadImmutableFile: (fileId: ImmutableFileId) => void;
   generateTemplate: (document: IEtoDocument) => void;
 }
 
@@ -150,10 +173,9 @@ export const Documents = compose<React.SFC>(
       loadingData: selectEtoLoading(s.etoFlow),
       etoFileLoading: selectEtoDocumentLoading(s.etoDocuments),
       etoState: selectCurrentEtoState(s.etoFlow),
+      etoLinks: selectCurrentEtoTemplates(s.etoFlow),
     }),
     dispatchToProps: dispatch => ({
-      downloadImmutableFile: fileId =>
-        dispatch(actions.immutableStorage.downloadImmutableFile(fileId)),
       generateTemplate: document => dispatch(actions.etoDocuments.generateTemplate(document)),
     }),
   }),

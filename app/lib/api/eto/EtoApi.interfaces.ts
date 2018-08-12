@@ -194,6 +194,7 @@ export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
+  templates?: TEtoDocumentTemplates;
 }
 
 export type TEtoSpecsData = TEtoTermsType &

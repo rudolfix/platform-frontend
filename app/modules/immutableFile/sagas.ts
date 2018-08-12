@@ -12,8 +12,8 @@ export function* downloadFile(
   if (action.type !== "IMMUTABLE_STORAGE_DOWNLOAD_FILE") return;
   try {
     const immutableFileId = action.payload.immutableFileId;
-    const test = yield apiImmutableStorage.getFile(immutableFileId);
-    yield neuCall(downloadLink, test.body, immutableFileId.name, immutableFileId.asPdf);
+    const downloadedFile = yield apiImmutableStorage.getFile(immutableFileId);
+    yield neuCall(downloadLink, downloadedFile, action.payload.fileName, immutableFileId.asPdf);
   } catch (e) {
     logger.debug(e);
     notificationCenter.error("Failed to download file from IPFS");

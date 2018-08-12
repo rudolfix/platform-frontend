@@ -12,6 +12,7 @@ import {
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { TEtoDocumentTemplates } from "./../../lib/api/eto/EtoFileApi.interfaces";
 import { IEtoDocumentState } from "./reducer";
 
 export const selectIsTermSheetSubmitted = (state: IEtoDocumentState): boolean | undefined =>
@@ -43,3 +44,7 @@ export const selectFileUploadAction = (state: IEtoDocumentState): (() => void) |
 export const selectEtoDocumentLoading = (state: IEtoDocumentState): boolean => state.loading;
 
 export const selectEtoDocumentData = (state: IEtoDocumentState): IEtoFiles => state.etoFileData;
+
+export const selectUploadedEtoDocuments = (
+  state: IEtoDocumentState,
+): TEtoDocumentTemplates | undefined => state.etoFileData && state.etoFileData.uploadedDocuments;

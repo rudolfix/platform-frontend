@@ -10,7 +10,6 @@ export interface IEtoDocumentState {
   etoFileData: IEtoFiles;
   uploadAction?: () => void;
 }
-// TODO: Add correct type for etoFileData once backend is connected
 
 export const etoFlowInitialState: IEtoDocumentState = {
   loading: false,

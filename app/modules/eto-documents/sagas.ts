@@ -25,12 +25,11 @@ export function* generateTemplate(
       ...{
         ipfsHash: templates.ipfs_hash,
         mimeType: templates.mime_type,
-        name: templates.name,
         placeholders: templates.placeholders,
       },
-      asPdf: true,
+      asPdf: false,
     });
-    yield neuCall(downloadLink, generatedDocument, immutableFileId.name, true);
+    yield neuCall(downloadLink, generatedDocument, immutableFileId.name, false);
   } catch (e) {
     logger.debug(e);
     notificationCenter.error("Failed to download file from IPFS");
@@ -73,23 +72,21 @@ function* uploadEtoFile(
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "ETO_FLOW_UPLOAD_DOCUMENT_START") return;
-  const { file, document } = action.payload;
+  const { file, documentType } = action.payload;
   try {
+    yield put(actions.etoDocuments.hideIpfsModal());
     yield neuCall(
       ensurePermissionsArePresent,
       [UPLOAD_IMMUTABLE_DOCUMENT],
       formatIntlMessage("eto.modal.submit-description"),
     );
-    const etoFiles = yield apiEtoFileService.uploadEtoDocument(file, document);
-    // TODO Fix any!
-    yield put(actions.etoDocuments.loadEtoFileData(etoFiles));
+    yield apiEtoFileService.uploadEtoDocument(file, documentType);
     notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));
   } catch (e) {
-    yield put(actions.etoDocuments.loadFileDataStart());
     logger.error("Failed to send ETO data", e);
     notificationCenter.error(formatIntlMessage("eto.modal.file-upload-failed"));
   } finally {
-    yield put(actions.etoDocuments.hideIpfsModal());
+    yield put(actions.etoDocuments.loadFileDataStart());
   }
 }
 

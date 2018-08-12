@@ -17,6 +17,7 @@ import {
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
+import { TEtoDocumentTemplates } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { DeepPartial } from "../../types";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
@@ -164,6 +165,10 @@ export const selectCombinedEtoCompanyData = (
 
 export const selectCurrentEtoState = (state: IEtoFlowState): EtoState | undefined =>
   state.etoData && state.etoData.state;
+
+export const selectCurrentEtoTemplates = (
+  state: IEtoFlowState,
+): DeepPartial<TEtoDocumentTemplates> | undefined => state.etoData && state.etoData.templates;
 
 /* General Selector */
 

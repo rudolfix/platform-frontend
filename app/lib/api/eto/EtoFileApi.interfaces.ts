@@ -29,6 +29,7 @@ export type etoDocumentType =
   | "other";
 
 type etoFormType = "document" | "template";
+
 export interface IEtoDocument {
   documentType: etoDocumentType;
   form: etoFormType;
@@ -38,16 +39,27 @@ export interface IEtoDocument {
   placeholders?: { [key: string]: string };
 }
 
-type IFileInfo =
-  | "canDeleteInStates"
-  | "canUploadInStates"
-  | "requiredTemplates"
-  | "uploadable_documents";
+type IComplextFileInfo = "canDeleteInStates" | "canUploadInStates";
+
+type ISimpleFileInfo = "requiredTemplates" | "uploadableDocuments";
 
 export interface IEtoFiles {
-  etoTemplates: { [key: string]: IEtoDocument };
-  uploadedDocuments: { [key: string]: IEtoDocument };
-  stateInfo?: { [key in IFileInfo]: { [key in EtoState]: etoDocumentType[] } };
+  etoTemplates: TEtoDocumentTemplates;
+  uploadedDocuments: TEtoDocumentTemplates;
+  stateInfo?: { [key in ISimpleFileInfo]: etoDocumentType[] } &
+    { [key in IComplextFileInfo]: { [key in EtoState]: etoDocumentType[] } };
 }
 
 export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };
+
+export const immutableDocumentName: { [key: string]: string } = {
+  company_token_holder_agreement: "Company Token Holder Agreement",
+  investment_and_shareholder_agreement: "Investment and Shareholder Agreement",
+  pamphlet_template: "Pamphlet Template",
+  prospectus_template: "prospectus Template",
+  reservation_and_acquisition_agreement: "Reservation and Acquisition Agreement",
+  termsheet_template: "Termsheet Template",
+  bafin_approved_prospectus: "Bafin Approved Prospectus",
+  bafin_approved_pamphlet: "Bafin Approved Pamphlet",
+  signed_investment_and_shareholder_agreement: "Signed Investment and Shareholder Agreement",
+};

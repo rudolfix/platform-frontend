@@ -24,13 +24,14 @@ export class ImmutableStorageApi {
     const data = new FormData();
     data.append("file", file);
 
-    const response = await this.httpClient.post<TFileDescription>({
+    const response = await this.httpClient.post<IHttpResponse<TFileDescription>>({
       baseUrl: BASE_PATH,
       url: UPLOAD_DOCUMENT_PATH + `?declared_mime_type=${mime_type}`,
       formData: data,
       responseSchema: FileDescriptionValidator,
     });
-    return response;
+
+    return response.body;
   }
 
   public async getFile({
@@ -40,7 +41,7 @@ export class ImmutableStorageApi {
     asPdf,
   }: ImmutableFileId): Promise<IHttpResponse<TFileDescription>> {
     const placeHolder = placeholders ? JSON.stringify(placeholders) : "";
-    return await this.binaryHttpClient.get<any>({
+    const response = await this.binaryHttpClient.get<IHttpResponse<TFileDescription>>({
       baseUrl: BASE_PATH,
       url: DOWNLOAD_DOCUMENT_PATH + ipfsHash,
       queryParams: {
@@ -49,5 +50,6 @@ export class ImmutableStorageApi {
         as_pdf: asPdf.toString(),
       },
     });
+    return response.body;
   }
 }

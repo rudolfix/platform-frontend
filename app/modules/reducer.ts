@@ -6,6 +6,7 @@ import { etoFlowReducer } from "./eto-flow/reducer";
 import { etoReducer } from "./eto/reducer";
 import { gasReducer } from "./gas/reducer";
 import { genericModalReducer } from "./genericModal/reducer";
+import { icbmWalletBalanceModalReducer } from "./icbmWalletBalanceModal/reducer";
 import { initReducer } from "./init/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
@@ -44,5 +45,6 @@ export const appReducers = {
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
   txSender: txSenderReducer,
+  icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
 };

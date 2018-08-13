@@ -25,4 +25,9 @@
 .address-wrapper {
   flex: 1;
   margin-right: px-to-rem(20px);
+  padding-left: 10px;
+}
+
+.hidden-input {
+  @include visually-hidden;
 }

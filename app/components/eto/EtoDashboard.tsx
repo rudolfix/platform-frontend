@@ -182,6 +182,103 @@ class EtoDashboardComponent extends React.Component<IProps> {
       etoFormProgress && etoFormProgress >= SUBMIT_PROPOSAL_THRESHOLD
     );
 
+    const etoStateView = () => {
+      switch (etoState) {
+        case "preview":
+          return (
+            <>
+              {shouldViewSubmissionSection && (
+                <SubmitDashBoardSection isTermSheetSubmitted={isTermSheetSubmitted} />
+              )}
+              <Col xs={12}>
+                <FormattedMessage id="eto-dashboard-application-description" />
+              </Col>
+              <EtoProgressDashboardSection
+                {...etoProgressProps}
+                shouldEtoDataLoad={shouldEtoDataLoad!}
+              />
+            </>
+          );
+        case "pending":
+          return (
+            <>
+              <DashboardSection
+                hasDecorator={false}
+                title={<EtoProjectState status={etoState} />}
+              />
+              <Col xs={12}>
+                <FormattedMessage id="eto-dashboard-application-description" />
+              </Col>
+              <ETOFormsProgressSection
+                {...etoProgressProps}
+                shouldEtoDataLoad={shouldEtoDataLoad!}
+              />
+            </>
+          );
+        case "listed":
+          return (
+            <>
+              <DashboardSection
+                hasDecorator={false}
+                title={<EtoProjectState status={etoState} />}
+              />
+              <Col lg={4} xs={12}>
+                <BookBuildingWidget />
+              </Col>
+              {!isPamphletSubmitted && (
+                <Col lg={4} xs={12}>
+                  <UploadProspectusWidget />
+                </Col>
+              )}
+              {!isProspectusSubmitted && (
+                <Col lg={4} xs={12}>
+                  <UploadPamphletWidget />
+                </Col>
+              )}
+              <Col xs={12}>
+                <FormattedMessage id="eto-dashboard-application-description" />
+              </Col>
+              <ETOFormsProgressSection
+                {...etoProgressProps}
+                shouldEtoDataLoad={shouldEtoDataLoad!}
+              />
+            </>
+          );
+        case "prospectus_approved":
+          return (
+            <>
+              <DashboardSection
+                hasDecorator={false}
+                title={<EtoProjectState status={etoState} />}
+              />
+              <Col lg={4} xs={12}>
+                <BookBuildingWidget />
+              </Col>
+              {!isPamphletSubmitted && (
+                <Col lg={4} xs={12}>
+                  <UploadProspectusWidget />
+                </Col>
+              )}
+              {!isProspectusSubmitted && (
+                <Col lg={4} xs={12}>
+                  <UploadPamphletWidget />
+                </Col>
+              )}
+              <Col lg={4} xs={12}>
+                <ChoosePreEtoDateWidget />
+              </Col>
+              <Col xs={12}>
+                <FormattedMessage id="eto-dashboard-application-description" />
+              </Col>
+              <ETOFormsProgressSection
+                {...etoProgressProps}
+                shouldEtoDataLoad={shouldEtoDataLoad!}
+              />
+            </>
+          );
+      }
+    };
+
     return (
       <LayoutAuthorized>
         <Row className="row-gutter-top" data-test-id="eto-dashboard-application">
@@ -199,59 +296,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
                   <SettingsWidgets isDynamic={true} {...this.props} />
                 </>
               )}
-
-              {(etoState === "preview" || !etoState) && (
-                <>
-                  {shouldViewSubmissionSection && (
-                    <SubmitDashBoardSection isTermSheetSubmitted={isTermSheetSubmitted} />
-                  )}
-                  <EtoProgressDashboardSection
-                    {...etoProgressProps}
-                    shouldEtoDataLoad={shouldEtoDataLoad!}
-                  />
-                </>
-              )}
-              {(etoState === "pending" ||
-                etoState === "listed" ||
-                etoState === "prospectus_approved") && (
-                <>
-                  <DashboardSection
-                    hasDecorator={false}
-                    title={<EtoProjectState status={etoState} />}
-                  />
-                  {(etoState === "listed" || etoState === "prospectus_approved") && (
-                    <>
-                      <Col lg={4} xs={12}>
-                        {/* TODO: Add visibility logic for BookBuildingWidget*/}
-                        <BookBuildingWidget />
-                      </Col>
-                      {!isPamphletSubmitted && (
-                        <Col lg={4} xs={12}>
-                          {/* TODO: Add visibility logic for UploadProspectusWidget*/}
-                          <UploadProspectusWidget />
-                        </Col>
-                      )}
-                      {!isProspectusSubmitted && (
-                        <Col lg={4} xs={12}>
-                          <UploadPamphletWidget />
-                        </Col>
-                      )}
-                    </>
-                  )}
-                  {etoState === "prospectus_approved" && (
-                    <Col lg={4} xs={12}>
-                      <ChoosePreEtoDateWidget />
-                    </Col>
-                  )}
-                  <Col xs={12}>
-                    <FormattedMessage id="eto-dashboard-application-description" />
-                  </Col>
-                  <ETOFormsProgressSection
-                    {...etoProgressProps}
-                    shouldEtoDataLoad={shouldEtoDataLoad!}
-                  />
-                </>
-              )}
+              {etoStateView()}
             </>
           )}
         </Row>

@@ -1,9 +1,11 @@
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { IWalletStateData } from "../wallet/reducer";
 
 export interface IIcbmWalletBalanceModal {
   isOpen: boolean;
-  address: string;
+  ethAddress?: string;
+  walletData?: Partial<IWalletStateData>;
 }
 
 export interface ISendEthModalState {
@@ -13,7 +15,6 @@ export interface ISendEthModalState {
 
 const initialState: IIcbmWalletBalanceModal = {
   isOpen: false,
-  address: "",
 };
 
 export const icbmWalletBalanceModalReducer: AppReducer<IIcbmWalletBalanceModal> = (
@@ -23,13 +24,23 @@ export const icbmWalletBalanceModalReducer: AppReducer<IIcbmWalletBalanceModal> 
   switch (action.type) {
     case "ICBM_WALLET_BALANCE_MODAL_SHOW":
       return {
+        ...state,
         isOpen: true,
-        address: action.payload.address,
       };
     case "ICBM_WALLET_BALANCE_MODAL_HIDE":
       return {
+        ...state,
         isOpen: false,
-        address: action.payload.address,
+      };
+    case "ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA":
+      return {
+        ...state,
+        ethAddress: action.payload.ethAddress,
+      };
+    case "ICBM_WALLET_BALANCE_MODAL_LOAD_WALLET_DATA":
+      return {
+        ...state,
+        walletData: action.payload.data,
       };
     default:
       return state;

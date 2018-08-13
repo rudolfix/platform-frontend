@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../modules/actions";
+import { IWalletStateData } from "../../modules/wallet/reducer";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { InlineIcon } from "../shared/InlineIcon";
@@ -16,6 +17,8 @@ import * as styles from "./IcbmWalletBalanceModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
+  walletData?: Partial<IWalletStateData>;
+  ethAddress?: string;
 }
 
 interface IDispatchProps {
@@ -67,11 +70,13 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
               label={
                 <FormattedMessage id="settings.modal.icbm-wallet-balance.icbm-wallet-address.label" />
               }
-              value="test"
+              value={this.props.ethAddress || ""}
             />
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />}
-              value={"0"}
+              value={
+                (this.props.walletData && this.props.walletData.euroTokenICBMLockedBalance) || 0
+              }
               icon={iconNeu}
               link={{
                 title: (
@@ -82,7 +87,9 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
             />
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
-              value={"0"}
+              value={
+                (this.props.walletData && this.props.walletData.etherTokenICBMLockedBalance) || 0
+              }
               icon={iconEth}
               link={{
                 title: (
@@ -104,8 +111,10 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
 export const IcbmWalletBalanceModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: state.icbmWalletBalanceModal.isOpen,
+    ethAddress: state.icbmWalletBalanceModal.ethAddress,
+    walletData: state.icbmWalletBalanceModal.walletData,
   }),
   dispatchToProps: dispatch => ({
-    onCancel: () => dispatch(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal("")),
+    onCancel: () => dispatch(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal()),
   }),
 })(IcbmWalletBalanceComponent);

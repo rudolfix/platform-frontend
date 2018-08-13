@@ -22,3 +22,5 @@ declare module "react-id-swiper/lib/custom";
 declare module "react-blockies";
 
 declare module "qrcode";
+
+declare module "web3-utils";

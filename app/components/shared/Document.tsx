@@ -12,6 +12,7 @@ interface IDocumentProps {
 interface IDocumentTileProps {
   title: string;
   className?: string;
+  onlyDownload?: boolean;
   blank?: boolean;
   active?: boolean;
 }
@@ -47,6 +48,7 @@ export const DocumentTile: React.SFC<IDocumentProps & IDocumentTileProps> = ({
   title,
   className,
   blank,
+  onlyDownload,
   active,
 }) => {
   return (
@@ -61,7 +63,10 @@ export const DocumentTile: React.SFC<IDocumentProps & IDocumentTileProps> = ({
     >
       <Document extension={extension} blank={blank} />
       <p className={cn(styles.title, blank && styles.blankTitle)}>{title}</p>
-      <p className={cn(styles.subTitle)}>Drag and drop or Click to upload high quality PDF</p>
+      {!onlyDownload &&
+        blank && (
+          <p className={cn(styles.subTitle)}>Drag and drop or Click to upload high quality PDF</p>
+        )}
     </Col>
   );
 };

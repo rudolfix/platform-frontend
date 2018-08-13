@@ -2,6 +2,7 @@ import { fork, put } from "redux-saga/effects";
 
 import { UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { etoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { downloadLink } from "../immutableFile/sagas";
@@ -11,7 +12,7 @@ export function* generateTemplate(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
   action: TAction,
 ): any {
-  if (action.type !== "ETO_FLOW_GENERATE_TEMPLATE") return;
+  if (action.type !== "ETO_DOCUMENTS_GENERATE_TEMPLATE") return;
   try {
     const immutableFileId = action.payload.immutableFileId;
     const templates = yield apiEtoFileService.getEtoTemplate({
@@ -29,10 +30,29 @@ export function* generateTemplate(
       },
       asPdf: false,
     });
-    yield neuCall(downloadLink, generatedDocument, immutableFileId.name, false);
+    yield neuCall(downloadLink, generatedDocument, immutableFileId.name, ".doc");
   } catch (e) {
     logger.debug(e);
     notificationCenter.error("Failed to download file from IPFS");
+  }
+}
+
+export function* downloadDocumentByType(
+  { apiImmutableStorage, notificationCenter, logger }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_DOCUMENTS_DOWNLOAD_BY_TYPE") return;
+  try {
+    const matchingDocument = yield neuCall(getDocumentOfTypePromise, action.payload.documentType);
+    const downloadedDocument = yield apiImmutableStorage.getFile({
+      ipfsHash: matchingDocument.ipfsHash,
+      mimeType: matchingDocument.mimeType,
+      asPdf: true,
+    });
+    yield neuCall(downloadLink, downloadedDocument, matchingDocument.name, "");
+  } catch (e) {
+    logger.error(e);
+    notificationCenter.error("Failed to download file");
   }
 }
 
@@ -60,6 +80,17 @@ export function* loadEtoFileData({
   }
 }
 
+async function getDocumentOfTypePromise(
+  { apiEtoFileService }: TGlobalDependencies,
+  documentType: etoDocumentType,
+): Promise<IEtoDocument> {
+  const documents: any = await apiEtoFileService.getAllEtoDocuments();
+  const matchingDocument = Object.keys(documents).filter(ipfsHashKey => {
+    if (documents[ipfsHashKey].documentType === documentType) return documents[ipfsHashKey];
+  });
+  return documents[matchingDocument[0]];
+}
+
 function* uploadEtoFile(
   {
     apiEtoFileService,
@@ -71,15 +102,20 @@ function* uploadEtoFile(
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
-  if (action.type !== "ETO_FLOW_UPLOAD_DOCUMENT_START") return;
+  if (action.type !== "ETO_DOCUMENTS_UPLOAD_DOCUMENT_START") return;
   const { file, documentType } = action.payload;
   try {
     yield put(actions.etoDocuments.hideIpfsModal());
+
     yield neuCall(
       ensurePermissionsArePresent,
       [UPLOAD_IMMUTABLE_DOCUMENT],
       formatIntlMessage("eto.modal.submit-description"),
     );
+
+    const matchingDocument = yield neuCall(getDocumentOfTypePromise, documentType);
+    apiEtoFileService.deleteSpecificEtoDocument(matchingDocument.ipfsHash);
+
     yield apiEtoFileService.uploadEtoDocument(file, documentType);
     notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));
   } catch (e) {
@@ -91,7 +127,8 @@ function* uploadEtoFile(
 }
 
 export function* etoDocumentsSagas(): any {
-  yield fork(neuTakeEvery, "ETO_FLOW_GENERATE_TEMPLATE", generateTemplate);
-  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_FILE_DATA_START", loadEtoFileData);
-  yield fork(neuTakeEvery, "ETO_FLOW_UPLOAD_DOCUMENT_START", uploadEtoFile);
+  yield fork(neuTakeEvery, "ETO_DOCUMENTS_GENERATE_TEMPLATE", generateTemplate);
+  yield fork(neuTakeEvery, "ETO_DOCUMENTS_LOAD_FILE_DATA_START", loadEtoFileData);
+  yield fork(neuTakeEvery, "ETO_DOCUMENTS_UPLOAD_DOCUMENT_START", uploadEtoFile);
+  yield fork(neuTakeEvery, "ETO_DOCUMENTS_DOWNLOAD_BY_TYPE", downloadDocumentByType);
 }

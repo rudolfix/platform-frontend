@@ -13,6 +13,10 @@ const BASE_PATH = "/api/eto-listing/etos";
 const ETO_DOCUMENTS_PATH = "/me/documents";
 const ETO_DOCUMENTS_INFO_PATH = "/me/documents/state_info";
 const ETO_TEMPLATES_PATH = "/me/templates";
+
+export class EtoFileApiError extends Error {}
+export class FileAlreadyExists extends EtoFileApiError {}
+
 @injectable()
 export class EtoFileApi {
   constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
@@ -41,7 +45,20 @@ export class EtoFileApi {
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_PATH,
       formData: data,
+      allowedStatusCodes: [409],
     });
+    if (response.statusCode === 409) {
+      throw new FileAlreadyExists();
+    }
+    return response.body;
+  }
+
+  public async deleteSpecificEtoDocument(ipfsHash: string): Promise<IHttpResponse<string>> {
+    const response = await this.httpClient.delete<IHttpResponse<string>>({
+      baseUrl: BASE_PATH,
+      url: `${ETO_DOCUMENTS_PATH}/${ipfsHash}`,
+    });
+
     return response.body;
   }
 

@@ -13,7 +13,9 @@ export function* downloadFile(
   try {
     const immutableFileId = action.payload.immutableFileId;
     const downloadedFile = yield apiImmutableStorage.getFile(immutableFileId);
-    yield neuCall(downloadLink, downloadedFile, action.payload.fileName, immutableFileId.asPdf);
+    const extension = immutableFileId.asPdf ? ".pdf" : ".doc";
+
+    yield neuCall(downloadLink, downloadedFile, action.payload.fileName, extension);
   } catch (e) {
     logger.debug(e);
     notificationCenter.error("Failed to download file from IPFS");
@@ -28,8 +30,7 @@ export function downloadLink(
   _deps: TGlobalDependencies,
   blob: Blob,
   name: string,
-  isPdf: boolean,
+  fileExtension: string,
 ): void {
-  const fileExtention = isPdf ? ".pdf" : ".docx";
-  saveAs(blob, name + fileExtention);
+  saveAs(blob, name + fileExtension);
 }

@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { EtoState } from "../lib/api/eto/EtoApi.interfaces";
 import {
   etoDocumentType,
   IEtoDocument,
@@ -12,11 +13,16 @@ import {
 } from "../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../modules/actions";
 import {
+  selectEtoDocumentData,
+  selectEtoDocumentLoading,
+} from "../modules/eto-documents/selectors";
+import {
   selectCurrentEtoState,
   selectCurrentEtoTemplates,
   selectEtoLoading,
 } from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
+import { DeepPartial } from "../types";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { ETOAddDocuments } from "./eto/shared/EtoAddDocument";
 import { EtoFileIpfsModal } from "./eto/shared/EtoFileIpfsModal";
@@ -26,12 +32,7 @@ import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
 import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
-import { EtoState } from "../lib/api/eto/EtoApi.interfaces";
-import {
-  selectEtoDocumentData,
-  selectEtoDocumentLoading,
-} from "../modules/eto-documents/selectors";
-import { DeepPartial } from "../types";
+import * as cn from "classnames";
 import * as styles from "./Documents.module.scss";
 
 export const GeneratedDocuments: React.SFC<{
@@ -49,6 +50,7 @@ export const GeneratedDocuments: React.SFC<{
           title={immutableDocumentName[document.documentType]}
           extension={".doc"}
           blank={false}
+          onlyDownload={true}
         />
       </div>
     </Col>
@@ -64,10 +66,11 @@ class DocumentsComponent extends React.Component<IProps> {
       etoFileLoading,
       etoState,
       etoLinks,
+      downloadDocumentByType,
     } = this.props;
     const { etoTemplates, uploadedDocuments, stateInfo } = etoFilesData;
     const generalUploadables = stateInfo
-      ? ([] as etoDocumentType[]).concat(stateInfo.requiredTemplates, stateInfo.uploadableDocuments)
+      ? ([] as etoDocumentType[]).concat(stateInfo.uploadableDocuments)
       : [];
     return (
       <LayoutAuthorized>
@@ -107,24 +110,30 @@ class DocumentsComponent extends React.Component<IProps> {
                 </Col>
                 {generalUploadables.map((key: etoDocumentType, index: number) => {
                   const typedFileName = immutableDocumentName[key];
-                  const isFileUploaded =
+                  const canUpload =
                     stateInfo &&
                     stateInfo.canUploadInStates[etoState].some(fileName => fileName === key);
-
+                  const isFileUploaded = Object.keys(uploadedDocuments).some(
+                    uploadedKey => uploadedDocuments[uploadedKey].documentType === key,
+                  );
                   return (
                     <Col xs={6} lg={3} key={index} className="mb-2">
-                      <ETOAddDocuments documentType={key} disabled={!isFileUploaded}>
+                      <ETOAddDocuments documentType={key} disabled={!canUpload}>
                         <DocumentTile
                           title={typedFileName}
                           extension={".pdf"}
-                          active={isFileUploaded}
-                          blank={
-                            !Object.keys(uploadedDocuments).some(
-                              uploadedKey => uploadedDocuments[uploadedKey].documentType === key,
-                            )
-                          }
+                          active={canUpload}
+                          blank={!isFileUploaded}
                         />
                       </ETOAddDocuments>
+                      {isFileUploaded && (
+                        <div
+                          onClick={() => downloadDocumentByType(key)}
+                          className={cn(styles.subTitleDownload)}
+                        >
+                          Download
+                        </div>
+                      )}
                     </Col>
                   );
                 })}
@@ -163,6 +172,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   generateTemplate: (document: IEtoDocument) => void;
+  downloadDocumentByType: (documentType: etoDocumentType) => void;
 }
 
 export const Documents = compose<React.SFC>(
@@ -177,6 +187,8 @@ export const Documents = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       generateTemplate: document => dispatch(actions.etoDocuments.generateTemplate(document)),
+      downloadDocumentByType: documentType =>
+        dispatch(actions.etoDocuments.downloadDocumentByType(documentType)),
     }),
   }),
 )(DocumentsComponent);

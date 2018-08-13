@@ -8,3 +8,13 @@
 
   margin-bottom: $spacing-vertical-lg-1;
 }
+
+.sub-title-download {
+  color: $color-black;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: px-to-rem(8px);
+  margin-bottom: 0;
+  cursor: pointer;
+}

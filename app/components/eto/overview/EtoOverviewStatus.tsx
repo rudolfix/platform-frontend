@@ -28,8 +28,8 @@ interface IPublicWidget {
 }
 
 interface IProps {
-  tokenName: string;
-  tokenSymbol: string;
+  tokenName?: string;
+  tokenSymbol?: string;
   status: TStatus;
   image: IResponsiveImage;
   prospectusApproved: boolean;
@@ -78,7 +78,7 @@ const CampaigningWidget: React.SFC<ICampaigningWidget> = ({ amountBacked, invest
   );
 };
 
-const ClaimWidget: React.SFC<{ tokenName: string }> = ({ tokenName }) => (
+const ClaimWidget: React.SFC<{ tokenName?: string }> = ({ tokenName }) => (
   <div className={styles.widgetClaim}>
     <div className={styles.message}>
       <FormattedMessage id="shared-component.eto-overview.success" />

@@ -13,6 +13,7 @@ import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
+import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormFieldDate } from "../../../shared/forms/formField/FormFieldDate";
 import { FormSelectField } from "../../../shared/forms/formField/FormSelectField";
 import { FormField } from "../../../shared/forms/forms";
@@ -42,6 +43,14 @@ export const FUNDING_ROUNDS: IRounds = {
   public: "Public",
 };
 
+const NUMBER_OF_EMPLOYEES = {
+  NONE_KEY: <FormattedMessage id="form.select.please-select" />,
+  "1-9": "1-9",
+  "10-99": "10-99",
+  "100-999": "100-999",
+  ">1000": ">1000",
+};
+
 interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
@@ -52,29 +61,71 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
     <EtoFormBase title="Legal Information" validator={EtoLegalInformationType.toYup()}>
       <Section>
-        <FormField label="Legal company name" name="name" disabled />
-        <FormField label="Legal form" name="legalForm" disabled />
-        <FormField label="Company Street Address" name="street" disabled />
-        <FormField label="City / Country" name="country" disabled />
-        <FormField label="Registration number*" name="registrationNumber" />
-        <FormField label="Vat number*" name="vatNumber" />
-        <FormFieldDate label="Company founding date*" name="foundingDate" />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.legal-company-name" />}
+          name="name"
+          disabled
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.legal-form" />}
+          name="legalForm"
+          disabled
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.company-state-address" />}
+          name="street"
+          disabled
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.city-country" />}
+          name="country"
+          disabled
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.registration-name" />}
+          name="registrationNumber"
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.vat-number" />}
+          name="vatNumber"
+        />
+        <FormFieldDate
+          label={<FormattedMessage id="eto.form.legal-information.company-founding-date" />}
+          name="foundingDate"
+        />
         <FormSelectField
-          label="Number of employees*"
-          values={{
-            NONE_KEY: <FormattedMessage id="form.select.please-select" />,
-            "1-9": "1-9",
-            "10-99": "10-99",
-            "100-999": "100-999",
-            ">1000": ">1000",
-          }}
+          label={<FormattedMessage id="eto.form.legal-information.number-of-employees" />}
+          values={NUMBER_OF_EMPLOYEES}
           name="numberOfEmployees"
         />
-        <FormField label="Number of founders" type="number" name="numberOfFounders" />
-        <FormSelectField label="Last Funding Round*" values={FUNDING_ROUNDS} name="companyStage" />
-        <FormField label="Last Funding Amount" type="number" name="lastFundingSizeEur" />
-        <FormField label="Number of existing shares" type="number" name="companyShares" />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.number-of-founders" />}
+          type="number"
+          name="numberOfFounders"
+        />
+        <FormSelectField
+          label={<FormattedMessage id="eto.form.legal-information.last-founding-round" />}
+          values={FUNDING_ROUNDS}
+          name="companyStage"
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.last-founding-amount" />}
+          type="number"
+          name="lastFundingSizeEur"
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.legal-information.number-of-existing-shares" />}
+          type="number"
+          min="0"
+          name="companyShares"
+        />
         {/* TODO: Add pie chart */}
+        <FormCategoryDistribution
+          name="shareholders"
+          label={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
+          suggestions={["Full Name"]}
+          blankField={{ fullName: "", shares: "" }}
+        />
       </Section>
       <Col>
         <Row className="justify-content-end">
@@ -86,7 +137,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
             }}
             isLoading={props.savingData}
           >
-            Save
+            <FormattedMessage id="form.button.save" />
           </Button>
         </Row>
       </Col>

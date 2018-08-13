@@ -29,6 +29,7 @@ storiesOf("FormCategoryDistribution", module)
       ],
     })(() => (
       <FormCategoryDistribution
+        transformRatio={100}
         label="HOW WILL YOU USE THE RAISED CAPITAL?"
         name="test"
         paragraphName="paragraph"

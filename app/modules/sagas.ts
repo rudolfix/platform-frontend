@@ -8,6 +8,7 @@ import { dashboardSagas } from "./dashboard/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
+import { icbmWalletGetDataSagas } from "./icbmWalletBalanceModal/sagas";
 import { initSagas } from "./init/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { settingsSagas } from "./settings/sagas";
@@ -16,7 +17,7 @@ import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { txSendingSagasWatcher } from "./tx/sender/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
-import { walletGetDataSaga, walletSagas } from "./wallet/sagas";
+import { walletSagas } from "./wallet/sagas";
 import { web3Sagas } from "./web3/sagas";
 
 /**
@@ -33,7 +34,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(walletSelectorSagas),
     effects.fork(lightWalletSagas),
     effects.fork(walletSagas),
-    effects.fork(walletGetDataSaga),
+    effects.fork(icbmWalletGetDataSagas),
     effects.fork(etoFlowSagas),
     effects.fork(etoSagas),
     effects.fork(formSingleFileUploadSagas),

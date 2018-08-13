@@ -46,7 +46,7 @@ run_backend() {
             echo "using env variable"
             echo "${BACKEND_DEPLOYMENT_KEY}" | base64 -d > "./cert"
             chmod 600 ./cert
-            ssh-agent sh -c 'ssh-add ./cert; git clone git@github.com:Neufund/platform-backend.git; cd ./platform-backend; git reset --hard ${BACKEND_SHA}'
+            ssh-agent sh -c "ssh-add ./cert && git clone git@github.com:Neufund/platform-backend.git && cd ./platform-backend && git reset --hard ${BACKEND_SHA} && git status"
         fi
     fi
 

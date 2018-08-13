@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
+import { Link } from "react-router-dom";
 
 import { selectNeuBalanceEuroAmount } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
@@ -10,6 +10,7 @@ import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
+import { appRoutes } from "../../appRoutes";
 import * as styles from "./MyPortfolioWidget.module.scss";
 
 type TOwnProps = CommonHtmlProps;
@@ -34,19 +35,22 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, d
   }
 
   return (
-    <>
-      <Col xl={8} md={7} xs={12} className="mt-5 text-center mb-4 ">
+    <div className={styles.contentWrapper}>
+      <div className={styles.main}>
         <h3>
           <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
         </h3>
         <p>
-          <FormattedMessage id="dashboard.my-portfolio-widget.no-assets" />
+          <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
+          <Link to={appRoutes.settings} className={styles.link}>
+            <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
+          </Link>
         </p>
-      </Col>
-      <Col xl={4} md={5} xs={12} className="mt-3">
+      </div>
+      <div className={styles.side}>
         <MyNeuWidget balanceNeu={data!.balanceNeu} balanceEur={data!.balanceEur} />
-      </Col>
-    </>
+      </div>
+    </div>
   );
 };
 
@@ -65,7 +69,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
       className={className}
       style={style}
     >
-      <Row className={styles.main}>
+      <>
         {isLoading ? (
           <LoadingIndicator />
         ) : (
@@ -75,7 +79,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
             test-data-id="dashboard-my-portfolio-widget"
           />
         )}
-      </Row>
+      </>
     </Panel>
   );
 };

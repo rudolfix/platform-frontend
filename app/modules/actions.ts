@@ -10,6 +10,7 @@ import { etoFlowActions } from "./eto-flow/actions";
 import { etoActions } from "./eto/actions";
 import { gasActions } from "./gas/actions";
 import { genericModalActions } from "./genericModal/actions";
+import { icbmWalletBalanceModalActions } from "./icbmWalletBalanceModal/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
@@ -44,6 +45,7 @@ export const actions = {
   formSingleFileUpload: formSingleFileUploadActions,
   remoteFile: remoteFileActions,
   depositEthModal: depositModalActions,
+  icbmWalletBalanceModal: icbmWalletBalanceModalActions,
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
   gas: gasActions,
@@ -74,6 +76,7 @@ export const allActions = {
   ...depositModalActions,
   ...txMonitorActions,
   ...txSenderActions,
+  ...icbmWalletBalanceModalActions,
   ...gasActions,
 };
 

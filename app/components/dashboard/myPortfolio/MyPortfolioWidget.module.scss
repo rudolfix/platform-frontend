@@ -1,6 +1,29 @@
+.content-wrapper {
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+
+  display: flex;
+  flex-direction: column;
+}
+
 .main {
-  background-image: url("../../../assets/img/logo_cropped_background.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position-y: 30px;
+  @include media-breakpoint-up(md) {
+    padding-right: 20px;
+  }
+
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.side {
+  min-height: 180px;
+}
+
+.link {
+  text-decoration: underline;
 }

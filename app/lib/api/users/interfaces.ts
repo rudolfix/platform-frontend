@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import { WalletSubType, WalletType } from "../../../modules/web3/types";
+import * as YupTS from "../../yup-ts";
 
 export type TUserType = "investor" | "issuer";
 
@@ -46,3 +47,28 @@ export const UserValidator = Yup.object()
 export const emailStatus = Yup.object().shape({
   isAvailable: Yup.boolean(),
 });
+
+const TxSchema = YupTS.object({
+  blockHash: YupTS.string().optional(),
+  blockNumber: YupTS.string().optional(),
+  chainId: YupTS.string().optional(),
+  from: YupTS.string(),
+  gas: YupTS.string(),
+  gasPrice: YupTS.string(),
+  hash: YupTS.string(),
+  input: YupTS.string(),
+  nonce: YupTS.string(),
+  status: YupTS.string().optional(),
+  to: YupTS.string(),
+  transactionIndex: YupTS.string().optional(),
+  value: YupTS.string(),
+});
+
+export const TxWithMetadataSchema = YupTS.object({
+  transaction: TxSchema,
+  transactionType: YupTS.string(),
+});
+
+export type TxWithMetadata = YupTS.TypeOf<typeof TxWithMetadataSchema>;
+export const TxWithMetadataValidator = TxWithMetadataSchema.toYup();
+export const TxWithMetadataListValidator = YupTS.array(TxWithMetadataSchema).toYup();

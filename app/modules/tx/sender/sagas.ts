@@ -4,11 +4,9 @@ import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IAppState } from "../../../store";
-import { EthereumAddress } from "../../../types";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { selectEthereumAddress } from "../../web3/selectors";
 import { TxSenderType } from "./reducer";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
@@ -59,11 +57,9 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
   if (!txData) {
     throw new Error("Tx data is not defined");
   }
-  const address: EthereumAddress = yield select((s: IAppState) => selectEthereumAddress(s.web3));
-  const finalData = { ...txData, from: address };
 
   try {
-    const txHash = yield web3Manager.sendTransaction(finalData);
+    const txHash = yield web3Manager.sendTransaction(txData);
     yield put(actions.txSender.txSenderSigned(txHash));
 
     return txHash;

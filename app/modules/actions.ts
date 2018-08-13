@@ -85,3 +85,4 @@ export const allActions = {
  */
 type TActionCreatorsUnionType = TDictionaryValues<typeof allActions>;
 export type TAction = ReturnType<TActionCreatorsUnionType>;
+export type TActionType = TAction["type"];

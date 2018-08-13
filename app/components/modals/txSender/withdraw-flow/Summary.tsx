@@ -4,9 +4,11 @@ import { Col, Row } from "reactstrap";
 
 import { Button } from "../../../shared/Buttons";
 import { Heading } from "../../../shared/modals/Heading";
+import { Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ISummaryComponentProps } from "../TxSender";
+import { GweiFormatter } from "./Withdraw";
 
 export const WithdrawSummary: React.SFC<ISummaryComponentProps> = ({ data, onAccept }) => (
   <>
@@ -22,11 +24,17 @@ export const WithdrawSummary: React.SFC<ISummaryComponentProps> = ({ data, onAcc
       <Col>
         <InfoList>
           <InfoRow caption={<FormattedMessage id="withdraw-flow.to" />} value={data.to} />
-          <InfoRow caption={<FormattedMessage id="withdraw-flow.cost" />} value={data.value} />
-          <InfoRow caption={<FormattedMessage id="withdraw-flow.gas" />} value={data.gas} />
+
+          <InfoRow
+            caption={<FormattedMessage id="withdraw-flow.cost" />}
+            value={<Money currency="eth" value={data.value!} />}
+          />
+
+          <InfoRow caption={<FormattedMessage id="withdraw-flow.gas" />} value={data.gas!} />
+
           <InfoRow
             caption={<FormattedMessage id="withdraw-flow.gasPrice" />}
-            value={data.gasPrice}
+            value={<GweiFormatter value={data.gasPrice!} />}
           />
         </InfoList>
       </Col>

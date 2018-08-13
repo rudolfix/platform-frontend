@@ -9,8 +9,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { IWalletStateData } from "../wallet/reducer";
 import { selectIcbmWalletEthAddress } from "./selectors";
 
-function* loadIcbmWalletDataSaga({ logger }: TGlobalDependencies): any {
-  // TODO: get eth address
+function* loadIcbmWalletDataSaga({ logger, notificationCenter }: TGlobalDependencies): any {
   const ethAddress = yield select((s: IAppState) =>
     selectIcbmWalletEthAddress(s.icbmWalletBalanceModal),
   );
@@ -21,6 +20,8 @@ function* loadIcbmWalletDataSaga({ logger }: TGlobalDependencies): any {
     yield put(actions.icbmWalletBalanceModal.loadIcbmWalletData(state));
   } catch (e) {
     logger.error("Error while loading wallet data: ", e);
+
+    notificationCenter.error("Error while loading wallet data");
   }
 }
 

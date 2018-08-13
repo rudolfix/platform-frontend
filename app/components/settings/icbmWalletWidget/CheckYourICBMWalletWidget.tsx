@@ -14,7 +14,7 @@ import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./CheckYourICBMWalletWidget.module.scss";
 
 interface IDispatchProps {
-  onSubmit: () => void;
+  onSubmit: (address: string) => void;
 }
 
 class FormContent extends React.Component {
@@ -55,7 +55,10 @@ class CheckYourICBMWalletWidgetComponent extends React.Component<IDispatchProps>
         <p>
           <FormattedMessage id="check-your-icbm-wallet-widget.notice" />
         </p>
-        <Formik initialValues={{ address: "" }} onSubmit={this.props.onSubmit}>
+        <Formik
+          initialValues={{ address: "" }}
+          onSubmit={values => this.props.onSubmit(values.address)}
+        >
           <Form>
             <FormContent />
           </Form>
@@ -67,9 +70,8 @@ class CheckYourICBMWalletWidgetComponent extends React.Component<IDispatchProps>
 
 export const CheckYourICBMWalletWidget = appConnect<IDispatchProps>({
   dispatchToProps: dispatch => ({
-    onSubmit: () => {
-      //  TODO: Pass correct eth address
-      // dispatch(actions.icbmWalletBalanceModal.getWalletData("0x8e75544b848f0a32a1ab119e3916ec7138f3bed"))
+    onSubmit: (address: string) => {
+      dispatch(actions.icbmWalletBalanceModal.getWalletData(address));
       dispatch(actions.icbmWalletBalanceModal.startLoadingIcbmWalletBalanceData());
       dispatch(actions.icbmWalletBalanceModal.showIcbmWalletBalanceModal());
     },

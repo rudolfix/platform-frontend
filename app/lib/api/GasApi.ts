@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
+import * as Web3Utils from "web3-utils";
 import * as YupTS from "../yup-ts";
 
 import { symbols } from "../../di/symbols";
-import { Web3Manager } from "../web3/Web3Manager";
 import { IHttpClient, IHttpResponse } from "./client/IHttpClient";
 
 const BASE_PATH = "/api/gas/";
@@ -10,10 +10,7 @@ const GET_GAS_PATH = "/gas";
 
 @injectable()
 export class GasApi {
-  constructor(
-    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
-    @inject(symbols.web3Manager) private web3: Web3Manager,
-  ) {}
+  constructor(@inject(symbols.authorizedHttpClient) private httpClient: IHttpClient) {}
 
   public async getGas(): Promise<IHttpResponse<GasModelShape>> {
     const results = await this.httpClient.get<GasModelShape>({
@@ -30,10 +27,10 @@ export class GasApi {
 
   private transformBody(gas: GasModelShape): GasModelShape {
     return {
-      fast: this.web3.internalWeb3Adapter.web3.toWei(gas.fast, "gwei"),
-      fastest: this.web3.internalWeb3Adapter.web3.toWei(gas.fastest, "gwei"),
-      safeLow: this.web3.internalWeb3Adapter.web3.toWei(gas.safeLow, "gwei"),
-      standard: this.web3.internalWeb3Adapter.web3.toWei(gas.standard, "gwei"),
+      fast: Web3Utils.toWei(gas.fast, "gwei"),
+      fastest: Web3Utils.toWei(gas.fastest, "gwei"),
+      safeLow: Web3Utils.toWei(gas.safeLow, "gwei"),
+      standard: Web3Utils.toWei(gas.standard, "gwei"),
     };
   }
 }

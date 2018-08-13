@@ -75,4 +75,11 @@ describe("yup-ts", () => {
       expect(validator.isValidSync(undefined)).to.be.true;
     });
   });
+
+  it("should validate empty arrays", () => {
+    const array = YupTS.array(animalValidator).toYup();
+
+    expect(array.isValidSync([])).to.be.true;
+    expect(array.isValidSync(null)).to.be.false;
+  });
 });

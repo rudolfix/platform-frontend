@@ -164,7 +164,12 @@ class ArrayYTS<T extends YTS<any>> extends YTS<Array<TypeOf<T>>> {
     const validator = Yup.array().of(this.shape.toYup());
 
     if (this.isRequired) {
-      return validator.required("This field is required");
+      // we can't use here .required() since it will throw on empty array. See: https://github.com/jquense/yup/issues/189
+      return validator.test(
+        "is-required",
+        "This field is required",
+        val => val !== undefined && val !== null,
+      );
     }
     return validator;
   }

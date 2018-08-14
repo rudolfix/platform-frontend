@@ -93,7 +93,9 @@ export class Web3Adapter {
     return new Promise<Web3.Transaction>((resolve, reject) => {
       this.watchNewBlock(async blockId => {
         try {
-          await options.onNewBlock(blockId);
+          if (options.onNewBlock) {
+            await options.onNewBlock(blockId);
+          }
 
           const tx = await getTx(options.txHash);
           const isMined = tx && tx.blockNumber;
@@ -143,7 +145,7 @@ export class Web3Adapter {
 
 interface IWaitForTxOptions {
   txHash: string;
-  onNewBlock: (blockId: number) => Promise<void>;
+  onNewBlock?: (blockId: number) => Promise<void>;
 }
 
 interface ITypedDataToSign {

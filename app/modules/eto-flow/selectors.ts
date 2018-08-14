@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { IAppState } from "./../../store";
+import { IAppState } from "../../store";
 
 import {
   EtoCompanyInformationType,

@@ -8,6 +8,7 @@ import { IAppState } from "../../../store";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
+import { updateTxs } from "../monitor/sagas";
 import { ITxData, TxSenderType } from "./reducer";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
@@ -43,6 +44,8 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.txSenderShowModal(type));
 
+  yield neuCall(ensureNoPendingTx);
+
   yield take("TX_SENDER_ACCEPT");
 
   yield call(connectWallet, "Send funds!");
@@ -51,6 +54,30 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
   const txHash = yield neuCall(sendTxSubSaga);
 
   yield neuCall(watchTxSubSaga, txHash);
+}
+
+function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDependencies): any {
+  let txs: Array<TxWithMetadata> = yield select((s: IAppState) => s.txMonitor.txs);
+
+  if (txs.length >= 1) {
+    yield put(actions.txSender.txSenderWatchPendingTxs());
+
+    while (txs.length > 0) {
+      const {
+        transaction: { hash: txHash },
+      } = txs[0];
+
+      logger.info("Watching tx: ", txHash);
+      yield web3Manager.internalWeb3Adapter.waitForTx({ txHash });
+
+      yield apiUserService.deletePendingTx(txHash);
+
+      yield neuCall(updateTxs);
+      txs = yield select((s: IAppState) => s.txMonitor.txs);
+    }
+
+    yield put(actions.txSender.txSenderWatchPendingTxsDone());
+  }
 }
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
@@ -80,7 +107,8 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
       },
       transactionType: "WITHDRAW", // @todo hardcoded
     };
-    yield apiUserService.addPendingTxs(txWithMetadata);
+    yield apiUserService.addPendingTx(txWithMetadata);
+    yield neuCall(updateTxs);
 
     return txHash;
   } catch (e) {

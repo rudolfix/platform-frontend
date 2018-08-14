@@ -142,7 +142,7 @@ export class UsersApi {
     return response.body;
   }
 
-  public async addPendingTxs(tx: TxWithMetadata): Promise<void> {
+  public async addPendingTx(tx: TxWithMetadata): Promise<void> {
     await this.httpClient.put<void>({
       baseUrl: USER_API_ROOT,
       url: "/pending_transactions/me",
@@ -151,6 +151,13 @@ export class UsersApi {
         transaction_type: tx.transactionType,
       },
       disableManglingRequestBody: true,
+    });
+  }
+
+  public async deletePendingTx(txHash: string): Promise<void> {
+    await this.httpClient.delete<void>({
+      baseUrl: USER_API_ROOT,
+      url: `/pending_transactions/me/${txHash}`,
     });
   }
 }

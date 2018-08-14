@@ -129,7 +129,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           </FormLabel>
           <FormRange
             name="publicDurationDays"
-            min={14}
+            min={0}
             unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
             max={60}
           />

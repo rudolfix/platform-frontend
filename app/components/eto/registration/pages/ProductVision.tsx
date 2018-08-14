@@ -41,7 +41,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
           placeholder="Describe"
           name="problemSolved"
-          charactersLimit={250}
         />
 
         <FormTextArea
@@ -49,7 +48,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.customer-group" />}
           placeholder="Describe"
           name="customerGroup"
-          charactersLimit={250}
         />
 
         <FormTextArea
@@ -57,7 +55,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.product-vision" />}
           placeholder="Describe"
           name="productVision"
-          charactersLimit={250}
         />
 
         <FormTextArea
@@ -65,7 +62,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.inspiration" />}
           placeholder="Describe"
           name="inspiration"
-          charactersLimit={250}
         />
 
         <FormTextArea
@@ -94,7 +90,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.sales-model" />}
           placeholder="Describe"
           name="salesModel"
-          charactersLimit={250}
         />
 
         <FormTextArea
@@ -102,7 +97,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
           placeholder="Describe"
           name="marketingApproach"
-          charactersLimit={250}
         />
 
         <FormTextArea
@@ -110,7 +104,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
           placeholder="Describe"
           name="sellingProposition"
-          charactersLimit={250}
         />
       </Section>
       <Col>

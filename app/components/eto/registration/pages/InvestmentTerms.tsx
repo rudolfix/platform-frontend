@@ -98,7 +98,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           placeholder="Number of share"
           name="minimumNewSharesToIssue"
           type="number"
-          min="0"
+          min="1"
         />
         <FormField
           label={

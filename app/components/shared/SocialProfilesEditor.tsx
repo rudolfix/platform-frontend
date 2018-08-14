@@ -29,7 +29,7 @@ export const SOCIAL_PROFILES_ICONS = [
     name: "twitter",
     placeholder: "Twitter",
     svgIcon: socialTwitter,
-    preSelected: true
+    preSelected: true,
   },
   {
     name: "facebook",
@@ -159,7 +159,7 @@ export interface ISocialProfile {
   svgIcon: string;
   placeholder?: string;
   url?: string;
-  preSelected?: boolean
+  preSelected?: boolean;
 }
 
 interface IProps {
@@ -183,7 +183,7 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
     formik: PropTypes.object,
   };
 
-  componentDidMount (): void {
+  componentDidMount(): void {
     const { values, setFieldValue } = this.context.formik as FormikProps<any>;
     const { name, profiles } = this.props;
     const socialMediaValues: TSocialChannelsType = getIn(values, name) || [];
@@ -195,7 +195,6 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
       selectedFields[index] = profile.preSelected ? true : !!value;
     });
     this.setState({ ...this.state, selectedFields });
-
   }
 
   toggleProfileVisibility = (index: number): void => {

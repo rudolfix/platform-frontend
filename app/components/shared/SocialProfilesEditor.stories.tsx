@@ -45,7 +45,7 @@ const socialProfiles = [
     name: "Reddit",
     url: "reddit.com",
     svgIcon: redditIcon,
-    preSelected: true
+    preSelected: true,
   },
   {
     name: "Telegram",
@@ -54,7 +54,7 @@ const socialProfiles = [
   {
     name: "Github",
     svgIcon: githubIcon,
-    preSelected: true
+    preSelected: true,
   },
   {
     name: "Instagram",
@@ -74,6 +74,9 @@ const socialProfiles = [
   },
 ];
 
-storiesOf("SocialProfilesEditor", module).add("default",
-  formWrapper({name: [{type: 'twitter', url: 'fufu'}]})(() => <SocialProfilesEditor profiles={socialProfiles} name="name" />),
+storiesOf("SocialProfilesEditor", module).add(
+  "default",
+  formWrapper({ name: [{ type: "twitter", url: "fufu" }] })(() => (
+    <SocialProfilesEditor profiles={socialProfiles} name="name" />
+  )),
 );

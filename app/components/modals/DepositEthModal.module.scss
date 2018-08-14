@@ -30,3 +30,10 @@
   align-items: center;
   padding-bottom: $spacing-vertical-lg-3;
 }
+
+.address {
+  @include media-breakpoint-up(sm) {
+    max-width: px-to-rem(330px);
+  }
+  margin: 0 auto;
+}

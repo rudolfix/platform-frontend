@@ -5,7 +5,6 @@ import * as React from "react";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
-import { Avatar } from "../../Avatar";
 import { CustomTooltip } from "../../CustomTooltip";
 import { FormLabel } from "./FormLabel";
 import { isNonValid } from "./utils";
@@ -84,12 +83,6 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
                   )}
                 </InputGroupAddon>
               </InputGroup>
-              {hasAvatar && (
-                <Avatar
-                  seed={field.value || ""}
-                  style={{ position: "absolute", right: "36px", top: "-40px" }}
-                />
-              )}
             </>
           )}
         />

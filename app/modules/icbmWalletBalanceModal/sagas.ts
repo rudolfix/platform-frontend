@@ -31,8 +31,9 @@ async function loadIcbmWalletDataAsync(
 ): Promise<Partial<IWalletStateData>> {
   return numericValuesToString(
     await promiseAll({
-      euroTokenICBMLockedBalance: contractsService.euroLock.balanceOf(ethAddress).then(b => b[0]),
       etherTokenICBMLockedBalance: contractsService.etherLock.balanceOf(ethAddress).then(b => b[0]),
+      euroTokenICBMLockedBalance: contractsService.euroLock.balanceOf(ethAddress).then(b => b[1]),
+      timestamp: contractsService.etherLock.balanceOf(ethAddress).then(b => b[2]),
     }),
   );
 }

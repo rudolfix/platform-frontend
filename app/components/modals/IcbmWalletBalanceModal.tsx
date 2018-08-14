@@ -7,6 +7,7 @@ import { IWalletStateData } from "../../modules/wallet/reducer";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { InlineIcon } from "../shared/InlineIcon";
+import { Money } from "../shared/Money";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ModalComponentBody } from "./ModalComponentBody";
 
@@ -27,7 +28,7 @@ interface IDispatchProps {
 
 interface IProps {
   label: TTranslatedString;
-  value: string | number;
+  value: string | React.ReactNode;
   icon?: string;
   link?: {
     title: TTranslatedString;
@@ -75,28 +76,28 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />}
               value={
-                (this.props.walletData && this.props.walletData.euroTokenICBMLockedBalance) || 0
+                <Money
+                  currency="neu"
+                  value={
+                    (this.props.walletData && this.props.walletData.euroTokenICBMLockedBalance) ||
+                    "0"
+                  }
+                />
               }
               icon={iconNeu}
-              link={{
-                title: (
-                  <FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.link" />
-                ),
-                url: "#0",
-              }}
             />
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
               value={
-                (this.props.walletData && this.props.walletData.etherTokenICBMLockedBalance) || 0
+                <Money
+                  value={
+                    (this.props.walletData && this.props.walletData.etherTokenICBMLockedBalance) ||
+                    "0"
+                  }
+                  currency="eth"
+                />
               }
               icon={iconEth}
-              link={{
-                title: (
-                  <FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.link" />
-                ),
-                url: "#0",
-              }}
             />
             <p className={styles.footer}>
               <FormattedMessage id="settings.modal.icbm-wallet-balance.coming-soon" />

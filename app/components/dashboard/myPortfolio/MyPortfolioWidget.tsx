@@ -20,6 +20,7 @@ interface IBodyProps {
   data?: {
     balanceNeu: string;
     balanceEur: string;
+    isIcbmWalletConnected?: boolean;
   };
 }
 
@@ -40,12 +41,14 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, d
         <h3>
           <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
         </h3>
-        <p>
-          <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
-          <Link to={appRoutes.settings} className={styles.link}>
-            <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
-          </Link>
-        </p>
+        {data && data.isIcbmWalletConnected ? (
+          <p>
+            <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
+            <Link to={appRoutes.settings} className={styles.link}>
+              <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
+            </Link>
+          </p>
+        ) : null}
       </div>
       <div className={styles.side}>
         <MyNeuWidget balanceNeu={data!.balanceNeu} balanceEur={data!.balanceEur} />
@@ -89,6 +92,7 @@ export const MyPortfolioWidget = appConnect<IStateProps, {}, TOwnProps>({
     isLoading: s.wallet.loading,
     error: s.wallet.error,
     data: s.wallet.data && {
+      isIcbmWalletConnected: !!s.wallet.data.euroTokenICBMLockedBalance,
       balanceNeu: s.wallet.data.neuBalance,
       balanceEur: selectNeuBalanceEuroAmount(s.wallet.data),
     },

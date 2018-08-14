@@ -4,7 +4,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import * as Web3 from "web3";
 
+import { toast } from "../../../../node_modules/react-toastify";
 import { actions } from "../../../modules/actions";
+import { IWeb3State } from "../../../modules/web3/reducer";
+import { selectEthereumAddress } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
 import { FormFieldColorful } from "../../shared/forms/formField/FormFieldColorful";
@@ -15,6 +18,10 @@ import * as styles from "./CheckYourICBMWalletWidget.module.scss";
 
 interface IDispatchProps {
   onSubmit: (address: string) => void;
+}
+
+interface IStateProps {
+  web3: IWeb3State;
 }
 
 class FormContent extends React.Component {
@@ -45,7 +52,13 @@ class FormContent extends React.Component {
   }
 }
 
-class CheckYourICBMWalletWidgetComponent extends React.Component<IDispatchProps> {
+class CheckYourICBMWalletWidgetComponent extends React.Component<IStateProps & IDispatchProps> {
+  private handleSubmit(address: string): void {
+    address !== selectEthereumAddress(this.props.web3) || ""
+      ? this.props.onSubmit(address)
+      : toast.error(`You are checking your own address`);
+  }
+
   render(): React.ReactNode {
     return (
       <Panel
@@ -57,7 +70,7 @@ class CheckYourICBMWalletWidgetComponent extends React.Component<IDispatchProps>
         </p>
         <Formik
           initialValues={{ address: "" }}
-          onSubmit={values => this.props.onSubmit(values.address)}
+          onSubmit={values => this.handleSubmit(values.address)}
         >
           <Form>
             <FormContent />
@@ -68,11 +81,15 @@ class CheckYourICBMWalletWidgetComponent extends React.Component<IDispatchProps>
   }
 }
 
-export const CheckYourICBMWalletWidget = appConnect<IDispatchProps>({
+export const CheckYourICBMWalletWidget = appConnect<IStateProps, IDispatchProps>({
+  stateToProps: state => ({
+    web3: state.web3,
+  }),
   dispatchToProps: dispatch => ({
     onSubmit: (address: string) => {
       dispatch(actions.icbmWalletBalanceModal.getWalletData(address));
       dispatch(actions.icbmWalletBalanceModal.startLoadingIcbmWalletBalanceData());
+
       dispatch(actions.icbmWalletBalanceModal.showIcbmWalletBalanceModal());
     },
   }),

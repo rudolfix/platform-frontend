@@ -120,7 +120,7 @@ export class JsonHttpClient implements IHttpClient {
 
     try {
       let body: string | FormData | undefined = config.body
-        ? JSON.stringify(toSnakeCase(config.body))
+        ? JSON.stringify(config.disableManglingRequestBody ? config.body : toSnakeCase(config.body))
         : undefined;
 
       let headers = config.formData ? this.formDataRequestHeaders : this.jsonRequestHeaders;

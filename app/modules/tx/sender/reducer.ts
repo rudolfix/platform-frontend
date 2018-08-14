@@ -18,7 +18,7 @@ export interface ITxData {
   gas?: string;
   gasPrice?: string;
   data?: string;
-  nonce?: number;
+  nonce?: string;
   from?: string;
 }
 

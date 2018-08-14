@@ -3,11 +3,12 @@ import { call, fork, put, race, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
+import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { IAppState } from "../../../store";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
-import { TxSenderType } from "./reducer";
+import { ITxData, TxSenderType } from "./reducer";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
@@ -52,15 +53,34 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
   yield neuCall(watchTxSubSaga, txHash);
 }
 
-function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
-  const txData: Web3.TxData | undefined = yield select((s: IAppState) => s.txSender.txDetails);
+function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
+  const txData: ITxData | undefined = yield select((s: IAppState) => s.txSender.txDetails);
   if (!txData) {
     throw new Error("Tx data is not defined");
   }
 
   try {
-    const txHash = yield web3Manager.sendTransaction(txData);
+    const txHash: string = yield web3Manager.sendTransaction(txData as any);
     yield put(actions.txSender.txSenderSigned(txHash));
+    const txWithMetadata: TxWithMetadata = {
+      transaction: {
+        from: txData.from!,
+        gas: txData.gas!,
+        gasPrice: txData.gasPrice!,
+        hash: txHash,
+        input: txData.data! || "0x0",
+        nonce: txData.nonce!,
+        to: txData.to!,
+        value: txData.value!,
+        blockHash: undefined,
+        blockNumber: undefined,
+        chainId: undefined,
+        status: undefined,
+        transactionIndex: undefined,
+      },
+      transactionType: "WITHDRAW", // @todo hardcoded
+    };
+    yield apiUserService.addPendingTxs(txWithMetadata);
 
     return txHash;
   } catch (e) {

@@ -67,8 +67,22 @@ export class Web3Adapter {
     return resultData.result;
   }
 
+  /**
+   * This will ensure that txData has nonce value.
+   */
   public async sendTransaction(txData: Web3.TxData): Promise<string> {
     const send = promisify<any, any>(this.web3.eth.sendTransaction.bind(this.web3.eth));
+
+    // we manually add nonce value if needed
+    // later it's needed by backend
+    if (txData.nonce === undefined) {
+      const getTransactionCount = promisify<number, string>(
+        this.web3.eth.getTransactionCount.bind(this.web3.eth),
+      );
+      const nonce = await getTransactionCount(txData.from);
+
+      txData.nonce = nonce + 1;
+    }
 
     return await send(txData);
   }

@@ -227,13 +227,13 @@ class EtoDashboardComponent extends React.Component<IProps> {
                         {/* TODO: Add visibility logic for BookBuildingWidget*/}
                         <BookBuildingWidget />
                       </Col>
-                      {!isPamphletSubmitted && (
+                      {isProspectusSubmitted || (
                         <Col lg={4} xs={12}>
                           {/* TODO: Add visibility logic for UploadProspectusWidget*/}
                           <UploadProspectusWidget />
                         </Col>
                       )}
-                      {!isProspectusSubmitted && (
+                      {isPamphletSubmitted || (
                         <Col lg={4} xs={12}>
                           <UploadPamphletWidget />
                         </Col>

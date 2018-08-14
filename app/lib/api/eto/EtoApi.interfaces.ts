@@ -67,6 +67,8 @@ const socialChannelsType = YupTS.array(
   }),
 );
 
+export type TSocialChannelsType = YupTS.TypeOf<typeof socialChannelsType>
+
 const groupType = YupTS.object({
   description: YupTS.string().optional(),
   members: YupTS.array(

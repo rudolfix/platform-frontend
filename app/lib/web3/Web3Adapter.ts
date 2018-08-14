@@ -81,7 +81,7 @@ export class Web3Adapter {
       );
       const nonce = await getTransactionCount(txData.from);
 
-      txData.nonce = nonce + 1;
+      txData.nonce = nonce;
     }
 
     return await send(txData);

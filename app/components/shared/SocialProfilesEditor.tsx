@@ -163,6 +163,7 @@ interface IProps {
   className?: string;
   profiles: ISocialProfile[];
   name: string;
+  index?: number;
 }
 
 interface IState {
@@ -181,27 +182,28 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
   };
 
   componentDidMount(): void {
-    const { values, setFieldValue } = this.context.formik as FormikProps<{
-      [key: string]: Array<{ url: string; type: string }>;
-    }>;
-    const { name, profiles } = this.props;
+    const { name, profiles, index = 0 } = this.props;
+    const { values, setFieldValue } = this.context.formik as FormikProps<{ [key: string]: any }>;
 
-    const socialMediaValues = values[name] || [];
-    const selectedFields: boolean[] = [];
+    const members = values[name.split(".")[0]].members;
+    const data: Array<{ url: string; title: string }[]> = members.map(
+      (m: { socialChannels: { url: string; type: string }[] }[]) =>
+        (m as any).socialChannels || [
+          ...profiles.map(profile => ({ url: "", type: profile.name })),
+        ],
+    );
+    const selectedFields: Array<boolean[]> = data.map(a =>
+      (a as Array<{ url: string }>).map(({ url }) => (url ? !!url.length : false)),
+    );
 
-    profiles.forEach((profile, index) => {
-      const previousLink = socialMediaValues.find(v => v.type === profile.name);
-      const value: string = previousLink ? previousLink.url : "";
-      setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
-      //always enable twitter
-      selectedFields[index] = profile.name === "twitter" ? true : !!value;
-    });
+    data[index].forEach((e, i) => setFieldValue(`${name}.${i}`, e));
 
-    this.setState({ ...this.state, selectedFields });
+    this.setState({ ...this.state, selectedFields: selectedFields[index] });
   }
 
   toggleProfileVisibility = (index: number): void => {
     const { selectedFields } = this.state;
+
     selectedFields[index] = !this.state.selectedFields[index];
     this.setState({ selectedFields });
   };

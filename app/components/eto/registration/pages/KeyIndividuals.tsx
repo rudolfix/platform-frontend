@@ -95,6 +95,7 @@ const Individual: React.SFC<IIndividual> = props => {
           <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
         </FormLabel>
         <SocialProfilesEditor
+          index={index}
           profiles={SOCIAL_PROFILES_PERSON}
           name={`${groupFieldName}.members.${index}.socialChannels`}
         />

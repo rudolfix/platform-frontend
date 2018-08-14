@@ -32,7 +32,7 @@ const SingleMediaLinkField: React.SFC<
         {isLastElement && <ButtonIcon className="mt-2" svgIcon={plusIcon} onClick={onAddClick} />}
       </Col>
       <Col xs={10}>
-        <FormField name={`${props.name}.title`} placeholder="Title" />
+        <FormField name={`${props.name}.title`} placeholder="Title" charactersLimit={100} />
         <FormField name={`${props.name}.url`} placeholder={placeholder || "Url"} />
       </Col>
       {!isFirstElement && (
@@ -60,6 +60,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
   componentDidMount(): void {
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
     const { name } = this.props;
+
     if (!values[name]) setFieldValue(`${name}.0`, this.props.blankField);
   }
 

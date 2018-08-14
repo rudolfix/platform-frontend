@@ -10,6 +10,8 @@ import {
   IUser,
   IUserInput,
   IVerifyEmailUser,
+  TxWithMetadata,
+  TxWithMetadataListValidator,
   UserValidator,
 } from "./interfaces";
 
@@ -29,10 +31,11 @@ const upperCaseWalletTypesInUser = (userApiResponse: IUser): IUser => ({
       (userApiResponse.walletSubtype.toUpperCase() as WalletSubType)) ||
     undefined,
 });
+
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(symbols.authorizedHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 
@@ -127,5 +130,15 @@ export class UsersApi {
     }
 
     return upperCaseWalletTypesInUser(response.body);
+  }
+
+  public async pendingTxs(): Promise<Array<TxWithMetadata>> {
+    const response = await this.httpClient.get<Array<TxWithMetadata>>({
+      baseUrl: USER_API_ROOT,
+      url: "/pending_transactions/me",
+      responseSchema: TxWithMetadataListValidator,
+    });
+
+    return response.body;
   }
 }

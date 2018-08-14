@@ -1,5 +1,6 @@
 import { DeepPartial } from "../../../types";
 import * as YupTS from "../../yup-ts";
+import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
 /** COMPANY ETO RELATED INTERFACES
  *  only deals with "/companies/me"
@@ -105,6 +106,12 @@ export const EtoLegalInformationType = YupTS.object({
   numberOfFounders: YupTS.number(),
   lastFundingSizeEur: YupTS.number().optional(),
   companyShares: YupTS.number(),
+  shareholders: YupTS.array(
+    YupTS.object({
+      fullName: YupTS.string(),
+      shares: YupTS.number(),
+    }),
+  ),
 });
 type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
 
@@ -140,41 +147,72 @@ export type TCompanyEtoData = TEtoTeamData &
 
 export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
 
+export enum EtoStateEnum {
+  "preview" = "preview",
+  "pending" = "pending",
+  "listed" = "listed",
+  "prospectus_approved" = "prospectusApproved",
+  "on_chain" = "onChain",
+}
+// Since only keys are transformed from snake case to camel case we have to manually map states
+// see@ swagger /api/eto-listing/ui/#!/ETO/api_eto_get_me
+// see@ swagger api/eto-listing/ui/#!/Documents/api_document_documents_state_info
+
 export const EtoTermsType = YupTS.object({
-  equityTokenName: YupTS.string(),
-  equityTokenSymbol: YupTS.string(),
-  equityTokenImage: YupTS.string(),
-  equityTokensPerShare: YupTS.number(),
-  fullyDilutedPreMoneyValuationEur: YupTS.number(),
-  existingCompanyShares: YupTS.number(),
-  newSharesToIssue: YupTS.number(),
-  maximumNewSharesToIssue: YupTS.number(),
+  currencies: YupTS.array(YupTS.string()).optional(),
   discountScheme: YupTS.string(),
-  shareNominalValueEur: YupTS.number(),
   publicDurationDays: YupTS.number(),
   minTicketEur: YupTS.number(),
   maxTicketEur: YupTS.number().optional(),
   enableTransferOnSuccess: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
-  riskRegulatedBusiness: YupTS.boolean(),
-  // TODO: This fields moved to Risk Assessment and needs to be disconnected here
-  nominee: YupTS.string(),
-  isCrowdfunding: YupTS.boolean(),
-  liquidationPreferenceMultiplier: YupTS.number(),
+  notUnderCrowdfundingRegulations: YupTS.onlyTrue(),
   whitelistDurationDays: YupTS.number(),
-  minimumNewSharesToIssue: YupTS.number(),
+  additionalTerms: YupTS.string().optional(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
 
+export const EtoEquityTokenInfoType = YupTS.object({
+  equityTokenName: YupTS.string().optional(),
+  equityTokenSymbol: YupTS.string().optional(),
+  equityTokenImage: YupTS.string().optional(),
+});
+
+export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType>;
+
+export const EtoVotingRightsType = YupTS.object({
+  nominee: YupTS.string().optional(),
+  liquidationPreferenceMultiplier: YupTS.number().optional(),
+  generalVotingRule: YupTS.string().optional(),
+});
+
+export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
+
+export const EtoInvestmentTermsType = YupTS.object({
+  equityTokensPerShare: YupTS.number().optional(),
+  shareNominalValueEur: YupTS.number().optional(),
+  fullyDilutedPreMoneyValuationEur: YupTS.number().optional(),
+  existingCompanyShares: YupTS.number().optional(),
+  authorizedCapitalShares: YupTS.number().optional(),
+  newSharesToIssue: YupTS.number().optional(),
+  minimumNewSharesToIssue: YupTS.number().optional(),
+  newSharesToIssueInWhitelist: YupTS.number().optional(),
+  whitelistDiscountFraction: YupTS.number().optional(),
+});
+
+export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
+
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
-  currencies: string[];
-  generalVotingRule?: string;
+  templates?: TEtoDocumentTemplates;
 }
 
-export type TEtoSpecsData = TEtoTermsType & IAdditionalEtoType;
+export type TEtoSpecsData = TEtoTermsType &
+  TEtoEquityTokenInfoType &
+  TEtoVotingRightsType &
+  TEtoInvestmentTermsType &
+  IAdditionalEtoType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;
@@ -187,6 +225,8 @@ export type TGeneralEtoData = {
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,
+  ...EtoEquityTokenInfoType.shape,
+  ...EtoVotingRightsType.shape,
   ...EtoMediaType.shape,
   ...EtoLegalInformationType.shape,
   ...EtoKeyIndividualsType.shape,

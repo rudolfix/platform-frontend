@@ -49,51 +49,6 @@ const swiperSettings = {
   },
 };
 
-const documentsData = [
-  {
-    name: "section name",
-    documents: [
-      {
-        name: "test file",
-        url: "test.doc",
-      },
-      {
-        name: "test file",
-        url: "test.pdf",
-      },
-      {
-        name: "test file",
-        url: "test.doc",
-      },
-      {
-        name: "test file",
-        url: "test.pdf",
-      },
-    ],
-  },
-  {
-    name: "section name",
-    documents: [
-      {
-        name: "test file",
-        url: "test.pdf",
-      },
-      {
-        name: "test file",
-        url: "test.doc",
-      },
-      {
-        name: "test file",
-        url: "test.doc",
-      },
-      {
-        name: "test file",
-        url: "test.pdf",
-      },
-    ],
-  },
-];
-
 const day = 86400000;
 const etoStartDate = Date.now() - 20 * day;
 const bookBuildingEndDate = etoStartDate + 16 * day;
@@ -152,7 +107,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
     name: <FormattedMessage id="eto.public-view.documents.marketing-documents" />,
   };
 
-  const documents = marketingLinks ? [marketingLinks].concat(documentsData as any) : documentsData;
+  const documents = marketingLinks ? [marketingLinks] : [];
 
   return (
     <div>

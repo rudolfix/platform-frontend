@@ -1,15 +1,11 @@
 import { expect } from "chai";
 import * as fetchMock from "fetch-mock";
 import * as Yup from "yup";
+import { NetworkingError, ResponseParsingError, ResponseStatusError } from "./HttpClient";
 
 import { expectToBeRejected } from "../../../../test/testUtils";
 import { getSampleMalformedProducts, getSampleProducts, IProduct, productSchema } from "./fixtures";
-import {
-  JsonHttpClient,
-  NetworkingError,
-  ResponseParsingError,
-  ResponseStatusError,
-} from "./JsonHttpClient";
+import { JsonHttpClient } from "./JsonHttpClient";
 
 describe("JsonHttpClient", () => {
   const API_URL = "https://some-api.com/";

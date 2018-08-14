@@ -29,7 +29,6 @@
   border: 1px solid $gray10;
   width: px-to-rem(160px);
   height: px-to-rem(139.6px);
-
   border-radius: px-to-rem(5px);
   display: flex;
   flex-direction: column;
@@ -54,16 +53,21 @@
     color: $gray10;
     justify-content: center;
   }
-
 }
 
 .sub-title {
   color: $gray10;
   justify-content: center;
+  text-align: center;
   font-size: px-to-rem(8px);
   margin-bottom: 0;
 }
 
+.enabled {
+  cursor: pointer;
+}
+
 .active {
   border: 1px solid $green-light;
+  cursor: pointer;
 }

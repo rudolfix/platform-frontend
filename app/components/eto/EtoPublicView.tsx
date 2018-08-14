@@ -34,13 +34,13 @@ const Page: React.SFC<IProps> = ({ companyData, etoData }) => {
 export const EtoPublicViewComponent: React.SFC<IProps> = props => <EtoPublicView {...props} />;
 
 export const EtoPublicView = compose<React.SFC>(
+  onEnterAction({
+    actionCreator: dispatch => dispatch(actions.etoFlow.loadDataStart()),
+  }),
   appConnect({
     stateToProps: s => ({
       companyData: s.etoFlow.companyData,
       etoData: s.etoFlow.etoData,
     }),
-  }),
-  onEnterAction({
-    actionCreator: dispatch => dispatch(actions.etoFlow.loadDataStart()),
   }),
 )(Page);

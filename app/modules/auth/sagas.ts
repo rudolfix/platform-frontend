@@ -225,6 +225,7 @@ function* handleSignInUser({
 function* verifyUserEmail(): Iterator<any> {
   const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
   const urlEmail = yield select((s: IAppState) => selectEmailFromQueryString(s.router));
+
   const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);

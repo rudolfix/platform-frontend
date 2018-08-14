@@ -2,11 +2,10 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { compose } from "redux";
 
-import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import { etoDocumentType } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
-import { etoDocumentType } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import * as styles from "./EtoAddDocument.module.scss";
 
 interface IDispatchProps {

@@ -10,7 +10,7 @@ interface IDocumentProps {
 }
 
 interface IDocumentTileProps {
-  title: string;
+  title: string | React.ReactNode;
   className?: string;
   onlyDownload?: boolean;
   blank?: boolean;

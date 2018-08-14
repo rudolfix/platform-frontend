@@ -16,6 +16,12 @@ import {
   selectVerifiedUserEmail,
 } from "../../modules/auth/selectors";
 import {
+  selectEtoDocumentLoading,
+  selectIsPamphletSubmitted,
+  selectIsProspectusSubmitted,
+  selectIsTermSheetSubmitted,
+} from "../../modules/eto-documents/selectors";
+import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,
   calculateEtoKeyIndividualsProgress,
@@ -32,13 +38,6 @@ import {
   selectEtoData,
   selectEtoState,
 } from "../../modules/eto-flow/selectors";
-
-import {
-  selectEtoDocumentLoading,
-  selectIsPamphletSubmitted,
-  selectIsProspectusSubmitted,
-  selectIsTermSheetSubmitted,
-} from "../../modules/eto-documents/selectors";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";

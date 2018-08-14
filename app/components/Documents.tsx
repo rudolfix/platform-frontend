@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
@@ -8,7 +9,6 @@ import {
   etoDocumentType,
   IEtoDocument,
   IEtoFiles,
-  immutableDocumentName,
   TEtoDocumentTemplates,
 } from "../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../modules/actions";
@@ -32,8 +32,27 @@ import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
 import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
-import * as cn from "classnames";
 import * as styles from "./Documents.module.scss";
+
+export const immutableDocumentTitle: { [key: string]: string | React.ReactNode } = {
+  company_token_holder_agreement: (
+    <FormattedMessage id="eto.documents.company-token-holder-agreement" />
+  ),
+  investment_and_shareholder_agreement: (
+    <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
+  ),
+  pamphlet_template: <FormattedMessage id="eto.documents.pamphlet_template" />,
+  prospectus_template: <FormattedMessage id="eto.documents.prospectus-Template" />,
+  reservation_and_acquisition_agreement: (
+    <FormattedMessage id="eto.documents.Reservation-and-Acquisition-Agreement" />
+  ),
+  termsheet_template: <FormattedMessage id="eto.documents.Termsheet-Template" />,
+  bafin_approved_prospectus: <FormattedMessage id="eto.documents.Bafin-Approved-Prospectus" />,
+  bafin_approved_pamphlet: <FormattedMessage id="eto.documents.Bafin-Approved-Pamphlet" />,
+  signed_investment_and_shareholder_agreement: (
+    <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
+  ),
+};
 
 export const GeneratedDocuments: React.SFC<{
   document: IEtoDocument;
@@ -47,7 +66,7 @@ export const GeneratedDocuments: React.SFC<{
         }}
       >
         <DocumentTile
-          title={immutableDocumentName[document.documentType]}
+          title={immutableDocumentTitle[document.documentType]}
           extension={".doc"}
           blank={false}
           onlyDownload={true}
@@ -95,7 +114,7 @@ class DocumentsComponent extends React.Component<IProps> {
                     />
                   );
                 })}
-                {!!(Object.keys(etoTemplates).length === 0) && (
+                {Object.keys(etoTemplates).length === 0 && (
                   <Col className="mb-2">
                     <div>Please fill the ETO forms in order to generate templates</div>
                   </Col>
@@ -107,7 +126,7 @@ class DocumentsComponent extends React.Component<IProps> {
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
                 {generalUploadables.map((key: etoDocumentType, index: number) => {
-                  const typedFileName = immutableDocumentName[key];
+                  const typedFileName = immutableDocumentTitle[key];
                   const canUpload =
                     stateInfo &&
                     stateInfo.canUploadInStates[EtoStateEnum[etoState]].some(

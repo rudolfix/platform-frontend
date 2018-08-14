@@ -57,7 +57,7 @@ export const immutableDocumentName: { [key: string]: string } = {
   company_token_holder_agreement: "Company Token Holder Agreement",
   investment_and_shareholder_agreement: "Investment and Shareholder Agreement",
   pamphlet_template: "Pamphlet Template",
-  prospectus_template: "prospectus Template",
+  prospectus_template: "Prospectus Template",
   reservation_and_acquisition_agreement: "Reservation and Acquisition Agreement",
   termsheet_template: "Termsheet Template",
   bafin_approved_prospectus: "Bafin Approved Prospectus",

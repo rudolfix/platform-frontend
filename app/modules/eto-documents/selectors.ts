@@ -26,7 +26,7 @@ export const selectIsPamphletSubmitted = (state: IEtoDocumentState): boolean | u
   state.etoFileData &&
   state.etoFileData.uploadedDocuments &&
   Object.keys(state.etoFileData.uploadedDocuments).some(
-    key => state.etoFileData.uploadedDocuments[key].documentType === "bafin_approved_pamphlet", 
+    key => state.etoFileData.uploadedDocuments[key].documentType === "bafin_approved_pamphlet",
   );
 
 export const selectIsProspectusSubmitted = (state: IEtoDocumentState): boolean | undefined =>

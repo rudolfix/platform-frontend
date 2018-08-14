@@ -41,14 +41,18 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, d
         <h3>
           <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
         </h3>
-        {data && data.isIcbmWalletConnected ? (
-          <p>
-            <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
-            <Link to={appRoutes.settings} className={styles.link}>
-              <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
-            </Link>
-          </p>
-        ) : null}
+        {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
+          <>
+            {data && data.isIcbmWalletConnected ? (
+              <p>
+                <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
+                <Link to={appRoutes.settings} className={styles.link}>
+                  <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
+                </Link>
+              </p>
+            ) : null}
+          </>
+        )}
       </div>
       <div className={styles.side}>
         <MyNeuWidget balanceNeu={data!.balanceNeu} balanceEur={data!.balanceEur} />

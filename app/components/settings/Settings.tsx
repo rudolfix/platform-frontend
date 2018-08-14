@@ -35,10 +35,11 @@ export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet }) => 
         <Col lg={4} xs={12}>
           <YourEthereumAddressWidget />
         </Col>
-
-        <Col lg={4} xs={12}>
-          <CheckYourICBMWalletWidget />
-        </Col>
+        {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" && (
+          <Col lg={4} xs={12}>
+            <CheckYourICBMWalletWidget />
+          </Col>
+        )}
 
         {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
           <>

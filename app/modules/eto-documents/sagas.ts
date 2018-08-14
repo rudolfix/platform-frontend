@@ -114,7 +114,7 @@ function* uploadEtoFile(
     );
 
     const matchingDocument = yield neuCall(getDocumentOfTypePromise, documentType);
-    apiEtoFileService.deleteSpecificEtoDocument(matchingDocument.ipfsHash);
+    if (matchingDocument) apiEtoFileService.deleteSpecificEtoDocument(matchingDocument.ipfsHash);
 
     yield apiEtoFileService.uploadEtoDocument(file, documentType);
     notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));

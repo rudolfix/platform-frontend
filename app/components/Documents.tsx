@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoState } from "../lib/api/eto/EtoApi.interfaces";
+import { EtoState, EtoStateEnum } from "../lib/api/eto/EtoApi.interfaces";
 import {
   etoDocumentType,
   IEtoDocument,
@@ -69,9 +69,7 @@ class DocumentsComponent extends React.Component<IProps> {
       downloadDocumentByType,
     } = this.props;
     const { etoTemplates, uploadedDocuments, stateInfo } = etoFilesData;
-    const generalUploadables = stateInfo
-      ? ([] as etoDocumentType[]).concat(stateInfo.uploadableDocuments)
-      : [];
+    const generalUploadables = stateInfo ? stateInfo.uploadableDocuments : [];
     return (
       <LayoutAuthorized>
         {loadingData || etoFileLoading || !etoState ? (
@@ -112,7 +110,9 @@ class DocumentsComponent extends React.Component<IProps> {
                   const typedFileName = immutableDocumentName[key];
                   const canUpload =
                     stateInfo &&
-                    stateInfo.canUploadInStates[etoState].some(fileName => fileName === key);
+                    stateInfo.canUploadInStates[EtoStateEnum[etoState]].some(
+                      fileName => fileName === key,
+                    );
                   const isFileUploaded = Object.keys(uploadedDocuments).some(
                     uploadedKey => uploadedDocuments[uploadedKey].documentType === key,
                   );

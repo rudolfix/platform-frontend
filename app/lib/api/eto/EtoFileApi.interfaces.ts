@@ -1,4 +1,5 @@
-import { EtoState } from "./EtoApi.interfaces";
+import { EtoStateEnum } from "./EtoApi.interfaces";
+
 type fileStates = "canReplace" | "locked" | "readOnly";
 
 export interface IEtoSingleFile {
@@ -47,7 +48,7 @@ export interface IEtoFiles {
   etoTemplates: TEtoDocumentTemplates;
   uploadedDocuments: TEtoDocumentTemplates;
   stateInfo?: { [key in ISimpleFileInfo]: etoDocumentType[] } &
-    { [key in IComplextFileInfo]: { [key in EtoState]: etoDocumentType[] } };
+    { [key in IComplextFileInfo]: { [key in EtoStateEnum]: etoDocumentType[] } };
 }
 
 export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };

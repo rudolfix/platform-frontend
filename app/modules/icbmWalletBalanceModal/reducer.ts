@@ -1,11 +1,10 @@
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { IWalletStateData } from "../wallet/reducer";
 
 export interface IIcbmWalletBalanceModal {
   isOpen: boolean;
   ethAddress?: string;
-  walletData?: Partial<IWalletStateData>;
+  walletData?: any;
 }
 
 export interface ISendEthModalState {

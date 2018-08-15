@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../modules/actions";
-import { IWalletStateData } from "../../modules/wallet/reducer";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { InlineIcon } from "../shared/InlineIcon";
@@ -18,7 +17,9 @@ import * as styles from "./IcbmWalletBalanceModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
-  walletData?: Partial<IWalletStateData>;
+  walletData?: {
+    lockedBalance: string[];
+  };
   ethAddress?: string;
 }
 
@@ -78,10 +79,7 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
               value={
                 <Money
                   currency="neu"
-                  value={
-                    (this.props.walletData && this.props.walletData.euroTokenICBMLockedBalance) ||
-                    "0"
-                  }
+                  value={(this.props.walletData && this.props.walletData.lockedBalance[0]) || "0"}
                 />
               }
               icon={iconNeu}
@@ -90,10 +88,7 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
               value={
                 <Money
-                  value={
-                    (this.props.walletData && this.props.walletData.etherTokenICBMLockedBalance) ||
-                    "0"
-                  }
+                  value={(this.props.walletData && this.props.walletData.lockedBalance[1]) || "0"}
                   currency="eth"
                 />
               }

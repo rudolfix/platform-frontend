@@ -4,9 +4,8 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
 import { EthereumAddress } from "../../types";
 import { actions } from "../actions";
-import { numericValuesToString } from "../contracts/utils";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { IWalletStateData } from "../wallet/reducer";
+import { IIcbmWalletBalanceModal } from "./reducer";
 import { selectIcbmWalletEthAddress } from "./selectors";
 
 function* loadIcbmWalletDataSaga({ logger, notificationCenter }: TGlobalDependencies): any {
@@ -15,7 +14,7 @@ function* loadIcbmWalletDataSaga({ logger, notificationCenter }: TGlobalDependen
   );
 
   try {
-    const state: IWalletStateData = yield neuCall(loadIcbmWalletDataAsync, ethAddress);
+    const state: IIcbmWalletBalanceModal = yield neuCall(loadIcbmWalletDataAsync, ethAddress);
 
     yield put(actions.icbmWalletBalanceModal.loadIcbmWalletData(state));
   } catch (e) {
@@ -28,14 +27,12 @@ function* loadIcbmWalletDataSaga({ logger, notificationCenter }: TGlobalDependen
 async function loadIcbmWalletDataAsync(
   { contractsService }: TGlobalDependencies,
   ethAddress: EthereumAddress,
-): Promise<Partial<IWalletStateData>> {
-  return numericValuesToString(
-    await promiseAll({
-      etherTokenICBMLockedBalance: contractsService.etherLock.balanceOf(ethAddress).then(b => b[0]),
-      euroTokenICBMLockedBalance: contractsService.euroLock.balanceOf(ethAddress).then(b => b[1]),
-      timestamp: contractsService.etherLock.balanceOf(ethAddress).then(b => b[2]),
-    }),
-  );
+): Promise<any> {
+  return await promiseAll({
+    lockedBalance: contractsService.etherLock
+      .balanceOf(ethAddress)
+      .then(b => b.map(n => n.toString())),
+  });
 }
 
 export function* icbmWalletGetDataSagas(): any {

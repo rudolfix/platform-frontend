@@ -17,7 +17,7 @@ type TOwnProps = CommonHtmlProps;
 
 interface IBodyProps {
   error?: string;
-  data?: {
+  lockedAmount?: {
     balanceNeu: string;
     balanceEur: string;
     isIcbmWalletConnected?: boolean;
@@ -30,7 +30,7 @@ interface IStateProps extends IBodyProps {
 
 type IProps = TOwnProps & IStateProps;
 
-export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, data }) => {
+export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, lockedAmount }) => {
   if (error) {
     return <WarningAlert>{error}</WarningAlert>;
   }
@@ -43,7 +43,7 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, d
         </h3>
         {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
           <>
-            {data && data.isIcbmWalletConnected ? (
+            {lockedAmount && lockedAmount.isIcbmWalletConnected ? (
               <p>
                 <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
                 <Link to={appRoutes.settings} className={styles.link}>
@@ -55,7 +55,7 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, d
         )}
       </div>
       <div className={styles.side}>
-        <MyNeuWidget balanceNeu={data!.balanceNeu} balanceEur={data!.balanceEur} />
+        <MyNeuWidget balanceNeu={lockedAmount!.balanceNeu} balanceEur={lockedAmount!.balanceEur} />
       </div>
     </div>
   );
@@ -66,7 +66,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   style,
   isLoading,
   error,
-  data,
+  lockedAmount,
 }) => {
   return (
     <Panel
@@ -81,7 +81,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
           <LoadingIndicator />
         ) : (
           <MyPortfolioWidgetComponentBody
-            data={data}
+            lockedAmount={lockedAmount}
             error={error}
             test-data-id="dashboard-my-portfolio-widget"
           />
@@ -95,10 +95,10 @@ export const MyPortfolioWidget = appConnect<IStateProps, {}, TOwnProps>({
   stateToProps: s => ({
     isLoading: s.wallet.loading,
     error: s.wallet.error,
-    data: s.wallet.data && {
-      isIcbmWalletConnected: !!s.wallet.data.euroTokenICBMLockedBalance,
+    lockedAmount: s.wallet.data && {
       balanceNeu: s.wallet.data.neuBalance,
       balanceEur: selectNeuBalanceEuroAmount(s.wallet.data),
+      isIcbmWalletConnected: !!s.wallet.data.euroTokenICBMLockedBalance,
     },
   }),
 })(MyPortfolioWidgetComponent);

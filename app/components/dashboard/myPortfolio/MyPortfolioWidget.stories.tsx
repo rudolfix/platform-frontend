@@ -10,9 +10,12 @@ storiesOf("MyPortfolioWidget", module)
   .add("loaded", () => (
     <MyPortfolioWidgetComponent
       isLoading={false}
-      data={{ balanceEur: "12312352413", balanceNeu: `123${Q18.toString()}` }}
+      lockedAmount={{ balanceEur: "12312352413", balanceNeu: `123${Q18.toString()}` }}
     />
   ))
   .add("loaded, no funds", () => (
-    <MyPortfolioWidgetComponent isLoading={false} data={{ balanceEur: "0", balanceNeu: "0" }} />
+    <MyPortfolioWidgetComponent
+      isLoading={false}
+      lockedAmount={{ balanceEur: "0", balanceNeu: "0" }}
+    />
   ));

@@ -1,5 +1,5 @@
 import { createAction, createSimpleAction } from "../actionsUtils";
-import { IWalletStateData } from "../wallet/reducer";
+import { IIcbmWalletBalanceModal } from "./reducer";
 
 export const icbmWalletBalanceModalActions = {
   startLoadingIcbmWalletBalanceData: () =>
@@ -8,6 +8,6 @@ export const icbmWalletBalanceModalActions = {
   hideIcbmWalletBalanceModal: () => createSimpleAction("ICBM_WALLET_BALANCE_MODAL_HIDE"),
   getWalletData: (ethAddress: string) =>
     createAction("ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA", { ethAddress }),
-  loadIcbmWalletData: (data: Partial<IWalletStateData>) =>
+  loadIcbmWalletData: (data: IIcbmWalletBalanceModal) =>
     createAction("ICBM_WALLET_BALANCE_MODAL_LOAD_WALLET_DATA", { data }),
 };

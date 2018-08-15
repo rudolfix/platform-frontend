@@ -1,0 +1,25 @@
+$_side-padding: 12px;
+
+.input-wrapper {
+  display: flex;
+  border: 1px solid $color-graphite;
+  padding: 10px $_side-padding;
+
+  &:global(.is-valid) {
+    border-color: $color-green-dark;
+  }
+
+  &:global(.is-invalid) {
+    border-color: $color-orange;
+  }
+
+  :global(.form-control) {
+    border: 0;
+    padding: 0;
+  }
+}
+
+.addon {
+  flex-shrink: 0;
+  margin-left: $_side-padding;
+}

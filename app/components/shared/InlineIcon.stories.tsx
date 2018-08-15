@@ -73,7 +73,6 @@ import * as eth_icon2 from "../../assets/img/eth_icon2.svg";
 import * as link_arrow from "../../assets/img/link_arrow.svg";
 import * as logo_square_white from "../../assets/img/logo-square-white.svg";
 import * as logo_capitalized from "../../assets/img/logo_capitalized.svg";
-import * as logo_cropped_background from "../../assets/img/logo_cropped_background.svg";
 import * as logo_small_black from "../../assets/img/logo_small_black.svg";
 import * as logo_white from "../../assets/img/logo_white.svg";
 import * as logo_yellow from "../../assets/img/logo_yellow.svg";
@@ -186,7 +185,6 @@ storiesOf("Icons", module)
         eth_icon2,
         link_arrow,
         logo_capitalized,
-        logo_cropped_background,
         logo_small_black,
         logo_square_white,
         logo_white,

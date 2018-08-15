@@ -1,6 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { compose } from "redux";
 
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -9,6 +10,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereumAddressWidget/YourEthereumAddressWidget";
+import { CheckYourICBMWalletWidget } from "./icbmWalletWidget/CheckYourICBMWalletWidget";
 import { SettingsWidgets } from "./SettingsWidgets";
 
 interface IStateProps {
@@ -29,8 +31,13 @@ export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet }) => 
           title={<FormattedMessage id="settings.account-info.title" />}
           data-test-id="eto-dashboard-application"
         />
+
         <Col lg={4} xs={12}>
           <YourEthereumAddressWidget />
+        </Col>
+
+        <Col lg={4} xs={12}>
+          <CheckYourICBMWalletWidget />
         </Col>
 
         {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
@@ -51,8 +58,10 @@ export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet }) => 
   );
 };
 
-export const Settings = appConnect<IStateProps>({
-  stateToProps: s => ({
-    isLightWallet: selectIsLightWallet(s.web3),
+export const Settings = compose<React.SFC>(
+  appConnect<IStateProps>({
+    stateToProps: s => ({
+      isLightWallet: selectIsLightWallet(s.web3),
+    }),
   }),
-})(SettingsComponent);
+)(SettingsComponent);

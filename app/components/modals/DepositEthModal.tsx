@@ -34,7 +34,7 @@ const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props 
           <p className={styles.description}>
             <FormattedMessage id="modal.deposit-eth.description" />
           </p>
-          <AccountAddress address={props.address} />
+          <AccountAddress address={props.address} className={styles.address} />
         </div>
       </ModalComponentBody>
     </Modal>

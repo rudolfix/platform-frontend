@@ -13,6 +13,7 @@ export const MONEY_DECIMALS = 18;
 export const SUBMIT_KYC_PERMISSION = "submit-kyc";
 export const CHANGE_EMAIL_PERMISSION = "change-email";
 export const SUBMIT_ETO_PERMISSION = "submit-eto-listing";
+export const UPLOAD_IMMUTABLE_DOCUMENT = "upload-issuer-immutable-document";
 export const DO_BOOK_BUILDING = "do-bookbuilding";
 
 /**

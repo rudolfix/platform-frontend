@@ -88,19 +88,6 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               <span className="pl-1">EUR</span>
             </div>
           </Col>
-          <Col className="d-block d-sm-none text-right col-auto">
-            <Link to={appRoutes.wallet}>
-              <Button
-                layout="secondary"
-                iconPosition="icon-after"
-                theme="dark"
-                svgIcon={arrowRight}
-                className={cn(styles.link, "pr-0")}
-              >
-                <FormattedMessage id="dashboard.my-wallet-widget.hidden-wallet-redirect-button" />
-              </Button>
-            </Link>
-          </Col>
         </Row>
       </>
     );

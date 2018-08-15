@@ -32,8 +32,8 @@ interface IRounds {
 
 export const FUNDING_ROUNDS: IRounds = {
   NONE_KEY: <FormattedMessage id="form.select.please-select" />,
-  pre_seed: "pre seed",
-  seed: "seed",
+  pre_seed: "Pre Seed",
+  seed: "Seed",
   a_round: "A Round",
   b_round: "B Round",
   c_round: "C Round",

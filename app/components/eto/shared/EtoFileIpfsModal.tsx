@@ -3,13 +3,16 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Modal, Row } from "reactstrap";
 
 import { actions } from "../../../modules/actions";
-import { selectFileUploadAction, selectIsIpfsModalOpen } from "../../../modules/eto-flow/selectors";
+import {
+  selectFileUploadAction,
+  selectIsIpfsModalOpen,
+} from "../../../modules/eto-documents/selectors";
 import { appConnect } from "../../../store";
 import { ModalComponentBody } from "../../modals/ModalComponentBody";
 import { ButtonArrowRight } from "../../shared/Buttons";
+import { ResponsiveImage } from "../../shared/ResponsiveImage";
 
 import * as ipfsImage from "../../../assets/img/ipfs.png";
-import { ResponsiveImage } from "../../shared/ResponsiveImage";
 import * as styles from "./EtoFileIpfsModal.module.scss";
 
 interface IStateProps {
@@ -57,10 +60,10 @@ export const EtoFileIpfsModalComponent: React.SFC<IStateProps & IDispatchProps> 
 
 export const EtoFileIpfsModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
-    isOpen: selectIsIpfsModalOpen(s.etoFlow),
-    onContinue: selectFileUploadAction(s.etoFlow),
+    isOpen: selectIsIpfsModalOpen(s.etoDocuments),
+    onContinue: selectFileUploadAction(s.etoDocuments),
   }),
   dispatchToProps: dispatch => ({
-    onDismiss: () => dispatch(actions.etoFlow.hideIpfsModal()),
+    onDismiss: () => dispatch(actions.etoDocuments.hideIpfsModal()),
   }),
 })(EtoFileIpfsModalComponent);

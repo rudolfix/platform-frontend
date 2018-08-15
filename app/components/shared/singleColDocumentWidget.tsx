@@ -1,35 +1,57 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { Col } from "reactstrap";
+import { compose } from "redux";
 
+import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
+import { actions } from "../../modules/actions";
+import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
+import { immutableDocumentTitle } from "../Documents";
 import { Panel } from "./Panel";
 
 import * as styles from "./singleColDocumentWidget.module.scss";
 
-export interface IDocument {
-  url: string;
-  name: TTranslatedString;
-}
-
-interface IProps {
-  documents: IDocument[];
-  name: TTranslatedString;
+interface IOwnProps {
+  documents: IEtoDocument[];
+  title: TTranslatedString;
   className?: string;
 }
+interface IDispatchProps {
+  downloadImmutableFile: (fileId: ImmutableFileId, fileName: string) => void;
+}
 
-export const SingleColDocumentsWidget: React.SFC<IProps> = ({ documents, className, name }) => {
+type IProps = IOwnProps & IDispatchProps;
+
+export const SingleColDocumentsWidget: React.SFC<IProps> = ({
+  documents,
+  className,
+  title,
+  downloadImmutableFile,
+}) => {
   return (
     <Panel className={className}>
-      <Col className={styles.groupName}>{name}</Col>
+      <Col className={styles.groupName}>{title}</Col>
       <div className={styles.group}>
-        {documents.map(({ name, url }, i) => {
+        {documents.map(({ ipfsHash, mimeType, documentType }, i) => {
           return (
             <Col xs={12} className={styles.document} key={i}>
               <i className={cn("fa fa-link", styles.documentIcon)} />
-              <a href={url} className={styles.documentLink}>
-                {name}
-              </a>
+              <div
+                className={styles.documentLink}
+                onClick={() =>
+                  downloadImmutableFile(
+                    {
+                      ...{ ipfsHash, mimeType },
+                      asPdf: false,
+                    },
+                    immutableDocumentName[documentType],
+                  )
+                }
+              >
+                {immutableDocumentTitle[documentType]}
+              </div>
             </Col>
           );
         })}
@@ -37,3 +59,12 @@ export const SingleColDocumentsWidget: React.SFC<IProps> = ({ documents, classNa
     </Panel>
   );
 };
+
+export const SingleColDocuments = compose<React.SFC<IOwnProps>>(
+  appConnect<{}, IDispatchProps>({
+    dispatchToProps: dispatch => ({
+      downloadImmutableFile: (fileId, name) =>
+        dispatch(actions.immutableStorage.downloadImmutableFile(fileId, name)),
+    }),
+  }),
+)(SingleColDocumentsWidget);

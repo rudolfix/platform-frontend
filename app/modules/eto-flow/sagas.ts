@@ -5,7 +5,6 @@ import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants"
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
@@ -22,21 +21,6 @@ export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDepen
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO data. Make sure you have completed KYC and email verification process.",
-    );
-    yield put(actions.routing.goToDashboard());
-  }
-}
-
-export function* loadEtoFileData({
-  notificationCenter,
-  apiEtoFileService,
-}: TGlobalDependencies): any {
-  try {
-    const etoFileData: IEtoFiles = yield apiEtoFileService.getFileEtoData();
-    yield put(actions.etoFlow.loadEtoFileData(etoFileData));
-  } catch (e) {
-    notificationCenter.error(
-      "Could not access ETO files data. Make sure you have completed KYC and email verification process.",
     );
     yield put(actions.routing.goToDashboard());
   }
@@ -119,37 +103,9 @@ export function* submitEtoData(
   }
 }
 
-function* uploadEtoFile(
-  {
-    apiEtoFileService,
-    notificationCenter,
-    logger,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
-  }: TGlobalDependencies,
-  action: TAction,
-): Iterator<any> {
-  if (action.type !== "ETO_FLOW_UPLOAD_DOCUMENT_START") return;
-  const { file, name } = action.payload;
-  try {
-    const etoFiles = yield apiEtoFileService.putFileEtoData(file, name);
-    yield put(actions.etoFlow.loadEtoFileData(etoFiles));
-    notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));
-  } catch (e) {
-    yield put(actions.etoFlow.loadFileDataStart());
-    logger.error("Failed to send ETO data", e);
-    notificationCenter.error(formatIntlMessage("eto.modal.file-upload-failed"));
-  } finally {
-    yield put(actions.etoFlow.hideIpfsModal());
-  }
-}
-
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
-  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_FILE_DATA_START", loadEtoFileData);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
-  yield fork(neuTakeEvery, "ETO_FLOW_UPLOAD_DOCUMENT_START", uploadEtoFile);
   yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
 }

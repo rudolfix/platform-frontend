@@ -1,5 +1,6 @@
 import { DeepPartial } from "../../../types";
 import * as YupTS from "../../yup-ts";
+import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
 /** COMPANY ETO RELATED INTERFACES
  *  only deals with "/companies/me"
@@ -66,6 +67,8 @@ const socialChannelsType = YupTS.array(
     url: YupTS.url(),
   }),
 );
+
+export type TSocialChannelsType = YupTS.TypeOf<typeof socialChannelsType>;
 
 const groupType = YupTS.object({
   description: YupTS.string().optional(),
@@ -146,6 +149,17 @@ export type TCompanyEtoData = TEtoTeamData &
 
 export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
 
+export enum EtoStateEnum {
+  "preview" = "preview",
+  "pending" = "pending",
+  "listed" = "listed",
+  "prospectus_approved" = "prospectusApproved",
+  "on_chain" = "onChain",
+}
+// Since only keys are transformed from snake case to camel case we have to manually map states
+// see@ swagger /api/eto-listing/ui/#!/ETO/api_eto_get_me
+// see@ swagger api/eto-listing/ui/#!/Documents/api_document_documents_state_info
+
 export const EtoTermsType = YupTS.object({
   currencies: YupTS.array(YupTS.string()).optional(),
   discountScheme: YupTS.string(),
@@ -193,6 +207,7 @@ export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
+  templates?: TEtoDocumentTemplates;
 }
 
 export type TEtoSpecsData = TEtoTermsType &

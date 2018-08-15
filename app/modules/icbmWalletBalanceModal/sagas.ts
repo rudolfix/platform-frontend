@@ -27,7 +27,7 @@ function* loadIcbmWalletDataSaga({ logger, notificationCenter }: TGlobalDependen
 async function loadIcbmWalletDataAsync(
   { contractsService }: TGlobalDependencies,
   ethAddress: EthereumAddress,
-): Promise<any> {
+): Promise<{ lockedBalance: string[] }> {
   return await promiseAll({
     lockedBalance: contractsService.etherLock
       .balanceOf(ethAddress)

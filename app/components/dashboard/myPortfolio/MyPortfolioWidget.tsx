@@ -20,7 +20,7 @@ interface IBodyProps {
   lockedAmount?: {
     balanceNeu: string;
     balanceEur: string;
-    isIcbmWalletConnected?: boolean;
+    isIcbmWalletConnected: boolean;
   };
 }
 

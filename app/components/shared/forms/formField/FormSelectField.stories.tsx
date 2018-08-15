@@ -11,7 +11,7 @@ const defaultValues = {
 storiesOf("FormSelectField", module)
   .add(
     "default",
-    formWrapper({ name: "foo" })(() => <FormSelectField name="name" values={defaultValues} />),
+    formWrapper({ name: "foo " })(() => <FormSelectField name="name" values={defaultValues} />),
   )
   .add(
     "with custom options",

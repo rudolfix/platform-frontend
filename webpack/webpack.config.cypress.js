@@ -6,7 +6,7 @@ const loadAppEnv = require("./loadAppEnv");
 const applicationEnv = loadAppEnv(process.env);
 
 module.exports = {
-  mode: 'none',
+  mode: "none",
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },

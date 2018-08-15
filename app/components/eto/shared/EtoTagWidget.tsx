@@ -4,7 +4,6 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Creatable as ReactSelectCreatable } from "react-select";
 import Select from "react-virtualized-select";
-import { Col, Input } from "reactstrap";
 
 import { CommonHtmlProps } from "../../../types";
 import { Tag } from "../../shared/Tag";

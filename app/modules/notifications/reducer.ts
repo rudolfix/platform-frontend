@@ -1,6 +1,5 @@
 import { AppActionTypes, AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../auth/selectors";
 import { routingActions } from "../routing/actions";
 import { notificationActions } from "./actions";
 

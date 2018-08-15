@@ -1,18 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col } from "reactstrap";
-import {
-  EtoCompanyInformationType,
-  EtoKeyIndividualsType,
-  EtoLegalInformationType,
-  EtoMediaType,
-  EtoProductVisionType,
-  EtoRiskAssessmentType,
-  EtoTermsType,
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-} from "../../../lib/api/eto/EtoApi.interfaces";
-import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
 

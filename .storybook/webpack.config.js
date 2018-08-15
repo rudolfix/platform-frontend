@@ -14,10 +14,10 @@ module.exports = (baseConfig, env, config) => {
 
   const isMakingScreenshots = process.env.npm_lifecycle_event === "storybook:screenshots";
   if (isMakingScreenshots) {
-    config.mode = 'none'
+    config.mode = "none";
     config.devServer = {
-      hot: false
-    }
+      hot: false,
+    };
     config.entry.preview = config.entry.preview.filter(
       x => x.indexOf("webpack-hot-middleware") === -1,
     );

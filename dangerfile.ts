@@ -1,4 +1,4 @@
-import { fail, danger, message } from "danger";
+import { danger, fail, message } from "danger";
 
 const currentCommitSHA = danger.git.commits[danger.git.commits.length - 1].sha;
 
@@ -29,5 +29,4 @@ function reportVisualRegression() {
 }
 
 checkPackageLock();
-// reportVisualRegression();
-// TODO: Check Visual Regression
+reportVisualRegression();

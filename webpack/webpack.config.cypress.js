@@ -6,6 +6,7 @@ const loadAppEnv = require("./loadAppEnv");
 const applicationEnv = loadAppEnv(process.env);
 
 module.exports = {
+  mode: 'none',
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },
@@ -15,11 +16,9 @@ module.exports = {
         test: /\.(tsx?)$/,
         use: [
           {
-            loader: "awesome-typescript-loader",
+            loader: "ts-loader",
             options: {
-              configFileName: "./cypress/tsconfig.json",
-              useCache: true,
-              errorsAsWarnings: true,
+              configFile: "cypress/tsconfig.json",
             },
           },
         ],

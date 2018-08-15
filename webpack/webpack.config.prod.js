@@ -8,6 +8,7 @@ const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
 
 module.exports = merge(configCommon, {
+  mode: "production",
   output: {
     filename: "[hash].[name].min.js",
   },
@@ -100,10 +101,9 @@ module.exports = merge(configCommon, {
             test: /\.(tsx?)$/,
             use: [
               {
-                loader: "awesome-typescript-loader",
+                loader: "ts-loader",
                 options: {
-                  configFileName: "./tsconfig.json",
-                  useCache: false,
+                  configFile: "tsconfig.json",
                 },
               },
             ],

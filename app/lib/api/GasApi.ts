@@ -10,7 +10,7 @@ const GET_GAS_PATH = "/gas";
 
 @injectable()
 export class GasApi {
-  constructor(@inject(symbols.authorizedHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
 
   public async getGas(): Promise<IHttpResponse<GasModelShape>> {
     const results = await this.httpClient.get<GasModelShape>({

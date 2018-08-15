@@ -9,7 +9,7 @@ const DOCUMENTS_PATH = "/documents";
 
 @injectable()
 export class FileStorageApi {
-  constructor(@inject(symbols.authorizedHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
 
   public async uploadFile(type: TFileType, file: File): Promise<IHttpResponse<TFileDescription>> {
     const data = new FormData();

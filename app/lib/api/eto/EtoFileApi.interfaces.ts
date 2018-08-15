@@ -1,3 +1,5 @@
+import { EtoStateEnum } from "./EtoApi.interfaces";
+
 type fileStates = "canReplace" | "locked" | "readOnly";
 
 export interface IEtoSingleFile {
@@ -15,41 +17,50 @@ export interface IEtoGeneratedFile {
   title: string;
 }
 
-export type TEtoUploadFile =
-  | "pamphlet"
-  | "termSheet"
-  | "infoBlatt"
-  | "bafinProspectus"
-  | "signedAgreement";
+export type etoDocumentType =
+  | "reservation_and_acquisition_agreement"
+  | "company_token_holder_agreement"
+  | "investment_and_shareholder_agreement"
+  | "prospectus_template"
+  | "pamphlet_template"
+  | "termsheet_template"
+  | "bafin_approved_prospectus"
+  | "bafin_approved_pamphlet"
+  | "signed_investment_and_shareholder_agreement"
+  | "other";
+
+type etoFormType = "document" | "template";
+
+export interface IEtoDocument {
+  documentType: etoDocumentType;
+  form: etoFormType;
+  ipfsHash: string;
+  mimeType: string;
+  name: string;
+  placeholders?: { [key: string]: string };
+}
+
+type IComplextFileInfo = "canDeleteInStates" | "canUploadInStates";
+
+type ISimpleFileInfo = "requiredTemplates" | "uploadableDocuments";
 
 export interface IEtoFiles {
-  links: IEtoLinkFile[];
-  generatedDocuments: IEtoGeneratedFile[];
-  uploadedDocuments: {
-    pamphlet: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    termSheet: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    infoBlatt: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    bafinProspectus: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-    signedAgreement: {
-      url?: string;
-      status?: string;
-      file?: File;
-    };
-  };
+  etoTemplates: TEtoDocumentTemplates;
+  uploadedDocuments: TEtoDocumentTemplates;
+  stateInfo?: { [key in ISimpleFileInfo]: etoDocumentType[] } &
+    { [key in IComplextFileInfo]: { [key in EtoStateEnum]: etoDocumentType[] } };
 }
+
+export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };
+
+export const immutableDocumentName: { [key: string]: string } = {
+  company_token_holder_agreement: "Company Token Holder Agreement",
+  investment_and_shareholder_agreement: "Investment and Shareholder Agreement",
+  pamphlet_template: "Pamphlet Template",
+  prospectus_template: "Prospectus Template",
+  reservation_and_acquisition_agreement: "Reservation and Acquisition Agreement",
+  termsheet_template: "Termsheet Template",
+  bafin_approved_prospectus: "Bafin Approved Prospectus",
+  bafin_approved_pamphlet: "Bafin Approved Pamphlet",
+  signed_investment_and_shareholder_agreement: "Signed Investment and Shareholder Agreement",
+};

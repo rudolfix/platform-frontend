@@ -32,6 +32,18 @@
     flex-shrink: 0;
   }
 
+  &:global(.on_chain) {
+    &::before {
+      background-color: $green-light;
+    }
+  }
+
+  &:global(.prospectus_approved) {
+    &::before {
+      background-color: $green-light;
+    }
+  }
+
   &:global(.listed) {
     &::before {
       background-color: $blue-light;

@@ -11,7 +11,7 @@ export interface ISrcSet {
   "3x"?: string;
 }
 
-type TTheme = "light" | "dark";
+type TTheme = "light" | "dark" | "transparent";
 
 export interface IResponsiveImage {
   src?: string;

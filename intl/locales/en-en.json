@@ -687,8 +687,8 @@
   "wallet.deposit-funds.eur.header": "Deposit {icon} nEUR to your Light Wallet",
   "wallet.deposit-funds.eur.iban": "IBAN",
   "wallet.deposit-funds.eur.reference": "Reference",
-  "wallet.deposit-funds.menu.eth": "Receive Eth",
-  "wallet.deposit-funds.menu.eur": "Deposit nEur",
+  "wallet.deposit-funds.menu.eth": "Receive ETH",
+  "wallet.deposit-funds.menu.eur": "Deposit nEUR",
   "wallet.deposit-funds.name": "Deposit funds / Receive",
   "wallet.name": "Wallet",
   "wallet.total": "Total",
@@ -697,5 +697,5 @@
   "withdraw-flow.gasPrice": "Gas Price",
   "withdraw-flow.summary": "Withdraw Summary",
   "withdraw-flow.to": "To",
-  "your-ethereum-address-widget.header": "Your ethereum address"
+  "your-ethereum-address-widget.header": "Your Ethereum address"
 }

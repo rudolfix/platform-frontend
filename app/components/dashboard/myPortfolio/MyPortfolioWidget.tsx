@@ -43,7 +43,7 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, l
         </h3>
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" && (
           <>
-            {lockedAmount && lockedAmount.isIcbmWalletConnected ? (
+            {lockedAmount && !lockedAmount.isIcbmWalletConnected ? (
               <p>
                 <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
                 <Link to={appRoutes.settings} className={styles.link}>

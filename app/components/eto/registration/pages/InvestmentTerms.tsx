@@ -10,10 +10,10 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
+import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
-import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 
 interface IStateProps {
   loadingData: boolean;

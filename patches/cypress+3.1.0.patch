@@ -1,9 +1,7 @@
 patch-package
-new file mode 100644
-Binary files /dev/null and
 --- a/node_modules/cypress/types/index.d.ts
 +++ b/node_modules/cypress/types/index.d.ts
-@@ -67,13 +67,13 @@ declare namespace Cypress {
+@@ -85,13 +85,13 @@ declare namespace Cypress {
       * @example
       *    Cypress.Blob.method()
       */
@@ -19,7 +17,7 @@ Binary files /dev/null and
      /**
       * Cypress automatically includes moment.js and exposes it as Cypress.moment.
       *
-@@ -91,7 +91,7 @@ declare namespace Cypress {
+@@ -109,7 +109,7 @@ declare namespace Cypress {
       * @example
       *   new Cypress.Promise((resolve, reject) => { ... })
       */

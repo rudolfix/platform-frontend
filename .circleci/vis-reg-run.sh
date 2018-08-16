@@ -7,6 +7,8 @@ cd "$(dirname "$0")"
 
 echo "BASE_KEY: ${BASE_KEY}"
 echo "CURRENT_KEY: ${CURRENT_KEY}"
+echo "AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}"
+
 
 echo "Preparing visual regression tests"
 ./vis-reg-prepare.sh

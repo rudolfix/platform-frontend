@@ -13,6 +13,7 @@ import { Button } from "../../../shared/Buttons";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormField } from "../../../shared/forms/forms";
 import { EtoFormBase } from "../EtoFormBase";
+import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 
 interface IStateProps {
   loadingData: boolean;
@@ -118,12 +119,13 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           type="number"
           min="1"
         />
-        <FormField
+        <FormTransformingField
           label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
           placeholder=" "
           name="whitelistDiscountFraction"
           type="number"
           prefix="%"
+          ratio={100}
         />
 
         <FormHighlightGroup>
@@ -226,10 +228,6 @@ export const EtoInvestmentTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        // just use fractions between 0 and 1, not percentage
-        if (data.whitelistDiscountFraction && data.whitelistDiscountFraction >= 1) {
-          data.whitelistDiscountFraction /= 100;
-        }
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

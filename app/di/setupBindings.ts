@@ -2,6 +2,8 @@ import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "../config/getConfig";
+import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";
+import { BinaryHttpClient } from "../lib/api/client/BinaryHttpClient";
 import { IHttpClient } from "../lib/api/client/IHttpClient";
 import { JsonHttpClient } from "../lib/api/client/JsonHttpClient";
 import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
@@ -26,6 +28,7 @@ import { EtoApi } from "../lib/api/eto/EtoApi";
 import { EtoFileApi } from "../lib/api/eto/EtoFileApi";
 import { FileStorageApi } from "../lib/api/FileStorageApi";
 import { GasApi } from "../lib/api/GasApi";
+import { ImmutableStorageApi } from "../lib/api/ImmutableStorageApi";
 import { KycApi } from "../lib/api/KycApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
@@ -68,8 +71,16 @@ export function setupBindings(config: IConfig): Container {
     .to(JsonHttpClient)
     .inSingletonScope();
   container
-    .bind<IHttpClient>(symbols.authorizedHttpClient)
+    .bind<IHttpClient>(symbols.binaryHttpClient)
+    .to(BinaryHttpClient)
+    .inSingletonScope();
+  container
+    .bind<IHttpClient>(symbols.authorizedJsonHttpClient)
     .to(AuthorizedJsonHttpClient)
+    .inSingletonScope();
+  container
+    .bind<IHttpClient>(symbols.authorizedBinaryHttpClient)
+    .to(AuthorizedBinaryHttpClient)
     .inSingletonScope();
 
   // singletons
@@ -143,6 +154,10 @@ export function setupBindings(config: IConfig): Container {
     .to(FileStorageApi)
     .inSingletonScope();
   container
+    .bind(symbols.apiImmutableStorage)
+    .to(ImmutableStorageApi)
+    .inSingletonScope();
+  container
     .bind(symbols.gasApi)
     .to(GasApi)
     .inSingletonScope();
@@ -205,8 +220,14 @@ export const createGlobalDependencies = (container: Container) => ({
   ledgerWalletConnector: container.get<LedgerWalletConnector>(symbols.ledgerWalletConnector),
 
   // network layer
+  binaryHttpClient: container.get<BinaryHttpClient>(symbols.binaryHttpClient),
   jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),
-  authorizedHttpClient: container.get<AuthorizedJsonHttpClient>(symbols.authorizedHttpClient),
+  authorizedJsonHttpClient: container.get<AuthorizedJsonHttpClient>(
+    symbols.authorizedJsonHttpClient,
+  ),
+  authorizedBinaryHttpClient: container.get<AuthorizedBinaryHttpClient>(
+    symbols.authorizedBinaryHttpClient,
+  ),
 
   // apis
   signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),
@@ -217,6 +238,7 @@ export const createGlobalDependencies = (container: Container) => ({
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
   gasApi: container.get<GasApi>(symbols.gasApi),
+  apiImmutableStorage: container.get<ImmutableStorageApi>(symbols.apiImmutableStorage),
 
   intlWrapper: container.get<IntlWrapper>(symbols.intlWrapper),
 });

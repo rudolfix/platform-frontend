@@ -1,9 +1,10 @@
 import * as cn from "classnames";
-import { FieldArray, FormikProps } from "formik";
+import { FieldArray, FormikProps, getIn } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
+import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces";
 import { CommonHtmlProps } from "../../types";
 import { FormField } from "./forms/formField/FormField";
 import { InlineIcon } from "./InlineIcon";
@@ -28,6 +29,7 @@ export const SOCIAL_PROFILES_ICONS = [
     name: "twitter",
     placeholder: "Twitter",
     svgIcon: socialTwitter,
+    preSelected: true,
   },
   {
     name: "facebook",
@@ -146,7 +148,7 @@ const SingleMediaLinkField: React.SFC<
   return (
     <Row className="my-4 justify-content-center">
       <Col>
-        <FormField name={`${name}.url`} placeholder={profile.placeholder} />
+        <FormField name={`${name}.url`} placeholder={profile.placeholder || profile.name} />
       </Col>
     </Row>
   );
@@ -157,6 +159,7 @@ export interface ISocialProfile {
   svgIcon: string;
   placeholder?: string;
   url?: string;
+  preSelected?: boolean;
 }
 
 interface IProps {
@@ -181,27 +184,22 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
   };
 
   componentDidMount(): void {
-    const { values, setFieldValue } = this.context.formik as FormikProps<{
-      [key: string]: Array<{ url: string; type: string }>;
-    }>;
+    const { values, setFieldValue } = this.context.formik as FormikProps<any>;
     const { name, profiles } = this.props;
-
-    const socialMediaValues = values[name] || [];
+    const socialMediaValues: TSocialChannelsType = getIn(values, name) || [];
     const selectedFields: boolean[] = [];
-
     profiles.forEach((profile, index) => {
       const previousLink = socialMediaValues.find(v => v.type === profile.name);
       const value: string = previousLink ? previousLink.url : "";
       setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
-      //always enable twitter
-      selectedFields[index] = profile.name === "twitter" ? true : !!value;
+      selectedFields[index] = profile.preSelected ? true : !!value;
     });
-
     this.setState({ ...this.state, selectedFields });
   }
 
   toggleProfileVisibility = (index: number): void => {
     const { selectedFields } = this.state;
+
     selectedFields[index] = !this.state.selectedFields[index];
     this.setState({ selectedFields });
   };

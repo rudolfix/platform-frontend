@@ -60,6 +60,11 @@ function generateProxyConfig(backendUrl, nodeUrl) {
       targetRemote: backendUrl + "gas",
       pathRewrite: { "^/api/gas": "" },
     },
+    "/api/immutable-storage": {
+      targetLocal: "http://localhost:5012",
+      targetRemote: backendUrl + "immutable-storage",
+      pathRewrite: { "^/api/immutable-storage": "" },
+    },
   };
 
   return mapValues(base, value => {

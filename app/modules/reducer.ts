@@ -1,6 +1,7 @@
 import { accessWalletReducer } from "./accessWallet/reducer";
 import { authReducer } from "./auth/reducer";
 import { depositEthModalReducer } from "./depositEthModal/reducer";
+import { etoDocumentReducer } from "./eto-documents/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
 import { etoReducer } from "./eto/reducer";
 import { gasReducer } from "./gas/reducer";
@@ -41,6 +42,7 @@ export const appReducers = {
   wallet: walletReducer,
   notifications: notificationsReducer,
   etoFlow: etoFlowReducer,
+  etoDocuments: etoDocumentReducer,
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
   txSender: txSenderReducer,

@@ -10,13 +10,10 @@ export interface IHttpRequestCommon {
   headers?: Dictionary<string>;
   body?: any;
   formData?: FormData;
+  skipResponseParsing?: boolean;
   expectsNoResponse?: boolean;
   allowedStatusCodes?: number[]; // 20x are always allowed
   disableManglingRequestBody?: boolean; // by default we make body of the request snake cased since our backend expects this form
-}
-
-export interface IHttpGetRequest extends IHttpRequestCommon {
-  queryParams?: Dictionary<string>;
 }
 
 export interface IHttpClientErrorDocument {
@@ -27,7 +24,12 @@ export interface IHttpClientErrorDocument {
   // @todo add space for failed validation here
 }
 
-export interface IHttpPostRequest extends IHttpRequestCommon {}
+export interface IHttpGetRequest extends IHttpRequestCommon {
+  queryParams?: Dictionary<string>;
+}
+export interface IHttpPostRequest extends IHttpRequestCommon {
+  queryParams?: Dictionary<string>;
+}
 export interface IHttpPutRequest extends IHttpRequestCommon {}
 export interface IHttpPatchRequest extends IHttpRequestCommon {}
 export interface IHttpDeleteRequest extends IHttpRequestCommon {}

@@ -2,32 +2,31 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { compose } from "redux";
 
-import { TEtoUploadFile } from "../../../lib/api/eto/EtoFileApi.interfaces";
-import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import { etoDocumentType } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import * as styles from "./EtoAddDocument.module.scss";
 
 interface IDispatchProps {
-  onDropFile: (file: File, fileName: TEtoUploadFile) => void;
+  onDropFile: (file: File, documentType: etoDocumentType) => void;
 }
 
 interface IOwnProps {
   children: React.ReactNode;
-  fileName: TEtoUploadFile;
+  documentType: etoDocumentType;
   disabled?: boolean;
 }
 export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = ({
   onDropFile,
   children,
-  fileName,
+  documentType,
   disabled,
 }) => {
-  const onDrop = (accepted: File[]) => accepted[0] && onDropFile(accepted[0], fileName);
+  const onDrop = (accepted: File[]) => accepted[0] && onDropFile(accepted[0], documentType);
   return (
     <Dropzone
-      accept="application/pdf,application/msword"
+      accept="application/pdf"
       onDrop={onDrop}
       activeClassName={styles.invisible}
       acceptClassName={styles.invisible}
@@ -44,10 +43,10 @@ export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = (
 export const ETOAddDocuments = compose<React.SFC<IOwnProps>>(
   appConnect<{}, IDispatchProps, IOwnProps>({
     dispatchToProps: dispatch => ({
-      onDropFile: (file: File, fileName: TEtoUploadFile) =>
+      onDropFile: (file: File, documentType: etoDocumentType) =>
         dispatch(
-          actions.etoFlow.showIpfsModal(() =>
-            dispatch(actions.etoFlow.etoUploadDocument(file, fileName)),
+          actions.etoDocuments.showIpfsModal(() =>
+            dispatch(actions.etoDocuments.etoUploadDocument(file, documentType)),
           ),
         ),
     }),

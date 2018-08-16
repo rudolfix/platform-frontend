@@ -7,6 +7,10 @@
     &.light {
       background-color: $color-white;
     }
+
+    &.transparent {
+      background-color: transparent;
+    }
   }
 }
 

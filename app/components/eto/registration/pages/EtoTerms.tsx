@@ -10,14 +10,13 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
-import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
+import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
 import {
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
 } from "../../../shared/forms/formField/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
-import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { FormField, FormTextArea } from "../../../shared/forms/forms";
 import { CURRENCIES } from "../../EtoPublicView";
 import { EtoFormBase } from "../EtoFormBase";
@@ -85,7 +84,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           <FormCheckbox
             name="notUnderCrowdfundingRegulations"
             label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
-            checked
           />
         </div>
 
@@ -93,17 +91,12 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           <FormLabel>
             <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
           </FormLabel>
-          <FormToggle
-            name="prospectusLanguage"
-            trueValue="de"
-            falseValue="en"
-            disabledLabel={
-              <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.disabled-label" />
-            }
-            enabledLabel={
-              <FormattedMessage id="eto.form.section.eto-terms.prospectus-language.enabled-label" />
-            }
-          />
+          <div>
+            <FormRadioButton name="prospectusLanguage" label="DE" value="de" />
+          </div>
+          <div>
+            <FormRadioButton name="prospectusLanguage" label="EN" value="en" />
+          </div>
         </div>
 
         <div className="form-group">
@@ -151,11 +144,20 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           <FormLabel>
             <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
           </FormLabel>
-          <FormToggle
-            name="enableTransferOnSuccess"
-            disabledLabel={<FormattedMessage id="form.select.asap" />}
-            enabledLabel={<FormattedMessage id="eto.form.eto-terms.future-date" />}
-          />
+          <div>
+            <FormRadioButton
+              name="enableTransferOnSuccess"
+              label={<FormattedMessage id="form.select.asap" />}
+              value={true}
+            />
+          </div>
+          <div>
+            <FormRadioButton
+              name="enableTransferOnSuccess"
+              label={<FormattedMessage id="eto.form.eto-terms.future-date" />}
+              value={false}
+            />
+          </div>
         </div>
 
         <FormTextArea
@@ -202,7 +204,6 @@ export const EtoRegistrationTerms = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        data.notUnderCrowdfundingRegulations = true; // Temporary solution - overrides checked value
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

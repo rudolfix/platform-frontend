@@ -8,6 +8,8 @@ cd "$(dirname "$0")"
 echo "BASE_KEY: ${BASE_KEY}"
 echo "CURRENT_KEY: ${CURRENT_KEY}"
 echo "AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}"
+echo "AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}"
+echo "AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}"
 
 
 echo "Preparing visual regression tests"

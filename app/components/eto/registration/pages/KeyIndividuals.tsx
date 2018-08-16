@@ -91,6 +91,12 @@ const Individual: React.SFC<IIndividual> = props => {
           acceptedFiles="image/*"
           fileFormatInformation="*150 x 150px png"
         />
+        <FormField
+          className="mt-2"
+          name={`${groupFieldName}.members.${index}.website`}
+          label={<FormattedMessage id="eto.form.key-individuals.website" />}
+          placeholder="website"
+        />
         <FormLabel className="mt-4 mb-2">
           <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
         </FormLabel>
@@ -169,6 +175,10 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         name="founders"
       />
       <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
+        name="keyAlliances"
+      />
+      <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.board-members.title" />}
         name="boardMembers"
       />
@@ -183,10 +193,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.partners.title" />}
         name="partners"
-      />
-      <KeyIndividualsGroup
-        title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
-        name="keyAlliances"
       />
       <Col>
         <Row className="justify-content-end">

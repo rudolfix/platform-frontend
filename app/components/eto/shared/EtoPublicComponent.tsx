@@ -638,7 +638,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               {companyData.boardMembers &&
                 companyData.boardMembers.members.length > 0 &&
                 !!companyData.boardMembers.members[0].name.length && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
+                  <TabContent
+                    tab={<FormattedMessage id="eto.public-view.carousel.tab.board-members" />}
+                  >
                     <Panel>
                       <PeopleSwiperWidget
                         navigation={{
@@ -655,7 +657,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               {companyData.keyAlliances &&
                 companyData.keyAlliances.members.length > 0 &&
                 !!companyData.keyAlliances.members[0].name.length && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
+                  <TabContent
+                    tab={<FormattedMessage id="eto.public-view.carousel.tab.key-alliances" />}
+                  >
                     <Panel>
                       <PeopleSwiperWidget
                         navigation={{

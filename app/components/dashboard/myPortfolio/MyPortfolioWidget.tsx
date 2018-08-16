@@ -41,7 +41,7 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, l
         <h3>
           <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
         </h3>
-        {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
+        {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" && (
           <>
             {lockedAmount && lockedAmount.isIcbmWalletConnected ? (
               <p>

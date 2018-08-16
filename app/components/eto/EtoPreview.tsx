@@ -1,7 +1,5 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import Slider, { Settings } from "react-slick";
-import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
@@ -14,7 +12,6 @@ import {
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { Accordion, AccordionElement } from "../shared/Accordion";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IStateProps {

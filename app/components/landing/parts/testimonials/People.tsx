@@ -1,6 +1,5 @@
 import * as React from "react";
 import Slider, { Settings } from "react-slick";
-import { Col, Row } from "reactstrap";
 
 import { HiResImage } from "../../../shared/HiResImage";
 import * as styles from "./People.module.scss";

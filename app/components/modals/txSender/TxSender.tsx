@@ -5,10 +5,11 @@ import { actions } from "../../../modules/actions";
 import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
-import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
+import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
+import { WatchPendingTxs } from "./shared/WatchPeningTxs";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
@@ -58,6 +59,9 @@ function renderBody({
   txHash,
 }: Props): React.ReactNode {
   switch (state) {
+    case "WATCHING_PENDING_TXS":
+      return <WatchPendingTxs />;
+
     case "INIT":
       return <Withdraw onAccept={acceptDraft} />;
 
@@ -68,7 +72,7 @@ function renderBody({
       return <AccessWalletContainer />;
 
     case "SIGNING":
-      return <LoadingIndicator />;
+      return <SigningMessage />;
 
     case "MINING":
       return <TxPending blockId={blockId!} txHash={txHash!} />;

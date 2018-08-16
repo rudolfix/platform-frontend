@@ -141,4 +141,23 @@ export class UsersApi {
 
     return response.body;
   }
+
+  public async addPendingTx(tx: TxWithMetadata): Promise<void> {
+    await this.httpClient.put<void>({
+      baseUrl: USER_API_ROOT,
+      url: "/pending_transactions/me",
+      body: {
+        transaction: tx.transaction,
+        transaction_type: tx.transactionType,
+      },
+      disableManglingRequestBody: true,
+    });
+  }
+
+  public async deletePendingTx(txHash: string): Promise<void> {
+    await this.httpClient.delete<void>({
+      baseUrl: USER_API_ROOT,
+      url: `/pending_transactions/me/${txHash}`,
+    });
+  }
 }

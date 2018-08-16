@@ -1,7 +1,7 @@
 import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
 
-import { SUBMIT_ETO_PERMISSION } from "../../config/constants";
+import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
@@ -22,6 +22,27 @@ export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDepen
     notificationCenter.error(
       "Could not access ETO data. Make sure you have completed KYC and email verification process.",
     );
+    yield put(actions.routing.goToDashboard());
+  }
+}
+
+export function* changeBookBuildingStatus(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES") return;
+  try {
+    yield neuCall(
+      ensurePermissionsArePresent,
+      [DO_BOOK_BUILDING],
+      "Confirm Changing your book building",
+    );
+    yield apiEtoService.changeBookBuildingState(action.payload.status);
+  } catch (e) {
+    logger.error("Failed to send ETO data", e);
+    notificationCenter.error("Failed to send ETO data");
+  } finally {
+    yield put(actions.etoFlow.loadDataStart());
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -86,4 +107,5 @@ export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
 }

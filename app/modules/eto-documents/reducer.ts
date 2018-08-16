@@ -1,4 +1,3 @@
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";

@@ -3,7 +3,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { InlineIcon } from "../../shared/InlineIcon";
 
 import * as externalLinkIcon from "../../../assets/img/inline_icons/link_out.svg";

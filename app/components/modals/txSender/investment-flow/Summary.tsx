@@ -1,4 +1,3 @@
-import { Form, FormikProps } from "formik";
 import * as React from "react";
 import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

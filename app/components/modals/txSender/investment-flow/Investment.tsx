@@ -1,6 +1,5 @@
 import { Form, Formik, FormikProps } from "formik";
 import * as React from "react";
-import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, FormGroup, Label, Row } from "reactstrap";
 

@@ -1,0 +1,31 @@
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: px-to-rem(11px);
+}
+
+.record {
+  display: flex;
+  min-height: px-to-rem(26px);
+}
+
+.label,
+.value {
+  flex-basis: 50%;
+}
+
+.label {
+  font-weight: $font-weight-bold;
+}
+
+.details {
+  color: $color-silver;
+  font-size: 10px;
+  letter-spacing: -.2px;
+}
+
+.image {
+  width: px-to-rem(28px);
+}

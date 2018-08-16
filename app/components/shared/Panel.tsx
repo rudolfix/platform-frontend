@@ -35,7 +35,7 @@ export const Panel: React.SFC<IPanelProps & CommonHtmlProps> = ({
           {rightComponent && <div className={styles.right}>{rightComponent}</div>}
         </header>
       )}
-      {children}
+      <div className={styles.content}>{children}</div>
     </div>
   );
 };

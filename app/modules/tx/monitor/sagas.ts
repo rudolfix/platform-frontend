@@ -1,5 +1,5 @@
+import { delay } from "redux-saga";
 import { put } from "redux-saga/effects";
-import { delay } from "../../../../node_modules/redux-saga";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { actions } from "../../actions";

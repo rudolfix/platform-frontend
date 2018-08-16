@@ -9,6 +9,7 @@ const COMPANIES_ME_DATA_PATH = "/companies/me";
 const COMPANIES_DATA_PATH = "/companies/";
 const ETO_DATA_PATH = "/etos/me";
 const ETO_SUBMISSION_PATH = "/etos/me/submission";
+const ETO_BOOK_BUILDING_PATH = "/etos/me/bookbuilding";
 const ETO_PREVIEW_PATH = "/eto-previews/";
 
 @injectable()
@@ -66,6 +67,16 @@ export class EtoApi {
     return await this.httpClient.post<TGeneralEtoData>({
       baseUrl: BASE_PATH,
       url: ETO_SUBMISSION_PATH,
+    });
+  }
+
+  public async changeBookBuildingState(
+    isBookBuilding: boolean,
+  ): Promise<IHttpResponse<TGeneralEtoData>> {
+    return await this.httpClient.put<TGeneralEtoData>({
+      baseUrl: BASE_PATH,
+      url: ETO_BOOK_BUILDING_PATH,
+      body: { is_bookbuilding: isBookBuilding },
     });
   }
 }

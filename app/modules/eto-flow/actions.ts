@@ -7,4 +7,6 @@ export const etoFlowActions = {
   loadData: (data: Partial<TGeneralEtoData>) => createAction("ETO_FLOW_LOAD_DATA", { data }),
   saveDataStart: (data: Partial<TGeneralEtoData>) =>
     createAction("ETO_FLOW_SAVE_DATA_START", { data }),
+  changeBookBuildingStatus: (status: boolean) =>
+    createAction("ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", { status }),
 };

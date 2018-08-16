@@ -13,7 +13,7 @@ import { SectionHeader } from "../shared/SectionHeader";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereumAddressWidget/YourEthereumAddressWidget";
 import { CheckYourICBMWalletWidget } from "./icbmWalletWidget/CheckYourICBMWalletWidget";
-import { AccountDetails } from "./personalAccountDetails/PersonalAccountDetails";
+import { PersonalAccountDetails } from "./personalAccountDetails/PersonalAccountDetails";
 import { SettingsWidgets } from "./SettingsWidgets";
 
 interface IStateProps {
@@ -46,7 +46,7 @@ export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet, userT
 
         {userType === "investor" && (
           <Col lg={4} xs={12}>
-            <AccountDetails />
+            <PersonalAccountDetails />
           </Col>
         )}
 

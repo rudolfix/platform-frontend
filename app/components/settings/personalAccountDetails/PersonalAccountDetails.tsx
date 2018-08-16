@@ -1,8 +1,11 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { compose } from "redux";
 
+import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
 import { Panel } from "../../shared/Panel";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
@@ -58,10 +61,6 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
     const { isDataHidden } = this.state;
     const { personalData } = this.props;
 
-    if (!Object.keys(personalData).length) {
-      return null;
-    }
-
     return (
       <Panel
         className="h-100"
@@ -114,21 +113,30 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
               </>
             )}
           </div>
-          {isDataHidden && (
-            <div>
-              <Button layout="secondary" onClick={this.toggleDataVisibility}>
-                <FormattedMessage id="settings.account-details.button" />
-              </Button>
-            </div>
-          )}
+          <div>
+            <Button layout="secondary" onClick={this.toggleDataVisibility}>
+              {isDataHidden ? (
+                <FormattedMessage id="settings.account-details.button-show" />
+              ) : (
+                <FormattedMessage id="settings.account-details.button-hide" />
+              )}
+            </Button>
+          </div>
         </div>
       </Panel>
     );
   }
 }
 
-export const AccountDetails = appConnect<IStateProps>({
-  stateToProps: s => ({
-    personalData: s.kyc.individualData || {},
+export const PersonalAccountDetails = compose<React.SFC>(
+  appConnect<IStateProps>({
+    stateToProps: s => ({
+      personalData: s.kyc.individualData || {},
+    }),
   }),
-})(AccountDetailsComponent);
+  onEnterAction({
+    actionCreator: dispatch => {
+      dispatch(actions.kyc.kycLoadIndividualRequest());
+    },
+  }),
+)(AccountDetailsComponent);

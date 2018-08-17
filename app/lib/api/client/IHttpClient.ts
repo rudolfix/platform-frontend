@@ -13,6 +13,7 @@ export interface IHttpRequestCommon {
   skipResponseParsing?: boolean;
   expectsNoResponse?: boolean;
   allowedStatusCodes?: number[]; // 20x are always allowed
+  disableManglingRequestBody?: boolean; // by default we make body of the request snake cased since our backend expects this form
 }
 
 export interface IHttpClientErrorDocument {

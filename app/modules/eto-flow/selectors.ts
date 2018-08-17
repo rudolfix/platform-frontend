@@ -20,6 +20,7 @@ import {
 import { TEtoDocumentTemplates } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { DeepPartial } from "../../types";
 import { selectIsUserEmailVerified } from "../auth/selectors";
+import { selectEtoDocumentLoading } from "../eto-documents/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./reducer";
 
@@ -174,3 +175,6 @@ export const selectCurrentEtoTemplates = (
 
 export const selectShouldEtoDataLoad = (state: IAppState) =>
   selectKycRequestStatus(state.kyc) === "Accepted" && selectIsUserEmailVerified(state.auth);
+
+export const selectIsGeneralEtoLoading = (state: IAppState) =>
+  selectEtoLoading(state.etoFlow) && selectEtoDocumentLoading(state.etoDocuments);

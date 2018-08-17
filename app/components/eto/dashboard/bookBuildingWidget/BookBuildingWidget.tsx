@@ -10,6 +10,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpe
 import { ButtonArrowRight } from "../../../shared/Buttons";
 import { Panel } from "../../../shared/Panel";
 
+import { actions } from "../../../../modules/actions";
 import * as styles from "../../etoContentWidget.module.scss";
 
 interface IDispatchProps {
@@ -85,9 +86,9 @@ export const BookBuildingWidget = compose<React.SFC>(
     stateToProps: state => ({
       bookBuildingState: selectIsBookBuilding(state.etoFlow),
     }),
-    dispatchToProps: () => ({
-      startBookBuilding: () => {},
-      stopBookBuilding: () => {},
+    dispatchToProps: dispatch => ({
+      startBookBuilding: () => dispatch(actions.etoFlow.changeBookBuildingStatus(true)),
+      stopBookBuilding: () => dispatch(actions.etoFlow.changeBookBuildingStatus(false)),
     }),
   }),
   injectIntlHelpers,

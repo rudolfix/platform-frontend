@@ -3,18 +3,22 @@ import { put } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { actions } from "../../actions";
-import { neuCall, neuTakeEvery } from "../../sagas";
+import { neuCall } from "../../sagas";
 import { neuTakeUntil } from "../../sagasUtils";
 
 const TX_MONITOR_DELAY = 60000;
 
-function* txMonitor({ apiUserService, logger }: TGlobalDependencies): any {
+export function* updateTxs({ apiUserService }: TGlobalDependencies): any {
+  const txs: Array<TxWithMetadata> = yield apiUserService.pendingTxs();
+
+  yield put(actions.txMonitor.loadTxs(txs));
+}
+
+function* txMonitor({ logger }: TGlobalDependencies): any {
   while (true) {
     logger.info("Querying for pending txs...");
 
-    const txs: Array<TxWithMetadata> = yield apiUserService.pendingTxs();
-
-    yield put(actions.txMonitor.loadTxs(txs));
+    yield neuCall(updateTxs);
 
     yield delay(TX_MONITOR_DELAY);
   }

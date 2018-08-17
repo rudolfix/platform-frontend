@@ -78,6 +78,7 @@ const groupType = YupTS.object({
       role: YupTS.string().optional(),
       image: YupTS.string().optional(),
       description: YupTS.string(),
+      website: YupTS.url(),
       socialChannels: socialChannelsType.optional(),
     }),
   ),

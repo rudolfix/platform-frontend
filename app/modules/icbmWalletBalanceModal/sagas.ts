@@ -15,15 +15,17 @@ class IcbmWalletError extends Error {}
 class NoIcbmWalletError extends IcbmWalletError {}
 class SameUserError extends IcbmWalletError {}
 
-async function checkIcbmWalletPromise(migrationWalletData: IWalletStateData): Promise<boolean> {
+function checkIcbmWallet(migrationWalletData: IWalletStateData): boolean {
+  /* tslint:disable */
   return !(
-    (migrationWalletData &&
-      migrationWalletData.etherTokenLockedWallet &&
-      migrationWalletData.etherTokenLockedWallet.unlockDate === "0") ||
+    migrationWalletData &&
+    migrationWalletData.etherTokenLockedWallet &&
+    migrationWalletData.etherTokenLockedWallet.unlockDate === "0" &&
     (migrationWalletData &&
       migrationWalletData.euroTokenLockedWallet &&
       migrationWalletData.euroTokenLockedWallet.unlockDate === "0")
   );
+  /* tslint:enable */
 }
 
 function* loadIcbmWalletDataSaga(
@@ -39,7 +41,7 @@ function* loadIcbmWalletDataSaga(
     if (userAddress === ethAddress) throw new SameUserError();
 
     const migrationWalletData: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
-    const isIcbmUser = yield checkIcbmWalletPromise(migrationWalletData);
+    const isIcbmUser = checkIcbmWallet(migrationWalletData);
     if (!isIcbmUser) throw new NoIcbmWalletError();
 
     yield put(actions.icbmWalletBalanceModal.loadIcbmWalletData(migrationWalletData));

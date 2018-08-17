@@ -38,6 +38,20 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
       <Section>
         <FormTextArea
           className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.inspiration" />}
+          placeholder="Describe"
+          name="inspiration"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.product-vision" />}
+          placeholder="Describe"
+          name="productVision"
+        />
+
+        <FormTextArea
+          className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
           placeholder="Describe"
           name="problemSolved"
@@ -52,24 +66,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.product-vision" />}
+          label={<FormattedMessage id="eto.form.product-vision.sales-model" />}
           placeholder="Describe"
-          name="productVision"
-        />
-
-        <FormTextArea
-          className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.inspiration" />}
-          placeholder="Describe"
-          name="inspiration"
-        />
-
-        <FormTextArea
-          className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
-          placeholder="Describe"
-          name="keyProductPriorities"
-          charactersLimit={250}
+          name="salesModel"
         />
 
         <FormCategoryDistribution
@@ -87,13 +86,6 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.sales-model" />}
-          placeholder="Describe"
-          name="salesModel"
-        />
-
-        <FormTextArea
-          className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
           placeholder="Describe"
           name="marketingApproach"
@@ -104,6 +96,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           label={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
           placeholder="Describe"
           name="sellingProposition"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+          placeholder="Describe"
+          name="keyProductPriorities"
+          charactersLimit={250}
         />
       </Section>
       <Col>

@@ -19,10 +19,11 @@ export interface IWalletStateData {
 
   etherTokenBalance: string;
   euroTokenBalance: string;
-  euroTokenLockedBalance: string;
-  etherTokenLockedBalance: string;
   etherBalance: string;
   neuBalance: string;
+
+  euroTokenLockedBalance: string;
+  etherTokenLockedBalance: string;
 }
 
 const walletInitialState: IWalletState = {

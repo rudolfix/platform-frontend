@@ -111,7 +111,7 @@ export const WalletStart = compose<React.SFC>(
             ethAmount: selectLiquidEtherBalance(state.wallet),
             ethEuroAmount: selectLiquidEtherBalanceEuroAmount(state),
             neuroAmount: selectLiquidEuroTokenBalance(state.wallet),
-            neuroEuroAmount: selectLiquidEuroTotalAmount(state),
+            neuroEuroAmount: selectLiquidEuroTokenBalance(state.wallet),
             totalEuroAmount: selectLiquidEuroTotalAmount(state),
           },
           lockedWalletData: {
@@ -119,7 +119,7 @@ export const WalletStart = compose<React.SFC>(
             ethAmount: selectLockedEtherBalance(state.wallet),
             ethEuroAmount: selectLockedEtherBalanceEuroAmount(state),
             neuroAmount: selectLockedEuroTokenBalance(state.wallet),
-            neuroEuroAmount: selectLockedEuroTotalAmount(state),
+            neuroEuroAmount: selectLockedEuroTokenBalance(state.wallet),
             totalEuroAmount: selectLockedEuroTotalAmount(state),
           },
           icbmWalletData: {
@@ -127,7 +127,7 @@ export const WalletStart = compose<React.SFC>(
             ethAmount: selectICBMLockedEtherBalance(state.wallet),
             ethEuroAmount: selectICBMLockedEtherBalanceEuroAmount(state),
             neuroAmount: selectICBMLockedEuroTokenBalance(state.wallet),
-            neuroEuroAmount: selectICBMLockedEuroTotalAmount(state),
+            neuroEuroAmount: selectICBMLockedEuroTokenBalance(state.wallet),
             totalEuroAmount: selectICBMLockedEuroTotalAmount(state),
           },
         };

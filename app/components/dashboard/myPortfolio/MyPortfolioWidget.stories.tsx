@@ -10,7 +10,7 @@ storiesOf("MyPortfolioWidget", module)
   .add("loaded", () => (
     <MyPortfolioWidgetComponent
       isLoading={false}
-      lockedAmount={{
+      {...{
         balanceEur: "12312352413",
         balanceNeu: `123${Q18.toString()}`,
         isIcbmWalletConnected: true,
@@ -20,6 +20,6 @@ storiesOf("MyPortfolioWidget", module)
   .add("loaded, no funds", () => (
     <MyPortfolioWidgetComponent
       isLoading={false}
-      lockedAmount={{ balanceEur: "0", balanceNeu: "0", isIcbmWalletConnected: true }}
+      {...{ balanceEur: "0", balanceNeu: "0", isIcbmWalletConnected: true }}
     />
   ));

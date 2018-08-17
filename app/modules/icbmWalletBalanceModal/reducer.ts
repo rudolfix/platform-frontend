@@ -4,6 +4,7 @@ import { IWalletStateData } from "./../wallet/reducer";
 
 export interface IIcbmWalletBalanceModal {
   isOpen: boolean;
+  loading: boolean;
   ethAddress?: string;
   migrationWalletData?: IWalletStateData;
 }
@@ -15,6 +16,7 @@ export interface ISendEthModalState {
 
 const initialState: IIcbmWalletBalanceModal = {
   isOpen: false,
+  loading: false,
 };
 
 export const icbmWalletBalanceModalReducer: AppReducer<IIcbmWalletBalanceModal> = (
@@ -36,10 +38,12 @@ export const icbmWalletBalanceModalReducer: AppReducer<IIcbmWalletBalanceModal> 
       return {
         ...state,
         ethAddress: action.payload.ethAddress,
+        loading: true,
       };
     case "ICBM_WALLET_BALANCE_MODAL_LOAD_WALLET_DATA":
       return {
         ...state,
+        loading: false,
         migrationWalletData: action.payload.data,
       };
     default:

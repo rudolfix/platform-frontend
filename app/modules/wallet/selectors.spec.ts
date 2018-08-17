@@ -18,11 +18,19 @@ describe("Wallet > selectors", () => {
         data: {
           euroTokenBalance: "1",
           euroTokenLockedBalance: "3",
-          euroTokenICBMLockedBalance: "5",
 
+          etherTokenLockedWallet: {
+            ICBMLockedBalance: "50",
+            neumarksDue: "0",
+            unlockDate: "0",
+          },
+          euroTokenLockedWallet: {
+            ICBMLockedBalance: "5",
+            neumarksDue: "0",
+            unlockDate: "0",
+          },
           etherTokenBalance: "10",
           etherTokenLockedBalance: "30",
-          etherTokenICBMLockedBalance: "50",
           etherTokenNeumarksDue: "3",
           etherTokenUnlockDate: "2",
 
@@ -31,8 +39,10 @@ describe("Wallet > selectors", () => {
         },
       },
       tokenPrice: {
-        etherPriceEur: "483.96",
-        neuPriceEur: "0.500901",
+        tokenPriceData: {
+          etherPriceEur: "10",
+          neuPriceEur: "10000",
+        },
       },
     };
 

@@ -3,8 +3,11 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { actions } from "../../modules/actions";
+import { selectIcbmWalletConnected } from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
@@ -15,9 +18,13 @@ import { SettingsWidgets } from "./SettingsWidgets";
 
 interface IStateProps {
   isLightWallet: boolean;
+  isIcbmWalletConnected: boolean;
 }
 
-export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet }) => {
+export const SettingsComponent: React.SFC<IStateProps> = ({
+  isLightWallet,
+  isIcbmWalletConnected,
+}) => {
   return (
     <LayoutAuthorized>
       <Row className="row-gutter-top">
@@ -35,11 +42,12 @@ export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet }) => 
         <Col lg={4} xs={12}>
           <YourEthereumAddressWidget />
         </Col>
-        {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" && (
-          <Col lg={4} xs={12}>
-            <CheckYourICBMWalletWidget />
-          </Col>
-        )}
+        {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
+          (isIcbmWalletConnected || (
+            <Col lg={4} xs={12}>
+              <CheckYourICBMWalletWidget />
+            </Col>
+          ))}
 
         {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
           <>
@@ -60,9 +68,11 @@ export const SettingsComponent: React.SFC<IStateProps> = ({ isLightWallet }) => 
 };
 
 export const Settings = compose<React.SFC>(
+  onEnterAction({ actionCreator: d => d(actions.wallet.startLoadingWalletData()) }),
   appConnect<IStateProps>({
     stateToProps: s => ({
       isLightWallet: selectIsLightWallet(s.web3),
+      isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
     }),
   }),
 )(SettingsComponent);

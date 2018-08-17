@@ -25,6 +25,7 @@ interface IStateProps {
   etherBalance: string;
   ethAddress?: string;
   neumarksDue: string;
+  isLoading: boolean;
 }
 
 interface IDispatchProps {
@@ -65,7 +66,7 @@ const HighlightedField: React.SFC<IProps> = ({ label, value, icon, link }) => {
 
 class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatchProps> {
   render(): React.ReactNode {
-    const { isOpen, onCancel, ethAddress, etherBalance, neumarksDue } = this.props;
+    const { isOpen, onCancel, ethAddress, etherBalance, neumarksDue, isLoading } = this.props;
     return (
       <Modal isOpen={isOpen} toggle={onCancel}>
         <ModalComponentBody onClose={onCancel}>
@@ -81,12 +82,14 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
             />
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />}
-              value={<Money currency="neu" value={neumarksDue || "0"} />}
+              value={isLoading ? <>Loading</> : <Money currency="neu" value={neumarksDue || "0"} />}
               icon={iconNeu}
             />
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
-              value={<Money value={etherBalance || "0"} currency="eth" />}
+              value={
+                isLoading ? <>Loading</> : <Money value={etherBalance || "0"} currency="eth" />
+              }
               icon={iconEth}
             />
             <p className={styles.footer}>
@@ -102,6 +105,7 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
 export const IcbmWalletBalanceModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: state.icbmWalletBalanceModal.isOpen,
+    isLoading: state.icbmWalletBalanceModal.loading,
     ethAddress: selectIcbmWalletEthAddress(state.icbmWalletBalanceModal),
     neumarksDue: selectAllNeumakrsDueIcbmModal(state.icbmWalletBalanceModal),
     etherBalance: selectEtherBalanceIcbmModal(state.icbmWalletBalanceModal),

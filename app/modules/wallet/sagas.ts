@@ -49,17 +49,15 @@ export async function loadWalletDataAsync(
         }),
       ),
     })),
-    // This needs to be seperated
     ...numericValuesToString(
       await promiseAll({
         etherTokenBalance: contractsService.etherTokenContract.balanceOf(ethAddress),
         euroTokenBalance: contractsService.euroTokenContract.balanceOf(ethAddress),
-        euroTokenLockedBalance: Promise.resolve(new BigNumber("0")),
-
-        etherTokenLockedBalance: Promise.resolve(new BigNumber("0")),
-
         etherBalance: web3Manager.internalWeb3Adapter.getBalance(ethAddress),
         neuBalance: contractsService.neumarkContract.balanceOf(ethAddress),
+        //@TODO: Connect locked balance with locked wallet
+        euroTokenLockedBalance: Promise.resolve(new BigNumber("0")),
+        etherTokenLockedBalance: Promise.resolve(new BigNumber("0")),
       }),
     ),
   };

@@ -4,36 +4,44 @@ import { Link } from "react-router-dom";
 
 import {
   selectIcbmWalletConnected,
+  selectNeuBalance,
   selectNeuBalanceEuroAmount,
 } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
+import { appRoutes } from "../../appRoutes";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
-import { appRoutes } from "../../appRoutes";
 import * as styles from "./MyPortfolioWidget.module.scss";
 
 type TOwnProps = CommonHtmlProps;
 
 interface IBodyProps {
   error?: string;
-  lockedAmount?: {
-    balanceNeu: string;
-    balanceEur: string;
-    isIcbmWalletConnected: boolean;
-  };
+  balanceNeu: string;
+  balanceEur: string;
+  isIcbmWalletConnected: boolean;
 }
 
-interface IStateProps extends IBodyProps {
+interface IStateProps {
   isLoading: boolean;
+  balanceNeu?: string;
+  balanceEur?: string;
+  error?: string;
+  isIcbmWalletConnected?: boolean;
 }
 
 type IProps = TOwnProps & IStateProps;
 
-export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, lockedAmount }) => {
+export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
+  error,
+  isIcbmWalletConnected,
+  balanceEur,
+  balanceNeu,
+}) => {
   if (error) {
     return <WarningAlert>{error}</WarningAlert>;
   }
@@ -46,19 +54,19 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({ error, l
         </h3>
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" && (
           <>
-            {lockedAmount && !lockedAmount.isIcbmWalletConnected ? (
+            {isIcbmWalletConnected || (
               <p>
                 <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
                 <Link to={appRoutes.settings} className={styles.link}>
                   <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
                 </Link>
               </p>
-            ) : null}
+            )}
           </>
         )}
       </div>
       <div className={styles.side}>
-        <MyNeuWidget balanceNeu={lockedAmount!.balanceNeu} balanceEur={lockedAmount!.balanceEur} />
+        <MyNeuWidget balanceNeu={balanceNeu} balanceEur={balanceEur} />
       </div>
     </div>
   );
@@ -69,7 +77,9 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   style,
   isLoading,
   error,
-  lockedAmount,
+  isIcbmWalletConnected,
+  balanceEur,
+  balanceNeu,
 }) => {
   return (
     <Panel
@@ -84,7 +94,11 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
           <LoadingIndicator />
         ) : (
           <MyPortfolioWidgetComponentBody
-            lockedAmount={lockedAmount}
+            {...{
+              isIcbmWalletConnected: isIcbmWalletConnected!,
+              balanceEur: balanceEur!,
+              balanceNeu: balanceNeu!,
+            }}
             error={error}
             test-data-id="dashboard-my-portfolio-widget"
           />
@@ -98,10 +112,8 @@ export const MyPortfolioWidget = appConnect<IStateProps, {}, TOwnProps>({
   stateToProps: s => ({
     isLoading: s.wallet.loading,
     error: s.wallet.error,
-    lockedAmount: s.wallet.data && {
-      balanceNeu: s.wallet.data.neuBalance,
-      balanceEur: selectNeuBalanceEuroAmount(s),
-      isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
-    },
+    balanceNeu: selectNeuBalance(s.wallet),
+    balanceEur: selectNeuBalanceEuroAmount(s),
+    isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
   }),
 })(MyPortfolioWidgetComponent);

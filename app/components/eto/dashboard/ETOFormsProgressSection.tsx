@@ -2,18 +2,6 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col } from "reactstrap";
 import {
-  EtoCompanyInformationType,
-  EtoKeyIndividualsType,
-  EtoLegalInformationType,
-  EtoMediaType,
-  EtoProductVisionType,
-  EtoRiskAssessmentType,
-  EtoTermsType,
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-} from "../../../lib/api/eto/EtoApi.interfaces";
-
-import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,
   calculateEtoKeyIndividualsProgress,

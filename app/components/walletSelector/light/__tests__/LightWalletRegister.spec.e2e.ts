@@ -48,9 +48,9 @@ describe("Light wallet login / register", () => {
     loginWithLightWallet(email, password);
 
     assertUserInDashboard().then(() => {
-      const savedMetadata = window.localStorage.NF_WALLET_METADATA;
+      const savedMetadata = (window.localStorage as any).NF_WALLET_METADATA;
       cy.clearLocalStorage().then(() => {
-        window.localStorage.NF_WALLET_ISSUER_METADATA = savedMetadata;
+        (window.localStorage as any).NF_WALLET_ISSUER_METADATA = savedMetadata;
 
         cy.visit("eto/login/light");
         cy.contains(tid("light-wallet-login-with-email-email-field"), email);
@@ -58,7 +58,7 @@ describe("Light wallet login / register", () => {
         cy.get(tid("wallet-selector-nuewallet.login-button")).click();
 
         return assertUserInDashboard().then(() => {
-          expect(window.localStorage.NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
+          expect((window.localStorage as any).NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
         });
       });
     });

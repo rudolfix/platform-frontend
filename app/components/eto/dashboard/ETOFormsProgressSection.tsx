@@ -73,6 +73,15 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
       <Col lg={4} xs={12} md={6} className="mb-4">
         <EtoFormProgressWidget
           isLoading={loadingData}
+          to={etoRegisterRoutes.etoInvestmentTerms}
+          progress={shouldEtoDataLoad ? etoInvestmentTermsProgress : 0}
+          disabled={!shouldEtoDataLoad}
+          name={<FormattedMessage id="eto.form-progress-widget.investment-terms" />}
+        />
+      </Col>
+      <Col lg={4} xs={12} md={6} className="mb-4">
+        <EtoFormProgressWidget
+          isLoading={loadingData}
           to={etoRegisterRoutes.etoTerms}
           progress={shouldEtoDataLoad ? etoTermsProgress : 0}
           disabled={!shouldEtoDataLoad}
@@ -131,15 +140,6 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
           progress={shouldEtoDataLoad ? etoVotingRightProgress : 0}
           disabled={!shouldEtoDataLoad}
           name={<FormattedMessage id="eto.form-progress-widget.voting-right" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoInvestmentTerms}
-          progress={shouldEtoDataLoad ? etoInvestmentTermsProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.investment-terms" />}
         />
       </Col>
     </>

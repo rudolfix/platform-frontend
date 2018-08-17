@@ -2,21 +2,26 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { Col } from "reactstrap";
 import {
-  EtoCompanyInformationType,
-  EtoKeyIndividualsType,
-  EtoLegalInformationType,
-  EtoMediaType,
-  EtoProductVisionType,
-  EtoRiskAssessmentType,
-  EtoTermsType,
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-} from "../../../lib/api/eto/EtoApi.interfaces";
-import { selectKycRequestStatus, selectWidgetLoading } from "../../../modules/kyc/selectors";
+  calculateCompanyInformationProgress,
+  calculateEtoEquityTokenInfoProgress,
+  calculateEtoKeyIndividualsProgress,
+  calculateEtoMediaProgress,
+  calculateEtoRiskAssessmentProgress,
+  calculateEtoTermsProgress,
+  calculateEtoVotingRightProgress,
+  calculateInvestmentTermsProgress,
+  calculateLegalInformationProgress,
+  calculateProductVisionProgress,
+  selectCompanyData,
+  selectEtoData,
+  selectIsGeneralEtoLoading,
+  selectShouldEtoDataLoad,
+} from "../../../modules/eto-flow/selectors";
+import { appConnect } from "../../../store";
 import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
 
-export interface IEtoFormsProgressSectionProps {
+export interface IStateProps {
   loadingData: boolean;
   shouldEtoDataLoad: boolean;
   companyInformationProgress: number;
@@ -31,7 +36,7 @@ export interface IEtoFormsProgressSectionProps {
   etoInvestmentTermsProgress: number;
 }
 
-export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> = ({
+const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
   loadingData,
   shouldEtoDataLoad,
   companyInformationProgress,
@@ -63,6 +68,15 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           progress={shouldEtoDataLoad ? legalInformationProgress : 0}
           disabled={!shouldEtoDataLoad}
           name={<FormattedMessage id="eto.form-progress-widget.legal-info" />}
+        />
+      </Col>
+      <Col lg={4} xs={12} md={6} className="mb-4">
+        <EtoFormProgressWidget
+          isLoading={loadingData}
+          to={etoRegisterRoutes.etoInvestmentTerms}
+          progress={shouldEtoDataLoad ? etoInvestmentTermsProgress : 0}
+          disabled={!shouldEtoDataLoad}
+          name={<FormattedMessage id="eto.form-progress-widget.investment-terms" />}
         />
       </Col>
       <Col lg={4} xs={12} md={6} className="mb-4">
@@ -128,15 +142,23 @@ export const ETOFormsProgressSection: React.SFC<IEtoFormsProgressSectionProps> =
           name={<FormattedMessage id="eto.form-progress-widget.voting-right" />}
         />
       </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoInvestmentTerms}
-          progress={shouldEtoDataLoad ? etoInvestmentTermsProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.investment-terms" />}
-        />
-      </Col>
     </>
   );
 };
+
+export const ETOFormsProgressSection = appConnect<IStateProps, {}>({
+  stateToProps: s => ({
+    loadingData: selectIsGeneralEtoLoading(s),
+    shouldEtoDataLoad: selectShouldEtoDataLoad(s),
+    companyInformationProgress: calculateCompanyInformationProgress(selectCompanyData(s.etoFlow)),
+    etoTermsProgress: calculateEtoTermsProgress(selectEtoData(s.etoFlow)),
+    etoKeyIndividualsProgress: calculateEtoKeyIndividualsProgress(selectCompanyData(s.etoFlow)),
+    legalInformationProgress: calculateLegalInformationProgress(selectCompanyData(s.etoFlow)),
+    productVisionProgress: calculateProductVisionProgress(selectCompanyData(s.etoFlow)),
+    etoMediaProgress: calculateEtoMediaProgress(selectCompanyData(s.etoFlow)),
+    etoVotingRightProgress: calculateEtoVotingRightProgress(selectEtoData(s.etoFlow)),
+    etoEquityTokenInfoProgress: calculateEtoEquityTokenInfoProgress(selectEtoData(s.etoFlow)),
+    etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectCompanyData(s.etoFlow)),
+    etoInvestmentTermsProgress: calculateInvestmentTermsProgress(selectEtoData(s.etoFlow)),
+  }),
+})(ETOFormsProgressSectionComponent);

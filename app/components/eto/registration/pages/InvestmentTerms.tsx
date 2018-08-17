@@ -13,6 +13,7 @@ import { Button } from "../../../shared/Buttons";
 import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormField } from "../../../shared/forms/forms";
+import { formatMoney } from "../../../shared/Money.utils";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IStateProps {
@@ -43,8 +44,8 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
     const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
     const computedMaxNumberOfTokens = newSharesToIssue * equityTokensPerShare;
     const computedMinNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
-    const computedMaxCapEur = computedNewSharePrice * newSharesToIssue;
-    const computedMinCapEur = computedNewSharePrice * minimumNewSharesToIssue;
+    const computedMaxCapPercent = (newSharesToIssue / existingCompanyShares) * 100;
+    const computedMinCapPercent = (minimumNewSharesToIssue / existingCompanyShares) * 100;
 
     const computedTokenPrice = computedNewSharePrice / equityTokensPerShare;
 
@@ -131,9 +132,9 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
         <FormHighlightGroup>
           <FormField
             label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
-            placeholder="1/1000000 of share price auto complete"
+            prefix="€"
             name="newSharePrice"
-            value={computedNewSharePrice}
+            value={formatMoney(`${computedNewSharePrice}`, 4, 4)}
             disabled
           />
           <FormField
@@ -141,13 +142,14 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             name="equityTokenPrice"
             prefix="€"
             placeholder="read only"
-            value={computedTokenPrice}
+            value={formatMoney(`${computedTokenPrice}`, 4, 4)}
             disabled
           />
           <Row>
             <Col sm={12} md={6} className="mb-4">
               <FormField
                 label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
+                prefix="€"
                 placeholder="read only"
                 name="minNumberOfTokens"
                 value={computedMinNumberOfTokens}
@@ -157,6 +159,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             <Col sm={12} md={6} className="mb-4">
               <FormField
                 label={<FormattedMessage id="eto.form.section.investment-terms.total-investment" />}
+                prefix="€"
                 placeholder="read only"
                 name="totalInvestment"
                 value={computedMaxNumberOfTokens}
@@ -168,10 +171,9 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
                 label={
                   <FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />
                 }
-                prefix="€"
                 placeholder="read only"
                 name="minCapEur"
-                value={computedMinCapEur}
+                value={computedMinNumberOfTokens}
                 disabled
               />
             </Col>
@@ -180,10 +182,31 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
                 label={
                   <FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />
                 }
-                prefix="€"
                 placeholder="read only"
                 name="maxCapEur"
-                value={computedMaxCapEur}
+                value={computedMaxNumberOfTokens}
+                disabled
+              />
+            </Col>
+            <Col sm={12} md={6}>
+              <FormField
+                label={
+                  <FormattedMessage id="eto.form.section.investment-terms.minimum-shares-generated" />
+                }
+                prefix="%"
+                name="minSharesGenerated"
+                value={computedMinCapPercent}
+                disabled
+              />
+            </Col>
+            <Col sm={12} md={6}>
+              <FormField
+                label={
+                  <FormattedMessage id="eto.form.section.investment-terms.maximum-shares-generated" />
+                }
+                prefix="%"
+                name="maxSharesGenerated"
+                value={computedMaxCapPercent}
                 disabled
               />
             </Col>

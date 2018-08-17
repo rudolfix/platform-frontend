@@ -1,12 +1,20 @@
 import * as React from "react";
+
 import { actions } from "../../modules/actions";
 import { selectIsAuthorized, selectUserEmail } from "../../modules/auth/selectors";
+import {
+  selectAmountOfMinedTxs,
+  selectAmountOfPendingTxs,
+} from "../../modules/tx/monitor/selectors";
 import { appConnect } from "../../store";
 import { Button } from "../shared/Buttons";
 
 interface IStateProps {
   isAuthorized: boolean;
   email?: string;
+
+  pendingTxs: number;
+  minedTxs: number;
 }
 
 interface IDispatchProps {
@@ -19,6 +27,8 @@ const UserInfoComponent: React.SFC<IStateProps & IDispatchProps> = ({
   email,
   sign,
   send,
+  minedTxs,
+  pendingTxs,
 }) => {
   if (!isAuthorized) {
     return <h3>No user! </h3>;
@@ -28,6 +38,9 @@ const UserInfoComponent: React.SFC<IStateProps & IDispatchProps> = ({
         <h3>User email: {email || "<no email>"}</h3>
         <Button onClick={sign}>SIGN A MESSAGE</Button>
         <Button onClick={send}>SEND TX</Button>
+
+        <p>Pending Txs: {pendingTxs}</p>
+        <p>Mined Txs: {minedTxs}</p>
       </div>
     );
   }
@@ -37,6 +50,8 @@ export const UserInfo = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
     email: selectUserEmail(s.auth),
+    pendingTxs: selectAmountOfPendingTxs(s.txMonitor),
+    minedTxs: selectAmountOfMinedTxs(s.txMonitor),
   }),
   dispatchToProps: dispatch => ({
     sign: () => {

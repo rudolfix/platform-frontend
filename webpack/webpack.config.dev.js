@@ -1,12 +1,14 @@
 const merge = require("webpack-merge");
 const webpack = require("webpack");
 const path = require("path");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const generateProxyConfig = require("./proxy-urls");
 const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
 
 module.exports = merge(configCommon, {
+  mode: "development",
   devServer: {
     contentBase: paths.dist,
     host: "localhost",
@@ -28,12 +30,11 @@ module.exports = merge(configCommon, {
     },
     proxy: generateProxyConfig("http://localhost", "http://localhost:8545"),
   },
-  entry: [
-    "react-hot-loader/patch",
-    "webpack-dev-server/client?http://localhost:9090",
-    "webpack/hot/only-dev-server",
+  entry: ["react-hot-loader/patch"],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new ForkTsCheckerWebpackPlugin({ tsconfig: "tsconfig.dev.json" }),
   ],
-  plugins: [new webpack.NamedModulesPlugin(), new webpack.HotModuleReplacementPlugin()],
   module: {
     rules: [
       {
@@ -109,11 +110,11 @@ module.exports = merge(configCommon, {
             test: /\.(tsx?)$/,
             use: [
               {
-                loader: "awesome-typescript-loader",
+                loader: "ts-loader",
                 options: {
-                  configFileName: "./tsconfig.dev.json",
-                  useCache: true,
-                  // errorsAsWarnings: true, // uncomment this to be able to run application with type errors
+                  configFile: "tsconfig.dev.json",
+                  transpileOnly: true,
+                  experimentalWatchApi: true,
                 },
               },
             ],

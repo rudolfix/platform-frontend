@@ -1,5 +1,4 @@
 import { storiesOf } from "@storybook/react";
-import { Form, Formik } from "formik";
 import * as React from "react";
 
 import { formWrapper } from "./form-utils";
@@ -12,7 +11,7 @@ const defaultValues = {
 storiesOf("FormSelectField", module)
   .add(
     "default",
-    formWrapper({ name: "foo" })(() => <FormSelectField name="name" values={defaultValues} />),
+    formWrapper({ name: "foo " })(() => <FormSelectField name="name" values={defaultValues} />),
   )
   .add(
     "with custom options",

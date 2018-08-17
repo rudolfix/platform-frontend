@@ -3,6 +3,7 @@ import { AppReducer } from "../../../store";
 export type TxSenderType = "WITHDRAW";
 export type TxSenderState =
   | "UNINITIALIZED"
+  | "WATCHING_PENDING_TXS"
   | "INIT"
   | "SUMMARY"
   | "ACCESSING_WALLET"
@@ -18,7 +19,7 @@ export interface ITxData {
   gas?: string;
   gasPrice?: string;
   data?: string;
-  nonce?: number;
+  nonce?: string;
   from?: string;
 }
 
@@ -39,6 +40,18 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
   action,
 ): ITxSenderState => {
   switch (action.type) {
+    case "TX_SENDER_WATCH_PENDING_TXS":
+      return {
+        ...initialState,
+        state: "WATCHING_PENDING_TXS",
+      };
+
+    case "TX_SENDER_WATCH_PENDING_TXS_DONE":
+      return {
+        ...initialState,
+        state: "INIT",
+      };
+
     case "TX_SENDER_SHOW_MODAL":
       return {
         ...initialState,

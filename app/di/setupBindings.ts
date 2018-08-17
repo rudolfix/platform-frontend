@@ -2,6 +2,8 @@ import { Container } from "inversify";
 import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "../config/getConfig";
+import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";
+import { BinaryHttpClient } from "../lib/api/client/BinaryHttpClient";
 import { IHttpClient } from "../lib/api/client/IHttpClient";
 import { JsonHttpClient } from "../lib/api/client/JsonHttpClient";
 import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
@@ -20,8 +22,6 @@ import {
   AsyncIntervalSchedulerFactory,
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/AsyncIntervalScheduler";
-import { AuthorizedBinaryHttpClient } from "./../lib/api/client/AuthBinaryHttpClient";
-import { BinaryHttpClient } from "./../lib/api/client/BinaryHttpClient";
 
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { EtoApi } from "../lib/api/eto/EtoApi";

@@ -13,6 +13,13 @@ $indicator-size: 16px;
 .input {
   @include visually-hidden;
 
+  &[type="radio"] + .indicator {
+    &,
+    &::after {
+      border-radius: 50%;
+    }
+  }
+
   &:checked + .indicator {
     &::after {
       @include rect($indicator-size - 6px);

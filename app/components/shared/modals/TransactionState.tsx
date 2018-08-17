@@ -1,5 +1,4 @@
 import * as React from "react";
-import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 

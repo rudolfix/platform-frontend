@@ -3,7 +3,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
+import { selectUserType } from "../../modules/auth/selectors";
 import { selectIcbmWalletConnected } from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -14,16 +16,19 @@ import { SectionHeader } from "../shared/SectionHeader";
 import { ChangeEmail } from "./changeEmail/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereumAddressWidget/YourEthereumAddressWidget";
 import { CheckYourICBMWalletWidget } from "./icbmWalletWidget/CheckYourICBMWalletWidget";
+import { AccountDetails } from "./personalAccountDetails/PersonalAccountDetails";
 import { SettingsWidgets } from "./SettingsWidgets";
 
 interface IStateProps {
   isLightWallet: boolean;
   isIcbmWalletConnected: boolean;
+  userType: TUserType | undefined;
 }
 
 export const SettingsComponent: React.SFC<IStateProps> = ({
   isLightWallet,
   isIcbmWalletConnected,
+  userType,
 }) => {
   return (
     <LayoutAuthorized>
@@ -49,6 +54,12 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
             </Col>
           ))}
 
+        {userType === "investor" && (
+          <Col lg={4} xs={12}>
+            <AccountDetails />
+          </Col>
+        )}
+
         {process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED === "1" && (
           <>
             {/* TODO: Remove message */}
@@ -72,6 +83,7 @@ export const Settings = compose<React.SFC>(
   appConnect<IStateProps>({
     stateToProps: s => ({
       isLightWallet: selectIsLightWallet(s.web3),
+      userType: selectUserType(s.auth),
       isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
     }),
   }),

@@ -2,6 +2,7 @@ import { fork, put } from "redux-saga/effects";
 
 import { UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
 import { etoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
@@ -15,6 +16,7 @@ export function* generateTemplate(
   if (action.type !== "ETO_DOCUMENTS_GENERATE_TEMPLATE") return;
   try {
     const immutableFileId = action.payload.immutableFileId;
+
     const templates = yield apiEtoFileService.getEtoTemplate({
       documentType: immutableFileId.documentType,
       name: immutableFileId.name,
@@ -121,7 +123,10 @@ function* uploadEtoFile(
     notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));
   } catch (e) {
     logger.error("Failed to send ETO data", e);
-    notificationCenter.error(formatIntlMessage("eto.modal.file-upload-failed"));
+
+    if (e instanceof FileAlreadyExists)
+      notificationCenter.error(formatIntlMessage("eto.modal.file-already-exists"));
+    else notificationCenter.error(formatIntlMessage("eto.modal.file-upload-failed"));
   } finally {
     yield put(actions.etoDocuments.loadFileDataStart());
   }

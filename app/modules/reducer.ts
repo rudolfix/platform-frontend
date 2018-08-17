@@ -13,6 +13,7 @@ import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { settingsReducer } from "./settings/reducer";
 import { tokenPriceReducer } from "./shared/tokenPrice/reducer";
+import { txMonitorReducer } from "./tx/monitor/reducer";
 import { txSenderReducer } from "./tx/sender/reducer";
 import { browserReducer } from "./userAgent/reducer";
 import { verifyEmailWidgetReducer } from "./verifyEmailWidget/reducer";
@@ -49,4 +50,5 @@ export const appReducers = {
   txSender: txSenderReducer,
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
+  txMonitor: txMonitorReducer,
 };

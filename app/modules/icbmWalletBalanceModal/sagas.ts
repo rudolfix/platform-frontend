@@ -1,22 +1,24 @@
-import * as promiseAll from "promise-all";
 import { fork, put, select } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
-import { EthereumAddress } from "../../types";
 import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { IIcbmWalletBalanceModal } from "./reducer";
+import { loadWalletDataAsync } from "../wallet/sagas";
+import { TAction } from "./../actions";
 import { selectIcbmWalletEthAddress } from "./selectors";
 
-function* loadIcbmWalletDataSaga({ logger, notificationCenter }: TGlobalDependencies): any {
+function* loadIcbmWalletDataSaga(
+  { logger, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): any {
   const ethAddress = yield select((s: IAppState) =>
     selectIcbmWalletEthAddress(s.icbmWalletBalanceModal),
   );
-
+  if (action.type !== "ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA") return;
   try {
-    const state: IIcbmWalletBalanceModal = yield neuCall(loadIcbmWalletDataAsync, ethAddress);
-
-    yield put(actions.icbmWalletBalanceModal.loadIcbmWalletData(state));
+    const migrationWalletData = yield neuCall(loadWalletDataAsync, ethAddress);
+    yield put(actions.icbmWalletBalanceModal.loadIcbmWalletData(migrationWalletData));
   } catch (e) {
     logger.error("Error while loading wallet data: ", e);
 
@@ -24,17 +26,6 @@ function* loadIcbmWalletDataSaga({ logger, notificationCenter }: TGlobalDependen
   }
 }
 
-async function loadIcbmWalletDataAsync(
-  { contractsService }: TGlobalDependencies,
-  ethAddress: EthereumAddress,
-): Promise<{ lockedBalance: string[] }> {
-  return await promiseAll({
-    lockedBalance: contractsService.etherLock
-      .balanceOf(ethAddress)
-      .then(b => b.map(n => n.toString())),
-  });
-}
-
 export function* icbmWalletGetDataSagas(): any {
-  yield fork(neuTakeEvery, "ICBM_WALLET_BALANCE_MODAL_START_LOADING", loadIcbmWalletDataSaga);
+  yield fork(neuTakeEvery, "ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA", loadIcbmWalletDataSaga);
 }

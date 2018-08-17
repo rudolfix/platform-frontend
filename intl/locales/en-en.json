@@ -497,7 +497,7 @@
   "settings.modal.icbm-wallet-balance.coming-soon": "Feature coming soon: ICBM wallet migration",
   "settings.modal.icbm-wallet-balance.eth-balance.label": "Your Ether Balance",
   "settings.modal.icbm-wallet-balance.icbm-wallet-address.label": "ICBM wallet address",
-  "settings.modal.icbm-wallet-balance.neu-balance.label": "Your NEU Balance",
+  "settings.modal.icbm-wallet-balance.neu-balance.label": "Amount of neu issued in ICBM",
   "settings.modal.icbm-wallet-balance.title": "ICBM wallet balance",
   "settings.personal-settings.title": "Personal Settings",
   "settings.security-settings.title": "Account Settings",

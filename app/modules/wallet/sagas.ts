@@ -28,27 +28,41 @@ function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
-async function loadWalletDataAsync(
+export async function loadWalletDataAsync(
   { contractsService, web3Manager }: TGlobalDependencies,
   ethAddress: EthereumAddress,
 ): Promise<IWalletStateData> {
-  return numericValuesToString(
-    await promiseAll({
-      euroTokenBalance: contractsService.euroTokenContract.balanceOf(ethAddress),
-      euroTokenLockedBalance: Promise.resolve(new BigNumber("0")),
-      euroTokenICBMLockedBalance: contractsService.euroLock.balanceOf(ethAddress).then(b => b[0]),
+  return {
+    ...(await promiseAll({
+      euroTokenLockedWallet: contractsService.euroLock.balanceOf(ethAddress).then(b =>
+        numericValuesToString({
+          ICBMLockedBalance: b[0],
+          neumarksDue: b[1],
+          unlockDate: b[2],
+        }),
+      ),
+      etherTokenLockedWallet: contractsService.etherLock.balanceOf(ethAddress).then(b =>
+        numericValuesToString({
+          ICBMLockedBalance: b[0],
+          neumarksDue: b[1],
+          unlockDate: b[2],
+        }),
+      ),
+    })),
+    // This needs to be seperated
+    ...numericValuesToString(
+      await promiseAll({
+        etherTokenBalance: contractsService.etherTokenContract.balanceOf(ethAddress),
+        euroTokenBalance: contractsService.euroTokenContract.balanceOf(ethAddress),
+        euroTokenLockedBalance: Promise.resolve(new BigNumber("0")),
 
-      etherTokenBalance: contractsService.etherTokenContract.balanceOf(ethAddress),
-      etherTokenLockedBalance: Promise.resolve(new BigNumber("0")),
-      etherTokenICBMLockedBalance: contractsService.etherLock.balanceOf(ethAddress).then(b => b[0]),
+        etherTokenLockedBalance: Promise.resolve(new BigNumber("0")),
 
-      etherBalance: web3Manager.internalWeb3Adapter.getBalance(ethAddress),
-      neuBalance: contractsService.neumarkContract.balanceOf(ethAddress),
-
-      etherPriceEur: Promise.resolve(new BigNumber("483.96")), // @todo hardcoded value
-      neuPriceEur: Promise.resolve(new BigNumber("0.500901")), // @todo hardcoded value
-    }),
-  );
+        etherBalance: web3Manager.internalWeb3Adapter.getBalance(ethAddress),
+        neuBalance: contractsService.neumarkContract.balanceOf(ethAddress),
+      }),
+    ),
+  };
 }
 
 export function* walletSagas(): any {

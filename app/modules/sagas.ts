@@ -47,6 +47,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(txSendingSagasWatcher),
     effects.fork(gasApiSagas),
     effects.fork(etoDocumentsSagas),
+    effects.fork(icbmWalletGetDataSagas),
     effects.fork(txMonitorSagas),
   ]);
 }

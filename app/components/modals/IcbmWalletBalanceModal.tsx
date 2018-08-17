@@ -3,6 +3,11 @@ import { FormattedMessage } from "react-intl";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../modules/actions";
+import {
+  selectAllNeumakrsDueIcbmModal,
+  selectEtherBalanceIcbmModal,
+  selectIcbmWalletEthAddress,
+} from "../../modules/icbmWalletBalanceModal/selectors";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { InlineIcon } from "../shared/InlineIcon";
@@ -17,10 +22,9 @@ import * as styles from "./IcbmWalletBalanceModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
-  walletData?: {
-    lockedBalance: string[];
-  };
+  etherBalance: string;
   ethAddress?: string;
+  neumarksDue: string;
 }
 
 interface IDispatchProps {
@@ -61,9 +65,10 @@ const HighlightedField: React.SFC<IProps> = ({ label, value, icon, link }) => {
 
 class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatchProps> {
   render(): React.ReactNode {
+    const { isOpen, onCancel, ethAddress, etherBalance, neumarksDue } = this.props;
     return (
-      <Modal isOpen={this.props.isOpen} toggle={this.props.onCancel}>
-        <ModalComponentBody onClose={this.props.onCancel}>
+      <Modal isOpen={isOpen} toggle={onCancel}>
+        <ModalComponentBody onClose={onCancel}>
           <div className={styles.content}>
             <SectionHeader className={styles.header}>
               <FormattedMessage id="settings.modal.icbm-wallet-balance.title" />
@@ -72,26 +77,16 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
               label={
                 <FormattedMessage id="settings.modal.icbm-wallet-balance.icbm-wallet-address.label" />
               }
-              value={this.props.ethAddress || ""}
+              value={ethAddress || ""}
             />
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />}
-              value={
-                <Money
-                  currency="neu"
-                  value={(this.props.walletData && this.props.walletData.lockedBalance[0]) || "0"}
-                />
-              }
+              value={<Money currency="neu" value={neumarksDue || "0"} />}
               icon={iconNeu}
             />
             <HighlightedField
               label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
-              value={
-                <Money
-                  value={(this.props.walletData && this.props.walletData.lockedBalance[1]) || "0"}
-                  currency="eth"
-                />
-              }
+              value={<Money value={etherBalance || "0"} currency="eth" />}
               icon={iconEth}
             />
             <p className={styles.footer}>
@@ -107,8 +102,9 @@ class IcbmWalletBalanceComponent extends React.Component<IStateProps & IDispatch
 export const IcbmWalletBalanceModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: state.icbmWalletBalanceModal.isOpen,
-    ethAddress: state.icbmWalletBalanceModal.ethAddress,
-    walletData: state.icbmWalletBalanceModal.walletData,
+    ethAddress: selectIcbmWalletEthAddress(state.icbmWalletBalanceModal),
+    neumarksDue: selectAllNeumakrsDueIcbmModal(state.icbmWalletBalanceModal),
+    etherBalance: selectEtherBalanceIcbmModal(state.icbmWalletBalanceModal),
   }),
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal()),

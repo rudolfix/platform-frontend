@@ -103,32 +103,32 @@ export const WalletStart = compose<React.SFC>(
       const error = s.wallet.error;
 
       if (!isLoading && !error) {
-        const walletData = s.wallet.data!;
+        const state = s;
         return {
           isLoading,
           error,
           liquidWalletData: {
-            ethAmount: selectLiquidEtherBalance(walletData),
-            ethEuroAmount: selectLiquidEtherBalanceEuroAmount(walletData),
-            neuroAmount: selectLiquidEuroTokenBalance(walletData),
-            neuroEuroAmount: selectLiquidEuroTotalAmount(walletData),
-            totalEuroAmount: selectLiquidEuroTotalAmount(walletData),
+            ethAmount: selectLiquidEtherBalance(state.wallet),
+            ethEuroAmount: selectLiquidEtherBalanceEuroAmount(state),
+            neuroAmount: selectLiquidEuroTokenBalance(state.wallet),
+            neuroEuroAmount: selectLiquidEuroTotalAmount(state),
+            totalEuroAmount: selectLiquidEuroTotalAmount(state),
           },
           lockedWalletData: {
-            hasFunds: selectLockedWalletHasFunds(walletData),
-            ethAmount: selectLockedEtherBalance(walletData),
-            ethEuroAmount: selectLockedEtherBalanceEuroAmount(walletData),
-            neuroAmount: selectLockedEuroTokenBalance(walletData),
-            neuroEuroAmount: selectLockedEuroTotalAmount(walletData),
-            totalEuroAmount: selectLockedEuroTotalAmount(walletData),
+            hasFunds: selectLockedWalletHasFunds(state),
+            ethAmount: selectLockedEtherBalance(state.wallet),
+            ethEuroAmount: selectLockedEtherBalanceEuroAmount(state),
+            neuroAmount: selectLockedEuroTokenBalance(state.wallet),
+            neuroEuroAmount: selectLockedEuroTotalAmount(state),
+            totalEuroAmount: selectLockedEuroTotalAmount(state),
           },
           icbmWalletData: {
-            hasFunds: selectICBMLockedWalletHasFunds(walletData),
-            ethAmount: selectICBMLockedEtherBalance(walletData),
-            ethEuroAmount: selectICBMLockedEtherBalanceEuroAmount(walletData),
-            neuroAmount: selectICBMLockedEuroTokenBalance(walletData),
-            neuroEuroAmount: selectICBMLockedEuroTotalAmount(walletData),
-            totalEuroAmount: selectICBMLockedEuroTotalAmount(walletData),
+            hasFunds: selectICBMLockedWalletHasFunds(state),
+            ethAmount: selectICBMLockedEtherBalance(state.wallet),
+            ethEuroAmount: selectICBMLockedEtherBalanceEuroAmount(state),
+            neuroAmount: selectICBMLockedEuroTokenBalance(state.wallet),
+            neuroEuroAmount: selectICBMLockedEuroTotalAmount(state),
+            totalEuroAmount: selectICBMLockedEuroTotalAmount(state),
           },
         };
       } else {

@@ -2,7 +2,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 
-import { selectNeuBalanceEuroAmount } from "../../../modules/wallet/selectors";
+import {
+  selectIcbmWalletConnected,
+  selectNeuBalanceEuroAmount,
+} from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
@@ -97,8 +100,8 @@ export const MyPortfolioWidget = appConnect<IStateProps, {}, TOwnProps>({
     error: s.wallet.error,
     lockedAmount: s.wallet.data && {
       balanceNeu: s.wallet.data.neuBalance,
-      balanceEur: selectNeuBalanceEuroAmount(s.wallet.data),
-      isIcbmWalletConnected: !!s.wallet.data.euroTokenICBMLockedBalance,
+      balanceEur: selectNeuBalanceEuroAmount(s),
+      isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
     },
   }),
 })(MyPortfolioWidgetComponent);

@@ -134,9 +134,4 @@ export const PersonalAccountDetails = compose<React.SFC>(
       personalData: s.kyc.individualData || {},
     }),
   }),
-  onEnterAction({
-    actionCreator: dispatch => {
-      dispatch(actions.kyc.kycLoadIndividualRequest());
-    },
-  }),
 )(AccountDetailsComponent);

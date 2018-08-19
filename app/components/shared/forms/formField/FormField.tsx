@@ -1,5 +1,5 @@
 import * as cn from "classnames";
-import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
+import { Field, FieldAttributes, FieldProps, FormikProps, getIn } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
@@ -18,23 +18,15 @@ interface IFieldGroup {
   suffix?: string | React.ReactNode;
   addonStyle?: string;
   maxLength?: string;
-  additionalObjValue?: { name: string; value: string };
   charactersLimit?: number;
 }
+
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 
 export class FormField extends React.Component<FieldGroupProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
-
-  componentDidMount(): void {
-    const formik: FormikProps<any> = this.context.formik;
-
-    if (this.props.additionalObjValue) {
-      formik.setFieldValue(this.props.additionalObjValue.name, this.props.additionalObjValue.value);
-    }
-  }
 
   render(): React.ReactChild {
     const {
@@ -46,7 +38,6 @@ export class FormField extends React.Component<FieldGroupProps> {
       suffix,
       className,
       addonStyle,
-      additionalObjValue,
       charactersLimit,
       ...props
     } = this.props;
@@ -90,12 +81,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                   className={cn(className, styles.inputField)}
                   {...field}
                   type={type}
-                  value={computedValue(
-                    this.props.additionalObjValue
-                      ? this.props.additionalObjValue && " "
-                      : field.value,
-                    charactersLimit,
-                  )}
+                  value={computedValue(field.value, charactersLimit)}
                   valid={isValid(touched, errors, name)}
                   placeholder={placeholder}
                   {...inputExtraProps}
@@ -108,7 +94,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 )}
               </InputGroup>
               {isNonValid(touched, errors, name) && (
-                <div className={styles.errorLabel}>{errors[name]}</div>
+                <div className={styles.errorLabel}>{getIn(errors, name)}</div>
               )}
               {charactersLimit && <div>{countedCharacters(field.value, charactersLimit)}</div>}
             </>

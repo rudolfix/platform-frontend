@@ -54,6 +54,9 @@ export const immutableDocumentTitle: { [key: string]: string | React.ReactNode }
   ),
 };
 
+// Documents to be not presented
+const ignoredDocuments: string[] = ["pamphletTemplate", "termsheetTemplate", "prospectusTemplate"];
+
 export const GeneratedDocuments: React.SFC<{
   document: IEtoDocument;
   generateTemplate: (document: IEtoDocument) => void;
@@ -105,15 +108,17 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   GENERATED DOCUMENTS
                 </Col>
-                {Object.keys(etoTemplates).map((key, index) => {
-                  return (
-                    <GeneratedDocuments
-                      key={index}
-                      document={etoTemplates[key]}
-                      generateTemplate={generateTemplate}
-                    />
-                  );
-                })}
+                {Object.keys(etoTemplates)
+                  .filter(key => !ignoredDocuments.some(ignoredDocument => ignoredDocument === key))
+                  .map((key, index) => {
+                    return (
+                      <GeneratedDocuments
+                        key={index}
+                        document={etoTemplates[key]}
+                        generateTemplate={generateTemplate}
+                      />
+                    );
+                  })}
                 {Object.keys(etoTemplates).length === 0 && (
                   <Col className="mb-2">
                     <div>Please fill the ETO forms in order to generate templates</div>

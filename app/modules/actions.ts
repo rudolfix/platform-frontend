@@ -17,6 +17,7 @@ import { routingActions } from "./routing/actions";
 import { settingsActions } from "./settings/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
+import { tokenPriceActions } from "./shared/tokenPrice/actions";
 import { txMonitorActions } from "./tx/monitor/actions";
 import { txSenderActions } from "./tx/sender/actions";
 import { userAgentActions } from "./userAgent/actions";
@@ -33,6 +34,7 @@ export const actions = {
   verifyEmail: verifyEmailActions,
   genericModal: genericModalActions,
   signMessageModal: accessWalletActions,
+  tokenPrice: tokenPriceActions,
   init: initActions,
   kyc: kycActions,
   routing: routingActions,
@@ -59,6 +61,7 @@ export const actions = {
  */
 export const allActions = {
   ...dashboardActions,
+  ...tokenPriceActions,
   ...etoDocumentsActions,
   ...verifyEmailActions,
   ...settingsActions,

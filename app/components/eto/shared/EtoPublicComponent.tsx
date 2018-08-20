@@ -330,6 +330,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <Video
               youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
               className="mb-4 mt-5"
+              hasModal
             />
             {isTwitterFeedEnabled && (
               <>
@@ -785,13 +786,19 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Panel>
         </Col>
         <Col sm={12} md={4}>
-          <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.form.documents.title" />
-          </SectionHeader>
-          <DocumentsWidget className="mb-4" groups={documents} />
+          {documents[0] &&
+            !!documents[0].documents[0].url.length && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <FormattedMessage id="eto.form.documents.title" />
+                </SectionHeader>
+
+                <DocumentsWidget className="mb-4" groups={documents} />
+              </>
+            )}
 
           {companyData.companyNews &&
-            companyData.companyNews.length > 0 && (
+            !!companyData.companyNews[0].url.length && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.media-links.title" />

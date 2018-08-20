@@ -16,6 +16,7 @@ import { txMonitorReducer } from "./tx/monitor/reducer";
 import { txSenderReducer } from "./tx/sender/reducer";
 import { browserReducer } from "./userAgent/reducer";
 import { verifyEmailWidgetReducer } from "./verifyEmailWidget/reducer";
+import { videoModalReducer } from "./videoModal/reducer";
 import { browserWalletWizardReducer } from "./wallet-selector/browser-wizard/reducer";
 import { ledgerWizardReducer } from "./wallet-selector/ledger-wizard/reducer";
 import { lightWalletWizardReducer } from "./wallet-selector/light-wizard/reducer";
@@ -49,4 +50,5 @@ export const appReducers = {
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
   txMonitor: txMonitorReducer,
+  videoModal: videoModalReducer,
 };

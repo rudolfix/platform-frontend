@@ -102,12 +102,10 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
                       }, ${personalData.country}`}
                     />
                   )}
-                {personalData.isHighIncome && (
-                  <Record
-                    label={<FormattedMessage id="settings.account-details.income" />}
-                    value={personalData.isHighIncome ? "yes" : "no"}
-                  />
-                )}
+                <Record
+                  label={<FormattedMessage id="settings.account-details.income" />}
+                  value={personalData.isHighIncome ? "yes" : "no"}
+                />
               </>
             )}
           </div>

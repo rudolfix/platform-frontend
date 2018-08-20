@@ -680,7 +680,7 @@
   "wallet-selector.tabs.browser-wallet-register": "REGISTER WITH EXTERNAL WALLET",
   "wallet-selector.tabs.ledger-login": "USE LEDGER NANO",
   "wallet-selector.tabs.ledger-register": "REGISTER WITH LEDGER NANO",
-  "wallet-selector.tabs.neuwallet-login": "USE NEUFUND WALLET",
+  "wallet-selector.tabs.neuwallet-login": "USE LIGHT WALLET",
   "wallet-selector.tabs.neuwallet-register": "CREATE LIGHT WALLET",
   "wallet.deposit-funds.eth.email-notification": "You will receive an e-mail notification once your funds have been successfully deposited!",
   "wallet.deposit-funds.eth.header": "Receive {icon} ETH to your Light Wallet",

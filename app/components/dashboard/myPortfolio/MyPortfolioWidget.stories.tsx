@@ -11,7 +11,7 @@ storiesOf("MyPortfolioWidget", module)
       isLoading={false}
       {...{
         balanceEur: "12312352413",
-        balanceNeu: `123${Q18.toString()}`,
+        balanceNeu: Q18.mul(123).toString(),
         isIcbmWalletConnected: true,
       }}
     />

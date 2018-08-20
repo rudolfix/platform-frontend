@@ -1,6 +1,7 @@
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
+import { selectNeuPriceEur } from "./../shared/tokenPrice/selectors";
 import { IWalletState } from "./reducer";
 
 /**
@@ -8,7 +9,7 @@ import { IWalletState } from "./reducer";
  */
 
 export const selectNeuBalanceEuroAmount = (state: IAppState): string =>
-  multiplyBigNumbers([selectEtherPriceEur(state.tokenPrice), selectNeuBalance(state.wallet)]);
+  multiplyBigNumbers([selectNeuPriceEur(state.tokenPrice), selectNeuBalance(state.wallet)]);
 
 export const selectNeuBalance = (state: IWalletState): string =>
   (state.data && state.data.neuBalance) || "0";

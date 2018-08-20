@@ -16,6 +16,7 @@ import { kycSagas } from "./kyc/sagas";
 import { settingsSagas } from "./settings/sagas";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
+import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
 import { txMonitorSagas } from "./tx/monitor/sagas";
 import { txSendingSagasWatcher } from "./tx/sender/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
@@ -48,6 +49,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(gasApiSagas),
     effects.fork(etoDocumentsSagas),
     effects.fork(txMonitorSagas),
+    effects.fork(tokenPriceSagas),
   ]);
 }
 

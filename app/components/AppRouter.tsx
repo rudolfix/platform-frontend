@@ -1,12 +1,11 @@
 import * as queryString from "query-string";
 import * as React from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 
 import { Dashboard } from "./dashboard/Dashboard";
-import { Demo } from "./Demo";
 import { Documents } from "./Documents";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
@@ -96,8 +95,6 @@ export const AppRouter: React.SFC = () => (
       investorComponent={EtoPreview}
       issuerComponent={EtoPreview}
     />
-
-    <Route path={appRoutes.demo} component={Demo} />
 
     <Redirect to={appRoutes.root} />
   </SwitchConnected>

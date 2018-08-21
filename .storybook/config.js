@@ -10,7 +10,7 @@ import { initScreenshot, withScreenshot } from "storybook-chrome-screenshot/lib"
 import { addLocaleData } from "react-intl";
 import enLocaleData from "react-intl/locale-data/en";
 
-import * as languageEn from "../intl/locales/en-en.json";
+import languageEn from "../intl/locales/en-en.json";
 
 // Provide your messages
 const messages = {

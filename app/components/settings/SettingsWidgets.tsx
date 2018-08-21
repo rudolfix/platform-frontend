@@ -2,7 +2,6 @@ import * as React from "react";
 import { Col } from "reactstrap";
 
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
-import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
 import { BackupSeedWidget } from "./backupSeed/BackupSeedWidget";
 import { KycStatusWidget } from "./kycStates/KycStatusWidget";
 import { VerifyEmailWidget } from "./verifyEmail/VerifyEmailWidget";

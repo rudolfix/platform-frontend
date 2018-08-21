@@ -1,4 +1,4 @@
-import { fail, danger, message } from "danger";
+import { danger, fail, message } from "danger";
 
 const currentCommitSHA = danger.git.commits[danger.git.commits.length - 1].sha;
 
@@ -13,7 +13,7 @@ function checkPackageLock() {
 
 function reportVisualRegression() {
   try {
-    const reportLink = `https://s3.eu-central-1.amazonaws.com/neufund-platform-screenshots/${currentCommitSHA}/report/index.html`;
+    const reportLink = `https://s3.eu-central-1.amazonaws.com/neufund.visual.regression/${currentCommitSHA}/report/index.html`;
 
     const reportData = require("./.reg/out.json");
 
@@ -29,5 +29,4 @@ function reportVisualRegression() {
 }
 
 checkPackageLock();
-// reportVisualRegression();
-// TODO: Check Visual Regression
+reportVisualRegression();

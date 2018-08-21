@@ -16,7 +16,7 @@ import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
 
-import { selectEthereumAddress } from "../../../../modules/web3/selectors";
+import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import * as styles from "./Withdraw.module.scss";
 
 interface IWithdrawOwnProps {
@@ -123,7 +123,7 @@ export const GasComponent: React.SFC<IGasState> = ({ gasPrice, error }) => {
 export const Withdraw = appConnect<IWithdrawStateProps, {}, IWithdrawOwnProps>({
   stateToProps: state => ({
     gas: state.gas,
-    address: selectEthereumAddress(state.web3),
+    address: selectEthereumAddressWithChecksum(state.web3),
   }),
 })(WithdrawComponent);
 

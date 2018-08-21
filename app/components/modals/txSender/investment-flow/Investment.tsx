@@ -1,7 +1,7 @@
 import { Form, Formik, FormikProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Container, FormGroup, Label, Row } from "reactstrap";
+import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { InfoAlert } from "../../../shared/Alerts";
@@ -10,7 +10,7 @@ import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImp
 import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
 import { IInitComponentProps } from "../TxSender";
-import { WalletSelector } from "./WalletSelector";
+import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
@@ -22,12 +22,7 @@ interface IFormState {
 }
 
 interface IStateProps {
-  wallets: Array<{
-    id: string;
-    name: string;
-    balanceEth: string;
-    balanceEur?: string;
-  }>;
+  wallets: IWalletSelectionData[];
 }
 
 interface IDispatchProps {
@@ -55,53 +50,71 @@ export const InvestmentSelectionForm = injectIntlHelpers(
       <Form>
         <Container className={styles.container}>
           <Row>
-            <Heading>
-              <FormattedMessage id="investment-flow.select-wallet-and-currency" />
-            </Heading>
+            <Col>
+              <Heading>
+                <FormattedMessage id="investment-flow.select-wallet-and-currency" />
+              </Heading>
+            </Col>
           </Row>
-          <WalletSelector wallets={props.wallets} name="wallet" />
+          <InvestmentTypeSelector wallets={props.wallets} />
           <Row>
-            <Heading>
-              <FormattedMessage id="investment-flow.invest-funds" />
-            </Heading>
+            <Col>
+              <Heading>
+                <FormattedMessage id="investment-flow.invest-funds" />
+              </Heading>
+            </Col>
           </Row>
-          <FormGroup className={styles.investInput}>
-            <Label>
-              <FormattedMessage
-                id="investment-flow.amount-input-label"
-                values={{
-                  transactionCost: (
-                    <Money currency="eth" value="20000000000000000" theme="t-orange" />
-                  ),
-                }}
-              />
-            </Label>
-            <FormFieldImportant
-              name="amount"
-              placeholder={props.intl.formatIntlMessage("investment-flow.min-ticket-size")}
-              errorMessage={failureTooltip}
-            />
-            <a href="#" onClick={el => el.preventDefault()}>
-              <FormattedMessage id="investment-flow.invest-entire-balance" />
-            </a>
-          </FormGroup>
+          <Row>
+            <Col>
+              <FormGroup className={styles.investInput}>
+                <Label>
+                  <FormattedMessage
+                    id="investment-flow.amount-input-label"
+                    values={{
+                      transactionCost: (
+                        <Money currency="eth" value="20000000000000000" theme="t-orange" />
+                      ),
+                    }}
+                  />
+                </Label>
+                <FormFieldImportant
+                  name="amount"
+                  placeholder={props.intl.formatIntlMessage("investment-flow.min-ticket-size")}
+                  errorMessage={failureTooltip}
+                />
+                <a href="#" onClick={el => el.preventDefault()}>
+                  <FormattedMessage id="investment-flow.invest-entire-balance" />
+                </a>
+              </FormGroup>
+            </Col>
+          </Row>
           <Row className={styles.equals}>
-            <span>≈</span>
+            <Col>
+              <span>≈</span>
+            </Col>
           </Row>
-          <FormGroup>
-            <Label>
-              <img className={styles.icon} src={tokenIcon} />{" "}
-              <FormattedMessage id="investment-flow.equity-tokens" />
-            </Label>
-            <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
-          </FormGroup>
-          <FormGroup>
-            <Label>
-              <img className={styles.icon} src={neuIcon} />{" "}
-              <FormattedMessage id="investment-flow.estimated-neu-tokens" />
-            </Label>
-            <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
-          </FormGroup>
+          <Row>
+            <Col>
+              <FormGroup>
+                <Label>
+                  <img className={styles.icon} src={tokenIcon} />{" "}
+                  <FormattedMessage id="investment-flow.equity-tokens" />
+                </Label>
+                <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FormGroup>
+                <Label>
+                  <img className={styles.icon} src={neuIcon} />{" "}
+                  <FormattedMessage id="investment-flow.estimated-neu-tokens" />
+                </Label>
+                <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
+              </FormGroup>
+            </Col>
+          </Row>
           <Row className="justify-content-center">
             <Button layout="primary" className="mr-4" type="submit">
               <FormattedMessage id="investment-flow.invest" />

@@ -95,7 +95,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
         gas: txData.gas!,
         gasPrice: txData.gasPrice!,
         hash: txHash,
-        input: txData.data! || "0x0",
+        input: txData.data || "0x0",
         nonce: txData.nonce!,
         to: txData.to!,
         value: txData.value!,

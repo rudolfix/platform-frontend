@@ -58,11 +58,12 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
           <YourEthereumAddressWidget />
         </Col>
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
-          (isIcbmWalletConnected || (
+          isIcbmWalletConnected &&
+          isUserInvestor && (
             <Col lg={4} xs={12}>
               <CheckYourICBMWalletWidget />
             </Col>
-          ))}
+          )}
 
         {isUserInvestor &&
           isPersonalDataProcessed && (

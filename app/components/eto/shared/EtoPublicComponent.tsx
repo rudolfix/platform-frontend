@@ -354,160 +354,164 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <FormattedMessage id="eto.public-view.token-terms.title" />
           </SectionHeader>
           <Panel className={styles.tokenTerms}>
-            <div className={styles.group}>
-              {computedMinCapEur && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.soft-cap" />
-                  </span>
-                  <span className={styles.value}>{computedMinCapEur}</span>
-                </div>
-              )}
-              {computedMaxCapEur && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.hard-cap" />
-                  </span>
-                  <span className={styles.value}>{computedMaxCapEur}</span>
-                </div>
-              )}
-              {computedMinNumberOfTokens && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap" />
-                  </span>
-                  <span className={styles.value}>{computedMinNumberOfTokens}</span>
-                </div>
-              )}
-              {computedMaxNumberOfTokens && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap" />
-                  </span>
-                  <span className={styles.value}>{computedMaxNumberOfTokens}</span>
-                </div>
-              )}
-              {etoData.discountScheme && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.token-discount" />
-                  </span>
-                  <span className={styles.value}>{etoData.discountScheme}</span>
-                </div>
-              )}
-            </div>
-
-            <div className={styles.divider} />
-
-            <div className={styles.group}>
-              {etoData.equityTokensPerShare && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
-                  </span>
-                  <span className={styles.value}>{etoData.equityTokensPerShare}</span>
-                </div>
-              )}
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
-                </span>
-                <span className={styles.value}>
-                  €{" "}
-                  {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
-                    ? (
-                        etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
-                      ).toPrecision(4)
-                    : DEFAULT_PLACEHOLDER}
-                </span>
+            <div className={styles.content}>
+              <div className={styles.group}>
+                {computedMinCapEur && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.soft-cap" />
+                    </span>
+                    <span className={styles.value}>{computedMinCapEur}</span>
+                  </div>
+                )}
+                {computedMaxCapEur && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.hard-cap" />
+                    </span>
+                    <span className={styles.value}>{computedMaxCapEur}</span>
+                  </div>
+                )}
+                {computedMinNumberOfTokens && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap" />
+                    </span>
+                    <span className={styles.value}>{computedMinNumberOfTokens}</span>
+                  </div>
+                )}
+                {computedMaxNumberOfTokens && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap" />
+                    </span>
+                    <span className={styles.value}>{computedMaxNumberOfTokens}</span>
+                  </div>
+                )}
+                {etoData.discountScheme && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.token-discount" />
+                    </span>
+                    <span className={styles.value}>{etoData.discountScheme}</span>
+                  </div>
+                )}
               </div>
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.fundraising-currency" />
-                </span>
-                <span className={styles.value}>
-                  {etoData.currencies
-                    ? etoData.currencies.map((currency: string) => CURRENCIES[currency]).join(" / ")
-                    : DEFAULT_PLACEHOLDER}
-                </span>
-              </div>
-              {etoData.minTicketEur && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.minimum-ticket-size" />
-                  </span>
-                  <span className={styles.value}>€ {etoData.minTicketEur}</span>
-                </div>
-              )}
-              {etoData.maxTicketEur && (
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.maximum-ticket-size" />
-                  </span>
-                  <span className={styles.value}>€ {etoData.maxTicketEur}</span>
-                </div>
-              )}
-            </div>
 
-            <div className={styles.divider} />
+              <div className={styles.divider} />
 
-            <div className={styles.group}>
-              {etoData.whitelistDurationDays && (
+              <div className={styles.group}>
+                {etoData.equityTokensPerShare && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
+                    </span>
+                    <span className={styles.value}>{etoData.equityTokensPerShare}</span>
+                  </div>
+                )}
                 <div className={styles.entry}>
                   <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.pre-sale-duration" />
+                    <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
                   </span>
                   <span className={styles.value}>
-                    {etoData.whitelistDurationDays}{" "}
-                    <FormattedMessage id="eto.public-view.token-terms.days" />
+                    €{" "}
+                    {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
+                      ? (
+                          etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
+                        ).toPrecision(4)
+                      : DEFAULT_PLACEHOLDER}
                   </span>
                 </div>
-              )}
-
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.public-offer-duration" />
-                </span>
-                <span className={styles.value}>
-                  <FormattedMessage id="eto.public-view.token-terms.weeks" />
-                </span>
+                <div className={styles.entry}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="eto.public-view.token-terms.fundraising-currency" />
+                  </span>
+                  <span className={styles.value}>
+                    {etoData.currencies
+                      ? etoData.currencies
+                          .map((currency: string) => CURRENCIES[currency])
+                          .join(" / ")
+                      : DEFAULT_PLACEHOLDER}
+                  </span>
+                </div>
+                {etoData.minTicketEur && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.minimum-ticket-size" />
+                    </span>
+                    <span className={styles.value}>€ {etoData.minTicketEur}</span>
+                  </div>
+                )}
+                {etoData.maxTicketEur && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.maximum-ticket-size" />
+                    </span>
+                    <span className={styles.value}>€ {etoData.maxTicketEur}</span>
+                  </div>
+                )}
               </div>
 
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.token-transfers" />
-                </span>
-                <span className={styles.value}>
-                  {etoData.enableTransferOnSuccess ? (
-                    <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                  ) : (
-                    <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                  )}
-                </span>
-              </div>
+              <div className={styles.divider} />
 
-              <div className={styles.entry}>
-                <span className={styles.label}>Voting rights</span>
-                <span className={styles.value}>
-                  {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
-                    <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                  ) : (
-                    <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                  )}
-                </span>
-              </div>
+              <div className={styles.group}>
+                {etoData.whitelistDurationDays && (
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.pre-sale-duration" />
+                    </span>
+                    <span className={styles.value}>
+                      {etoData.whitelistDurationDays}{" "}
+                      <FormattedMessage id="eto.public-view.token-terms.days" />
+                    </span>
+                  </div>
+                )}
 
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
-                </span>
-                <span className={styles.value}>
-                  {etoData.liquidationPreferenceMultiplier !== 0 ? (
-                    <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                  ) : (
-                    <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                  )}
-                </span>
+                <div className={styles.entry}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="eto.public-view.token-terms.public-offer-duration" />
+                  </span>
+                  <span className={styles.value}>
+                    <FormattedMessage id="eto.public-view.token-terms.weeks" />
+                  </span>
+                </div>
+
+                <div className={styles.entry}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="eto.public-view.token-terms.token-transfers" />
+                  </span>
+                  <span className={styles.value}>
+                    {etoData.enableTransferOnSuccess ? (
+                      <FormattedMessage id="eto.public-view.token-terms.enabled" />
+                    ) : (
+                      <FormattedMessage id="eto.public-view.token-terms.disabled" />
+                    )}
+                  </span>
+                </div>
+
+                <div className={styles.entry}>
+                  <span className={styles.label}>Voting rights</span>
+                  <span className={styles.value}>
+                    {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
+                      <FormattedMessage id="eto.public-view.token-terms.disabled" />
+                    ) : (
+                      <FormattedMessage id="eto.public-view.token-terms.enabled" />
+                    )}
+                  </span>
+                </div>
+
+                <div className={styles.entry}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
+                  </span>
+                  <span className={styles.value}>
+                    {etoData.liquidationPreferenceMultiplier !== 0 ? (
+                      <FormattedMessage id="eto.public-view.token-terms.enabled" />
+                    ) : (
+                      <FormattedMessage id="eto.public-view.token-terms.disabled" />
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
           </Panel>

@@ -34,7 +34,10 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
   userType,
   requestKycStatus,
 }) => {
-  const isPersonalDataProcessed = requestKycStatus === "Pending" || requestKycStatus === "Accepted";
+  const isPersonalDataProcessed =
+    requestKycStatus === "Pending" ||
+    requestKycStatus === "Accepted" ||
+    requestKycStatus === "Draft";
   const isUserInvestor = userType === "investor";
 
   return (
@@ -98,7 +101,7 @@ export const Settings = compose<React.SFC>(
   }),
   onEnterAction({
     actionCreator: dispatch => {
-      dispatch(actions.kyc.kycLoadIndividualRequest());
+      dispatch(actions.kyc.kycLoadIndividualData());
     },
   }),
 )(SettingsComponent);

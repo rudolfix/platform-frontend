@@ -15,6 +15,7 @@ import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksW
 import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
+import { Slides } from "../../shared/Slides";
 import { SocialProfilesList } from "../../shared/SocialProfilesList";
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
@@ -180,7 +181,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <Row className="align-items-stretch">
         <Col xs={12} md={isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12} className="mb-4">
           <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.public-view.about" />
+            <div className={styles.companyHeader}>
+              <div>{companyData.brandName}</div>
+              {companyData.companyWebsite && (
+                <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
+                  {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
+                </a>
+              )}
+            </div>
           </SectionHeader>
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
@@ -188,14 +196,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             {companyData.keyQuoteInvestor && (
               <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>
             )}
-            <div className="d-flex justify-content-between">
-              {companyData.companyWebsite && (
-                <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
-                  {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
-                </a>
-              )}
-              <SocialProfilesList profiles={companyData.socialChannels || []} />
-            </div>
           </Panel>
 
           <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -325,28 +325,38 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
-          <Col xs={12} md={4} className="mb-4 flex-column d-flex">
-            <Video
-              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
-              className="mb-4 mt-5"
-              hasModal
-            />
-            {isTwitterFeedEnabled && (
-              <>
-                <SectionHeader layoutHasDecorator={false} className="mb-4">
-                  Twitter
-                </SectionHeader>
-                <Panel
-                  narrow
-                  className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
-                >
-                  <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
-                </Panel>
-              </>
+        <Col xs={12} md={4} className="mb-4 flex-column d-flex">
+          <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+            {isYouTubeVideoAvailable && (
+              <TabContent tab="video">
+                <Video
+                  youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
+                  hasModal
+                />
+              </TabContent>
             )}
-          </Col>
-        )}
+            <TabContent tab="pitch deck">
+              {/* TODO: connect slideshare url */}
+              <Slides slideShareUrl="#0" />
+            </TabContent>
+          </Tabs>
+          <div className="mt-4">
+            <SocialProfilesList profiles={companyData.socialChannels || []} />
+          </div>
+          {isTwitterFeedEnabled && (
+            <>
+              <SectionHeader layoutHasDecorator={false} className="mt-4 mb-4">
+                Twitter
+              </SectionHeader>
+              <Panel
+                narrow
+                className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
+              >
+                <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
+              </Panel>
+            </>
+          )}
+        </Col>
       </Row>
 
       <Row>

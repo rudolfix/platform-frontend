@@ -32,13 +32,13 @@ const VideoComponent: React.SFC<IProps & IDispatchProps> = ({
   const computedUrl = `https://www.youtube.com/embed/${youTubeId}?disablekb=1&rel=0&showinfo=0&color=white`;
 
   return (
-    <Proportion width={720} height={405} className={className}>
+    <Proportion width={480} height={360} className={className}>
       {hasModal ? (
         <ResponsiveImage
           className={hasModal && "thumbnail"}
           onClick={() => openModal(computedUrl)}
-          width={720}
-          height={405}
+          width={480}
+          height={360}
           srcSet={{ "1x": `https://img.youtube.com/vi/${youTubeId}/hqdefault.jpg` }}
           alt="video thumbnail"
         />

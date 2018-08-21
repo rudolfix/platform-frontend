@@ -114,3 +114,9 @@
   height: 100%;
   min-height: 320px;
 }
+
+.company-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

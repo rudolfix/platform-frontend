@@ -86,7 +86,7 @@ export const InvestmentSelectionForm = injectIntlHelpers(
             </a>
           </FormGroup>
           <Row className={styles.equals}>
-            <span>=</span>
+            <span>≈</span>
           </Row>
           <FormGroup>
             <Label>

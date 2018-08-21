@@ -14,6 +14,7 @@ interface IProps {
   wallets: Array<{
     id: string;
     name: string;
+    icon: string
     balanceEth: string;
     balanceEur?: string;
   }>;
@@ -49,7 +50,7 @@ export class WalletSelector extends React.Component<IProps> {
                       <div className={styles.label}>{w.name}</div>
                       <div className={styles.balance}>
                         <div className={styles.icon}>
-                          <img src={ethIcon} />
+                          <img src={w.icon} />
                         </div>
                         <div className={styles.balanceValues}>
                           <div className={styles.balanceEth}>

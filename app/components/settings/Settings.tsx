@@ -34,7 +34,10 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
   userType,
   requestKycStatus,
 }) => {
-  const isPersonalDataProcessed = requestKycStatus === "Pending" || requestKycStatus === "Accepted";
+  const isPersonalDataProcessed =
+    requestKycStatus === "Pending" ||
+    requestKycStatus === "Accepted" ||
+    requestKycStatus === "Draft";
   const isUserInvestor = userType === "investor";
 
   return (
@@ -55,11 +58,12 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
           <YourEthereumAddressWidget />
         </Col>
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
-          (isIcbmWalletConnected || (
+          isIcbmWalletConnected &&
+          isUserInvestor && (
             <Col lg={4} xs={12}>
               <CheckYourICBMWalletWidget />
             </Col>
-          ))}
+          )}
 
         {isUserInvestor &&
           isPersonalDataProcessed && (
@@ -98,7 +102,7 @@ export const Settings = compose<React.SFC>(
   }),
   onEnterAction({
     actionCreator: dispatch => {
-      dispatch(actions.kyc.kycLoadIndividualRequest());
+      dispatch(actions.kyc.kycLoadIndividualData());
     },
   }),
 )(SettingsComponent);

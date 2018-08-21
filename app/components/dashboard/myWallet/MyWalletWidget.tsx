@@ -133,15 +133,15 @@ export const MyWalletWidget = compose<React.SFC<CommonHtmlProps>>(
       const error = s.wallet.error;
 
       if (!isLoading && !error) {
-        const walletData = s.wallet.data!;
+        const state = s;
         return {
           isLoading,
           error,
           data: {
-            euroTokenAmount: selectTotalEuroTokenBalance(walletData),
-            ethAmount: selectTotalEtherBalance(walletData),
-            ethEuroAmount: selectTotalEtherBalanceEuroAmount(walletData),
-            totalAmount: selectTotalEuroBalance(walletData),
+            euroTokenAmount: selectTotalEuroTokenBalance(state.wallet),
+            ethAmount: selectTotalEtherBalance(state.wallet),
+            ethEuroAmount: selectTotalEtherBalanceEuroAmount(state),
+            totalAmount: selectTotalEuroBalance(state),
           },
         };
       } else {

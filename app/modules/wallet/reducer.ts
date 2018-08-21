@@ -6,22 +6,24 @@ export interface IWalletState {
   data?: IWalletStateData;
 }
 
+export interface ILockedWallet {
+  ICBMLockedBalance: string;
+  neumarksDue: string;
+  unlockDate: string;
+}
+
 // balances of all coins are represented by bignumber.js strings
 export interface IWalletStateData {
-  euroTokenBalance: string;
-  euroTokenLockedBalance: string;
-  euroTokenICBMLockedBalance: string;
+  euroTokenLockedWallet?: ILockedWallet;
+  etherTokenLockedWallet?: ILockedWallet;
 
   etherTokenBalance: string;
-  etherTokenLockedBalance: string;
-  etherTokenICBMLockedBalance: string;
-
+  euroTokenBalance: string;
   etherBalance: string;
   neuBalance: string;
 
-  // this info should probably be somewhere else?
-  etherPriceEur: string;
-  neuPriceEur: string;
+  euroTokenLockedBalance: string;
+  etherTokenLockedBalance: string;
 }
 
 const walletInitialState: IWalletState = {

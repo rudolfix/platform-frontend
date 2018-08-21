@@ -48,9 +48,10 @@
 }
 
 .content {
+  @include rect(100%);
+
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .left {

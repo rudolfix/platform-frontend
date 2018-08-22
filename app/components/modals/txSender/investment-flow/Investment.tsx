@@ -1,53 +1,52 @@
-import { Form, Formik, FormikProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
+import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
+import { ITxData } from "../../../../modules/tx/sender/reducer";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button } from "../../../shared/Buttons";
-import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImportant";
 import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
-import { IInitComponentProps } from "../TxSender";
 import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
-import * as neuIcon from "../../../../assets/img/neu_icon.svg";
-import * as tokenIcon from "../../../../assets/img/token_icon.svg";
+import { appConnect } from "../../../../store";
+import { multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
+import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import * as styles from "./Investment.module.scss";
 
-interface IFormState {
-  value: string;
-  wallet: string;
+interface IOwnProps {
+  onAccept: (tx: Partial<ITxData>) => any;
 }
 
 interface IStateProps {
   wallets: IWalletSelectionData[];
+  euroValue: string;
+  etherPriceEur: number;
+  errorState: string;
+  investmentType: EInvestmentType;
+  gasCostEth: string;
 }
 
 interface IDispatchProps {
-  submit: (values: IFormState) => void;
+  getTransaction: () => void;
+  setEuroValue: (eth: string) => void;
+  setEthValue: (eur: string) => void;
+  setInvestmentType: (type: EInvestmentType) => void
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & IOwnProps;
 
-export const InvestmentSelectionForm = injectIntlHelpers(
-  (props: FormikProps<IFormState> & IProps & IIntlProps) => {
-    const failureTooltip = (
-      <div>
-        <p>
-          <FormattedMessage id="investment-flow.amount-exceeds-investment" />
-        </p>
-        <Row>
-          <Button theme="white" className="mr-4" type="submit">
-            <FormattedMessage id="investment-flow.max-invest" />
-          </Button>
-        </Row>
-      </div>
-    );
+export const InvestmentSelectionComponent = injectIntlHelpers(
+  (props: IProps & IIntlProps) => {
+    const {gasCostEth} = props
+    const gasCostEuro = multiplyBigNumbers([gasCostEth, props.etherPriceEur.toString()])
+    const totalCostEth = "1000000"
+    const totalCostEur = "100000000"
 
     return (
-      <Form>
+      <>
         <Container className={styles.container}>
           <Row>
             <Col>
@@ -56,101 +55,85 @@ export const InvestmentSelectionForm = injectIntlHelpers(
               </Heading>
             </Col>
           </Row>
-          <InvestmentTypeSelector wallets={props.wallets} />
+          <InvestmentTypeSelector wallets={props.wallets} currentType={props.investmentType} onSelect={props.setInvestmentType} />
           <Row>
             <Col>
               <Heading>
-                <FormattedMessage id="investment-flow.invest-funds" />
+                <FormattedMessage id="investment-flow.calculate-investment" />
               </Heading>
             </Col>
           </Row>
           <Row>
             <Col>
-              <FormGroup className={styles.investInput}>
-                <Label>
-                  <FormattedMessage
-                    id="investment-flow.amount-input-label"
-                    values={{
-                      transactionCost: (
-                        <Money currency="eth" value="20000000000000000" theme="t-orange" />
-                      ),
-                    }}
-                  />
-                </Label>
-                <FormFieldImportant
-                  name="amount"
-                  placeholder={props.intl.formatIntlMessage("investment-flow.min-ticket-size")}
-                  errorMessage={failureTooltip}
-                />
-                <a href="#" onClick={el => el.preventDefault()}>
-                  <FormattedMessage id="investment-flow.invest-entire-balance" />
-                </a>
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row className={styles.equals}>
-            <Col>
-              <span>≈</span>
+              <p><FormattedMessage id="investment-flow.amount-to-invest" /></p>
             </Col>
           </Row>
           <Row>
             <Col>
-              <FormGroup>
-                <Label>
-                  <img className={styles.icon} src={tokenIcon} />{" "}
-                  <FormattedMessage id="investment-flow.equity-tokens" />
-                </Label>
-                <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
-              </FormGroup>
+              <FormFieldRaw />
+            </Col>
+            <Col sm="1">
+              <div className={styles.equals}>≈</div>
+            </Col>
+            <Col>
+              <FormFieldRaw />
+              <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
+                <FormattedMessage id="investment-flow.invest-entire-balance" />
+              </a>
             </Col>
           </Row>
+        </Container>
+        <div className={styles.green}>
+          <Container className={styles.container}>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label>
+                    <FormattedMessage id="investment-flow.equity-tokens" />
+                  </Label>
+                  <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
+                </FormGroup>
+              </Col>
+              <Col sm="1">
+              </Col>
+              <Col>
+                <FormGroup>
+                  <Label>
+                    <FormattedMessage id="investment-flow.estimated-neu-tokens" />
+                  </Label>
+                  <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
+                </FormGroup>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+        <Container className={styles.container}>
           <Row>
-            <Col>
-              <FormGroup>
-                <Label>
-                  <img className={styles.icon} src={neuIcon} />{" "}
-                  <FormattedMessage id="investment-flow.estimated-neu-tokens" />
-                </Label>
-                <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
-              </FormGroup>
+            <Col className={styles.summary}>
+              <div>
+                + <FormattedMessage id="investment-flow.estimated-gas-cost" />
+                <Money value={gasCostEuro} currency="eur" theme="t-orange"/>
+                <span>≈</span>
+                <Money value={gasCostEth} currency="eth" theme="t-orange" />
+              </div>
+              <div>
+                <FormattedMessage id="investment-flow.total" />
+                <Money value={totalCostEur} currency="eur" theme="t-orange"/>
+                <span>≈</span>
+                <Money value={totalCostEth} currency="eth" theme="t-orange" />
+              </div>
             </Col>
           </Row>
           <Row className="justify-content-center">
             <Button layout="primary" className="mr-4" type="submit">
-              <FormattedMessage id="investment-flow.invest" />
+              <FormattedMessage id="investment-flow.invest-now" />
             </Button>
           </Row>
         </Container>
-      </Form>
+      </>
     );
   },
 );
 
-/**
- * @todo real wallet data is missing!
- */
 
-const wallets = [
-  {
-    balanceEth: "300000000",
-    id: "foo",
-    name: "ICBM Wallet",
-  },
-  {
-    balanceEth: "400000000",
-    balanceEur: "456",
-    id: "bar",
-    name: "Light Wallet",
-  },
-];
-
-export const InvestmentSelection: React.SFC<IInitComponentProps> = ({ onAccept }) => {
-  return (
-    <Formik<{}, IFormState>
-      initialValues={{ wallet: wallets[0].name, value: "0" }}
-      onSubmit={v => onAccept({ value: v.value })}
-    >
-      {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}
-    </Formik>
-  );
-};
+export const InvestmentSelection = appConnect<IStateProps, IDispatchProps, IOwnProps>({})(InvestmentSelectionComponent)

@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import * as React from "react";
 
 import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
-import { InvestmentSelectionForm } from "./Investment";
+import { InvestmentSelectionComponent } from "./Investment";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
@@ -37,8 +37,19 @@ const wallets = [
   },
 ];
 
-storiesOf("InvestmentSelectionForm", module).add("default", () => (
-  <Formik initialValues={{ wallet: "bar", amount: 0 }} onSubmit={() => {}}>
-    {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}
-  </Formik>
-));
+const dummyProps = {
+  getTransaction: () => {},
+  setEthValue: () => {},
+  setEuroValue: () => {},
+  setInvestmentType: () => {},
+  onAccept: () => {},
+  euroValue: "1000000000",
+  etherPriceEur: 100,
+  errorState: "fufu",
+  investmentType: EInvestmentType.InvestmentWallet,
+  gasCostEth: "10000000"
+}
+
+storiesOf("InvestmentSelection", module).add("default", () =>
+  <InvestmentSelectionComponent wallets={wallets} investmentType={EInvestmentType.InvestmentWallet} {...dummyProps} />
+);

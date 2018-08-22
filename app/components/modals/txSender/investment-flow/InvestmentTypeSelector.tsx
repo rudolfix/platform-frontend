@@ -58,9 +58,9 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
                           <Money currency="eth" value={w.balanceEth} />
                         )}
                         {w.balanceNEuro && (
-                          <Money currency="eth" value={w.balanceNEuro} />
+                          <Money currency="eur_token" value={w.balanceNEuro} />
                         )}
-                        {!!w.balanceEur && (
+                        {w.balanceEur && (
                           <div className={styles.balanceEur}>
                             = <Money currency="eur" value={w.balanceEur} />
                           </div>

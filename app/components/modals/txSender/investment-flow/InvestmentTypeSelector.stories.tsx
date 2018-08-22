@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react";
-import { Formik } from "formik";
 import * as React from "react";
+import { Container } from "reactstrap";
 
 import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
-import { InvestmentSelectionForm } from "./Investment";
+import { InvestmentTypeSelector } from "./InvestmentTypeSelector";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
@@ -37,8 +37,17 @@ const wallets = [
   },
 ];
 
-storiesOf("InvestmentSelectionForm", module).add("default", () => (
-  <Formik initialValues={{ wallet: "bar", amount: 0 }} onSubmit={() => {}}>
-    {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}
-  </Formik>
+// tslint:disable-next-line:no-console
+const onSelect = (v: any) => console.log(v)
+
+storiesOf("InvestmentTypeSelector", module).add("default", () => (
+  <Container>
+    <InvestmentTypeSelector wallets={wallets} currentType={EInvestmentType.None} onSelect={onSelect} />
+  </Container>
+));
+
+storiesOf("InvestmentTypeSelector", module).add("selected", () => (
+  <Container>
+    <InvestmentTypeSelector wallets={wallets} currentType={EInvestmentType.InvestmentWallet} onSelect={onSelect} />
+  </Container>
 ));

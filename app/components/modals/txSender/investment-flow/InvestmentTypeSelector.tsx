@@ -1,3 +1,4 @@
+import * as cn from "classnames"
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, FormGroup, Row } from "reactstrap";
@@ -5,13 +6,14 @@ import { Col, FormGroup, Row } from "reactstrap";
 import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
 import { Money } from "../../../shared/Money";
 
-import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as styles from "./InvestmentTypeSelector.module.scss";
 
 export interface IWalletSelectionData {
     type: string;
     name: string;
-    balanceEth: string;
+    icon: string;
+    balanceEth?: string;
+    balanceNEuro?: string;
     balanceEur?: string;
 }
 
@@ -28,42 +30,49 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
 
   render (): React.ReactNode {
     const { wallets, currentType, onSelect } = this.props;
+    const selected = currentType !== EInvestmentType.None
     return (
-      <Row>
-        {wallets.map(w => (
-          <Col sm="6" key={w.type}>
-            <FormGroup>
-              <label className={styles.wrapper}>
-                <input
-                  className={styles.input}
-                  checked={currentType === w.type}
-                  onChange={e => onSelect(e.target.value as EInvestmentType)}
-                  type="radio"
-                  name="investmentType"
-                  value={w.type}
-                />
-                <div className={styles.box}>
-                  <div className={styles.label}>{w.name}</div>
-                  <div className={styles.balance}>
+      <Row className={selected && styles.selected}>
+        {wallets.map(w => {
+          const checked = currentType === w.type;
+          return (
+            <Col sm="6" key={w.type}>
+              <FormGroup>
+                <label className={cn(styles.wrapper, checked && styles.checked)}>
+                  <input
+                    className={styles.input}
+                    checked={checked}
+                    onChange={e => onSelect(e.target.value as EInvestmentType)}
+                    type="radio"
+                    name="investmentType"
+                    value={w.type}
+                  />
+                  <div className={styles.box}>
                     <div className={styles.icon}>
-                      <img src={ethIcon} />
+                      <img src={w.icon} />
                     </div>
-                    <div className={styles.balanceValues}>
-                      <div className={styles.balanceEth}>
-                        <Money currency="eth" value={w.balanceEth} />
+                    <div className={styles.label}>{w.name}</div>
+                    <div className={styles.balance}>
+                      <div className={styles.balanceValues}>
+                        {w.balanceEth && (
+                          <Money currency="eth" value={w.balanceEth} />
+                        )}
+                        {w.balanceNEuro && (
+                          <Money currency="eth" value={w.balanceNEuro} />
+                        )}
+                        {!!w.balanceEur && (
+                          <div className={styles.balanceEur}>
+                            = <Money currency="eur" value={w.balanceEur} />
+                          </div>
+                        )}
                       </div>
-                      {!!w.balanceEur && (
-                        <div className={styles.balanceEur}>
-                          = <Money currency="eur" value={w.balanceEur} />
-                        </div>
-                      )}
                     </div>
                   </div>
-                </div>
-              </label>
-            </FormGroup>
-          </Col>
-        ))}
+                </label>
+              </FormGroup>
+            </Col>
+          )
+        })}
       </Row>
     );
   }

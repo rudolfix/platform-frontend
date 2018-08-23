@@ -38,13 +38,16 @@
 }
 
 .token-terms {
-  @include media-breakpoint-up (md) {
-    flex-direction: row;
-  }
+  .content {
+    @include media-breakpoint-up (md) {
+      flex-direction: row;
+    }
 
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 
   .divider {
     @include media-breakpoint-up (md) {
@@ -71,6 +74,7 @@
     @include media-breakpoint-up (md) {
       width: 25%;
     }
+
   }
 
   .label {

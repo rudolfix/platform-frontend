@@ -14,8 +14,8 @@ export interface ILockedWallet {
 
 // balances of all coins are represented by bignumber.js strings
 export interface IWalletStateData {
-  euroTokenLockedWallet?: ILockedWallet;
-  etherTokenLockedWallet?: ILockedWallet;
+  euroTokenLockedWallet?: ILockedWallet; // ICBM Wallet
+  etherTokenLockedWallet?: ILockedWallet; // ICBM Wallet
 
   etherTokenBalance: string;
   euroTokenBalance: string;

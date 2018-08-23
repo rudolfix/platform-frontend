@@ -4,16 +4,16 @@ import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
 import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
 import { ITxData } from "../../../../modules/tx/sender/reducer";
+import { appConnect } from "../../../../store";
+import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button } from "../../../shared/Buttons";
+import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
 import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
-import { appConnect } from "../../../../store";
-import { multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
-import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import * as styles from "./Investment.module.scss";
 
 interface IOwnProps {
@@ -40,10 +40,11 @@ type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 export const InvestmentSelectionComponent = injectIntlHelpers(
   (props: IProps & IIntlProps) => {
-    const {gasCostEth} = props
-    const gasCostEuro = multiplyBigNumbers([gasCostEth, props.etherPriceEur.toString()])
-    const totalCostEth = "1000000"
-    const totalCostEur = "100000000"
+    const {gasCostEth, euroValue, etherPriceEur} = props
+    const ethValue = divideBigNumbers(euroValue, etherPriceEur)
+    const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur])
+    const totalCostEth = addBigNumbers([gasCostEth, ethValue])
+    const totalCostEur = addBigNumbers([gasCostEuro, euroValue])
 
     return (
       <>
@@ -70,13 +71,13 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
           </Row>
           <Row>
             <Col>
-              <FormFieldRaw />
+              <FormFieldRaw prefix="€" value={euroValue}/>
             </Col>
             <Col sm="1">
               <div className={styles.equals}>≈</div>
             </Col>
             <Col>
-              <FormFieldRaw />
+              <FormFieldRaw prefix="ETH" value={ethValue}/>
               <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
                 <FormattedMessage id="investment-flow.invest-entire-balance" />
               </a>
@@ -112,14 +113,14 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             <Col className={styles.summary}>
               <div>
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />
-                <Money value={gasCostEuro} currency="eur" theme="t-orange"/>
-                <span>≈</span>
+                : <Money value={gasCostEuro} currency="eur" theme="t-orange"/>
+                <span> ≈ </span>
                 <Money value={gasCostEth} currency="eth" theme="t-orange" />
               </div>
               <div>
                 <FormattedMessage id="investment-flow.total" />
-                <Money value={totalCostEur} currency="eur" theme="t-orange"/>
-                <span>≈</span>
+                : <Money value={totalCostEur} currency="eur" theme="t-orange"/>
+                <span> ≈ </span>
                 <Money value={totalCostEth} currency="eth" theme="t-orange" />
               </div>
             </Col>

@@ -50,7 +50,7 @@ export const FormFieldRaw: React.SFC<FieldGroupProps> = ({
 }) => {
 
   const val = computedValue(value, charactersLimit)
-  const invalid = props.invalid || !errorMsg
+  const invalid = props.invalid || !!errorMsg
 
   return (
     <FormGroup>

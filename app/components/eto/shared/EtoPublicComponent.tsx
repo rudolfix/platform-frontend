@@ -800,14 +800,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               )}
               {companyData.keyCompetitors && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+                  title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
                 >
                   <p>{companyData.keyCompetitors}</p>
                 </AccordionElement>
               )}
               {companyData.marketTraction && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+                  title={<FormattedMessage id="eto.form.product-vision.market-traction" />}
                 >
                   <p>{companyData.marketTraction}</p>
                 </AccordionElement>

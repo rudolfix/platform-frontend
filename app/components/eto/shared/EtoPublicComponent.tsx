@@ -192,7 +192,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </SectionHeader>
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
-            {companyData.keyQuoteFounder && <p className={cn("mb-4", )}>"{companyData.keyQuoteFounder}"</p>}
+            {companyData.keyQuoteFounder && (
+              <p className={cn("mb-4")}>"{companyData.keyQuoteFounder}"</p>
+            )}
             {companyData.keyQuoteInvestor && (
               <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>
             )}

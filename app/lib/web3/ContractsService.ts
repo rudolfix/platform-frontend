@@ -55,7 +55,7 @@ export class ContractsService {
       knownInterfaces.etherLock, // @todo: THIS SHOULD BE icbmEtherLock but it's not b/c it's not deployed atm
       knownInterfaces.icbmEuroToken,
       knownInterfaces.icbmEtherToken,
-    ]);
+    ].map(v => v.toString()));
 
     this.neumarkContract = await create(Neumark, web3, neumarkAddress);
     this.euroLock = await create(ICBMLockedAccount, web3, euroLockAddress);

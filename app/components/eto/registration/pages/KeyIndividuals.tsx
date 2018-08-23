@@ -83,7 +83,7 @@ const Individual: React.SFC<IIndividual> = props => {
           name={`${groupFieldName}.members.${index}.description`}
           label={<FormattedMessage id="eto.form.key-individuals.short-bio" />}
           placeholder=" "
-          charactersLimit={250}
+          charactersLimit={1200}
         />
         <FormSingleFileUpload
           label={<FormattedMessage id="eto.form.key-individuals.image" />}
@@ -92,9 +92,8 @@ const Individual: React.SFC<IIndividual> = props => {
           fileFormatInformation="*150 x 150px png"
         />
         <FormField
-          className="mt-2"
+          className="mt-4"
           name={`${groupFieldName}.members.${index}.website`}
-          label={<FormattedMessage id="eto.form.key-individuals.website" />}
           placeholder="website"
         />
         <FormLabel className="mt-4 mb-2">

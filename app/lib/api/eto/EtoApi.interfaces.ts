@@ -43,7 +43,10 @@ export const EtoProductVisionType = YupTS.object({
   customerGroup: YupTS.string().optional(),
   sellingProposition: YupTS.string().optional(),
   marketingApproach: YupTS.string().optional(),
-  salesModel: YupTS.string().optional(),
+  companyMission: YupTS.string().optional(),
+  targetMarketAndIndustry: YupTS.string().optional(),
+  keyCompetitors: YupTS.string().optional(),
+  marketTraction: YupTS.string().optional(),
 });
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
@@ -55,7 +58,7 @@ export const EtoRiskAssessmentType = YupTS.object({
   riskLiquidityDescription: YupTS.string(),
   riskThirdPartyDescription: YupTS.string(),
   riskThirdPartySharesFinancing: YupTS.string(),
-  riskChangingAgreementDescription: YupTS.string(),
+  businessModel: YupTS.string(),
   riskMaxDescription: YupTS.string(),
 });
 

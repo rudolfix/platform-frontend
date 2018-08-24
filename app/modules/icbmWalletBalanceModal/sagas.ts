@@ -7,7 +7,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
 import { selectEthereumAddress } from "../web3/selectors";
-import { TAction } from "./../actions";
+import { TAction } from "../actions";
 import { selectIcbmWalletEthAddress } from "./selectors";
 
 class IcbmWalletError extends Error {}

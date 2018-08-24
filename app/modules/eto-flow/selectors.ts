@@ -8,7 +8,7 @@ import {
   EtoKeyIndividualsType,
   EtoLegalInformationType,
   EtoMediaType,
-  EtoProductVisionType,
+  EtoPitchType,
   EtoRiskAssessmentType,
   EtoState,
   EtoTermsType,
@@ -99,7 +99,7 @@ export const calculateLegalInformationProgress = getFormFractionDoneCalculator(
   EtoLegalInformationType.toYup(),
 );
 export const calculateProductVisionProgress = getFormFractionDoneCalculator(
-  EtoProductVisionType.toYup(),
+  EtoPitchType.toYup(),
 );
 export const calculateEtoMediaProgress = getFormFractionDoneCalculator(
   EtoMediaType.toYup(),

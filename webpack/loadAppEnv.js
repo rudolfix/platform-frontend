@@ -15,16 +15,15 @@ module.exports = function loadAppEnv(processEnv) {
   if (process.env.NF_ENABLE_TRANSLATE_OVERLAY) {
     bundle.NF_ENABLE_TRANSLATE_OVERLAY = process.env.NF_ENABLE_TRANSLATE_OVERLAY;
   }
+  if (!process.env.NF_CONTRACT_ARTIFACTS_VERSION) {
+    bundle.NF_CONTRACT_ARTIFACTS_VERSION = "localhost";
+  }
 
   const allEnvs = Object.assign({}, bundle, envs);
 
   // extract universe address from contract artifacts repo meta.json
   // overrides .env value, if meta.json exists, but not process.env
-  if (
-    !universeAddressExists &&
-    allEnvs.NF_CONTRACTS_NEW === "1" &&
-    allEnvs.NF_CONTRACT_ARTIFACTS_VERSION
-  ) {
+  if (!universeAddressExists && allEnvs.NF_CONTRACTS_NEW === "1") {
     try {
       const meta = require(`../git_modules/platform-contracts-artifacts/${
         allEnvs.NF_CONTRACT_ARTIFACTS_VERSION
@@ -34,12 +33,6 @@ module.exports = function loadAppEnv(processEnv) {
       console.error("cannot read universe address from meta.json in contract artifacts", e.message);
       console.error("not overriding NF_UNIVERSE_CONTRACT_ADDRESS");
     }
-  } else {
-    console.log(
-      allEnvs.NF_CONTRACTS_NEW,
-      process.env.NF_UNIVERSE_CONTRACT_ADDRESS,
-      allEnvs.NF_CONTRACT_ARTIFACTS_VERSION,
-    );
   }
 
   return mapValues(allEnvs, JSON.stringify);

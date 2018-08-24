@@ -55,6 +55,7 @@ export const actions = {
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
   gas: gasActions,
+  investmentFlow: investmentFlowActions
 };
 
 /**

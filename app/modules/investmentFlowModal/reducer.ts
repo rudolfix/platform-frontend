@@ -1,4 +1,3 @@
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
@@ -10,12 +9,22 @@ export enum EInvestmentType {
   BankTransfer = "BANK_TRANSFER"
 }
 
+export enum EInvestmentErrorState {
+  AboveMaximumTicketSize = "above_maximum_ticket_size",
+  BelowMinimumTicketSize = "below_minimum_ticket_size",
+  ExceedsWalletBalance = "exceeds_wallet_balance",
+  ExceedsTokenAmount = "exceeds_token_amount",
+}
+
 export interface IInvestmentFlowState {
-  investmentSelection: EInvestmentType
+  euroValue: string,
+  investmentType: EInvestmentType
+  errorState?: EInvestmentErrorState
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
-  investmentSelection: EInvestmentType.None
+  euroValue: "",
+  investmentType: EInvestmentType.None
 };
 
 export const investmentFlowModalReducer: AppReducer<IInvestmentFlowState> = (
@@ -26,7 +35,7 @@ export const investmentFlowModalReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
         ...state,
-        investmentSelection: action.payload.type
+        investmentType: action.payload.type
       };
   }
 

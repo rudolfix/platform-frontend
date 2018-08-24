@@ -1,5 +1,4 @@
 import { storiesOf } from "@storybook/react";
-import { Formik } from "formik";
 import * as React from "react";
 
 import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
@@ -44,10 +43,10 @@ const dummyProps = {
   setInvestmentType: () => {},
   onAccept: () => {},
   euroValue: "1000000000",
-  etherPriceEur: 100,
+  etherPriceEur: "100",
   errorState: "fufu",
   investmentType: EInvestmentType.InvestmentWallet,
-  gasCostEth: "10000000"
+  gasPrice: "10000000"
 }
 
 storiesOf("InvestmentSelection", module).add("default", () =>

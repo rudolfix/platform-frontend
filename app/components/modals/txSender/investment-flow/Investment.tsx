@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
+import { actions } from "../../../../modules/actions";
 import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
 import { ITxData } from "../../../../modules/tx/sender/reducer";
 import { appConnect } from "../../../../store";
@@ -14,7 +15,11 @@ import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
 import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
+import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
+import * as euroIcon from "../../../../assets/img/euro_icon.svg";
+import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import * as styles from "./Investment.module.scss";
+
 
 interface IOwnProps {
   onAccept: (tx: Partial<ITxData>) => any;
@@ -23,16 +28,16 @@ interface IOwnProps {
 interface IStateProps {
   wallets: IWalletSelectionData[];
   euroValue: string;
-  etherPriceEur: number;
-  errorState: string;
+  etherPriceEur: string;
   investmentType: EInvestmentType;
-  gasCostEth: string;
+  gasPrice: string;
+  errorState?: string;
 }
 
 interface IDispatchProps {
   getTransaction: () => void;
-  setEuroValue: (eth: string) => void;
-  setEthValue: (eur: string) => void;
+  setEuroValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  setEthValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   setInvestmentType: (type: EInvestmentType) => void
 }
 
@@ -40,10 +45,10 @@ type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 export const InvestmentSelectionComponent = injectIntlHelpers(
   (props: IProps & IIntlProps) => {
-    const {gasCostEth, euroValue, etherPriceEur} = props
+    const {gasPrice, euroValue, etherPriceEur} = props
     const ethValue = divideBigNumbers(euroValue, etherPriceEur)
-    const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur])
-    const totalCostEth = addBigNumbers([gasCostEth, ethValue])
+    const gasCostEuro = multiplyBigNumbers([gasPrice, etherPriceEur])
+    const totalCostEth = addBigNumbers([gasPrice, ethValue])
     const totalCostEur = addBigNumbers([gasCostEuro, euroValue])
 
     return (
@@ -77,7 +82,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
               <div className={styles.equals}>≈</div>
             </Col>
             <Col>
-              <FormFieldRaw prefix="ETH" value={ethValue}/>
+              <FormFieldRaw prefix="ETH" value={ethValue} onChange={props.setEthValue}/>
               <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
                 <FormattedMessage id="investment-flow.invest-entire-balance" />
               </a>
@@ -115,7 +120,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />
                 : <Money value={gasCostEuro} currency="eur" theme="t-orange"/>
                 <span> ≈ </span>
-                <Money value={gasCostEth} currency="eth" theme="t-orange" />
+                <Money value={gasPrice} currency="eth" theme="t-orange" />
               </div>
               <div>
                 <FormattedMessage id="investment-flow.total" />
@@ -137,4 +142,47 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
 );
 
 
-export const InvestmentSelection = appConnect<IStateProps, IDispatchProps, IOwnProps>({})(InvestmentSelectionComponent)
+const dummyWallets = [
+  {
+    balanceEth: "30000000000000000000",
+    type: EInvestmentType.ICBMEth,
+    name: "ICBM Wallet",
+    icon: ethIcon
+  },
+  {
+    balanceNEuro: "45600000000000000000",
+    balanceEur: "45600000000000000000",
+    type: EInvestmentType.ICBMnEuro,
+    name: "ICBM Wallet",
+    icon: neuroIcon
+  },
+  {
+    balanceEth: "50000000000000000000",
+    balanceEur: "45600000000000000000",
+    type: EInvestmentType.InvestmentWallet,
+    name: "Investment Wallet",
+    icon: ethIcon
+  },
+  {
+    type: EInvestmentType.BankTransfer,
+    name: "Direct Bank Transfer",
+    icon: euroIcon
+  },
+];
+
+export const InvestmentSelection = appConnect<IStateProps, IDispatchProps, IOwnProps>({
+  stateToProps: state => ({
+    euroValue: state.investmentFlowModal.euroValue,
+    errorState: state.investmentFlowModal.errorState,
+    etherPriceEur: state.tokenPrice.tokenPriceData!.etherPriceEur,
+    gasPrice: state.gas.gasPrice!.standard,
+    investmentType: state.investmentFlowModal.investmentType,
+    wallets: dummyWallets
+  }),
+  dispatchToProps: dispatch => ({
+    getTransaction: () => {},
+    setEthValue: (evt) => dispatch(actions.investmentFlow.setEthValue(evt.target.value)),
+    setEuroValue: (evt) => dispatch(actions.investmentFlow.setEuroValue(evt.target.value)),
+    setInvestmentType: (type: EInvestmentType) => dispatch(actions.investmentFlow.selectInvestmentType(type))
+  }),
+})(InvestmentSelectionComponent)

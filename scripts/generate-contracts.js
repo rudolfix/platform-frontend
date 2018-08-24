@@ -3,12 +3,8 @@ const tc = require("typechain");
 const path = require("path");
 const fs = require("fs");
 
-const applicationEnv = loadAppEnv(process.env);
-let artifactsVersion = "localhost";
-try {
-  // @ts-ignore
-  artifactsVersion = JSON.parse(applicationEnv.NF_CONTRACT_ARTIFACTS_VERSION);
-} catch (e) {}
+loadAppEnv(process.env);
+let artifactsVersion = process.env.NF_CONTRACT_ARTIFACTS_VERSION || "localhost";
 
 const contractsPath = `git_modules/platform-contracts-artifacts/${artifactsVersion}`;
 const outDir = "app/lib/contracts";

@@ -16,16 +16,6 @@ const outDir = "app/lib/contracts";
 // @ts-ignore
 global.IS_CLI = true;
 
-tc.generateTypeChainWrappers({
-  outDir,
-  glob: `${contractsPath}/contracts/*.json`,
-  force: true,
-}).catch(e => {
-  console.error("Faild to generate typechain contract wrappers");
-  console.error(e.message);
-  process.exit(1);
-});
-
 async function generateKnownInterfaces() {
   const knownInterfaces = require(`../${contractsPath}/meta.json`).KNOWN_INTERFACES;
   fs.writeFileSync(
@@ -34,8 +24,19 @@ async function generateKnownInterfaces() {
   );
 }
 
-generateKnownInterfaces().catch(e => {
-  console.error("Faild to read meta.json and generate knownInterfaces.json");
-  console.error(e.message);
-  process.exit(1);
-});
+tc.generateTypeChainWrappers({
+  outDir,
+  glob: `${contractsPath}/contracts/*.json`,
+  force: true,
+})
+  .catch(e => {
+    console.error("Faild to generate typechain contract wrappers");
+    console.error(e.message);
+    process.exit(1);
+  })
+  .then(() => generateKnownInterfaces())
+  .catch(e => {
+    console.error("Faild to read meta.json and generate knownInterfaces.json");
+    console.error(e.message);
+    process.exit(1);
+  });

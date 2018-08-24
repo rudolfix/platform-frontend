@@ -12,7 +12,7 @@ import { ILogger } from "../dependencies/Logger";
 import { Commitment } from "./CommitmentDeprecated";
 import { Web3Manager } from "./Web3Manager";
 
-import * as knownInterfaces from "../contracts/knownInterfaces.json"
+import * as knownInterfaces from "../contracts/knownInterfaces.json";
 
 @injectable()
 export class ContractsService {

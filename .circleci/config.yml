@@ -35,7 +35,7 @@ jobs:
           keys:
           - v11-deps-{{ checksum "package.json" }}
           - v11-deps-
-      - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
+      - run: yarn prepare
 
       - run: yarn lint
 
@@ -50,7 +50,7 @@ jobs:
           keys:
           - v11-deps-{{ checksum "package.json" }}
           - v11-deps-
-      - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
+      - run: yarn prepare
 
       - run: yarn test:browser-coverage && yarn test:node
 

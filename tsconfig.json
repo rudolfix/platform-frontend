@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "sourceMap": true,
-    "typeRoots": ["./node_modules/@types", "./@types"]
+    "typeRoots": ["./node_modules/@types", "./@types"],
+    "resolveJsonModule": true
   },
   "include": [
     "./node_modules/types-bn/index.d.ts",
@@ -19,6 +20,7 @@
     "./node_modules/cypress/types/index.d.ts",
     "app/**/*.ts",
     "app/**/*.tsx",
+    "app/**/*.json",
     "typings/**/*.ts",
     "test/**/*.ts",
     "test/**/*.tsx"

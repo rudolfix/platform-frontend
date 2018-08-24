@@ -5,7 +5,8 @@
     "target": "es2015",
     "lib": ["es2015", "dom"],
     "types": ["cypress"],
-    "jsx": "react"
+    "jsx": "react",
+    "resolveJsonModule": true
   },
   "include": ["../**/*.spec.e2e.ts"]
 }

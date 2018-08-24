@@ -10,8 +10,9 @@ import { Neumark } from "../contracts/Neumark";
 import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/Logger";
 import { Commitment } from "./CommitmentDeprecated";
-import { knownInterfaces } from "./knownInterfaces";
 import { Web3Manager } from "./Web3Manager";
+
+import * as knownInterfaces from "../contracts/knownInterfaces.json"
 
 @injectable()
 export class ContractsService {
@@ -49,15 +50,13 @@ export class ContractsService {
       etherLockAddress,
       euroTokenAddress,
       etherTokenAddress,
-    ] = await this.universeContract.getManySingletons(
-      [
-        knownInterfaces.neumark,
-        knownInterfaces.icbmEuroLock,
-        knownInterfaces.etherLock, // @todo: THIS SHOULD BE icbmEtherLock but it's not b/c it's not deployed atm
-        knownInterfaces.icbmEuroToken,
-        knownInterfaces.icbmEtherToken,
-      ].map(v => v.toString()),
-    );
+    ] = await this.universeContract.getManySingletons([
+      knownInterfaces.neumark,
+      knownInterfaces.icbmEuroLock,
+      knownInterfaces.icbmEtherLock,
+      knownInterfaces.icbmEuroToken,
+      knownInterfaces.icbmEtherToken,
+    ]);
 
     this.neumarkContract = await create(Neumark, web3, neumarkAddress);
     this.euroLock = await create(ICBMLockedAccount, web3, euroLockAddress);

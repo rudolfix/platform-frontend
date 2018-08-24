@@ -38,6 +38,12 @@
     "no-use-before-declare": false
   },
   "linterOptions": {
-    "exclude": ["node_modules/**", "**/*.spec.ts?(x)", "**/*.spec.node.ts?(x)", "test/**"]
+    "exclude": [
+      "node_modules/**",
+      "**/*.spec.ts?(x)",
+      "**/*.spec.node.ts?(x)",
+      "test/**",
+      "**/*.json"
+    ]
   }
 }

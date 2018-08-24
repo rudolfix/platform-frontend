@@ -34,13 +34,23 @@ const distributionSuggestions = ["Development", "Other"];
 
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
-    <EtoFormBase title="Product Vision" validator={EtoProductVisionType.toYup()}>
+    <EtoFormBase
+      title={<FormattedMessage id="eto.form-progress-widget.product-vision" />}
+      validator={EtoProductVisionType.toYup()}
+    >
       <Section>
         <FormTextArea
           className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.inspiration" />}
           placeholder="Describe"
           name="inspiration"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.company-mission" />}
+          placeholder="Describe"
+          name="companyMission"
         />
 
         <FormTextArea
@@ -66,9 +76,30 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.sales-model" />}
+          label={<FormattedMessage id="eto.form.product-vision.target-market-and-industry" />}
           placeholder="Describe"
-          name="salesModel"
+          name="targetMarketAndIndustry"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
+          placeholder="Describe"
+          name="keyCompetitors"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
+          placeholder="Describe"
+          name="sellingProposition"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.key-benefits-for-investors" />}
+          placeholder="Describe"
+          name="keyBenefitsForInvestors"
         />
 
         <FormCategoryDistribution
@@ -86,6 +117,13 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.market-traction" />}
+          placeholder="Describe"
+          name="marketTraction"
+        />
+
+        <FormTextArea
+          className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
           placeholder="Describe"
           name="marketingApproach"
@@ -93,17 +131,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
-          placeholder="Describe"
-          name="sellingProposition"
-        />
-
-        <FormTextArea
-          className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
           placeholder="Describe"
           name="keyProductPriorities"
-          charactersLimit={250}
         />
       </Section>
       <Col>

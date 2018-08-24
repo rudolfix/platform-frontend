@@ -10,8 +10,9 @@ import { Neumark } from "../contracts/Neumark";
 import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/Logger";
 import { Commitment } from "./CommitmentDeprecated";
-import { knownInterfaces } from "./knownInterfaces";
 import { Web3Manager } from "./Web3Manager";
+
+import * as knownInterfaces from "../contracts/knownInterfaces.json";
 
 @injectable()
 export class ContractsService {
@@ -52,7 +53,7 @@ export class ContractsService {
     ] = await this.universeContract.getManySingletons([
       knownInterfaces.neumark,
       knownInterfaces.icbmEuroLock,
-      knownInterfaces.etherLock, // @todo: THIS SHOULD BE icbmEtherLock but it's not b/c it's not deployed atm
+      knownInterfaces.icbmEtherLock,
       knownInterfaces.icbmEuroToken,
       knownInterfaces.icbmEtherToken,
     ]);

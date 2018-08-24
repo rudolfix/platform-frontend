@@ -16,7 +16,7 @@ import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { Slides } from "../../shared/Slides";
-import { SocialProfilesList } from "../../shared/SocialProfilesList";
+import { IEtoSocialProfile, SocialProfilesList } from "../../shared/SocialProfilesList";
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
@@ -88,12 +88,21 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
   const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
 
-  const { socialChannels, companyVideo, disableTwitterFeed } = companyData;
+  const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
     !disableTwitterFeed;
-  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length > 0;
+  const isYouTubeVideoAvailable = !!(
+    companyVideo &&
+    companyVideo.url &&
+    companyVideo.url.length > 0
+  );
+  const isSlideShareAvailable = !!(
+    companySlideshare &&
+    companySlideshare.url &&
+    companySlideshare.url.length > 0
+  );
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
       ? (socialChannels.find(c => c.type === "twitter") as any).url
@@ -179,7 +188,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       </Row>
 
       <Row className="align-items-stretch">
-        <Col xs={12} md={isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12} className="mb-4">
+        <Col
+          xs={12}
+          md={isSlideShareAvailable || isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12}
+          className="mb-4"
+        >
           <SectionHeader layoutHasDecorator={false} className="mb-4">
             <div className={styles.companyHeader}>
               <div>{companyData.brandName}</div>
@@ -193,10 +206,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
             {companyData.keyQuoteFounder && (
-              <p className={cn("mb-4")}>"{companyData.keyQuoteFounder}"</p>
+              <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteFounder}"</p>
             )}
             {companyData.keyQuoteInvestor && (
-              <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>
+              <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteInvestor}"</p>
             )}
           </Panel>
 
@@ -337,13 +350,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 />
               </TabContent>
             )}
-            <TabContent tab="pitch deck">
-              {/* TODO: connect slideshare url */}
-              <Slides slideShareUrl="#0" />
-            </TabContent>
+            {isSlideShareAvailable && (
+              <TabContent tab="pitch deck">
+                <Slides
+                  slideShareUrl={companyData.companySlideshare && companyData.companySlideshare.url}
+                />
+              </TabContent>
+            )}
           </Tabs>
           <div className="mt-4">
-            <SocialProfilesList profiles={companyData.socialChannels || []} />
+            <SocialProfilesList profiles={companyData.socialChannels as IEtoSocialProfile[]} />
           </div>
           {isTwitterFeedEnabled && (
             <>

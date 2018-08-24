@@ -1,5 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { formWrapper } from "./forms/formField/form-utils";
 
 import { SocialProfilesEditor } from "./SocialProfilesEditor";
 
@@ -13,7 +14,6 @@ import * as telegramIcon from "../../assets/img/inline_icons/social_telegram.svg
 import * as twitterIcon from "../../assets/img/inline_icons/social_twitter.svg";
 import * as xingIcon from "../../assets/img/inline_icons/social_xing.svg";
 import * as youtubeIcon from "../../assets/img/inline_icons/social_youtube.svg";
-import { formWrapper } from "./forms/formField/form-utils";
 
 const socialProfiles = [
   {

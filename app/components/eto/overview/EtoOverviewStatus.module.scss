@@ -65,6 +65,7 @@
     @include responsive-size(width, 34px, 72px);
 
     margin-right: px-to-rem(10px);
+    overflow: hidden;
   }
 
   .token-name {

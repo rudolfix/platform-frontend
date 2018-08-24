@@ -110,28 +110,28 @@ workflows:
           requires:
             - install
 
-   nightly:
-     triggers:
-       - schedule:
-           cron: "0 0 * * *"
-           filters:
-             branches:
-               only:
-                 - master
-                 - beta
-     jobs:
-      - install
-      - lint:
-          requires:
-            - install
-      - test:
-          requires:
-            - install
-      - test-e2e:
-          requires:
-            - install
-      - danger-ci:
-          requires:
-            - install
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+                - production
+    jobs:
+     - install
+     - lint:
+         requires:
+           - install
+     - test:
+         requires:
+           - install
+     - test-e2e:
+         requires:
+           - install
+     - danger-ci:
+         requires:
+           - install
 
             

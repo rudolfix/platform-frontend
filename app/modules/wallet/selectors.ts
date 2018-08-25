@@ -59,6 +59,7 @@ export const selectLockedEuroTotalAmount = (state: IAppState) =>
     selectLockedEtherBalanceEuroAmount(state),
     selectLockedEuroTokenBalance(state.wallet),
   ]);
+
 export const selectLockedWalletHasFunds = (state: IAppState): boolean =>
   selectLockedEuroTotalAmount(state) !== "0";
 
@@ -88,6 +89,7 @@ export const selectICBMLockedEuroTotalAmount = (state: IAppState) =>
     selectICBMLockedEtherBalanceEuroAmount(state),
     selectICBMLockedEuroTokenBalance(state.wallet),
   ]);
+
 export const selectICBMLockedWalletHasFunds = (state: IAppState): boolean =>
   selectICBMLockedEuroTotalAmount(state) !== "0";
 

@@ -7,6 +7,7 @@ import { Panel } from "./Panel";
 import * as styles from "./MediaLinksWidget.module.scss";
 
 export interface ILink {
+  publication: string;
   title: TTranslatedString;
   url: string;
 }
@@ -30,13 +31,14 @@ export const MediaLinksWidget: React.SFC<IProps> = ({ links }) => {
 
   return (
     <Panel>
-      {links.map(({ title, url }, i) => {
+      {links.map(({ title, url, publication }, i) => {
         return (
+          publication &&
           url &&
           title && (
             <div className={styles.link} key={i}>
               <a href={normalizedUrl(url)} target="_blank">
-                {title}
+                {publication}: {title}
               </a>
             </div>
           )

@@ -1,7 +1,6 @@
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
-import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { selectNeuPriceEur } from "../shared/tokenPrice/selectors";
+import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
 import { IWalletState } from "./reducer";
 
 /**

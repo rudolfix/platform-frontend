@@ -2,12 +2,11 @@ import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
-import { actions } from "../actions";
+import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
 import { selectEthereumAddress } from "../web3/selectors";
-import { TAction } from "../actions";
 import { selectIcbmWalletEthAddress } from "./selectors";
 
 class IcbmWalletError extends Error {}

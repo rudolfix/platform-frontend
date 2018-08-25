@@ -17,24 +17,29 @@ describe("Wallet > selectors", () => {
       wallet: {
         loading: false,
         data: {
-          euroTokenBalance: Q18.toString(),
-          euroTokenLockedBalance: Q18.mul(3).toString(),
-
           etherTokenLockedWallet: {
-            ICBMLockedBalance: Q18.mul(50).toString(),
+            LockedBalance: "0",
             neumarksDue: "0",
             unlockDate: "0",
           },
           euroTokenLockedWallet: {
-            ICBMLockedBalance: Q18.mul(5).toString(),
+            LockedBalance: "0",
+            neumarksDue: "0",
+            unlockDate: "0",
+          },
+
+          etherTokenICBMLockedWallet: {
+            LockedBalance: Q18.mul(50).toString(),
+            neumarksDue: "0",
+            unlockDate: "0",
+          },
+          euroTokenICBMLockedWallet: {
+            LockedBalance: Q18.mul(5).toString(),
             neumarksDue: "0",
             unlockDate: "0",
           },
           etherTokenBalance: Q18.mul(10).toString(),
-          etherTokenLockedBalance: Q18.mul(30).toString(),
-          etherTokenNeumarksDue: Q18.mul(3).toString(),
-          etherTokenUnlockDate: Q18.mul(2).toString(),
-
+          euroTokenBalance: Q18.mul(10.12).toString(),
           etherBalance: Q18.mul(100).toString(),
           neuBalance: Q18.mul(1000).toString(),
         },

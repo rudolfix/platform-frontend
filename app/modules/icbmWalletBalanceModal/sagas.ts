@@ -2,11 +2,12 @@ import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
-import { actions, TAction } from "../actions";
+import { actions } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
-import { IWalletStateData } from "../wallet/reducer";
+import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
-import { selectEthereumAddress } from "../web3/selectors";
+import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { TAction } from "./../actions";
 import { selectIcbmWalletEthAddress } from "./selectors";
 
 class IcbmWalletError extends Error {}
@@ -14,17 +15,8 @@ class IcbmWalletError extends Error {}
 class NoIcbmWalletError extends IcbmWalletError {}
 class SameUserError extends IcbmWalletError {}
 
-function checkIcbmWallet(migrationWalletData: IWalletStateData): boolean {
-  /* tslint:disable */
-  return !(
-    migrationWalletData &&
-    migrationWalletData.etherTokenLockedWallet &&
-    migrationWalletData.etherTokenLockedWallet.unlockDate === "0" &&
-    (migrationWalletData &&
-      migrationWalletData.euroTokenLockedWallet &&
-      migrationWalletData.euroTokenLockedWallet.unlockDate === "0")
-  );
-  /* tslint:enable */
+function hasIcbmWallet(lockedWallet: ILockedWallet): boolean {
+  return lockedWallet.unlockDate !== "0";
 }
 
 function* loadIcbmWalletDataSaga(
@@ -36,21 +28,25 @@ function* loadIcbmWalletDataSaga(
   );
   if (action.type !== "ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA") return;
   try {
-    const userAddress = yield select((s: IAppState) => selectEthereumAddress(s.web3));
+    const userAddress = yield select((s: IAppState) => selectEthereumAddressWithChecksum(s.web3));
     if (userAddress === ethAddress) throw new SameUserError();
 
     const migrationWalletData: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
-    const isIcbmUser = checkIcbmWallet(migrationWalletData);
+    const isIcbmUser = hasIcbmWallet(migrationWalletData.etherTokenICBMLockedWallet);
     if (!isIcbmUser) throw new NoIcbmWalletError();
 
-    yield put(actions.icbmWalletBalanceModal.loadIcbmWalletData(migrationWalletData));
+    yield put(
+      actions.icbmWalletBalanceModal.loadIcbmWalletData(
+        migrationWalletData.etherTokenICBMLockedWallet,
+      ),
+    );
     yield put(actions.icbmWalletBalanceModal.showIcbmWalletBalanceModal());
   } catch (e) {
     logger.error("Error: ", e);
+    // todo: all texts to text resources
     if (e instanceof NoIcbmWalletError)
-      return notificationCenter.error("Given address doesn't exist in our database");
-    if (e instanceof SameUserError)
-      return notificationCenter.error("User can't check their own address");
+      return notificationCenter.error("ICBM Wallet not found for given Ethereum address");
+    if (e instanceof SameUserError) return notificationCenter.error("This is your current address");
     // Default Error
     return notificationCenter.error("Error while loading wallet data");
   }

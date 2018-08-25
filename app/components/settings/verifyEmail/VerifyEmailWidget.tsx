@@ -163,9 +163,6 @@ const UnVerifiedUser: React.SFC<{
     className={cn(styles.content, "d-flex flex-wrap align-content-around")}
     data-test-id="settings.verify-email-widget.unverified-email-state"
   >
-    <p className={cn(styles.text, "pt-2 mb-0")}>
-      <FormattedMessage id="settings.verify-email-widget.you-need-to-verify-email" />
-    </p>
     {verifiedEmail && (
       <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
         <p className="mb-0 text-center">
@@ -211,6 +208,7 @@ const UnVerifiedUser: React.SFC<{
     </Col>
   </div>
 );
+
 export const VerifyEmailWidgetComponent: React.SFC<
   IStateProps & IDispatchProps & IOwnProps & IIntlProps
 > = ({

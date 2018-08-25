@@ -78,7 +78,7 @@ describe("Wallet selector integration", () => {
     });
 
     const contractsMock = createMock(ContractsService, {
-      neumarkContract: createMock(Neumark, {
+      neumark: createMock(Neumark, {
         balanceOf: (_address: string) => Promise.resolve(new BigNumber(1)),
       }),
     });

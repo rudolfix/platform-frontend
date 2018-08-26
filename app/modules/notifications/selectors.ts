@@ -1,4 +1,4 @@
-import { some } from "lodash";
+import { indexOf, some } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
 import { IAppState } from "../../store";
@@ -15,7 +15,7 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
   return (
     !selectIsUserEmailVerified(state.auth) ||
     (!selectBackupCodesVerified(state.auth) && selectWalletType(state.web3) === WalletType.LIGHT) ||
-    selectKycRequestStatus(state.kyc) !== "Accepted"
+    indexOf(["Outsourced", "Pending", "Accepted"], selectKycRequestStatus(state.kyc)) === -1
   );
 };
 

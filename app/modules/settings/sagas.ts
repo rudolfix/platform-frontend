@@ -97,6 +97,9 @@ export function* resendEmail(
 
   const user = yield select((s: IAppState) => selectUser(s.auth));
   const email = user.unverifiedEmail;
+  const salt = yield select(
+    (s: IAppState) => selectLightWalletSalt(s.web3) || selectPreviousLightWalletSalt(s.web3),
+  );
 
   try {
     if (!email) throw new Error("No unverified email");
@@ -107,7 +110,7 @@ export function* resendEmail(
       formatIntlMessage("modules.settings.sagas.resend-email.confirmation"),
       formatIntlMessage("modules.settings.sagas.resend-email.confirmation-description"),
     );
-    yield effects.call(updateUser, { ...user, new_email: email });
+    yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
     notificationCenter.info(formatIntlMessage("modules.settings.sagas.resend-email.sent"));
   } catch {
     notificationCenter.error(formatIntlMessage("modules.settings.sagas.resend-email.failed"));

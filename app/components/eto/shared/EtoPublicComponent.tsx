@@ -75,13 +75,13 @@ export const CURRENCIES: ICurrencies = {
 };
 
 export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
-  const fullyDilutedPreMoneyValuationEur = etoData.fullyDilutedPreMoneyValuationEur || 1;
+  const preMoneyValuationEur = etoData.preMoneyValuationEur || 1;
   const existingCompanyShares = etoData.existingCompanyShares || 1;
   const newSharesToIssue = etoData.newSharesToIssue || 1;
   const equityTokensPerShare = etoData.equityTokensPerShare || 1;
   const minimumNewSharesToIssue = etoData.minimumNewSharesToIssue || 1;
 
-  const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
+  const computedNewSharePrice = preMoneyValuationEur / existingCompanyShares;
   const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
   const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
   const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
@@ -271,14 +271,12 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                       </span>
                     </div>
                   )}
-                  {etoData.fullyDilutedPreMoneyValuationEur && (
+                  {etoData.preMoneyValuationEur && (
                     <div className={styles.entry}>
                       <span className={styles.label}>
                         <FormattedMessage id="eto.public-view.legal-information.pre-money-valuation" />
                       </span>
-                      <span className={styles.value}>
-                        {`€ ${etoData.fullyDilutedPreMoneyValuationEur}`}
-                      </span>
+                      <span className={styles.value}>{`€ ${etoData.preMoneyValuationEur}`}</span>
                     </div>
                   )}
                   {etoData.existingCompanyShares && (
@@ -420,10 +418,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </span>
                   <span className={styles.value}>
                     €{" "}
-                    {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
-                      ? (
-                          etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
-                        ).toPrecision(4)
+                    {etoData.preMoneyValuationEur && etoData.existingCompanyShares
+                      ? (etoData.preMoneyValuationEur / etoData.existingCompanyShares).toPrecision(
+                          4,
+                        )
                       : DEFAULT_PLACEHOLDER}
                   </span>
                 </div>
@@ -784,25 +782,23 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <p>{companyData.companyMission}</p>
                 </AccordionElement>
               )}
-              {companyData.keyProductPriorities && (
-                <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
-                >
-                  <p>{companyData.keyProductPriorities}</p>
+              {companyData.roadmap && (
+                <AccordionElement title={<FormattedMessage id="eto.form.product-vision.roadmap" />}>
+                  <p>{companyData.roadmap}</p>
                 </AccordionElement>
               )}
-              {companyData.targetSegment && (
+              {companyData.targetMarketAndIndustry && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+                  title={<FormattedMessage id="eto.form.product-vision.target-segment" />}
                 >
-                  <p>{companyData.targetSegment}</p>
+                  <p>{companyData.targetMarketAndIndustry}</p>
                 </AccordionElement>
               )}
-              {companyData.competitors && (
+              {companyData.keyCompetitors && (
                 <AccordionElement
                   title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
                 >
-                  <p>{companyData.competitors}</p>
+                  <p>{companyData.keyCompetitors}</p>
                 </AccordionElement>
               )}
               {companyData.marketTraction && (

@@ -19,12 +19,20 @@ interface ISingleMediaLinkFieldInternalProps {
   name: string;
   url?: string;
   placeholder: string;
+  blankField: any;
 }
 
 const SingleMediaLinkField: React.SFC<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
 > = props => {
-  const { isFirstElement, onAddClick, onRemoveClick, isLastElement, placeholder } = props;
+  const {
+    isFirstElement,
+    onAddClick,
+    onRemoveClick,
+    isLastElement,
+    placeholder,
+    blankField,
+  } = props;
 
   return (
     <Row className="my-4">
@@ -32,8 +40,23 @@ const SingleMediaLinkField: React.SFC<
         {isLastElement && <ButtonIcon className="mt-2" svgIcon={plusIcon} onClick={onAddClick} />}
       </Col>
       <Col xs={10}>
-        <FormField name={`${props.name}.title`} placeholder="Title" charactersLimit={100} />
-        <FormField name={`${props.name}.url`} placeholder={placeholder || "Url"} />
+        {blankField &&
+          Object.keys(blankField).map(fieldName => {
+            const isFieldWithCharactersLimit = fieldName === "title";
+
+            return isFieldWithCharactersLimit ? (
+              <FormField
+                name={`${props.name}.${fieldName}`}
+                placeholder={fieldName || placeholder}
+                charactersLimit={100}
+              />
+            ) : (
+              <FormField
+                name={`${props.name}.${fieldName}`}
+                placeholder={fieldName || placeholder}
+              />
+            );
+          })}
       </Col>
       {!isFirstElement && (
         <Col xs={1}>
@@ -79,6 +102,7 @@ export class MediaLinksEditor extends React.Component<IProps> {
               const isFirstElement = index === 0;
               return (
                 <SingleMediaLinkField
+                  blankField={blankField}
                   name={`${name}.${index}`}
                   formFieldKey={"url"}
                   onRemoveClick={() => {

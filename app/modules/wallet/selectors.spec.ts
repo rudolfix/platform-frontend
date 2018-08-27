@@ -1,10 +1,12 @@
 import { expect } from "chai";
-import { Q18 } from "./../../config/constants";
-import { IAppState } from "./../../store";
+import { Q18 } from "../../config/constants";
+import { IAppState } from "../../store";
 import {
   selectICBMLockedEuroTotalAmount,
   selectLiquidEuroTotalAmount,
   selectLockedEuroTotalAmount,
+  selectNeuBalance,
+  selectNeuBalanceEuroAmount,
   selectTotalEtherBalance,
   selectTotalEtherBalanceEuroAmount,
   selectTotalEuroBalance,
@@ -17,24 +19,29 @@ describe("Wallet > selectors", () => {
       wallet: {
         loading: false,
         data: {
-          euroTokenBalance: Q18.toString(),
-          euroTokenLockedBalance: Q18.mul(3).toString(),
-
           etherTokenLockedWallet: {
-            ICBMLockedBalance: Q18.mul(50).toString(),
+            LockedBalance: Q18.mul(23.11).toString(),
             neumarksDue: "0",
             unlockDate: "0",
           },
           euroTokenLockedWallet: {
-            ICBMLockedBalance: Q18.mul(5).toString(),
+            LockedBalance: Q18.mul(18.11).toString(),
+            neumarksDue: "0",
+            unlockDate: "0",
+          },
+
+          etherTokenICBMLockedWallet: {
+            LockedBalance: Q18.mul(50).toString(),
+            neumarksDue: "0",
+            unlockDate: "0",
+          },
+          euroTokenICBMLockedWallet: {
+            LockedBalance: Q18.mul(5).toString(),
             neumarksDue: "0",
             unlockDate: "0",
           },
           etherTokenBalance: Q18.mul(10).toString(),
-          etherTokenLockedBalance: Q18.mul(30).toString(),
-          etherTokenNeumarksDue: Q18.mul(3).toString(),
-          etherTokenUnlockDate: Q18.mul(2).toString(),
-
+          euroTokenBalance: Q18.mul(10.12).toString(),
           etherBalance: Q18.mul(100).toString(),
           neuBalance: Q18.mul(1000).toString(),
         },
@@ -49,25 +56,44 @@ describe("Wallet > selectors", () => {
 
     const fullStateMock = (state as any) as IAppState;
 
-    expect(selectTotalEtherBalance(state.wallet)).to.be.eq(Q18.mul(10 + 30 + 50 + 100).toString());
+    const totalEther = Q18.mul(10 + 23.11 + 50 + 100);
+    expect(selectTotalEtherBalance(state.wallet)).to.be.eq(totalEther.toString());
 
     expect(selectTotalEtherBalanceEuroAmount(fullStateMock)).to.be.eq(
-      Q18.mul((10 + 30 + 50 + 100) * 10).toString(),
+      totalEther.mul(10).toString(),
     );
-    expect(selectTotalEuroTokenBalance(state.wallet)).to.be.eq(Q18.mul(1 + 3 + 5).toString());
+
+    const totalEuro = Q18.mul(10.12 + 5 + 18.11);
+    expect(selectTotalEuroTokenBalance(state.wallet)).to.be.eq(totalEuro.toString());
 
     expect(selectLiquidEuroTotalAmount(fullStateMock)).to.be.eq(
-      Q18.mul(1 + (10 + 100) * 10).toString(),
+      Q18.mul(10.12)
+        .add(Q18.mul(100 + 10).mul(10))
+        .toString(),
     );
 
-    expect(selectLockedEuroTotalAmount(fullStateMock)).to.be.eq(Q18.mul(3 + 30 * 10).toString());
+    expect(selectLockedEuroTotalAmount(fullStateMock)).to.be.eq(
+      Q18.mul(18.11)
+        .add(Q18.mul(23.11).mul(10))
+        .toString(),
+    );
 
     expect(selectICBMLockedEuroTotalAmount(fullStateMock)).to.be.eq(
       Q18.mul(5 + 50 * 10).toString(),
     );
 
     expect(selectTotalEuroBalance(fullStateMock)).to.be.eq(
-      Q18.mul(1 + 3 + 5 + (10 + 30 + 50 + 100) * 10).toString(),
+      totalEther
+        .mul(10)
+        .add(totalEuro)
+        .toString(),
+    );
+
+    expect(selectNeuBalance(state.wallet)).to.eq(Q18.mul(1000).toString());
+    expect(selectNeuBalanceEuroAmount(fullStateMock)).to.eq(
+      Q18.mul(1000)
+        .mul(10000)
+        .toString(),
     );
   });
 });

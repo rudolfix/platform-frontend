@@ -33,7 +33,7 @@ export const EtoCompanyInformationType = YupTS.object({
 });
 type TEtoTeamData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
-export const EtoProductVisionType = YupTS.object({
+export const EtoPitchType = YupTS.object({
   problemSolved: YupTS.string().optional(),
   productVision: YupTS.string().optional(),
   inspiration: YupTS.string().optional(),
@@ -49,7 +49,7 @@ export const EtoProductVisionType = YupTS.object({
   marketTraction: YupTS.string().optional(),
 });
 
-type TEtoProductVision = YupTS.TypeOf<typeof EtoProductVisionType>;
+type TEtoProductVision = YupTS.TypeOf<typeof EtoPitchType>;
 
 export const EtoRiskAssessmentType = YupTS.object({
   riskNotRegulatedBusiness: YupTS.onlyTrue(),
@@ -236,7 +236,7 @@ export const GeneralEtoDataType = YupTS.object({
   ...EtoMediaType.shape,
   ...EtoLegalInformationType.shape,
   ...EtoKeyIndividualsType.shape,
-  ...EtoProductVisionType.shape,
+  ...EtoPitchType.shape,
   ...EtoCompanyInformationType.shape,
   ...EtoRiskAssessmentType.shape,
 });

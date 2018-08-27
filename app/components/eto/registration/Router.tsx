@@ -7,12 +7,12 @@ import { etoRegisterRoutes } from "./routes";
 import { EtoRegistrationCompanyInformation } from "./pages/CompanyInformation";
 import { EtoEquityTokenInfo } from "./pages/EtoEquityTokenInfo";
 import { EtoRegistrationMedia } from "./pages/EtoMedia";
+import { EtoRegistrationPitch } from "./pages/EtoPitch";
 import { EtoRegistrationTerms } from "./pages/EtoTerms";
 import { EtoVotingRights } from "./pages/EtoVotingRights";
 import { EtoInvestmentTerms } from "./pages/InvestmentTerms";
 import { EtoRegistrationKeyIndividuals } from "./pages/KeyIndividuals";
 import { EtoRegistrationLegalInformation } from "./pages/LegalInformation";
-import { EtoRegistrationProductVision } from "./pages/ProductVision";
 import { EtoRegistrationRiskAssessment } from "./pages/RiskAssessment";
 
 export const EtoRegisterRouter: React.SFC = () => (
@@ -32,7 +32,7 @@ export const EtoRegisterRouter: React.SFC = () => (
       component={EtoRegistrationKeyIndividuals}
       exact
     />
-    <Route path={etoRegisterRoutes.productVision} component={EtoRegistrationProductVision} exact />
+    <Route path={etoRegisterRoutes.productVision} component={EtoRegistrationPitch} exact />
     <Route
       path={etoRegisterRoutes.etoRiskAssessment}
       component={EtoRegistrationRiskAssessment}

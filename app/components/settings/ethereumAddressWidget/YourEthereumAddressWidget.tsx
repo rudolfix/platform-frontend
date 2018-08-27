@@ -1,16 +1,15 @@
 import * as React from "react";
 
 import { FormattedMessage } from "react-intl-phraseapp";
-import { selectEthereumAddress } from "../../../modules/web3/selectors";
+import { selectEthereumAddressWithChecksum } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
-import { EthereumAddress } from "../../../types";
 import { AccountAddress } from "../../shared/AccountAddress";
 import { Panel } from "../../shared/Panel";
 
 import * as styles from "./YourEthereumAddressWidget.module.scss";
 
 interface IStateProps {
-  address: EthereumAddress;
+  address: string;
 }
 
 export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ address }) => (
@@ -26,6 +25,6 @@ export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ add
 
 export const YourEthereumAddressWidget = appConnect<IStateProps>({
   stateToProps: s => ({
-    address: selectEthereumAddress(s.web3),
+    address: selectEthereumAddressWithChecksum(s.web3),
   }),
 })(YourEthereumAddressWidgetComponent);

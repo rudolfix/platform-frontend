@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../modules/actions";
-import { selectEthereumAddress } from "../../modules/web3/selectors";
+import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { AccountAddress } from "../shared/AccountAddress";
 import { EthereumQRCode } from "../shared/EthereumQRCode";
@@ -44,7 +44,7 @@ const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props 
 export const DepositEthModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: state.depositEthModal.isOpen,
-    address: selectEthereumAddress(state.web3),
+    address: selectEthereumAddressWithChecksum(state.web3),
   }),
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.depositEthModal.hideDepositEthModal()),

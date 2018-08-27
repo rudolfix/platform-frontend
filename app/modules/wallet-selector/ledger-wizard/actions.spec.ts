@@ -114,7 +114,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       });
 
       const contractsMock = createMock(ContractsService, {
-        neumarkContract: createMock(Neumark, {
+        neumark: createMock(Neumark, {
           balanceOf: (address: string) =>
             Promise.resolve(new BigNumber(expectedAccountsToBalancesNEU[address])),
         }),

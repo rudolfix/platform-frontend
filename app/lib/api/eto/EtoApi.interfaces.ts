@@ -78,10 +78,10 @@ const groupType = YupTS.object({
   members: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
-      role: YupTS.string().optional(),
+      role: YupTS.string(),
       image: YupTS.string().optional(),
       description: YupTS.string(),
-      website: YupTS.url(),
+      website: YupTS.url().optional(),
       socialChannels: socialChannelsType.optional(),
     }),
   ),

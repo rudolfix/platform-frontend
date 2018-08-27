@@ -7,6 +7,7 @@ import { TGeneralEtoData, TPartialCompanyEtoData, TPartialEtoSpecData } from "./
 const BASE_PATH = "/api/eto-listing/";
 const COMPANIES_ME_DATA_PATH = "/companies/me";
 const COMPANIES_DATA_PATH = "/companies/";
+const ETOS_PATH = "/etos";
 const ETO_DATA_PATH = "/etos/me";
 const ETO_SUBMISSION_PATH = "/etos/me/submission";
 const ETO_BOOK_BUILDING_PATH = "/etos/me/bookbuilding";
@@ -14,7 +15,15 @@ const ETO_PREVIEW_PATH = "/eto-previews/";
 
 @injectable()
 export class EtoApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {
+  }
+
+  public async getEtos(): Promise<IHttpResponse<TPartialEtoSpecData>> {
+    return await this.httpClient.get<TPartialEtoSpecData>({
+      baseUrl: BASE_PATH,
+      url: ETOS_PATH,
+    });
+  }
 
   public async getEtoData(): Promise<IHttpResponse<TPartialEtoSpecData>> {
     return await this.httpClient.get<TPartialEtoSpecData>({

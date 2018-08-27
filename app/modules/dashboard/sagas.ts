@@ -1,8 +1,11 @@
 import { effects } from "redux-saga";
-import { fork } from "redux-saga/effects";
+import { fork, put } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { IHttpResponse } from "../../lib/api/client/IHttpClient";
+import { TInvestorEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { signMessage } from "../accessWallet/sagas";
-import { TAction } from "../actions";
+import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { txSendSaga } from "../tx/sender/sagas";
 
@@ -42,7 +45,17 @@ function* sendDummyTx({ logger }: TGlobalDependencies, action: TAction): any {
   }
 }
 
+function * loadEtos ({apiEtoService, logger,  }: TGlobalDependencies): any {
+  try {
+    const etos: IHttpResponse<TInvestorEtoData[]> = yield apiEtoService.getEtos();
+    yield put(actions.dashboard.setEtos(etos.body));
+  } catch (e) {
+    logger.error("ETOs could not be loaded", e, e.message)
+  }
+}
+
 export const dashboardSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "DASHBOARD_SIGN_DUMMY_MESSAGE", signDummyMessage);
   yield fork(neuTakeEvery, "DASHBOARD_SEND_DUMMY_TX", sendDummyTx);
+  yield fork(neuTakeEvery, "DASHBOARD_LOAD_ETOS", loadEtos)
 };

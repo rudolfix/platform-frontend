@@ -11,7 +11,7 @@ import { genericModalActions } from "./genericModal/actions";
 import { icbmWalletBalanceModalActions } from "./icbmWalletBalanceModal/actions";
 import { immutableStorageActions } from "./immutableFile/actions";
 import { initActions } from "./init/actions";
-import { investmentFlowActions } from "./investmentFlowModal/actions";
+import { investmentFlowActions } from "./investmentFlow/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { routingActions } from "./routing/actions";

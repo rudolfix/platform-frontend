@@ -9,7 +9,7 @@ import { gasReducer } from "./gas/reducer";
 import { genericModalReducer } from "./genericModal/reducer";
 import { icbmWalletBalanceModalReducer } from "./icbmWalletBalanceModal/reducer";
 import { initReducer } from "./init/reducer";
-import { investmentFlowModalReducer } from "./investmentFlowModal/reducer";
+import { investmentFlowReducer } from "./investmentFlow/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
@@ -53,6 +53,6 @@ export const appReducers = {
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
   txMonitor: txMonitorReducer,
-  investmentFlowModal: investmentFlowModalReducer,
+  investmentFlow: investmentFlowReducer,
   dashboard: dashboardReducer,
 };

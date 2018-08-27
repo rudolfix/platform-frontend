@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Col, FormGroup, Row } from "reactstrap";
 
-import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
+import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
 import { Money } from "../../../shared/Money";
 
 import * as styles from "./InvestmentTypeSelector.module.scss";

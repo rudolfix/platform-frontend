@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
 import { actions } from "../../../../modules/actions";
-import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
+import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
 import { ITxData } from "../../../../modules/tx/sender/reducer";
 import { appConnect } from "../../../../store";
 import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
@@ -172,11 +172,11 @@ const dummyWallets = [
 
 export const InvestmentSelection = appConnect<IStateProps, IDispatchProps, IOwnProps>({
   stateToProps: state => ({
-    euroValue: state.investmentFlowModal.euroValue,
-    errorState: state.investmentFlowModal.errorState,
+    euroValue: state.investmentFlow.euroValue,
+    errorState: state.investmentFlow.errorState,
     etherPriceEur: state.tokenPrice.tokenPriceData!.etherPriceEur,
     gasPrice: state.gas.gasPrice!.standard,
-    investmentType: state.investmentFlowModal.investmentType,
+    investmentType: state.investmentFlow.investmentType,
     wallets: dummyWallets
   }),
   dispatchToProps: dispatch => ({

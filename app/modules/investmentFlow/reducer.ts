@@ -1,5 +1,7 @@
+import { TInvestorEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { divideBigNumbers } from "../../utils/BigNumberUtils";
 
 export enum EInvestmentType {
   None = "NONE",
@@ -19,6 +21,7 @@ export enum EInvestmentErrorState {
 export interface IInvestmentFlowState {
   euroValue: string,
   investmentType: EInvestmentType
+  eto?: TInvestorEtoData
   errorState?: EInvestmentErrorState
 }
 
@@ -27,7 +30,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   investmentType: EInvestmentType.None
 };
 
-export const investmentFlowModalReducer: AppReducer<IInvestmentFlowState> = (
+export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
   state = investmentFlowInitialState,
   action,
 ): DeepReadonly<IInvestmentFlowState> => {
@@ -36,6 +39,21 @@ export const investmentFlowModalReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         investmentType: action.payload.type
+      };
+    case "INVESTMENT_FLOW_SET_ETO":
+      return {
+        ...state,
+        eto: action.payload.eto
+      };
+    case "INVESTMENT_FLOW_SET_INVESTMENT_ERROR_STATE":
+      return {
+        ...state,
+        errorState: action.payload.errorState
+      };
+    case "INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE":
+      return {
+        ...state,
+        euroValue: action.payload.value
       };
   }
 

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EInvestmentType } from "../../../../modules/investmentFlowModal/reducer";
+import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
 import { InvestmentSelectionComponent } from "./Investment";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";

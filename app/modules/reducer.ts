@@ -1,5 +1,6 @@
 import { accessWalletReducer } from "./accessWallet/reducer";
 import { authReducer } from "./auth/reducer";
+import { dashboardReducer } from "./dashboard/reducer";
 import { depositEthModalReducer } from "./depositEthModal/reducer";
 import { etoDocumentReducer } from "./eto-documents/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
@@ -52,5 +53,6 @@ export const appReducers = {
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
   txMonitor: txMonitorReducer,
-  investmentFlowModal: investmentFlowModalReducer
+  investmentFlowModal: investmentFlowModalReducer,
+  dashboard: dashboardReducer,
 };

@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { actions } from "../../../modules/actions";
-import { selectEthereumAddress } from "../../../modules/web3/selectors";
+import { selectEthereumAddressWithChecksum } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { AccountAddress, IAccountAddressProps } from "../../shared/AccountAddress";
@@ -139,7 +139,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
 
 export const WalletBalance = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
-    address: selectEthereumAddress(state.web3),
+    address: selectEthereumAddressWithChecksum(state.web3),
   }),
   dispatchToProps: dispatch => ({
     depositEth: () => dispatch(actions.depositEthModal.showDepositEthModal()),

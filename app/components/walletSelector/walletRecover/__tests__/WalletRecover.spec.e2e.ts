@@ -37,7 +37,7 @@ describe("Wallet recover", () => {
     "strike",
   ];
 
-  const expectedGeneratedAddress = "0x429123b08df32b0006fd1f3b0ef893a8993802f3";
+  const expectedGeneratedAddress = "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3";
 
   it("should recover wallet from saved phrases", () => {
     const email = "john-smith@example.com";

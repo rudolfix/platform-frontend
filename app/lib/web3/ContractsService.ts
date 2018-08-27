@@ -6,7 +6,11 @@ import { symbols } from "../../di/symbols";
 import { EtherToken } from "../contracts/EtherToken";
 import { EuroToken } from "../contracts/EuroToken";
 import { ICBMLockedAccount } from "../contracts/ICBMLockedAccount";
+import { IdentityRegistry } from "../contracts/IdentityRegistry";
+import { ITokenExchangeRateOracle } from "../contracts/ITokenExchangeRateOracle";
+import { LockedAccount } from "../contracts/LockedAccount";
 import { Neumark } from "../contracts/Neumark";
+import { PlatformTerms } from "../contracts/PlatformTerms";
 import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/Logger";
 import { Commitment } from "./CommitmentDeprecated";
@@ -18,12 +22,17 @@ import * as knownInterfaces from "../contracts/knownInterfaces.json";
 export class ContractsService {
   private universeContract!: Universe;
 
-  public neumarkContract!: Neumark;
-  public euroTokenContract!: EuroToken;
-  public etherTokenContract!: EtherToken;
+  public neumark!: Neumark;
+  public euroToken!: EuroToken;
+  public etherToken!: EtherToken;
 
-  public euroLock!: ICBMLockedAccount;
-  public etherLock!: ICBMLockedAccount;
+  public euroLock!: LockedAccount;
+  public etherLock!: LockedAccount;
+  public icbmEuroLock!: ICBMLockedAccount;
+  public icbmEtherLock!: ICBMLockedAccount;
+  public identityRegistry!: IdentityRegistry;
+  public platformTerms!: PlatformTerms;
+  public rateOracle!: ITokenExchangeRateOracle;
 
   constructor(
     @inject(symbols.config) private readonly config: IConfig,
@@ -48,23 +57,38 @@ export class ContractsService {
       neumarkAddress,
       euroLockAddress,
       etherLockAddress,
+      icbmEuroLockAddress,
+      icbmEtherLockAddress,
       euroTokenAddress,
       etherTokenAddress,
+      tokenExchangeRateOracleAddress,
+      identityRegistryAddress,
+      platformTermsAddress,
     ] = await this.universeContract.getManySingletons([
       knownInterfaces.neumark,
+      knownInterfaces.euroLock,
+      knownInterfaces.etherLock,
       knownInterfaces.icbmEuroLock,
       knownInterfaces.icbmEtherLock,
-      knownInterfaces.icbmEuroToken,
-      knownInterfaces.icbmEtherToken,
+      knownInterfaces.euroToken,
+      knownInterfaces.etherToken,
+      knownInterfaces.tokenExchangeRateOracle,
+      knownInterfaces.identityRegistry,
+      knownInterfaces.platformTerms,
     ]);
 
-    this.neumarkContract = await create(Neumark, web3, neumarkAddress);
-    this.euroLock = await create(ICBMLockedAccount, web3, euroLockAddress);
-    this.etherLock = await create(ICBMLockedAccount, web3, etherLockAddress);
-    this.euroTokenContract = await create(EuroToken, web3, euroTokenAddress);
-    this.etherTokenContract = await create(EtherToken, web3, etherTokenAddress);
+    this.neumark = await create(Neumark, web3, neumarkAddress);
+    this.euroLock = await create(LockedAccount, web3, euroLockAddress);
+    this.etherLock = await create(LockedAccount, web3, etherLockAddress);
+    this.icbmEuroLock = await create(ICBMLockedAccount, web3, icbmEuroLockAddress);
+    this.icbmEtherLock = await create(ICBMLockedAccount, web3, icbmEtherLockAddress);
+    this.rateOracle = await create(ITokenExchangeRateOracle, web3, tokenExchangeRateOracleAddress);
+    this.identityRegistry = await create(IdentityRegistry, web3, identityRegistryAddress);
+    this.platformTerms = await create(PlatformTerms, web3, platformTermsAddress);
+    this.euroToken = await create(EuroToken, web3, euroTokenAddress);
+    this.etherToken = await create(EtherToken, web3, etherTokenAddress);
 
-    this.logger.info("Initializing contracts DONE.");
+    this.logger.info("Initializing contracts via UNIVERSE is DONE.");
   }
 
   public async initDeprecated(): Promise<void> {
@@ -82,21 +106,18 @@ export class ContractsService {
       etherLockAddress: commitmentContract.etherLock,
     });
 
-    this.neumarkContract = await create(Neumark, web3, neumarkAddress);
-    const euroLock = await create(ICBMLockedAccount, web3, euroLockAddress);
-    const etherLock = await create(ICBMLockedAccount, web3, etherLockAddress);
-
-    this.euroLock = euroLock as any;
-    this.etherLock = etherLock as any;
+    this.neumark = await create(Neumark, web3, neumarkAddress);
+    this.icbmEuroLock = await create(ICBMLockedAccount, web3, euroLockAddress);
+    this.icbmEtherLock = await create(ICBMLockedAccount, web3, etherLockAddress);
 
     const { euroTokenAddress, etherTokenAddress } = await promiseAll({
-      euroTokenAddress: euroLock.assetToken,
-      etherTokenAddress: etherLock.assetToken,
+      euroTokenAddress: this.icbmEuroLock.assetToken,
+      etherTokenAddress: this.icbmEtherLock.assetToken,
     });
 
-    this.euroTokenContract = await create(EuroToken, web3, euroTokenAddress);
-    this.etherTokenContract = await create(EtherToken, web3, etherTokenAddress);
-    this.logger.info("Initializing contracts DONE.");
+    this.euroToken = await create(EuroToken, web3, euroTokenAddress);
+    this.etherToken = await create(EtherToken, web3, etherTokenAddress);
+    this.logger.info("Initializing contracts via ICBM COMMITMENT is DONE.");
   }
 }
 

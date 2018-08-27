@@ -7,6 +7,7 @@ import { onEnterAction } from "../../utils/OnEnterAction";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 
+import { PersonProfileModal } from "../modals/PersonProfileModal";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IProps {
@@ -27,6 +28,7 @@ const Page: React.SFC<IProps> = ({ companyData, etoData }) => {
   return (
     <LayoutAuthorized>
       <EtoPublicComponent companyData={companyData} etoData={etoData} />
+      <PersonProfileModal />
     </LayoutAuthorized>
   );
 };

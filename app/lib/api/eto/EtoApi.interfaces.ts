@@ -230,7 +230,7 @@ export type TGeneralEtoData = {
 };
 
 // this is comming from the /etos endpoint for investors dashboard
-export type TInvestorEtoData = TPartialEtoSpecData & { company: TPartialCompanyEtoData }
+export type TInvestorEtoData = TPartialEtoSpecData & { company: TPartialCompanyEtoData };
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,

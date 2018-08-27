@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { EtoList} from "./eto-list/EtoList";
+import { EtoList } from "./eto-list/EtoList";
 import { EtoListDummies } from "./eto-list/EtoListDummies";
 import { MyPortfolioWidget } from "./myPortfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./myWallet/MyWalletWidget";
@@ -20,9 +20,7 @@ export const Dashboard = () => (
       </Col>
 
       {process.env.NF_EQUITY_TOKEN_OFFERINGS_VISIBLE === "1" &&
-        (process.env.NF_ETO_LOAD_REAL_DATA
-        ? <EtoList />
-        : <EtoListDummies />)}
+        (process.env.NF_ETO_LOAD_REAL_DATA ? <EtoList /> : <EtoListDummies />)}
     </Row>
 
     {process.env.NF_USER_INFO_COMPONENT_ENABLED === "1" && <UserInfo />}

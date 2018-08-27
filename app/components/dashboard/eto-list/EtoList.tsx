@@ -10,17 +10,17 @@ import { Button } from "../../shared/Buttons";
 import { SectionHeader } from "../../shared/SectionHeader";
 
 interface IStateProps {
-  etos: TInvestorEtoData[]
+  etos: TInvestorEtoData[];
 }
 
 interface IDispatchProps {
-  startInvestmentFlow: (eto: TInvestorEtoData) => void
+  startInvestmentFlow: (eto: TInvestorEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps
+type IProps = IStateProps & IDispatchProps;
 
 // TODO: Invest button needs to go to details view later
-export const EtoListComponent: React.SFC<IProps> = ({etos, startInvestmentFlow}) => (
+export const EtoListComponent: React.SFC<IProps> = ({ etos, startInvestmentFlow }) => (
   <>
     <Col xs={12}>
       <SectionHeader>ETO Offerings</SectionHeader>
@@ -39,14 +39,14 @@ export const EtoListComponent: React.SFC<IProps> = ({etos, startInvestmentFlow})
 
 export const EtoList = compose<React.ComponentClass>(
   onEnterAction({
-    actionCreator: d => d(actions.dashboard.loadEtos())
+    actionCreator: d => d(actions.dashboard.loadEtos()),
   }),
   appConnect({
     stateToProps: state => ({
-      etos: state.dashboard.etos
+      etos: state.dashboard.etos,
     }),
     dispatchToProps: _d => ({
-      startInvestmentFlow: () => {}
-    })
-  })
-)(EtoListComponent)
+      startInvestmentFlow: () => {},
+    }),
+  }),
+)(EtoListComponent);

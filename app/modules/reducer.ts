@@ -52,5 +52,5 @@ export const appReducers = {
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
   txMonitor: txMonitorReducer,
-  dashboard: dashboardReducer
+  dashboard: dashboardReducer,
 };

@@ -3,7 +3,7 @@ import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
 export interface IDashBoardState {
-  etos: TInvestorEtoData[]
+  etos: TInvestorEtoData[];
 }
 
 export const dashboardInitialState: IDashBoardState = {
@@ -18,8 +18,8 @@ export const dashboardReducer: AppReducer<IDashBoardState> = (
     case "DASHBOARD_SET_ETOS":
       return {
         ...state,
-        etos: action.payload.etos
-      }
+        etos: action.payload.etos,
+      };
   }
 
   return state;

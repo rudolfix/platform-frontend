@@ -15,8 +15,7 @@ const ETO_PREVIEW_PATH = "/eto-previews/";
 
 @injectable()
 export class EtoApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {
-  }
+  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
 
   public async getEtos(): Promise<IHttpResponse<TPartialEtoSpecData>> {
     return await this.httpClient.get<TPartialEtoSpecData>({

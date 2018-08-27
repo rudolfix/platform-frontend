@@ -1,5 +1,5 @@
 import { createAction, createSimpleAction } from "../actionsUtils";
-import { IWalletStateData } from "./../wallet/reducer";
+import { IWalletStateData } from "../wallet/reducer";
 
 export const icbmWalletBalanceModalActions = {
   showIcbmWalletBalanceModal: () => createSimpleAction("ICBM_WALLET_BALANCE_MODAL_SHOW"),

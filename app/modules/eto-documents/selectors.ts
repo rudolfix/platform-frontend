@@ -1,5 +1,4 @@
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { TEtoDocumentTemplates } from "./../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoFiles, TEtoDocumentTemplates } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IEtoDocumentState } from "./reducer";
 
 export const selectIsTermSheetSubmitted = (state: IEtoDocumentState): boolean | undefined =>

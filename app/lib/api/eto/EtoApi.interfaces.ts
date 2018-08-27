@@ -44,8 +44,8 @@ export const EtoPitchType = YupTS.object({
   sellingProposition: YupTS.string().optional(),
   marketingApproach: YupTS.string().optional(),
   companyMission: YupTS.string().optional(),
-  targetMarketAndIndustry: YupTS.string().optional(),
-  keyCompetitors: YupTS.string().optional(),
+  targetSegment: YupTS.string().optional(),
+  competitors: YupTS.string().optional(),
   marketTraction: YupTS.string().optional(),
 });
 
@@ -58,7 +58,7 @@ export const EtoRiskAssessmentType = YupTS.object({
   riskLiquidityDescription: YupTS.string(),
   riskThirdPartyDescription: YupTS.string(),
   riskThirdPartySharesFinancing: YupTS.string(),
-  businessModel: YupTS.string(),
+  salesModel: YupTS.string(),
   riskMaxDescription: YupTS.string(),
 });
 

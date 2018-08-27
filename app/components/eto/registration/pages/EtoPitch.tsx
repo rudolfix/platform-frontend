@@ -78,14 +78,14 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.target-market-and-industry" />}
           placeholder="Describe"
-          name="targetMarketAndIndustry"
+          name="targetSegment"
         />
 
         <FormTextArea
           className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
           placeholder="Describe"
-          name="keyCompetitors"
+          name="competitors"
         />
 
         <FormTextArea
@@ -133,7 +133,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.business-model" />}
           placeholder="Describe"
-          name="businessModel"
+          name="salesModel"
         />
 
         <FormTextArea

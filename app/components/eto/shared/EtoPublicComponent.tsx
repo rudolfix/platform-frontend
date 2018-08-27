@@ -791,18 +791,18 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <p>{companyData.keyProductPriorities}</p>
                 </AccordionElement>
               )}
-              {companyData.targetMarketAndIndustry && (
+              {companyData.targetSegment && (
                 <AccordionElement
                   title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
                 >
-                  <p>{companyData.targetMarketAndIndustry}</p>
+                  <p>{companyData.targetSegment}</p>
                 </AccordionElement>
               )}
-              {companyData.keyCompetitors && (
+              {companyData.competitors && (
                 <AccordionElement
                   title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
                 >
-                  <p>{companyData.keyCompetitors}</p>
+                  <p>{companyData.competitors}</p>
                 </AccordionElement>
               )}
               {companyData.marketTraction && (

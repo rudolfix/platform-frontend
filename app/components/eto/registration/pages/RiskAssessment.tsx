@@ -67,7 +67,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           className="my-2"
           label={<FormattedMessage id="eto.form.risk-assessment.business-model" />}
           placeholder="Describe"
-          name="businessModel"
+          name="salesModel"
         />
 
         <FormTextArea

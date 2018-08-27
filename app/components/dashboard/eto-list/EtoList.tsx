@@ -45,8 +45,8 @@ export const EtoList = compose<React.ComponentClass>(
     stateToProps: state => ({
       etos: state.dashboard.etos,
     }),
-    dispatchToProps: _d => ({
-      startInvestmentFlow: () => {},
+    dispatchToProps: d => ({
+      startInvestmentFlow: (eto: TInvestorEtoData) => d(actions.investmentFlow.investmentStart(eto)),
     }),
   }),
 )(EtoListComponent);

@@ -12,6 +12,7 @@ import { gasApiSagas } from "./gas/sagas";
 import { icbmWalletGetDataSagas } from "./icbmWalletBalanceModal/sagas";
 import { immutableFileSagas } from "./immutableFile/sagas";
 import { initSagas } from "./init/sagas";
+import { investmentFlowSagas } from "./investmentFlow/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { settingsSagas } from "./settings/sagas";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
@@ -50,6 +51,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(etoDocumentsSagas),
     effects.fork(txMonitorSagas),
     effects.fork(tokenPriceSagas),
+    effects.fork(investmentFlowSagas),
   ]);
 }
 

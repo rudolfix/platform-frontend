@@ -1,5 +1,5 @@
 import { TInvestorEtoData } from "../../lib/api/eto/EtoApi.interfaces";
-import { createAction } from "../actionsUtils";
+import { createAction, createSimpleAction } from "../actionsUtils";
 import { EInvestmentErrorState, EInvestmentType } from "./reducer";
 
 export const investmentFlowActions = {
@@ -13,4 +13,8 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE", { value }),
   setEto: (eto: TInvestorEtoData) =>
     createAction("INVESTMENT_FLOW_SET_ETO", { eto }),
+  investmentStart: (eto: TInvestorEtoData) =>
+    createAction("INVESTMENT_FLOW_START", { eto }),
+  investmentReset: () =>
+    createSimpleAction("INVESTMENT_FLOW_RESET"),
 };

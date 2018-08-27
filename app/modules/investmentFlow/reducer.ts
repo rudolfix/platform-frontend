@@ -35,6 +35,10 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
   action,
 ): DeepReadonly<IInvestmentFlowState> => {
   switch (action.type) {
+    case "INVESTMENT_FLOW_RESET":
+      return {
+        ...investmentFlowInitialState
+      }
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
         ...state,

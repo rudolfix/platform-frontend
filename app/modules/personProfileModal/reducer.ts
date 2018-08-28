@@ -1,4 +1,4 @@
-import { ISocialProfile } from "../../components/shared/SocialProfilesEditor";
+import { IEtoSocialProfile } from "../../components/shared/SocialProfilesList";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
@@ -9,10 +9,10 @@ export interface IPersonProfileModalState {
 
 export interface IPersonProfileModal {
   image: string;
-  name: string | React.ReactNode;
-  role: string | React.ReactNode;
+  name: string;
+  role: string;
   description: string | React.ReactNode;
-  socialChannels: ISocialProfile[];
+  socialChannels: IEtoSocialProfile[];
   website: string;
 }
 

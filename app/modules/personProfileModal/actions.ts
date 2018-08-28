@@ -1,14 +1,14 @@
-import { ISocialProfile } from "../../components/shared/SocialProfilesEditor";
+import { IEtoSocialProfile } from "../../components/shared/SocialProfilesList";
 import { TTranslatedString } from "../../types";
 import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const personProfileModalActions = {
   showPersonProfileModal: (
-    name: TTranslatedString,
-    role: TTranslatedString,
+    name: string,
+    role: string,
     description: TTranslatedString,
     image: string,
-    socialChannels: ISocialProfile[],
+    socialChannels: IEtoSocialProfile[],
     website: string,
   ) =>
     createAction("PERSON_PROFILE_MODAL_SHOW", {

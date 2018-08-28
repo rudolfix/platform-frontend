@@ -533,7 +533,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <Panel>
               <PeopleSwiperWidget
                 {...swiperSettings}
-                people={companyData.founders.members as IPerson[]}
+                people={companyData.founders && companyData.founders.members}
                 navigation={{
                   nextEl: "people-swiper-founders-next",
                   prevEl: "people-swiper-founders-prev",

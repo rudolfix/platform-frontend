@@ -70,17 +70,18 @@ export const SocialProfilesList: React.SFC<IProps> = ({
 }) => {
   return (
     <div className={cn(styles.socialProfilesList, layoutIconSize, layoutIconsPosition)}>
-      {profiles.map(
-        ({ type, url }) =>
-          url && (
-            <div className={styles.profile} key={type}>
-              <a href={url} target="_blank" title={url}>
-                <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
-              </a>
-              <span className={styles.label}>{type}</span>
-            </div>
-          ),
-      )}
+      {profiles &&
+        profiles.map(
+          ({ type, url }) =>
+            url && (
+              <div className={styles.profile} key={type}>
+                <a href={url} target="_blank" title={url}>
+                  <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+                </a>
+                <span className={styles.label}>{type}</span>
+              </div>
+            ),
+        )}
     </div>
   );
 };

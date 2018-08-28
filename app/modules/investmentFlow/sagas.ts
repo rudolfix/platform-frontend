@@ -19,6 +19,7 @@ function* calculateValueFromEth({getState}: TGlobalDependencies, action: TAction
 function* start(_: TGlobalDependencies, action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return
   yield put(actions.investmentFlow.investmentReset())
+  yield put(actions.gas.gasApiEnsureLoading())
   yield put(actions.investmentFlow.setEto(action.payload.eto))
 }
 

@@ -13,13 +13,11 @@ import { InfoAlert } from "../../../shared/Alerts";
 import { Button } from "../../../shared/Buttons";
 import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
-import { Money } from "../../../shared/Money";
 import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
-import { IWalletState, IWalletStateData } from "../../../../modules/wallet/reducer";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
 import { formatMoney } from "../../../shared/Money.utils";
 import * as styles from "./Investment.module.scss";
@@ -77,7 +75,14 @@ function createWallets (state: IAppState): IWalletSelectionData[] {
       icon: euroIcon
     },
   ];
+}
 
+function formatEur(val? : string): string | undefined {
+  return val && formatMoney(val, 0, 2)
+}
+
+function formatEth(val? : string): string | undefined {
+  return val && formatMoney(val, 0, 4)
 }
 
 export const InvestmentSelectionComponent = injectIntlHelpers(
@@ -114,13 +119,13 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
           </Row>
           <Row>
             <Col>
-              <FormFieldRaw prefix="€" value={euroValue && formatMoney(euroValue, 0, 2)} onChange={props.setEuroValue}/>
+              <FormFieldRaw prefix="€" value={formatEur(euroValue)} onChange={props.setEuroValue}/>
             </Col>
             <Col sm="1">
               <div className={styles.equals}>≈</div>
             </Col>
             <Col>
-              <FormFieldRaw prefix="ETH" value={ethValue && formatMoney(ethValue, 0, 4)} onChange={props.setEthValue}/>
+              <FormFieldRaw prefix="ETH" value={formatEth(ethValue)} onChange={props.setEthValue}/>
               <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
                 <FormattedMessage id="investment-flow.invest-entire-balance" />
               </a>
@@ -156,15 +161,11 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             <Col className={styles.summary}>
               <div>
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />
-                : <Money value={gasCostEuro} currency="eur" theme="t-orange"/>
-                <span> ≈ </span>
-                <Money value={gasPrice} currency="eth" theme="t-orange" />
+                : <span className="orange">{formatEur(gasCostEuro)}€ ≈ ETH {formatEth(gasPrice)}</span>
               </div>
               <div>
                 <FormattedMessage id="investment-flow.total" />
-                : <Money value={totalCostEur} currency="eur" theme="t-orange"/>
-                <span> ≈ </span>
-                <Money value={totalCostEth} currency="eth" theme="t-orange" />
+                : <span className="orange">{formatEur(totalCostEur)}€ ≈ ETH {formatEth(totalCostEth)}</span>
               </div>
             </Col>
           </Row>

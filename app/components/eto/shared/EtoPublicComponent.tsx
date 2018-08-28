@@ -95,13 +95,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
     !disableTwitterFeed;
   const isYouTubeVideoAvailable = !!(
     companyVideo &&
-    companyVideo.url &&
-    companyVideo.url.length > 0
+    companyVideo.url
   );
   const isSlideShareAvailable = !!(
     companySlideshare &&
-    companySlideshare.url &&
-    companySlideshare.url.length > 0
+    companySlideshare.url
   );
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels

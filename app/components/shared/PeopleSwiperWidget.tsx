@@ -4,6 +4,7 @@ import Swiper from "react-id-swiper/lib/custom";
 
 import { ButtonIcon } from "./Buttons";
 import { SlidePerson, TSlidePersonLayout } from "./SlidePerson";
+import { IEtoSocialProfile } from "./SocialProfilesList";
 
 import * as prevIcon from "../../assets/img/inline_icons/arrow_left.svg";
 import * as nextIcon from "../../assets/img/inline_icons/arrow_right.svg";
@@ -15,7 +16,7 @@ export interface IPerson {
   description: string;
   layout?: TSlidePersonLayout;
   role?: string;
-  socialChannels: any;
+  socialChannels: IEtoSocialProfile[];
 }
 
 interface IProps {

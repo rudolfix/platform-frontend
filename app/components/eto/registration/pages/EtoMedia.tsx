@@ -44,7 +44,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       </p>
       <Row>
         <Col className="offset-1" xs={10}>
-          <FormField name="companyPitchDeck.url" placeholder="url" />
+          <FormField name="companyVideo.url" placeholder="url" />
         </Col>
       </Row>
 

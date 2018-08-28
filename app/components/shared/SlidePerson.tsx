@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { TTranslatedString } from "../../types";
 import { ISrcSet, ResponsiveImage } from "./ResponsiveImage";
-import { SocialProfilesList } from "./SocialProfilesList";
+import { IEtoSocialProfile, SocialProfilesList } from "./SocialProfilesList";
 
 import * as styles from "./SlidePerson.module.scss";
 
@@ -11,7 +11,7 @@ export type TSlidePersonLayout = "horizontal" | "vertical";
 interface IProps {
   srcSet: ISrcSet;
   name: string;
-  socialChannels: any;
+  socialChannels: IEtoSocialProfile[];
   description: TTranslatedString;
   role?: TTranslatedString;
   layout?: TSlidePersonLayout;

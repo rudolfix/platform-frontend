@@ -5,7 +5,7 @@ import { DepositFunds } from "./DepositFunds";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 import * as icon from "../../../../assets/img/eth_icon.svg";
-import { selectEthereumAddress } from "../../../../modules/web3/selectors";
+import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 
 interface IProps {
@@ -45,7 +45,7 @@ export const DepositEthComponent: React.SFC<IProps & IStateProps> = ({ path, eth
 export const DepositEth = compose(
   appConnect<IStateProps>({
     stateToProps: s => ({
-      ethAddress: selectEthereumAddress(s.web3),
+      ethAddress: selectEthereumAddressWithChecksum(s.web3),
     }),
   }),
 )(DepositEthComponent);

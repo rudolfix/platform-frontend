@@ -69,7 +69,7 @@ jobs:
           keys:
           - v11-deps-{{ checksum "package.json" }}
           - v11-deps-
-      - run: yarn prepare
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
 
       - run: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
 
@@ -134,4 +134,4 @@ workflows:
          requires:
            - install
 
-            
+

@@ -8,7 +8,7 @@ import { neuTakeEvery } from "../sagas";
 function* calculateValueFromEth({getState}: TGlobalDependencies, action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE") return;
   const s = getState()
-  const eth = action.payload.value
+  const eth = action.payload.value || "0"
   const tp = s.tokenPrice.tokenPriceData
   if (tp) {
     const value = multiplyBigNumbers([eth, tp.etherPriceEur])

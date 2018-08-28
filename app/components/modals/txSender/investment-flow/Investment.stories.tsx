@@ -7,6 +7,7 @@ import { InvestmentSelectionComponent } from "./Investment";
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
+import { GasModelShape } from "../../../../lib/api/GasApi";
 
 const wallets = [
   {
@@ -46,7 +47,8 @@ const dummyProps = {
   etherPriceEur: "100",
   errorState: "fufu",
   investmentType: EInvestmentType.InvestmentWallet,
-  gasPrice: "10000000"
+  // tslint:disable-next-line:no-object-literal-type-assertion
+  gasPrice: {standard: "10000000"} as GasModelShape
 }
 
 storiesOf("InvestmentSelection", module).add("default", () =>

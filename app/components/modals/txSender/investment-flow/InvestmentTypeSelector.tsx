@@ -36,7 +36,7 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
         {wallets.map(w => {
           const checked = currentType === w.type;
           return (
-            <Col sm="6" key={w.type}>
+            <Col md="6" key={w.type}>
               <FormGroup>
                 <label className={cn(styles.wrapper, checked && styles.checked)}>
                   <input

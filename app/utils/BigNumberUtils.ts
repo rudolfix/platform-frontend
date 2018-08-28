@@ -26,4 +26,4 @@ export const multiplyBigNumbers = (numbers: NumberRepresentation[]): string =>
  * Divide any number representation as BigNumbers
  */
 export const divideBigNumbers = (dividend: NumberRepresentation, divisor: NumberRepresentation): string =>
-  new BigNumber(dividend).div(divisor).toString();
+  (new BigNumber(dividend)).div(divisor).toString();

@@ -25,6 +25,7 @@ export const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
   value,
   onChange,
   checked,
+  disabled,
   "data-test-id": dataTestId,
 }) => {
   return (
@@ -37,6 +38,7 @@ export const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
         value={value}
         checked={checked}
         data-test-id={dataTestId}
+        disabled={disabled}
       />
       <div className={styles.indicator} />
       <div className={styles.label}>{label}</div>

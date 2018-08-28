@@ -37,7 +37,7 @@ export const EtoPitchType = YupTS.object({
   problemSolved: YupTS.string().optional(),
   productVision: YupTS.string().optional(),
   inspiration: YupTS.string().optional(),
-  keyProductPriorities: YupTS.string().optional(),
+  roadmap: YupTS.string().optional(),
   useOfCapital: YupTS.string().optional(),
   useOfCapitalList: YupTS.array(EtoCapitalListType.optional()).optional(),
   customerGroup: YupTS.string().optional(),
@@ -45,8 +45,10 @@ export const EtoPitchType = YupTS.object({
   marketingApproach: YupTS.string().optional(),
   companyMission: YupTS.string().optional(),
   targetMarketAndIndustry: YupTS.string().optional(),
+  keyBenefitsForInvestors: YupTS.string().optional(),
   keyCompetitors: YupTS.string().optional(),
   marketTraction: YupTS.string().optional(),
+  businessModel: YupTS.string().optional(),
 });
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoPitchType>;
@@ -58,7 +60,7 @@ export const EtoRiskAssessmentType = YupTS.object({
   riskLiquidityDescription: YupTS.string(),
   riskThirdPartyDescription: YupTS.string(),
   riskThirdPartySharesFinancing: YupTS.string(),
-  businessModel: YupTS.string(),
+  riskBusinessModelDescription: YupTS.string(),
   riskMaxDescription: YupTS.string(),
 });
 
@@ -197,7 +199,7 @@ export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 export const EtoInvestmentTermsType = YupTS.object({
   equityTokensPerShare: YupTS.number().optional(),
   shareNominalValueEur: YupTS.number().optional(),
-  fullyDilutedPreMoneyValuationEur: YupTS.number().optional(),
+  preMoneyValuationEur: YupTS.number().optional(),
   existingCompanyShares: YupTS.number().optional(),
   authorizedCapitalShares: YupTS.number().optional(),
   newSharesToIssue: YupTS.number().optional(),

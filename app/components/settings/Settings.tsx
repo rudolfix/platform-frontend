@@ -3,11 +3,11 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
-import { selectKycRequestStatus } from "../../modules/kyc/selectors";
+import { selectKycRequestStatus, selectKycRequestType } from "../../modules/kyc/selectors";
 import { selectIcbmWalletConnected } from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -24,21 +24,21 @@ import { SettingsWidgets } from "./SettingsWidgets";
 interface IStateProps {
   isLightWallet: boolean;
   isIcbmWalletConnected: boolean;
-  userType: TUserType | undefined;
-  requestKycStatus: TRequestStatus | undefined;
+  userType?: TUserType;
+  kycRequestType?: TKycRequestType;
+  kycRequestStatus?: TRequestStatus;
 }
 
 export const SettingsComponent: React.SFC<IStateProps> = ({
   isLightWallet,
   isIcbmWalletConnected,
   userType,
-  requestKycStatus,
+  kycRequestType,
+  kycRequestStatus,
 }) => {
-  const isPersonalDataProcessed =
-    requestKycStatus === "Pending" ||
-    requestKycStatus === "Accepted" ||
-    requestKycStatus === "Draft";
+  const isPersonalDataProcessed = kycRequestStatus !== "Draft";
   const isUserInvestor = userType === "investor";
+  const isIndividual = kycRequestType === "individual";
 
   return (
     <LayoutAuthorized>
@@ -58,7 +58,7 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
           <YourEthereumAddressWidget />
         </Col>
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
-          isIcbmWalletConnected &&
+          !isIcbmWalletConnected &&
           isUserInvestor && (
             <Col lg={4} xs={12}>
               <CheckYourICBMWalletWidget />
@@ -66,6 +66,7 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
           )}
 
         {isUserInvestor &&
+          isIndividual &&
           isPersonalDataProcessed && (
             <Col lg={4} xs={12}>
               <PersonalAccountDetails />
@@ -96,7 +97,8 @@ export const Settings = compose<React.SFC>(
     stateToProps: s => ({
       isLightWallet: selectIsLightWallet(s.web3),
       userType: selectUserType(s.auth),
-      requestKycStatus: selectKycRequestStatus(s.kyc),
+      kycRequestStatus: selectKycRequestStatus(s.kyc),
+      kycRequestType: selectKycRequestType(s.kyc),
       isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
     }),
   }),

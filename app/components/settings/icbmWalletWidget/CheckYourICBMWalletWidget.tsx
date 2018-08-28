@@ -12,7 +12,7 @@ import { Panel } from "../../shared/Panel";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import { selectIcbmMigrationWallet } from "../../../modules/icbmWalletBalanceModal/selectors";
-import { IWalletStateData } from "../../../modules/wallet/reducer";
+import { ILockedWallet } from "../../../modules/wallet/reducer";
 import * as styles from "./CheckYourICBMWalletWidget.module.scss";
 
 interface IDispatchProps {
@@ -20,7 +20,7 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  lockedWalletData?: IWalletStateData;
+  lockedWalletData?: ILockedWallet;
 }
 
 class FormContent extends React.Component {

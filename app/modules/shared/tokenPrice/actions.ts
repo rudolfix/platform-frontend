@@ -1,4 +1,4 @@
-import { createAction, createSimpleAction } from "./../../actionsUtils";
+import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ITokenPriceStateData } from "./reducer";
 
 export const tokenPriceActions = {

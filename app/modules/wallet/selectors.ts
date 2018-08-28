@@ -1,7 +1,6 @@
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
-import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { selectNeuPriceEur } from "./../shared/tokenPrice/selectors";
+import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
 import { IWalletState } from "./reducer";
 
 /**
@@ -38,7 +37,10 @@ export const selectLiquidEuroTotalAmount = (state: IAppState) =>
  * Locked Wallet Assets
  */
 export const selectLockedEtherBalance = (state: IWalletState) =>
-  (state.data && state.data.etherTokenLockedBalance) || "0";
+  (state.data &&
+    state.data.etherTokenLockedWallet &&
+    state.data.etherTokenLockedWallet.LockedBalance) ||
+  "0";
 
 export const selectLockedEtherBalanceEuroAmount = (state: IAppState) =>
   multiplyBigNumbers([
@@ -47,13 +49,17 @@ export const selectLockedEtherBalanceEuroAmount = (state: IAppState) =>
   ]);
 
 export const selectLockedEuroTokenBalance = (state: IWalletState) =>
-  (state.data && state.data.euroTokenLockedBalance) || "0";
+  (state.data &&
+    state.data.euroTokenLockedWallet &&
+    state.data.euroTokenLockedWallet.LockedBalance) ||
+  "0";
 
 export const selectLockedEuroTotalAmount = (state: IAppState) =>
   addBigNumbers([
     selectLockedEtherBalanceEuroAmount(state),
     selectLockedEuroTokenBalance(state.wallet),
   ]);
+
 export const selectLockedWalletHasFunds = (state: IAppState): boolean =>
   selectLockedEuroTotalAmount(state) !== "0";
 
@@ -62,8 +68,8 @@ export const selectLockedWalletHasFunds = (state: IAppState): boolean =>
  */
 export const selectICBMLockedEtherBalance = (state: IWalletState) =>
   (state.data &&
-    state.data.etherTokenLockedWallet &&
-    state.data.etherTokenLockedWallet.ICBMLockedBalance) ||
+    state.data.etherTokenICBMLockedWallet &&
+    state.data.etherTokenICBMLockedWallet.LockedBalance) ||
   "0";
 
 export const selectICBMLockedEtherBalanceEuroAmount = (state: IAppState) =>
@@ -74,8 +80,8 @@ export const selectICBMLockedEtherBalanceEuroAmount = (state: IAppState) =>
 
 export const selectICBMLockedEuroTokenBalance = (state: IWalletState) =>
   (state.data &&
-    state.data.euroTokenLockedWallet &&
-    state.data.euroTokenLockedWallet.ICBMLockedBalance) ||
+    state.data.euroTokenICBMLockedWallet &&
+    state.data.euroTokenICBMLockedWallet.LockedBalance) ||
   "0";
 
 export const selectICBMLockedEuroTotalAmount = (state: IAppState) =>
@@ -83,6 +89,7 @@ export const selectICBMLockedEuroTotalAmount = (state: IAppState) =>
     selectICBMLockedEtherBalanceEuroAmount(state),
     selectICBMLockedEuroTokenBalance(state.wallet),
   ]);
+
 export const selectICBMLockedWalletHasFunds = (state: IAppState): boolean =>
   selectICBMLockedEuroTotalAmount(state) !== "0";
 
@@ -119,22 +126,22 @@ export const selectIsLoaded = (state: IWalletState): boolean => !state.loading;
 
 export const selectEtherNeumarksDue = (state: IWalletState): string =>
   (state.data &&
-    state.data.etherTokenLockedWallet &&
-    state.data.etherTokenLockedWallet.neumarksDue) ||
+    state.data.etherTokenICBMLockedWallet &&
+    state.data.etherTokenICBMLockedWallet.neumarksDue) ||
   "0";
 
 export const selectEurNeumarksDue = (state: IWalletState): string =>
   (state.data &&
-    state.data.euroTokenLockedWallet &&
-    state.data.euroTokenLockedWallet.neumarksDue) ||
+    state.data.euroTokenICBMLockedWallet &&
+    state.data.euroTokenICBMLockedWallet.neumarksDue) ||
   "0";
 
 export const selectIcbmWalletConnected = (state: IWalletState): boolean =>
   !!(
     (state.data &&
-      state.data.etherTokenLockedWallet &&
-      state.data.etherTokenLockedWallet.unlockDate !== "0") ||
+      state.data.etherTokenICBMLockedWallet &&
+      state.data.etherTokenICBMLockedWallet.unlockDate !== "0") ||
     (state.data &&
-      state.data.euroTokenLockedWallet &&
-      state.data.euroTokenLockedWallet.unlockDate !== "0")
+      state.data.euroTokenICBMLockedWallet &&
+      state.data.euroTokenICBMLockedWallet.unlockDate !== "0")
   );

@@ -6,7 +6,7 @@ import { compose } from "redux";
 
 import {
   EtoCompanyInformationType,
-  EtoProductVisionType,
+  EtoPitchType,
   TPartialCompanyEtoData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -36,7 +36,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
     <EtoFormBase
       title={<FormattedMessage id="eto.form-progress-widget.product-vision" />}
-      validator={EtoProductVisionType.toYup()}
+      validator={EtoPitchType.toYup()}
     >
       <Section>
         <FormTextArea
@@ -124,16 +124,23 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+          label={<FormattedMessage id="eto.form.product-vision.roadmap" />}
           placeholder="Describe"
-          name="marketingApproach"
+          name="roadmap"
         />
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+          label={<FormattedMessage id="eto.form.product-vision.business-model" />}
           placeholder="Describe"
-          name="keyProductPriorities"
+          name="businessModel"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+          placeholder="Describe"
+          name="marketingApproach"
         />
       </Section>
       <Col>
@@ -161,11 +168,11 @@ const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
-export const EtoRegistrationProductVisionComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationPitchComponent: React.SFC<IProps> = props => (
   <EtoEnhancedForm {...props} />
 );
 
-export const EtoRegistrationProductVision = compose<React.SFC>(
+export const EtoRegistrationPitch = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -186,4 +193,4 @@ export const EtoRegistrationProductVision = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-)(EtoRegistrationProductVisionComponent);
+)(EtoRegistrationPitchComponent);

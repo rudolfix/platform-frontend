@@ -35,8 +35,8 @@ interface IOwnProps {
 
 interface IDispatchProps {
   showPersonModal: (
-    name: TTranslatedString,
-    role: TTranslatedString,
+    name: string,
+    role: string,
     description: TTranslatedString,
     image: string,
     socialChannels: IEtoSocialProfile[],

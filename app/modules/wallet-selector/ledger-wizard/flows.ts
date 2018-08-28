@@ -69,7 +69,7 @@ export const ledgerWizardFlows = {
 
       const balancesNEU = await Promise.all(
         derivationPathsArray.map(dp =>
-          contractsService.neumarkContract.balanceOf(dp.address).then(bn => bn.toString()),
+          contractsService.neumark.balanceOf(dp.address).then(bn => bn.toString()),
         ),
       );
 

@@ -8,7 +8,7 @@ import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 
 import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
-import { ChartPie } from "../../shared/charts/ChartPie";
+import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
@@ -24,13 +24,13 @@ import { EtoTimeline } from "../overview/EtoTimeline";
 import { Cover } from "../publicView/Cover";
 import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
 
-import * as icon_link from "../../../assets/img/inline_icons/icon_link.svg";
+import * as icon_link from "../../../assets/img/inline_icons/social_link.svg";
 import * as token_icon from "../../../assets/img/token_icon.svg";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
-const CHART_COLORS = ["#394651", "#c4c5c6", "#2fb194", "#50e3c2", "#4a90e2", "#0b0e11"];
+const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#394652", "#c4c5c6"];
 
 const swiperSettings = {
   slidesPerView: 5,
@@ -75,13 +75,13 @@ export const CURRENCIES: ICurrencies = {
 };
 
 export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
-  const fullyDilutedPreMoneyValuationEur = etoData.fullyDilutedPreMoneyValuationEur || 1;
+  const preMoneyValuationEur = etoData.preMoneyValuationEur || 1;
   const existingCompanyShares = etoData.existingCompanyShares || 1;
   const newSharesToIssue = etoData.newSharesToIssue || 1;
   const equityTokensPerShare = etoData.equityTokensPerShare || 1;
   const minimumNewSharesToIssue = etoData.minimumNewSharesToIssue || 1;
 
-  const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
+  const computedNewSharePrice = preMoneyValuationEur / existingCompanyShares;
   const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
   const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
   const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
@@ -104,7 +104,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       name: l.title,
       icon: <InlineIcon svgIcon={icon_link} />,
     })),
-    name: <FormattedMessage id="eto.public-view.documents.marketing-documents" />,
+    name: (
+      <FormattedMessage
+        id="eto.public-view.documents.more-information-about-brand"
+        values={{
+          brandName: companyData.brandName,
+        }}
+      />
+    ),
   };
 
   const documents = marketingLinks ? [marketingLinks] : [];
@@ -264,36 +271,12 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                       </span>
                     </div>
                   )}
-                </div>
-              </Col>
-
-              <Col>
-                {companyData.shareholders && (
-                  <ChartPie
-                    className="mb-3"
-                    data={{
-                      datasets: [
-                        {
-                          data: companyData.shareholders.map(d => d && d.shares),
-                          /* tslint:disable:no-unused-variable */
-                          backgroundColor: companyData.shareholders.map(
-                            (_, i: number) => CHART_COLORS[i],
-                          ),
-                        },
-                      ],
-                      labels: (companyData.shareholders || []).map(d => d && d.fullName),
-                    }}
-                  />
-                )}
-                <div className={styles.group}>
-                  {etoData.fullyDilutedPreMoneyValuationEur && (
+                  {etoData.preMoneyValuationEur && (
                     <div className={styles.entry}>
                       <span className={styles.label}>
                         <FormattedMessage id="eto.public-view.legal-information.pre-money-valuation" />
                       </span>
-                      <span className={styles.value}>
-                        {`€ ${etoData.fullyDilutedPreMoneyValuationEur}`}
-                      </span>
+                      <span className={styles.value}>{`€ ${etoData.preMoneyValuationEur}`}</span>
                     </div>
                   )}
                   {etoData.existingCompanyShares && (
@@ -321,6 +304,26 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                     </div>
                   )}
                 </div>
+              </Col>
+
+              <Col>
+                {companyData.shareholders && (
+                  <ChartDoughnut
+                    className="mb-3"
+                    data={{
+                      datasets: [
+                        {
+                          data: companyData.shareholders.map(d => d && d.shares),
+                          /* tslint:disable:no-unused-variable */
+                          backgroundColor: companyData.shareholders.map(
+                            (_, i: number) => CHART_COLORS[i],
+                          ),
+                        },
+                      ],
+                      labels: (companyData.shareholders || []).map(d => d && d.fullName),
+                    }}
+                  />
+                )}
               </Col>
             </Row>
           </Panel>
@@ -415,10 +418,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   </span>
                   <span className={styles.value}>
                     €{" "}
-                    {etoData.fullyDilutedPreMoneyValuationEur && etoData.existingCompanyShares
-                      ? (
-                          etoData.fullyDilutedPreMoneyValuationEur / etoData.existingCompanyShares
-                        ).toPrecision(4)
+                    {etoData.preMoneyValuationEur && etoData.existingCompanyShares
+                      ? (etoData.preMoneyValuationEur / etoData.existingCompanyShares).toPrecision(
+                          4,
+                        )
                       : DEFAULT_PLACEHOLDER}
                   </span>
                 </div>
@@ -740,8 +743,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
                     {companyData.useOfCapitalList && (
                       <Col md={12} lg={6}>
-                        <ChartPie
+                        <ChartDoughnut
                           className="pr-5 pb-4"
+                          layout="vertical"
                           data={{
                             datasets: [
                               {
@@ -771,18 +775,37 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <p>{companyData.marketingApproach}</p>
                 </AccordionElement>
               )}
-              {companyData.salesModel && (
+              {companyData.companyMission && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.sales-model" />}
+                  title={<FormattedMessage id="eto.form.product-vision.company-mission" />}
                 >
-                  <p>{companyData.salesModel}</p>
+                  <p>{companyData.companyMission}</p>
                 </AccordionElement>
               )}
-              {companyData.keyProductPriorities && (
+              {companyData.roadmap && (
+                <AccordionElement title={<FormattedMessage id="eto.form.product-vision.roadmap" />}>
+                  <p>{companyData.roadmap}</p>
+                </AccordionElement>
+              )}
+              {companyData.targetMarketAndIndustry && (
                 <AccordionElement
-                  title={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+                  title={<FormattedMessage id="eto.form.product-vision.target-segment" />}
                 >
-                  <p>{companyData.keyProductPriorities}</p>
+                  <p>{companyData.targetMarketAndIndustry}</p>
+                </AccordionElement>
+              )}
+              {companyData.keyCompetitors && (
+                <AccordionElement
+                  title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
+                >
+                  <p>{companyData.keyCompetitors}</p>
+                </AccordionElement>
+              )}
+              {companyData.marketTraction && (
+                <AccordionElement
+                  title={<FormattedMessage id="eto.form.product-vision.market-traction" />}
+                >
+                  <p>{companyData.marketTraction}</p>
                 </AccordionElement>
               )}
             </Accordion>

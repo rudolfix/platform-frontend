@@ -44,6 +44,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           <FormCheckbox
             name="riskNoThirdPartyDependency"
             label={<FormattedMessage id="eto.form.risk-assessment.no-third-parties" />}
+            disabled={true}
           />
         </div>
 
@@ -65,9 +66,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.risk-assessment.changing-agreement-description" />}
+          label={<FormattedMessage id="eto.form.risk-assessment.business-model" />}
           placeholder="Describe"
-          name="riskChangingAgreementDescription"
+          name="riskBusinessModelDescription"
         />
 
         <FormTextArea
@@ -81,6 +82,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           <FormCheckbox
             name="riskNotRegulatedBusiness"
             label={<FormattedMessage id="eto.form.risk-assessment.no-regulation" />}
+            disabled={true}
           />
         </div>
 
@@ -88,6 +90,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           <FormCheckbox
             name="riskNoLoansExist"
             label={<FormattedMessage id="eto.form.risk-assessment.no-loans" />}
+            disabled={true}
           />
         </div>
       </Section>

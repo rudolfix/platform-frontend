@@ -35,13 +35,13 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
 
   render(): React.ReactNode {
     const { stateValues } = this.props;
-    const fullyDilutedPreMoneyValuationEur = stateValues.fullyDilutedPreMoneyValuationEur || 1;
+    const preMoneyValuationEur = stateValues.preMoneyValuationEur || 1;
     const existingCompanyShares = stateValues.existingCompanyShares || 1;
     const newSharesToIssue = stateValues.newSharesToIssue || 1;
     const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
     const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 0;
 
-    const computedNewSharePrice = fullyDilutedPreMoneyValuationEur / existingCompanyShares;
+    const computedNewSharePrice = preMoneyValuationEur / existingCompanyShares;
     const computedMaxNumberOfTokens = newSharesToIssue * equityTokensPerShare;
     const computedMinNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
     const computedMaxCapPercent = (newSharesToIssue / existingCompanyShares) * 100;
@@ -76,7 +76,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           }
           placeholder=" "
           prefix="€"
-          name="fullyDilutedPreMoneyValuationEur"
+          name="preMoneyValuationEur"
           type="number"
           min="1"
         />
@@ -134,7 +134,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
             prefix="€"
             name="newSharePrice"
-            value={formatMoney(`${computedNewSharePrice}`, 4, 4)}
+            value={formatMoney(`${computedNewSharePrice}`, 1, 4)}
             disabled
           />
           <FormField
@@ -142,7 +142,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             name="equityTokenPrice"
             prefix="€"
             placeholder="read only"
-            value={formatMoney(`${computedTokenPrice}`, 4, 4)}
+            value={formatMoney(`${computedTokenPrice}`, 1, 8)}
             disabled
           />
           <Row>
@@ -195,7 +195,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
                 }
                 prefix="%"
                 name="minSharesGenerated"
-                value={computedMinCapPercent}
+                value={computedMinCapPercent.toFixed(3)}
                 disabled
               />
             </Col>
@@ -206,7 +206,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
                 }
                 prefix="%"
                 name="maxSharesGenerated"
-                value={computedMaxCapPercent}
+                value={computedMaxCapPercent.toFixed(3)}
                 disabled
               />
             </Col>

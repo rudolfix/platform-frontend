@@ -115,6 +115,10 @@ export const EtoVotingRights = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
+        data.liquidationPreferenceMultiplier = parseFloat(
+          `${data.liquidationPreferenceMultiplier}`,
+        ); // Changes option's string value to number so it meets swagger requirements
+
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},

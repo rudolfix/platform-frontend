@@ -6,7 +6,7 @@ import { compose } from "redux";
 
 import {
   EtoCompanyInformationType,
-  EtoProductVisionType,
+  EtoPitchType,
   TPartialCompanyEtoData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -34,13 +34,23 @@ const distributionSuggestions = ["Development", "Other"];
 
 const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
-    <EtoFormBase title="Product Vision" validator={EtoProductVisionType.toYup()}>
+    <EtoFormBase
+      title={<FormattedMessage id="eto.form-progress-widget.product-vision" />}
+      validator={EtoPitchType.toYup()}
+    >
       <Section>
         <FormTextArea
           className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.inspiration" />}
           placeholder="Describe"
           name="inspiration"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.company-mission" />}
+          placeholder="Describe"
+          name="companyMission"
         />
 
         <FormTextArea
@@ -66,9 +76,30 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.sales-model" />}
+          label={<FormattedMessage id="eto.form.product-vision.target-market-and-industry" />}
           placeholder="Describe"
-          name="salesModel"
+          name="targetMarketAndIndustry"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
+          placeholder="Describe"
+          name="keyCompetitors"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
+          placeholder="Describe"
+          name="sellingProposition"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.key-benefits-for-investors" />}
+          placeholder="Describe"
+          name="keyBenefitsForInvestors"
         />
 
         <FormCategoryDistribution
@@ -86,24 +117,30 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.market-traction" />}
+          placeholder="Describe"
+          name="marketTraction"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.roadmap" />}
+          placeholder="Describe"
+          name="roadmap"
+        />
+
+        <FormTextArea
+          className="my-2"
+          label={<FormattedMessage id="eto.form.product-vision.business-model" />}
+          placeholder="Describe"
+          name="businessModel"
+        />
+
+        <FormTextArea
+          className="my-2"
           label={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
           placeholder="Describe"
           name="marketingApproach"
-        />
-
-        <FormTextArea
-          className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
-          placeholder="Describe"
-          name="sellingProposition"
-        />
-
-        <FormTextArea
-          className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
-          placeholder="Describe"
-          name="keyProductPriorities"
-          charactersLimit={250}
         />
       </Section>
       <Col>
@@ -131,11 +168,11 @@ const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);
 
-export const EtoRegistrationProductVisionComponent: React.SFC<IProps> = props => (
+export const EtoRegistrationPitchComponent: React.SFC<IProps> = props => (
   <EtoEnhancedForm {...props} />
 );
 
-export const EtoRegistrationProductVision = compose<React.SFC>(
+export const EtoRegistrationPitch = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -156,4 +193,4 @@ export const EtoRegistrationProductVision = compose<React.SFC>(
   onEnterAction({
     actionCreator: _dispatch => {},
   }),
-)(EtoRegistrationProductVisionComponent);
+)(EtoRegistrationPitchComponent);

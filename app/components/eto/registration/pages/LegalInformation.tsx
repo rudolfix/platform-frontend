@@ -82,7 +82,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           disabled
         />
         <FormField
-          label={<FormattedMessage id="eto.form.legal-information.registration-name" />}
+          label={<FormattedMessage id="eto.form.legal-information.registration-number" />}
           name="registrationNumber"
         />
         <FormField
@@ -119,9 +119,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           min="0"
           name="companyShares"
         />
-        {/* TODO: Add pie chart */}
         <FormCategoryDistribution
           name="shareholders"
+          prefix="n"
           label={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
           suggestions={["Full Name"]}
           blankField={{ fullName: "", shares: "" }}

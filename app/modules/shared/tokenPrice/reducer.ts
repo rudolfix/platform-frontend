@@ -10,6 +10,7 @@ export interface ITokenPriceState {
 export interface ITokenPriceStateData {
   etherPriceEur: string;
   neuPriceEur: string;
+  priceOutdated: boolean;
 }
 
 const walletInitialState: ITokenPriceState = {

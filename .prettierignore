@@ -8,3 +8,5 @@ coverage
 intl
 e2e
 .reg
+git_modules
+app/lib/contracts

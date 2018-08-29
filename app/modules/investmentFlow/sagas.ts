@@ -1,14 +1,14 @@
-import { fork, put } from "redux-saga/effects";
+import { fork, put, select, takeEvery } from "redux-saga/effects";
 
-import { TGlobalDependencies } from "../../di/setupBindings";
+import { IAppState } from "../../store";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
+import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
-import { neuTakeEvery } from "../sagas";
 
-function* calculateValueFromEth({getState}: TGlobalDependencies, action: TAction): any {
+function* calculateValueFromEth(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE") return;
-  const s = getState()
-  const eth = action.payload.value || "0"
+  const s: IAppState = yield select()
+  const eth = extractNumber(action.payload.value) || "0"
   const tp = s.tokenPrice.tokenPriceData
   if (tp) {
     const value = multiplyBigNumbers([eth, tp.etherPriceEur])
@@ -16,7 +16,7 @@ function* calculateValueFromEth({getState}: TGlobalDependencies, action: TAction
   }
 }
 
-function* start(_: TGlobalDependencies, action: TAction): any {
+function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return
   yield put(actions.investmentFlow.investmentReset())
   yield put(actions.gas.gasApiEnsureLoading())
@@ -24,6 +24,6 @@ function* start(_: TGlobalDependencies, action: TAction): any {
 }
 
 export function* investmentFlowSagas(): any {
-  yield fork(neuTakeEvery, "INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE", calculateValueFromEth)
-  yield fork(neuTakeEvery, "INVESTMENT_FLOW_START", start)
+  yield fork(takeEvery, "INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE", calculateValueFromEth)
+  yield fork(takeEvery, "INVESTMENT_FLOW_START", start)
 }

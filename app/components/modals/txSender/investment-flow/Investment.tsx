@@ -78,7 +78,7 @@ function createWallets (state: IAppState): IWalletSelectionData[] {
 }
 
 function formatEur(val? : string): string | undefined {
-  return val && formatMoney(val, 0, 2)
+  return val && formatMoney(val, 0, 0)
 }
 
 function formatEth(val? : string): string | undefined {
@@ -119,13 +119,13 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
           </Row>
           <Row>
             <Col>
-              <FormFieldRaw prefix="€" value={formatEur(euroValue)} onChange={props.setEuroValue}/>
+              <FormFieldRaw prefix="€" controlCursor value={formatEur(euroValue)} onChange={props.setEuroValue}/>
             </Col>
             <Col sm="1">
               <div className={styles.equals}>≈</div>
             </Col>
             <Col>
-              <FormFieldRaw prefix="ETH" value={formatEth(ethValue)} onChange={props.setEthValue}/>
+              <FormFieldRaw prefix="ETH" controlCursor value={formatEth(ethValue)} onChange={props.setEthValue}/>
               <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
                 <FormattedMessage id="investment-flow.invest-entire-balance" />
               </a>

@@ -19,7 +19,7 @@ import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
-import { formatMoney } from "../../../shared/Money.utils";
+import { formatMoney } from "../../../../utils/Money.utils";
 import * as styles from "./Investment.module.scss";
 
 

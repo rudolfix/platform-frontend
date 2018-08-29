@@ -1,8 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { MONEY_DECIMALS } from "../../config/constants";
+import { formatMoney, formatThousands } from "../../utils/Money.utils";
 import * as styles from "./Money.module.scss";
-import { formatMoney, formatThousands } from "./Money.utils";
 
 export type TCurrency = "neu" | "eur" | "eur_token" | "eth";
 

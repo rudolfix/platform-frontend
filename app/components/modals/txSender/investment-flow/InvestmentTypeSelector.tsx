@@ -9,12 +9,12 @@ import { Money } from "../../../shared/Money";
 import * as styles from "./InvestmentTypeSelector.module.scss";
 
 export interface IWalletSelectionData {
-    type: string;
-    name: string;
-    icon: string;
-    balanceEth?: string;
-    balanceNEuro?: string;
-    balanceEur?: string;
+  type: string;
+  name: string;
+  icon: string;
+  balanceEth?: string;
+  balanceNEuro?: string;
+  balanceEur?: string;
 }
 
 interface IProps {

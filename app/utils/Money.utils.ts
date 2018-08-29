@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { invariant } from "../../utils/invariant";
+import { invariant } from "./invariant";
 
 export function formatMoney(
   value: string,

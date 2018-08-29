@@ -93,14 +93,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
     !disableTwitterFeed;
-  const isYouTubeVideoAvailable = !!(
-    companyVideo &&
-    companyVideo.url
-  );
-  const isSlideShareAvailable = !!(
-    companySlideshare &&
-    companySlideshare.url
-  );
+  const isYouTubeVideoAvailable = !!(companyVideo && companyVideo.url);
+  const isSlideShareAvailable = !!(companySlideshare && companySlideshare.url);
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
       ? (socialChannels.find(c => c.type === "twitter") as any).url
@@ -360,7 +354,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             )}
           </Tabs>
           <div className="mt-4">
-            <SocialProfilesList profiles={companyData.socialChannels as IEtoSocialProfile[]} />
+            <SocialProfilesList
+              profiles={(companyData.socialChannels as IEtoSocialProfile[]) || []}
+            />
           </div>
           {isTwitterFeedEnabled && (
             <>

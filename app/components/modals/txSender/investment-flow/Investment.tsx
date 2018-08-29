@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage, FormattedHTMLMessage } from "react-intl-phraseapp";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
 import { GasModelShape } from "../../../../lib/api/GasApi";
@@ -76,6 +76,12 @@ function createWallets (state: IAppState): IWalletSelectionData[] {
       icon: euroIcon
     },
   ];
+}
+
+const investmentTypeMessages = {
+  [EInvestmentType.ICBMEth]: <FormattedHTMLMessage id="investment-flow.icbm-wallet-info-message" tagName="p"/>,
+  [EInvestmentType.ICBMnEuro]: <FormattedHTMLMessage id="investment-flow.icbm-wallet-info-message" tagName="p"/>,
+  [EInvestmentType.ICBMEth]: <FormattedHTMLMessage id="investment-flow.bank-transfer-info-message" tagName="p"/>
 }
 
 function formatEur(val? : string): string | undefined {

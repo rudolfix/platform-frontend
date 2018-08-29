@@ -21,6 +21,7 @@ export interface IResponsiveImage {
   width?: number;
   height?: number;
   className?: string;
+  onClick?: () => void;
 }
 
 export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
@@ -31,6 +32,7 @@ export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
   height,
   width,
   theme,
+  onClick,
 }) => {
   const computedSrcSet = `${srcSet["1x"]} 1x,
     ${srcSet["2x"] && (srcSet["2x"] as string) + " 2x"},
@@ -41,6 +43,7 @@ export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
       width={width}
       height={height}
       className={cn(styles.responsiveImage, className, theme)}
+      onClick={onClick}
     >
       <img className={styles.image} src={src || srcSet["1x"]} srcSet={computedSrcSet} alt={alt} />
     </Proportion>

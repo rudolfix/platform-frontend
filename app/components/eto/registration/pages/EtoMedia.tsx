@@ -49,6 +49,15 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
       </Row>
 
       <p className="offset-1 mb-2 font-weight-bold">
+        <FormattedMessage id="eto.form.eto-media.slideshare" />
+      </p>
+      <Row>
+        <Col className="offset-1" xs={10}>
+          <FormField name="companySlideshare.url" placeholder="url" />
+        </Col>
+      </Row>
+
+      <p className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.social-channels" />
       </p>
       <Row>
@@ -118,6 +127,10 @@ const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
     values.companyVideo = {
       url: (values.companyVideo && values.companyVideo.url) || "",
       title: (values.companyVideo && values.companyVideo.title) || "",
+    };
+    values.companySlideshare = {
+      url: (values.companySlideshare && values.companySlideshare.url) || "",
+      title: (values.companySlideshare && values.companySlideshare.title) || "",
     };
     return values;
   },

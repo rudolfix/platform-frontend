@@ -23,6 +23,7 @@ import { txMonitorActions } from "./tx/monitor/actions";
 import { txSenderActions } from "./tx/sender/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { verifyEmailActions } from "./verifyEmailWidget/actions";
+import { videoModalActions } from "./videoModal/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
 import { walletActions } from "./wallet/actions";
 import { web3Actions } from "./web3/actions";
@@ -55,6 +56,7 @@ export const actions = {
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
   gas: gasActions,
+  videoModal: videoModalActions,
   personProfileModal: personProfileModalActions,
 };
 
@@ -88,6 +90,7 @@ export const allActions = {
   ...txSenderActions,
   ...icbmWalletBalanceModalActions,
   ...gasActions,
+  ...videoModalActions,
   ...personProfileModalActions,
 };
 

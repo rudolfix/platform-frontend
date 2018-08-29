@@ -13,6 +13,7 @@ import { immutableStorageActions } from "./immutableFile/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
+import { personProfileModalActions } from "./personProfileModal/actions";
 import { routingActions } from "./routing/actions";
 import { settingsActions } from "./settings/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
@@ -54,6 +55,7 @@ export const actions = {
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
   gas: gasActions,
+  personProfileModal: personProfileModalActions,
 };
 
 /**
@@ -86,6 +88,7 @@ export const allActions = {
   ...txSenderActions,
   ...icbmWalletBalanceModalActions,
   ...gasActions,
+  ...personProfileModalActions,
 };
 
 /**

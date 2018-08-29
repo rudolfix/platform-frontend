@@ -22,7 +22,6 @@ storiesOf("SlidePerson", module)
       key={person.name}
       name={person.name}
       role={person.role}
-      description={person.description}
       srcSet={person.image}
       layout="vertical"
     />
@@ -33,7 +32,6 @@ storiesOf("SlidePerson", module)
       key={person.name}
       name={person.name}
       role={person.role}
-      description={person.description}
       srcSet={person.image}
       layout="horizontal"
     />

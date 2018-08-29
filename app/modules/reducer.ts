@@ -12,6 +12,7 @@ import { initReducer } from "./init/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
+import { personProfileModalReducer } from "./personProfileModal/reducer";
 import { settingsReducer } from "./settings/reducer";
 import { tokenPriceReducer } from "./shared/tokenPrice/reducer";
 import { txMonitorReducer } from "./tx/monitor/reducer";
@@ -54,5 +55,6 @@ export const appReducers = {
   gas: gasReducer,
   txMonitor: txMonitorReducer,
   videoModal: videoModalReducer,
+  personProfileModal: personProfileModalReducer,
   dashboard: dashboardReducer,
 };

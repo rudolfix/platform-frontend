@@ -548,45 +548,20 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         (companyData.team && companyData.team.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
-            <Tabs
-              className="mb-4"
-              layoutSize="large"
-              layoutOrnament={false}
-              selectedIndex={selectActiveCarouselTab([companyData.founders, companyData.team])}
-            >
-              {companyData.founders &&
-                companyData.founders.members.length > 0 && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
-                    <Panel>
-                      <PeopleSwiperWidget
-                        {...swiperSettings}
-                        people={companyData.founders.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-founders-next",
-                          prevEl: "people-swiper-founders-prev",
-                        }}
-                        layout="vertical"
-                      />
-                    </Panel>
-                  </TabContent>
-                )}
-              {companyData.team &&
-                companyData.team.members.length > 0 && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
-                    <Panel>
-                      <PeopleSwiperWidget
-                        {...swiperSettings}
-                        people={companyData.team.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-team-next",
-                          prevEl: "people-swiper-team-prev",
-                        }}
-                        layout="vertical"
-                      />
-                    </Panel>
-                  </TabContent>
-                )}
-            </Tabs>
+            <SectionHeader layoutHasDecorator={false} className="mb-4">
+              <FormattedMessage id="eto.public-view.carousel.team" />
+            </SectionHeader>
+            <Panel>
+              <PeopleSwiperWidget
+                {...swiperSettings}
+                people={(companyData.founders && (companyData.founders.members as IPerson[])) || []}
+                navigation={{
+                  nextEl: "people-swiper-founders-next",
+                  prevEl: "people-swiper-founders-prev",
+                }}
+                layout="vertical"
+              />
+            </Panel>
           </Col>
         </Row>
       )}

@@ -43,7 +43,7 @@ export const EtoList = compose<React.ComponentClass>(
   }),
   appConnect({
     stateToProps: state => ({
-      etos: [{company: {brandName: "fufu"}}]//state.dashboard.etos,
+      etos: state.dashboard.etos && state.dashboard.etos.length ? state.dashboard.etos : [{ company: { brandName: "fufu" } }]
     }),
     dispatchToProps: d => ({
       startInvestmentFlow: (eto: TInvestorEtoData) => d(actions.investmentFlow.investmentStart(eto)),

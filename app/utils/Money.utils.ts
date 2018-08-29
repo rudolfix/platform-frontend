@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { Q18 } from "../config/constants";
 import { invariant } from "./invariant";
 
 export function formatMoney(
@@ -8,7 +9,7 @@ export function formatMoney(
 ): string {
   const money = new BigNumber(value);
   const moneyInPrimaryBase = money.div(new BigNumber(10).pow(currencyDecimals));
-  return moneyInPrimaryBase.toFixed(decimalPlaces, BigNumber.ROUND_HALF_UP);
+  return moneyInPrimaryBase.toFixed(decimalPlaces, BigNumber.ROUND_UP);
 }
 
 /**
@@ -25,4 +26,10 @@ export function formatThousands(value: string): string {
     return formattedBeforeDot + "." + splitByDot[1];
   }
   return formattedBeforeDot;
+}
+
+export function convertToBigInt(value: string, currencyDecimals?: number): string {
+  const q = currencyDecimals ? new BigNumber(10).pow(currencyDecimals) : Q18
+  const moneyInWei = q.mul(value);
+  return moneyInWei.toFixed(0, BigNumber.ROUND_UP);
 }

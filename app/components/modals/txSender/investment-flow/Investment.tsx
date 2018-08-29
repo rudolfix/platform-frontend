@@ -18,6 +18,7 @@ import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSe
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
+import { MONEY_DECIMALS } from "../../../../config/constants";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
 import { formatMoney } from "../../../../utils/Money.utils";
 import * as styles from "./Investment.module.scss";
@@ -78,11 +79,11 @@ function createWallets (state: IAppState): IWalletSelectionData[] {
 }
 
 function formatEur(val? : string): string | undefined {
-  return val && formatMoney(val, 0, 0)
+  return val && formatMoney(val, MONEY_DECIMALS, 0)
 }
 
 function formatEth(val? : string): string | undefined {
-  return val && formatMoney(val, 0, 4)
+  return val && formatMoney(val, MONEY_DECIMALS, 4)
 }
 
 export const InvestmentSelectionComponent = injectIntlHelpers(

@@ -12,7 +12,7 @@ function* calculateValueFromEth(action: TAction): any {
   const tp = s.tokenPrice.tokenPriceData
   if (tp) {
     const value = multiplyBigNumbers([eth, tp.etherPriceEur])
-    yield put(actions.investmentFlow.setEuroValue(value))
+    yield put(actions.investmentFlow.setEuroValue(value === "0" ? "" : value))
   }
 }
 

@@ -2,6 +2,7 @@
   position: relative;
   display: block;
   width: 100%;
+  cursor: pointer;
 }
 
 .selected {
@@ -59,7 +60,6 @@
 }
 
 .checked {
-  // box-sizing: content-box;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   color: $body-color;
@@ -70,12 +70,6 @@
   }
 
   .balance {
-    margin-right: .7em
-  }
-}
-
-input {
-  &:checked + .box > .checked {
-    visibility: visible;
+    margin-right: .7em;
   }
 }

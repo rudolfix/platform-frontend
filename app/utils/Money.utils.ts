@@ -3,7 +3,7 @@ import { Q18 } from "../config/constants";
 import { invariant } from "./invariant";
 
 export function formatMoney(
-  value: string,
+  value: string | BigNumber,
   currencyDecimals: number,
   decimalPlaces: number,
 ): string {

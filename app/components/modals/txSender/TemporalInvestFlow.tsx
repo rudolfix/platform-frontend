@@ -23,7 +23,7 @@ export const InvestmentModalComponent: React.SFC<Props> = props => {
 
   return (
     <Modal isOpen={isOpen} toggle={onCancel} className="big">
-      <ModalComponentBody onClose={onCancel}><InvestmentSelection onAccept={() => {}} /></ModalComponentBody>
+      <ModalComponentBody onClose={onCancel}><InvestmentSelection /></ModalComponentBody>
     </Modal>
   );
 };

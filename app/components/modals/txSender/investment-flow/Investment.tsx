@@ -1,11 +1,11 @@
+import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
 import { GasModelShape } from "../../../../lib/api/GasApi";
 import { actions } from "../../../../modules/actions";
-import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
-import { ITxData } from "../../../../modules/tx/sender/reducer";
+import { EInvestmentType, ICalculatedContribution } from "../../../../modules/investmentFlow/reducer";
 import { appConnect, IAppState } from "../../../../store";
 import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
@@ -21,13 +21,8 @@ import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
 import { formatMoney } from "../../../../utils/Money.utils";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
 import * as styles from "./Investment.module.scss";
 
-
-interface IOwnProps {
-  onAccept: (tx: Partial<ITxData>) => any;
-}
 
 interface IStateProps {
   wallets: IWalletSelectionData[];
@@ -36,6 +31,7 @@ interface IStateProps {
   investmentType: EInvestmentType;
   gasPrice?: GasModelShape;
   errorState?: string;
+  calculatedContribution?: ICalculatedContribution
 }
 
 interface IDispatchProps {
@@ -45,7 +41,7 @@ interface IDispatchProps {
   setInvestmentType: (type: EInvestmentType) => void
 }
 
-type IProps = IStateProps & IDispatchProps & IOwnProps;
+type IProps = IStateProps & IDispatchProps;
 
 function createWallets (state: IAppState): IWalletSelectionData[] {
   const w = state.wallet
@@ -89,11 +85,11 @@ function getInvestmentTypeMessages (type: EInvestmentType): React.ReactNode {
   }
 }
 
-function formatEur(val? : string): string | undefined {
+function formatEur(val? : string | BigNumber): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 0)
 }
 
-function formatEth(val? : string): string | undefined {
+function formatEth(val? : string | BigNumber): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 4)
 }
 
@@ -105,6 +101,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
     const gasCostEuro = multiplyBigNumbers([gasPrice, etherPriceEur])
     const totalCostEth = addBigNumbers([gasPrice, ethValue || "0"])
     const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"])
+    const cc = props.calculatedContribution
 
     return (
       <>
@@ -157,7 +154,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
                   <Label>
                     <FormattedMessage id="investment-flow.equity-tokens" />
                   </Label>
-                  <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
+                  <InfoAlert>{cc && cc.equityTokenInt.toString() || "\xA0" /* non breaking space*/ }</InfoAlert>
                 </FormGroup>
               </Col>
               <Col sm="1">
@@ -167,7 +164,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
                   <Label>
                     <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                   </Label>
-                  <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
+                  <InfoAlert>{cc && formatEth(cc.neuRewardUlps) || "\xA0"}</InfoAlert>
                 </FormGroup>
               </Col>
             </Row>
@@ -197,7 +194,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
   },
 );
 
-export const InvestmentSelection = appConnect<IStateProps, IDispatchProps, IOwnProps>({
+export const InvestmentSelection = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => {
     const etherPriceEur = state.tokenPrice.tokenPriceData!.etherPriceEur
     return ({
@@ -206,7 +203,8 @@ export const InvestmentSelection = appConnect<IStateProps, IDispatchProps, IOwnP
       errorState: state.investmentFlow.errorState,
       gasPrice: state.gas.gasPrice,
       investmentType: state.investmentFlow.investmentType,
-      wallets: createWallets(state)
+      wallets: createWallets(state),
+      calculatedContribution: state.investmentFlow.calculatedContribution
     })
   },
   dispatchToProps: dispatch => ({

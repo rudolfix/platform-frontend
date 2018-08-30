@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 import { TInvestorEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
@@ -17,11 +19,21 @@ export enum EInvestmentErrorState {
   ExceedsTokenAmount = "exceeds_token_amount",
 }
 
+export interface ICalculatedContribution {
+  isWhitelisted: boolean
+  minTicketEurUlps: BigNumber
+  maxTicketEurUlps: BigNumber
+  equityTokenInt: BigNumber
+  neuRewardUlps: BigNumber
+  maxCapExceeded: boolean
+}
+
 export interface IInvestmentFlowState {
   euroValue: string,
   investmentType: EInvestmentType
   eto?: TInvestorEtoData
   errorState?: EInvestmentErrorState
+  calculatedContribution?: ICalculatedContribution
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
@@ -57,6 +69,11 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         euroValue: action.payload.value
+      };
+    case "INVESTMENT_FLOW_SET_CALCULATED_CONTRIBUTION":
+      return {
+        ...state,
+        calculatedContribution: action.payload.contrib
       };
   }
 

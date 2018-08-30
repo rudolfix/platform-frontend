@@ -7,10 +7,12 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE", { type }),
   setErrorState: (errorState?: EInvestmentErrorState) =>
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_ERROR_STATE", { errorState }),
+  submitEuroValue: (value: string) =>
+    createAction("INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE", { value }),
+  submitEthValue: (value: string) =>
+    createAction("INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE", { value }),
   setEuroValue: (value: string) =>
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE", { value }),
-  setEthValue: (value: string) =>
-    createAction("INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE", { value }),
   setEto: (eto: TInvestorEtoData) =>
     createAction("INVESTMENT_FLOW_SET_ETO", { eto }),
   investmentStart: (eto: TInvestorEtoData) =>

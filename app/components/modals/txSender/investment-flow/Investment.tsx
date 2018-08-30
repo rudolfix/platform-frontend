@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage, FormattedHTMLMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
 import { GasModelShape } from "../../../../lib/api/GasApi";
@@ -21,6 +21,7 @@ import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
 import { formatMoney } from "../../../../utils/Money.utils";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
 import * as styles from "./Investment.module.scss";
 
 
@@ -78,10 +79,14 @@ function createWallets (state: IAppState): IWalletSelectionData[] {
   ];
 }
 
-const investmentTypeMessages = {
-  [EInvestmentType.ICBMEth]: <FormattedHTMLMessage id="investment-flow.icbm-wallet-info-message" tagName="p"/>,
-  [EInvestmentType.ICBMnEuro]: <FormattedHTMLMessage id="investment-flow.icbm-wallet-info-message" tagName="p"/>,
-  [EInvestmentType.ICBMEth]: <FormattedHTMLMessage id="investment-flow.bank-transfer-info-message" tagName="p"/>
+function getInvestmentTypeMessages (type: EInvestmentType): React.ReactNode {
+  switch (type) {
+    case EInvestmentType.ICBMEth:
+    case EInvestmentType.ICBMnEuro:
+      return <FormattedHTMLMessage id="investment-flow.icbm-wallet-info-message" tagName="p"/>
+    case EInvestmentType.BankTransfer:
+      return <FormattedHTMLMessage id="investment-flow.bank-transfer-info-message" tagName="p"/>
+  }
 }
 
 function formatEur(val? : string): string | undefined {
@@ -111,7 +116,12 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
               </Heading>
             </Col>
           </Row>
-          <InvestmentTypeSelector wallets={props.wallets} currentType={props.investmentType} onSelect={props.setInvestmentType} />
+          <Row>
+            <InvestmentTypeSelector wallets={props.wallets} currentType={props.investmentType} onSelect={props.setInvestmentType} />
+            <Col>
+              {getInvestmentTypeMessages(props.investmentType)}
+            </Col>
+          </Row>
           <Row>
             <Col>
               <Heading>
@@ -201,8 +211,8 @@ export const InvestmentSelection = appConnect<IStateProps, IDispatchProps, IOwnP
   },
   dispatchToProps: dispatch => ({
     getTransaction: () => { },
-    setEthValue: (evt) => dispatch(actions.investmentFlow.setEthValue(evt.target.value)),
-    setEuroValue: (evt) => dispatch(actions.investmentFlow.setEuroValue(evt.target.value)),
+    setEthValue: (evt) => dispatch(actions.investmentFlow.submitEthValue(evt.target.value)),
+    setEuroValue: (evt) => dispatch(actions.investmentFlow.submitEuroValue(evt.target.value)),
     setInvestmentType: (type: EInvestmentType) => dispatch(actions.investmentFlow.selectInvestmentType(type))
   })
 })(InvestmentSelectionComponent)

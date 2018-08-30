@@ -32,7 +32,7 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
     const { wallets, currentType, onSelect } = this.props;
     const selected = currentType !== EInvestmentType.None
     return (
-      <Row className={selected && styles.selected}>
+      <div className={cn(styles.container, selected && styles.selected)}>
         {wallets.map(w => {
           const checked = currentType === w.type;
           return (
@@ -73,7 +73,7 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
             </Col>
           )
         })}
-      </Row>
+      </div>
     );
   }
 }

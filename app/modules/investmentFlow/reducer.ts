@@ -1,8 +1,6 @@
 import { TInvestorEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { convertToBigInt } from "../../utils/Money.utils";
-import { extractNumber } from "../../utils/StringUtils";
 
 export enum EInvestmentType {
   None = "NONE",
@@ -56,10 +54,9 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
         errorState: action.payload.errorState
       };
     case "INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE":
-      const value = extractNumber(action.payload.value)
       return {
         ...state,
-        euroValue: value && convertToBigInt(value)
+        euroValue: action.payload.value
       };
   }
 

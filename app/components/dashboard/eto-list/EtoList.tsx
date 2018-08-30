@@ -30,7 +30,7 @@ export const EtoListComponent: React.SFC<IProps> = ({ etos, startInvestmentFlow 
         {/* TODO: implement real ETO Card here */}
         <div className="mb-3">
           <h4>{eto.company.brandName}</h4>
-          <Button onClick={() => startInvestmentFlow(eto)}>invest now</Button>
+          {eto.state === "on_chain" && <Button onClick={() => startInvestmentFlow(eto)}>invest now</Button>}
         </div>
       </Col>
     ))}

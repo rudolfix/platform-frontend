@@ -5,8 +5,8 @@ import { Modal, Row } from "reactstrap";
 import { actions } from "../../modules/actions";
 import {
   IGenericModal,
+  selectGenericModalIsOpen,
   selectGenericModalObj,
-  selectIsOpen,
 } from "../../modules/genericModal/reducer";
 import { appConnect } from "../../store";
 
@@ -64,7 +64,7 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
 
 export const GenericModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
-    isOpen: selectIsOpen(s.genericModal),
+    isOpen: selectGenericModalIsOpen(s.genericModal),
     genericModalObj: selectGenericModalObj(s.genericModal),
   }),
   dispatchToProps: dispatch => ({

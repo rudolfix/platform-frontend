@@ -15,7 +15,8 @@ import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksW
 import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
-import { SocialProfilesList } from "../../shared/SocialProfilesList";
+import { Slides } from "../../shared/Slides";
+import { IEtoSocialProfile, SocialProfilesList } from "../../shared/SocialProfilesList";
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
@@ -79,12 +80,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
   const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
   const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
 
-  const { socialChannels, companyVideo, disableTwitterFeed } = companyData;
+  const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
     !disableTwitterFeed;
-  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length > 0;
+  const isYouTubeVideoAvailable = !!(companyVideo && companyVideo.url);
+  const isSlideShareAvailable = !!(companySlideshare && companySlideshare.url);
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
       ? (socialChannels.find(c => c.type === "twitter") as any).url
@@ -174,24 +176,29 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       </Row>
 
       <Row className="align-items-stretch">
-        <Col xs={12} md={isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12} className="mb-4">
+        <Col
+          xs={12}
+          md={isSlideShareAvailable || isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12}
+          className="mb-4"
+        >
           <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.public-view.about" />
-          </SectionHeader>
-          <Panel className="mb-4">
-            <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
-            {companyData.keyQuoteFounder && <p className="mb-4">"{companyData.keyQuoteFounder}"</p>}
-            {companyData.keyQuoteInvestor && (
-              <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>
-            )}
-            <div className="d-flex justify-content-between">
+            <div className={styles.companyHeader}>
+              <div>{companyData.brandName}</div>
               {companyData.companyWebsite && (
                 <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
                   {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
                 </a>
               )}
-              <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
+          </SectionHeader>
+          <Panel className="mb-4">
+            <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
+            {companyData.keyQuoteFounder && (
+              <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteFounder}"</p>
+            )}
+            {companyData.keyQuoteInvestor && (
+              <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteInvestor}"</p>
+            )}
           </Panel>
 
           <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -317,27 +324,43 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
-          <Col xs={12} md={4} className="mb-4 flex-column d-flex">
-            <Video
-              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
-              className="mb-4 mt-5"
-            />
-            {isTwitterFeedEnabled && (
-              <>
-                <SectionHeader layoutHasDecorator={false} className="mb-4">
-                  Twitter
-                </SectionHeader>
-                <Panel
-                  narrow
-                  className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
-                >
-                  <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
-                </Panel>
-              </>
+        <Col xs={12} md={4} className="mb-4 flex-column d-flex">
+          <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+            {isYouTubeVideoAvailable && (
+              <TabContent tab="video">
+                <Video
+                  youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
+                  hasModal
+                />
+              </TabContent>
             )}
-          </Col>
-        )}
+            {isSlideShareAvailable && (
+              <TabContent tab="pitch deck">
+                <Slides
+                  slideShareUrl={companyData.companySlideshare && companyData.companySlideshare.url}
+                />
+              </TabContent>
+            )}
+          </Tabs>
+          <div className="mt-4">
+            <SocialProfilesList
+              profiles={(companyData.socialChannels as IEtoSocialProfile[]) || []}
+            />
+          </div>
+          {isTwitterFeedEnabled && (
+            <>
+              <SectionHeader layoutHasDecorator={false} className="mt-4 mb-4">
+                Twitter
+              </SectionHeader>
+              <Panel
+                narrow
+                className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
+              >
+                <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
+              </Panel>
+            </>
+          )}
+        </Col>
       </Row>
 
       <Row>
@@ -514,45 +537,20 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         (companyData.team && companyData.team.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
-            <Tabs
-              className="mb-4"
-              layoutSize="large"
-              layoutOrnament={false}
-              selectedIndex={selectActiveCarouselTab([companyData.founders, companyData.team])}
-            >
-              {companyData.founders &&
-                companyData.founders.members.length > 0 && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
-                    <Panel>
-                      <PeopleSwiperWidget
-                        {...swiperSettings}
-                        people={companyData.founders.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-founders-next",
-                          prevEl: "people-swiper-founders-prev",
-                        }}
-                        layout="vertical"
-                      />
-                    </Panel>
-                  </TabContent>
-                )}
-              {companyData.team &&
-                companyData.team.members.length > 0 && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
-                    <Panel>
-                      <PeopleSwiperWidget
-                        {...swiperSettings}
-                        people={companyData.team.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-team-next",
-                          prevEl: "people-swiper-team-prev",
-                        }}
-                        layout="vertical"
-                      />
-                    </Panel>
-                  </TabContent>
-                )}
-            </Tabs>
+            <SectionHeader layoutHasDecorator={false} className="mb-4">
+              <FormattedMessage id="eto.public-view.carousel.team" />
+            </SectionHeader>
+            <Panel>
+              <PeopleSwiperWidget
+                {...swiperSettings}
+                people={(companyData.founders && (companyData.founders.members as IPerson[])) || []}
+                navigation={{
+                  nextEl: "people-swiper-founders-next",
+                  prevEl: "people-swiper-founders-prev",
+                }}
+                layout="vertical"
+              />
+            </Panel>
           </Col>
         </Row>
       )}
@@ -801,13 +799,19 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Panel>
         </Col>
         <Col sm={12} md={4}>
-          <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.form.documents.title" />
-          </SectionHeader>
-          <DocumentsWidget className="mb-4" groups={documents} />
+          {documents[0] &&
+            !!documents[0].documents[0].url.length && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <FormattedMessage id="eto.form.documents.title" />
+                </SectionHeader>
+
+                <DocumentsWidget className="mb-4" groups={documents} />
+              </>
+            )}
 
           {companyData.companyNews &&
-            companyData.companyNews.length > 0 && (
+            !!companyData.companyNews[0].url.length && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.media-links.title" />

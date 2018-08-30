@@ -13,6 +13,7 @@ import { immutableStorageActions } from "./immutableFile/actions";
 import { initActions } from "./init/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
+import { personProfileModalActions } from "./personProfileModal/actions";
 import { routingActions } from "./routing/actions";
 import { settingsActions } from "./settings/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
@@ -22,6 +23,7 @@ import { txMonitorActions } from "./tx/monitor/actions";
 import { txSenderActions } from "./tx/sender/actions";
 import { userAgentActions } from "./userAgent/actions";
 import { verifyEmailActions } from "./verifyEmailWidget/actions";
+import { videoModalActions } from "./videoModal/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
 import { walletActions } from "./wallet/actions";
 import { web3Actions } from "./web3/actions";
@@ -54,6 +56,8 @@ export const actions = {
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
   gas: gasActions,
+  videoModal: videoModalActions,
+  personProfileModal: personProfileModalActions,
 };
 
 /**
@@ -86,6 +90,8 @@ export const allActions = {
   ...txSenderActions,
   ...icbmWalletBalanceModalActions,
   ...gasActions,
+  ...videoModalActions,
+  ...personProfileModalActions,
 };
 
 /**

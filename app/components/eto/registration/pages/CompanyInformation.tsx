@@ -3,6 +3,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { FormattedMessage } from "react-intl";
 import {
   EtoCompanyInformationType,
   TPartialCompanyEtoData,
@@ -36,26 +37,35 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   return (
     <EtoFormBase title="Company Information" validator={EtoCompanyInformationType.toYup()}>
       <Section>
-        <FormField label="Brand Name*" name="brandName" />
-        <FormField label="Website*" name="companyWebsite" />
-        <FormField label="Company tagline*" name="companyOneliner" />
+        <FormField
+          label={<FormattedMessage id="eto.form.company-information.brand-name" />}
+          name="brandName"
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.company-information.website" />}
+          name="companyWebsite"
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.company-information.company-tagline" />}
+          name="companyOneliner"
+        />
 
         <FormTextArea
           className="mb-2 mt-2"
-          label="Company Description*"
+          label={<FormattedMessage id="eto.form.company-information.company-description" />}
           placeholder="Describe your company 250 Characters"
           name="companyDescription"
           charactersLimit={750}
         />
         <FormTextArea
-          label="Founders Quote"
-          placeholder="Key Quote from Founder 250 Characters"
+          label={<FormattedMessage id="eto.form.company-information.founders-quote" />}
+          placeholder="Key Quote from Founder"
           name="keyQuoteFounder"
           charactersLimit={250}
         />
         <FormTextArea
-          label="Founders Investor"
-          placeholder="Key Quote from Investor 250 Characters"
+          label={<FormattedMessage id="eto.form.company-information.investor-quote" />}
+          placeholder="Key Quote from Investor"
           name="keyQuoteInvestor"
           charactersLimit={250}
         />
@@ -70,7 +80,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           <Col>
             <FormSingleFileUpload
               name="companyLogo"
-              label="Logo"
+              label={<FormattedMessage id="eto.form.company-information.logo" />}
               acceptedFiles="image/*"
               fileFormatInformation="*150 x 150 png"
               className="mb-3"
@@ -79,7 +89,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
           <Col>
             <FormSingleFileUpload
               name="companyBanner"
-              label="Banner"
+              label={<FormattedMessage id="eto.form.company-information.banner" />}
               acceptedFiles="image/*"
               fileFormatInformation="*1250 x 400 png"
               className="mb-3"
@@ -99,7 +109,7 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
             }}
             isLoading={props.savingData}
           >
-            Save
+            <FormattedMessage id="form.button.save" />
           </Button>
         </Row>
       </Col>

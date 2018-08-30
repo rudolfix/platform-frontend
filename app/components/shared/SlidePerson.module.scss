@@ -36,6 +36,8 @@
 
 .image {
   @include circle(83px);
+
+  overflow: hidden;
 }
 
 .name {

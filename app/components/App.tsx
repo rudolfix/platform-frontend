@@ -14,6 +14,7 @@ import { AppRouter } from "./AppRouter";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { GenericModal } from "./modals/GenericModal";
+import { VideoModal } from "./modals/VideoModal";
 import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { ScrollToTop } from "./shared/ScrollToTop";
@@ -46,6 +47,7 @@ class AppComponent extends React.Component<IStateProps> {
         <AccessWalletModal />
         <ToastContainer />
         <GenericModal />
+        <VideoModal />
       </>
     );
   }

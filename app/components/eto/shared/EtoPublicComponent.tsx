@@ -49,14 +49,6 @@ const swiperSettings = {
   },
 };
 
-const day = 86400000;
-const etoStartDate = Date.now() - 20 * day;
-const bookBuildingEndDate = etoStartDate + 16 * day;
-const whitelistedEndDate = bookBuildingEndDate + 7 * day;
-const publicEndDate = whitelistedEndDate + 7 * day;
-const inSigningEndDate = publicEndDate + 14 * day;
-const etoEndDate = inSigningEndDate + 7 * day;
-
 interface IProps {
   companyData: TCompanyEtoData;
   etoData: TEtoSpecsData;
@@ -172,13 +164,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </SectionHeader>
           <Panel>
             <EtoTimeline
-              bookBuildingEndDate={bookBuildingEndDate}
-              whitelistedEndDate={whitelistedEndDate}
-              publicEndDate={publicEndDate}
-              inSigningEndDate={inSigningEndDate}
-              etoStartDate={etoStartDate}
-              etoEndDate={etoEndDate}
-              status="campaigning"
+              etoStartDate={etoData.startDate}
+              preEtoDuration={etoData.whitelistDurationDays}
+              publicEtoDuration={etoData.publicDurationDays}
+              inSigningDuration={etoData.signingDurationDays}
             />
           </Panel>
         </Col>

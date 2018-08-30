@@ -17,6 +17,7 @@ export enum EInvestmentErrorState {
   BelowMinimumTicketSize = "below_minimum_ticket_size",
   ExceedsWalletBalance = "exceeds_wallet_balance",
   ExceedsTokenAmount = "exceeds_token_amount",
+  NoWalletSelected = "no_wallet_selected"
 }
 
 export interface ICalculatedContribution {
@@ -53,7 +54,10 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
         ...state,
-        investmentType: action.payload.type
+        investmentType: action.payload.type,
+        euroValue: "",
+        errorState: undefined,
+        calculatedContribution: undefined,
       };
     case "INVESTMENT_FLOW_SET_ETO":
       return {

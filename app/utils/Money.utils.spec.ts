@@ -21,6 +21,11 @@ describe("Money utils", () => {
     it("should not format decimal places", () => {
       expect(formatThousands(formatMoney("100000", 2, 4))).to.be.eq("1 000.0000");
     });
+
+    it("should handle undefined", () => {
+      expect(formatThousands()).to.be.eq("");
+      expect(formatThousands("")).to.be.eq("");
+    })
   });
 
   describe("convertToBigInt", () => {

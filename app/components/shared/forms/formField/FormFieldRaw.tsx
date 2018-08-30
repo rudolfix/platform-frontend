@@ -80,6 +80,7 @@ export class FormFieldRaw extends React.Component<FieldGroupProps> {
       charactersLimit,
       errorMsg,
       onChange,
+      controlCursor,
       ...props
     } = this.props
 

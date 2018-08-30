@@ -15,7 +15,8 @@ export function formatMoney(
 /**
  * Assumes dot as decimal separator
  */
-export function formatThousands(value: string): string {
+export function formatThousands(value?: string): string {
+  if (!value) return ""
   const splitByDot = value.split(".");
 
   invariant(splitByDot.length <= 2, "Can't format this number: " + value);

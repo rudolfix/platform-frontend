@@ -11,6 +11,7 @@ import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { neuCall } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { EInvestmentErrorState, EInvestmentType } from "./reducer";
 import { convertToCalculatedContribution, selectIsICBMInvestment } from "./selectors";
 
 function* calculateValueFromEth(action: TAction): any {
@@ -26,8 +27,14 @@ function* calculateValueFromEth(action: TAction): any {
 
 function* validateEuroValue(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE") return;
+  const type = yield select((s: IAppState) => s.investmentFlow.investmentType)
   let value = extractNumber(action.payload.value)
+  if (value && type === EInvestmentType.None) {
+    yield put(actions.investmentFlow.setErrorState(EInvestmentErrorState.NoWalletSelected))
+    return
+  }
   value = value && convertToBigInt(value)
+  yield put(actions.investmentFlow.setErrorState())
   yield put(actions.investmentFlow.setEuroValue(value))
   yield put(actions.investmentFlow.calculateContribution())
 }

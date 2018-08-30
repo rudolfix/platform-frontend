@@ -5,7 +5,7 @@ import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 
 import { GasModelShape } from "../../../../lib/api/GasApi";
 import { actions } from "../../../../modules/actions";
-import { EInvestmentType, ICalculatedContribution } from "../../../../modules/investmentFlow/reducer";
+import { EInvestmentErrorState, EInvestmentType, ICalculatedContribution } from "../../../../modules/investmentFlow/reducer";
 import { appConnect, IAppState } from "../../../../store";
 import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
@@ -15,12 +15,13 @@ import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
 import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
+import { compose } from "redux";
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
-import { formatMoney } from "../../../../utils/Money.utils";
+import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
 import * as styles from "./Investment.module.scss";
 
 
@@ -32,16 +33,17 @@ interface IStateProps {
   gasPrice?: GasModelShape;
   errorState?: string;
   calculatedContribution?: ICalculatedContribution
+  minTicketEur: number
 }
 
 interface IDispatchProps {
   getTransaction: () => void;
-  setEuroValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
-  setEthValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
-  setInvestmentType: (type: EInvestmentType) => void
+  changeEuroValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  changeEthValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  changeInvestmentType: (type: EInvestmentType) => void
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & IIntlProps;
 
 function createWallets (state: IAppState): IWalletSelectionData[] {
   const w = state.wallet
@@ -95,13 +97,14 @@ function formatEth(val? : string | BigNumber): string | undefined {
 
 export const InvestmentSelectionComponent = injectIntlHelpers(
   (props: IProps & IIntlProps) => {
-    const {euroValue, etherPriceEur} = props
+    const {euroValue, etherPriceEur, minTicketEur, intl} = props
     const gasPrice = (props.gasPrice && props.gasPrice.standard) || "0"
     const ethValue = euroValue && divideBigNumbers(euroValue, etherPriceEur)
     const gasCostEuro = multiplyBigNumbers([gasPrice, etherPriceEur])
     const totalCostEth = addBigNumbers([gasPrice, ethValue || "0"])
     const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"])
     const cc = props.calculatedContribution
+    const minTicketEth = divideBigNumbers(minTicketEur, etherPriceEur)
 
     return (
       <>
@@ -114,9 +117,12 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             </Col>
           </Row>
           <Row>
-            <InvestmentTypeSelector wallets={props.wallets} currentType={props.investmentType} onSelect={props.setInvestmentType} />
+            <InvestmentTypeSelector wallets={props.wallets} currentType={props.investmentType} onSelect={props.changeInvestmentType} />
             <Col>
               {getInvestmentTypeMessages(props.investmentType)}
+              {props.errorState === EInvestmentErrorState.NoWalletSelected && (
+                <p><FormattedMessage id="investment-flow.no-selected-wallet-warning" /></p>
+              )}
             </Col>
           </Row>
           <Row>
@@ -133,13 +139,13 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
           </Row>
           <Row>
             <Col>
-              <FormFieldRaw prefix="€" controlCursor value={formatEur(euroValue)} onChange={props.setEuroValue}/>
+              <FormFieldRaw prefix="€" placeholder={`${intl.formatIntlMessage("investment-flow.min-ticket-size")} ${minTicketEur} €`} controlCursor value={formatEur(euroValue)} onChange={props.changeEuroValue}/>
             </Col>
             <Col sm="1">
               <div className={styles.equals}>≈</div>
             </Col>
             <Col>
-              <FormFieldRaw prefix="ETH" controlCursor value={formatEth(ethValue)} onChange={props.setEthValue}/>
+              <FormFieldRaw prefix="ETH" placeholder={`${intl.formatIntlMessage("investment-flow.min-ticket-size")} ${formatMoney(minTicketEth, 0, 4)} ETH`} controlCursor value={formatEth(ethValue)} onChange={props.changeEthValue}/>
               <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
                 <FormattedMessage id="investment-flow.invest-entire-balance" />
               </a>
@@ -154,7 +160,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
                   <Label>
                     <FormattedMessage id="investment-flow.equity-tokens" />
                   </Label>
-                  <InfoAlert>{cc && cc.equityTokenInt.toString() || "\xA0" /* non breaking space*/ }</InfoAlert>
+                  <InfoAlert>{cc && formatThousands(cc.equityTokenInt.toString()) || "\xA0" /* non breaking space*/ }</InfoAlert>
                 </FormGroup>
               </Col>
               <Col sm="1">
@@ -164,7 +170,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
                   <Label>
                     <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                   </Label>
-                  <InfoAlert>{cc && formatEth(cc.neuRewardUlps) || "\xA0"}</InfoAlert>
+                  <InfoAlert>{cc && formatThousands(formatEth(cc.neuRewardUlps)) || "\xA0"}</InfoAlert>
                 </FormGroup>
               </Col>
             </Row>
@@ -175,16 +181,16 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             <Col className={styles.summary}>
               <div>
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />
-                : <span className="orange">{formatEur(gasCostEuro)}€ ≈ ETH {formatEth(gasPrice)}</span>
+                : <span className="orange">{formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasPrice)}</span>
               </div>
               <div>
                 <FormattedMessage id="investment-flow.total" />
-                : <span className="orange">{formatEur(totalCostEur)}€ ≈ ETH {formatEth(totalCostEth)}</span>
+                : <span className="orange">{formatThousands(formatEur(totalCostEur))} € ≈ ETH {formatThousands(formatEth(totalCostEth))}</span>
               </div>
             </Col>
           </Row>
           <Row className="justify-content-center mb-0">
-            <Button layout="primary" className="mr-4" type="submit">
+            <Button layout="primary" type="submit">
               <FormattedMessage id="investment-flow.invest-now" />
             </Button>
           </Row>
@@ -194,7 +200,9 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
   },
 );
 
-export const InvestmentSelection = appConnect<IStateProps, IDispatchProps>({
+export const InvestmentSelection = compose(
+  injectIntlHelpers,
+  appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => {
     const etherPriceEur = state.tokenPrice.tokenPriceData!.etherPriceEur
     return ({
@@ -204,13 +212,14 @@ export const InvestmentSelection = appConnect<IStateProps, IDispatchProps>({
       gasPrice: state.gas.gasPrice,
       investmentType: state.investmentFlow.investmentType,
       wallets: createWallets(state),
-      calculatedContribution: state.investmentFlow.calculatedContribution
+      calculatedContribution: state.investmentFlow.calculatedContribution,
+      minTicketEur: (state.investmentFlow.eto && state.investmentFlow.eto.minTicketEur!) || 0
     })
   },
   dispatchToProps: dispatch => ({
     getTransaction: () => { },
-    setEthValue: (evt) => dispatch(actions.investmentFlow.submitEthValue(evt.target.value)),
-    setEuroValue: (evt) => dispatch(actions.investmentFlow.submitEuroValue(evt.target.value)),
-    setInvestmentType: (type: EInvestmentType) => dispatch(actions.investmentFlow.selectInvestmentType(type))
+    changeEthValue: (evt) => dispatch(actions.investmentFlow.submitEthValue(evt.target.value)),
+    changeEuroValue: (evt) => dispatch(actions.investmentFlow.submitEuroValue(evt.target.value)),
+    changeInvestmentType: (type: EInvestmentType) => dispatch(actions.investmentFlow.selectInvestmentType(type))
   })
-})(InvestmentSelectionComponent)
+}))(InvestmentSelectionComponent)

@@ -39,9 +39,9 @@ const wallets = [
 
 const dummyProps = {
   getTransaction: () => {},
-  setEthValue: () => {},
-  setEuroValue: () => {},
-  setInvestmentType: () => {},
+  changeEthValue: () => {},
+  changeEuroValue: () => {},
+  changeInvestmentType: () => {},
   onAccept: () => {},
   euroValue: "1000000000",
   etherPriceEur: "100",

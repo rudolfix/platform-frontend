@@ -55,7 +55,7 @@ const EtoTimelineContext = React.createContext(defaultEtoTimelineContext);
 
 const DatePoint: React.SFC<IDatePointProps> = ({ date, type }) => {
   return (
-    <g transform={`translate(-33 -9)`}>
+    <g transform="translate(-33 -9)">
       {date && (
         <text className={styles.date}>
           <tspan x={12} y={50}>
@@ -177,9 +177,7 @@ export const EtoTimeline: React.SFC<IProps> = props => {
   const today = Date.now() + 50;
 
   // start/end dates of phases
-  const preEtoStartDate = isNaN(Date.parse(props.etoStartDate))
-    ? NaN
-    : Date.parse(props.etoStartDate);
+  const preEtoStartDate = Date.parse(props.etoStartDate);
   const publicEtoStartDate = isNaN(preEtoStartDate)
     ? NaN
     : preEtoStartDate + (props.preEtoDuration || 0) * day;

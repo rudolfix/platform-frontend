@@ -180,6 +180,7 @@ export const EtoTermsType = YupTS.object({
   notUnderCrowdfundingRegulations: YupTS.onlyTrue(),
   whitelistDurationDays: YupTS.number(),
   additionalTerms: YupTS.string().optional(),
+  signingDurationDays: YupTS.number(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
@@ -218,6 +219,7 @@ interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
   templates?: TEtoDocumentTemplates;
+  startDate: string;
 }
 
 export type TEtoSpecsData = TEtoTermsType &

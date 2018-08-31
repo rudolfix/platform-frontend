@@ -50,17 +50,17 @@ async function loadICBMWallet(
   }
 }
 
-export async function loadWalletDataAsync(
+export async function loadWalletDataAsync (
   { contractsService, web3Manager }: TGlobalDependencies,
   ethAddress: EthereumAddress,
 ): Promise<IWalletStateData> {
   return {
-    ...{
-      euroTokenICBMLockedWallet: await loadICBMWallet(ethAddress, contractsService.icbmEuroLock),
-      etherTokenICBMLockedWallet: await loadICBMWallet(ethAddress, contractsService.icbmEtherLock),
-      euroTokenLockedWallet: await loadICBMWallet(ethAddress, contractsService.euroLock),
-      etherTokenLockedWallet: await loadICBMWallet(ethAddress, contractsService.etherLock),
-    },
+    ...await promiseAll({
+      euroTokenICBMLockedWallet: loadICBMWallet(ethAddress, contractsService.icbmEuroLock),
+      etherTokenICBMLockedWallet: loadICBMWallet(ethAddress, contractsService.icbmEtherLock),
+      euroTokenLockedWallet: loadICBMWallet(ethAddress, contractsService.euroLock),
+      etherTokenLockedWallet: loadICBMWallet(ethAddress, contractsService.etherLock),
+    }),
     ...numericValuesToString(
       await promiseAll({
         etherTokenBalance: contractsService.etherToken.balanceOf(ethAddress),

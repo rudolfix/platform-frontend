@@ -12,7 +12,7 @@ import { ITokenPriceStateData } from "./reducer";
 
 const TOKEN_PRICE_MONITOR_DELAY = 5000;
 
-export async function loadTokenPriceDataAsync({
+export async function loadTokenPriceDataAsync ({
   contractsService,
 }: TGlobalDependencies): Promise<ITokenPriceStateData> {
   // todo: remove placeholders when contracts deployed on production
@@ -34,12 +34,10 @@ export async function loadTokenPriceDataAsync({
       );
   } else {
     return Object.assign(
-      numericValuesToString(
-        await promiseAll({
-          etherPriceEur: Promise.resolve(new BigNumber("483.96")),
-          neuPriceEur: Promise.resolve(new BigNumber("0.500901")),
-        }),
-      ),
+      numericValuesToString({
+        etherPriceEur: new BigNumber("483.96"),
+        neuPriceEur: new BigNumber("0.500901"),
+      }),
       { priceOutdated: true },
     );
   }

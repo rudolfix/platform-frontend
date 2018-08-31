@@ -1,7 +1,6 @@
 import BigNumber from "bignumber.js";
-import { fork, put, select, takeEvery } from "redux-saga/effects";
+import { fork, put, select, takeEvery, throttle } from "redux-saga/effects";
 
-import { throttle } from "redux-saga";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
@@ -61,11 +60,20 @@ function* start(action: TAction): any {
   yield put(actions.investmentFlow.investmentReset())
   yield put(actions.gas.gasApiEnsureLoading())
   yield put(actions.investmentFlow.setEto(action.payload.eto))
+  yield put(actions.txSender.startInvestment())
+}
+
+function* stop(): any {
+  const type: EInvestmentType = yield select((s: IAppState) => s.investmentFlow.investmentType)
+  if (type !== EInvestmentType.None) {
+    yield put(actions.investmentFlow.investmentReset())
+  }
 }
 
 export function* investmentFlowSagas(): any {
-  yield fork(takeEvery, "INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE", calculateValueFromEth)
-  yield fork(takeEvery, "INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE", validateEuroValue)
-  yield fork(takeEvery, "INVESTMENT_FLOW_START", start)
-  yield fork(throttle, 300, "INVESTMENT_FLOW_CALCULATE_CONTRIBUTION", neuCall, getCalculatedContribution)
+  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE", calculateValueFromEth)
+  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE", validateEuroValue)
+  yield throttle(300, "INVESTMENT_FLOW_CALCULATE_CONTRIBUTION", neuCall, getCalculatedContribution)
+  yield takeEvery("INVESTMENT_FLOW_START", start)
+  yield takeEvery("TX_SENDER_HIDE_MODAL", stop)
 }

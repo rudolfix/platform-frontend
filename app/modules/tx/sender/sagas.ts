@@ -20,8 +20,19 @@ export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
+export function* investSaga({ logger }: TGlobalDependencies): any {
+  try {
+    yield neuCall(txSendSaga, "INVEST");
+    logger.info("Investment successful");
+  } catch (e) {
+    logger.warn("Investment cancelled", e);
+  }
+}
+
+
 export const txSendingSagasWatcher = function*(): Iterator<any> {
-  yield fork(neuTakeEvery, "WITHDRAW_ETH", withdrawSaga);
+  yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
+  yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
 };
 
 export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
@@ -82,6 +93,8 @@ function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDepe
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
   const txData: ITxData | undefined = yield select((s: IAppState) => s.txSender.txDetails);
+  const type: TxSenderType = yield select((s: IAppState) => s.txSender.type);
+
   if (!txData) {
     throw new Error("Tx data is not defined");
   }
@@ -105,7 +118,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
         status: undefined,
         transactionIndex: undefined,
       },
-      transactionType: "WITHDRAW", // @todo hardcoded
+      transactionType: type
     };
     yield apiUserService.addPendingTx(txWithMetadata);
     yield neuCall(updateTxs);

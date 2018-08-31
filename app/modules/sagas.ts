@@ -46,7 +46,6 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(formSingleFileUploadSagas),
     effects.fork(remoteFileSagas),
     effects.fork(txSendingSagasWatcher),
-    effects.fork(txSendingSagasWatcher),
     effects.fork(gasApiSagas),
     effects.fork(etoDocumentsSagas),
     effects.fork(txMonitorSagas),

@@ -1,19 +1,22 @@
 import * as React from "react";
-import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 
+import { actions } from "../../../../modules/actions";
+import { appConnect } from "../../../../store";
+import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { Button } from "../../../shared/Buttons";
 import { DocumentLink } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
+import { ITxSummaryDispatchProps, ITxSummaryStateProps } from "../TxSender";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./Summary.module.scss";
 
-interface IStateProps {
+interface IStateProps extends ITxSummaryStateProps {
   investmentData: {
     companyName: string;
     tokenPrice: string;
@@ -27,14 +30,10 @@ interface IStateProps {
   agreementUrl: string;
 }
 
-interface IDispatchProps {
-  submit: () => void;
-}
+type IProps = IStateProps & ITxSummaryDispatchProps;
 
-type IProps = IStateProps & IDispatchProps;
-
-export const InvestmentSummary = injectIntl(
-  ({ investmentData: data, agreementUrl }: IProps & InjectedIntlProps) => {
+export const InvestmentSummaryComponent = injectIntlHelpers(
+  ({ investmentData: data, agreementUrl, onAccept }: IProps & IIntlProps) => {
     const equityTokens = (
       <span>
         <img src={tokenIcon} /> {data.equityTokens}
@@ -98,7 +97,7 @@ export const InvestmentSummary = injectIntl(
         </Row>
 
         <Row className="justify-content-center">
-          <Button layout="primary" className="mr-4" type="submit">
+          <Button layout="primary" className="mr-4" type="button" onClick={onAccept}>
             <FormattedMessage id="investment-flow.confirm" />
           </Button>
         </Row>
@@ -106,3 +105,14 @@ export const InvestmentSummary = injectIntl(
     );
   },
 );
+
+export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
+  stateToProps: state => ({
+    txData: state.txSender.txDetails!,
+    agreementUrl: "fufu",
+    investmentData: {} as any,
+  }),
+  dispatchToProps: d => ({
+    onAccept: () => d(actions.txSender.txSenderAccept()),
+  })
+})(InvestmentSummaryComponent)

@@ -2,7 +2,8 @@ import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ITxData, TxSenderType } from "./reducer";
 
 export const txSenderActions = {
-  withdrawEth: () => createSimpleAction("WITHDRAW_ETH"),
+  startWithdrawEth: () => createSimpleAction("TX_SENDER_START_WITHDRAW_ETH"),
+  startInvestment: () => createSimpleAction("TX_SENDER_START_INVESTMENT"),
   txSenderShowModal: (type: TxSenderType) => createAction("TX_SENDER_SHOW_MODAL", { type }),
   txSenderHideModal: () => createSimpleAction("TX_SENDER_HIDE_MODAL"),
   txSenderWatchPendingTxs: () => createSimpleAction("TX_SENDER_WATCH_PENDING_TXS"),

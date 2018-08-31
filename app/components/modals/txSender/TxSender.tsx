@@ -7,6 +7,8 @@ import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors"
 import { appConnect } from "../../../store";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
+import { InvestmentSelection } from "./investment-flow/Investment";
+import { InvestmentSummary } from "./investment-flow/Summary";
 import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
 import { WatchPendingTxs } from "./shared/WatchPeningTxs";
@@ -25,8 +27,6 @@ interface IStateProps {
 
 interface IDispatchProps {
   onCancel: () => any;
-  acceptDraft: (tx: Partial<ITxData>) => any;
-  accept: () => any;
 }
 
 type Props = IStateProps & IDispatchProps;
@@ -41,32 +41,51 @@ export const TxSenderModalComponent: React.SFC<Props> = props => {
   );
 };
 
-export interface IInitComponentProps {
+export interface ITxInitDispatchProps {
   onAccept: (tx: Partial<ITxData>) => any;
 }
 
-export interface ISummaryComponentProps {
+export interface ITxSummaryStateProps {
+  txData: ITxData;
+}
+export interface ITxSummaryDispatchProps {
   onAccept: () => any;
-  data: ITxData;
+}
+export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps
+
+function getInitComponent (type: TxSenderType): JSX.Element {
+  switch (type) {
+    case "INVEST":
+      return <InvestmentSelection />
+    case "WITHDRAW":
+      return <Withdraw />
+  }
+}
+
+function getSummaryComponent (type: TxSenderType): JSX.Element {
+  switch (type) {
+    case "INVEST":
+      return <InvestmentSummary />
+    case "WITHDRAW":
+      return <WithdrawSummary />
+  }
 }
 
 function renderBody({
   state,
-  acceptDraft,
-  accept,
   blockId,
-  details,
   txHash,
+  type
 }: Props): React.ReactNode {
   switch (state) {
     case "WATCHING_PENDING_TXS":
       return <WatchPendingTxs />;
 
     case "INIT":
-      return <Withdraw onAccept={acceptDraft} />;
+      return getInitComponent(type!)
 
     case "SUMMARY":
-      return <WithdrawSummary data={details!} onAccept={accept} />;
+      return getSummaryComponent(type!)
 
     case "ACCESSING_WALLET":
       return <AccessWalletContainer />;
@@ -92,14 +111,11 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: selectTxSenderModalOpened(state.txSender),
     state: state.txSender.state,
-    type: state.txSender.type,
-    details: state.txSender.txDetails,
+    type: state.txSender.type!,
     txHash: state.txSender.txHash,
     blockId: state.txSender.blockId,
   }),
   dispatchToProps: d => ({
     onCancel: () => d(actions.txSender.txSenderHideModal()),
-    acceptDraft: (tx: Partial<ITxData>) => d(actions.txSender.txSenderAcceptDraft(tx)),
-    accept: () => d(actions.txSender.txSenderAccept()),
-  }),
+  })
 })(TxSenderModalComponent);

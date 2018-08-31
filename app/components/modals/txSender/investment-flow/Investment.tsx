@@ -200,7 +200,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
   },
 );
 
-export const InvestmentSelection = compose(
+export const InvestmentSelection: React.SFC = compose<any>(
   injectIntlHelpers,
   appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => {

@@ -2,15 +2,17 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
+import { actions } from "../../../../modules/actions";
+import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/Buttons";
 import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ISummaryComponentProps } from "../TxSender";
+import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
 import { GweiFormatter } from "./Withdraw";
 
-export const WithdrawSummary: React.SFC<ISummaryComponentProps> = ({ data, onAccept }) => (
+export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({ txData, onAccept }) => (
   <>
     <Row className="mb-4">
       <Col>
@@ -23,18 +25,18 @@ export const WithdrawSummary: React.SFC<ISummaryComponentProps> = ({ data, onAcc
     <Row>
       <Col>
         <InfoList>
-          <InfoRow caption={<FormattedMessage id="withdraw-flow.to" />} value={data.to} />
+          <InfoRow caption={<FormattedMessage id="withdraw-flow.to" />} value={txData.to} />
 
           <InfoRow
             caption={<FormattedMessage id="withdraw-flow.cost" />}
-            value={<Money currency="eth" value={data.value!} />}
+            value={<Money currency="eth" value={txData.value!} />}
           />
 
-          <InfoRow caption={<FormattedMessage id="withdraw-flow.gas" />} value={data.gas!} />
+          <InfoRow caption={<FormattedMessage id="withdraw-flow.gas" />} value={txData.gas!} />
 
           <InfoRow
             caption={<FormattedMessage id="withdraw-flow.gasPrice" />}
-            value={<GweiFormatter value={data.gasPrice!} />}
+            value={<GweiFormatter value={txData.gasPrice!} />}
           />
         </InfoList>
       </Col>
@@ -49,3 +51,12 @@ export const WithdrawSummary: React.SFC<ISummaryComponentProps> = ({ data, onAcc
     </Row>
   </>
 );
+
+export const WithdrawSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispatchProps>({
+  stateToProps: state => ({
+    txData: state.txSender.txDetails!,
+  }),
+  dispatchToProps: d => ({
+    onAccept: () => d(actions.txSender.txSenderAccept()),
+  })
+})(WithdrawSummaryComponent)

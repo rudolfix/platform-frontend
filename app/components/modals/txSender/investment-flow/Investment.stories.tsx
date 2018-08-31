@@ -48,7 +48,8 @@ const dummyProps = {
   errorState: "fufu",
   investmentType: EInvestmentType.InvestmentWallet,
   // tslint:disable-next-line:no-object-literal-type-assertion
-  gasPrice: {standard: "10000000"} as GasModelShape
+  gasPrice: {standard: "10000000"} as GasModelShape,
+  minTicketEur: 200
 }
 
 storiesOf("InvestmentSelection", module).add("default", () =>

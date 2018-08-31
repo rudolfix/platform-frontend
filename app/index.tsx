@@ -1,8 +1,6 @@
-// tslint:disable-next-line: no-submodule-imports
 import createHistory from "history/createBrowserHistory";
 import { Container } from "inversify";
 import { compact } from "lodash";
-// tslint:disable-next-line: no-submodule-imports
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";

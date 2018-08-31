@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { InvestmentSummary } from "./Summary";
+import { InvestmentSummaryComponent } from "./Summary";
 
 const data: any = {
   companyName: "X company",
@@ -15,5 +15,5 @@ const data: any = {
 };
 
 storiesOf("InvestmentSummary", module).add("default", () => (
-  <InvestmentSummary investmentData={data} agreementUrl="somePDF.pdf" submit={() => {}} />
+  <InvestmentSummaryComponent txData={{} as any} investmentData={data} agreementUrl="somePDF.pdf" onAccept={() => {}} />
 ));

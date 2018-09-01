@@ -5,10 +5,14 @@
 
   &:global(.small) {
     :local(.profile) {
-      @include rect(12px);
+      @include rect(20px);
 
-      margin-right: 14px;
-      margin-left: 14px;
+      padding: 4px;
+      margin-right: 8px;
+
+      :local(.label) {
+        transform: translate(-50%, -30px);
+      }
     }
   }
 
@@ -23,7 +27,7 @@
   background-color: $color-graphite;
   flex-shrink: 0;
   margin-bottom: 12px;
-  margin-right: 20px;
+  margin-right: 15px;
   padding: px-to-rem(6px);
   position: relative;
   transition: 300ms $ease-out-expo background-color;
@@ -37,7 +41,7 @@
     }
   }
 
-  a {
+  .icon {
     &,
     &:hover {
       color: $color-white;
@@ -45,28 +49,39 @@
   }
 }
 
+
 .label {
   color: $color-graphite;
   position: absolute;
   bottom: 0;
-  padding: 5px 7px;
   pointer-events: none;
   font-size: 14px;
   border-radius: 2px;
-  background-color: $color-white;
   opacity: 0;
   transition: all .5s cubic-bezier(.68, -.55, .265, 1.55);
   left: 50%;
   transform: translate(-50%, 0);
   will-change: transform;
 
-  &::before {
+  &,
+  .ornament {
+    box-shadow: $shadow-bottom-black-light;
+  }
+
+  .content {
+    background-color: $color-white;
+    padding: 5px 7px;
+    z-index: $z-index-base;
+  }
+
+  .ornament {
     @include rect(9px);
 
     background-color: $color-white;
     content: "";
     position: absolute;
     left: 50%;
-    transform: translate(-50%, 22px) rotate(45deg);
+    transform: translate(-50%, -5px) rotate(45deg);
+    z-index: $z-index-under-base;
   }
 }

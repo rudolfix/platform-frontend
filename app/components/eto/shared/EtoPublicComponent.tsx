@@ -87,6 +87,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
     !disableTwitterFeed;
   const isYouTubeVideoAvailable = !!(companyVideo && companyVideo.url);
   const isSlideShareAvailable = !!(companySlideshare && companySlideshare.url);
+  const hasSocialChannelsAdded = !!(socialChannels && socialChannels.length);
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
       ? (socialChannels.find(c => c.type === "twitter") as any).url
@@ -178,7 +179,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       <Row className="align-items-stretch">
         <Col
           xs={12}
-          md={isSlideShareAvailable || isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12}
+          md={
+            isSlideShareAvailable ||
+            isTwitterFeedEnabled ||
+            isYouTubeVideoAvailable ||
+            hasSocialChannelsAdded
+              ? 8
+              : 12
+          }
           className="mb-4"
         >
           <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -342,7 +350,11 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
               </TabContent>
             )}
           </Tabs>
-          <div className="mt-4">
+          <div
+            className={cn(
+              (isSlideShareAvailable || isTwitterFeedEnabled || isYouTubeVideoAvailable) && "mt-4",
+            )}
+          >
             <SocialProfilesList
               profiles={(companyData.socialChannels as IEtoSocialProfile[]) || []}
             />

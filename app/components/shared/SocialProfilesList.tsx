@@ -44,6 +44,8 @@ interface IProps {
   profiles: IEtoSocialProfile[];
   layoutIconSize?: TLayoutSize;
   layoutIconsPosition?: TLayoutPosition;
+  showLabels?: boolean;
+  isClickable?: boolean;
 }
 
 export const SOCIAL_PROFILES: {
@@ -67,21 +69,47 @@ export const SocialProfilesList: React.SFC<IProps> = ({
   profiles,
   layoutIconSize,
   layoutIconsPosition,
+  showLabels,
+  isClickable,
 }) => {
+  const icon = (url: string, type: string): React.ReactNode => {
+    if (isClickable) {
+      return (
+        <a href={url} target="_blank" title={url} className={styles.icon}>
+          <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+        </a>
+      );
+    } else {
+      return (
+        <div className={styles.icon}>
+          <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={cn(styles.socialProfilesList, layoutIconSize, layoutIconsPosition)}>
       {profiles &&
         profiles.map(
           ({ type, url }) =>
-            url && (
+            !!url.length && (
               <div className={styles.profile} key={type}>
-                <a href={url} target="_blank" title={url}>
-                  <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
-                </a>
-                <span className={styles.label}>{type}</span>
+                {icon(url, type)}
+                {showLabels && (
+                  <div className={styles.label}>
+                    <div className={styles.content}>{type}</div>
+                    <div className={styles.ornament} />
+                  </div>
+                )}
               </div>
             ),
         )}
     </div>
   );
+};
+
+SocialProfilesList.defaultProps = {
+  showLabels: true,
+  isClickable: true,
 };

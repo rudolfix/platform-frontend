@@ -13,9 +13,19 @@ interface IProps {
   socialChannels: IEtoSocialProfile[];
   role: string;
   layout?: TSlidePersonLayout;
+  showLabels?: boolean;
+  isClickable?: boolean;
 }
 
-export const SlidePerson: React.SFC<IProps> = ({ srcSet, name, role, layout, socialChannels }) => {
+export const SlidePerson: React.SFC<IProps> = ({
+  srcSet,
+  name,
+  role,
+  layout,
+  socialChannels,
+  showLabels,
+  isClickable,
+}) => {
   return (
     <div className={cn(styles.slidePerson, layout)}>
       <div className={styles.image}>
@@ -30,6 +40,8 @@ export const SlidePerson: React.SFC<IProps> = ({ srcSet, name, role, layout, soc
           profiles={socialChannels || []}
           layoutIconSize="small"
           layoutIconsPosition="center"
+          showLabels={showLabels}
+          isClickable={isClickable}
         />
       )}
     </div>

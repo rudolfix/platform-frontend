@@ -5,7 +5,7 @@ import Swiper from "react-id-swiper/lib/custom";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
-import { ButtonIcon } from "./Buttons";
+import { InlineIcon } from "./InlineIcon";
 import { SlidePerson, TSlidePersonLayout } from "./SlidePerson";
 import { IEtoSocialProfile } from "./SocialProfilesList";
 
@@ -98,12 +98,12 @@ class PeopleSwiperWidgetComponent extends React.Component<IOwnProps & IDispatchP
         </Swiper>
         {navigation && (
           <>
-            <ButtonIcon
+            <InlineIcon
               svgIcon={prevIcon}
               className={cn(styles.prev, navigation.prevEl)}
               onClick={this.goPrev}
             />
-            <ButtonIcon
+            <InlineIcon
               svgIcon={nextIcon}
               className={cn(styles.next, navigation.nextEl)}
               onClick={this.goNext}

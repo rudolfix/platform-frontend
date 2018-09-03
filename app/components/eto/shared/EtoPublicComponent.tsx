@@ -163,21 +163,23 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
         smartContractOnchain={true}
       />
 
-      <Row>
-        <Col className="mb-4">
-          <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.public-view.eto-timeline" />
-          </SectionHeader>
-          <Panel>
-            <EtoTimeline
-              etoStartDate={etoData.startDate}
-              preEtoDuration={etoData.whitelistDurationDays}
-              publicEtoDuration={etoData.publicDurationDays}
-              inSigningDuration={etoData.signingDurationDays}
-            />
-          </Panel>
-        </Col>
-      </Row>
+      {etoData.startDate && (
+        <Row>
+          <Col className="mb-4">
+            <SectionHeader layoutHasDecorator={false} className="mb-4">
+              <FormattedMessage id="eto.public-view.eto-timeline" />
+            </SectionHeader>
+            <Panel>
+              <EtoTimeline
+                etoStartDate={etoData.startDate}
+                preEtoDuration={etoData.whitelistDurationDays}
+                publicEtoDuration={etoData.publicDurationDays}
+                inSigningDuration={etoData.signingDurationDays}
+              />
+            </Panel>
+          </Col>
+        </Row>
+      )}
 
       <Row className="align-items-stretch">
         <Col

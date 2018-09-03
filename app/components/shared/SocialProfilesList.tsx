@@ -94,7 +94,7 @@ export const SocialProfilesList: React.SFC<IProps> = ({
         profiles.map(
           ({ type, url }) =>
             !!url.length && (
-              <div className={styles.profile} key={type}>
+              <div className={styles.profile} key={`${type}-${url}`}>
                 {icon(url, type)}
                 {showLabels && (
                   <div className={styles.label}>

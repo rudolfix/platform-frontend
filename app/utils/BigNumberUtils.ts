@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 
-type NumberRepresentation = string | number | BigNumber
+type BigNumberRepresentation = string | number | BigNumber
 
 /**
  * Add string as BigNumbers
  */
-export const addBigNumbers = (numbers: NumberRepresentation[]): string =>
+export const addBigNumbers = (numbers: BigNumberRepresentation[]): string =>
   numbers
     .reduce((acc: BigNumber, number) => {
       return acc.plus(new BigNumber(number));
@@ -15,7 +15,7 @@ export const addBigNumbers = (numbers: NumberRepresentation[]): string =>
 /**
  * Multiply string as BigNumbers
  */
-export const multiplyBigNumbers = (numbers: NumberRepresentation[]): string =>
+export const multiplyBigNumbers = (numbers: BigNumberRepresentation[]): string =>
   numbers
     .reduce((acc: BigNumber, number) => {
       return acc.mul(new BigNumber(number));
@@ -25,5 +25,10 @@ export const multiplyBigNumbers = (numbers: NumberRepresentation[]): string =>
 /**
  * Divide any number representation as BigNumbers
  */
-export const divideBigNumbers = (dividend: NumberRepresentation, divisor: NumberRepresentation): string =>
+export const divideBigNumbers = (dividend: BigNumberRepresentation, divisor: BigNumberRepresentation): string =>
   (new BigNumber(dividend)).div(divisor).toString();
+
+
+export const compareBigNumbers = (a: BigNumberRepresentation, b: BigNumberRepresentation): number => {
+  return (new BigNumber(a).comparedTo(b))
+}

@@ -13,12 +13,14 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_START", { eto }),
   investmentReset: () =>
     createSimpleAction("INVESTMENT_FLOW_RESET"),
-  calculateContribution: () =>
-    createSimpleAction("INVESTMENT_FLOW_CALCULATE_CONTRIBUTION"),
+  validateInputs: () =>
+    createSimpleAction("INVESTMENT_FLOW_VALIDATE_INPUTS"),
   setEuroValue: (value: string) =>
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE", { value }),
   setCalculatedContribution: (contrib?: ICalculatedContribution) =>
     createAction("INVESTMENT_FLOW_SET_CALCULATED_CONTRIBUTION", { contrib }),
+  setGasPrice: (gasPrice: string) =>
+    createAction("INVESTMENT_FLOW_SET_GAS_PRICE", { gasPrice }),
   setEto: (eto: TInvestorEtoData) =>
     createAction("INVESTMENT_FLOW_SET_ETO", { eto }),
   setErrorState: (errorState?: EInvestmentErrorState) =>

@@ -207,7 +207,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
     const etherPriceEur = state.tokenPrice.tokenPriceData!.etherPriceEur
     return ({
       etherPriceEur,
-      euroValue: state.investmentFlow.euroValue,
+      euroValue: state.investmentFlow.euroValueUlps,
       errorState: state.investmentFlow.errorState,
       gasPrice: state.gas.gasPrice,
       investmentType: state.investmentFlow.investmentType,

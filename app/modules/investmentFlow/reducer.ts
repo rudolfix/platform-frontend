@@ -3,6 +3,10 @@ import BigNumber from "bignumber.js";
 import { TInvestorEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
+
+const INVESTMENT_GAS_AMOUNT = "600000"
+const GAS_PRICE_MULTIPLIER = 1.2
 
 export enum EInvestmentType {
   None = "NONE",
@@ -17,7 +21,8 @@ export enum EInvestmentErrorState {
   BelowMinimumTicketSize = "below_minimum_ticket_size",
   ExceedsWalletBalance = "exceeds_wallet_balance",
   ExceedsTokenAmount = "exceeds_token_amount",
-  NoWalletSelected = "no_wallet_selected"
+  NoWalletSelected = "no_wallet_selected",
+  NotEnoughEtherForGas = "not_enough_ether_for_gas"
 }
 
 export interface ICalculatedContribution {
@@ -30,16 +35,20 @@ export interface ICalculatedContribution {
 }
 
 export interface IInvestmentFlowState {
-  euroValue: string,
+  euroValueUlps: string,
   investmentType: EInvestmentType
   eto?: TInvestorEtoData
   errorState?: EInvestmentErrorState
   calculatedContribution?: ICalculatedContribution
+  gasAmount: string
+  gasPrice: string
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
-  euroValue: "",
-  investmentType: EInvestmentType.None
+  euroValueUlps: "",
+  investmentType: EInvestmentType.None,
+  gasAmount: INVESTMENT_GAS_AMOUNT,
+  gasPrice: ""
 };
 
 export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
@@ -55,9 +64,14 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         investmentType: action.payload.type,
-        euroValue: "",
+        euroValueUlps: "",
         errorState: undefined,
         calculatedContribution: undefined,
+      };
+    case "INVESTMENT_FLOW_SET_GAS_PRICE":
+      return {
+        ...state,
+        gasPrice: multiplyBigNumbers([action.payload.gasPrice, GAS_PRICE_MULTIPLIER])
       };
     case "INVESTMENT_FLOW_SET_ETO":
       return {
@@ -72,7 +86,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE":
       return {
         ...state,
-        euroValue: action.payload.value
+        euroValueUlps: action.payload.value
       };
     case "INVESTMENT_FLOW_SET_CALCULATED_CONTRIBUTION":
       return {

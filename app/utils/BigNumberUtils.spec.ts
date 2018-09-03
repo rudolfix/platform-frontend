@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import BigNumber from "bignumber.js";
 
-import { addBigNumbers, multiplyBigNumbers, divideBigNumbers } from "./BigNumberUtils";
+import { addBigNumbers, multiplyBigNumbers, divideBigNumbers, compareBigNumbers } from "./BigNumberUtils";
 
 describe("BigNumber Utils", () => {
   describe("addBigNumbers", () => {
@@ -22,6 +22,14 @@ describe("BigNumber Utils", () => {
     it("should divide", () => {
       expect(divideBigNumbers("1000", "5")).to.eq("200")
       expect(divideBigNumbers(1000, new BigNumber(5))).to.eq("200")
+    })
+  })
+
+  describe("compareBigNumbers", () => {
+    it ("compares big numbers", () => {
+      expect(compareBigNumbers('1000', "10")).to.equal(1)
+      expect(compareBigNumbers('1000', "1000")).to.equal(0)
+      expect(compareBigNumbers('1000', "1001")).to.equal(-1)
     })
   })
 });

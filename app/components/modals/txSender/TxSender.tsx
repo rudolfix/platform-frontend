@@ -1,3 +1,4 @@
+import * as cn from "classnames"
 import * as React from "react";
 import { Modal } from "reactstrap";
 
@@ -31,11 +32,15 @@ interface IDispatchProps {
 
 type Props = IStateProps & IDispatchProps;
 
+function isBigModal (props: Props): boolean {
+  return props.state === "INIT" && props.type === "INVEST"
+}
+
 export const TxSenderModalComponent: React.SFC<Props> = props => {
   const { isOpen, onCancel } = props;
 
   return (
-    <Modal isOpen={isOpen} toggle={onCancel}>
+    <Modal isOpen={isOpen} toggle={onCancel} className={cn(isBigModal(props) && "big")}>
       <ModalComponentBody onClose={onCancel}>{renderBody(props)}</ModalComponentBody>
     </Modal>
   );
@@ -100,7 +105,7 @@ function renderBody({
       return <WithdrawSuccess />;
 
     case "ERROR_SIGN":
-      return <div>Error occured!</div>;
+      return <div>Error occured!!!!</div>;
 
     case "REVERTED":
       return <div>Error: Tx reverted!</div>;

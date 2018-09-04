@@ -38,6 +38,7 @@ $_logo-size-sm: 80px;
   @include responsive-size(width, $_logo-size-sm, $_logo-size-xl);
 
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .details {

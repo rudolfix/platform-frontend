@@ -11,12 +11,16 @@ import {
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { selectEtoDocumentData } from "../../modules/eto-documents/selectors";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IStateProps {
   companyData?: TPartialCompanyEtoData;
   etoData?: TPartialEtoSpecData;
+  etoFilesData: IEtoFiles;
   previewCode: string;
   loading: boolean;
 }
@@ -47,6 +51,7 @@ class EtoPreviewComponent extends React.Component<IProps> {
           // TODO: type casting needs to be resolved, but EtoPublicComponent required the full data, not the partial type
           companyData={this.props.companyData as TCompanyEtoData}
           etoData={this.props.etoData as TEtoSpecsData}
+          etoFilesData={this.props.etoFilesData}
         />
       </LayoutAuthorized>
     );
@@ -56,12 +61,18 @@ class EtoPreviewComponent extends React.Component<IProps> {
 interface IOwnProps extends RouteComponentProps<{ previewCode: string }> {}
 
 export const EtoPreview = compose<React.SFC>(
+  onEnterAction({
+    actionCreator: dispatch => {
+      dispatch(actions.etoDocuments.loadFileDataStart());
+    },
+  }),
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: (state, connectProps) => ({
       previewCode: connectProps.match.params.previewCode,
       companyData: state.eto.previewCompanyData[connectProps.match.params.previewCode],
       etoData: state.eto.previewEtoData[connectProps.match.params.previewCode],
       loading: state.eto.previewLoading[connectProps.match.params.previewCode],
+      etoFilesData: selectEtoDocumentData(state.etoDocuments),
     }),
     dispatchToProps: dispatch => ({
       loadEtoPreview: (previewCode: string) =>

@@ -12,12 +12,6 @@
   letter-spacing: px-to-rem(-.5px);
 }
 
-@mixin font-headline-medium {
-  font-family: $headings-font-family;
-  font-size: px-to-rem(32px);
-  letter-spacing: px-to-rem(-.5px);
-}
-
 @mixin font-headline {
   font-family: $headings-font-family;
   font-size: px-to-rem(20px);

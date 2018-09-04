@@ -44,11 +44,11 @@ export const immutableDocumentTitle: { [key: string]: string | React.ReactNode }
   pamphlet_template: <FormattedMessage id="eto.documents.pamphlet_template" />,
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-Template" />,
   reservation_and_acquisition_agreement: (
-    <FormattedMessage id="eto.documents.Reservation-and-Acquisition-Agreement" />
+    <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
   ),
   termsheet_template: <FormattedMessage id="eto.documents.Termsheet-Template" />,
-  bafin_approved_prospectus: <FormattedMessage id="eto.documents.Bafin-Approved-Prospectus" />,
-  bafin_approved_pamphlet: <FormattedMessage id="eto.documents.Bafin-Approved-Pamphlet" />,
+  approved_prospectus: <FormattedMessage id="eto.documents.Approved-Prospectus" />,
+  approved_pamphlet: <FormattedMessage id="eto.documents.Approved-Pamphlet" />,
   signed_investment_and_shareholder_agreement: (
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
   ),

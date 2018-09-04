@@ -5,6 +5,7 @@
 
 .next,
 .prev {
+  border: 1px solid currentColor;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

@@ -24,8 +24,8 @@ export type etoDocumentType =
   | "prospectus_template"
   | "pamphlet_template"
   | "termsheet_template"
-  | "bafin_approved_prospectus"
-  | "bafin_approved_pamphlet"
+  | "approved_prospectus"
+  | "approved_pamphlet"
   | "signed_investment_and_shareholder_agreement"
   | "other";
 
@@ -60,7 +60,7 @@ export const immutableDocumentName: { [key: string]: string } = {
   prospectus_template: "Prospectus Template",
   reservation_and_acquisition_agreement: "Reservation and Acquisition Agreement",
   termsheet_template: "Termsheet Template",
-  bafin_approved_prospectus: "Bafin Approved Prospectus",
-  bafin_approved_pamphlet: "Bafin Approved Pamphlet",
+  approved_prospectus: "Approved Prospectus",
+  approved_pamphlet: "Approved Pamphlet",
   signed_investment_and_shareholder_agreement: "Signed Investment and Shareholder Agreement",
 };

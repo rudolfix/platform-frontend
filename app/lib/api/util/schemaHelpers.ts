@@ -62,17 +62,17 @@ export const isUsCitizen = citizen.test(
 
 export const countryCode = Yup.string();
 export const RESTRICTED_COUNTRIES = [
-  "BA",
   "KP",
-  "CU",
+  "ET",
   "IR",
-  "IQ",
+  "PK",
+  "RS",
   "LK",
   "SY",
-  "SD",
+  "TT",
+  "TN",
+  "YE",
   "US",
-  "AL",
-  "RS",
 ];
 
 export const restrictedCountry = countryCode

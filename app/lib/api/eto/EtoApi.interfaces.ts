@@ -80,10 +80,10 @@ const groupType = YupTS.object({
   members: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
-      role: YupTS.string().optional(),
+      role: YupTS.string(),
       image: YupTS.string().optional(),
       description: YupTS.string(),
-      website: YupTS.url(),
+      website: YupTS.url().optional(),
       socialChannels: socialChannelsType.optional(),
     }),
   ),
@@ -133,6 +133,10 @@ export const EtoMediaType = YupTS.object({
     title: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
     url: YupTS.url(),
   }),
+  companySlideshare: YupTS.object({
+    title: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
+    url: YupTS.url().optional(),
+  }),
 
   socialChannels: socialChannelsType.optional(),
   companyNews: YupTS.array(linkType).optional(),
@@ -176,6 +180,7 @@ export const EtoTermsType = YupTS.object({
   notUnderCrowdfundingRegulations: YupTS.onlyTrue(),
   whitelistDurationDays: YupTS.number(),
   additionalTerms: YupTS.string().optional(),
+  signingDurationDays: YupTS.number(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
@@ -214,6 +219,7 @@ interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
   templates?: TEtoDocumentTemplates;
+  startDate: string;
 }
 
 export type TEtoSpecsData = TEtoTermsType &

@@ -7,15 +7,18 @@ import { Col, Row } from "reactstrap";
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 
 import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { IEtoFiles } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
+import { Document } from "../../shared/Document";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { SectionHeader } from "../../shared/SectionHeader";
-import { SocialProfilesList } from "../../shared/SocialProfilesList";
+import { Slides } from "../../shared/Slides";
+import { IEtoSocialProfile, SocialProfilesList } from "../../shared/SocialProfilesList";
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
@@ -34,8 +37,8 @@ const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#394652", "#c
 
 const swiperSettings = {
   slidesPerView: 5,
-  observer: true,
   centeredSlides: true,
+  observer: true,
   spaceBetween: 80,
   breakpoints: {
     640: {
@@ -49,17 +52,10 @@ const swiperSettings = {
   },
 };
 
-const day = 86400000;
-const etoStartDate = Date.now() - 20 * day;
-const bookBuildingEndDate = etoStartDate + 16 * day;
-const whitelistedEndDate = bookBuildingEndDate + 7 * day;
-const publicEndDate = whitelistedEndDate + 7 * day;
-const inSigningEndDate = publicEndDate + 14 * day;
-const etoEndDate = inSigningEndDate + 7 * day;
-
 interface IProps {
   companyData: TCompanyEtoData;
   etoData: TEtoSpecsData;
+  etoFilesData: IEtoFiles;
 }
 
 // TODO: There are lots of castings right now in this file, cause formerly the types of IProps was "any"
@@ -74,7 +70,7 @@ export const CURRENCIES: ICurrencies = {
   eur_t: "nEUR",
 };
 
-export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, etoFilesData }) => {
   const preMoneyValuationEur = etoData.preMoneyValuationEur || 1;
   const existingCompanyShares = etoData.existingCompanyShares || 1;
   const newSharesToIssue = etoData.newSharesToIssue || 1;
@@ -83,16 +79,17 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
 
   const computedNewSharePrice = preMoneyValuationEur / existingCompanyShares;
   const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
-  const computedMaxNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
   const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
   const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
 
-  const { socialChannels, companyVideo, disableTwitterFeed } = companyData;
+  const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
     !disableTwitterFeed;
-  const isYouTubeVideoAvailable = companyVideo && companyVideo.url && companyVideo.url.length > 0;
+  const isYouTubeVideoAvailable = !!(companyVideo && companyVideo.url);
+  const isSlideShareAvailable = !!(companySlideshare && companySlideshare.url);
+  const hasSocialChannelsAdded = !!(socialChannels && socialChannels.length);
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
       ? (socialChannels.find(c => c.type === "twitter") as any).url
@@ -137,7 +134,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       />
 
       <EtoOverviewStatus
-        image={{
+        tokenImage={{
           srcSet: {
             "1x": etoData.equityTokenImage || token_icon,
           },
@@ -145,14 +142,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         }}
         className="mb-4"
         prospectusApproved={true}
-        onchain={false}
-        tokenPrice="10000"
-        companyEquity=""
-        companyValuation="10000000"
-        declaredCap="100000"
+        equityTokenPrice="10000"
+        newSharesGenerated="1000"
+        preMoneyValuation="10000000"
+        investmentAmount="100000"
         status="campaigning"
-        tokenName={etoData.equityTokenName}
-        tokenSymbol={etoData.equityTokenSymbol}
+        tokenName={etoData.equityTokenName || ""}
+        tokenSymbol={etoData.equityTokenSymbol || ""}
         campaigningWidget={{
           amountBacked: "20",
           investorsBacked: 2,
@@ -163,46 +159,59 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           tokensGoal: 30,
           raisedTokens: 12,
         }}
+        termSheet={true}
+        smartContractOnchain={true}
       />
 
-      <Row>
-        <Col className="mb-4">
-          <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.public-view.eto-timeline" />
-          </SectionHeader>
-          <Panel>
-            <EtoTimeline
-              bookBuildingEndDate={bookBuildingEndDate}
-              whitelistedEndDate={whitelistedEndDate}
-              publicEndDate={publicEndDate}
-              inSigningEndDate={inSigningEndDate}
-              etoStartDate={etoStartDate}
-              etoEndDate={etoEndDate}
-              status="campaigning"
-            />
-          </Panel>
-        </Col>
-      </Row>
+      {etoData.startDate && (
+        <Row>
+          <Col className="mb-4">
+            <SectionHeader layoutHasDecorator={false} className="mb-4">
+              <FormattedMessage id="eto.public-view.eto-timeline" />
+            </SectionHeader>
+            <Panel>
+              <EtoTimeline
+                etoStartDate={etoData.startDate}
+                preEtoDuration={etoData.whitelistDurationDays}
+                publicEtoDuration={etoData.publicDurationDays}
+                inSigningDuration={etoData.signingDurationDays}
+              />
+            </Panel>
+          </Col>
+        </Row>
+      )}
 
       <Row className="align-items-stretch">
-        <Col xs={12} md={isTwitterFeedEnabled || isYouTubeVideoAvailable ? 8 : 12} className="mb-4">
+        <Col
+          xs={12}
+          md={
+            isSlideShareAvailable ||
+            isTwitterFeedEnabled ||
+            isYouTubeVideoAvailable ||
+            hasSocialChannelsAdded
+              ? 8
+              : 12
+          }
+          className="mb-4"
+        >
           <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.public-view.about" />
-          </SectionHeader>
-          <Panel className="mb-4">
-            <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
-            {companyData.keyQuoteFounder && <p className="mb-4">"{companyData.keyQuoteFounder}"</p>}
-            {companyData.keyQuoteInvestor && (
-              <p className="mb-4">"{companyData.keyQuoteInvestor}"</p>
-            )}
-            <div className="d-flex justify-content-between">
+            <div className={styles.companyHeader}>
+              <div>{companyData.brandName}</div>
               {companyData.companyWebsite && (
                 <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
                   {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
                 </a>
               )}
-              <SocialProfilesList profiles={companyData.socialChannels || []} />
             </div>
+          </SectionHeader>
+          <Panel className="mb-4">
+            <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
+            {companyData.keyQuoteFounder && (
+              <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteFounder}"</p>
+            )}
+            {companyData.keyQuoteInvestor && (
+              <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteInvestor}"</p>
+            )}
           </Panel>
 
           <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -328,27 +337,47 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Row>
           </Panel>
         </Col>
-        {(isTwitterFeedEnabled || isYouTubeVideoAvailable) && (
-          <Col xs={12} md={4} className="mb-4 flex-column d-flex">
-            <Video
-              youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
-              className="mb-4 mt-5"
-            />
-            {isTwitterFeedEnabled && (
-              <>
-                <SectionHeader layoutHasDecorator={false} className="mb-4">
-                  Twitter
-                </SectionHeader>
-                <Panel
-                  narrow
-                  className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
-                >
-                  <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
-                </Panel>
-              </>
+        <Col xs={12} md={4} className="mb-4 flex-column d-flex">
+          <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
+            {isYouTubeVideoAvailable && (
+              <TabContent tab="video">
+                <Video
+                  youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
+                  hasModal
+                />
+              </TabContent>
             )}
-          </Col>
-        )}
+            {isSlideShareAvailable && (
+              <TabContent tab="pitch deck">
+                <Slides
+                  slideShareUrl={companyData.companySlideshare && companyData.companySlideshare.url}
+                />
+              </TabContent>
+            )}
+          </Tabs>
+          <div
+            className={cn(
+              (isSlideShareAvailable || isTwitterFeedEnabled || isYouTubeVideoAvailable) && "mt-4",
+            )}
+          >
+            <SocialProfilesList
+              profiles={(companyData.socialChannels as IEtoSocialProfile[]) || []}
+            />
+          </div>
+          {isTwitterFeedEnabled && (
+            <>
+              <SectionHeader layoutHasDecorator={false} className="mt-4 mb-4">
+                Twitter
+              </SectionHeader>
+              <Panel
+                narrow
+                className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
+              >
+                <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
+              </Panel>
+            </>
+          )}
+        </Col>
       </Row>
 
       <Row>
@@ -359,161 +388,219 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           <Panel className={styles.tokenTerms}>
             <div className={styles.content}>
               <div className={styles.group}>
-                {computedMinCapEur && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.soft-cap" />
-                    </span>
-                    <span className={styles.value}>{computedMinCapEur}</span>
-                  </div>
-                )}
-                {computedMaxCapEur && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.hard-cap" />
-                    </span>
-                    <span className={styles.value}>{computedMaxCapEur}</span>
-                  </div>
-                )}
-                {computedMinNumberOfTokens && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.minimum-token-cap" />
-                    </span>
-                    <span className={styles.value}>{computedMinNumberOfTokens}</span>
-                  </div>
-                )}
-                {computedMaxNumberOfTokens && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.maximum-token-cap" />
-                    </span>
-                    <span className={styles.value}>{computedMaxNumberOfTokens}</span>
-                  </div>
-                )}
-                {etoData.discountScheme && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.token-discount" />
-                    </span>
-                    <span className={styles.value}>{etoData.discountScheme}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.divider} />
-
-              <div className={styles.group}>
-                {etoData.equityTokensPerShare && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
-                    </span>
-                    <span className={styles.value}>{etoData.equityTokensPerShare}</span>
-                  </div>
-                )}
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
-                  </span>
-                  <span className={styles.value}>
-                    €{" "}
-                    {etoData.preMoneyValuationEur && etoData.existingCompanyShares
-                      ? (etoData.preMoneyValuationEur / etoData.existingCompanyShares).toPrecision(
-                          4,
-                        )
-                      : DEFAULT_PLACEHOLDER}
-                  </span>
+                <div className={styles.groupTitle}>
+                  <FormattedMessage id="eto.public-view.token-terms.group-title.equity" />
                 </div>
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.fundraising-currency" />
-                  </span>
-                  <span className={styles.value}>
-                    {etoData.currencies
-                      ? etoData.currencies
-                          .map((currency: string) => CURRENCIES[currency])
-                          .join(" / ")
-                      : DEFAULT_PLACEHOLDER}
-                  </span>
-                </div>
-                {etoData.minTicketEur && (
+                <div className={styles.groupContent}>
+                  {etoData.preMoneyValuationEur && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.pre-money-valuation" />
+                      </span>
+                      <span className={styles.value}>
+                        {"€ "}
+                        {etoData.preMoneyValuationEur}
+                      </span>
+                    </div>
+                  )}
+                  {etoData.existingCompanyShares && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.existing-shares" />
+                      </span>
+                      <span className={styles.value}>{etoData.existingCompanyShares}</span>
+                    </div>
+                  )}
                   <div className={styles.entry}>
                     <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.minimum-ticket-size" />
-                    </span>
-                    <span className={styles.value}>€ {etoData.minTicketEur}</span>
-                  </div>
-                )}
-                {etoData.maxTicketEur && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.maximum-ticket-size" />
-                    </span>
-                    <span className={styles.value}>€ {etoData.maxTicketEur}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.divider} />
-
-              <div className={styles.group}>
-                {etoData.whitelistDurationDays && (
-                  <div className={styles.entry}>
-                    <span className={styles.label}>
-                      <FormattedMessage id="eto.public-view.token-terms.pre-sale-duration" />
+                      <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
                     </span>
                     <span className={styles.value}>
-                      {etoData.whitelistDurationDays}{" "}
-                      <FormattedMessage id="eto.public-view.token-terms.days" />
+                      {"€ "}
+                      {computedNewSharePrice.toFixed(4)}
                     </span>
                   </div>
-                )}
-
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.public-offer-duration" />
-                  </span>
-                  <span className={styles.value}>
-                    <FormattedMessage id="eto.public-view.token-terms.weeks" />
-                  </span>
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.investment-amount" />
+                    </span>
+                    <span className={styles.value}>
+                      {"€ "} {computedMinCapEur.toFixed(4)} - {"€ "}
+                      {computedMaxCapEur.toFixed(4)}
+                    </span>
+                  </div>
+                  {etoData.discountScheme && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.price-discount" />
+                      </span>
+                      <span className={styles.value}>{etoData.discountScheme}</span>
+                    </div>
+                  )}
+                  {etoFilesData.uploadedDocuments[
+                    "signed_investment_and_shareholder_agreement"
+                  ] && (
+                    <a
+                      href={`${
+                        etoFilesData.uploadedDocuments[
+                          "signed_investment_and_shareholder_agreement"
+                        ]
+                      }`}
+                      className={styles.groupDocumentLink}
+                    >
+                      <div className={styles.icon}>
+                        <Document extension="pdf" />
+                      </div>
+                      <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
+                    </a>
+                  )}
                 </div>
+              </div>
 
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.token-transfers" />
-                  </span>
-                  <span className={styles.value}>
-                    {etoData.enableTransferOnSuccess ? (
-                      <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                    ) : (
-                      <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                    )}
-                  </span>
+              <div className={styles.divider} />
+
+              <div className={styles.group}>
+                <div className={styles.groupTitle}>
+                  <FormattedMessage id="eto.public-view.token-terms.group-title.token-sale" />
                 </div>
-
-                <div className={styles.entry}>
-                  <span className={styles.label}>Voting rights</span>
-                  <span className={styles.value}>
-                    {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
-                      <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                    ) : (
-                      <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                    )}
-                  </span>
+                <div className={styles.groupContent}>
+                  {etoData.equityTokensPerShare && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
+                      </span>
+                      <span className={styles.value}>{etoData.equityTokensPerShare}</span>
+                    </div>
+                  )}
+                  {computedMinNumberOfTokens && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.tokens-to-issue" />
+                      </span>
+                      <span className={styles.value}>{computedMinNumberOfTokens}</span>
+                    </div>
+                  )}
+                  {computedNewSharePrice && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.token-price" />
+                      </span>
+                      <span className={styles.value}>€ {computedNewSharePrice.toFixed(4)}</span>
+                    </div>
+                  )}
+                  {etoData.whitelistDurationDays && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.pre-eto-duration" />
+                      </span>
+                      <span className={styles.value}>
+                        {etoData.whitelistDurationDays}{" "}
+                        <FormattedMessage id="eto.public-view.token-terms.days" />
+                      </span>
+                    </div>
+                  )}
+                  {etoData.publicDurationDays && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.public-eto-duration" />
+                      </span>
+                      <span className={styles.value}>
+                        {etoData.publicDurationDays}{" "}
+                        <FormattedMessage id="eto.public-view.token-terms.days" />
+                      </span>
+                    </div>
+                  )}
+                  {etoFilesData.uploadedDocuments["reservation_and_acquisition_agreement"] && (
+                    <a
+                      href={`${
+                        etoFilesData.uploadedDocuments["reservation_and_acquisition_agreement"]
+                      }`}
+                      className={styles.groupDocumentLink}
+                    >
+                      <div className={styles.icon}>
+                        <Document extension="pdf" />
+                      </div>
+                      <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
+                    </a>
+                  )}
                 </div>
+              </div>
 
-                <div className={styles.entry}>
-                  <span className={styles.label}>
-                    <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
-                  </span>
-                  <span className={styles.value}>
-                    {etoData.liquidationPreferenceMultiplier !== 0 ? (
-                      <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                    ) : (
-                      <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                    )}
-                  </span>
+              <div className={styles.divider} />
+
+              <div className={styles.group}>
+                <div className={styles.groupTitle}>
+                  <FormattedMessage id="eto.public-view.token-terms.group-title.token-holder-rights" />
+                </div>
+                <div className={styles.groupContent}>
+                  {etoData.nominee && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.nominee" />
+                      </span>
+                      <span className={styles.value}>{etoData.nominee}</span>
+                    </div>
+                  )}
+                  {etoData.signingDurationDays && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.token-terms.public-offer-duration" />
+                      </span>
+                      <span className={styles.value}>
+                        {etoData.signingDurationDays}{" "}
+                        <FormattedMessage id="eto.public-view.token-terms.days" />
+                      </span>
+                    </div>
+                  )}
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.token-tradability" />
+                    </span>
+                    <span className={styles.value}>
+                      {etoData.enableTransferOnSuccess ? (
+                        <FormattedMessage id="eto.public-view.token-terms.enabled" />
+                      ) : (
+                        <FormattedMessage id="eto.public-view.token-terms.disabled" />
+                      )}
+                    </span>
+                  </div>
+
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.voting-rights" />
+                    </span>
+                    <span className={styles.value}>
+                      {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
+                        <FormattedMessage id="eto.public-view.token-terms.disabled" />
+                      ) : (
+                        <FormattedMessage id="eto.public-view.token-terms.enabled" />
+                      )}
+                    </span>
+                  </div>
+
+                  <div className={styles.entry}>
+                    <span className={styles.label}>
+                      <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
+                    </span>
+                    <span className={styles.value}>
+                      {etoData.liquidationPreferenceMultiplier !== 0 ? (
+                        <FormattedMessage id="eto.public-view.token-terms.enabled" />
+                      ) : (
+                        <FormattedMessage id="eto.public-view.token-terms.disabled" />
+                      )}
+                    </span>
+                  </div>
+                  {etoFilesData.uploadedDocuments["company_token_holder_agreement"] && (
+                    <a
+                      href={`${etoFilesData.uploadedDocuments["company_token_holder_agreement"]}`}
+                      className={styles.groupDocumentLink}
+                    >
+                      <div className={styles.icon}>
+                        <Document extension="pdf" />
+                      </div>
+                      <FormattedMessage id="eto.documents.tokenholder-agreement" />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -525,45 +612,20 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         (companyData.team && companyData.team.members[0].name.length)) && (
         <Row>
           <Col className="mb-4">
-            <Tabs
-              className="mb-4"
-              layoutSize="large"
-              layoutOrnament={false}
-              selectedIndex={selectActiveCarouselTab([companyData.founders, companyData.team])}
-            >
-              {companyData.founders &&
-                companyData.founders.members.length > 0 && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.founders" />}>
-                    <Panel>
-                      <PeopleSwiperWidget
-                        {...swiperSettings}
-                        people={companyData.founders.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-founders-next",
-                          prevEl: "people-swiper-founders-prev",
-                        }}
-                        layout="vertical"
-                      />
-                    </Panel>
-                  </TabContent>
-                )}
-              {companyData.team &&
-                companyData.team.members.length > 0 && (
-                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.team" />}>
-                    <Panel>
-                      <PeopleSwiperWidget
-                        {...swiperSettings}
-                        people={companyData.team.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-team-next",
-                          prevEl: "people-swiper-team-prev",
-                        }}
-                        layout="vertical"
-                      />
-                    </Panel>
-                  </TabContent>
-                )}
-            </Tabs>
+            <SectionHeader layoutHasDecorator={false} className="mb-4">
+              <FormattedMessage id="eto.public-view.carousel.team" />
+            </SectionHeader>
+            <Panel>
+              <PeopleSwiperWidget
+                {...swiperSettings}
+                people={(companyData.founders && (companyData.founders.members as IPerson[])) || []}
+                navigation={{
+                  nextEl: "people-swiper-founders-next",
+                  prevEl: "people-swiper-founders-prev",
+                }}
+                layout="vertical"
+              />
+            </Panel>
           </Col>
         </Row>
       )}
@@ -812,13 +874,19 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Panel>
         </Col>
         <Col sm={12} md={4}>
-          <SectionHeader layoutHasDecorator={false} className="mb-4">
-            <FormattedMessage id="eto.form.documents.title" />
-          </SectionHeader>
-          <DocumentsWidget className="mb-4" groups={documents} />
+          {documents[0] &&
+            !!documents[0].documents[0].url.length && (
+              <>
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <FormattedMessage id="eto.form.documents.title" />
+                </SectionHeader>
+
+                <DocumentsWidget className="mb-4" groups={documents} />
+              </>
+            )}
 
           {companyData.companyNews &&
-            companyData.companyNews.length > 0 && (
+            !!companyData.companyNews[0].url.length && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.media-links.title" />

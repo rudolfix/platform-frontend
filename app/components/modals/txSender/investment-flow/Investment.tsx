@@ -20,6 +20,8 @@ import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
+import { selectInvestmentGasCost, selectReadyToInvest } from "../../../../modules/investmentFlow/selectors";
+import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
 import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
 import * as styles from "./Investment.module.scss";
@@ -30,10 +32,11 @@ interface IStateProps {
   euroValue: string;
   etherPriceEur: string;
   investmentType: EInvestmentType;
-  gasPrice?: GasModelShape;
-  errorState?: string;
+  gasCost: string;
+  errorState?: EInvestmentErrorState;
   calculatedContribution?: ICalculatedContribution
   minTicketEur: number
+  readyToInvest: boolean
 }
 
 interface IDispatchProps {
@@ -87,6 +90,19 @@ function getInvestmentTypeMessages (type: EInvestmentType): React.ReactNode {
   }
 }
 
+function getInputErrorMessage (type?: EInvestmentErrorState): React.ReactNode | undefined {
+  switch (type) {
+    case EInvestmentErrorState.ExceedsTokenAmount:
+      return <FormattedMessage id="investment-flow.error-message.exceeds-token-amount" />
+    case EInvestmentErrorState.AboveMaximumTicketSize:
+      return <FormattedMessage id="investment-flow.error-message.above-maximum-ticket-size" />
+    case EInvestmentErrorState.BelowMinimumTicketSize:
+      return <FormattedMessage id="investment-flow.error-message.below-minimum-ticket-size" />
+    case EInvestmentErrorState.ExceedsWalletBalance:
+      return <FormattedMessage id="investment-flow.error-message.exceeds-wallet-balance" />
+  }
+}
+
 function formatEur(val? : string | BigNumber): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 0)
 }
@@ -97,11 +113,10 @@ function formatEth(val? : string | BigNumber): string | undefined {
 
 export const InvestmentSelectionComponent = injectIntlHelpers(
   (props: IProps & IIntlProps) => {
-    const {euroValue, etherPriceEur, minTicketEur, intl} = props
-    const gasPrice = (props.gasPrice && props.gasPrice.standard) || "0"
+    const {euroValue, etherPriceEur, minTicketEur, intl, gasCost} = props
     const ethValue = euroValue && divideBigNumbers(euroValue, etherPriceEur)
-    const gasCostEuro = multiplyBigNumbers([gasPrice, etherPriceEur])
-    const totalCostEth = addBigNumbers([gasPrice, ethValue || "0"])
+    const gasCostEuro = multiplyBigNumbers([gasCost, etherPriceEur])
+    const totalCostEth = addBigNumbers([gasCost, ethValue || "0"])
     const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"])
     const cc = props.calculatedContribution
     const minTicketEth = divideBigNumbers(minTicketEur, etherPriceEur)
@@ -134,12 +149,14 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
           </Row>
           <Row>
             <Col>
-              <p><FormattedMessage id="investment-flow.amount-to-invest" /></p>
+              {props.errorState === EInvestmentErrorState.NotEnoughEtherForGas
+                ? (<p className={styles.error}><FormattedMessage id="investment-flow.error-message.not-enough-ether-for-gas" /></p>)
+                : (<p><FormattedMessage id="investment-flow.amount-to-invest" /></p>)}
             </Col>
           </Row>
           <Row>
             <Col>
-              <FormFieldRaw prefix="€" placeholder={`${intl.formatIntlMessage("investment-flow.min-ticket-size")} ${minTicketEur} €`} controlCursor value={formatEur(euroValue)} onChange={props.changeEuroValue}/>
+              <FormFieldRaw prefix="€" errorMsg={getInputErrorMessage(props.errorState)} placeholder={`${intl.formatIntlMessage("investment-flow.min-ticket-size")} ${minTicketEur} €`} controlCursor value={formatEur(euroValue)} onChange={props.changeEuroValue}/>
             </Col>
             <Col sm="1">
               <div className={styles.equals}>≈</div>
@@ -181,7 +198,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             <Col className={styles.summary}>
               <div>
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />
-                : <span className="orange">{formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasPrice)}</span>
+                : <span className="orange">{formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCost)}</span>
               </div>
               <div>
                 <FormattedMessage id="investment-flow.total" />
@@ -190,7 +207,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             </Col>
           </Row>
           <Row className="justify-content-center mb-0">
-            <Button layout="primary" type="submit">
+            <Button layout="primary" type="submit" disabled={!props.readyToInvest}>
               <FormattedMessage id="investment-flow.invest-now" />
             </Button>
           </Row>
@@ -204,16 +221,16 @@ export const InvestmentSelection: React.SFC = compose<any>(
   injectIntlHelpers,
   appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => {
-    const etherPriceEur = state.tokenPrice.tokenPriceData!.etherPriceEur
     return ({
-      etherPriceEur,
+      etherPriceEur: selectEtherPriceEur(state.tokenPrice),
       euroValue: state.investmentFlow.euroValueUlps,
       errorState: state.investmentFlow.errorState,
-      gasPrice: state.gas.gasPrice,
+      gasCost: selectInvestmentGasCost(state.investmentFlow),
       investmentType: state.investmentFlow.investmentType,
       wallets: createWallets(state),
       calculatedContribution: state.investmentFlow.calculatedContribution,
-      minTicketEur: (state.investmentFlow.eto && state.investmentFlow.eto.minTicketEur!) || 0
+      minTicketEur: (state.investmentFlow.eto && state.investmentFlow.eto.minTicketEur!) || 0,
+      readyToInvest: selectReadyToInvest(state.investmentFlow)
     })
   },
   dispatchToProps: dispatch => ({

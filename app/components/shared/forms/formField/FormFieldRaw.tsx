@@ -90,7 +90,7 @@ export class FormFieldRaw extends React.Component<FieldGroupProps> {
     return (
       <FormGroup>
         {label && <FormLabel>{label}</FormLabel>}
-        <InputGroup>
+        <InputGroup className={cn(invalid && "is-invalid")}>
           {prefix && (
             <InputGroupAddon addonType="prepend" className={cn(styles.addon, addonStyle)}>
               {prefix}

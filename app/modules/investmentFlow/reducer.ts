@@ -48,7 +48,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   euroValueUlps: "",
   investmentType: EInvestmentType.None,
   gasAmount: INVESTMENT_GAS_AMOUNT,
-  gasPrice: ""
+  gasPrice: "0"
 };
 
 export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
@@ -71,7 +71,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SET_GAS_PRICE":
       return {
         ...state,
-        gasPrice: multiplyBigNumbers([action.payload.gasPrice, GAS_PRICE_MULTIPLIER])
+        gasPrice: multiplyBigNumbers([action.payload.gasPrice || 0, GAS_PRICE_MULTIPLIER])
       };
     case "INVESTMENT_FLOW_SET_ETO":
       return {

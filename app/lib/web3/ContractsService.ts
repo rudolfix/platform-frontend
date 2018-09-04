@@ -90,7 +90,7 @@ export class ContractsService {
     this.euroToken = await create(EuroToken, web3, euroTokenAddress);
     this.etherToken = await create(EtherToken, web3, etherTokenAddress);
 
-    this.etherToken.rawWeb3Contract.transfer.getData()
+    // this.etherToken.rawWeb3Contract.transfer.getData()
 
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");
   }

@@ -1,21 +1,23 @@
 import BigNumber from "bignumber.js";
-import { fork, put, select, takeEvery, throttle } from "redux-saga/effects";
+import { delay } from "redux-saga";
+import { fork, put, select, takeEvery, takeLatest, throttle } from "redux-saga/effects";
 
-import { EIDRM } from "constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
-import { addBigNumbers, compareBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
+import { addBigNumbers, compareBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Money.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
+import { IGasState } from "../gas/reducer";
 import { neuCall } from "../sagas";
+import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { selectLiquidEtherBalance } from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EInvestmentErrorState, EInvestmentType, IInvestmentFlowState } from "./reducer";
 import { convertToCalculatedContribution, selectInvestmentGasCost, selectIsICBMInvestment } from "./selectors";
 
-function* calculateValueFromEth(action: TAction): any {
+function* calculateEuroValueFromEth(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE") return;
   const s: IAppState = yield select()
   const eth = extractNumber(action.payload.value) || "0"
@@ -26,17 +28,20 @@ function* calculateValueFromEth(action: TAction): any {
   }
 }
 
-function* validateEuroValue(action: TAction): any {
+function* processEuroValue(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE") return;
   const state: IAppState = yield select()
-  const type = state.investmentFlow.investmentType
+  const i = state.investmentFlow
+  const type = i.investmentType
   let value = extractNumber(action.payload.value)
   if (value && type === EInvestmentType.None) {
     yield put(actions.investmentFlow.setErrorState(EInvestmentErrorState.NoWalletSelected))
     return
   }
+  if (type !== EInvestmentType.None && i.errorState === EInvestmentErrorState.NoWalletSelected) {
+    yield put(actions.investmentFlow.setErrorState())
+  }
   value = value && convertToBigInt(value)
-  yield put(actions.investmentFlow.setErrorState())
   yield put(actions.investmentFlow.setEuroValue(value))
   yield put(actions.investmentFlow.validateInputs())
 }
@@ -45,10 +50,9 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   const i = state.investmentFlow
   const value = i.euroValueUlps
   const wallet = state.wallet.data
-  const eto = i.eto
   const contribs = i.calculatedContribution
 
-  if (!eto || !contribs || !value || !wallet) return
+  if (!contribs || !value || !wallet) return
 
   const gasPrice = selectInvestmentGasCost(i)
 
@@ -56,8 +60,10 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
     return EInvestmentErrorState.NotEnoughEtherForGas
   }
 
+  const etherValue = divideBigNumbers(value, selectEtherPriceEur(state.tokenPrice))
+
   if (i.investmentType === EInvestmentType.InvestmentWallet) {
-    if (compareBigNumbers(addBigNumbers([value, gasPrice]), selectLiquidEtherBalance(state.wallet)) === 1) {
+    if (compareBigNumbers(addBigNumbers([etherValue, gasPrice]), selectLiquidEtherBalance(state.wallet)) === 1) {
       return EInvestmentErrorState.ExceedsWalletBalance
     }
   }
@@ -78,7 +84,10 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
 }
 
 function * validateAndCalculateInputs({contractsService}: TGlobalDependencies): any {
-  const state: IAppState = yield select()
+  // debounce validation
+  yield delay(300)
+
+  let state: IAppState = yield select()
   const eto = state.investmentFlow.eto
   const value = state.investmentFlow.euroValueUlps
   if (value && eto) {
@@ -88,10 +97,12 @@ function * validateAndCalculateInputs({contractsService}: TGlobalDependencies): 
       const isICBM = selectIsICBMInvestment(state.investmentFlow)
       const calculation = yield etoContract.calculateContribution(from, isICBM, new BigNumber(value))
       yield put(actions.investmentFlow.setCalculatedContribution(convertToCalculatedContribution(calculation)))
+      state = yield select()
       yield put(actions.investmentFlow.setErrorState(validateInvestment(state)))
     }
   } else {
     yield put(actions.investmentFlow.setCalculatedContribution())
+    yield put(actions.investmentFlow.setErrorState())
   }
 }
 
@@ -101,6 +112,7 @@ function* start(action: TAction): any {
   yield put(actions.gas.gasApiEnsureLoading())
   yield put(actions.investmentFlow.setEto(action.payload.eto))
   yield put(actions.txSender.startInvestment())
+  yield setGasPrice()
 }
 
 function* stop(): any {
@@ -110,10 +122,17 @@ function* stop(): any {
   }
 }
 
+function * setGasPrice (): any {
+  const gas: IGasState = yield select((s: IAppState) => s.gas)
+  yield put(actions.investmentFlow.setGasPrice(gas.gasPrice && gas.gasPrice.standard))
+  yield put(actions.investmentFlow.validateInputs())
+}
+
 export function* investmentFlowSagas(): any {
-  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE", calculateValueFromEth)
-  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE", validateEuroValue)
-  yield throttle(300, "INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs)
+  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE", calculateEuroValueFromEth)
+  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE", processEuroValue)
+  yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs)
   yield takeEvery("INVESTMENT_FLOW_START", start)
   yield takeEvery("TX_SENDER_HIDE_MODAL", stop)
+  yield takeEvery("GAS_API_LOADED", setGasPrice)
 }

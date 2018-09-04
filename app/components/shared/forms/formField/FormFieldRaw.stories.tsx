@@ -14,5 +14,5 @@ storiesOf("FormFieldRaw", module)
     <FormFieldRaw label="Form field" name="value" prefix="@" />
   ))
   .add("with error message", () => (
-    <FormFieldRaw label="Form field" name="value" errorMsg="something is wrong" />
+    <FormFieldRaw label="Form field" name="value" errorMsg="something is wrong" suffix="fufu" prefix="€" />
   ));

@@ -19,7 +19,7 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE", { value }),
   setCalculatedContribution: (contrib?: ICalculatedContribution) =>
     createAction("INVESTMENT_FLOW_SET_CALCULATED_CONTRIBUTION", { contrib }),
-  setGasPrice: (gasPrice: string) =>
+  setGasPrice: (gasPrice?: string) =>
     createAction("INVESTMENT_FLOW_SET_GAS_PRICE", { gasPrice }),
   setEto: (eto: TInvestorEtoData) =>
     createAction("INVESTMENT_FLOW_SET_ETO", { eto }),

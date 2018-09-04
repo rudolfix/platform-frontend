@@ -44,7 +44,7 @@ export const immutableDocumentTitle: { [key: string]: string | React.ReactNode }
   pamphlet_template: <FormattedMessage id="eto.documents.pamphlet_template" />,
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-Template" />,
   reservation_and_acquisition_agreement: (
-    <FormattedMessage id="eto.documents.Reservation-and-Acquisition-Agreement" />
+    <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
   ),
   termsheet_template: <FormattedMessage id="eto.documents.Termsheet-Template" />,
   approved_prospectus: <FormattedMessage id="eto.documents.Approved-Prospectus" />,

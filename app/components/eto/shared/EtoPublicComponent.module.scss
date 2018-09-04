@@ -56,7 +56,7 @@
 
     display: none;
     position: relative;
-    width: 12.5%;
+    width: px-to-rem(50px);
 
     &::before {
       @include rect(1px, 100%);
@@ -72,9 +72,45 @@
 
   .group {
     @include media-breakpoint-up (md) {
-      width: 25%;
+      width: calc(#{(1 / 3) * 100%} - 50px);
+      flex-direction: row;
     }
 
+    display: flex;
+    flex-direction: column;
+  }
+
+  .group-title {
+    @include media-breakpoint-up (md) {
+      writing-mode: vertical-lr;
+      margin-right: px-to-rem(25px);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .group-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .group-document-link {
+    display: flex;
+    height: 20px;
+    font-size: 12px;
+    text-decoration: underline;
+
+    .icon {
+      margin-right: 12px;
+      width: 18px;
+    }
   }
 
   .label {
@@ -99,6 +135,8 @@
     .label,
     .value {
       flex-basis: 60%;
+      overflow-wrap: break-word;
+      word-break: break-all;
     }
 
     .label {

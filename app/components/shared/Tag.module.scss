@@ -16,10 +16,6 @@
   transition: 150ms ease-out background-color;
   user-select: none;
 
-  & + .tag {
-    margin-left: px-to-rem(10px);
-  }
-
   &:global(.ghost-bold) {
     @include media-breakpoint-down(xs) {
       font-size: .6rem;

@@ -6,21 +6,22 @@ import { EtoOverviewStatus } from "./EtoOverviewStatus";
 const props = {
   tokenName: "token name",
   tokenSymbol: "token symbol",
-  image: {
+  tokenImage: {
     srcSet: {
       "1x": "",
     },
     alt: "token image alt",
   },
+  termSheet: true,
   prospectusApproved: true,
-  onchain: true,
-  companyValuation: "company valuation",
-  declaredCap: "declared cap",
-  companyEquity: "company equity",
-  tokenPrice: "token price",
+  smartContractOnchain: true,
+  preMoneyValuation: "pre money valuation",
+  investmentAmount: "investment amount",
+  newSharesGenerated: "new shares generated",
+  equityTokenPrice: "Equity Token Price",
 };
 
-storiesOf("EtoOverviewStatus", module)
+storiesOf("Eto/OverviewStatus", module)
   .add("status: campaigning", () => (
     <EtoOverviewStatus
       {...props}

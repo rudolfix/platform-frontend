@@ -13,7 +13,7 @@ import { ITokenPriceStateData } from "./reducer";
 
 const TOKEN_PRICE_MONITOR_DELAY = 5000;
 
-export async function loadTokenPriceDataAsync ({
+export async function loadTokenPriceDataAsync({
   contractsService,
 }: TGlobalDependencies): Promise<ITokenPriceStateData> {
   // todo: remove placeholders when contracts deployed on production
@@ -49,9 +49,15 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
     logger.info("Querying for tokenPrice");
 
     const tokenPriceData = yield neuCall(loadTokenPriceDataAsync);
-    const price: ITokenPriceStateData | undefined = yield select((s: IAppState) => s.tokenPrice.tokenPriceData)
+    const price: ITokenPriceStateData | undefined = yield select(
+      (s: IAppState) => s.tokenPrice.tokenPriceData,
+    );
 
-    if (!price || price.etherPriceEur !== tokenPriceData.etherPriceEur || price.neuPriceEur !== tokenPriceData.neuPriceEur) {
+    if (
+      !price ||
+      price.etherPriceEur !== tokenPriceData.etherPriceEur ||
+      price.neuPriceEur !== tokenPriceData.neuPriceEur
+    ) {
       yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
     }
 

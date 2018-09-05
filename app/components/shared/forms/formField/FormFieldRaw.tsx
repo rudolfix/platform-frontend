@@ -17,28 +17,28 @@ export interface IFieldGroup {
   addonStyle?: string;
   maxLength?: string;
   charactersLimit?: number;
-  invalid?: boolean
-  controlCursor?: boolean
+  invalid?: boolean;
+  controlCursor?: boolean;
 }
 
 type FieldGroupProps = IFieldGroup & InputProps & CommonHtmlProps;
 
-export const computedValue = (val: InputProps['value'], limit: number | undefined) => {
-  if (typeof val === 'number' || Array.isArray(val) || !val || !limit) {
+export const computedValue = (val: InputProps["value"], limit: number | undefined) => {
+  if (typeof val === "number" || Array.isArray(val) || !val || !limit) {
     return val;
   }
   return limit && val.length > limit ? val.slice(0, limit - 1) : val;
 };
 
-export const countedCharacters = (val: InputProps['value'], limit: number | undefined) => {
-  val = val || ""
+export const countedCharacters = (val: InputProps["value"], limit: number | undefined) => {
+  val = val || "";
   return `${(val as string).length}/${limit}`;
 };
 
 export class FormFieldRaw extends React.Component<FieldGroupProps> {
-  private rawStr = ""
-  private caretPosition = 0
-  private inputRef?: HTMLInputElement
+  private rawStr = "";
+  private caretPosition = 0;
+  private inputRef?: HTMLInputElement;
 
   private handleChange = (ev: React.ChangeEvent<any>) => {
     this.rawStr = String(ev.target.value);
@@ -47,26 +47,26 @@ export class FormFieldRaw extends React.Component<FieldGroupProps> {
     if (this.props.onChange) {
       this.props.onChange(ev);
     }
-  }
+  };
 
-  componentDidUpdate ({ value }: FieldGroupProps): void {
+  componentDidUpdate({ value }: FieldGroupProps): void {
     if (this.props.controlCursor && this.inputRef) {
-      const input = this.inputRef
+      const input = this.inputRef;
       if (this.props.value !== value) {
         const str = this.rawStr.substr(0, this.caretPosition);
         const index = String(this.props.value).indexOf(str) + this.caretPosition;
 
         if (index !== -1) {
-          input.setSelectionRange(index, index)
+          input.setSelectionRange(index, index);
         }
       } else {
-        const index = this.caretPosition
-        input.setSelectionRange(index, index)
+        const index = this.caretPosition;
+        input.setSelectionRange(index, index);
       }
     }
   }
 
-  render (): React.ReactNode {
+  render(): React.ReactNode {
     const {
       value,
       name,
@@ -82,10 +82,10 @@ export class FormFieldRaw extends React.Component<FieldGroupProps> {
       onChange,
       controlCursor,
       ...props
-    } = this.props
+    } = this.props;
 
-    const val = computedValue(value, charactersLimit)
-    const invalid = props.invalid || !!errorMsg
+    const val = computedValue(value, charactersLimit);
+    const invalid = props.invalid || !!errorMsg;
 
     return (
       <FormGroup>
@@ -104,7 +104,7 @@ export class FormFieldRaw extends React.Component<FieldGroupProps> {
             placeholder={placeholder}
             invalid={invalid}
             onChange={this.handleChange}
-            innerRef={(ref) => this.inputRef = ref}
+            innerRef={ref => (this.inputRef = ref)}
             {...props}
           />
           {suffix && (
@@ -113,9 +113,7 @@ export class FormFieldRaw extends React.Component<FieldGroupProps> {
             </InputGroupAddon>
           )}
         </InputGroup>
-        {errorMsg && (
-          <div className={styles.errorLabel}>{errorMsg}</div>
-        )}
+        {errorMsg && <div className={styles.errorLabel}>{errorMsg}</div>}
         {charactersLimit && <div>{countedCharacters(val, charactersLimit)}</div>}
       </FormGroup>
     );

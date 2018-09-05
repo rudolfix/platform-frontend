@@ -30,7 +30,9 @@ export const EtoListComponent: React.SFC<IProps> = ({ etos, startInvestmentFlow 
         {/* TODO: implement real ETO Card here */}
         <div className="mb-3">
           <h4>{eto.company.brandName}</h4>
-          {eto.state === "on_chain" && <Button onClick={() => startInvestmentFlow(eto)}>invest now</Button>}
+          {eto.state === "on_chain" && (
+            <Button onClick={() => startInvestmentFlow(eto)}>invest now</Button>
+          )}
         </div>
       </Col>
     ))}
@@ -43,10 +45,14 @@ export const EtoList = compose<React.ComponentClass>(
   }),
   appConnect({
     stateToProps: state => ({
-      etos: state.dashboard.etos && state.dashboard.etos.length ? state.dashboard.etos : [{ company: { brandName: "fufu" } }]
+      etos:
+        state.dashboard.etos && state.dashboard.etos.length
+          ? state.dashboard.etos
+          : [{ company: { brandName: "fufu" } }],
     }),
     dispatchToProps: d => ({
-      startInvestmentFlow: (eto: TInvestorEtoData) => d(actions.investmentFlow.investmentStart(eto)),
+      startInvestmentFlow: (eto: TInvestorEtoData) =>
+        d(actions.investmentFlow.investmentStart(eto)),
     }),
   }),
 )(EtoListComponent);

@@ -55,7 +55,7 @@ export const actions = {
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
   gas: gasActions,
-  investmentFlow: investmentFlowActions
+  investmentFlow: investmentFlowActions,
 };
 
 /**
@@ -88,7 +88,7 @@ export const allActions = {
   ...txSenderActions,
   ...icbmWalletBalanceModalActions,
   ...gasActions,
-  ...investmentFlowActions
+  ...investmentFlowActions,
 };
 
 /**

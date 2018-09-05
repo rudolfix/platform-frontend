@@ -114,5 +114,5 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
-  })
-})(InvestmentSummaryComponent)
+  }),
+})(InvestmentSummaryComponent);

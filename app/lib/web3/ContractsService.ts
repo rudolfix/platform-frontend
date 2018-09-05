@@ -22,7 +22,7 @@ import * as knownInterfaces from "../contracts/knownInterfaces.json";
 @injectable()
 export class ContractsService {
   private universeContract!: Universe;
-  private etoCommitmentCache: {[etoId: string]: ETOCommitment} = {}
+  private etoCommitmentCache: { [etoId: string]: ETOCommitment } = {};
 
   public neumark!: Neumark;
   public euroToken!: EuroToken;
@@ -125,12 +125,12 @@ export class ContractsService {
   }
 
   async getETOCommitmentContract(etoId: string): Promise<ETOCommitment> {
-    if (this.etoCommitmentCache[etoId]) return this.etoCommitmentCache[etoId]
+    if (this.etoCommitmentCache[etoId]) return this.etoCommitmentCache[etoId];
 
     const web3 = this.web3Manager.internalWeb3Adapter.web3;
-    const contract = await create(ETOCommitment, web3, etoId)
-    this.etoCommitmentCache[etoId] = contract
-    return contract
+    const contract = await create(ETOCommitment, web3, etoId);
+    this.etoCommitmentCache[etoId] = contract;
+    return contract;
   }
 }
 

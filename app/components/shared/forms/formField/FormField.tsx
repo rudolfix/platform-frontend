@@ -44,7 +44,7 @@ export class FormField extends React.Component<FieldGroupProps> {
         <Field
           name={name}
           render={({ field }: FieldProps) => {
-            const val = computedValue(field.value, charactersLimit)
+            const val = computedValue(field.value, charactersLimit);
             return (
               <>
                 <InputGroup>
@@ -74,7 +74,7 @@ export class FormField extends React.Component<FieldGroupProps> {
                 )}
                 {charactersLimit && <div>{countedCharacters(val, charactersLimit)}</div>}
               </>
-            )
+            );
           }}
         />
       </FormGroup>

@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-type BigNumberRepresentation = string | number | BigNumber
+type BigNumberRepresentation = string | number | BigNumber;
 
 /**
  * Add string as BigNumbers
@@ -25,10 +25,14 @@ export const multiplyBigNumbers = (numbers: BigNumberRepresentation[]): string =
 /**
  * Divide any number representation as BigNumbers
  */
-export const divideBigNumbers = (dividend: BigNumberRepresentation, divisor: BigNumberRepresentation): string =>
-  (new BigNumber(dividend)).div(divisor).toString();
+export const divideBigNumbers = (
+  dividend: BigNumberRepresentation,
+  divisor: BigNumberRepresentation,
+): string => new BigNumber(dividend).div(divisor).toString();
 
-
-export const compareBigNumbers = (a: BigNumberRepresentation, b: BigNumberRepresentation): number => {
-  return (new BigNumber(a).comparedTo(b))
-}
+export const compareBigNumbers = (
+  a: BigNumberRepresentation,
+  b: BigNumberRepresentation,
+): number => {
+  return new BigNumber(a).comparedTo(b);
+};

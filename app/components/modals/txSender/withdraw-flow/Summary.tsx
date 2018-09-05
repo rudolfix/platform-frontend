@@ -12,7 +12,10 @@ import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
 import { GweiFormatter } from "./Withdraw";
 
-export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({ txData, onAccept }) => (
+export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
+  txData,
+  onAccept,
+}) => (
   <>
     <Row className="mb-4">
       <Col>
@@ -58,5 +61,5 @@ export const WithdrawSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispat
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
-  })
-})(WithdrawSummaryComponent)
+  }),
+})(WithdrawSummaryComponent);

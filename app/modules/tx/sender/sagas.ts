@@ -29,7 +29,6 @@ export function* investSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
-
 export const txSendingSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
   yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
@@ -118,7 +117,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
         status: undefined,
         transactionIndex: undefined,
       },
-      transactionType: type
+      transactionType: type,
     };
     yield apiUserService.addPendingTx(txWithMetadata);
     yield neuCall(updateTxs);

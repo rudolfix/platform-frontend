@@ -124,7 +124,7 @@ export const Withdraw = appConnect<IWithdrawStateProps, ITxInitDispatchProps>({
   }),
   dispatchToProps: d => ({
     onAccept: (tx: Partial<ITxData>) => d(actions.txSender.txSenderAcceptDraft(tx)),
-  })
+  }),
 })(WithdrawComponent);
 
 export const GweiFormatter: React.SFC<{ value: string }> = ({ value }) => (

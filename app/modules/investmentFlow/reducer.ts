@@ -5,20 +5,20 @@ import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 
-const INVESTMENT_GAS_AMOUNT = "600000"
-const GAS_PRICE_MULTIPLIER = 1.2
+const INVESTMENT_GAS_AMOUNT = "600000";
+const GAS_PRICE_MULTIPLIER = 1.2;
 
 export enum EInvestmentType {
   None = "NONE",
   InvestmentWallet = "INVESTMENT_WALLET",
   ICBMEth = "ICBM_ETH",
   ICBMnEuro = "ICBM_NEURO",
-  BankTransfer = "BANK_TRANSFER"
+  BankTransfer = "BANK_TRANSFER",
 }
 
 export enum EInvestmentCurrency {
   Ether = "ETH",
-  Euro = "EUR"
+  Euro = "EUR",
 }
 
 export enum EInvestmentErrorState {
@@ -27,27 +27,27 @@ export enum EInvestmentErrorState {
   ExceedsWalletBalance = "exceeds_wallet_balance",
   ExceedsTokenAmount = "exceeds_token_amount",
   NoWalletSelected = "no_wallet_selected",
-  NotEnoughEtherForGas = "not_enough_ether_for_gas"
+  NotEnoughEtherForGas = "not_enough_ether_for_gas",
 }
 
 export interface ICalculatedContribution {
-  isWhitelisted: boolean
-  minTicketEurUlps: BigNumber
-  maxTicketEurUlps: BigNumber
-  equityTokenInt: BigNumber
-  neuRewardUlps: BigNumber
-  maxCapExceeded: boolean
+  isWhitelisted: boolean;
+  minTicketEurUlps: BigNumber;
+  maxTicketEurUlps: BigNumber;
+  equityTokenInt: BigNumber;
+  neuRewardUlps: BigNumber;
+  maxCapExceeded: boolean;
 }
 
 export interface IInvestmentFlowState {
-  euroValueUlps: string,
-  ethValueUlps: string,
-  investmentType: EInvestmentType
-  eto?: TInvestorEtoData
-  errorState?: EInvestmentErrorState
-  calculatedContribution?: ICalculatedContribution
-  gasAmount: string
-  gasPrice: string
+  euroValueUlps: string;
+  ethValueUlps: string;
+  investmentType: EInvestmentType;
+  eto?: TInvestorEtoData;
+  errorState?: EInvestmentErrorState;
+  calculatedContribution?: ICalculatedContribution;
+  gasAmount: string;
+  gasPrice: string;
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
@@ -55,7 +55,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   ethValueUlps: "",
   investmentType: EInvestmentType.None,
   gasAmount: INVESTMENT_GAS_AMOUNT,
-  gasPrice: "0"
+  gasPrice: "0",
 };
 
 export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
@@ -65,8 +65,8 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
   switch (action.type) {
     case "INVESTMENT_FLOW_RESET":
       return {
-        ...investmentFlowInitialState
-      }
+        ...investmentFlowInitialState,
+      };
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
         ...state,
@@ -78,32 +78,32 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SET_GAS_PRICE":
       return {
         ...state,
-        gasPrice: multiplyBigNumbers([action.payload.gasPrice || 0, GAS_PRICE_MULTIPLIER])
+        gasPrice: multiplyBigNumbers([action.payload.gasPrice || 0, GAS_PRICE_MULTIPLIER]),
       };
     case "INVESTMENT_FLOW_SET_ETO":
       return {
         ...state,
-        eto: action.payload.eto
+        eto: action.payload.eto,
       };
     case "INVESTMENT_FLOW_SET_INVESTMENT_ERROR_STATE":
       return {
         ...state,
-        errorState: action.payload.errorState
+        errorState: action.payload.errorState,
       };
     case "INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE":
       return {
         ...state,
-        ethValueUlps: action.payload.value
+        ethValueUlps: action.payload.value,
       };
     case "INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE":
       return {
         ...state,
-        euroValueUlps: action.payload.value
+        euroValueUlps: action.payload.value,
       };
     case "INVESTMENT_FLOW_SET_CALCULATED_CONTRIBUTION":
       return {
         ...state,
-        calculatedContribution: action.payload.contrib
+        calculatedContribution: action.payload.contrib,
       };
   }
 

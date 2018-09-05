@@ -1,4 +1,4 @@
-import * as cn from "classnames"
+import * as cn from "classnames";
 import * as React from "react";
 import { Modal } from "reactstrap";
 
@@ -32,8 +32,8 @@ interface IDispatchProps {
 
 type Props = IStateProps & IDispatchProps;
 
-function isBigModal (props: Props): boolean {
-  return props.state === "INIT" && props.type === "INVEST"
+function isBigModal(props: Props): boolean {
+  return props.state === "INIT" && props.type === "INVEST";
 }
 
 export const TxSenderModalComponent: React.SFC<Props> = props => {
@@ -56,41 +56,36 @@ export interface ITxSummaryStateProps {
 export interface ITxSummaryDispatchProps {
   onAccept: () => any;
 }
-export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps
+export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 
-function getInitComponent (type: TxSenderType): JSX.Element {
+function getInitComponent(type: TxSenderType): JSX.Element {
   switch (type) {
     case "INVEST":
-      return <InvestmentSelection />
+      return <InvestmentSelection />;
     case "WITHDRAW":
-      return <Withdraw />
+      return <Withdraw />;
   }
 }
 
-function getSummaryComponent (type: TxSenderType): JSX.Element {
+function getSummaryComponent(type: TxSenderType): JSX.Element {
   switch (type) {
     case "INVEST":
-      return <InvestmentSummary />
+      return <InvestmentSummary />;
     case "WITHDRAW":
-      return <WithdrawSummary />
+      return <WithdrawSummary />;
   }
 }
 
-function renderBody({
-  state,
-  blockId,
-  txHash,
-  type
-}: Props): React.ReactNode {
+function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
   switch (state) {
     case "WATCHING_PENDING_TXS":
       return <WatchPendingTxs />;
 
     case "INIT":
-      return getInitComponent(type!)
+      return getInitComponent(type!);
 
     case "SUMMARY":
-      return getSummaryComponent(type!)
+      return getSummaryComponent(type!);
 
     case "ACCESSING_WALLET":
       return <AccessWalletContainer />;
@@ -122,5 +117,5 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
   }),
   dispatchToProps: d => ({
     onCancel: () => d(actions.txSender.txSenderHideModal()),
-  })
+  }),
 })(TxSenderModalComponent);

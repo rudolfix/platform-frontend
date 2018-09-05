@@ -1,6 +1,6 @@
 import { AppReducer } from "../../../store";
 
-export type TxSenderType = "WITHDRAW" | "INVEST"
+export type TxSenderType = "WITHDRAW" | "INVEST";
 
 export type TxSenderState =
   | "UNINITIALIZED"
@@ -22,7 +22,7 @@ export interface ITxData {
   data?: string;
   nonce?: string;
   from?: string;
-  input?: string
+  input?: string;
 }
 
 export interface ITxSenderState {

@@ -14,40 +14,48 @@ const wallets = [
     balanceEth: "30000000000000000000",
     type: EInvestmentType.ICBMEth,
     name: "ICBM Wallet",
-    icon: ethIcon
+    icon: ethIcon,
   },
   {
     balanceNEuro: "45600000000000000000",
     balanceEur: "45600000000000000000",
     type: EInvestmentType.ICBMnEuro,
     name: "ICBM Wallet",
-    icon: neuroIcon
+    icon: neuroIcon,
   },
   {
     balanceEth: "50000000000000000000",
     balanceEur: "45600000000000000000",
     type: EInvestmentType.InvestmentWallet,
     name: "Investment Wallet",
-    icon: ethIcon
+    icon: ethIcon,
   },
   {
     type: EInvestmentType.BankTransfer,
     name: "Direct Bank Transfer",
-    icon: euroIcon
+    icon: euroIcon,
   },
 ];
 
 // tslint:disable-next-line:no-console
-const onSelect = (v: any) => console.log(v)
+const onSelect = (v: any) => console.log(v);
 
 storiesOf("InvestmentTypeSelector", module).add("default", () => (
   <Container>
-    <InvestmentTypeSelector wallets={wallets} currentType={EInvestmentType.None} onSelect={onSelect} />
+    <InvestmentTypeSelector
+      wallets={wallets}
+      currentType={EInvestmentType.None}
+      onSelect={onSelect}
+    />
   </Container>
 ));
 
 storiesOf("InvestmentTypeSelector", module).add("selected", () => (
   <Container>
-    <InvestmentTypeSelector wallets={wallets} currentType={EInvestmentType.InvestmentWallet} onSelect={onSelect} />
+    <InvestmentTypeSelector
+      wallets={wallets}
+      currentType={EInvestmentType.InvestmentWallet}
+      onSelect={onSelect}
+    />
   </Container>
 ));

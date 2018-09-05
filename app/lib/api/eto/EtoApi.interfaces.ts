@@ -231,8 +231,8 @@ export type TGeneralEtoData = {
 
 // this is comming from the /etos endpoint for investors dashboard
 export type TInvestorEtoData = TPartialEtoSpecData & {
-  company: TPartialCompanyEtoData
-  etoId: string
+  company: TPartialCompanyEtoData;
+  etoId: string;
 };
 
 export const GeneralEtoDataType = YupTS.object({

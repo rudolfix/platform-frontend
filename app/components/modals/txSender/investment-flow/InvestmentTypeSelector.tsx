@@ -1,7 +1,7 @@
-import * as cn from "classnames"
+import * as cn from "classnames";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { Col, FormGroup, Row } from "reactstrap";
+import { Col, FormGroup } from "reactstrap";
 
 import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
 import { Money } from "../../../shared/Money";
@@ -20,7 +20,7 @@ export interface IWalletSelectionData {
 interface IProps {
   wallets: IWalletSelectionData[];
   currentType: EInvestmentType;
-  onSelect: (type: EInvestmentType) => void
+  onSelect: (type: EInvestmentType) => void;
 }
 
 export class InvestmentTypeSelector extends React.Component<IProps> {
@@ -28,9 +28,9 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
     formik: PropTypes.object,
   };
 
-  render (): React.ReactNode {
+  render(): React.ReactNode {
     const { wallets, currentType, onSelect } = this.props;
-    const selected = currentType !== EInvestmentType.None
+    const selected = currentType !== EInvestmentType.None;
     return (
       <div className={cn(styles.container, selected && styles.selected)}>
         {wallets.map(w => {
@@ -54,12 +54,8 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
                     <div className={styles.label}>{w.name}</div>
                     <div className={styles.balance}>
                       <div className={styles.balanceValues}>
-                        {w.balanceEth && (
-                          <Money currency="eth" value={w.balanceEth} />
-                        )}
-                        {w.balanceNEuro && (
-                          <Money currency="eur_token" value={w.balanceNEuro} />
-                        )}
+                        {w.balanceEth && <Money currency="eth" value={w.balanceEth} />}
+                        {w.balanceNEuro && <Money currency="eur_token" value={w.balanceNEuro} />}
                         {w.balanceEur && (
                           <div className={styles.balanceEur}>
                             = <Money currency="eur" value={w.balanceEur} />
@@ -71,7 +67,7 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
                 </label>
               </FormGroup>
             </Col>
-          )
+          );
         })}
       </div>
     );

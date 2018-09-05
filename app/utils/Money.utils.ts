@@ -16,7 +16,7 @@ export function formatMoney(
  * Assumes dot as decimal separator
  */
 export function formatThousands(value?: string): string {
-  if (!value) return ""
+  if (!value) return "";
   const splitByDot = value.split(".");
 
   invariant(splitByDot.length <= 2, "Can't format this number: " + value);
@@ -30,7 +30,7 @@ export function formatThousands(value?: string): string {
 }
 
 export function convertToBigInt(value: string, currencyDecimals?: number): string {
-  const q = currencyDecimals ? new BigNumber(10).pow(currencyDecimals) : Q18
+  const q = currencyDecimals ? new BigNumber(10).pow(currencyDecimals) : Q18;
   const moneyInWei = q.mul(value);
   return moneyInWei.toFixed(0, BigNumber.ROUND_UP);
 }

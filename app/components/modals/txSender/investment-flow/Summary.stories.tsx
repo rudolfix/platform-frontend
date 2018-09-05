@@ -15,5 +15,10 @@ const data: any = {
 };
 
 storiesOf("InvestmentSummary", module).add("default", () => (
-  <InvestmentSummaryComponent txData={{} as any} investmentData={data} agreementUrl="somePDF.pdf" onAccept={() => {}} />
+  <InvestmentSummaryComponent
+    txData={{} as any}
+    investmentData={data}
+    agreementUrl="somePDF.pdf"
+    onAccept={() => {}}
+  />
 ));

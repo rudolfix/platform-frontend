@@ -62,16 +62,17 @@ function* computeAndSetCurrencies(value: string, currency: EInvestmentCurrency):
     yield put(actions.investmentFlow.setEthValue(""));
     yield put(actions.investmentFlow.setEurValue(""));
   } else if (etherPriceEur && etherPriceEur !== "0") {
+    const bignumber = new BigNumber(value)
     switch (currency) {
       case EInvestmentCurrency.Ether:
-        const eurVal = multiplyBigNumbers([value, etherPriceEur]);
-        yield put(actions.investmentFlow.setEthValue(value));
-        yield put(actions.investmentFlow.setEurValue(eurVal));
+        const eurVal = bignumber.mul(etherPriceEur);
+        yield put(actions.investmentFlow.setEthValue(bignumber.round(BigNumber.ROUND_UP).toString()));
+        yield put(actions.investmentFlow.setEurValue(eurVal.round(BigNumber.ROUND_UP).toString()));
         return;
       case EInvestmentCurrency.Euro:
-        const ethVal = divideBigNumbers(value, etherPriceEur);
-        yield put(actions.investmentFlow.setEthValue(ethVal));
-        yield put(actions.investmentFlow.setEurValue(value));
+        const ethVal = bignumber.div(etherPriceEur);
+        yield put(actions.investmentFlow.setEthValue(ethVal.round(BigNumber.ROUND_UP).toString()));
+        yield put(actions.investmentFlow.setEurValue(bignumber.round(BigNumber.ROUND_UP).toString()));
         return;
     }
   }
@@ -182,17 +183,14 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
   let txDetails: ITxData | undefined;
 
   if (i.investmentType === EInvestmentType.InvestmentWallet) {
-    const transactionValueEth = new BigNumber(i.euroValueUlps).div(
-      state.tokenPrice.tokenPriceData!.etherPriceEur,
-    );
     const etherTokenBalance = state.wallet.data!.etherTokenBalance;
 
     // transaction can be fully covered by etherTokens
-    if (compareBigNumbers(etherTokenBalance, transactionValueEth) >= 0) {
+    if (compareBigNumbers(etherTokenBalance, i.ethValueUlps) >= 0) {
       // need to call 3 args version of transfer method. See the abi in the contract.
       const txCall = (contractsService.etherToken.transferTx as any)(
         i.eto!.etoId,
-        transactionValueEth,
+        i.ethValueUlps,
         "",
       );
       txDetails = {
@@ -206,17 +204,18 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
 
       // fill up etherToken with ether from wallet
     } else {
-      const difference = transactionValueEth.sub(etherTokenBalance);
+      const ethVal = new BigNumber(i.ethValueUlps)
+      const difference = ethVal.sub(etherTokenBalance);
       const txCall = contractsService.etherToken.depositAndTransferTx(
         i.eto!.etoId,
-        transactionValueEth,
+        ethVal,
         [""],
       );
       txDetails = {
         to: contractsService.etherToken.address,
         from: selectEthereumAddressWithChecksum(state.web3),
         input: txCall.getData(),
-        value: difference.toString(),
+        value: difference.round().toString(),
         gas: i.gasAmount,
         gasPrice: i.gasPrice,
       };

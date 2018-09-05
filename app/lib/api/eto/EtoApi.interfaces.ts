@@ -91,6 +91,7 @@ const groupType = YupTS.object({
 
 export const EtoKeyIndividualsType = YupTS.object({
   team: groupType.optional(),
+  advisors: groupType.optional(),
   founders: groupType.optional(),
   boardMembers: groupType.optional(),
   notableInvestors: groupType.optional(),

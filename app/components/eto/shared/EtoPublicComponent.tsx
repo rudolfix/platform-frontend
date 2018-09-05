@@ -630,7 +630,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
         </Row>
       )}
 
-      {((companyData.notableInvestors && !!companyData.notableInvestors.members[0].name.length) ||
+      {((companyData.advisors && !!companyData.advisors.members[0].name.length) ||
+        (companyData.notableInvestors && !!companyData.notableInvestors.members[0].name.length) ||
         (companyData.partners && !!companyData.partners.members[0].name.length) ||
         (companyData.keyCustomers && !!companyData.keyCustomers.members[0].name.length) ||
         (companyData.keyAlliances && !!companyData.keyAlliances.members[0].name.length) ||
@@ -642,6 +643,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
               layoutSize="large"
               layoutOrnament={false}
               selectedIndex={selectActiveCarouselTab([
+                companyData.advisors,
                 companyData.notableInvestors,
                 companyData.partners,
                 companyData.keyCustomers,
@@ -649,6 +651,23 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                 companyData.keyAlliances,
               ])}
             >
+              {companyData.advisors &&
+                companyData.advisors.members.length > 0 &&
+                !!companyData.advisors.members[0].name.length && (
+                  <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
+                    <Panel>
+                      <PeopleSwiperWidget
+                        {...swiperSettings}
+                        people={companyData.advisors.members as IPerson[]}
+                        navigation={{
+                          nextEl: "people-swiper-advisors-next",
+                          prevEl: "people-swiper-advisors-prev",
+                        }}
+                        layout="vertical"
+                      />
+                    </Panel>
+                  </TabContent>
+                )}
               {companyData.notableInvestors &&
                 companyData.notableInvestors.members.length > 0 &&
                 !!companyData.notableInvestors.members[0].name.length && (

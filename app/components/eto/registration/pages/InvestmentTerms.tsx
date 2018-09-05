@@ -5,7 +5,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
+import {
+  EtoInvestmentTermsType,
+  TPartialEtoSpecData,
+} from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -52,7 +55,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
     return (
       <EtoFormBase
         title={<FormattedMessage id="eto.form.investment-terms.title" />}
-        validator={EtoTermsType.toYup()}
+        validator={EtoInvestmentTermsType.toYup()}
       >
         <FormField
           label={
@@ -134,7 +137,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
             label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
             prefix="€"
             name="newSharePrice"
-            value={formatMoney(`${computedNewSharePrice}`, 1, 4)}
+            value={formatMoney(`${computedNewSharePrice}`, 1, 8)}
             disabled
           />
           <FormField
@@ -195,7 +198,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
                 }
                 prefix="%"
                 name="minSharesGenerated"
-                value={computedMinCapPercent.toFixed(3)}
+                value={computedMinCapPercent.toFixed(4)}
                 disabled
               />
             </Col>
@@ -206,7 +209,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
                 }
                 prefix="%"
                 name="maxSharesGenerated"
-                value={computedMaxCapPercent.toFixed(3)}
+                value={computedMaxCapPercent.toFixed(4)}
                 disabled
               />
             </Col>
@@ -233,7 +236,7 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
 }
 
 const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
-  validationSchema: EtoTermsType.toYup(),
+  validationSchema: EtoInvestmentTermsType.toYup(),
   mapPropsToValues: props => props.stateValues,
   handleSubmit: (values, props) => props.props.saveData(values),
 })(EtoForm);

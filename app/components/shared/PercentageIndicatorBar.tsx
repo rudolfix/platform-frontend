@@ -6,7 +6,16 @@ import { invariant } from "../../utils/invariant";
 
 import * as styles from "./PercentageIndicatorBar.module.scss";
 
-type IProps =
+type TLayout = "narrow";
+
+type TTheme = "green";
+
+interface ICommonProps {
+  layout?: TLayout;
+  theme?: TTheme;
+}
+
+type TProps =
   | {
       percent: number;
       fraction?: number;
@@ -14,9 +23,13 @@ type IProps =
   | {
       percent?: number;
       fraction: number;
+      layout?: TLayout;
     };
 
-const CURVE = 20;
+type IProps = ICommonProps & TProps;
+
+const DEFAULT_CURVE = 20;
+const NARROW_CURVE = 5;
 
 export function selectPercentage(props: IProps): number {
   if (props.percent !== undefined) {
@@ -38,25 +51,34 @@ export const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = props
   const { percent: _percent, fraction: _fraction, ...htmlProps } = props;
   const percent = Math.round(selectPercentage(props));
 
+  const isNarrow = props.layout === "narrow";
+  const computedCurve = isNarrow ? NARROW_CURVE : DEFAULT_CURVE;
+  const computedHeight = isNarrow ? 10 : 38;
+
   return (
-    <div {...htmlProps} className={cn(styles.percentageIndicatorBar, htmlProps.className)}>
-      <span className={styles.label} data-test-id="percentage-indicator-bar-value">
-        {percent}%
-      </span>
-      <svg width="100%" height="38">
+    <div
+      {...htmlProps}
+      className={cn(styles.percentageIndicatorBar, htmlProps.className, props.theme)}
+    >
+      {!isNarrow && (
+        <span className={styles.label} data-test-id="percentage-indicator-bar-value">
+          {percent}%
+        </span>
+      )}
+      <svg width="100%" height={computedHeight}>
         <defs>
           <clipPath id="percent-indicator-bar">
-            <rect width="100%" height="38" rx={CURVE} ry={CURVE} />
+            <rect width="100%" height={computedHeight} rx={computedCurve} ry={computedCurve} />
           </clipPath>
         </defs>
         <g clipPath="url(#percent-indicator-bar)">
-          <rect className={styles.background} height="100%" rx={CURVE} ry={CURVE} />
+          <rect className={styles.background} height="100%" rx={computedCurve} ry={computedCurve} />
           <rect
             className={styles.progress}
             width="100%"
             height="100%"
-            rx={CURVE}
-            ry={CURVE}
+            rx={computedCurve}
+            ry={computedCurve}
             style={{ transform: `translateX(${percent - 100}%)` }}
           />
         </g>

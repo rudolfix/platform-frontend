@@ -140,27 +140,37 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
           },
           alt: `${etoData.equityTokenSymbol} - ${etoData.equityTokenName}`,
         }}
+        tokenName={etoData.equityTokenName || ""}
+        tokenSymbol={etoData.equityTokenSymbol || ""}
         className="mb-4"
+        numberOfInvestors={12}
         prospectusApproved={true}
+        termSheet={true}
+        timeToClaim={12}
+        smartContractOnchain={true}
         equityTokenPrice="10000"
         newSharesGenerated="1000"
         preMoneyValuation="10000000"
         investmentAmount="100000"
         status="campaigning"
-        tokenName={etoData.equityTokenName || ""}
-        tokenSymbol={etoData.equityTokenSymbol || ""}
+        raisedAmount="2000"
         campaigningWidget={{
-          amountBacked: "20",
-          investorsBacked: 2,
+          amountBacked: "amountBacked",
+          investorsBacked: 22,
+          investorsLimit: 500,
+          wasBacked: false,
+          isLoggedIn: true,
+          isActivated: true,
+          quote: "Lorem ipsum",
         }}
         publicWidget={{
           endInDays: 5,
-          investorsBacked: 20,
-          tokensGoal: 30,
-          raisedTokens: 12,
+          investorsBacked: 10,
+          tokensGoal: 20,
+          raisedTokens: 1,
+          raisedETH: 1000,
+          raisedNEUR: 10000,
         }}
-        termSheet={true}
-        smartContractOnchain={true}
       />
 
       {etoData.startDate && (

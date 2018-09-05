@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
+import { EInvestmentErrorState, EInvestmentType } from "../../../../modules/investmentFlow/reducer";
 import { InvestmentSelectionComponent } from "./Investment";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
@@ -45,11 +45,11 @@ const dummyProps = {
   onAccept: () => {},
   euroValue: "1000000000",
   etherPriceEur: "100",
-  errorState: "fufu",
+  errorState: EInvestmentErrorState.ExceedsWalletBalance,
   investmentType: EInvestmentType.InvestmentWallet,
-  // tslint:disable-next-line:no-object-literal-type-assertion
-  gasCost: "10000000",
-  minTicketEur: 200
+  gasCostEth: "10000000",
+  minTicketEur: 200,
+  readyToInvest: false
 }
 
 storiesOf("InvestmentSelection", module).add("default", () =>

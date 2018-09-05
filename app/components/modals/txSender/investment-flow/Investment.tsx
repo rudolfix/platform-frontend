@@ -20,7 +20,7 @@ import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
-import { selectInvestmentGasCost, selectReadyToInvest } from "../../../../modules/investmentFlow/selectors";
+import { selectInvestmentGasCostEth, selectReadyToInvest } from "../../../../modules/investmentFlow/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
 import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
@@ -32,7 +32,7 @@ interface IStateProps {
   euroValue: string;
   etherPriceEur: string;
   investmentType: EInvestmentType;
-  gasCost: string;
+  gasCostEth: string;
   errorState?: EInvestmentErrorState;
   calculatedContribution?: ICalculatedContribution
   minTicketEur: number
@@ -40,7 +40,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  getTransaction: () => void;
+  sendTransaction: () => void;
   changeEuroValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   changeEthValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   changeInvestmentType: (type: EInvestmentType) => void
@@ -113,10 +113,10 @@ function formatEth(val? : string | BigNumber): string | undefined {
 
 export const InvestmentSelectionComponent = injectIntlHelpers(
   (props: IProps & IIntlProps) => {
-    const {euroValue, etherPriceEur, minTicketEur, intl, gasCost} = props
+    const {euroValue, etherPriceEur, minTicketEur, intl, gasCostEth} = props
     const ethValue = euroValue && divideBigNumbers(euroValue, etherPriceEur)
-    const gasCostEuro = multiplyBigNumbers([gasCost, etherPriceEur])
-    const totalCostEth = addBigNumbers([gasCost, ethValue || "0"])
+    const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur])
+    const totalCostEth = addBigNumbers([gasCostEth, ethValue || "0"])
     const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"])
     const cc = props.calculatedContribution
     const minTicketEth = divideBigNumbers(minTicketEur, etherPriceEur)
@@ -198,7 +198,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             <Col className={styles.summary}>
               <div>
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />
-                : <span className="orange">{formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCost)}</span>
+                : <span className="orange">{formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}</span>
               </div>
               <div>
                 <FormattedMessage id="investment-flow.total" />
@@ -207,7 +207,7 @@ export const InvestmentSelectionComponent = injectIntlHelpers(
             </Col>
           </Row>
           <Row className="justify-content-center mb-0">
-            <Button layout="primary" type="submit" disabled={!props.readyToInvest}>
+            <Button onClick={props.sendTransaction} layout="primary" type="submit" disabled={!props.readyToInvest}>
               <FormattedMessage id="investment-flow.invest-now" />
             </Button>
           </Row>
@@ -225,7 +225,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
       etherPriceEur: selectEtherPriceEur(state.tokenPrice),
       euroValue: state.investmentFlow.euroValueUlps,
       errorState: state.investmentFlow.errorState,
-      gasCost: selectInvestmentGasCost(state.investmentFlow),
+      gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
       investmentType: state.investmentFlow.investmentType,
       wallets: createWallets(state),
       calculatedContribution: state.investmentFlow.calculatedContribution,
@@ -234,7 +234,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
     })
   },
   dispatchToProps: dispatch => ({
-    getTransaction: () => { },
+    sendTransaction: () => dispatch(actions.investmentFlow.generateInvestmentTx()),
     changeEthValue: (evt) => dispatch(actions.investmentFlow.submitEthValue(evt.target.value)),
     changeEuroValue: (evt) => dispatch(actions.investmentFlow.submitEuroValue(evt.target.value)),
     changeInvestmentType: (type: EInvestmentType) => dispatch(actions.investmentFlow.selectInvestmentType(type))

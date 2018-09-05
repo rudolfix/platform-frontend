@@ -25,4 +25,6 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_SET_ETO", { eto }),
   setErrorState: (errorState?: EInvestmentErrorState) =>
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_ERROR_STATE", { errorState }),
+  generateInvestmentTx: () =>
+    createSimpleAction("INVESTMENT_FLOW_GENERATE_TX")
 };

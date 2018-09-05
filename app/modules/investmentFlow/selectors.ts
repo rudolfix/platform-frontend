@@ -1,6 +1,6 @@
 import { BigNumber } from "bignumber.js";
 
-import { compareBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
+import { compareBigNumbers, multiplyBigNumbers, addBigNumbers } from "../../utils/BigNumberUtils";
 import { EInvestmentType, ICalculatedContribution, IInvestmentFlowState } from "./reducer";
 
 export const selectIsICBMInvestment = (state: IInvestmentFlowState) => state.investmentType === EInvestmentType.ICBMEth || state.investmentType === EInvestmentType.ICBMnEuro
@@ -21,7 +21,7 @@ export const convertToCalculatedContribution = ([
   maxCapExceeded
 })
 
-export const selectInvestmentGasCost = (state: IInvestmentFlowState) => multiplyBigNumbers([state.gasPrice, state.gasAmount])
+export const selectInvestmentGasCostEth = (state: IInvestmentFlowState) => multiplyBigNumbers([state.gasPrice, state.gasAmount])
 
 export const selectReadyToInvest = (state: IInvestmentFlowState) => !!(
   state.euroValueUlps && compareBigNumbers(state.euroValueUlps, 0) > 0

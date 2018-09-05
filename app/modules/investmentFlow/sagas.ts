@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { delay } from "redux-saga";
 import { fork, put, select, takeEvery, takeLatest, throttle } from "redux-saga/effects";
 
+import { compare } from "semver";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
@@ -10,12 +11,13 @@ import { convertToBigInt } from "../../utils/Money.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";
-import { neuCall } from "../sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
+import { ITxData } from "../tx/sender/reducer";
 import { selectLiquidEtherBalance } from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EInvestmentErrorState, EInvestmentType, IInvestmentFlowState } from "./reducer";
-import { convertToCalculatedContribution, selectInvestmentGasCost, selectIsICBMInvestment } from "./selectors";
+import { convertToCalculatedContribution, selectInvestmentGasCostEth, selectIsICBMInvestment, selectReadyToInvest } from "./selectors";
 
 function* calculateEuroValueFromEth(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE") return;
@@ -54,7 +56,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
 
   if (!contribs || !value || !wallet) return
 
-  const gasPrice = selectInvestmentGasCost(i)
+  const gasPrice = selectInvestmentGasCostEth(i)
 
   if (compareBigNumbers(gasPrice, wallet.etherBalance) === 1) {
     return EInvestmentErrorState.NotEnoughEtherForGas
@@ -128,11 +130,58 @@ function * setGasPrice (): any {
   yield put(actions.investmentFlow.validateInputs())
 }
 
+function* generateTransaction ({ contractsService }: TGlobalDependencies): any {
+  const state: IAppState = yield select()
+  if (!selectReadyToInvest(state.investmentFlow)) {
+    throw new Error("Investment data is not valid to create an Transaction")
+  }
+  const i = state.investmentFlow
+
+  let txDetails: ITxData | undefined
+
+  if (i.investmentType === EInvestmentType.InvestmentWallet) {
+    const transactionValueEth = new BigNumber(i.euroValueUlps).div(state.tokenPrice.tokenPriceData!.etherPriceEur)
+    const etherTokenBalance = state.wallet.data!.etherTokenBalance
+
+    // transaction can be fully covered by etherTokens
+    if (compareBigNumbers(etherTokenBalance, transactionValueEth) >= 0) {
+      // need to call 3 args version of transfer method. See the abi in the contract.
+      const txCall = (contractsService.etherToken.transferTx as any)(i.eto!.etoId, transactionValueEth, "")
+      txDetails = {
+        to: contractsService.etherToken.address,
+        from: selectEthereumAddressWithChecksum(state.web3),
+        input: txCall.getData(),
+        value: '0',
+        gas: i.gasAmount,
+        gasPrice: i.gasPrice,
+      }
+
+    // fill up etherToken with ether from wallet
+    } else {
+      const difference = transactionValueEth.sub(etherTokenBalance)
+      const txCall = contractsService.etherToken.depositAndTransferTx(i.eto!.etoId, transactionValueEth, [""])
+      txDetails = {
+        to: contractsService.etherToken.address,
+        from: selectEthereumAddressWithChecksum(state.web3),
+        input: txCall.getData(),
+        value: difference.toString(),
+        gas: i.gasAmount,
+        gasPrice: i.gasPrice,
+      }
+    }
+  }
+
+  if (txDetails) {
+    yield put(actions.txSender.txSenderAcceptDraft(txDetails))
+  }
+}
+
 export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE", calculateEuroValueFromEth)
   yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE", processEuroValue)
   yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs)
   yield takeEvery("INVESTMENT_FLOW_START", start)
+  yield fork(neuTakeEvery, "INVESTMENT_FLOW_GENERATE_TX", generateTransaction)
   yield takeEvery("TX_SENDER_HIDE_MODAL", stop)
   yield takeEvery("GAS_API_LOADED", setGasPrice)
 }

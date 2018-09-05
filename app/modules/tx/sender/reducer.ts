@@ -22,6 +22,7 @@ export interface ITxData {
   data?: string;
   nonce?: string;
   from?: string;
+  input?: string
 }
 
 export interface ITxSenderState {

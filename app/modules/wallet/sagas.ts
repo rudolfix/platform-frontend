@@ -11,18 +11,15 @@ import { numericValuesToString } from "../contracts/utils";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { ILockedWallet, IWalletStateData } from "./reducer";
-import { selectIsLoaded } from "./selectors";
 
 function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
   try {
-    const isLoaded = yield select((s: IAppState) => selectIsLoaded(s.wallet));
-    if (isLoaded) return;
-
     const ethAddress = yield select((s: IAppState) => selectEthereumAddressWithChecksum(s.web3));
 
     const state: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
 
     yield put(actions.wallet.loadWalletData(state));
+    logger.info("Wallet Loaded");
   } catch (e) {
     yield put(actions.wallet.loadWalletDataError("Error while loading wallet data."));
     logger.error("Error while loading wallet data: ", e);

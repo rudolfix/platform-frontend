@@ -143,6 +143,8 @@ export const WalletBalance = appConnect<IStateProps, IDispatchProps>({
   }),
   dispatchToProps: dispatch => ({
     depositEth: () => dispatch(actions.depositEthModal.showDepositEthModal()),
-    withdrawEth: () => dispatch(actions.txSender.withdrawEth()),
+    withdrawEth: () => {
+      dispatch(actions.txSender.withdrawEth());
+    },
   }),
 })(WalletBalanceComponent);

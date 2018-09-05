@@ -2,17 +2,19 @@ import { END, eventChannel } from "redux-saga";
 import { call, fork, put, race, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
 
+import { addHexPrefix } from "ethereumjs-util";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { IAppState } from "../../../store";
 import { connectWallet } from "../../accessWallet/sagas";
-import { actions } from "../../actions";
+import { actions, TAction } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
 import { ITxData, TxSenderType } from "./reducer";
 
-export function* withdrawSaga({ logger }: TGlobalDependencies): any {
+export function* withdrawSaga({ logger }: TGlobalDependencies, action: TAction): any {
   try {
+    if (action.type !== "WITHDRAW_ETH") return;
     yield neuCall(txSendSaga, "WITHDRAW");
     logger.info("Withdrawing successful");
   } catch (e) {
@@ -20,8 +22,14 @@ export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
+export function* txMinedSaga(_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "TX_SENDER_TX_MINED") return;
+  yield put(actions.wallet.startLoadingWalletData());
+}
+
 export const txSendingSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeEvery, "WITHDRAW_ETH", withdrawSaga);
+  yield fork(neuTakeEvery, "TX_SENDER_TX_MINED", txMinedSaga);
 };
 
 export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
@@ -50,7 +58,6 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
 
   yield call(connectWallet, "Send funds!");
   yield put(actions.txSender.txSenderWalletPlugged());
-
   const txHash = yield neuCall(sendTxSubSaga);
 
   yield neuCall(watchTxSubSaga, txHash);
@@ -92,13 +99,13 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
     const txWithMetadata: TxWithMetadata = {
       transaction: {
         from: txData.from!,
-        gas: txData.gas!,
-        gasPrice: txData.gasPrice!,
+        gas: addHexPrefix(Number(txData.gas!).toString(16)),
+        gasPrice: "0x" + Number(txData.gasPrice!).toString(16),
         hash: txHash,
         input: txData.data! || "0x0",
-        nonce: txData.nonce!,
+        nonce: "0x" + Number(txData.nonce!).toString(16),
         to: txData.to!,
-        value: txData.value!,
+        value: "0x" + Number(txData.value!).toString(16),
         blockHash: undefined,
         blockNumber: undefined,
         chainId: undefined,

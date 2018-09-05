@@ -74,7 +74,7 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
               <FormFieldImportant
                 name="value"
                 label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
-                placeholder="10.5"
+                placeholder="Please enter value in eth"
               />
             </Col>
 

@@ -1,7 +1,7 @@
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
-import * as ethUtils from "ethereumjs-util";
+import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
 import * as nacl from "tweetnacl";
 import * as naclUtil from "tweetnacl-util";
@@ -60,6 +60,9 @@ export class LightWalletMissingPassword extends LightWalletError {}
 export class LightWalletWrongPassword extends LightWalletError {}
 export class LightWalletLocked extends LightWalletError {}
 export class LightWalletWrongMnemonic extends LightWalletError {}
+
+export class ProviderEngineError extends LightError {}
+export class NativeSignTransactionUserError extends ProviderEngineError {}
 
 // it's useful to have it as a class to allow injection and mocking.Todo: remove static functions and probably move to separate file
 @injectable()
@@ -179,6 +182,7 @@ export class LightWallet implements IPersonalWallet {
     public readonly email: string,
     public password?: string,
   ) {}
+
   public readonly walletType = WalletType.LIGHT;
   public readonly walletSubType = WalletSubType.UNKNOWN;
   public readonly signerType = SignerType.ETH_SIGN;
@@ -196,7 +200,7 @@ export class LightWallet implements IPersonalWallet {
       throw new LightWalletMissingPassword();
     }
     try {
-      const msgHash = ethUtils.hashPersonalMessage(ethUtils.toBuffer(ethUtils.addHexPrefix(data)));
+      const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
       const rawSignedMsg = await LightWalletProvider.signing.signMsgHash(
         this.vault.walletInstance,
         await LightWalletUtil.getWalletKey(this.vault.walletInstance, this.password),
@@ -212,7 +216,27 @@ export class LightWallet implements IPersonalWallet {
   }
 
   public async sendTransaction(data: Web3.TxData): Promise<string> {
-    return this.web3Adapter.sendTransaction(data);
+    if (!this.password) {
+      throw new LightWalletMissingPassword();
+    }
+    data.nonce = await this.web3Adapter.getTransactionCount(data.from);
+
+    const txData: Web3.CallTxDataBase = {};
+
+    txData.to = addHexPrefix(data.to!);
+    txData.gasLimit = addHexPrefix(Number(data.gas || 0).toString());
+    txData.gasPrice = addHexPrefix(Number(data.gasPrice || 0).toString(16));
+    txData.nonce = addHexPrefix(Number(data.nonce || 0).toString(16));
+    txData.value = addHexPrefix(Number(data.value! || 0).toString(16));
+    txData.data = addHexPrefix(data.data || "0");
+
+    const rawData = LightWalletProvider.signing.signTx(
+      this.vault.walletInstance,
+      await LightWalletUtil.getWalletKey(this.vault.walletInstance, this.password),
+      txData,
+      this.ethereumAddress,
+    );
+    return await this.web3Adapter.sendRawTransaction(addHexPrefix(rawData));
   }
 
   public async getSeed(): Promise<string> {
@@ -246,6 +270,10 @@ export class LightWalletConnector {
 
   public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;
 
+  public passwordProvider(): any {
+    return "";
+  }
+
   public async connect(
     lightWalletVault: IVault,
     email: string,
@@ -271,12 +299,17 @@ export class LightWalletConnector {
 
   private async setWeb3Provider(lightWalletVault: IVault): Promise<any> {
     let engine: any;
+    lightWalletVault.walletInstance.passwordProvider = (callback: any) => {
+      return callback(null, this.passwordProvider());
+    };
+
     try {
       // hooked-wallet-subprovider required methods were manually implemented
       const web3Provider = new HookedWalletSubprovider({
-        signTransaction: lightWalletVault.walletInstance.signTransaction.bind(
-          lightWalletVault.walletInstance,
-        ),
+        signTransaction: () => {
+          // Native signTransaction Shouldn't be used
+          throw new NativeSignTransactionUserError();
+        },
         getAccounts: (cb: any) => {
           const data = lightWalletVault.walletInstance.getAddresses.bind(
             lightWalletVault.walletInstance,

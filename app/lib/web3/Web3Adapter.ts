@@ -67,6 +67,21 @@ export class Web3Adapter {
     return resultData.result;
   }
 
+  public async getTransactionCount(address: string): Promise<number> {
+    const getTransactionCount = promisify<number, string>(
+      this.web3.eth.getTransactionCount.bind(this.web3.eth),
+    );
+    return await getTransactionCount(address);
+  }
+
+  /**
+   * This will ensure that txData has nonce value.
+   */
+  public async sendRawTransaction(txData: string): Promise<string> {
+    const send = promisify<any, any>(this.web3.eth.sendRawTransaction.bind(this.web3.eth));
+    return await send(txData);
+  }
+
   /**
    * This will ensure that txData has nonce value.
    */

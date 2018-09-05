@@ -35,23 +35,6 @@ const DEFAULT_PLACEHOLDER = "N/A";
 
 const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#394652", "#c4c5c6"];
 
-const swiperSettings = {
-  slidesPerView: 5,
-  centeredSlides: true,
-  observer: true,
-  spaceBetween: 80,
-  breakpoints: {
-    640: {
-      slidesPerView: 1,
-      spaceBetween: 10,
-    },
-    1200: {
-      slidesPerView: 2,
-      spaceBetween: 20,
-    },
-  },
-};
-
 interface IProps {
   companyData: TCompanyEtoData;
   etoData: TEtoSpecsData;
@@ -632,7 +615,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
             </SectionHeader>
             <Panel>
               <PeopleSwiperWidget
-                {...swiperSettings}
                 people={(companyData.founders && (companyData.founders.members as IPerson[])) || []}
                 navigation={{
                   nextEl: "people-swiper-founders-next",
@@ -672,7 +654,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperSettings}
                         people={companyData.advisors.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-advisors-next",
@@ -691,7 +672,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperSettings}
                         people={companyData.notableInvestors.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-investors-next",
@@ -708,7 +688,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperSettings}
                         navigation={{
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
@@ -727,7 +706,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        {...swiperSettings}
                         navigation={{
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
@@ -750,7 +728,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                           nextEl: "people-swiper-board-members-next",
                           prevEl: "people-swiper-board-members-prev",
                         }}
-                        {...swiperSettings}
                         people={companyData.boardMembers.members as IPerson[]}
                         layout="vertical"
                       />
@@ -769,7 +746,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                           nextEl: "people-swiper-board-members-next",
                           prevEl: "people-swiper-board-members-prev",
                         }}
-                        {...swiperSettings}
                         people={companyData.keyAlliances.members as IPerson[]}
                         layout="vertical"
                       />

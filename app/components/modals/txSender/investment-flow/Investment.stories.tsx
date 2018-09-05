@@ -38,12 +38,13 @@ const wallets = [
 ];
 
 const dummyProps = {
-  getTransaction: () => {},
+  sendTransaction: () => {},
   changeEthValue: () => {},
   changeEuroValue: () => {},
   changeInvestmentType: () => {},
   onAccept: () => {},
   euroValue: "1000000000",
+  ethValue: "100000000000",
   etherPriceEur: "100",
   errorState: EInvestmentErrorState.ExceedsWalletBalance,
   investmentType: EInvestmentType.InvestmentWallet,

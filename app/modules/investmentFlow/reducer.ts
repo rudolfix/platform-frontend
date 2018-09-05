@@ -16,6 +16,11 @@ export enum EInvestmentType {
   BankTransfer = "BANK_TRANSFER"
 }
 
+export enum EInvestmentCurrency {
+  Ether = "ETH",
+  Euro = "EUR"
+}
+
 export enum EInvestmentErrorState {
   AboveMaximumTicketSize = "above_maximum_ticket_size",
   BelowMinimumTicketSize = "below_minimum_ticket_size",
@@ -36,6 +41,7 @@ export interface ICalculatedContribution {
 
 export interface IInvestmentFlowState {
   euroValueUlps: string,
+  ethValueUlps: string,
   investmentType: EInvestmentType
   eto?: TInvestorEtoData
   errorState?: EInvestmentErrorState
@@ -46,6 +52,7 @@ export interface IInvestmentFlowState {
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
   euroValueUlps: "",
+  ethValueUlps: "",
   investmentType: EInvestmentType.None,
   gasAmount: INVESTMENT_GAS_AMOUNT,
   gasPrice: "0"
@@ -82,6 +89,11 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         errorState: action.payload.errorState
+      };
+    case "INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE":
+      return {
+        ...state,
+        ethValueUlps: action.payload.value
       };
     case "INVESTMENT_FLOW_SET_INVESTMENT_EUR_VALUE":
       return {

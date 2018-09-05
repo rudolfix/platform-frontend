@@ -16,36 +16,48 @@ import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { ITxData } from "../tx/sender/reducer";
 import { selectLiquidEtherBalance } from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import { EInvestmentErrorState, EInvestmentType, IInvestmentFlowState } from "./reducer";
+import { EInvestmentCurrency, EInvestmentErrorState, EInvestmentType, IInvestmentFlowState } from "./reducer";
 import { convertToCalculatedContribution, selectInvestmentGasCostEth, selectIsICBMInvestment, selectReadyToInvest } from "./selectors";
 
-function* calculateEuroValueFromEth(action: TAction): any {
-  if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE") return;
-  const s: IAppState = yield select()
-  const eth = extractNumber(action.payload.value) || "0"
-  const tp = s.tokenPrice.tokenPriceData
-  if (tp) {
-    const value = multiplyBigNumbers([eth, tp.etherPriceEur])
-    yield put(actions.investmentFlow.submitEuroValue(value === "0" ? "" : value))
-  }
-}
-
-function* processEuroValue(action: TAction): any {
-  if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE") return;
+function* processCurrencyValue(action: TAction): any {
+  if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE") return;
   const state: IAppState = yield select()
   const i = state.investmentFlow
   const type = i.investmentType
   let value = extractNumber(action.payload.value)
+
+  // Dont allow setting values, if no investment type is selected
   if (value && type === EInvestmentType.None) {
     yield put(actions.investmentFlow.setErrorState(EInvestmentErrorState.NoWalletSelected))
     return
-  }
-  if (type !== EInvestmentType.None && i.errorState === EInvestmentErrorState.NoWalletSelected) {
+  } else if (type !== EInvestmentType.None && i.errorState === EInvestmentErrorState.NoWalletSelected) {
     yield put(actions.investmentFlow.setErrorState())
   }
-  value = value && convertToBigInt(value)
-  yield put(actions.investmentFlow.setEuroValue(value))
+
+  yield computeAndSetCurrencies(convertToBigInt(value), action.payload.currency)
   yield put(actions.investmentFlow.validateInputs())
+}
+
+function * computeAndSetCurrencies(value: string, currency: EInvestmentCurrency): any {
+  const state: IAppState = yield select()
+  const etherPriceEur = selectEtherPriceEur(state.tokenPrice)
+  if (!value) {
+    yield put(actions.investmentFlow.setEthValue(""))
+    yield put(actions.investmentFlow.setEurValue(""))
+  } else if (etherPriceEur && etherPriceEur !== "0") {
+    switch (currency) {
+      case EInvestmentCurrency.Ether:
+        const eurVal = multiplyBigNumbers([value, etherPriceEur])
+        yield put(actions.investmentFlow.setEthValue(value))
+        yield put(actions.investmentFlow.setEurValue(eurVal))
+        return
+      case EInvestmentCurrency.Euro:
+        const ethVal = divideBigNumbers(value, etherPriceEur)
+        yield put(actions.investmentFlow.setEthValue(ethVal))
+        yield put(actions.investmentFlow.setEurValue(value))
+        return
+    }
+  }
 }
 
 function validateInvestment(state: IAppState): EInvestmentErrorState | undefined {
@@ -175,13 +187,30 @@ function* generateTransaction ({ contractsService }: TGlobalDependencies): any {
     yield put(actions.txSender.txSenderAcceptDraft(txDetails))
   }
 }
+function * recalculateCurrencies (): any {
+  yield delay(100) // wait for new token price to be available
+  const i: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow)
+  switch (i.investmentType) {
+    // ether fixed, recalculate euro
+    case EInvestmentType.ICBMEth:
+    case EInvestmentType.InvestmentWallet:
+      if (i.ethValueUlps) yield computeAndSetCurrencies(i.ethValueUlps, EInvestmentCurrency.Ether)
+      return
+
+    // euro fixed, recalculate ether
+    default:
+      if (i.euroValueUlps) yield computeAndSetCurrencies(i.euroValueUlps, EInvestmentCurrency.Euro)
+      return
+  }
+}
 
 export function* investmentFlowSagas(): any {
-  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_ETH_VALUE", calculateEuroValueFromEth)
-  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_EUR_VALUE", processEuroValue)
+  yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", processCurrencyValue)
   yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs)
   yield takeEvery("INVESTMENT_FLOW_START", start)
   yield fork(neuTakeEvery, "INVESTMENT_FLOW_GENERATE_TX", generateTransaction)
   yield takeEvery("TX_SENDER_HIDE_MODAL", stop)
   yield takeEvery("GAS_API_LOADED", setGasPrice)
+  yield takeEvery("GAS_API_LOADED", setGasPrice)
+  yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies)
 }

@@ -2,34 +2,34 @@ import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
+import { compose } from "redux";
 
-import { GasModelShape } from "../../../../lib/api/GasApi";
+import { MONEY_DECIMALS } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
-import { EInvestmentErrorState, EInvestmentType, ICalculatedContribution } from "../../../../modules/investmentFlow/reducer";
+import { EInvestmentCurrency, EInvestmentErrorState, EInvestmentType, ICalculatedContribution } from "../../../../modules/investmentFlow/reducer";
+import { selectInvestmentGasCostEth, selectReadyToInvest } from "../../../../modules/investmentFlow/selectors";
+import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
+import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
 import { appConnect, IAppState } from "../../../../store";
 import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button } from "../../../shared/Buttons";
 import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
 import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
-import { compose } from "redux";
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
-import { MONEY_DECIMALS } from "../../../../config/constants";
-import { selectInvestmentGasCostEth, selectReadyToInvest } from "../../../../modules/investmentFlow/selectors";
-import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
-import { selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount, selectICBMLockedEuroTokenBalance, selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount } from "../../../../modules/wallet/selectors";
-import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
 import * as styles from "./Investment.module.scss";
 
 
 interface IStateProps {
   wallets: IWalletSelectionData[];
   euroValue: string;
+  ethValue: string;
   etherPriceEur: string;
   investmentType: EInvestmentType;
   gasCostEth: string;
@@ -113,8 +113,7 @@ function formatEth(val? : string | BigNumber): string | undefined {
 
 export const InvestmentSelectionComponent = injectIntlHelpers(
   (props: IProps & IIntlProps) => {
-    const {euroValue, etherPriceEur, minTicketEur, intl, gasCostEth} = props
-    const ethValue = euroValue && divideBigNumbers(euroValue, etherPriceEur)
+    const {euroValue, ethValue, etherPriceEur, minTicketEur, intl, gasCostEth} = props
     const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur])
     const totalCostEth = addBigNumbers([gasCostEth, ethValue || "0"])
     const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"])
@@ -224,6 +223,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
     return ({
       etherPriceEur: selectEtherPriceEur(state.tokenPrice),
       euroValue: state.investmentFlow.euroValueUlps,
+      ethValue: state.investmentFlow.ethValueUlps,
       errorState: state.investmentFlow.errorState,
       gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
       investmentType: state.investmentFlow.investmentType,
@@ -235,8 +235,8 @@ export const InvestmentSelection: React.SFC = compose<any>(
   },
   dispatchToProps: dispatch => ({
     sendTransaction: () => dispatch(actions.investmentFlow.generateInvestmentTx()),
-    changeEthValue: (evt) => dispatch(actions.investmentFlow.submitEthValue(evt.target.value)),
-    changeEuroValue: (evt) => dispatch(actions.investmentFlow.submitEuroValue(evt.target.value)),
+    changeEthValue: (evt) => dispatch(actions.investmentFlow.submitCurrencyValue(evt.target.value, EInvestmentCurrency.Ether)),
+    changeEuroValue: (evt) => dispatch(actions.investmentFlow.submitCurrencyValue(evt.target.value, EInvestmentCurrency.Euro)),
     changeInvestmentType: (type: EInvestmentType) => dispatch(actions.investmentFlow.selectInvestmentType(type))
   })
 }))(InvestmentSelectionComponent)

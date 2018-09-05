@@ -78,7 +78,3 @@ export type TAcceptedFileType =
   | "image/svg+xml"
   | "image/*";
 // TODO: Correct TAcceptedFileType types it can contain more than one type
-
-declare class EtherToken {
-  transferTx: () => void
-}

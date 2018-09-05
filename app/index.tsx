@@ -11,7 +11,6 @@ import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { logger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import "reflect-metadata";
 
@@ -89,7 +88,6 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
     ...compact([
       routerMiddleware(history),
       createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
-      process.env.NODE_ENV !== "production" && logger,
       sagaMiddleware,
     ]),
   );

@@ -71,10 +71,10 @@ const CampaigningWidget: React.SFC<ICampaigningWidget> = ({
         </div>
       ) : (
         <Row>
-          <Col xs={12} lg={6}>
+          <Col xs={12} xl={6}>
             <FormField name="amount" prefix="€" />
           </Col>
-          <Col xs={12} lg={6}>
+          <Col xs={12} xl={6}>
             <Button type="submit">
               <FormattedMessage id="shared-component.eto-overview.back-now" />
             </Button>

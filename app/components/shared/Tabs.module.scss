@@ -19,7 +19,7 @@
 
 .tab {
   $_space-between-tabs-layout-small: 10px;
-  $_space-between-tabs-layout-large: 70px;
+  $_space-between-tabs-layout-large: 60px;
 
   color: $color-black;
   cursor: pointer;
@@ -83,12 +83,11 @@
 
   //layout: size large
   &:global(.large) {
-    @include font-button-default;
-    @include responsive-size(margin-left, $_space-between-tabs-layout-small, $_space-between-tabs-layout-large);
-    @include responsive-size(margin-right, $_space-between-tabs-layout-small, $_space-between-tabs-layout-large);
+    $_padding-large: 20px;
+    $_padding-small: 5px;
 
-    padding-left: 14px;
-    padding-right: 14px;
+    @include font-button-default;
+    @include responsive-size(padding-right, $_padding-small, $_padding-large);
 
     &:first-of-type {
       margin-left: 0;
@@ -96,6 +95,10 @@
 
     &:last-of-type {
       margin-right: 0;
+    }
+
+    + :local(.tab) {
+      @include responsive-size(margin-left, $_space-between-tabs-layout-small - $_padding-small, $_space-between-tabs-layout-large - $_padding-large);
     }
   }
 }

@@ -5,6 +5,10 @@
   flex-grow: 1;
   position: relative;
 
+  &:global(.green) {
+    color: $color-green-dark;
+  }
+
   .label {
     @include font-default;
 

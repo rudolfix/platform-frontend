@@ -13,11 +13,28 @@ import * as reddit from "../../assets/img/inline_icons/social_reddit.svg";
 import * as slack from "../../assets/img/inline_icons/social_slack.svg";
 import * as telegram from "../../assets/img/inline_icons/social_telegram.svg";
 import * as twitter from "../../assets/img/inline_icons/social_twitter.svg";
+import * as xing from "../../assets/img/inline_icons/social_xing.svg";
+import * as youtube from "../../assets/img/inline_icons/social_youtube.svg";
 import * as styles from "./SocialProfilesList.module.scss";
 
+export type TSocialChannelType =
+  | "facebook"
+  | "github"
+  | "gplus"
+  | "instagram"
+  | "linkedin"
+  | "medium"
+  | "reddit"
+  | "slack"
+  | "telegram"
+  | "twitter"
+  | "xing"
+  | "bitcointalk"
+  | "youtube";
+
 export interface IEtoSocialProfile {
-  type?: string;
-  url?: string;
+  type: string;
+  url: string;
 }
 
 type TLayoutSize = "small";
@@ -27,6 +44,8 @@ interface IProps {
   profiles: IEtoSocialProfile[];
   layoutIconSize?: TLayoutSize;
   layoutIconsPosition?: TLayoutPosition;
+  showLabels?: boolean;
+  isClickable?: boolean;
 }
 
 export const SOCIAL_PROFILES: {
@@ -42,25 +61,55 @@ export const SOCIAL_PROFILES: {
   slack,
   telegram,
   twitter,
+  xing,
+  youtube,
 };
 
 export const SocialProfilesList: React.SFC<IProps> = ({
   profiles,
   layoutIconSize,
   layoutIconsPosition,
+  showLabels,
+  isClickable,
 }) => {
+  const icon = (url: string, type: string): React.ReactNode => {
+    if (isClickable) {
+      return (
+        <a href={url} target="_blank" title={url} className={styles.icon}>
+          <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+        </a>
+      );
+    } else {
+      return (
+        <div className={styles.icon}>
+          <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={cn(styles.socialProfilesList, layoutIconSize, layoutIconsPosition)}>
-      {profiles.map(
-        ({ type, url }) =>
-          url && (
-            <div className={styles.profile} key={type}>
-              <a href={url} target="_blank" title={url}>
-                <InlineIcon svgIcon={SOCIAL_PROFILES[type as string]} />
-              </a>
-            </div>
-          ),
-      )}
+      {profiles &&
+        profiles.map(
+          ({ type, url }) =>
+            !!url.length && (
+              <div className={styles.profile} key={`${type}-${url}`}>
+                {icon(url, type)}
+                {showLabels && (
+                  <div className={styles.label}>
+                    <div className={styles.content}>{type}</div>
+                    <div className={styles.ornament} />
+                  </div>
+                )}
+              </div>
+            ),
+        )}
     </div>
   );
+};
+
+SocialProfilesList.defaultProps = {
+  showLabels: true,
+  isClickable: true,
 };

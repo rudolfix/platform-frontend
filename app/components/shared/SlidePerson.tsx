@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { TTranslatedString } from "../../types";
 import { ISrcSet, ResponsiveImage } from "./ResponsiveImage";
 import { IEtoSocialProfile, SocialProfilesList } from "./SocialProfilesList";
 
@@ -12,18 +11,20 @@ interface IProps {
   srcSet: ISrcSet;
   name: string;
   socialChannels: IEtoSocialProfile[];
-  description: TTranslatedString;
-  role?: TTranslatedString;
+  role: string;
   layout?: TSlidePersonLayout;
+  showLabels?: boolean;
+  isClickable?: boolean;
 }
 
 export const SlidePerson: React.SFC<IProps> = ({
   srcSet,
   name,
   role,
-  description,
   layout,
   socialChannels,
+  showLabels,
+  isClickable,
 }) => {
   return (
     <div className={cn(styles.slidePerson, layout)}>
@@ -33,13 +34,16 @@ export const SlidePerson: React.SFC<IProps> = ({
       <div>
         <h5 className={styles.name}>{name}</h5>
         {role && <h6 className={styles.title}>{role}</h6>}
-        <p className={styles.bio}>{description}</p>
       </div>
-      <SocialProfilesList
-        profiles={socialChannels || []}
-        layoutIconSize="small"
-        layoutIconsPosition="center"
-      />
+      {!!socialChannels.length && (
+        <SocialProfilesList
+          profiles={socialChannels || []}
+          layoutIconSize="small"
+          layoutIconsPosition="center"
+          showLabels={showLabels}
+          isClickable={isClickable}
+        />
+      )}
     </div>
   );
 };

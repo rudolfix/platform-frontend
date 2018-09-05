@@ -2,10 +2,14 @@ import * as cn from "classnames";
 import * as React from "react";
 import Swiper from "react-id-swiper/lib/custom";
 
-import { ButtonIcon } from "./Buttons";
+import { actions } from "../../modules/actions";
+import { appConnect } from "../../store";
+import { TTranslatedString } from "../../types";
+import { InlineIcon } from "./InlineIcon";
 import { SlidePerson, TSlidePersonLayout } from "./SlidePerson";
 import { IEtoSocialProfile } from "./SocialProfilesList";
 
+import { compose } from "redux";
 import * as prevIcon from "../../assets/img/inline_icons/arrow_left.svg";
 import * as nextIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./PeopleSwiperWidget.module.scss";
@@ -15,11 +19,12 @@ export interface IPerson {
   image: string;
   description: string;
   layout?: TSlidePersonLayout;
-  role?: string;
+  role: string;
   socialChannels: IEtoSocialProfile[];
+  website: string;
 }
 
-interface IProps {
+interface IOwnProps {
   people: IPerson[];
   navigation?: {
     nextEl: string;
@@ -28,7 +33,18 @@ interface IProps {
   [key: string]: any;
 }
 
-export class PeopleSwiperWidget extends React.Component<IProps> {
+interface IDispatchProps {
+  showPersonModal: (
+    name: string,
+    role: string,
+    description: TTranslatedString,
+    image: string,
+    socialChannels: IEtoSocialProfile[],
+    website: string,
+  ) => void;
+}
+
+class PeopleSwiperWidgetComponent extends React.Component<IOwnProps & IDispatchProps> {
   swiper: any = null;
 
   swiperRef = (ref: any) => {
@@ -50,38 +66,44 @@ export class PeopleSwiperWidget extends React.Component<IProps> {
   componentDidMount(): void {
     const numberOfSlides = this.props.people.length;
 
-    if (numberOfSlides % 2) {
+    if (numberOfSlides < 5 && numberOfSlides % 2) {
       this.swiper.slideTo(Math.round(numberOfSlides / 2) - 1);
     }
   }
 
   render(): React.ReactNode {
-    const { people, navigation, layout, ...config } = this.props;
+    const { people, navigation, layout, showPersonModal, ...config } = this.props;
 
     return (
       <div className={styles.swiperWidget}>
         <Swiper {...config} ref={this.swiperRef}>
-          {people.map(({ image, name, description, role, socialChannels }, i) => (
-            <div key={i}>
-              <SlidePerson
-                socialChannels={socialChannels}
-                role={role}
-                description={description}
-                name={name}
-                srcSet={{ "1x": image }}
-                layout={layout}
-              />
-            </div>
-          ))}
+          {people.map(({ image, name, description, role, socialChannels, website }, i) => {
+            return (
+              <div
+                key={i}
+                onClick={() =>
+                  showPersonModal(name, role, description, image, socialChannels, website)
+                }
+              >
+                <SlidePerson
+                  socialChannels={socialChannels}
+                  role={role}
+                  name={name}
+                  srcSet={{ "1x": image }}
+                  layout={layout}
+                />
+              </div>
+            );
+          })}
         </Swiper>
         {navigation && (
           <>
-            <ButtonIcon
+            <InlineIcon
               svgIcon={prevIcon}
               className={cn(styles.prev, navigation.prevEl)}
               onClick={this.goPrev}
             />
-            <ButtonIcon
+            <InlineIcon
               svgIcon={nextIcon}
               className={cn(styles.next, navigation.nextEl)}
               onClick={this.goNext}
@@ -92,3 +114,30 @@ export class PeopleSwiperWidget extends React.Component<IProps> {
     );
   }
 }
+
+export const PeopleSwiperWidget = compose<React.SFC<IOwnProps>>(
+  appConnect<{}, IDispatchProps, IOwnProps>({
+    dispatchToProps: dispatch => {
+      return {
+        showPersonModal: (
+          name: string,
+          role: string,
+          description: TTranslatedString,
+          image: string,
+          socialChannels: IEtoSocialProfile[],
+          website: string,
+        ) =>
+          dispatch(
+            actions.personProfileModal.showPersonProfileModal(
+              name,
+              role,
+              description,
+              image,
+              socialChannels,
+              website,
+            ),
+          ),
+      };
+    },
+  }),
+)(PeopleSwiperWidgetComponent);

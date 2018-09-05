@@ -11,6 +11,10 @@
     &.transparent {
       background-color: transparent;
     }
+
+    &.thumbnail {
+      cursor: pointer;
+    }
   }
 }
 

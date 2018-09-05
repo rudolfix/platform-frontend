@@ -9,7 +9,6 @@ import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { logger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import "reflect-metadata";
 
@@ -28,9 +27,9 @@ import * as ga from "./utils/googleAnalitycs.js";
 import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import { InversifyProvider } from "./utils/InversifyProvider";
 
+import "font-awesome/scss/font-awesome.scss";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import "../node_modules/font-awesome/scss/font-awesome.scss";
 import "./styles/bootstrap.scss";
 import "./styles/overrides.scss";
 
@@ -87,7 +86,6 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
     ...compact([
       routerMiddleware(history),
       createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
-      process.env.NODE_ENV !== "production" && logger,
       sagaMiddleware,
     ]),
   );

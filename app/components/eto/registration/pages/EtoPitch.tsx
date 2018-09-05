@@ -124,9 +124,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
 
         <FormTextArea
           className="my-2"
-          label={<FormattedMessage id="eto.form.product-vision.key-product-priorities" />}
+          label={<FormattedMessage id="eto.form.product-vision.roadmap" />}
           placeholder="Describe"
-          name="keyProductPriorities"
+          name="roadmap"
         />
 
         <FormTextArea

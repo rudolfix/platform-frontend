@@ -97,8 +97,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
 
   const marketingLinks = companyData.marketingLinks && {
     documents: companyData.marketingLinks.map(l => ({
-      url: l.url,
-      name: l.title,
+      url: l.url || "",
+      name: l.title || "",
       icon: <InlineIcon svgIcon={icon_link} />,
     })),
     name: (
@@ -216,9 +216,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
           </SectionHeader>
           <Panel className="mb-4">
             <p className="mb-4">{companyData.companyDescription || DEFAULT_PLACEHOLDER}</p>
-            {companyData.keyQuoteFounder && (
-              <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteFounder}"</p>
-            )}
             {companyData.keyQuoteInvestor && (
               <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteInvestor}"</p>
             )}
@@ -238,6 +235,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                         <FormattedMessage id="eto.public-view.legal-information.legal-company-name" />
                       </span>
                       <span className={styles.value}>{companyData.name}</span>
+                    </div>
+                  )}
+                  {companyData.name && (
+                    <div className={styles.entry}>
+                      <span className={styles.label}>
+                        <FormattedMessage id="eto.public-view.legal-information.legal-form" />
+                      </span>
+                      <span className={styles.value}>{companyData.legalForm}</span>
                     </div>
                   )}
                   {companyData.foundingDate && (
@@ -831,7 +836,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
                         <p>{companyData.useOfCapital}</p>
                       </Col>
                     )}
-
                     {companyData.useOfCapitalList && (
                       <Col md={12} lg={6}>
                         <ChartDoughnut
@@ -904,7 +908,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
         </Col>
         <Col sm={12} md={4}>
           {documents[0] &&
-            !!documents[0].documents[0].url.length && (
+            !!documents[0].documents[0].url && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.documents.title" />
@@ -915,7 +919,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, et
             )}
 
           {companyData.companyNews &&
-            !!companyData.companyNews[0].url.length && (
+            !!companyData.companyNews[0].url && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.media-links.title" />

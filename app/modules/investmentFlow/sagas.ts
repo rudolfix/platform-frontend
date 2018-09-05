@@ -28,6 +28,7 @@ import {
 } from "./reducer";
 import {
   convertToCalculatedContribution,
+  selectCurrencyByInvestmentType,
   selectInvestmentGasCostEth,
   selectIsICBMInvestment,
   selectReadyToInvest,
@@ -229,17 +230,11 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
 function* recalculateCurrencies(): any {
   yield delay(100); // wait for new token price to be available
   const i: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
-  switch (i.investmentType) {
-    // ether fixed, recalculate euro
-    case EInvestmentType.ICBMEth:
-    case EInvestmentType.InvestmentWallet:
-      if (i.ethValueUlps) yield computeAndSetCurrencies(i.ethValueUlps, EInvestmentCurrency.Ether);
-      return;
-
-    // euro fixed, recalculate ether
-    default:
-      if (i.euroValueUlps) yield computeAndSetCurrencies(i.euroValueUlps, EInvestmentCurrency.Euro);
-      return;
+  const curr = selectCurrencyByInvestmentType(i)
+  if (curr === EInvestmentCurrency.Ether && i.ethValueUlps) {
+    yield computeAndSetCurrencies(i.ethValueUlps, curr);
+  } else if (i.euroValueUlps) {
+    yield computeAndSetCurrencies(i.euroValueUlps, curr);
   }
 }
 

@@ -3,6 +3,8 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 
 import { actions } from "../../../../modules/actions";
+import { EInvestmentCurrency, EInvestmentType } from "../../../../modules/investmentFlow/reducer";
+import { selectCurrencyByInvestmentType, selectInvestmentGasCostEth } from "../../../../modules/investmentFlow/selectors";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { Button } from "../../../shared/Buttons";
@@ -14,26 +16,37 @@ import { ITxSummaryDispatchProps, ITxSummaryStateProps } from "../TxSender";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
+import { MONEY_DECIMALS } from "../../../../config/constants";
+import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
+import { formatMoney } from "../../../../utils/Money.utils";
+import { Money } from "../../../shared/Money";
 import * as styles from "./Summary.module.scss";
 
-interface IStateProps extends ITxSummaryStateProps {
-  investmentData: {
-    companyName: string;
-    tokenPrice: string;
-    etoAddress: string;
-    investment: string;
-    transactionCost: string;
-    equityTokens: number;
-    estimatedReward: number;
-    transactionValue: number;
-  };
+interface IStateProps {
+  companyName: string;
+  tokenPrice: number;
+  etoAddress: string;
+  investmentEur: string;
+  investmentEth: string;
+  gasCostEth: string;
+  equityTokens: string;
+  estimatedReward: string;
+  etherPriceEur: string
   agreementUrl: string;
 }
 
 type IProps = IStateProps & ITxSummaryDispatchProps;
 
+function formatEur(val?: string ): string | undefined {
+  return val && formatMoney(val, MONEY_DECIMALS, 0);
+}
+
+function formatEth(val?: string ): string | undefined {
+  return val && formatMoney(val, MONEY_DECIMALS, 4);
+}
+
 export const InvestmentSummaryComponent = injectIntlHelpers(
-  ({ investmentData: data, agreementUrl, onAccept }: IProps & IIntlProps) => {
+  ({ agreementUrl, onAccept, gasCostEth, etherPriceEur, ...data }: IProps & IIntlProps) => {
     const equityTokens = (
       <span>
         <img src={tokenIcon} /> {data.equityTokens}
@@ -41,12 +54,20 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
     );
     const estimatedReward = (
       <span>
-        <img src={neuIcon} /> {data.estimatedReward}
+        <img src={neuIcon} /> {formatEur(data.estimatedReward)} NEU
       </span>
     );
+    const investment = `€ ${formatEur(data.investmentEur)} ≈ ${formatEth(data.investmentEth)} ETH`
+
+    const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur]);
+    const totalCostEth = addBigNumbers([gasCostEth, data.investmentEth]);
+    const totalCostEur = addBigNumbers([gasCostEuro, data.investmentEur]);
+
+    const total = `€ ${formatEur(totalCostEur)} ≈ ${formatEth(totalCostEth)} ETH`
+
     return (
       <Container className={styles.container}>
-        <Row>
+        <Row className="mt-0">
           <Heading>
             <FormattedMessage id="investment-flow.investment-summary" />
           </Heading>
@@ -60,7 +81,7 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.token-price" />}
-              value={data.tokenPrice}
+              value={Math.round(data.tokenPrice * 100) / 100 + " €"}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.eto-address" />}
@@ -68,11 +89,11 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.your-investment" />}
-              value={data.investment}
+              value={investment}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
-              value={data.transactionCost}
+              value={formatEth(gasCostEth) + " ETH"}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.equity-tokens" />}
@@ -84,7 +105,7 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.transaction-value" />}
-              value={data.transactionValue}
+              value={total}
             />
           </InfoList>
         </Row>
@@ -96,8 +117,8 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
           />
         </Row>
 
-        <Row className="justify-content-center">
-          <Button layout="primary" className="mr-4" type="button" onClick={onAccept}>
+        <Row className="justify-content-center mb-0 mt-0">
+          <Button layout="primary" type="button" onClick={onAccept}>
             <FormattedMessage id="investment-flow.confirm" />
           </Button>
         </Row>
@@ -107,11 +128,24 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
 );
 
 export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
-  stateToProps: state => ({
-    txData: state.txSender.txDetails!,
-    agreementUrl: "fufu",
-    investmentData: {} as any,
-  }),
+  stateToProps: state => {
+    const i = state.investmentFlow
+    const eto = i.eto!
+    const currency = selectCurrencyByInvestmentType(i)
+
+    return {
+      agreementUrl: "fufu",
+      companyName: eto.company.name!,
+      tokenPrice: (eto.preMoneyValuationEur! / eto.existingCompanyShares!) / eto.equityTokensPerShare!,
+      etoAddress: eto.etoId,
+      investmentEth: i.ethValueUlps,
+      investmentEur: i.euroValueUlps,
+      gasCostEth: selectInvestmentGasCostEth(i),
+      equityTokens: i.calculatedContribution!.equityTokenInt.toString(),
+      estimatedReward: i.calculatedContribution!.neuRewardUlps.toString(),
+      etherPriceEur: state.tokenPrice.tokenPriceData!.etherPriceEur
+    }
+  },
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
   }),

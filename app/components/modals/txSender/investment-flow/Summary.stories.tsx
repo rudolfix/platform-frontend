@@ -3,22 +3,22 @@ import * as React from "react";
 
 import { InvestmentSummaryComponent } from "./Summary";
 
-const data: any = {
+const data = {
   companyName: "X company",
-  tokenPrice: "0.0034 ETH",
+  tokenPrice: 0.34,
   etoAddress: "0x123434562134asdf2412341234adf12341234",
-  investment: "1.23 ETH",
-  transactionCost: "0.02 ETH",
+  investmentEth: "12345678900000000000",
+  investmentEur: "123456789000000000000000",
+  gasCostEth: "2000000000000000",
   equityTokens: "500.12345 Tokens",
-  estimatedReward: "4 NEU",
-  transactionValue: "2 ETH",
+  estimatedReward: "40000000000000000000",
+  etherPriceEur: "200",
+  agreementUrl: "somePDF.pdf"
 };
 
 storiesOf("InvestmentSummary", module).add("default", () => (
   <InvestmentSummaryComponent
-    txData={{} as any}
-    investmentData={data}
-    agreementUrl="somePDF.pdf"
+    {...data}
     onAccept={() => {}}
   />
 ));

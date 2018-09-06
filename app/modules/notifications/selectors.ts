@@ -6,7 +6,10 @@ import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../auth/se
 import { selectKycRequestStatus, selectWidgetLoading } from "../kyc/selectors";
 import { selectWalletType } from "../web3/selectors";
 import { WalletType } from "../web3/types";
-import { settingsNotification } from "./reducer";
+import { INotification, settingsNotification } from "./reducer";
+
+export const selectNotifications = (state: IAppState): INotification[] =>
+  state.notifications.notifications;
 
 export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
   if (selectWidgetLoading(state.kyc)) {

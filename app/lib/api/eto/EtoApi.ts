@@ -15,24 +15,27 @@ const ETO_PREVIEW_PATH = "/eto-previews/";
 
 @injectable()
 export class EtoApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(
+    @inject(symbols.authorizedJsonHttpClient) private authorizedHttpClient: IHttpClient,
+    @inject(symbols.jsonHttpClient) private httpClient: IHttpClient,
+  ) {}
 
   public async getEtos(): Promise<IHttpResponse<TPartialEtoSpecData>> {
-    return await this.httpClient.get<TPartialEtoSpecData>({
+    return await this.authorizedHttpClient.get<TPartialEtoSpecData>({
       baseUrl: BASE_PATH,
       url: ETOS_PATH,
     });
   }
 
   public async getEtoData(): Promise<IHttpResponse<TPartialEtoSpecData>> {
-    return await this.httpClient.get<TPartialEtoSpecData>({
+    return await this.authorizedHttpClient.get<TPartialEtoSpecData>({
       baseUrl: BASE_PATH,
       url: ETO_DATA_PATH,
     });
   }
 
   public async putEtoData(data: TPartialEtoSpecData): Promise<IHttpResponse<TPartialEtoSpecData>> {
-    return await this.httpClient.put<TPartialEtoSpecData>({
+    return await this.authorizedHttpClient.put<TPartialEtoSpecData>({
       baseUrl: BASE_PATH,
       url: ETO_DATA_PATH,
       body: data,
@@ -40,7 +43,7 @@ export class EtoApi {
   }
 
   public async getCompanyData(): Promise<IHttpResponse<TPartialCompanyEtoData>> {
-    return await this.httpClient.get<TPartialCompanyEtoData>({
+    return await this.authorizedHttpClient.get<TPartialCompanyEtoData>({
       baseUrl: BASE_PATH,
       url: COMPANIES_ME_DATA_PATH,
     });
@@ -64,7 +67,7 @@ export class EtoApi {
   public async putCompanyData(
     data: TPartialCompanyEtoData,
   ): Promise<IHttpResponse<TPartialCompanyEtoData>> {
-    return await this.httpClient.put<TPartialCompanyEtoData>({
+    return await this.authorizedHttpClient.put<TPartialCompanyEtoData>({
       baseUrl: BASE_PATH,
       url: COMPANIES_ME_DATA_PATH,
       body: data,
@@ -72,7 +75,7 @@ export class EtoApi {
   }
 
   public async submitCompanyAndEtoData(): Promise<IHttpResponse<TGeneralEtoData>> {
-    return await this.httpClient.post<TGeneralEtoData>({
+    return await this.authorizedHttpClient.post<TGeneralEtoData>({
       baseUrl: BASE_PATH,
       url: ETO_SUBMISSION_PATH,
     });
@@ -81,7 +84,7 @@ export class EtoApi {
   public async changeBookBuildingState(
     isBookBuilding: boolean,
   ): Promise<IHttpResponse<TGeneralEtoData>> {
-    return await this.httpClient.put<TGeneralEtoData>({
+    return await this.authorizedHttpClient.put<TGeneralEtoData>({
       baseUrl: BASE_PATH,
       url: ETO_BOOK_BUILDING_PATH,
       body: { is_bookbuilding: isBookBuilding },

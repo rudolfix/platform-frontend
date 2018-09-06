@@ -58,21 +58,25 @@ export interface ITxSummaryDispatchProps {
 }
 export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 
-function getInitComponent(type: TxSenderType): JSX.Element {
+function getInitComponent(type?: TxSenderType): JSX.Element {
   switch (type) {
     case "INVEST":
       return <InvestmentSelection />;
     case "WITHDRAW":
       return <Withdraw />;
+    default:
+      throw new Error("Transaction type needs to be set at transaction init state");
   }
 }
 
-function getSummaryComponent(type: TxSenderType): JSX.Element {
+function getSummaryComponent(type?: TxSenderType): JSX.Element {
   switch (type) {
     case "INVEST":
       return <InvestmentSummary />;
     case "WITHDRAW":
       return <WithdrawSummary />;
+    default:
+      throw new Error("Transaction type needs to be set at transaction summary state");
   }
 }
 
@@ -100,7 +104,7 @@ function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
       return <WithdrawSuccess />;
 
     case "ERROR_SIGN":
-      return <div>Error occured!!!!</div>;
+      return <div>Error occured!</div>;
 
     case "REVERTED":
       return <div>Error: Tx reverted!</div>;
@@ -111,7 +115,7 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: selectTxSenderModalOpened(state.txSender),
     state: state.txSender.state,
-    type: state.txSender.type!,
+    type: state.txSender.type,
     txHash: state.txSender.txHash,
     blockId: state.txSender.blockId,
   }),

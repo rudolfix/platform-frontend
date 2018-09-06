@@ -3,7 +3,15 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 
 import { actions } from "../../../../modules/actions";
-import { selectInvestmentGasCostEth } from "../../../../modules/investmentFlow/selectors";
+import {
+  selectEquityTokenCount,
+  selectEthValueUlps,
+  selectEto,
+  selectEtoCompany,
+  selectEurValueUlps,
+  selectInvestmentGasCostEth,
+  selectNeuRewardUlps,
+} from "../../../../modules/investmentFlow/selectors";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { Button } from "../../../shared/Buttons";
@@ -16,6 +24,7 @@ import { ITxSummaryDispatchProps } from "../TxSender";
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
+import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import {
   addBigNumbers,
   divideBigNumbers,
@@ -132,18 +141,18 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
 export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
   stateToProps: state => {
     const i = state.investmentFlow;
-    const eto = i.eto!;
-
+    // eto and computed values are guaranteed to be present at investment summary state
+    const company = selectEtoCompany(i)!;
     return {
       agreementUrl: "fufu",
-      companyName: eto.company.name!,
-      etoAddress: eto.etoId,
-      investmentEth: i.ethValueUlps,
-      investmentEur: i.euroValueUlps,
+      companyName: company.name,
+      etoAddress: selectEto(i)!.etoId,
+      investmentEth: selectEthValueUlps(i),
+      investmentEur: selectEurValueUlps(i),
       gasCostEth: selectInvestmentGasCostEth(i),
-      equityTokens: i.calculatedContribution!.equityTokenInt.toString(),
-      estimatedReward: i.calculatedContribution!.neuRewardUlps.toString(),
-      etherPriceEur: state.tokenPrice.tokenPriceData!.etherPriceEur,
+      equityTokens: selectEquityTokenCount(i) as string,
+      estimatedReward: selectNeuRewardUlps(i) as string,
+      etherPriceEur: selectEtherPriceEur(state.tokenPrice),
     };
   },
   dispatchToProps: d => ({

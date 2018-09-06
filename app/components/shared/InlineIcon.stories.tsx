@@ -3,7 +3,6 @@ import * as React from "react";
 
 import * as accordion_arrow from "../../assets/img/inline_icons/accordion_arrow.svg";
 import * as add_file from "../../assets/img/inline_icons/add_file.svg";
-import * as arrow_bordered from "../../assets/img/inline_icons/arrow_bordered.svg";
 import * as arrow_left from "../../assets/img/inline_icons/arrow_left.svg";
 import * as arrow_right from "../../assets/img/inline_icons/arrow_right.svg";
 import * as arrowhead from "../../assets/img/inline_icons/arrowhead.svg";
@@ -97,7 +96,6 @@ storiesOf("Icons", module)
       {[
         accordion_arrow,
         add_file,
-        arrow_bordered,
         arrow_left,
         arrow_right,
         arrowhead,

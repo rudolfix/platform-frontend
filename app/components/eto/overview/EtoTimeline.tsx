@@ -191,19 +191,32 @@ export const EtoTimeline: React.SFC<IProps> = props => {
   // blocks sizes
   const totalTimeScope = inSigningEndDate - preEtoStartDate;
   const preEtoWidth =
-    ((publicEtoStartDate - preEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH;
+    ((publicEtoStartDate - preEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH ||
+    DEFAULT_BLOCK_WIDTH;
   const publicEtoWidth =
-    ((inSigningStartDate - publicEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH;
+    ((inSigningStartDate - publicEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH ||
+    DEFAULT_BLOCK_WIDTH;
   const inSigningWidth =
-    ((inSigningEndDate - inSigningStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH;
+    ((inSigningEndDate - inSigningStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH ||
+    DEFAULT_BLOCK_WIDTH;
 
-  const pointerPosition =
-    today <= preEtoStartDate
-      ? 20
-      : today < inSigningEndDate
-        ? DEFAULT_BLOCK_WIDTH +
-          ((today - preEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH
-        : 4 * DEFAULT_BLOCK_WIDTH + 20;
+  const pointerPosition = () => {
+    const hasStartDate = !isNaN(preEtoStartDate);
+    const campaigningPosition = 20;
+    const claimOrRefundPosition = 4 * DEFAULT_BLOCK_WIDTH + 20;
+
+    if (!hasStartDate || today <= preEtoStartDate) {
+      return campaigningPosition;
+    }
+
+    if (today < inSigningEndDate) {
+      return (
+        DEFAULT_BLOCK_WIDTH + ((today - preEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH
+      );
+    }
+
+    return claimOrRefundPosition;
+  };
 
   return (
     <EtoTimelineContext.Provider value={defaultEtoTimelineContext}>
@@ -243,7 +256,7 @@ export const EtoTimeline: React.SFC<IProps> = props => {
             <DatePoint date={inSigningEndDate} type="short" />
           </g>
         </g>
-        <Pointer position={pointerPosition} />
+        <Pointer position={pointerPosition()} />
       </svg>
     </EtoTimelineContext.Provider>
   );

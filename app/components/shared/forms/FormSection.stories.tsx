@@ -4,7 +4,7 @@ import * as React from "react";
 import { Container } from "reactstrap";
 import { FormSection } from "./FormSection";
 
-storiesOf("FormSection", module).add("default", () => (
+storiesOf("Form/Section", module).add("default", () => (
   <Container>
     <FormSection title="Example section title">
       <div>

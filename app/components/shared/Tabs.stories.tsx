@@ -30,7 +30,7 @@ const tabbedContent = [
   </TabContent>,
 ];
 
-storiesOf("NewTabs", module)
+storiesOf("Basic UI/NewTabs", module)
   .add("layout: small with ornament", () => <Tabs>{tabbedContent}</Tabs>)
   .add("layout: small", () => <Tabs layoutOrnament={false}>{tabbedContent}</Tabs>)
   .add("layout: large with ornament", () => <Tabs layoutSize="large">{tabbedContent}</Tabs>)

@@ -23,7 +23,7 @@ const IndividualRequirements = [
   "High quality, coloured .png, .jpg or pdf files only",
 ];
 
-storiesOf("MultiFileUpload", module)
+storiesOf("Upload/MultiFileUpload", module)
   .add("individual", () => (
     <MultiFileUpload
       uploadType="individual"

@@ -5,7 +5,7 @@ import { Button, ButtonArrowRight } from "./Buttons";
 
 import * as icon from "../../assets/img/inline_icons/icon_questionmark.svg";
 
-storiesOf("Button", module)
+storiesOf("Buttons/default", module)
   .add("primary", () => (
     <>
       <Button>primary</Button>
@@ -64,6 +64,6 @@ storiesOf("Button", module)
   ))
   .add("loading", () => <Button isLoading>Primary</Button>);
 
-storiesOf("ButtonArrowRight", module).add("primary", () => (
+storiesOf("Buttons/ArrowRight", module).add("primary", () => (
   <ButtonArrowRight>primary</ButtonArrowRight>
 ));

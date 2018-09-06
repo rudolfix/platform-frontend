@@ -3,8 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 
 import { actions } from "../../../../modules/actions";
-import { EInvestmentCurrency, EInvestmentType } from "../../../../modules/investmentFlow/reducer";
-import { selectCurrencyByInvestmentType, selectInvestmentGasCostEth } from "../../../../modules/investmentFlow/selectors";
+import { selectInvestmentGasCostEth } from "../../../../modules/investmentFlow/selectors";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { Button } from "../../../shared/Buttons";
@@ -12,19 +11,17 @@ import { DocumentLink } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps, ITxSummaryStateProps } from "../TxSender";
+import { ITxSummaryDispatchProps } from "../TxSender";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
-import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
+import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatMoney } from "../../../../utils/Money.utils";
-import { Money } from "../../../shared/Money";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
   companyName: string;
-  tokenPrice: number;
   etoAddress: string;
   investmentEur: string;
   investmentEth: string;
@@ -64,6 +61,7 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
     const totalCostEur = addBigNumbers([gasCostEuro, data.investmentEur]);
 
     const total = `€ ${formatEur(totalCostEur)} ≈ ${formatEth(totalCostEth)} ETH`
+    const tokenPrice = divideBigNumbers(data.investmentEur, data.equityTokens)
 
     return (
       <Container className={styles.container}>
@@ -81,7 +79,7 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.token-price" />}
-              value={Math.round(data.tokenPrice * 100) / 100 + " €"}
+              value={`${formatMoney(tokenPrice, MONEY_DECIMALS, 2)} €`}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.eto-address" />}
@@ -93,7 +91,7 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
-              value={formatEth(gasCostEth) + " ETH"}
+              value={`${formatEth(gasCostEth)} ETH`}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.equity-tokens" />}
@@ -131,12 +129,10 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
   stateToProps: state => {
     const i = state.investmentFlow
     const eto = i.eto!
-    const currency = selectCurrencyByInvestmentType(i)
 
     return {
       agreementUrl: "fufu",
       companyName: eto.company.name!,
-      tokenPrice: (eto.preMoneyValuationEur! / eto.existingCompanyShares!) / eto.equityTokensPerShare!,
       etoAddress: eto.etoId,
       investmentEth: i.ethValueUlps,
       investmentEur: i.euroValueUlps,

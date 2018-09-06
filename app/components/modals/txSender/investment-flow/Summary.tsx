@@ -16,7 +16,11 @@ import { ITxSummaryDispatchProps } from "../TxSender";
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import { MONEY_DECIMALS } from "../../../../config/constants";
-import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
+import {
+  addBigNumbers,
+  divideBigNumbers,
+  multiplyBigNumbers,
+} from "../../../../utils/BigNumberUtils";
 import { formatMoney } from "../../../../utils/Money.utils";
 import * as styles from "./Summary.module.scss";
 
@@ -28,17 +32,17 @@ interface IStateProps {
   gasCostEth: string;
   equityTokens: string;
   estimatedReward: string;
-  etherPriceEur: string
+  etherPriceEur: string;
   agreementUrl: string;
 }
 
 type IProps = IStateProps & ITxSummaryDispatchProps;
 
-function formatEur(val?: string ): string | undefined {
+function formatEur(val?: string): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 0);
 }
 
-function formatEth(val?: string ): string | undefined {
+function formatEth(val?: string): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 4);
 }
 
@@ -54,14 +58,14 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
         <img src={neuIcon} /> {formatEur(data.estimatedReward)} NEU
       </span>
     );
-    const investment = `€ ${formatEur(data.investmentEur)} ≈ ${formatEth(data.investmentEth)} ETH`
+    const investment = `€ ${formatEur(data.investmentEur)} ≈ ${formatEth(data.investmentEth)} ETH`;
 
     const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur]);
     const totalCostEth = addBigNumbers([gasCostEth, data.investmentEth]);
     const totalCostEur = addBigNumbers([gasCostEuro, data.investmentEur]);
 
-    const total = `€ ${formatEur(totalCostEur)} ≈ ${formatEth(totalCostEth)} ETH`
-    const tokenPrice = divideBigNumbers(data.investmentEur, data.equityTokens)
+    const total = `€ ${formatEur(totalCostEur)} ≈ ${formatEth(totalCostEth)} ETH`;
+    const tokenPrice = divideBigNumbers(data.investmentEur, data.equityTokens);
 
     return (
       <Container className={styles.container}>
@@ -127,8 +131,8 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
 
 export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
   stateToProps: state => {
-    const i = state.investmentFlow
-    const eto = i.eto!
+    const i = state.investmentFlow;
+    const eto = i.eto!;
 
     return {
       agreementUrl: "fufu",
@@ -139,8 +143,8 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
       gasCostEth: selectInvestmentGasCostEth(i),
       equityTokens: i.calculatedContribution!.equityTokenInt.toString(),
       estimatedReward: i.calculatedContribution!.neuRewardUlps.toString(),
-      etherPriceEur: state.tokenPrice.tokenPriceData!.etherPriceEur
-    }
+      etherPriceEur: state.tokenPrice.tokenPriceData!.etherPriceEur,
+    };
   },
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),

@@ -5,12 +5,7 @@ import { fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
-import {
-  addBigNumbers,
-  compareBigNumbers,
-  divideBigNumbers,
-  multiplyBigNumbers,
-} from "../../utils/BigNumberUtils";
+import { addBigNumbers, compareBigNumbers, divideBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Money.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
@@ -63,17 +58,21 @@ function* computeAndSetCurrencies(value: string, currency: EInvestmentCurrency):
     yield put(actions.investmentFlow.setEthValue(""));
     yield put(actions.investmentFlow.setEurValue(""));
   } else if (etherPriceEur && etherPriceEur !== "0") {
-    const bignumber = new BigNumber(value)
+    const bignumber = new BigNumber(value);
     switch (currency) {
       case EInvestmentCurrency.Ether:
         const eurVal = bignumber.mul(etherPriceEur);
-        yield put(actions.investmentFlow.setEthValue(bignumber.round(BigNumber.ROUND_UP).toString()));
+        yield put(
+          actions.investmentFlow.setEthValue(bignumber.round(BigNumber.ROUND_UP).toString()),
+        );
         yield put(actions.investmentFlow.setEurValue(eurVal.round(BigNumber.ROUND_UP).toString()));
         return;
       case EInvestmentCurrency.Euro:
         const ethVal = bignumber.div(etherPriceEur);
         yield put(actions.investmentFlow.setEthValue(ethVal.round(BigNumber.ROUND_UP).toString()));
-        yield put(actions.investmentFlow.setEurValue(bignumber.round(BigNumber.ROUND_UP).toString()));
+        yield put(
+          actions.investmentFlow.setEurValue(bignumber.round(BigNumber.ROUND_UP).toString()),
+        );
         return;
     }
   }
@@ -205,13 +204,9 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
 
       // fill up etherToken with ether from wallet
     } else {
-      const ethVal = new BigNumber(i.ethValueUlps)
+      const ethVal = new BigNumber(i.ethValueUlps);
       const difference = ethVal.sub(etherTokenBalance);
-      const txCall = contractsService.etherToken.depositAndTransferTx(
-        i.eto!.etoId,
-        ethVal,
-        [""],
-      );
+      const txCall = contractsService.etherToken.depositAndTransferTx(i.eto!.etoId, ethVal, [""]);
       txDetails = {
         to: contractsService.etherToken.address,
         from: selectEthereumAddressWithChecksum(state.web3),
@@ -230,7 +225,7 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
 function* recalculateCurrencies(): any {
   yield delay(100); // wait for new token price to be available
   const i: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
-  const curr = selectCurrencyByInvestmentType(i)
+  const curr = selectCurrencyByInvestmentType(i);
   if (curr === EInvestmentCurrency.Ether && i.ethValueUlps) {
     yield computeAndSetCurrencies(i.ethValueUlps, curr);
   } else if (i.euroValueUlps) {

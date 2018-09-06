@@ -1,7 +1,12 @@
 import { BigNumber } from "bignumber.js";
 
 import { compareBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
-import { EInvestmentCurrency, EInvestmentType, ICalculatedContribution, IInvestmentFlowState } from "./reducer";
+import {
+  EInvestmentCurrency,
+  EInvestmentType,
+  ICalculatedContribution,
+  IInvestmentFlowState,
+} from "./reducer";
 
 export const selectIsICBMInvestment = (state: IInvestmentFlowState) =>
   state.investmentType === EInvestmentType.ICBMEth ||
@@ -37,5 +42,7 @@ export const selectReadyToInvest = (state: IInvestmentFlowState) =>
   );
 
 export const selectCurrencyByInvestmentType = (state: IInvestmentFlowState) =>
-  state.investmentType === EInvestmentType.InvestmentWallet || state.investmentType === EInvestmentType.ICBMEth
-    ? EInvestmentCurrency.Ether : EInvestmentCurrency.Euro
+  state.investmentType === EInvestmentType.InvestmentWallet ||
+  state.investmentType === EInvestmentType.ICBMEth
+    ? EInvestmentCurrency.Ether
+    : EInvestmentCurrency.Euro;

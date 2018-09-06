@@ -188,21 +188,21 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
     // transaction can be fully covered by etherTokens
     if (compareBigNumbers(etherTokenBalance, i.ethValueUlps) >= 0) {
       // need to call 3 args version of transfer method. See the abi in the contract.
-      const txCall = (contractsService.etherToken.transferTx as any)(
-        i.eto!.etoId,
-        i.ethValueUlps,
-        "",
-      );
+      // so we call the rawWeb3Contract directly
+      const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
+        "address,uint256,bytes"
+      ].getData(i.eto!.etoId, i.ethValueUlps, "");
+
       txDetails = {
         to: contractsService.etherToken.address,
         from: selectEthereumAddressWithChecksum(state.web3),
-        input: txCall.getData(),
+        input: txInput,
         value: "0",
         gas: i.gasAmount,
         gasPrice: i.gasPrice,
       };
 
-      // fill up etherToken with ether from wallet
+      // fill up etherToken with ether from walle}t
     } else {
       const ethVal = new BigNumber(i.ethValueUlps);
       const difference = ethVal.sub(etherTokenBalance);

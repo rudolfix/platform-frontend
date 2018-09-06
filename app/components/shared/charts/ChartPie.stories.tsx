@@ -13,4 +13,4 @@ const data = {
   ],
 };
 
-storiesOf("ChartPie", module).add("default", () => <ChartPie data={data} />);
+storiesOf("Charts/Pie", module).add("default", () => <ChartPie data={data} />);

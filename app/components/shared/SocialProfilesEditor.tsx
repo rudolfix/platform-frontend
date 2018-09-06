@@ -190,7 +190,7 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
     const selectedFields: boolean[] = [];
     profiles.forEach((profile, index) => {
       const previousLink = socialMediaValues.find(v => v.type === profile.name);
-      const value: string = previousLink ? previousLink.url : "";
+      const value: string = previousLink ? previousLink.url || "" : "";
       setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
       selectedFields[index] = profile.preSelected ? true : !!value;
     });

@@ -134,7 +134,7 @@
   align-items: center;
 
   .message {
-    max-width: px-to-rem(260px);
+    max-width: 300px;
     text-align: center;
     margin-bottom: px-to-rem(20px);
   }
@@ -158,6 +158,40 @@
     color: $color-orange;
     margin-bottom: px-to-rem(8px);
   }
+}
+
+.change-pledge {
+  color: $color-green-dark;
+  text-decoration: underline;
+}
+
+.delete-pledge {
+  color: $color-orange;
+  text-decoration: underline;
+}
+
+.ends-in {
+  color: $color-orange;
+  font-size: 10px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.quote {
+  font-size: 16px;
+  line-height: 1.06;
+  letter-spacing: -.2px;
+  font-style: italic;
+
+  &::before,
+  &::after {
+    content: "\"";
+  }
+}
+
+.register-now {
+  justify-content: center;
+  text-align: center;
 }
 
 .status-of-eto {
@@ -217,4 +251,10 @@
 .token-details {
   display: flex;
   margin: px-to-rem(20px) 0;
+}
+
+.invest-now-button {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
 }

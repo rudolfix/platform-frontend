@@ -4,7 +4,7 @@ import * as React from "react";
 import { formWrapper } from "./form-utils";
 import { FormCategoryDistribution } from "./FormCategoryDistribution";
 
-storiesOf("FormCategoryDistribution", module)
+storiesOf("Form/CategoryDistribution", module)
   .add(
     "default",
     formWrapper({})(() => (

@@ -7,7 +7,7 @@ import { CustomTooltip } from "./CustomTooltip";
 
 import * as icon from "../../assets/img/logo_yellow.svg";
 
-storiesOf("CustomTooltip", module).add("default", () => {
+storiesOf("Basic UI/CustomTooltip", module).add("default", () => {
   return (
     <div>
       <div style={{ margin: "0 10em 10em" }}>

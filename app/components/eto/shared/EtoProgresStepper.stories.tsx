@@ -16,6 +16,6 @@ const stepProps = [
   },
 ];
 
-storiesOf("EtoProgressStepper", module).add("default", () => (
+storiesOf("ETO/ProgressStepper", module).add("default", () => (
   <EtoProgressStepper currentStep={2} stepProps={stepProps} onClick={action(`step-click`)} />
 ));

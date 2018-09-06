@@ -5,7 +5,7 @@ import { formWrapper } from "./form-utils";
 
 import { FormCheckbox, FormRadioButton } from "./FormCheckbox";
 
-storiesOf("FormCheckbox && FormRadioButton", module)
+storiesOf("Form/ Checkbox && RadioButton", module)
   .add(
     "checkbox",
     formWrapper({ bwm: false, audi: false, ford: true, volvo: true })(() => (

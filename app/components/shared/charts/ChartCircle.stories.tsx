@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { ChartCircle } from "./ChartCircle";
 
-storiesOf("ChartCircle", module)
+storiesOf("Charts/Circle", module)
   .add("0%", () => <ChartCircle name="Key People" progress={0} />)
   .add("20%", () => <ChartCircle name="Key People" progress={0.2} />)
   .add("50%", () => <ChartCircle name="Key People" progress={0.5} />)

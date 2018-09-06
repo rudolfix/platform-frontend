@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { Tag } from "./Tag";
 
-storiesOf("Tag", module)
+storiesOf("Basic UI/Tag", module)
   .add("default", () => <Tag text={"lorem"} />)
   .add("themed", () => (
     <>

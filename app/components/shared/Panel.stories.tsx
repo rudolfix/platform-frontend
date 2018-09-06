@@ -8,7 +8,7 @@ import * as icon from "../../assets/img/notifications/warning.svg";
 const lorem =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, eveniet reiciendis minus aperiam numquam vero at placeat, officia, porro similique voluptatem dolores provident labore dolorem temporibus veniam sapiente nihil quibusdam.";
 
-storiesOf("Panel", module)
+storiesOf("Basic UI/Panel", module)
   .add("default", () => <Panel>{lorem}</Panel>)
   .add("with header text", () => <Panel headerText="sample header text">{lorem}</Panel>)
   .add("with icon", () => <Panel icon={icon}>{lorem}</Panel>)

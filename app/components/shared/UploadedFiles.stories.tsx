@@ -10,4 +10,4 @@ const files = [
   },
 ];
 
-storiesOf("UploadedFiles", module).add("default", () => <UploadedFiles files={files} />);
+storiesOf("Upload/UploadedFiles", module).add("default", () => <UploadedFiles files={files} />);

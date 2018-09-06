@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import Dropzone from "react-dropzone";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
 
@@ -71,7 +71,7 @@ const MultiFileUploadComponent: React.SFC<IProps> = ({
   const dropzoneInner = fileUploading ? (
     <FormattedMessage id="shared-component.multi-file-upload.uploading" />
   ) : (
-    <FormattedMessage id="shared-component.multi-file-upload.upload-cta" />
+    <FormattedHTMLMessage tagName="span" id="shared-component.multi-file-upload.upload-cta" />
   );
 
   const dropzoneWithFilesInner = (

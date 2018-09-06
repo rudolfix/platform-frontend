@@ -5,7 +5,7 @@ import { SingleFileUpload } from "./SingleFileUpload";
 
 import * as image from "!!url-loader!../../assets/img/header/social_logo.png";
 
-storiesOf("SingleFileUpload", module)
+storiesOf("Upload/SingleFileUpload", module)
   .add("default", () => (
     <SingleFileUpload
       acceptedFiles="image/*,application/pdf"

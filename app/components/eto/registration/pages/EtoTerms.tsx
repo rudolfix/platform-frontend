@@ -18,7 +18,6 @@ import {
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { FormField, FormTextArea } from "../../../shared/forms/forms";
-import { CURRENCIES } from "../../EtoPublicView";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IStateProps {
@@ -33,7 +32,16 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const currencies = ["eur_t", "eth"];
+interface ICurrencies {
+  [key: string]: string;
+}
+
+const CURRENCIES: ICurrencies = {
+  eth: "ETH",
+  eur_t: "nEUR",
+};
+
+const currencies = Object.keys(CURRENCIES);
 
 class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
   static contextTypes = {

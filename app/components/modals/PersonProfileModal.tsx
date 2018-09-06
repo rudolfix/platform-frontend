@@ -41,7 +41,11 @@ const PersonProfileModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
           {personProfileModalObj && personProfileModalObj.description}
         </p>
         {personProfileModalObj && (
-          <a href={personProfileModalObj.website}>{personProfileModalObj.website}</a>
+          <div className={styles.linkWrapper}>
+            <a href={personProfileModalObj.website} target="_blank">
+              {personProfileModalObj.website}
+            </a>
+          </div>
         )}
       </ModalComponentBody>
     </Modal>

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ToastContainer } from "react-toastify";
-
 import { compose } from "redux";
+
 import { actions } from "../modules/actions";
 import {
   selectInitError,
@@ -11,8 +11,6 @@ import {
 import { appConnect } from "../store";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { AppRouter } from "./AppRouter";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
 import { GenericModal } from "./modals/GenericModal";
 import { VideoModal } from "./modals/VideoModal";
 import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
@@ -37,13 +35,10 @@ class AppComponent extends React.Component<IStateProps> {
 
     return (
       <>
-        <Header />
-        <div className="wrapper">
-          <ScrollToTop>
-            <AppRouter />
-          </ScrollToTop>
-        </div>
-        <Footer />
+        <ScrollToTop>
+          <AppRouter />
+        </ScrollToTop>
+
         <AccessWalletModal />
         <ToastContainer />
         <GenericModal />

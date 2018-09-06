@@ -4,34 +4,61 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./Counter.module.scss";
 
 interface IProps {
-  endDate?: Date;
+  endDate: number;
 }
 
-const Counter: React.SFC<IProps> = () => {
-  return (
-    <div className={styles.counter}>
-      <div className={styles.wrapper}>
-        <div className={styles.plate}>01</div>
-        <div className={styles.label}>
-          <FormattedMessage id="counter.label.days" />
-        </div>
-      </div>
-      {":"}
-      <div className={styles.wrapper}>
-        <div className={styles.plate}>01</div>
-        <div className={styles.label}>
-          <FormattedMessage id="counter.label.hours" />
-        </div>
-      </div>
-      {":"}
-      <div className={styles.wrapper}>
-        <div className={styles.plate}>01</div>
-        <div className={styles.label}>
-          <FormattedMessage id="counter.label.minutes" />
-        </div>
-      </div>
-    </div>
-  );
-};
+interface IState {
+  date: number;
+}
 
-export default Counter;
+const day = 86400000;
+const hour = day / 24;
+const minute = hour / 60000;
+
+export class Counter extends React.Component<IProps, IState> {
+  state = {
+    date: this.props.endDate - Date.now(),
+  };
+
+  componentDidMount(): void {
+    setInterval(() => {
+      this.setState(state => ({ date: state.date - 1000 }));
+    }, 1000);
+  }
+
+  render(): React.ReactNode {
+    const { date } = this.state;
+
+    const computedDays = parseInt(`${date / day}`, 10);
+    const computedHours = parseInt(`${(((date / day) % computedDays) * day) / hour}`, 10);
+    const computedMinutes = parseInt(
+      `${(((((date / day) % computedDays) * day) / hour) % computedHours) * minute}`,
+      10,
+    );
+
+    return (
+      <div className={styles.counter}>
+        <div className={styles.wrapper}>
+          <div className={styles.plate}>{computedDays}</div>
+          <div className={styles.label}>
+            <FormattedMessage id="counter.label.days" />
+          </div>
+        </div>
+        {":"}
+        <div className={styles.wrapper}>
+          <div className={styles.plate}>{computedHours}</div>
+          <div className={styles.label}>
+            <FormattedMessage id="counter.label.hours" />
+          </div>
+        </div>
+        {":"}
+        <div className={styles.wrapper}>
+          <div className={styles.plate}>{computedMinutes}</div>
+          <div className={styles.label}>
+            <FormattedMessage id="counter.label.minutes" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

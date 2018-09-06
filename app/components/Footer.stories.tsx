@@ -3,4 +3,4 @@ import * as React from "react";
 
 import { Footer } from "./Footer";
 
-storiesOf("Footer", module).add("default", () => <Footer />);
+storiesOf("Layout/Footer", module).add("default", () => <Footer />);

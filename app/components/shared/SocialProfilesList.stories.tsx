@@ -46,6 +46,6 @@ const socialProfiles = [
   },
 ];
 
-storiesOf("SocialProfilesList", module).add("default", () => (
+storiesOf("SocialProfiles/SocialProfilesList", module).add("default", () => (
   <SocialProfilesList profiles={socialProfiles} />
 ));

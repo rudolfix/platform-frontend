@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { FormFieldImportant } from "./FormFieldImportant";
 
-storiesOf("FormFieldImportant", module)
+storiesOf("Form/FieldImportant", module)
   .add("default", () => (
     <Formik initialValues={{}} onSubmit={() => {}}>
       {() => (

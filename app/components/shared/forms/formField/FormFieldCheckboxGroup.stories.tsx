@@ -4,7 +4,7 @@ import { formWrapper } from "./form-utils";
 
 import { FormFieldCheckbox, FormFieldCheckboxGroup } from "./FormFieldCheckboxGroup";
 
-storiesOf("FormFieldCheckboxGroup", module).add(
+storiesOf("Form/FieldCheckboxGroup", module).add(
   "default",
   formWrapper({ animals: ["dog"] })(() => (
     <FormFieldCheckboxGroup name="animals">

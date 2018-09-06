@@ -13,4 +13,4 @@ const data = {
   ],
 };
 
-storiesOf("ChartDoughnut", module).add("default", () => <ChartDoughnut data={data} />);
+storiesOf("Charts/Doughnut", module).add("default", () => <ChartDoughnut data={data} />);

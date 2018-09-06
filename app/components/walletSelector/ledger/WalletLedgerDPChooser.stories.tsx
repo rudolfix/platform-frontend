@@ -19,6 +19,6 @@ const errorState = {
   errorMessage: "visible error",
 };
 
-storiesOf("WalletLedgerDPChooser", module)
+storiesOf("Ledger/WalletLedgerDPChooser", module)
   .add("initial", () => <DPChooserComponent {...initialState} />)
   .add("visible error", () => <DPChooserComponent {...errorState} />);

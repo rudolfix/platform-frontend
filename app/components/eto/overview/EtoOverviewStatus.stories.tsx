@@ -25,7 +25,7 @@ const props = {
   isPayoutEnabled: false,
 };
 
-storiesOf("Eto/OverviewStatus", module)
+storiesOf("ETO/OverviewStatus", module)
   .add("status: campaigning - back now", () => (
     <EtoOverviewStatus
       {...props}

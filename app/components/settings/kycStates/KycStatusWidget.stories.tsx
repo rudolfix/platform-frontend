@@ -14,7 +14,7 @@ const commonProps = {
   onGoToWallet: () => {},
 };
 
-storiesOf("KycStatusWidget", module)
+storiesOf("KYC/StatusWidget", module)
   .add("email-not-verified", () => (
     <KycStatusWidgetComponent {...commonProps} requestStatus="Draft" isUserEmailVerified={false} />
   ))

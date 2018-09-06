@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Col, Row } from "reactstrap";
-
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
+
 import { actions } from "../../modules/actions";
 import {
   selectIsLoginRoute,
@@ -14,8 +14,10 @@ import {
 import { appConnect } from "../../store";
 import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { withContainer } from "../../utils/withContainer";
 import { appRoutes } from "../appRoutes";
 import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
+import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
 import { TabContent, Tabs } from "../shared/Tabs";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
@@ -140,4 +142,5 @@ export const WalletSelector = compose<React.SFC>(
     }),
   }),
   injectIntlHelpers,
+  withContainer(LayoutUnauthorized),
 )(WalletSelectorComponent);

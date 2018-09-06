@@ -1,6 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import Swiper from "react-id-swiper/lib/custom";
+import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
@@ -9,9 +10,8 @@ import { InlineIcon } from "./InlineIcon";
 import { SlidePerson, TSlidePersonLayout } from "./SlidePerson";
 import { IEtoSocialProfile } from "./SocialProfilesList";
 
-import { compose } from "redux";
-import * as prevIcon from "../../assets/img/inline_icons/arrow_left.svg";
-import * as nextIcon from "../../assets/img/inline_icons/arrow_right.svg";
+import * as prevIcon from "../../assets/img/inline_icons/arrow_bordered_left.svg";
+import * as nextIcon from "../../assets/img/inline_icons/arrow_bordered_right.svg";
 import * as styles from "./PeopleSwiperWidget.module.scss";
 
 export interface IPerson {
@@ -63,20 +63,30 @@ class PeopleSwiperWidgetComponent extends React.Component<IOwnProps & IDispatchP
     }
   };
 
-  componentDidMount(): void {
-    const numberOfSlides = this.props.people.length;
-
-    if (numberOfSlides < 5 && numberOfSlides % 2) {
-      this.swiper.slideTo(Math.round(numberOfSlides / 2) - 1);
-    }
-  }
-
   render(): React.ReactNode {
-    const { people, navigation, layout, showPersonModal, ...config } = this.props;
+    const { people, navigation, layout, showPersonModal } = this.props;
+    const swiperSettings = {
+      breakpoints: {
+        576: {
+          slidesPerView: 1,
+        },
+        768: {
+          slidesPerView: 2,
+        },
+        992: {
+          slidesPerView: 3,
+        },
+        1200: {
+          slidesPerView: 4,
+        },
+      },
+      observer: true,
+      slidesPerView: 5,
+    };
 
     return (
       <div className={styles.swiperWidget}>
-        <Swiper {...config} ref={this.swiperRef}>
+        <Swiper {...swiperSettings} ref={this.swiperRef}>
           {people.map(({ image, name, description, role, socialChannels, website }, i) => {
             return (
               <div

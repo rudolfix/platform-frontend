@@ -10,7 +10,7 @@ import { ProjectStatus, TStatus } from "../../shared/ProjectStatus";
 import { Tag } from "../../shared/Tag";
 
 import { Button } from "../../shared/Buttons";
-import Counter from "../../shared/Counter";
+import { Counter } from "../../shared/Counter";
 import { FormField } from "../../shared/forms/forms";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
@@ -202,7 +202,7 @@ const PreEtoWidget: React.SFC = () => (
       <FormattedMessage id="shared-component.eto-overview.count-down-to-eto" />
     </div>
     <div className={styles.zone}>UTC 22/07/2019</div>
-    <Counter />
+    <Counter endDate={Date.now() + 86400000} />
   </div>
 );
 

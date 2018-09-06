@@ -1,6 +1,6 @@
 import * as queryString from "query-string";
 import * as React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
@@ -28,6 +28,11 @@ import { WalletSelector } from "./walletSelector/WalletSelector";
 
 export const AppRouter: React.SFC = () => (
   <SwitchConnected>
+    <Route
+      path={appRoutes.etoPreview}
+      render={({ match }) => <EtoPreview previewCode={match.params.previewCode} />}
+    />
+
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
@@ -90,11 +95,6 @@ export const AppRouter: React.SFC = () => (
       exact
     />
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} issuerComponent={Kyc} />
-    <OnlyAuthorizedRoute
-      path={appRoutes.etoPreview}
-      investorComponent={EtoPreview}
-      issuerComponent={EtoPreview}
-    />
 
     <Redirect to={appRoutes.root} />
   </SwitchConnected>
@@ -114,7 +114,7 @@ const SecretProtected = (Component: any) =>
         return <Component {...props} />;
       }
 
-      return <Redirect to="/" />;
+      return <Redirect to={appRoutes.root} />;
     }
   };
 const EtoSecretProtectedWalletSelector = SecretProtected(WalletSelector);

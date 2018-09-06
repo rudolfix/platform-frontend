@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { Document } from "../../shared/Document";
 import { Panel } from "../../shared/Panel";
 
@@ -10,7 +10,7 @@ import * as styles from "./EtoInvestmentTermsWidget.module.scss";
 
 interface IProps {
   etoData: TEtoSpecsData;
-  etoFilesData: IEtoFiles;
+  etoFilesData: TEtoDocumentTemplates;
   computedNewSharePrice: number;
   computedMinCapEur: number;
   computedMinNumberOfTokens: number;
@@ -78,11 +78,9 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.value}>{etoData.discountScheme}</span>
               </div>
             )}
-            {etoFilesData.uploadedDocuments["signed_investment_and_shareholder_agreement"] && (
+            {etoFilesData["signed_investment_and_shareholder_agreement"] && (
               <a
-                href={`${
-                  etoFilesData.uploadedDocuments["signed_investment_and_shareholder_agreement"]
-                }`}
+                href={`${etoFilesData["signed_investment_and_shareholder_agreement"]}`}
                 className={styles.groupDocumentLink}
               >
                 <div className={styles.icon}>
@@ -147,9 +145,9 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 </span>
               </div>
             )}
-            {etoFilesData.uploadedDocuments["reservation_and_acquisition_agreement"] && (
+            {etoFilesData["reservation_and_acquisition_agreement"] && (
               <a
-                href={`${etoFilesData.uploadedDocuments["reservation_and_acquisition_agreement"]}`}
+                href={`${etoFilesData["reservation_and_acquisition_agreement"]}`}
                 className={styles.groupDocumentLink}
               >
                 <div className={styles.icon}>
@@ -219,9 +217,9 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
               </span>
               <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}</span>
             </div>
-            {etoFilesData.uploadedDocuments["company_token_holder_agreement"] && (
+            {etoFilesData["company_token_holder_agreement"] && (
               <a
-                href={`${etoFilesData.uploadedDocuments["company_token_holder_agreement"]}`}
+                href={`${etoFilesData["company_token_holder_agreement"]}`}
                 className={styles.groupDocumentLink}
               >
                 <div className={styles.icon}>

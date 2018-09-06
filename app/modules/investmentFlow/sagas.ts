@@ -47,7 +47,7 @@ function* processCurrencyValue(action: TAction): any {
     yield put(actions.investmentFlow.setErrorState());
   }
 
-  yield computeAndSetCurrencies(convertToBigInt(value), action.payload.currency);
+  yield computeAndSetCurrencies(value && convertToBigInt(value), action.payload.currency);
   yield put(actions.investmentFlow.validateInputs());
 }
 

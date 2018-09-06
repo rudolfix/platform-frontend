@@ -10,7 +10,6 @@ import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.inte
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
-import { Document } from "../../shared/Document";
 import { DocumentsWidget } from "../../shared/DocumentsWidget";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
@@ -29,6 +28,7 @@ import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
 
 import * as icon_link from "../../../assets/img/inline_icons/social_link.svg";
 import * as token_icon from "../../../assets/img/token_icon.svg";
+import { EtoInvestmentTermsWidget } from "../publicView/EtoInvestmentTermsWidget";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
@@ -381,218 +381,15 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <SectionHeader layoutHasDecorator={false} className="mb-4">
               <FormattedMessage id="eto.public-view.token-terms.title" />
             </SectionHeader>
-            <Panel className={styles.tokenTerms}>
-              <div className={styles.content}>
-                <div className={styles.group}>
-                  <div className={styles.groupTitle}>
-                    <FormattedMessage id="eto.public-view.token-terms.group-title.equity" />
-                  </div>
-                  <div className={styles.groupContent}>
-                    {etoData.preMoneyValuationEur && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.pre-money-valuation" />
-                        </span>
-                        <span className={styles.value}>
-                          {"€ "}
-                          {etoData.preMoneyValuationEur}
-                        </span>
-                      </div>
-                    )}
-                    {etoData.existingCompanyShares && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.existing-shares" />
-                        </span>
-                        <span className={styles.value}>{etoData.existingCompanyShares}</span>
-                      </div>
-                    )}
-                    <div className={styles.entry}>
-                      <span className={styles.label}>
-                        <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
-                      </span>
-                      <span className={styles.value}>
-                        {"€ "}
-                        {computedNewSharePrice.toFixed(4)}
-                      </span>
-                    </div>
-                    <div className={styles.entry}>
-                      <span className={styles.label}>
-                        <FormattedMessage id="eto.public-view.token-terms.investment-amount" />
-                      </span>
-                      <span className={styles.value}>
-                        {"€ "} {computedMinCapEur.toFixed(4)} - {"€ "}
-                        {computedMaxCapEur.toFixed(4)}
-                      </span>
-                    </div>
-                    {etoData.discountScheme && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.price-discount" />
-                        </span>
-                        <span className={styles.value}>{etoData.discountScheme}</span>
-                      </div>
-                    )}
-                    {documentsByType["signed_investment_and_shareholder_agreement"] && (
-                      <a
-                        href={`${documentsByType["signed_investment_and_shareholder_agreement"]}`}
-                        className={styles.groupDocumentLink}
-                      >
-                        <div className={styles.icon}>
-                          <Document extension="pdf" />
-                        </div>
-                        <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
-                      </a>
-                    )}
-                  </div>
-                </div>
 
-                <div className={styles.divider} />
-
-                <div className={styles.group}>
-                  <div className={styles.groupTitle}>
-                    <FormattedMessage id="eto.public-view.token-terms.group-title.token-sale" />
-                  </div>
-                  <div className={styles.groupContent}>
-                    {etoData.equityTokensPerShare && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
-                        </span>
-                        <span className={styles.value}>{etoData.equityTokensPerShare}</span>
-                      </div>
-                    )}
-                    {computedMinNumberOfTokens && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.tokens-to-issue" />
-                        </span>
-                        <span className={styles.value}>{computedMinNumberOfTokens}</span>
-                      </div>
-                    )}
-                    {computedNewSharePrice && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.token-price" />
-                        </span>
-                        <span className={styles.value}>€ {computedNewSharePrice.toFixed(4)}</span>
-                      </div>
-                    )}
-                    {etoData.whitelistDurationDays && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.pre-eto-duration" />
-                        </span>
-                        <span className={styles.value}>
-                          {etoData.whitelistDurationDays}{" "}
-                          <FormattedMessage id="eto.public-view.token-terms.days" />
-                        </span>
-                      </div>
-                    )}
-                    {etoData.publicDurationDays && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.public-eto-duration" />
-                        </span>
-                        <span className={styles.value}>
-                          {etoData.publicDurationDays}{" "}
-                          <FormattedMessage id="eto.public-view.token-terms.days" />
-                        </span>
-                      </div>
-                    )}
-                    {documentsByType["reservation_and_acquisition_agreement"] && (
-                      <a
-                        href={`${documentsByType["reservation_and_acquisition_agreement"]}`}
-                        className={styles.groupDocumentLink}
-                      >
-                        <div className={styles.icon}>
-                          <Document extension="pdf" />
-                        </div>
-                        <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <div className={styles.divider} />
-
-                <div className={styles.group}>
-                  <div className={styles.groupTitle}>
-                    <FormattedMessage id="eto.public-view.token-terms.group-title.token-holder-rights" />
-                  </div>
-                  <div className={styles.groupContent}>
-                    {etoData.nominee && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.nominee" />
-                        </span>
-                        <span className={styles.value}>{etoData.nominee}</span>
-                      </div>
-                    )}
-                    {etoData.signingDurationDays && (
-                      <div className={styles.entry}>
-                        <span className={styles.label}>
-                          <FormattedMessage id="eto.public-view.token-terms.public-offer-duration" />
-                        </span>
-                        <span className={styles.value}>
-                          {etoData.signingDurationDays}{" "}
-                          <FormattedMessage id="eto.public-view.token-terms.days" />
-                        </span>
-                      </div>
-                    )}
-                    <div className={styles.entry}>
-                      <span className={styles.label}>
-                        <FormattedMessage id="eto.public-view.token-terms.token-tradability" />
-                      </span>
-                      <span className={styles.value}>
-                        {etoData.enableTransferOnSuccess ? (
-                          <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                        ) : (
-                          <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                        )}
-                      </span>
-                    </div>
-
-                    <div className={styles.entry}>
-                      <span className={styles.label}>
-                        <FormattedMessage id="eto.public-view.token-terms.voting-rights" />
-                      </span>
-                      <span className={styles.value}>
-                        {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
-                          <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                        ) : (
-                          <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                        )}
-                      </span>
-                    </div>
-
-                    <div className={styles.entry}>
-                      <span className={styles.label}>
-                        <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
-                      </span>
-                      <span className={styles.value}>
-                        {etoData.liquidationPreferenceMultiplier !== 0 ? (
-                          <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                        ) : (
-                          <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                        )}
-                      </span>
-                    </div>
-                    {documentsByType["company_token_holder_agreement"] && (
-                      <a
-                        href={`${documentsByType["company_token_holder_agreement"]}`}
-                        className={styles.groupDocumentLink}
-                      >
-                        <div className={styles.icon}>
-                          <Document extension="pdf" />
-                        </div>
-                        <FormattedMessage id="eto.documents.tokenholder-agreement" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Panel>
+            <EtoInvestmentTermsWidget
+              etoData={etoData}
+              etoFilesData={documentsByType}
+              computedMaxCapEur={computedMaxCapEur}
+              computedMinCapEur={computedMinCapEur}
+              computedMinNumberOfTokens={computedMinNumberOfTokens}
+              computedNewSharePrice={computedNewSharePrice}
+            />
           </Col>
         </Row>
 

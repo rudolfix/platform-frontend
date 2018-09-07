@@ -40,7 +40,7 @@ export const TxSenderModalComponent: React.SFC<Props> = props => {
   const { isOpen, onCancel } = props;
 
   return (
-    <Modal isOpen={isOpen} toggle={onCancel} className={cn(isBigModal(props) && "big")}>
+    <Modal isOpen={isOpen} toggle={onCancel} className={cn({ big: isBigModal(props) })}>
       <ModalComponentBody onClose={onCancel}>{renderBody(props)}</ModalComponentBody>
     </Modal>
   );
@@ -58,27 +58,23 @@ export interface ITxSummaryDispatchProps {
 }
 export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 
-function getInitComponent(type?: TxSenderType): JSX.Element {
+const InitComponent: React.SFC<{ type: TxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSelection />;
     case "WITHDRAW":
       return <Withdraw />;
-    default:
-      throw new Error("Transaction type needs to be set at transaction init state");
   }
-}
+};
 
-function getSummaryComponent(type?: TxSenderType): JSX.Element {
+const SummaryComponent: React.SFC<{ type: TxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSummary />;
     case "WITHDRAW":
       return <WithdrawSummary />;
-    default:
-      throw new Error("Transaction type needs to be set at transaction summary state");
   }
-}
+};
 
 function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
   switch (state) {
@@ -86,10 +82,16 @@ function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
       return <WatchPendingTxs />;
 
     case "INIT":
-      return getInitComponent(type!);
+      if (!type) {
+        throw new Error("Transaction type needs to be set at transaction init state");
+      }
+      return <InitComponent type={type} />;
 
     case "SUMMARY":
-      return getSummaryComponent(type!);
+      if (!type) {
+        throw new Error("Transaction type needs to be set at transaction summary state");
+      }
+      return <SummaryComponent type={type} />;
 
     case "ACCESSING_WALLET":
       return <AccessWalletContainer />;

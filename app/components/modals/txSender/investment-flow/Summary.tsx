@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 
+import { MONEY_DECIMALS } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
 import {
   selectEquityTokenCount,
@@ -12,8 +13,15 @@ import {
   selectInvestmentGasCostEth,
   selectNeuRewardUlps,
 } from "../../../../modules/investmentFlow/selectors";
+import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
+import {
+  addBigNumbers,
+  divideBigNumbers,
+  multiplyBigNumbers,
+} from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/Buttons";
 import { DocumentLink } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
@@ -23,14 +31,6 @@ import { ITxSummaryDispatchProps } from "../TxSender";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
-import { MONEY_DECIMALS } from "../../../../config/constants";
-import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
-import {
-  addBigNumbers,
-  divideBigNumbers,
-  multiplyBigNumbers,
-} from "../../../../utils/BigNumberUtils";
-import { formatMoney } from "../../../../utils/Money.utils";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {

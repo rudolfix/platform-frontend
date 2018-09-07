@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { FormField } from "./FormField";
 
-storiesOf("FormField", module)
+storiesOf("Form/Field", module)
   .add("default", () => (
     <Formik initialValues={{}} onSubmit={() => {}}>
       {() => (

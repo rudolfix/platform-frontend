@@ -22,7 +22,7 @@ const chartBarData = {
   ],
 };
 
-storiesOf("EtoTokenIssuance", module).add("default", () => (
+storiesOf("ETO/TokenIssuance", module).add("default", () => (
   <EtoTokenDistribution
     chartData={chartBarData}
     giniIndex={0.6162}

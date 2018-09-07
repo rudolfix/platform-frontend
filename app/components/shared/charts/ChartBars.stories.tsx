@@ -13,4 +13,4 @@ const data = {
   ],
 };
 
-storiesOf("ChartBars", module).add("default", () => <ChartBars data={data} />);
+storiesOf("Charts/Bars", module).add("default", () => <ChartBars data={data} />);

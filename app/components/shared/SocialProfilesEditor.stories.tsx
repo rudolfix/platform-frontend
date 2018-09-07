@@ -72,7 +72,7 @@ const socialProfiles = [
   },
 ];
 
-storiesOf("SocialProfilesEditor", module).add(
+storiesOf("SocialProfiles/SocialProfilesEditor", module).add(
   "default",
   formWrapper({ name: [{ type: "twitter", url: "fufu" }] })(() => (
     <SocialProfilesEditor profiles={socialProfiles} name="name" />

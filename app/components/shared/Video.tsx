@@ -6,7 +6,7 @@ import { Proportion } from "./Proportion";
 import { ResponsiveImage } from "./ResponsiveImage";
 
 interface IProps {
-  youTubeUrl: string;
+  youTubeUrl: string | undefined;
   className?: string;
   hasModal?: boolean;
 }

@@ -5,7 +5,7 @@ import { formWrapper } from "./form-utils";
 
 import { FormRange } from "./FormRange";
 
-storiesOf("FormRange", module)
+storiesOf("Form/Range", module)
   .add(
     "default",
     formWrapper({ name: 15 })(() => <FormRange name="name" min={10} max={20} unit="%" />),

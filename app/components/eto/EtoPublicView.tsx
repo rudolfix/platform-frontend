@@ -1,48 +1,27 @@
 import * as React from "react";
-
 import { compose } from "redux";
+
 import { actions } from "../../modules/actions";
+import { selectEtoDocumentData } from "../../modules/eto-documents/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
-
+import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-
-import { PersonProfileModal } from "../modals/PersonProfileModal";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
-
-interface IProps {
-  companyData: any;
-  etoData: any;
-}
-
-interface ICurrencies {
-  [key: string]: string;
-}
-
-export const CURRENCIES: ICurrencies = {
-  eth: "ETH",
-  eur_t: "nEUR",
-};
-
-const Page: React.SFC<IProps> = ({ companyData, etoData }) => {
-  return (
-    <LayoutAuthorized>
-      <EtoPublicComponent companyData={companyData} etoData={etoData} />
-      <PersonProfileModal />
-    </LayoutAuthorized>
-  );
-};
-
-export const EtoPublicViewComponent: React.SFC<IProps> = props => <EtoPublicView {...props} />;
 
 export const EtoPublicView = compose<React.SFC>(
   onEnterAction({
-    actionCreator: dispatch => dispatch(actions.etoFlow.loadDataStart()),
+    actionCreator: dispatch => {
+      dispatch(actions.etoFlow.loadDataStart());
+      dispatch(actions.etoDocuments.loadFileDataStart());
+    },
   }),
   appConnect({
     stateToProps: s => ({
       companyData: s.etoFlow.companyData,
       etoData: s.etoFlow.etoData,
+      etoFilesData: selectEtoDocumentData(s.etoDocuments),
     }),
   }),
-)(Page);
+  withContainer(LayoutAuthorized),
+)(EtoPublicComponent);

@@ -4,7 +4,7 @@ import * as React from "react";
 import { formWrapper } from "./form-utils";
 import { FormToggle } from "./FormToggle";
 
-storiesOf("FormToggle", module)
+storiesOf("Form/Toggle", module)
   .add(
     "on",
     formWrapper({ toggle: true })(() => (

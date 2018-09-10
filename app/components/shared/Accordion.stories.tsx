@@ -6,7 +6,7 @@ import { Accordion, AccordionElement } from "./Accordion";
 const lorem =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut unde soluta vero ab magnam sit, libero id veniam? Porro, cupiditate dignissimos. Neque ratione fugit doloremque, explicabo molestias impedit minima dicta.";
 
-storiesOf("Accordion", module)
+storiesOf("Basic UI/Accordion", module)
   .add("default", () => (
     <Accordion>
       <AccordionElement title="Accordion title 1">

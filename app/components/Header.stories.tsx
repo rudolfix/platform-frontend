@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { HeaderComponent } from "./Header";
 
-storiesOf("Header", module)
+storiesOf("Layout/Header", module)
   .add("investor", () => (
     <>
       <HeaderComponent

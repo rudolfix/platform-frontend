@@ -22,7 +22,7 @@ const chartBarData = {
   ],
 };
 
-storiesOf("EtoRaisedAmount", module).add("default", () => (
+storiesOf("ETO/RaisedAmount", module).add("default", () => (
   <EtoRaisedAmount
     firstTransactionTime="yesterday"
     lastTransactionTime="yesterday"

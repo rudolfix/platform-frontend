@@ -174,6 +174,10 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         name="founders"
       />
       <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.advisors.title" />}
+        name="advisors"
+      />
+      <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
         name="keyAlliances"
       />

@@ -35,9 +35,9 @@ export const SlidePerson: React.SFC<IProps> = ({
         <h5 className={styles.name}>{name}</h5>
         {role && <h6 className={styles.title}>{role}</h6>}
       </div>
-      {!!socialChannels.length && (
+      {socialChannels && (
         <SocialProfilesList
-          profiles={socialChannels || []}
+          profiles={socialChannels}
           layoutIconSize="small"
           layoutIconsPosition="center"
           showLabels={showLabels}

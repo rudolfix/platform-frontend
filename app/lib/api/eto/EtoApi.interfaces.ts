@@ -69,7 +69,7 @@ type TEtoRiskAssessment = YupTS.TypeOf<typeof EtoRiskAssessmentType>;
 const socialChannelsType = YupTS.array(
   YupTS.object({
     type: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
-    url: YupTS.url(),
+    url: YupTS.url().optional(),
   }),
 );
 
@@ -91,6 +91,7 @@ const groupType = YupTS.object({
 
 export const EtoKeyIndividualsType = YupTS.object({
   team: groupType.optional(),
+  advisors: groupType.optional(),
   founders: groupType.optional(),
   boardMembers: groupType.optional(),
   notableInvestors: groupType.optional(),
@@ -121,17 +122,28 @@ export const EtoLegalInformationType = YupTS.object({
     }),
   ),
 });
+
 type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
 
-const linkType = YupTS.object({
-  title: YupTS.string(),
-  url: YupTS.url(),
-});
+const marketingLinksType = YupTS.array(
+  YupTS.object({
+    title: YupTS.string().optional(),
+    url: YupTS.url().optional(),
+  }),
+);
+
+const companyNewsType = YupTS.array(
+  YupTS.object({
+    title: YupTS.string().optional(),
+    url: YupTS.url().optional(),
+    publication: YupTS.string().optional(),
+  }),
+);
 
 export const EtoMediaType = YupTS.object({
   companyVideo: YupTS.object({
     title: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
-    url: YupTS.url(),
+    url: YupTS.url().optional(),
   }),
   companySlideshare: YupTS.object({
     title: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
@@ -139,8 +151,8 @@ export const EtoMediaType = YupTS.object({
   }),
 
   socialChannels: socialChannelsType.optional(),
-  companyNews: YupTS.array(linkType).optional(),
-  marketingLinks: YupTS.array(linkType).optional(),
+  companyNews: companyNewsType.optional(),
+  marketingLinks: marketingLinksType.optional(),
   disableTwitterFeed: YupTS.boolean().optional(),
 });
 
@@ -218,8 +230,9 @@ export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType
 interface IAdditionalEtoType {
   state: EtoState;
   isBookbuilding: boolean;
-  templates?: TEtoDocumentTemplates;
+  templates: TEtoDocumentTemplates;
   startDate: string;
+  documents: TEtoDocumentTemplates;
 }
 
 export type TEtoSpecsData = TEtoTermsType &

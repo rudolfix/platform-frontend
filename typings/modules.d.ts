@@ -18,7 +18,6 @@ declare module "react-sizes";
 
 declare module "react-id-swiper";
 declare module "react-id-swiper/lib/custom";
-
 declare module "react-blockies";
 
 declare module "qrcode";

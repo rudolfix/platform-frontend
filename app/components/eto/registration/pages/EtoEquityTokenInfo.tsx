@@ -50,7 +50,6 @@ class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps>
           label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
           placeholder="3 - 4 characters"
           maxLength="4"
-          pattern=".{3,4}"
           name="equityTokenSymbol"
         />
         <div className="form-group">

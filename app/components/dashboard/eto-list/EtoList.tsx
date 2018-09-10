@@ -2,7 +2,7 @@ import * as React from "react";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 
-import { TInvestorEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { TPublicEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -10,11 +10,11 @@ import { Button } from "../../shared/Buttons";
 import { SectionHeader } from "../../shared/SectionHeader";
 
 interface IStateProps {
-  etos: TInvestorEtoData[];
+  etos: TPublicEtoData[];
 }
 
 interface IDispatchProps {
-  startInvestmentFlow: (eto: TInvestorEtoData) => void;
+  startInvestmentFlow: (eto: TPublicEtoData) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -48,7 +48,7 @@ export const EtoList = compose<React.ComponentClass>(
       etos: state.dashboard.etos,
     }),
     dispatchToProps: d => ({
-      startInvestmentFlow: (eto: TInvestorEtoData) =>
+      startInvestmentFlow: (eto: TPublicEtoData) =>
         d(actions.investmentFlow.investmentStart(eto)),
     }),
   }),

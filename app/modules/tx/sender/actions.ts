@@ -15,4 +15,7 @@ export const txSenderActions = {
   txSenderWalletPlugged: () => createSimpleAction("TX_SENDER_WALLET_PLUGGED"),
   txSenderReportBlock: (blockId: number) => createAction("TX_SENDER_REPORT_BLOCK", blockId),
   txSenderTxMined: () => createSimpleAction("TX_SENDER_TX_MINED"),
+  // This is only for development, can be removed after all flows are implemented and e2e tested
+  signDebugDummyMessage: (message: string) => createAction("TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE", { message }),
+  sendDebugDummyTx: () => createSimpleAction("TX_SENDER_DEBUG_SEND_DUMMY_TX"),
 };

@@ -61,7 +61,7 @@ export const EtoPreview = compose<React.SFC<IRouterParams>>(
     }),
     dispatchToProps: dispatch => ({
       loadEtoPreview: (previewCode: string) =>
-        dispatch(actions.eto.loadEtoPreviewStart(previewCode)),
+        dispatch(actions.publicEtos.loadEtoPreview(previewCode)),
     }),
   }),
   withContainer(LayoutBase),

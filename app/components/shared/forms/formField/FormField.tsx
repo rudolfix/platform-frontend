@@ -2,14 +2,29 @@ import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikProps, getIn } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
-import { CommonHtmlProps } from "../../../../types";
-import { computedValue, countedCharacters, IFieldGroup } from "./FormFieldRaw";
+import { CommonHtmlProps, InputType } from "../../../../types";
+import { computedValue, countedCharacters } from "./FormFieldRaw";
 import { FormLabel } from "./FormLabel";
 import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
+
+export interface IFieldGroup {
+  label?: string | React.ReactNode;
+  min?: string;
+  max?: string;
+  placeholder?: string | React.ReactNode;
+  errorMsg?: string | React.ReactNode;
+  type?: InputType;
+  prefix?: string | React.ReactNode;
+  suffix?: string | React.ReactNode;
+  addonStyle?: string;
+  maxLength?: string;
+  charactersLimit?: number;
+}
 
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
 
@@ -29,6 +44,9 @@ export class FormField extends React.Component<FieldGroupProps> {
       className,
       addonStyle,
       charactersLimit,
+      errorMsg,
+      min,
+      max,
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;
@@ -70,9 +88,25 @@ export class FormField extends React.Component<FieldGroupProps> {
                   )}
                 </InputGroup>
                 {isNonValid(touched, errors, name) && (
-                  <div className={styles.errorLabel}>{getIn(errors, name) || props.errorMsg}</div>
+                  <div className={styles.errorLabel}>{getIn(errors, name) || errorMsg}</div>
                 )}
                 {charactersLimit && <div>{countedCharacters(val, charactersLimit)}</div>}
+
+                {min &&
+                  parseInt(field.value, 10) < parseInt(min, 10) && (
+                    <div className={styles.errorLabel}>
+                      <FormattedMessage id="form.error.minimum-value" values={{ value: min }} />
+                    </div>
+                  )}
+
+                {max &&
+                  parseInt(field.value, 10) > parseInt(max, 10) && (
+                    <div className={styles.errorLabel}>
+                      <FormattedMessage id="form.error.maximum-value" values={{ value: max }} />
+                    </div>
+                  )}
+
+                {charactersLimit && <div>{countedCharacters(field.value, charactersLimit)}</div>}
               </>
             );
           }}

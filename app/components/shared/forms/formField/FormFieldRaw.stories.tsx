@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { FormFieldRaw } from "./FormFieldRaw";
 
-storiesOf("FormFieldRaw", module)
+storiesOf("Form/FormFieldRaw", module)
   .add("default", () => <FormFieldRaw label="Form field" name="value" />)
   .add("with suffix", () => <FormFieldRaw label="Form field" name="value" suffix="%" />)
   .add("with prefix", () => <FormFieldRaw label="Form field" name="value" prefix="@" />)

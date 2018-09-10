@@ -211,12 +211,14 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
               </span>
             </div>
 
-            <div className={styles.entry}>
-              <span className={styles.label}>
-                <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
-              </span>
-              <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}</span>
-            </div>
+            {etoData.liquidationPreferenceMultiplier && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
+                </span>
+                <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}</span>
+              </div>
+            )}
             {etoFilesData["company_token_holder_agreement"] && (
               <a
                 href={`${etoFilesData["company_token_holder_agreement"]}`}

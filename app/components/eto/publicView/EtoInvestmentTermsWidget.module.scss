@@ -35,14 +35,14 @@
     @include media-breakpoint-up (md) {
       width: calc(#{(1 / 3) * 100%} - 50px);
       flex-direction: row;
+
+      &:last-of-type {
+        width: (100 / 3) * 1%;
+      }
     }
 
     display: flex;
     flex-direction: column;
-
-    &:last-of-type {
-      width: (100 / 3) * 1%;
-    }
   }
 
   .group-title {

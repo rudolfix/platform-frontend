@@ -2,26 +2,19 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, InputProps } from "reactstrap";
 
-import { CommonHtmlProps, InputType } from "../../../../types";
+import { CommonHtmlProps } from "../../../../types";
+import { IFieldGroup } from "./FormField";
 import { FormLabel } from "./FormLabel";
 
 import * as styles from "./FormStyles.module.scss";
 
-export interface IFieldGroup {
-  label?: string | React.ReactNode;
-  placeholder?: string | React.ReactNode;
-  errorMsg?: string | React.ReactNode;
-  type?: InputType;
-  prefix?: string | React.ReactNode;
-  suffix?: string | React.ReactNode;
-  addonStyle?: string;
-  maxLength?: string;
+export interface IFieldGroupRaw extends IFieldGroup {
   charactersLimit?: number;
   invalid?: boolean;
   controlCursor?: boolean;
 }
 
-type FieldGroupProps = IFieldGroup & InputProps & CommonHtmlProps;
+type FieldGroupProps = IFieldGroupRaw & InputProps & CommonHtmlProps;
 
 export const computedValue = (val: InputProps["value"], limit: number | undefined) => {
   if (typeof val === "number" || Array.isArray(val) || !val || !limit) {

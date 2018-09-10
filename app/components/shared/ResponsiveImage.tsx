@@ -45,7 +45,9 @@ export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
       className={cn(styles.responsiveImage, className, theme)}
       onClick={onClick}
     >
-      <img className={styles.image} src={src || srcSet["1x"]} srcSet={computedSrcSet} alt={alt} />
+      {srcSet["1x"] && (
+        <img className={styles.image} src={src || srcSet["1x"]} srcSet={computedSrcSet} alt={alt} />
+      )}
     </Proportion>
   );
 };

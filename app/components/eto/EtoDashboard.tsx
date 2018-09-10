@@ -128,6 +128,9 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
         <>
           <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
           <Col lg={4} xs={12}>
+            <ChoosePreEtoDateWidget />
+          </Col>
+          <Col lg={4} xs={12}>
             <BookBuildingWidget />
           </Col>
           {!isPamphletSubmitted && (

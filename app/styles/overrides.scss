@@ -49,10 +49,13 @@ textarea {
     background-color: transparent;
   }
 
-  &:focus,
+  &,
   &.is-valid {
-    background-color: transparent;
-    border-color: $color-graphite !important;
+    &,
+    &:focus {
+      background-color: transparent;
+      border-color: $color-graphite;
+    }
   }
 }
 

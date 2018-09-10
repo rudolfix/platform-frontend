@@ -33,7 +33,7 @@ export class FormField extends React.Component<FieldGroupProps> {
     formik: PropTypes.object,
   };
 
-  render (): React.ReactChild {
+  render(): React.ReactChild {
     const {
       label,
       type,
@@ -108,7 +108,7 @@ export class FormField extends React.Component<FieldGroupProps> {
 
                 {charactersLimit && <div>{countedCharacters(field.value, charactersLimit)}</div>}
               </>
-            )
+            );
           }}
         />
       </FormGroup>

@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, InputProps } from "reactstrap";
 
-import { CommonHtmlProps, InputType } from "../../../../types";
+import { CommonHtmlProps } from "../../../../types";
 import { IFieldGroup } from "./FormField";
 import { FormLabel } from "./FormLabel";
 

@@ -7,6 +7,10 @@
 
   &:global(.green) {
     color: $color-green-dark;
+
+    .label {
+      color: darken($color-green-dark, 30%);
+    }
   }
 
   .label {

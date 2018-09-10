@@ -1,6 +1,5 @@
 import BigNumber from "bignumber.js";
 
-import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";

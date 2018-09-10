@@ -1,10 +1,10 @@
 import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
+import { ICalculatedContribution } from "../public-etos/reducer";
 import {
   EInvestmentCurrency,
   EInvestmentErrorState,
   EInvestmentType,
-  ICalculatedContribution,
 } from "./reducer";
 
 export const investmentFlowActions = {

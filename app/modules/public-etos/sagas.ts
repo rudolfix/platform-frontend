@@ -1,24 +1,37 @@
-import { fork, put } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TPartialCompanyEtoData, TPartialEtoSpecData, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
+import { IAppAction, IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { neuTakeEvery } from "../sagas";
+import { IPublicEtoState } from "./reducer";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): any {
-  if (action.type !== "ETO_FLOW_LOAD_ETO_PREVIEW_START") return;
+  if (action.type !== "PUBLIC_ETOS_LOAD_ETO_PREVIEW") return;
   const previewCode = action.payload.previewCode;
+  const s:IPublicEtoState = yield select((s: IAppState) => s.publicEtos)
+  // clear old data, if requesting different eto, otherwise optimistically fetch changes
+  if (s.previewEtoData && s.previewEtoData.previewCode !== previewCode) {
+    actions.publicEtos.setPreviewEto()
+  }
+
   try {
-    const etoData: IHttpResponse<TPublicEtoData> = yield apiEtoService.getEtoPreview(
+    const etoData: IHttpResponse<TPartialEtoSpecData> = yield apiEtoService.getEtoPreview(
       previewCode,
     );
+    const companyId = etoData.body.companyId as string;
+    const companyData: IHttpResponse<
+      TPartialCompanyEtoData
+    > = yield apiEtoService.getCompanyDataById(companyId);
     yield put(
-      actions.publicEtos.setEtos({
-        etoData: etoData.body,
+      actions.publicEtos.setPreviewEto({
+        eto: etoData.body,
+        company: companyData.body
       }),
     );
   } catch (e) {
@@ -29,8 +42,19 @@ export function* loadEtoPreview(
 
 function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
   try {
-    const etos: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
-    yield put(actions.dashboard.setEtos(etos.body));
+    const etoData: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
+
+    const etos: {[id: string]: TPublicEtoData} = {}
+    const order: string[] = []
+    etoData.body.forEach(eto => {
+      if (eto.etoId) {
+        etos[eto.etoId] = eto;
+        order.push(eto.etoId)
+      }
+    })
+
+    yield put(actions.publicEtos.setPublicEtos(etos));
+    yield put(actions.publicEtos.setEtosDisplayOrder(order));
   } catch (e) {
     logger.error("ETOs could not be loaded", e, e.message);
   }
@@ -38,6 +62,6 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
 
 
 export function* etoSagas(): any {
-  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_ETO_PREVIEW_START", loadEtoPreview);
-  yield fork(neuTakeEvery, "DASHBOARD_LOAD_ETOS", loadEtos);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO_PREVIEW", loadEtoPreview);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
 }

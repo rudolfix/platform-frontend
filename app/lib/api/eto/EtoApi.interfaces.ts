@@ -228,6 +228,8 @@ export const EtoInvestmentTermsType = YupTS.object({
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
 
 interface IAdditionalEtoType {
+  companyId: string;
+  previewCode: string;
   state: EtoState;
   isBookbuilding: boolean;
   templates: TEtoDocumentTemplates;

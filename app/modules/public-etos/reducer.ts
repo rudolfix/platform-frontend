@@ -13,31 +13,61 @@ export interface ICalculatedContribution {
   maxCapExceeded: boolean;
 }
 
-export interface IEtoState {
-  etos: { [etoId: string]: TPublicEtoData | undefined };
-  currentEtoId?: string
-  computedContributions: {[etoId: string]: ICalculatedContribution},
+export interface IPublicEtoState {
+  // only preview, endpoint eto-listing/eto-previews
+  previewEtoData?: TPartialEtoSpecData
+  previewCompanyData?: TPartialCompanyEtoData
+
+  // for endpoint eto-listing/etos
+  publicEtos: { [etoId: string]: TPublicEtoData | undefined };
+  currentPublicEtoId?: string
+  calculatedContributions: {[etoId: string]: ICalculatedContribution},
   displayOrder: string[]
 }
 
-export const etoFlowInitialState: IEtoState = {
-  etos: {},
-  computedContributions: {},
+export const etoFlowInitialState: IPublicEtoState = {
+  publicEtos: {},
+  calculatedContributions: {},
   displayOrder: []
 };
 
-export const etoReducer: AppReducer<IEtoState> = (
+export const publicEtosReducer: AppReducer<IPublicEtoState> = (
   state = etoFlowInitialState,
   action,
-): DeepReadonly<IEtoState> => {
+): DeepReadonly<IPublicEtoState> => {
   switch (action.type) {
-    case "PUBLIC_ETOS_SET_ETOS":
+    case "PUBLIC_ETOS_SET_PUBLIC_ETOS":
       return {
         ...state,
-        previewEtoData: {
-          ...state.previewEtoData,
-          [action.payload.previewCode]: action.payload.data.etoData,
+        publicEtos: {
+          ...state.publicEtos,
+          ...action.payload.etos,
         },
+      };
+    case "PUBLIC_ETOS_SET_DISPLAY_ORDER":
+      return {
+        ...state,
+        displayOrder: action.payload.order,
+      };
+    case "PUBLIC_ETOS_SET_CURRENT_ETO":
+      return {
+        ...state,
+        currentPublicEtoId: action.payload.etoId,
+      };
+    case "PUBLIC_ETOS_SET_CALCULATED_CONTRIBUTION":
+      return {
+        ...state,
+        calculatedContributions: {
+          ...state.calculatedContributions,
+          [action.payload.etoId]: action.payload.contrib,
+        },
+      };
+    case "PUBLIC_ETOS_SET_PREVIEW_ETO":
+      const data = action.payload.data
+      return {
+        ...state,
+        previewEtoData: data && data.eto,
+        previewCompanyData: data && data.company,
       };
   }
 

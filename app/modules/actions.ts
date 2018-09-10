@@ -1,4 +1,4 @@
-import { TDictionaryValues } from "../types";
+import { TDictionaryArrayValues, TDictionaryValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { depositModalActions } from "./depositEthModal/actions";
@@ -61,42 +61,43 @@ export const actions = {
 };
 
 /**
- * Merge all actions into main action object. Add new set of actions here.
+ * Add all actions objects here to extract the propper typing of all action types.
  */
-export const allActions = {
-  ...tokenPriceActions,
-  ...etoDocumentsActions,
-  ...verifyEmailActions,
-  ...settingsActions,
-  ...genericModalActions,
-  ...accessWalletActions,
-  ...initActions,
-  ...routingActions,
-  ...kycActions,
-  ...walletSelectorActions,
-  ...web3Actions,
-  ...userAgentActions,
-  ...authActions,
-  ...walletActions,
-  ...notificationActions,
-  ...immutableStorageActions,
-  ...etoFlowActions,
-  ...etoActions,
-  ...formSingleFileUploadActions,
-  ...remoteFileActions,
-  ...depositModalActions,
-  ...txMonitorActions,
-  ...txSenderActions,
-  ...icbmWalletBalanceModalActions,
-  ...gasActions,
-  ...investmentFlowActions,
-  ...videoModalActions,
-  ...personProfileModalActions,
-};
+export const allActions = [
+  tokenPriceActions,
+  etoDocumentsActions,
+  verifyEmailActions,
+  settingsActions,
+  genericModalActions,
+  accessWalletActions,
+  initActions,
+  routingActions,
+  kycActions,
+  walletSelectorActions,
+  web3Actions,
+  userAgentActions,
+  authActions,
+  walletActions,
+  notificationActions,
+  immutableStorageActions,
+  etoFlowActions,
+  etoActions,
+  formSingleFileUploadActions,
+  remoteFileActions,
+  depositModalActions,
+  txMonitorActions,
+  txSenderActions,
+  icbmWalletBalanceModalActions,
+  gasActions,
+  investmentFlowActions,
+  videoModalActions,
+  personProfileModalActions,
+];
 
 /**
  * Build action union type
  */
-type TActionCreatorsUnionType = TDictionaryValues<typeof allActions>;
+type TActionCreatorsUnionType = TDictionaryArrayValues<typeof allActions>;
+
 export type TAction = ReturnType<TActionCreatorsUnionType>;
 export type TActionType = TAction["type"];

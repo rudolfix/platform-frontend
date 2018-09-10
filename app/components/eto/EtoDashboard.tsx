@@ -38,8 +38,7 @@ import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
 
-const SUBMIT_PROPOSAL_THRESHOLD = 0.5;
-// TODO: CHANGE TO 100% when data model in interfaces represents swagger
+const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
 interface IStateProps {
   isLightWallet: boolean;

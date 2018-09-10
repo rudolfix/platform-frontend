@@ -36,6 +36,7 @@ export interface IInvestmentFlowState {
   errorState?: EInvestmentErrorState;
   gasAmount: string;
   gasPrice: string;
+  isValidatedInput: boolean
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
@@ -44,6 +45,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   investmentType: EInvestmentType.None,
   gasAmount: INVESTMENT_GAS_AMOUNT,
   gasPrice: "0",
+  isValidatedInput: false
 };
 
 export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
@@ -57,19 +59,13 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       };
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
-        ...state,
+        ...investmentFlowInitialState,
         investmentType: action.payload.type,
-        euroValueUlps: "",
-        errorState: undefined,
       };
     case "INVESTMENT_FLOW_SET_GAS_PRICE":
       return {
         ...state,
         gasPrice: multiplyBigNumbers([action.payload.gasPrice || 0, GAS_PRICE_MULTIPLIER]),
-      };
-    case "INVESTMENT_FLOW_SET_ETO":
-      return {
-        ...state,
       };
     case "INVESTMENT_FLOW_SET_INVESTMENT_ERROR_STATE":
       return {
@@ -85,6 +81,11 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         euroValueUlps: action.payload.value,
+      };
+    case "INVESTMENT_FLOW_SET_IS_INPUT_VALIDATED":
+      return {
+        ...state,
+        isValidatedInput: action.payload.isValidated,
       };
   }
 

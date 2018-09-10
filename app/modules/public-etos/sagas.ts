@@ -1,12 +1,17 @@
+import BigNumber from "bignumber.js";
 import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TPartialCompanyEtoData, TPartialEtoSpecData, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
+import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppAction, IAppState } from "../../store";
+import { convertToBigInt } from "../../utils/Money.utils";
 import { actions, TAction } from "../actions";
-import { neuTakeEvery } from "../sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
+import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { IPublicEtoState } from "./reducer";
+import { convertToCalculatedContribution, selectCurrentCalculatedContribution, selectCurrentEto } from "./selectors";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
@@ -61,7 +66,47 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
 }
 
 
+export function* loadComputedContributionFromContract ({ contractsService }: TGlobalDependencies, eto: TPublicEtoData, amountEuroUlps?: string, isICBM = false): any {
+  const state: IAppState = yield select()
+  const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
+  if (etoContract) {
+    amountEuroUlps = amountEuroUlps || convertToBigInt((eto.minTicketEur && eto.minTicketEur.toString()) || '0')
+    const from = selectEthereumAddressWithChecksum(state.web3);
+    const calculation = yield etoContract.calculateContribution(
+      from,
+      isICBM,
+      new BigNumber(amountEuroUlps),
+    );
+    yield put(
+      actions.publicEtos.setCalculatedContribution(
+        eto.etoId,
+        convertToCalculatedContribution(calculation),
+      ),
+    );
+  }
+}
+
+function* loadCurrentCalculatedContribution (_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "PUBLIC_ETOS_LOAD_CURRENT_CALCULATED_CONTRIBUTION") return;
+  const state: IPublicEtoState = yield select((s: IAppState) => s.publicEtos)
+  const current = selectCurrentEto(state)
+  if (!current) return
+  const contribution = selectCurrentCalculatedContribution(state)
+  if (!contribution || action.payload.investmentEurUlps) {
+    yield neuCall(loadComputedContributionFromContract, current, action.payload.investmentEurUlps)
+  }
+}
+
+function* changeCurrentEto (_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "PUBLIC_ETOS_LOAD_CURRENT_PUBLIC_ETO") return;
+  const { etoId } = action.payload
+  yield put(actions.publicEtos.setCurrentEto(etoId))
+  yield put(actions.publicEtos.loadCurrentCalculatedContribution())
+}
+
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO_PREVIEW", loadEtoPreview);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_CURRENT_CALCULATED_CONTRIBUTION", loadCurrentCalculatedContribution);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_CURRENT_PUBLIC_ETO", changeCurrentEto);
 }

@@ -8,7 +8,7 @@ export const etoActions = {
     createAction("PUBLIC_ETOS_LOAD_ETO_PREVIEW", { previewCode }),
   loadEtos: () => createSimpleAction("PUBLIC_ETOS_LOAD_ETOS"),
   loadCurrentCalculatedContribution: (investmentEurUlps?: string) => createAction("PUBLIC_ETOS_LOAD_CURRENT_CALCULATED_CONTRIBUTION", {investmentEurUlps}),
-  changeCurrentEto: (etoId: string) => createAction("PUBLIC_ETOS_CHANGE_CURRENT_PUBLIC_ETO", {etoId}),
+  loadCurrentEto: (etoId?: string) => createAction("PUBLIC_ETOS_LOAD_CURRENT_PUBLIC_ETO", {etoId}),
   // state mutations
   setPublicEtos: (etos: {[etoId: string]: TPublicEtoData}) => createAction("PUBLIC_ETOS_SET_PUBLIC_ETOS", { etos }),
   setEtosDisplayOrder: (order: string[]) => createAction("PUBLIC_ETOS_SET_DISPLAY_ORDER", { order }),

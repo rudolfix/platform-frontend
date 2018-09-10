@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikProps, getIn } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
@@ -12,6 +13,8 @@ import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
   label?: string | React.ReactNode;
+  min?: string;
+  max?: string;
   placeholder?: string | React.ReactNode;
   type?: InputType;
   prefix?: string | React.ReactNode;
@@ -39,6 +42,8 @@ export class FormField extends React.Component<FieldGroupProps> {
       className,
       addonStyle,
       charactersLimit,
+      min,
+      max,
       ...props
     } = this.props;
     const formik: FormikProps<any> = this.context.formik;
@@ -93,6 +98,21 @@ export class FormField extends React.Component<FieldGroupProps> {
                   </InputGroupAddon>
                 )}
               </InputGroup>
+
+              {min &&
+                parseInt(field.value, 10) < parseInt(min, 10) && (
+                  <div className={styles.errorLabel}>
+                    <FormattedMessage id="form.error.minimum-value" values={{ value: min }} />
+                  </div>
+                )}
+
+              {max &&
+                parseInt(field.value, 10) > parseInt(max, 10) && (
+                  <div className={styles.errorLabel}>
+                    <FormattedMessage id="form.error.maximum-value" values={{ value: max }} />
+                  </div>
+                )}
+
               {isNonValid(touched, errors, name) && (
                 <div className={styles.errorLabel}>{getIn(errors, name)}</div>
               )}

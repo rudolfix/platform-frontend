@@ -300,6 +300,8 @@
   "form.button.submit": "CONTINUE",
   "form.button.submit-changes": "CONTINUE",
   "form.button.submit-request": "CONTINUE",
+  "form.error.maximum-value": "Value must be lower than {value}",
+  "form.error.minimum-value": "Value must be higher than {value}",
   "form.field.error.is-required": "This field is required",
   "form.label.address": "Address",
   "form.label.birth-date": "Date of birth",

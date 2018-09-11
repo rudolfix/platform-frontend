@@ -1,6 +1,6 @@
 import { Field, FieldProps } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import * as styles from "./FormRange.module.scss";
 
@@ -15,6 +15,7 @@ interface IProps {
   unitMin?: TUnit;
   unitMax?: TUnit;
   step?: TStep;
+  disabled?: boolean;
 }
 
 interface IInternalProps {
@@ -37,37 +38,45 @@ const RangeLabel: React.SFC<IRangeLabelProps> = ({ label, value, unit }) => (
   </div>
 );
 
-export const RangeComponent: React.SFC<IProps & IInternalProps> = props => {
-  const { name, unit, unitMin, unitMax, min, max, step, onChange, value } = props;
-
-  return (
-    <div className={styles.range}>
-      <RangeLabel
-        label={<FormattedMessage id="shared-component.range.min" />}
-        value={min}
-        unit={unitMin || unit}
-      />
-      <input
-        name={name}
-        value={value}
-        min={min}
-        max={max}
-        step={step || 1}
-        className={styles.input}
-        type="range"
-        onChange={onChange}
-      />
-      <RangeLabel
-        label={<FormattedMessage id="shared-component.range.max" />}
-        value={max}
-        unit={unitMax || unit}
-      />
-      <div className={styles.currentValue}>
-        {value} {unitMin && unitMax ? (value > 1 ? unitMax : unitMin) : unit}
-      </div>
+export const RangeComponent: React.SFC<IProps & IInternalProps> = ({
+  disabled,
+  name,
+  unit,
+  unitMin,
+  unitMax,
+  min,
+  max,
+  step,
+  onChange,
+  value,
+}) => (
+  <div className={styles.range}>
+    <RangeLabel
+      label={<FormattedMessage id="shared-component.range.min" />}
+      value={min}
+      unit={unitMin || unit}
+    />
+    <input
+      disabled={disabled}
+      name={name}
+      value={value}
+      min={min}
+      max={max}
+      step={step || 1}
+      className={styles.input}
+      type="range"
+      onChange={onChange}
+    />
+    <RangeLabel
+      label={<FormattedMessage id="shared-component.range.max" />}
+      value={max}
+      unit={unitMax || unit}
+    />
+    <div className={styles.currentValue}>
+      {value} {unitMin && unitMax ? (value > 1 ? unitMax : unitMin) : unit}
     </div>
-  );
-};
+  </div>
+);
 
 export class FormRange extends React.Component<IProps> {
   render(): React.ReactNode {

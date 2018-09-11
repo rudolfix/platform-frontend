@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { DocumentLink } from "../DocumentLink";
 import { TransactionState } from "./TransactionState";
 
-storiesOf("TransactionState", module)
+storiesOf("Modals/TransactionState", module)
   .add("pending", () => (
     <TransactionState state="pending" txHash="234523451234" blockNumber={12343456}>
       <p>

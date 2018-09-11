@@ -6,7 +6,8 @@ const webpack = require("webpack");
 module.exports = (baseConfig, env, config) => {
   const pathToStyleLoader = path.join(__dirname, "./setup-styles.ts");
 
-  config.entry.preview.push(pathToStyleLoader);
+  console.log(config.entry);
+  config.entry.iframe.push(pathToStyleLoader);
 
   config.module.rules = [...devConfig.module.rules];
 
@@ -18,7 +19,7 @@ module.exports = (baseConfig, env, config) => {
     config.devServer = {
       hot: false,
     };
-    config.entry.preview = config.entry.preview.filter(
+    config.entry.iframe = config.entry.iframe.filter(
       x => x.indexOf("webpack-hot-middleware") === -1,
     );
     config.plugins = config.plugins.filter(

@@ -4,6 +4,6 @@ import * as React from "react";
 import { withStore } from "../../../utils/storeDecorator";
 import { WalletLedgerNotSupported } from "./WalletLedgerNotSupportedComponent";
 
-storiesOf("WalletLedgerNotSupported", module)
+storiesOf("Ledger/WalletLedgerNotSupported", module)
   .addDecorator(withStore())
   .add("default", () => <WalletLedgerNotSupported />);

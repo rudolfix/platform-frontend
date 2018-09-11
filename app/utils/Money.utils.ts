@@ -1,20 +1,23 @@
 import BigNumber from "bignumber.js";
-import { invariant } from "../../utils/invariant";
+
+import { Q18 } from "../config/constants";
+import { invariant } from "./invariant";
 
 export function formatMoney(
-  value: string,
+  value: string | BigNumber,
   currencyDecimals: number,
   decimalPlaces: number,
 ): string {
   const money = new BigNumber(value);
   const moneyInPrimaryBase = money.div(new BigNumber(10).pow(currencyDecimals));
-  return moneyInPrimaryBase.toFixed(decimalPlaces, BigNumber.ROUND_HALF_UP);
+  return moneyInPrimaryBase.toFixed(decimalPlaces, BigNumber.ROUND_UP);
 }
 
 /**
  * Assumes dot as decimal separator
  */
-export function formatThousands(value: string): string {
+export function formatThousands(value?: string): string {
+  if (!value) return "";
   const splitByDot = value.split(".");
 
   invariant(splitByDot.length <= 2, "Can't format this number: " + value);
@@ -25,4 +28,10 @@ export function formatThousands(value: string): string {
     return formattedBeforeDot + "." + splitByDot[1];
   }
   return formattedBeforeDot;
+}
+
+export function convertToBigInt(value: string, currencyDecimals?: number): string {
+  const q = currencyDecimals ? new BigNumber(10).pow(currencyDecimals) : Q18;
+  const moneyInWei = q.mul(value);
+  return moneyInWei.toFixed(0, BigNumber.ROUND_UP);
 }

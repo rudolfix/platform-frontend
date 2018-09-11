@@ -1,143 +1,317 @@
-import { Form, Formik, FormikProps } from "formik";
+import BigNumber from "bignumber.js";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { Container, FormGroup, Label, Row } from "reactstrap";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { Col, Container, FormGroup, Label, Row } from "reactstrap";
+import { compose } from "redux";
 
+import { MONEY_DECIMALS } from "../../../../config/constants";
+import { actions } from "../../../../modules/actions";
+import {
+  EInvestmentCurrency,
+  EInvestmentErrorState,
+  EInvestmentType,
+} from "../../../../modules/investmentFlow/reducer";
+import {
+  selectEquityTokenCount,
+  selectErrorState,
+  selectEthValueUlps,
+  selectEto,
+  selectEurValueUlps,
+  selectInvestmentGasCostEth,
+  selectInvestmentType,
+  selectNeuRewardUlps,
+  selectReadyToInvest,
+} from "../../../../modules/investmentFlow/selectors";
+import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
+import {
+  selectICBMLockedEtherBalance,
+  selectICBMLockedEtherBalanceEuroAmount,
+  selectICBMLockedEuroTokenBalance,
+  selectLiquidEtherBalance,
+  selectLiquidEtherBalanceEuroAmount,
+} from "../../../../modules/wallet/selectors";
+import { appConnect, IAppState } from "../../../../store";
+import {
+  addBigNumbers,
+  divideBigNumbers,
+  multiplyBigNumbers,
+} from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button } from "../../../shared/Buttons";
-import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImportant";
+import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
-import { Money } from "../../../shared/Money";
-import { IInitComponentProps } from "../TxSender";
-import { WalletSelector } from "./WalletSelector";
+import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";
 
-import * as neuIcon from "../../../../assets/img/neu_icon.svg";
-import * as tokenIcon from "../../../../assets/img/token_icon.svg";
+import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
+import * as euroIcon from "../../../../assets/img/euro_icon.svg";
+import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import * as styles from "./Investment.module.scss";
 
-interface IFormState {
-  value: string;
-  wallet: string;
-}
-
 interface IStateProps {
-  wallets: Array<{
-    id: string;
-    name: string;
-    balanceEth: string;
-    balanceEur?: string;
-  }>;
+  wallets: IWalletSelectionData[];
+  euroValue: string;
+  ethValue: string;
+  etherPriceEur: string;
+  investmentType: EInvestmentType;
+  gasCostEth: string;
+  errorState?: EInvestmentErrorState;
+  equityTokenCount?: string;
+  neuReward?: string;
+  minTicketEur: number;
+  readyToInvest: boolean;
 }
 
 interface IDispatchProps {
-  submit: (values: IFormState) => void;
+  sendTransaction: () => void;
+  changeEuroValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  changeEthValue: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  changeInvestmentType: (type: EInvestmentType) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & IIntlProps;
 
-export const InvestmentSelectionForm = injectIntlHelpers(
-  (props: FormikProps<IFormState> & IProps & IIntlProps) => {
-    const failureTooltip = (
-      <div>
-        <p>
-          <FormattedMessage id="investment-flow.amount-exceeds-investment" />
-        </p>
-        <Row>
-          <Button theme="white" className="mr-4" type="submit">
-            <FormattedMessage id="investment-flow.max-invest" />
-          </Button>
-        </Row>
-      </div>
-    );
+function createWallets(state: IAppState): IWalletSelectionData[] {
+  const w = state.wallet;
+  return [
+    {
+      balanceEth: selectICBMLockedEtherBalance(w),
+      balanceEur: selectICBMLockedEtherBalanceEuroAmount(state),
+      type: EInvestmentType.ICBMEth,
+      name: "ICBM Wallet",
+      icon: ethIcon,
+    },
+    {
+      balanceNEuro: selectICBMLockedEuroTokenBalance(w),
+      balanceEur: selectICBMLockedEuroTokenBalance(w),
+      type: EInvestmentType.ICBMnEuro,
+      name: "ICBM Wallet",
+      icon: neuroIcon,
+    },
+    {
+      balanceEth: selectLiquidEtherBalance(w),
+      balanceEur: selectLiquidEtherBalanceEuroAmount(state),
+      type: EInvestmentType.InvestmentWallet,
+      name: "Investment Wallet",
+      icon: ethIcon,
+    },
+    {
+      type: EInvestmentType.BankTransfer,
+      name: "Direct Bank Transfer",
+      icon: euroIcon,
+    },
+  ];
+}
 
-    return (
-      <Form>
-        <Container className={styles.container}>
-          <Row>
+function getInvestmentTypeMessages(type: EInvestmentType): React.ReactNode {
+  switch (type) {
+    case EInvestmentType.ICBMEth:
+    case EInvestmentType.ICBMnEuro:
+      return <FormattedHTMLMessage id="investment-flow.icbm-wallet-info-message" tagName="p" />;
+    case EInvestmentType.BankTransfer:
+      return <FormattedHTMLMessage id="investment-flow.bank-transfer-info-message" tagName="p" />;
+  }
+}
+
+function getInputErrorMessage(type?: EInvestmentErrorState): React.ReactNode | undefined {
+  switch (type) {
+    case EInvestmentErrorState.ExceedsTokenAmount:
+      return <FormattedMessage id="investment-flow.error-message.exceeds-token-amount" />;
+    case EInvestmentErrorState.AboveMaximumTicketSize:
+      return <FormattedMessage id="investment-flow.error-message.above-maximum-ticket-size" />;
+    case EInvestmentErrorState.BelowMinimumTicketSize:
+      return <FormattedMessage id="investment-flow.error-message.below-minimum-ticket-size" />;
+    case EInvestmentErrorState.ExceedsWalletBalance:
+      return <FormattedMessage id="investment-flow.error-message.exceeds-wallet-balance" />;
+  }
+}
+
+function formatEur(val?: string | BigNumber): string | undefined {
+  return val && formatMoney(val, MONEY_DECIMALS, 0);
+}
+
+function formatEth(val?: string | BigNumber): string | undefined {
+  return val && formatMoney(val, MONEY_DECIMALS, 4);
+}
+
+export const InvestmentSelectionComponent = injectIntlHelpers((props: IProps & IIntlProps) => {
+  const { euroValue, ethValue, etherPriceEur, minTicketEur, intl, gasCostEth } = props;
+  const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur]);
+  const totalCostEth = addBigNumbers([gasCostEth, ethValue || "0"]);
+  const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"]);
+  const minTicketEth = divideBigNumbers(minTicketEur, etherPriceEur);
+
+  return (
+    <>
+      <Container className={styles.container} fluid>
+        <Row className="mt-0">
+          <Col>
             <Heading>
               <FormattedMessage id="investment-flow.select-wallet-and-currency" />
             </Heading>
-          </Row>
-          <WalletSelector wallets={props.wallets} name="wallet" />
-          <Row>
+          </Col>
+        </Row>
+        <Row>
+          <InvestmentTypeSelector
+            wallets={props.wallets}
+            currentType={props.investmentType}
+            onSelect={props.changeInvestmentType}
+          />
+          <Col>
+            {getInvestmentTypeMessages(props.investmentType)}
+            {props.errorState === EInvestmentErrorState.NoWalletSelected && (
+              <p>
+                <FormattedMessage id="investment-flow.no-selected-wallet-warning" />
+              </p>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <Heading>
-              <FormattedMessage id="investment-flow.invest-funds" />
+              <FormattedMessage id="investment-flow.calculate-investment" />
             </Heading>
-          </Row>
-          <FormGroup className={styles.investInput}>
-            <Label>
-              <FormattedMessage
-                id="investment-flow.amount-input-label"
-                values={{
-                  transactionCost: (
-                    <Money currency="eth" value="20000000000000000" theme="t-orange" />
-                  ),
-                }}
-              />
-            </Label>
-            <FormFieldImportant
-              name="amount"
-              placeholder={props.intl.formatIntlMessage("investment-flow.min-ticket-size")}
-              errorMessage={failureTooltip}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {props.errorState === EInvestmentErrorState.NotEnoughEtherForGas ? (
+              <p className={styles.error}>
+                <FormattedMessage id="investment-flow.error-message.not-enough-ether-for-gas" />
+              </p>
+            ) : (
+              <p>
+                <FormattedMessage id="investment-flow.amount-to-invest" />
+              </p>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormFieldRaw
+              prefix="€"
+              errorMsg={getInputErrorMessage(props.errorState)}
+              placeholder={`${intl.formatIntlMessage(
+                "investment-flow.min-ticket-size",
+              )} ${minTicketEur} €`}
+              controlCursor
+              value={formatEur(euroValue)}
+              onChange={props.changeEuroValue}
             />
-            <a href="#" onClick={el => el.preventDefault()}>
+          </Col>
+          <Col sm="1">
+            <div className={styles.equals}>≈</div>
+          </Col>
+          <Col>
+            <FormFieldRaw
+              prefix="ETH"
+              placeholder={`${intl.formatIntlMessage(
+                "investment-flow.min-ticket-size",
+              )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
+              controlCursor
+              value={formatEth(ethValue)}
+              onChange={props.changeEthValue}
+            />
+            <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
               <FormattedMessage id="investment-flow.invest-entire-balance" />
             </a>
-          </FormGroup>
-          <Row className={styles.equals}>
-            <span>=</span>
-          </Row>
-          <FormGroup>
-            <Label>
-              <img className={styles.icon} src={tokenIcon} />{" "}
-              <FormattedMessage id="investment-flow.equity-tokens" />
-            </Label>
-            <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
-          </FormGroup>
-          <FormGroup>
-            <Label>
-              <img className={styles.icon} src={neuIcon} />{" "}
-              <FormattedMessage id="investment-flow.estimated-neu-tokens" />
-            </Label>
-            <InfoAlert>TODO: Autoconvert from invested amount</InfoAlert>
-          </FormGroup>
-          <Row className="justify-content-center">
-            <Button layout="primary" className="mr-4" type="submit">
-              <FormattedMessage id="investment-flow.invest" />
-            </Button>
+          </Col>
+        </Row>
+      </Container>
+      <div className={styles.green}>
+        <Container className={styles.container} fluid>
+          <Row>
+            <Col>
+              <FormGroup>
+                <Label>
+                  <FormattedMessage id="investment-flow.equity-tokens" />
+                </Label>
+                <InfoAlert>
+                  {(props.equityTokenCount && formatThousands(props.equityTokenCount.toString())) ||
+                    "\xA0" /* non breaking space*/}
+                </InfoAlert>
+              </FormGroup>
+            </Col>
+            <Col sm="1" />
+            <Col>
+              <FormGroup>
+                <Label>
+                  <FormattedMessage id="investment-flow.estimated-neu-tokens" />
+                </Label>
+                <InfoAlert>
+                  {(props.neuReward && formatThousands(formatEth(props.neuReward))) || "\xA0"}
+                </InfoAlert>
+              </FormGroup>
+            </Col>
           </Row>
         </Container>
-      </Form>
-    );
-  },
-);
-
-/**
- * @todo real wallet data is missing!
- */
-
-const wallets = [
-  {
-    balanceEth: "300000000",
-    id: "foo",
-    name: "ICBM Wallet",
-  },
-  {
-    balanceEth: "400000000",
-    balanceEur: "456",
-    id: "bar",
-    name: "Light Wallet",
-  },
-];
-
-export const InvestmentSelection: React.SFC<IInitComponentProps> = ({ onAccept }) => {
-  return (
-    <Formik<{}, IFormState>
-      initialValues={{ wallet: wallets[0].name, value: "0" }}
-      onSubmit={v => onAccept({ value: v.value })}
-    >
-      {(props: any) => <InvestmentSelectionForm {...props} wallets={wallets} />}
-    </Formik>
+      </div>
+      <Container className={styles.container} fluid>
+        <Row>
+          <Col className={styles.summary}>
+            <div>
+              + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
+              <span className="orange">
+                {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
+              </span>
+            </div>
+            <div>
+              <FormattedMessage id="investment-flow.total" />:{" "}
+              <span className="orange">
+                {formatThousands(formatEur(totalCostEur))} € ≈ ETH{" "}
+                {formatThousands(formatEth(totalCostEth))}
+              </span>
+            </div>
+          </Col>
+        </Row>
+        <Row className="justify-content-center mb-0">
+          <Button
+            onClick={props.sendTransaction}
+            layout="primary"
+            type="submit"
+            disabled={!props.readyToInvest}
+          >
+            <FormattedMessage id="investment-flow.invest-now" />
+          </Button>
+        </Row>
+      </Container>
+    </>
   );
-};
+});
+
+export const InvestmentSelection: React.SFC = compose<any>(
+  injectIntlHelpers,
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => {
+      const i = state.investmentFlow;
+      const eto = selectEto(i);
+      return {
+        etherPriceEur: selectEtherPriceEur(state.tokenPrice),
+        euroValue: selectEurValueUlps(i),
+        ethValue: selectEthValueUlps(i),
+        errorState: selectErrorState(i),
+        gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
+        investmentType: selectInvestmentType(i),
+        wallets: createWallets(state),
+        neuReward: selectNeuRewardUlps(i),
+        equityTokenCount: selectEquityTokenCount(i),
+        minTicketEur: (eto && eto.minTicketEur) || 0,
+        readyToInvest: selectReadyToInvest(state.investmentFlow),
+      };
+    },
+    dispatchToProps: dispatch => ({
+      sendTransaction: () => dispatch(actions.investmentFlow.generateInvestmentTx()),
+      changeEthValue: evt =>
+        dispatch(
+          actions.investmentFlow.submitCurrencyValue(evt.target.value, EInvestmentCurrency.Ether),
+        ),
+      changeEuroValue: evt =>
+        dispatch(
+          actions.investmentFlow.submitCurrencyValue(evt.target.value, EInvestmentCurrency.Euro),
+        ),
+      changeInvestmentType: (type: EInvestmentType) =>
+        dispatch(actions.investmentFlow.selectInvestmentType(type)),
+    }),
+  }),
+)(InvestmentSelectionComponent);

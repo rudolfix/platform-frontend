@@ -72,7 +72,7 @@ const dataAllChecked = [
   },
 ];
 
-storiesOf("VerificationStatus", module)
+storiesOf("KYC/VerificationStatus", module)
   .add("default", () => <VerificationStatus steps={dataDefault} />)
   .add("one checked", () => <VerificationStatus steps={dataOneChecked} />)
   .add("all checked", () => <VerificationStatus steps={dataAllChecked} />);

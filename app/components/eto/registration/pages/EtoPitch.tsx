@@ -2,6 +2,7 @@ import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import {
@@ -11,7 +12,6 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
@@ -28,11 +28,11 @@ interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
 const distributionSuggestions = ["Development", "Other"];
 
-const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
+const EtoRegistrationPitchComponent = (props: IProps) => {
   return (
     <EtoFormBase
       title={<FormattedMessage id="eto.form-progress-widget.product-vision" />}
@@ -162,17 +162,8 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   );
 };
 
-const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoCompanyInformationType.toYup(),
-  mapPropsToValues: props => props.stateValues,
-  handleSubmit: (values, props) => props.props.saveData(values),
-})(EtoForm);
-
-export const EtoRegistrationPitchComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
-);
-
 export const EtoRegistrationPitch = compose<React.SFC>(
+  setDisplayName("EtoRegistrationPitch"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -190,7 +181,9 @@ export const EtoRegistrationPitch = compose<React.SFC>(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: _dispatch => {},
+  withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
+    validationSchema: EtoCompanyInformationType.toYup(),
+    mapPropsToValues: props => props.stateValues,
+    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationPitchComponent);

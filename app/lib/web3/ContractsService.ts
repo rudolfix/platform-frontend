@@ -4,6 +4,7 @@ import * as promiseAll from "promise-all";
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";
 import { EtherToken } from "../contracts/EtherToken";
+import { ETOCommitment } from "../contracts/ETOCommitment";
 import { EuroToken } from "../contracts/EuroToken";
 import { ICBMLockedAccount } from "../contracts/ICBMLockedAccount";
 import { IdentityRegistry } from "../contracts/IdentityRegistry";
@@ -21,6 +22,7 @@ import * as knownInterfaces from "../contracts/knownInterfaces.json";
 @injectable()
 export class ContractsService {
   private universeContract!: Universe;
+  private etoCommitmentCache: { [etoId: string]: ETOCommitment } = {};
 
   public neumark!: Neumark;
   public euroToken!: EuroToken;
@@ -118,6 +120,15 @@ export class ContractsService {
     this.euroToken = await create(EuroToken, web3, euroTokenAddress);
     this.etherToken = await create(EtherToken, web3, etherTokenAddress);
     this.logger.info("Initializing contracts via ICBM COMMITMENT is DONE.");
+  }
+
+  async getETOCommitmentContract(etoId: string): Promise<ETOCommitment> {
+    if (this.etoCommitmentCache[etoId]) return this.etoCommitmentCache[etoId];
+
+    const web3 = this.web3Manager.internalWeb3Adapter.web3;
+    const contract = await create(ETOCommitment, web3, etoId);
+    this.etoCommitmentCache[etoId] = contract;
+    return contract;
   }
 }
 

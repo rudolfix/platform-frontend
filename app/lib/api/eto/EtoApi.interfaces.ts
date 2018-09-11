@@ -169,9 +169,15 @@ export type TCompanyEtoData = TEtoTeamData &
  *  only deals with "/etos/me"
  */
 
-export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
+export enum EtoState {
+  PREVIEW = "preview",
+  PENDING = "pending",
+  LISTED = "listed",
+  PROSPECTUS_APPROVED = "prospectus_approved",
+  ON_CHAIN = "on_chain",
+}
 
-export enum EtoStateEnum {
+export enum EtoStateToCamelcase {
   "preview" = "preview",
   "pending" = "pending",
   "listed" = "listed",
@@ -251,7 +257,10 @@ export type TGeneralEtoData = {
 };
 
 // this is comming from the /etos endpoint for investors dashboard
-export type TInvestorEtoData = TPartialEtoSpecData & { company: TPartialCompanyEtoData };
+export type TInvestorEtoData = TEtoSpecsData & {
+  company: TCompanyEtoData;
+  etoId: string;
+};
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,

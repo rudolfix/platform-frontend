@@ -64,6 +64,7 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
 }
 
 function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDependencies): any {
+  yield updateTxs();
   let txs: Array<TxWithMetadata> = yield select((s: IAppState) => s.txMonitor.txs);
 
   if (txs.length >= 1) {
@@ -82,9 +83,9 @@ function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDepe
       yield neuCall(updateTxs);
       txs = yield select((s: IAppState) => s.txMonitor.txs);
     }
-
-    yield put(actions.txSender.txSenderWatchPendingTxsDone());
   }
+  
+  yield put(actions.txSender.txSenderWatchPendingTxsDone());
 }
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {

@@ -55,7 +55,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
     case "TX_SENDER_SHOW_MODAL":
       return {
         ...initialState,
-        state: "INIT",
+        state: "WATCHING_PENDING_TXS",
         type: action.payload.type,
       };
 

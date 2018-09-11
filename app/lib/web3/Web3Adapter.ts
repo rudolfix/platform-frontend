@@ -67,6 +67,13 @@ export class Web3Adapter {
     return resultData.result;
   }
 
+  public async getTransactionReceipt(txHash: string): Promise<Web3.TxData> {
+    const getTransactionReceipt = promisify<Web3.TxData, string>(
+      this.web3.eth.getTransactionReceipt.bind(this.web3.eth),
+    );
+    return await getTransactionReceipt(txHash);
+  }
+
   public async getTransactionCount(address: string): Promise<number> {
     const getTransactionCount = promisify<number, string>(
       this.web3.eth.getTransactionCount.bind(this.web3.eth),

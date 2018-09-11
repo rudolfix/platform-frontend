@@ -13,6 +13,7 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./Web3Manager";
+import BigNumber from "bignumber.js";
 
 import { symbols } from "../../di/symbols";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
@@ -30,6 +31,16 @@ export interface ICreateVault {
 export interface IVault {
   walletInstance: any;
   salt: string;
+}
+
+interface ITransaction {
+  to?: string;
+  value?: number | string | BigNumber;
+  gas?: number | string | BigNumber;
+  gasPrice?: number | string | BigNumber;
+  data?: string;
+  nonce?: string;
+  gasLimit?: string;
 }
 
 export interface ILightWallet {
@@ -221,7 +232,7 @@ export class LightWallet implements IPersonalWallet {
     }
     data.nonce = await this.web3Adapter.getTransactionCount(data.from);
 
-    const txData: Web3.CallTxDataBase = {};
+    const txData: ITransaction = {};
 
     txData.to = addHexPrefix(data.to!);
     txData.gasLimit = addHexPrefix(Number(data.gas || 0).toString());

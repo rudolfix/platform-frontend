@@ -78,7 +78,7 @@ function renderBody({
       return <TxPending blockId={blockId!} txHash={txHash!} />;
 
     case "DONE":
-      return <WithdrawSuccess />;
+      return <WithdrawSuccess txHash={txHash} />;
 
     case "ERROR_SIGN":
       return <div>Error occured!</div>;

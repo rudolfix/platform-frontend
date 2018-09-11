@@ -105,8 +105,6 @@ export class FormField extends React.Component<FieldGroupProps> {
                       <FormattedMessage id="form.error.maximum-value" values={{ value: max }} />
                     </div>
                   )}
-
-                {charactersLimit && <div>{countedCharacters(field.value, charactersLimit)}</div>}
               </>
             );
           }}

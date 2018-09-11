@@ -12,14 +12,11 @@ import {
   EInvestmentType,
 } from "../../../../modules/investmentFlow/reducer";
 import {
-  selectEquityTokenCount,
   selectErrorState,
   selectEthValueUlps,
-  selectEto,
   selectEurValueUlps,
   selectInvestmentGasCostEth,
   selectInvestmentType,
-  selectNeuRewardUlps,
   selectReadyToInvest,
 } from "../../../../modules/investmentFlow/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
@@ -47,6 +44,7 @@ import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSe
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
+import { selectCurrentEquityTokenCount, selectCurrentEto, selectCurrentNeuRewardUlps } from "../../../../modules/public-etos/selectors";
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
@@ -285,7 +283,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const i = state.investmentFlow;
-      const eto = selectEto(i);
+      const eto = selectCurrentEto(state.publicEtos);
       return {
         etherPriceEur: selectEtherPriceEur(state.tokenPrice),
         euroValue: selectEurValueUlps(i),
@@ -294,8 +292,8 @@ export const InvestmentSelection: React.SFC = compose<any>(
         gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
         investmentType: selectInvestmentType(i),
         wallets: createWallets(state),
-        neuReward: selectNeuRewardUlps(i),
-        equityTokenCount: selectEquityTokenCount(i),
+        neuReward: selectCurrentNeuRewardUlps(state.publicEtos),
+        equityTokenCount: selectCurrentEquityTokenCount(state.publicEtos),
         minTicketEur: (eto && eto.minTicketEur) || 0,
         readyToInvest: selectReadyToInvest(state.investmentFlow),
       };

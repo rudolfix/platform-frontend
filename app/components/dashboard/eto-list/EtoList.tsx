@@ -4,6 +4,7 @@ import { compose } from "redux";
 
 import { TPublicEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { selectPublicEtoList } from "../../../modules/public-etos/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
@@ -41,15 +42,19 @@ export const EtoListComponent: React.SFC<IProps> = ({ etos, startInvestmentFlow 
 
 export const EtoList = compose<React.ComponentClass>(
   onEnterAction({
-    actionCreator: d => d(actions.dashboard.loadEtos()),
+    actionCreator: d => d(actions.publicEtos.loadEtos()),
   }),
   appConnect({
     stateToProps: state => ({
-      etos: state.dashboard.etos,
+      etos: selectPublicEtoList(state.publicEtos),
     }),
     dispatchToProps: d => ({
-      startInvestmentFlow: (eto: TPublicEtoData) =>
-        d(actions.investmentFlow.investmentStart(eto)),
+      startInvestmentFlow: (eto: TPublicEtoData) => {
+        // TODO: The current ETO should be loaded alread by details view
+        d(actions.publicEtos.loadCurrentEto(eto.etoId))
+
+        d(actions.investmentFlow.investmentStart())
+      }
     }),
   }),
 )(EtoListComponent);

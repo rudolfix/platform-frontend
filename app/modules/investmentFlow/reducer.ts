@@ -60,6 +60,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
         ...investmentFlowInitialState,
+        gasPrice: state.gasPrice,
         investmentType: action.payload.type,
       };
     case "INVESTMENT_FLOW_SET_GAS_PRICE":

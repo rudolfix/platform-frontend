@@ -5,14 +5,11 @@ import { Container, Row } from "reactstrap";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
 import {
-  selectEquityTokenCount,
   selectEthValueUlps,
-  selectEto,
-  selectEtoCompany,
   selectEurValueUlps,
   selectInvestmentGasCostEth,
-  selectNeuRewardUlps,
 } from "../../../../modules/investmentFlow/selectors";
+import { selectCurrentEquityTokenCount, selectCurrentEto, selectCurrentNeuRewardUlps } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
 import {
@@ -141,17 +138,18 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
 export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
   stateToProps: state => {
     const i = state.investmentFlow;
+    const p = state.publicEtos
     // eto and computed values are guaranteed to be present at investment summary state
-    const company = selectEtoCompany(i)!;
+    const eto = selectCurrentEto(p)!
     return {
       agreementUrl: "fufu",
-      companyName: company.name,
-      etoAddress: selectEto(i)!.etoId,
+      companyName: eto.company.name,
+      etoAddress: eto.etoId,
       investmentEth: selectEthValueUlps(i),
       investmentEur: selectEurValueUlps(i),
       gasCostEth: selectInvestmentGasCostEth(i),
-      equityTokens: selectEquityTokenCount(i) as string,
-      estimatedReward: selectNeuRewardUlps(i) as string,
+      equityTokens: selectCurrentEquityTokenCount(p) as string,
+      estimatedReward: selectCurrentNeuRewardUlps(p) as string,
       etherPriceEur: selectEtherPriceEur(state.tokenPrice),
     };
   },

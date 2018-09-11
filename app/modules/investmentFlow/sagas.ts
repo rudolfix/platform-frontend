@@ -48,6 +48,7 @@ function* processCurrencyValue(action: TAction): any {
     yield put(actions.investmentFlow.setErrorState());
   }
 
+  yield put(actions.investmentFlow.setIsInputValidated(false))
   yield computeAndSetCurrencies(value && convertToBigInt(value), action.payload.currency);
   yield put(actions.investmentFlow.validateInputs());
 }
@@ -135,6 +136,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
       yield neuCall(loadComputedContributionFromContract, eto, value, isICBM)
       state = yield select();
       yield put(actions.investmentFlow.setErrorState(validateInvestment(state)));
+      yield put(actions.investmentFlow.setIsInputValidated(true))
     }
   } else {
     yield put(actions.investmentFlow.setErrorState());

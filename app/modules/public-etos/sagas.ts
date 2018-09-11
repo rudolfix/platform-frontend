@@ -67,6 +67,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
 
 
 export function* loadComputedContributionFromContract ({ contractsService }: TGlobalDependencies, eto: TPublicEtoData, amountEuroUlps?: string, isICBM = false): any {
+  if (eto.state !== "on_chain") return
   const state: IAppState = yield select()
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
   if (etoContract) {

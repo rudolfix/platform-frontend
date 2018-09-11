@@ -11,11 +11,17 @@
   text-align: right;
 }
 
-.addon > :global(.input-group-text) {
-  background-color: transparent;
-  padding: 0 0 px-to-rem(4px) px-to-rem(10px);
-  border: 0;
-  border-bottom: 1px solid $color-graphite;
+.addon {
+  &:global(.is-invalid) {
+    border-color: $color-red;
+  }
+
+  > :global(.input-group-text) {
+    background-color: transparent;
+    padding: 0 0 px-to-rem(4px) px-to-rem(10px);
+    border: 0;
+    border-bottom: 1px solid $color-graphite;
+  }
 }
 
 .custom-select {

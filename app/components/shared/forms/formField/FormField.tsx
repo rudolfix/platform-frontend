@@ -67,12 +67,23 @@ export class FormField extends React.Component<FieldGroupProps> {
               <>
                 <InputGroup>
                   {prefix && (
-                    <InputGroupAddon addonType="prepend" className={cn(styles.addon, addonStyle)}>
+                    <InputGroupAddon
+                      addonType="prepend"
+                      className={cn(
+                        styles.addon,
+                        addonStyle,
+                        isValid(touched, errors, name) && "is-invalid",
+                      )}
+                    >
                       {prefix}
                     </InputGroupAddon>
                   )}
                   <Input
-                    className={cn(className, styles.inputField)}
+                    className={cn(
+                      className,
+                      styles.inputField,
+                      isValid(touched, errors, name) && "is-invalid",
+                    )}
                     {...field}
                     type={type}
                     value={val}
@@ -82,7 +93,10 @@ export class FormField extends React.Component<FieldGroupProps> {
                     {...props}
                   />
                   {suffix && (
-                    <InputGroupAddon addonType="append" className={styles.addon}>
+                    <InputGroupAddon
+                      addonType="append"
+                      className={cn(styles.addon, isValid(touched, errors, name) && "is-invalid")}
+                    >
                       {suffix}
                     </InputGroupAddon>
                   )}
@@ -105,8 +119,6 @@ export class FormField extends React.Component<FieldGroupProps> {
                       <FormattedMessage id="form.error.maximum-value" values={{ value: max }} />
                     </div>
                   )}
-
-                {charactersLimit && <div>{countedCharacters(field.value, charactersLimit)}</div>}
               </>
             );
           }}

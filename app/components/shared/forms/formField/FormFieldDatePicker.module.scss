@@ -3,6 +3,8 @@ $_background-color: #f4f7f9;
 $_font-color: #323c47;
 
 .form-field-date-picker {
+  width: 100%;
+
   :global {
     .form-group {
       flex: 1;

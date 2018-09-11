@@ -13,18 +13,18 @@ interface IProps {
 
 // We need to do this because of missing type for `renderInput`
 // https://github.com/YouCanBookMe/react-datetime/pull/541
-const TypedDatetime = DateTime as React.ComponentType<
-  DateTime.DatetimepickerProps & {
-    renderInput?: (
-      props: any,
-      openCalendar: () => void,
-      closeCalendar: () => void,
-      onChange: () => void,
-    ) => void;
-  }
->;
+type DatetimeProps = DateTime.DatetimepickerProps & {
+  renderInput?: (
+    props: any,
+    openCalendar: () => void,
+    closeCalendar: () => void,
+    onChange: () => void,
+  ) => void;
+};
 
-export const FormFieldDatePicker: React.SFC<IProps> = () => (
+const TypedDatetime = DateTime as React.ComponentType<DatetimeProps>;
+
+const FormFieldDatePicker: React.SFC<IProps> = () => (
   <div className={styles.formFieldDatePicker}>
     <TypedDatetime
       closeOnSelect={true}
@@ -55,3 +55,5 @@ export const FormFieldDatePicker: React.SFC<IProps> = () => (
     />
   </div>
 );
+
+export { FormFieldDatePicker, TypedDatetime, DatetimeProps };

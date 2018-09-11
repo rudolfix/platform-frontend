@@ -63,7 +63,10 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
         <h4 className={styles.title}>
           <FormattedMessage id="shared-component.wallet-balance.title.account-address" />
         </h4>
-        <AccountAddress address={address} />
+        <AccountAddress
+          address={address}
+          data-test-id="shared.wallet.wallet-balance.unlock-wallet.account-address"
+        />
       </div>
 
       <div>

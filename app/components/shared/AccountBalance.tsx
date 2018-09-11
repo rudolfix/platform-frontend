@@ -54,7 +54,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
               theme="graphite"
               svgIcon={arrowRightIcon}
               onClick={onWithdrawClick}
-              data-test-id={dataTestId || "" + ".shared-component.withdraw.button"}
+              data-test-id={dataTestId && dataTestId + ".shared-component.withdraw.button"}
               disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || parseFloat(largeNumber) === 0}
             >
               <FormattedMessage id="shared-component.account-balance.withdraw" />

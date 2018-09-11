@@ -34,15 +34,9 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
         <Avatar seed={address} />
 
         <div className={styles.addressWrapper}>
-          <div className={styles.address}>
+          <div className={styles.address} data-test-id={dataTestId}>
             {address}
-            <input
-              className={styles.hiddenInput}
-              data-test-id={dataTestId}
-              ref={this.addressRef}
-              value={address}
-              readOnly
-            />
+            <input className={styles.hiddenInput} ref={this.addressRef} value={address} readOnly />
           </div>
           <div className={styles.transactionHistory}>
             <FormattedMessage id="shared-components.account-address.transaction-history" />{" "}

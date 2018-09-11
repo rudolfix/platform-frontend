@@ -2,6 +2,8 @@ import { get } from "lodash";
 import { tid } from "../../test/testUtils";
 import { appRoutes } from "../components/appRoutes";
 
+export const numberRegExPattern = /\d+/g;
+
 export const assertEtoDashboard = () => {
   cy.url().should("contain", "/dashboard");
   cy.get(tid("eto-dashboard-application")).should("exist");

@@ -42,7 +42,11 @@ export const WithdrawSummary: React.SFC<ISummaryComponentProps> = ({ data, onAcc
 
     <Row>
       <Col className="text-center">
-        <Button onClick={onAccept} className="mt-4">
+        <Button
+          onClick={onAccept}
+          className="mt-4"
+          data-test-id="modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept"
+        >
           Accept
         </Button>
       </Col>

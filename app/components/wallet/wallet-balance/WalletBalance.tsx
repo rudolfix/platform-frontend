@@ -89,6 +89,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
           largeNumber={data!.ethAmount}
           value={data!.ethEuroAmount}
           onWithdrawClick={withdrawEth}
+          dataTestId="wallet-balance.ether"
           onDepositClick={depositEth}
         />
       </div>

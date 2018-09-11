@@ -93,6 +93,7 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
         svgString={iconWallet}
         to={appRoutes.wallet}
         menuName={<FormattedMessage id="menu.wallet" />}
+        data-test-id="authorized-layout-wallet-button"
       />
       <MenuEntry
         svgString={iconHelp}

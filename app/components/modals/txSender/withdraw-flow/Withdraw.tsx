@@ -67,6 +67,7 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
                 name="to"
                 label={<FormattedMessage id="modal.sent-eth.to-address" />}
                 placeholder="0x0"
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.to-address"
               />
             </Col>
 
@@ -75,6 +76,7 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
                 name="value"
                 label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
                 placeholder="Please enter value in eth"
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
               />
             </Col>
 
@@ -82,6 +84,7 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
               <FormFieldImportant
                 name="gas"
                 label={<FormattedMessage id="modal.sent-eth.gas-limit" />}
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.gas-limit"
               />
             </Col>
 
@@ -93,7 +96,11 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
             </Col>
 
             <Col xs={12} className="text-center">
-              <Button type="submit" disabled={(gas.loading && !gas.error) || !isValid}>
+              <Button
+                type="submit"
+                disabled={(gas.loading && !gas.error) || !isValid}
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"
+              >
                 <FormattedMessage id="modal.sent-eth.button" />
               </Button>
             </Col>

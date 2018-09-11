@@ -9,7 +9,11 @@ import {
   selectEurValueUlps,
   selectInvestmentGasCostEth,
 } from "../../../../modules/investmentFlow/selectors";
-import { selectCurrentEquityTokenCount, selectCurrentEto, selectCurrentNeuRewardUlps } from "../../../../modules/public-etos/selectors";
+import {
+  selectCurrentEquityTokenCount,
+  selectCurrentEto,
+  selectCurrentNeuRewardUlps,
+} from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
 import {
@@ -138,9 +142,9 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
 export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
   stateToProps: state => {
     const i = state.investmentFlow;
-    const p = state.publicEtos
+    const p = state.publicEtos;
     // eto and computed values are guaranteed to be present at investment summary state
-    const eto = selectCurrentEto(p)!
+    const eto = selectCurrentEto(p)!;
     return {
       agreementUrl: "fufu",
       companyName: eto.company.name,

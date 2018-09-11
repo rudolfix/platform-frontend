@@ -1,6 +1,10 @@
 import BigNumber from "bignumber.js";
 
-import { TPartialCompanyEtoData, TPartialEtoSpecData, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
+import {
+  TPartialCompanyEtoData,
+  TPartialEtoSpecData,
+  TPublicEtoData,
+} from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
@@ -15,20 +19,20 @@ export interface ICalculatedContribution {
 
 export interface IPublicEtoState {
   // only preview, endpoint eto-listing/eto-previews
-  previewEtoData?: TPartialEtoSpecData
-  previewCompanyData?: TPartialCompanyEtoData
+  previewEtoData?: TPartialEtoSpecData;
+  previewCompanyData?: TPartialCompanyEtoData;
 
   // for endpoint eto-listing/etos
   publicEtos: { [etoId: string]: TPublicEtoData | undefined };
-  currentPublicEtoId?: string
-  calculatedContributions: {[etoId: string]: ICalculatedContribution},
-  displayOrder: string[]
+  currentPublicEtoId?: string;
+  calculatedContributions: { [etoId: string]: ICalculatedContribution };
+  displayOrder: string[];
 }
 
 export const etoFlowInitialState: IPublicEtoState = {
   publicEtos: {},
   calculatedContributions: {},
-  displayOrder: []
+  displayOrder: [],
 };
 
 export const publicEtosReducer: AppReducer<IPublicEtoState> = (
@@ -63,7 +67,7 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
         },
       };
     case "PUBLIC_ETOS_SET_PREVIEW_ETO":
-      const data = action.payload.data
+      const data = action.payload.data;
       return {
         ...state,
         previewEtoData: data && data.eto,

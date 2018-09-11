@@ -48,7 +48,7 @@ function* processCurrencyValue(action: TAction): any {
     yield put(actions.investmentFlow.setErrorState());
   }
 
-  yield put(actions.investmentFlow.setIsInputValidated(false))
+  yield put(actions.investmentFlow.setIsInputValidated(false));
   yield computeAndSetCurrencies(value && convertToBigInt(value), action.payload.currency);
   yield put(actions.investmentFlow.validateInputs());
 }
@@ -127,16 +127,16 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   yield delay(300);
 
   let state: IAppState = yield select();
-  const eto = selectCurrentEto(state.publicEtos)
+  const eto = selectCurrentEto(state.publicEtos);
   const value = state.investmentFlow.euroValueUlps;
   if (value && eto) {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
     if (etoContract) {
       const isICBM = selectIsICBMInvestment(state.investmentFlow);
-      yield neuCall(loadComputedContributionFromContract, eto, value, isICBM)
+      yield neuCall(loadComputedContributionFromContract, eto, value, isICBM);
       state = yield select();
       yield put(actions.investmentFlow.setErrorState(validateInvestment(state)));
-      yield put(actions.investmentFlow.setIsInputValidated(true))
+      yield put(actions.investmentFlow.setIsInputValidated(true));
     }
   } else {
     yield put(actions.investmentFlow.setErrorState());
@@ -166,7 +166,7 @@ function* setGasPrice(): any {
 
 function* generateTransaction({ contractsService }: TGlobalDependencies): any {
   const state: IAppState = yield select();
-  const eto = selectCurrentEto(state.publicEtos)
+  const eto = selectCurrentEto(state.publicEtos);
   if (!eto || !selectReadyToInvest(state.investmentFlow)) {
     throw new Error("Investment data is not valid to create an Transaction");
   }
@@ -226,8 +226,8 @@ function* recalculateCurrencies(): any {
   }
 }
 
-function * cancelInvestment (): any {
-  yield put(actions.txSender.txSenderHideModal())
+function* cancelInvestment(): any {
+  yield put(actions.txSender.txSenderHideModal());
 }
 
 export function* investmentFlowSagas(): any {

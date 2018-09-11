@@ -53,7 +53,7 @@ export const EtoPreview = compose<React.SFC<IRouterParams>>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: state => ({
       etoData: state.publicEtos.previewEtoData,
-      companyData: state.publicEtos.previewCompanyData
+      companyData: state.publicEtos.previewCompanyData,
     }),
     dispatchToProps: dispatch => ({
       loadEtoPreview: (previewCode: string) =>

@@ -1,4 +1,3 @@
-
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
@@ -35,7 +34,7 @@ export interface IInvestmentFlowState {
   errorState?: EInvestmentErrorState;
   gasAmount: string;
   gasPrice: string;
-  isValidatedInput: boolean
+  isValidatedInput: boolean;
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
@@ -44,7 +43,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   investmentType: EInvestmentType.None,
   gasAmount: INVESTMENT_GAS_AMOUNT,
   gasPrice: "0",
-  isValidatedInput: false
+  isValidatedInput: false,
 };
 
 export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (

@@ -51,10 +51,10 @@ export const EtoList = compose<React.ComponentClass>(
     dispatchToProps: d => ({
       startInvestmentFlow: (eto: TPublicEtoData) => {
         // TODO: The current ETO should be loaded alread by details view
-        d(actions.publicEtos.loadCurrentEto(eto.etoId))
+        d(actions.publicEtos.loadCurrentEto(eto.etoId));
 
-        d(actions.investmentFlow.investmentStart())
-      }
+        d(actions.investmentFlow.investmentStart());
+      },
     }),
   }),
 )(EtoListComponent);

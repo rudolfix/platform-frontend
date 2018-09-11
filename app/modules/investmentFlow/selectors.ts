@@ -1,9 +1,5 @@
 import { compareBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
-import {
-  EInvestmentCurrency,
-  EInvestmentType,
-  IInvestmentFlowState,
-} from "./reducer";
+import { EInvestmentCurrency, EInvestmentType, IInvestmentFlowState } from "./reducer";
 
 // State Selectors
 

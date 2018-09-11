@@ -259,10 +259,12 @@ export type TGeneralEtoData = {
 };
 
 // this is comming from the /etos endpoint for investors dashboard
-export type TPublicEtoData = DeepReadonlyObject<TEtoSpecsData & {
-  company: TCompanyEtoData;
-  etoId: string;
-}>;
+export type TPublicEtoData = DeepReadonlyObject<
+  TEtoSpecsData & {
+    company: TCompanyEtoData;
+    etoId: string;
+  }
+>;
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,

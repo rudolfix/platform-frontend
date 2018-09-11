@@ -1,9 +1,5 @@
 import { createAction, createSimpleAction } from "../actionsUtils";
-import {
-  EInvestmentCurrency,
-  EInvestmentErrorState,
-  EInvestmentType,
-} from "./reducer";
+import { EInvestmentCurrency, EInvestmentErrorState, EInvestmentType } from "./reducer";
 
 export const investmentFlowActions = {
   // public actions

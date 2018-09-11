@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
@@ -13,7 +14,6 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./Web3Manager";
-import BigNumber from "bignumber.js";
 
 import { symbols } from "../../di/symbols";
 import { WalletSubType, WalletType } from "../../modules/web3/types";

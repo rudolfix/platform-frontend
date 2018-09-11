@@ -84,7 +84,7 @@ function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDepe
       txs = yield select((s: IAppState) => s.txMonitor.txs);
     }
   }
-  
+
   yield put(actions.txSender.txSenderWatchPendingTxsDone());
 }
 

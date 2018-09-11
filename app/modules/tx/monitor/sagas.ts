@@ -3,7 +3,7 @@ import { put } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { actions } from "../../actions";
-import { neuCall, neuTakeEvery } from "../../sagas";
+import { neuCall } from "../../sagas";
 import { neuTakeUntil } from "../../sagasUtils";
 
 const TX_MONITOR_DELAY = 60000;
@@ -25,7 +25,7 @@ async function cleanPendingTransactionsPromise(
       );
       // transactionReceipt should be null if transaction is not mined
       if (transactionReceipt) return tx;
-      else apiUserService.deletePendingTx(tx.transaction.hash);
+      else await apiUserService.deletePendingTx(tx.transaction.hash);
     }),
   );
   return nodePendingTx.filter(tx => (tx ? tx : undefined));

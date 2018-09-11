@@ -52,6 +52,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...initialState,
         state: "INIT",
+        type: action.payload.type,
       };
 
     case "TX_SENDER_SHOW_MODAL":

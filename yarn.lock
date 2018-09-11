@@ -5207,7 +5207,7 @@ elliptic@=6.4.0, elliptic@^6.0.0, elliptic@^6.2.3:
 
 elliptic@^3.1.0:
   version "3.1.0"
-  resolved "http://registry.npmjs.org/elliptic/-/elliptic-3.1.0.tgz#c21682ef762769b56a74201609105da11d5f60cc"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-3.1.0.tgz#c21682ef762769b56a74201609105da11d5f60cc"
   dependencies:
     bn.js "^2.0.3"
     brorand "^1.0.1"
@@ -5584,8 +5584,8 @@ eth-lib@0.1.27:
     xhr-request-promise "^0.1.2"
 
 "eth-lightwallet@https://github.com/Neufund/eth-lightwallet.git":
-  version "3.0.2"
-  resolved "https://github.com/Neufund/eth-lightwallet.git#122937b4287cac0e7285ac4072f6776bb49c6c70"
+  version "3.0.3"
+  resolved "https://github.com/Neufund/eth-lightwallet.git#318e2f65cd5a25fd159af90f0d8ef4f400c55901"
   dependencies:
     bitcore-lib "^0.15.0"
     bitcore-mnemonic "^1.5.0"
@@ -6926,7 +6926,7 @@ hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
-hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 

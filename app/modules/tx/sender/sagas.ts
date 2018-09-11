@@ -14,7 +14,6 @@ import { ITxData, TxSenderType } from "./reducer";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies, action: TAction): any {
   try {
-    if (action.type !== "WITHDRAW_ETH") return;
     yield neuCall(txSendSaga, "WITHDRAW");
     logger.info("Withdrawing successful");
   } catch (e) {
@@ -56,7 +55,7 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.txSenderShowModal(type));
 
-  yield neuCall(ensureNoPendingTx);
+  yield neuCall(ensureNoPendingTx, type);
 
   yield take("TX_SENDER_ACCEPT");
 
@@ -67,7 +66,10 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
   yield neuCall(watchTxSubSaga, txHash);
 }
 
-function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDependencies): any {
+function* ensureNoPendingTx(
+  { apiUserService, web3Manager, logger }: TGlobalDependencies,
+  type: TxSenderType,
+): any {
   yield updateTxs();
   let txs: Array<TxWithMetadata> = yield select((s: IAppState) => s.txMonitor.txs);
 
@@ -89,7 +91,7 @@ function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDepe
     }
   }
 
-  yield put(actions.txSender.txSenderWatchPendingTxsDone());
+  yield put(actions.txSender.txSenderWatchPendingTxsDone(type));
 }
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
@@ -99,7 +101,6 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
   if (!txData) {
     throw new Error("Tx data is not defined");
   }
-
   try {
     const txHash: string = yield web3Manager.sendTransaction(txData as any);
     yield put(actions.txSender.txSenderSigned(txHash));

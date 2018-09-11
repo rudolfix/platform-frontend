@@ -11,6 +11,7 @@ import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
 import * as styles from "./SingleFileUpload.module.scss";
 
 interface IProps {
+  disabled?: boolean;
   acceptedFiles: TAcceptedFileType;
   fileUploading: boolean;
   file?: string;
@@ -25,6 +26,7 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
 
   render(): React.ReactNode {
     const {
+      disabled,
       acceptedFiles,
       file,
       fileUploading,
@@ -34,6 +36,7 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
       style,
       onDeleteFile,
     } = this.props;
+
     const hasFile = !!file;
 
     const dropzoneInner = fileUploading ? (
@@ -49,7 +52,7 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
     return (
       <Dropzone
         accept={acceptedFiles}
-        disabled={fileUploading}
+        disabled={disabled || fileUploading}
         onDrop={this.onDrop}
         multiple={false}
         acceptClassName="accept"
@@ -59,21 +62,22 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
         style={style}
       >
         <div className={styles.fakeDropzoneArea}>
-          {hasFile ? <img src={file} alt={"File uploaded"} /> : dropzoneInner}
+          {hasFile ? <img src={file} alt="File uploaded" /> : dropzoneInner}
         </div>
         <div className={styles.sideBox}>
-          {hasFile ? (
-            <Button layout="secondary" onClick={dontPropagateEvent(onDeleteFile)}>
-              Delete {label}
-            </Button>
-          ) : (
-            <>
-              <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
-                {label}
+          {!disabled &&
+            (hasFile ? (
+              <Button layout="secondary" onClick={dontPropagateEvent(onDeleteFile)}>
+                Delete {label}
               </Button>
-              <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
-            </>
-          )}
+            ) : (
+              <>
+                <Button layout="secondary" iconPosition="icon-before" svgIcon={uploadIcon}>
+                  {label}
+                </Button>
+                <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
+              </>
+            ))}
         </div>
       </Dropzone>
     );

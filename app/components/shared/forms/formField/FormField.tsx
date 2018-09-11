@@ -1,5 +1,5 @@
 import * as cn from "classnames";
-import { Field, FieldAttributes, FieldProps, FormikProps, getIn } from "formik";
+import { Field, FieldAttributes, FieldProps, getIn } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -46,8 +46,7 @@ export class FormField extends React.Component<FieldGroupProps> {
       max,
       ...props
     } = this.props;
-    const formik: FormikProps<any> = this.context.formik;
-    const { touched, errors } = formik;
+    const { touched, errors } = this.context.formik;
 
     const computedValue = (value: string | undefined, limit: number | undefined): string => {
       if (!value) {
@@ -69,6 +68,7 @@ export class FormField extends React.Component<FieldGroupProps> {
     const inputExtraProps = {
       invalid: isNonValid(touched, errors, name),
     } as any;
+
     return (
       <FormGroup>
         {label && <FormLabel>{label}</FormLabel>}

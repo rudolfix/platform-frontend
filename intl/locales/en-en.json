@@ -561,6 +561,7 @@
   "shared-component.asset-portfolio.volume-24h": "Volume (24h)",
   "shared-component.eto-form-progress-widget.complete": "Complete",
   "shared-component.eto-form-progress-widget.edit": "Edit",
+  "shared-component.eto-form-progress-widget.show": "Show",
   "shared-component.eto-overview-status.equity-token-price": "Equity Token Price",
   "shared-component.eto-overview-status.investment-amount": "Investment amount",
   "shared-component.eto-overview-status.new-shares-generated": "New shares generated",

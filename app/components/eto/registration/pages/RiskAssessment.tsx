@@ -2,6 +2,7 @@ import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import {
@@ -10,7 +11,6 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
 import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
@@ -27,9 +27,9 @@ interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
-const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
+const EtoRegistrationRiskAssessmentComponent = (props: IProps) => {
   return (
     <EtoFormBase title="Risk Assessment" validator={EtoRiskAssessmentType.toYup()}>
       <Section>
@@ -113,17 +113,8 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   );
 };
 
-const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoRiskAssessmentType.toYup(),
-  mapPropsToValues: props => props.stateValues,
-  handleSubmit: (values, props) => props.props.saveData(values),
-})(EtoForm);
-
-export const EtoRegistrationRiskAssessmentComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
-);
-
 export const EtoRegistrationRiskAssessment = compose<React.SFC>(
+  setDisplayName("EtoRegistrationRiskAssessment"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -141,7 +132,9 @@ export const EtoRegistrationRiskAssessment = compose<React.SFC>(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: _dispatch => {},
+  withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
+    validationSchema: EtoRiskAssessmentType.toYup(),
+    mapPropsToValues: props => props.stateValues,
+    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationRiskAssessmentComponent);

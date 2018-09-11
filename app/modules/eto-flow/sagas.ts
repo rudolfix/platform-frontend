@@ -4,7 +4,7 @@ import { fork, put } from "redux-saga/effects";
 import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
+import { EtoState, TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
@@ -60,7 +60,7 @@ export function* saveEtoData(
       ...currentCompanyData,
       ...action.payload.data.companyData,
     });
-    if (currentEtoData.state === "preview")
+    if (currentEtoData.state === EtoState.PREVIEW)
       yield apiEtoService.putEtoData({
         ...currentEtoData,
         ...action.payload.data.etoData,

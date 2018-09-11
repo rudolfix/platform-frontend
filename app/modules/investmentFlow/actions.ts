@@ -1,4 +1,3 @@
-import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
 import {
   EInvestmentCurrency,

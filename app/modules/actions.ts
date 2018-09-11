@@ -1,4 +1,4 @@
-import { TDictionaryArrayValues, TDictionaryValues } from "../types";
+import { TDictionaryArrayValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
 import { depositModalActions } from "./depositEthModal/actions";

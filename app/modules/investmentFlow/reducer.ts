@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";

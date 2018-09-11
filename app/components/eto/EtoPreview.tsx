@@ -8,7 +8,6 @@ import {
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectEtoDocumentData } from "../../modules/eto-documents/selectors";
 import { appConnect } from "../../store";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutBase } from "../layouts/LayoutBase";

@@ -5,7 +5,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { TPartialCompanyEtoData, TPartialEtoSpecData, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { IAppAction, IAppState } from "../../store";
+import { IAppState } from "../../store";
 import { convertToBigInt } from "../../utils/Money.utils";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";

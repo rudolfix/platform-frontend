@@ -1,4 +1,4 @@
-import { TGeneralEtoData, TPartialCompanyEtoData, TPartialEtoSpecData, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
+import { TPartialCompanyEtoData, TPartialEtoSpecData, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
 import { ICalculatedContribution } from "./reducer";
 

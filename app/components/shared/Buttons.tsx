@@ -34,7 +34,7 @@ export interface IButtonProps {
   isLoading?: boolean;
 }
 
-export const Button: React.SFC<IButtonProps> = ({
+const Button: React.SFC<IButtonProps> = ({
   children,
   layout,
   theme,
@@ -75,16 +75,18 @@ Button.defaultProps = {
   disabled: false,
 };
 
-export const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
+const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
   <div className={cn(styles.buttonIcon, className)} onClick={onClick}>
     <InlineIcon {...props} width="20px" height="20px" />
   </div>
 );
 
-export const ButtonClose: React.SFC<IGeneralButton> = props => (
+const ButtonClose: React.SFC<IGeneralButton> = props => (
   <ButtonIcon {...props} svgIcon={closeIcon} />
 );
 
-export const ButtonArrowRight: React.SFC<IGeneralButton> = props => (
+const ButtonArrowRight: React.SFC<IGeneralButton> = props => (
   <Button layout="secondary" {...props} iconPosition="icon-after" svgIcon={arrowRight} />
 );
+
+export { ButtonIcon, ButtonClose, ButtonArrowRight, Button };

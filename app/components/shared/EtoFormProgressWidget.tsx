@@ -5,17 +5,35 @@ import { Link } from "react-router-dom";
 import { Button } from "./Buttons";
 import { ChartCircle, IChartCircleProps } from "./charts/ChartCircle";
 import { LoadingIndicator } from "./LoadingIndicator";
+import { Panel } from "./Panel";
 import { Proportion } from "./Proportion";
 
 import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./EtoFormProgressWidget.module.scss";
-import { Panel } from "./Panel";
 
 interface IProps {
   to: string;
   isLoading: boolean;
-  disabled?: boolean;
+  disabled: boolean;
+  readonly: boolean;
 }
+
+interface IButtonTextProps {
+  isInProgress: boolean;
+  readonly: boolean;
+}
+
+const ButtonText: React.SFC<IButtonTextProps> = ({ isInProgress, readonly }) => {
+  if (readonly) {
+    return <FormattedMessage id="shared-component.eto-form-progress-widget.show" />;
+  }
+
+  if (isInProgress) {
+    return <FormattedMessage id="shared-component.eto-form-progress-widget.complete" />;
+  }
+
+  return <FormattedMessage id="shared-component.eto-form-progress-widget.edit" />;
+};
 
 export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
   to,
@@ -23,39 +41,38 @@ export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
   name,
   isLoading,
   disabled,
-}) => {
-  return (
-    <Panel>
-      <Proportion width={100} height={108}>
-        <div className={styles.contentWrapper}>
-          {isLoading ? (
-            <LoadingIndicator />
-          ) : (
-            <>
-              <ChartCircle progress={progress} name={name} />
-              <Link
-                to={to}
-                className={styles.linkWrapper}
-                onClick={e => (disabled ? e.preventDefault() : e)}
+  readonly,
+}) => (
+  <Panel>
+    <Proportion width={100} height={108}>
+      <div className={styles.contentWrapper}>
+        {isLoading ? (
+          <LoadingIndicator />
+        ) : (
+          <>
+            <ChartCircle progress={progress} name={name} />
+
+            <Link
+              to={{
+                pathname: to,
+                state: { readonly },
+              }}
+              className={styles.linkWrapper}
+              onClick={e => (disabled ? e.preventDefault() : e)}
+            >
+              <Button
+                theme="silver"
+                layout="secondary"
+                iconPosition="icon-after"
+                svgIcon={arrowRightIcon}
+                disabled={disabled}
               >
-                <Button
-                  theme="silver"
-                  layout="secondary"
-                  iconPosition="icon-after"
-                  svgIcon={arrowRightIcon}
-                  disabled={disabled}
-                >
-                  {progress < 1 ? (
-                    <FormattedMessage id="shared-component.eto-form-progress-widget.complete" />
-                  ) : (
-                    <FormattedMessage id="shared-component.eto-form-progress-widget.edit" />
-                  )}
-                </Button>
-              </Link>
-            </>
-          )}
-        </div>
-      </Proportion>
-    </Panel>
-  );
-};
+                <ButtonText isInProgress={progress < 1} readonly={readonly} />
+              </Button>
+            </Link>
+          </>
+        )}
+      </div>
+    </Proportion>
+  </Panel>
+);

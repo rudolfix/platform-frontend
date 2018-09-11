@@ -1,13 +1,15 @@
-import { Field, FormikErrors, FormikProps, FormikTouched } from "formik";
+import { Field } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
-import { TTranslatedString } from "../../../../types";
 
+import { TTranslatedString } from "../../../../types";
 import * as styles from "./FormFieldDate.module.scss";
 import * as errorStyles from "./FormStyles.module.scss";
+import { isValid } from "./utils";
 
 interface IProps {
+  disabled?: boolean;
   label: TTranslatedString;
   name: string;
   "data-test-id"?: string;
@@ -19,17 +21,7 @@ const positionMap = {
   day: 2,
 };
 
-const isValid = (
-  touched: FormikTouched<any>,
-  errors: FormikErrors<any>,
-  name: string,
-): boolean | undefined => {
-  if (touched && touched[name] !== true) {
-    return undefined;
-  }
-
-  return !(errors && errors[name]);
-};
+type FieldDateType = "year" | "month" | "day";
 
 export class FormFieldDate extends React.Component<IProps> {
   static contextTypes = {
@@ -52,7 +44,7 @@ export class FormFieldDate extends React.Component<IProps> {
   };
 
   onChange = (
-    type: "year" | "month" | "day",
+    type: FieldDateType,
     e: React.FormEvent<HTMLInputElement>,
     handler: (e: React.FormEvent<HTMLInputElement>) => void,
   ) => {
@@ -62,28 +54,29 @@ export class FormFieldDate extends React.Component<IProps> {
     handler(e);
   };
 
-  fromValue = (type: "year" | "month" | "day", value: string = ""): string => {
+  fromValue = (type: FieldDateType, value: string = ""): string => {
     const items = value.split("-");
     this.cache[type] = items.length === 3 ? items[positionMap[type]] : "";
     return this.cache[type];
   };
 
   render(): React.ReactNode {
-    const formik: FormikProps<any> = this.context.formik;
-    const { touched, errors } = formik;
-    const { name, "data-test-id": dataTestId } = this.props;
+    const { name, label, "data-test-id": dataTestId, disabled } = this.props;
+    const { touched, errors } = this.context.formik;
     const valid = isValid(touched, errors, name);
+
     return (
       <FormGroup>
         <div className={styles.dateField} data-test-id={dataTestId}>
-          <span className={styles.label}>{this.props.label}</span>
+          <span className={styles.label}>{label}</span>
           <div className={styles.inputsWrapper}>
             <Field
-              name={this.props.name}
+              name={name}
               render={({ field }) => (
                 <div className={styles.inputWrapper}>
                   <Input
                     {...field}
+                    disabled={disabled}
                     onChange={e => {
                       this.onChange("day", e, field.onChange);
                       // auto advance to next field
@@ -108,6 +101,7 @@ export class FormFieldDate extends React.Component<IProps> {
                 <div>
                   <Input
                     {...field}
+                    disabled={disabled}
                     onChange={e => {
                       this.onChange("month", e, field.onChange);
                       // auto advance to next field
@@ -133,6 +127,7 @@ export class FormFieldDate extends React.Component<IProps> {
                 <div className={styles.dateFieldYear}>
                   <Input
                     {...field}
+                    disabled={disabled}
                     onChange={e => this.onChange("year", e, field.onChange)}
                     value={this.fromValue("year", field.value)}
                     placeholder="YYYY"

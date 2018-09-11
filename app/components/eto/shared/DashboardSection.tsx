@@ -10,7 +10,7 @@ interface IProps {
   hasDecorator?: boolean;
 }
 
-export const DashboardSection: React.SFC<IProps> = ({
+const DashboardSection: React.SFC<IProps> = ({
   title,
   step,
   "data-test-id": dataTestId,
@@ -22,3 +22,5 @@ export const DashboardSection: React.SFC<IProps> = ({
     </SectionHeader>
   </Col>
 );
+
+export { DashboardSection };

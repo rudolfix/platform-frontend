@@ -38,8 +38,7 @@ import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
 
-const SUBMIT_PROPOSAL_THRESHOLD = 0.5;
-// TODO: CHANGE TO 100% when data model in interfaces represents swagger
+const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
 interface IStateProps {
   isLightWallet: boolean;
@@ -106,8 +105,12 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
   isPamphletSubmitted,
   isProspectusSubmitted,
 }) => {
+  if (!etoState) {
+    return <LoadingIndicator />;
+  }
+
   switch (etoState) {
-    case "preview":
+    case EtoState.PREVIEW:
       return (
         <>
           {shouldViewSubmissionSection && (
@@ -116,17 +119,21 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
           <EtoProgressDashboardSection />
         </>
       );
-    case "pending":
+    case EtoState.ON_CHAIN:
+    case EtoState.PENDING:
       return (
         <>
           <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
           <ETOFormsProgressSection />
         </>
       );
-    case "listed":
+    case EtoState.LISTED:
       return (
         <>
           <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
+          <Col lg={4} xs={12}>
+            <ChoosePreEtoDateWidget />
+          </Col>
           <Col lg={4} xs={12}>
             <BookBuildingWidget />
           </Col>
@@ -146,7 +153,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
           <ETOFormsProgressSection />
         </>
       );
-    case "prospectus_approved":
+    case EtoState.PROSPECTUS_APPROVED:
       return (
         <>
           <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
@@ -173,7 +180,9 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
         </>
       );
     default:
-      return <LoadingIndicator />;
+      return (
+        <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
+      );
   }
 };
 
@@ -223,13 +232,11 @@ class EtoDashboardComponent extends React.Component<IProps> {
 
           {shouldEtoDataLoad ? (
             <EtoStateViewRender
-              {...{
-                isTermSheetSubmitted,
-                isPamphletSubmitted,
-                isProspectusSubmitted,
-                shouldViewSubmissionSection,
-                etoState,
-              }}
+              isTermSheetSubmitted={isTermSheetSubmitted}
+              isPamphletSubmitted={isPamphletSubmitted}
+              isProspectusSubmitted={isProspectusSubmitted}
+              shouldViewSubmissionSection={shouldViewSubmissionSection}
+              etoState={etoState}
             />
           ) : (
             <EtoProgressDashboardSection />

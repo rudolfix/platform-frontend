@@ -169,9 +169,15 @@ export type TCompanyEtoData = TEtoTeamData &
  *  only deals with "/etos/me"
  */
 
-export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
+export enum EtoState {
+  PREVIEW = "preview",
+  PENDING = "pending",
+  LISTED = "listed",
+  PROSPECTUS_APPROVED = "prospectus_approved",
+  ON_CHAIN = "on_chain",
+}
 
-export enum EtoStateEnum {
+export enum EtoStateToCamelcase {
   "preview" = "preview",
   "pending" = "pending",
   "listed" = "listed",

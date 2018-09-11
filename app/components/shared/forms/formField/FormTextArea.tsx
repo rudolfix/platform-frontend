@@ -1,18 +1,18 @@
-import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
+import { Field, FieldAttributes, FieldProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, InputGroup, InputGroupAddon } from "reactstrap";
-import { FormLabel } from "./FormLabel";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
+import { FormLabel } from "./FormLabel";
 import { isNonValid } from "./utils";
 
 interface IFieldGroup {
+  disabled?: boolean;
   label?: TTranslatedString;
   placeholder?: string;
   prefix?: string;
   suffix?: string;
-  className?: string;
   charactersLimit?: number;
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
@@ -22,9 +22,17 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
   };
 
   render(): React.ReactChild {
-    const { label, placeholder, name, prefix, suffix, className, charactersLimit } = this.props;
-    const formik: FormikProps<any> = this.context.formik;
-    const { touched, errors } = formik;
+    const {
+      label,
+      disabled,
+      placeholder,
+      name,
+      prefix,
+      suffix,
+      className,
+      charactersLimit,
+    } = this.props;
+    const { touched, errors } = this.context.formik;
 
     const computedValue = (value: string | undefined, limit: number | undefined): string => {
       if (!value) {
@@ -60,6 +68,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
                   )}
                   <textarea
                     {...field}
+                    disabled={disabled}
                     value={computedValue(value, charactersLimit)}
                     placeholder={placeholder}
                     className={className}

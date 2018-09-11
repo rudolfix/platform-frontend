@@ -19,6 +19,11 @@ import {
   selectInvestmentType,
   selectReadyToInvest,
 } from "../../../../modules/investmentFlow/selectors";
+import {
+  selectCurrentEquityTokenCount,
+  selectCurrentEto,
+  selectCurrentNeuRewardUlps,
+} from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import {
   selectICBMLockedEtherBalance,
@@ -44,7 +49,6 @@ import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSe
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
-import { selectCurrentEquityTokenCount, selectCurrentEto, selectCurrentNeuRewardUlps } from "../../../../modules/public-etos/selectors";
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
@@ -59,6 +63,7 @@ interface IStateProps {
   neuReward?: string;
   minTicketEur: number;
   readyToInvest: boolean;
+  showTokens: boolean;
 }
 
 interface IDispatchProps {
@@ -226,7 +231,9 @@ export const InvestmentSelectionComponent = injectIntlHelpers((props: IProps & I
                   <FormattedMessage id="investment-flow.equity-tokens" />
                 </Label>
                 <InfoAlert>
-                  {(props.equityTokenCount && formatThousands(props.equityTokenCount.toString())) ||
+                  {(props.showTokens &&
+                    props.equityTokenCount &&
+                    formatThousands(props.equityTokenCount.toString())) ||
                     "\xA0" /* non breaking space*/}
                 </InfoAlert>
               </FormGroup>
@@ -238,7 +245,10 @@ export const InvestmentSelectionComponent = injectIntlHelpers((props: IProps & I
                   <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                 </Label>
                 <InfoAlert>
-                  {(props.neuReward && formatThousands(formatEth(props.neuReward))) || "\xA0"}
+                  {(props.showTokens &&
+                    props.neuReward &&
+                    formatThousands(formatEth(props.neuReward))) ||
+                    "\xA0"}
                 </InfoAlert>
               </FormGroup>
             </Col>
@@ -284,9 +294,10 @@ export const InvestmentSelection: React.SFC = compose<any>(
     stateToProps: state => {
       const i = state.investmentFlow;
       const eto = selectCurrentEto(state.publicEtos);
+      const eur = selectEurValueUlps(i);
       return {
         etherPriceEur: selectEtherPriceEur(state.tokenPrice),
-        euroValue: selectEurValueUlps(i),
+        euroValue: eur,
         ethValue: selectEthValueUlps(i),
         errorState: selectErrorState(i),
         gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
@@ -294,6 +305,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         wallets: createWallets(state),
         neuReward: selectCurrentNeuRewardUlps(state.publicEtos),
         equityTokenCount: selectCurrentEquityTokenCount(state.publicEtos),
+        showTokens: !!(eur && i.isValidatedInput),
         minTicketEur: (eto && eto.minTicketEur) || 0,
         readyToInvest: selectReadyToInvest(state.investmentFlow),
       };

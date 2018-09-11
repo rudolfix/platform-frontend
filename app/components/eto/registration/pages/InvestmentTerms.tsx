@@ -11,11 +11,11 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
+import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/Buttons";
 import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormField } from "../../../shared/forms/forms";
-import { formatMoney } from "../../../shared/Money.utils";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {

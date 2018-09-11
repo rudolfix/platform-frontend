@@ -11,6 +11,7 @@ import { genericModalActions } from "./genericModal/actions";
 import { icbmWalletBalanceModalActions } from "./icbmWalletBalanceModal/actions";
 import { immutableStorageActions } from "./immutableFile/actions";
 import { initActions } from "./init/actions";
+import { investmentFlowActions } from "./investmentFlow/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { personProfileModalActions } from "./personProfileModal/actions";
@@ -56,6 +57,7 @@ export const actions = {
   txMonitor: txMonitorActions,
   txSender: txSenderActions,
   gas: gasActions,
+  investmentFlow: investmentFlowActions,
   videoModal: videoModalActions,
   personProfileModal: personProfileModalActions,
 };
@@ -90,6 +92,7 @@ export const allActions = {
   ...txSenderActions,
   ...icbmWalletBalanceModalActions,
   ...gasActions,
+  ...investmentFlowActions,
   ...videoModalActions,
   ...personProfileModalActions,
 };

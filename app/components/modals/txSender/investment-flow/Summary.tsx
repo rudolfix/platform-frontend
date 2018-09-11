@@ -1,40 +1,62 @@
 import * as React from "react";
-import { InjectedIntlProps, injectIntl } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 
+import { MONEY_DECIMALS } from "../../../../config/constants";
+import { actions } from "../../../../modules/actions";
+import {
+  selectEquityTokenCount,
+  selectEthValueUlps,
+  selectEto,
+  selectEtoCompany,
+  selectEurValueUlps,
+  selectInvestmentGasCostEth,
+  selectNeuRewardUlps,
+} from "../../../../modules/investmentFlow/selectors";
+import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
+import { appConnect } from "../../../../store";
+import {
+  addBigNumbers,
+  divideBigNumbers,
+  multiplyBigNumbers,
+} from "../../../../utils/BigNumberUtils";
+import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/Buttons";
 import { DocumentLink } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
+import { ITxSummaryDispatchProps } from "../TxSender";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
-  investmentData: {
-    companyName: string;
-    tokenPrice: string;
-    etoAddress: string;
-    investment: string;
-    transactionCost: string;
-    equityTokens: number;
-    estimatedReward: number;
-    transactionValue: number;
-  };
+  companyName: string;
+  etoAddress: string;
+  investmentEur: string;
+  investmentEth: string;
+  gasCostEth: string;
+  equityTokens: string;
+  estimatedReward: string;
+  etherPriceEur: string;
   agreementUrl: string;
 }
 
-interface IDispatchProps {
-  submit: () => void;
+type IProps = IStateProps & ITxSummaryDispatchProps;
+
+function formatEur(val?: string): string | undefined {
+  return val && formatMoney(val, MONEY_DECIMALS, 0);
 }
 
-type IProps = IStateProps & IDispatchProps;
+function formatEth(val?: string): string | undefined {
+  return val && formatMoney(val, MONEY_DECIMALS, 4);
+}
 
-export const InvestmentSummary = injectIntl(
-  ({ investmentData: data, agreementUrl }: IProps & InjectedIntlProps) => {
+export const InvestmentSummaryComponent = injectIntlHelpers(
+  ({ agreementUrl, onAccept, gasCostEth, etherPriceEur, ...data }: IProps & IIntlProps) => {
     const equityTokens = (
       <span>
         <img src={tokenIcon} /> {data.equityTokens}
@@ -42,12 +64,21 @@ export const InvestmentSummary = injectIntl(
     );
     const estimatedReward = (
       <span>
-        <img src={neuIcon} /> {data.estimatedReward}
+        <img src={neuIcon} /> {formatEur(data.estimatedReward)} NEU
       </span>
     );
+    const investment = `€ ${formatEur(data.investmentEur)} ≈ ${formatEth(data.investmentEth)} ETH`;
+
+    const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur]);
+    const totalCostEth = addBigNumbers([gasCostEth, data.investmentEth]);
+    const totalCostEur = addBigNumbers([gasCostEuro, data.investmentEur]);
+
+    const total = `€ ${formatEur(totalCostEur)} ≈ ${formatEth(totalCostEth)} ETH`;
+    const tokenPrice = divideBigNumbers(data.investmentEur, data.equityTokens);
+
     return (
       <Container className={styles.container}>
-        <Row>
+        <Row className="mt-0">
           <Heading>
             <FormattedMessage id="investment-flow.investment-summary" />
           </Heading>
@@ -61,7 +92,7 @@ export const InvestmentSummary = injectIntl(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.token-price" />}
-              value={data.tokenPrice}
+              value={`${formatMoney(tokenPrice, MONEY_DECIMALS, 2)} €`}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.eto-address" />}
@@ -69,11 +100,11 @@ export const InvestmentSummary = injectIntl(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.your-investment" />}
-              value={data.investment}
+              value={investment}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
-              value={data.transactionCost}
+              value={`${formatEth(gasCostEth)} ETH`}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.equity-tokens" />}
@@ -85,7 +116,7 @@ export const InvestmentSummary = injectIntl(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.transaction-value" />}
-              value={data.transactionValue}
+              value={total}
             />
           </InfoList>
         </Row>
@@ -97,8 +128,8 @@ export const InvestmentSummary = injectIntl(
           />
         </Row>
 
-        <Row className="justify-content-center">
-          <Button layout="primary" className="mr-4" type="submit">
+        <Row className="justify-content-center mb-0 mt-0">
+          <Button layout="primary" type="button" onClick={onAccept}>
             <FormattedMessage id="investment-flow.confirm" />
           </Button>
         </Row>
@@ -106,3 +137,25 @@ export const InvestmentSummary = injectIntl(
     );
   },
 );
+
+export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
+  stateToProps: state => {
+    const i = state.investmentFlow;
+    // eto and computed values are guaranteed to be present at investment summary state
+    const company = selectEtoCompany(i)!;
+    return {
+      agreementUrl: "fufu",
+      companyName: company.name,
+      etoAddress: selectEto(i)!.etoId,
+      investmentEth: selectEthValueUlps(i),
+      investmentEur: selectEurValueUlps(i),
+      gasCostEth: selectInvestmentGasCostEth(i),
+      equityTokens: selectEquityTokenCount(i) as string,
+      estimatedReward: selectNeuRewardUlps(i) as string,
+      etherPriceEur: selectEtherPriceEur(state.tokenPrice),
+    };
+  },
+  dispatchToProps: d => ({
+    onAccept: () => d(actions.txSender.txSenderAccept()),
+  }),
+})(InvestmentSummaryComponent);

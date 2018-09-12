@@ -32,19 +32,20 @@ async function cleanPendingTransactionsPromise(
 }
 
 export function* updateTxs(): any {
-  try {
-    const apiPendingTx = yield neuCall(getPendingTransactionsPromise);
-    const txs = yield neuCall(cleanPendingTransactionsPromise, apiPendingTx);
-    yield put(actions.txMonitor.loadTxs(txs));
-  } catch (e) {
-    debugger;
-  }
+  const apiPendingTx = yield neuCall(getPendingTransactionsPromise);
+  const txs = yield neuCall(cleanPendingTransactionsPromise, apiPendingTx);
+  yield put(actions.txMonitor.loadTxs(txs));
 }
 
-function* txMonitor({ logger }: TGlobalDependencies): any {
+function* txMonitor({ logger, notificationCenter }: TGlobalDependencies): any {
   while (true) {
     logger.info("Querying for pending txs...");
-    yield neuCall(updateTxs);
+    try {
+      yield neuCall(updateTxs);
+    } catch (e) {
+      notificationCenter.error("Error while trying to get pending transactions");
+      logger.error(e);
+    }
 
     yield delay(TX_MONITOR_DELAY);
   }

@@ -7,12 +7,12 @@ import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { IAppState } from "../../../store";
 import { connectWallet } from "../../accessWallet/sagas";
-import { actions, TAction } from "../../actions";
+import { actions } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
 import { ITxData, TxSenderType } from "./reducer";
 
-export function* withdrawSaga({ logger }: TGlobalDependencies, action: TAction): any {
+export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
     yield neuCall(txSendSaga, "WITHDRAW");
     logger.info("Withdrawing successful");

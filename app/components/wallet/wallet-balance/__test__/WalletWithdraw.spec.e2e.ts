@@ -10,7 +10,8 @@ import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils
 import { numberRegExPattern } from "./../../../../e2e-test-utils/index";
 
 const Q18 = new BigNumber(10).pow(18);
-const GIGA = 1000000000;
+const GIGA_WEI = 1000000000;
+const NODE_ADDRESS = "https://localhost:9090/node";
 
 describe("Wallet Withdraw", () => {
   it("should recover existing user with verified email from saved phrases and change email", () => {
@@ -67,13 +68,10 @@ describe("Wallet Withdraw", () => {
     assertLatestEmailSentWithSalt(email);
 
     assertUserInDashboard();
-
     cy.get(tid("authorized-layout-wallet-button")).click();
     cy.get(tid("shared.wallet.wallet-balance.unlock-wallet.account-address")).then(
       accountAddress => {
-        console.log(accountAddress.text());
         cy.get(tid("wallet-balance.ether.shared-component.withdraw.button")).click();
-
         cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(
           expectedAddress,
         );
@@ -91,22 +89,20 @@ describe("Wallet Withdraw", () => {
             cy.get(tid("modals.tx-sender.withdraw-flow.success"));
 
             cy.get(tid("modals.tx-sender.withdraw-flow.tx-hash")).then(txHashObject => {
-              getTransactionReceiptRpc("https://localhost:9090/node", txHashObject.text()).then(
-                data => {
-                  const { from, gas, gasPrice, input, hash, to, value } = data.body.result;
+              getTransactionReceiptRpc(NODE_ADDRESS, txHashObject.text()).then(data => {
+                const { from, gas, gasPrice, input, hash, to, value } = data.body.result;
 
-                  const ethValue = new BigNumber(value).toString();
-                  const ethGasPrice = new BigNumber(gasPrice).div(GIGA).toString();
+                const ethValue = new BigNumber(value).toString();
+                const ethGasPrice = new BigNumber(gasPrice).div(GIGA_WEI).toString();
 
-                  expect(from).to.equal(accountAddress.text().toLowerCase());
-                  expect(txHashObject.text()).to.equal(hash);
-                  expect(ethGasPrice).to.equal(expectedGasPrice[0]);
-                  expect(input).to.equal(expectedInput);
-                  expect(gas).to.equal(expectedGasLimit);
-                  expect(ethValue).to.equal(Q18.mul(testValue).toString());
-                  expect(to).to.equal(expectedAddress);
-                },
-              );
+                expect(from).to.equal(accountAddress.text().toLowerCase());
+                expect(txHashObject.text()).to.equal(hash);
+                expect(ethGasPrice).to.equal(expectedGasPrice[0]);
+                expect(input).to.equal(expectedInput);
+                expect(gas).to.equal(expectedGasLimit);
+                expect(ethValue).to.equal(Q18.mul(testValue).toString());
+                expect(to).to.equal(expectedAddress);
+              });
             });
           },
         );

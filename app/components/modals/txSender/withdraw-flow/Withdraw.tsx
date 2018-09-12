@@ -135,5 +135,7 @@ export const Withdraw = appConnect<IWithdrawStateProps, ITxInitDispatchProps>({
 })(WithdrawComponent);
 
 export const GweiFormatter: React.SFC<{ value: string }> = ({ value }) => (
-  <div data-test-id="modals.tx-sender.withdraw-flow.gwei-formatter-component.gas-price">{Web3Utils.fromWei(value, "gwei")} Gwei</div>
+  <div data-test-id="modals.tx-sender.withdraw-flow.gwei-formatter-component.gas-price">
+    {Web3Utils.fromWei(value, "gwei")} Gwei
+  </div>
 );

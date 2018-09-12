@@ -4,6 +4,7 @@ import { fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
+import { ITxData } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, divideBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Money.utils";
@@ -12,7 +13,6 @@ import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { ITxData } from "../tx/sender/reducer";
 import { selectLiquidEtherBalance } from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import {

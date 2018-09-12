@@ -1,11 +1,6 @@
 import BigNumber from "../../../../../node_modules/bignumber.js/bignumber.js";
 import { tid } from "../../../../../test/testUtils";
-import {
-  assertLatestEmailSentWithSalt,
-  assertUserInDashboard,
-  mockApiUrl,
-  typeLightwalletRecoveryPhrase,
-} from "../../../../e2e-test-utils";
+import { assertUserInDashboard, typeLightwalletRecoveryPhrase } from "../../../../e2e-test-utils";
 import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils";
 import { numberRegExPattern } from "./../../../../e2e-test-utils/index";
 
@@ -49,8 +44,6 @@ describe("Wallet Withdraw", () => {
     const expectedInput = "0x00";
     const expectedAddress = "0x28f1670f55ae9c15fe38bf052cd35edcdb1dab8b";
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
-
     cy.visit("/recover/seed");
 
     typeLightwalletRecoveryPhrase(words);
@@ -62,44 +55,42 @@ describe("Wallet Withdraw", () => {
 
     assertUserInDashboard();
     cy.get(tid("authorized-layout-wallet-button")).click();
-    cy.get(tid("account-address.your.ether-address.div")).then(
-      accountAddress => {
-        cy.get(tid("wallet-balance.ether.shared-component.withdraw.button")).click();
-        cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(
-          expectedAddress,
-        );
-        cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).type(testValue);
-        cy.get(tid("modals.tx-sender.withdraw-flow.gwei-formatter-component.gas-price")).then(
-          gasPrice => {
-            const expectedGasPrice = gasPrice.text().match(numberRegExPattern) || ["0"];
-            cy.get(
-              tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"),
-            ).click();
+    cy.get(tid("account-address.your.ether-address.div")).then(accountAddress => {
+      cy.get(tid("wallet-balance.ether.shared-component.withdraw.button")).click();
+      cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(
+        expectedAddress,
+      );
+      cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).type(testValue);
+      cy.get(tid("modals.tx-sender.withdraw-flow.gwei-formatter-component.gas-price")).then(
+        gasPrice => {
+          const expectedGasPrice = gasPrice.text().match(numberRegExPattern) || ["0"];
+          cy.get(
+            tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"),
+          ).click();
 
-            cy.get(tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept")).click();
-            cy.get(tid("access-light-wallet-prompt-accept-button")).click();
-            cy.get(tid("modals.shared.signing-message.modal"));
-            cy.get(tid("modals.tx-sender.withdraw-flow.success"));
+          cy.get(tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept")).click();
+          cy.get(tid("access-light-wallet-prompt-accept-button")).click();
+          cy.get(tid("modals.shared.signing-message.modal"));
+          cy.get(tid("modals.tx-sender.withdraw-flow.success"));
 
-            cy.get(tid("modals.tx-sender.withdraw-flow.tx-hash")).then(txHashObject => {
-              getTransactionReceiptRpc(NODE_ADDRESS, txHashObject.text()).then(data => {
-                const { from, gas, gasPrice, input, hash, to, value } = data.body.result;
+          cy.get(tid("modals.tx-sender.withdraw-flow.tx-hash")).then(txHashObject => {
+            getTransactionReceiptRpc(NODE_ADDRESS, txHashObject.text()).then(data => {
+              const { from, gas, gasPrice, input, hash, to, value } = data.body.result;
 
-                const ethValue = new BigNumber(value).toString();
-                const ethGasPrice = new BigNumber(gasPrice).div(GIGA_WEI).toString();
+              const ethValue = new BigNumber(value).toString();
+              const ethGasPrice = new BigNumber(gasPrice).div(GIGA_WEI).toString();
 
-                expect(from).to.equal(accountAddress.text().toLowerCase());
-                expect(txHashObject.text()).to.equal(hash);
-                expect(ethGasPrice).to.equal(expectedGasPrice[0]);
-                expect(input).to.equal(expectedInput);
-                expect(gas).to.equal(expectedGasLimit);
-                expect(ethValue).to.equal(Q18.mul(testValue).toString());
-                expect(to).to.equal(expectedAddress);
-              });
+              expect(from).to.equal(accountAddress.text().toLowerCase());
+              expect(txHashObject.text()).to.equal(hash);
+              expect(ethGasPrice).to.equal(expectedGasPrice[0]);
+              expect(input).to.equal(expectedInput);
+              expect(gas).to.equal(expectedGasLimit);
+              expect(ethValue).to.equal(Q18.mul(testValue).toString());
+              expect(to).to.equal(expectedAddress);
             });
-          },
-        );
-      },
-    );
+          });
+        },
+      );
+    });
   });
 });

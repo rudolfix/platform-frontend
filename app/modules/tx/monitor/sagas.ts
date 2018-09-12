@@ -28,7 +28,7 @@ async function cleanPendingTransactionsPromise(
       else await apiUserService.deletePendingTx(tx.transaction.hash);
     }),
   );
-  return nodePendingTx.filter(tx => (tx ? tx : undefined));
+  return nodePendingTx.filter(tx => tx);
 }
 
 export function* updateTxs(): any {
@@ -44,7 +44,7 @@ function* txMonitor({ logger, notificationCenter }: TGlobalDependencies): any {
       yield neuCall(updateTxs);
     } catch (e) {
       notificationCenter.error("Error while trying to get pending transactions");
-      logger.error(e);
+      logger.error("Error getting pending txs", e);
     }
 
     yield delay(TX_MONITOR_DELAY);

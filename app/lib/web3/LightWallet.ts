@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
@@ -13,7 +12,7 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
-import { IEthereumNetworkConfig } from "./Web3Manager";
+import { IEthereumNetworkConfig, ITxData } from "./Web3Manager";
 
 import { symbols } from "../../di/symbols";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
@@ -31,16 +30,6 @@ export interface ICreateVault {
 export interface IVault {
   walletInstance: any;
   salt: string;
-}
-
-interface ITransaction {
-  to?: string;
-  value?: number | string | BigNumber;
-  gas?: number | string | BigNumber;
-  gasPrice?: number | string | BigNumber;
-  data?: string;
-  nonce?: string;
-  gasLimit?: string;
 }
 
 export interface ILightWallet {
@@ -67,7 +56,7 @@ export class LightUnknownError extends LightError {}
 export class LightCreationError extends LightWalletUtilError {}
 export class LightKeyEncryptError extends LightWalletUtilError {}
 export class LightDeserializeError extends LightWalletUtilError {}
-export class LightWalletMissingPassword extends LightWalletError {}
+export class LightWalletMissingPasswordError extends LightWalletError {}
 export class LightWalletWrongPassword extends LightWalletError {}
 export class LightWalletLocked extends LightWalletError {}
 export class LightWalletWrongMnemonic extends LightWalletError {}
@@ -208,7 +197,7 @@ export class LightWallet implements IPersonalWallet {
 
   public async signMessage(data: string): Promise<string> {
     if (!this.password) {
-      throw new LightWalletMissingPassword();
+      throw new LightWalletMissingPasswordError();
     }
     try {
       const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
@@ -228,11 +217,11 @@ export class LightWallet implements IPersonalWallet {
 
   public async sendTransaction(data: Web3.TxData): Promise<string> {
     if (!this.password) {
-      throw new LightWalletMissingPassword();
+      throw new LightWalletMissingPasswordError();
     }
     data.nonce = await this.web3Adapter.getTransactionCount(data.from);
 
-    const txData: ITransaction = {};
+    const txData: ITxData = {};
 
     txData.to = addHexPrefix(data.to!);
     txData.gasLimit = addHexPrefix(Number(data.gas || 0).toString());
@@ -252,7 +241,7 @@ export class LightWallet implements IPersonalWallet {
 
   public async getSeed(): Promise<string> {
     if (!this.password) {
-      throw new LightWalletMissingPassword();
+      throw new LightWalletMissingPasswordError();
     }
     return await LightWalletUtil.getWalletSeed(this.vault.walletInstance, this.password);
   }

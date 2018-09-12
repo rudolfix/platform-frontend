@@ -1,4 +1,5 @@
 import { AppReducer } from "../../../store";
+import { ITxData } from "./../../../lib/web3/Web3Manager";
 
 export type TxSenderType = "WITHDRAW" | "INVEST";
 
@@ -13,17 +14,6 @@ export type TxSenderState =
   | "DONE"
   | "ERROR_SIGN"
   | "REVERTED";
-
-export interface ITxData {
-  to?: string;
-  value?: string;
-  gas?: string;
-  gasPrice?: string;
-  data?: string;
-  nonce?: string;
-  from?: string;
-  input?: string;
-}
 
 export interface ITxSenderState {
   state: TxSenderState;

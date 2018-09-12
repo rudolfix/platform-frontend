@@ -1,5 +1,6 @@
 import { createAction, createSimpleAction } from "../../actionsUtils";
-import { ITxData, TxSenderType } from "./reducer";
+import { ITxData } from "./../../../lib/web3/Web3Manager";
+import { TxSenderType } from "./reducer";
 
 export const txSenderActions = {
   startWithdrawEth: () => createSimpleAction("TX_SENDER_START_WITHDRAW_ETH"),

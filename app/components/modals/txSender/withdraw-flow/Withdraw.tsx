@@ -7,7 +7,6 @@ import * as Web3Utils from "web3-utils";
 import * as YupTS from "../../../../lib/yup-ts";
 import { actions } from "../../../../modules/actions";
 import { IGasState } from "../../../../modules/gas/reducer";
-import { ITxData } from "../../../../modules/tx/sender/reducer";
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
@@ -18,6 +17,7 @@ import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { ITxInitDispatchProps } from "../TxSender";
 
+import { ITxData } from "../../../../lib/web3/Web3Manager";
 import * as styles from "./Withdraw.module.scss";
 
 interface IWithdrawStateProps {

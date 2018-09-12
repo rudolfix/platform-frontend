@@ -10,7 +10,8 @@ import { connectWallet } from "../../accessWallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
-import { ITxData, TxSenderType } from "./reducer";
+import { ITxData } from "./../../../lib/web3/Web3Manager";
+import { TxSenderType } from "./reducer";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
@@ -110,7 +111,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
         gas: addHexPrefix(Number(txData.gas!).toString(16)),
         gasPrice: "0x" + Number(txData.gasPrice!).toString(16),
         hash: txHash,
-        input: txData.data! || "0x0",
+        input: txData.data || "0x0",
         nonce: "0x" + Number(txData.nonce!).toString(16),
         to: txData.to!,
         value: "0x" + Number(txData.value!).toString(16),

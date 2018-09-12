@@ -15,9 +15,8 @@ interface IDispatchProps {
   setEtoDate: () => void;
 }
 
-export const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlProps> = ({
+const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlProps> = ({
   intl: { formatIntlMessage },
-  setEtoDate,
 }) => {
   return (
     <Panel headerText={formatIntlMessage("settings.choose-pre-eto-date")}>
@@ -26,14 +25,14 @@ export const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlPr
           <FormattedMessage id="settings.choose-pre-eto-date.book-building-will-stop" />
         </p>
         <Col className="d-flex justify-content-center">
-          <DatePicker onChange={setEtoDate} />
+          <DatePicker />
         </Col>
       </div>
     </Panel>
   );
 };
 
-export const ChoosePreEtoDateWidget = compose<React.SFC>(
+const ChoosePreEtoDateWidget = compose<React.SFC>(
   appConnect<IDispatchProps>({
     dispatchToProps: () => ({
       setEtoDate: () => {},
@@ -41,3 +40,5 @@ export const ChoosePreEtoDateWidget = compose<React.SFC>(
   }),
   injectIntlHelpers,
 )(ChoosePreEtoDateWidgetComponent);
+
+export { ChoosePreEtoDateWidgetComponent, ChoosePreEtoDateWidget }

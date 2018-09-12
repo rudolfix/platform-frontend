@@ -11,12 +11,8 @@
   min-height: px-to-rem(26px);
 }
 
-.label,
-.value {
-  flex-basis: 50%;
-}
-
 .label {
+  flex-basis: 50%;
   font-weight: $font-weight-bold;
 }
 

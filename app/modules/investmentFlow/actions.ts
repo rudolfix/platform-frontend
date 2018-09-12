@@ -12,8 +12,7 @@ export const investmentFlowActions = {
   validateInputs: () => createSimpleAction("INVESTMENT_FLOW_VALIDATE_INPUTS"),
   generateInvestmentTx: () => createSimpleAction("INVESTMENT_FLOW_GENERATE_TX"),
   // state mutations
-  setEtoId: (etoId: string) =>
-    createAction("INVESTMENT_FLOW_SET_ETO_ID", { etoId }),
+  setEtoId: (etoId: string) => createAction("INVESTMENT_FLOW_SET_ETO_ID", { etoId }),
   setEthValue: (value: string) =>
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE", { value }),
   setEurValue: (value: string) =>

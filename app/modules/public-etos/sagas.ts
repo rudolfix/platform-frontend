@@ -17,7 +17,9 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { IPublicEtoState } from "./reducer";
 import {
-  convertToCalculatedContribution, selectCalculatedContributionByEtoId, selectEtoById,
+  convertToCalculatedContribution,
+  selectCalculatedContributionByEtoId,
+  selectEtoById,
 } from "./selectors";
 
 export function* loadEtoPreview(
@@ -57,7 +59,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
     const etosResponse: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
 
     const etos = keyBy(etosResponse.body, eto => eto.etoId);
-    const order = etosResponse.body.map(eto => eto.etoId)
+    const order = etosResponse.body.map(eto => eto.etoId);
 
     yield put(actions.publicEtos.setPublicEtos(etos));
     yield put(actions.publicEtos.setEtosDisplayOrder(order));
@@ -107,9 +109,5 @@ function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): a
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO_PREVIEW", loadEtoPreview);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
-  yield fork(
-    neuTakeEvery,
-    "PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION",
-    loadCalculatedContribution,
-  );
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION", loadCalculatedContribution);
 }

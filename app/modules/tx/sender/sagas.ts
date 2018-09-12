@@ -177,7 +177,7 @@ const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: stri
 
 // Debug sagas - can be removed after all transaction flows are implemented and e2e tested
 
-function* signDummyMessage({logger}: TGlobalDependencies, action: TAction): Iterator<any> {
+function* signDummyMessage({ logger }: TGlobalDependencies, action: TAction): Iterator<any> {
   if (action.type !== "TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE") {
     return;
   }

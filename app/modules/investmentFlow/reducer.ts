@@ -67,7 +67,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SET_ETO_ID":
       return {
         ...state,
-        etoId: action.payload.etoId
+        etoId: action.payload.etoId,
       };
     case "INVESTMENT_FLOW_SET_GAS_PRICE":
       return {

@@ -3,8 +3,7 @@ import BigNumber from "bignumber.js";
 import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { ICalculatedContribution, IPublicEtoState } from "./reducer";
 
-export const selectEtoById = (state: IPublicEtoState, etoId: string) =>
-  state.publicEtos[etoId];
+export const selectEtoById = (state: IPublicEtoState, etoId: string) => state.publicEtos[etoId];
 
 export const selectCalculatedContributionByEtoId = (state: IPublicEtoState, etoId: string) =>
   state.calculatedContributions[etoId];

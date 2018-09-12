@@ -59,7 +59,7 @@ describe("Wallet recover", () => {
     cy.wait(5000);
     assertLatestEmailSentWithSalt(email);
 
-    cy.contains(tid("my-neu-widget-neumark-balance"), "10487.9455 NEU");
+    cy.contains(tid("my-neu-widget-neumark-balance"), "151848.6894 NEU");
 
     cy.contains(tid("my-wallet-widget-eur-token-large-value"), "0.00 nEUR");
     cy.contains(tid("my-wallet-widget-eur-token-value"), "0.00 EUR");

@@ -5584,8 +5584,8 @@ eth-lib@0.1.27:
     xhr-request-promise "^0.1.2"
 
 "eth-lightwallet@https://github.com/Neufund/eth-lightwallet.git":
-  version "3.0.3"
-  resolved "https://github.com/Neufund/eth-lightwallet.git#318e2f65cd5a25fd159af90f0d8ef4f400c55901"
+  version "3.0.4"
+  resolved "https://github.com/Neufund/eth-lightwallet.git#d2fe21b87074e701b45c5bff5efa3d00f530f2c4"
   dependencies:
     bitcore-lib "^0.15.0"
     bitcore-mnemonic "^1.5.0"

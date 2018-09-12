@@ -55,21 +55,14 @@ describe("Wallet Withdraw", () => {
 
     typeLightwalletRecoveryPhrase(words);
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
-
     cy.get(tid("wallet-selector-register-email")).type(email);
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");
     cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
-    cy.wait(2000);
-
     cy.get(tid("recovery-success-btn-go-dashboard")).click();
-
-    cy.wait(5000);
-    assertLatestEmailSentWithSalt(email);
 
     assertUserInDashboard();
     cy.get(tid("authorized-layout-wallet-button")).click();
-    cy.get(tid("shared.wallet.wallet-balance.unlock-wallet.account-address")).then(
+    cy.get(tid("account-address.your.ether-address.div")).then(
       accountAddress => {
         cy.get(tid("wallet-balance.ether.shared-component.withdraw.button")).click();
         cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(

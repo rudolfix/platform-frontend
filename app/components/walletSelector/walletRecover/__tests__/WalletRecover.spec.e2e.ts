@@ -70,7 +70,7 @@ describe("Wallet recover", () => {
 
     cy.get(tid("authorized-layout-settings-button")).click();
 
-    cy.get(tid("your-ether-address-widget-eth-address")).should(
+    cy.get(tid("account-address.your.ether-address.input")).should(
       "have.value",
       expectedGeneratedAddress,
     );

@@ -27,21 +27,21 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
   };
 
   render(): React.ReactNode {
-    const { address, className, "data-test-id": dataTestId } = this.props;
+    const { address, className } = this.props;
 
     return (
       <div className={cn(styles.accountAddress, className)}>
         <Avatar seed={address} />
 
         <div className={styles.addressWrapper}>
-          <div className={styles.address} data-test-id={dataTestId}>
+          <div className={styles.address} data-test-id="account-address.your.ether-address.div">
             {address}
             <input
               className={styles.hiddenInput}
               ref={this.addressRef}
               value={address}
               readOnly
-              data-test-id={dataTestId}
+              data-test-id="account-address.your.ether-address.input"
             />
           </div>
           <div className={styles.transactionHistory}>

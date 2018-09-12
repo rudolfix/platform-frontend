@@ -14,6 +14,7 @@ import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
 import { FormField } from "../../../shared/forms/forms";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
+import { Tooltip } from "../../../shared/Tooltip";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -47,6 +48,10 @@ const EtoRegistrationMediaComponent = ({ savingData, saveData, values }: IProps)
 
       <p className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.slideshare" />
+        <Tooltip
+          className="ml-2 d-inline-block"
+          content={<FormattedMessage id="eto.form.eto-media.slide-share.tooltip" />}
+        />
       </p>
       <Row>
         <Col className="offset-1" xs={10}>

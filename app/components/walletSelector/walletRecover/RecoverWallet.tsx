@@ -60,6 +60,7 @@ export class RecoveryProcessesComponent extends React.Component<
               steps={8}
             />
             <RegisterWalletComponent
+              restore={true}
               submitForm={(values: IFormValues) => {
                 this.props.submitForm({ ...values, seed: this.state.seed });
               }}

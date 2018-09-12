@@ -702,6 +702,8 @@
   "wallet-selector.neuwallet.register": "Register",
   "wallet-selector.neuwallet.register-link-text": "You don't have an account?",
   "wallet-selector.neuwallet.register-prompt": "Create your Light Wallet",
+  "wallet-selector.neuwallet.restore": "Restore",
+  "wallet-selector.neuwallet.restore-prompt": "Restore your Light Wallet",
   "wallet-selector.neuwallet.welcome": "Login with Light Wallet",
   "wallet-selector.recover.help.contact-for-help": "Contact for help",
   "wallet-selector.recover.help.email-login": "Please check your inbox for the Access Link you got after creating your Light Wallet",

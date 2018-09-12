@@ -36,7 +36,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
-    <OnlyPublicRoute path={appRoutes.recover} component={WalletRecoverMain} />
+    <OnlyPublicRoute path={appRoutes.restore} component={WalletRecoverMain} />
 
     {process.env.NF_ISSUERS_ENABLED === "1" && [
       <OnlyPublicRoute
@@ -55,8 +55,8 @@ export const AppRouter: React.SFC = () => (
         component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
-        key={appRoutes.recoverEto}
-        path={appRoutes.recoverEto}
+        key={appRoutes.restoreEto}
+        path={appRoutes.restoreEto}
         component={WalletRecoverMain}
       />,
     ]}

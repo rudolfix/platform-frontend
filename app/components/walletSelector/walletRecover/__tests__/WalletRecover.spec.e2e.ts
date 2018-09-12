@@ -39,7 +39,7 @@ describe("Wallet recover", () => {
 
   const expectedGeneratedAddress = "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3";
 
-  it.only("should recover wallet from saved phrases", () => {
+  it("should recover wallet from saved phrases", () => {
     const email = "john-smith@example.com";
     clearEmailServer();
 

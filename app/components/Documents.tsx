@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoState, EtoStateEnum } from "../lib/api/eto/EtoApi.interfaces";
+import { EtoState, EtoStateToCamelcase } from "../lib/api/eto/EtoApi.interfaces";
 import {
   etoDocumentType,
   IEtoDocument,
@@ -134,7 +134,7 @@ class DocumentsComponent extends React.Component<IProps> {
                   const typedFileName = immutableDocumentTitle[key];
                   const canUpload =
                     stateInfo &&
-                    stateInfo.canUploadInStates[EtoStateEnum[etoState]].some(
+                    stateInfo.canUploadInStates[EtoStateToCamelcase[etoState]].some(
                       fileName => fileName === key,
                     );
                   const isFileUploaded = Object.keys(uploadedDocuments).some(

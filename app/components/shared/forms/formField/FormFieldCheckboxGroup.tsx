@@ -2,6 +2,7 @@ import { Field, FormikProps } from "formik";
 import { includes } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
+
 import { CheckboxComponent } from "./FormCheckbox";
 
 interface IFormFieldCheckboxGroupProps {
@@ -37,6 +38,7 @@ export class FormFieldCheckboxGroup extends React.Component<IFormFieldCheckboxGr
 interface IFormFieldCheckboxProps {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export class FormFieldCheckbox extends React.Component<IFormFieldCheckboxProps> {
@@ -45,7 +47,7 @@ export class FormFieldCheckbox extends React.Component<IFormFieldCheckboxProps> 
   };
 
   render(): React.ReactNode {
-    const { value, label, ...restProps } = this.props;
+    const { value, label, disabled, ...restProps } = this.props;
     const { setFieldValue } = this.context.formik as FormikProps<any>;
 
     return (
@@ -57,6 +59,7 @@ export class FormFieldCheckbox extends React.Component<IFormFieldCheckboxProps> 
               <CheckboxComponent
                 {...restProps}
                 name={fieldName}
+                disabled={disabled}
                 label={label}
                 value={value}
                 checked={includes(field.value, value)}

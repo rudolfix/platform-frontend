@@ -2,8 +2,6 @@ import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
 import { SwitchConnected } from "../../shared/connectedRouting";
-import { etoRegisterRoutes } from "./routes";
-
 import { EtoRegistrationCompanyInformation } from "./pages/CompanyInformation";
 import { EtoEquityTokenInfo } from "./pages/EtoEquityTokenInfo";
 import { EtoRegistrationMedia } from "./pages/EtoMedia";
@@ -14,6 +12,7 @@ import { EtoInvestmentTerms } from "./pages/InvestmentTerms";
 import { EtoRegistrationKeyIndividuals } from "./pages/KeyIndividuals";
 import { EtoRegistrationLegalInformation } from "./pages/LegalInformation";
 import { EtoRegistrationRiskAssessment } from "./pages/RiskAssessment";
+import { etoRegisterRoutes } from "./routes";
 
 export const EtoRegisterRouter: React.SFC = () => (
   <SwitchConnected>
@@ -24,7 +23,9 @@ export const EtoRegisterRouter: React.SFC = () => (
     />
     <Route
       path={etoRegisterRoutes.legalInformation}
-      component={EtoRegistrationLegalInformation}
+      render={({ location }) => (
+        <EtoRegistrationLegalInformation readonly={location.state.readonly} />
+      )}
       exact
     />
     <Route
@@ -38,10 +39,26 @@ export const EtoRegisterRouter: React.SFC = () => (
       component={EtoRegistrationRiskAssessment}
       exact
     />
-    <Route path={etoRegisterRoutes.etoTerms} component={EtoRegistrationTerms} exact />
-    <Route path={etoRegisterRoutes.etoEquityTokenInfo} component={EtoEquityTokenInfo} exact />
-    <Route path={etoRegisterRoutes.etoVotingRight} component={EtoVotingRights} exact />
-    <Route path={etoRegisterRoutes.etoInvestmentTerms} component={EtoInvestmentTerms} exact />
+    <Route
+      path={etoRegisterRoutes.etoTerms}
+      render={({ location }) => <EtoRegistrationTerms readonly={location.state.readonly} />}
+      exact
+    />
+    <Route
+      path={etoRegisterRoutes.etoEquityTokenInfo}
+      render={({ location }) => <EtoEquityTokenInfo readonly={location.state.readonly} />}
+      exact
+    />
+    <Route
+      path={etoRegisterRoutes.etoVotingRight}
+      render={({ location }) => <EtoVotingRights readonly={location.state.readonly} />}
+      exact
+    />
+    <Route
+      path={etoRegisterRoutes.etoInvestmentTerms}
+      render={({ location }) => <EtoInvestmentTerms readonly={location.state.readonly} />}
+      exact
+    />
     <Route path={etoRegisterRoutes.etoMedia} component={EtoRegistrationMedia} exact />
     <Redirect to={etoRegisterRoutes.companyInformation} />
   </SwitchConnected>

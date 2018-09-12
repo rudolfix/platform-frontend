@@ -1,11 +1,4 @@
-import {
-  Field,
-  FieldAttributes,
-  FieldProps,
-  FormikErrors,
-  FormikProps,
-  FormikTouched,
-} from "formik";
+import { Field, FieldAttributes, FieldProps } from "formik";
 import { map, mapValues } from "lodash";
 import * as PropTypes from "prop-types";
 import * as React from "react";
@@ -13,8 +6,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup, Input } from "reactstrap";
 
 import { FormLabel } from "./FormLabel";
-
-import { isNonValid } from "./utils";
+import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -24,8 +16,8 @@ export const BOOL_FALSE_KEY = "false";
 
 export const boolify = <T extends {}>(values: T): T => {
   if (!values) return values;
-  const v: any = values;
-  return mapValues(v, key => {
+
+  return mapValues(values, key => {
     if (key === BOOL_TRUE_KEY) return true;
     if (key === BOOL_FALSE_KEY) return false;
     return key;
@@ -34,8 +26,8 @@ export const boolify = <T extends {}>(values: T): T => {
 
 export const unboolify = <T extends {}>(values: T): T => {
   if (!values) return values;
-  const v: any = values;
-  return mapValues(v, key => {
+
+  return mapValues(values, key => {
     if (key === true) return BOOL_TRUE_KEY;
     if (key === false) return BOOL_FALSE_KEY;
     return key;
@@ -58,20 +50,6 @@ interface IFieldGroup {
 }
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
-/* The function that encapsulates the logic of determniing a value for Input field valid property. Note we have to
-   return boolean | undefined value. Undefined should be returned when the field has not been touched by the user. */
-const isValid = (
-  touched: FormikTouched<any>,
-  errors: FormikErrors<any>,
-  name: string,
-): boolean | undefined => {
-  if (touched && touched[name] !== true) {
-    return undefined;
-  }
-
-  return !(errors && errors[name]);
-};
-
 export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
   static contextTypes = {
     formik: PropTypes.object,
@@ -91,9 +69,9 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
         ));
 
   render(): React.ReactChild {
-    const { label, name, extraMessage, "data-test-id": dataTestId } = this.props;
-    const formik: FormikProps<any> = this.context.formik;
-    const { touched, errors, setFieldTouched } = formik;
+    const { label, name, extraMessage, "data-test-id": dataTestId, disabled } = this.props;
+    const { touched, errors, setFieldTouched } = this.context.formik;
+
     //This is done due to the difference between reactstrap and @typings/reactstrap
     const inputExtraProps = {
       invalid: isNonValid(touched, errors, name),
@@ -108,6 +86,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
             render={({ field }: FieldProps) => (
               <Input
                 {...field}
+                disabled={disabled}
                 onFocus={() => setFieldTouched(name, true)}
                 type="select"
                 value={field.value}

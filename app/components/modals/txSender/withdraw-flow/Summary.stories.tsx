@@ -3,7 +3,7 @@ import * as React from "react";
 import { Container } from "reactstrap";
 
 import { ITxData } from "../../../../modules/tx/sender/reducer";
-import { WithdrawSummary } from "./Summary";
+import { WithdrawSummaryComponent } from "./Summary";
 
 const txData: ITxData = {
   to: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
@@ -15,6 +15,6 @@ const txData: ITxData = {
 
 storiesOf("Withdraw summary", module).add("default", () => (
   <Container>
-    <WithdrawSummary data={txData} onAccept={() => {}} />
+    <WithdrawSummaryComponent txData={txData} onAccept={() => {}} />
   </Container>
 ));

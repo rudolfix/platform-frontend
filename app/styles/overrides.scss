@@ -100,6 +100,10 @@ textarea {
     max-width: px-to-rem(600px);
     display: flex;
     justify-content: center;
+
+    &.big {
+      max-width: px-to-rem(800px);
+    }
   }
 }
 

@@ -1,8 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { Container } from "reactstrap";
 
-import { EInvestmentErrorState, EInvestmentType } from "../../../../modules/investmentFlow/reducer";
-import { InvestmentSelectionComponent } from "./Investment";
+import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
+import { InvestmentTypeSelector } from "./InvestmentTypeSelector";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
@@ -36,26 +37,25 @@ const wallets = [
   },
 ];
 
-const dummyProps = {
-  sendTransaction: () => {},
-  changeEthValue: () => {},
-  changeEuroValue: () => {},
-  changeInvestmentType: () => {},
-  onAccept: () => {},
-  euroValue: "1000000000",
-  ethValue: "100000000000",
-  etherPriceEur: "100",
-  errorState: EInvestmentErrorState.ExceedsWalletBalance,
-  investmentType: EInvestmentType.InvestmentWallet,
-  gasCostEth: "10000000",
-  minTicketEur: 200,
-  readyToInvest: false,
-};
+// tslint:disable-next-line:no-console
+const onSelect = (v: any) => console.log(v);
 
-storiesOf("InvestmentSelection", module).add("default", () => (
-  <InvestmentSelectionComponent
-    wallets={wallets}
-    investmentType={EInvestmentType.InvestmentWallet}
-    {...dummyProps}
-  />
+storiesOf("InvestmentTypeSelector", module).add("default", () => (
+  <Container>
+    <InvestmentTypeSelector
+      wallets={wallets}
+      currentType={EInvestmentType.None}
+      onSelect={onSelect}
+    />
+  </Container>
+));
+
+storiesOf("InvestmentTypeSelector", module).add("selected", () => (
+  <Container>
+    <InvestmentTypeSelector
+      wallets={wallets}
+      currentType={EInvestmentType.InvestmentWallet}
+      onSelect={onSelect}
+    />
+  </Container>
 ));

@@ -8,6 +8,7 @@ import { CommonHtmlProps, TAcceptedFileType } from "../../../../types";
 import { SingleFileUpload } from "../../SingleFileUpload";
 
 interface IOwnProps {
+  disabled?: boolean;
   name: string;
   label: string | React.ReactNode;
   acceptedFiles: TAcceptedFileType;
@@ -59,7 +60,15 @@ export class FormSingleFileUploadComponent extends React.Component<
   }
 
   render(): React.ReactChild {
-    const { label, name, fileFormatInformation, acceptedFiles, className, style } = this.props;
+    const {
+      label,
+      name,
+      fileFormatInformation,
+      acceptedFiles,
+      className,
+      style,
+      disabled,
+    } = this.props;
 
     return (
       <Field
@@ -75,6 +84,7 @@ export class FormSingleFileUploadComponent extends React.Component<
             onDeleteFile={this.onDeleteFile}
             className={className}
             style={style}
+            disabled={disabled}
           />
         )}
       />

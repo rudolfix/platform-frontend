@@ -52,12 +52,14 @@ const RadioButtonComponent: React.SFC<IProps & IInternalProps> = ({
   value,
   onChange,
   checked,
+  disabled,
   "data-test-id": dataTestId,
 }) => {
   return (
     <label className={styles.checkbox}>
       <input
         className={styles.input}
+        disabled={disabled}
         onChange={onChange}
         type="radio"
         name={name}

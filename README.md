@@ -65,14 +65,17 @@ If you need to push the contract artifacts to the newest version yourself, then 
 ```
 yarn update-contract-artifacts
 ```
-then commit the submodules change. It is important to commit before you run yarn,
-since the yarn prepare script will revert uncommited changes to git submodules,
-and repin them to the local version.
+
+then commit the submodules change. It is important to commit before you run yarn, since the yarn
+prepare script will revert uncommited changes to git submodules, and repin them to the local
+version.
+
 ```
 yarn
 ```
 
-If somebody else committed a new version of the submodules, just run yarn, and everything will be updated
+If somebody else committed a new version of the submodules, just run yarn, and everything will be
+updated
 
 ### Docs
 

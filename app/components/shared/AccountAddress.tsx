@@ -34,7 +34,7 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
         <Avatar seed={address} />
 
         <div className={styles.addressWrapper}>
-          <div className={styles.address}>
+          <div className={styles.address} data-test-id={dataTestId}>
             {address}
             <input
               className={styles.hiddenInput}

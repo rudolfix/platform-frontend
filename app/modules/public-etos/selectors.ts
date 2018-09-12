@@ -3,19 +3,19 @@ import BigNumber from "bignumber.js";
 import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { ICalculatedContribution, IPublicEtoState } from "./reducer";
 
-export const selectCurrentEto = (state: IPublicEtoState) =>
-  state.currentPublicEtoId ? state.publicEtos[state.currentPublicEtoId] : undefined;
+export const selectEtoById = (state: IPublicEtoState, etoId: string) =>
+  state.publicEtos[etoId];
 
-export const selectCurrentCalculatedContribution = (state: IPublicEtoState) =>
-  state.currentPublicEtoId ? state.calculatedContributions[state.currentPublicEtoId] : undefined;
+export const selectCalculatedContributionByEtoId = (state: IPublicEtoState, etoId: string) =>
+  state.calculatedContributions[etoId];
 
-export const selectCurrentEquityTokenCount = (state: IPublicEtoState) => {
-  const contrib = selectCurrentCalculatedContribution(state);
+export const selectEquityTokenCountByEtoId = (state: IPublicEtoState, etoId: string) => {
+  const contrib = selectCalculatedContributionByEtoId(state, etoId);
   return contrib && contrib.equityTokenInt.toString();
 };
 
-export const selectCurrentNeuRewardUlps = (state: IPublicEtoState) => {
-  const contrib = selectCurrentCalculatedContribution(state);
+export const selectNeuRewardUlpsByEtoId = (state: IPublicEtoState, etoId: string) => {
+  const contrib = selectCalculatedContributionByEtoId(state, etoId);
   return contrib && contrib.neuRewardUlps.toString();
 };
 

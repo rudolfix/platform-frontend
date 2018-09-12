@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import { fork, put, select } from "redux-saga/effects";
 
+import { keyBy } from "lodash";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
@@ -16,9 +17,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { IPublicEtoState } from "./reducer";
 import {
-  convertToCalculatedContribution,
-  selectCurrentCalculatedContribution,
-  selectCurrentEto,
+  convertToCalculatedContribution, selectCalculatedContributionByEtoId, selectEtoById,
 } from "./selectors";
 
 export function* loadEtoPreview(
@@ -55,21 +54,15 @@ export function* loadEtoPreview(
 
 function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
   try {
-    const etoData: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
+    const etosResponse: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
 
-    const etos: { [id: string]: TPublicEtoData } = {};
-    const order: string[] = [];
-    etoData.body.forEach(eto => {
-      if (eto.etoId) {
-        etos[eto.etoId] = eto;
-        order.push(eto.etoId);
-      }
-    });
+    const etos = keyBy(etosResponse.body, eto => eto.etoId);
+    const order = etosResponse.body.map(eto => eto.etoId)
 
     yield put(actions.publicEtos.setPublicEtos(etos));
     yield put(actions.publicEtos.setEtosDisplayOrder(order));
   } catch (e) {
-    logger.error("ETOs could not be loaded", e, e.message);
+    logger.error("ETOs could not be loaded", e);
   }
 }
 
@@ -100,22 +93,15 @@ export function* loadComputedContributionFromContract(
   }
 }
 
-function* loadCurrentCalculatedContribution(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "PUBLIC_ETOS_LOAD_CURRENT_CALCULATED_CONTRIBUTION") return;
+function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION") return;
   const state: IPublicEtoState = yield select((s: IAppState) => s.publicEtos);
-  const current = selectCurrentEto(state);
-  if (!current) return;
-  const contribution = selectCurrentCalculatedContribution(state);
+  const eto = selectEtoById(state, action.payload.etoId);
+  if (!eto) return;
+  const contribution = selectCalculatedContributionByEtoId(state, eto.etoId);
   if (!contribution || action.payload.investmentEurUlps) {
-    yield neuCall(loadComputedContributionFromContract, current, action.payload.investmentEurUlps);
+    yield neuCall(loadComputedContributionFromContract, eto, action.payload.investmentEurUlps);
   }
-}
-
-function* changeCurrentEto(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "PUBLIC_ETOS_LOAD_CURRENT_PUBLIC_ETO") return;
-  const { etoId } = action.payload;
-  yield put(actions.publicEtos.setCurrentEto(etoId));
-  yield put(actions.publicEtos.loadCurrentCalculatedContribution());
 }
 
 export function* etoSagas(): any {
@@ -123,8 +109,7 @@ export function* etoSagas(): any {
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
   yield fork(
     neuTakeEvery,
-    "PUBLIC_ETOS_LOAD_CURRENT_CALCULATED_CONTRIBUTION",
-    loadCurrentCalculatedContribution,
+    "PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION",
+    loadCalculatedContribution,
   );
-  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_CURRENT_PUBLIC_ETO", changeCurrentEto);
 }

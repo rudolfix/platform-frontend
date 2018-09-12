@@ -177,7 +177,7 @@ const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: stri
 
 // Debug sagas - can be removed after all transaction flows are implemented and e2e tested
 
-function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterator<any> {
+function* signDummyMessage({logger}: TGlobalDependencies, action: TAction): Iterator<any> {
   if (action.type !== "TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE") {
     return;
   }
@@ -192,11 +192,9 @@ function* signDummyMessage(_deps: TGlobalDependencies, action: TAction): Iterato
     );
 
     // this is just for demo purposes
-    // tslint:disable-next-line
-    console.log("signed: ", signed);
+    logger.info("signed: ", signed);
   } catch {
-    // tslint:disable-next-line
-    console.log("Error while signing a message :( ");
+    logger.error("Error while signing a message :( ");
   }
 }
 

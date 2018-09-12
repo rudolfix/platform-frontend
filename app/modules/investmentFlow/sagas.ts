@@ -11,7 +11,7 @@ import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";
 import { loadComputedContributionFromContract } from "../public-etos/sagas";
-import { selectCurrentCalculatedContribution, selectCurrentEto } from "../public-etos/selectors";
+import { selectCalculatedContributionByEtoId, selectEtoById } from "../public-etos/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { ITxData } from "../tx/sender/reducer";
@@ -84,7 +84,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   const i = state.investmentFlow;
   const value = i.euroValueUlps;
   const wallet = state.wallet.data;
-  const contribs = selectCurrentCalculatedContribution(state.publicEtos);
+  const contribs = selectCalculatedContributionByEtoId(state.publicEtos, i.etoId);
 
   if (!contribs || !value || !wallet) return;
 
@@ -127,7 +127,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   yield delay(300);
 
   let state: IAppState = yield select();
-  const eto = selectCurrentEto(state.publicEtos);
+  const eto = selectEtoById(state.publicEtos, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
   if (value && eto) {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
@@ -146,6 +146,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
   yield put(actions.investmentFlow.investmentReset());
+  yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.startInvestment());
   yield setGasPrice();
@@ -166,11 +167,12 @@ function* setGasPrice(): any {
 
 function* generateTransaction({ contractsService }: TGlobalDependencies): any {
   const state: IAppState = yield select();
-  const eto = selectCurrentEto(state.publicEtos);
-  if (!eto || !selectReadyToInvest(state.investmentFlow)) {
+  const i = state.investmentFlow;
+  const eto = selectEtoById(state.publicEtos, i.etoId);
+
+  if (!eto || !selectReadyToInvest(i)) {
     throw new Error("Investment data is not valid to create an Transaction");
   }
-  const i = state.investmentFlow;
 
   let txDetails: ITxData | undefined;
 

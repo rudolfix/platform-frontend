@@ -20,9 +20,9 @@ import {
   selectReadyToInvest,
 } from "../../../../modules/investmentFlow/selectors";
 import {
-  selectCurrentEquityTokenCount,
-  selectCurrentEto,
-  selectCurrentNeuRewardUlps,
+  selectEquityTokenCountByEtoId,
+  selectEtoById,
+  selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import {
@@ -293,7 +293,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const i = state.investmentFlow;
-      const eto = selectCurrentEto(state.publicEtos);
+      const eto = selectEtoById(state.publicEtos, i.etoId);
       const eur = selectEurValueUlps(i);
       return {
         etherPriceEur: selectEtherPriceEur(state.tokenPrice),
@@ -303,8 +303,8 @@ export const InvestmentSelection: React.SFC = compose<any>(
         gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
         investmentType: selectInvestmentType(i),
         wallets: createWallets(state),
-        neuReward: selectCurrentNeuRewardUlps(state.publicEtos),
-        equityTokenCount: selectCurrentEquityTokenCount(state.publicEtos),
+        neuReward: selectNeuRewardUlpsByEtoId(state.publicEtos, i.etoId),
+        equityTokenCount: selectEquityTokenCountByEtoId(state.publicEtos, i.etoId),
         showTokens: !!(eur && i.isValidatedInput),
         minTicketEur: (eto && eto.minTicketEur) || 0,
         readyToInvest: selectReadyToInvest(state.investmentFlow),

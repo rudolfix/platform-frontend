@@ -28,6 +28,7 @@ export enum EInvestmentErrorState {
 }
 
 export interface IInvestmentFlowState {
+  etoId: string;
   euroValueUlps: string;
   ethValueUlps: string;
   investmentType: EInvestmentType;
@@ -38,6 +39,7 @@ export interface IInvestmentFlowState {
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
+  etoId: "",
   euroValueUlps: "",
   ethValueUlps: "",
   investmentType: EInvestmentType.None,
@@ -58,8 +60,14 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
         ...investmentFlowInitialState,
+        etoId: state.etoId,
         gasPrice: state.gasPrice,
         investmentType: action.payload.type,
+      };
+    case "INVESTMENT_FLOW_SET_ETO_ID":
+      return {
+        ...state,
+        etoId: action.payload.etoId
       };
     case "INVESTMENT_FLOW_SET_GAS_PRICE":
       return {

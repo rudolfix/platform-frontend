@@ -24,7 +24,6 @@ export interface IPublicEtoState {
 
   // for endpoint eto-listing/etos
   publicEtos: { [etoId: string]: TPublicEtoData | undefined };
-  currentPublicEtoId?: string;
   calculatedContributions: { [etoId: string]: ICalculatedContribution };
   displayOrder: string[];
 }
@@ -52,11 +51,6 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
       return {
         ...state,
         displayOrder: action.payload.order,
-      };
-    case "PUBLIC_ETOS_SET_CURRENT_ETO":
-      return {
-        ...state,
-        currentPublicEtoId: action.payload.etoId,
       };
     case "PUBLIC_ETOS_SET_CALCULATED_CONTRIBUTION":
       return {

@@ -3,7 +3,7 @@ import { EInvestmentCurrency, EInvestmentErrorState, EInvestmentType } from "./r
 
 export const investmentFlowActions = {
   // public actions
-  investmentStart: () => createSimpleAction("INVESTMENT_FLOW_START"),
+  investmentStart: (etoId: string) => createAction("INVESTMENT_FLOW_START", { etoId }),
   investmentReset: () => createSimpleAction("INVESTMENT_FLOW_RESET"),
   selectInvestmentType: (type: EInvestmentType) =>
     createAction("INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE", { type }),
@@ -12,6 +12,8 @@ export const investmentFlowActions = {
   validateInputs: () => createSimpleAction("INVESTMENT_FLOW_VALIDATE_INPUTS"),
   generateInvestmentTx: () => createSimpleAction("INVESTMENT_FLOW_GENERATE_TX"),
   // state mutations
+  setEtoId: (etoId: string) =>
+    createAction("INVESTMENT_FLOW_SET_ETO_ID", { etoId }),
   setEthValue: (value: string) =>
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_ETH_VALUE", { value }),
   setEurValue: (value: string) =>

@@ -10,9 +10,9 @@ import {
   selectInvestmentGasCostEth,
 } from "../../../../modules/investmentFlow/selectors";
 import {
-  selectCurrentEquityTokenCount,
-  selectCurrentEto,
-  selectCurrentNeuRewardUlps,
+  selectEquityTokenCountByEtoId,
+  selectEtoById,
+  selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
@@ -144,7 +144,7 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
     const i = state.investmentFlow;
     const p = state.publicEtos;
     // eto and computed values are guaranteed to be present at investment summary state
-    const eto = selectCurrentEto(p)!;
+    const eto = selectEtoById(p, i.etoId)!;
     return {
       agreementUrl: "fufu",
       companyName: eto.company.name,
@@ -152,8 +152,8 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
       investmentEth: selectEthValueUlps(i),
       investmentEur: selectEurValueUlps(i),
       gasCostEth: selectInvestmentGasCostEth(i),
-      equityTokens: selectCurrentEquityTokenCount(p) as string,
-      estimatedReward: selectCurrentNeuRewardUlps(p) as string,
+      equityTokens: selectEquityTokenCountByEtoId(p, i.etoId) as string,
+      estimatedReward: selectNeuRewardUlpsByEtoId(p, i.etoId) as string,
       etherPriceEur: selectEtherPriceEur(state.tokenPrice),
     };
   },

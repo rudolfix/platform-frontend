@@ -58,6 +58,22 @@ yarn intl:extract
 
 [Read more](./docs/working-with-intl.md)
 
+### Update contract artifacts submodule
+
+If you need to push the contract artifacts to the newest version yourself, then run.
+
+```
+yarn update-contract-artifacts
+```
+then commit the submodules change. It is important to commit before you run yarn,
+since the yarn prepare script will revert uncommited changes to git submodules,
+and repin them to the local version.
+```
+yarn
+```
+
+If somebody else committed a new version of the submodules, just run yarn, and everything will be updated
+
 ### Docs
 
 - [Component Development Guidelines](./docs/component-development-guidelines.md)

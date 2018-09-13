@@ -9,7 +9,7 @@ import { InfoBlock } from "../../shared/InfoBlock";
 
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/forms";
+import { FormField } from "../../shared/forms/index";
 
 import { actions } from "../../../modules/actions";
 

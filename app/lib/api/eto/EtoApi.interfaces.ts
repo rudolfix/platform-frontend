@@ -234,6 +234,7 @@ export const EtoInvestmentTermsType = YupTS.object({
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
 
 interface IAdditionalEtoType {
+  etoId: string;
   companyId: string;
   previewCode: string;
   state: EtoState;
@@ -241,6 +242,7 @@ interface IAdditionalEtoType {
   templates: TEtoDocumentTemplates;
   startDate: string;
   documents: TEtoDocumentTemplates;
+  maxPledges: number;
 }
 
 export type TEtoSpecsData = TEtoTermsType &

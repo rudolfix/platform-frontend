@@ -111,6 +111,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         />
 
         <EtoOverviewStatus
+          etoId={etoData.etoId}
           tokenImage={{
             srcSet: {
               "1x": etoData.equityTokenImage || token_icon,
@@ -132,12 +133,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           status="campaigning"
           raisedAmount="2000"
           campaigningWidget={{
-            amountBacked: "amountBacked",
-            investorsBacked: 22,
-            investorsLimit: 500,
-            wasBacked: false,
-            isLoggedIn: true,
-            isActivated: true,
+            investorsLimit: etoData.maxPledges,
+            maxPledge: etoData.maxTicketEur,
+            minPledge: etoData.minTicketEur,
+            isActivated: etoData.isBookbuilding,
             quote: "Lorem ipsum",
           }}
           publicWidget={{

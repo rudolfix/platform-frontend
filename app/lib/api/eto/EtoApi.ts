@@ -55,6 +55,7 @@ export class EtoApi {
       url: ETO_PREVIEW_PATH + previewCode,
     });
   }
+
   public async getCompanyDataById(
     companyId: string,
   ): Promise<IHttpResponse<TPartialCompanyEtoData>> {
@@ -88,6 +89,13 @@ export class EtoApi {
       baseUrl: BASE_PATH,
       url: ETO_BOOK_BUILDING_PATH,
       body: { is_bookbuilding: isBookBuilding },
+    });
+  }
+
+  public getBookBuildingStats(etoId: string): Promise<IHttpResponse<any>> {
+    return this.httpClient.get<any>({
+      baseUrl: BASE_PATH,
+      url: ETOS_PATH + "/" + etoId + "/bookbuilding-stats",
     });
   }
 }

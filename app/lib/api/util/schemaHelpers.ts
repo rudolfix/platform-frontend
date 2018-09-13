@@ -1,7 +1,7 @@
 import { includes, mapValues } from "lodash";
 import * as moment from "moment";
 import * as Yup from "yup";
-import { NONE_KEY } from "../../../components/shared/forms/forms";
+import { NONE_KEY } from "../../../components/shared/forms/index";
 
 /**
  * Schema helpers

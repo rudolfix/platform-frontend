@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
+
 import { AppDispatch } from "../store";
 
 interface IOnEnterActionDispatchProps {
@@ -7,7 +8,7 @@ interface IOnEnterActionDispatchProps {
 }
 
 interface IOnEnterActionOptions {
-  actionCreator: (dispatch: AppDispatch) => void;
+  actionCreator: (dispatch: AppDispatch, props: any) => void;
   pure?: boolean;
 }
 
@@ -18,8 +19,8 @@ export const onEnterAction: (
 ) => React.ComponentClass = options => WrappedComponent =>
   connect<{}, IOnEnterActionDispatchProps>(
     undefined,
-    dispatch => ({
-      enterAction: () => options.actionCreator(dispatch),
+    (dispatch, props) => ({
+      enterAction: () => options.actionCreator(dispatch, props),
     }),
     undefined,
     {

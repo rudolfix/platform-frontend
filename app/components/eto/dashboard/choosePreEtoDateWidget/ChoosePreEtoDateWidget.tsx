@@ -41,4 +41,4 @@ const ChoosePreEtoDateWidget = compose<React.SFC>(
   injectIntlHelpers,
 )(ChoosePreEtoDateWidgetComponent);
 
-export { ChoosePreEtoDateWidgetComponent, ChoosePreEtoDateWidget }
+export { ChoosePreEtoDateWidgetComponent, ChoosePreEtoDateWidget };

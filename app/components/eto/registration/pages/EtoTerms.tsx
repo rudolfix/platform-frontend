@@ -16,7 +16,7 @@ import {
 } from "../../../shared/forms/formField/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
-import { FormField, FormTextArea } from "../../../shared/forms/forms";
+import { FormField, FormTextArea } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {

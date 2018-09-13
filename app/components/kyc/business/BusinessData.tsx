@@ -14,7 +14,7 @@ import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/Buttons";
-import { FormField, FormSelectCountryField } from "../../shared/forms/forms";
+import { FormField, FormSelectCountryField } from "../../shared/forms/index";
 import { businessRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";

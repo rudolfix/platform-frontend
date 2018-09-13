@@ -15,7 +15,7 @@ import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/Buttons";
 import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { FormField } from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {

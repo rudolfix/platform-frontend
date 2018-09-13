@@ -8,6 +8,7 @@ import {
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
+import { recoverRoutes } from "../recoverRoutes";
 
 describe("Wallet recover", () => {
   const words = [
@@ -43,7 +44,7 @@ describe("Wallet recover", () => {
     const email = "john-smith@example.com";
     clearEmailServer();
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
 
     typeLightwalletRecoveryPhrase(words);
 
@@ -108,7 +109,7 @@ describe("Wallet recover", () => {
     const email = "0xE6Ad2@neufund.org";
     const password = "strongpassword";
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
     typeLightwalletRecoveryPhrase(words);
     typeEmailPassword(email, password);
 
@@ -150,7 +151,7 @@ describe("Wallet recover", () => {
 
     cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
     typeLightwalletRecoveryPhrase(words);
     typeEmailPassword(email, password);
 
@@ -193,7 +194,7 @@ describe("Wallet recover", () => {
     const email = "john-smith@example.com";
     cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
 
     typeLightwalletRecoveryPhrase(words);
 

@@ -31,6 +31,7 @@
     "no-var-keyword": true,
     "no-console": true,
     "no-debugger": true,
+    "no-invalid-this": false,
     "typedef": [true, "call-signature"],
     "ordered-imports": true,
     "no-commented-code": true,

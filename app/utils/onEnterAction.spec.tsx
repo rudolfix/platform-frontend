@@ -23,17 +23,18 @@ describe("onEnterAction", () => {
   });
 
   it("should call action creator when mount", () => {
+    const store = createDummyStore();
+    const props = { foo: "bar" };
     const actionCreator = spy();
 
     const OnMountActionComponent = onEnterAction({ actionCreator })(SomeComponent);
-    const store = createDummyStore();
 
     createMount(
       <ReduxProvider store={store}>
-        <OnMountActionComponent />
+        <OnMountActionComponent {...props} />
       </ReduxProvider>,
     );
 
-    expect(actionCreator).to.be.calledWithExactly(store.dispatch);
+    expect(actionCreator).to.be.calledWithExactly(store.dispatch, props);
   });
 });

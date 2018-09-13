@@ -1,10 +1,9 @@
 import { accessWalletReducer } from "./accessWallet/reducer";
 import { authReducer } from "./auth/reducer";
-import { dashboardReducer } from "./dashboard/reducer";
+import { bookBuildingFlowReducer } from "./bookbuilding-flow/reducer";
 import { depositEthModalReducer } from "./depositEthModal/reducer";
 import { etoDocumentReducer } from "./eto-documents/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
-import { etoReducer } from "./eto/reducer";
 import { gasReducer } from "./gas/reducer";
 import { genericModalReducer } from "./genericModal/reducer";
 import { icbmWalletBalanceModalReducer } from "./icbmWalletBalanceModal/reducer";
@@ -14,6 +13,7 @@ import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./personProfileModal/reducer";
+import { publicEtosReducer } from "./public-etos/reducer";
 import { settingsReducer } from "./settings/reducer";
 import { tokenPriceReducer } from "./shared/tokenPrice/reducer";
 import { txMonitorReducer } from "./tx/monitor/reducer";
@@ -48,8 +48,9 @@ export const appReducers = {
   wallet: walletReducer,
   notifications: notificationsReducer,
   etoFlow: etoFlowReducer,
+  bookBuildingFlow: bookBuildingFlowReducer,
   etoDocuments: etoDocumentReducer,
-  eto: etoReducer,
+  publicEtos: publicEtosReducer,
   depositEthModal: depositEthModalReducer,
   txSender: txSenderReducer,
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
@@ -58,5 +59,4 @@ export const appReducers = {
   investmentFlow: investmentFlowReducer,
   videoModal: videoModalReducer,
   personProfileModal: personProfileModalReducer,
-  dashboard: dashboardReducer,
 };

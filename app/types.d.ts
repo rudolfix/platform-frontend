@@ -22,6 +22,7 @@ type DeepPartial<T> = {
 };
 
 export type TDictionaryValues<T> = T extends Dictionary<infer U> ? U : never;
+export type TDictionaryArrayValues<T> = T extends Array<Dictionary<infer U>> ? U : never;
 
 export type primitive = string | number | boolean | undefined | null;
 export type DeepReadonly<T> = T extends primitive

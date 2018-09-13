@@ -26,7 +26,7 @@ import {
   FormSelectField,
   NONE_KEY,
   unboolify,
-} from "../../shared/forms/forms";
+} from "../../shared/forms/index";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 

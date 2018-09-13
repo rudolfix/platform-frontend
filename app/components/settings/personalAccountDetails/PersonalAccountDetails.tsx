@@ -34,14 +34,13 @@ interface IRecordProps {
   details?: TTranslatedString;
 }
 
-const Record: React.SFC<IRecordProps> = ({ value, label, details }) => {
+const Record: React.SFC<IRecordProps> = ({ label, details }) => {
   return (
     <div className={styles.record}>
       <div className={styles.label}>
         {label}
         {details && <div className={styles.details}>{details}</div>}
       </div>
-      <div className={styles.value}>{value}</div>
     </div>
   );
 };
@@ -86,7 +85,6 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
                 {personalData.birthDate && (
                   <Record
                     label={<FormattedMessage id="settings.account-details.date-of-birth" />}
-                    details="dd/mm/yyyy"
                     value={personalData.birthDate}
                   />
                 )}
@@ -96,7 +94,6 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
                   personalData.country && (
                     <Record
                       label={<FormattedMessage id="settings.account-details.address" />}
-                      details={<FormattedMessage id="settings.account-details.address-details" />}
                       value={`${personalData.street}, ${personalData.city} ${
                         personalData.zipCode
                       }, ${personalData.country}`}

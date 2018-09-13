@@ -11,6 +11,8 @@ import { convertToBigInt } from "../../utils/Money.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";
+import { loadComputedContributionFromContract } from "../public-etos/sagas";
+import { selectCalculatedContributionByEtoId, selectEtoById } from "../public-etos/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { selectLiquidEtherBalance } from "../wallet/selectors";
@@ -22,7 +24,6 @@ import {
   IInvestmentFlowState,
 } from "./reducer";
 import {
-  convertToCalculatedContribution,
   selectCurrencyByInvestmentType,
   selectInvestmentGasCostEth,
   selectIsICBMInvestment,
@@ -47,6 +48,7 @@ function* processCurrencyValue(action: TAction): any {
     yield put(actions.investmentFlow.setErrorState());
   }
 
+  yield put(actions.investmentFlow.setIsInputValidated(false));
   yield computeAndSetCurrencies(value && convertToBigInt(value), action.payload.currency);
   yield put(actions.investmentFlow.validateInputs());
 }
@@ -82,7 +84,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   const i = state.investmentFlow;
   const value = i.euroValueUlps;
   const wallet = state.wallet.data;
-  const contribs = i.calculatedContribution;
+  const contribs = selectCalculatedContributionByEtoId(state.publicEtos, i.etoId);
 
   if (!contribs || !value || !wallet) return;
 
@@ -125,28 +127,18 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   yield delay(300);
 
   let state: IAppState = yield select();
-  const eto = state.investmentFlow.eto;
+  const eto = selectEtoById(state.publicEtos, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
   if (value && eto) {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
     if (etoContract) {
-      const from = selectEthereumAddressWithChecksum(state.web3);
       const isICBM = selectIsICBMInvestment(state.investmentFlow);
-      const calculation = yield etoContract.calculateContribution(
-        from,
-        isICBM,
-        new BigNumber(value),
-      );
-      yield put(
-        actions.investmentFlow.setCalculatedContribution(
-          convertToCalculatedContribution(calculation),
-        ),
-      );
+      yield neuCall(loadComputedContributionFromContract, eto, value, isICBM);
       state = yield select();
       yield put(actions.investmentFlow.setErrorState(validateInvestment(state)));
+      yield put(actions.investmentFlow.setIsInputValidated(true));
     }
   } else {
-    yield put(actions.investmentFlow.setCalculatedContribution());
     yield put(actions.investmentFlow.setErrorState());
   }
 }
@@ -154,8 +146,8 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
   yield put(actions.investmentFlow.investmentReset());
+  yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
   yield put(actions.gas.gasApiEnsureLoading());
-  yield put(actions.investmentFlow.setEto(action.payload.eto));
   yield put(actions.txSender.startInvestment());
   yield setGasPrice();
 }
@@ -175,10 +167,12 @@ function* setGasPrice(): any {
 
 function* generateTransaction({ contractsService }: TGlobalDependencies): any {
   const state: IAppState = yield select();
-  if (!selectReadyToInvest(state.investmentFlow)) {
+  const i = state.investmentFlow;
+  const eto = selectEtoById(state.publicEtos, i.etoId);
+
+  if (!eto || !selectReadyToInvest(i)) {
     throw new Error("Investment data is not valid to create an Transaction");
   }
-  const i = state.investmentFlow;
 
   let txDetails: ITxData | undefined;
 
@@ -191,7 +185,7 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
       // so we call the rawWeb3Contract directly
       const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
         "address,uint256,bytes"
-      ].getData(i.eto!.etoId, i.ethValueUlps, "");
+      ].getData(eto.etoId, i.ethValueUlps, "");
 
       txDetails = {
         to: contractsService.etherToken.address,
@@ -206,7 +200,7 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
     } else {
       const ethVal = new BigNumber(i.ethValueUlps);
       const difference = ethVal.sub(etherTokenBalance);
-      const txCall = contractsService.etherToken.depositAndTransferTx(i.eto!.etoId, ethVal, [""]);
+      const txCall = contractsService.etherToken.depositAndTransferTx(eto.etoId, ethVal, [""]);
       txDetails = {
         to: contractsService.etherToken.address,
         from: selectEthereumAddressWithChecksum(state.web3),
@@ -222,6 +216,7 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
     yield put(actions.txSender.txSenderAcceptDraft(txDetails));
   }
 }
+
 function* recalculateCurrencies(): any {
   yield delay(100); // wait for new token price to be available
   const i: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
@@ -233,12 +228,17 @@ function* recalculateCurrencies(): any {
   }
 }
 
+function* cancelInvestment(): any {
+  yield put(actions.txSender.txSenderHideModal());
+}
+
 export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", processCurrencyValue);
   yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs);
   yield takeEvery("INVESTMENT_FLOW_START", start);
   yield fork(neuTakeEvery, "INVESTMENT_FLOW_GENERATE_TX", generateTransaction);
   yield takeEvery("TX_SENDER_HIDE_MODAL", stop);
+  yield takeEvery("PUBLIC_ETOS_SET_CURRENT_ETO", cancelInvestment); // cancel when current eto changes
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);

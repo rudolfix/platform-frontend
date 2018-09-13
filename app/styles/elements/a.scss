@@ -1,5 +1,6 @@
 a {
   &[href^="http"],
+  &[href^="/"],
   &[download] {
     text-decoration: underline;
   }

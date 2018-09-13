@@ -1,6 +1,7 @@
 import { TDictionaryArrayValues } from "../types";
 import { accessWalletActions } from "./accessWallet/actions";
 import { authActions } from "./auth/actions";
+import { bookBuildingFlowActions } from "./bookbuilding-flow/actions";
 import { depositModalActions } from "./depositEthModal/actions";
 import { etoDocumentsActions } from "./eto-documents/actions";
 import { etoFlowActions } from "./eto-flow/actions";
@@ -48,6 +49,7 @@ export const actions = {
   etoFlow: etoFlowActions,
   etoDocuments: etoDocumentsActions,
   publicEtos: etoActions,
+  bookBuilding: bookBuildingFlowActions,
   formSingleFileUpload: formSingleFileUploadActions,
   remoteFile: remoteFileActions,
   depositEthModal: depositModalActions,
@@ -68,6 +70,7 @@ export const allActions = [
   etoDocumentsActions,
   verifyEmailActions,
   settingsActions,
+  bookBuildingFlowActions,
   genericModalActions,
   accessWalletActions,
   initActions,

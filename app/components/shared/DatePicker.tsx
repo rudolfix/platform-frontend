@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { DatetimeProps, TypedDatetime } from "./forms/forms";
+import { DatetimeProps, TypedDatetime } from "./forms/index";
 import { InlineIcon } from "./InlineIcon";
 
 import * as iconCalendar from "../../assets/img/inline_icons/calendar.svg";

@@ -16,7 +16,7 @@ import { Button } from "../../../shared/Buttons";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormFieldDate } from "../../../shared/forms/formField/FormFieldDate";
 import { FormSelectField } from "../../../shared/forms/formField/FormSelectField";
-import { FormField } from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 

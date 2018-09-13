@@ -17,7 +17,7 @@ import {
   FormSelectField,
   NONE_KEY,
   unboolify,
-} from "../../shared/forms/forms";
+} from "../../shared/forms/index";
 
 import { KYCBeneficialOwners } from "./BeneficialOwners";
 

@@ -12,16 +12,18 @@ import {
   EInvestmentType,
 } from "../../../../modules/investmentFlow/reducer";
 import {
-  selectEquityTokenCount,
   selectErrorState,
   selectEthValueUlps,
-  selectEto,
   selectEurValueUlps,
   selectInvestmentGasCostEth,
   selectInvestmentType,
-  selectNeuRewardUlps,
   selectReadyToInvest,
 } from "../../../../modules/investmentFlow/selectors";
+import {
+  selectEquityTokenCountByEtoId,
+  selectEtoById,
+  selectNeuRewardUlpsByEtoId,
+} from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import {
   selectICBMLockedEtherBalance,
@@ -61,6 +63,7 @@ interface IStateProps {
   neuReward?: string;
   minTicketEur: number;
   readyToInvest: boolean;
+  showTokens: boolean;
 }
 
 interface IDispatchProps {
@@ -228,7 +231,9 @@ export const InvestmentSelectionComponent = injectIntlHelpers((props: IProps & I
                   <FormattedMessage id="investment-flow.equity-tokens" />
                 </Label>
                 <InfoAlert>
-                  {(props.equityTokenCount && formatThousands(props.equityTokenCount.toString())) ||
+                  {(props.showTokens &&
+                    props.equityTokenCount &&
+                    formatThousands(props.equityTokenCount.toString())) ||
                     "\xA0" /* non breaking space*/}
                 </InfoAlert>
               </FormGroup>
@@ -240,7 +245,10 @@ export const InvestmentSelectionComponent = injectIntlHelpers((props: IProps & I
                   <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                 </Label>
                 <InfoAlert>
-                  {(props.neuReward && formatThousands(formatEth(props.neuReward))) || "\xA0"}
+                  {(props.showTokens &&
+                    props.neuReward &&
+                    formatThousands(formatEth(props.neuReward))) ||
+                    "\xA0"}
                 </InfoAlert>
               </FormGroup>
             </Col>
@@ -285,17 +293,19 @@ export const InvestmentSelection: React.SFC = compose<any>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const i = state.investmentFlow;
-      const eto = selectEto(i);
+      const eto = selectEtoById(state.publicEtos, i.etoId);
+      const eur = selectEurValueUlps(i);
       return {
         etherPriceEur: selectEtherPriceEur(state.tokenPrice),
-        euroValue: selectEurValueUlps(i),
+        euroValue: eur,
         ethValue: selectEthValueUlps(i),
         errorState: selectErrorState(i),
         gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
         investmentType: selectInvestmentType(i),
         wallets: createWallets(state),
-        neuReward: selectNeuRewardUlps(i),
-        equityTokenCount: selectEquityTokenCount(i),
+        neuReward: selectNeuRewardUlpsByEtoId(state.publicEtos, i.etoId),
+        equityTokenCount: selectEquityTokenCountByEtoId(state.publicEtos, i.etoId),
+        showTokens: !!(eur && i.isValidatedInput),
         minTicketEur: (eto && eto.minTicketEur) || 0,
         readyToInvest: selectReadyToInvest(state.investmentFlow),
       };

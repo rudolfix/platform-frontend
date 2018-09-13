@@ -8,7 +8,6 @@ import {
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectEtoDocumentData } from "../../modules/eto-documents/selectors";
 import { appConnect } from "../../store";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutBase } from "../layouts/LayoutBase";
@@ -18,7 +17,6 @@ import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 interface IStateProps {
   companyData?: TPartialCompanyEtoData;
   etoData?: TPartialEtoSpecData;
-  loading: boolean;
 }
 
 interface IRouterParams {
@@ -37,7 +35,7 @@ class EtoPreviewComponent extends React.Component<IProps> {
   }
 
   render(): React.ReactNode {
-    if (this.props.loading || !this.props.companyData || !this.props.etoData) {
+    if (!this.props.companyData || !this.props.etoData) {
       return <LoadingIndicator />;
     }
 
@@ -53,15 +51,13 @@ class EtoPreviewComponent extends React.Component<IProps> {
 
 export const EtoPreview = compose<React.SFC<IRouterParams>>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
-    stateToProps: (state, props) => ({
-      companyData: state.eto.previewCompanyData[props.previewCode],
-      etoData: state.eto.previewEtoData[props.previewCode],
-      loading: state.eto.previewLoading[props.previewCode],
-      etoFilesData: selectEtoDocumentData(state.etoDocuments),
+    stateToProps: state => ({
+      etoData: state.publicEtos.previewEtoData,
+      companyData: state.publicEtos.previewCompanyData,
     }),
     dispatchToProps: dispatch => ({
       loadEtoPreview: (previewCode: string) =>
-        dispatch(actions.eto.loadEtoPreviewStart(previewCode)),
+        dispatch(actions.publicEtos.loadEtoPreview(previewCode)),
     }),
   }),
   withContainer(LayoutBase),

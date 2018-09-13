@@ -50,6 +50,7 @@ const dummyProps = {
   gasCostEth: "10000000",
   minTicketEur: 200,
   readyToInvest: false,
+  showTokens: true,
 };
 
 storiesOf("InvestmentSelection", module).add("default", () => (

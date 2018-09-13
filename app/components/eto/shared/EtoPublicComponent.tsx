@@ -183,7 +183,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 <div>{companyData.brandName}</div>
                 {companyData.companyWebsite && (
                   <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
-                    {companyData.companyWebsite || DEFAULT_PLACEHOLDER}
+                    {companyData.companyWebsite.split("//")[1] || DEFAULT_PLACEHOLDER}
                   </a>
                 )}
               </div>

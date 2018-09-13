@@ -171,7 +171,8 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.nominee" />
                 </span>
-                <span className={styles.value}>{etoData.nominee}</span>
+                {/* TODO: change to {etoData.nominee} when endpoint is avaliable */}
+                <span className={styles.value}>Neumini UG</span>
               </div>
             )}
             {etoData.signingDurationDays && (

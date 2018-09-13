@@ -6,7 +6,7 @@ import { Col, Row } from "reactstrap";
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { ButtonIcon } from "../../Buttons";
 import { FormHighlightGroup } from "../FormHighlightGroup";
-import { FormField } from "../forms";
+import { FormField } from "../index";
 import { FormTextArea } from "./FormTextArea";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";

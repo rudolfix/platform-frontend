@@ -14,7 +14,7 @@ import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/Buttons";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
-import { FormField } from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {

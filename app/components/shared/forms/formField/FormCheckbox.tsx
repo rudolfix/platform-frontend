@@ -5,18 +5,17 @@ import * as React from "react";
 import * as styles from "./FormCheckbox.module.scss";
 
 interface IProps {
-  label: string | React.ReactNode;
+  inputId?: string;
   name: string;
+  label?: string | React.ReactNode;
   value?: any;
   checked?: boolean;
   disabled?: boolean;
-  onChange?: () => void;
   "data-test-id"?: string;
 }
 
 interface IInternalProps {
-  value: any;
-  onChange: (e: React.ChangeEvent<any>) => any;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
@@ -26,11 +25,13 @@ export const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
   onChange,
   checked,
   disabled,
+  inputId,
   "data-test-id": dataTestId,
 }) => {
   return (
     <label className={styles.checkbox}>
       <input
+        id={inputId}
         className={styles.input}
         onChange={onChange}
         type="checkbox"
@@ -41,7 +42,7 @@ export const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
         disabled={disabled}
       />
       <div className={styles.indicator} />
-      <div className={styles.label}>{label}</div>
+      {label && <div className={styles.label}>{label}</div>}
     </label>
   );
 };
@@ -68,7 +69,7 @@ const RadioButtonComponent: React.SFC<IProps & IInternalProps> = ({
         data-test-id={dataTestId}
       />
       <div className={styles.indicator} />
-      <div className={styles.label}>{label}</div>
+      {label && <div className={styles.label}>{label}</div>}
     </label>
   );
 };

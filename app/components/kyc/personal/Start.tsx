@@ -23,7 +23,7 @@ import {
   FormSelectField,
   NONE_KEY,
   unboolify,
-} from "../../shared/forms/forms";
+} from "../../shared/forms/index";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";

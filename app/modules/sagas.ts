@@ -1,9 +1,10 @@
 import { effects } from "redux-saga";
-
 import { call, spawn, takeEvery } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../di/setupBindings";
 import { TAction } from "./actions";
 import { authSagas } from "./auth/sagas";
+import { bookBuildingFlowSagas } from "./bookbuilding-flow/sagas";
 import { etoDocumentsSagas } from "./eto-documents/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { gasApiSagas } from "./gas/sagas";
@@ -41,6 +42,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(etoFlowSagas),
     effects.fork(immutableFileSagas),
     effects.fork(etoSagas),
+    effects.fork(bookBuildingFlowSagas),
     effects.fork(formSingleFileUploadSagas),
     effects.fork(remoteFileSagas),
     effects.fork(txSendingSagasWatcher),

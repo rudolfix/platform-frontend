@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/forms";
+import { FormField } from "../../shared/forms/index";
 
 import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../modules/actions";

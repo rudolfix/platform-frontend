@@ -147,7 +147,7 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
     const eto = selectEtoById(p, i.etoId)!;
     return {
       agreementUrl: "fufu",
-      companyName: eto.company.name,
+      companyName: eto.company.name!,
       etoAddress: eto.etoId,
       investmentEth: selectEthValueUlps(i),
       investmentEur: selectEurValueUlps(i),

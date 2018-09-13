@@ -47,6 +47,14 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
           ...action.payload.etos,
         },
       };
+    case "PUBLIC_ETOS_SET_PUBLIC_ETO":
+      return {
+        ...state,
+        publicEtos: {
+          ...state.publicEtos,
+          [action.payload.eto.etoId]: action.payload.eto,
+        },
+      };
     case "PUBLIC_ETOS_SET_DISPLAY_ORDER":
       return {
         ...state,

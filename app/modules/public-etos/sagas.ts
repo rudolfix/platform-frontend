@@ -39,9 +39,9 @@ export function* loadEtoPreview(
       previewCode,
     );
     const companyId = etoData.body.companyId as string;
-    const companyData: IHttpResponse<
-      TPartialCompanyEtoData
-    > = yield apiEtoService.getCompanyDataById(companyId);
+    const companyData: IHttpResponse<TPartialCompanyEtoData> = yield apiEtoService.getCompanyById(
+      companyId,
+    );
     yield put(
       actions.publicEtos.setPreviewEto({
         eto: etoData.body,
@@ -49,7 +49,32 @@ export function* loadEtoPreview(
       }),
     );
   } catch (e) {
-    notificationCenter.error("Could load ETO preview. Is the preview link correct?");
+    notificationCenter.error("Could not load ETO preview. Is the preview link correct?");
+    yield put(actions.routing.goToDashboard());
+  }
+}
+
+export function* loadEto(
+  { apiEtoService, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "PUBLIC_ETOS_LOAD_ETO") return;
+
+  try {
+    const etoId = action.payload.etoId;
+
+    const etoResponse: IHttpResponse<TPublicEtoData> = yield apiEtoService.getEto(etoId);
+    const eto = etoResponse.body;
+
+    const companyResponse: IHttpResponse<
+      TPartialCompanyEtoData
+    > = yield apiEtoService.getCompanyById(eto.companyId);
+    const company = companyResponse.body;
+
+    yield put(actions.publicEtos.setPublicEto({ ...eto, company }));
+  } catch (e) {
+    notificationCenter.error("Could not load ETO. Is the link correct?");
+
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -108,6 +133,7 @@ function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): a
 
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO_PREVIEW", loadEtoPreview);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO", loadEto);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION", loadCalculatedContribution);
 }

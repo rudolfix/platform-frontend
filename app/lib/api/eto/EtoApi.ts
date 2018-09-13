@@ -27,25 +27,18 @@ export class EtoApi {
     });
   }
 
-  public async getEtoData(): Promise<IHttpResponse<TPartialEtoSpecData>> {
+  public async getMyEto(): Promise<IHttpResponse<TPartialEtoSpecData>> {
     return await this.authorizedHttpClient.get<TPartialEtoSpecData>({
       baseUrl: BASE_PATH,
       url: ETO_DATA_PATH,
     });
   }
 
-  public async putEtoData(data: TPartialEtoSpecData): Promise<IHttpResponse<TPartialEtoSpecData>> {
+  public async putMyEto(data: TPartialEtoSpecData): Promise<IHttpResponse<TPartialEtoSpecData>> {
     return await this.authorizedHttpClient.put<TPartialEtoSpecData>({
       baseUrl: BASE_PATH,
       url: ETO_DATA_PATH,
       body: data,
-    });
-  }
-
-  public async getCompanyData(): Promise<IHttpResponse<TPartialCompanyEtoData>> {
-    return await this.authorizedHttpClient.get<TPartialCompanyEtoData>({
-      baseUrl: BASE_PATH,
-      url: COMPANIES_ME_DATA_PATH,
     });
   }
 
@@ -56,16 +49,28 @@ export class EtoApi {
     });
   }
 
-  public async getCompanyDataById(
-    companyId: string,
-  ): Promise<IHttpResponse<TPartialCompanyEtoData>> {
+  public async getEto(etoId: string): Promise<IHttpResponse<TPartialEtoSpecData>> {
+    return await this.httpClient.get<TPartialEtoSpecData>({
+      baseUrl: BASE_PATH,
+      url: ETOS_PATH + "/" + etoId,
+    });
+  }
+
+  public async getCompany(): Promise<IHttpResponse<TPartialCompanyEtoData>> {
+    return await this.authorizedHttpClient.get<TPartialCompanyEtoData>({
+      baseUrl: BASE_PATH,
+      url: COMPANIES_ME_DATA_PATH,
+    });
+  }
+
+  public async getCompanyById(companyId: string): Promise<IHttpResponse<TPartialCompanyEtoData>> {
     return await this.httpClient.get<TPartialCompanyEtoData>({
       baseUrl: BASE_PATH,
       url: COMPANIES_DATA_PATH + companyId,
     });
   }
 
-  public async putCompanyData(
+  public async putCompany(
     data: TPartialCompanyEtoData,
   ): Promise<IHttpResponse<TPartialCompanyEtoData>> {
     return await this.authorizedHttpClient.put<TPartialCompanyEtoData>({
@@ -75,7 +80,7 @@ export class EtoApi {
     });
   }
 
-  public async submitCompanyAndEtoData(): Promise<IHttpResponse<TGeneralEtoData>> {
+  public async submitCompanyAndEto(): Promise<IHttpResponse<TGeneralEtoData>> {
     return await this.authorizedHttpClient.post<TGeneralEtoData>({
       baseUrl: BASE_PATH,
       url: ETO_SUBMISSION_PATH,

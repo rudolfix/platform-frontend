@@ -13,6 +13,7 @@ import { Portfolio } from "./Portfolio";
 
 import { appRoutes } from "./appRoutes";
 import { EmailVerify } from "./emailVerify";
+import { EtoIssuerView } from "./eto/EtoIssuerView";
 import { EtoPreview } from "./eto/EtoPreview";
 import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoRegister } from "./eto/registration/Start";
@@ -31,6 +32,11 @@ export const AppRouter: React.SFC = () => (
     <Route
       path={appRoutes.etoPreview}
       render={({ match }) => <EtoPreview previewCode={match.params.previewCode} />}
+    />
+
+    <Route
+      path={appRoutes.etoPublicView}
+      render={({ match }) => <EtoPublicView etoId={match.params.etoId} />}
     />
 
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
@@ -68,7 +74,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyAuthorizedRoute path={appRoutes.wallet} investorComponent={Wallet} />
     <OnlyAuthorizedRoute path={appRoutes.documents} issuerComponent={Documents} />
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />
-    <OnlyAuthorizedRoute path={appRoutes.etoPublicView} issuerComponent={EtoPublicView} exact />
+    <OnlyAuthorizedRoute path={appRoutes.etoIssuerView} issuerComponent={EtoIssuerView} exact />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute

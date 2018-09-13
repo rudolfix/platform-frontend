@@ -263,7 +263,7 @@ export type TGeneralEtoData = {
 // this is comming from the /etos endpoint for investors dashboard
 export type TPublicEtoData = DeepReadonlyObject<
   TEtoSpecsData & {
-    company: TCompanyEtoData;
+    company: TPartialCompanyEtoData;
     etoId: string;
   }
 >;

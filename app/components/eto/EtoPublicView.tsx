@@ -1,27 +1,67 @@
 import * as React from "react";
-import { compose } from "redux";
+import { branch, compose } from "recompose";
 
+import {
+  TCompanyEtoData,
+  TEtoSpecsData,
+  TPublicEtoData,
+} from "../../lib/api/eto/EtoApi.interfaces";
+import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
-import { selectEtoDocumentData } from "../../modules/eto-documents/selectors";
+import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutBase } from "../layouts/LayoutBase";
+import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
-export const EtoPublicView = compose<React.SFC>(
-  onEnterAction({
-    actionCreator: dispatch => {
-      dispatch(actions.etoFlow.loadDataStart());
-      dispatch(actions.etoDocuments.loadFileDataStart());
-    },
-  }),
-  appConnect({
-    stateToProps: s => ({
-      companyData: s.etoFlow.companyData,
-      etoData: s.etoFlow.etoData,
-      etoFilesData: selectEtoDocumentData(s.etoDocuments),
+interface IStateProps {
+  eto?: TPublicEtoData;
+  userType?: TUserType;
+}
+
+interface IRouterParams {
+  etoId: string;
+}
+
+interface IDispatchProps {
+  loadEto: () => void;
+}
+
+type IProps = IStateProps & IDispatchProps & IRouterParams;
+
+class EtoPreviewComponent extends React.Component<IProps> {
+  render(): React.ReactNode {
+    if (!this.props.eto) {
+      return <LoadingIndicator />;
+    }
+
+    return (
+      <EtoPublicComponent
+        companyData={this.props.eto.company as TCompanyEtoData}
+        etoData={this.props.eto as TEtoSpecsData}
+      />
+    );
+  }
+}
+
+export const EtoPublicView = compose<IProps, IRouterParams>(
+  appConnect<IStateProps, IDispatchProps, IRouterParams>({
+    stateToProps: (state, props) => ({
+      userType: selectUserType(state.auth),
+      eto: state.publicEtos.publicEtos[props.etoId],
     }),
   }),
-  withContainer(LayoutAuthorized),
-)(EtoPublicComponent);
+  onEnterAction({
+    actionCreator: (dispatch, props) => {
+      dispatch(actions.publicEtos.loadEto(props.etoId));
+    },
+  }),
+  branch<IStateProps>(
+    props => props.userType === "investor",
+    withContainer(LayoutAuthorized),
+    withContainer(LayoutBase),
+  ),
+)(EtoPreviewComponent);

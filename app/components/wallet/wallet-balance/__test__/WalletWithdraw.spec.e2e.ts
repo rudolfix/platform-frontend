@@ -1,8 +1,10 @@
 import BigNumber from "../../../../../node_modules/bignumber.js/bignumber.js";
+
 import { tid } from "../../../../../test/testUtils";
 import { assertUserInDashboard, typeLightwalletRecoveryPhrase } from "../../../../e2e-test-utils";
 import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils";
 import { numberRegExPattern } from "./../../../../e2e-test-utils/index";
+import { recoverRoutes } from "./../../../walletSelector/walletRecover/recoverRoutes";
 
 const Q18 = new BigNumber(10).pow(18);
 const GIGA_WEI = 1000000000;
@@ -44,7 +46,7 @@ describe("Wallet Withdraw", () => {
     const expectedInput = "0x00";
     const expectedAddress = "0x28f1670f55ae9c15fe38bf052cd35edcdb1dab8b";
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
 
     typeLightwalletRecoveryPhrase(words);
 

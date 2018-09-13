@@ -10,7 +10,15 @@ interface IProps {
 export const Slides: React.SFC<IProps> = ({ slideShareUrl, className }) => {
   return slideShareUrl ? (
     <Proportion className={className}>
-      <iframe src={slideShareUrl} allowFullScreen scrolling="no" />
+      <iframe
+        src={
+          slideShareUrl.includes("https://")
+            ? slideShareUrl
+            : `https://${slideShareUrl.split("//")[1]}`
+        }
+        allowFullScreen
+        scrolling="no"
+      />
     </Proportion>
   ) : null;
 };

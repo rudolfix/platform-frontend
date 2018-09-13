@@ -135,7 +135,7 @@ export const registerWithLightWallet = (
     email = convertToUniqueEmail(email);
   }
 
-  cy.visit("/register");
+  cy.visit(appRoutes.register);
 
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);

@@ -60,7 +60,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
               layout="simple"
               iconPosition="icon-after"
               theme="graphite"
-              disabled={process.env.NF_WITHDRAW_ENABLED !== "1"}
+              disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || !onDepositClick}
               svgIcon={arrowRightIcon}
               onClick={onDepositClick}
             >

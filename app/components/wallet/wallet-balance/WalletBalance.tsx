@@ -77,7 +77,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
           largeNumber={data!.neuroAmount}
           value={data!.neuroEuroAmount}
           onWithdrawClick={withdrawEth}
-          onDepositClick={depositEth}
+          // TODO: add on depositClick when euro token flow exists
         />
 
         <HorizontalLine className="my-3" />

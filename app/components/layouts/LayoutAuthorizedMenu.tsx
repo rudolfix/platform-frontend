@@ -125,7 +125,7 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad
       />
       <MenuEntry
         svgString={iconEto}
-        to={appRoutes.etoPublicView}
+        to={appRoutes.etoIssuerView}
         disabled={!shouldEtoDataLoad}
         menuName={<FormattedMessage id="menu.eto-page" />}
       />

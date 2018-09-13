@@ -9,7 +9,8 @@ export const appRoutes = {
   loginEto: "/eto/login",
   restore: "/restore",
   restoreEto: "/eto/restore",
-  etoPublicView: "/eto-public-view",
+  etoIssuerView: "/eto-view",
+  etoPublicView: "/eto-view/:etoId",
   etoPreview: "/eto-preview/:previewCode",
 
   kyc: "/kyc",

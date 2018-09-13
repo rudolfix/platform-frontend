@@ -10,12 +10,14 @@ export const etoActions = {
   // public actions
   loadEtoPreview: (previewCode: string) =>
     createAction("PUBLIC_ETOS_LOAD_ETO_PREVIEW", { previewCode }),
+  loadEto: (etoId: string) => createAction("PUBLIC_ETOS_LOAD_ETO", { etoId }),
   loadEtos: () => createSimpleAction("PUBLIC_ETOS_LOAD_ETOS"),
   loadCalculatedContribution: (etoId: string, investmentEurUlps?: string) =>
     createAction("PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION", { etoId, investmentEurUlps }),
   // state mutations
   setPublicEtos: (etos: { [etoId: string]: TPublicEtoData }) =>
     createAction("PUBLIC_ETOS_SET_PUBLIC_ETOS", { etos }),
+  setPublicEto: (eto: TPublicEtoData) => createAction("PUBLIC_ETOS_SET_PUBLIC_ETO", { eto }),
   setEtosDisplayOrder: (order: string[]) =>
     createAction("PUBLIC_ETOS_SET_DISPLAY_ORDER", { order }),
   setCalculatedContribution: (etoId: string, contrib: ICalculatedContribution) =>

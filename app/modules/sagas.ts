@@ -4,16 +4,15 @@ import { call, spawn, takeEvery } from "redux-saga/effects";
 import { TGlobalDependencies } from "../di/setupBindings";
 import { TAction } from "./actions";
 import { authSagas } from "./auth/sagas";
-import { dashboardSagas } from "./dashboard/sagas";
 import { etoDocumentsSagas } from "./eto-documents/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
-import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
 import { icbmWalletGetDataSagas } from "./icbmWalletBalanceModal/sagas";
 import { immutableFileSagas } from "./immutableFile/sagas";
 import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investmentFlow/sagas";
 import { kycSagas } from "./kyc/sagas";
+import { etoSagas } from "./public-etos/sagas";
 import { settingsSagas } from "./settings/sagas";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
@@ -32,7 +31,6 @@ function* allSagas(): Iterator<effects.Effect> {
   yield effects.all([
     effects.fork(kycSagas),
     effects.fork(initSagas),
-    effects.fork(dashboardSagas),
     effects.fork(settingsSagas),
     effects.fork(web3Sagas),
     effects.fork(authSagas),

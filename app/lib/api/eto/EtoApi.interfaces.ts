@@ -1,4 +1,4 @@
-import { DeepPartial } from "../../../types";
+import { DeepPartial, DeepReadonlyObject } from "../../../types";
 import * as YupTS from "../../yup-ts";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
@@ -234,6 +234,8 @@ export const EtoInvestmentTermsType = YupTS.object({
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
 
 interface IAdditionalEtoType {
+  companyId: string;
+  previewCode: string;
   state: EtoState;
   isBookbuilding: boolean;
   templates: TEtoDocumentTemplates;
@@ -257,10 +259,12 @@ export type TGeneralEtoData = {
 };
 
 // this is comming from the /etos endpoint for investors dashboard
-export type TInvestorEtoData = TEtoSpecsData & {
-  company: TCompanyEtoData;
-  etoId: string;
-};
+export type TPublicEtoData = DeepReadonlyObject<
+  TEtoSpecsData & {
+    company: TCompanyEtoData;
+    etoId: string;
+  }
+>;
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,

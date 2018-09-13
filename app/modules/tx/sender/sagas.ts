@@ -5,8 +5,8 @@ import * as Web3 from "web3";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { IAppState } from "../../../store";
-import { connectWallet } from "../../accessWallet/sagas";
-import { actions } from "../../actions";
+import { connectWallet, signMessage } from "../../accessWallet/sagas";
+import { actions, TAction } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
 import { ITxData, TxSenderType } from "./reducer";
@@ -28,11 +28,6 @@ export function* investSaga({ logger }: TGlobalDependencies): any {
     logger.warn("Investment cancelled", e);
   }
 }
-
-export const txSendingSagasWatcher = function*(): Iterator<any> {
-  yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
-  yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
-};
 
 export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
   const { result, cancel } = yield race({
@@ -179,3 +174,50 @@ const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: stri
       // @todo missing unsubscribe
     };
   });
+
+// Debug sagas - can be removed after all transaction flows are implemented and e2e tested
+
+function* signDummyMessage({ logger }: TGlobalDependencies, action: TAction): Iterator<any> {
+  if (action.type !== "TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE") {
+    return;
+  }
+  const message = action.payload.message;
+
+  try {
+    const signed = yield neuCall(
+      signMessage,
+      message,
+      "Test Message",
+      "Please sign this for me :)",
+    );
+
+    // this is just for demo purposes
+    logger.info("signed: ", signed);
+  } catch {
+    logger.error("Error while signing a message :( ");
+  }
+}
+
+function* sendDummyTx({ logger }: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "TX_SENDER_DEBUG_SEND_DUMMY_TX") {
+    return;
+  }
+
+  try {
+    yield neuCall(txSendSaga, "WITHDRAW");
+    logger.info("TX SENT SUCCESSFULLY!!");
+  } catch (e) {
+    logger.error("Error while sending tx :(", e);
+  }
+}
+
+// connect actions
+
+export const txSendingSagasWatcher = function*(): Iterator<any> {
+  yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
+  yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
+
+  // Dev only
+  yield fork(neuTakeEvery, "TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE", signDummyMessage);
+  yield fork(neuTakeEvery, "TX_SENDER_DEBUG_SEND_DUMMY_TX", sendDummyTx);
+};

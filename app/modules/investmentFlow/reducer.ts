@@ -1,6 +1,3 @@
-import BigNumber from "bignumber.js";
-
-import { TInvestorEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
@@ -30,32 +27,25 @@ export enum EInvestmentErrorState {
   NotEnoughEtherForGas = "not_enough_ether_for_gas",
 }
 
-export interface ICalculatedContribution {
-  isWhitelisted: boolean;
-  minTicketEurUlps: BigNumber;
-  maxTicketEurUlps: BigNumber;
-  equityTokenInt: BigNumber;
-  neuRewardUlps: BigNumber;
-  maxCapExceeded: boolean;
-}
-
 export interface IInvestmentFlowState {
+  etoId: string;
   euroValueUlps: string;
   ethValueUlps: string;
   investmentType: EInvestmentType;
-  eto?: TInvestorEtoData;
   errorState?: EInvestmentErrorState;
-  calculatedContribution?: ICalculatedContribution;
   gasAmount: string;
   gasPrice: string;
+  isValidatedInput: boolean;
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
+  etoId: "",
   euroValueUlps: "",
   ethValueUlps: "",
   investmentType: EInvestmentType.None,
   gasAmount: INVESTMENT_GAS_AMOUNT,
   gasPrice: "0",
+  isValidatedInput: false,
 };
 
 export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
@@ -69,21 +59,20 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       };
     case "INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE":
       return {
-        ...state,
+        ...investmentFlowInitialState,
+        etoId: state.etoId,
+        gasPrice: state.gasPrice,
         investmentType: action.payload.type,
-        euroValueUlps: "",
-        errorState: undefined,
-        calculatedContribution: undefined,
+      };
+    case "INVESTMENT_FLOW_SET_ETO_ID":
+      return {
+        ...state,
+        etoId: action.payload.etoId,
       };
     case "INVESTMENT_FLOW_SET_GAS_PRICE":
       return {
         ...state,
         gasPrice: multiplyBigNumbers([action.payload.gasPrice || 0, GAS_PRICE_MULTIPLIER]),
-      };
-    case "INVESTMENT_FLOW_SET_ETO":
-      return {
-        ...state,
-        eto: action.payload.eto,
       };
     case "INVESTMENT_FLOW_SET_INVESTMENT_ERROR_STATE":
       return {
@@ -100,10 +89,10 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
         ...state,
         euroValueUlps: action.payload.value,
       };
-    case "INVESTMENT_FLOW_SET_CALCULATED_CONTRIBUTION":
+    case "INVESTMENT_FLOW_SET_IS_INPUT_VALIDATED":
       return {
         ...state,
-        calculatedContribution: action.payload.contrib,
+        isValidatedInput: action.payload.isValidated,
       };
   }
 

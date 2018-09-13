@@ -9,7 +9,6 @@ $_active-color: lighten($_hover-color, 20%);
   all: initial;
   cursor: pointer;
   font-weight: $font-weight-bold;
-  text-decoration: none;
 
   &:focus,
   .content:focus {
@@ -22,7 +21,7 @@ $_active-color: lighten($_hover-color, 20%);
     }
   }
 
-  .content {
+  > .content {
     align-items: center;
     display: flex;
     flex-shrink: 0;
@@ -30,6 +29,7 @@ $_active-color: lighten($_hover-color, 20%);
     padding: px-to-rem(8px) px-to-rem(20px);
     position: relative;
     text-align: center;
+    text-decoration: inherit;
     transition: 200ms ease-out all; // sass-lint:disable-line no-transition-all
   }
 

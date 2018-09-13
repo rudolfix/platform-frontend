@@ -1,6 +1,6 @@
 import { appRoutes } from "../../appRoutes";
 
-const parentRoutePath = appRoutes.recover;
+const parentRoutePath = appRoutes.restore;
 
 export const recoverRoutes = {
   success: parentRoutePath + "/success",

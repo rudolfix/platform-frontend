@@ -2,6 +2,7 @@ import { END, eventChannel } from "redux-saga";
 import { call, fork, put, race, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
 
+import { addHexPrefix } from "ethereumjs-util";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
 import { IAppState } from "../../../store";
@@ -9,7 +10,8 @@ import { connectWallet, signMessage } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
-import { ITxData, TxSenderType } from "./reducer";
+import { ITxData } from "./../../../lib/web3/Web3Manager";
+import { TxSenderType } from "./reducer";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
@@ -49,19 +51,22 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.txSenderShowModal(type));
 
-  yield neuCall(ensureNoPendingTx);
+  yield neuCall(ensureNoPendingTx, type);
 
   yield take("TX_SENDER_ACCEPT");
 
   yield call(connectWallet, "Send funds!");
   yield put(actions.txSender.txSenderWalletPlugged());
-
   const txHash = yield neuCall(sendTxSubSaga);
 
   yield neuCall(watchTxSubSaga, txHash);
 }
 
-function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDependencies): any {
+function* ensureNoPendingTx(
+  { apiUserService, web3Manager, logger }: TGlobalDependencies,
+  type: TxSenderType,
+): any {
+  yield updateTxs();
   let txs: Array<TxWithMetadata> = yield select((s: IAppState) => s.txMonitor.txs);
 
   if (txs.length >= 1) {
@@ -80,9 +85,9 @@ function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDepe
       yield neuCall(updateTxs);
       txs = yield select((s: IAppState) => s.txMonitor.txs);
     }
-
-    yield put(actions.txSender.txSenderWatchPendingTxsDone());
   }
+
+  yield put(actions.txSender.txSenderWatchPendingTxsDone(type));
 }
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
@@ -92,20 +97,19 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
   if (!txData) {
     throw new Error("Tx data is not defined");
   }
-
   try {
     const txHash: string = yield web3Manager.sendTransaction(txData as any);
     yield put(actions.txSender.txSenderSigned(txHash));
     const txWithMetadata: TxWithMetadata = {
       transaction: {
         from: txData.from!,
-        gas: txData.gas!,
-        gasPrice: txData.gasPrice!,
+        gas: addHexPrefix(Number(txData.gas!).toString(16)),
+        gasPrice: "0x" + Number(txData.gasPrice!).toString(16),
         hash: txHash,
         input: txData.data || "0x0",
-        nonce: txData.nonce!,
+        nonce: "0x" + Number(txData.nonce!).toString(16),
         to: txData.to!,
-        value: txData.value!,
+        value: "0x" + Number(txData.value!).toString(16),
         blockHash: undefined,
         blockNumber: undefined,
         chainId: undefined,

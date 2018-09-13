@@ -2,8 +2,9 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Modal } from "reactstrap";
 
+import { ITxData } from "../../../lib/web3/Web3Manager";
 import { actions } from "../../../modules/actions";
-import { ITxData, TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
+import { TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
 import { ModalComponentBody } from "../ModalComponentBody";
@@ -103,7 +104,7 @@ function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
       return <TxPending blockId={blockId!} txHash={txHash!} />;
 
     case "DONE":
-      return <WithdrawSuccess />;
+      return <WithdrawSuccess txHash={txHash} />;
 
     case "ERROR_SIGN":
       return <div>Error occured!</div>;

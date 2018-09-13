@@ -24,7 +24,7 @@ async function cleanPendingTransactionsPromise(
         tx.transaction.hash,
       );
       // transactionReceipt should be null if transaction is not mined
-      if (transactionReceipt) return tx;
+      if (!transactionReceipt) return tx;
       else await apiUserService.deletePendingTx(tx.transaction.hash);
     }),
   );

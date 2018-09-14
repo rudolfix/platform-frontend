@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../modules/actions";
 import { selectEthereumAddressWithChecksum } from "../../../modules/web3/selectors";

@@ -1,5 +1,5 @@
-import { HTMLAttributes, CSSProperties } from "react";
-import { FormattedMessage } from "react-intl";
+import { CSSProperties, HTMLAttributes } from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 type Dictionary<T> = { [id: string]: T };
 type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key

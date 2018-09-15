@@ -26,14 +26,20 @@ export class BrowserWalletUnknownError extends BrowserWalletError {}
 
 export class BrowserWallet implements IPersonalWallet {
   public readonly walletType = WalletType.BROWSER;
-  // todo: signerType depends on wallet subtype. parity has eth_sign, metamask one below
-  public readonly signerType = SignerType.ETH_SIGN_TYPED_DATA;
 
   constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly walletSubType: WalletSubType,
     public readonly ethereumAddress: EthereumAddress,
   ) {}
+
+  public getSignerType(): SignerType {
+    if (this.walletSubType === WalletSubType.METAMASK) {
+      return SignerType.ETH_SIGN_TYPED_DATA;
+    } else {
+      return SignerType.ETH_SIGN;
+    }
+  }
 
   public async testConnection(networkId: string): Promise<boolean> {
     const currentNetworkId = await this.web3Adapter.getNetworkId();
@@ -45,22 +51,21 @@ export class BrowserWallet implements IPersonalWallet {
   }
 
   public async signMessage(data: string): Promise<string> {
-    if (this.walletSubType === WalletSubType.METAMASK) {
-      const typedDataDecoded = JSON.parse(hex2ascii(data));
-
-      try {
+    try {
+      if (this.walletSubType === WalletSubType.METAMASK) {
+        const typedDataDecoded = JSON.parse(hex2ascii(data));
         // We can await as signTypedData function already awaits inside for result of RPC call.
         return await this.web3Adapter.signTypedData(this.ethereumAddress, typedDataDecoded);
-      } catch (e) {
-        const error = parseBrowserWalletError(e);
-        if (error instanceof BrowserWalletConfirmationRejectedError) {
-          throw new SignerRejectConfirmationError();
-        } else {
-          throw error;
-        }
+      } else {
+        return await this.web3Adapter.ethSign(this.ethereumAddress, "0x" + data);
       }
-    } else {
-      return this.web3Adapter.ethSign(this.ethereumAddress, data);
+    } catch (e) {
+      const error = parseBrowserWalletError(e);
+      if (error instanceof BrowserWalletConfirmationRejectedError) {
+        throw new SignerRejectConfirmationError();
+      } else {
+        throw error;
+      }
     }
   }
 
@@ -119,8 +124,9 @@ export class BrowserWalletConnector {
   }
 }
 
-// At this moment it's only Metamask
+// At this moment it's only Metamask and Parity
 export function parseBrowserWalletError(error: any): BrowserWalletError {
+  // detect Metamask rejection
   if (
     error.code !== undefined &&
     error.message !== undefined &&
@@ -128,7 +134,14 @@ export function parseBrowserWalletError(error: any): BrowserWalletError {
     error.message.startsWith("Error: MetaMask Message Signature: User denied message signature.")
   ) {
     return new BrowserWalletConfirmationRejectedError();
-  } else {
-    return new BrowserWalletUnknownError();
   }
+  // detect Parity rejection
+  if (
+    error.message !== undefined &&
+    error.message.startsWith("Request has been rejected.")
+  ) {
+    return new BrowserWalletConfirmationRejectedError();
+  }
+
+  return new BrowserWalletUnknownError();
 }

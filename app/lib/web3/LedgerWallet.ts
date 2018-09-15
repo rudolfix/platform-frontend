@@ -43,7 +43,6 @@ export class LedgerUnknownError extends LedgerError {}
 export class LedgerWallet implements IPersonalWallet {
   public readonly walletType = WalletType.LEDGER;
   public readonly walletSubType = WalletSubType.UNKNOWN; // in future we may detect if it's pure ledger or Neukey
-  public readonly signerType = SignerType.ETH_SIGN;
   waitingForCommand = false; // if ledger is waiting for user interaction it is blocked and you should not send any instructions to it.
 
   public constructor(
@@ -52,6 +51,10 @@ export class LedgerWallet implements IPersonalWallet {
     private readonly ledgerInstance: any | undefined,
     public readonly derivationPath: string,
   ) {}
+
+  public getSignerType(): SignerType {
+    return SignerType.ETH_SIGN;
+  }
 
   public async testConnection(): Promise<boolean> {
     if (this.waitingForCommand) {

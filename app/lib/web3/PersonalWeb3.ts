@@ -16,7 +16,9 @@ export interface IPersonalWallet {
   readonly ethereumAddress: EthereumAddress;
   readonly walletType: WalletType;
   readonly walletSubType: WalletSubType;
-  readonly signerType: SignerType;
+
+  // returns type of a signer based on walletType and walletSubType
+  getSignerType(): SignerType;
 
   // this will be periodically ran by Web3Manager to ensure that wallet connection is still established
   testConnection(networkId: EthereumNetworkId): Promise<boolean>;

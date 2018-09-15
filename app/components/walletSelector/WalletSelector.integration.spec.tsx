@@ -42,11 +42,12 @@ describe("Wallet selector integration", () => {
     const expectedDerivationPath = "44'/60'/0'/1";
     const expectedAddress = dummyEthereumAddress;
     const expectedChallenge = "CHALLENGE";
+
     const ledgerWalletMock = createMock(LedgerWallet, {
       walletType: WalletType.LEDGER,
       walletSubType: WalletSubType.UNKNOWN,
-      signerType: SignerType.ETH_SIGN,
       ethereumAddress: expectedAddress,
+      getSignerType: () => SignerType.ETH_SIGN,
       testConnection: async () => false,
       getMetadata: (): ILedgerWalletMetadata => ({
         walletType: WalletType.LEDGER,
@@ -191,7 +192,7 @@ describe("Wallet selector integration", () => {
       walletType: WalletType.BROWSER,
       walletSubType: WalletSubType.METAMASK,
       ethereumAddress: expectedAddress,
-      signerType: SignerType.ETH_SIGN_TYPED_DATA,
+      getSignerType: () => SignerType.ETH_SIGN_TYPED_DATA,
       getMetadata: (): IBrowserWalletMetadata => ({
         walletType: WalletType.BROWSER,
         address: expectedAddress,

@@ -35,7 +35,7 @@ describe("Jwt actions", () => {
 
       const browserWalletMock = createMock(BrowserWallet, {
         signMessage: async () => expectedSignedMessage,
-        signerType: expectedSignerType,
+        getSignerType: () => expectedSignerType,
       });
       const web3ManagerMock = createMock(Web3Manager, {
         personalWallet: browserWalletMock,

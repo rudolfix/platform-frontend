@@ -136,10 +136,7 @@ export function parseBrowserWalletError(error: any): BrowserWalletError {
     return new BrowserWalletConfirmationRejectedError();
   }
   // detect Parity rejection
-  if (
-    error.message !== undefined &&
-    error.message.startsWith("Request has been rejected.")
-  ) {
+  if (error.message !== undefined && error.message.startsWith("Request has been rejected.")) {
     return new BrowserWalletConfirmationRejectedError();
   }
 

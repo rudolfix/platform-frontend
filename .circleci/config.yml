@@ -99,16 +99,16 @@ workflows:
       - install
       - lint:
           requires:
-            - install
+            - install-1
       - test:
           requires:
-            - install
+            - install-1
       - test-e2e:
           requires:
-            - install
+            - install-1
       - danger-ci:
           requires:
-            - install
+            - install-1
 
   nightly:
     triggers:
@@ -123,15 +123,15 @@ workflows:
      - install
      - lint:
          requires:
-           - install
+           - install-2
      - test:
          requires:
-           - install
+           - install-2
      - test-e2e:
          requires:
-           - install
+           - install-2
      - danger-ci:
          requires:
-           - install
+           - install-2
 
 

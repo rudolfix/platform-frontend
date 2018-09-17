@@ -498,8 +498,6 @@
   "settings.account-details.date-of-birth": "Date of birth:",
   "settings.account-details.full-name": "Full name:",
   "settings.account-details.income": "Income above 5000 EUR:",
-  "settings.account-details.is-high-income.no": "No",
-  "settings.account-details.is-high-income.yes": "Yes",
   "settings.account-details.title": "Account details",
   "settings.account-info.title": "Account info",
   "settings.backup-seed-display.next-words": "next {wordNumber} words",

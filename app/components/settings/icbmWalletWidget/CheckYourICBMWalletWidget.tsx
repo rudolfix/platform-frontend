@@ -1,7 +1,7 @@
 import { Form, Formik, FormikProps } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import * as Web3Utils from "web3-utils";
 
 import { actions } from "../../../modules/actions";

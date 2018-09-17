@@ -35,7 +35,7 @@ export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
             value={<Money currency="eth" value={txData.value!} />}
           />
 
-          <InfoRow caption={<FormattedMessage id="withdraw-flow.gas" />} value={txData.gas!} />
+          <InfoRow caption={<FormattedMessage id="withdraw-flow.gas" />} value={txData.gas} />
 
           <InfoRow
             caption={<FormattedMessage id="withdraw-flow.gasPrice" />}
@@ -47,7 +47,11 @@ export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
 
     <Row>
       <Col className="text-center">
-        <Button onClick={onAccept} className="mt-4">
+        <Button
+          onClick={onAccept}
+          className="mt-4"
+          data-test-id="modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept"
+        >
           Accept
         </Button>
       </Col>

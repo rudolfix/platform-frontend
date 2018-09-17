@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../modules/actions";
 import { selectEthereumAddressWithChecksum } from "../../../modules/web3/selectors";
@@ -77,7 +77,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
           largeNumber={data!.neuroAmount}
           value={data!.neuroEuroAmount}
           onWithdrawClick={withdrawEth}
-          onDepositClick={depositEth}
+          // TODO: add on depositClick when euro token flow exists
         />
 
         <HorizontalLine className="my-3" />
@@ -89,6 +89,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
           largeNumber={data!.ethAmount}
           value={data!.ethEuroAmount}
           onWithdrawClick={withdrawEth}
+          dataTestId="wallet-balance.ether"
           onDepositClick={depositEth}
         />
       </div>

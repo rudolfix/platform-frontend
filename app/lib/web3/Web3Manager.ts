@@ -16,6 +16,18 @@ import { LightWallet } from "./LightWallet";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
+export interface ITxData {
+  to?: string;
+  value?: string;
+  gas?: string;
+  gasPrice?: string;
+  data?: string;
+  nonce?: string;
+  from?: string;
+  gasLimit?: string;
+  input?: string;
+}
+
 export interface IEthereumNetworkConfig {
   rpcUrl: string;
 }

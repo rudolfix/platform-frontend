@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Button } from "./Buttons";
 import { IMoneySuiteWidgetProps, MoneySuiteWidget } from "./MoneySuiteWidget";
 
@@ -11,6 +11,7 @@ interface IProps {
   onWithdrawClick?: () => void;
   onDepositClick?: () => void;
   onUpgradeClick?: () => void;
+  dataTestId?: string;
 }
 
 export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
@@ -22,6 +23,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
   onWithdrawClick,
   onDepositClick,
   onUpgradeClick,
+  dataTestId,
 }) => {
   return (
     <div className={styles.accountBalance}>
@@ -52,6 +54,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
               theme="graphite"
               svgIcon={arrowRightIcon}
               onClick={onWithdrawClick}
+              data-test-id={dataTestId && dataTestId + ".shared-component.withdraw.button"}
               disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || parseFloat(largeNumber) === 0}
             >
               <FormattedMessage id="shared-component.account-balance.withdraw" />
@@ -60,7 +63,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
               layout="simple"
               iconPosition="icon-after"
               theme="graphite"
-              disabled={process.env.NF_WITHDRAW_ENABLED !== "1"}
+              disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || !onDepositClick}
               svgIcon={arrowRightIcon}
               onClick={onDepositClick}
             >

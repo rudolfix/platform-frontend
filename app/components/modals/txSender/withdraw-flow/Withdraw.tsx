@@ -7,7 +7,6 @@ import * as Web3Utils from "web3-utils";
 import * as YupTS from "../../../../lib/yup-ts";
 import { actions } from "../../../../modules/actions";
 import { IGasState } from "../../../../modules/gas/reducer";
-import { ITxData } from "../../../../modules/tx/sender/reducer";
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
@@ -18,6 +17,7 @@ import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { ITxInitDispatchProps } from "../TxSender";
 
+import { ITxData } from "../../../../lib/web3/Web3Manager";
 import * as styles from "./Withdraw.module.scss";
 
 interface IWithdrawStateProps {
@@ -64,6 +64,7 @@ export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchP
                 name="to"
                 label={<FormattedMessage id="modal.sent-eth.to-address" />}
                 placeholder="0x0"
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.to-address"
               />
             </Col>
 
@@ -71,7 +72,8 @@ export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchP
               <FormFieldImportant
                 name="value"
                 label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
-                placeholder="10.5"
+                placeholder="Please enter value in eth"
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
               />
             </Col>
 
@@ -79,6 +81,7 @@ export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchP
               <FormFieldImportant
                 name="gas"
                 label={<FormattedMessage id="modal.sent-eth.gas-limit" />}
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.gas-limit"
               />
             </Col>
 
@@ -90,7 +93,11 @@ export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchP
             </Col>
 
             <Col xs={12} className="text-center">
-              <Button type="submit" disabled={(gas.loading && !gas.error) || !isValid}>
+              <Button
+                type="submit"
+                disabled={(gas.loading && !gas.error) || !isValid}
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"
+              >
                 <FormattedMessage id="modal.sent-eth.button" />
               </Button>
             </Col>
@@ -128,5 +135,7 @@ export const Withdraw = appConnect<IWithdrawStateProps, ITxInitDispatchProps>({
 })(WithdrawComponent);
 
 export const GweiFormatter: React.SFC<{ value: string }> = ({ value }) => (
-  <div>{Web3Utils.fromWei(value, "gwei")} Gwei</div>
+  <div data-test-id="modals.tx-sender.withdraw-flow.gwei-formatter-component.gas-price">
+    {Web3Utils.fromWei(value, "gwei")} Gwei
+  </div>
 );

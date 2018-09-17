@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 
 import * as logo from "../assets/img/logo_capitalized.svg";

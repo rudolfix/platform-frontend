@@ -6,6 +6,7 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { DatePicker } from "../../../shared/DatePicker";
 import { Panel } from "../../../shared/Panel";
 
 import * as styles from "../../etoContentWidget.module.scss";
@@ -14,7 +15,7 @@ interface IDispatchProps {
   setEtoDate: () => void;
 }
 
-export const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlProps> = ({
+const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlProps> = ({
   intl: { formatIntlMessage },
 }) => {
   return (
@@ -24,15 +25,14 @@ export const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlPr
           <FormattedMessage id="settings.choose-pre-eto-date.book-building-will-stop" />
         </p>
         <Col className="d-flex justify-content-center">
-          {/* TODO: refactor to simple datepicker without formik */}
-          {/*<FormFieldDatePicker name="preEtoDate" />*/}
+          <DatePicker />
         </Col>
       </div>
     </Panel>
   );
 };
 
-export const ChoosePreEtoDateWidget = compose<React.SFC>(
+const ChoosePreEtoDateWidget = compose<React.SFC>(
   appConnect<IDispatchProps>({
     dispatchToProps: () => ({
       setEtoDate: () => {},
@@ -40,3 +40,5 @@ export const ChoosePreEtoDateWidget = compose<React.SFC>(
   }),
   injectIntlHelpers,
 )(ChoosePreEtoDateWidgetComponent);
+
+export { ChoosePreEtoDateWidgetComponent, ChoosePreEtoDateWidget };

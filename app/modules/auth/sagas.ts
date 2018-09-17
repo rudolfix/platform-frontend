@@ -245,7 +245,7 @@ export async function obtainJwtPromise(
   const salt = cryptoRandomString(64);
 
   /* tslint:disable: no-useless-cast */
-  const signerType = web3Manager.personalWallet!.signerType;
+  const signerType = web3Manager.personalWallet!.getSignerType();
   /* tslint:enable: no-useless-cast */
 
   logger.info("Obtaining auth challenge from api");

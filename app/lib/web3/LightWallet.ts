@@ -185,7 +185,10 @@ export class LightWallet implements IPersonalWallet {
 
   public readonly walletType = WalletType.LIGHT;
   public readonly walletSubType = WalletSubType.UNKNOWN;
-  public readonly signerType = SignerType.ETH_SIGN;
+
+  public getSignerType(): SignerType {
+    return SignerType.ETH_SIGN;
+  }
 
   public async testConnection(networkId: string): Promise<boolean> {
     const currentNetworkId = await this.web3Adapter.getNetworkId();

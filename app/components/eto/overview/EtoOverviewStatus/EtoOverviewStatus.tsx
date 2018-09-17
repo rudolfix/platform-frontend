@@ -1,32 +1,19 @@
 import * as cn from "classnames";
-import { Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
 
-import { CommonHtmlProps, TTranslatedString } from "../../../types";
-import { FormFieldCheckbox } from "../../shared/forms/formField/FormFieldCheckboxGroup";
-import { ProjectStatus, TStatus } from "../../shared/ProjectStatus";
-import { Tag } from "../../shared/Tag";
+import { CommonHtmlProps } from "../../../../types";
+import { ProjectStatus, TStatus } from "../../../shared/ProjectStatus";
+import { Tag } from "../../../shared/Tag";
 
-import { Button } from "../../shared/Buttons";
-import { Counter } from "../../shared/Counter";
-import { FormField } from "../../shared/forms/forms";
-import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
-import { IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
-import { SuccessTick } from "../../shared/SuccessTick";
+import { Button } from "../../../shared/Buttons";
+import { Counter } from "../../../shared/Counter";
+import { PercentageIndicatorBar } from "../../../shared/PercentageIndicatorBar";
+import { IResponsiveImage, ResponsiveImage } from "../../../shared/ResponsiveImage";
+import { SuccessTick } from "../../../shared/SuccessTick";
+import { CampaigningWidget, ICampaigningWidget } from "./CampaigningWidget/CampaigningWidget";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
-
-interface ICampaigningWidget {
-  amountBacked: string;
-  investorsBacked: number;
-  investorsLimit: number;
-  wasBacked: boolean;
-  isActivated: boolean;
-  isLoggedIn: boolean;
-  quote: TTranslatedString;
-}
 
 interface IPublicWidget {
   endInDays: number;
@@ -38,6 +25,7 @@ interface IPublicWidget {
 }
 
 interface IProps {
+  etoId: string;
   prospectusApproved: boolean;
   preMoneyValuation: string;
   investmentAmount: string;
@@ -46,104 +34,6 @@ interface IProps {
   publicWidget?: IPublicWidget;
   campaigningWidget?: ICampaigningWidget;
 }
-
-const CampaigningWidget: React.SFC<ICampaigningWidget> = ({
-  amountBacked,
-  investorsBacked,
-  investorsLimit,
-  wasBacked,
-  isActivated,
-  quote,
-  isLoggedIn,
-}) => {
-  const loggedIn = () => {
-    if (isActivated) {
-      return wasBacked ? (
-        <div>
-          <span onClick={() => {}} className={styles.changePledge}>
-            <FormattedMessage id="shared-component.eto-overview.change" />
-          </span>{" "}
-          <FormattedMessage id="shared-component.eto-overview.or" />{" "}
-          <span onClick={() => {}} className={styles.deletePledge}>
-            <FormattedMessage id="shared-component.eto-overview.delete" />
-          </span>{" "}
-          <FormattedMessage id="shared-component.eto-overview.your-pledge" />
-        </div>
-      ) : (
-        <Row>
-          <Col xs={12} xl={6}>
-            <FormField name="amount" prefix="€" />
-          </Col>
-          <Col xs={12} xl={6}>
-            <Button type="submit">
-              <FormattedMessage id="shared-component.eto-overview.back-now" />
-            </Button>
-          </Col>
-        </Row>
-      );
-    } else {
-      return <div className={styles.quote}>{quote}</div>;
-    }
-  };
-
-  const loggedOut = () => {
-    return (
-      <div className={styles.registerNow}>
-        <div>
-          <FormattedMessage id="shared-component.eto-overview.register-cta" />
-        </div>
-        <Button className="mt-3">
-          <FormattedMessage id="shared-component.eto-overview.register" />
-        </Button>
-      </div>
-    );
-  };
-
-  return (
-    <div className={styles.widgetCampaigning}>
-      {isActivated &&
-        isLoggedIn && (
-          <>
-            <div className={styles.group}>
-              <span className={styles.label}>
-                <FormattedMessage id="shared-component.eto-overview.amount-backed" />
-              </span>
-              <span className={styles.value}>{amountBacked}</span>
-            </div>
-            <div className={styles.group}>
-              <span className={styles.label}>
-                <FormattedMessage id="shared-component.eto-overview.investors-backed" />
-              </span>
-              <span className={styles.value}>
-                {investorsBacked} out of {investorsLimit} whitelisted
-              </span>
-            </div>
-          </>
-        )}
-      <div>
-        {/* TODO: change this dummy data once the logic is available */}
-        <Formik initialValues={{ amount: 100 }} onSubmit={() => {}}>
-          {() => (
-            <>
-              {isActivated &&
-                isLoggedIn && (
-                  <div className={styles.group}>
-                    <div className={styles.label}>
-                      <FormattedMessage id="shared-component.eto-overview.show-my-email" />
-                    </div>
-                    <div className={styles.value}>
-                      <FormFieldCheckbox value="show_email" label="" />
-                    </div>
-                  </div>
-                )}
-              {isLoggedIn ? loggedIn() : loggedOut()}
-            </>
-          )}
-        </Formik>
-      </div>
-    </div>
-  );
-};
 
 interface IClaimWidget {
   tokenName: string;
@@ -336,7 +226,7 @@ const WidgetTags: React.SFC<IWidgetTags> = ({
   );
 };
 
-export const EtoOverviewStatus: React.SFC<
+const EtoOverviewStatus: React.SFC<
   IProps & ITokenSymbolWidgetProps & IStatusOfEto & IWidgetTags & IClaimWidget & CommonHtmlProps
 > = props => {
   const hasTags = props.termSheet || props.prospectusApproved || props.smartContractOnchain;
@@ -403,13 +293,12 @@ export const EtoOverviewStatus: React.SFC<
           {props.status === "campaigning" &&
             props.campaigningWidget && (
               <CampaigningWidget
-                isLoggedIn={props.campaigningWidget.isLoggedIn}
+                etoId={props.etoId}
+                minPledge={props.campaigningWidget.minPledge}
+                maxPledge={props.campaigningWidget.maxPledge}
                 isActivated={props.campaigningWidget.isActivated}
                 quote={props.campaigningWidget.quote}
                 investorsLimit={props.campaigningWidget.investorsLimit}
-                wasBacked={props.campaigningWidget.wasBacked}
-                amountBacked={props.campaigningWidget.amountBacked}
-                investorsBacked={props.campaigningWidget.investorsBacked}
               />
             )}
           {props.status === "pre-eto" && <PreEtoWidget />}
@@ -445,3 +334,5 @@ export const EtoOverviewStatus: React.SFC<
     </div>
   );
 };
+
+export { EtoOverviewStatus };

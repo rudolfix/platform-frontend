@@ -1,8 +1,8 @@
-import * as React from "react";
-
 import { expect } from "chai";
+import * as React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { spy } from "sinon";
+
 import { createMount } from "../../test/createMount";
 import { createDummyStore } from "../../test/fixtures";
 import { onEnterAction } from "./OnEnterAction";
@@ -23,17 +23,18 @@ describe("onEnterAction", () => {
   });
 
   it("should call action creator when mount", () => {
+    const store = createDummyStore();
+    const props = { foo: "bar" };
     const actionCreator = spy();
 
     const OnMountActionComponent = onEnterAction({ actionCreator })(SomeComponent);
-    const store = createDummyStore();
 
     createMount(
       <ReduxProvider store={store}>
-        <OnMountActionComponent />
+        <OnMountActionComponent {...props} />
       </ReduxProvider>,
     );
 
-    expect(actionCreator).to.be.calledWithExactly(store.dispatch);
+    expect(actionCreator).to.be.calledWithExactly(store.dispatch, props);
   });
 });

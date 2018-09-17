@@ -1,4 +1,4 @@
-import { DeepPartial } from "../../../types";
+import { DeepPartial, DeepReadonlyObject } from "../../../types";
 import * as YupTS from "../../yup-ts";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
@@ -169,9 +169,15 @@ export type TCompanyEtoData = TEtoTeamData &
  *  only deals with "/etos/me"
  */
 
-export type EtoState = "preview" | "pending" | "listed" | "prospectus_approved" | "on_chain";
+export enum EtoState {
+  PREVIEW = "preview",
+  PENDING = "pending",
+  LISTED = "listed",
+  PROSPECTUS_APPROVED = "prospectus_approved",
+  ON_CHAIN = "on_chain",
+}
 
-export enum EtoStateEnum {
+export enum EtoStateToCamelcase {
   "preview" = "preview",
   "pending" = "pending",
   "listed" = "listed",
@@ -228,11 +234,15 @@ export const EtoInvestmentTermsType = YupTS.object({
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
 
 interface IAdditionalEtoType {
+  etoId: string;
+  companyId: string;
+  previewCode: string;
   state: EtoState;
   isBookbuilding: boolean;
   templates: TEtoDocumentTemplates;
   startDate: string;
   documents: TEtoDocumentTemplates;
+  maxPledges: number;
 }
 
 export type TEtoSpecsData = TEtoTermsType &
@@ -251,7 +261,12 @@ export type TGeneralEtoData = {
 };
 
 // this is comming from the /etos endpoint for investors dashboard
-export type TInvestorEtoData = TPartialEtoSpecData & { company: TPartialCompanyEtoData };
+export type TPublicEtoData = DeepReadonlyObject<
+  TEtoSpecsData & {
+    company: TPartialCompanyEtoData;
+    etoId: string;
+  }
+>;
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,

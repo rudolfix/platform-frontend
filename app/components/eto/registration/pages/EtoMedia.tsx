@@ -1,24 +1,21 @@
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
-
-import { EtoFormBase } from "../EtoFormBase";
-
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
+
 import { EtoMediaType, TPartialCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
-import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
-import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
-
-import { Button } from "../../../shared/Buttons";
-import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
-import { Section } from "../Shared";
-
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/selectors";
-import { FormField } from "../../../shared/forms/forms";
+import { appConnect } from "../../../../store";
+import { Button } from "../../../shared/Buttons";
+import { FormCheckbox, FormField } from "../../../shared/forms";
+import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
+import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
+import { Tooltip } from "../../../shared/Tooltip";
+import { EtoFormBase } from "../EtoFormBase";
+import { Section } from "../Shared";
 
 interface IStateProps {
   loadingData: boolean;
@@ -30,9 +27,9 @@ interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
-const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
+const EtoRegistrationMediaComponent = ({ savingData, saveData, values }: IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-media.title" />}
     validator={EtoMediaType.toYup()}
@@ -50,6 +47,10 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
 
       <p className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.slideshare" />
+        <Tooltip
+          className="ml-2 d-inline-block"
+          content={<FormattedMessage id="eto.form.eto-media.slide-share.tooltip" />}
+        />
       </p>
       <Row>
         <Col className="offset-1" xs={10}>
@@ -108,9 +109,9 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
           className="mr-4"
           type="submit"
           onClick={() => {
-            props.saveData(props.values);
+            saveData(values);
           }}
-          isLoading={false}
+          isLoading={savingData}
         >
           <FormattedMessage id="form.button.save" />
         </Button>
@@ -119,29 +120,8 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => (
   </EtoFormBase>
 );
 
-const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoMediaType.toYup(),
-  mapPropsToValues: props => {
-    const values = props.stateValues;
-    // set initial values to prevent server errors on saving without filled out video
-    values.companyVideo = {
-      url: (values.companyVideo && values.companyVideo.url) || "",
-      title: (values.companyVideo && values.companyVideo.title) || "",
-    };
-    values.companySlideshare = {
-      url: (values.companySlideshare && values.companySlideshare.url) || "",
-      title: (values.companySlideshare && values.companySlideshare.title) || "",
-    };
-    return values;
-  },
-  handleSubmit: (values, props) => props.props.saveData(values),
-})(EtoForm);
-
-export const EtoRegistrationMediaComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
-);
-
 export const EtoRegistrationMedia = compose<React.SFC>(
+  setDisplayName("EtoRegistrationMedia"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -154,7 +134,21 @@ export const EtoRegistrationMedia = compose<React.SFC>(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: _dispatch => {},
+  withFormik<IProps, TPartialCompanyEtoData>({
+    validationSchema: EtoMediaType.toYup(),
+    mapPropsToValues: props => {
+      const values = props.stateValues;
+      // set initial values to prevent server errors on saving without filled out video
+      values.companyVideo = {
+        url: (values.companyVideo && values.companyVideo.url) || "",
+        title: (values.companyVideo && values.companyVideo.title) || "",
+      };
+      values.companySlideshare = {
+        url: (values.companySlideshare && values.companySlideshare.url) || "",
+        title: (values.companySlideshare && values.companySlideshare.title) || "",
+      };
+      return values;
+    },
+    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationMediaComponent);

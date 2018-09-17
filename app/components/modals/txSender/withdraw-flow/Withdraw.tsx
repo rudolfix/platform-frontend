@@ -2,26 +2,23 @@ import { Form, Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import * as Web3Utils from "web3-utils";
 
 import * as YupTS from "../../../../lib/yup-ts";
+import { actions } from "../../../../modules/actions";
 import { IGasState } from "../../../../modules/gas/reducer";
-import { ITxData } from "../../../../modules/tx/sender/reducer";
+import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
+import { appConnect } from "../../../../store";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { Button } from "../../../shared/Buttons";
 import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImportant";
-
-import * as Web3Utils from "web3-utils";
-import { appConnect } from "../../../../store";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
+import { ITxInitDispatchProps } from "../TxSender";
 
-import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
+import { ITxData } from "../../../../lib/web3/Web3Manager";
 import * as styles from "./Withdraw.module.scss";
-
-interface IWithdrawOwnProps {
-  onAccept: (tx: Partial<ITxData>) => any;
-}
 
 interface IWithdrawStateProps {
   gas: IGasState;
@@ -35,7 +32,7 @@ const withdrawFormSchema = YupTS.object({
 });
 const withdrawFormValidator = withdrawFormSchema.toYup();
 
-export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProps> = ({
+export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchProps> = ({
   onAccept,
   gas,
   address,
@@ -67,6 +64,7 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
                 name="to"
                 label={<FormattedMessage id="modal.sent-eth.to-address" />}
                 placeholder="0x0"
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.to-address"
               />
             </Col>
 
@@ -74,7 +72,8 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
               <FormFieldImportant
                 name="value"
                 label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
-                placeholder="10.5"
+                placeholder="Please enter value in eth"
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
               />
             </Col>
 
@@ -82,6 +81,7 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
               <FormFieldImportant
                 name="gas"
                 label={<FormattedMessage id="modal.sent-eth.gas-limit" />}
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.gas-limit"
               />
             </Col>
 
@@ -93,7 +93,11 @@ export const WithdrawComponent: React.SFC<IWithdrawOwnProps & IWithdrawStateProp
             </Col>
 
             <Col xs={12} className="text-center">
-              <Button type="submit" disabled={(gas.loading && !gas.error) || !isValid}>
+              <Button
+                type="submit"
+                disabled={(gas.loading && !gas.error) || !isValid}
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"
+              >
                 <FormattedMessage id="modal.sent-eth.button" />
               </Button>
             </Col>
@@ -120,13 +124,18 @@ export const GasComponent: React.SFC<IGasState> = ({ gasPrice, error }) => {
   return <LoadingIndicator light />;
 };
 
-export const Withdraw = appConnect<IWithdrawStateProps, {}, IWithdrawOwnProps>({
+export const Withdraw = appConnect<IWithdrawStateProps, ITxInitDispatchProps>({
   stateToProps: state => ({
     gas: state.gas,
     address: selectEthereumAddressWithChecksum(state.web3),
   }),
+  dispatchToProps: d => ({
+    onAccept: (tx: Partial<ITxData>) => d(actions.txSender.txSenderAcceptDraft(tx)),
+  }),
 })(WithdrawComponent);
 
 export const GweiFormatter: React.SFC<{ value: string }> = ({ value }) => (
-  <div>{Web3Utils.fromWei(value, "gwei")} Gwei</div>
+  <div data-test-id="modals.tx-sender.withdraw-flow.gwei-formatter-component.gas-price">
+    {Web3Utils.fromWei(value, "gwei")} Gwei
+  </div>
 );

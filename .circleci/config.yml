@@ -11,8 +11,8 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v11-deps-{{ checksum "package.json" }}
-          - v11-deps-
+          - v12-deps-{{ checksum "package.json" }}
+          - v12-deps-
       - run: mkdir -p /home/circleci/.cache/Cypress && cp -R /home/circleci/.cache/Cypress ~/.cache/Cypress
 
       - run: yarn --frozen-lockfile
@@ -22,7 +22,7 @@ jobs:
           paths:
             - node_modules
             - /home/circleci/.cache/Cypress
-          key: v11-deps-{{ checksum "package.json" }}
+          key: v12-deps-{{ checksum "package.json" }}
 
   lint:
     docker:
@@ -33,8 +33,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v11-deps-{{ checksum "package.json" }}
-          - v11-deps-
+          - v12-deps-{{ checksum "package.json" }}
+          - v12-deps-
       - run: yarn prepare
 
       - run: yarn lint
@@ -48,8 +48,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v11-deps-{{ checksum "package.json" }}
-          - v11-deps-
+          - v12-deps-{{ checksum "package.json" }}
+          - v12-deps-
       - run: yarn prepare
 
       - run: yarn test:browser-coverage && yarn test:node
@@ -67,8 +67,8 @@ jobs:
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
           keys:
-          - v11-deps-{{ checksum "package.json" }}
-          - v11-deps-
+          - v12-deps-{{ checksum "package.json" }}
+          - v12-deps-
       - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
 
       - run: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
@@ -82,13 +82,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v11-deps-{{ checksum "package.json" }}
-          - v11-deps-
+          - v12-deps-{{ checksum "package.json" }}
+          - v12-deps-
       - run: yarn prepare
 
-      - run: yarn storybook:screenshots
+      # - run: yarn storybook:screenshots
       # Re-enable storybook:screenshots
-      - run: (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} && ./.circleci/vis-reg-run.sh)
+      # - run: (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} && ./.circleci/vis-reg-run.sh)
       - run: yarn danger ci
 
 workflows:
@@ -99,16 +99,16 @@ workflows:
       - install
       - lint:
           requires:
-            - install
+            - install-1
       - test:
           requires:
-            - install
+            - install-1
       - test-e2e:
           requires:
-            - install
+            - install-1
       - danger-ci:
           requires:
-            - install
+            - install-1
 
   nightly:
     triggers:
@@ -123,15 +123,15 @@ workflows:
      - install
      - lint:
          requires:
-           - install
+           - install-2
      - test:
          requires:
-           - install
+           - install-2
      - test-e2e:
          requires:
-           - install
+           - install-2
      - danger-ci:
          requires:
-           - install
+           - install-2
 
 

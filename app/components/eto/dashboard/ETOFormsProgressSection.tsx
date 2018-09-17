@@ -1,6 +1,8 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
+
+import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
 import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,
@@ -14,6 +16,7 @@ import {
   calculateProductVisionProgress,
   selectCompanyData,
   selectEtoData,
+  selectEtoState,
   selectIsGeneralEtoLoading,
   selectShouldEtoDataLoad,
 } from "../../../modules/eto-flow/selectors";
@@ -22,6 +25,7 @@ import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
 import { etoRegisterRoutes } from "../registration/routes";
 
 export interface IStateProps {
+  etoStatus?: EtoState;
   loadingData: boolean;
   shouldEtoDataLoad: boolean;
   companyInformationProgress: number;
@@ -37,6 +41,7 @@ export interface IStateProps {
 }
 
 const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
+  etoStatus,
   loadingData,
   shouldEtoDataLoad,
   companyInformationProgress,
@@ -50,104 +55,90 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
   etoVotingRightProgress,
   etoInvestmentTermsProgress,
 }) => {
+  const sections = [
+    {
+      redirectTo: etoRegisterRoutes.companyInformation,
+      progress: companyInformationProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.about" />,
+      readonly: false,
+    },
+    {
+      redirectTo: etoRegisterRoutes.legalInformation,
+      progress: legalInformationProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.legal-info" />,
+      readonly: etoStatus !== EtoState.PREVIEW,
+    },
+    {
+      redirectTo: etoRegisterRoutes.etoInvestmentTerms,
+      progress: etoInvestmentTermsProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.investment-terms" />,
+      readonly: etoStatus !== EtoState.PREVIEW,
+    },
+    {
+      redirectTo: etoRegisterRoutes.etoTerms,
+      progress: etoTermsProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.eto-terms" />,
+      readonly: etoStatus !== EtoState.PREVIEW,
+    },
+    {
+      redirectTo: etoRegisterRoutes.keyIndividuals,
+      progress: etoKeyIndividualsProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.key-individuals" />,
+      readonly: false,
+    },
+    {
+      redirectTo: etoRegisterRoutes.productVision,
+      progress: productVisionProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.product-vision" />,
+      readonly: false,
+    },
+    {
+      redirectTo: etoRegisterRoutes.etoMedia,
+      progress: etoMediaProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.media" />,
+      readonly: false,
+    },
+    {
+      redirectTo: etoRegisterRoutes.etoRiskAssessment,
+      progress: etoRiskAssessmentProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.risk-assessment" />,
+      readonly: false,
+    },
+    {
+      redirectTo: etoRegisterRoutes.etoEquityTokenInfo,
+      progress: etoEquityTokenInfoProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.equity-token-info" />,
+      readonly: etoStatus !== EtoState.PREVIEW,
+    },
+    {
+      redirectTo: etoRegisterRoutes.etoVotingRight,
+      progress: etoVotingRightProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.voting-right" />,
+      readonly: etoStatus !== EtoState.PREVIEW,
+    },
+  ];
+
   return (
     <>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.companyInformation}
-          progress={shouldEtoDataLoad ? companyInformationProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.about" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.legalInformation}
-          progress={shouldEtoDataLoad ? legalInformationProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.legal-info" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoInvestmentTerms}
-          progress={shouldEtoDataLoad ? etoInvestmentTermsProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.investment-terms" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoTerms}
-          progress={shouldEtoDataLoad ? etoTermsProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.eto-terms" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.keyIndividuals}
-          progress={shouldEtoDataLoad ? etoKeyIndividualsProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.key-individuals" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.productVision}
-          progress={shouldEtoDataLoad ? productVisionProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.product-vision" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoMedia}
-          progress={shouldEtoDataLoad ? etoMediaProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.media" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoRiskAssessment}
-          progress={shouldEtoDataLoad ? etoRiskAssessmentProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.risk-assessment" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoEquityTokenInfo}
-          progress={shouldEtoDataLoad ? etoEquityTokenInfoProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.equity-token-info" />}
-        />
-      </Col>
-      <Col lg={4} xs={12} md={6} className="mb-4">
-        <EtoFormProgressWidget
-          isLoading={loadingData}
-          to={etoRegisterRoutes.etoVotingRight}
-          progress={shouldEtoDataLoad ? etoVotingRightProgress : 0}
-          disabled={!shouldEtoDataLoad}
-          name={<FormattedMessage id="eto.form-progress-widget.voting-right" />}
-        />
-      </Col>
+      {sections.map((section, index) => (
+        <Col key={index} lg={4} xs={12} md={6} className="mb-4">
+          <EtoFormProgressWidget
+            isLoading={loadingData}
+            to={section.redirectTo}
+            progress={shouldEtoDataLoad ? section.progress : 0}
+            disabled={!shouldEtoDataLoad}
+            readonly={section.readonly}
+            name={section.name}
+          />
+        </Col>
+      ))}
     </>
   );
 };
 
 export const ETOFormsProgressSection = appConnect<IStateProps, {}>({
   stateToProps: s => ({
+    etoStatus: selectEtoState(s.etoFlow),
     loadingData: selectIsGeneralEtoLoading(s),
     shouldEtoDataLoad: selectShouldEtoDataLoad(s),
     companyInformationProgress: calculateCompanyInformationProgress(selectCompanyData(s.etoFlow)),

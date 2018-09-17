@@ -1,7 +1,9 @@
 import { FieldArray, FormikProps, withFormik } from "formik";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
+import { Col, Row } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import {
@@ -10,16 +12,13 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
-
-import { Col, Row } from "reactstrap";
 import { TTranslatedString } from "../../../../types";
 import { Button, ButtonIcon } from "../../../shared/Buttons";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { FormField, FormTextArea } from "../../../shared/forms/forms";
 import { FormSection } from "../../../shared/forms/FormSection";
+import { FormField, FormTextArea } from "../../../shared/forms/index";
 import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { EtoFormBase } from "../EtoFormBase";
 
@@ -37,7 +36,7 @@ interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
 interface IIndividual {
   onRemoveClick: () => void;
@@ -163,7 +162,7 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   }
 }
 
-const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
+const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
   return (
     <EtoFormBase
       title={<FormattedMessage id="eto.form.key-individuals.title" />}
@@ -216,17 +215,8 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
   );
 };
 
-const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoKeyIndividualsType.toYup(),
-  mapPropsToValues: props => props.stateValues,
-  handleSubmit: (values, props) => props.props.saveData(values),
-})(EtoForm);
-
-export const EtoRegistrationKeyIndividualsComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
-);
-
 export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
+  setDisplayName("EtoRegistrationKeyIndividuals"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -239,7 +229,9 @@ export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: _dispatch => {},
+  withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
+    validationSchema: EtoKeyIndividualsType.toYup(),
+    mapPropsToValues: props => props.stateValues,
+    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationKeyIndividualsComponent);

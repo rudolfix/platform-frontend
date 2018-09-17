@@ -8,6 +8,7 @@ import {
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
+import { recoverRoutes } from "../recoverRoutes";
 
 describe("Wallet recover", () => {
   const words = [
@@ -43,7 +44,7 @@ describe("Wallet recover", () => {
     const email = "john-smith@example.com";
     clearEmailServer();
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
 
     typeLightwalletRecoveryPhrase(words);
 
@@ -59,7 +60,7 @@ describe("Wallet recover", () => {
     cy.wait(5000);
     assertLatestEmailSentWithSalt(email);
 
-    cy.contains(tid("my-neu-widget-neumark-balance"), "10487.9455 NEU");
+    cy.contains(tid("my-neu-widget-neumark-balance"), "151848.6894 NEU");
 
     cy.contains(tid("my-wallet-widget-eur-token-large-value"), "0.00 nEUR");
     cy.contains(tid("my-wallet-widget-eur-token-value"), "0.00 EUR");
@@ -70,7 +71,7 @@ describe("Wallet recover", () => {
 
     cy.get(tid("authorized-layout-settings-button")).click();
 
-    cy.get(tid("your-ether-address-widget-eth-address")).should(
+    cy.get(tid("account-address.your.ether-address.input")).should(
       "have.value",
       expectedGeneratedAddress,
     );
@@ -108,7 +109,7 @@ describe("Wallet recover", () => {
     const email = "0xE6Ad2@neufund.org";
     const password = "strongpassword";
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
     typeLightwalletRecoveryPhrase(words);
     typeEmailPassword(email, password);
 
@@ -150,7 +151,7 @@ describe("Wallet recover", () => {
 
     cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
     typeLightwalletRecoveryPhrase(words);
     typeEmailPassword(email, password);
 
@@ -193,7 +194,7 @@ describe("Wallet recover", () => {
     const email = "john-smith@example.com";
     cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
 
-    cy.visit("/recover/seed");
+    cy.visit(`${recoverRoutes.seed}`);
 
     typeLightwalletRecoveryPhrase(words);
 

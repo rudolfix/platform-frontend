@@ -9,7 +9,7 @@ import { InfoBlock } from "../../shared/InfoBlock";
 
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/forms";
+import { FormField } from "../../shared/forms/index";
 
 import { actions } from "../../../modules/actions";
 
@@ -45,7 +45,9 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref(PASSWORD)], "Passwords are not equal"),
 });
 
-const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues> & IStateProps) => (
+const RegisterLightWalletForm = (
+  formikBag: FormikProps<IFormValues> & IStateProps & { restore: boolean },
+) => (
   <Form>
     {/* TODO: ADD TRANSLATIONS */}
     <FormField
@@ -69,22 +71,31 @@ const RegisterLightWalletForm = (formikBag: FormikProps<IFormValues> & IStatePro
     <div className="text-center">
       <Button
         type="submit"
-        disabled={!formikBag.isValid || formikBag.isLoading}
+        disabled={formikBag.isSubmitting || !formikBag.isValid || formikBag.isLoading}
         data-test-id="wallet-selector-register-button"
       >
-        <FormattedMessage id="wallet-selector.neuwallet.register" />
+        {formikBag.restore ? (
+          <FormattedMessage id="wallet-selector.neuwallet.restore" />
+        ) : (
+          <FormattedMessage id="wallet-selector.neuwallet.register" />
+        )}
       </Button>
     </div>
   </Form>
 );
 
-const RegisterEnhancedLightWalletForm = withFormik<IDispatchProps & IStateProps, IFormValues>({
+const RegisterEnhancedLightWalletForm = withFormik<
+  IDispatchProps & IStateProps & { restore: boolean },
+  IFormValues
+>({
   validationSchema: validationSchema,
   mapPropsToValues: props => props.currentValues as IFormValues,
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(RegisterLightWalletForm);
 
-export const RegisterWalletComponent: React.SFC<IDispatchProps & IStateProps> = props => {
+export const RegisterWalletComponent: React.SFC<
+  IDispatchProps & IStateProps & { restore: boolean }
+> = props => {
   return (
     <>
       <Row>
@@ -103,7 +114,11 @@ export const RegisterWalletComponent: React.SFC<IDispatchProps & IStateProps> = 
       <Row className="justify-content-sm-center mt-3">
         <Col className="align-self-end col-sm-auto col-xs-12">
           <h1 className="mb-4">
-            <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
+            {props.restore ? (
+              <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
+            ) : (
+              <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
+            )}
           </h1>
           <RegisterEnhancedLightWalletForm {...props} />
         </Col>
@@ -113,7 +128,7 @@ export const RegisterWalletComponent: React.SFC<IDispatchProps & IStateProps> = 
 };
 
 export const RegisterLightWallet = compose<React.SFC>(
-  appConnect<IStateProps, IDispatchProps>({
+  appConnect<IStateProps, IDispatchProps, { restore: boolean }>({
     stateToProps: state => ({
       errorMsg: state.lightWalletWizard.errorMsg,
       isLoading: state.lightWalletWizard.isLoading,

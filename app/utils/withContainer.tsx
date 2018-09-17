@@ -1,9 +1,6 @@
 import * as React from "react";
+import { ComponentEnhancer, nest } from "recompose";
 
-export const withContainer: (
-  Layout: React.ComponentType,
-) => (WrappedComponent: React.ComponentType) => React.SFC = Layout => WrappedComponent => props => (
-  <Layout>
-    <WrappedComponent {...props} />
-  </Layout>
-);
+export function withContainer(Layout: React.ComponentType<any>): ComponentEnhancer<any, any> {
+  return WrapperComponent => nest(Layout, WrapperComponent);
+}

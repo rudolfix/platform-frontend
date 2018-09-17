@@ -4,7 +4,7 @@ import { fork, put } from "redux-saga/effects";
 import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
+import { EtoState, TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
@@ -12,8 +12,8 @@ import { neuCall, neuTakeEvery } from "../sagas";
 
 export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
   try {
-    const etoCompanyData: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyData();
-    const etoData: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEtoData();
+    const etoCompanyData: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompany();
+    const etoData: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getMyEto();
 
     yield put(
       actions.etoFlow.loadData({ etoData: etoData.body, companyData: etoCompanyData.body }),
@@ -56,12 +56,12 @@ export function* saveEtoData(
     const currentCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
     const currentEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
 
-    yield apiEtoService.putCompanyData({
+    yield apiEtoService.putCompany({
       ...currentCompanyData,
       ...action.payload.data.companyData,
     });
-    if (currentEtoData.state === "preview")
-      yield apiEtoService.putEtoData({
+    if (currentEtoData.state === EtoState.PREVIEW)
+      yield apiEtoService.putMyEto({
         ...currentEtoData,
         ...action.payload.data.etoData,
       });
@@ -92,7 +92,7 @@ export function* submitEtoData(
       [SUBMIT_ETO_PERMISSION],
       formatIntlMessage("eto.modal.submit-description"),
     );
-    yield apiEtoService.submitCompanyAndEtoData();
+    yield apiEtoService.submitCompanyAndEto();
     notificationCenter.info("ETO Successfully submitted");
   } catch (e) {
     logger.error("Failed to send ETO data", e);

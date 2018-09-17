@@ -1,5 +1,5 @@
 import { genericModalIcons } from "../../components/modals/GenericModal";
-import { AppReducer } from "../../store";
+import { AppActionTypes, AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
 export interface IGenericModalState {
@@ -14,6 +14,8 @@ export interface IGenericModal {
   title: string | React.ReactNode;
   description?: string | React.ReactNode;
   icon?: TIconType;
+  actionLinkText?: string | React.ReactNode;
+  onClickAction?: AppActionTypes;
 }
 
 const initialState: IGenericModalState = {
@@ -32,11 +34,7 @@ export const genericModalReducer: AppReducer<IGenericModalState> = (
         genericModalObj: action.payload,
       };
     case "GENERIC_MODAL_HIDE":
-      return {
-        ...state,
-        genericModalObj: undefined,
-        isOpen: false,
-      };
+      return initialState;
   }
 
   return state;

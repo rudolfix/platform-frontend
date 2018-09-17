@@ -1,9 +1,10 @@
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import { FormattedMessage } from "react-intl-phraseapp";
 import {
   EtoLegalInformationType,
   TPartialCompanyEtoData,
@@ -11,19 +12,26 @@ import {
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormFieldDate } from "../../../shared/forms/formField/FormFieldDate";
 import { FormSelectField } from "../../../shared/forms/formField/FormSelectField";
-import { FormField } from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialCompanyEtoData;
+  company: TPartialCompanyEtoData;
+}
+
+interface IExternalProps {
+  readonly: boolean;
+}
+
+interface IDispatchProps {
+  saveData: (values: TPartialCompanyEtoData) => void;
 }
 
 interface IRounds {
@@ -51,13 +59,14 @@ const NUMBER_OF_EMPLOYEES = {
   ">1000": ">1000",
 };
 
-interface IDispatchProps {
-  saveData: (values: TPartialCompanyEtoData) => void;
-}
+type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
-type IProps = IStateProps & IDispatchProps;
-
-const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
+const EtoRegistrationLegalInformationComponent = ({
+  readonly,
+  savingData,
+  saveData,
+  values,
+}: IProps) => {
   return (
     <EtoFormBase title="Legal Information" validator={EtoLegalInformationType.toYup()}>
       <Section>
@@ -84,83 +93,87 @@ const EtoForm = (props: FormikProps<TPartialCompanyEtoData> & IProps) => {
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.registration-number" />}
           name="registrationNumber"
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.vat-number" />}
           name="vatNumber"
+          disabled={readonly}
         />
         <FormFieldDate
           label={<FormattedMessage id="eto.form.legal-information.company-founding-date" />}
           name="foundingDate"
+          disabled={readonly}
         />
         <FormSelectField
           label={<FormattedMessage id="eto.form.legal-information.number-of-employees" />}
           values={NUMBER_OF_EMPLOYEES}
           name="numberOfEmployees"
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.number-of-founders" />}
           type="number"
           name="numberOfFounders"
+          disabled={readonly}
         />
         <FormSelectField
           label={<FormattedMessage id="eto.form.legal-information.last-founding-round" />}
           values={FUNDING_ROUNDS}
           name="companyStage"
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.last-founding-amount" />}
           type="number"
           name="lastFundingSizeEur"
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.number-of-existing-shares" />}
           type="number"
           min="0"
           name="companyShares"
+          disabled={readonly}
         />
         <FormCategoryDistribution
           name="shareholders"
-          prefix="n"
+          prefix="%"
           label={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
           suggestions={["Full Name"]}
           blankField={{ fullName: "", shares: "" }}
+          disabled={readonly}
         />
       </Section>
-      <Col>
-        <Row className="justify-content-end">
-          <Button
-            layout="primary"
-            className="mr-4"
-            onClick={() => {
-              props.saveData(props.values);
-            }}
-            isLoading={props.savingData}
-          >
-            <FormattedMessage id="form.button.save" />
-          </Button>
-        </Row>
-      </Col>
+      {!readonly && (
+        <Col>
+          <Row className="justify-content-end">
+            <Button
+              type="submit"
+              layout="primary"
+              className="mr-4"
+              isLoading={savingData}
+              onClick={() => {
+                // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
+                saveData(values);
+              }}
+            >
+              <FormattedMessage id="form.button.save" />
+            </Button>
+          </Row>
+        </Col>
+      )}
     </EtoFormBase>
   );
 };
 
-const EtoEnhancedForm = withFormik<IProps, TPartialCompanyEtoData>({
-  validationSchema: EtoLegalInformationType.toYup(),
-  mapPropsToValues: props => props.stateValues,
-  handleSubmit: (values, props) => props.props.saveData(values),
-})(EtoForm);
-
-export const EtoRegistrationLegalInformationComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
-);
-
-export const EtoRegistrationLegalInformation = compose<React.SFC>(
+export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>>(
+  setDisplayName("EtoRegistrationLegalInformation"),
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: s => ({
-      loadingData: s.etoFlow.loading,
-      savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
+    stateToProps: state => ({
+      loadingData: state.etoFlow.loading,
+      savingData: state.etoFlow.saving,
+      company: state.etoFlow.companyData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
@@ -168,7 +181,9 @@ export const EtoRegistrationLegalInformation = compose<React.SFC>(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: _dispatch => {},
+  withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
+    validationSchema: EtoLegalInformationType.toYup(),
+    mapPropsToValues: props => props.company,
+    handleSubmit: (values, { props }) => props.saveData(values),
   }),
 )(EtoRegistrationLegalInformationComponent);

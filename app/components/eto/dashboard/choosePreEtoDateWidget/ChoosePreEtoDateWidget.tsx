@@ -23,7 +23,10 @@ export const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlPr
         <p className={cn(styles.text, "pt-2")}>
           <FormattedMessage id="settings.choose-pre-eto-date.book-building-will-stop" />
         </p>
-        <Col className="d-flex justify-content-center">{/* TODO: Add datePicker Component */}</Col>
+        <Col className="d-flex justify-content-center">
+          {/* TODO: refactor to simple datepicker without formik */}
+          {/*<FormFieldDatePicker name="preEtoDate" />*/}
+        </Col>
       </div>
     </Panel>
   );

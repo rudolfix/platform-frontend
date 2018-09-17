@@ -1,6 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal, Row } from "reactstrap";
+import { compose, setDisplayName, withHandlers } from "recompose";
 
 import { actions } from "../../modules/actions";
 import {
@@ -8,8 +9,7 @@ import {
   selectGenericModalIsOpen,
   selectGenericModalObj,
 } from "../../modules/genericModal/reducer";
-import { appConnect } from "../../store";
-
+import { appConnect, AppDispatch } from "../../store";
 import { Button } from "../shared/Buttons";
 import { ModalComponentBody } from "./ModalComponentBody";
 
@@ -22,8 +22,9 @@ interface IStateProps {
   genericModalObj?: IGenericModal;
 }
 
-interface IDispatchProps {
-  onDismiss: () => void;
+interface IHandlersProps {
+  closeModal: () => void;
+  onClick: () => void;
 }
 
 export const genericModalIcons = {
@@ -31,14 +32,15 @@ export const genericModalIcons = {
   exclamation: <img src={warningIcon} className={styles.icon} aria-hidden="true" />,
 };
 
-const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
-  onDismiss,
+const GenericModalComponent: React.SFC<IStateProps & IHandlersProps> = ({
+  onClick,
+  closeModal,
   isOpen,
   genericModalObj,
 }) => {
   return (
-    <Modal isOpen={isOpen} toggle={onDismiss} centered>
-      <ModalComponentBody onClose={onDismiss}>
+    <Modal isOpen={isOpen} toggle={closeModal} centered>
+      <ModalComponentBody onClose={closeModal}>
         <Row className="mt-5 justify-content-center">
           <h5 data-test-id="components.modals.generic-modal.title">
             {genericModalObj && genericModalObj.title}
@@ -53,8 +55,12 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
         </Row>
 
         <Row className="mb-5 justify-content-center">
-          <Button onClick={onDismiss} data-test-id="generic-modal-dismiss-button">
-            <FormattedMessage id="modal.generic.button.dismiss" />
+          <Button onClick={onClick} data-test-id="generic-modal-dismiss-button">
+            {genericModalObj && genericModalObj.actionLinkText ? (
+              genericModalObj.actionLinkText
+            ) : (
+              <FormattedMessage id="modal.generic.button.dismiss" />
+            )}
           </Button>
         </Row>
       </ModalComponentBody>
@@ -62,12 +68,26 @@ const GenericModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
   );
 };
 
-export const GenericModal = appConnect<IStateProps, IDispatchProps>({
-  stateToProps: s => ({
-    isOpen: selectGenericModalIsOpen(s.genericModal),
-    genericModalObj: selectGenericModalObj(s.genericModal),
+interface IReduxProps {
+  dispatch: AppDispatch;
+}
+
+export const GenericModal = compose<IStateProps & IHandlersProps, {}>(
+  setDisplayName("GenericModal"),
+  appConnect<IStateProps>({
+    stateToProps: state => ({
+      isOpen: selectGenericModalIsOpen(state.genericModal),
+      genericModalObj: selectGenericModalObj(state.genericModal),
+    }),
   }),
-  dispatchToProps: dispatch => ({
-    onDismiss: () => dispatch(actions.genericModal.hideGenericModal()),
+  withHandlers<IStateProps & IReduxProps, IHandlersProps>({
+    closeModal: ({ dispatch }) => () => dispatch(actions.genericModal.hideGenericModal()),
+    onClick: ({ genericModalObj, dispatch }) => () => {
+      dispatch(actions.genericModal.hideGenericModal());
+
+      if (genericModalObj && genericModalObj.onClickAction) {
+        dispatch(genericModalObj.onClickAction);
+      }
+    },
   }),
-})(GenericModalComponent);
+)(GenericModalComponent);

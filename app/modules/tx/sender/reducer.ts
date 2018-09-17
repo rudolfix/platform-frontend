@@ -1,6 +1,8 @@
 import { AppReducer } from "../../../store";
+import { ITxData } from "./../../../lib/web3/Web3Manager";
 
-export type TxSenderType = "WITHDRAW";
+export type TxSenderType = "WITHDRAW" | "INVEST";
+
 export type TxSenderState =
   | "UNINITIALIZED"
   | "WATCHING_PENDING_TXS"
@@ -12,16 +14,6 @@ export type TxSenderState =
   | "DONE"
   | "ERROR_SIGN"
   | "REVERTED";
-
-export interface ITxData {
-  to?: string;
-  value?: string;
-  gas?: string;
-  gasPrice?: string;
-  data?: string;
-  nonce?: string;
-  from?: string;
-}
 
 export interface ITxSenderState {
   state: TxSenderState;
@@ -50,12 +42,13 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...initialState,
         state: "INIT",
+        type: action.payload.type,
       };
 
     case "TX_SENDER_SHOW_MODAL":
       return {
         ...initialState,
-        state: "INIT",
+        state: "WATCHING_PENDING_TXS",
         type: action.payload.type,
       };
 

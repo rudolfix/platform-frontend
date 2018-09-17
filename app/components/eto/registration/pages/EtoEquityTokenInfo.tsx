@@ -1,8 +1,8 @@
 import { FormikProps, withFormik } from "formik";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import {
@@ -11,12 +11,15 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
-import { FormField } from "../../../shared/forms/forms";
+import { FormField } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
+
+interface IExternalProps {
+  readonly: boolean;
+}
 
 interface IStateProps {
   loadingData: boolean;
@@ -28,72 +31,65 @@ interface IDispatchProps {
   saveData: (values: TPartialEtoSpecData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
-  render(): React.ReactNode {
-    return (
-      <EtoFormBase
-        title={<FormattedMessage id="eto.form.eto-equity-token-info.title" />}
-        validator={EtoEquityTokenInfoType.toYup()}
-      >
-        <FormField
-          label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
-          placeholder="Token name"
-          name="equityTokenName"
-        />
-        <FormField
-          label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
-          placeholder="3 - 4 characters"
-          maxLength="4"
-          pattern=".{3,4}"
-          name="equityTokenSymbol"
-        />
-        <div className="form-group">
-          <FormLabel>
-            <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
-          </FormLabel>
-          <FormSingleFileUpload
-            label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
-            name="equityTokenImage"
-            acceptedFiles="image/png"
-            fileFormatInformation="*200 x 200px png"
-          />
-        </div>
-        <Col>
-          <Row className="justify-content-center">
-            <Button
-              layout="primary"
-              type="submit"
-              onClick={() => {
-                this.props.saveData(this.props.values);
-              }}
-              isLoading={this.props.savingData}
-            >
-              <FormattedMessage id="form.button.save" />
-            </Button>
-          </Row>
-        </Col>
-      </EtoFormBase>
-    );
-  }
-}
-
-const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
-  validationSchema: EtoEquityTokenInfoType.toYup(),
-  mapPropsToValues: props => props.stateValues,
-  handleSubmit: (values, props) => props.props.saveData(values),
-})(EtoForm);
-
-export const EtoEquityTokenInfoComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
+const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({
+  readonly,
+  savingData,
+  saveData,
+  values,
+}) => (
+  <EtoFormBase
+    title={<FormattedMessage id="eto.form.eto-equity-token-info.title" />}
+    validator={EtoEquityTokenInfoType.toYup()}
+  >
+    <FormField
+      label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
+      placeholder="Token name"
+      name="equityTokenName"
+      disabled={readonly}
+    />
+    <FormField
+      label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+      placeholder="3 - 4 characters"
+      maxLength="4"
+      name="equityTokenSymbol"
+      disabled={readonly}
+    />
+    <div className="form-group">
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
+      </FormLabel>
+      <FormSingleFileUpload
+        label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+        name="equityTokenImage"
+        acceptedFiles="image/png"
+        fileFormatInformation="*200 x 200px png"
+        disabled={readonly}
+      />
+    </div>
+    {!readonly && (
+      <Col>
+        <Row className="justify-content-center">
+          <Button
+            layout="primary"
+            type="submit"
+            isLoading={savingData}
+            onClick={() => {
+              // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
+              saveData(values);
+            }}
+          >
+            <FormattedMessage id="form.button.save" />
+          </Button>
+        </Row>
+      </Col>
+    )}
+  </EtoFormBase>
 );
 
-export const EtoEquityTokenInfo = compose<React.SFC>(
+export const EtoEquityTokenInfo = compose<React.SFC<IExternalProps>>(
+  setDisplayName("EtoEquityTokenInfo"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -113,7 +109,9 @@ export const EtoEquityTokenInfo = compose<React.SFC>(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: _dispatch => {},
+  withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
+    validationSchema: EtoEquityTokenInfoType.toYup(),
+    mapPropsToValues: props => props.stateValues,
+    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoEquityTokenInfoComponent);

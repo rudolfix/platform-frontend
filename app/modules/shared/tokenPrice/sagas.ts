@@ -1,9 +1,10 @@
 import { BigNumber } from "bignumber.js";
-import * as promiseAll from "promise-all";
 import { delay } from "redux-saga";
-import { put } from "redux-saga/effects";
+import { put, select } from "redux-saga/effects";
+
 import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
+import { IAppState } from "../../../store";
 import { actions } from "../../actions";
 import { numericValuesToString } from "../../contracts/utils";
 import { neuCall } from "../../sagas";
@@ -34,12 +35,10 @@ export async function loadTokenPriceDataAsync({
       );
   } else {
     return Object.assign(
-      numericValuesToString(
-        await promiseAll({
-          etherPriceEur: Promise.resolve(new BigNumber("483.96")),
-          neuPriceEur: Promise.resolve(new BigNumber("0.500901")),
-        }),
-      ),
+      numericValuesToString({
+        etherPriceEur: new BigNumber("483.96"),
+        neuPriceEur: new BigNumber("0.500901"),
+      }),
       { priceOutdated: true },
     );
   }
@@ -50,7 +49,17 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
     logger.info("Querying for tokenPrice");
 
     const tokenPriceData = yield neuCall(loadTokenPriceDataAsync);
-    yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
+    const price: ITokenPriceStateData | undefined = yield select(
+      (s: IAppState) => s.tokenPrice.tokenPriceData,
+    );
+
+    if (
+      !price ||
+      price.etherPriceEur !== tokenPriceData.etherPriceEur ||
+      price.neuPriceEur !== tokenPriceData.neuPriceEur
+    ) {
+      yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
+    }
 
     yield delay(TOKEN_PRICE_MONITOR_DELAY);
   }

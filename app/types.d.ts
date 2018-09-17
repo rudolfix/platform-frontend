@@ -1,5 +1,5 @@
-import { HTMLAttributes, CSSProperties } from "react";
-import { FormattedMessage } from "react-intl";
+import { CSSProperties, HTMLAttributes } from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 type Dictionary<T> = { [id: string]: T };
 type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
@@ -22,6 +22,7 @@ type DeepPartial<T> = {
 };
 
 export type TDictionaryValues<T> = T extends Dictionary<infer U> ? U : never;
+export type TDictionaryArrayValues<T> = T extends Array<Dictionary<infer U>> ? U : never;
 
 export type primitive = string | number | boolean | undefined | null;
 export type DeepReadonly<T> = T extends primitive

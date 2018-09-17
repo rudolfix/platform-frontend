@@ -93,6 +93,7 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
         svgString={iconWallet}
         to={appRoutes.wallet}
         menuName={<FormattedMessage id="menu.wallet" />}
+        data-test-id="authorized-layout-wallet-button"
       />
       <MenuEntry
         svgString={iconHelp}
@@ -124,7 +125,7 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad
       />
       <MenuEntry
         svgString={iconEto}
-        to={appRoutes.etoPublicView}
+        to={appRoutes.etoIssuerView}
         disabled={!shouldEtoDataLoad}
         menuName={<FormattedMessage id="menu.eto-page" />}
       />

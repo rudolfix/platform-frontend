@@ -6,7 +6,7 @@ import { Col, Row } from "reactstrap";
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { ButtonIcon } from "../../Buttons";
 import { FormHighlightGroup } from "../FormHighlightGroup";
-import { FormField } from "../forms";
+import { FormField } from "../index";
 import { FormTextArea } from "./FormTextArea";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
@@ -14,7 +14,7 @@ import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 import { FormTransformingField } from "./FormTransformingField";
 
 interface IProps {
-  className?: string;
+  disabled?: boolean;
   name: string;
   label?: TTranslatedString;
   prefix?: string;
@@ -36,59 +36,63 @@ interface IExternalProps {
   blankField: object;
 }
 
-const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = props => {
-  const {
-    isFirstElement,
-    removeField,
-    isLastElement,
-    placeholder,
-    addField,
-    formFieldKeys,
-    prefix,
-    transformRatio,
-  } = props;
-
-  return (
-    <Row>
-      <Col xs={8}>
-        <Row className="justify-content-center">
-          <Col xs={1} className="pt-2">
-            {isLastElement && <ButtonIcon svgIcon={plusIcon} onClick={addField} />}
-          </Col>
-          <Col>
-            <FormField name={`${props.name}.${formFieldKeys[0]}`} placeholder={placeholder} />
-          </Col>
-        </Row>
-      </Col>
-      <Col>
-        <Row>
-          <Col xs={9}>
-            {transformRatio ? (
-              <FormTransformingField
-                min="0"
-                prefix={prefix}
-                name={`${props.name}.${formFieldKeys[1]}`}
-                ratio={transformRatio}
-              />
-            ) : (
-              <FormField
-                min="0"
-                prefix={prefix}
-                name={`${props.name}.${formFieldKeys[1]}`}
-                type="number"
-              />
-            )}
-          </Col>
-          {!isFirstElement && (
-            <span className="pt-2">
-              <ButtonIcon svgIcon={closeIcon} onClick={removeField} />
-            </span>
+const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = ({
+  disabled,
+  isFirstElement,
+  removeField,
+  isLastElement,
+  placeholder,
+  addField,
+  formFieldKeys,
+  prefix,
+  transformRatio,
+  name,
+}) => (
+  <Row>
+    <Col xs={8}>
+      <Row className="justify-content-center">
+        <Col xs={1} className="pt-2">
+          {isLastElement && !disabled && <ButtonIcon svgIcon={plusIcon} onClick={addField} />}
+        </Col>
+        <Col>
+          <FormField
+            disabled={disabled}
+            name={`${name}.${formFieldKeys[0]}`}
+            placeholder={placeholder}
+          />
+        </Col>
+      </Row>
+    </Col>
+    <Col>
+      <Row>
+        <Col xs={9}>
+          {transformRatio ? (
+            <FormTransformingField
+              disabled={disabled}
+              min="0"
+              prefix={prefix}
+              name={`${name}.${formFieldKeys[1]}`}
+              ratio={transformRatio}
+            />
+          ) : (
+            <FormField
+              disabled={disabled}
+              min="0"
+              prefix={prefix}
+              name={`${name}.${formFieldKeys[1]}`}
+              type="number"
+            />
           )}
-        </Row>
-      </Col>
-    </Row>
-  );
-};
+        </Col>
+        {!isFirstElement && (
+          <span className="pt-2">
+            {disabled && <ButtonIcon svgIcon={closeIcon} onClick={removeField} />}
+          </span>
+        )}
+      </Row>
+    </Col>
+  </Row>
+);
 
 export class FormCategoryDistribution extends React.Component<
   IProps & IExternalProps & CommonHtmlProps
@@ -104,12 +108,13 @@ export class FormCategoryDistribution extends React.Component<
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
     const { name } = this.props;
 
-    if (!values[name])
+    if (!values[name]) {
       this.suggestions.forEach((_, index) => setFieldValue(`${name}.${index}`, this.blankField));
+    }
   }
 
   render(): React.ReactNode {
-    const { name, label, className, paragraphName, prefix, transformRatio } = this.props;
+    const { name, label, className, paragraphName, prefix, transformRatio, disabled } = this.props;
     const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     const categoryDistribution = values[name] || [];
@@ -119,7 +124,9 @@ export class FormCategoryDistribution extends React.Component<
       <FormHighlightGroup>
         <div className={className}>
           <div className="mb-4 text-uppercase">{label}</div>
-          {paragraphName && <FormTextArea name={paragraphName} placeholder="Detail" />}
+          {paragraphName && (
+            <FormTextArea name={paragraphName} placeholder="Detail" disabled={disabled} />
+          )}
 
           <FieldArray
             name={name}
@@ -127,11 +134,12 @@ export class FormCategoryDistribution extends React.Component<
               <>
                 {categoryDistribution.map(
                   (_: { description: string; percent: number }, index: number) => {
-                    const isLastElement = !(index < categoryDistribution.length - 1);
+                    const isLastElement = index === categoryDistribution.length - 1;
                     const isFirstElement = index === 0;
 
                     return (
                       <SingleCategoryDistributionComponent
+                        disabled={disabled}
                         key={index}
                         formFieldKeys={formFieldKeys}
                         prefix={prefix}

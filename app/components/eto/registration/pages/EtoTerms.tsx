@@ -1,14 +1,13 @@
 import { FormikProps, withFormik } from "formik";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button } from "../../../shared/Buttons";
 import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
 import {
@@ -17,8 +16,12 @@ import {
 } from "../../../shared/forms/formField/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
-import { FormField, FormTextArea } from "../../../shared/forms/forms";
+import { FormField, FormTextArea } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
+
+interface IExternalProps {
+  readonly: boolean;
+}
 
 interface IStateProps {
   loadingData: boolean;
@@ -30,7 +33,7 @@ interface IDispatchProps {
   saveData: (values: TPartialEtoSpecData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
 interface ICurrencies {
   [key: string]: string;
@@ -43,167 +46,168 @@ const CURRENCIES: ICurrencies = {
 
 const currencies = Object.keys(CURRENCIES);
 
-class EtoForm extends React.Component<FormikProps<TPartialEtoSpecData> & IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
-  render(): React.ReactNode {
-    return (
-      <EtoFormBase
-        title={<FormattedMessage id="eto.form.eto-terms.title" />}
-        validator={EtoTermsType.toYup()}
-      >
-        <FormLabel>
-          <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
-        </FormLabel>
-        <div className="form-group">
-          <FormFieldCheckboxGroup name="currencies">
-            {currencies.map(currency => (
-              <FormFieldCheckbox key={currency} label={CURRENCIES[currency]} value={currency} />
-            ))}
-          </FormFieldCheckboxGroup>
-        </div>
-
-        <Row>
-          <Col>
-            <FormField
-              label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
-              placeholder="1"
-              prefix="€"
-              name="minTicketEur"
-              type="number"
-              min="1"
-            />
-          </Col>
-          <Col>
-            <FormField
-              label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
-              placeholder="Unlimited"
-              prefix="€"
-              name="maxTicketEur"
-              type="number"
-              min="1"
-            />
-          </Col>
-        </Row>
-
-        <div className="form-group">
-          <FormCheckbox
-            name="notUnderCrowdfundingRegulations"
-            label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
+const EtoRegistrationTermsComponent: React.SFC<IProps> = ({
+  readonly,
+  savingData,
+  saveData,
+  values,
+}) => (
+  <EtoFormBase
+    title={<FormattedMessage id="eto.form.eto-terms.title" />}
+    validator={EtoTermsType.toYup()}
+  >
+    <FormLabel>
+      <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
+    </FormLabel>
+    <div className="form-group">
+      <FormFieldCheckboxGroup name="currencies">
+        {currencies.map(currency => (
+          <FormFieldCheckbox
+            key={currency}
+            label={CURRENCIES[currency]}
+            value={currency}
+            disabled={readonly}
           />
-        </div>
+        ))}
+      </FormFieldCheckboxGroup>
+    </div>
 
-        <div className="form-group">
-          <FormLabel>
-            <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
-          </FormLabel>
-          <div>
-            <FormRadioButton name="prospectusLanguage" label="DE" value="de" />
-          </div>
-          <div>
-            <FormRadioButton name="prospectusLanguage" label="EN" value="en" />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <FormLabel>
-            <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
-          </FormLabel>
-          <FormRange
-            name="whitelistDurationDays"
-            min={1}
-            unitMin={
-              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />
-            }
-            max={14}
-            unitMax={
-              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />
-            }
-          />
-        </div>
-
-        <div className="form-group">
-          <FormLabel>
-            <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
-          </FormLabel>
-          <FormRange
-            name="publicDurationDays"
-            min={0}
-            unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
-            max={60}
-          />
-        </div>
-
-        <div className="form-group">
-          <FormLabel>
-            <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
-          </FormLabel>
-          <FormRange
-            name="signingDurationDays"
-            min={14}
-            unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
-            max={30}
-          />
-        </div>
-
-        <div className="form-group">
-          <FormLabel>
-            <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
-          </FormLabel>
-          <div>
-            <FormRadioButton
-              name="enableTransferOnSuccess"
-              label={<FormattedMessage id="form.select.asap" />}
-              value={true}
-            />
-          </div>
-          <div>
-            <FormRadioButton
-              name="enableTransferOnSuccess"
-              label={<FormattedMessage id="eto.form.eto-terms.future-date" />}
-              value={false}
-            />
-          </div>
-        </div>
-
-        <FormTextArea
-          className="mb-2 mt-2"
-          label={<FormattedMessage id="eto.form.other" />}
-          name="additionalTerms"
+    <Row>
+      <Col>
+        <FormField
+          label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
+          placeholder="1"
+          prefix="€"
+          name="minTicketEur"
+          type="number"
+          min="1"
+          disabled={readonly}
         />
+      </Col>
+      <Col>
+        <FormField
+          label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
+          placeholder="Unlimited"
+          prefix="€"
+          name="maxTicketEur"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+      </Col>
+    </Row>
 
-        <Col>
-          <Row className="justify-content-center">
-            <Button
-              layout="primary"
-              type="submit"
-              onClick={() => {
-                this.props.saveData(this.props.values);
-              }}
-              isLoading={this.props.savingData}
-            >
-              <FormattedMessage id="form.button.save" />
-            </Button>
-          </Row>
-        </Col>
-      </EtoFormBase>
-    );
-  }
-}
+    <div className="form-group">
+      <FormCheckbox
+        disabled={readonly}
+        name="notUnderCrowdfundingRegulations"
+        label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
+      />
+    </div>
 
-const EtoEnhancedForm = withFormik<IProps, TPartialEtoSpecData>({
-  validationSchema: EtoTermsType.toYup(),
-  mapPropsToValues: props => props.stateValues,
-  handleSubmit: (values, props) => props.props.saveData(values),
-})(EtoForm);
+    <div className="form-group">
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
+      </FormLabel>
+      <div>
+        <FormRadioButton name="prospectusLanguage" label="DE" value="de" disabled={readonly} />
+      </div>
+      <div>
+        <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
+      </div>
+    </div>
 
-export const EtoRegistrationTermsComponent: React.SFC<IProps> = props => (
-  <EtoEnhancedForm {...props} />
+    <div className="form-group">
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
+      </FormLabel>
+      <FormRange
+        disabled={readonly}
+        name="whitelistDurationDays"
+        min={1}
+        unitMin={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />}
+        max={14}
+        unitMax={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />}
+      />
+    </div>
+
+    <div className="form-group">
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
+      </FormLabel>
+      <FormRange
+        disabled={readonly}
+        name="publicDurationDays"
+        min={0}
+        unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
+        max={60}
+      />
+    </div>
+
+    <div className="form-group">
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
+      </FormLabel>
+      <FormRange
+        disabled={readonly}
+        name="signingDurationDays"
+        min={14}
+        unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
+        max={30}
+      />
+    </div>
+
+    <div className="form-group">
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
+      </FormLabel>
+      <div>
+        <FormRadioButton
+          disabled={readonly}
+          name="enableTransferOnSuccess"
+          label={<FormattedMessage id="form.select.asap" />}
+          value={true}
+        />
+      </div>
+      <div>
+        <FormRadioButton
+          disabled={readonly}
+          name="enableTransferOnSuccess"
+          label={<FormattedMessage id="eto.form.eto-terms.future-date" />}
+          value={false}
+        />
+      </div>
+    </div>
+
+    <FormTextArea
+      disabled={readonly}
+      className="mb-2 mt-2"
+      label={<FormattedMessage id="eto.form.other" />}
+      name="additionalTerms"
+    />
+
+    {!readonly && (
+      <Col>
+        <Row className="justify-content-center">
+          <Button
+            layout="primary"
+            type="submit"
+            isLoading={savingData}
+            onClick={() => {
+              // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
+              saveData(values);
+            }}
+          >
+            <FormattedMessage id="form.button.save" />
+          </Button>
+        </Row>
+      </Col>
+    )}
+  </EtoFormBase>
 );
 
-export const EtoRegistrationTerms = compose<React.SFC>(
+export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
+  setDisplayName("EtoRegistrationTerms"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
@@ -223,7 +227,9 @@ export const EtoRegistrationTerms = compose<React.SFC>(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: _dispatch => {},
+  withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
+    validationSchema: EtoTermsType.toYup(),
+    mapPropsToValues: props => props.stateValues,
+    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationTermsComponent);

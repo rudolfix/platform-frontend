@@ -14,6 +14,7 @@ import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../accessWallet/sagas";
 import { actions } from "../actions";
 import { loadKycRequestData } from "../kyc/sagas";
+import { selectRedirectURLFromQueryString } from "../routing/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectUrlUserType } from "../wallet-selector/selectors";
 import {
@@ -22,7 +23,7 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { WalletSubType, WalletType } from "../web3/types";
-import { selectRedirectURLFromQueryString, selectVerifiedUserEmail } from "./selectors";
+import { selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();

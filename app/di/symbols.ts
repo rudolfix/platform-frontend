@@ -21,6 +21,7 @@ export const symbols = makeDebugSymbols({
   usersApi: Symbol(),
   apiKycService: Symbol(),
   apiEtoService: Symbol(),
+  apiEtoPledgeService: Symbol(),
   apiEtoFileService: Symbol(),
   fileStorageService: Symbol(),
   gasApi: Symbol(),

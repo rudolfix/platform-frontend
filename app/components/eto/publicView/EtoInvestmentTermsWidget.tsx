@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
@@ -171,7 +171,8 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.nominee" />
                 </span>
-                <span className={styles.value}>{etoData.nominee}</span>
+                {/* TODO: change to {etoData.nominee} when endpoint is avaliable */}
+                <span className={styles.value}>Neumini UG</span>
               </div>
             )}
             {etoData.signingDurationDays && (
@@ -211,12 +212,14 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
               </span>
             </div>
 
-            <div className={styles.entry}>
-              <span className={styles.label}>
-                <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
-              </span>
-              <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}</span>
-            </div>
+            {etoData.liquidationPreferenceMultiplier && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
+                </span>
+                <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}</span>
+              </div>
+            )}
             {etoFilesData["company_token_holder_agreement"] && (
               <a
                 href={`${etoFilesData["company_token_holder_agreement"]}`}

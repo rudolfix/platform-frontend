@@ -4,7 +4,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { EtoState, TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
@@ -121,31 +121,33 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           tokenName={etoData.equityTokenName || ""}
           tokenSymbol={etoData.equityTokenSymbol || ""}
           className="mb-4"
-          numberOfInvestors={12}
-          prospectusApproved={true}
-          termSheet={true}
-          timeToClaim={12}
-          smartContractOnchain={true}
-          equityTokenPrice="10000"
-          newSharesGenerated="1000"
-          preMoneyValuation="10000000"
-          investmentAmount="100000"
-          status="campaigning"
-          raisedAmount="2000"
+          investmentAmount={0} //TODO: connect proper one
+          equityTokenPrice={0} //TODO: connect proper one
+          raisedAmount={0} //TODO: connect proper one
+          timeToClaim={0} //TODO: connect proper one
+          numberOfInvestors={0} //TODO: connect proper one
+          newSharesGenerated={etoData.newSharesToIssue}
+          smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
+          prospectusApproved={!!documentsByType["approved_prospectus"].name.length}
+          termSheet={!!documentsByType["termsheet_template"].name.length}
+          preMoneyValuation={etoData.preMoneyValuationEur}
+          status={etoData.state}
+          etoStartDate={etoData.startDate}
+          preEtoDuration={etoData.whitelistDurationDays}
+          publicEtoDuration={etoData.publicDurationDays}
+          inSigningDuration={etoData.signingDurationDays}
           campaigningWidget={{
             investorsLimit: etoData.maxPledges,
             maxPledge: etoData.maxTicketEur,
             minPledge: etoData.minTicketEur,
             isActivated: etoData.isBookbuilding,
-            quote: "Lorem ipsum",
+            quote: companyData.keyQuoteFounder,
           }}
           publicWidget={{
-            endInDays: 5,
-            investorsBacked: 10,
-            tokensGoal: 20,
-            raisedTokens: 1,
-            raisedETH: 1000,
-            raisedNEUR: 10000,
+            investorsBacked: 0,
+            tokensGoal: 0,
+            raisedTokens: 0,
+            etoId: etoData.etoId,
           }}
         />
 

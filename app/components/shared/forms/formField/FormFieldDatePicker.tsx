@@ -34,6 +34,7 @@ const FormFieldDatePicker: React.SFC<IProps> = () => (
           <div className={styles.inputWrapper}>
             <Field
               {...props}
+              name={props.name}
               render={({ field }: FieldProps) => {
                 return (
                   <input

@@ -217,7 +217,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
                 </span>
-                <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}</span>
+                <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
               </div>
             )}
             {etoFilesData["company_token_holder_agreement"] && (

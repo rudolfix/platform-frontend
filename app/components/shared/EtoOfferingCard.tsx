@@ -152,7 +152,7 @@ export class EtoOfferingCardComponent extends React.Component<
             )}
             <div className={styles.tags}>
               {props.tags.map((tag, index) => (
-                <Tag {...tag} key={index} />
+                <Tag className="ml-2" {...tag} key={index} />
               ))}
             </div>
           </div>

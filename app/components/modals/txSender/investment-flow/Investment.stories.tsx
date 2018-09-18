@@ -48,12 +48,12 @@ const dummyProps = {
   errorState: EInvestmentErrorState.ExceedsWalletBalance,
   investmentType: EInvestmentType.InvestmentWallet,
   gasCostEth: "10000000",
-  minTicketEur: 200,
   readyToInvest: false,
   showTokens: true,
+  eto: {} as any,
 };
 
-storiesOf("InvestmentSelection", module).add("default", () => (
+storiesOf("Investment/InvestmentSelection", module).add("default", () => (
   <InvestmentSelectionComponent
     wallets={wallets}
     investmentType={EInvestmentType.InvestmentWallet}

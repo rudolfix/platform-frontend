@@ -4,7 +4,7 @@ import { ConfettiEthereum } from "../../../landing/parts/ConfettiEthereum";
 import * as styles from "./Success.module.scss";
 
 interface IProps {
-  txHash?: string;
+  txHash: string;
 }
 
 export const WithdrawSuccess: React.SFC<IProps> = ({ txHash }) => (

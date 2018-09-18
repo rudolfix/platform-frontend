@@ -40,22 +40,22 @@ const wallets = [
 // tslint:disable-next-line:no-console
 const onSelect = (v: any) => console.log(v);
 
-storiesOf("InvestmentTypeSelector", module).add("default", () => (
-  <Container>
-    <InvestmentTypeSelector
-      wallets={wallets}
-      currentType={EInvestmentType.None}
-      onSelect={onSelect}
-    />
-  </Container>
-));
-
-storiesOf("InvestmentTypeSelector", module).add("selected", () => (
-  <Container>
-    <InvestmentTypeSelector
-      wallets={wallets}
-      currentType={EInvestmentType.InvestmentWallet}
-      onSelect={onSelect}
-    />
-  </Container>
-));
+storiesOf("Investment/InvestmentTypeSelector", module)
+  .add("default", () => (
+    <Container>
+      <InvestmentTypeSelector
+        wallets={wallets}
+        currentType={EInvestmentType.None}
+        onSelect={onSelect}
+      />
+    </Container>
+  ))
+  .add("selected", () => (
+    <Container>
+      <InvestmentTypeSelector
+        wallets={wallets}
+        currentType={EInvestmentType.InvestmentWallet}
+        onSelect={onSelect}
+      />
+    </Container>
+  ));

@@ -5,6 +5,7 @@ import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { MONEY_DECIMALS } from "../../../../config/constants";
+import { TPublicEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import {
   EInvestmentCurrency,
@@ -52,6 +53,7 @@ import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
+  eto: TPublicEtoData;
   wallets: IWalletSelectionData[];
   euroValue: string;
   ethValue: string;
@@ -61,7 +63,6 @@ interface IStateProps {
   errorState?: EInvestmentErrorState;
   equityTokenCount?: string;
   neuReward?: string;
-  minTicketEur: number;
   readyToInvest: boolean;
   showTokens: boolean;
 }
@@ -117,14 +118,32 @@ function getInvestmentTypeMessages(type: EInvestmentType): React.ReactNode {
   }
 }
 
-function getInputErrorMessage(type?: EInvestmentErrorState): React.ReactNode | undefined {
+function getInputErrorMessage(
+  type: EInvestmentErrorState | undefined,
+  eto: TPublicEtoData,
+): React.ReactNode | undefined {
   switch (type) {
     case EInvestmentErrorState.ExceedsTokenAmount:
-      return <FormattedMessage id="investment-flow.error-message.exceeds-token-amount" />;
+      return (
+        <FormattedMessage
+          id="investment-flow.error-message.exceeds-token-amount"
+          values={{ tokenName: eto.equityTokenName }}
+        />
+      );
     case EInvestmentErrorState.AboveMaximumTicketSize:
-      return <FormattedMessage id="investment-flow.error-message.above-maximum-ticket-size" />;
+      return (
+        <FormattedMessage
+          id="investment-flow.error-message.above-maximum-ticket-size"
+          values={{ maxAmount: `€${eto.maxTicketEur || 0}` }}
+        />
+      );
     case EInvestmentErrorState.BelowMinimumTicketSize:
-      return <FormattedMessage id="investment-flow.error-message.below-minimum-ticket-size" />;
+      return (
+        <FormattedMessage
+          id="investment-flow.error-message.below-minimum-ticket-size"
+          values={{ minAmount: `€${eto.minTicketEur || 0}` }}
+        />
+      );
     case EInvestmentErrorState.ExceedsWalletBalance:
       return <FormattedMessage id="investment-flow.error-message.exceeds-wallet-balance" />;
   }
@@ -138,164 +157,182 @@ function formatEth(val?: string | BigNumber): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 4);
 }
 
-export const InvestmentSelectionComponent = injectIntlHelpers((props: IProps & IIntlProps) => {
-  const { euroValue, ethValue, etherPriceEur, minTicketEur, intl, gasCostEth } = props;
-  const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur]);
-  const totalCostEth = addBigNumbers([gasCostEth, ethValue || "0"]);
-  const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"]);
-  const minTicketEth = divideBigNumbers(minTicketEur, etherPriceEur);
+export const InvestmentSelectionComponent = injectIntlHelpers(
+  ({
+    changeEthValue,
+    changeEuroValue,
+    changeInvestmentType,
+    equityTokenCount,
+    errorState,
+    etherPriceEur,
+    ethValue,
+    eto,
+    euroValue,
+    gasCostEth,
+    intl,
+    investmentType,
+    neuReward,
+    readyToInvest,
+    sendTransaction,
+    showTokens,
+    wallets,
+  }: IProps & IIntlProps) => {
+    const minTicketEur = eto.minTicketEur || 0;
+    const gasCostEuro = multiplyBigNumbers([gasCostEth, etherPriceEur]);
+    const totalCostEth = addBigNumbers([gasCostEth, ethValue || "0"]);
+    const totalCostEur = addBigNumbers([gasCostEuro, euroValue || "0"]);
+    const minTicketEth = divideBigNumbers(minTicketEur, etherPriceEur);
 
-  return (
-    <>
-      <Container className={styles.container} fluid>
-        <Row className="mt-0">
-          <Col>
-            <Heading>
-              <FormattedMessage id="investment-flow.select-wallet-and-currency" />
-            </Heading>
-          </Col>
-        </Row>
-        <Row>
-          <InvestmentTypeSelector
-            wallets={props.wallets}
-            currentType={props.investmentType}
-            onSelect={props.changeInvestmentType}
-          />
-          <Col>
-            {getInvestmentTypeMessages(props.investmentType)}
-            {props.errorState === EInvestmentErrorState.NoWalletSelected && (
-              <p>
-                <FormattedMessage id="investment-flow.no-selected-wallet-warning" />
-              </p>
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Heading>
-              <FormattedMessage id="investment-flow.calculate-investment" />
-            </Heading>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {props.errorState === EInvestmentErrorState.NotEnoughEtherForGas ? (
-              <p className={styles.error}>
-                <FormattedMessage id="investment-flow.error-message.not-enough-ether-for-gas" />
-              </p>
-            ) : (
-              <p>
-                <FormattedMessage id="investment-flow.amount-to-invest" />
-              </p>
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormFieldRaw
-              prefix="€"
-              errorMsg={getInputErrorMessage(props.errorState)}
-              placeholder={`${intl.formatIntlMessage(
-                "investment-flow.min-ticket-size",
-              )} ${minTicketEur} €`}
-              controlCursor
-              value={formatEur(euroValue)}
-              onChange={props.changeEuroValue}
-            />
-          </Col>
-          <Col sm="1">
-            <div className={styles.equals}>≈</div>
-          </Col>
-          <Col>
-            <FormFieldRaw
-              prefix="ETH"
-              placeholder={`${intl.formatIntlMessage(
-                "investment-flow.min-ticket-size",
-              )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
-              controlCursor
-              value={formatEth(ethValue)}
-              onChange={props.changeEthValue}
-            />
-            <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
-              <FormattedMessage id="investment-flow.invest-entire-balance" />
-            </a>
-          </Col>
-        </Row>
-      </Container>
-      <div className={styles.green}>
+    return (
+      <>
         <Container className={styles.container} fluid>
+          <Row className="mt-0">
+            <Col>
+              <Heading>
+                <FormattedMessage id="investment-flow.select-wallet-and-currency" />
+              </Heading>
+            </Col>
+          </Row>
+          <Row>
+            <InvestmentTypeSelector
+              wallets={wallets}
+              currentType={investmentType}
+              onSelect={changeInvestmentType}
+            />
+            <Col className={styles.walletInfo}>
+              {getInvestmentTypeMessages(investmentType)}
+              {errorState === EInvestmentErrorState.NoWalletSelected && (
+                <p className={styles.orange}>
+                  <FormattedMessage id="investment-flow.no-selected-wallet-warning" />
+                </p>
+              )}
+            </Col>
+          </Row>
           <Row>
             <Col>
-              <FormGroup>
-                <Label>
-                  <FormattedMessage id="investment-flow.equity-tokens" />
-                </Label>
-                <InfoAlert>
-                  {(props.showTokens &&
-                    props.equityTokenCount &&
-                    formatThousands(props.equityTokenCount.toString())) ||
-                    "\xA0" /* non breaking space*/}
-                </InfoAlert>
-              </FormGroup>
+              <Heading>
+                <FormattedMessage id="investment-flow.calculate-investment" />
+              </Heading>
             </Col>
-            <Col sm="1" />
+          </Row>
+          <Row>
             <Col>
-              <FormGroup>
-                <Label>
-                  <FormattedMessage id="investment-flow.estimated-neu-tokens" />
-                </Label>
-                <InfoAlert>
-                  {(props.showTokens &&
-                    props.neuReward &&
-                    formatThousands(formatEth(props.neuReward))) ||
-                    "\xA0"}
-                </InfoAlert>
-              </FormGroup>
+              {errorState === EInvestmentErrorState.NotEnoughEtherForGas ? (
+                <p className={styles.error}>
+                  <FormattedMessage id="investment-flow.error-message.not-enough-ether-for-gas" />
+                </p>
+              ) : (
+                <p>
+                  <FormattedMessage id="investment-flow.amount-to-invest" />
+                </p>
+              )}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FormFieldRaw
+                prefix="€"
+                errorMsg={getInputErrorMessage(errorState, eto)}
+                placeholder={`${intl.formatIntlMessage(
+                  "investment-flow.min-ticket-size",
+                )} ${minTicketEur} €`}
+                controlCursor
+                value={formatEur(euroValue)}
+                onChange={changeEuroValue}
+              />
+            </Col>
+            <Col sm="1">
+              <div className={styles.equals}>≈</div>
+            </Col>
+            <Col>
+              <FormFieldRaw
+                prefix="ETH"
+                placeholder={`${intl.formatIntlMessage(
+                  "investment-flow.min-ticket-size",
+                )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
+                controlCursor
+                value={formatEth(ethValue)}
+                onChange={changeEthValue}
+              />
+              <a className={styles.investAll} href="#" onClick={el => el.preventDefault()}>
+                <FormattedMessage id="investment-flow.invest-entire-balance" />
+              </a>
             </Col>
           </Row>
         </Container>
-      </div>
-      <Container className={styles.container} fluid>
-        <Row>
-          <Col className={styles.summary}>
-            <div>
-              + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
-              <span className="orange">
-                {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
-              </span>
-            </div>
-            <div>
-              <FormattedMessage id="investment-flow.total" />:{" "}
-              <span className="orange">
-                {formatThousands(formatEur(totalCostEur))} € ≈ ETH{" "}
-                {formatThousands(formatEth(totalCostEth))}
-              </span>
-            </div>
-          </Col>
-        </Row>
-        <Row className="justify-content-center mb-0">
-          <Button
-            onClick={props.sendTransaction}
-            layout="primary"
-            type="submit"
-            disabled={!props.readyToInvest}
-          >
-            <FormattedMessage id="investment-flow.invest-now" />
-          </Button>
-        </Row>
-      </Container>
-    </>
-  );
-});
+        <div className={styles.green}>
+          <Container className={styles.container} fluid>
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label>
+                    <FormattedMessage id="investment-flow.equity-tokens" />
+                  </Label>
+                  <InfoAlert>
+                    {(showTokens &&
+                      equityTokenCount &&
+                      formatThousands(equityTokenCount.toString())) ||
+                      "\xA0" /* non breaking space*/}
+                  </InfoAlert>
+                </FormGroup>
+              </Col>
+              <Col sm="1" />
+              <Col>
+                <FormGroup>
+                  <Label>
+                    <FormattedMessage id="investment-flow.estimated-neu-tokens" />
+                  </Label>
+                  <InfoAlert>
+                    {(showTokens && neuReward && formatThousands(formatEth(neuReward))) || "\xA0"}
+                  </InfoAlert>
+                </FormGroup>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+        <Container className={styles.container} fluid>
+          <Row>
+            <Col className={styles.summary}>
+              <div>
+                + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
+                <span className={styles.orange}>
+                  {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
+                </span>
+              </div>
+              <div>
+                <FormattedMessage id="investment-flow.total" />:{" "}
+                <span className={styles.orange}>
+                  {formatThousands(formatEur(totalCostEur))} € ≈ ETH{" "}
+                  {formatThousands(formatEth(totalCostEth))}
+                </span>
+              </div>
+            </Col>
+          </Row>
+          <Row className="justify-content-center mb-0">
+            <Button
+              onClick={sendTransaction}
+              layout="primary"
+              type="submit"
+              disabled={!readyToInvest}
+            >
+              <FormattedMessage id="investment-flow.invest-now" />
+            </Button>
+          </Row>
+        </Container>
+      </>
+    );
+  },
+);
 
 export const InvestmentSelection: React.SFC = compose<any>(
   injectIntlHelpers,
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const i = state.investmentFlow;
-      const eto = selectEtoById(state.publicEtos, i.etoId);
+      const eto = selectEtoById(state.publicEtos, i.etoId)!;
       const eur = selectEurValueUlps(i);
       return {
+        eto,
         etherPriceEur: selectEtherPriceEur(state.tokenPrice),
         euroValue: eur,
         ethValue: selectEthValueUlps(i),
@@ -306,7 +343,6 @@ export const InvestmentSelection: React.SFC = compose<any>(
         neuReward: selectNeuRewardUlpsByEtoId(state.publicEtos, i.etoId),
         equityTokenCount: selectEquityTokenCountByEtoId(state.publicEtos, i.etoId),
         showTokens: !!(eur && i.isValidatedInput),
-        minTicketEur: (eto && eto.minTicketEur) || 0,
         readyToInvest: selectReadyToInvest(state.investmentFlow),
       };
     },

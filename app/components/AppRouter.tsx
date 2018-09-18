@@ -12,7 +12,7 @@ import { Kyc } from "./kyc/Kyc";
 import { Portfolio } from "./Portfolio";
 
 import { appRoutes } from "./appRoutes";
-import { EmailVerify } from "./emailVerify";
+import { EmailVerify } from "./EmailVerify";
 import { EtoIssuerView } from "./eto/EtoIssuerView";
 import { EtoPreview } from "./eto/EtoPreview";
 import { EtoPublicView } from "./eto/EtoPublicView";

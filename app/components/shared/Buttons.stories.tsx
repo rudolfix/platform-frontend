@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Button, ButtonArrowRight } from "./Buttons";
+import { Button, ButtonArrowRight, ButtonSize, ButtonWidth } from "./Buttons";
 
 import * as icon from "../../assets/img/inline_icons/icon_questionmark.svg";
 
@@ -34,7 +34,7 @@ storiesOf("Buttons/default", module)
     </>
   ))
   .add("white theme", () => (
-    <div>
+    <>
       <Button theme="white">primary</Button>
       <br />
       <Button theme="white" disabled>
@@ -60,7 +60,23 @@ storiesOf("Buttons/default", module)
       <Button layout="secondary" svgIcon={icon} theme="white" iconPosition="icon-before" disabled>
         secondary icon before text disabled
       </Button>
-    </div>
+    </>
+  ))
+  .add("with size", () => (
+    <>
+      <Button size={ButtonSize.NORMAL}>normal button</Button>
+      <br />
+      <Button size={ButtonSize.SMALL}>small button</Button>
+      <br />
+    </>
+  ))
+  .add("with width", () => (
+    <>
+      <Button width={ButtonWidth.NORMAL}>normal button</Button>
+      <br />
+      <Button width={ButtonWidth.BLOCK}>wide button</Button>
+      <br />
+    </>
   ))
   .add("loading", () => <Button isLoading>Primary</Button>);
 

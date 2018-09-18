@@ -66,8 +66,6 @@ export type CommonHtmlProps = {
   style?: CSSProperties;
 };
 
-export type Size = "narrow" | "wide";
-
 export type TTranslatedString = string | React.ReactElement<FormattedMessage>;
 
 export type TAcceptedFileType =

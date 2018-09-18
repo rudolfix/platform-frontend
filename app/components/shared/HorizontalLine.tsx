@@ -1,10 +1,9 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { Size } from "../../types";
-
 import * as styles from "./HorizontalLine.module.scss";
 
+type Size = "narrow" | "wide";
 type TTheme = "yellow";
 
 interface IHorizontalLineProps {

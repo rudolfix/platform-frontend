@@ -17,7 +17,7 @@ import { selectIsConnectedButtonLocked } from "../../../modules/verifyEmailWidge
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/formField/FormField";
+import { FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";

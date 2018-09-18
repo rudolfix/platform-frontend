@@ -70,22 +70,19 @@ const LoggedOutCampaigning: React.SFC = () => {
 
 export const CampaigningWidgetLayout: React.SFC<
   IExternalProps & ICampaigningWidget & IStateProps
-> = ({ etoId, investorsLimit, isActivated, quote, isAuthorized, minPledge, maxPledge }) => (
-  <div className={styles.widgetCampaigning}>
-    {isAuthorized ? (
-      <LoggedInCampaigning
-        maxPledge={maxPledge}
-        minPledge={minPledge}
-        etoId={etoId}
-        isActivated={isActivated}
-        quote={quote}
-        investorsLimit={investorsLimit}
-      />
-    ) : (
-      <LoggedOutCampaigning />
-    )}
-  </div>
-);
+> = ({ etoId, investorsLimit, isActivated, quote, isAuthorized, minPledge, maxPledge }) =>
+  isAuthorized ? (
+    <LoggedInCampaigning
+      maxPledge={maxPledge}
+      minPledge={minPledge}
+      etoId={etoId}
+      isActivated={isActivated}
+      quote={quote}
+      investorsLimit={investorsLimit}
+    />
+  ) : (
+    <LoggedOutCampaigning />
+  );
 
 export const CampaigningWidget = compose<React.SFC<IExternalProps & ICampaigningWidget>>(
   appConnect<IStateProps>({

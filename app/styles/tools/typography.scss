@@ -36,6 +36,11 @@
   letter-spacing: px-to-rem(-.2px);
 }
 
+@mixin font-button-small {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(10px);
+}
+
 @mixin font-default {
   font-family: $headings-font-family;
   font-size: px-to-rem(14px);

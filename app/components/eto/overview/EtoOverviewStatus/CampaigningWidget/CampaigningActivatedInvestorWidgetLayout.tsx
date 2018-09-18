@@ -1,11 +1,11 @@
+import * as cn from "classnames";
 import { Form, Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
 
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
-import { Button } from "../../../../shared/Buttons";
-import { CheckboxComponent, FormField } from "../../../../shared/forms";
+import { Button, ButtonSize, ButtonWidth } from "../../../../shared/Buttons";
+import { CheckboxComponent, FormInput, InputSize } from "../../../../shared/forms";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
 
@@ -77,17 +77,15 @@ const CampaigningActivatedInvestorWidgetLayout: React.SFC<
           onSubmit={({ amount }) => backNow(amount as number)}
           validationSchema={generateCampaigningValidation(minPledge, maxPledge)}
         >
-          <Form>
-            <Row>
-              <Col xs={12} xl={6}>
-                <FormField type="number" name="amount" prefix="€" />
-              </Col>
-              <Col xs={12} xl={6}>
-                <Button type="submit">
-                  <FormattedMessage id="shared-component.eto-overview.back-now" />
-                </Button>
-              </Col>
-            </Row>
+          <Form className={styles.group}>
+            <div className={cn(styles.label, styles.labelNoUppercase)}>
+              <FormInput size={InputSize.SMALL} type="number" name="amount" prefix="€" />
+            </div>
+            <div className={styles.value}>
+              <Button type="submit" size={ButtonSize.SMALL} width={ButtonWidth.BLOCK}>
+                <FormattedMessage id="shared-component.eto-overview.back-now" />
+              </Button>
+            </div>
           </Form>
         </Formik>
       )}

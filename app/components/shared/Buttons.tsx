@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { Size } from "../../types";
 import { InlineIcon } from "./InlineIcon";
 import { LoadingIndicator } from "./LoadingIndicator";
 
@@ -13,6 +12,17 @@ type TButtonLayout = "primary" | "secondary" | "simple";
 type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite";
 type TIconPosition = "icon-before" | "icon-after";
 
+export enum ButtonSize {
+  NORMAL = "",
+  SMALL = "small",
+}
+
+export enum ButtonWidth {
+  NORMAL = "",
+  WIDE = "wide",
+  BLOCK = "block",
+}
+
 interface IGeneralButton {
   onClick?: () => void;
 }
@@ -21,6 +31,7 @@ interface IButtonIcon extends IGeneralButton {
   svgIcon: string;
   className?: string;
 }
+
 export interface IButtonProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
@@ -30,7 +41,8 @@ export interface IButtonProps {
   type?: string;
   className?: string;
   iconPosition?: TIconPosition;
-  size?: Size;
+  size?: ButtonSize;
+  width?: ButtonWidth;
   isLoading?: boolean;
 }
 
@@ -43,36 +55,38 @@ const Button: React.SFC<IButtonProps> = ({
   className,
   iconPosition,
   size,
+  width,
   isLoading,
+  type,
   ...props
-}) => {
-  return (
-    <button
-      className={cn("button", layout, iconPosition, theme, size)}
-      disabled={disabled || isLoading}
-      tabIndex={0}
-      type="button"
-      {...props}
-    >
-      <div className={cn(styles.content, className)} tabIndex={-1}>
-        {isLoading ? (
-          <LoadingIndicator light />
-        ) : (
-          <>
-            {iconPosition === "icon-before" && <InlineIcon svgIcon={svgIcon || ""} />}
-            {children}
-            {iconPosition === "icon-after" && <InlineIcon svgIcon={svgIcon || ""} />}
-          </>
-        )}
-      </div>
-    </button>
-  );
-};
+}) => (
+  <button
+    className={cn("button", layout, iconPosition, theme, size, width)}
+    disabled={disabled || isLoading}
+    type={type}
+    {...props}
+  >
+    <div className={cn(styles.content, className)} tabIndex={-1}>
+      {isLoading ? (
+        <LoadingIndicator light />
+      ) : (
+        <>
+          {iconPosition === "icon-before" && <InlineIcon svgIcon={svgIcon || ""} />}
+          {children}
+          {iconPosition === "icon-after" && <InlineIcon svgIcon={svgIcon || ""} />}
+        </>
+      )}
+    </div>
+  </button>
+);
 
 Button.defaultProps = {
   layout: "primary",
   theme: "dark",
+  type: "button",
   disabled: false,
+  size: ButtonSize.NORMAL,
+  width: ButtonWidth.NORMAL,
 };
 
 const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (

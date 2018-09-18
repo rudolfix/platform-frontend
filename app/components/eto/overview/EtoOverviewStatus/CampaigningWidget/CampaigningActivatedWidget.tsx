@@ -38,7 +38,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
   minPledge,
   maxPledge,
 }) => (
-  <>
+  <div className={styles.groupWrapper}>
     <div className={styles.group}>
       <span className={styles.label}>
         <FormattedMessage id="shared-component.eto-overview.amount-backed" />
@@ -66,7 +66,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
       ) : (
         <CampaigningActivatedUnapprovedInvestorWidget minPledge={minPledge} maxPledge={maxPledge} />
       ))}
-  </>
+  </div>
 );
 
 const CampaigningActivatedWidget = compose<React.SFC<IExternalProps>>(

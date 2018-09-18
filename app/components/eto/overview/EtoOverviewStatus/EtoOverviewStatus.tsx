@@ -32,7 +32,7 @@ interface IProps {
   newSharesGenerated: string;
   equityTokenPrice: string;
   publicWidget?: IPublicWidget;
-  campaigningWidget?: ICampaigningWidget;
+  campaigningWidget: ICampaigningWidget;
 }
 
 interface IClaimWidget {
@@ -260,7 +260,7 @@ const EtoOverviewStatus: React.SFC<
 
         <div className={styles.divider} />
 
-        <div className={styles.detailsWrapper}>
+        <div className={styles.groupWrapper}>
           <div className={styles.group}>
             <span className={styles.label}>
               <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
@@ -290,17 +290,16 @@ const EtoOverviewStatus: React.SFC<
         <div className={styles.divider} />
 
         <div className={styles.stageContentWrapper}>
-          {props.status === "campaigning" &&
-            props.campaigningWidget && (
-              <CampaigningWidget
-                etoId={props.etoId}
-                minPledge={props.campaigningWidget.minPledge}
-                maxPledge={props.campaigningWidget.maxPledge}
-                isActivated={props.campaigningWidget.isActivated}
-                quote={props.campaigningWidget.quote}
-                investorsLimit={props.campaigningWidget.investorsLimit}
-              />
-            )}
+          {props.status === "campaigning" && (
+            <CampaigningWidget
+              etoId={props.etoId}
+              minPledge={props.campaigningWidget.minPledge}
+              maxPledge={props.campaigningWidget.maxPledge}
+              isActivated={true}
+              quote={props.campaigningWidget.quote}
+              investorsLimit={props.campaigningWidget.investorsLimit}
+            />
+          )}
           {props.status === "pre-eto" && <PreEtoWidget />}
           {props.status === "public-eto" && (
             <PublicEtoWidget

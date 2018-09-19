@@ -187,24 +187,43 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
 
     return txHash;
   } catch (error) {
+    // @see https://github.com/paritytech/parity-ethereum/blob/61f4534e2a5f9c947661af0eaf4af5b76456efe0/rpc/src/v1/helpers/errors.rs#L304
     if (
-      error.code !== undefined &&
-      error.message !== undefined &&
       error.code === -32010 &&
       error.message.startsWith("Insufficient funds. The account you tried to send transaction")
     ) {
       return yield put(actions.txSender.txSenderError("Not enough funds"));
     }
-
     if (
-      error.code !== undefined &&
-      error.message !== undefined &&
-      ((error.code === -32000 && error.message === "intrinsic gas too low") ||
-        (error.code === -32010 &&
-          error.message.startsWith("Transaction gas is too low. There is not enough")) ||
-        (error.code === -32010 && error.message.startsWith("exceeds current gas limit")))
-    )
+      (error.code === -32000 && error.message === "intrinsic gas too low") ||
+      (error.code === -32010 &&
+        error.message.startsWith("Transaction gas is too low. There is not enough")) ||
+      (error.code === -32010 && error.message.startsWith("exceeds current gas limit"))
+    ) {
       return yield put(actions.txSender.txSenderError("Gas to low"));
+    }
+
+    if (error.code === -32010 && error.message.startsWith("Transaction nonce is too low")) {
+      return yield put(actions.txSender.txSenderError("Nonce too low"));
+    }
+    if (
+      error.code === -32010 &&
+      error.message.startsWith("There are too many transactions in the queue")
+    ) {
+      return yield put(actions.txSender.txSenderError("Too many transactions in que"));
+    }
+    if (error.code === -32010 && error.message.startsWith("Invalid RLP data")) {
+      return yield put(actions.txSender.txSenderError("Invalid transaction"));
+    }
+    if (error.code === -32010 && error.message.startsWith("Invalid chain id")) {
+      return yield put(actions.txSender.txSenderError("Invalid chain id"));
+    }
+    if (
+      error.code === -32010 &&
+      error.message.startsWith("Transaction cost exceeds current gas limit")
+    ) {
+      return yield put(actions.txSender.txSenderError("Transaction cost is bigger than fas limit"));
+    }
   }
   return yield put(actions.txSender.txSenderError("Tx was rejected"));
 }

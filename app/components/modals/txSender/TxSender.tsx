@@ -120,7 +120,7 @@ function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
       return <SuccessComponent type={type} txHash={txHash!} />;
 
     case "ERROR_SIGN":
-      return <div>Error occured!</div>;
+      return <div>Error occurred!</div>;
 
     case "REVERTED":
       return <div>Error: Tx reverted!</div>;

@@ -2,6 +2,11 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  color: $neu-pale-grey;
+
+  img {
+    opacity: .1;
+  }
 }
 
 .wrapper {
@@ -9,14 +14,6 @@
   display: block;
   width: 100%;
   cursor: pointer;
-}
-
-.selected {
-  color: $neu-pale-grey;
-
-  img {
-    opacity: .1;
-  }
 }
 
 .input {

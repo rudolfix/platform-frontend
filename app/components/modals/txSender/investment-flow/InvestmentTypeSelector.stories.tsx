@@ -3,14 +3,15 @@ import * as React from "react";
 import { Container } from "reactstrap";
 
 import { EInvestmentType } from "../../../../modules/investmentFlow/reducer";
-import { InvestmentTypeSelector } from "./InvestmentTypeSelector";
+import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
 
-const wallets = [
+const wallets: WalletSelectionData[] = [
   {
+    balanceEur: "32112",
     balanceEth: "30000000000000000000",
     type: EInvestmentType.ICBMEth,
     name: "ICBM Wallet",
@@ -40,22 +41,12 @@ const wallets = [
 // tslint:disable-next-line:no-console
 const onSelect = (v: any) => console.log(v);
 
-storiesOf("Investment/InvestmentTypeSelector", module)
-  .add("default", () => (
-    <Container>
-      <InvestmentTypeSelector
-        wallets={wallets}
-        currentType={EInvestmentType.None}
-        onSelect={onSelect}
-      />
-    </Container>
-  ))
-  .add("selected", () => (
-    <Container>
-      <InvestmentTypeSelector
-        wallets={wallets}
-        currentType={EInvestmentType.InvestmentWallet}
-        onSelect={onSelect}
-      />
-    </Container>
-  ));
+storiesOf("Investment/InvestmentTypeSelector", module).add("default", () => (
+  <Container>
+    <InvestmentTypeSelector
+      wallets={wallets}
+      currentType={EInvestmentType.InvestmentWallet}
+      onSelect={onSelect}
+    />
+  </Container>
+));

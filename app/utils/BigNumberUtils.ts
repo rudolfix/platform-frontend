@@ -13,6 +13,16 @@ export const addBigNumbers = (numbers: BigNumberRepresentation[]): string =>
     .toString();
 
 /**
+ * Subtract string as BigNumbers
+ */
+export const subtractBigNumbers = ([head, ...tail]: BigNumberRepresentation[]): string =>
+  tail
+    .reduce((acc: BigNumber, number) => {
+      return acc.minus(new BigNumber(number));
+    }, new BigNumber(head))
+    .toString();
+
+/**
  * Multiply string as BigNumbers
  */
 export const multiplyBigNumbers = (numbers: BigNumberRepresentation[]): string =>

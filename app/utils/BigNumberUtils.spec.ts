@@ -6,6 +6,7 @@ import {
   compareBigNumbers,
   divideBigNumbers,
   multiplyBigNumbers,
+  subtractBigNumbers,
 } from "./BigNumberUtils";
 
 describe("BigNumber Utils", () => {
@@ -13,6 +14,13 @@ describe("BigNumber Utils", () => {
     it("should add", () => {
       expect(addBigNumbers(["100", "200", "1"])).to.be.eq("301");
       expect(addBigNumbers(["100", new BigNumber(200), 1])).to.be.eq("301");
+    });
+  });
+
+  describe("subtractBigNumbers", () => {
+    it("should subtract", () => {
+      expect(subtractBigNumbers(["500", "200", "1"])).to.be.eq("299");
+      expect(subtractBigNumbers(["500", new BigNumber(200), 1])).to.be.eq("299");
     });
   });
 

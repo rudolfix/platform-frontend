@@ -8,12 +8,10 @@ export const txSenderActions = {
   txSenderAcceptDraft: (txData: ITxData) => createAction("TX_SENDER_ACCEPT_DRAFT", txData),
   txSenderAccept: () => createSimpleAction("TX_SENDER_ACCEPT"),
   txSenderSigned: (txHash: string) => createAction("TX_SENDER_SIGNED", { txHash }),
-  txSenderError: (error: string) => createAction("TX_SENDER_ERROR", { error }),
   txSenderWalletPlugged: () => createSimpleAction("TX_SENDER_WALLET_PLUGGED"),
   txSenderReportBlock: (blockId: number) => createAction("TX_SENDER_REPORT_BLOCK", blockId),
   txSenderTxMined: () => createSimpleAction("TX_SENDER_TX_MINED"),
-
-  generateWithdrawTx: () => createSimpleAction("TX_SENDER_GENERATE_TX"),
+  generateWithdrawTx: (txData: ITxData) => createAction("TX_SENDER_GENERATE_TX", txData),
 
   // Transaction inititiation
   startWithdrawEth: () => createSimpleAction("TX_SENDER_START_WITHDRAW_ETH"),
@@ -23,6 +21,8 @@ export const txSenderActions = {
   txSenderWatchPendingTxs: () => createSimpleAction("TX_SENDER_WATCH_PENDING_TXS"),
   txSenderWatchPendingTxsDone: (type: TxSenderType) =>
     createAction("TX_SENDER_WATCH_PENDING_TXS_DONE", { type }),
+  // Error Actions
+  txSenderError: (error: string) => createAction("TX_SENDER_ERROR", { error }),
 
   // This is only for development, can be removed after all flows are implemented and e2e tested
   signDebugDummyMessage: (message: string) =>

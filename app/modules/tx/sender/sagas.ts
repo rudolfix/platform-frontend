@@ -96,11 +96,15 @@ function* ensureNoPendingTx(
   yield put(actions.txSender.txSenderWatchPendingTxsDone(type));
 }
 
-function* generateEthWithrdawTransaction({ contractsService }: TGlobalDependencies): any {
-  const txStateDetails = yield select((s: IAppState) => selectTxDetails(s.txSender));
+function* generateEthWithrdawTransaction(
+  { contractsService }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "TX_SENDER_GENERATE_TX") return;
+
+  const txStateDetails = action.payload;
 
   let txDetails: ITxData | undefined;
-
   if (!txStateDetails) return;
   const etherTokenBalance = yield select((s: IAppState) => selectEtherTokenBalance(s.wallet));
   const from = yield select((s: IAppState) => selectEthereumAddressWithChecksum(s.web3));
@@ -111,9 +115,10 @@ function* generateEthWithrdawTransaction({ contractsService }: TGlobalDependenci
 
     // need to call 3 args version of transfer method. See the abi in the contract.
     // so we call the rawWeb3Contract directly
+    debugger;
     const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
       "address,uint256,bytes"
-    ].getData(txStateDetails.to, txStateDetails.value, "");
+    ].getData(txStateDetails.to, new BigNumber(txStateDetails.value), "");
 
     txDetails = {
       to: contractsService.etherToken.address,
@@ -142,9 +147,13 @@ function* generateEthWithrdawTransaction({ contractsService }: TGlobalDependenci
   }
 
   if (txDetails) {
-    yield put(actions.txSender.txSenderAccept());
+    yield put(actions.txSender.txSenderAcceptDraft(txDetails));
   }
 }
+
+class EthereumNodeError extends Error {}
+class InsufficientFundsError extends EthereumNodeError {}
+class InsufficientGasError extends EthereumNodeError {}
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
   const txData: ITxData = yield select((s: IAppState) => selectTxDetails(s.txSender));
@@ -179,9 +188,28 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
     yield neuCall(updateTxs);
 
     return txHash;
-  } catch (e) {
+  } catch (error) {
+    if (
+      error.code !== undefined &&
+      error.message !== undefined &&
+      error.code === -32010 &&
+      error.message.startsWith("Insufficient funds. The account you tried to send transaction")
+    ) {
+      throw new InsufficientFundsError();
+    }
+
+    if (
+      error.code !== undefined &&
+      error.message !== undefined &&
+      ((error.code === -32000 && error.message === "intrinsic gas too low") ||
+        (error.code === -32010 &&
+          error.message.startsWith("Transaction gas is too low. There is not enough")) ||
+        (error.code === -32010 && error.message.startsWith("exceeds current gas limit")))
+    ) {
+      throw new InsufficientGasError();
+    }
     yield put(actions.txSender.txSenderError("Tx was rejected"));
-    throw e;
+    throw error;
   }
 }
 
@@ -190,31 +218,35 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
 
   while (true) {
     const result: TEventEmitterChannelEvents = yield take(watchTxChannel);
-
     switch (result.type) {
-      case "NEW_BLOCK":
+      case EventEmitterChannelEvents.NEW_BLOCK:
         yield put(actions.txSender.txSenderReportBlock(result.blockId));
         break;
-      case "TX_MINED":
+      case EventEmitterChannelEvents.TX_MINED:
         return yield put(actions.txSender.txSenderTxMined());
-      case "ERROR":
+      case EventEmitterChannelEvents.ERROR:
         logger.error("Error while tx watching: ", result.error);
         return yield put(actions.txSender.txSenderError("Error while watching tx."));
     }
   }
 }
-
+enum EventEmitterChannelEvents {
+  NEW_BLOCK = "NEW_BLOCK",
+  TX_MINED = "TX_MINED",
+  ERROR = "ERROR",
+  REVERTED_TRANSACTION = "REVERTED_TRANSACTION",
+}
 type TEventEmitterChannelEvents =
   | {
-      type: "NEW_BLOCK";
+      type: EventEmitterChannelEvents.NEW_BLOCK;
       blockId: number;
     }
   | {
-      type: "TX_MINED";
+      type: EventEmitterChannelEvents.TX_MINED;
       tx: Web3.Transaction;
     }
   | {
-      type: "ERROR";
+      type: EventEmitterChannelEvents.ERROR;
       error: any;
     };
 
@@ -224,13 +256,14 @@ const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: stri
       .waitForTx({
         txHash,
         onNewBlock: async blockId => {
-          emitter({ type: "NEW_BLOCK", blockId });
+          emitter({ type: EventEmitterChannelEvents.NEW_BLOCK, blockId });
         },
       })
-      .then(tx => emitter({ type: "TX_MINED", tx }))
-      .catch(error => emitter({ type: "ERROR", error }))
+      .then(tx => emitter({ type: EventEmitterChannelEvents.TX_MINED, tx }))
+      .catch(error => {
+        emitter({ type: EventEmitterChannelEvents.ERROR, error });
+      })
       .then(() => emitter(END));
-
     return () => {
       // @todo missing unsubscribe
     };

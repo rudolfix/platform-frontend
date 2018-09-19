@@ -6,6 +6,14 @@ import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
 import { delay } from "../../utils/delay";
 
+class Web3Error extends Error {}
+export class RevertedTransactionError extends Web3Error {}
+
+enum TRANSACTION_STATUS {
+  REVERTED = "0x0",
+  SUCCESS = "0x1",
+}
+
 /**
  * Layer on top of raw Web3js. Simplifies API for common operations. Adds promise support.
  * Note that some methods may be not supported correctly by exact implementation of your client
@@ -67,8 +75,8 @@ export class Web3Adapter {
     return resultData.result;
   }
 
-  public async getTransactionReceipt(txHash: string): Promise<Web3.TxData> {
-    const getTransactionReceipt = promisify<Web3.TxData, string>(
+  public async getTransactionReceipt(txHash: string): Promise<Web3.TransactionReceipt> {
+    const getTransactionReceipt = promisify<Web3.TransactionReceipt, string>(
       this.web3.eth.getTransactionReceipt.bind(this.web3.eth),
     );
     return await getTransactionReceipt(txHash);
@@ -120,14 +128,18 @@ export class Web3Adapter {
           }
 
           const tx = await getTx(options.txHash);
+          const txReceipt = await this.getTransactionReceipt(options.txHash);
           const isMined = tx && tx.blockNumber;
 
           if (!isMined) {
             return;
           }
 
-          resolve(tx);
+          if (txReceipt.status === TRANSACTION_STATUS.REVERTED) {
+            throw new RevertedTransactionError();
+          }
 
+          resolve(tx);
           return true;
         } catch (e) {
           reject(e);

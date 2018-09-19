@@ -22,10 +22,13 @@ export interface ITxData {
   gas?: string;
   gasPrice?: string;
   data?: string;
-  nonce?: string;
-  from?: string;
+  from: string;
   gasLimit?: string;
   input?: string;
+}
+
+export interface IRawTxData extends ITxData {
+  nonce?: string;
 }
 
 export interface IEthereumNetworkConfig {

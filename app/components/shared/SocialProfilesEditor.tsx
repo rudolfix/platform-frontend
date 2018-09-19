@@ -6,7 +6,7 @@ import { Col, Row } from "reactstrap";
 
 import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces";
 import { CommonHtmlProps } from "../../types";
-import { FormField } from "./forms/formField/FormField";
+import { FormField } from "./forms";
 import { InlineIcon } from "./InlineIcon";
 
 import * as iconChat from "../../assets/img/inline_icons/icon-menu-help.svg";
@@ -174,33 +174,34 @@ interface IState {
 }
 
 export class SocialProfilesEditor extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = { selectedFields: [], filteredFields: [] };
-  }
-
   static contextTypes = {
     formik: PropTypes.object,
   };
 
+  state: IState = { selectedFields: [], filteredFields: [] };
+
   componentDidMount(): void {
     const { values, setFieldValue } = this.context.formik as FormikProps<any>;
     const { name, profiles } = this.props;
+
     const socialMediaValues: TSocialChannelsType = getIn(values, name) || [];
     const selectedFields: boolean[] = [];
+
     profiles.forEach((profile, index) => {
       const previousLink = socialMediaValues.find(v => v.type === profile.name);
       const value: string = previousLink ? previousLink.url || "" : "";
       setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
       selectedFields[index] = profile.preSelected ? true : !!value;
     });
-    this.setState({ ...this.state, selectedFields });
+
+    this.setState({ selectedFields });
   }
 
   toggleProfileVisibility = (index: number): void => {
     const { selectedFields } = this.state;
 
     selectedFields[index] = !this.state.selectedFields[index];
+
     this.setState({ selectedFields });
   };
 

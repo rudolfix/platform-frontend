@@ -7,6 +7,7 @@ import { IEtoSocialProfile, SocialProfilesList } from "./SocialProfilesList";
 import * as styles from "./SlidePerson.module.scss";
 
 export type TSlidePersonLayout = "horizontal" | "vertical";
+
 interface IProps {
   srcSet: ISrcSet;
   name: string;
@@ -17,11 +18,11 @@ interface IProps {
   isClickable?: boolean;
 }
 
-export const SlidePerson: React.SFC<IProps> = ({
+const SlidePerson: React.SFC<IProps> = ({
   srcSet,
   name,
   role,
-  layout,
+  layout = "horizontal",
   socialChannels,
   showLabels,
   isClickable,
@@ -48,6 +49,4 @@ export const SlidePerson: React.SFC<IProps> = ({
   );
 };
 
-SlidePerson.defaultProps = {
-  layout: "horizontal",
-};
+export { SlidePerson };

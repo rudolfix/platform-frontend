@@ -174,13 +174,13 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
       txDetails = {
         to: contractsService.etherToken.address,
         from: selectEthereumAddressWithChecksum(state.web3),
-        input: txInput,
+        data: txInput,
         value: "0",
         gas: i.gasAmount,
         gasPrice: i.gasPrice,
       };
 
-      // fill up etherToken with ether from walle}t
+      // fill up etherToken with ether from wallet
     } else {
       const ethVal = new BigNumber(i.ethValueUlps);
       const difference = ethVal.sub(etherTokenBalance);
@@ -188,7 +188,7 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
       txDetails = {
         to: contractsService.etherToken.address,
         from: selectEthereumAddressWithChecksum(state.web3),
-        input: txCall.getData(),
+        data: txCall.getData(),
         value: difference.round().toString(),
         gas: i.gasAmount,
         gasPrice: i.gasPrice,
@@ -223,7 +223,6 @@ export function* investmentFlowSagas(): any {
   yield fork(neuTakeEvery, "INVESTMENT_FLOW_GENERATE_TX", generateTransaction);
   yield takeEvery("TX_SENDER_HIDE_MODAL", stop);
   yield takeEvery("PUBLIC_ETOS_SET_CURRENT_ETO", cancelInvestment); // cancel when current eto changes
-  yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);
 }

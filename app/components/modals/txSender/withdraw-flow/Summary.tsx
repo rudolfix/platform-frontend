@@ -64,6 +64,6 @@ export const WithdrawSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispat
     txData: state.txSender.txDetails!,
   }),
   dispatchToProps: d => ({
-    onAccept: () => d(actions.txSender.txSenderAccept()),
+    onAccept: () => d(actions.txSender.generateWithdrawTx()),
   }),
 })(WithdrawSummaryComponent);

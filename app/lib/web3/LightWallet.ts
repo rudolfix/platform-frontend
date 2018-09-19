@@ -12,7 +12,7 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
-import { IEthereumNetworkConfig, ITxData } from "./Web3Manager";
+import { IEthereumNetworkConfig, IRawTxData } from "./Web3Manager";
 
 import { symbols } from "../../di/symbols";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
@@ -224,14 +224,15 @@ export class LightWallet implements IPersonalWallet {
     }
     data.nonce = await this.web3Adapter.getTransactionCount(data.from);
 
-    const txData: ITxData = {};
-
-    txData.to = addHexPrefix(data.to!);
-    txData.gasLimit = addHexPrefix(Number(data.gas || 0).toString());
-    txData.gasPrice = addHexPrefix(Number(data.gasPrice || 0).toString(16));
-    txData.nonce = addHexPrefix(Number(data.nonce || 0).toString(16));
-    txData.value = addHexPrefix(Number(data.value! || 0).toString(16));
-    txData.data = addHexPrefix(data.data || "0");
+    const txData: IRawTxData = {
+      from: data.from,
+      to: addHexPrefix(data.to!),
+      gas: addHexPrefix(Number(data.gas || 0).toString()),
+      gasPrice: addHexPrefix(Number(data.gasPrice || 0).toString(16)),
+      nonce: addHexPrefix(Number(data.nonce || 0).toString(16)),
+      value: addHexPrefix(Number(data.value! || 0).toString(16)),
+      data: addHexPrefix(data.data || "0"),
+    };
 
     const rawData = LightWalletProvider.signing.signTx(
       this.vault.walletInstance,

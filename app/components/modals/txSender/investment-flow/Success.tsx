@@ -5,7 +5,7 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
 import { ConfettiEthereum } from "../../../landing/parts/ConfettiEthereum";
-import { ButtonArrowRight } from "../../../shared/Buttons";
+import { ButtonArrowRight } from "../../../shared/buttons";
 import { EtherscanTxLink } from "../../../shared/EtherscanLink";
 
 import * as styles from "./Success.module.scss";

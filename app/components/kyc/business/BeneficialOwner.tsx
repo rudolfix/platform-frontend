@@ -15,8 +15,7 @@ import { actions } from "../../../modules/actions";
 import { Col, Row } from "reactstrap";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { AccordionElement } from "../../shared/Accordion";
-import { Button } from "../../shared/Buttons";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
+import { Button } from "../../shared/buttons";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -26,7 +25,8 @@ import {
   FormSelectField,
   NONE_KEY,
   unboolify,
-} from "../../shared/forms/index";
+} from "../../shared/forms";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 

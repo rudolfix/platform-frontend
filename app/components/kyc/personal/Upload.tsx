@@ -9,7 +9,7 @@ import { actions } from "../../../modules/actions";
 import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { individualRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";

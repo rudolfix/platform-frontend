@@ -1,14 +1,13 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { compose } from "redux";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { Button } from "../../shared/Buttons";
+import { ButtonLink } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { settingsRoutes } from "../routes";
 
@@ -50,11 +49,14 @@ export const BackupSeedWidgetComponent: React.SFC<
             <FormattedMessage id="settings.backup-seed-widget.backed-up-seed" />
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <Link to={settingsRoutes.seedBackup}>
-              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
-                <FormattedMessage id="settings.backup-seed-widget.view-again" />
-              </Button>
-            </Link>
+            <ButtonLink
+              to={settingsRoutes.seedBackup}
+              layout="secondary"
+              iconPosition="icon-after"
+              svgIcon={arrowRight}
+            >
+              <FormattedMessage id="settings.backup-seed-widget.view-again" />
+            </ButtonLink>
           </Col>
         </div>
       ) : (
@@ -66,11 +68,15 @@ export const BackupSeedWidgetComponent: React.SFC<
             <FormattedMessage id="settings.backup-seed-widget.write-down-recovery-phrase" />
           </p>
           <Col xs={12} className="d-flex justify-content-center">
-            <Link to={settingsRoutes.seedBackup} data-test-id="backup-seed-widget-link-button">
-              <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
-                <FormattedMessage id="settings.backup-seed-widget.backup-phrase" />
-              </Button>
-            </Link>
+            <ButtonLink
+              to={settingsRoutes.seedBackup}
+              data-test-id="backup-seed-widget-link-button"
+              layout="secondary"
+              iconPosition="icon-after"
+              svgIcon={arrowRight}
+            >
+              <FormattedMessage id="settings.backup-seed-widget.backup-phrase" />
+            </ButtonLink>
           </Col>
         </div>
       )}

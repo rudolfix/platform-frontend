@@ -11,9 +11,8 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
-import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
-import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
+import { Button } from "../../../shared/buttons";
+import { FormCheckbox, FormTextArea } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 

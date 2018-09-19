@@ -7,7 +7,7 @@ import { compose } from "redux";
 import { selectIsBookBuilding } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
-import { ButtonArrowRight } from "../../../shared/Buttons";
+import { ButtonArrowRight } from "../../../shared/buttons";
 import { Panel } from "../../../shared/Panel";
 
 import { actions } from "../../../../modules/actions";

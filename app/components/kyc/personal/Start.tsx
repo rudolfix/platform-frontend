@@ -12,8 +12,7 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
+import { Button } from "../../shared/buttons";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -23,7 +22,8 @@ import {
   FormSelectField,
   NONE_KEY,
   unboolify,
-} from "../../shared/forms/index";
+} from "../../shared/forms";
+import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";

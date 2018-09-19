@@ -7,8 +7,8 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/formField/FormField";
+import { Button } from "../../shared/buttons";
+import { FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 
 interface IDispatchProps {

@@ -1,8 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
 
-import { Button } from "./Buttons";
+import { ButtonLink } from "./buttons";
 import { ChartCircle, IChartCircleProps } from "./charts/ChartCircle";
 import { LoadingIndicator } from "./LoadingIndicator";
 import { Panel } from "./Panel";
@@ -52,15 +51,12 @@ export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
           <>
             <ChartCircle progress={progress} name={name} />
 
-            <Link
-              to={{
-                pathname: to,
-                state: { readonly },
-              }}
-              className={styles.linkWrapper}
-              onClick={e => (disabled ? e.preventDefault() : e)}
-            >
-              <Button
+            <div className={styles.linkWrapper}>
+              <ButtonLink
+                to={{
+                  pathname: to,
+                  state: { readonly },
+                }}
                 theme="silver"
                 layout="secondary"
                 iconPosition="icon-after"
@@ -68,8 +64,8 @@ export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
                 disabled={disabled}
               >
                 <ButtonText isInProgress={progress < 1} readonly={readonly} />
-              </Button>
-            </Link>
+              </ButtonLink>
+            </div>
           </>
         )}
       </div>

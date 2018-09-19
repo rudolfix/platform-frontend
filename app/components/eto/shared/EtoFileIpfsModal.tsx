@@ -9,7 +9,7 @@ import {
 } from "../../../modules/eto-documents/selectors";
 import { appConnect } from "../../../store";
 import { ModalComponentBody } from "../../modals/ModalComponentBody";
-import { ButtonArrowRight } from "../../shared/Buttons";
+import { ButtonArrowRight } from "../../shared/buttons";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 
 import * as ipfsImage from "../../../assets/img/ipfs.png";

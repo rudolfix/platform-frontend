@@ -23,7 +23,7 @@ import {
 } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { formatMoney } from "../../../../utils/Money.utils";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
 import { DocumentLink } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";

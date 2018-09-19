@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../modules/wallet-selector/ledger-wizard/reducer";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { Money } from "../../shared/Money";
 import { NavigationButton } from "../../shared/Navigation";
 import * as styles from "./WalletLedgerChooserTableAdvanced.module.scss";

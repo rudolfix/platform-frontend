@@ -1,14 +1,15 @@
 import * as React from "react";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+
 import * as logo from "../../assets/img/logo_small_black.svg";
+import { Button } from "../shared/buttons";
 import { ChartBars, IChartBarsData } from "../shared/charts/ChartBars";
 import { ChartPie, IChartPieData } from "../shared/charts/ChartPie";
 import { Money, TCurrency } from "../shared/Money";
 import { Panel } from "../shared/Panel";
-import * as styles from "./NeufundKpiWidget.module.scss";
 
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { Button } from "../shared/Buttons";
+import * as styles from "./NeufundKpiWidget.module.scss";
 
 interface IProps {
   date: string;

@@ -9,7 +9,7 @@ import { EtoMediaType, TPartialCompanyEtoData } from "../../../../lib/api/eto/Et
 import { actions } from "../../../../modules/actions";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
 import { FormCheckbox, FormField } from "../../../shared/forms";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";

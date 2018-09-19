@@ -42,7 +42,7 @@ import {
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
 import { InfoAlert } from "../../../shared/Alerts";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
 import { FormFieldRaw } from "../../../shared/forms/formField/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
 import { InvestmentTypeSelector, IWalletSelectionData } from "./InvestmentTypeSelector";

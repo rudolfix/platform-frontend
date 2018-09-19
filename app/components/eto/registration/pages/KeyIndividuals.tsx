@@ -13,12 +13,12 @@ import {
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
-import { Button, ButtonIcon } from "../../../shared/Buttons";
+import { Button, ButtonIcon } from "../../../shared/buttons";
+import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
-import { FormField, FormTextArea } from "../../../shared/forms/index";
 import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { EtoFormBase } from "../EtoFormBase";
 

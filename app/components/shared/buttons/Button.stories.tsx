@@ -1,11 +1,11 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Button, ButtonArrowRight, ButtonSize, ButtonWidth } from "./Buttons";
+import { Button, ButtonArrowRight, ButtonSize, ButtonWidth } from "./Button";
 
-import * as icon from "../../assets/img/inline_icons/icon_questionmark.svg";
+import * as icon from "../../../assets/img/inline_icons/icon_questionmark.svg";
 
-storiesOf("Buttons/default", module)
+storiesOf("buttons/default", module)
   .add("primary", () => (
     <>
       <Button>primary</Button>
@@ -80,6 +80,6 @@ storiesOf("Buttons/default", module)
   ))
   .add("loading", () => <Button isLoading>Primary</Button>);
 
-storiesOf("Buttons/ArrowRight", module).add("primary", () => (
+storiesOf("buttons/ArrowRight", module).add("primary", () => (
   <ButtonArrowRight>primary</ButtonArrowRight>
 ));

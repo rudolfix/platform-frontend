@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { selectIsAuthorized } from "../../../../../modules/auth/selectors";
 import { appConnect } from "../../../../../store";
 import { TTranslatedString } from "../../../../../types";
-import { Button } from "../../../../shared/Buttons";
+import { Button } from "../../../../shared/buttons";
 import { CampaigningActivatedWidget } from "./CampaigningActivatedWidget";
 
 import * as styles from "../EtoOverviewStatus.module.scss";

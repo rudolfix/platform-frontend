@@ -1,12 +1,14 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { InlineIcon } from "./InlineIcon";
-import { LoadingIndicator } from "./LoadingIndicator";
+import { InlineIcon } from "../InlineIcon";
+import { LoadingIndicator } from "../LoadingIndicator";
 
-import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
-import * as closeIcon from "../../assets/img/inline_icons/close.svg";
-import * as styles from "./Buttons.module.scss";
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
+import * as closeIcon from "../../../assets/img/inline_icons/close.svg";
+import { CommonHtmlProps } from "../../../types";
+
+import * as styles from "./Button.module.scss";
 
 type TButtonLayout = "primary" | "secondary" | "simple";
 type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite";
@@ -23,8 +25,8 @@ export enum ButtonWidth {
   BLOCK = "block",
 }
 
-interface IGeneralButton {
-  onClick?: () => void;
+export interface IGeneralButton {
+  onClick?: (event: any) => void;
 }
 
 interface IButtonIcon extends IGeneralButton {
@@ -32,14 +34,12 @@ interface IButtonIcon extends IGeneralButton {
   className?: string;
 }
 
-export interface IButtonProps {
+export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
   layout?: TButtonLayout;
   theme?: TButtonTheme;
   disabled?: boolean;
-  onClick?: (event: any) => void;
   svgIcon?: string;
   type?: string;
-  className?: string;
   iconPosition?: TIconPosition;
   size?: ButtonSize;
   width?: ButtonWidth;
@@ -99,8 +99,8 @@ const ButtonClose: React.SFC<IGeneralButton> = props => (
   <ButtonIcon {...props} svgIcon={closeIcon} />
 );
 
-const ButtonArrowRight: React.SFC<IGeneralButton> = props => (
-  <Button layout="secondary" {...props} iconPosition="icon-after" svgIcon={arrowRight} />
+const ButtonArrowRight: React.SFC<IButtonProps> = props => (
+  <Button {...props} layout="secondary" iconPosition="icon-after" svgIcon={arrowRight} />
 );
 
 export { ButtonIcon, ButtonClose, ButtonArrowRight, Button };

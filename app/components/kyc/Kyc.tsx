@@ -17,7 +17,7 @@ import {
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { Button } from "../shared/Buttons";
+import { Button } from "../shared/buttons";
 import { KycPanel } from "./KycPanel";
 import { KYCAddDocuments } from "./shared/AddDocuments";
 

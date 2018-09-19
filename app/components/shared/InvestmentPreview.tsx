@@ -1,13 +1,12 @@
 import * as React from "react";
+import { FormattedPlural } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { Link } from "react-router-dom";
-import { Button } from "./Buttons";
+import { Button, ButtonLink } from "./buttons";
 import { Money } from "./Money";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag";
 
-import { FormattedPlural } from "react-intl";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./InvestmentPreview.module.scss";
 
 interface IPreFoundingStatus {
@@ -151,11 +150,9 @@ export const InvestmentPreview: React.SFC<IProps> = ({
           )}
         </div>
       </div>
-      <Link to={linkToDetails}>
-        <Button layout="secondary">
-          <FormattedMessage id="shared-component.investment-preview.details" />
-        </Button>
-      </Link>
+      <ButtonLink to={linkToDetails} layout="secondary">
+        <FormattedMessage id="shared-component.investment-preview.details" />
+      </ButtonLink>
     </article>
   );
 };

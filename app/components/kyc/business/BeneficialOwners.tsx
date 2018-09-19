@@ -9,7 +9,7 @@ import { appConnect } from "../../../store";
 import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Accordion } from "../../shared/Accordion";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KYCBeneficialOwner } from "./BeneficialOwner";
 

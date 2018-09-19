@@ -12,12 +12,12 @@ import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
 import { Counter } from "../../../shared/Counter";
 import { PercentageIndicatorBar } from "../../../shared/PercentageIndicatorBar";
 import { IResponsiveImage, ResponsiveImage } from "../../../shared/ResponsiveImage";
 import { SuccessTick } from "../../../shared/SuccessTick";
-import { CampaigningWidget, ICampaigningWidget } from "./CampaigningWidget/CampaigningWidget";
+import { CampaigningWidget, ICampaigningWidget } from "./CampaigningWidget";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
 

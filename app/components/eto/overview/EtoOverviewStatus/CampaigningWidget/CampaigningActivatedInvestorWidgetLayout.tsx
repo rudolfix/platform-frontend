@@ -4,7 +4,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
-import { Button, ButtonSize, ButtonWidth } from "../../../../shared/Buttons";
+import { Button, ButtonSize, ButtonWidth } from "../../../../shared/buttons";
 import { CheckboxComponent, FormInput, InputSize } from "../../../../shared/forms";
 
 import * as styles from "../EtoOverviewStatus.module.scss";

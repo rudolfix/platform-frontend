@@ -1,9 +1,9 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { FormattedMessage } from "react-intl-phraseapp";
-import { Button } from "../../shared/Buttons";
+import { ButtonLink } from "../../shared/buttons";
 import { loginWalletRoutes } from "../walletRoutes";
 import { recoverRoutes } from "./recoverRoutes";
 
@@ -34,11 +34,9 @@ export const LoginHelp: React.SFC<void> = () => (
           </p>
         </div>
         <Col xs={12} md={4}>
-          <Link to={recoverRoutes.seed}>
-            <Button>
-              <FormattedMessage id="wallet-selector.recover.help.recover-button" />
-            </Button>
-          </Link>
+          <ButtonLink to={recoverRoutes.seed}>
+            <FormattedMessage id="wallet-selector.recover.help.recover-button" />
+          </ButtonLink>
         </Col>
       </Row>
       <div className="border-bottom pb-4" />
@@ -49,17 +47,15 @@ export const LoginHelp: React.SFC<void> = () => (
           <FormattedMessage id="wallet-selector.recover.help.ledger-lost" />
         </h5>
         <Col xs={12} md={4}>
-          <Link to="/">
-            <Button>
-              <FormattedMessage id="wallet-selector.recover.help.ledger-lost-btn" />
-            </Button>
-          </Link>
+          <ButtonLink to="/">
+            <FormattedMessage id="wallet-selector.recover.help.ledger-lost-btn" />
+          </ButtonLink>
         </Col>
       </Row>
     </Col>
     <Col md={12}>
       <Row className="ml-2 mt-5 pt-5 mr-2 justify-content-between align-items-center">
-        <Link className="" to={loginWalletRoutes.light}>
+        <Link to={loginWalletRoutes.light}>
           <i className="fa fa-lg fa-angle-left mr-1" /> BACK
         </Link>
         <a href="https://support.neufund.org/support/home">

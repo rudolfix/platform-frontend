@@ -16,7 +16,7 @@ import {
 import { selectIsConnectedButtonLocked } from "../../../modules/verifyEmailWidget/reducer";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 

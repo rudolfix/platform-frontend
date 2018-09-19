@@ -11,10 +11,10 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
+import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
-import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 
 // TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one

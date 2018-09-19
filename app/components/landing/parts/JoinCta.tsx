@@ -1,11 +1,10 @@
 import * as cn from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
-import { Link } from "react-router-dom";
 
 import { CommonHtmlProps } from "../../../types";
 import { appRoutes } from "../../appRoutes";
-import { Button } from "../../shared/Buttons";
+import { ButtonLink } from "../../shared/buttons";
 
 import * as styles from "./JoinCta.module.scss";
 
@@ -68,9 +67,9 @@ export class JoinCta extends React.Component<CommonHtmlProps, IState> {
     return (
       <div id="newsletter">
         <div className={cn(styles.joinCta, htmlProps.className)} style={htmlProps.style}>
-          <Link to={appRoutes.register} className={styles.registerNow}>
-            <Button theme="brand">Register NOW</Button>
-          </Link>
+          <ButtonLink theme="brand" to={appRoutes.register} className={styles.registerNow}>
+            Register NOW
+          </ButtonLink>
 
           <span className="m-2">or</span>
 

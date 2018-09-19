@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { Money } from "../../shared/Money";

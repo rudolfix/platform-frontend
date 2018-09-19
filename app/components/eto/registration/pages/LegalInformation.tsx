@@ -12,11 +12,10 @@ import {
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
+import { FormField, FormSelectField } from "../../../shared/forms";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
 import { FormFieldDate } from "../../../shared/forms/formField/FormFieldDate";
-import { FormSelectField } from "../../../shared/forms/formField/FormSelectField";
-import { FormField } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 

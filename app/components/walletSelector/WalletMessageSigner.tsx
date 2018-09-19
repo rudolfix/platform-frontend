@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { actions } from "../../modules/actions";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { Button } from "../shared/Buttons";
+import { Button } from "../shared/buttons";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";

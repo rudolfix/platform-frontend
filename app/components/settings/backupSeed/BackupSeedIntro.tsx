@@ -5,7 +5,7 @@ import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 import * as noComputer from "../../../assets/img/seed_backup/no_computer.svg";
 import * as safe from "../../../assets/img/seed_backup/safe.svg";
 import * as write from "../../../assets/img/seed_backup/write.svg";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { StepCard } from "../../shared/StepCard";
 
 interface IBackupSeedIntroProps {

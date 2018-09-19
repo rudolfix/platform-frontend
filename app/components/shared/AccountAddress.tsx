@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 import { CommonHtmlProps } from "../../types";
 import { Avatar } from "./Avatar";
-import { ButtonIcon } from "./Buttons";
+import { ButtonIcon } from "./buttons";
 import { EtherscanAddressLink } from "./EtherscanLink";
 
 import * as clipboardIcon from "../../assets/img/inline_icons/icon-clipboard.svg";

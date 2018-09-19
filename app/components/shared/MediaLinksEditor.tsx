@@ -4,8 +4,8 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { CommonHtmlProps } from "../../types";
-import { ButtonIcon } from "./Buttons";
-import { FormField } from "./forms/formField/FormField";
+import { ButtonIcon } from "./buttons";
+import { FormField } from "./forms";
 
 import * as closeIcon from "../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../assets/img/inline_icons/round_plus.svg";

@@ -5,8 +5,8 @@ import { compose } from "redux";
 import * as Yup from "yup";
 
 import { appConnect } from "../../../store";
-import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/index";
+import { Button } from "../../shared/buttons";
+import { FormField } from "../../shared/forms";
 
 import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../modules/actions";

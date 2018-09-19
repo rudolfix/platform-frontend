@@ -10,7 +10,7 @@ import {
   selectGenericModalObj,
 } from "../../modules/genericModal/reducer";
 import { appConnect, AppDispatch } from "../../store";
-import { Button } from "../shared/Buttons";
+import { Button } from "../shared/buttons";
 import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as successIcon from "../../assets/img/notifications/Success_small.svg";

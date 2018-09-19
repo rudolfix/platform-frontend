@@ -1,7 +1,7 @@
 import * as React from "react";
-
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Button } from "./Buttons";
+
+import { Button } from "./buttons";
 import { IMoneySuiteWidgetProps, MoneySuiteWidget } from "./MoneySuiteWidget";
 
 import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";

@@ -6,7 +6,7 @@ import { Modal } from "reactstrap";
 import { actions } from "../../../modules/actions";
 import { selectIsLightWallet, selectIsUnlocked } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 

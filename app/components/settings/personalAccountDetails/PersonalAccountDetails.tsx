@@ -4,7 +4,7 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 

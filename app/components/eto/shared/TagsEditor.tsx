@@ -3,7 +3,7 @@ import { includes } from "lodash";
 import * as React from "react";
 import { Input } from "reactstrap";
 
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { Tag } from "../../shared/Tag";
 
 import * as checkIcon from "../../../assets/img/inline_icons/check.svg";

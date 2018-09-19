@@ -12,9 +12,9 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
+import { FormTextArea } from "../../../shared/forms";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
-import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 

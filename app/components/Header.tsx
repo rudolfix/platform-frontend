@@ -7,7 +7,7 @@ import { actions } from "../modules/actions";
 import { selectIsAuthorized, selectUserType } from "../modules/auth/selectors";
 import { appConnect } from "../store";
 import { appRoutes } from "./appRoutes";
-import { Button } from "./shared/Buttons";
+import { Button, ButtonLink } from "./shared/buttons";
 import { loginWalletRoutes, walletRegisterRoutes } from "./walletSelector/walletRoutes";
 
 import * as logo from "../../app/assets/img/logo_yellow.svg";
@@ -43,31 +43,31 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
       <div className={styles.buttons}>
         {props.location && props.location.indexOf("eto") !== -1 ? (
           <>
-            <span>
-              <Link
-                data-test-id="Header-register-eto"
-                className={styles.registerButton}
-                to={appRoutes.registerEto}
-              >
-                <Button theme="white">REGISTER</Button>
-              </Link>
-            </span>
-            <Link data-test-id="Header-login-eto" to={appRoutes.loginEto}>
-              <Button theme="white">LOGIN</Button>
-            </Link>
+            <ButtonLink
+              theme="white"
+              className={styles.registerButton}
+              data-test-id="Header-register-eto"
+              to={appRoutes.registerEto}
+            >
+              REGISTER
+            </ButtonLink>
+            <ButtonLink theme="white" data-test-id="Header-login-eto" to={appRoutes.loginEto}>
+              LOGIN
+            </ButtonLink>
           </>
         ) : (
           <>
-            <Link
-              data-test-id="Header-register"
+            <ButtonLink
+              theme="white"
               className={styles.registerButton}
+              data-test-id="Header-register"
               to={walletRegisterRoutes.light}
             >
-              <Button theme="white">REGISTER</Button>
-            </Link>
-            <Link data-test-id="Header-login" to={loginWalletRoutes.light}>
-              <Button theme="white">LOGIN</Button>
-            </Link>
+              REGISTER
+            </ButtonLink>
+            <ButtonLink theme="white" data-test-id="Header-login" to={loginWalletRoutes.light}>
+              LOGIN
+            </ButtonLink>
           </>
         )}
       </div>

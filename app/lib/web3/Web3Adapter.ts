@@ -8,6 +8,7 @@ import { delay } from "../../utils/delay";
 
 class Web3Error extends Error {}
 export class RevertedTransactionError extends Web3Error {}
+export class OutOfGasError extends Web3Error {}
 
 enum TRANSACTION_STATUS {
   REVERTED = "0x0",
@@ -136,6 +137,10 @@ export class Web3Adapter {
           }
 
           if (txReceipt.status === TRANSACTION_STATUS.REVERTED) {
+            if (txReceipt.gasUsed === tx.gas) {
+              // All gas is burned in this case
+              throw new OutOfGasError();
+            }
             throw new RevertedTransactionError();
           }
 

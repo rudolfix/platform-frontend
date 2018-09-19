@@ -21,6 +21,7 @@ export interface ITxSenderState {
   txDetails?: ITxData;
   blockId?: number;
   txHash?: string;
+  error?: string;
 }
 
 const initialState: ITxSenderState = {
@@ -101,6 +102,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...initialState,
         state: "ERROR_SIGN",
+        error: action.payload.error,
       };
   }
 

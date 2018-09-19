@@ -3,8 +3,10 @@ import { addHexPrefix } from "ethereumjs-util";
 import { END, eventChannel } from "redux-saga";
 import { call, fork, put, race, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
+
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
+import { RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { IAppState } from "../../../store";
 import { compareBigNumbers } from "../../../utils/BigNumberUtils";
 import { connectWallet, signMessage } from "../../accessWallet/sagas";
@@ -12,6 +14,7 @@ import { actions, TAction } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
 import { updateTxs } from "../monitor/sagas";
+import { OutOfGasError } from "./../../../lib/web3/Web3Adapter";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
 import { selectEtherTokenBalance } from "./../../wallet/selectors";
 import { TxSenderType } from "./reducer";
@@ -115,7 +118,6 @@ function* generateEthWithrdawTransaction(
 
     // need to call 3 args version of transfer method. See the abi in the contract.
     // so we call the rawWeb3Contract directly
-    debugger;
     const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
       "address,uint256,bytes"
     ].getData(txStateDetails.to, new BigNumber(txStateDetails.value), "");
@@ -151,10 +153,6 @@ function* generateEthWithrdawTransaction(
   }
 }
 
-class EthereumNodeError extends Error {}
-class InsufficientFundsError extends EthereumNodeError {}
-class InsufficientGasError extends EthereumNodeError {}
-
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
   const txData: ITxData = yield select((s: IAppState) => selectTxDetails(s.txSender));
   const type = yield select((s: IAppState) => selectTxType(s.txSender));
@@ -174,8 +172,8 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
         input: txData.data || "0x0",
         // TODO:Connect nonce
         nonce: "0x0",
-        to: txData.to!,
-        value: "0x" + Number(txData.value!).toString(16),
+        to: txData.to,
+        value: "0x" + Number(txData.value).toString(16),
         blockHash: undefined,
         blockNumber: undefined,
         chainId: undefined,
@@ -195,7 +193,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
       error.code === -32010 &&
       error.message.startsWith("Insufficient funds. The account you tried to send transaction")
     ) {
-      throw new InsufficientFundsError();
+      return yield put(actions.txSender.txSenderError("Not enough funds"));
     }
 
     if (
@@ -205,12 +203,10 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
         (error.code === -32010 &&
           error.message.startsWith("Transaction gas is too low. There is not enough")) ||
         (error.code === -32010 && error.message.startsWith("exceeds current gas limit")))
-    ) {
-      throw new InsufficientGasError();
-    }
-    yield put(actions.txSender.txSenderError("Tx was rejected"));
-    throw error;
+    )
+      return yield put(actions.txSender.txSenderError("Gas to low"));
   }
+  return yield put(actions.txSender.txSenderError("Tx was rejected"));
 }
 
 function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
@@ -227,6 +223,12 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
       case EventEmitterChannelEvents.ERROR:
         logger.error("Error while tx watching: ", result.error);
         return yield put(actions.txSender.txSenderError("Error while watching tx."));
+      case EventEmitterChannelEvents.OUT_OF_GAS:
+        logger.error("Error Transaction Reverted: ", result.error);
+        return yield put(actions.txSender.txSenderError("Out of gas"));
+      case EventEmitterChannelEvents.REVERTED_TRANSACTION:
+        logger.error("Error Transaction Reverted: ", result.error);
+        return yield put(actions.txSender.txSenderError("Reverted Transaction"));
     }
   }
 }
@@ -235,6 +237,7 @@ enum EventEmitterChannelEvents {
   TX_MINED = "TX_MINED",
   ERROR = "ERROR",
   REVERTED_TRANSACTION = "REVERTED_TRANSACTION",
+  OUT_OF_GAS = "OUT_OF_GAS",
 }
 type TEventEmitterChannelEvents =
   | {
@@ -247,6 +250,14 @@ type TEventEmitterChannelEvents =
     }
   | {
       type: EventEmitterChannelEvents.ERROR;
+      error: any;
+    }
+  | {
+      type: EventEmitterChannelEvents.REVERTED_TRANSACTION;
+      error: any;
+    }
+  | {
+      type: EventEmitterChannelEvents.OUT_OF_GAS;
       error: any;
     };
 
@@ -261,7 +272,13 @@ const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: stri
       })
       .then(tx => emitter({ type: EventEmitterChannelEvents.TX_MINED, tx }))
       .catch(error => {
-        emitter({ type: EventEmitterChannelEvents.ERROR, error });
+        if (error instanceof RevertedTransactionError) {
+          emitter({ type: EventEmitterChannelEvents.REVERTED_TRANSACTION, error });
+        } else if (error instanceof OutOfGasError) {
+          emitter({ type: EventEmitterChannelEvents.OUT_OF_GAS, error });
+        } else {
+          emitter({ type: EventEmitterChannelEvents.ERROR, error });
+        }
       })
       .then(() => emitter(END));
     return () => {

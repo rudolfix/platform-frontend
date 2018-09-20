@@ -120,7 +120,7 @@ function* generateEthWithrdawTransaction(
     // so we call the rawWeb3Contract directly
     const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
       "address,uint256,bytes"
-    ].getData(txStateDetails.to, new BigNumber(txStateDetails.value), "");
+    ].getData(txStateDetails.to, txStateDetails.value, "");
 
     txDetails = {
       to: contractsService.etherToken.address,

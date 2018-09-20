@@ -10,6 +10,14 @@ class Web3Error extends Error {}
 export class RevertedTransactionError extends Web3Error {}
 export class OutOfGasError extends Web3Error {}
 
+export class EthNodeError extends Error {}
+export class LowGasNodeError extends EthNodeError {}
+export class LowNonceError extends EthNodeError {}
+export class LongTransactionQueError extends EthNodeError {}
+export class InvalidRlpDataError extends EthNodeError {}
+export class InvalidChangeIdError extends EthNodeError {}
+export class UnknownEthNodeError extends EthNodeError {}
+
 enum TRANSACTION_STATUS {
   REVERTED = "0x0",
   SUCCESS = "0x1",

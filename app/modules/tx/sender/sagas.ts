@@ -6,9 +6,15 @@ import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TxWithMetadata } from "../../../lib/api/users/interfaces";
-import { RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
+import {
+  InvalidChangeIdError,
+  InvalidRlpDataError,
+  LongTransactionQueError,
+  LowNonceError,
+  RevertedTransactionError,
+  UnknownEthNodeError,
+} from "../../../lib/web3/Web3Adapter";
 import { IAppState } from "../../../store";
-import { compareBigNumbers } from "../../../utils/BigNumberUtils";
 import { connectWallet, signMessage } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
 import { neuCall, neuTakeEvery } from "../../sagas";
@@ -57,18 +63,34 @@ export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
 }
 
 export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any {
-  yield put(actions.gas.gasApiEnsureLoading());
-  yield put(actions.txSender.txSenderShowModal(type));
+  try {
+    yield put(actions.gas.gasApiEnsureLoading());
+    yield put(actions.txSender.txSenderShowModal(type));
 
-  yield neuCall(ensureNoPendingTx, type);
+    yield neuCall(ensureNoPendingTx, type);
 
-  yield take("TX_SENDER_ACCEPT");
+    yield take("TX_SENDER_ACCEPT");
 
-  yield call(connectWallet, "Send funds!");
-  yield put(actions.txSender.txSenderWalletPlugged());
-  const txHash = yield neuCall(sendTxSubSaga);
+    yield call(connectWallet, "Send funds!");
+    yield put(actions.txSender.txSenderWalletPlugged());
+    const txHash = yield neuCall(sendTxSubSaga);
 
-  yield neuCall(watchTxSubSaga, txHash);
+    yield neuCall(watchTxSubSaga, txHash);
+  } catch (error) {
+    if (error instanceof OutOfGasError) {
+      return yield put(actions.txSender.txSenderError("Gas too low"));
+    } else if (error instanceof LowNonceError) {
+      return yield put(actions.txSender.txSenderError("Nonce too low"));
+    } else if (error instanceof LongTransactionQueError) {
+      return yield put(actions.txSender.txSenderError("Too many transactions in que"));
+    } else if (error instanceof InvalidRlpDataError) {
+      return yield put(actions.txSender.txSenderError("Invalid RLP transaction"));
+    } else if (error instanceof InvalidChangeIdError) {
+      return yield put(actions.txSender.txSenderError("Invalid chain id"));
+    } else if (error instanceof UnknownEthNodeError) {
+      return yield put(actions.txSender.txSenderError("Tx was rejected"));
+    }
+  }
 }
 
 function* ensureNoPendingTx(
@@ -113,41 +135,21 @@ function* generateEthWithrdawTransaction(
   const from = yield select((s: IAppState) => selectEthereumAddressWithChecksum(s.web3));
 
   // transaction can be fully covered by etherTokens
-  if (compareBigNumbers(etherTokenBalance, txStateDetails.value) >= 0) {
-    // TODO: Make value in tx detail forced
 
-    // need to call 3 args version of transfer method. See the abi in the contract.
-    // so we call the rawWeb3Contract directly
-    const txInput = contractsService.etherToken
-      .withdrawAndSendTx(txStateDetails.to, new BigNumber(txStateDetails.value))
-      .getData();
+  const txInput = contractsService.etherToken
+    .withdrawAndSendTx(txStateDetails.to, new BigNumber(txStateDetails.value))
+    .getData();
+  const ethVal = new BigNumber(txStateDetails.value);
+  const difference = ethVal.sub(etherTokenBalance);
 
-    txDetails = {
-      to: contractsService.etherToken.address,
-      from,
-      data: txInput,
-      value: "0",
-      gas: txStateDetails.gas,
-      gasPrice: txStateDetails.gasPrice,
-    };
-
-    // fill up etherToken with ether from wallet
-  } else {
-    const ethVal = new BigNumber(txStateDetails.value);
-    const difference = ethVal.sub(etherTokenBalance);
-    const txCall = contractsService.etherToken.depositAndTransferTx(txStateDetails.to, ethVal, [
-      "",
-    ]);
-    txDetails = {
-      to: contractsService.etherToken.address,
-      from,
-      data: txCall.getData(),
-      value: difference.round().toString(),
-      gas: txStateDetails.gas,
-      gasPrice: txStateDetails.gasPrice,
-    };
-  }
-
+  txDetails = {
+    to: contractsService.etherToken.address,
+    from,
+    data: txInput,
+    value: difference.comparedTo(0) > 0 ? difference.toString() : "0",
+    gas: txStateDetails.gas,
+    gasPrice: txStateDetails.gasPrice,
+  };
   if (txDetails) {
     yield put(actions.txSender.txSenderAcceptDraft(txDetails));
   }
@@ -200,55 +202,52 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
         error.message.startsWith("Transaction gas is too low. There is not enough")) ||
       (error.code === -32010 && error.message.startsWith("exceeds current gas limit"))
     ) {
-      return yield put(actions.txSender.txSenderError("Gas to low"));
+      throw new OutOfGasError();
     }
 
     if (error.code === -32010 && error.message.startsWith("Transaction nonce is too low")) {
-      return yield put(actions.txSender.txSenderError("Nonce too low"));
+      throw new LowNonceError();
     }
     if (
       error.code === -32010 &&
       error.message.startsWith("There are too many transactions in the queue")
     ) {
-      return yield put(actions.txSender.txSenderError("Too many transactions in que"));
+      throw new LongTransactionQueError();
     }
     if (error.code === -32010 && error.message.startsWith("Invalid RLP data")) {
-      return yield put(actions.txSender.txSenderError("Invalid transaction"));
+      throw new InvalidRlpDataError();
     }
     if (error.code === -32010 && error.message.startsWith("Invalid chain id")) {
-      return yield put(actions.txSender.txSenderError("Invalid chain id"));
-    }
-    if (
-      error.code === -32010 &&
-      error.message.startsWith("Transaction cost exceeds current gas limit")
-    ) {
-      return yield put(actions.txSender.txSenderError("Transaction cost is bigger than fas limit"));
+      throw new InvalidChangeIdError();
     }
   }
-  return yield put(actions.txSender.txSenderError("Tx was rejected"));
+  throw new UnknownEthNodeError();
 }
 
 function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
   const watchTxChannel = yield neuCall(createWatchTxChannel, txHash);
-
-  while (true) {
-    const result: TEventEmitterChannelEvents = yield take(watchTxChannel);
-    switch (result.type) {
-      case EventEmitterChannelEvents.NEW_BLOCK:
-        yield put(actions.txSender.txSenderReportBlock(result.blockId));
-        break;
-      case EventEmitterChannelEvents.TX_MINED:
-        return yield put(actions.txSender.txSenderTxMined());
-      case EventEmitterChannelEvents.ERROR:
-        logger.error("Error while tx watching: ", result.error);
-        return yield put(actions.txSender.txSenderError("Error while watching tx."));
-      case EventEmitterChannelEvents.OUT_OF_GAS:
-        logger.error("Error Transaction Reverted: ", result.error);
-        return yield put(actions.txSender.txSenderError("Out of gas"));
-      case EventEmitterChannelEvents.REVERTED_TRANSACTION:
-        logger.error("Error Transaction Reverted: ", result.error);
-        return yield put(actions.txSender.txSenderError("Reverted Transaction"));
+  try {
+    while (true) {
+      const result: TEventEmitterChannelEvents = yield take(watchTxChannel);
+      switch (result.type) {
+        case EventEmitterChannelEvents.NEW_BLOCK:
+          yield put(actions.txSender.txSenderReportBlock(result.blockId));
+          break;
+        case EventEmitterChannelEvents.TX_MINED:
+          return yield put(actions.txSender.txSenderTxMined());
+        case EventEmitterChannelEvents.ERROR:
+          logger.error("Error while tx watching: ", result.error);
+          return yield put(actions.txSender.txSenderError("Error while watching tx."));
+        case EventEmitterChannelEvents.OUT_OF_GAS:
+          logger.error("Error Transaction Reverted: ", result.error);
+          return yield put(actions.txSender.txSenderError("Out of gas"));
+        case EventEmitterChannelEvents.REVERTED_TRANSACTION:
+          logger.error("Error Transaction Reverted: ", result.error);
+          return yield put(actions.txSender.txSenderError("Reverted Transaction"));
+      }
     }
+  } finally {
+    return;
   }
 }
 enum EventEmitterChannelEvents {

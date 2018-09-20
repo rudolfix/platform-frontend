@@ -224,7 +224,6 @@ export class LightWallet implements IPersonalWallet {
       throw new LightWalletMissingPasswordError();
     }
     data.nonce = await this.web3Adapter.getTransactionCount(data.from);
-
     const txData: IRawTxData = {
       from: data.from,
       to: addHexPrefix(data.to!),

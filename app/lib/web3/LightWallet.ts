@@ -1,3 +1,4 @@
+import { BigNumber } from 'bignumber.js';
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
@@ -227,10 +228,10 @@ export class LightWallet implements IPersonalWallet {
     const txData: IRawTxData = {
       from: data.from,
       to: addHexPrefix(data.to!),
-      gas: addHexPrefix(Number(data.gas || 0).toString()),
-      gasPrice: addHexPrefix(Number(data.gasPrice || 0).toString(16)),
-      nonce: addHexPrefix(Number(data.nonce || 0).toString(16)),
-      value: addHexPrefix(Number(data.value! || 0).toString(16)),
+      gas: addHexPrefix(new BigNumber(data.gas || 0).toString(16)),
+      gasPrice: addHexPrefix(new BigNumber(data.gasPrice || 0).toString(16)),
+      nonce: addHexPrefix(new BigNumber(data.nonce || 0).toString(16)),
+      value: addHexPrefix(new BigNumber(data.value! || 0).toString(16)),
       data: addHexPrefix(data.data || "0"),
     };
 

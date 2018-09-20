@@ -47,7 +47,7 @@ export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchP
     <Formik<{}, ITxData>
       validationSchema={withdrawFormValidator}
       isInitialValid={false}
-      initialValues={{ gas: "24000", from: "", value: "", to: "" }}
+      initialValues={{ gas: "100000", from: "", value: "", to: "" }}
       onSubmit={data => {
         const gasPrice = gas.gasPrice!.standard;
         const value = Web3Utils.toWei(data.value, "ether");

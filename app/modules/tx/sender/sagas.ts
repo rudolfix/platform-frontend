@@ -118,9 +118,9 @@ function* generateEthWithrdawTransaction(
 
     // need to call 3 args version of transfer method. See the abi in the contract.
     // so we call the rawWeb3Contract directly
-    const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
-      "address,uint256,bytes"
-    ].getData(txStateDetails.to, txStateDetails.value, "");
+    const txInput = contractsService.etherToken
+      .withdrawAndSendTx(txStateDetails.to, new BigNumber(txStateDetails.value))
+      .getData();
 
     txDetails = {
       to: contractsService.etherToken.address,
@@ -166,7 +166,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
     const txWithMetadata: TxWithMetadata = {
       transaction: {
         from: txData.from,
-        gas: addHexPrefix(Number(txData.gas!).toString(16)),
+        gas: addHexPrefix(Number(txData.gas).toString(16)),
         gasPrice: "0x" + Number(txData.gasPrice!).toString(16),
         hash: txHash,
         input: txData.data || "0x0",

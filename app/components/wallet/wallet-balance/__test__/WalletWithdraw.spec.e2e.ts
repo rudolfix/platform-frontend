@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import web3Accounts from "../../../../../node_modules/web3-eth-accounts/src/index.js";
 
 import { tid } from "../../../../../test/testUtils";
 import {
@@ -9,7 +10,7 @@ import {
 import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils";
 import { recoverRoutes } from "../../../walletSelector/walletRecover/recoverRoutes";
 
-/* to be used later const Q18 = new BigNumber(10).pow(18); */
+const Q18 = new BigNumber(10).pow(18);
 const GIGA_WEI = 1000000000;
 const NODE_ADDRESS = "https://localhost:9090/node";
 
@@ -44,11 +45,14 @@ describe("Wallet Withdraw", () => {
     ];
 
     const email = "john-smith@example.com";
-    const testValue = (10).toString();
-    const expectedGasLimit = "0x24000";
-    const expectedInput =
-      "0xbe45fd620000000000000000000000007d50356afc0535932d3bbafd515459bc92c894800000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    const expectedAddress = "0x7D50356afC0535932d3Bbafd515459Bc92c89480";
+    const testValue = (5).toString();
+    const expectedGasLimit = "0x186a0";
+    const account = new web3Accounts().create();
+    const expectedInput = `0x64663ea6000000000000000000000000${account.address
+      .slice(2)
+      .toLowerCase()}0000000000000000000000000000000000000000000000004563918244f40000`;
+
+    const expectedAddress = account.address;
     const expectedInputValue = "0";
 
     cy.visit(`${recoverRoutes.seed}`);
@@ -97,13 +101,10 @@ describe("Wallet Withdraw", () => {
               // TODO: Connect artifacts with tests to get deterministic addresses
               // expect(etherTokenAddress).to.equal(to);
 
-              /* Currently only ether tokens are transferred instead of real tokens this part will be disabled until 
-                 We find out how to send real ether
-
-                getBalanceRpc(NODE_ADDRESS, expectedAddress).then(balance => {
+              getBalanceRpc(NODE_ADDRESS, expectedAddress).then(balance => {
                 const receivedEtherValue = new BigNumber(balance.body.result).toString();
                 expect(receivedEtherValue).to.equal(Q18.mul(testValue).toString());
-              }); */
+              });
             });
           });
         },

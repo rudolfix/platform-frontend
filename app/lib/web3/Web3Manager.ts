@@ -1,3 +1,4 @@
+import { BigNumber } from "bignumber.js";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -19,7 +20,7 @@ import { Web3Adapter } from "./Web3Adapter";
 export interface ITxData {
   to: string;
   value: string;
-  gas?: string;
+  gas?: string | BigNumber;
   gasPrice?: string;
   data?: string;
   from: string;

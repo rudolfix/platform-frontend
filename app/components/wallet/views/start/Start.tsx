@@ -10,6 +10,7 @@ import {
   selectICBMLockedEuroTokenBalance,
   selectICBMLockedEuroTotalAmount,
   selectICBMLockedWalletHasFunds,
+  selectIsLoading,
   selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
   selectLiquidEuroTokenBalance,
@@ -19,8 +20,8 @@ import {
   selectLockedEuroTokenBalance,
   selectLockedEuroTotalAmount,
   selectLockedWalletHasFunds,
+  selectWalletError,
 } from "../../../../modules/wallet/selectors";
-import { selectIsLoading, selectWalletError } from "../../../../modules/wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -91,7 +92,8 @@ export const WalletStartComponent: React.SFC<TProps> = ({
             <IcbmWallet
               className="h-100"
               headerText={<FormattedMessage id="components.wallet.start.icbm-wallet" />}
-              onUpgradeClick={() => {}}
+              onUpgradeEuroClick={() => {}}
+              onUpgradeEtherClick={() => {}}
               data={icbmWalletData}
             />
           </Col>

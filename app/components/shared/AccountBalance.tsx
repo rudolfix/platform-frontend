@@ -35,43 +35,42 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
         value={value}
       />
       <div className={styles.buttons}>
-        {onUpgradeClick ? (
+        {onUpgradeClick && (
           <Button
             layout="simple"
             iconPosition="icon-after"
             theme="graphite"
             svgIcon={arrowRightIcon}
-            onClick={() => {}}
+            onClick={onUpgradeClick}
             disabled
           >
             <FormattedMessage id="shared-component.account-balance.upgrade" />
           </Button>
-        ) : (
-          (onWithdrawClick || onDepositClick) && (
-            <>
-              <Button
-                layout="simple"
-                iconPosition="icon-after"
-                theme="graphite"
-                svgIcon={arrowRightIcon}
-                onClick={onWithdrawClick}
-                data-test-id={dataTestId && dataTestId + ".shared-component.withdraw.button"}
-                disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || parseFloat(largeNumber) === 0}
-              >
-                <FormattedMessage id="shared-component.account-balance.withdraw" />
-              </Button>
-              <Button
-                layout="simple"
-                iconPosition="icon-after"
-                theme="graphite"
-                disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || !onDepositClick}
-                svgIcon={arrowRightIcon}
-                onClick={onDepositClick}
-              >
-                <FormattedMessage id="shared-component.account-balance.deposit" />
-              </Button>
-            </>
-          )
+        )}
+        {(onWithdrawClick || onDepositClick) && (
+          <>
+            <Button
+              layout="simple"
+              iconPosition="icon-after"
+              theme="graphite"
+              svgIcon={arrowRightIcon}
+              onClick={onWithdrawClick}
+              data-test-id={dataTestId && dataTestId + ".shared-component.withdraw.button"}
+              disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || parseFloat(largeNumber) === 0}
+            >
+              <FormattedMessage id="shared-component.account-balance.withdraw" />
+            </Button>
+            <Button
+              layout="simple"
+              iconPosition="icon-after"
+              theme="graphite"
+              disabled={process.env.NF_WITHDRAW_ENABLED !== "1" || !onDepositClick}
+              svgIcon={arrowRightIcon}
+              onClick={onDepositClick}
+            >
+              <FormattedMessage id="shared-component.account-balance.deposit" />
+            </Button>
+          </>
         )}
       </div>
     </div>

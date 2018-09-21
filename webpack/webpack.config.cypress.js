@@ -18,7 +18,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
-              configFile: "cypress/tsconfig.json",
+              configFile: "tsconfig.cypress.json",
             },
           },
         ],

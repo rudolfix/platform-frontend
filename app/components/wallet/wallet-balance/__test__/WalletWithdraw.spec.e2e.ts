@@ -1,10 +1,9 @@
-import BigNumber from "../../../../../node_modules/bignumber.js/bignumber.js";
+import BigNumber from "bignumber.js";
 
 import { tid } from "../../../../../test/testUtils";
-import { assertUserInDashboard, typeLightwalletRecoveryPhrase } from "../../../../e2e-test-utils";
+import { assertUserInDashboard, numberRegExPattern, typeLightwalletRecoveryPhrase } from "../../../../e2e-test-utils";
 import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils";
-import { numberRegExPattern } from "./../../../../e2e-test-utils/index";
-import { recoverRoutes } from "./../../../walletSelector/walletRecover/recoverRoutes";
+import { recoverRoutes } from "../../../walletSelector/walletRecover/recoverRoutes";
 
 const Q18 = new BigNumber(10).pow(18);
 const GIGA_WEI = 1000000000;

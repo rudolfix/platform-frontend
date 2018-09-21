@@ -2,11 +2,8 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { actions } from "../../../modules/actions";
-import { selectEthereumAddressWithChecksum } from "../../../modules/web3/selectors";
-import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
-import { AccountAddress, IAccountAddressProps } from "../../shared/AccountAddress";
+import { AccountAddress } from "../../shared/AccountAddress";
 import { AccountBalance } from "../../shared/AccountBalance";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
@@ -25,48 +22,74 @@ export interface IWalletValues {
   totalEuroAmount: string;
 }
 
-interface IWalletBalanceProps {
-  isLoading: boolean;
+interface IUnlockedWallet extends IPanelProps {
+  depositEth: () => void;
+  withdrawEth: () => void;
   data?: IWalletValues;
-  isLocked: boolean;
-}
-
-interface IStateProps {
   address: string;
 }
 
-interface IDispatchProps {
-  depositEth: () => void;
-  withdrawEth: () => void;
-}
-
-type IProps = IPanelProps &
-  IWalletBalanceProps &
-  IStateProps &
-  IDispatchProps &
-  IAccountAddressProps &
-  CommonHtmlProps;
-
-const WalletBalanceComponent: React.SFC<IProps> = ({
-  isLoading,
-  headerText,
+export const UnlockedWallet: React.SFC<IUnlockedWallet> = ({
   address,
   data,
   depositEth,
   withdrawEth,
-  isLocked,
-  className,
 }) => {
-  const unlockedWallet = (
-    <div className={styles.accountWithAddressWrapper}>
-      <div>
-        <h4 className={styles.title}>
-          <FormattedMessage id="shared-component.wallet-balance.title.account-address" />
-        </h4>
-        <AccountAddress address={address} />
-      </div>
+  return (
+    <WalletBalanceContainer>
+      <div className={styles.accountWithAddressWrapper}>
+        <div>
+          <h4 className={styles.title}>
+            <FormattedMessage id="shared-component.wallet-balance.title.account-address" />
+          </h4>
+          <AccountAddress address={address} />
+        </div>
 
-      <div>
+        <div>
+          <h4 className={styles.title}>
+            <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
+          </h4>
+          <AccountBalance
+            icon={neuroIcon}
+            currency="eur_token"
+            currencyTotal="eur"
+            largeNumber={data!.neuroAmount}
+            value={data!.neuroEuroAmount}
+            onWithdrawClick={withdrawEth}
+            // TODO: add on depositClick when euro token flow exists
+          />
+
+          <HorizontalLine className="my-3" />
+
+          <AccountBalance
+            icon={ethIcon}
+            currency="eth"
+            currencyTotal="eur"
+            largeNumber={data!.ethAmount}
+            value={data!.ethEuroAmount}
+            onWithdrawClick={withdrawEth}
+            dataTestId="wallet-balance.ether"
+            onDepositClick={depositEth}
+          />
+        </div>
+      </div>
+    </WalletBalanceContainer>
+  );
+};
+
+interface IIcbmWallet extends IPanelProps {
+  onUpgradeClick: () => void;
+  data?: IWalletValues;
+}
+
+export const IcbmWallet: React.SFC<IIcbmWallet> = ({ data }) => {
+  return (
+    <WalletBalanceContainer>
+      <div className={styles.icbmLockedWallet}>
+        <p className={styles.message}>
+          <FormattedMessage id="shared-component.wallet-icbm.already-upgraded-message" />
+        </p>
+
         <h4 className={styles.title}>
           <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
         </h4>
@@ -76,8 +99,7 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
           currencyTotal="eur"
           largeNumber={data!.neuroAmount}
           value={data!.neuroEuroAmount}
-          onWithdrawClick={withdrawEth}
-          // TODO: add on depositClick when euro token flow exists
+          onUpgradeClick={() => {}}
         />
 
         <HorizontalLine className="my-3" />
@@ -88,62 +110,71 @@ const WalletBalanceComponent: React.SFC<IProps> = ({
           currencyTotal="eur"
           largeNumber={data!.ethAmount}
           value={data!.ethEuroAmount}
-          onWithdrawClick={withdrawEth}
-          dataTestId="wallet-balance.ether"
-          onDepositClick={depositEth}
+          onUpgradeClick={() => {}}
         />
       </div>
-    </div>
+    </WalletBalanceContainer>
   );
+};
 
-  const IcbmLocked = (
-    <div className={styles.icbmLockedWallet}>
-      <p className={styles.message}>
-        <FormattedMessage id="shared-component.wallet-icbm.upgrade-message" />
-      </p>
+interface ILockedWallet extends IPanelProps {
+  data?: IWalletValues;
+}
 
-      <h4 className={styles.title}>
-        <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
-      </h4>
-      <AccountBalance
-        icon={neuroIcon}
-        currency="eur_token"
-        currencyTotal="eur"
-        largeNumber={data!.neuroAmount}
-        value={data!.neuroEuroAmount}
-        onUpgradeClick={() => {}}
-      />
+export const LockedWallet: React.SFC<ILockedWallet> = ({ data }) => {
+  return (
+    <WalletBalanceContainer>
+      <div className={styles.icbmLockedWallet}>
+        <p className={styles.message}>
+          <FormattedMessage id="shared-component.wallet-icbm.upgrade-message" />
+        </p>
 
-      <HorizontalLine className="my-3" />
+        <h4 className={styles.title}>
+          <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
+        </h4>
+        <AccountBalance
+          icon={neuroIcon}
+          currency="eur_token"
+          currencyTotal="eur"
+          largeNumber={data!.neuroAmount}
+          value={data!.neuroEuroAmount}
+        />
 
-      <AccountBalance
-        icon={ethIcon}
-        currency="eth"
-        currencyTotal="eur"
-        largeNumber={data!.ethAmount}
-        value={data!.ethEuroAmount}
-        onUpgradeClick={() => {}}
-      />
-    </div>
+        <HorizontalLine className="my-3" />
+
+        <AccountBalance
+          icon={ethIcon}
+          currency="eth"
+          currencyTotal="eur"
+          largeNumber={data!.ethAmount}
+          value={data!.ethEuroAmount}
+        />
+      </div>
+    </WalletBalanceContainer>
   );
+};
 
+export const LoadingWallet: React.SFC<IPanelProps> = props => {
+  return (
+    <WalletBalanceContainer {...props}>
+      <LoadingIndicator />
+    </WalletBalanceContainer>
+  );
+};
+
+const WalletBalanceContainer: React.SFC<
+  IPanelProps &
+    CommonHtmlProps & {
+      data?: IWalletValues;
+    }
+> = ({ headerText, data, className, children }) => {
   return (
     <Panel
       headerText={headerText}
       rightComponent={data && <TotalEuro totalEurValue={data.totalEuroAmount} />}
       className={cn(className, "d-flex flex-column")}
     >
-      {isLoading ? <LoadingIndicator /> : isLocked ? IcbmLocked : unlockedWallet}
+      {children}
     </Panel>
   );
 };
-
-export const WalletBalance = appConnect<IStateProps, IDispatchProps>({
-  stateToProps: state => ({
-    address: selectEthereumAddressWithChecksum(state.web3),
-  }),
-  dispatchToProps: dispatch => ({
-    depositEth: () => dispatch(actions.depositEthModal.showDepositEthModal()),
-    withdrawEth: () => dispatch(actions.txSender.startWithdrawEth()),
-  }),
-})(WalletBalanceComponent);

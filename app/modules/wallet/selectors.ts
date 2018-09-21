@@ -126,8 +126,6 @@ export const selectTotalEuroBalance = (state: IAppState) =>
     selectICBMLockedEuroTotalAmount(state),
   ]);
 
-export const selectIsLoaded = (state: IWalletState): boolean => !state.loading;
-
 export const selectEtherNeumarksDue = (state: IWalletState): string =>
   (state.data &&
     state.data.etherTokenICBMLockedWallet &&
@@ -149,3 +147,7 @@ export const selectIcbmWalletConnected = (state: IWalletState): boolean =>
       state.data.euroTokenICBMLockedWallet &&
       state.data.euroTokenICBMLockedWallet.unlockDate !== "0")
   );
+
+export const selectIsLoading = (state: IWalletState): boolean => !!state.loading;
+
+export const selectWalletError = (state: IWalletState): string | undefined => state.error;

@@ -1,7 +1,11 @@
 import BigNumber from "bignumber.js";
 
 import { tid } from "../../../../../test/testUtils";
-import { assertUserInDashboard, numberRegExPattern, typeLightwalletRecoveryPhrase } from "../../../../e2e-test-utils";
+import {
+  assertUserInDashboard,
+  numberRegExPattern,
+  typeLightwalletRecoveryPhrase,
+} from "../../../../e2e-test-utils";
 import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils";
 import { recoverRoutes } from "../../../walletSelector/walletRecover/recoverRoutes";
 

@@ -247,7 +247,8 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
       }
     }
   } finally {
-    return;
+    watchTxChannel.close();
+    logger.info("Stopped Watching for TXs");
   }
 }
 enum EventEmitterChannelEvents {
@@ -281,6 +282,7 @@ type TEventEmitterChannelEvents =
 
 const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: string) =>
   eventChannel<TEventEmitterChannelEvents>(emitter => {
+    debugger;
     web3Manager.internalWeb3Adapter
       .waitForTx({
         txHash,

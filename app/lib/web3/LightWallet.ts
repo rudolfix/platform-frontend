@@ -219,25 +219,25 @@ export class LightWallet implements IPersonalWallet {
     }
   }
 
-  public async sendTransaction(data: Web3.TxData): Promise<string> {
+  public async sendTransaction(txData: Web3.TxData): Promise<string> {
     if (!this.password) {
       throw new LightWalletMissingPasswordError();
     }
-    data.nonce = await this.web3Adapter.getTransactionCount(data.from);
-    const txData: IRawTxData = {
-      from: data.from,
-      to: addHexPrefix(data.to!),
-      gas: addHexPrefix(new BigNumber(data.gas || 0).toString(16)),
-      gasPrice: addHexPrefix(new BigNumber(data.gasPrice || 0).toString(16)),
-      nonce: addHexPrefix(new BigNumber(data.nonce || 0).toString(16)),
-      value: addHexPrefix(new BigNumber(data.value! || 0).toString(16)),
-      data: addHexPrefix(data.data || "0"),
+    txData.nonce = await this.web3Adapter.getTransactionCount(txData.from);
+    const encodedTxData: IRawTxData = {
+      from: txData.from,
+      to: addHexPrefix(txData.to!),
+      gas: addHexPrefix(new BigNumber(txData.gas || 0).toString(16)),
+      gasPrice: addHexPrefix(new BigNumber(txData.gasPrice || 0).toString(16)),
+      nonce: addHexPrefix(new BigNumber(txData.nonce || 0).toString(16)),
+      value: addHexPrefix(new BigNumber(txData.value! || 0).toString(16)),
+      data: addHexPrefix(txData.data || "0"),
     };
 
     const rawData = LightWalletProvider.signing.signTx(
       this.vault.walletInstance,
       await LightWalletUtil.getWalletKey(this.vault.walletInstance, this.password),
-      txData,
+      encodedTxData,
       this.ethereumAddress,
     );
     return await this.web3Adapter.sendRawTransaction(addHexPrefix(rawData));

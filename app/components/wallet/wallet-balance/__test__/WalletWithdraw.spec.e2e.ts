@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import web3Accounts from "../../../../../node_modules/web3-eth-accounts/src/index.js";
+import web3Accounts from "web3-eth-accounts";
 
 import { tid } from "../../../../../test/testUtils";
 import {
@@ -7,7 +7,7 @@ import {
   numberRegExPattern,
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
-import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils";
+import { getTransactionByHashRpc, getBalanceRpc } from "../../../../e2e-test-utils/ethRpcUtils";
 import { recoverRoutes } from "../../../walletSelector/walletRecover/recoverRoutes";
 
 const Q18 = new BigNumber(10).pow(18);

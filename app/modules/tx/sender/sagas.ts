@@ -282,7 +282,6 @@ type TEventEmitterChannelEvents =
 
 const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: string) =>
   eventChannel<TEventEmitterChannelEvents>(emitter => {
-    debugger;
     web3Manager.internalWeb3Adapter
       .waitForTx({
         txHash,

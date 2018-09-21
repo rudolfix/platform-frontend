@@ -24,6 +24,5 @@
     "typings/**/*.ts",
     "test/**/*.ts",
     "test/**/*.tsx"
-  ],
-  "exclude": ["app/**/*.spec.e2e.ts", "./app/e2e-test-utils/**"]
+  ]
 }

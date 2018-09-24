@@ -6,7 +6,8 @@ import { compose } from "redux";
 
 import { EtoState, TPublicEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectPublicEtoList } from "../../../modules/public-etos/selectors";
+import { selectPublicEtos } from "../../../modules/public-etos/selectors";
+import { IEtoFullData } from "../../../modules/public-etos/types";
 import { IWalletState } from "../../../modules/wallet/reducer";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -14,7 +15,7 @@ import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
 import { SectionHeader } from "../../shared/SectionHeader";
 
 interface IStateProps {
-  etos: TPublicEtoData[];
+  etos: IEtoFullData[];
   wallet: IWalletState;
 }
 
@@ -88,9 +89,9 @@ export const EtoList = compose<React.ComponentClass>(
       d(actions.publicEtos.loadEtos());
     },
   }),
-  appConnect({
+  appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      etos: selectPublicEtoList(state.publicEtos),
+      etos: selectPublicEtos(state),
       wallet: state.wallet,
     }),
     dispatchToProps: d => ({

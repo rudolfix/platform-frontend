@@ -1,7 +1,9 @@
-import BigNumber from "bignumber.js";
+import { createSelector } from "reselect";
+import { IAppState } from "../../store";
+import { IPublicEtoState } from "./reducer";
+import { IEtoFullData } from "./types";
 
-import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
-import { ICalculatedContribution, IPublicEtoState } from "./reducer";
+const selectPublicEtosState = (state: IAppState) => state.publicEtos;
 
 export const selectEtoById = (state: IPublicEtoState, etoId: string) => state.publicEtos[etoId];
 
@@ -18,23 +20,23 @@ export const selectNeuRewardUlpsByEtoId = (state: IPublicEtoState, etoId: string
   return contrib && contrib.neuRewardUlps.toString();
 };
 
-export const selectPublicEtoList = (state: IPublicEtoState): TPublicEtoData[] =>
-  state.displayOrder.map(id => state.publicEtos[id] as TPublicEtoData).filter(v => v);
+export const selectEtoFullData = (state: IPublicEtoState, etoId: string): IEtoFullData | undefined => {
+  const eto = state.publicEtos[etoId];
 
-// Helpers
+  if (eto) {
+    return {
+      ...eto,
+      contract: {
+        timedState: state.timedStates[etoId],
+      },
+    };
+  }
 
-export const convertToCalculatedContribution = ([
-  isWhitelisted,
-  minTicketEurUlps,
-  maxTicketEurUlps,
-  equityTokenInt,
-  neuRewardUlps,
-  maxCapExceeded,
-]: [boolean, BigNumber, BigNumber, BigNumber, BigNumber, boolean]): ICalculatedContribution => ({
-  isWhitelisted,
-  minTicketEurUlps,
-  maxTicketEurUlps,
-  equityTokenInt,
-  neuRewardUlps,
-  maxCapExceeded,
-});
+  return undefined;
+};
+
+export const selectPublicEtos = createSelector(
+  selectPublicEtosState,
+  (state: IPublicEtoState): Array<IEtoFullData> =>
+    state.displayOrder.map(id => selectEtoFullData(state, id)!).filter(Boolean),
+);

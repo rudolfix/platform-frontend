@@ -1,10 +1,11 @@
 import BigNumber from "bignumber.js";
-import { fork, put, select } from "redux-saga/effects";
+import { all, fork, put, select } from "redux-saga/effects";
 
 import { keyBy } from "lodash";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
+  EtoState,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
   TPublicEtoData,
@@ -15,12 +16,13 @@ import { convertToBigInt } from "../../utils/Money.utils";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
 import {
-  convertToCalculatedContribution,
   selectCalculatedContributionByEtoId,
   selectEtoById,
 } from "./selectors";
+import { convertToCalculatedContribution } from "./utils";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
@@ -72,11 +74,27 @@ export function* loadEto(
     const company = companyResponse.body;
 
     yield put(actions.publicEtos.setPublicEto({ ...eto, company }));
+
+    if (eto.state === EtoState.ON_CHAIN) {
+      yield neuCall(loadEtoTimedState, eto);
+    }
   } catch (e) {
     notificationCenter.error("Could not load ETO. Is the link correct?");
 
     yield put(actions.routing.goToDashboard());
   }
+}
+
+function* loadEtoTimedState({ contractsService, logger }: TGlobalDependencies, eto: TPublicEtoData): any {
+  if (eto.state !== EtoState.ON_CHAIN) {
+    throw new InvalidETOStateError( eto.state, EtoState.ON_CHAIN);
+  }
+
+  const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
+
+  const timedState: BigNumber = yield etoContract.timedState;
+
+  yield put(actions.publicEtos.setEtoTimedState(eto.etoId, timedState.toNumber()));
 }
 
 function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
@@ -85,6 +103,13 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
 
     const etos = keyBy(etosResponse.body, eto => eto.etoId);
     const order = etosResponse.body.map(eto => eto.etoId);
+
+    yield all(
+      order
+        .map(id => etos[id])
+        .filter(eto => eto.state === EtoState.ON_CHAIN)
+        .map(eto => neuCall(loadEtoTimedState, eto))
+    );
 
     yield put(actions.publicEtos.setPublicEtos(etos));
     yield put(actions.publicEtos.setEtosDisplayOrder(order));
@@ -100,11 +125,14 @@ export function* loadComputedContributionFromContract(
   isICBM = false,
 ): any {
   if (eto.state !== "on_chain") return;
+
   const state: IAppState = yield select();
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
+
   if (etoContract) {
     amountEuroUlps =
       amountEuroUlps || convertToBigInt((eto.minTicketEur && eto.minTicketEur.toString()) || "0");
+
     const from = selectEthereumAddressWithChecksum(state.web3);
     const calculation = yield etoContract.calculateContribution(
       from,

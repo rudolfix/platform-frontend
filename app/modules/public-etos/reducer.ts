@@ -7,6 +7,7 @@ import {
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { ETOStateOnChain } from "./types";
 
 export interface ICalculatedContribution {
   isWhitelisted: boolean;
@@ -25,12 +26,14 @@ export interface IPublicEtoState {
   // for endpoint eto-listing/etos
   publicEtos: { [etoId: string]: TPublicEtoData | undefined };
   calculatedContributions: { [etoId: string]: ICalculatedContribution };
+  timedStates: { [etoId: string]: ETOStateOnChain };
   displayOrder: string[];
 }
 
 export const etoFlowInitialState: IPublicEtoState = {
   publicEtos: {},
   calculatedContributions: {},
+  timedStates: {},
   displayOrder: [],
 };
 
@@ -66,6 +69,14 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
         calculatedContributions: {
           ...state.calculatedContributions,
           [action.payload.etoId]: action.payload.contrib,
+        },
+      };
+    case "PUBLIC_ETOS_SET_ETO_TIMED_STATE":
+      return {
+        ...state,
+        timedStates: {
+          ...state.timedStates,
+          [action.payload.etoId]: action.payload.state,
         },
       };
     case "PUBLIC_ETOS_SET_PREVIEW_ETO":

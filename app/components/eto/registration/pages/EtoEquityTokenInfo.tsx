@@ -33,12 +33,7 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({
-  readonly,
-  savingData,
-  saveData,
-  values,
-}) => (
+const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-equity-token-info.title" />}
     validator={EtoEquityTokenInfoType.toYup()}
@@ -71,15 +66,7 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({
     {!readonly && (
       <Col>
         <Row className="justify-content-center">
-          <Button
-            layout="primary"
-            type="submit"
-            isLoading={savingData}
-            onClick={() => {
-              // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
-              saveData(values);
-            }}
-          >
+          <Button layout="primary" type="submit" isLoading={savingData}>
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

@@ -45,12 +45,7 @@ const CURRENCIES: ICurrencies = {
 
 const currencies = Object.keys(CURRENCIES);
 
-const EtoRegistrationTermsComponent: React.SFC<IProps> = ({
-  readonly,
-  savingData,
-  saveData,
-  values,
-}) => (
+const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData }) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-terms.title" />}
     validator={EtoTermsType.toYup()}
@@ -188,15 +183,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({
     {!readonly && (
       <Col>
         <Row className="justify-content-center">
-          <Button
-            layout="primary"
-            type="submit"
-            isLoading={savingData}
-            onClick={() => {
-              // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
-              saveData(values);
-            }}
-          >
+          <Button layout="primary" type="submit" isLoading={savingData}>
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

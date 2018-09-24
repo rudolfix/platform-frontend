@@ -1,10 +1,11 @@
 import { FieldAttributes } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { FormSelectField, NONE_KEY } from "./FormSelectField";
 
 const VALUES = {
-  [NONE_KEY]: "Please select",
+  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
   AF: "Afghanistan",
   AX: "ÅLand Islands",
   AL: "Albania",
@@ -189,7 +190,7 @@ const VALUES = {
   RO: "Romania",
   RU: "Russian Federation",
   RW: "Rwanda",
-  BL: "Saint BarthÉLemy",
+  BL: "Saint Barthélemy",
   SH: "Saint Helena, Ascension And Tristan Da Cunha",
   KN: "Saint Kitts And Nevis",
   LC: "Saint Lucia",
@@ -261,6 +262,8 @@ interface IFieldGroup {
 
 type FieldGroupProps = IFieldGroup & FieldAttributes;
 
-export const FormSelectCountryField: React.SFC<FieldGroupProps> = props => (
+const FormSelectCountryField: React.SFC<FieldGroupProps> = props => (
   <FormSelectField {...props} values={VALUES} />
 );
+
+export { FormSelectCountryField };

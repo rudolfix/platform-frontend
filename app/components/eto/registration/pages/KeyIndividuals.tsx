@@ -170,7 +170,7 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
     >
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
-        name="founders"
+        name="team"
       />
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.advisors.title" />}
@@ -198,16 +198,8 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
       />
       <Col>
         <Row className="justify-content-end">
-          <Button
-            layout="primary"
-            className="mr-4"
-            type="submit"
-            onClick={() => {
-              props.saveData(props.values);
-            }}
-            isLoading={props.savingData}
-          >
-            Save
+          <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
+            <FormattedMessage id="form.button.save" />
           </Button>
         </Row>
       </Col>

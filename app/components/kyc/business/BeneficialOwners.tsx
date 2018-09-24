@@ -3,10 +3,9 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
+import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-
-import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Accordion } from "../../shared/Accordion";
 import { Button } from "../../shared/buttons";
@@ -27,7 +26,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
+const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   <div>
     <HorizontalLine className={cn("mt-2", "mb-2")} />
     <h4 className={styles.sectionTitle}>

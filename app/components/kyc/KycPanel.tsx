@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -24,7 +25,7 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
   backLink,
   isMaxWidth,
 }) => (
-  <div className={`${styles.kycPanel} ${isMaxWidth ? styles.kycPanelMax : ""}`}>
+  <div className={cn({ [styles.kycPanelMax]: isMaxWidth })}>
     <Panel className="mt-4">
       <header className={styles.header}>
         <h2 className={styles.title}>

@@ -6,24 +6,25 @@ import { compose } from "redux";
 
 import {
   IKycIndividualData,
-  KycIndividudalDataSchemaRequired,
+  KycIndividualDataSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
+import { Button } from "../../shared/buttons";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
   boolify,
   FormField,
+  FormFieldDate,
   FormSelectCountryField,
   FormSelectField,
+  FormSelectNationalityField,
   NONE_KEY,
   unboolify,
-} from "../../shared/forms/index";
+} from "../../shared/forms";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
@@ -125,6 +126,16 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
           name="country"
           data-test-id="kyc-personal-start-country"
         />
+        <FormSelectCountryField
+          label={formatIntlMessage("form.label.place-of-birth")}
+          name="placeOfBirth"
+          data-test-id="kyc-personal-start-place-of-birth"
+        />
+        <FormSelectNationalityField
+          label={formatIntlMessage("form.label.nationality")}
+          name="nationality"
+          data-test-id="kyc-personal-start-nationality"
+        />
         <br />
         <FormSelectField
           values={PEP_VALUES}
@@ -186,8 +197,8 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
-  validationSchema: KycIndividudalDataSchemaRequired,
-  isInitialValid: (props: any) => KycIndividudalDataSchemaRequired.isValidSync(props.currentValues),
+  validationSchema: KycIndividualDataSchemaRequired,
+  isInitialValid: (props: any) => KycIndividualDataSchemaRequired.isValidSync(props.currentValues),
   mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
   enableReinitialize: true,
   handleSubmit: (values, props) => {
@@ -195,7 +206,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   },
 })(KYCForm);
 
-export const KYCPersonalStartComponent: React.SFC<IProps> = props => {
+const KYCPersonalStartComponent: React.SFC<IProps> = props => {
   return (
     <KycPanel steps={personalSteps} backLink={kycRoutes.start}>
       <KycDisclaimer className="pb-5" />

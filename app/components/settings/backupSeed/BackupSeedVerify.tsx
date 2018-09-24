@@ -4,7 +4,7 @@ import * as React from "react";
 import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";

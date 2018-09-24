@@ -32,21 +32,8 @@ import {
 
 function* processCurrencyValue(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE") return;
-  const state: IAppState = yield select();
-  const i = state.investmentFlow;
-  const type = i.investmentType;
-  let value = extractNumber(action.payload.value);
 
-  // Dont allow setting values, if no investment type is selected
-  if (value && type === EInvestmentType.None) {
-    yield put(actions.investmentFlow.setErrorState(EInvestmentErrorState.NoWalletSelected));
-    return;
-  } else if (
-    type !== EInvestmentType.None &&
-    i.errorState === EInvestmentErrorState.NoWalletSelected
-  ) {
-    yield put(actions.investmentFlow.setErrorState());
-  }
+  const value = extractNumber(action.payload.value);
 
   yield put(actions.investmentFlow.setIsInputValidated(false));
   yield computeAndSetCurrencies(value && convertToBigInt(value), action.payload.currency);
@@ -81,14 +68,14 @@ function* computeAndSetCurrencies(value: string, currency: EInvestmentCurrency):
 }
 
 function validateInvestment(state: IAppState): EInvestmentErrorState | undefined {
-  const i = state.investmentFlow;
-  const value = i.euroValueUlps;
+  const investmentFlow = state.investmentFlow;
+  const value = investmentFlow.euroValueUlps;
   const wallet = state.wallet.data;
-  const contribs = selectCalculatedContributionByEtoId(state.publicEtos, i.etoId);
+  const contribs = selectCalculatedContributionByEtoId(state.publicEtos, investmentFlow.etoId);
 
   if (!contribs || !value || !wallet) return;
 
-  const gasPrice = selectInvestmentGasCostEth(i);
+  const gasPrice = selectInvestmentGasCostEth(investmentFlow);
 
   if (compareBigNumbers(gasPrice, wallet.etherBalance) === 1) {
     return EInvestmentErrorState.NotEnoughEtherForGas;
@@ -96,7 +83,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
 
   const etherValue = divideBigNumbers(value, selectEtherPriceEur(state.tokenPrice));
 
-  if (i.investmentType === EInvestmentType.InvestmentWallet) {
+  if (investmentFlow.investmentType === EInvestmentType.InvestmentWallet) {
     if (
       compareBigNumbers(
         addBigNumbers([etherValue, gasPrice]),
@@ -153,10 +140,7 @@ function* start(action: TAction): any {
 }
 
 function* stop(): any {
-  const type: EInvestmentType = yield select((s: IAppState) => s.investmentFlow.investmentType);
-  if (type !== EInvestmentType.None) {
-    yield put(actions.investmentFlow.investmentReset());
-  }
+  yield put(actions.investmentFlow.investmentReset());
 }
 
 function* setGasPrice(): any {

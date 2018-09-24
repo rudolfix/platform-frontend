@@ -16,6 +16,8 @@ interface IPersonData {
   street: string;
   city: string;
   country: string;
+  placeOfBirth: string;
+  nationality: string;
   zipCode: string;
   isPoliticallyExposed: string;
   isUsCitizen: string;
@@ -33,6 +35,8 @@ const personData: IPersonData = {
   street: "example",
   city: "example",
   country: "DE",
+  placeOfBirth: "UA",
+  nationality: "PL",
   zipCode: "00000",
   isPoliticallyExposed: "true",
   isUsCitizen: "false",
@@ -58,6 +62,8 @@ const submitIndividualKYCForm = (person: IPersonData) => {
   cy.get(tid("kyc-personal-start-city")).type(person.city);
   cy.get(tid("kyc-personal-start-zip-code")).type(person.zipCode);
   cy.get(tid("kyc-personal-start-country")).select(person.country);
+  cy.get(tid("kyc-personal-start-place-of-birth")).select(person.placeOfBirth);
+  cy.get(tid("kyc-personal-start-nationality")).select(person.nationality);
 
   cy.get(tid("kyc-personal-start-is-politically-exposed")).select(person.isPoliticallyExposed);
   cy.get(tid("kyc-personal-start-is-us-citizen")).select(person.isUsCitizen);

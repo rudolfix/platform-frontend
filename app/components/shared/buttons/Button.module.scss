@@ -74,6 +74,20 @@ $_active-color: lighten($_hover-color, 20%);
         color: $color-white;
       }
     }
+
+    &:global(.small) {
+      @include font-button-small;
+
+      .content {
+        border: px-to-rem(1px) solid currentColor;
+      }
+    }
+
+    &:global(.block) {
+      .content {
+        min-width: auto;
+      }
+    }
   }
 
   &:global(.secondary) {
@@ -101,8 +115,23 @@ $_active-color: lighten($_hover-color, 20%);
     }
   }
 
+  // widths
+  &:global(.block) {
+    display: block;
+    width: 100%;
+  }
+
   &:global(.wide) {
     min-width: px-to-rem(220px);
+  }
+
+  // sizes
+  &:global(.small) {
+    font-weight: $font-weight-medium;
+
+    > .content {
+      padding: px-to-rem(3px) px-to-rem(8px);
+    }
   }
 
   &:global {

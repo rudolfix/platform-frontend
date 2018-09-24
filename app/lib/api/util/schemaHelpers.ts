@@ -1,7 +1,6 @@
 import { includes, mapValues } from "lodash";
 import * as moment from "moment";
 import * as Yup from "yup";
-import { NONE_KEY } from "../../../components/shared/forms/index";
 
 /**
  * Schema helpers
@@ -75,12 +74,10 @@ export const RESTRICTED_COUNTRIES = [
   "US",
 ];
 
-export const restrictedCountry = countryCode
-  .test("country", "This field is required", response => response !== NONE_KEY)
-  .test(
-    "country",
-    "Unfortunately, we do not accept investors or companies coming from your country due to regulatory restrictions.",
-    response => {
-      return !includes(RESTRICTED_COUNTRIES, response);
-    },
-  );
+export const restrictedCountry = countryCode.test(
+  "country",
+  "Unfortunately, we do not accept investors or companies coming from your country due to regulatory restrictions.",
+  response => {
+    return !includes(RESTRICTED_COUNTRIES, response);
+  },
+);

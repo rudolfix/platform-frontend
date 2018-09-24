@@ -1,8 +1,8 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Link } from "react-router-dom";
-import { Button } from "../shared/Buttons";
+import { ButtonLink } from "../shared/buttons";
 import { Panel } from "../shared/Panel";
 import { IVerificationProgressStep, VerificationStatus } from "../shared/VerificationStatus";
 
@@ -25,7 +25,7 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
   backLink,
   isMaxWidth,
 }) => (
-  <div className={`${styles.kycPanel} ${isMaxWidth ? styles.kycPanelMax : ""}`}>
+  <div className={cn({ [styles.kycPanelMax]: isMaxWidth })}>
     <Panel className="mt-4">
       <header className={styles.header}>
         <h2 className={styles.title}>
@@ -41,11 +41,14 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
       <div className={styles.content}>{children}</div>
       <footer className={styles.footer}>
         {backLink && (
-          <Link to={backLink}>
-            <Button layout="secondary" iconPosition="icon-before" svgIcon={arrowLeft}>
-              <FormattedMessage id="kyc.panel.go-back" />
-            </Button>
-          </Link>
+          <ButtonLink
+            to={backLink}
+            layout="secondary"
+            iconPosition="icon-before"
+            svgIcon={arrowLeft}
+          >
+            <FormattedMessage id="kyc.panel.go-back" />
+          </ButtonLink>
         )}
       </footer>
     </Panel>

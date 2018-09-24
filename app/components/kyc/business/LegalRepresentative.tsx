@@ -13,11 +13,13 @@ import {
   BOOL_TRUE_KEY,
   boolify,
   FormField,
+  FormFieldDate,
   FormSelectCountryField,
   FormSelectField,
+  FormSelectNationalityField,
   NONE_KEY,
   unboolify,
-} from "../../shared/forms/index";
+} from "../../shared/forms";
 
 import { KYCBeneficialOwners } from "./BeneficialOwners";
 
@@ -30,8 +32,7 @@ import {
 } from "../../../lib/api/KycApi.interfaces";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
+import { Button } from "../../shared/buttons";
 import { individualRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
@@ -120,6 +121,16 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>
         label={formatIntlMessage("form.label.country")}
         name="country"
       />
+      <FormSelectCountryField
+        label={formatIntlMessage("form.label.place-of-birth")}
+        name="placeOfBirth"
+        data-test-id="kyc-company-legal-representative-place-of-birth"
+      />
+      <FormSelectNationalityField
+        label={formatIntlMessage("form.label.nationality")}
+        name="nationality"
+        data-test-id="kyc-company-legal-representative-nationality"
+      />
       <FormSelectField
         data-test-id="kyc-company-legal-representative-pep"
         values={PEP_VALUES}
@@ -183,8 +194,10 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
 };
 
 const BeneficialOwners: React.SFC<IProps & { lrDataValid: boolean }> = props => {
-  if (!props.lrDataValid || props.files.length === 0) return <div />;
-  if (!props.businessData || !(props.businessData.legalFormType === "corporate")) return <div />;
+  if (!props.lrDataValid || props.files.length === 0) return null;
+
+  if (!(props.businessData && props.businessData.legalFormType === "corporate")) return null;
+
   return <KYCBeneficialOwners />;
 };
 

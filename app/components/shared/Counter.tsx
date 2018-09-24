@@ -16,14 +16,22 @@ const hour = day / 24;
 const minute = hour / 60000;
 
 export class Counter extends React.Component<IProps, IState> {
+  interval: number | null = null;
+
   state = {
     date: this.props.endDate - Date.now(),
   };
 
   componentDidMount(): void {
-    setInterval(() => {
+    this.interval = window.setInterval(() => {
       this.setState(state => ({ date: state.date - 1000 }));
     }, 1000);
+  }
+
+  componentWillUnmount(): void {
+    if (this.interval !== null) {
+      window.clearInterval(this.interval);
+    }
   }
 
   render(): React.ReactNode {

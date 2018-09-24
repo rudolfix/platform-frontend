@@ -3,6 +3,7 @@ import { get } from "lodash";
 
 /* The function that encapsulates the logic of determining a value for Input field valid property. Note we have to
    return boolean | undefined value. Undefined should be returned when the field has not been touched by the user. */
+// TODO: Refactor to formik 'ErrorMessage' component
 export const isValid = (
   touched: FormikTouched<any>,
   errors: FormikErrors<any>,

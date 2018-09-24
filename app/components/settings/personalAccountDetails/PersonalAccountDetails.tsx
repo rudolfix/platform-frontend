@@ -4,7 +4,7 @@ import { compose } from "redux";
 
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 
@@ -31,16 +31,13 @@ interface IOwnState {
 interface IRecordProps {
   label: TTranslatedString;
   value: TTranslatedString;
-  details?: TTranslatedString;
 }
 
-const Record: React.SFC<IRecordProps> = ({ label, details }) => {
+const Record: React.SFC<IRecordProps> = ({ value, label }) => {
   return (
     <div className={styles.record}>
-      <div className={styles.label}>
-        {label}
-        {details && <div className={styles.details}>{details}</div>}
-      </div>
+      <div className={styles.label}>{label}</div>
+      <div className={styles.value}>{value}</div>
     </div>
   );
 };
@@ -99,18 +96,10 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
                       }, ${personalData.country}`}
                     />
                   )}
-                {personalData.isHighIncome && (
-                  <Record
-                    label={<FormattedMessage id="settings.account-details.income" />}
-                    value={
-                      personalData.isHighIncome ? (
-                        <FormattedMessage id="settings.account-details.is-high-income.yes" />
-                      ) : (
-                        <FormattedMessage id="settings.account-details.is-high-income.no" />
-                      )
-                    }
-                  />
-                )}
+                <Record
+                  label={<FormattedMessage id="settings.account-details.income" />}
+                  value={personalData.isHighIncome ? "yes" : "no"}
+                />
               </>
             )}
           </div>

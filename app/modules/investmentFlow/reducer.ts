@@ -6,7 +6,6 @@ const INVESTMENT_GAS_AMOUNT = "600000";
 const GAS_PRICE_MULTIPLIER = 1.2;
 
 export enum EInvestmentType {
-  None = "NONE",
   InvestmentWallet = "INVESTMENT_WALLET",
   ICBMEth = "ICBM_ETH",
   ICBMnEuro = "ICBM_NEURO",
@@ -23,7 +22,6 @@ export enum EInvestmentErrorState {
   BelowMinimumTicketSize = "below_minimum_ticket_size",
   ExceedsWalletBalance = "exceeds_wallet_balance",
   ExceedsTokenAmount = "exceeds_token_amount",
-  NoWalletSelected = "no_wallet_selected",
   NotEnoughEtherForGas = "not_enough_ether_for_gas",
 }
 
@@ -42,7 +40,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   etoId: "",
   euroValueUlps: "",
   ethValueUlps: "",
-  investmentType: EInvestmentType.None,
+  investmentType: EInvestmentType.InvestmentWallet,
   gasAmount: INVESTMENT_GAS_AMOUNT,
   gasPrice: "0",
   isValidatedInput: false,

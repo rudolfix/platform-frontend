@@ -8,7 +8,7 @@ import { TUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import { selectUrlUserType } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { recoverRoutes } from "./recoverRoutes";
 
@@ -45,7 +45,7 @@ export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> =
     </Row>
     <Row className="justify-content-end mt-4 pt-4 align-bottom" noGutters>
       <Col className="align-bottom text-end">
-        <Link className="" to={recoverRoutes.help}>
+        <Link to={recoverRoutes.help}>
           <FormattedMessage id="components.wallet-selector.wallet-recover.recovery-success.contact-for-help" />
           <i className="fa fa-lg fa-angle-right ml-1" />
         </Link>

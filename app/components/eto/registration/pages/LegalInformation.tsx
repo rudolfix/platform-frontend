@@ -12,11 +12,13 @@ import {
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
-import { Button } from "../../../shared/Buttons";
-import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
-import { FormFieldDate } from "../../../shared/forms/formField/FormFieldDate";
-import { FormSelectField } from "../../../shared/forms/formField/FormSelectField";
-import { FormField } from "../../../shared/forms/index";
+import { Button } from "../../../shared/buttons";
+import {
+  FormCategoryDistribution,
+  FormField,
+  FormFieldDate,
+  FormSelectField,
+} from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -61,12 +63,7 @@ const NUMBER_OF_EMPLOYEES = {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
-const EtoRegistrationLegalInformationComponent = ({
-  readonly,
-  savingData,
-  saveData,
-  values,
-}: IProps) => {
+const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IProps) => {
   return (
     <EtoFormBase title="Legal Information" validator={EtoLegalInformationType.toYup()}>
       <Section>
@@ -148,16 +145,7 @@ const EtoRegistrationLegalInformationComponent = ({
       {!readonly && (
         <Col>
           <Row className="justify-content-end">
-            <Button
-              type="submit"
-              layout="primary"
-              className="mr-4"
-              isLoading={savingData}
-              onClick={() => {
-                // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
-                saveData(values);
-              }}
-            >
+            <Button type="submit" layout="primary" className="mr-4" isLoading={savingData}>
               <FormattedMessage id="form.button.save" />
             </Button>
           </Row>

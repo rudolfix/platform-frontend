@@ -48,7 +48,7 @@ interface IProps {
   isClickable?: boolean;
 }
 
-export const SOCIAL_PROFILES: {
+export const SOCIAL_PROFILE_ICONS: {
   [key: string]: string;
 } = {
   facebook,
@@ -65,24 +65,24 @@ export const SOCIAL_PROFILES: {
   youtube,
 };
 
-export const SocialProfilesList: React.SFC<IProps> = ({
+const SocialProfilesList: React.SFC<IProps> = ({
   profiles,
   layoutIconSize,
   layoutIconsPosition,
-  showLabels,
-  isClickable,
+  showLabels = true,
+  isClickable = true,
 }) => {
   const icon = (url: string, type: string): React.ReactNode => {
     if (isClickable) {
       return (
         <a href={url} target="_blank" title={url} className={styles.icon}>
-          <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+          <InlineIcon svgIcon={SOCIAL_PROFILE_ICONS[type]} />
         </a>
       );
     } else {
       return (
         <div className={styles.icon}>
-          <InlineIcon svgIcon={SOCIAL_PROFILES[type]} />
+          <InlineIcon svgIcon={SOCIAL_PROFILE_ICONS[type]} />
         </div>
       );
     }
@@ -109,7 +109,4 @@ export const SocialProfilesList: React.SFC<IProps> = ({
   );
 };
 
-SocialProfilesList.defaultProps = {
-  showLabels: true,
-  isClickable: true,
-};
+export { SocialProfilesList };

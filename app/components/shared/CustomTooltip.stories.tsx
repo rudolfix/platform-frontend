@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Button } from "./Buttons";
+import { Button } from "./buttons";
 import { CustomTooltip } from "./CustomTooltip";
 
 import * as icon from "../../assets/img/logo_yellow.svg";

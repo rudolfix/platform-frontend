@@ -3,18 +3,22 @@ import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon, InputProps } from "reactstrap";
 
 import { CommonHtmlProps } from "../../../../types";
-import { IFieldGroup } from "./FormField";
+import { IFormInputExternalProps } from "./FormInput";
 import { FormLabel } from "./FormLabel";
 
 import * as styles from "./FormStyles.module.scss";
 
-export interface IFieldGroupRaw extends IFieldGroup {
+export interface IFieldGroupRawExternalProps {
+  label?: string | React.ReactNode;
   charactersLimit?: number;
   invalid?: boolean;
   controlCursor?: boolean;
 }
 
-type FieldGroupProps = IFieldGroupRaw & InputProps & CommonHtmlProps;
+type FieldGroupRawProps = IFormInputExternalProps &
+  IFieldGroupRawExternalProps &
+  InputProps &
+  CommonHtmlProps;
 
 export const computedValue = (val: InputProps["value"], limit: number | undefined) => {
   if (typeof val === "number" || Array.isArray(val) || !val || !limit) {
@@ -28,7 +32,7 @@ export const countedCharacters = (val: InputProps["value"], limit: number | unde
   return `${(val as string).length}/${limit}`;
 };
 
-export class FormFieldRaw extends React.Component<FieldGroupProps> {
+export class FormFieldRaw extends React.Component<FieldGroupRawProps> {
   private rawStr = "";
   private caretPosition = 0;
   private inputRef?: HTMLInputElement;
@@ -42,7 +46,7 @@ export class FormFieldRaw extends React.Component<FieldGroupProps> {
     }
   };
 
-  componentDidUpdate({ value }: FieldGroupProps): void {
+  componentDidUpdate({ value }: FieldGroupRawProps): void {
     if (this.props.controlCursor && this.inputRef) {
       const input = this.inputRef;
       if (this.props.value !== value) {

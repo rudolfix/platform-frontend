@@ -7,7 +7,7 @@ import {
   selectAmountOfPendingTxs,
 } from "../../modules/tx/monitor/selectors";
 import { appConnect } from "../../store";
-import { Button } from "../shared/Buttons";
+import { Button } from "../shared/buttons";
 
 interface IStateProps {
   isAuthorized: boolean;

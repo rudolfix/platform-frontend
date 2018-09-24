@@ -66,8 +66,6 @@ export type CommonHtmlProps = {
   style?: CSSProperties;
 };
 
-export type Size = "narrow" | "wide";
-
 export type TTranslatedString = string | React.ReactElement<FormattedMessage>;
 
 export type TAcceptedFileType =
@@ -79,3 +77,5 @@ export type TAcceptedFileType =
   | "image/svg+xml"
   | "image/*";
 // TODO: Correct TAcceptedFileType types it can contain more than one type
+
+export type Omit<T extends K, K> = Pick<T, Exclude<keyof T, keyof K>>;

@@ -1,11 +1,12 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { toast } from "react-toastify";
 
-import { FormattedMessage } from "react-intl-phraseapp";
 import { CommonHtmlProps } from "../../types";
 import { Avatar } from "./Avatar";
-import { ButtonIcon } from "./Buttons";
+import { ButtonIcon } from "./buttons";
+import { EtherscanAddressLink } from "./EtherscanLink";
 
 import * as clipboardIcon from "../../assets/img/inline_icons/icon-clipboard.svg";
 import * as styles from "./AccountAddress.module.scss";
@@ -46,9 +47,7 @@ export class AccountAddress extends React.Component<IAccountAddressProps & Commo
           </div>
           <div className={styles.transactionHistory}>
             <FormattedMessage id="shared-components.account-address.transaction-history" />{" "}
-            <a href={`https://etherscan.io/address/${address}`} target="_blank">
-              {`https://etherscan.io`}
-            </a>
+            <EtherscanAddressLink address={address} />
           </div>
         </div>
 

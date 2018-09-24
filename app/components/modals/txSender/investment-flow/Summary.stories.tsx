@@ -15,6 +15,6 @@ const data = {
   agreementUrl: "somePDF.pdf",
 };
 
-storiesOf("InvestmentSummary", module).add("default", () => (
+storiesOf("Investment/InvestmentSummary", module).add("default", () => (
   <InvestmentSummaryComponent {...data} onAccept={() => {}} />
 ));

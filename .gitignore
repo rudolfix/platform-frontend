@@ -13,4 +13,7 @@ cypress/screenshots
 __screenshots__
 e2e/platform-backend
 .reg
+
+# IDE's ignores
 .vscode
+.idea

@@ -14,37 +14,6 @@
     margin-right: px-to-rem(8px);
     border-radius: 50%;
     flex-shrink: 0;
-  }
-
-  &:global(.book-building) {
-    &::before {
-      background-color: $gray3;
-    }
-  }
-
-  &:global(.campaigning) {
-    &::before {
-      background-color: $blue-light;
-    }
-  }
-
-  &:global(.pre-eto),
-  &:global(.public-eto) {
-    &::before {
-      background-color: $neu-seaweed;
-    }
-  }
-
-  &:global(.in-signing) {
-    &::before {
-      background-color: lighten($neu-slate-grey, 5%);
-    }
-  }
-
-  &:global(.claim),
-  &:global(.refund) {
-    &::before {
-      background-color: $neu-slate-grey;
-    }
+    background-color: $color-green-dark;
   }
 }

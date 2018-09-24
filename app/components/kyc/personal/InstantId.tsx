@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 

@@ -9,7 +9,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 
 export const SEED_LENGTH = 24;

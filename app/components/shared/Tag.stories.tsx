@@ -9,6 +9,7 @@ storiesOf("Basic UI/Tag", module)
     <>
       <Tag text={"dark theme"} theme="dark" />
       <Tag text={"green theme"} theme="green" />
+      <Tag text={"silver theme"} theme="silver" />
       <Tag to="#0" text="tag" />
       <Tag layout="ghost" to="#0" text="ghost tag" />
       <Tag layout="ghost" size="small" to="#0" text="small ghost tag" />

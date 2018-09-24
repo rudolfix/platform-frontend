@@ -4,7 +4,7 @@ import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
-import { ButtonIcon } from "../../Buttons";
+import { ButtonIcon } from "../../buttons";
 import { FormHighlightGroup } from "../FormHighlightGroup";
 import { FormField } from "../index";
 import { FormTextArea } from "./FormTextArea";

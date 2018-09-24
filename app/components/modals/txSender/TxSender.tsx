@@ -10,6 +10,7 @@ import { appConnect } from "../../../store";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
 import { InvestmentSelection } from "./investment-flow/Investment";
+import { InvestmentSuccess } from "./investment-flow/Success";
 import { InvestmentSummary } from "./investment-flow/Summary";
 import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
@@ -77,6 +78,15 @@ const SummaryComponent: React.SFC<{ type: TxSenderType }> = ({ type }) => {
   }
 };
 
+const SuccessComponent: React.SFC<{ type: TxSenderType; txHash?: string }> = ({ type, txHash }) => {
+  switch (type) {
+    case "INVEST":
+      return <InvestmentSuccess txHash={txHash!} />;
+    case "WITHDRAW":
+      return <WithdrawSuccess txHash={txHash!} />;
+  }
+};
+
 function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
   switch (state) {
     case "WATCHING_PENDING_TXS":
@@ -104,10 +114,13 @@ function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
       return <TxPending blockId={blockId!} txHash={txHash!} />;
 
     case "DONE":
-      return <WithdrawSuccess txHash={txHash} />;
+      if (!type) {
+        throw new Error("Transaction type needs to be set at transaction done state");
+      }
+      return <SuccessComponent type={type} txHash={txHash!} />;
 
     case "ERROR_SIGN":
-      return <div>Error occured!</div>;
+      return <div>Error occurred!</div>;
 
     case "REVERTED":
       return <div>Error: Tx reverted!</div>;

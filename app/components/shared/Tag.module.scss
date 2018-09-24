@@ -51,6 +51,10 @@
     color: $neu-seaweed;
   }
 
+  &:global(.silver) {
+    color: $color-silver;
+  }
+
   &:global(.dark) {
     background-color: $neu-charcoal-grey;
     color: $neu-white-two;

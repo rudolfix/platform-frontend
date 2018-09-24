@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
 import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";

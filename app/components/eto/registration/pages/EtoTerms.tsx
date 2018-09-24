@@ -8,15 +8,14 @@ import { compose } from "redux";
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
-import { FormCheckbox, FormRadioButton } from "../../../shared/forms/formField/FormCheckbox";
+import { Button } from "../../../shared/buttons";
+import { FormCheckbox, FormField, FormRadioButton, FormTextArea } from "../../../shared/forms";
 import {
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
 } from "../../../shared/forms/formField/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
-import { FormField, FormTextArea } from "../../../shared/forms/index";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {
@@ -46,12 +45,7 @@ const CURRENCIES: ICurrencies = {
 
 const currencies = Object.keys(CURRENCIES);
 
-const EtoRegistrationTermsComponent: React.SFC<IProps> = ({
-  readonly,
-  savingData,
-  saveData,
-  values,
-}) => (
+const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData }) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-terms.title" />}
     validator={EtoTermsType.toYup()}
@@ -189,15 +183,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({
     {!readonly && (
       <Col>
         <Row className="justify-content-center">
-          <Button
-            layout="primary"
-            type="submit"
-            isLoading={savingData}
-            onClick={() => {
-              // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
-              saveData(values);
-            }}
-          >
+          <Button layout="primary" type="submit" isLoading={savingData}>
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

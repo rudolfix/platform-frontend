@@ -1,9 +1,8 @@
 import * as cn from "classnames";
 import * as H from "history";
 import * as React from "react";
-import { Link } from "react-router-dom";
 
-import { ButtonArrowRight } from "../Buttons";
+import { ButtonArrowRight, ButtonLink } from "../buttons";
 import { Panel } from "../Panel";
 
 import * as styles from "./DashboardLinkWidget.module.scss";
@@ -21,9 +20,9 @@ export const DashboardLinkWidget: React.SFC<IProps> = ({ title, text, to, button
       <div className={styles.content}>
         <p className={cn(styles.text, "pt-2")}>{text}</p>
         <div className="d-flex justify-content-center">
-          <Link to={to}>
-            <ButtonArrowRight>{buttonText}</ButtonArrowRight>
-          </Link>
+          <ButtonLink to={to} component={ButtonArrowRight}>
+            {buttonText}
+          </ButtonLink>
         </div>
       </div>
     </Panel>

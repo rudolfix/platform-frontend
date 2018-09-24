@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 
-import { Button } from "../../shared/Buttons";
+import { ButtonLink, ButtonWidth } from "../../shared/buttons";
 
 import * as logo from "../../../assets/img/logo_capitalized.svg";
 import * as styles from "./RegisterCta.module.scss";
@@ -17,11 +16,9 @@ export const RegisterCta: React.SFC<ISelfProps> = ({ text, ctaText, ctaLink }) =
     <section className={styles.registerCta}>
       <img className={styles.image} src={logo} alt="Neufund logo" />
       <h2 className={styles.ctaText}>{text}</h2>
-      <Link to={ctaLink}>
-        <Button size="wide" theme="white">
-          {ctaText}
-        </Button>
-      </Link>
+      <ButtonLink width={ButtonWidth.WIDE} theme="white" to={ctaLink}>
+        {ctaText}
+      </ButtonLink>
     </section>
   );
 };

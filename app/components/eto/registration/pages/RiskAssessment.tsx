@@ -11,9 +11,8 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
-import { FormCheckbox } from "../../../shared/forms/formField/FormCheckbox";
-import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
+import { Button } from "../../../shared/buttons";
+import { FormCheckbox, FormTextArea } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -96,16 +95,8 @@ const EtoRegistrationRiskAssessmentComponent = (props: IProps) => {
       </Section>
       <Col>
         <Row className="justify-content-end">
-          <Button
-            layout="primary"
-            className="mr-4"
-            type="submit"
-            onClick={() => {
-              props.saveData(props.values);
-            }}
-            isLoading={props.savingData}
-          >
-            Save
+          <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
+            <FormattedMessage id="form.button.save" />
           </Button>
         </Row>
       </Col>

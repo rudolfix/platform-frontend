@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import {
+  countryCode,
   isUsCitizen,
   makeAllRequired,
   personBirthDate,
@@ -16,6 +17,8 @@ export interface IKycPerson {
   zipCode?: string;
   country?: string;
   birthDate?: string;
+  placeOfBirth?: string;
+  nationality?: string;
   isPoliticallyExposed?: boolean;
 }
 
@@ -27,6 +30,8 @@ export const KycPersonSchema = Yup.object().shape({
   zipCode: Yup.string(),
   country: restrictedCountry,
   birthDate: personBirthDate,
+  placeOfBirth: countryCode,
+  nationality: countryCode,
   isPoliticallyExposed: Yup.bool(),
 });
 
@@ -36,18 +41,19 @@ export interface IKycIndividualData extends IKycPerson {
   isHighIncome?: boolean;
 }
 
-export const KycIndividudalDataSchema = KycPersonSchema.concat(
+export const KycIndividualDataSchema = KycPersonSchema.concat(
   Yup.object().shape({
     isUsCitizen,
     isHighIncome: Yup.bool(),
   }),
 );
 
-export const KycIndividudalDataSchemaRequired = makeAllRequired(KycIndividudalDataSchema);
+export const KycIndividualDataSchemaRequired = makeAllRequired(KycIndividualDataSchema);
 
 // business data
 export interface IKycBusinessData {
   name?: string;
+  registrationNumber?: string;
   legalForm?: string;
   legalFormType?: TKycBusinessType;
   street?: string;
@@ -58,16 +64,18 @@ export interface IKycBusinessData {
 }
 
 export const KycBusinessDataSchema = Yup.object().shape({
-  name: Yup.string(),
-  legalForm: Yup.string(),
-  legalFormType: Yup.string(),
-  street: Yup.string(),
-  city: Yup.string(),
-  zipCode: Yup.string(),
-  country: restrictedCountry,
-  jurisdiction: Yup.string().default("de"),
+  name: Yup.string().required("This field is required"),
+  registrationNumber: Yup.string(),
+  legalForm: Yup.string().required("This field is required"),
+  legalFormType: Yup.string().required("This field is required"),
+  street: Yup.string().required("This field is required"),
+  city: Yup.string().required("This field is required"),
+  zipCode: Yup.string().required("This field is required"),
+  country: restrictedCountry.required("This field is required"),
+  jurisdiction: Yup.string()
+    .required("This field is required")
+    .default("de"),
 });
-export const KycBusinessDataSchemaRequired = makeAllRequired(KycBusinessDataSchema);
 
 // legal representative (same as base person)
 export interface IKycLegalRepresentative extends IKycPerson {}

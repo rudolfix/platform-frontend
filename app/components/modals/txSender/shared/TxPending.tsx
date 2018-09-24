@@ -1,8 +1,9 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
+import { EtherscanTxLink } from "../../../shared/EtherscanLink";
 
-import { FormattedMessage } from "react-intl-phraseapp";
 import * as styles from "./TxPending.module.scss";
 
 export interface ITxPendingProps {
@@ -22,9 +23,9 @@ export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash }) => (
       <FormattedMessage id="tx-sender.tx-pending.description" />
     </p>
 
-    <a className={styles.txHash} href={`https://etherscan.io/tx/${txHash}`} target="_blank">
+    <EtherscanTxLink txHash={txHash} className={styles.txHash}>
       <FormattedMessage id="tx-sender.tx-pending.hash-label" /> {txHash}
-    </a>
+    </EtherscanTxLink>
 
     <p>
       <FormattedMessage id="tx-sender.tx-pending.block-number-label" />

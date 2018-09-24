@@ -16,7 +16,7 @@ import {
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { UnionDictionary } from "../../../types";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 
 import { onEnterAction } from "../../../utils/OnEnterAction";

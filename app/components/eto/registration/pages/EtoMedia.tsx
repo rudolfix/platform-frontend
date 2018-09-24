@@ -9,7 +9,7 @@ import { EtoMediaType, TPartialCompanyEtoData } from "../../../../lib/api/eto/Et
 import { actions } from "../../../../modules/actions";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
 import { FormCheckbox, FormField } from "../../../shared/forms";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
@@ -29,7 +29,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
-const EtoRegistrationMediaComponent = ({ savingData, saveData, values }: IProps) => (
+const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-media.title" />}
     validator={EtoMediaType.toYup()}
@@ -104,15 +104,7 @@ const EtoRegistrationMediaComponent = ({ savingData, saveData, values }: IProps)
     </Section>
     <Col>
       <Row className="justify-content-end">
-        <Button
-          layout="primary"
-          className="mr-4"
-          type="submit"
-          onClick={() => {
-            saveData(values);
-          }}
-          isLoading={savingData}
-        >
+        <Button layout="primary" className="mr-4" type="submit" isLoading={savingData}>
           <FormattedMessage id="form.button.save" />
         </Button>
       </Row>

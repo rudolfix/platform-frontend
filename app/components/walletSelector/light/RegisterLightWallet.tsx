@@ -5,13 +5,12 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
-import { InfoBlock } from "../../shared/InfoBlock";
-
-import { appConnect } from "../../../store";
-import { Button } from "../../shared/Buttons";
-import { FormField } from "../../shared/forms/index";
 
 import { actions } from "../../../modules/actions";
+import { appConnect } from "../../../store";
+import { Button } from "../../shared/buttons";
+import { FormField } from "../../shared/forms";
+import { InfoBlock } from "../../shared/InfoBlock";
 
 const EMAIL = "email";
 const PASSWORD = "password";

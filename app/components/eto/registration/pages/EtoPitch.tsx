@@ -5,16 +5,12 @@ import { Col, Row } from "reactstrap";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import {
-  EtoCompanyInformationType,
-  EtoPitchType,
-  TPartialCompanyEtoData,
-} from "../../../../lib/api/eto/EtoApi.interfaces";
+import { EtoPitchType, TPartialCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
+import { FormTextArea } from "../../../shared/forms";
 import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
-import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -145,15 +141,7 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
       </Section>
       <Col>
         <Row className="justify-content-end">
-          <Button
-            layout="primary"
-            className="mr-4"
-            type="submit"
-            onClick={() => {
-              props.saveData(props.values);
-            }}
-            isLoading={props.savingData}
-          >
+          <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
             Save
           </Button>
         </Row>
@@ -182,7 +170,7 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     }),
   }),
   withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
-    validationSchema: EtoCompanyInformationType.toYup(),
+    validationSchema: EtoPitchType.toYup(),
     mapPropsToValues: props => props.stateValues,
     handleSubmit: (values, props) => props.props.saveData(values),
   }),

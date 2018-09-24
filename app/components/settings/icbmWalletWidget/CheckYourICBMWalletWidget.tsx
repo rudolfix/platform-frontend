@@ -6,7 +6,7 @@ import * as Web3Utils from "web3-utils";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { FormFieldColorful } from "../../shared/forms/formField/FormFieldColorful";
 import { Panel } from "../../shared/Panel";
 

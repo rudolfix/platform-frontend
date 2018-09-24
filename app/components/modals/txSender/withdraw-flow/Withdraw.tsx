@@ -10,7 +10,7 @@ import { IGasState } from "../../../../modules/gas/reducer";
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
 import { FormFieldImportant } from "../../../shared/forms/formField/FormFieldImportant";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { LoadingIndicator } from "../../../shared/LoadingIndicator";

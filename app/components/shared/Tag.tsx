@@ -8,7 +8,7 @@ import { InlineIcon } from "./InlineIcon";
 
 import * as styles from "./Tag.module.scss";
 
-type TTheme = "dark" | "green" | "white" | "default";
+type TTheme = "dark" | "green" | "white" | "default" | "silver";
 type TLayout = "ghost" | "ghost-bold" | "bold";
 type TSize = "small";
 

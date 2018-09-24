@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
@@ -14,7 +13,7 @@ import {
 } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/Buttons";
+import { ButtonLink } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
@@ -105,17 +104,16 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
         <FormattedMessage id="components.dashboard.my-wallet.my-wallet-widget.header-text" />
       }
       rightComponent={
-        <Link to={appRoutes.wallet}>
-          <Button
-            layout="secondary"
-            iconPosition="icon-after"
-            theme="dark"
-            svgIcon={arrowRight}
-            className={cn(styles.link, "pr-0")}
-          >
-            <FormattedMessage id="dashboard.my-wallet-widget.main-wallet-redirect-button" />
-          </Button>
-        </Link>
+        <ButtonLink
+          to={appRoutes.wallet}
+          layout="secondary"
+          iconPosition="icon-after"
+          theme="dark"
+          svgIcon={arrowRight}
+          className={cn(styles.link, "pr-0")}
+        >
+          <FormattedMessage id="dashboard.my-wallet-widget.main-wallet-redirect-button" />
+        </ButtonLink>
       }
       className={className}
       style={style}

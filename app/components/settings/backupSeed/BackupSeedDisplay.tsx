@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 
 import * as styles from "./BackupSeedDisplay.module.scss";
 

@@ -11,10 +11,9 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/Buttons";
+import { Button } from "../../../shared/buttons";
+import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
-import { FormTextArea } from "../../../shared/forms/formField/FormTextArea";
-import { FormField } from "../../../shared/forms/index";
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
@@ -100,16 +99,7 @@ const EtoRegistrationTeamAndInvestorsComponent = (
     </Section>
     <Col>
       <Row className="justify-content-end">
-        <Button
-          layout="primary"
-          className="mr-4"
-          type="submit"
-          onClick={() => {
-            // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
-            props.saveData(props.values);
-          }}
-          isLoading={props.savingData}
-        >
+        <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
           <FormattedMessage id="form.button.save" />
         </Button>
       </Row>

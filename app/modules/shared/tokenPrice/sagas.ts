@@ -1,14 +1,14 @@
 import { BigNumber } from "bignumber.js";
 import { delay } from "redux-saga";
-import { put, select } from "redux-saga/effects";
+import { put, select, takeLatest } from "redux-saga/effects";
 
 import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
 import { numericValuesToString } from "../../contracts/utils";
+import { selectIsSmartContractInitDone } from "../../init/selectors";
 import { neuCall } from "../../sagas";
-import { neuTakeUntil } from "../../sagasUtils";
 import { ITokenPriceStateData } from "./reducer";
 
 const TOKEN_PRICE_MONITOR_DELAY = 5000;
@@ -45,6 +45,10 @@ export async function loadTokenPriceDataAsync({
 }
 
 function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
+  const isSmartContractInitDone: boolean = yield select(selectIsSmartContractInitDone);
+
+  if (!isSmartContractInitDone) return;
+
   while (true) {
     logger.info("Querying for tokenPrice");
 
@@ -66,5 +70,5 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
 }
 
 export function* tokenPriceSagas(): any {
-  yield neuTakeUntil("AUTH_LOAD_USER", "AUTH_LOGOUT", tokenPriceMonitor);
+  yield takeLatest("INIT_DONE", neuCall, tokenPriceMonitor);
 }

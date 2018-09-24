@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
-import { Button } from "../../shared/Buttons";
+import { Button } from "../../shared/buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { Money, TMoneyTransfer } from "../../shared/Money";

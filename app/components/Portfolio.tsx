@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 
 import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
 import { AssetPortfolio } from "./shared/AssetPortfolio";
-import { Button } from "./shared/Buttons";
+import { Button } from "./shared/buttons";
 import { Document } from "./shared/Document";
 import { NewTable, NewTableRow } from "./shared/NewTable";
 import { SectionHeader } from "./shared/SectionHeader";

@@ -34,13 +34,7 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-const EtoInvestmentTermsComponent: React.SFC<IProps> = ({
-  stateValues,
-  savingData,
-  readonly,
-  values,
-  saveData,
-}) => {
+const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingData, readonly }) => {
   const preMoneyValuationEur = stateValues.preMoneyValuationEur || 1;
   const existingCompanyShares = stateValues.existingCompanyShares || 1;
   const newSharesToIssue = stateValues.newSharesToIssue || 1;
@@ -224,15 +218,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({
       {!readonly && (
         <Col>
           <Row className="justify-content-center">
-            <Button
-              layout="primary"
-              type="submit"
-              isLoading={savingData}
-              onClick={() => {
-                // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
-                saveData(values);
-              }}
-            >
+            <Button layout="primary" type="submit" isLoading={savingData}>
               <FormattedMessage id="form.button.save" />
             </Button>
           </Row>

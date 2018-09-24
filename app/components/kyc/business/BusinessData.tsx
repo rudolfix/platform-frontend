@@ -7,7 +7,7 @@ import { compose } from "redux";
 import {
   IKycBusinessData,
   IKycFileInfo,
-  KycBusinessDataSchemaRequired,
+  KycBusinessDataSchema,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
@@ -63,6 +63,11 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
         name="name"
       />
       <FormField
+        data-test-id="kyc-company-business-data-registration-number"
+        label={formatIntlMessage("form.label.company-registration-number")}
+        name="registrationNumber"
+      />
+      <FormField
         data-test-id="kyc-company-business-data-legal-form"
         label={formatIntlMessage("form.label.legal-form")}
         name="legalForm"
@@ -115,10 +120,10 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
 );
 
 const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
-  validationSchema: KycBusinessDataSchemaRequired,
+  validationSchema: KycBusinessDataSchema,
   mapPropsToValues: props => props.currentValues as IKycBusinessData,
   enableReinitialize: true,
-  isInitialValid: (props: any) => KycBusinessDataSchemaRequired.isValidSync(props.currentValues),
+  isInitialValid: (props: any) => KycBusinessDataSchema.isValidSync(props.currentValues),
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(KYCForm);
 
@@ -148,7 +153,7 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
 
 export const KycBusinessDataComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => {
-    const dataValid = KycBusinessDataSchemaRequired.isValidSync(props.currentValues);
+    const dataValid = KycBusinessDataSchema.isValidSync(props.currentValues);
     return (
       <KycPanel
         steps={businessSteps}

@@ -11,7 +11,7 @@ import {
   IKycLegalRepresentative,
   IKycRequestState,
   KycFileInfoShape,
-  KycIndividudalDataSchema,
+  KycIndividualDataSchema,
   KycLegalRepresentativeSchema,
   KycRequestStateSchema,
 } from "./KycApi.interfaces";
@@ -52,7 +52,7 @@ export class KycApi {
     return await this.httpClient.get<IKycBusinessData>({
       baseUrl: BASE_PATH,
       url: INDIVIDUAL_DATA_PATH,
-      responseSchema: KycIndividudalDataSchema,
+      responseSchema: KycIndividualDataSchema,
     });
   }
 
@@ -63,7 +63,7 @@ export class KycApi {
       baseUrl: BASE_PATH,
       url: INDIVIDUAL_DATA_PATH,
       body: data,
-      responseSchema: KycIndividudalDataSchema,
+      responseSchema: KycIndividualDataSchema,
     });
   }
 

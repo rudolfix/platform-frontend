@@ -6,10 +6,11 @@ import { Link } from "react-router-dom";
 import { ProjectStatus } from "../../../shared/ProjectStatus";
 import { Tag } from "../../../shared/Tag";
 
-import { EtoState } from "../../../../lib/api/eto/EtoApi.interfaces";
+import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { IWalletState } from "../../../../modules/wallet/reducer";
 import { appConnect } from "../../../../store";
-import { CommonHtmlProps } from "../../../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { Button } from "../../../shared/buttons";
@@ -33,9 +34,11 @@ interface IPublicWidgetDispatchProps {
 }
 
 interface IProps {
+  wallet: IWalletState | undefined;
   etoId: string;
-  prospectusApproved: boolean;
+  prospectusApproved: IEtoDocument;
   etoStartDate: string;
+  canEnableBookbuilding: boolean;
   preEtoDuration: number | undefined;
   publicEtoDuration: number | undefined;
   inSigningDuration: number | undefined;
@@ -47,8 +50,9 @@ interface IProps {
   publicWidget: IPublicWidgetProps;
 }
 
-interface IPreEtoProps {
+interface ICounterProps {
   endDate?: number;
+  stage?: string;
 }
 
 interface IClaimWidget {
@@ -102,11 +106,11 @@ const RefundWidget: React.SFC = () => (
   </div>
 );
 
-const PreEtoWidget: React.SFC<IPreEtoProps> = ({ endDate }) => {
+const CounterWidget: React.SFC<ICounterProps> = ({ endDate, stage }) => {
   return (
     <div className={styles.widgetPreEto}>
       <div className={styles.title}>
-        <FormattedMessage id="shared-component.eto-overview.count-down-to-eto" />
+        <FormattedMessage id="shared-component.eto-overview.count-down-to" values={{ stage }} />
       </div>
       {endDate && (
         <>
@@ -205,36 +209,76 @@ const PoweredByNeufund = () => {
 };
 
 interface IWidgetTags {
-  termSheet: boolean;
-  prospectusApproved: boolean;
+  termSheet: IEtoDocument;
+  prospectusApproved: IEtoDocument;
   smartContractOnchain: boolean;
+  etoId: string;
 }
 
 const WidgetTags: React.SFC<IWidgetTags> = ({
   termSheet,
   prospectusApproved,
   smartContractOnchain,
+  etoId,
 }) => {
+  const hasTermSheet = termSheet.name && termSheet.name.length;
+  const hasProspectusApproved = prospectusApproved.name && prospectusApproved.name.length;
+
+  const LinkedTag: React.SFC<{ href: string; text: TTranslatedString; download?: boolean }> = ({
+    href,
+    text,
+    download,
+  }) => {
+    return (
+      <a href={href} download={download} target="_blank">
+        <Tag size="small" theme="green" layout="ghost" text={text} />
+      </a>
+    );
+  };
+
   return (
     <>
-      <Tag
-        size="small"
-        theme={termSheet ? "green" : "silver"}
-        layout="ghost"
-        text={<FormattedMessage id="shared-component.eto-overview.term-sheet" />}
-      />
-      <Tag
-        size="small"
-        theme={prospectusApproved ? "green" : "silver"}
-        layout="ghost"
-        text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
-      />
-      <Tag
-        size="small"
-        theme={smartContractOnchain ? "green" : "silver"}
-        layout="ghost"
-        text={<FormattedMessage id="shared-component.eto-overview.smart-contract-on-chain" />}
-      />
+      {hasTermSheet ? (
+        <LinkedTag
+          href={termSheet.name}
+          download
+          text={<FormattedMessage id="shared-component.eto-overview.term-sheet" />}
+        />
+      ) : (
+        <Tag
+          size="small"
+          theme="silver"
+          layout="ghost"
+          text={<FormattedMessage id="shared-component.eto-overview.term-sheet" />}
+        />
+      )}
+      {hasProspectusApproved ? (
+        <LinkedTag
+          href={prospectusApproved.name}
+          download
+          text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
+        />
+      ) : (
+        <Tag
+          size="small"
+          theme="silver"
+          layout="ghost"
+          text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
+        />
+      )}
+      {smartContractOnchain ? (
+        <LinkedTag
+          href={`https://etherscan.io/address/${etoId}`}
+          text={<FormattedMessage id="shared-component.eto-overview.smart-contract-on-chain" />}
+        />
+      ) : (
+        <Tag
+          size="small"
+          theme="silver"
+          layout="ghost"
+          text={<FormattedMessage id="shared-component.eto-overview.smart-contract-on-chain" />}
+        />
+      )}
     </>
   );
 };
@@ -243,7 +287,7 @@ const EtoOverviewStatus: React.SFC<
   IProps & ITokenSymbolWidgetProps & IStatusOfEto & IWidgetTags & IClaimWidget & CommonHtmlProps
 > = props => {
   const day = 86400000;
-  const today = Date.now() + 50;
+  const today = Date.now();
   const preEtoStartDate = Date.parse(props.etoStartDate);
   const publicEtoStartDate = isNaN(preEtoStartDate)
     ? NaN
@@ -254,6 +298,15 @@ const EtoOverviewStatus: React.SFC<
   const inSigningEndDate = isNaN(inSigningStartDate)
     ? NaN
     : inSigningStartDate + (props.inSigningDuration || 0) * day;
+
+  const isEligibleToPreEto = !!(
+    props.wallet &&
+    props.wallet.data &&
+    props.wallet.data.etherTokenICBMLockedWallet.LockedBalance !== "0"
+  );
+  const hasStartDate = !isNaN(publicEtoStartDate);
+  const isBeforePublicEtoStage = today <= publicEtoStartDate;
+  const isBeforeInSigningStage = today < inSigningStartDate;
 
   return (
     <div className={cn(styles.etoOverviewStatus, props.className)}>
@@ -275,6 +328,7 @@ const EtoOverviewStatus: React.SFC<
 
         <div className={styles.tagsWrapper}>
           <WidgetTags
+            etoId={props.etoId}
             termSheet={props.termSheet}
             prospectusApproved={props.prospectusApproved}
             smartContractOnchain={props.smartContractOnchain}
@@ -316,28 +370,25 @@ const EtoOverviewStatus: React.SFC<
         <div className={styles.divider} />
 
         <div className={styles.stageContentWrapper}>
-          {props.status === EtoState.ON_CHAIN &&
-            !preEtoStartDate &&
-            props.campaigningWidget && (
-              <CampaigningWidget
-                etoId={props.etoId}
-                minPledge={props.campaigningWidget.minPledge}
-                maxPledge={props.campaigningWidget.maxPledge}
-                isActivated={props.campaigningWidget.isActivated}
-                quote={props.campaigningWidget.quote}
-                investorsLimit={props.campaigningWidget.investorsLimit}
-              />
-            )}
-          {props.status === EtoState.ON_CHAIN &&
-            today >= preEtoStartDate &&
-            today < publicEtoStartDate && (
-              // TODO: Check if you are able to invest
-              <PreEtoWidget endDate={publicEtoStartDate} />
-            )}
-          {props.status === EtoState.ON_CHAIN &&
-            today < preEtoStartDate && (
-              // today >= publicEtoStartDate &&
-              // today < inSigningStartDate &&
+          {props.canEnableBookbuilding && (
+            <CampaigningWidget
+              etoId={props.etoId}
+              minPledge={props.campaigningWidget.minPledge}
+              maxPledge={props.campaigningWidget.maxPledge}
+              isActivated={props.campaigningWidget.isActivated}
+              quote={props.campaigningWidget.quote}
+              investorsLimit={props.campaigningWidget.investorsLimit}
+            />
+          )}
+          {hasStartDate &&
+            !props.canEnableBookbuilding &&
+            (isEligibleToPreEto && isBeforePublicEtoStage ? (
+              <CounterWidget endDate={publicEtoStartDate} stage="Public ETO" />
+            ) : isBeforeInSigningStage ? null : (
+              <CounterWidget endDate={preEtoStartDate} stage="Pre ETO" />
+            ))}
+          {isBeforeInSigningStage &&
+            today >= publicEtoStartDate && (
               <PublicEtoWidget
                 raisedTokens={0}
                 investorsBacked={0}
@@ -345,8 +396,7 @@ const EtoOverviewStatus: React.SFC<
                 etoId={props.etoId}
               />
             )}
-          {props.status === EtoState.ON_CHAIN &&
-            today >= inSigningStartDate &&
+          {today >= inSigningStartDate &&
             today < inSigningEndDate && (
               <ClaimWidget
                 tokenName={props.tokenName}
@@ -355,15 +405,6 @@ const EtoOverviewStatus: React.SFC<
                 timeToClaim={props.timeToClaim}
               />
             )}
-          {/* // TODO: connect when state will be avaliable */}
-          {/* {props.status === "claim" && (
-            <ClaimWidget
-              tokenName={props.tokenName}
-              numberOfInvestors={props.numberOfInvestors}
-              raisedAmount={props.raisedAmount}
-              timeToClaim={props.timeToClaim}
-            />
-          )} */}
           {props.status === "refund" && <RefundWidget />}
         </div>
       </div>

@@ -170,7 +170,7 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
     >
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
-        name="founders"
+        name="team"
       />
       <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.advisors.title" />}

@@ -273,8 +273,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Col>
         </Row>
 
-        {companyData.founders &&
-          companyData.founders.members[0].name.length && (
+        {companyData.team &&
+          companyData.team.members[0].name.length && (
             <Row>
               <Col className="mb-4">
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -282,12 +282,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                 </SectionHeader>
                 <Panel>
                   <PeopleSwiperWidget
-                    people={
-                      (companyData.founders && (companyData.founders.members as IPerson[])) || []
-                    }
+                    people={(companyData.team && (companyData.team.members as IPerson[])) || []}
                     navigation={{
-                      nextEl: "people-swiper-founders-next",
-                      prevEl: "people-swiper-founders-prev",
+                      nextEl: "people-swiper-team-next",
+                      prevEl: "people-swiper-team-prev",
                     }}
                     layout="vertical"
                   />

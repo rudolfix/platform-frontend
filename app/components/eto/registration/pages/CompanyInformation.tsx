@@ -99,16 +99,7 @@ const EtoRegistrationTeamAndInvestorsComponent = (
     </Section>
     <Col>
       <Row className="justify-content-end">
-        <Button
-          layout="primary"
-          className="mr-4"
-          type="submit"
-          onClick={() => {
-            // we need to submit data like this only b/c formik doesnt support calling props.submitForm with invalid form state
-            props.saveData(props.values);
-          }}
-          isLoading={props.savingData}
-        >
+        <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
           <FormattedMessage id="form.button.save" />
         </Button>
       </Row>

@@ -273,28 +273,28 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           </Col>
         </Row>
 
-        {((companyData.founders && companyData.founders.members[0].name.length) ||
-          (companyData.team && companyData.team.members[0].name.length)) && (
-          <Row>
-            <Col className="mb-4">
-              <SectionHeader layoutHasDecorator={false} className="mb-4">
-                <FormattedMessage id="eto.public-view.carousel.team" />
-              </SectionHeader>
-              <Panel>
-                <PeopleSwiperWidget
-                  people={
-                    (companyData.founders && (companyData.founders.members as IPerson[])) || []
-                  }
-                  navigation={{
-                    nextEl: "people-swiper-founders-next",
-                    prevEl: "people-swiper-founders-prev",
-                  }}
-                  layout="vertical"
-                />
-              </Panel>
-            </Col>
-          </Row>
-        )}
+        {companyData.founders &&
+          companyData.founders.members[0].name.length && (
+            <Row>
+              <Col className="mb-4">
+                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <FormattedMessage id="eto.public-view.carousel.team" />
+                </SectionHeader>
+                <Panel>
+                  <PeopleSwiperWidget
+                    people={
+                      (companyData.founders && (companyData.founders.members as IPerson[])) || []
+                    }
+                    navigation={{
+                      nextEl: "people-swiper-founders-next",
+                      prevEl: "people-swiper-founders-prev",
+                    }}
+                    layout="vertical"
+                  />
+                </Panel>
+              </Col>
+            </Row>
+          )}
 
         {((companyData.advisors && !!companyData.advisors.members[0].name.length) ||
           (companyData.notableInvestors && !!companyData.notableInvestors.members[0].name.length) ||

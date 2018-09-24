@@ -8,3 +8,5 @@ export * from "./formField/FormSelectNationalityField";
 export * from "./formField/FormFieldDate";
 export * from "./formField/FormTextArea";
 export * from "./formField/FormInput";
+export * from "./formField/FormCategoryDistribution";
+export * from "./formField/FormFieldDate";

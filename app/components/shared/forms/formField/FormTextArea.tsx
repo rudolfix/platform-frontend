@@ -7,6 +7,8 @@ import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { FormLabel } from "./FormLabel";
 import { isNonValid } from "./utils";
 
+import * as styles from "./FormStyles.module.scss";
+
 interface IFieldGroup {
   disabled?: boolean;
   label?: TTranslatedString;
@@ -75,10 +77,10 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
                   />
                   {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
                 </InputGroup>
-                <div className="mt-2">
-                  {isNonValid(touched, errors, name) && <div>{errors[name]}</div>}
-                  {charactersLimit && <div>{countedCharacters(value, charactersLimit)}</div>}
-                </div>
+                {isNonValid(touched, errors, name) && (
+                  <div className={styles.errorLabel}>{errors[name]}</div>
+                )}
+                {charactersLimit && countedCharacters(value, charactersLimit)}
               </>
             );
           }}

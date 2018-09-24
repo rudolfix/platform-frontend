@@ -68,7 +68,7 @@ type TEtoRiskAssessment = YupTS.TypeOf<typeof EtoRiskAssessmentType>;
 
 const socialChannelsType = YupTS.array(
   YupTS.object({
-    type: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
+    type: YupTS.string().optional(),
     url: YupTS.url().optional(),
   }),
 );
@@ -76,13 +76,12 @@ const socialChannelsType = YupTS.array(
 export type TSocialChannelsType = YupTS.TypeOf<typeof socialChannelsType>;
 
 const groupType = YupTS.object({
-  description: YupTS.string().optional(),
   members: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
       role: YupTS.string(),
       image: YupTS.string().optional(),
-      description: YupTS.string(),
+      description: YupTS.string().optional(),
       website: YupTS.url().optional(),
       socialChannels: socialChannelsType.optional(),
     }),
@@ -90,7 +89,6 @@ const groupType = YupTS.object({
 });
 
 export const EtoKeyIndividualsType = YupTS.object({
-  team: groupType.optional(),
   advisors: groupType.optional(),
   founders: groupType.optional(),
   boardMembers: groupType.optional(),
@@ -190,7 +188,6 @@ export enum EtoStateToCamelcase {
 
 export const EtoTermsType = YupTS.object({
   currencies: YupTS.array(YupTS.string()).optional(),
-  discountScheme: YupTS.string(),
   publicDurationDays: YupTS.number(),
   minTicketEur: YupTS.number(),
   maxTicketEur: YupTS.number().optional(),

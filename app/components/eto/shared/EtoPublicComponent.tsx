@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { EtoState, TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { IWalletState } from "../../../modules/wallet/reducer";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
@@ -37,13 +38,14 @@ export const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#39465
 interface IProps {
   companyData: TCompanyEtoData;
   etoData: TEtoSpecsData;
+  wallet?: IWalletState | undefined;
 }
 
 // TODO: There are lots of castings right now in this file, cause formerly the types of IProps was "any"
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wallet }) => {
   const preMoneyValuationEur = etoData.preMoneyValuationEur || 1;
   const existingCompanyShares = etoData.existingCompanyShares || 1;
   const newSharesToIssue = etoData.newSharesToIssue || 1;
@@ -111,6 +113,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         />
 
         <EtoOverviewStatus
+          wallet={wallet}
           etoId={etoData.etoId}
           tokenImage={{
             srcSet: {
@@ -121,6 +124,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           tokenName={etoData.equityTokenName || ""}
           tokenSymbol={etoData.equityTokenSymbol || ""}
           className="mb-4"
+          canEnableBookbuilding={etoData.canEnableBookbuilding}
           investmentAmount={0} //TODO: connect proper one
           equityTokenPrice={0} //TODO: connect proper one
           raisedAmount={0} //TODO: connect proper one
@@ -128,8 +132,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           numberOfInvestors={0} //TODO: connect proper one
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
-          prospectusApproved={!!documentsByType["approved_prospectus"].name.length}
-          termSheet={!!documentsByType["termsheet_template"].name.length}
+          prospectusApproved={documentsByType["approved_prospectus"]}
+          termSheet={documentsByType["termsheet_template"]}
           preMoneyValuation={etoData.preMoneyValuationEur}
           status={etoData.state}
           etoStartDate={etoData.startDate}

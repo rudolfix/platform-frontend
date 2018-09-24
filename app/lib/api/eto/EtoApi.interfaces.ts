@@ -243,6 +243,7 @@ interface IAdditionalEtoType {
   startDate: string;
   documents: TEtoDocumentTemplates;
   maxPledges: number;
+  canEnableBookbuilding: boolean;
 }
 
 export type TEtoSpecsData = TEtoTermsType &

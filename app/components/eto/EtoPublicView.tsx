@@ -9,6 +9,7 @@ import {
 import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
+import { IWalletState } from "../../modules/wallet/reducer";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
@@ -20,6 +21,7 @@ import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 interface IStateProps {
   eto?: TPublicEtoData;
   userType?: TUserType;
+  wallet?: IWalletState;
 }
 
 interface IRouterParams {
@@ -40,6 +42,7 @@ class EtoPreviewComponent extends React.Component<IProps> {
 
     return (
       <EtoPublicComponent
+        wallet={this.props.wallet}
         companyData={this.props.eto.company as TCompanyEtoData}
         etoData={this.props.eto as TEtoSpecsData}
       />
@@ -52,11 +55,13 @@ export const EtoPublicView = compose<IProps, IRouterParams>(
     stateToProps: (state, props) => ({
       userType: selectUserType(state.auth),
       eto: state.publicEtos.publicEtos[props.etoId],
+      wallet: state.wallet,
     }),
   }),
   onEnterAction({
     actionCreator: (dispatch, props) => {
       dispatch(actions.publicEtos.loadEto(props.etoId));
+      dispatch(actions.wallet.startLoadingWalletData());
     },
   }),
   branch<IStateProps>(

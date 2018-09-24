@@ -41,6 +41,7 @@ export function selectPercentage(props: IProps): number {
   }
 
   invariant(false, "You need to provide percent or fraction to PercentageIndicatorBar component");
+
   return 1;
 }
 

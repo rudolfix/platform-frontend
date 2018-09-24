@@ -84,9 +84,7 @@ export function getInitialDataForFractionCalculation(formState: any): any {
 export const etoMediaProgressOptions: IProgressOptions = {
   ignore: {
     companyVideo: true,
-    socialChannels: {
-      type: true,
-    },
+    companySlideshare: true,
   },
 };
 

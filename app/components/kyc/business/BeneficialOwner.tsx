@@ -1,18 +1,16 @@
+import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { appConnect } from "../../../store";
-
-import { Form, FormikProps, withFormik } from "formik";
 import {
   IKycBeneficialOwner,
   IKycFileInfo,
   KycBeneficialOwnerSchemaRequired,
 } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-
-import { Col, Row } from "reactstrap";
+import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { AccordionElement } from "../../shared/Accordion";
 import { Button } from "../../shared/buttons";
@@ -21,12 +19,13 @@ import {
   BOOL_TRUE_KEY,
   boolify,
   FormField,
+  FormFieldDate,
   FormSelectCountryField,
   FormSelectField,
+  FormSelectNationalityField,
   NONE_KEY,
   unboolify,
 } from "../../shared/forms";
-import { FormFieldDate } from "../../shared/forms/formField/FormFieldDate";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 
@@ -79,6 +78,14 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBeneficialOwner> & IProps>(
           </Col>
         </Row>
         <FormSelectCountryField label={formatIntlMessage("form.label.country")} name="country" />
+        <FormSelectCountryField
+          label={formatIntlMessage("form.label.place-of-birth")}
+          name="placeOfBirth"
+        />
+        <FormSelectNationalityField
+          label={formatIntlMessage("form.label.nationality")}
+          name="nationality"
+        />
         <FormSelectField
           values={PEP_VALUES}
           label={
@@ -127,7 +134,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycBeneficialOwner>({
   },
 })(KYCForm);
 
-export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
+class KYCBeneficialOwnerComponent extends React.Component<IProps> {
   componentDidMount(): void {
     this.props.loadDocumentList();
   }

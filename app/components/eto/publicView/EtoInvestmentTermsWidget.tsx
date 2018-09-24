@@ -70,14 +70,15 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 {computedMaxCapEur.toFixed(4)}
               </span>
             </div>
-            {etoData.discountScheme && (
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.price-discount" />
-                </span>
-                <span className={styles.value}>{etoData.discountScheme}</span>
-              </div>
-            )}
+            {/* TODO: It's not possible right now to change `discountScheme` therefore it was removed from interface */}
+            {/*{etoData.discountScheme && (*/}
+            {/*<div className={styles.entry}>*/}
+            {/*<span className={styles.label}>*/}
+            {/*<FormattedMessage id="eto.public-view.token-terms.price-discount" />*/}
+            {/*</span>*/}
+            {/*<span className={styles.value}>{etoData.discountScheme}</span>*/}
+            {/*</div>*/}
+            {/*)}*/}
             {etoFilesData["signed_investment_and_shareholder_agreement"] && (
               <a
                 href={`${etoFilesData["signed_investment_and_shareholder_agreement"]}`}

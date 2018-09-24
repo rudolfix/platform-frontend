@@ -29,7 +29,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
 
-const EtoRegistrationMediaComponent = ({ savingData, saveData, values }: IProps) => (
+const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-media.title" />}
     validator={EtoMediaType.toYup()}
@@ -104,15 +104,7 @@ const EtoRegistrationMediaComponent = ({ savingData, saveData, values }: IProps)
     </Section>
     <Col>
       <Row className="justify-content-end">
-        <Button
-          layout="primary"
-          className="mr-4"
-          type="submit"
-          onClick={() => {
-            saveData(values);
-          }}
-          isLoading={savingData}
-        >
+        <Button layout="primary" className="mr-4" type="submit" isLoading={savingData}>
           <FormattedMessage id="form.button.save" />
         </Button>
       </Row>

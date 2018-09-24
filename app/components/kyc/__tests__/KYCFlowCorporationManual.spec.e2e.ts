@@ -34,6 +34,8 @@ interface IPersonData {
   street: string;
   city: string;
   country: string;
+  placeOfBirth: string;
+  nationality: string;
   zipCode: string;
   isPoliticallyExposed: string;
   isUsCitizen: string;
@@ -51,6 +53,8 @@ const personData: IPersonData = {
   street: "example",
   city: "example",
   country: "DE",
+  placeOfBirth: "UA",
+  nationality: "PL",
   zipCode: "00000",
   isPoliticallyExposed: "true",
   isUsCitizen: "false",
@@ -106,6 +110,8 @@ const submitLegalRepresentationForm = (person: IPersonData) => {
   cy.get(tid("kyc-company-legal-representative-city")).type(person.city);
   cy.get(tid("kyc-company-legal-representative-zip-code")).type(person.zipCode);
   cy.get(tid("kyc-company-legal-representative-country")).select(person.country);
+  cy.get(tid("kyc-company-legal-representative-place-of-birth")).select(person.placeOfBirth);
+  cy.get(tid("kyc-company-legal-representative-nationality")).select(person.nationality);
   cy.get(tid("kyc-company-legal-representative-pep")).select(person.isPoliticallyExposed);
 
   cy.get(tid("kyc-company-legal-representative-save")).click();

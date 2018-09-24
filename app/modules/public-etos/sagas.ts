@@ -22,7 +22,7 @@ import {
   selectCalculatedContributionByEtoId,
   selectEtoById,
 } from "./selectors";
-import { convertToCalculatedContribution } from "./utils";
+import { convertToCalculatedContribution, convertToEtoTotalInvestment } from "./utils";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
@@ -76,7 +76,7 @@ export function* loadEto(
     yield put(actions.publicEtos.setPublicEto({ ...eto, company }));
 
     if (eto.state === EtoState.ON_CHAIN) {
-      yield neuCall(loadEtoTimedState, eto);
+      yield neuCall(loadEtoContact, eto);
     }
   } catch (e) {
     notificationCenter.error("Could not load ETO. Is the link correct?");
@@ -85,16 +85,20 @@ export function* loadEto(
   }
 }
 
-function* loadEtoTimedState({ contractsService, logger }: TGlobalDependencies, eto: TPublicEtoData): any {
+function* loadEtoContact({ contractsService, logger }: TGlobalDependencies, eto: TPublicEtoData): any {
   if (eto.state !== EtoState.ON_CHAIN) {
     throw new InvalidETOStateError( eto.state, EtoState.ON_CHAIN);
   }
 
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
 
-  const timedState: BigNumber = yield etoContract.timedState;
+  const timedStateRaw = yield etoContract.timedState;
+  const totalInvestmentRaw = yield etoContract.totalInvestment();
 
-  yield put(actions.publicEtos.setEtoTimedState(eto.etoId, timedState.toNumber()));
+  yield put(actions.publicEtos.setEtoDataFromContract(eto.etoId, {
+    timedState: timedStateRaw.toNumber(),
+    totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
+  }));
 }
 
 function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
@@ -108,7 +112,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
       order
         .map(id => etos[id])
         .filter(eto => eto.state === EtoState.ON_CHAIN)
-        .map(eto => neuCall(loadEtoTimedState, eto))
+        .map(eto => neuCall(loadEtoContact, eto))
     );
 
     yield put(actions.publicEtos.setPublicEtos(etos));

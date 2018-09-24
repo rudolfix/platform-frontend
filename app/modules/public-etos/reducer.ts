@@ -7,16 +7,7 @@ import {
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { ETOStateOnChain } from "./types";
-
-export interface ICalculatedContribution {
-  isWhitelisted: boolean;
-  minTicketEurUlps: BigNumber;
-  maxTicketEurUlps: BigNumber;
-  equityTokenInt: BigNumber;
-  neuRewardUlps: BigNumber;
-  maxCapExceeded: boolean;
-}
+import { ETOStateOnChain, ICalculatedContribution, IEtoContractData } from "./types";
 
 export interface IPublicEtoState {
   // only preview, endpoint eto-listing/eto-previews
@@ -26,14 +17,14 @@ export interface IPublicEtoState {
   // for endpoint eto-listing/etos
   publicEtos: { [etoId: string]: TPublicEtoData | undefined };
   calculatedContributions: { [etoId: string]: ICalculatedContribution };
-  timedStates: { [etoId: string]: ETOStateOnChain };
+  contracts: { [etoId: string]: IEtoContractData };
   displayOrder: string[];
 }
 
 export const etoFlowInitialState: IPublicEtoState = {
   publicEtos: {},
   calculatedContributions: {},
-  timedStates: {},
+  contracts: {},
   displayOrder: [],
 };
 
@@ -71,12 +62,12 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
           [action.payload.etoId]: action.payload.contrib,
         },
       };
-    case "PUBLIC_ETOS_SET_ETO_TIMED_STATE":
+    case "PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT":
       return {
         ...state,
-        timedStates: {
-          ...state.timedStates,
-          [action.payload.etoId]: action.payload.state,
+        contracts: {
+          ...state.contracts,
+          [action.payload.etoId]: action.payload.data,
         },
       };
     case "PUBLIC_ETOS_SET_PREVIEW_ETO":

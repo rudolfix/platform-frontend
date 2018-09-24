@@ -2,6 +2,22 @@ import {
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { DeepReadonlyObject } from "../../types";
+import BigNumber from "bignumber.js";
+
+export interface ICalculatedContribution {
+  isWhitelisted: boolean;
+  minTicketEurUlps: BigNumber;
+  maxTicketEurUlps: BigNumber;
+  equityTokenInt: BigNumber;
+  neuRewardUlps: BigNumber;
+  maxCapExceeded: boolean;
+}
+
+export interface IEtoTotalInvestment {
+  totalEquivEurUlps: BigNumber;
+  totalTokensInt: BigNumber;
+  totalInvestors: BigNumber;
+}
 
 export enum ETOStateOnChain {
   Setup = 0, // Initial state
@@ -15,6 +31,7 @@ export enum ETOStateOnChain {
 
 export interface IEtoContractData {
   timedState?: ETOStateOnChain;
+  totalInvestment: IEtoTotalInvestment;
 }
 
 export type IEtoFullData = DeepReadonlyObject<

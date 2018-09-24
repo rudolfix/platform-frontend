@@ -4,8 +4,7 @@ import {
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
-import { ICalculatedContribution } from "./reducer";
-import { ETOStateOnChain } from "./types";
+import { ICalculatedContribution, IEtoContractData } from "./types";
 
 export const etoActions = {
   // public actions
@@ -23,8 +22,8 @@ export const etoActions = {
     createAction("PUBLIC_ETOS_SET_DISPLAY_ORDER", { order }),
   setCalculatedContribution: (etoId: string, contrib: ICalculatedContribution) =>
     createAction("PUBLIC_ETOS_SET_CALCULATED_CONTRIBUTION", { etoId, contrib }),
-  setEtoTimedState: (etoId: string, state: ETOStateOnChain) =>
-    createAction("PUBLIC_ETOS_SET_ETO_TIMED_STATE", { etoId, state }),
+  setEtoDataFromContract: (etoId: string, data: IEtoContractData) =>
+    createAction("PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT", { etoId, data }),
   setPreviewEto: (data?: { eto: TPartialEtoSpecData; company: TPartialCompanyEtoData }) =>
     createAction("PUBLIC_ETOS_SET_PREVIEW_ETO", { data }),
 };

@@ -13,6 +13,7 @@ import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
 import { SectionHeader } from "../../shared/SectionHeader";
+import { setDisplayName } from "recompose";
 
 interface IStateProps {
   etos: IEtoFullData[];
@@ -25,7 +26,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-export const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
+const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
   <>
     <Col xs={12}>
       <SectionHeader>
@@ -83,6 +84,7 @@ export const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
 );
 
 export const EtoList = compose<React.ComponentClass>(
+  setDisplayName("EtoList"),
   onEnterAction({
     actionCreator: d => {
       d(actions.wallet.startLoadingWalletData());

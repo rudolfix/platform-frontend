@@ -26,9 +26,7 @@ export const selectEtoFullData = (state: IPublicEtoState, etoId: string): IEtoFu
   if (eto) {
     return {
       ...eto,
-      contract: {
-        timedState: state.timedStates[etoId],
-      },
+      contract: state.contracts[etoId]
     };
   }
 

@@ -7,7 +7,6 @@ import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   EtoState,
   TPartialCompanyEtoData,
-  TPartialEtoSpecData,
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
@@ -27,24 +26,21 @@ export function* loadEtoPreview(
 ): any {
   if (action.type !== "PUBLIC_ETOS_LOAD_ETO_PREVIEW") return;
   const previewCode = action.payload.previewCode;
-  const s: IPublicEtoState = yield select((s: IAppState) => s.publicEtos);
-  // clear old data, if requesting different eto, otherwise optimistically fetch changes
-  if (s.previewEtoData && s.previewEtoData.previewCode !== previewCode) {
-    actions.publicEtos.setPreviewEto();
-  }
 
   try {
-    const etoData: IHttpResponse<TPartialEtoSpecData> = yield apiEtoService.getEtoPreview(
+    const etoResponse: IHttpResponse<TPublicEtoData> = yield apiEtoService.getEtoPreview(
       previewCode,
     );
-    const companyId = etoData.body.companyId as string;
-    const companyData: IHttpResponse<TPartialCompanyEtoData> = yield apiEtoService.getCompanyById(
-      companyId,
+    const eto = etoResponse.body;
+    const companyResponse: IHttpResponse<TPartialCompanyEtoData> = yield apiEtoService.getCompanyById(
+      eto.companyId!,
     );
+    const company = companyResponse.body;
+
     yield put(
-      actions.publicEtos.setPreviewEto({
-        eto: etoData.body,
-        company: companyData.body,
+      actions.publicEtos.setPublicEto({
+        ...eto,
+        company,
       }),
     );
   } catch (e) {
@@ -97,12 +93,10 @@ function* loadEtoContact(
     const timedStateRaw = yield etoContract.timedState;
     const totalInvestmentRaw = yield etoContract.totalInvestment();
 
-    yield put(
-      actions.publicEtos.setEtoDataFromContract(eto.etoId, {
-        timedState: timedStateRaw.toNumber(),
-        totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
-      }),
-    );
+    yield put(actions.publicEtos.setEtoDataFromContract(eto.previewCode, {
+      timedState: timedStateRaw.toNumber(),
+      totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
+    }));
   } catch (e) {
     logger.error("ETO contract data could not be loaded", e);
   }
@@ -112,8 +106,8 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
   try {
     const etosResponse: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
 
-    const etos = keyBy(etosResponse.body, eto => eto.etoId);
-    const order = etosResponse.body.map(eto => eto.etoId);
+    const etos = keyBy(etosResponse.body, eto => eto.previewCode);
+    const order = etosResponse.body.map(eto => eto.previewCode);
 
     yield all(
       order
@@ -152,7 +146,7 @@ export function* loadComputedContributionFromContract(
     );
     yield put(
       actions.publicEtos.setCalculatedContribution(
-        eto.etoId,
+        eto.previewCode,
         convertToCalculatedContribution(calculation),
       ),
     );

@@ -20,10 +20,8 @@ export const etoActions = {
   setPublicEto: (eto: TPublicEtoData) => createAction("PUBLIC_ETOS_SET_PUBLIC_ETO", { eto }),
   setEtosDisplayOrder: (order: string[]) =>
     createAction("PUBLIC_ETOS_SET_DISPLAY_ORDER", { order }),
-  setCalculatedContribution: (etoId: string, contrib: ICalculatedContribution) =>
-    createAction("PUBLIC_ETOS_SET_CALCULATED_CONTRIBUTION", { etoId, contrib }),
-  setEtoDataFromContract: (etoId: string, data: IEtoContractData) =>
-    createAction("PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT", { etoId, data }),
-  setPreviewEto: (data?: { eto: TPartialEtoSpecData; company: TPartialCompanyEtoData }) =>
-    createAction("PUBLIC_ETOS_SET_PREVIEW_ETO", { data }),
+  setCalculatedContribution: (previewCode: string, contrib: ICalculatedContribution) =>
+    createAction("PUBLIC_ETOS_SET_CALCULATED_CONTRIBUTION", { previewCode, contrib }),
+  setEtoDataFromContract: (previewCode: string, data: IEtoContractData) =>
+    createAction("PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT", { previewCode, data }),
 };

@@ -15,6 +15,8 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
+import { TEtoWithContract } from "../../modules/public-etos/types";
+import { selectEtoWithContractById } from "../../modules/public-etos/selectors";
 
 interface IStateProps {
   eto?: TEtoWithContract;
@@ -52,7 +54,7 @@ export const EtoPublicView = compose<IProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state.auth),
-      eto: selectEtoWithContract(state, props.etoId),
+      eto: selectEtoWithContractById(state, props.etoId),
       wallet: state.wallet,
     }),
   }),

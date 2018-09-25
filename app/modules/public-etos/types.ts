@@ -33,9 +33,4 @@ export interface IEtoContractData {
   totalInvestment: IEtoTotalInvestment;
 }
 
-export type TEtoWithContract = DeepReadonlyObject<
-  TPublicEtoData & {
-    contract: IEtoContractData;
-  }
-> &
-  IEtoContractData;
+export type TEtoWithContract = TPublicEtoData & DeepReadonlyObject<{ contract?: IEtoContractData; }>;

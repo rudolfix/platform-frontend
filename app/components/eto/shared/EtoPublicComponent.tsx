@@ -500,7 +500,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
                                   data: companyData.useOfCapitalList.map(
                                     d => d && d.percent,
                                   ) as number[],
-                                  /* tslint:disable:no-unused-variable */
                                   backgroundColor: companyData.useOfCapitalList.map(
                                     (_, i: number) => CHART_COLORS[i],
                                   ),

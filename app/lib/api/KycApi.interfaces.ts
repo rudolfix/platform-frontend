@@ -63,17 +63,17 @@ export interface IKycBusinessData {
   jurisdiction?: string;
 }
 
-export const KycBusinessDataSchema = Yup.object().shape({
-  name: Yup.string().required("This field is required"),
+export const KycBusinessDataSchema = Yup.object<any>().shape({
+  name: Yup.string().required(),
   registrationNumber: Yup.string(),
-  legalForm: Yup.string().required("This field is required"),
-  legalFormType: Yup.string().required("This field is required"),
-  street: Yup.string().required("This field is required"),
-  city: Yup.string().required("This field is required"),
-  zipCode: Yup.string().required("This field is required"),
-  country: restrictedCountry.required("This field is required"),
+  legalForm: Yup.string().required(),
+  legalFormType: Yup.string().required(),
+  street: Yup.string().required(),
+  city: Yup.string().required(),
+  zipCode: Yup.string().required(),
+  country: restrictedCountry.required(),
   jurisdiction: Yup.string()
-    .required("This field is required")
+    .required()
     .default("de"),
 });
 

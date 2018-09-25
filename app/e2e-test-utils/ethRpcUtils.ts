@@ -14,8 +14,11 @@ export const requestFromWeb3Node = (
     },
   });
 
-export const getTransactionReceiptRpc = (nodeAddress: string, txHash: string) =>
+export const getTransactionByHashRpc = (nodeAddress: string, txHash: string) =>
   requestFromWeb3Node(nodeAddress, "eth_getTransactionByHash", [txHash]);
+
+export const getTransactionReceiptRpc = (nodeAddress: string, txHash: string) =>
+  requestFromWeb3Node(nodeAddress, "eth_getTransactionReceipt", [txHash]);
 
 export const getBalanceRpc = (nodeAddress: string, address: string) =>
   requestFromWeb3Node(nodeAddress, "eth_getBalance", [address, "latest"]);

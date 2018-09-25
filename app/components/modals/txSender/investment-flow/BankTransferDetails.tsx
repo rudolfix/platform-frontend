@@ -30,6 +30,7 @@ import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps } from "../TxSender";
 
 import * as styles from "./Summary.module.scss";
+import { formatEur } from "./utils";
 
 interface IStateProps {
   accountName: string;
@@ -42,10 +43,6 @@ interface IStateProps {
 }
 
 type IProps = IStateProps & ITxSummaryDispatchProps;
-
-function formatEur(val?: string): string | undefined {
-  return val && formatMoney(val, MONEY_DECIMALS, 0);
-}
 
 const BankTransferDetailsComponent = injectIntlHelpers(
   ({ onAccept, ...data}: IProps & IIntlProps) => {
@@ -160,7 +157,7 @@ const BankTransferDetails = appConnect<IStateProps, ITxSummaryDispatchProps>({
     };
   },
   dispatchToProps: d => ({
-    onAccept: () => d(actions.txSender.txSenderAccept()),
+    onAccept: () => d(actions.investmentFlow.showBankTransferSummary()),
   }),
 })(BankTransferDetailsComponent);
 

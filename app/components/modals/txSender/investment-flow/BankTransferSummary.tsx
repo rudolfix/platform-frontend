@@ -30,6 +30,7 @@ import { ITxSummaryDispatchProps } from "../TxSender";
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./Summary.module.scss";
+import { formatEur } from "./utils";
 
 interface IProps {
   companyName: string;
@@ -37,10 +38,6 @@ interface IProps {
   equityTokens: string;
   estimatedReward: string;
   agreementUrl: string;
-}
-
-function formatEur(val?: string): string | undefined {
-  return val && formatMoney(val, MONEY_DECIMALS, 0);
 }
 
 const BankTransferSummaryComponent = injectIntlHelpers(

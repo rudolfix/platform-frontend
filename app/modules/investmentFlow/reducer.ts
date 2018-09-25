@@ -98,6 +98,11 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
         ...state,
         isValidatedInput: action.payload.isValidated,
       };
+    case "INVESTMENT_FLOW_SET_BANK_TRANSFER_FLOW_STATE":
+      return {
+        ...state,
+        bankTransferFlow: action.payload.state,
+      };
   }
 
   return state;

@@ -42,11 +42,11 @@ function renderBody({ state }: Props): React.ReactNode {
 
 const BankTransferFlowModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
-    isOpen: selectIsBankTransferModalOpened(state),
+    isOpen: selectIsBankTransferModalOpened(state.investmentFlow),
     state: state.investmentFlow.bankTransferFlow,
   }),
   dispatchToProps: d => ({
-    onCancel: () => d(actions.txSender.txSenderHideModal()),
+    onCancel: () => d(actions.investmentFlow.resetInvestment()),
   }),
 })(BankTransferFlowModalComponent);
 

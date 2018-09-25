@@ -38,5 +38,5 @@ export const selectCurrencyByInvestmentType = (state: IInvestmentFlowState) =>
     ? EInvestmentCurrency.Ether
     : EInvestmentCurrency.Euro;
 
-export const selectIsBankTransferModalOpened = (state: IAppState) =>
-  !!state.investmentFlow.bankTransferFlow && !selectTxSenderModalOpened(state.txSender)
+export const selectIsBankTransferModalOpened = (state: IInvestmentFlowState) =>
+  state.investmentType === EInvestmentType.BankTransfer && !!state.bankTransferFlow && selectReadyToInvest(state)

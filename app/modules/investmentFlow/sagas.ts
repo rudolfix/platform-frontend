@@ -18,6 +18,7 @@ import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { selectLiquidEtherBalance } from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import {
+  EBankTransferFlowState,
   EInvestmentCurrency,
   EInvestmentErrorState,
   EInvestmentType,
@@ -26,6 +27,7 @@ import {
 import {
   selectCurrencyByInvestmentType,
   selectInvestmentGasCostEth,
+  selectIsBankTransferModalOpened,
   selectIsICBMInvestment,
   selectReadyToInvest,
 } from "./selectors";
@@ -132,15 +134,18 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
 function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
-  yield put(actions.investmentFlow.investmentReset());
+  yield put(actions.investmentFlow.resetInvestment());
   yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.startInvestment());
   yield setGasPrice();
 }
 
-function* stop(): any {
-  yield put(actions.investmentFlow.investmentReset());
+function* onTxModalHide(): any {
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow)
+  if (!selectIsBankTransferModalOpened(state)) {
+    yield put(actions.investmentFlow.resetInvestment());
+  }
 }
 
 function* setGasPrice(): any {
@@ -212,8 +217,17 @@ function* recalculateCurrencies(): any {
   }
 }
 
-function* cancelInvestment(): any {
-  yield put(actions.txSender.txSenderHideModal());
+function* showBankTransferDetails(): any {
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow)
+  if (state.investmentType !== EInvestmentType.BankTransfer) return
+  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Details))
+  yield put(actions.txSender.txSenderHideModal())
+}
+
+function* showBankTransferSummary(): any {
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow)
+  if (state.investmentType !== EInvestmentType.BankTransfer) return
+  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Summary))
 }
 
 export function* investmentFlowSagas(): any {
@@ -221,8 +235,10 @@ export function* investmentFlowSagas(): any {
   yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs);
   yield takeEvery("INVESTMENT_FLOW_START", start);
   yield fork(neuTakeEvery, "INVESTMENT_FLOW_GENERATE_TX", generateTransaction);
-  yield takeEvery("TX_SENDER_HIDE_MODAL", stop);
-  yield takeEvery("PUBLIC_ETOS_SET_CURRENT_ETO", cancelInvestment); // cancel when current eto changes
+  yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS", showBankTransferDetails);
+  yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_SUMMARY", showBankTransferSummary);
+
+  yield takeEvery("TX_SENDER_HIDE_MODAL", onTxModalHide);
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);

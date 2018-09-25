@@ -262,6 +262,7 @@ export class LightWallet implements IPersonalWallet {
       salt: this.vault.salt,
       vault: JSON.stringify(this.vault.walletInstance),
       walletType: WalletType.LIGHT,
+      walletSubType: WalletSubType.UNKNOWN,
     };
   }
 }

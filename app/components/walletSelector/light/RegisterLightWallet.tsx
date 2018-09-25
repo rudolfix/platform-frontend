@@ -34,13 +34,13 @@ interface IDispatchProps {
 
 const validationSchema = Yup.object().shape({
   [EMAIL]: Yup.string()
-    .required("Required")
-    .email("Wrong email format"),
+    .required()
+    .email(),
   [PASSWORD]: Yup.string()
-    .required("Required")
-    .min(8, "Must be longer than 8"),
+    .required()
+    .min(8),
   [REPEAT_PASSWORD]: Yup.string()
-    .required("Required")
+    .required()
     .oneOf([Yup.ref(PASSWORD)], "Passwords are not equal"),
 });
 

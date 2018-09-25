@@ -6,9 +6,9 @@ import * as Yup from "yup";
  * Schema helpers
  * semi documented.... :)
  */
-export const makeAllRequired = (schema: Yup.ObjectSchema): Yup.ObjectSchema => {
+export const makeAllRequired = (schema: Yup.ObjectSchema<any>): Yup.ObjectSchema<any> => {
   const oldFields: { [key: string]: Yup.MixedSchema } = (schema as any).fields;
-  const newFields = mapValues(oldFields, schema => schema.required("This field is required"));
+  const newFields = mapValues(oldFields, schema => schema.required());
   return Yup.object().shape(newFields);
 };
 

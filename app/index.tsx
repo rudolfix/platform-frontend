@@ -1,3 +1,7 @@
+import "reflect-metadata";
+
+import "./config/yupLocales";
+
 import createHistory from "history/createBrowserHistory";
 import { Container } from "inversify";
 import { compact } from "lodash";
@@ -10,7 +14,6 @@ import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
-import "reflect-metadata";
 
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";

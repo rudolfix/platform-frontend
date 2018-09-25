@@ -128,7 +128,6 @@ export const LegalInformationWidget: React.SFC<IProps> = ({ companyData, etoData
                 datasets: [
                   {
                     data: companyData.shareholders.map(d => d && d.shares),
-                    /* tslint:disable:no-unused-variable */
                     backgroundColor: companyData.shareholders.map(
                       (_, i: number) => CHART_COLORS[i],
                     ),

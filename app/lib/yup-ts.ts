@@ -18,7 +18,7 @@ export type Schema<T> = ObjectYTS<T>;
 abstract class YTS<T> {
   _T!: T;
 
-  abstract toYup(): Yup.Schema;
+  abstract toYup(): Yup.Schema<T>;
 
   abstract optional(): YTS<T | undefined>;
 }
@@ -30,11 +30,11 @@ class ObjectYTS<T> extends YTS<TypeOfProps<T>> {
     super();
   }
 
-  toYup(): Yup.Schema {
+  toYup(): Yup.ObjectSchema<any> {
     const validator = Yup.object(mapValues(this.shape as any, s => s.toYup()));
 
     if (this.isRequired) {
-      return validator.required("This field is required");
+      return validator.required();
     }
     return validator;
   }
@@ -51,11 +51,11 @@ class StringYTS extends YTS<string> {
     super();
   }
 
-  toYup(): Yup.Schema {
+  toYup(): Yup.Schema<any> {
     const validator = Yup.string();
 
     if (this.isRequired) {
-      return validator.required("This field is required");
+      return validator.required();
     }
     return validator;
   }
@@ -72,11 +72,11 @@ class UrlYTS extends YTS<string> {
     super();
   }
 
-  toYup(): Yup.Schema {
+  toYup(): Yup.Schema<any> {
     const validator = Yup.string().url();
 
     if (this.isRequired) {
-      return validator.required("This field is required");
+      return validator.required();
     }
     return validator;
   }
@@ -93,11 +93,11 @@ class NumberYTS extends YTS<number> {
     super();
   }
 
-  toYup(): Yup.Schema {
+  toYup(): Yup.Schema<any> {
     const validator = Yup.number();
 
     if (this.isRequired) {
-      return validator.required("This field is required");
+      return validator.required();
     }
     return validator;
   }
@@ -114,11 +114,11 @@ class BooleanYTS extends YTS<boolean> {
     super();
   }
 
-  toYup(): Yup.Schema {
+  toYup(): Yup.Schema<any> {
     const validator = Yup.boolean();
 
     if (this.isRequired) {
-      return validator.required("This field is required");
+      return validator.required();
     }
     return validator;
   }
@@ -135,7 +135,7 @@ class TrueYTS extends YTS<true> {
     super();
   }
 
-  toYup(): Yup.Schema {
+  toYup(): Yup.Schema<any> {
     const validator = Yup.boolean().test(
       "isTrue",
       "This field is required",
@@ -143,7 +143,7 @@ class TrueYTS extends YTS<true> {
     );
 
     if (this.isRequired) {
-      return validator.required("This field is required");
+      return validator.required();
     }
     return validator;
   }
@@ -160,7 +160,7 @@ class ArrayYTS<T extends YTS<any>> extends YTS<Array<TypeOf<T>>> {
     super();
   }
 
-  toYup(): Yup.Schema {
+  toYup(): Yup.Schema<any> {
     const validator = Yup.array().of(this.shape.toYup());
 
     if (this.isRequired) {

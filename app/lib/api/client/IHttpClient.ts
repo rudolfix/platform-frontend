@@ -6,7 +6,7 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 export interface IHttpRequestCommon {
   url: string;
   baseUrl?: string;
-  responseSchema?: Yup.Schema;
+  responseSchema?: Yup.Schema<any>;
   headers?: Dictionary<string>;
   body?: any;
   formData?: FormData;

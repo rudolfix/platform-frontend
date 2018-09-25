@@ -37,16 +37,26 @@ export async function loadOrCreateUserPromise(
   { apiUserService, web3Manager }: TGlobalDependencies,
   userType: TUserType,
 ): Promise<IUser> {
+  // tslint:disable-next-line
+  const walletMetadata = web3Manager.personalWallet!.getMetadata();
   try {
-    return await apiUserService.me();
+    const user = await apiUserService.me();
+    if (
+      user.walletType === walletMetadata.walletType &&
+      user.walletSubtype === walletMetadata.walletSubType
+    ) {
+      return user;
+    }
+    // if wallet type changed send correct wallet type to the backend
+    user.walletType = walletMetadata.walletType;
+    user.walletSubtype = walletMetadata.walletSubType;
+    return await apiUserService.updateUser(user);
   } catch (e) {
     if (!(e instanceof UserNotExisting)) {
       throw e;
     }
   }
   // for light wallet we need to send slightly different request
-  // tslint:disable-next-line
-  const walletMetadata = web3Manager.personalWallet!.getMetadata();
   if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
     return apiUserService.createAccount({
       newEmail: walletMetadata.email,

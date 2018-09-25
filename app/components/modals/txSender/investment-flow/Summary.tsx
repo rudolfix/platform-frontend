@@ -60,6 +60,7 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
   ({ agreementUrl, onAccept, gasCostEth, etherPriceEur, ...data }: IProps & IIntlProps) => {
     const equityTokens = (
       <span>
+        {/* TODO: Change to actual custom token icon */}
         <img src={tokenIcon} /> {data.equityTokens}
       </span>
     );

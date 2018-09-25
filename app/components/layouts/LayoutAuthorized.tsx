@@ -9,6 +9,7 @@ import { IcbmWalletBalanceModal } from "../modals/IcbmWalletBalanceModal";
 import { TxSenderModal } from "../modals/txSender/TxSender";
 import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 
+import { BankTransferFlowModal } from "../modals/txSender/investment-flow/BankTransferFlow";
 import * as styles from "./LayoutAuthorized.module.scss";
 
 export const LayoutAuthorized: React.SFC = ({ children }) => (
@@ -32,5 +33,6 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
     <DepositEthModal />
     <TxSenderModal />
     <IcbmWalletBalanceModal />
+    <BankTransferFlowModal />
   </>
 );

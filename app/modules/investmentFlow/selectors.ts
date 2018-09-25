@@ -1,4 +1,6 @@
+import { IAppState } from "../../store";
 import { compareBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
+import { selectTxSenderModalOpened } from "../tx/sender/selectors";
 import { EInvestmentCurrency, EInvestmentType, IInvestmentFlowState } from "./reducer";
 
 // State Selectors
@@ -35,3 +37,6 @@ export const selectCurrencyByInvestmentType = (state: IInvestmentFlowState) =>
   state.investmentType === EInvestmentType.ICBMEth
     ? EInvestmentCurrency.Ether
     : EInvestmentCurrency.Euro;
+
+export const selectIsBankTransferModalOpened = (state: IAppState) =>
+  !!state.investmentFlow.bankTransferFlow && !selectTxSenderModalOpened(state.txSender)

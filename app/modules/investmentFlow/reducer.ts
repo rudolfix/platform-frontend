@@ -25,6 +25,11 @@ export enum EInvestmentErrorState {
   NotEnoughEtherForGas = "not_enough_ether_for_gas",
 }
 
+export enum EBankTransferFlowState {
+  Details = "details",
+  Summary = "summary"
+}
+
 export interface IInvestmentFlowState {
   etoId: string;
   euroValueUlps: string;
@@ -34,6 +39,7 @@ export interface IInvestmentFlowState {
   gasAmount: string;
   gasPrice: string;
   isValidatedInput: boolean;
+  bankTransferFlow?: EBankTransferFlowState;
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {

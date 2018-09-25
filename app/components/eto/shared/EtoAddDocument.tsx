@@ -2,19 +2,19 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { compose } from "redux";
 
-import { etoDocumentType } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { EtoDocumentType } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 
 import * as styles from "./EtoAddDocument.module.scss";
 
 interface IDispatchProps {
-  onDropFile: (file: File, documentType: etoDocumentType) => void;
+  onDropFile: (file: File, documentType: EtoDocumentType) => void;
 }
 
 interface IOwnProps {
   children: React.ReactNode;
-  documentType: etoDocumentType;
+  documentType: EtoDocumentType;
   disabled?: boolean;
 }
 export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = ({
@@ -43,7 +43,7 @@ export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = (
 export const ETOAddDocuments = compose<React.SFC<IOwnProps>>(
   appConnect<{}, IDispatchProps, IOwnProps>({
     dispatchToProps: dispatch => ({
-      onDropFile: (file: File, documentType: etoDocumentType) =>
+      onDropFile: (file: File, documentType: EtoDocumentType) =>
         dispatch(
           actions.etoDocuments.showIpfsModal(() =>
             dispatch(actions.etoDocuments.etoUploadDocument(file, documentType)),

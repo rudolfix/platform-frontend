@@ -128,8 +128,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           numberOfInvestors={0} //TODO: connect proper one
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
-          prospectusApproved={!!documentsByType["approved_prospectus"].name.length}
-          termSheet={!!documentsByType["termsheet_template"].name.length}
+          prospectusApproved={!!documentsByType["approved_prospectus"]}
+          termSheet={!!documentsByType["termsheet_template"]}
           preMoneyValuation={etoData.preMoneyValuationEur}
           status={etoData.state}
           etoStartDate={etoData.startDate}

@@ -17,7 +17,7 @@ export interface IEtoGeneratedFile {
   title: string;
 }
 
-export type etoDocumentType =
+export type EtoDocumentType =
   | "reservation_and_acquisition_agreement"
   | "company_token_holder_agreement"
   | "investment_and_shareholder_agreement"
@@ -32,7 +32,7 @@ export type etoDocumentType =
 type etoFormType = "document" | "template";
 
 export interface IEtoDocument {
-  documentType: etoDocumentType;
+  documentType: EtoDocumentType;
   form: etoFormType;
   ipfsHash: string;
   mimeType: string;
@@ -47,8 +47,8 @@ type ISimpleFileInfo = "requiredTemplates" | "uploadableDocuments";
 export interface IEtoFiles {
   etoTemplates: TEtoDocumentTemplates;
   uploadedDocuments: TEtoDocumentTemplates;
-  stateInfo?: { [key in ISimpleFileInfo]: etoDocumentType[] } &
-    { [key in IComplextFileInfo]: { [key in EtoStateToCamelcase]: etoDocumentType[] } };
+  stateInfo?: { [key in ISimpleFileInfo]: EtoDocumentType[] } &
+    { [key in IComplextFileInfo]: { [key in EtoStateToCamelcase]: EtoDocumentType[] } };
 }
 
 export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };

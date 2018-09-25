@@ -1,11 +1,7 @@
 import * as React from "react";
 import { branch, compose } from "recompose";
 
-import {
-  TCompanyEtoData,
-  TEtoSpecsData,
-  TPublicEtoData,
-} from "../../lib/api/eto/EtoApi.interfaces";
+import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
@@ -18,7 +14,7 @@ import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 import { TEtoWithContract } from "../../modules/public-etos/types";
-import { selectEtoWithContract } from "../../modules/public-etos/selectors";
+import { selectEtoWithContractById } from "../../modules/public-etos/selectors";
 
 interface IStateProps {
   eto?: TEtoWithContract;
@@ -56,7 +52,7 @@ export const EtoPublicView = compose<IProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state.auth),
-      eto: selectEtoWithContract(state, props.etoId),
+      eto: selectEtoWithContractById(state, props.etoId),
       wallet: state.wallet,
     }),
   }),

@@ -1,20 +1,9 @@
-import BigNumber from "bignumber.js";
-
-import {
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-  TPublicEtoData,
-} from "../../lib/api/eto/EtoApi.interfaces";
+import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { ETOStateOnChain, ICalculatedContribution, IEtoContractData } from "./types";
+import { ICalculatedContribution, IEtoContractData } from "./types";
 
 export interface IPublicEtoState {
-  // only preview, endpoint eto-listing/eto-previews
-  previewEtoData?: TPartialEtoSpecData;
-  previewCompanyData?: TPartialCompanyEtoData;
-
-  // for endpoint eto-listing/etos
   publicEtos: { [etoId: string]: TPublicEtoData | undefined };
   calculatedContributions: { [etoId: string]: ICalculatedContribution };
   contracts: { [etoId: string]: IEtoContractData };
@@ -46,7 +35,7 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
         ...state,
         publicEtos: {
           ...state.publicEtos,
-          [action.payload.eto.etoId]: action.payload.eto,
+          [action.payload.eto.previewCode]: action.payload.eto,
         },
       };
     case "PUBLIC_ETOS_SET_DISPLAY_ORDER":
@@ -59,7 +48,7 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
         ...state,
         calculatedContributions: {
           ...state.calculatedContributions,
-          [action.payload.etoId]: action.payload.contrib,
+          [action.payload.previewCode]: action.payload.contrib,
         },
       };
     case "PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT":
@@ -67,15 +56,8 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
         ...state,
         contracts: {
           ...state.contracts,
-          [action.payload.etoId]: action.payload.data,
+          [action.payload.previewCode]: action.payload.data,
         },
-      };
-    case "PUBLIC_ETOS_SET_PREVIEW_ETO":
-      const data = action.payload.data;
-      return {
-        ...state,
-        previewEtoData: data && data.eto,
-        previewCompanyData: data && data.company,
       };
   }
 

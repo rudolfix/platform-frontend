@@ -37,7 +37,7 @@ interface IProps {
   investmentEur: string;
   equityTokens: string;
   estimatedReward: string;
-  agreementUrl: string;
+  summaryDocumentUrl: string;
 }
 
 const BankTransferSummaryComponent = injectIntlHelpers(
@@ -103,8 +103,8 @@ const BankTransferSummaryComponent = injectIntlHelpers(
 
         <Row className="justify-content-center">
           <DocumentLink
-            url={data.agreementUrl}
-            name={<FormattedMessage id="investment-flow.summary.download-agreement" />}
+            url={data.summaryDocumentUrl}
+            name={<FormattedMessage id="investment-flow.bank-transfer-summary.investment-summary" />}
           />
         </Row>
 
@@ -120,7 +120,7 @@ const BankTransferSummary = appConnect<IProps>({
     // eto and computed values are guaranteed to be present at investment summary state
     const eto = selectEtoById(p, i.etoId)!;
     return {
-      agreementUrl: "fufu",
+      summaryDocumentUrl: "fufu", // TODO: add proper agreement document link
       companyName: eto.company.name!,
       investmentEur: selectEurValueUlps(i),
       equityTokens: selectEquityTokenCountByEtoId(i.etoId, p) as string,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
 import { MONEY_DECIMALS } from "../../../../config/constants";
@@ -62,9 +62,7 @@ const BankTransferDetailsComponent = injectIntlHelpers(
             <p>
               <FormattedMessage id="investment-flow.bank-transfer.general-instructions" />
             </p>
-            <p>
-              <FormattedMessage id="investment-flow.bank-transfer.bank-details-instructions" />
-            </p>
+            <FormattedHTMLMessage tagName="p" id="investment-flow.bank-transfer.bank-details-instructions" />
           </Col>
         </Row>
 
@@ -95,14 +93,6 @@ const BankTransferDetailsComponent = injectIntlHelpers(
           <Col>
             <Heading>
               <FormattedMessage id="investment-flow.bank-transfer.to-account" />
-            </Heading>
-          </Col>
-        </Row>
-
-        <Row className="mt-0">
-          <Col>
-            <Heading>
-              <FormattedMessage id="investment-flow.bank-transfer.direct-bank-transfer" />
             </Heading>
           </Col>
         </Row>

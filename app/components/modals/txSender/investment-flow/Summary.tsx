@@ -147,7 +147,7 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
     // eto and computed values are guaranteed to be present at investment summary state
     const eto = selectEtoById(p, i.etoId)!;
     return {
-      agreementUrl: "fufu",
+      agreementUrl: "fufu", // TODO: add proper agreement document link
       companyName: eto.company.name!,
       etoAddress: eto.etoId,
       investmentEth: selectEthValueUlps(i),

@@ -18,7 +18,7 @@ const summaryData = {
   investmentEur: "10000000000000000000000",
   equityTokens: "1234",
   estimatedReward: "3456123412341231234123412344",
-  agreementUrl: "fufu"
+  summaryDocumentUrl: "fufu"
 }
 
 storiesOf("Investment/Bank Transfer", module)

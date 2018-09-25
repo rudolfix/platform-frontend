@@ -71,7 +71,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   const investmentFlow = state.investmentFlow;
   const value = investmentFlow.euroValueUlps;
   const wallet = state.wallet.data;
-  const contribs = selectCalculatedContributionByEtoId(state.publicEtos, investmentFlow.etoId);
+  const contribs = selectCalculatedContributionByEtoId(investmentFlow.etoId, state.publicEtos);
 
   if (!contribs || !value || !wallet) return;
 

@@ -152,8 +152,8 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
       investmentEth: selectEthValueUlps(i),
       investmentEur: selectEurValueUlps(i),
       gasCostEth: selectInvestmentGasCostEth(i),
-      equityTokens: selectEquityTokenCountByEtoId(p, i.etoId) as string,
-      estimatedReward: selectNeuRewardUlpsByEtoId(p, i.etoId) as string,
+      equityTokens: selectEquityTokenCountByEtoId(i.etoId, p) as string,
+      estimatedReward: selectNeuRewardUlpsByEtoId(i.etoId, p) as string,
       etherPriceEur: selectEtherPriceEur(state.tokenPrice),
     };
   },

@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
-import { all, fork, put, select } from "redux-saga/effects";
 import { keyBy } from "lodash";
+import { all, fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
@@ -18,10 +18,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
-import {
-  selectCalculatedContributionByEtoId,
-  selectEtoById,
-} from "./selectors";
+import { selectCalculatedContributionByEtoId, selectEtoById } from "./selectors";
 import { convertToCalculatedContribution, convertToEtoTotalInvestment } from "./utils";
 
 export function* loadEtoPreview(
@@ -85,10 +82,13 @@ export function* loadEto(
   }
 }
 
-function* loadEtoContact({ contractsService, logger }: TGlobalDependencies, eto: TPublicEtoData): any {
+function* loadEtoContact(
+  { contractsService, logger }: TGlobalDependencies,
+  eto: TPublicEtoData,
+): any {
   try {
     if (eto.state !== EtoState.ON_CHAIN) {
-      logger.error(new InvalidETOStateError( eto.state, EtoState.ON_CHAIN));
+      logger.error(new InvalidETOStateError(eto.state, EtoState.ON_CHAIN));
       return;
     }
 
@@ -97,10 +97,12 @@ function* loadEtoContact({ contractsService, logger }: TGlobalDependencies, eto:
     const timedStateRaw = yield etoContract.timedState;
     const totalInvestmentRaw = yield etoContract.totalInvestment();
 
-    yield put(actions.publicEtos.setEtoDataFromContract(eto.etoId, {
-      timedState: timedStateRaw.toNumber(),
-      totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
-    }));
+    yield put(
+      actions.publicEtos.setEtoDataFromContract(eto.etoId, {
+        timedState: timedStateRaw.toNumber(),
+        totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
+      }),
+    );
   } catch (e) {
     logger.error("ETO contract data could not be loaded", e);
   }
@@ -117,7 +119,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
       order
         .map(id => etos[id])
         .filter(eto => eto.state === EtoState.ON_CHAIN)
-        .map(eto => neuCall(loadEtoContact, eto))
+        .map(eto => neuCall(loadEtoContact, eto)),
     );
 
     yield put(actions.publicEtos.setPublicEtos(etos));

@@ -1,4 +1,3 @@
-import { createSelector } from "reselect";
 import { IAppState } from "../../store";
 import { IPublicEtoState } from "./reducer";
 import { TEtoWithContract } from "./types";
@@ -20,14 +19,17 @@ export const selectNeuRewardUlpsByEtoId = (state: IPublicEtoState, etoId: string
   return contrib && contrib.neuRewardUlps.toString();
 };
 
-export const selectEtoWithContract = (state: IAppState, etoId: string): TEtoWithContract | undefined => {
+export const selectEtoWithContract = (
+  state: IAppState,
+  etoId: string,
+): TEtoWithContract | undefined => {
   const publicEtosState = selectPublicEtosState(state);
   const eto = publicEtosState.publicEtos[etoId];
 
   if (eto) {
     return {
       ...eto,
-      contract: publicEtosState.contracts[etoId]
+      contract: publicEtosState.contracts[etoId],
     };
   }
 

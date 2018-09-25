@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { EtoState, TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { TEtoWithContract } from "../../../modules/public-etos/types";
 import { IWalletState } from "../../../modules/wallet/reducer";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
@@ -26,7 +27,6 @@ import { Cover } from "../publicView/Cover";
 import { EtoInvestmentTermsWidget } from "../publicView/EtoInvestmentTermsWidget";
 import { LegalInformationWidget } from "../publicView/LegalInformationWidget";
 import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
-import { TEtoWithContract } from "../../../modules/public-etos/types";
 
 import * as icon_link from "../../../assets/img/inline_icons/social_link.svg";
 import * as token_icon from "../../../assets/img/token_icon.svg";
@@ -114,6 +114,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
         />
 
         <EtoOverviewStatus
+          preMoneyValuationEur={etoData.preMoneyValuationEur}
+          existingCompanyShares={etoData.existingCompanyShares}
+          equityTokensPerShare={etoData.equityTokensPerShare}
+          contract={etoData.contract}
           wallet={wallet}
           etoId={etoData.etoId}
           tokenImage={{
@@ -127,10 +131,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           className="mb-4"
           canEnableBookbuilding={etoData.canEnableBookbuilding}
           investmentAmount={0} //TODO: connect proper one
-          equityTokenPrice={0} //TODO: connect proper one
-          raisedAmount={0} //TODO: connect proper one
-          timeToClaim={0} //TODO: connect proper one
-          numberOfInvestors={0} //TODO: connect proper one
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
           prospectusApproved={!!documentsByType["approved_prospectus"]}

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithContract } from "../../../modules/public-etos/types";
 import { TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { TEtoWithContract } from "../../../modules/public-etos/types";
 import { Document } from "../../shared/Document";
 import { Panel } from "../../shared/Panel";
 
@@ -79,7 +79,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
             {/*<span className={styles.value}>{etoData.discountScheme}</span>*/}
             {/*</div>*/}
             {/*)}*/}
-            {etoFilesData["signed_investment_and_shareholder_agreement"] && (
+            {!!etoFilesData["signed_investment_and_shareholder_agreement"] && (
               <a
                 href={`${etoFilesData["signed_investment_and_shareholder_agreement"]}`}
                 className={styles.groupDocumentLink}
@@ -100,7 +100,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
             <FormattedMessage id="eto.public-view.token-terms.group-title.token-sale" />
           </div>
           <div className={styles.groupContent}>
-            {etoData.equityTokensPerShare && (
+            {!!etoData.equityTokensPerShare && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
@@ -108,7 +108,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.value}>{etoData.equityTokensPerShare}</span>
               </div>
             )}
-            {computedMinNumberOfTokens && (
+            {!!computedMinNumberOfTokens && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.tokens-to-issue" />
@@ -116,15 +116,17 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.value}>{computedMinNumberOfTokens}</span>
               </div>
             )}
-            {computedNewSharePrice && (
+            {!!(computedNewSharePrice && etoData.equityTokensPerShare) && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.token-price" />
                 </span>
-                <span className={styles.value}>€ {computedNewSharePrice.toFixed(4)}</span>
+                <span className={styles.value}>
+                  € {(computedNewSharePrice / etoData.equityTokensPerShare).toFixed(4)}
+                </span>
               </div>
             )}
-            {etoData.whitelistDurationDays && (
+            {!!etoData.whitelistDurationDays && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.pre-eto-duration" />
@@ -135,7 +137,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 </span>
               </div>
             )}
-            {etoData.publicDurationDays && (
+            {!!etoData.publicDurationDays && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.public-eto-duration" />
@@ -146,7 +148,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 </span>
               </div>
             )}
-            {etoFilesData["reservation_and_acquisition_agreement"] && (
+            {!!etoFilesData["reservation_and_acquisition_agreement"] && (
               <a
                 href={`${etoFilesData["reservation_and_acquisition_agreement"]}`}
                 className={styles.groupDocumentLink}
@@ -167,7 +169,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
             <FormattedMessage id="eto.public-view.token-terms.group-title.token-holder-rights" />
           </div>
           <div className={styles.groupContent}>
-            {etoData.nominee && (
+            {!!etoData.nominee && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.nominee" />
@@ -176,7 +178,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.value}>Neumini UG</span>
               </div>
             )}
-            {etoData.signingDurationDays && (
+            {!!etoData.signingDurationDays && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.public-offer-duration" />
@@ -213,7 +215,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
               </span>
             </div>
 
-            {etoData.liquidationPreferenceMultiplier && (
+            {!!etoData.liquidationPreferenceMultiplier && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
@@ -221,7 +223,7 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
               </div>
             )}
-            {etoFilesData["company_token_holder_agreement"] && (
+            {!!etoFilesData["company_token_holder_agreement"] && (
               <a
                 href={`${etoFilesData["company_token_holder_agreement"]}`}
                 className={styles.groupDocumentLink}

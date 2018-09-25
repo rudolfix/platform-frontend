@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import {
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
@@ -7,7 +5,7 @@ import {
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { ETOStateOnChain, ICalculatedContribution, IEtoContractData } from "./types";
+import { ICalculatedContribution, IEtoContractData } from "./types";
 
 export interface IPublicEtoState {
   // only preview, endpoint eto-listing/eto-previews

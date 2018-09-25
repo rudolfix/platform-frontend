@@ -1,14 +1,12 @@
 import * as React from "react";
 import { branch, compose } from "recompose";
 
-import {
-  TCompanyEtoData,
-  TEtoSpecsData,
-  TPublicEtoData,
-} from "../../lib/api/eto/EtoApi.interfaces";
+import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
+import { selectEtoWithContract } from "../../modules/public-etos/selectors";
+import { TEtoWithContract } from "../../modules/public-etos/types";
 import { IWalletState } from "../../modules/wallet/reducer";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -17,8 +15,6 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
-import { TEtoWithContract } from "../../modules/public-etos/types";
-import { selectEtoWithContract } from "../../modules/public-etos/selectors";
 
 interface IStateProps {
   eto?: TEtoWithContract;

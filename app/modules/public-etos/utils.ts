@@ -17,12 +17,12 @@ export const convertToCalculatedContribution = ([
   maxCapExceeded,
 });
 
-export const convertToEtoTotalInvestment = ([
+export const convertToEtoTotalInvestment = ([totalEquivEurUlps, totalTokensInt, totalInvestors]: [
+  BigNumber,
+  BigNumber,
+  BigNumber
+]): IEtoTotalInvestment => ({
   totalEquivEurUlps,
   totalTokensInt,
-  totalInvestors
-]: [BigNumber, BigNumber, BigNumber]): IEtoTotalInvestment => ({
-  totalEquivEurUlps,
-  totalTokensInt,
-  totalInvestors
+  totalInvestors,
 });

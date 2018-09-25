@@ -1,8 +1,7 @@
-import {
-  TPublicEtoData,
-} from "../../lib/api/eto/EtoApi.interfaces";
-import { DeepReadonlyObject } from "../../types";
 import BigNumber from "bignumber.js";
+
+import { TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
+import { DeepReadonlyObject } from "../../types";
 
 export interface ICalculatedContribution {
   isWhitelisted: boolean;
@@ -38,4 +37,5 @@ export type TEtoWithContract = DeepReadonlyObject<
   TPublicEtoData & {
     contract: IEtoContractData;
   }
->;
+> &
+  IEtoContractData;

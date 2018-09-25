@@ -24,7 +24,7 @@ import { selectEtoDocumentLoading } from "../eto-documents/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./reducer";
 
-function getErrorsNumber(validator: Yup.Schema, data?: any): number {
+function getErrorsNumber(validator: Yup.Schema<any>, data?: any): number {
   try {
     validator.validateSync(data, { abortEarly: false });
     return 0;
@@ -121,7 +121,7 @@ export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoD
 });
 
 export function getFormFractionDoneCalculator(
-  validator: Yup.Schema,
+  validator: Yup.Schema<any>,
   opts?: IProgressOptions,
 ): ProgressCalculator {
   const strictValidator = validator.clone();

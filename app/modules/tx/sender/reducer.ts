@@ -21,6 +21,7 @@ export interface ITxSenderState {
   txDetails?: ITxData;
   blockId?: number;
   txHash?: string;
+  error?: string;
 }
 
 const initialState: ITxSenderState = {
@@ -32,19 +33,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
   action,
 ): ITxSenderState => {
   switch (action.type) {
-    case "TX_SENDER_WATCH_PENDING_TXS":
-      return {
-        ...initialState,
-        state: "WATCHING_PENDING_TXS",
-      };
-
-    case "TX_SENDER_WATCH_PENDING_TXS_DONE":
-      return {
-        ...initialState,
-        state: "INIT",
-        type: action.payload.type,
-      };
-
+    // Modal related Actions
     case "TX_SENDER_SHOW_MODAL":
       return {
         ...initialState,
@@ -57,22 +46,19 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...initialState,
       };
 
-    case "TX_SENDER_ERROR":
+    //Pending Transaction Actions
+    case "TX_SENDER_WATCH_PENDING_TXS":
       return {
         ...initialState,
-        state: "ERROR_SIGN",
+        state: "WATCHING_PENDING_TXS",
       };
 
-    case "TX_SENDER_ACCEPT_DRAFT":
+    case "TX_SENDER_WATCH_PENDING_TXS_DONE":
       return {
-        ...state,
-        state: "SUMMARY",
-        txDetails: {
-          ...state.txDetails,
-          ...action.payload,
-        },
+        ...initialState,
+        state: "INIT",
+        type: action.payload.type,
       };
-
     case "TX_SENDER_ACCEPT":
       return {
         ...state,
@@ -84,7 +70,15 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...state,
         state: "SIGNING",
       };
-
+    case "TX_SENDER_ACCEPT_DRAFT":
+      return {
+        ...state,
+        state: "SUMMARY",
+        txDetails: {
+          ...state.txDetails,
+          ...action.payload,
+        },
+      };
     case "TX_SENDER_SIGNED":
       return {
         ...state,
@@ -102,6 +96,13 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...state,
         state: "DONE",
+      };
+    //Error Actions
+    case "TX_SENDER_ERROR":
+      return {
+        ...initialState,
+        state: "ERROR_SIGN",
+        error: action.payload.error,
       };
   }
 

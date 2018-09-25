@@ -26,6 +26,7 @@ interface IStateProps {
   details?: ITxData;
   blockId?: number;
   txHash?: string;
+  error?: string;
 }
 
 interface IDispatchProps {
@@ -49,7 +50,7 @@ export const TxSenderModalComponent: React.SFC<Props> = props => {
 };
 
 export interface ITxInitDispatchProps {
-  onAccept: (tx: Partial<ITxData>) => any;
+  onAccept: (tx: ITxData) => any;
 }
 
 export interface ITxSummaryStateProps {
@@ -87,7 +88,7 @@ const SuccessComponent: React.SFC<{ type: TxSenderType; txHash?: string }> = ({ 
   }
 };
 
-function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
+function renderBody({ state, blockId, txHash, type, error }: Props): React.ReactNode {
   switch (state) {
     case "WATCHING_PENDING_TXS":
       return <WatchPendingTxs />;
@@ -120,10 +121,7 @@ function renderBody({ state, blockId, txHash, type }: Props): React.ReactNode {
       return <SuccessComponent type={type} txHash={txHash!} />;
 
     case "ERROR_SIGN":
-      return <div>Error occurred!</div>;
-
-    case "REVERTED":
-      return <div>Error: Tx reverted!</div>;
+      return <div>{error}</div>;
   }
 }
 
@@ -134,6 +132,7 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
     type: state.txSender.type,
     txHash: state.txSender.txHash,
     blockId: state.txSender.blockId,
+    error: state.txSender.error,
   }),
   dispatchToProps: d => ({
     onCancel: () => d(actions.txSender.txSenderHideModal()),

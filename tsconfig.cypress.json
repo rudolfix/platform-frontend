@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
+    "noImplicitAny": false,
     "target": "es2015",
     "moduleResolution": "Node",
     "types": ["cypress"],

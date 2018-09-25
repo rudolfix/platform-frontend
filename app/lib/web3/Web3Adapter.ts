@@ -6,6 +6,23 @@ import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
 import { delay } from "../../utils/delay";
 
+class Web3Error extends Error {}
+export class RevertedTransactionError extends Web3Error {}
+export class OutOfGasError extends Web3Error {}
+
+export class EthNodeError extends Error {}
+export class LowGasNodeError extends EthNodeError {}
+export class LowNonceError extends EthNodeError {}
+export class LongTransactionQueError extends EthNodeError {}
+export class InvalidRlpDataError extends EthNodeError {}
+export class InvalidChangeIdError extends EthNodeError {}
+export class UnknownEthNodeError extends EthNodeError {}
+
+enum TRANSACTION_STATUS {
+  REVERTED = "0x0",
+  SUCCESS = "0x1",
+}
+
 /**
  * Layer on top of raw Web3js. Simplifies API for common operations. Adds promise support.
  * Note that some methods may be not supported correctly by exact implementation of your client
@@ -67,11 +84,18 @@ export class Web3Adapter {
     return resultData.result;
   }
 
-  public async getTransactionReceipt(txHash: string): Promise<Web3.TxData> {
-    const getTransactionReceipt = promisify<Web3.TxData, string>(
+  public async getTransactionReceipt(txHash: string): Promise<Web3.TransactionReceipt> {
+    const getTransactionReceipt = promisify<Web3.TransactionReceipt, string>(
       this.web3.eth.getTransactionReceipt.bind(this.web3.eth),
     );
     return await getTransactionReceipt(txHash);
+  }
+
+  public async getTransactionByHash(txHash: string): Promise<Web3.Transaction> {
+    const getTransactionByHash = promisify<Web3.Transaction, string>(
+      this.web3.eth.getTransaction.bind(this.web3.eth),
+    );
+    return await getTransactionByHash(txHash);
   }
 
   public async getTransactionCount(address: string): Promise<number> {
@@ -120,14 +144,22 @@ export class Web3Adapter {
           }
 
           const tx = await getTx(options.txHash);
+          const txReceipt = await this.getTransactionReceipt(options.txHash);
           const isMined = tx && tx.blockNumber;
 
           if (!isMined) {
             return;
           }
 
-          resolve(tx);
+          if (txReceipt.status === TRANSACTION_STATUS.REVERTED) {
+            if (txReceipt.gasUsed === tx.gas) {
+              // All gas is burned in this case
+              throw new OutOfGasError();
+            }
+            throw new RevertedTransactionError();
+          }
 
+          resolve(tx);
           return true;
         } catch (e) {
           reject(e);

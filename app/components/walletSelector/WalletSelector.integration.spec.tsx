@@ -51,6 +51,7 @@ describe("Wallet selector integration", () => {
       testConnection: async () => false,
       getMetadata: (): ILedgerWalletMetadata => ({
         walletType: WalletType.LEDGER,
+        walletSubType: WalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
         address: expectedAddress,
       }),
@@ -169,6 +170,7 @@ describe("Wallet selector integration", () => {
       actions.web3.newPersonalWalletPlugged(
         {
           walletType: WalletType.LEDGER,
+          walletSubType: WalletSubType.UNKNOWN,
           derivationPath: expectedDerivationPath,
           address: expectedAddress,
         },

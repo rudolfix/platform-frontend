@@ -17,9 +17,11 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
+import { TEtoWithContract } from "../../modules/public-etos/types";
+import { selectEtoWithContract } from "../../modules/public-etos/selectors";
 
 interface IStateProps {
-  eto?: TPublicEtoData;
+  eto?: TEtoWithContract;
   userType?: TUserType;
   wallet?: IWalletState;
 }
@@ -44,7 +46,7 @@ class EtoPreviewComponent extends React.Component<IProps> {
       <EtoPublicComponent
         wallet={this.props.wallet}
         companyData={this.props.eto.company as TCompanyEtoData}
-        etoData={this.props.eto as TEtoSpecsData}
+        etoData={this.props.eto}
       />
     );
   }
@@ -54,7 +56,7 @@ export const EtoPublicView = compose<IProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state.auth),
-      eto: state.publicEtos.publicEtos[props.etoId],
+      eto: selectEtoWithContract(state, props.etoId),
       wallet: state.wallet,
     }),
   }),

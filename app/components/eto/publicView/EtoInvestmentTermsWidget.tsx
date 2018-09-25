@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { TEtoWithContract } from "../../../modules/public-etos/types";
 import { TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { Document } from "../../shared/Document";
 import { Panel } from "../../shared/Panel";
@@ -9,7 +9,7 @@ import { Panel } from "../../shared/Panel";
 import * as styles from "./EtoInvestmentTermsWidget.module.scss";
 
 interface IProps {
-  etoData: TEtoSpecsData;
+  etoData: TEtoWithContract;
   etoFilesData: TEtoDocumentTemplates;
   computedNewSharePrice: number;
   computedMinCapEur: number;

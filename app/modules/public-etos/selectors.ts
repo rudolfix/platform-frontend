@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { IAppState } from "../../store";
 import { IPublicEtoState } from "./reducer";
-import { IEtoFullData } from "./types";
+import { TEtoWithContract } from "./types";
 
 const selectPublicEtosState = (state: IAppState) => state.publicEtos;
 
@@ -20,21 +20,22 @@ export const selectNeuRewardUlpsByEtoId = (state: IPublicEtoState, etoId: string
   return contrib && contrib.neuRewardUlps.toString();
 };
 
-export const selectEtoFullData = (state: IPublicEtoState, etoId: string): IEtoFullData | undefined => {
-  const eto = state.publicEtos[etoId];
+export const selectEtoWithContract = (state: IAppState, etoId: string): TEtoWithContract | undefined => {
+  const publicEtosState = selectPublicEtosState(state);
+  const eto = publicEtosState.publicEtos[etoId];
 
   if (eto) {
     return {
       ...eto,
-      contract: state.contracts[etoId]
+      contract: publicEtosState.contracts[etoId]
     };
   }
 
   return undefined;
 };
 
-export const selectPublicEtos = createSelector(
-  selectPublicEtosState,
-  (state: IPublicEtoState): Array<IEtoFullData> =>
-    state.displayOrder.map(id => selectEtoFullData(state, id)!).filter(Boolean),
-);
+export const selectPublicEtos = (state: IAppState): Array<TEtoWithContract> => {
+  const publicEtosState = selectPublicEtosState(state);
+
+  return publicEtosState.displayOrder.map(id => selectEtoWithContract(state, id)!).filter(Boolean);
+};

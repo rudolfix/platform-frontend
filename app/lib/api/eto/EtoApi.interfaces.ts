@@ -262,7 +262,6 @@ export type TGeneralEtoData = {
 export type TPublicEtoData = DeepReadonlyObject<
   TEtoSpecsData & {
     company: TPartialCompanyEtoData;
-    etoId: string;
   }
 >;
 

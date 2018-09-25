@@ -75,8 +75,8 @@ describe("Wallet selector integration", () => {
       }),
     });
     const usersApiMock = createMock(UsersApi, {
-      me: async () => getDummyUser(),
-      createAccount: async () => getDummyUser(),
+      me: async () => getDummyUser(ledgerWalletMock.getMetadata()),
+      createAccount: async () => getDummyUser(ledgerWalletMock.getMetadata()),
     });
 
     const contractsMock = createMock(ContractsService, {
@@ -224,8 +224,8 @@ describe("Wallet selector integration", () => {
       }),
     });
     const usersApiMock = createMock(UsersApi, {
-      me: async () => getDummyUser(),
-      createAccount: async () => getDummyUser(),
+      me: async () => getDummyUser(browserWalletMock.getMetadata()),
+      createAccount: async () => getDummyUser(browserWalletMock.getMetadata()),
     });
 
     const initialRoute = "/register";

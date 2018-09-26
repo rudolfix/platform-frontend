@@ -3,7 +3,7 @@ import { call, fork, put, select } from "redux-saga/effects";
 
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IUser } from "../../../lib/api/users/interfaces";
+import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
 import {
   ILightWalletMetadata,
@@ -36,7 +36,7 @@ import {
   selectLightWalletFromQueryString,
   selectPreviousConnectedWallet,
 } from "../../web3/selectors";
-import { WalletType } from "../../web3/types";
+import { WalletSubType, WalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
@@ -116,12 +116,8 @@ export async function setupLightWalletPromise(
       password,
     );
 
-    const walletMetadata = lightWallet.getMetadata();
     await web3Manager.plugPersonalWallet(lightWallet);
-
-    if (walletMetadata && walletMetadata.walletType === WalletType.LIGHT) {
-      return walletMetadata;
-    } else throw new Error(`Wallet ${walletMetadata.walletType} is not a lightwallet`);
+    return lightWallet.getMetadata() as ILightWalletMetadata;
   } catch (e) {
     logger.warn("Error while trying to connect with light wallet: ", e.message);
     throw e;
@@ -197,52 +193,34 @@ export function* lightWalletRecoverWatch(
 
     yield put(actions.walletSelector.messageSigning());
     yield neuCall(obtainJWT, [CHANGE_EMAIL_PERMISSION]);
-
+    const userUpdate: IUserInput = {
+      salt: walletMetadata.salt,
+      backupCodesVerified: true,
+      type: userType,
+      walletType: walletMetadata.walletType,
+      walletSubtype: WalletSubType.UNKNOWN,
+    };
+    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
     try {
-      const isEmailAvailable = yield neuCall(checkEmailPromise, email);
       const user: IUser = yield neuCall(loadUserPromise);
       if (isEmailAvailable) {
-        yield effects.call(updateUser, {
-          newEmail: walletMetadata.email,
-          salt: walletMetadata.salt,
-          backupCodesVerified: false,
-          type: userType,
-          walletType: walletMetadata.walletType,
-          walletSubtype:
-            walletMetadata.walletType === WalletType.BROWSER
-              ? walletMetadata.walletSubType
-              : undefined,
-        });
+        userUpdate.newEmail = walletMetadata.email;
+        yield effects.call(updateUser, userUpdate);
       } else {
-        if (user.verifiedEmail === email.toLowerCase())
-          yield effects.call(updateUser, {
-            salt: walletMetadata.salt,
-            backupCodesVerified: false,
-            type: userType,
-            walletType: walletMetadata.walletType,
-            walletSubtype:
-              walletMetadata.walletType === WalletType.BROWSER
-                ? walletMetadata.walletSubType
-                : undefined,
-          });
-        else throw new EmailAlreadyExists();
+        if (user.verifiedEmail === email.toLowerCase()) yield effects.call(updateUser, userUpdate);
+        else {
+          throw new EmailAlreadyExists();
+        }
       }
     } catch (e) {
-      if (e instanceof UserNotExisting)
-        yield effects.call(createUser, {
-          newEmail: walletMetadata.email,
-          salt: walletMetadata.salt,
-          backupCodesVerified: false,
-          type: userType,
-          walletType: walletMetadata.walletType,
-          walletSubtype:
-            walletMetadata.walletType === WalletType.BROWSER
-              ? walletMetadata.walletSubType
-              : undefined,
-        });
-      else throw e;
+      if (e instanceof UserNotExisting) {
+        if (!isEmailAvailable) {
+          throw new EmailAlreadyExists();
+        }
+        userUpdate.newEmail = walletMetadata.email;
+        yield effects.call(createUser, userUpdate);
+      } else throw e;
     }
-
     yield put(actions.routing.goToSuccessfulRecovery());
   } catch (e) {
     yield effects.put(actions.walletSelector.reset());

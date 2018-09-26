@@ -261,8 +261,8 @@ export class LightWallet implements IPersonalWallet {
       email: this.email,
       salt: this.vault.salt,
       vault: JSON.stringify(this.vault.walletInstance),
-      walletType: WalletType.LIGHT,
-      walletSubType: WalletSubType.UNKNOWN,
+      walletType: this.walletType,
+      walletSubType: this.walletSubType,
     };
   }
 }
@@ -273,8 +273,6 @@ export class LightWalletConnector {
   public constructor(
     @inject(symbols.ethereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
-
-  public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;
 
   public passwordProvider(): any {
     return "";

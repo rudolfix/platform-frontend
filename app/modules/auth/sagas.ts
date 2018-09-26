@@ -119,7 +119,6 @@ export async function updateUserPromise(
   { apiUserService }: TGlobalDependencies,
   user: IUserInput,
 ): Promise<IUser> {
-  await apiUserService.me();
   return apiUserService.updateUser(user);
 }
 

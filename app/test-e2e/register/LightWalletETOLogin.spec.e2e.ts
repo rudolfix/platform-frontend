@@ -1,9 +1,9 @@
-import { tid } from "../../../../../test/testUtils";
 import {
   assertEtoDashboard,
   convertToUniqueEmail,
   registerWithLightWalletETO,
-} from "../../../../e2e-test-utils";
+  tid,
+} from "../utils";
 
 const password = "strongpassword";
 

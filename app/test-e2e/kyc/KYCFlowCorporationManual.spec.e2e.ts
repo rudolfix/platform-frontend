@@ -1,9 +1,6 @@
-import { tid } from "../../../../test/testUtils";
-import { registerWithLightWallet, verifyLatestUserEmail } from "../../../e2e-test-utils";
-import { kycRoutes } from "../routes";
-
-const email = "test+partnership@neufund.org";
-const password = "superstrongpassword";
+import { tid } from "../utils";
+import { kycRoutes } from "../../components/kyc/routes";
+import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 interface ISmallBusinessData {
   companyName: string;
@@ -64,7 +61,7 @@ const personData: IPersonData = {
 const goToCorporationFlow = () => {
   cy.visit(kycRoutes.start);
   cy.get(tid("kyc-start-go-to-company")).click();
-  cy.get(tid("kyc-start-business-go-to-partnership")).click();
+  cy.get(tid("kyc-start-business-go-to-corporation")).click();
 
   cy.url().should("eq", `https://localhost:9090${kycRoutes.businessData}`);
 };
@@ -135,24 +132,28 @@ const uploadSupportingDocuments = () => {
   cy.get(tid("kyc-company-legal-representative-documents")).trigger("drop", dropEvent);
 };
 
-const submitLegalRepresentativeForm = () => {
+const addAndDeleteBeneficialOwnerAndSubmitFormForLegalRepresentation = () => {
+  cy.get(tid("kyc-beneficial-owner-add-new"))
+    .wait(1500)
+    .click();
+  cy.get(tid("kyc-beneficial-owner-delete")).click();
   cy.get(tid("kyc-company-legal-representative-upload-and-submit")).click();
-  cy.get(tid("access-light-wallet-password-input")).type(password);
+  cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
   cy.get(tid("access-light-wallet-confirm")).click();
 
   cy.url().should("eq", `https://localhost:9090${kycRoutes.legalRepresentative}`);
 };
 
 describe("KYC Small Business flow with manual verification", () => {
+  beforeEach(() => createAndLoginNewUser({ type: "investor" }));
+
   it("went through KYC Small Business flow", () => {
-    registerWithLightWallet(email, password, true);
-    verifyLatestUserEmail();
     goToCorporationFlow();
     submitSmallBusinessKYCForm(smallBusinessData);
     uploadSupportingDocumentsAndSubmitForm();
     submitLegalRepresentationForm(personData);
     uploadSupportingDocuments();
-    submitLegalRepresentativeForm();
+    addAndDeleteBeneficialOwnerAndSubmitFormForLegalRepresentation();
 
     cy.url().should("eq", `https://localhost:9090${kycRoutes.legalRepresentative}`);
   });

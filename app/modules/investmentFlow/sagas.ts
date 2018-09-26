@@ -16,7 +16,11 @@ import { loadComputedContributionFromContract } from "../public-etos/sagas";
 import { selectCalculatedContributionByEtoId, selectEtoById } from "../public-etos/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { selectLiquidEtherBalance, selectLockedEuroTokenBalance, selectLockedEtherBalance } from "../wallet/selectors";
+import {
+  selectLiquidEtherBalance,
+  selectLockedEtherBalance,
+  selectLockedEuroTokenBalance,
+} from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import {
   EBankTransferFlowState,
@@ -178,7 +182,11 @@ function* setGasPrice(): any {
   yield put(actions.investmentFlow.validateInputs());
 }
 
-function createTxData (state: IAppState, txInput: string, contractAddress: string): ITxData | undefined {
+function createTxData(
+  state: IAppState,
+  txInput: string,
+  contractAddress: string,
+): ITxData | undefined {
   return {
     to: contractAddress,
     from: selectEthereumAddressWithChecksum(state.web3),
@@ -189,19 +197,35 @@ function createTxData (state: IAppState, txInput: string, contractAddress: strin
   };
 }
 
-function getEtherLockTransaction (state: IAppState, contractsService: ContractsService, etoId: string): ITxData | undefined {
-  const txInput = contractsService.etherLock.transferTx(etoId, new BigNumber(state.investmentFlow.ethValueUlps), [""]).getData();
-  return createTxData(state, txInput, contractsService.etherLock.address)
+function getEtherLockTransaction(
+  state: IAppState,
+  contractsService: ContractsService,
+  etoId: string,
+): ITxData | undefined {
+  const txInput = contractsService.etherLock
+    .transferTx(etoId, new BigNumber(state.investmentFlow.ethValueUlps), [""])
+    .getData();
+  return createTxData(state, txInput, contractsService.etherLock.address);
 }
 
-function getEuroLockTransaction (state: IAppState, contractsService: ContractsService, etoId: string): ITxData | undefined {
-  const txInput = contractsService.euroLock.transferTx(etoId, new BigNumber(state.investmentFlow.euroValueUlps), [""]).getData();
-  return createTxData(state, txInput, contractsService.euroLock.address)
+function getEuroLockTransaction(
+  state: IAppState,
+  contractsService: ContractsService,
+  etoId: string,
+): ITxData | undefined {
+  const txInput = contractsService.euroLock
+    .transferTx(etoId, new BigNumber(state.investmentFlow.euroValueUlps), [""])
+    .getData();
+  return createTxData(state, txInput, contractsService.euroLock.address);
 }
 
-function getEtherTokenTransaction (state: IAppState, contractsService: ContractsService, etoId: string): ITxData | undefined {
+function getEtherTokenTransaction(
+  state: IAppState,
+  contractsService: ContractsService,
+  etoId: string,
+): ITxData | undefined {
   const etherTokenBalance = state.wallet.data!.etherTokenBalance;
-  const i = state.investmentFlow
+  const i = state.investmentFlow;
   let txDetails: ITxData | undefined;
 
   // transaction can be fully covered by etherTokens
@@ -211,7 +235,7 @@ function getEtherTokenTransaction (state: IAppState, contractsService: Contracts
     const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
       "address,uint256,bytes"
     ].getData(etoId, i.ethValueUlps, "");
-    txDetails = createTxData(state, txInput, contractsService.etherToken.address)
+    txDetails = createTxData(state, txInput, contractsService.etherToken.address);
 
     // fill up etherToken with ether from walle}t
   } else {
@@ -228,7 +252,7 @@ function getEtherTokenTransaction (state: IAppState, contractsService: Contracts
     };
   }
 
-  return txDetails
+  return txDetails;
 }
 
 function* generateTransaction({ contractsService }: TGlobalDependencies): any {
@@ -244,14 +268,14 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
 
   switch (i.investmentType) {
     case EInvestmentType.InvestmentWallet:
-      txDetails = getEtherTokenTransaction(state, contractsService, eto.etoId)
-      break
+      txDetails = getEtherTokenTransaction(state, contractsService, eto.etoId);
+      break;
     case EInvestmentType.ICBMEth:
-      txDetails = getEtherLockTransaction(state, contractsService, eto.etoId)
-      break
+      txDetails = getEtherLockTransaction(state, contractsService, eto.etoId);
+      break;
     case EInvestmentType.ICBMnEuro:
-      txDetails = getEuroLockTransaction(state, contractsService, eto.etoId)
-      break
+      txDetails = getEuroLockTransaction(state, contractsService, eto.etoId);
+      break;
   }
 
   if (txDetails) {

@@ -223,13 +223,14 @@ export class LightWallet implements IPersonalWallet {
     if (!this.password) {
       throw new LightWalletMissingPasswordError();
     }
-    txData.nonce = await this.web3Adapter.getTransactionCount(txData.from);
+    const nonce = await this.web3Adapter.getTransactionCount(txData.from);
+
     const encodedTxData: IRawTxData = {
       from: txData.from,
       to: addHexPrefix(txData.to!),
       gas: addHexPrefix(new BigNumber(txData.gas || 0).toString(16)),
       gasPrice: addHexPrefix(new BigNumber(txData.gasPrice || 0).toString(16)),
-      nonce: addHexPrefix(new BigNumber(txData.nonce || 0).toString(16)),
+      nonce: addHexPrefix(new BigNumber(nonce || 0).toString(16)),
       value: addHexPrefix(new BigNumber(txData.value! || 0).toString(16)),
       data: addHexPrefix(txData.data || "0"),
     };

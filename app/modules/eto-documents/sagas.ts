@@ -3,7 +3,7 @@ import { fork, put } from "redux-saga/effects";
 import { UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
-import { etoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { downloadLink } from "../immutableFile/sagas";
@@ -84,7 +84,7 @@ export function* loadEtoFileData({
 
 async function getDocumentOfTypePromise(
   { apiEtoFileService }: TGlobalDependencies,
-  documentType: etoDocumentType,
+  documentType: EtoDocumentType,
 ): Promise<IEtoDocument> {
   const documents: any = await apiEtoFileService.getAllEtoDocuments();
   const matchingDocument = Object.keys(documents).filter(ipfsHashKey => {

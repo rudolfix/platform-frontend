@@ -8,7 +8,6 @@ import { neuTakeEvery } from "../sagas";
 import { selectGasPrice, selectIsAlreadyLoaded } from "./selectors";
 
 function* ensureGasApiDataSaga({ gasApi, logger }: TGlobalDependencies): any {
-  debugger;
   const isAlreadyLoaded: boolean = yield select(
     (state: IAppState): boolean => selectIsAlreadyLoaded(state.gas),
   );

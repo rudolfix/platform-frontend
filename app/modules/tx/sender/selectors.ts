@@ -1,5 +1,5 @@
 import { ITxData } from "./../../../lib/web3/Web3Manager";
-import { ITxSenderState, ETxSenderType } from "./reducer";
+import { ETxSenderType, ITxSenderState } from "./reducer";
 
 export const selectTxSenderModalOpened = (state: ITxSenderState): boolean =>
   state.state !== "UNINITIALIZED";

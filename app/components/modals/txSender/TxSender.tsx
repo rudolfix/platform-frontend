@@ -4,9 +4,10 @@ import { Modal } from "reactstrap";
 
 import { ITxData } from "../../../lib/web3/Web3Manager";
 import { actions } from "../../../modules/actions";
-import { TxSenderState, ETxSenderType } from "../../../modules/tx/sender/reducer";
+import { ETxSenderType, TxSenderState } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
 import { InvestmentSelection } from "./investment-flow/Investment";
@@ -18,7 +19,6 @@ import { WatchPendingTxs } from "./shared/WatchPeningTxs";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
-import { Upgrade } from "./upgrade-flow/Upgrade";
 
 interface IStateProps {
   isOpen: boolean;
@@ -68,10 +68,8 @@ const InitComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
       return <InvestmentSelection />;
     case "WITHDRAW":
       return <Withdraw />;
-    case "UPGRADE_ETH":
-      return <Upgrade tokenType={"ETHER"} />;
-    case "UPGRADE_EUR":
-      return <Upgrade tokenType={"EURO"} />;
+    default:
+      return <LoadingIndicator />;
   }
 };
 
@@ -84,7 +82,10 @@ const SummaryComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
   }
 };
 
-const SuccessComponent: React.SFC<{ type: ETxSenderType; txHash?: string }> = ({ type, txHash }) => {
+const SuccessComponent: React.SFC<{ type: ETxSenderType; txHash?: string }> = ({
+  type,
+  txHash,
+}) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSuccess txHash={txHash!} />;

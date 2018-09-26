@@ -1,8 +1,6 @@
 import { AppReducer } from "../../../store";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
 
-// export type TxSenderType = "WITHDRAW" | "INVEST" | "UPGRADE";
-
 export enum ETxSenderType {
   WITHDRAW = "WITHDRAW",
   INVEST = "INVEST",

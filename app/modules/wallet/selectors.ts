@@ -96,9 +96,8 @@ export const selectICBMLockedEuroTotalAmount = (state: IAppState) =>
   ]);
 
 export const selectICBMLockedWalletHasFunds = (state: IWalletState): boolean =>
-  addBigNumbers(
-    [selectICBMLockedEuroTokenBalance(state), selectICBMLockedEtherBalance(state)],
-  ) !== "0";
+  addBigNumbers([selectICBMLockedEuroTokenBalance(state), selectICBMLockedEtherBalance(state)]) !==
+  "0";
 
 /**
  * Total wallet assets value

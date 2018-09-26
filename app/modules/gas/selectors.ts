@@ -1,4 +1,4 @@
-import { GasModelShape } from '../../lib/api/GasApi';
+import { GasModelShape } from "../../lib/api/GasApi";
 import { IGasState } from "./reducer";
 
 export const selectIsAlreadyLoaded = (state: IGasState): boolean =>

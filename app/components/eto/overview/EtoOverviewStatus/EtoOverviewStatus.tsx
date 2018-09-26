@@ -24,9 +24,9 @@ import { CampaigningWidget, ICampaigningWidget } from "./CampaigningWidget";
 import * as styles from "./EtoOverviewStatus.module.scss";
 
 interface IPublicWidgetProps {
-  investorsBacked?: string | number,
-  tokensGoal?: string | number,
-  raisedTokens?: string | number,
+  investorsBacked?: string | number;
+  tokensGoal?: string | number;
+  raisedTokens?: string | number;
   etoId: string;
 }
 

@@ -41,7 +41,8 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
               preMoneyValuationEur={eto.preMoneyValuationEur}
               existingCompanyShares={eto.existingCompanyShares}
               equityTokensPerShare={eto.equityTokensPerShare}
-              investmentAmount={0} //TODO: connect proper one
+              investmentAmount={`€ ${((eto.preMoneyValuationEur || 1) / (eto.existingCompanyShares || 1) * (eto.newSharesToIssue || 1)).toFixed(4)} - € 
+              ${((eto.preMoneyValuationEur || 1) / (eto.existingCompanyShares || 1) * (eto.minimumNewSharesToIssue || 1)).toFixed(4)}`} //TODO: connect proper one
               contract={eto.contract}
               wallet={wallet}
               etoId={eto.etoId}
@@ -66,10 +67,7 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
                 maxPledge: eto.maxTicketEur,
                 minPledge: eto.minTicketEur,
                 isActivated: eto.isBookbuilding,
-                quote: "", // TODO: connect proper one
-              }}
-              publicWidget={{
-                etoId: eto.etoId,
+                quote: eto.company && eto.company.keyQuoteFounder || "",
               }}
             />
           )}

@@ -130,13 +130,13 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           tokenSymbol={etoData.equityTokenSymbol || ""}
           className="mb-4"
           canEnableBookbuilding={etoData.canEnableBookbuilding}
-          investmentAmount={0} //TODO: connect proper one
+          investmentAmount={etoData.company.keyQuoteFounder} //TODO: connect proper one
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
           prospectusApproved={documentsByType["approved_prospectus"]}
+          foundersQuote={etoData.company.keyQuoteFounder}
           termSheet={documentsByType["termsheet_template"]}
           preMoneyValuation={etoData.preMoneyValuationEur}
-          status={etoData.state}
           etoStartDate={etoData.startDate}
           preEtoDuration={etoData.whitelistDurationDays}
           publicEtoDuration={etoData.publicDurationDays}

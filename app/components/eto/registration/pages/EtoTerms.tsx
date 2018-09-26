@@ -17,6 +17,7 @@ import {
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { EtoFormBase } from "../EtoFormBase";
+import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 
 interface IExternalProps {
   readonly: boolean;
@@ -198,7 +199,7 @@ export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.etoData,
+      stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

@@ -17,7 +17,6 @@ import {
   selectIsTermSheetSubmitted,
 } from "../../modules/eto-documents/selectors";
 import {
-  calculateGeneralEtoData,
   selectCombinedEtoCompanyData,
   selectEtoState,
   selectShouldEtoDataLoad,
@@ -37,6 +36,7 @@ import { UploadPamphletWidget } from "./dashboard/UploadPamphletWidget";
 import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
+import { calculateGeneralEtoData } from "../../modules/eto-flow/utils";
 
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
@@ -257,11 +257,11 @@ export const EtoDashboard = compose<React.SFC>(
       backupCodesVerified: selectBackupCodesVerified(s.auth),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
       requestStatus: selectKycRequestStatus(s.kyc),
-      etoState: selectEtoState(s.etoFlow),
+      etoState: selectEtoState(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoDocuments),
       isPamphletSubmitted: selectIsPamphletSubmitted(s.etoDocuments),
       isProspectusSubmitted: selectIsProspectusSubmitted(s.etoDocuments),
-      etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s.etoFlow)),
+      etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s)),
     }),
     dispatchToProps: dispatch => ({
       loadFileDataStart: () => dispatch(actions.etoDocuments.loadFileDataStart()),

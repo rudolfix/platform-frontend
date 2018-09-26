@@ -73,7 +73,7 @@ export function* loadEtoFileData({
         stateInfo,
       }),
     );
-    yield put(actions.etoFlow.loadDataStart());
+    yield put(actions.etoFlow.loadIssuerEto());
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO files data. Make sure you have completed KYC and email verification process.",

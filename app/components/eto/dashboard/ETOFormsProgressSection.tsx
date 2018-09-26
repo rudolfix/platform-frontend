@@ -4,6 +4,16 @@ import { Col } from "reactstrap";
 
 import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
 import {
+  selectIssuerCompany,
+  selectIssuerEto,
+  selectEtoState,
+  selectIsGeneralEtoLoading,
+  selectShouldEtoDataLoad,
+} from "../../../modules/eto-flow/selectors";
+import { appConnect } from "../../../store";
+import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
+import { etoRegisterRoutes } from "../registration/routes";
+import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,
   calculateEtoKeyIndividualsProgress,
@@ -14,15 +24,7 @@ import {
   calculateInvestmentTermsProgress,
   calculateLegalInformationProgress,
   calculateProductVisionProgress,
-  selectCompanyData,
-  selectEtoData,
-  selectEtoState,
-  selectIsGeneralEtoLoading,
-  selectShouldEtoDataLoad,
-} from "../../../modules/eto-flow/selectors";
-import { appConnect } from "../../../store";
-import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
-import { etoRegisterRoutes } from "../registration/routes";
+} from "../../../modules/eto-flow/utils";
 
 export interface IStateProps {
   etoStatus?: EtoState;
@@ -137,19 +139,19 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
 };
 
 export const ETOFormsProgressSection = appConnect<IStateProps, {}>({
-  stateToProps: s => ({
-    etoStatus: selectEtoState(s.etoFlow),
-    loadingData: selectIsGeneralEtoLoading(s),
-    shouldEtoDataLoad: selectShouldEtoDataLoad(s),
-    companyInformationProgress: calculateCompanyInformationProgress(selectCompanyData(s.etoFlow)),
-    etoTermsProgress: calculateEtoTermsProgress(selectEtoData(s.etoFlow)),
-    etoKeyIndividualsProgress: calculateEtoKeyIndividualsProgress(selectCompanyData(s.etoFlow)),
-    legalInformationProgress: calculateLegalInformationProgress(selectCompanyData(s.etoFlow)),
-    productVisionProgress: calculateProductVisionProgress(selectCompanyData(s.etoFlow)),
-    etoMediaProgress: calculateEtoMediaProgress(selectCompanyData(s.etoFlow)),
-    etoVotingRightProgress: calculateEtoVotingRightProgress(selectEtoData(s.etoFlow)),
-    etoEquityTokenInfoProgress: calculateEtoEquityTokenInfoProgress(selectEtoData(s.etoFlow)),
-    etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectCompanyData(s.etoFlow)),
-    etoInvestmentTermsProgress: calculateInvestmentTermsProgress(selectEtoData(s.etoFlow)),
+  stateToProps: state => ({
+    etoStatus: selectEtoState(state),
+    loadingData: selectIsGeneralEtoLoading(state),
+    shouldEtoDataLoad: selectShouldEtoDataLoad(state),
+    companyInformationProgress: calculateCompanyInformationProgress(selectIssuerCompany(state)),
+    etoTermsProgress: calculateEtoTermsProgress(selectIssuerEto(state)),
+    etoKeyIndividualsProgress: calculateEtoKeyIndividualsProgress(selectIssuerCompany(state)),
+    legalInformationProgress: calculateLegalInformationProgress(selectIssuerCompany(state)),
+    productVisionProgress: calculateProductVisionProgress(selectIssuerCompany(state)),
+    etoMediaProgress: calculateEtoMediaProgress(selectIssuerCompany(state)),
+    etoVotingRightProgress: calculateEtoVotingRightProgress(selectIssuerEto(state)),
+    etoEquityTokenInfoProgress: calculateEtoEquityTokenInfoProgress(selectIssuerEto(state)),
+    etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectIssuerCompany(state)),
+    etoInvestmentTermsProgress: calculateInvestmentTermsProgress(selectIssuerEto(state)),
   }),
 })(ETOFormsProgressSectionComponent);

@@ -25,6 +25,7 @@ import { EtoFormBase } from "../EtoFormBase";
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 import * as styles from "./KeyIndividuals.module.scss";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 
 interface IStateProps {
   loadingData: boolean;
@@ -213,7 +214,7 @@ export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
+      stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

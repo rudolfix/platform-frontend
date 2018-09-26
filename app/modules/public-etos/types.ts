@@ -1,4 +1,6 @@
 import {
+  TCompanyEtoData,
+  TEtoSpecsData,
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { DeepReadonlyObject } from "../../types";
@@ -34,4 +36,4 @@ export interface IEtoContractData {
   totalInvestment: IEtoTotalInvestment;
 }
 
-export type TEtoWithContract = TPublicEtoData & DeepReadonlyObject<{ contract?: IEtoContractData; }>;
+export type TEtoWithCompanyAndContract = TEtoSpecsData & { contract?: IEtoContractData; company: TCompanyEtoData };

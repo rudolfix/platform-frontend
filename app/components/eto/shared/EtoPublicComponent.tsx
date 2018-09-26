@@ -26,7 +26,7 @@ import { Cover } from "../publicView/Cover";
 import { EtoInvestmentTermsWidget } from "../publicView/EtoInvestmentTermsWidget";
 import { LegalInformationWidget } from "../publicView/LegalInformationWidget";
 import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
-import { TEtoWithContract } from "../../../modules/public-etos/types";
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 
 import * as icon_link from "../../../assets/img/inline_icons/social_link.svg";
 import * as token_icon from "../../../assets/img/token_icon.svg";
@@ -38,7 +38,7 @@ export const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#39465
 
 interface IProps {
   companyData: TCompanyEtoData;
-  etoData: TEtoWithContract;
+  etoData: TEtoWithCompanyAndContract;
   wallet?: IWalletState | undefined;
 }
 
@@ -133,8 +133,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           numberOfInvestors={0} //TODO: connect proper one
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
-          prospectusApproved={!!documentsByType["approved_prospectus"]}
-          termSheet={!!documentsByType["termsheet_template"]}
+          prospectusApproved={documentsByType["approved_prospectus"]}
+          termSheet={documentsByType["termsheet_template"]}
           preMoneyValuation={etoData.preMoneyValuationEur}
           status={etoData.state}
           etoStartDate={etoData.startDate}

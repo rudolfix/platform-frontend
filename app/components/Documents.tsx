@@ -17,8 +17,8 @@ import {
   selectEtoDocumentLoading,
 } from "../modules/eto-documents/selectors";
 import {
-  selectCurrentEtoState,
-  selectCurrentEtoTemplates,
+  selectEtoState,
+  selectIssuerEtoTemplates,
   selectEtoLoading,
 } from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
@@ -202,12 +202,12 @@ interface IDispatchProps {
 export const Documents = compose<React.SFC>(
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: s => ({
-      etoFilesData: selectEtoDocumentData(s.etoDocuments),
-      loadingData: selectEtoLoading(s.etoFlow),
-      etoFileLoading: selectEtoDocumentLoading(s.etoDocuments),
-      etoState: selectCurrentEtoState(s.etoFlow),
-      etoLinks: selectCurrentEtoTemplates(s.etoFlow),
+    stateToProps: state => ({
+      etoFilesData: selectEtoDocumentData(state.etoDocuments),
+      loadingData: selectEtoLoading(state.etoFlow),
+      etoFileLoading: selectEtoDocumentLoading(state.etoDocuments),
+      etoState: selectEtoState(state),
+      etoLinks: selectIssuerEtoTemplates(state),
     }),
     dispatchToProps: dispatch => ({
       generateTemplate: document => dispatch(actions.etoDocuments.generateTemplate(document)),

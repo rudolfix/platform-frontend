@@ -21,6 +21,7 @@ import {
 } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 
 interface IStateProps {
   loadingData: boolean;
@@ -161,7 +162,7 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
     stateToProps: state => ({
       loadingData: state.etoFlow.loading,
       savingData: state.etoFlow.saving,
-      company: state.etoFlow.companyData,
+      company: selectIssuerCompany(state) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

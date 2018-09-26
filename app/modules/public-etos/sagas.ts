@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 import { all, fork, put, select } from "redux-saga/effects";
-import { keyBy } from "lodash";
+import { compose, omit, keyBy, map } from "lodash/fp";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
-  EtoState,
+  EtoState, TCompanyEtoData, TEtoSpecsData,
   TPartialCompanyEtoData,
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
@@ -22,6 +22,7 @@ import {
   selectEtoById,
 } from "./selectors";
 import { convertToCalculatedContribution, convertToEtoTotalInvestment } from "./utils";
+import { Dictionary } from "../../types";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
@@ -31,20 +32,17 @@ export function* loadEtoPreview(
   const previewCode = action.payload.previewCode;
 
   try {
-    const etoResponse: IHttpResponse<TPublicEtoData> = yield apiEtoService.getEtoPreview(
+    const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEtoPreview(
       previewCode,
     );
     const eto = etoResponse.body;
-    const companyResponse: IHttpResponse<TPartialCompanyEtoData> = yield apiEtoService.getCompanyById(
+    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(
       eto.companyId!,
     );
     const company = companyResponse.body;
 
     yield put(
-      actions.publicEtos.setPublicEto({
-        ...eto,
-        company,
-      }),
+      actions.publicEtos.setPublicEto({ eto, company }),
     );
   } catch (e) {
     notificationCenter.error("Could not load ETO preview. Is the preview link correct?");
@@ -61,16 +59,15 @@ export function* loadEto(
   try {
     const etoId = action.payload.etoId;
 
-    const etoResponse: IHttpResponse<TPublicEtoData> = yield apiEtoService.getEto(etoId);
+    const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEto(etoId);
     const eto = etoResponse.body;
 
-    const companyResponse: IHttpResponse<
-      TPartialCompanyEtoData
-    > = yield apiEtoService.getCompanyById(eto.companyId);
+    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(eto.companyId);
     const company = companyResponse.body;
 
-    yield put(actions.publicEtos.setPublicEto({ ...eto, company }));
+    yield put(actions.publicEtos.setPublicEto({ eto, company }));
 
+    // Load contract data if eto is already on blockchain
     if (eto.state === EtoState.ON_CHAIN) {
       yield neuCall(loadEtoContact, eto);
     }
@@ -81,7 +78,7 @@ export function* loadEto(
   }
 }
 
-function* loadEtoContact({ contractsService, logger }: TGlobalDependencies, eto: TPublicEtoData): any {
+export function* loadEtoContact({ contractsService, logger }: TGlobalDependencies, eto: TPublicEtoData): any {
   try {
     if (eto.state !== EtoState.ON_CHAIN) {
       logger.error(new InvalidETOStateError( eto.state, EtoState.ON_CHAIN));
@@ -105,18 +102,30 @@ function* loadEtoContact({ contractsService, logger }: TGlobalDependencies, eto:
 function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
   try {
     const etosResponse: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
+    const etos = etosResponse.body;
 
-    const etos = keyBy(etosResponse.body, eto => eto.previewCode);
+    const companies = compose(
+      keyBy((eto: TCompanyEtoData) => eto.companyId),
+      map((eto: TPublicEtoData) => eto.company),
+    )(etos);
+
+    const etosByPreviewCode = compose(
+      keyBy((eto: TEtoSpecsData) => eto.previewCode),
+      // remove company prop from eto
+      // it's saved separately for consistency with other endpoints
+      omit('company')
+    )(etos);
+
     const order = etosResponse.body.map(eto => eto.previewCode);
 
     yield all(
       order
-        .map(id => etos[id])
+        .map(id => etosByPreviewCode[id])
         .filter(eto => eto.state === EtoState.ON_CHAIN)
         .map(eto => neuCall(loadEtoContact, eto))
     );
 
-    yield put(actions.publicEtos.setPublicEtos(etos));
+    yield put(actions.publicEtos.setPublicEtos({ etos: etosByPreviewCode, companies }));
     yield put(actions.publicEtos.setEtosDisplayOrder(order));
   } catch (e) {
     logger.error("ETOs could not be loaded", e);

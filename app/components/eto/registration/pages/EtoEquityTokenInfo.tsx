@@ -7,6 +7,7 @@ import { compose } from "redux";
 
 import {
   EtoEquityTokenInfoType,
+  TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -16,6 +17,7 @@ import { FormField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
 import { EtoFormBase } from "../EtoFormBase";
+import { selectIssuerCompany, selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 
 interface IExternalProps {
   readonly: boolean;
@@ -81,7 +83,7 @@ export const EtoEquityTokenInfo = compose<React.SFC<IExternalProps>>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.etoData,
+      stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

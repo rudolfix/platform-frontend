@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as Yup from "yup";
 
-import { getFormFractionDoneCalculator, getInitialDataForFractionCalculation } from "../selectors";
+import { getFormFractionDoneCalculator, getInitialDataForFractionCalculation } from "../utils";
 
 describe("eto-flow > selectors", () => {
   describe("selectFormFractionDone", () => {

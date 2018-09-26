@@ -7,12 +7,12 @@ import { withContainer } from "../../utils/withContainer";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
-import { selectEtoWithContract } from "../../modules/public-etos/selectors";
-import { TEtoWithContract } from "../../modules/public-etos/types";
+import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
+import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 
 interface IStateProps {
-  eto?: TEtoWithContract;
+  eto?: TEtoWithCompanyAndContract;
 }
 
 interface IRouterParams {
@@ -35,19 +35,14 @@ class EtoPreviewComponent extends React.Component<IProps> {
       return <LoadingIndicator />;
     }
 
-    return (
-      <EtoPublicComponent
-        companyData={this.props.eto.company as TCompanyEtoData}
-        etoData={this.props.eto}
-      />
-    );
+    return <EtoPublicComponent companyData={this.props.eto.company} etoData={this.props.eto} />;
   }
 }
 
 export const EtoPreview = compose<React.SFC<IRouterParams>>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
-      eto: selectEtoWithContract(state, props.previewCode),
+      eto: selectEtoWithCompanyAndContract(state, props.previewCode),
     }),
     dispatchToProps: dispatch => ({
       loadEtoPreview: (previewCode: string) =>

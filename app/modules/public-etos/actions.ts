@@ -1,10 +1,11 @@
 import {
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
+  TCompanyEtoData,
+  TEtoSpecsData,
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
 import { ICalculatedContribution, IEtoContractData } from "./types";
+import { Dictionary } from "../../types";
 
 export const etoActions = {
   // public actions
@@ -15,9 +16,15 @@ export const etoActions = {
   loadCalculatedContribution: (etoId: string, investmentEurUlps?: string) =>
     createAction("PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION", { etoId, investmentEurUlps }),
   // state mutations
-  setPublicEtos: (etos: { [etoId: string]: TPublicEtoData }) =>
-    createAction("PUBLIC_ETOS_SET_PUBLIC_ETOS", { etos }),
-  setPublicEto: (eto: TPublicEtoData) => createAction("PUBLIC_ETOS_SET_PUBLIC_ETO", { eto }),
+  setPublicEtos: ({
+    etos,
+    companies,
+  }: {
+    etos: Dictionary<TEtoSpecsData>;
+    companies: Dictionary<TCompanyEtoData>;
+  }) => createAction("PUBLIC_ETOS_SET_PUBLIC_ETOS", { etos, companies }),
+  setPublicEto: ({ eto, company }: { eto: TEtoSpecsData; company: TCompanyEtoData }) =>
+    createAction("PUBLIC_ETOS_SET_PUBLIC_ETO", { eto, company }),
   setEtosDisplayOrder: (order: string[]) =>
     createAction("PUBLIC_ETOS_SET_DISPLAY_ORDER", { order }),
   setCalculatedContribution: (previewCode: string, contrib: ICalculatedContribution) =>

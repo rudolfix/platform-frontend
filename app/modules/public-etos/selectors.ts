@@ -1,7 +1,7 @@
 import { find } from 'lodash/fp';
 import { IAppState } from "../../store";
 import { IPublicEtoState } from "./reducer";
-import { TEtoWithContract } from "./types";
+import { TEtoWithCompanyAndContract } from "./types";
 
 const selectPublicEtosState = (state: IAppState) => state.publicEtos;
 
@@ -15,10 +15,19 @@ const selectEtoPreviewCode = (state: IPublicEtoState, etoId: string) => {
   return undefined;
 };
 
+export const selectEto = (state: IPublicEtoState, previewCode: string) => state.publicEtos[previewCode];
+
 export const selectEtoById = (state: IPublicEtoState, etoId: string) => state.publicEtos[etoId];
 
-export const selectCalculatedContributionByEtoId = (state: IPublicEtoState, etoId: string) =>
-  state.calculatedContributions[etoId];
+export const selectCalculatedContributionByEtoId = (state: IPublicEtoState, etoId: string) => {
+  const previewCode = selectEtoPreviewCode(state, etoId);
+
+  if (previewCode) {
+    return state.calculatedContributions[previewCode];
+  }
+
+  return undefined;
+};
 
 export const selectEquityTokenCountByEtoId = (state: IPublicEtoState, etoId: string) => {
   const contrib = selectCalculatedContributionByEtoId(state, etoId);
@@ -30,13 +39,14 @@ export const selectNeuRewardUlpsByEtoId = (state: IPublicEtoState, etoId: string
   return contrib && contrib.neuRewardUlps.toString();
 };
 
-export const selectEtoWithContract = (state: IAppState, previewCode: string): TEtoWithContract | undefined => {
+export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode: string): TEtoWithCompanyAndContract | undefined => {
   const publicEtosState = selectPublicEtosState(state);
   const eto = publicEtosState.publicEtos[previewCode];
 
   if (eto) {
     return {
       ...eto,
+      company: publicEtosState.companies[eto.companyId]!,
       contract: publicEtosState.contracts[previewCode]
     };
   }
@@ -44,19 +54,19 @@ export const selectEtoWithContract = (state: IAppState, previewCode: string): TE
   return undefined;
 };
 
-export const selectEtoWithContractById = (state: IAppState, etoId: string): TEtoWithContract | undefined => {
+export const selectEtoWithCompanyAndContractById = (state: IAppState, etoId: string): TEtoWithCompanyAndContract | undefined => {
   const publicEtosState = selectPublicEtosState(state);
   const previewCode = selectEtoPreviewCode(publicEtosState, etoId);
 
   if (previewCode) {
-    return selectEtoWithContract(state, previewCode);
+    return selectEtoWithCompanyAndContract(state, previewCode);
   }
 
   return undefined;
 };
 
-export const selectPublicEtos = (state: IAppState): Array<TEtoWithContract> => {
+export const selectPublicEtos = (state: IAppState): Array<TEtoWithCompanyAndContract> => {
   const publicEtosState = selectPublicEtosState(state);
 
-  return publicEtosState.displayOrder.map(id => selectEtoWithContract(state, id)!).filter(Boolean);
+  return publicEtosState.displayOrder.map(id => selectEtoWithCompanyAndContract(state, id)!).filter(Boolean);
 };

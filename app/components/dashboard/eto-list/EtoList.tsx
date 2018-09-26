@@ -7,7 +7,7 @@ import { compose } from "redux";
 import { EtoState, TPublicEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectPublicEtos } from "../../../modules/public-etos/selectors";
-import { TEtoWithContract } from "../../../modules/public-etos/types";
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { IWalletState } from "../../../modules/wallet/reducer";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -16,7 +16,7 @@ import { SectionHeader } from "../../shared/SectionHeader";
 import { setDisplayName } from "recompose";
 
 interface IStateProps {
-  etos: TEtoWithContract[];
+  etos: TEtoWithCompanyAndContract[];
   wallet: IWalletState;
 }
 

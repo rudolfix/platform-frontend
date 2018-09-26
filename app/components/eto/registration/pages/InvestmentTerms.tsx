@@ -17,6 +17,7 @@ import { FormField } from "../../../shared/forms";
 import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { EtoFormBase } from "../EtoFormBase";
+import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 
 interface IExternalProps {
   readonly: boolean;
@@ -234,7 +235,7 @@ export const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.etoData,
+      stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

@@ -8,7 +8,8 @@ import {
   getFormFractionDoneCalculator,
   IProgressOptions,
   ProgressCalculator,
-} from "../../../modules/eto-flow/selectors";
+} from "../../../modules/eto-flow/utils";
+
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
 

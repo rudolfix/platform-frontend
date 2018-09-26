@@ -9,15 +9,23 @@ import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { loadEtoContact } from "../public-etos/sagas";
+import { selectIssuerCompany, selectIssuerEto } from "./selectors";
 
-export function* loadEtoData({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
+export function* loadIssuerEto({ apiEtoService, notificationCenter }: TGlobalDependencies): any {
   try {
-    const etoCompanyData: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompany();
-    const etoData: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getMyEto();
+    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompany();
+    const company = companyResponse.body;
+    const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getMyEto();
+    const eto = etoResponse.body;
 
-    yield put(
-      actions.etoFlow.loadData({ etoData: etoData.body, companyData: etoCompanyData.body }),
-    );
+    yield put(actions.publicEtos.setPublicEto({ eto, company }));
+
+    yield put(actions.etoFlow.setIssuerEtoPreviewCode(eto.previewCode));
+
+    if (eto.state === EtoState.ON_CHAIN) {
+      yield neuCall(loadEtoContact, eto);
+    }
   } catch (e) {
     notificationCenter.error(
       "Could not access ETO data. Make sure you have completed KYC and email verification process.",
@@ -42,7 +50,7 @@ export function* changeBookBuildingStatus(
     logger.error("Failed to send ETO data", e);
     notificationCenter.error("Failed to send ETO data");
   } finally {
-    yield put(actions.etoFlow.loadDataStart());
+    yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -53,8 +61,8 @@ export function* saveEtoData(
 ): any {
   if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
   try {
-    const currentCompanyData = yield effects.select((s: IAppState) => s.etoFlow.companyData);
-    const currentEtoData = yield effects.select((s: IAppState) => s.etoFlow.etoData);
+    const currentCompanyData: TCompanyEtoData = yield effects.select(selectIssuerCompany);
+    const currentEtoData: TEtoSpecsData = yield effects.select(selectIssuerEto);
 
     yield apiEtoService.putCompany({
       ...currentCompanyData,
@@ -69,7 +77,7 @@ export function* saveEtoData(
     logger.error("Failed to send ETO data", e);
     notificationCenter.error("Failed to send ETO data");
   } finally {
-    yield put(actions.etoFlow.loadDataStart());
+    yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -98,13 +106,13 @@ export function* submitEtoData(
     logger.error("Failed to send ETO data", e);
     notificationCenter.error("Failed to send ETO data");
   } finally {
-    yield put(actions.etoFlow.loadDataStart());
+    yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   }
 }
 
 export function* etoFlowSagas(): any {
-  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_DATA_START", loadEtoData);
+  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_ISSUER_ETO", loadIssuerEto);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);

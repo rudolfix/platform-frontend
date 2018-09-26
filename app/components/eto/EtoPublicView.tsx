@@ -1,7 +1,6 @@
 import * as React from "react";
 import { branch, compose } from "recompose";
 
-import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
@@ -13,11 +12,11 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
-import { TEtoWithContract } from "../../modules/public-etos/types";
-import { selectEtoWithContractById } from "../../modules/public-etos/selectors";
+import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
+import { selectEtoWithCompanyAndContractById } from "../../modules/public-etos/selectors";
 
 interface IStateProps {
-  eto?: TEtoWithContract;
+  eto?: TEtoWithCompanyAndContract;
   userType?: TUserType;
   wallet?: IWalletState;
 }
@@ -41,7 +40,7 @@ class EtoPreviewComponent extends React.Component<IProps> {
     return (
       <EtoPublicComponent
         wallet={this.props.wallet}
-        companyData={this.props.eto.company as TCompanyEtoData}
+        companyData={this.props.eto.company}
         etoData={this.props.eto}
       />
     );
@@ -52,7 +51,7 @@ export const EtoPublicView = compose<IProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state.auth),
-      eto: selectEtoWithContractById(state, props.etoId),
+      eto: selectEtoWithCompanyAndContractById(state, props.etoId),
       wallet: state.wallet,
     }),
   }),

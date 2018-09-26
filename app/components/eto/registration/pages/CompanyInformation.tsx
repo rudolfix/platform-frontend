@@ -17,6 +17,7 @@ import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingle
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 
 interface IStateProps {
   loadingData: boolean;
@@ -113,7 +114,7 @@ export const EtoRegistrationCompanyInformation = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
+      stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

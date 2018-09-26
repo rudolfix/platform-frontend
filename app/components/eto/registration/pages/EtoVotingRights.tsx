@@ -16,6 +16,7 @@ import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { EtoFormBase } from "../EtoFormBase";
+import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 
 // TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
 const TOKEN_HOLDERS_RIGHTS = {
@@ -94,7 +95,7 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.etoData,
+      stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

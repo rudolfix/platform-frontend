@@ -7,13 +7,13 @@ import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
 import { Panel } from "../../shared/Panel";
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { CHART_COLORS } from "../shared/EtoPublicComponent";
-import { TEtoWithContract } from "../../../modules/public-etos/types";
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 
 import * as styles from "./LegalInformationWidget.module.scss";
 
 interface IProps {
   companyData: TCompanyEtoData;
-  etoData: TEtoWithContract;
+  etoData: TEtoWithCompanyAndContract;
 }
 
 export const LegalInformationWidget: React.SFC<IProps> = ({ companyData, etoData }) => {

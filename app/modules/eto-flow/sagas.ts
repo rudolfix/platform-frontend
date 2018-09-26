@@ -5,11 +5,10 @@ import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants"
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { EtoState, TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
-import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
-import { neuCall, neuTakeEvery } from "../sagas";
 import { loadEtoContact } from "../public-etos/sagas";
+import { neuCall, neuTakeEvery } from "../sagas";
 import { selectIssuerCompany, selectIssuerEto } from "./selectors";
 
 export function* loadIssuerEto({ apiEtoService, notificationCenter }: TGlobalDependencies): any {

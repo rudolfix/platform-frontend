@@ -4,15 +4,12 @@ import { Col } from "reactstrap";
 
 import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
 import {
+  selectIsGeneralEtoLoading,
   selectIssuerCompany,
   selectIssuerEto,
-  selectEtoState,
-  selectIsGeneralEtoLoading,
+  selectIssuerEtoState,
   selectShouldEtoDataLoad,
 } from "../../../modules/eto-flow/selectors";
-import { appConnect } from "../../../store";
-import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
-import { etoRegisterRoutes } from "../registration/routes";
 import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,
@@ -25,6 +22,9 @@ import {
   calculateLegalInformationProgress,
   calculateProductVisionProgress,
 } from "../../../modules/eto-flow/utils";
+import { appConnect } from "../../../store";
+import { EtoFormProgressWidget } from "../../shared/EtoFormProgressWidget";
+import { etoRegisterRoutes } from "../registration/routes";
 
 export interface IStateProps {
   etoStatus?: EtoState;
@@ -140,7 +140,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
 
 export const ETOFormsProgressSection = appConnect<IStateProps, {}>({
   stateToProps: state => ({
-    etoStatus: selectEtoState(state),
+    etoStatus: selectIssuerEtoState(state),
     loadingData: selectIsGeneralEtoLoading(state),
     shouldEtoDataLoad: selectShouldEtoDataLoad(state),
     companyInformationProgress: calculateCompanyInformationProgress(selectIssuerCompany(state)),

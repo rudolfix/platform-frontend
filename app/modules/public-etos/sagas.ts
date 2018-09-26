@@ -1,12 +1,13 @@
 import BigNumber from "bignumber.js";
+import { compose, keyBy, map, omit } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
-import { compose, omit, keyBy, map } from "lodash/fp";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
-  EtoState, TCompanyEtoData, TEtoSpecsData,
-  TPartialCompanyEtoData,
+  EtoState,
+  TCompanyEtoData,
+  TEtoSpecsData,
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
@@ -19,7 +20,6 @@ import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
 import { selectCalculatedContributionByEtoId, selectEtoById } from "./selectors";
 import { convertToCalculatedContribution, convertToEtoTotalInvestment } from "./utils";
-import { Dictionary } from "../../types";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
@@ -34,13 +34,11 @@ export function* loadEtoPreview(
     );
     const eto = etoResponse.body;
     const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(
-      eto.companyId!,
+      eto.companyId,
     );
     const company = companyResponse.body;
 
-    yield put(
-      actions.publicEtos.setPublicEto({ eto, company }),
-    );
+    yield put(actions.publicEtos.setPublicEto({ eto, company }));
   } catch (e) {
     notificationCenter.error("Could not load ETO preview. Is the preview link correct?");
     yield put(actions.routing.goToDashboard());
@@ -59,7 +57,9 @@ export function* loadEto(
     const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEto(etoId);
     const eto = etoResponse.body;
 
-    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(eto.companyId);
+    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(
+      eto.companyId,
+    );
     const company = companyResponse.body;
 
     yield put(actions.publicEtos.setPublicEto({ eto, company }));
@@ -90,10 +90,12 @@ export function* loadEtoContact(
     const timedStateRaw = yield etoContract.timedState;
     const totalInvestmentRaw = yield etoContract.totalInvestment();
 
-    yield put(actions.publicEtos.setEtoDataFromContract(eto.previewCode, {
-      timedState: timedStateRaw.toNumber(),
-      totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
-    }));
+    yield put(
+      actions.publicEtos.setEtoDataFromContract(eto.previewCode, {
+        timedState: timedStateRaw.toNumber(),
+        totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
+      }),
+    );
   } catch (e) {
     logger.error("ETO contract data could not be loaded", e);
   }
@@ -113,7 +115,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
       keyBy((eto: TEtoSpecsData) => eto.previewCode),
       // remove company prop from eto
       // it's saved separately for consistency with other endpoints
-      omit('company')
+      omit("company"),
     )(etos);
 
     const order = etosResponse.body.map(eto => eto.previewCode);

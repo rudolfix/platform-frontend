@@ -7,6 +7,7 @@ import { compose } from "redux";
 
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { FormCheckbox, FormField, FormRadioButton, FormTextArea } from "../../../shared/forms";
@@ -17,7 +18,6 @@ import {
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormRange } from "../../../shared/forms/formField/FormRange";
 import { EtoFormBase } from "../EtoFormBase";
-import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 
 interface IExternalProps {
   readonly: boolean;

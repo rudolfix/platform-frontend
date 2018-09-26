@@ -1,11 +1,7 @@
-import {
-  TCompanyEtoData,
-  TEtoSpecsData,
-  TPublicEtoData,
-} from "../../lib/api/eto/EtoApi.interfaces";
+import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
+import { Dictionary } from "../../types";
 import { createAction, createSimpleAction } from "../actionsUtils";
 import { ICalculatedContribution, IEtoContractData } from "./types";
-import { Dictionary } from "../../types";
 
 export const etoActions = {
   // public actions

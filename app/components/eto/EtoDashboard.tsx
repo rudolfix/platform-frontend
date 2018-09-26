@@ -18,9 +18,10 @@ import {
 } from "../../modules/eto-documents/selectors";
 import {
   selectCombinedEtoCompanyData,
-  selectEtoState,
+  selectIssuerEtoState,
   selectShouldEtoDataLoad,
 } from "../../modules/eto-flow/selectors";
+import { calculateGeneralEtoData } from "../../modules/eto-flow/utils";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -36,7 +37,6 @@ import { UploadPamphletWidget } from "./dashboard/UploadPamphletWidget";
 import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
-import { calculateGeneralEtoData } from "../../modules/eto-flow/utils";
 
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
@@ -257,7 +257,7 @@ export const EtoDashboard = compose<React.SFC>(
       backupCodesVerified: selectBackupCodesVerified(s.auth),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
       requestStatus: selectKycRequestStatus(s.kyc),
-      etoState: selectEtoState(s),
+      etoState: selectIssuerEtoState(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoDocuments),
       isPamphletSubmitted: selectIsPamphletSubmitted(s.etoDocuments),
       isProspectusSubmitted: selectIsProspectusSubmitted(s.etoDocuments),

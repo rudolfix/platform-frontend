@@ -10,13 +10,13 @@ import {
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormToggle } from "../../../shared/forms/formField/FormToggle";
 import { EtoFormBase } from "../EtoFormBase";
-import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 
 // TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
 const TOKEN_HOLDERS_RIGHTS = {

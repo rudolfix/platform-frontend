@@ -2,14 +2,13 @@ import * as React from "react";
 import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
+import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
+import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
-import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
-import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
-import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 
 interface IStateProps {
   eto?: TEtoWithCompanyAndContract;

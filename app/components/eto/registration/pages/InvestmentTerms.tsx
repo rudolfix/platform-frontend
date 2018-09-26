@@ -10,6 +10,7 @@ import {
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/buttons";
@@ -17,7 +18,6 @@ import { FormField } from "../../../shared/forms";
 import { FormTransformingField } from "../../../shared/forms/formField/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { EtoFormBase } from "../EtoFormBase";
-import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 
 interface IExternalProps {
   readonly: boolean;

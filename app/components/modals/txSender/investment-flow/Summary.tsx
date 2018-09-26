@@ -11,8 +11,6 @@ import {
 } from "../../../../modules/investmentFlow/selectors";
 import {
   selectEquityTokenCountByEtoId,
-  selectEtoById,
-  selectEtoWithCompanyAndContract,
   selectEtoWithCompanyAndContractById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/public-etos/selectors";
@@ -150,7 +148,7 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
     const eto = selectEtoWithCompanyAndContractById(state, i.etoId)!;
     return {
       agreementUrl: "fufu",
-      companyName: eto.company.name!,
+      companyName: eto.company.name,
       etoAddress: eto.etoId,
       investmentEth: selectEthValueUlps(i),
       investmentEur: selectEurValueUlps(i),

@@ -1,9 +1,6 @@
 import BigNumber from "bignumber.js";
 
-import {
-  TCompanyEtoData,
-  TEtoSpecsData,
-} from "../../lib/api/eto/EtoApi.interfaces";
+import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
 
 export interface ICalculatedContribution {
   isWhitelisted: boolean;
@@ -35,4 +32,7 @@ export interface IEtoContractData {
   totalInvestment: IEtoTotalInvestment;
 }
 
-export type TEtoWithCompanyAndContract = TEtoSpecsData & { contract?: IEtoContractData; company: TCompanyEtoData };
+export type TEtoWithCompanyAndContract = TEtoSpecsData & {
+  contract?: IEtoContractData;
+  company: TCompanyEtoData;
+};

@@ -17,9 +17,9 @@ import {
   selectEtoDocumentLoading,
 } from "../modules/eto-documents/selectors";
 import {
-  selectEtoState,
-  selectIssuerEtoTemplates,
   selectEtoLoading,
+  selectIssuerEtoState,
+  selectIssuerEtoTemplates,
 } from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
 import { DeepPartial } from "../types";
@@ -206,7 +206,7 @@ export const Documents = compose<React.SFC>(
       etoFilesData: selectEtoDocumentData(state.etoDocuments),
       loadingData: selectEtoLoading(state.etoFlow),
       etoFileLoading: selectEtoDocumentLoading(state.etoDocuments),
-      etoState: selectEtoState(state),
+      etoState: selectIssuerEtoState(state),
       etoLinks: selectIssuerEtoTemplates(state),
     }),
     dispatchToProps: dispatch => ({

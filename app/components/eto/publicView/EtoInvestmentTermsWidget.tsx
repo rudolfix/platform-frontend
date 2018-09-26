@@ -1,8 +1,8 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { Document } from "../../shared/Document";
 import { Panel } from "../../shared/Panel";
 

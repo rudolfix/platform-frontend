@@ -3,15 +3,15 @@ import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
 import { selectEtoDocumentData } from "../../modules/eto-documents/selectors";
+import {
+  selectIssuerCompany,
+  selectIssuerEtoWithCompanyAndContract,
+} from "../../modules/eto-flow/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
-import {
-  selectIssuerCompany,
-  selectIssuerEtoWithCompanyAndContract,
-} from "../../modules/eto-flow/selectors";
 
 export const EtoIssuerView = compose<React.SFC>(
   onEnterAction({

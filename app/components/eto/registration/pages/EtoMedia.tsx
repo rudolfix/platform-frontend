@@ -7,6 +7,7 @@ import { compose } from "redux";
 
 import { EtoMediaType, TPartialCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
@@ -16,7 +17,6 @@ import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/Soc
 import { Tooltip } from "../../../shared/Tooltip";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
-import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 
 interface IStateProps {
   loadingData: boolean;

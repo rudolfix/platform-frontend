@@ -4,7 +4,8 @@ import { createAction, createSimpleAction } from "../actionsUtils";
 export const etoFlowActions = {
   loadIssuerEto: () => createSimpleAction("ETO_FLOW_LOAD_ISSUER_ETO"),
   submitDataStart: () => createSimpleAction("ETO_FLOW_SUBMIT_DATA_START"),
-  setIssuerEtoPreviewCode: (etoPreviewCode: string) => createAction("ETO_FLOW_SET_ID", { etoPreviewCode }),
+  setIssuerEtoPreviewCode: (etoPreviewCode: string) =>
+    createAction("ETO_FLOW_SET_ID", { etoPreviewCode }),
   saveDataStart: (data: Partial<TGeneralEtoData>) =>
     createAction("ETO_FLOW_SAVE_DATA_START", { data }),
   changeBookBuildingStatus: (status: boolean) =>

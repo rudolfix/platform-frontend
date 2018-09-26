@@ -10,6 +10,7 @@ import {
   TPartialCompanyEtoData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { Button } from "../../../shared/buttons";
@@ -21,7 +22,6 @@ import {
 } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
-import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 
 interface IStateProps {
   loadingData: boolean;

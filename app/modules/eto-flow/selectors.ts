@@ -1,16 +1,17 @@
-import { IAppState } from "../../store";
 import {
-  EtoState, TCompanyEtoData,
+  EtoState,
+  TCompanyEtoData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { TEtoDocumentTemplates } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { IAppState } from "../../store";
 import { DeepPartial } from "../../types";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectEtoDocumentLoading } from "../eto-documents/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
-import { IEtoFlowState } from "./reducer";
 import { selectEto, selectEtoWithCompanyAndContract } from "../public-etos/selectors";
+import { IEtoFlowState } from "./reducer";
 
 const selectIssuerEtoPreviewCode = (state: IEtoFlowState) => state.etoPreviewCode;
 
@@ -44,7 +45,7 @@ export const selectIsBookBuilding = (state: IAppState): boolean | undefined => {
   return undefined;
 };
 
-export const selectEtoState = (state: IAppState): EtoState | undefined => {
+export const selectIssuerEtoState = (state: IAppState): EtoState | undefined => {
   const eto = selectIssuerEto(state);
 
   if (eto) {

@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { EtoState, TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { IWalletState } from "../../../modules/wallet/reducer";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
@@ -26,7 +27,6 @@ import { Cover } from "../publicView/Cover";
 import { EtoInvestmentTermsWidget } from "../publicView/EtoInvestmentTermsWidget";
 import { LegalInformationWidget } from "../publicView/LegalInformationWidget";
 import { selectActiveCarouselTab } from "./EtoPublicComponent.utils";
-import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 
 import * as icon_link from "../../../assets/img/inline_icons/social_link.svg";
 import * as token_icon from "../../../assets/img/token_icon.svg";

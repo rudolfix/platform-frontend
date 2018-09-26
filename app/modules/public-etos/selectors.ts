@@ -2,6 +2,7 @@ import { find } from "lodash/fp";
 import { IAppState } from "../../store";
 import { IPublicEtoState } from "./reducer";
 import { TEtoWithCompanyAndContract } from "./types";
+import { createSelector } from "reselect";
 
 const selectPublicEtosState = (state: IAppState) => state.publicEtos;
 
@@ -72,10 +73,14 @@ export const selectEtoWithCompanyAndContractById = (
   return undefined;
 };
 
-export const selectPublicEtos = (state: IAppState): Array<TEtoWithCompanyAndContract> => {
+export const selectPublicEtos = (state: IAppState): Array<TEtoWithCompanyAndContract> | undefined => {
   const publicEtosState = selectPublicEtosState(state);
 
-  return publicEtosState.displayOrder
-    .map(id => selectEtoWithCompanyAndContract(state, id)!)
-    .filter(Boolean);
+  if (publicEtosState.displayOrder) {
+    return publicEtosState.displayOrder
+      .map(id => selectEtoWithCompanyAndContract(state, id)!)
+      .filter(Boolean);
+  }
+
+  return undefined;
 };

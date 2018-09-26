@@ -8,7 +8,7 @@ export interface IPublicEtoState {
   companies: { [companyId: string]: TCompanyEtoData | undefined };
   calculatedContributions: { [previewCode: string]: ICalculatedContribution };
   contracts: { [previewCode: string]: IEtoContractData };
-  displayOrder: string[];
+  displayOrder: string[] | undefined;
 }
 
 export const etoFlowInitialState: IPublicEtoState = {
@@ -16,7 +16,7 @@ export const etoFlowInitialState: IPublicEtoState = {
   companies: {},
   calculatedContributions: {},
   contracts: {},
-  displayOrder: [],
+  displayOrder: undefined,
 };
 
 export const publicEtosReducer: AppReducer<IPublicEtoState> = (

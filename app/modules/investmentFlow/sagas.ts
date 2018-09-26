@@ -136,6 +136,7 @@ function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
   yield put(actions.investmentFlow.resetInvestment());
   yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
+  yield put(actions.kyc.kycLoadClientData());
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.startInvestment());
   yield setGasPrice();

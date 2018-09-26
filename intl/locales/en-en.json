@@ -347,6 +347,7 @@
   "investment-flow.bank-transfer.country": "country",
   "investment-flow.bank-transfer.direct-bank-transfer": "direct bank transfer",
   "investment-flow.bank-transfer.from-account": "from account",
+  "investment-flow.bank-transfer.gas-stipend": "I Agree to add 10 EUR to investment amount that will be converted into ETH gas stipend for future transactions on the platform.",
   "investment-flow.bank-transfer.general-instructions": "Investments via bank transfer take approx 2-3 to clear. Once investment is received we will send you an email confirmation and will issue your tokens to your account. If the investment is not recieved before the end of the sale your money will be returned to your bank account in 1-2 days.",
   "investment-flow.bank-transfer.iban": "IBAN",
   "investment-flow.bank-transfer.recipient": "recipient",

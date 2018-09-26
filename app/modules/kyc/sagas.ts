@@ -27,6 +27,11 @@ import {
   selectKycRequestStatus,
 } from "./selectors";
 
+function* loadClientData(): any {
+  yield put(actions.kyc.kycLoadIndividualData())
+  yield put(actions.kyc.kycLoadBusinessData())
+}
+
 /**
  * whole watcher feature is just a temporary workaround for a lack of real time communication with backend
  */
@@ -605,6 +610,8 @@ function* loadForOneOfTheKYCRequestsToLoad(): any {
 }
 
 export function* kycSagas(): any {
+  yield fork(neuTakeEvery, "KYC_LOAD_CLIENT_DATA", loadClientData);
+
   yield fork(neuTakeEvery, "KYC_LOAD_INDIVIDUAL_DATA", loadIndividualData);
   yield fork(neuTakeEvery, "KYC_SUBMIT_INDIVIDUAL_FORM", submitIndividualData);
   yield fork(neuTakeEvery, "KYC_UPLOAD_INDIVIDUAL_FILE", uploadIndividualFile);

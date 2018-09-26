@@ -26,4 +26,6 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_SET_IS_INPUT_VALIDATED", { isValidated }),
   setBankTransferFlowState: (state: EBankTransferFlowState) =>
     createAction("INVESTMENT_FLOW_SET_BANK_TRANSFER_FLOW_STATE", { state }),
+  toggleBankTransferGasStipend: () =>
+    createSimpleAction("INVESTMENT_FLOW_TOGGLE_BANK_TRANSFER_GAS_STIPEND"),
 };

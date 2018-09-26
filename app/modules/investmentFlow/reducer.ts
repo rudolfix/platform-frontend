@@ -39,7 +39,8 @@ export interface IInvestmentFlowState {
   gasAmount: string;
   gasPrice: string;
   isValidatedInput: boolean;
-  bankTransferFlow?: EBankTransferFlowState;
+  bankTransferFlowState?: EBankTransferFlowState;
+  bankTransferGasStipend?: boolean
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
@@ -101,7 +102,12 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case "INVESTMENT_FLOW_SET_BANK_TRANSFER_FLOW_STATE":
       return {
         ...state,
-        bankTransferFlow: action.payload.state,
+        bankTransferFlowState: action.payload.state,
+      };
+    case "INVESTMENT_FLOW_TOGGLE_BANK_TRANSFER_GAS_STIPEND":
+      return {
+        ...state,
+        bankTransferGasStipend: !state.bankTransferGasStipend,
       };
   }
 

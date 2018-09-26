@@ -23,7 +23,7 @@ const summaryData = {
 
 storiesOf("Investment/Bank Transfer", module)
 .add("Details", () => (
-  <BankTransferDetailsComponent onAccept={() => {}} {...detailsData} />
+  <BankTransferDetailsComponent onAccept={() => {}} onGasStipendChange={() => {}} {...detailsData} />
 ))
 .add("Summary", () => (
   <BankTransferSummaryComponent {...summaryData} />

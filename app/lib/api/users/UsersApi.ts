@@ -23,14 +23,12 @@ export class EmailAlreadyExists extends UserApiError {}
 
 const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
   ...userApiResponse,
-  walletType:
-    (userApiResponse.walletType
-      ? (userApiResponse.walletType.toUpperCase() as WalletType)
-      : WalletType.UNKNOWN) || undefined,
-  walletSubtype:
-    (userApiResponse.walletType
-      ? (userApiResponse.walletSubtype.toUpperCase() as WalletSubType)
-      : WalletSubType.UNKNOWN) || undefined,
+  walletType: userApiResponse.walletType
+    ? (userApiResponse.walletType.toUpperCase() as WalletType)
+    : WalletType.UNKNOWN,
+  walletSubtype: userApiResponse.walletType
+    ? (userApiResponse.walletSubtype.toUpperCase() as WalletSubType)
+    : WalletSubType.UNKNOWN,
 });
 
 @injectable()
@@ -47,7 +45,7 @@ export class UsersApi {
       ? {
           ...newUser,
           walletType: newUser.walletType.toLowerCase(),
-          walletSubtype: newUser.walletSubtype ? newUser.walletSubtype.toLowerCase() : undefined,
+          walletSubtype: newUser.walletSubtype.toLowerCase(),
         }
       : {};
     const response = await this.httpClient.post<IUser>({
@@ -110,9 +108,7 @@ export class UsersApi {
       ? {
           ...updatedUser,
           walletType: updatedUser.walletType.toLocaleLowerCase(),
-          walletSubtype: updatedUser.walletSubtype
-            ? updatedUser.walletSubtype.toLocaleLowerCase()
-            : undefined,
+          walletSubtype: updatedUser.walletSubtype.toLocaleLowerCase(),
         }
       : {};
     const response = await this.httpClient.put<IUser>({

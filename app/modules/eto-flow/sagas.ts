@@ -72,6 +72,8 @@ export function* saveEtoData(
         ...currentEtoData,
         ...action.payload.data.etoData,
       });
+    yield put(actions.etoFlow.loadDataStart());
+    yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error("Failed to send ETO data", e);
     notificationCenter.error("Failed to send ETO data");

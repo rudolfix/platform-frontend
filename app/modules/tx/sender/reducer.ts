@@ -1,7 +1,14 @@
 import { AppReducer } from "../../../store";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
 
-export type TxSenderType = "WITHDRAW" | "INVEST";
+// export type TxSenderType = "WITHDRAW" | "INVEST" | "UPGRADE";
+
+export enum ETxSenderType {
+  WITHDRAW = "WITHDRAW",
+  INVEST = "INVEST",
+  UPGRADE_EUR = "UPGRADE_ETH",
+  UPGRADE_ETH = "UPGRADE_EUR",
+}
 
 export type TxSenderState =
   | "UNINITIALIZED"
@@ -17,7 +24,7 @@ export type TxSenderState =
 
 export interface ITxSenderState {
   state: TxSenderState;
-  type?: TxSenderType;
+  type?: ETxSenderType;
   txDetails?: ITxData;
   blockId?: number;
   txHash?: string;

@@ -23,12 +23,29 @@ import { updateTxs } from "../monitor/sagas";
 import { OutOfGasError } from "./../../../lib/web3/Web3Adapter";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
 import { selectEtherTokenBalance } from "./../../wallet/selectors";
-import { TxSenderType } from "./reducer";
+import { ETxSenderType } from "./reducer";
 import { selectTxDetails, selectTxType } from "./selectors";
+import { ETokenType } from "./actions";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
     yield neuCall(txSendSaga, "WITHDRAW");
+    logger.info("Withdrawing successful");
+  } catch (e) {
+    logger.warn("Withdrawing cancelled", e);
+  }
+}
+
+export function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "TX_SENDER_START_UPGRADE_ETH") return;
+
+  try {
+    if (action.payload === ETokenType.EURO) {
+      yield neuCall(txSendSaga, "UPGRADE_EURO");
+    } else {
+      yield neuCall(txSendSaga, "UPGRADE_ETHER");
+    }
+
     logger.info("Withdrawing successful");
   } catch (e) {
     logger.warn("Withdrawing cancelled", e);
@@ -44,7 +61,7 @@ export function* investSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
-export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
+export function* txSendSaga(_: TGlobalDependencies, type: ETxSenderType): any {
   const { result, cancel } = yield race({
     result: neuCall(txSendProcess, type),
     cancel: take("TX_SENDER_HIDE_MODAL"),
@@ -62,12 +79,14 @@ export function* txSendSaga(_: TGlobalDependencies, type: TxSenderType): any {
   return result;
 }
 
-export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any {
+export function* txSendProcess(_: TGlobalDependencies, type: ETxSenderType): any {
   try {
     yield put(actions.gas.gasApiEnsureLoading());
     yield put(actions.txSender.txSenderShowModal(type));
 
     yield neuCall(ensureNoPendingTx, type);
+
+    /* BULSHUIT SUPER COMPLICATEDS */
 
     yield take("TX_SENDER_ACCEPT");
 
@@ -95,7 +114,7 @@ export function* txSendProcess(_: TGlobalDependencies, type: TxSenderType): any 
 
 function* ensureNoPendingTx(
   { apiUserService, web3Manager, logger }: TGlobalDependencies,
-  type: TxSenderType,
+  type: ETxSenderType,
 ): any {
   yield updateTxs();
   let txs: Array<TxWithMetadata> = yield select((s: IAppState) => s.txMonitor.txs);
@@ -121,7 +140,7 @@ function* ensureNoPendingTx(
   yield put(actions.txSender.txSenderWatchPendingTxsDone(type));
 }
 
-function* generateEthWithrdawTransaction(
+function* generateEthWithdrawTransaction(
   { contractsService }: TGlobalDependencies,
   action: TAction,
 ): any {
@@ -158,7 +177,7 @@ function* generateEthWithrdawTransaction(
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
   const txData: ITxData = yield select((s: IAppState) => selectTxDetails(s.txSender));
   const type = yield select((s: IAppState) => selectTxType(s.txSender));
-
+  debugger;
   if (!txData) {
     throw new Error("Tx data is not defined");
   }
@@ -345,8 +364,9 @@ function* sendDummyTx({ logger }: TGlobalDependencies, action: TAction): any {
 
 export const txSendingSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
+  yield fork(neuTakeEvery, "TX_SENDER_START_UPGRADE_ETH", upgradeSaga);
   yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
-  yield fork(neuTakeEvery, "TX_SENDER_GENERATE_TX", generateEthWithrdawTransaction);
+  yield fork(neuTakeEvery, "TX_SENDER_GENERATE_TX", generateEthWithdrawTransaction);
 
   // Dev only
   yield fork(neuTakeEvery, "TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE", signDummyMessage);

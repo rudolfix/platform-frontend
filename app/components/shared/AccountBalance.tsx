@@ -12,6 +12,7 @@ interface IProps {
   onDepositClick?: () => void;
   onUpgradeClick?: () => void;
   dataTestId?: string;
+  disabled?: boolean;
 }
 
 export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
@@ -19,6 +20,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
   currency,
   currencyTotal,
   largeNumber,
+  disabled,
   value,
   onWithdrawClick,
   onDepositClick,
@@ -42,7 +44,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
             theme="graphite"
             svgIcon={arrowRightIcon}
             onClick={onUpgradeClick}
-            disabled
+            disabled={disabled}
           >
             <FormattedMessage id="shared-component.account-balance.upgrade" />
           </Button>

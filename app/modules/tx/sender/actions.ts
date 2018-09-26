@@ -1,9 +1,14 @@
 import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
-import { TxSenderType } from "./reducer";
+import { ETxSenderType } from "./reducer";
+
+export enum ETokenType {
+  ETHER = "ETHER",
+  EURO = "EURO",
+}
 
 export const txSenderActions = {
-  txSenderShowModal: (type: TxSenderType) => createAction("TX_SENDER_SHOW_MODAL", { type }),
+  txSenderShowModal: (type: ETxSenderType) => createAction("TX_SENDER_SHOW_MODAL", { type }),
   txSenderHideModal: () => createSimpleAction("TX_SENDER_HIDE_MODAL"),
   txSenderAcceptDraft: (txData: ITxData) => createAction("TX_SENDER_ACCEPT_DRAFT", txData),
   txSenderAccept: () => createSimpleAction("TX_SENDER_ACCEPT"),
@@ -15,11 +20,12 @@ export const txSenderActions = {
 
   // Transaction inititiation
   startWithdrawEth: () => createSimpleAction("TX_SENDER_START_WITHDRAW_ETH"),
+  startUpgrade: (tokenType: ETokenType) => createAction("TX_SENDER_START_UPGRADE_ETH", tokenType),
   startInvestment: () => createSimpleAction("TX_SENDER_START_INVESTMENT"),
 
   // Pending transaction related actions
   txSenderWatchPendingTxs: () => createSimpleAction("TX_SENDER_WATCH_PENDING_TXS"),
-  txSenderWatchPendingTxsDone: (type: TxSenderType) =>
+  txSenderWatchPendingTxsDone: (type: ETxSenderType) =>
     createAction("TX_SENDER_WATCH_PENDING_TXS_DONE", { type }),
   // Error Actions
   txSenderError: (error: string) => createAction("TX_SENDER_ERROR", { error }),

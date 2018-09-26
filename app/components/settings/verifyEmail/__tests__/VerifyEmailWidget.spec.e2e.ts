@@ -36,6 +36,7 @@ describe("Verify Email Widget", () => {
     // Email server takes time before getting the request
     cy.wait(3000);
     assertLatestEmailSentWithSalt(secondEmail);
+    cy.wait(4000);
     verifyLatestUserEmail();
 
     assertVerifyEmailWidgetIsInVerfiedEmailState();

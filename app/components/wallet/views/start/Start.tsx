@@ -4,12 +4,15 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { actions } from "../../../../modules/actions";
+
 import {
   selectICBMLockedEtherBalance,
   selectICBMLockedEtherBalanceEuroAmount,
   selectICBMLockedEuroTokenBalance,
   selectICBMLockedEuroTotalAmount,
   selectICBMLockedWalletHasFunds,
+  selectIsEtherUpgradeTargetSet,
+  selectIsEuroUpgradeTargetSet,
   selectIsLoading,
   selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
@@ -27,12 +30,11 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
-import {
-  IcbmWallet,
-  IWalletValues,
-  LockedWallet,
-  UnlockedWallet,
-} from "../../wallet-balance/WalletBalance";
+import { IcbmWallet, IIcbmWalletValues } from "../../wallet-balance/IcbmWallet";
+import { LockedWallet } from "../../wallet-balance/LockedWallet";
+import { UnlockedWallet } from "../../wallet-balance/UnlockedWallet";
+import { IWalletValues } from "../../wallet-balance/WalletBalance";
+import { ETokenType } from "../../../../modules/tx/sender/actions";
 
 const transactions: any[] = [];
 
@@ -40,7 +42,7 @@ interface IStateProps {
   error?: string;
   liquidWalletData: IWalletValues;
   lockedWalletData: IWalletValues & { hasFunds: boolean };
-  icbmWalletData: IWalletValues & { hasFunds: boolean };
+  icbmWalletData: IIcbmWalletValues;
   userAddress: string;
   isLoading: boolean;
 }
@@ -48,6 +50,8 @@ interface IStateProps {
 interface IDispatchProps {
   depositEthUnlockedWallet: () => void;
   withdrawEthUnlockedWallet: () => void;
+  upgradeWalletEtherToken: () => void;
+  upgradeWalletEuroToken: () => void;
 }
 
 type TProps = IStateProps & IDispatchProps;
@@ -60,6 +64,8 @@ export const WalletStartComponent: React.SFC<TProps> = ({
   isLoading,
   depositEthUnlockedWallet,
   withdrawEthUnlockedWallet,
+  upgradeWalletEuroToken,
+  upgradeWalletEtherToken,
 }) => {
   return isLoading ? (
     <LoadingIndicator />
@@ -92,8 +98,8 @@ export const WalletStartComponent: React.SFC<TProps> = ({
             <IcbmWallet
               className="h-100"
               headerText={<FormattedMessage id="components.wallet.start.icbm-wallet" />}
-              onUpgradeEuroClick={() => {}}
-              onUpgradeEtherClick={() => {}}
+              onUpgradeEuroClick={upgradeWalletEuroToken}
+              onUpgradeEtherClick={upgradeWalletEtherToken}
               data={icbmWalletData}
             />
           </Col>
@@ -134,15 +140,19 @@ export const WalletStart = compose<React.SFC>(
         totalEuroAmount: selectLockedEuroTotalAmount(state),
       },
       icbmWalletData: {
-        hasFunds: selectICBMLockedWalletHasFunds(state),
+        hasFunds: selectICBMLockedWalletHasFunds(state.wallet),
         ethAmount: selectICBMLockedEtherBalance(state.wallet),
         ethEuroAmount: selectICBMLockedEtherBalanceEuroAmount(state),
         neuroAmount: selectICBMLockedEuroTokenBalance(state.wallet),
         neuroEuroAmount: selectICBMLockedEuroTokenBalance(state.wallet),
         totalEuroAmount: selectICBMLockedEuroTotalAmount(state),
+        isEtherUpgradeTargetSet: selectIsEtherUpgradeTargetSet(state.wallet),
+        isEuroUpgradeTargetSet: selectIsEuroUpgradeTargetSet(state.wallet),
       },
     }),
     dispatchToProps: dispatch => ({
+      upgradeWalletEtherToken: () => dispatch(actions.txSender.startUpgrade(ETokenType.ETHER)),
+      upgradeWalletEuroToken: () => dispatch(actions.txSender.startUpgrade(ETokenType.EURO)),
       depositEthUnlockedWallet: () => dispatch(actions.depositEthModal.showDepositEthModal()),
       withdrawEthUnlockedWallet: () => dispatch(actions.txSender.startWithdrawEth()),
     }),

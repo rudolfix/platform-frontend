@@ -4,7 +4,7 @@ import { Modal } from "reactstrap";
 
 import { ITxData } from "../../../lib/web3/Web3Manager";
 import { actions } from "../../../modules/actions";
-import { TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
+import { TxSenderState, ETxSenderType } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
 import { ModalComponentBody } from "../ModalComponentBody";
@@ -18,11 +18,12 @@ import { WatchPendingTxs } from "./shared/WatchPeningTxs";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
+import { Upgrade } from "./upgrade-flow/Upgrade";
 
 interface IStateProps {
   isOpen: boolean;
   state: TxSenderState;
-  type?: TxSenderType;
+  type?: ETxSenderType;
   details?: ITxData;
   blockId?: number;
   txHash?: string;
@@ -61,29 +62,33 @@ export interface ITxSummaryDispatchProps {
 }
 export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 
-const InitComponent: React.SFC<{ type: TxSenderType }> = ({ type }) => {
+const InitComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSelection />;
     case "WITHDRAW":
       return <Withdraw />;
+    case "UPGRADE_ETH":
+      return <Upgrade tokenType={"ETHER"} />;
+    case "UPGRADE_EUR":
+      return <Upgrade tokenType={"EURO"} />;
   }
 };
 
-const SummaryComponent: React.SFC<{ type: TxSenderType }> = ({ type }) => {
+const SummaryComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSummary />;
-    case "WITHDRAW":
+    default:
       return <WithdrawSummary />;
   }
 };
 
-const SuccessComponent: React.SFC<{ type: TxSenderType; txHash?: string }> = ({ type, txHash }) => {
+const SuccessComponent: React.SFC<{ type: ETxSenderType; txHash?: string }> = ({ type, txHash }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSuccess txHash={txHash!} />;
-    case "WITHDRAW":
+    default:
       return <WithdrawSuccess txHash={txHash!} />;
   }
 };

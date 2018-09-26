@@ -1,3 +1,4 @@
+import * as Web3Utils from "web3-utils";
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
@@ -94,8 +95,10 @@ export const selectICBMLockedEuroTotalAmount = (state: IAppState) =>
     selectICBMLockedEuroTokenBalance(state.wallet),
   ]);
 
-export const selectICBMLockedWalletHasFunds = (state: IAppState): boolean =>
-  selectICBMLockedEuroTotalAmount(state) !== "0";
+export const selectICBMLockedWalletHasFunds = (state: IWalletState): boolean =>
+  addBigNumbers(
+    [selectICBMLockedEuroTokenBalance(state), selectICBMLockedEtherBalance(state)],
+  ) !== "0";
 
 /**
  * Total wallet assets value
@@ -151,3 +154,9 @@ export const selectIcbmWalletConnected = (state: IWalletState): boolean =>
 export const selectIsLoading = (state: IWalletState): boolean => !!state.loading;
 
 export const selectWalletError = (state: IWalletState): string | undefined => state.error;
+
+export const selectIsEtherUpgradeTargetSet = (state: IWalletState): boolean =>
+  state.data && Web3Utils.isAddress(state.data.etherTokenUpgradeTarget);
+
+export const selectIsEuroUpgradeTargetSet = (state: IWalletState): boolean =>
+  state.data && Web3Utils.isAddress(state.data.euroTokenUpgradeTarget);

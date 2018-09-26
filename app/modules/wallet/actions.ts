@@ -8,4 +8,6 @@ export const walletActions = {
     createAction("WALLET_LOAD_WALLET_DATA_ERROR", { errorMsg }),
   getWalletData: (ethAddress: string) =>
     createAction("WALLET_GET_DATA_FOR_ADDRESS", { ethAddress }),
+  upgradeWalletEtherToken: () => createSimpleAction("GENERATE_ETHER_WALLET_UPGRADE_TX"),
+  upgradeWalletEuroToken: () => createSimpleAction("GENERATE_EURO_WALLET_UPGRADE_TX"),
 };

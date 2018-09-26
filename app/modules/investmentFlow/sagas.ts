@@ -143,7 +143,7 @@ function* start(action: TAction): any {
 }
 
 function* onTxModalHide(): any {
-  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow)
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
   if (!selectIsBankTransferModalOpened(state)) {
     yield put(actions.investmentFlow.resetInvestment());
   }
@@ -219,16 +219,16 @@ function* recalculateCurrencies(): any {
 }
 
 function* showBankTransferDetails(): any {
-  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow)
-  if (state.investmentType !== EInvestmentType.BankTransfer) return
-  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Details))
-  yield put(actions.txSender.txSenderHideModal())
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
+  if (state.investmentType !== EInvestmentType.BankTransfer) return;
+  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Details));
+  yield put(actions.txSender.txSenderHideModal());
 }
 
 function* showBankTransferSummary(): any {
-  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow)
-  if (state.investmentType !== EInvestmentType.BankTransfer) return
-  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Summary))
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
+  if (state.investmentType !== EInvestmentType.BankTransfer) return;
+  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Summary));
 }
 
 export function* investmentFlowSagas(): any {

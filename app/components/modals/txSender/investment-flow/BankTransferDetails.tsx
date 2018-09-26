@@ -5,25 +5,11 @@ import { Col, Container, Row } from "reactstrap";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
 import {
-  selectBankTransferReferenceCode,
-  selectEthValueUlps,
-  selectEurValueUlps,
-  selectInvestmentGasCostEth,
   selectBankTransferAmount,
+  selectBankTransferReferenceCode,
 } from "../../../../modules/investmentFlow/selectors";
 import { selectClientCountry, selectClientName } from "../../../../modules/kyc/selectors";
-import {
-  selectEquityTokenCountByEtoId,
-  selectEtoById,
-  selectNeuRewardUlpsByEtoId,
-} from "../../../../modules/public-etos/selectors";
-import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
-import {
-  addBigNumbers,
-  divideBigNumbers,
-  multiplyBigNumbers,
-} from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/buttons";
@@ -32,7 +18,6 @@ import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps } from "../TxSender";
-import { formatEur } from "./utils";
 
 import * as styles from "./Summary.module.scss";
 
@@ -42,20 +27,19 @@ interface IStateProps {
   recipient: string;
   iban: string;
   bic: string;
-  referenceCode: string
-  amount: string
-  gasStipend?: boolean
+  referenceCode: string;
+  amount: string;
+  gasStipend?: boolean;
 }
 
-interface IDispatchProps extends ITxSummaryDispatchProps{
-  onGasStipendChange: () => void
+interface IDispatchProps extends ITxSummaryDispatchProps {
+  onGasStipendChange: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
 const BankTransferDetailsComponent = injectIntlHelpers(
-  ({ onAccept, onGasStipendChange, ...data}: IProps & IIntlProps) => {
-
+  ({ onAccept, onGasStipendChange, ...data }: IProps & IIntlProps) => {
     return (
       <Container className={styles.container}>
         <Row className="mt-0">
@@ -71,8 +55,18 @@ const BankTransferDetailsComponent = injectIntlHelpers(
             <p>
               <FormattedMessage id="investment-flow.bank-transfer.general-instructions" />
             </p>
-            <FormattedHTMLMessage tagName="p" id="investment-flow.bank-transfer.bank-details-instructions" />
-            <p><CheckboxComponent checked={data.gasStipend} name="gas-stipend" label={<FormattedMessage id="investment-flow.bank-transfer.gas-stipend"/>} onChange={onGasStipendChange}/></p>
+            <FormattedHTMLMessage
+              tagName="p"
+              id="investment-flow.bank-transfer.bank-details-instructions"
+            />
+            <p>
+              <CheckboxComponent
+                checked={data.gasStipend}
+                name="gas-stipend"
+                label={<FormattedMessage id="investment-flow.bank-transfer.gas-stipend" />}
+                onChange={onGasStipendChange}
+              />
+            </p>
           </Col>
         </Row>
 
@@ -154,13 +148,13 @@ const BankTransferDetails = appConnect<IStateProps, IDispatchProps>({
       bic: "TLXXXXXXXXX",
       referenceCode: selectBankTransferReferenceCode(state),
       amount: selectBankTransferAmount(state.investmentFlow),
-      gasStipend: state.investmentFlow.bankTransferGasStipend
+      gasStipend: state.investmentFlow.bankTransferGasStipend,
     };
   },
   dispatchToProps: d => ({
     onAccept: () => d(actions.investmentFlow.showBankTransferSummary()),
-    onGasStipendChange: () => d(actions.investmentFlow.toggleBankTransferGasStipend())
+    onGasStipendChange: () => d(actions.investmentFlow.toggleBankTransferGasStipend()),
   }),
 })(BankTransferDetailsComponent);
 
-export {BankTransferDetailsComponent, BankTransferDetails}
+export { BankTransferDetailsComponent, BankTransferDetails };

@@ -308,12 +308,12 @@ export const InvestmentSelection: React.SFC = compose<any>(
 
       changeEuroValue(balanceEurFormatted);
     },
-    investNow: ({investmentType, sendTransaction, showBankTransferDetails}) => () => {
+    investNow: ({ investmentType, sendTransaction, showBankTransferDetails }) => () => {
       if (investmentType !== EInvestmentType.BankTransfer) {
-        sendTransaction()
+        sendTransaction();
       } else {
-        showBankTransferDetails()
+        showBankTransferDetails();
       }
-    }
+    },
   }),
 )(InvestmentSelectionComponent);

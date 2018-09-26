@@ -1,7 +1,6 @@
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Money.utils";
-import { selectTxSenderModalOpened } from "../tx/sender/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EInvestmentCurrency, EInvestmentType, IInvestmentFlowState } from "./reducer";
 
@@ -41,32 +40,32 @@ export const selectCurrencyByInvestmentType = (state: IInvestmentFlowState) =>
     : EInvestmentCurrency.Euro;
 
 export const selectIsBankTransferModalOpened = (state: IInvestmentFlowState) =>
-  state.investmentType === EInvestmentType.BankTransfer && !!state.bankTransferFlowState && selectReadyToInvest(state)
+  state.investmentType === EInvestmentType.BankTransfer &&
+  !!state.bankTransferFlowState &&
+  selectReadyToInvest(state);
 
 export const selectBankTransferReferenceCode = (state: IAppState) => {
-  const addressHex = selectEthereumAddressWithChecksum(state.web3).slice(2)
+  const addressHex = selectEthereumAddressWithChecksum(state.web3).slice(2);
 
-  const bytes: number[] = []
+  const bytes: number[] = [];
   for (let c = 0; c < addressHex.length; c += 2) {
     bytes.push(parseInt(addressHex.substr(c, 2), 16));
   }
-  const byteString = bytes.map(n => String.fromCharCode(n)).join('')
-  const base64 = btoa(byteString).replace("=", "")
+  const byteString = bytes.map(n => String.fromCharCode(n)).join("");
+  const base64 = btoa(byteString).replace("=", "");
 
-  let code = "NF " + base64
+  let code = "NF " + base64;
   if (state.investmentFlow.bankTransferGasStipend) {
-    code += " G"
+    code += " G";
   }
 
-  return code
+  return code;
   // see https://github.com/Neufund/platform-backend/wiki/5.4.-Use-Case-EUR-T-deposit for reference
-}
+};
 
-export const GAS_STIPEND_PRICE = convertToBigInt("10")
+export const GAS_STIPEND_PRICE = convertToBigInt("10");
 
 export const selectBankTransferAmount = (state: IInvestmentFlowState) => {
-  const eur = selectEurValueUlps(state)
-  return state.bankTransferGasStipend
-    ? addBigNumbers([GAS_STIPEND_PRICE, eur])
-    : eur
-}
+  const eur = selectEurValueUlps(state);
+  return state.bankTransferGasStipend ? addBigNumbers([GAS_STIPEND_PRICE, eur]) : eur;
+};

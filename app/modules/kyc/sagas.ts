@@ -28,8 +28,8 @@ import {
 } from "./selectors";
 
 function* loadClientData(): any {
-  yield put(actions.kyc.kycLoadIndividualData())
-  yield put(actions.kyc.kycLoadBusinessData())
+  yield put(actions.kyc.kycLoadIndividualData());
+  yield put(actions.kyc.kycLoadBusinessData());
 }
 
 /**

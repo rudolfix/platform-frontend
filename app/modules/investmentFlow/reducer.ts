@@ -27,7 +27,7 @@ export enum EInvestmentErrorState {
 
 export enum EBankTransferFlowState {
   Details = "details",
-  Summary = "summary"
+  Summary = "summary",
 }
 
 export interface IInvestmentFlowState {
@@ -40,7 +40,7 @@ export interface IInvestmentFlowState {
   gasPrice: string;
   isValidatedInput: boolean;
   bankTransferFlowState?: EBankTransferFlowState;
-  bankTransferGasStipend?: boolean
+  bankTransferGasStipend?: boolean;
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {

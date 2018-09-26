@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { Modal } from "reactstrap";
 
@@ -12,7 +11,7 @@ import { BankTransferSummary } from "./BankTransferSummary";
 
 interface IStateProps {
   isOpen: boolean;
-  state?: EBankTransferFlowState
+  state?: EBankTransferFlowState;
 }
 
 interface IDispatchProps {
@@ -50,4 +49,4 @@ const BankTransferFlowModal = appConnect<IStateProps, IDispatchProps>({
   }),
 })(BankTransferFlowModalComponent);
 
-export {BankTransferFlowModal, BankTransferFlowModalComponent}
+export { BankTransferFlowModal, BankTransferFlowModalComponent };

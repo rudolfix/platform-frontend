@@ -133,4 +133,4 @@ class FormRadioButton extends React.Component<IProps> {
   }
 }
 
-export { RadioButtonComponent, FormRadioButton, FormCheckbox, CheckboxComponent }
+export { RadioButtonComponent, FormRadioButton, FormCheckbox, CheckboxComponent };

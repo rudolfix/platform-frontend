@@ -140,4 +140,4 @@ const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
   }),
 })(TxSenderModalComponent);
 
-export { TxSenderModal, TxSenderModalComponent }
+export { TxSenderModal, TxSenderModalComponent };

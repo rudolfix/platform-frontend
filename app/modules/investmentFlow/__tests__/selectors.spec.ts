@@ -29,7 +29,7 @@ describe("investment-flow > selectors", () => {
       expect(code3).to.equal("NF giBgyW4BK/iNCGNaVDIQ0QKbZY0");
     });
 
-    it("adds a gas stipend modifier", () => {
+    it("adds a gas stipend appendix", () => {
       const state = createStateWithAddress("0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3");
       state.investmentFlow.bankTransferGasStipend = true;
 

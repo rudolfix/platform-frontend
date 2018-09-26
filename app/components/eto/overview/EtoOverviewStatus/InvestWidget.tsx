@@ -59,4 +59,4 @@ const InvestWidget = appConnect<{}, IInvestWidgetDispatchProps, IInvestWidgetPro
   }),
 })(InvestWidgetComponent);
 
-export { InvestWidget }
+export { InvestWidget };

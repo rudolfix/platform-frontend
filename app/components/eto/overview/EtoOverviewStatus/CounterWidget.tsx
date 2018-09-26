@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { FormattedMessage } from 'react-intl-phraseapp';
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Counter } from '../../../shared/Counter';
+import { Counter } from "../../../shared/Counter";
 
-import * as styles from './CounterWidget.module.scss'
+import * as styles from "./CounterWidget.module.scss";
 
 export interface ICounterWidgetProps {
   endDate?: number;
@@ -26,4 +26,4 @@ const CounterWidget: React.SFC<ICounterWidgetProps> = ({ endDate, stage }) => {
   );
 };
 
-export { CounterWidget }
+export { CounterWidget };

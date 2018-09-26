@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { FormattedMessage } from 'react-intl-phraseapp';
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Button } from '../../../shared/buttons';
-import { SuccessTick } from '../../../shared/SuccessTick';
+import { Button } from "../../../shared/buttons";
+import { SuccessTick } from "../../../shared/SuccessTick";
 
-import * as styles from './ClaimWidget.module.scss'
+import * as styles from "./ClaimWidget.module.scss";
 
 export interface IClaimWidget {
   tokenName: string;
@@ -39,4 +39,4 @@ const ClaimWidget: React.SFC<IClaimWidget> = ({
   </div>
 );
 
-export { ClaimWidget }
+export { ClaimWidget };

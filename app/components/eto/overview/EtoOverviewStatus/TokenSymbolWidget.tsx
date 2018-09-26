@@ -1,6 +1,6 @@
-import * as React from 'react'
+import * as React from "react";
 
-import { IResponsiveImage, ResponsiveImage } from '../../../shared/ResponsiveImage';
+import { IResponsiveImage, ResponsiveImage } from "../../../shared/ResponsiveImage";
 
 import * as styles from "./TokenSymbolWidget.module.scss";
 
@@ -28,4 +28,4 @@ const TokenSymbolWidget: React.SFC<ITokenSymbolWidgetProps> = ({
   );
 };
 
-export { TokenSymbolWidget }
+export { TokenSymbolWidget };

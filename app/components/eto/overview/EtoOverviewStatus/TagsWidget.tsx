@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { IEtoDocument } from '../../../../lib/api/eto/EtoFileApi.interfaces';
-import { TTranslatedString } from '../../../../types';
-import { Tag } from '../../../shared/Tag';
+import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
+import { TTranslatedString } from "../../../../types";
+import { Tag } from "../../../shared/Tag";
 
 export interface ITagsWidget {
   termSheet: IEtoDocument;
@@ -80,4 +80,4 @@ const TagsWidget: React.SFC<ITagsWidget> = ({
   );
 };
 
-export { TagsWidget }
+export { TagsWidget };

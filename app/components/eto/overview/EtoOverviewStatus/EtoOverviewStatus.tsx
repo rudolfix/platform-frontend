@@ -3,7 +3,17 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 
-import { ClaimWidget, CounterWidget, IClaimWidget, InvestWidget, ITagsWidget, ITokenSymbolWidgetProps, RefundWidget, TagsWidget, TokenSymbolWidget } from ".";
+import {
+  ClaimWidget,
+  CounterWidget,
+  IClaimWidget,
+  InvestWidget,
+  ITagsWidget,
+  ITokenSymbolWidgetProps,
+  RefundWidget,
+  TagsWidget,
+  TokenSymbolWidget,
+} from ".";
 import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { ETOStateOnChain } from "../../../../modules/public-etos/types";
 import { IWalletState } from "../../../../modules/wallet/reducer";

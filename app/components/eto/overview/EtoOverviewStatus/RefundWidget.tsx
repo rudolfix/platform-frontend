@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { FormattedMessage } from 'react-intl-phraseapp';
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Button } from '../../../shared/buttons';
+import { Button } from "../../../shared/buttons";
 
-import * as styles from './RefundWidget.module.scss';
+import * as styles from "./RefundWidget.module.scss";
 
-const RefundWidget:React.SFC = () => {
+const RefundWidget: React.SFC = () => {
   return (
     <div className={styles.refundWidget}>
       <div className={styles.message}>
@@ -15,7 +15,7 @@ const RefundWidget:React.SFC = () => {
         <FormattedMessage id="shared-component.eto-overview.claim-your-eth-neur" />
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export { RefundWidget }
+export { RefundWidget };

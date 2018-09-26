@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { setLocale } from "yup"
 
 const mixed = {
   default: (values: any) => <FormattedMessage id={"form.field.error.default"} values={values} />,

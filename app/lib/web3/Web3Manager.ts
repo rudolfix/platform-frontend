@@ -17,15 +17,18 @@ import { IPersonalWallet } from "./PersonalWeb3";
 import { Web3Adapter } from "./Web3Adapter";
 
 export interface ITxData {
-  to?: string;
-  value?: string;
+  to: string;
+  value: string;
   gas?: string;
   gasPrice?: string;
   data?: string;
-  nonce?: string;
-  from?: string;
+  from: string;
   gasLimit?: string;
   input?: string;
+}
+
+export interface IRawTxData extends ITxData {
+  nonce: string;
 }
 
 export interface IEthereumNetworkConfig {
@@ -108,6 +111,14 @@ export class Web3Manager {
   public async sendTransaction(tx: Web3.TxData): Promise<string> {
     if (this.personalWallet) {
       return this.personalWallet.sendTransaction(tx);
+    } else {
+      throw new Error("No wallet!");
+    }
+  }
+
+  public async getTransactionByHash(txHash: string): Promise<Web3.Transaction> {
+    if (this.personalWallet) {
+      return this.personalWallet.web3Adapter.getTransactionByHash(txHash);
     } else {
       throw new Error("No wallet!");
     }

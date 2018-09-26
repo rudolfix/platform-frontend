@@ -6,7 +6,7 @@ import { compose } from "redux";
 
 import { EtoState, EtoStateToCamelcase } from "../lib/api/eto/EtoApi.interfaces";
 import {
-  etoDocumentType,
+  EtoDocumentType,
   IEtoDocument,
   IEtoFiles,
   TEtoDocumentTemplates,
@@ -130,7 +130,7 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
-                {generalUploadables.map((key: etoDocumentType, index: number) => {
+                {generalUploadables.map((key: EtoDocumentType, index: number) => {
                   const typedFileName = immutableDocumentTitle[key];
                   const canUpload =
                     stateInfo &&
@@ -196,7 +196,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   generateTemplate: (document: IEtoDocument) => void;
-  downloadDocumentByType: (documentType: etoDocumentType) => void;
+  downloadDocumentByType: (documentType: EtoDocumentType) => void;
 }
 
 export const Documents = compose<React.SFC>(

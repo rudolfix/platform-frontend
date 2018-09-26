@@ -17,10 +17,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
-import {
-  selectCalculatedContributionByEtoId,
-  selectEtoById,
-} from "./selectors";
+import { selectCalculatedContributionByEtoId, selectEtoById } from "./selectors";
 import { convertToCalculatedContribution, convertToEtoTotalInvestment } from "./utils";
 import { Dictionary } from "../../types";
 
@@ -78,10 +75,13 @@ export function* loadEto(
   }
 }
 
-export function* loadEtoContact({ contractsService, logger }: TGlobalDependencies, eto: TPublicEtoData): any {
+export function* loadEtoContact(
+  { contractsService, logger }: TGlobalDependencies,
+  eto: TPublicEtoData,
+): any {
   try {
     if (eto.state !== EtoState.ON_CHAIN) {
-      logger.error(new InvalidETOStateError( eto.state, EtoState.ON_CHAIN));
+      logger.error(new InvalidETOStateError(eto.state, EtoState.ON_CHAIN));
       return;
     }
 
@@ -122,7 +122,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
       order
         .map(id => etosByPreviewCode[id])
         .filter(eto => eto.state === EtoState.ON_CHAIN)
-        .map(eto => neuCall(loadEtoContact, eto))
+        .map(eto => neuCall(loadEtoContact, eto)),
     );
 
     yield put(actions.publicEtos.setPublicEtos({ etos: etosByPreviewCode, companies }));

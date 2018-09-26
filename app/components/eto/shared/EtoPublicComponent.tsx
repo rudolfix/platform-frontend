@@ -114,6 +114,10 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
         />
 
         <EtoOverviewStatus
+          preMoneyValuationEur={etoData.preMoneyValuationEur}
+          existingCompanyShares={etoData.existingCompanyShares}
+          equityTokensPerShare={etoData.equityTokensPerShare}
+          contract={etoData.contract}
           wallet={wallet}
           etoId={etoData.etoId}
           tokenImage={{
@@ -127,10 +131,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           className="mb-4"
           canEnableBookbuilding={etoData.canEnableBookbuilding}
           investmentAmount={0} //TODO: connect proper one
-          equityTokenPrice={0} //TODO: connect proper one
-          raisedAmount={0} //TODO: connect proper one
-          timeToClaim={0} //TODO: connect proper one
-          numberOfInvestors={0} //TODO: connect proper one
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
           prospectusApproved={documentsByType["approved_prospectus"]}
@@ -500,7 +500,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
                                   data: companyData.useOfCapitalList.map(
                                     d => d && d.percent,
                                   ) as number[],
-                                  /* tslint:disable:no-unused-variable */
                                   backgroundColor: companyData.useOfCapitalList.map(
                                     (_, i: number) => CHART_COLORS[i],
                                   ),

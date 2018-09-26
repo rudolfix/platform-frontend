@@ -118,14 +118,14 @@ export class FormInput extends React.Component<FormInputProps> {
               {min &&
                 parseInt(field.value, 10) < parseInt(min, 10) && (
                   <div className={styles.errorLabel}>
-                    <FormattedMessage id="form.error.minimum-value" values={{ value: min }} />
+                    <FormattedMessage id="form.field.error.number.min" values={{ min }} />
                   </div>
                 )}
 
               {max &&
                 parseInt(field.value, 10) > parseInt(max, 10) && (
                   <div className={styles.errorLabel}>
-                    <FormattedMessage id="form.error.maximum-value" values={{ value: max }} />
+                    <FormattedMessage id="form.field.error.number.max" values={{ max }} />
                   </div>
                 )}
             </>

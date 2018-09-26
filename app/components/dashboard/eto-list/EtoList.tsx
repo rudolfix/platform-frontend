@@ -2,6 +2,7 @@ import { keyBy } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import { EtoState, TPublicEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
@@ -13,7 +14,6 @@ import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
 import { SectionHeader } from "../../shared/SectionHeader";
-import { setDisplayName } from "recompose";
 
 interface IStateProps {
   etos: TEtoWithCompanyAndContract[];
@@ -38,16 +38,16 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
         <div className="mb-3">
           {eto.state === EtoState.ON_CHAIN && (
             <EtoOverviewStatus
+              preMoneyValuationEur={eto.preMoneyValuationEur}
+              existingCompanyShares={eto.existingCompanyShares}
+              equityTokensPerShare={eto.equityTokensPerShare}
+              investmentAmount={0} //TODO: connect proper one
+              contract={eto.contract}
               wallet={wallet}
               etoId={eto.etoId}
               smartContractOnchain={eto.state === EtoState.ON_CHAIN}
               prospectusApproved={keyBy(eto.documents, "documentType")["approved_prospectus"]}
               termSheet={keyBy(eto.documents, "documentType")["termsheet_template"]}
-              investmentAmount={0} //TODO: connect proper one
-              equityTokenPrice={0} //TODO: connect proper one
-              raisedAmount={0} //TODO: connect proper one
-              timeToClaim={0} //TODO: connect proper one
-              numberOfInvestors={0} //TODO: connect proper one
               canEnableBookbuilding={eto.canEnableBookbuilding}
               etoStartDate={eto.startDate}
               preEtoDuration={eto.whitelistDurationDays}
@@ -61,7 +61,6 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
               }}
               tokenName={eto.equityTokenName || ""}
               tokenSymbol={eto.equityTokenSymbol || ""}
-              status={eto.state}
               campaigningWidget={{
                 investorsLimit: eto.maxPledges,
                 maxPledge: eto.maxTicketEur,
@@ -70,9 +69,6 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
                 quote: "", // TODO: connect proper one
               }}
               publicWidget={{
-                investorsBacked: 0, // TODO: connect proper one
-                tokensGoal: 0, // TODO: connect proper one
-                raisedTokens: 0, // TODO: connect proper one
                 etoId: eto.etoId,
               }}
             />

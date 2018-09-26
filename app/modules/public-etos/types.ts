@@ -1,10 +1,9 @@
+import BigNumber from "bignumber.js";
+
 import {
   TCompanyEtoData,
   TEtoSpecsData,
-  TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
-import { DeepReadonlyObject } from "../../types";
-import BigNumber from "bignumber.js";
 
 export interface ICalculatedContribution {
   isWhitelisted: boolean;

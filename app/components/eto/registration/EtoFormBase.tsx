@@ -20,7 +20,7 @@ interface IProps {
 }
 
 interface IFormPercentageDoneProps {
-  validator: Yup.Schema;
+  validator: Yup.Schema<any>;
   progressOptions?: IProgressOptions;
 }
 

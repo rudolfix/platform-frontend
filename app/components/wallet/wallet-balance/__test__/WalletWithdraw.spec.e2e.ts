@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import web3Accounts from "web3-eth-accounts";
 
 import { tid } from "../../../../../test/testUtils";
 import {
@@ -6,7 +7,7 @@ import {
   numberRegExPattern,
   typeLightwalletRecoveryPhrase,
 } from "../../../../e2e-test-utils";
-import { getTransactionReceiptRpc } from "../../../../e2e-test-utils/ethRpcUtils";
+import { getTransactionByHashRpc, getBalanceRpc } from "../../../../e2e-test-utils/ethRpcUtils";
 import { recoverRoutes } from "../../../walletSelector/walletRecover/recoverRoutes";
 
 const Q18 = new BigNumber(10).pow(18);
@@ -44,10 +45,15 @@ describe("Wallet Withdraw", () => {
     ];
 
     const email = "john-smith@example.com";
-    const testValue = (1).toString();
-    const expectedGasLimit = "0x21000";
-    const expectedInput = "0x00";
-    const expectedAddress = "0x28f1670f55ae9c15fe38bf052cd35edcdb1dab8b";
+    const testValue = (5).toString();
+    const expectedGasLimit = "0x186a0";
+    const account = new web3Accounts().create();
+    const expectedInput = `0x64663ea6000000000000000000000000${account.address
+      .slice(2)
+      .toLowerCase()}0000000000000000000000000000000000000000000000004563918244f40000`;
+
+    const expectedAddress = account.address;
+    const expectedInputValue = "0";
 
     cy.visit(`${recoverRoutes.seed}`);
 
@@ -79,8 +85,8 @@ describe("Wallet Withdraw", () => {
           cy.get(tid("modals.tx-sender.withdraw-flow.success"));
 
           cy.get(tid("modals.tx-sender.withdraw-flow.tx-hash")).then(txHashObject => {
-            getTransactionReceiptRpc(NODE_ADDRESS, txHashObject.text()).then(data => {
-              const { from, gas, gasPrice, input, hash, to, value } = data.body.result;
+            getTransactionByHashRpc(NODE_ADDRESS, txHashObject.text()).then(data => {
+              const { from, gas, gasPrice, input, hash, value } = data.body.result;
 
               const ethValue = new BigNumber(value).toString();
               const ethGasPrice = new BigNumber(gasPrice).div(GIGA_WEI).toString();
@@ -90,8 +96,15 @@ describe("Wallet Withdraw", () => {
               expect(ethGasPrice).to.equal(expectedGasPrice[0]);
               expect(input).to.equal(expectedInput);
               expect(gas).to.equal(expectedGasLimit);
-              expect(ethValue).to.equal(Q18.mul(testValue).toString());
-              expect(to).to.equal(expectedAddress);
+              expect(ethValue).to.equal(expectedInputValue);
+
+              // TODO: Connect artifacts with tests to get deterministic addresses
+              // expect(etherTokenAddress).to.equal(to);
+
+              getBalanceRpc(NODE_ADDRESS, expectedAddress).then(balance => {
+                const receivedEtherValue = new BigNumber(balance.body.result).toString();
+                expect(receivedEtherValue).to.equal(Q18.mul(testValue).toString());
+              });
             });
           });
         },

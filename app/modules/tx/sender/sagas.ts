@@ -22,12 +22,12 @@ import { actions, TAction } from "../../actions";
 import { onInvestmentTxModalHide } from "../../investmentFlow/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
+import { generateInvestmentTransaction } from "../transactionsGenerators/investment/sagas";
 import {
   generateEtherUpgradeTransaction,
-  generateEthWithdrawTransaction,
   generateEuroUpgradeTransaction,
-  generateInvestmentTransaction,
-} from "../transactionsGenerators/sagas";
+} from "../transactionsGenerators/upgrade/sagas";
+import { generateEthWithdrawTransaction } from "../transactionsGenerators/withdraw/sagas";
 import { OutOfGasError } from "./../../../lib/web3/Web3Adapter";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
 import { ETokenType, ETxSenderType } from "./reducer";
@@ -320,5 +320,5 @@ export const txSendingSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
   yield fork(neuTakeEvery, "TX_SENDER_START_UPGRADE", upgradeSaga);
   yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
-  // Claim
+  // Add new transaction types here...
 };

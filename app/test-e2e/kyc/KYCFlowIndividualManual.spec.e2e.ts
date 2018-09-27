@@ -1,9 +1,6 @@
-import { tid } from "../../../../test/testUtils";
-import { registerWithLightWallet, verifyLatestUserEmail } from "../../../e2e-test-utils";
-import { kycRoutes } from "../routes";
-
-const email = "test+individual@neufund.org";
-const password = "superstrongpassword";
+import { tid } from "../utils";
+import { kycRoutes } from "../../components/kyc/routes";
+import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 interface IPersonData {
   firstName: string;
@@ -96,14 +93,14 @@ const uploadDocumentAndSubmitForm = () => {
   cy.get(tid("kyc-personal-upload-dropzone")).trigger("drop", dropEvent);
 
   cy.get(tid("kyc-personal-upload-submit")).click();
-  cy.get(tid("access-light-wallet-password-input")).type(password);
+  cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
   cy.get(tid("access-light-wallet-confirm")).click();
 };
 
 describe("KYC Personal flow with manual verification", () => {
+  beforeEach(() => createAndLoginNewUser({ type: "investor" }));
+
   it("went through KYC flow with personal data", () => {
-    registerWithLightWallet(email, password, true);
-    verifyLatestUserEmail();
     goToIndividualKYCFlow();
     submitIndividualKYCForm(personData);
     goToIndividualManualVerification();

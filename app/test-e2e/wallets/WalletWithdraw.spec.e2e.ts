@@ -1,14 +1,14 @@
 import BigNumber from "bignumber.js";
 import web3Accounts from "web3-eth-accounts";
 
-import { tid } from "../../../../../test/testUtils";
 import {
   assertUserInDashboard,
   numberRegExPattern,
   typeLightwalletRecoveryPhrase,
-} from "../../../../e2e-test-utils";
-import { getTransactionByHashRpc, getBalanceRpc } from "../../../../e2e-test-utils/ethRpcUtils";
-import { recoverRoutes } from "../../../walletSelector/walletRecover/recoverRoutes";
+  tid,
+} from "../utils";
+import { getTransactionByHashRpc, getBalanceRpc } from "../utils/ethRpcUtils";
+import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";
 
 const Q18 = new BigNumber(10).pow(18);
 const GIGA_WEI = 1000000000;

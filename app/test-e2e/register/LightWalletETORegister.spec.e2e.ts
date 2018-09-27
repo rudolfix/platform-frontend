@@ -1,8 +1,4 @@
-import {
-  assertErrorModal,
-  assertEtoDashboard,
-  registerWithLightWalletETO,
-} from "../../../../e2e-test-utils";
+import { assertErrorModal, assertEtoDashboard, registerWithLightWalletETO } from "../utils";
 
 describe("Wallet backup e2e recovery phrase", () => {
   it("should register user with light-wallet", () => {

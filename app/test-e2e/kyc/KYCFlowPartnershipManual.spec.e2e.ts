@@ -1,9 +1,6 @@
-import { tid } from "../../../../test/testUtils";
-import { registerWithLightWallet, verifyLatestUserEmail } from "../../../e2e-test-utils";
-import { kycRoutes } from "../routes";
-
-const email = "test+small-business@neufund.org";
-const password = "superstrongpassword";
+import { registerWithLightWallet, verifyLatestUserEmail, tid } from "../utils";
+import { kycRoutes } from "../../components/kyc/routes";
+import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 interface ISmallBusinessData {
   companyName: string;
@@ -61,10 +58,10 @@ const personData: IPersonData = {
   hasHighIncome: "false",
 };
 
-const goToSmallBusinessFlow = () => {
+const goToCorporationFlow = () => {
   cy.visit(kycRoutes.start);
   cy.get(tid("kyc-start-go-to-company")).click();
-  cy.get(tid("kyc-start-company-go-to-small-business")).click();
+  cy.get(tid("kyc-start-business-go-to-partnership")).click();
 
   cy.url().should("eq", `https://localhost:9090${kycRoutes.businessData}`);
 };
@@ -119,7 +116,7 @@ const submitLegalRepresentationForm = (person: IPersonData) => {
   cy.url().should("eq", `https://localhost:9090${kycRoutes.legalRepresentative}`);
 };
 
-const uploadSupportingDocumentsAndSubmitFormForLegalRepresentation = () => {
+const uploadSupportingDocuments = () => {
   const dropEvent = {
     dataTransfer: {
       files: [] as any,
@@ -133,23 +130,27 @@ const uploadSupportingDocumentsAndSubmitFormForLegalRepresentation = () => {
   });
 
   cy.get(tid("kyc-company-legal-representative-documents")).trigger("drop", dropEvent);
-  cy.get(tid("kyc-company-legal-representative-upload-and-submit")).click();
+};
 
-  cy.get(tid("access-light-wallet-password-input")).type(password);
+const submitLegalRepresentativeForm = () => {
+  cy.get(tid("kyc-company-legal-representative-upload-and-submit")).click();
+  cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
   cy.get(tid("access-light-wallet-confirm")).click();
 
   cy.url().should("eq", `https://localhost:9090${kycRoutes.legalRepresentative}`);
 };
 
 describe("KYC Small Business flow with manual verification", () => {
+  beforeEach(() => createAndLoginNewUser({ type: "investor" }));
+
   it("went through KYC Small Business flow", () => {
-    registerWithLightWallet(email, password, true);
     verifyLatestUserEmail();
-    goToSmallBusinessFlow();
+    goToCorporationFlow();
     submitSmallBusinessKYCForm(smallBusinessData);
     uploadSupportingDocumentsAndSubmitForm();
     submitLegalRepresentationForm(personData);
-    uploadSupportingDocumentsAndSubmitFormForLegalRepresentation();
+    uploadSupportingDocuments();
+    submitLegalRepresentativeForm();
 
     cy.url().should("eq", `https://localhost:9090${kycRoutes.legalRepresentative}`);
   });

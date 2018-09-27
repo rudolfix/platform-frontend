@@ -57,7 +57,7 @@ export async function ensureWalletConnection({
   // verify if newly plugged wallet address is the same as before. Mismatch can happen for multiple reasons:
   //  - user selects different wallet in user interface (metamask)
   //  - user attaches different ledger device
-  const isSameAddress = wallet.ethereumAddress === metadata.address;
+  const isSameAddress = wallet.ethereumAddress.toLowerCase() === metadata.address.toLowerCase();
   if (!isSameAddress) {
     throw new MismatchedWalletAddressError(metadata.address, wallet.ethereumAddress);
   }

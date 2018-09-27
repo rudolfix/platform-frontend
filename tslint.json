@@ -44,6 +44,7 @@
       "**/*.spec.ts?(x)",
       "**/*.spec.e2e.ts?(x)",
       "**/*.spec.node.ts?(x)",
+      "**/e2e-test/utils/**",
       "test/**",
       "**/*.json"
     ]

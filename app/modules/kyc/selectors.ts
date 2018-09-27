@@ -71,3 +71,17 @@ export const selectWidgetLoading = (state: IKycState): boolean =>
 
 export const selectWidgetError = (state: IKycState): string | undefined =>
   state.individualRequestError || state.businessRequestError;
+
+export const selectIndividualClientName = (state: IKycState) => {
+  const data = state.individualData;
+  if (data) {
+    return [data.firstName, data.lastName].filter(Boolean).join(" ");
+  }
+};
+
+export const selectClientName = (state: IKycState) =>
+  (state.businessData && state.businessData.name) || selectIndividualClientName(state);
+
+export const selectClientCountry = (state: IKycState) =>
+  (state.businessData && state.businessData.country) ||
+  (state.individualData && state.individualData.country);

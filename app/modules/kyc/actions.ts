@@ -11,6 +11,11 @@ import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const kycActions = {
   /**
+   * General
+   */
+  kycLoadClientData: () => createSimpleAction("KYC_LOAD_CLIENT_DATA"),
+
+  /**
    * Widget watchers
    */
   kycStartWatching: () => createSimpleAction("KYC_WATCHER_START"),

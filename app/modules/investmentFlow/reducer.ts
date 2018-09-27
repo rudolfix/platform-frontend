@@ -25,6 +25,11 @@ export enum EInvestmentErrorState {
   NotEnoughEtherForGas = "not_enough_ether_for_gas",
 }
 
+export enum EBankTransferFlowState {
+  Details = "details",
+  Summary = "summary",
+}
+
 export interface IInvestmentFlowState {
   etoId: string;
   euroValueUlps: string;
@@ -34,6 +39,8 @@ export interface IInvestmentFlowState {
   gasAmount: string;
   gasPrice: string;
   isValidatedInput: boolean;
+  bankTransferFlowState?: EBankTransferFlowState;
+  bankTransferGasStipend?: boolean;
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
@@ -91,6 +98,16 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         isValidatedInput: action.payload.isValidated,
+      };
+    case "INVESTMENT_FLOW_SET_BANK_TRANSFER_FLOW_STATE":
+      return {
+        ...state,
+        bankTransferFlowState: action.payload.state,
+      };
+    case "INVESTMENT_FLOW_TOGGLE_BANK_TRANSFER_GAS_STIPEND":
+      return {
+        ...state,
+        bankTransferGasStipend: !state.bankTransferGasStipend,
       };
   }
 

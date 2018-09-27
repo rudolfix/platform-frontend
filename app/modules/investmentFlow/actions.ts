@@ -1,16 +1,23 @@
 import { createAction, createSimpleAction } from "../actionsUtils";
-import { EInvestmentCurrency, EInvestmentErrorState, EInvestmentType } from "./reducer";
+import {
+  EBankTransferFlowState,
+  EInvestmentCurrency,
+  EInvestmentErrorState,
+  EInvestmentType,
+} from "./reducer";
 
 export const investmentFlowActions = {
   // public actions
-  investmentStart: (etoId: string) => createAction("INVESTMENT_FLOW_START", { etoId }),
-  investmentReset: () => createSimpleAction("INVESTMENT_FLOW_RESET"),
+  startInvestment: (etoId: string) => createAction("INVESTMENT_FLOW_START", { etoId }),
+  resetInvestment: () => createSimpleAction("INVESTMENT_FLOW_RESET"),
   selectInvestmentType: (type: EInvestmentType) =>
     createAction("INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE", { type }),
   submitCurrencyValue: (value: string, currency: EInvestmentCurrency) =>
     createAction("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", { value, currency }),
   validateInputs: () => createSimpleAction("INVESTMENT_FLOW_VALIDATE_INPUTS"),
   generateInvestmentTx: () => createSimpleAction("INVESTMENT_FLOW_GENERATE_TX"),
+  showBankTransferDetails: () => createSimpleAction("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS"),
+  showBankTransferSummary: () => createSimpleAction("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_SUMMARY"),
   // state mutations
   setEtoId: (etoId: string) => createAction("INVESTMENT_FLOW_SET_ETO_ID", { etoId }),
   setEthValue: (value: string) =>
@@ -22,4 +29,8 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_SET_INVESTMENT_ERROR_STATE", { errorState }),
   setIsInputValidated: (isValidated: boolean) =>
     createAction("INVESTMENT_FLOW_SET_IS_INPUT_VALIDATED", { isValidated }),
+  setBankTransferFlowState: (state: EBankTransferFlowState) =>
+    createAction("INVESTMENT_FLOW_SET_BANK_TRANSFER_FLOW_STATE", { state }),
+  toggleBankTransferGasStipend: () =>
+    createSimpleAction("INVESTMENT_FLOW_TOGGLE_BANK_TRANSFER_GAS_STIPEND"),
 };

@@ -70,6 +70,7 @@ interface IDispatchProps {
   changeEuroValue: (value: string) => void;
   changeEthValue: (value: string) => void;
   changeInvestmentType: (type: EInvestmentType) => void;
+  showBankTransferDetails: () => void;
 }
 
 interface IWithProps {
@@ -83,6 +84,7 @@ interface IWithProps {
 
 interface IHandlersProps {
   investEntireBalance: () => void;
+  investNow: () => void;
 }
 
 type IProps = IStateProps & IDispatchProps & IIntlProps & IWithProps & IHandlersProps;
@@ -106,7 +108,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
   minTicketEur,
   neuReward,
   readyToInvest,
-  sendTransaction,
+  investNow,
   showTokens,
   totalCostEth,
   totalCostEur,
@@ -237,7 +239,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
         </Col>
       </Row>
       <Row className="justify-content-center mb-0">
-        <Button onClick={sendTransaction} layout="primary" type="submit" disabled={!readyToInvest}>
+        <Button onClick={investNow} layout="primary" type="submit" disabled={!readyToInvest}>
           <FormattedMessage id="investment-flow.invest-now" />
         </Button>
       </Row>
@@ -261,14 +263,15 @@ export const InvestmentSelection: React.SFC = compose<any>(
         gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
         investmentType: selectInvestmentType(investmentFlow),
         wallets: createWallets(state),
-        neuReward: selectNeuRewardUlpsByEtoId(state.publicEtos, investmentFlow.etoId),
-        equityTokenCount: selectEquityTokenCountByEtoId(state.publicEtos, investmentFlow.etoId),
+        neuReward: selectNeuRewardUlpsByEtoId(investmentFlow.etoId, state.publicEtos),
+        equityTokenCount: selectEquityTokenCountByEtoId(investmentFlow.etoId, state.publicEtos),
         showTokens: !!(eur && investmentFlow.isValidatedInput),
         readyToInvest: selectReadyToInvest(state.investmentFlow),
       };
     },
     dispatchToProps: dispatch => ({
       sendTransaction: () => dispatch(actions.investmentFlow.generateInvestmentTx()),
+      showBankTransferDetails: () => dispatch(actions.investmentFlow.showBankTransferDetails()),
       changeEthValue: value =>
         dispatch(actions.investmentFlow.submitCurrencyValue(value, EInvestmentCurrency.Ether)),
       changeEuroValue: value =>
@@ -304,6 +307,13 @@ export const InvestmentSelection: React.SFC = compose<any>(
       const balanceEurFormatted = formatMoney(availableEurBalance, MONEY_DECIMALS);
 
       changeEuroValue(balanceEurFormatted);
+    },
+    investNow: ({ investmentType, sendTransaction, showBankTransferDetails }) => () => {
+      if (investmentType !== EInvestmentType.BankTransfer) {
+        sendTransaction();
+      } else {
+        showBankTransferDetails();
+      }
     },
   }),
 )(InvestmentSelectionComponent);

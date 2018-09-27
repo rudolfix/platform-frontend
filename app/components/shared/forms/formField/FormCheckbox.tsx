@@ -18,7 +18,7 @@ interface IInternalProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
+const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
   name,
   label,
   value,
@@ -74,7 +74,7 @@ const RadioButtonComponent: React.SFC<IProps & IInternalProps> = ({
   );
 };
 
-export class FormCheckbox extends React.Component<IProps> {
+class FormCheckbox extends React.Component<IProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
@@ -102,7 +102,7 @@ export class FormCheckbox extends React.Component<IProps> {
   }
 }
 
-export class FormRadioButton extends React.Component<IProps> {
+class FormRadioButton extends React.Component<IProps> {
   static contextTypes = {
     formik: PropTypes.object,
   };
@@ -132,3 +132,5 @@ export class FormRadioButton extends React.Component<IProps> {
     );
   }
 }
+
+export { RadioButtonComponent, FormRadioButton, FormCheckbox, CheckboxComponent };

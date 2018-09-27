@@ -152,7 +152,7 @@ const PublicEtoWidgetComponent: React.SFC<IPublicWidgetProps & IPublicWidgetDisp
 
 const PublicEtoWidget = appConnect<{}, IPublicWidgetDispatchProps, IPublicWidgetProps>({
   dispatchToProps: (d, p) => ({
-    startInvestmentFlow: () => d(actions.investmentFlow.investmentStart(p.etoId)),
+    startInvestmentFlow: () => d(actions.investmentFlow.startInvestment(p.etoId)),
   }),
 })(PublicEtoWidgetComponent);
 

@@ -90,7 +90,7 @@ export const EtoList = compose<React.ComponentClass>(
     }),
     dispatchToProps: d => ({
       startInvestmentFlow: (eto: TPublicEtoData) => {
-        d(actions.investmentFlow.investmentStart(eto.etoId));
+        d(actions.investmentFlow.startInvestment(eto.etoId));
       },
     }),
   }),

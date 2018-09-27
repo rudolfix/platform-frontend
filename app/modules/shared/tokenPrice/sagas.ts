@@ -11,7 +11,8 @@ import { selectIsSmartContractInitDone } from "../../init/selectors";
 import { neuCall } from "../../sagas";
 import { ITokenPriceStateData } from "./reducer";
 
-const TOKEN_PRICE_MONITOR_DELAY = 5000;
+const TOKEN_PRICE_MONITOR_DELAY = 120000;
+const TOKEN_PRICE_MONITOR_SHORT_DELAY = 60000;
 
 export async function loadTokenPriceDataAsync({
   contractsService,
@@ -50,21 +51,26 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
   if (!isSmartContractInitDone) return;
 
   while (true) {
-    logger.info("Querying for tokenPrice");
+    try {
+      logger.info("Querying for tokenPrice");
 
-    const tokenPriceData = yield neuCall(loadTokenPriceDataAsync);
-    const price: ITokenPriceStateData | undefined = yield select(
-      (s: IAppState) => s.tokenPrice.tokenPriceData,
-    );
+      const tokenPriceData = yield neuCall(loadTokenPriceDataAsync);
+      const price: ITokenPriceStateData | undefined = yield select(
+        (s: IAppState) => s.tokenPrice.tokenPriceData,
+      );
 
-    if (
-      !price ||
-      price.etherPriceEur !== tokenPriceData.etherPriceEur ||
-      price.neuPriceEur !== tokenPriceData.neuPriceEur
-    ) {
-      yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
+      if (
+        !price ||
+        price.etherPriceEur !== tokenPriceData.etherPriceEur ||
+        price.neuPriceEur !== tokenPriceData.neuPriceEur
+      ) {
+        yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
+      }
+    } catch (e) {
+      logger.error("Token Price Oracle Failed", e);
+      yield delay(TOKEN_PRICE_MONITOR_SHORT_DELAY);
+      continue;
     }
-
     yield delay(TOKEN_PRICE_MONITOR_DELAY);
   }
 }

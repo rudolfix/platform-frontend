@@ -62,6 +62,7 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
               inSigningDuration={eto.signingDurationDays}
               preMoneyValuation={eto.preMoneyValuationEur}
               newSharesGenerated={eto.newSharesToIssue}
+              newSharesToIssue={eto.newSharesToIssue}
               tokenImage={{
                 alt: eto.equityTokenName || "",
                 srcSet: { "1x": eto.equityTokenImage || "" },

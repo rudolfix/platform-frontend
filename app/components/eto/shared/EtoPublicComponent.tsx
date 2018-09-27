@@ -114,6 +114,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
         />
 
         <EtoOverviewStatus
+          newSharesToIssue={etoData.newSharesToIssue}
           preMoneyValuationEur={etoData.preMoneyValuationEur}
           existingCompanyShares={etoData.existingCompanyShares}
           equityTokensPerShare={etoData.equityTokensPerShare}
@@ -141,7 +142,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
           prospectusApproved={documentsByType["approved_prospectus"]}
-          foundersQuote={etoData.company.keyQuoteFounder}
           termSheet={documentsByType["termsheet_template"]}
           preMoneyValuation={etoData.preMoneyValuationEur}
           etoStartDate={etoData.startDate}

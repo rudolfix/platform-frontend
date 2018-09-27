@@ -7,7 +7,7 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ContractsService } from "../../lib/web3/ContractsService";
 import { ITxData } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
-import { addBigNumbers, compareBigNumbers, divideBigNumbers } from "../../utils/BigNumberUtils";
+import { addBigNumbers, compareBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Money.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";

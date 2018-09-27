@@ -124,6 +124,7 @@ class RequestStateInfo extends React.Component<IProps> {
           title={<FormattedMessage id="kyc.request-state.pending.title" />}
           steps={steps}
           description={<FormattedMessage id="kyc.request-state.pending.description" />}
+          testId="kyc-panel-pending"
         >
           {this.props.pendingRequestType && (
             <KYCAddDocuments uploadType={this.props.pendingRequestType} />

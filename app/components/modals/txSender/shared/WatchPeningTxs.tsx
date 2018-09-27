@@ -4,7 +4,7 @@ import { LoadingIndicator } from "../../../shared/LoadingIndicator";
 
 export const WatchPendingTxs = () => (
   <>
-    <h3>Watching pending transactions</h3>
+    <h3>There are external pending transactions. Please wait...</h3>
     <LoadingIndicator />
   </>
 );

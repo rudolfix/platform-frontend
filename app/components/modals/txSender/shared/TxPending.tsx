@@ -1,6 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { TxSenderType } from "../../../../modules/tx/sender/reducer";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { EtherscanTxLink } from "../../../shared/EtherscanLink";
 
@@ -9,14 +10,15 @@ import * as styles from "./TxPending.module.scss";
 export interface ITxPendingProps {
   blockId: number;
   txHash: string;
+  type: TxSenderType;
 }
 
-export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash }) => (
+export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash, type }) => (
   <div className="text-center" test-data-id="modals.shared.tx-pending.modal">
     <SpinningEthereum className="mb-3" />
 
     <h3 className={styles.title}>
-      <FormattedMessage id="tx-sender.tx-pending.title" />
+      <FormattedMessage id="tx-sender.tx-pending.title" /> {type}
     </h3>
 
     <p>

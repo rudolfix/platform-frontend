@@ -7,6 +7,7 @@ import { ITxPendingProps, TxPending } from "./TxPending";
 const txData: ITxPendingProps = {
   blockId: 4623487932,
   txHash: "af908098b968d7564564362c51836",
+  type: "WITHDRAW",
 };
 
 storiesOf("TxPending", module).add("default", () => (

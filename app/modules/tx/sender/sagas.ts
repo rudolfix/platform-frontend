@@ -19,6 +19,7 @@ import { IAppState } from "../../../store";
 import { multiplyBigNumbers } from "../../../utils/BigNumberUtils";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
+import { onInvestmentTxModalHide } from '../../investmentFlow/sagas';
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
 import {
@@ -60,20 +61,25 @@ export function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): 
 
 export function* investSaga({ logger }: TGlobalDependencies): any {
   try {
-    yield txSendSaga(ETxSenderType.INVEST, generateInvestmentTransaction);
+    yield txSendSaga(ETxSenderType.INVEST, generateInvestmentTransaction, onInvestmentTxModalHide);
     logger.info("Investment successful");
   } catch (e) {
     logger.warn("Investment cancelled", e);
   }
 }
 
-export function* txSendSaga(type: ETxSenderType, transactionGenerationFunction: any): any {
+export function* txSendSaga(
+  type: ETxSenderType,
+  transactionGenerationFunction: any,
+  cleanupFunction?: any,
+): any {
   const { result, cancel } = yield race({
     result: yield txSendProcess(type, transactionGenerationFunction),
     cancel: take("TX_SENDER_HIDE_MODAL"),
   });
 
   if (cancel) {
+    if (cleanupFunction) yield cleanupFunction();
     throw new Error("TX_SENDING_CANCELLED");
   }
 

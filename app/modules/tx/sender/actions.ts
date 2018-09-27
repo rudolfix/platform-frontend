@@ -21,7 +21,6 @@ export const txSenderActions = {
     createAction("TX_SENDER_WATCH_PENDING_TXS_DONE", { type }),
   // Error Actions
   txSenderError: (error: string) => createAction("TX_SENDER_ERROR", { error }),
-
   //Transaction flows
   startWithdrawEth: () => createSimpleAction("TX_SENDER_START_WITHDRAW_ETH"),
   startUpgrade: (tokenType: ETokenType) => createAction("TX_SENDER_START_UPGRADE", tokenType),

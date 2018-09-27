@@ -62,7 +62,7 @@ export interface ITxSummaryDispatchProps {
 }
 export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 
-const InitComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
+const InitComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSelection />;
@@ -73,7 +73,7 @@ const InitComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
   }
 };
 
-const SummaryComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
+const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSummary />;
@@ -82,7 +82,7 @@ const SummaryComponent: React.SFC<{ type: ETxSenderType }> = ({ type }) => {
   }
 };
 
-const SuccessComponent: React.SFC<{ type: ETxSenderType; txHash?: string }> = ({
+const SuccessComponent: React.SFC<{ type?: ETxSenderType; txHash?: string }> = ({
   type,
   txHash,
 }) => {
@@ -106,10 +106,7 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
       return <InitComponent type={type} />;
 
     case "SUMMARY":
-      if (!type) {
-        throw new Error("Transaction type needs to be set at transaction summary state");
-      }
-      return <SummaryComponent type={type} />;
+      return <SummaryComponent type={type!} />;
 
     case "ACCESSING_WALLET":
       return <AccessWalletContainer />;
@@ -121,9 +118,6 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
       return <TxPending blockId={blockId!} txHash={txHash!} />;
 
     case "DONE":
-      if (!type) {
-        throw new Error("Transaction type needs to be set at transaction done state");
-      }
       return <SuccessComponent type={type} txHash={txHash!} />;
 
     case "ERROR_SIGN":

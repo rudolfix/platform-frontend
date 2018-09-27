@@ -791,7 +791,7 @@
   "withdraw-flow.cost": "Cost",
   "withdraw-flow.gas": "Gas Limit",
   "withdraw-flow.gasPrice": "Gas Price",
-  "withdraw-flow.summary": "Withdraw Summary",
+  "withdraw-flow.summary": "Transaction Summary",
   "withdraw-flow.to": "To",
   "your-ethereum-address-widget.header": "Your Ethereum address"
 }

@@ -35,7 +35,6 @@ export interface ITxSenderState {
 
 const initialState: ITxSenderState = {
   state: "UNINITIALIZED",
-  // txDetails: { to: "", value: "", gas: "", gasPrice: "", from: "" },
 };
 
 export const txSenderReducer: AppReducer<ITxSenderState> = (

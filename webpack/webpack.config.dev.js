@@ -14,7 +14,7 @@ module.exports = merge(configCommon, {
     host: "localhost",
     port: 9090,
     https: true,
-    hot: false,
+    hot: true,
     overlay: true,
     historyApiFallback: true,
     headers: {

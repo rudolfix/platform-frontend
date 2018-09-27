@@ -19,7 +19,7 @@ import { IAppState } from "../../../store";
 import { multiplyBigNumbers } from "../../../utils/BigNumberUtils";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { onInvestmentTxModalHide } from '../../investmentFlow/sagas';
+import { onInvestmentTxModalHide } from "../../investmentFlow/sagas";
 import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
 import {
@@ -35,7 +35,7 @@ import { selectTxDetails, selectTxType } from "./selectors";
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
-    yield txSendSaga(ETxSenderType.WITHDRAW, generateEthWithdrawTransaction);
+    yield txSendSaga(ETxSenderType.WITHDRAW, generateEthWithdrawTransaction, true);
 
     logger.info("Withdrawing successful");
   } catch (e) {
@@ -47,9 +47,9 @@ export function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): 
   try {
     if (action.type !== "TX_SENDER_START_UPGRADE") return;
     if (action.payload === ETokenType.EURO) {
-      yield txSendSaga(ETxSenderType.UPGRADE, generateEuroUpgradeTransaction);
+      yield txSendSaga(ETxSenderType.UPGRADE, generateEuroUpgradeTransaction, false);
     } else {
-      yield txSendSaga(ETxSenderType.UPGRADE, generateEtherUpgradeTransaction);
+      yield txSendSaga(ETxSenderType.UPGRADE, generateEtherUpgradeTransaction, false);
     }
 
     logger.info("Withdrawing successful");
@@ -61,7 +61,12 @@ export function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): 
 
 export function* investSaga({ logger }: TGlobalDependencies): any {
   try {
-    yield txSendSaga(ETxSenderType.INVEST, generateInvestmentTransaction, onInvestmentTxModalHide);
+    yield txSendSaga(
+      ETxSenderType.INVEST,
+      generateInvestmentTransaction,
+      true,
+      onInvestmentTxModalHide,
+    );
     logger.info("Investment successful");
   } catch (e) {
     logger.warn("Investment cancelled", e);
@@ -71,10 +76,11 @@ export function* investSaga({ logger }: TGlobalDependencies): any {
 export function* txSendSaga(
   type: ETxSenderType,
   transactionGenerationFunction: any,
+  requiresUserInput: boolean,
   cleanupFunction?: any,
 ): any {
   const { result, cancel } = yield race({
-    result: yield txSendProcess(type, transactionGenerationFunction),
+    result: txSendProcess(type, transactionGenerationFunction, requiresUserInput),
     cancel: take("TX_SENDER_HIDE_MODAL"),
   });
 
@@ -93,6 +99,7 @@ export function* txSendSaga(
 export function* txSendProcess(
   TransactionType: ETxSenderType,
   transactionGenerationFunction: any,
+  requiresUserInput: boolean,
 ): any {
   try {
     yield put(actions.gas.gasApiEnsureLoading());
@@ -101,7 +108,7 @@ export function* txSendProcess(
     yield neuCall(ensureNoPendingTx, TransactionType);
 
     let txDetails;
-    if (TransactionType === "WITHDRAW" || TransactionType === "INVEST") {
+    if (requiresUserInput) {
       yield put(actions.txSender.txSenderWatchPendingTxsDone(TransactionType));
       txDetails = yield take("TX_SENDER_ACCEPT_DRAFT");
     }

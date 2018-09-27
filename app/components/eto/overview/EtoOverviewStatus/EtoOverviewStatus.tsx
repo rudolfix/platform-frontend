@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 import {
   ClaimWidget,
   CounterWidget,
+  IClaimWidget,
   InvestWidget,
+  ITagsWidget,
+  ITokenSymbolWidgetProps,
   RefundWidget,
   TagsWidget,
   TokenSymbolWidget,
@@ -172,10 +175,11 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
               <CounterWidget endDate={publicEtoStartDate} stage="Public ETO" />
             ))}
           {(props.contract.timedState === ETOStateOnChain.Public ||
-            props.contract.timedState === ETOStateOnChain.Whitelist) && (
-            <>
-              {isEligibleToPreEto ? (
-                <InvestWidget
+            (props.contract.timedState === ETOStateOnChain.Whitelist)) && (
+              <>
+              {
+                isEligibleToPreEto
+                ? (<InvestWidget
                   raisedTokens={parseInt(
                     `${props.contract.totalInvestment.totalTokensInt.toString()}`,
                     10,
@@ -186,8 +190,9 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
                   )}
                   tokensGoal={0}
                   etoId={props.etoId}
-                />
-              ) : null}
+                />)
+                : null
+              }
             </>
           )}
           {props.contract.timedState === ETOStateOnChain.Claim && (

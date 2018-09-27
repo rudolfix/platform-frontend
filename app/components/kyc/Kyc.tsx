@@ -160,6 +160,7 @@ class RequestStateInfo extends React.Component<IProps> {
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.outsourced.title" />}
           steps={steps}
+          testId="kyc-panel-outsourced"
           description={<FormattedMessage id="kyc.request-state.outsourced.description" />}
         >
           {" "}

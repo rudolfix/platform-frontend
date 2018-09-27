@@ -5,9 +5,7 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
-import {
-  selectEtherTokenBalance,
-} from "../../../wallet/selectors";
+import { selectEtherTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 
 export function* generateEthWithdrawTransaction(

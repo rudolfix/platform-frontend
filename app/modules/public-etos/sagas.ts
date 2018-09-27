@@ -115,7 +115,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
       keyBy((eto: TEtoSpecsData) => eto.previewCode),
       // remove company prop from eto
       // it's saved separately for consistency with other endpoints
-      omit("company"),
+      map(omit("company")),
     )(etos);
 
     const order = etosResponse.body.map(eto => eto.previewCode);

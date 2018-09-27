@@ -31,8 +31,6 @@ const Plate: React.SFC<IPlateProps> = ({ value, label }) => {
 };
 
 export class Counter extends React.Component<IProps, IState> {
-  interval: number | null = null;
-
   state = {
     date: this.props.endDate - Date.now(),
   };
@@ -52,8 +50,8 @@ export class Counter extends React.Component<IProps, IState> {
   }
 
   componentWillUnmount(): void {
-    if (this.interval !== null) {
-      window.clearInterval(this.interval);
+    if (this.timer !== null) {
+      window.clearInterval(this.timer);
     }
   }
 

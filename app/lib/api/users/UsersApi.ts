@@ -10,6 +10,7 @@ import {
   IUser,
   IUserInput,
   IVerifyEmailUser,
+  TPendingTxs,
   TxWithMetadata,
   TxWithMetadataListValidator,
   UserValidator,
@@ -129,14 +130,19 @@ export class UsersApi {
     return ensureWalletTypesInUser(response.body);
   }
 
-  public async pendingTxs(): Promise<Array<TxWithMetadata>> {
+  public async pendingTxs(): Promise<TPendingTxs> {
     const response = await this.httpClient.get<Array<TxWithMetadata>>({
       baseUrl: USER_API_ROOT,
       url: "/pending_transactions/me",
       responseSchema: TxWithMetadataListValidator,
     });
-
-    return response.body;
+    const pendingTxs: TPendingTxs = {
+      // find transaction with payload
+      pendingTransaction: response.body.find(tx => !!tx.transactionType),
+      // move other transactions to OOO transactions
+      oooTransactions: response.body.filter(tx => !tx.transactionType).map(tx => tx.transaction),
+    };
+    return pendingTxs;
   }
 
   public async addPendingTx(tx: TxWithMetadata): Promise<void> {

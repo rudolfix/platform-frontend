@@ -17,18 +17,20 @@ import {
 } from "../../../lib/web3/Web3Adapter";
 import { IAppState } from "../../../store";
 import { multiplyBigNumbers } from "../../../utils/BigNumberUtils";
-import { connectWallet, signMessage } from "../../accessWallet/sagas";
+import { connectWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
-import { neuCall, neuFork, neuTakeEvery } from "../../sagas";
-import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
+import { neuCall, neuTakeEvery } from "../../sagas";
 import { updateTxs } from "../monitor/sagas";
+import {
+  generateEtherUpgradeTransaction,
+  generateEthWithdrawTransaction,
+  generateEuroUpgradeTransaction,
+  generateInvestmentTransaction,
+} from "../transactionsGenerators/sagas";
 import { OutOfGasError } from "./../../../lib/web3/Web3Adapter";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
-import { selectEtherTokenBalance } from "./../../wallet/selectors";
-import { ETxSenderType, ETokenType } from './reducer';
+import { ETokenType, ETxSenderType } from "./reducer";
 import { selectTxDetails, selectTxType } from "./selectors";
-import { generateTransaction } from "../../investmentFlow/sagas";
-import { generateEuroUpgradeTransaction, generateEtherUpgradeTransaction } from '../transactionsGenerators/sagas';
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
@@ -58,7 +60,7 @@ export function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): 
 
 export function* investSaga({ logger }: TGlobalDependencies): any {
   try {
-    yield txSendSaga(ETxSenderType.INVEST, generateTransaction);
+    yield txSendSaga(ETxSenderType.INVEST, generateInvestmentTransaction);
     logger.info("Investment successful");
   } catch (e) {
     logger.warn("Investment cancelled", e);
@@ -124,10 +126,7 @@ export function* txSendProcess(
   }
 }
 
-function* ensureNoPendingTx(
-  { apiUserService, web3Manager, logger }: TGlobalDependencies,
-  type: ETxSenderType,
-): any {
+function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDependencies): any {
   yield updateTxs();
   let txs: Array<TxWithMetadata> = yield select((s: IAppState) => s.txMonitor.txs);
 
@@ -148,39 +147,6 @@ function* ensureNoPendingTx(
       txs = yield select((s: IAppState) => s.txMonitor.txs);
     }
   }
-}
-
-function* generateEthWithdrawTransaction(
-  { contractsService }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== "TX_SENDER_ACCEPT_DRAFT") return;
-
-  const txStateDetails = action.payload;
-
-  let txDetails: ITxData | undefined;
-  if (!txStateDetails) return;
-  const etherTokenBalance = yield select((s: IAppState) => selectEtherTokenBalance(s.wallet));
-  const from = yield select((s: IAppState) => selectEthereumAddressWithChecksum(s.web3));
-
-  // transaction can be fully covered by etherTokens
-
-  const txInput = contractsService.etherToken
-    .withdrawAndSendTx(txStateDetails.to, new BigNumber(txStateDetails.value))
-    .getData();
-  const ethVal = new BigNumber(txStateDetails.value);
-  const difference = ethVal.sub(etherTokenBalance);
-
-  txDetails = {
-    to: contractsService.etherToken.address,
-    from,
-    data: txInput,
-    value: difference.comparedTo(0) > 0 ? difference.toString() : "0",
-    gas: txStateDetails.gas,
-    gasPrice: txStateDetails.gasPrice,
-  };
-
-  yield put(actions.txSender.txSenderAcceptDraft(txDetails));
 }
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
@@ -282,6 +248,7 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
     logger.info("Stopped Watching for TXs");
   }
 }
+
 enum EventEmitterChannelEvents {
   NEW_BLOCK = "NEW_BLOCK",
   TX_MINED = "TX_MINED",
@@ -340,4 +307,5 @@ export const txSendingSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
   yield fork(neuTakeEvery, "TX_SENDER_START_UPGRADE", upgradeSaga);
   yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
+  // Claim
 };

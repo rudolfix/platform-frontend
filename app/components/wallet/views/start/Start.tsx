@@ -5,6 +5,7 @@ import { compose } from "redux";
 
 import { actions } from "../../../../modules/actions";
 
+import { ETokenType } from "../../../../modules/tx/sender/reducer";
 import {
   selectICBMLockedEtherBalance,
   selectICBMLockedEtherBalanceEuroAmount,
@@ -34,7 +35,6 @@ import { IcbmWallet, IIcbmWalletValues } from "../../wallet-balance/IcbmWallet";
 import { LockedWallet } from "../../wallet-balance/LockedWallet";
 import { UnlockedWallet } from "../../wallet-balance/UnlockedWallet";
 import { IWalletValues } from "../../wallet-balance/WalletBalance";
-import { ETokenType } from '../../../../modules/tx/sender/reducer';
 
 const transactions: any[] = [];
 

@@ -10,7 +10,6 @@ export const investmentFlowActions = {
   submitCurrencyValue: (value: string, currency: EInvestmentCurrency) =>
     createAction("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", { value, currency }),
   validateInputs: () => createSimpleAction("INVESTMENT_FLOW_VALIDATE_INPUTS"),
-  generateInvestmentTx: () => createSimpleAction("INVESTMENT_FLOW_GENERATE_TX"),
   // state mutations
   setEtoId: (etoId: string) => createAction("INVESTMENT_FLOW_SET_ETO_ID", { etoId }),
   setEthValue: (value: string) =>

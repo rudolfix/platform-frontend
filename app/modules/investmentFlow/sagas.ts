@@ -1,10 +1,9 @@
 import BigNumber from "bignumber.js";
 import { delay } from "redux-saga";
-import { fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { put, select, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { ITxData } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, divideBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Money.utils";
@@ -13,10 +12,9 @@ import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";
 import { loadComputedContributionFromContract } from "../public-etos/sagas";
 import { selectCalculatedContributionByEtoId, selectEtoById } from "../public-etos/selectors";
-import { neuCall, neuTakeEvery } from "../sagas";
+import { neuCall } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { selectLiquidEtherBalance } from "../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import {
   EInvestmentCurrency,
   EInvestmentErrorState,
@@ -27,7 +25,6 @@ import {
   selectCurrencyByInvestmentType,
   selectInvestmentGasCostEth,
   selectIsICBMInvestment,
-  selectReadyToInvest,
 } from "./selectors";
 
 function* processCurrencyValue(action: TAction): any {
@@ -149,58 +146,6 @@ function* setGasPrice(): any {
   yield put(actions.investmentFlow.validateInputs());
 }
 
-export function* generateTransaction({ contractsService }: TGlobalDependencies): any {
-  const state: IAppState = yield select();
-  const i = state.investmentFlow;
-  const eto = selectEtoById(state.publicEtos, i.etoId);
-
-  if (!eto || !selectReadyToInvest(i)) {
-    throw new Error("Investment data is not valid to create an Transaction");
-  }
-
-  let txDetails: ITxData | undefined;
-
-  if (i.investmentType === EInvestmentType.InvestmentWallet) {
-    const etherTokenBalance = state.wallet.data!.etherTokenBalance;
-
-    // transaction can be fully covered by etherTokens
-    if (compareBigNumbers(etherTokenBalance, i.ethValueUlps) >= 0) {
-      // need to call 3 args version of transfer method. See the abi in the contract.
-      // so we call the rawWeb3Contract directly
-      const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
-        "address,uint256,bytes"
-      ].getData(eto.etoId, i.ethValueUlps, "");
-
-      txDetails = {
-        to: contractsService.etherToken.address,
-        from: selectEthereumAddressWithChecksum(state.web3),
-        data: txInput,
-        value: "0",
-        gas: i.gasAmount,
-        gasPrice: i.gasPrice,
-      };
-
-      // fill up etherToken with ether from wallet
-    } else {
-      const ethVal = new BigNumber(i.ethValueUlps);
-      const difference = ethVal.sub(etherTokenBalance);
-      const txCall = contractsService.etherToken.depositAndTransferTx(eto.etoId, ethVal, [""]);
-      txDetails = {
-        to: contractsService.etherToken.address,
-        from: selectEthereumAddressWithChecksum(state.web3),
-        data: txCall.getData(),
-        value: difference.round().toString(),
-        gas: i.gasAmount,
-        gasPrice: i.gasPrice,
-      };
-    }
-  }
-
-  if (txDetails) {
-    yield put(actions.txSender.txSenderAcceptDraft(txDetails));
-  }
-}
-
 function* recalculateCurrencies(): any {
   yield delay(100); // wait for new token price to be available
   const i: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
@@ -220,9 +165,10 @@ export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", processCurrencyValue);
   yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs);
   yield takeEvery("INVESTMENT_FLOW_START", start);
-  yield fork(neuTakeEvery, "INVESTMENT_FLOW_GENERATE_TX", generateTransaction);
-  yield takeEvery("TX_SENDER_HIDE_MODAL", stop);
   yield takeEvery("PUBLIC_ETOS_SET_CURRENT_ETO", cancelInvestment); // cancel when current eto changes
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);
+
+  // TODO: Take out of investment
+  yield takeEvery("TX_SENDER_HIDE_MODAL", stop);
 }

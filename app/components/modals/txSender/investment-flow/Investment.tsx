@@ -268,7 +268,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
       };
     },
     dispatchToProps: dispatch => ({
-      sendTransaction: () => dispatch(actions.investmentFlow.generateInvestmentTx()),
+      sendTransaction: () => dispatch(actions.txSender.txSenderAcceptDraft()),
       changeEthValue: value =>
         dispatch(actions.investmentFlow.submitCurrencyValue(value, EInvestmentCurrency.Ether)),
       changeEuroValue: value =>

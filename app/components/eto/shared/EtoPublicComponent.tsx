@@ -130,7 +130,14 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           tokenSymbol={etoData.equityTokenSymbol || ""}
           className="mb-4"
           canEnableBookbuilding={etoData.canEnableBookbuilding}
-          investmentAmount={etoData.company.keyQuoteFounder} //TODO: connect proper one
+          investmentAmount={`€ ${(
+            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
+            (etoData.newSharesToIssue || 1)
+          ).toFixed(4)} - € 
+          ${(
+            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
+            (etoData.minimumNewSharesToIssue || 1)
+          ).toFixed(4)}`}
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
           prospectusApproved={documentsByType["approved_prospectus"]}
@@ -147,12 +154,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
             minPledge: etoData.minTicketEur,
             isActivated: etoData.isBookbuilding,
             quote: companyData.keyQuoteFounder,
-          }}
-          publicWidget={{
-            investorsBacked: 0,
-            tokensGoal: 0,
-            raisedTokens: 0,
-            etoId: etoData.etoId,
           }}
         />
 

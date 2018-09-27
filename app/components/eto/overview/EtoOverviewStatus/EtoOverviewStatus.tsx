@@ -6,10 +6,7 @@ import { Link } from "react-router-dom";
 import {
   ClaimWidget,
   CounterWidget,
-  IClaimWidget,
   InvestWidget,
-  ITagsWidget,
-  ITokenSymbolWidgetProps,
   RefundWidget,
   TagsWidget,
   TokenSymbolWidget,
@@ -21,6 +18,7 @@ import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { ProjectStatus } from "../../../shared/ProjectStatus";
+import { IResponsiveImage } from "../../../shared/ResponsiveImage";
 import { CampaigningWidget, ICampaigningWidget } from "./CampaigningWidget";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
@@ -39,10 +37,16 @@ interface IProps {
   investmentAmount: string | number | undefined;
   newSharesGenerated: string | number | undefined;
   campaigningWidget: ICampaigningWidget;
-  preMoneyValuationEur?: number;
-  existingCompanyShares?: number;
-  equityTokensPerShare?: number;
-  timedState?: number;
+  preMoneyValuationEur?: number | undefined;
+  existingCompanyShares?: number | undefined;
+  equityTokensPerShare?: number | undefined;
+  timedState?: number | undefined;
+  tokenImage: IResponsiveImage;
+  tokenName: string;
+  tokenSymbol: string;
+  smartContractOnchain: boolean;
+  foundersQuote: string;
+  termSheet: IEtoDocument;
 }
 
 interface IStatusOfEto {
@@ -69,9 +73,7 @@ const PoweredByNeufund = () => {
   );
 };
 
-const EtoOverviewStatus: React.SFC<
-  IProps & ITokenSymbolWidgetProps & IStatusOfEto & ITagsWidget & IClaimWidget & CommonHtmlProps
-> = props => {
+const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
   const day = 86400000;
   const preEtoStartDate = Date.parse(props.etoStartDate);
   const publicEtoStartDate = isNaN(preEtoStartDate)
@@ -170,19 +172,23 @@ const EtoOverviewStatus: React.SFC<
               <CounterWidget endDate={publicEtoStartDate} stage="Public ETO" />
             ))}
           {(props.contract.timedState === ETOStateOnChain.Public ||
-            (props.contract.timedState === ETOStateOnChain.Whitelist && isEligibleToPreEto)) && (
-            <InvestWidget
-              raisedTokens={parseInt(
-                `${props.contract.totalInvestment.totalTokensInt.toString()}`,
-                10,
-              )}
-              investorsBacked={parseInt(
-                `${props.contract.totalInvestment.totalInvestors.toString()}`,
-                10,
-              )}
-              tokensGoal={0}
-              etoId={props.etoId}
-            />
+            props.contract.timedState === ETOStateOnChain.Whitelist) && (
+            <>
+              {isEligibleToPreEto ? (
+                <InvestWidget
+                  raisedTokens={parseInt(
+                    `${props.contract.totalInvestment.totalTokensInt.toString()}`,
+                    10,
+                  )}
+                  investorsBacked={parseInt(
+                    `${props.contract.totalInvestment.totalInvestors.toString()}`,
+                    10,
+                  )}
+                  tokensGoal={0}
+                  etoId={props.etoId}
+                />
+              ) : null}
+            </>
           )}
           {props.contract.timedState === ETOStateOnChain.Claim && (
             <ClaimWidget

@@ -8,8 +8,8 @@ import * as styles from "./ClaimWidget.module.scss";
 
 export interface IClaimWidget {
   tokenName: string;
-  numberOfInvestors: number;
-  raisedAmount: string | number;
+  numberOfInvestors: number | undefined;
+  raisedAmount: string | number | undefined;
   isPayout: boolean;
 }
 

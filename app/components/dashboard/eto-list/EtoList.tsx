@@ -48,7 +48,7 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
               ${(
                 ((eto.preMoneyValuationEur || 1) / (eto.existingCompanyShares || 1)) *
                 (eto.minimumNewSharesToIssue || 1)
-              ).toFixed(4)}`} //TODO: connect proper one
+              ).toFixed(4)}`}
               contract={eto.contract}
               wallet={wallet}
               etoId={eto.etoId}
@@ -69,10 +69,10 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
               tokenName={eto.equityTokenName || ""}
               tokenSymbol={eto.equityTokenSymbol || ""}
               campaigningWidget={{
-                investorsLimit: eto.maxPledges,
-                maxPledge: eto.maxTicketEur,
-                minPledge: eto.minTicketEur,
-                isActivated: eto.isBookbuilding,
+                investorsLimit: eto.maxPledges || 0,
+                maxPledge: eto.maxTicketEur || 0,
+                minPledge: eto.minTicketEur || 0,
+                isActivated: eto.isBookbuilding || false,
                 quote: (eto.company && eto.company.keyQuoteFounder) || "",
               }}
             />

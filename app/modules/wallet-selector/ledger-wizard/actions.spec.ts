@@ -18,7 +18,7 @@ import { WalletNotConnectedError, Web3Manager } from "../../../lib/web3/Web3Mana
 import { IAppState } from "../../../store";
 import { Dictionary } from "../../../types";
 import { actions } from "../../actions";
-import { WalletType } from "../../web3/types";
+import { WalletSubType, WalletType } from "../../web3/types";
 import { ledgerWizardFlows } from "./flows";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
 
@@ -241,6 +241,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         address: dummyEthereumAddress,
         derivationPath: expectedDerivationPath,
         walletType: WalletType.LEDGER,
+        walletSubType: WalletSubType.UNKNOWN,
       };
 
       const dispatchMock = spy();
@@ -273,6 +274,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         address: dummyEthereumAddress,
         derivationPath: expectedDerivationPath,
         walletType: WalletType.LEDGER,
+        walletSubType: WalletSubType.UNKNOWN,
       };
 
       const dispatchMock = spy();

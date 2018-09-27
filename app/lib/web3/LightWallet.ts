@@ -1,3 +1,4 @@
+import { BigNumber } from "bignumber.js";
 import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
@@ -12,7 +13,7 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 import { IPersonalWallet, SignerType } from "./PersonalWeb3";
-import { IEthereumNetworkConfig, ITxData } from "./Web3Manager";
+import { IEthereumNetworkConfig, IRawTxData } from "./Web3Manager";
 
 import { symbols } from "../../di/symbols";
 import { WalletSubType, WalletType } from "../../modules/web3/types";
@@ -218,25 +219,26 @@ export class LightWallet implements IPersonalWallet {
     }
   }
 
-  public async sendTransaction(data: Web3.TxData): Promise<string> {
+  public async sendTransaction(txData: Web3.TxData): Promise<string> {
     if (!this.password) {
       throw new LightWalletMissingPasswordError();
     }
-    data.nonce = await this.web3Adapter.getTransactionCount(data.from);
+    const nonce = await this.web3Adapter.getTransactionCount(txData.from);
 
-    const txData: ITxData = {};
-
-    txData.to = addHexPrefix(data.to!);
-    txData.gasLimit = addHexPrefix(Number(data.gas || 0).toString());
-    txData.gasPrice = addHexPrefix(Number(data.gasPrice || 0).toString(16));
-    txData.nonce = addHexPrefix(Number(data.nonce || 0).toString(16));
-    txData.value = addHexPrefix(Number(data.value! || 0).toString(16));
-    txData.data = addHexPrefix(data.data || "0");
+    const encodedTxData: IRawTxData = {
+      from: txData.from,
+      to: addHexPrefix(txData.to!),
+      gas: addHexPrefix(new BigNumber(txData.gas || 0).toString(16)),
+      gasPrice: addHexPrefix(new BigNumber(txData.gasPrice || 0).toString(16)),
+      nonce: addHexPrefix(new BigNumber(nonce || 0).toString(16)),
+      value: addHexPrefix(new BigNumber(txData.value! || 0).toString(16)),
+      data: addHexPrefix(txData.data || "0"),
+    };
 
     const rawData = LightWalletProvider.signing.signTx(
       this.vault.walletInstance,
       await LightWalletUtil.getWalletKey(this.vault.walletInstance, this.password),
-      txData,
+      encodedTxData,
       this.ethereumAddress,
     );
     return await this.web3Adapter.sendRawTransaction(addHexPrefix(rawData));
@@ -259,7 +261,8 @@ export class LightWallet implements IPersonalWallet {
       email: this.email,
       salt: this.vault.salt,
       vault: JSON.stringify(this.vault.walletInstance),
-      walletType: WalletType.LIGHT,
+      walletType: this.walletType,
+      walletSubType: this.walletSubType,
     };
   }
 }
@@ -270,8 +273,6 @@ export class LightWalletConnector {
   public constructor(
     @inject(symbols.ethereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
-
-  public readonly walletSubType: WalletSubType = WalletSubType.UNKNOWN;
 
   public passwordProvider(): any {
     return "";

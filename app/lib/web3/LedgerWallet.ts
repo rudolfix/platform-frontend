@@ -87,6 +87,7 @@ export class LedgerWallet implements IPersonalWallet {
     return {
       address: this.ethereumAddress,
       walletType: WalletType.LEDGER,
+      walletSubType: WalletSubType.UNKNOWN,
       derivationPath: this.derivationPath,
     };
   }

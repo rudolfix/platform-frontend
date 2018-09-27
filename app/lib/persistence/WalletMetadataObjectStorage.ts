@@ -9,6 +9,7 @@ export interface ICommonWalletMetadata {
 
 export interface ILightWalletMetadata extends ICommonWalletMetadata {
   walletType: WalletType.LIGHT;
+  walletSubType: WalletSubType.UNKNOWN;
   vault: string;
   salt: string;
   email: string;
@@ -31,6 +32,7 @@ export interface IBrowserWalletMetadata extends ICommonWalletMetadata {
 
 export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
   walletType: WalletType.LEDGER;
+  walletSubType: WalletSubType.UNKNOWN;
   derivationPath: string;
 }
 

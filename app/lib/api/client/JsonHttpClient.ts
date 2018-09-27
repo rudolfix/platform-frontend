@@ -47,7 +47,7 @@ export class JsonHttpClient extends HttpClient {
     if (config.responseSchema && response.ok && !config.skipResponseParsing) {
       // we dont validate response on non success statuses
       try {
-        finalResponseJson = config.responseSchema.validateSync<T>(toCamelCase(responseJson), {
+        finalResponseJson = config.responseSchema.validateSync(toCamelCase(responseJson), {
           stripUnknown: true,
         }) as T;
       } catch (e) {

@@ -179,7 +179,7 @@ function createTxData(
   return {
     to: contractAddress,
     from: selectEthereumAddressWithChecksum(state.web3),
-    input: txInput,
+    data: txInput,
     value: "0",
     gas: state.investmentFlow.gasAmount,
     gasPrice: state.investmentFlow.gasPrice,
@@ -234,7 +234,7 @@ function getEtherTokenTransaction(
     txDetails = {
       to: contractsService.etherToken.address,
       from: selectEthereumAddressWithChecksum(state.web3),
-      input: txCall.getData(),
+      data: txCall.getData(),
       value: difference.toString(),
       gas: i.gasAmount,
       gasPrice: i.gasPrice,
@@ -305,7 +305,6 @@ export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_SUMMARY", showBankTransferSummary);
 
   yield takeEvery("TX_SENDER_HIDE_MODAL", onTxModalHide);
-  yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);
 }

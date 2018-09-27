@@ -1,4 +1,3 @@
-import { tid } from "../../../../../test/testUtils";
 import {
   assertErrorModal,
   assertLatestEmailSentWithSalt,
@@ -10,7 +9,8 @@ import {
   registerWithLightWallet,
   typeEmailPassword,
   verifyLatestUserEmail,
-} from "../../../../e2e-test-utils";
+  tid,
+} from "../utils";
 
 describe("Light wallet login / register", () => {
   it("should register user with light-wallet and send email", () => {

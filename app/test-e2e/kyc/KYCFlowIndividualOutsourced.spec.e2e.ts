@@ -11,9 +11,8 @@ const goToIndividualKYCFlow = () => {
   cy.url().should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
 };
 
-const goToIndividualManualVerification = () => {
-  cy.get(tid("kyc-go-to-manual-verification")).click();
-  cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
+const goToIndividualOutsourcedVerification = () => {
+  cy.get(tid("kyc-go-to-outsourced-verification")).click();
 };
 
 const uploadDocumentAndSubmitForm = () => {
@@ -27,12 +26,9 @@ describe("KYC Personal flow with manual verification", () => {
   it("went through KYC flow with personal data", () => {
     goToIndividualKYCFlow();
     submitIndividualKYCForm(personData);
-    goToIndividualManualVerification();
-    uploadDocumentAndSubmitForm();
-    acceptWallet();
+    goToIndividualOutsourcedVerification();
 
-    cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
-    // panel should now be in pending state
-    cy.get(tid("kyc-panel-pending"));
+    // we should now be on the outsourced page
+    cy.url().should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
   });
 });

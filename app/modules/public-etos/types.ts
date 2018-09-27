@@ -27,12 +27,16 @@ export enum ETOStateOnChain {
   Refund = 6, // Terminal state
 }
 
+export type TEtoStartOfStates = Record<ETOStateOnChain, Date | undefined>;
+
 export interface IEtoContractData {
-  timedState?: ETOStateOnChain;
+  timedState: ETOStateOnChain;
   totalInvestment: IEtoTotalInvestment;
+  startOfStates: TEtoStartOfStates;
 }
 
 export type TEtoWithCompanyAndContract = TEtoSpecsData & {
+  // contract is undefined when ETO is not on blockchain
   contract?: IEtoContractData;
   company: TCompanyEtoData;
 };

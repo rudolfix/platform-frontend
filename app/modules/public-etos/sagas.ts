@@ -19,7 +19,7 @@ import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
 import { selectCalculatedContributionByEtoId, selectEtoById } from "./selectors";
-import { convertToCalculatedContribution, convertToEtoTotalInvestment } from "./utils";
+import { convertToCalculatedContribution, convertToEtoTotalInvestment, convertToStateStartDate } from "./utils";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
@@ -89,11 +89,13 @@ export function* loadEtoContact(
 
     const timedStateRaw = yield etoContract.timedState;
     const totalInvestmentRaw = yield etoContract.totalInvestment();
+    const startOfStatesRaw = yield etoContract.startOfStates;
 
     yield put(
       actions.publicEtos.setEtoDataFromContract(eto.previewCode, {
         timedState: timedStateRaw.toNumber(),
         totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
+        startOfStates: convertToStateStartDate(startOfStatesRaw),
       }),
     );
   } catch (e) {

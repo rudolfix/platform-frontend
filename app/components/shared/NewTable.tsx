@@ -5,6 +5,7 @@ import * as React from "react";
 import { TTranslatedString } from "../../types";
 import * as styles from "./NewTable.module.scss";
 import { Panel } from "./Panel";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 interface INewTableHeader {
   titles: (TTranslatedString | React.ReactNode)[];
@@ -14,8 +15,14 @@ interface INewTableRow {
   children: React.ReactNode[];
 }
 
+interface IPlaceholderTableRow {
+  children?: TTranslatedString;
+  numberOfCells: number;
+}
+
 interface INewTable {
   children: React.ReactElement<INewTableRow> | React.ReactElement<INewTableRow>[];
+  placeholder?: TTranslatedString;
   className?: string;
   keepRhythm?: boolean;
 }
@@ -30,9 +37,9 @@ export class NewTableRow extends React.Component<INewTableRow> {
       <tr className={styles.row}>
         {React.Children.map(children, child => {
           return (
-            <th className={styles.cell} key={uniqueId("table-row")}>
+            <td className={styles.cell} key={uniqueId("table-row")}>
               {child}
-            </th>
+            </td>
           );
         })}
       </tr>
@@ -40,7 +47,29 @@ export class NewTableRow extends React.Component<INewTableRow> {
   }
 }
 
-export const NewTable: React.SFC<TProps> = ({ titles, children, className, keepRhythm }) => {
+class PlaceholderTableRow extends React.Component<IPlaceholderTableRow> {
+  render(): React.ReactNode {
+    const { children, numberOfCells } = this.props;
+
+    return (
+      <tr className={styles.row}>
+        <td className={cn(styles.cell, styles.cellPlaceholder)} colSpan={numberOfCells}>
+          {children || <FormattedMessage id="shared-components.table.default-placeholder" />}
+        </td>
+      </tr>
+    );
+  }
+}
+
+export const NewTable: React.SFC<TProps> = ({
+  titles,
+  children,
+  className,
+  placeholder,
+  keepRhythm,
+}) => {
+  const isEmpty = React.Children.count(children) === 0;
+
   return (
     <Panel>
       <div className={cn(styles.tableWrapper, className, keepRhythm && "keep-rhythm")}>
@@ -54,7 +83,13 @@ export const NewTable: React.SFC<TProps> = ({ titles, children, className, keepR
               ))}
             </tr>
           </thead>
-          <tbody>{children}</tbody>
+          <tbody>
+            {isEmpty ? (
+              <PlaceholderTableRow numberOfCells={titles.length}>{placeholder}</PlaceholderTableRow>
+            ) : (
+              children
+            )}
+          </tbody>
         </table>
       </div>
     </Panel>

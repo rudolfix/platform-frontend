@@ -19,7 +19,8 @@ export const selectEtoWithInvestorTickets = (state: IAppState): TETOWithInvestor
     return etos
       .filter(eto => eto.state === EtoState.ON_CHAIN)
       .filter(eto => eto.contract!.timedState !== ETOStateOnChain.Setup)
-      .map(eto => ({ ...eto, investorTicket: selectInvestorTicket(state, eto.etoId)!} ));
+      .map(eto => ({ ...eto, investorTicket: selectInvestorTicket(state, eto.etoId)!} ))
+      .filter(eto => !eto.investorTicket.equivEurUlps.isZero());
   }
 
   return undefined;

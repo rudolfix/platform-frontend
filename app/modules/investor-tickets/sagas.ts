@@ -52,46 +52,7 @@ export function* loadEtoInvestorTicket(
   );
 }
 
-export function* claimTicket(
-  { notificationCenter, contractsService, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== "INVESTOR_TICKET_CLAIM") return;
-
-  try {
-    const etoId = action.payload.etoId;
-
-    const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
-
-    etoContract.claimTx().send();
-
-  } catch (e) {
-    logger.error("Could not claim ticket", e);
-    notificationCenter.error("Could not claim ticket");
-  }
-}
-
-export function* claimTicket(
-  { notificationCenter, contractsService, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== "INVESTOR_TICKET_CLAIM") return;
-
-  try {
-    const etoId = action.payload.etoId;
-
-    const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
-
-    etoContract.refundTx();
-
-  } catch (e) {
-    logger.error("Could not claim ticket", e);
-    notificationCenter.error("Could not claim ticket");
-  }
-}
-
 export function* investorTicketsSagas(): any {
   yield fork(neuTakeEvery, "INVESTOR_TICKET_ETOS_LOAD", loadEtosWithInvestorTickets);
   yield fork(neuTakeEvery, "INVESTOR_TICKET_LOAD", loadEtoInvestorTicket);
-  yield fork(neuTakeEvery, "INVESTOR_TICKET_CLAIM", claimTicket);
 }

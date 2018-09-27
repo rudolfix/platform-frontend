@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import { map } from "lodash/fp";
 import * as React from "react";
+import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
@@ -124,7 +125,7 @@ const PortfolioLayout: React.SFC<TProps> = ({ myAssets, pendingAssets }) => (
         >
           {pendingAssets.map(
             ({ equityTokenImage, equityTokenName, investorTicket, contract, etoId }) => {
-              const timedState = contract!.timedState!;
+              const timedState = contract!.timedState;
               const isWhitelistedOrPublic =
                 timedState === ETOStateOnChain.Whitelist || timedState === ETOStateOnChain.Public;
 
@@ -140,7 +141,12 @@ const PortfolioLayout: React.SFC<TProps> = ({ myAssets, pendingAssets }) => (
                   <>{investorTicket.rewardNmkUlps.toString()}</>
                   <>
                     {isWhitelistedOrPublic ? (
-                      <>Ends in {}</>
+                      <>
+                        Ends{" "}
+                        <FormattedRelative
+                          value={contract!.startOfStates[ETOStateOnChain.Signing]!}
+                        />
+                      </>
                     ) : (
                       <ProjectStatus status={timedState} />
                     )}
@@ -162,6 +168,7 @@ const PortfolioLayout: React.SFC<TProps> = ({ myAssets, pendingAssets }) => (
       <Col className="mb-4">
         <NewTable
           keepRhythm={true}
+          placeholder={<FormattedMessage id="portfolio.section.your-assets.table.placeholder" />}
           titles={[
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.token" />,
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.balance" />,
@@ -174,7 +181,7 @@ const PortfolioLayout: React.SFC<TProps> = ({ myAssets, pendingAssets }) => (
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.documents" />,
           ]}
         >
-          {pendingAssets.map(
+          {myAssets.map(
             ({ equityTokenImage, equityTokenName, investorTicket, contract, etoId, documents }) => {
               return (
                 <NewTableRow key={etoId}>

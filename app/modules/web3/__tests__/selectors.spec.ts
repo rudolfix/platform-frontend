@@ -8,7 +8,7 @@ import {
   selectLightWalletEmailFromQueryString,
   selectLightWalletFromQueryString,
 } from "../selectors";
-import { WalletType } from "../types";
+import { WalletSubType, WalletType } from "../types";
 import { getDummyLightWalletMetadata } from "./fixtures";
 
 describe("web3 > selectors", () => {
@@ -43,6 +43,7 @@ describe("web3 > selectors", () => {
         connected: false,
         previousConnectedWallet: {
           walletType: WalletType.LIGHT,
+          walletSubType: WalletSubType.UNKNOWN,
           address: dummyEthereumAddress,
           vault,
           email,

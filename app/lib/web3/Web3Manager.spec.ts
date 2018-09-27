@@ -34,6 +34,7 @@ describe("Web3Manager", () => {
       derivationPath: expectedDerivationPath,
       getMetadata: (): ILedgerWalletMetadata => ({
         walletType: WalletType.LEDGER,
+        walletSubType: WalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
         address: dummyEthereumAddress,
       }),
@@ -60,6 +61,7 @@ describe("Web3Manager", () => {
         {
           address: dummyEthereumAddress,
           walletType: WalletType.LEDGER,
+          walletSubType: WalletSubType.UNKNOWN,
           derivationPath: expectedDerivationPath,
         },
         true,

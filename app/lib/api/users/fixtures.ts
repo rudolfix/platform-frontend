@@ -1,8 +1,8 @@
-import { WalletSubType, WalletType } from "../../../modules/web3/types";
+import { TWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { TUserType } from "./interfaces";
 
-export const getDummyUser = () => ({
+export const getDummyUser = (walletMetadata: TWalletMetadata) => ({
   type: "investor" as TUserType,
-  walletType: "light" as WalletType,
-  walletSubtype: "unknown" as WalletSubType,
+  walletType: walletMetadata.walletType,
+  walletSubtype: walletMetadata.walletSubType,
 });

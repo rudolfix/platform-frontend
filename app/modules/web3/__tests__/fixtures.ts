@@ -8,6 +8,7 @@ import { WalletSubType, WalletType } from "../types";
 
 export const getDummyLightWalletMetadata = (): ILightWalletMetadata => ({
   walletType: WalletType.LIGHT,
+  walletSubType: WalletSubType.UNKNOWN,
   address: dummyEthereumAddress,
   vault: "vault",
   email: "test@example.com",
@@ -22,6 +23,7 @@ export const getDummyBrowserWalletMetadata = (): IBrowserWalletMetadata => ({
 
 export const getDummyLedgerWalletMetadata = (): ILedgerWalletMetadata => ({
   walletType: WalletType.LEDGER,
+  walletSubType: WalletSubType.UNKNOWN,
   derivationPath: "derivationPath",
   address: dummyEthereumAddress,
 });

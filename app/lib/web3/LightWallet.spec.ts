@@ -19,6 +19,7 @@ describe("Light Wallet", () => {
       salt: "SOME SALT",
       vault: '"WALLET INSTANCE"',
       walletType: "LIGHT",
+      walletSubType: "UNKNOWN",
     });
   });
 });

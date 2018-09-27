@@ -21,15 +21,14 @@ export class UserApiError extends Error {}
 export class UserNotExisting extends UserApiError {}
 export class EmailAlreadyExists extends UserApiError {}
 
-const upperCaseWalletTypesInUser = (userApiResponse: IUser): IUser => ({
+const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
   ...userApiResponse,
-  walletType:
-    (userApiResponse.walletType && (userApiResponse.walletType.toUpperCase() as WalletType)) ||
-    undefined,
-  walletSubtype:
-    (userApiResponse.walletType &&
-      (userApiResponse.walletSubtype.toUpperCase() as WalletSubType)) ||
-    undefined,
+  walletType: userApiResponse.walletType
+    ? (userApiResponse.walletType.toUpperCase() as WalletType)
+    : WalletType.UNKNOWN,
+  walletSubtype: userApiResponse.walletType
+    ? (userApiResponse.walletSubtype.toUpperCase() as WalletSubType)
+    : WalletSubType.UNKNOWN,
 });
 
 @injectable()
@@ -46,7 +45,7 @@ export class UsersApi {
       ? {
           ...newUser,
           walletType: newUser.walletType.toLowerCase(),
-          walletSubtype: newUser.walletSubtype ? newUser.walletSubtype.toLowerCase() : undefined,
+          walletSubtype: newUser.walletSubtype.toLowerCase(),
         }
       : {};
     const response = await this.httpClient.post<IUser>({
@@ -59,7 +58,7 @@ export class UsersApi {
     if (response.statusCode === 409) {
       throw new EmailAlreadyExists();
     }
-    return upperCaseWalletTypesInUser(response.body);
+    return ensureWalletTypesInUser(response.body);
   }
 
   public async me(): Promise<IUser> {
@@ -73,7 +72,7 @@ export class UsersApi {
     if (response.statusCode === 404) {
       throw new UserNotExisting();
     }
-    return upperCaseWalletTypesInUser(response.body);
+    return ensureWalletTypesInUser(response.body);
   }
 
   public async emailStatus(userEmail: string): Promise<any> {
@@ -101,7 +100,7 @@ export class UsersApi {
       throw new EmailAlreadyExists();
     }
 
-    return upperCaseWalletTypesInUser(response.body);
+    return ensureWalletTypesInUser(response.body);
   }
 
   public async updateUser(updatedUser: IUserInput): Promise<IUser> {
@@ -109,9 +108,7 @@ export class UsersApi {
       ? {
           ...updatedUser,
           walletType: updatedUser.walletType.toLocaleLowerCase(),
-          walletSubtype: updatedUser.walletSubtype
-            ? updatedUser.walletSubtype.toLocaleLowerCase()
-            : undefined,
+          walletSubtype: updatedUser.walletSubtype.toLocaleLowerCase(),
         }
       : {};
     const response = await this.httpClient.put<IUser>({
@@ -129,7 +126,7 @@ export class UsersApi {
       throw new EmailAlreadyExists();
     }
 
-    return upperCaseWalletTypesInUser(response.body);
+    return ensureWalletTypesInUser(response.body);
   }
 
   public async pendingTxs(): Promise<Array<TxWithMetadata>> {

@@ -51,6 +51,7 @@ describe("Wallet selector integration", () => {
       testConnection: async () => false,
       getMetadata: (): ILedgerWalletMetadata => ({
         walletType: WalletType.LEDGER,
+        walletSubType: WalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
         address: expectedAddress,
       }),
@@ -74,8 +75,8 @@ describe("Wallet selector integration", () => {
       }),
     });
     const usersApiMock = createMock(UsersApi, {
-      me: async () => getDummyUser(),
-      createAccount: async () => getDummyUser(),
+      me: async () => getDummyUser(ledgerWalletMock.getMetadata()),
+      createAccount: async () => getDummyUser(ledgerWalletMock.getMetadata()),
     });
 
     const contractsMock = createMock(ContractsService, {
@@ -169,6 +170,7 @@ describe("Wallet selector integration", () => {
       actions.web3.newPersonalWalletPlugged(
         {
           walletType: WalletType.LEDGER,
+          walletSubType: WalletSubType.UNKNOWN,
           derivationPath: expectedDerivationPath,
           address: expectedAddress,
         },
@@ -222,8 +224,8 @@ describe("Wallet selector integration", () => {
       }),
     });
     const usersApiMock = createMock(UsersApi, {
-      me: async () => getDummyUser(),
-      createAccount: async () => getDummyUser(),
+      me: async () => getDummyUser(browserWalletMock.getMetadata()),
+      createAccount: async () => getDummyUser(browserWalletMock.getMetadata()),
     });
 
     const initialRoute = "/register";

@@ -25,7 +25,7 @@ export interface IUserInput {
   backupCodesVerified?: boolean;
   type: TUserType;
   walletType: WalletType;
-  walletSubtype?: WalletSubType;
+  walletSubtype: WalletSubType;
 }
 
 export interface IVerifyEmailUser {

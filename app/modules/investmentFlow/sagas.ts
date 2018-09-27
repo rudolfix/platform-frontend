@@ -76,19 +76,18 @@ function* computeAndSetCurrencies(value: string, currency: EInvestmentCurrency):
 
 function validateInvestment(state: IAppState): EInvestmentErrorState | undefined {
   const investmentFlow = state.investmentFlow;
-  const value = investmentFlow.euroValueUlps;
+  const euroValue = investmentFlow.euroValueUlps;
+  const etherValue = investmentFlow.ethValueUlps;
   const wallet = state.wallet.data;
   const contribs = selectCalculatedContributionByEtoId(investmentFlow.etoId, state.publicEtos);
 
-  if (!contribs || !value || !wallet) return;
+  if (!contribs || !euroValue || !wallet) return;
 
   const gasPrice = selectInvestmentGasCostEth(investmentFlow);
 
   if (compareBigNumbers(gasPrice, wallet.etherBalance) === 1) {
     return EInvestmentErrorState.NotEnoughEtherForGas;
   }
-
-  const etherValue = divideBigNumbers(value, selectEtherPriceEur(state.tokenPrice));
 
   if (investmentFlow.investmentType === EInvestmentType.InvestmentWallet) {
     if (
@@ -102,32 +101,22 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   }
 
   if (investmentFlow.investmentType === EInvestmentType.ICBMnEuro) {
-    if (
-      compareBigNumbers(
-        addBigNumbers([etherValue, gasPrice]),
-        selectLockedEuroTokenBalance(state.wallet),
-      ) > 0
-    ) {
+    if (compareBigNumbers(euroValue, selectLockedEuroTokenBalance(state.wallet)) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
   if (investmentFlow.investmentType === EInvestmentType.ICBMEth) {
-    if (
-      compareBigNumbers(
-        addBigNumbers([etherValue, gasPrice]),
-        selectLockedEtherBalance(state.wallet),
-      ) > 0
-    ) {
+    if (compareBigNumbers(etherValue, selectLockedEtherBalance(state.wallet)) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
-  if (compareBigNumbers(value, contribs.minTicketEurUlps) === -1) {
+  if (compareBigNumbers(euroValue, contribs.minTicketEurUlps) === -1) {
     return EInvestmentErrorState.BelowMinimumTicketSize;
   }
 
-  if (compareBigNumbers(value, contribs.maxTicketEurUlps) === 1) {
+  if (compareBigNumbers(euroValue, contribs.maxTicketEurUlps) === 1) {
     return EInvestmentErrorState.AboveMaximumTicketSize;
   }
 
@@ -246,7 +235,7 @@ function getEtherTokenTransaction(
       to: contractsService.etherToken.address,
       from: selectEthereumAddressWithChecksum(state.web3),
       input: txCall.getData(),
-      value: difference.round().toString(),
+      value: difference.toString(),
       gas: i.gasAmount,
       gasPrice: i.gasPrice,
     };

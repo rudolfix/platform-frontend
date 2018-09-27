@@ -60,6 +60,7 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
   ({ agreementUrl, onAccept, gasCostEth, etherPriceEur, ...data }: IProps & IIntlProps) => {
     const equityTokens = (
       <span>
+        {/* TODO: Change to actual custom token icon */}
         <img src={tokenIcon} /> {data.equityTokens}
       </span>
     );
@@ -146,14 +147,14 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
     // eto and computed values are guaranteed to be present at investment summary state
     const eto = selectEtoById(p, i.etoId)!;
     return {
-      agreementUrl: "fufu",
+      agreementUrl: "fufu", // TODO: add proper agreement document link
       companyName: eto.company.name!,
       etoAddress: eto.etoId,
       investmentEth: selectEthValueUlps(i),
       investmentEur: selectEurValueUlps(i),
       gasCostEth: selectInvestmentGasCostEth(i),
-      equityTokens: selectEquityTokenCountByEtoId(p, i.etoId) as string,
-      estimatedReward: selectNeuRewardUlpsByEtoId(p, i.etoId) as string,
+      equityTokens: selectEquityTokenCountByEtoId(i.etoId, p) as string,
+      estimatedReward: selectNeuRewardUlpsByEtoId(i.etoId, p) as string,
       etherPriceEur: selectEtherPriceEur(state.tokenPrice),
     };
   },

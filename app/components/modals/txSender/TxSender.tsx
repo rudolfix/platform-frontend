@@ -40,7 +40,7 @@ function isBigModal(props: Props): boolean {
   return props.state === "INIT" && props.type === "INVEST";
 }
 
-export const TxSenderModalComponent: React.SFC<Props> = props => {
+const TxSenderModalComponent: React.SFC<Props> = props => {
   const { isOpen, onCancel } = props;
 
   return (
@@ -131,7 +131,7 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
   }
 }
 
-export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
+const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: selectTxSenderModalOpened(state.txSender),
     state: state.txSender.state,
@@ -144,3 +144,5 @@ export const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
     onCancel: () => d(actions.txSender.txSenderHideModal()),
   }),
 })(TxSenderModalComponent);
+
+export { TxSenderModal, TxSenderModalComponent };

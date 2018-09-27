@@ -1,27 +1,15 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "recompose";
 
-import { actions } from "../../modules/actions";
 import { ETOStateOnChain } from "../../modules/public-etos/types";
-import { appConnect } from "../../store";
 import { Button } from "../shared/buttons";
-
-import * as arrowIcon from "../../assets/img/inline_icons/arrow_right.svg";
 
 type TExternalProps = {
   state: ETOStateOnChain;
   etoId: string;
 };
 
-type TDispatchProps = {
-  claim: () => void;
-};
-
-const PortfolioAssetActionLayout: React.SFC<TExternalProps & TDispatchProps> = ({
-  state,
-  claim,
-}) => {
+const PortfolioAssetAction: React.SFC<TExternalProps> = ({ state }) => {
   switch (state) {
     // TODO: Connect Claim and Payout with refactored transaction functionality
     // case ETOStateOnChain.Claim:
@@ -49,10 +37,4 @@ const PortfolioAssetActionLayout: React.SFC<TExternalProps & TDispatchProps> = (
   }
 };
 
-export const PortfolioAssetAction = compose<TExternalProps & TDispatchProps, TExternalProps>(
-  appConnect<{}, TDispatchProps, TExternalProps>({
-    dispatchToProps: (dispatch, props) => ({
-      claim: () => dispatch(actions.investorEtoTicket.claim(props.etoId)),
-    }),
-  }),
-)(PortfolioAssetActionLayout);
+export { PortfolioAssetAction };

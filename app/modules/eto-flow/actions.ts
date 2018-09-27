@@ -7,7 +7,7 @@ export const etoFlowActions = {
   loadDataStop: () => createSimpleAction("ETO_FLOW_LOAD_DATA_STOP"),
   submitDataStart: () => createSimpleAction("ETO_FLOW_SUBMIT_DATA_START"),
   setIssuerEtoPreviewCode: (etoPreviewCode: string) =>
-    createAction("ETO_FLOW_SET_ID", { etoPreviewCode }),
+    createAction("ETO_FLOW_SET_ISSUER_ETO_PREVIEW_CODE", { etoPreviewCode }),
   saveDataStart: (data: Partial<TGeneralEtoData>) =>
     createAction("ETO_FLOW_SAVE_DATA_START", { data }),
   changeBookBuildingStatus: (status: boolean) =>

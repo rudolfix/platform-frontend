@@ -182,7 +182,7 @@ const PortfolioLayout: React.SFC<TProps> = ({ myAssets, pendingAssets }) => (
           ]}
         >
           {myAssets.map(
-            ({ equityTokenImage, equityTokenName, investorTicket, contract, etoId, documents }) => {
+            ({ equityTokenImage, equityTokenName, investorTicket, etoId, documents }) => {
               return (
                 <NewTableRow key={etoId}>
                   <>

@@ -23,7 +23,7 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         ...state,
         loading: true,
       };
-    case "ETO_FLOW_SET_ID":
+    case "ETO_FLOW_SET_ISSUER_ETO_PREVIEW_CODE":
       return {
         ...state,
         etoPreviewCode: action.payload.etoPreviewCode,

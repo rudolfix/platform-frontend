@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { toast } from "react-toastify";
 
 import { CommonHtmlProps } from "../../types";
 import { Avatar } from "./Avatar";
@@ -15,7 +14,10 @@ export interface IAccountAddressProps {
   "data-test-id"?: string;
 }
 
-const AccountAddress:React.SFC<IAccountAddressProps & CommonHtmlProps> = ({ address, className }) => {
+const AccountAddress: React.SFC<IAccountAddressProps & CommonHtmlProps> = ({
+  address,
+  className,
+}) => {
   return (
     <div className={cn(styles.accountAddress, className)}>
       <Avatar seed={address} />
@@ -32,7 +34,7 @@ const AccountAddress:React.SFC<IAccountAddressProps & CommonHtmlProps> = ({ addr
 
       <CopyToClipboard value={address} />
     </div>
-  )
-}
+  );
+};
 
-export { AccountAddress }
+export { AccountAddress };

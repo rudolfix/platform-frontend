@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { toast } from 'react-toastify';
+import * as React from "react";
+import { toast } from "react-toastify";
 
-import { ButtonIcon } from './buttons';
+import { ButtonIcon } from "./buttons";
 
 import * as clipboardIcon from "../../assets/img/inline_icons/icon-clipboard.svg";
 import * as styles from "./CopyToClipboard.module.scss";
@@ -11,7 +11,6 @@ interface IProps {
   message?: string;
   "data-test-id"?: string;
 }
-
 
 class CopyToClipboard extends React.Component<IProps> {
   private inputNode: any = React.createRef();
@@ -38,8 +37,8 @@ class CopyToClipboard extends React.Component<IProps> {
         />
         <ButtonIcon svgIcon={clipboardIcon} onClick={this.copyToClipboard} />
       </>
-    )
+    );
   }
 }
 
-export { CopyToClipboard }
+export { CopyToClipboard };

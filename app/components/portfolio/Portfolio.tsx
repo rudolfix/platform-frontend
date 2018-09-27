@@ -6,8 +6,8 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { PortfolioLayout } from "./PortfolioLayout";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { PortfolioLayout } from "./PortfolioLayout";
 
 export const Portfolio = compose(
   onEnterAction({

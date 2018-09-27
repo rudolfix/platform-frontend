@@ -23,19 +23,20 @@ const PortfolioAssetActionLayout: React.SFC<TExternalProps & TDispatchProps> = (
   claim,
 }) => {
   switch (state) {
-    case ETOStateOnChain.Claim:
-    case ETOStateOnChain.Payout:
-      return (
-        <Button onClick={claim} layout="simple" svgIcon={arrowIcon} iconPosition="icon-after">
-          <FormattedMessage id="portfolio.section.reserved-assets.claim-tokens" />
-        </Button>
-      );
-    case ETOStateOnChain.Refund:
-      return (
-        <Button layout="simple" svgIcon={arrowIcon} iconPosition="icon-after">
-          <FormattedMessage id="portfolio.section.reserved-assets.refund" />
-        </Button>
-      );
+    // TODO: Connect Claim and Payout with refactored transaction functionality
+    // case ETOStateOnChain.Claim:
+    // case ETOStateOnChain.Payout:
+    //   return (
+    //     <Button onClick={claim} layout="simple" svgIcon={arrowIcon} iconPosition="icon-after">
+    //       <FormattedMessage id="portfolio.section.reserved-assets.claim-tokens" />
+    //     </Button>
+    //   );
+    // case ETOStateOnChain.Refund:
+    //   return (
+    //     <Button layout="simple" svgIcon={arrowIcon} iconPosition="icon-after">
+    //       <FormattedMessage id="portfolio.section.reserved-assets.refund" />
+    //     </Button>
+    //   );
     case ETOStateOnChain.Signing:
       return (
         <Button layout="simple" disabled>

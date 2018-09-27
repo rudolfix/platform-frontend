@@ -34,7 +34,7 @@ import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
 import * as styles from "./Documents.module.scss";
 
-export const immutableDocumentTitle: { [key: string]: string | React.ReactNode } = {
+export const documentTitles: { [key in EtoDocumentType]: string | React.ReactNode } = {
   company_token_holder_agreement: (
     <FormattedMessage id="eto.documents.company-token-holder-agreement" />
   ),
@@ -52,6 +52,7 @@ export const immutableDocumentTitle: { [key: string]: string | React.ReactNode }
   signed_investment_and_shareholder_agreement: (
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
   ),
+  other: <FormattedMessage id="eto.documents.other" />,
 };
 
 // Documents to be not presented
@@ -69,7 +70,7 @@ export const GeneratedDocuments: React.SFC<{
         }}
       >
         <DocumentTile
-          title={immutableDocumentTitle[document.documentType]}
+          title={documentTitles[document.documentType]}
           extension={".doc"}
           blank={false}
           onlyDownload={true}
@@ -131,7 +132,7 @@ class DocumentsComponent extends React.Component<IProps> {
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
                 {generalUploadables.map((key: EtoDocumentType, index: number) => {
-                  const typedFileName = immutableDocumentTitle[key];
+                  const typedFileName = documentTitles[key];
                   const canUpload =
                     stateInfo &&
                     stateInfo.canUploadInStates[EtoStateToCamelcase[etoState]].some(

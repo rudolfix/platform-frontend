@@ -4,8 +4,12 @@ import { ITxData } from "./../../../lib/web3/Web3Manager";
 export enum ETxSenderType {
   WITHDRAW = "WITHDRAW",
   INVEST = "INVEST",
-  UPGRADE_EUR = "UPGRADE_ETH",
-  UPGRADE_ETH = "UPGRADE_EUR",
+  UPGRADE = "UPGRADE",
+}
+
+export enum ETokenType {
+  ETHER = "ETHER",
+  EURO = "EURO",
 }
 
 export type TxSenderState =

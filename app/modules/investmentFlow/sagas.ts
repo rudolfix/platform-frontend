@@ -149,7 +149,7 @@ function* setGasPrice(): any {
   yield put(actions.investmentFlow.validateInputs());
 }
 
-function* generateTransaction({ contractsService }: TGlobalDependencies): any {
+export function* generateTransaction({ contractsService }: TGlobalDependencies): any {
   const state: IAppState = yield select();
   const i = state.investmentFlow;
   const eto = selectEtoById(state.publicEtos, i.etoId);

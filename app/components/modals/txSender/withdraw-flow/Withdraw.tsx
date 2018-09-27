@@ -130,7 +130,7 @@ export const Withdraw = appConnect<IWithdrawStateProps, ITxInitDispatchProps>({
     address: selectEthereumAddressWithChecksum(state.web3),
   }),
   dispatchToProps: d => ({
-    onAccept: (tx: ITxData) => d(actions.txSender.generateWithdrawTx(tx)),
+    onAccept: (tx: ITxData) => d(actions.txSender.txSenderAcceptDraft(tx)),
   }),
 })(WithdrawComponent);
 

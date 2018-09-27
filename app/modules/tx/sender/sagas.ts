@@ -22,17 +22,17 @@ import { actions, TAction } from "../../actions";
 import { neuCall, neuFork, neuTakeEvery } from "../../sagas";
 import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
 import { updateTxs } from "../monitor/sagas";
-import { generateEtherUpgradeTransaction, generateEuroUpgradeTransaction } from "../upgrade/sagas";
 import { OutOfGasError } from "./../../../lib/web3/Web3Adapter";
 import { ITxData } from "./../../../lib/web3/Web3Manager";
 import { selectEtherTokenBalance } from "./../../wallet/selectors";
-import { ETokenType } from "./actions";
-import { ETxSenderType } from "./reducer";
+import { ETxSenderType, ETokenType } from './reducer';
 import { selectTxDetails, selectTxType } from "./selectors";
+import { generateTransaction } from "../../investmentFlow/sagas";
+import { generateEuroUpgradeTransaction, generateEtherUpgradeTransaction } from '../transactionsGenerators/sagas';
 
 export function* withdrawSaga({ logger }: TGlobalDependencies): any {
   try {
-    yield neuCall(txSendSaga, "WITHDRAW");
+    yield txSendSaga(ETxSenderType.WITHDRAW, generateEthWithdrawTransaction);
 
     logger.info("Withdrawing successful");
   } catch (e) {
@@ -42,25 +42,14 @@ export function* withdrawSaga({ logger }: TGlobalDependencies): any {
 
 export function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): any {
   try {
-    yield neuFork(txSendSaga, "UPGRADE");
-    const { accept, cancel } = yield race({
-      accept: take("TX_SENDER_WATCH_PENDING_TXS_DONE"),
-      cancel: take("TX_SENDER_HIDE_MODAL"),
-    });
-    if (cancel) {
-      logger.warn("Withdrawing cancelled");
-      return;
+    if (action.type !== "TX_SENDER_START_UPGRADE") return;
+    if (action.payload === ETokenType.EURO) {
+      yield txSendSaga(ETxSenderType.UPGRADE, generateEuroUpgradeTransaction);
+    } else {
+      yield txSendSaga(ETxSenderType.UPGRADE, generateEtherUpgradeTransaction);
     }
-    if (accept) {
-      if (action.type !== "TX_SENDER_START_UPGRADE_ETH") return;
-      if (action.payload === ETokenType.EURO) {
-        yield neuCall(generateEuroUpgradeTransaction);
-      } else {
-        yield neuCall(generateEtherUpgradeTransaction);
-      }
 
-      logger.info("Withdrawing successful");
-    }
+    logger.info("Withdrawing successful");
   } catch (e) {
     logger.error("Upgrade Saga Error", e);
     return yield put(actions.txSender.txSenderError("Error while generating Transaction"));
@@ -69,16 +58,16 @@ export function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): 
 
 export function* investSaga({ logger }: TGlobalDependencies): any {
   try {
-    yield neuCall(txSendSaga, "INVEST");
+    yield txSendSaga(ETxSenderType.INVEST, generateTransaction);
     logger.info("Investment successful");
   } catch (e) {
     logger.warn("Investment cancelled", e);
   }
 }
 
-export function* txSendSaga(_: TGlobalDependencies, type: ETxSenderType): any {
+export function* txSendSaga(type: ETxSenderType, transactionGenerationFunction: any): any {
   const { result, cancel } = yield race({
-    result: neuCall(txSendProcess, type),
+    result: yield txSendProcess(type, transactionGenerationFunction),
     cancel: take("TX_SENDER_HIDE_MODAL"),
   });
 
@@ -93,12 +82,23 @@ export function* txSendSaga(_: TGlobalDependencies, type: ETxSenderType): any {
   return result;
 }
 
-export function* txSendProcess(_: TGlobalDependencies, type: ETxSenderType): any {
+export function* txSendProcess(
+  TransactionType: ETxSenderType,
+  transactionGenerationFunction: any,
+): any {
   try {
     yield put(actions.gas.gasApiEnsureLoading());
-    yield put(actions.txSender.txSenderShowModal(type));
+    yield put(actions.txSender.txSenderShowModal(TransactionType));
 
-    yield neuCall(ensureNoPendingTx, type);
+    yield neuCall(ensureNoPendingTx, TransactionType);
+
+    let txDetails;
+    if (TransactionType === "WITHDRAW" || TransactionType === "INVEST") {
+      yield put(actions.txSender.txSenderWatchPendingTxsDone(TransactionType));
+      txDetails = yield take("TX_SENDER_ACCEPT_DRAFT");
+    }
+
+    yield neuCall(transactionGenerationFunction, txDetails);
 
     yield take("TX_SENDER_ACCEPT");
 
@@ -148,14 +148,13 @@ function* ensureNoPendingTx(
       txs = yield select((s: IAppState) => s.txMonitor.txs);
     }
   }
-  yield put(actions.txSender.txSenderWatchPendingTxsDone(type));
 }
 
 function* generateEthWithdrawTransaction(
   { contractsService }: TGlobalDependencies,
   action: TAction,
 ): any {
-  if (action.type !== "TX_SENDER_GENERATE_TX") return;
+  if (action.type !== "TX_SENDER_ACCEPT_DRAFT") return;
 
   const txStateDetails = action.payload;
 
@@ -180,9 +179,8 @@ function* generateEthWithdrawTransaction(
     gas: txStateDetails.gas,
     gasPrice: txStateDetails.gasPrice,
   };
-  if (txDetails) {
-    yield put(actions.txSender.txSenderAcceptDraft(txDetails));
-  }
+
+  yield put(actions.txSender.txSenderAcceptDraft(txDetails));
 }
 
 function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): any {
@@ -338,51 +336,8 @@ const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHash: stri
     };
   });
 
-// Debug sagas - can be removed after all transaction flows are implemented and e2e tested
-
-function* signDummyMessage({ logger }: TGlobalDependencies, action: TAction): Iterator<any> {
-  if (action.type !== "TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE") {
-    return;
-  }
-  const message = action.payload.message;
-
-  try {
-    const signed = yield neuCall(
-      signMessage,
-      message,
-      "Test Message",
-      "Please sign this for me :)",
-    );
-
-    // this is just for demo purposes
-    logger.info("signed: ", signed);
-  } catch {
-    logger.error("Error while signing a message :( ");
-  }
-}
-
-function* sendDummyTx({ logger }: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "TX_SENDER_DEBUG_SEND_DUMMY_TX") {
-    return;
-  }
-
-  try {
-    yield neuCall(txSendSaga, "WITHDRAW");
-    logger.info("TX SENT SUCCESSFULLY!!");
-  } catch (e) {
-    logger.error("Error while sending tx :(", e);
-  }
-}
-
-// connect actions
-
 export const txSendingSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeEvery, "TX_SENDER_START_WITHDRAW_ETH", withdrawSaga);
-  yield fork(neuTakeEvery, "TX_SENDER_START_UPGRADE_ETH", upgradeSaga);
+  yield fork(neuTakeEvery, "TX_SENDER_START_UPGRADE", upgradeSaga);
   yield fork(neuTakeEvery, "TX_SENDER_START_INVESTMENT", investSaga);
-  yield fork(neuTakeEvery, "TX_SENDER_GENERATE_TX", generateEthWithdrawTransaction);
-
-  // Dev only
-  yield fork(neuTakeEvery, "TX_SENDER_DEBUG_SIGN_DUMMY_MESSAGE", signDummyMessage);
-  yield fork(neuTakeEvery, "TX_SENDER_DEBUG_SEND_DUMMY_TX", sendDummyTx);
 };

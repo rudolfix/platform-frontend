@@ -1,13 +1,11 @@
 import BigNumber from "bignumber.js";
 import web3Accounts from "web3-eth-accounts";
-import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 import {
   assertUserInDashboard,
   numberRegExPattern,
   typeLightwalletRecoveryPhrase,
   tid,
-  goToDashboard,
 } from "../utils";
 import { getTransactionByHashRpc, getBalanceRpc } from "../utils/ethRpcUtils";
 import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";
@@ -16,41 +14,37 @@ const Q18 = new BigNumber(10).pow(18);
 const GIGA_WEI = 1000000000;
 const NODE_ADDRESS = "https://localhost:9090/node";
 
-//@see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
-const WORDS = [
-  "juice",
-  "chest",
-  "position",
-  "grace",
-  "weather",
-  "matter",
-  "turn",
-  "delay",
-  "space",
-  "abuse",
-  "winter",
-  "slice",
-  "tell",
-  "flip",
-  "use",
-  "between",
-  "crouch",
-  "shop",
-  "open",
-  "leg",
-  "elegant",
-  "bracket",
-  "lamp",
-  "day",
-];
-const SEED = WORDS.join(" ");
-
 describe("Wallet Withdraw", () => {
-  beforeEach(() => createAndLoginNewUser({ type: "investor", seed: SEED }));
-
   it("should recover existing user with verified email from saved phrases and change email", () => {
-    goToDashboard();
+    //@see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
+    const words = [
+      "juice",
+      "chest",
+      "position",
+      "grace",
+      "weather",
+      "matter",
+      "turn",
+      "delay",
+      "space",
+      "abuse",
+      "winter",
+      "slice",
+      "tell",
+      "flip",
+      "use",
+      "between",
+      "crouch",
+      "shop",
+      "open",
+      "leg",
+      "elegant",
+      "bracket",
+      "lamp",
+      "day",
+    ];
 
+    const email = "john-smith@example.com";
     const testValue = (5).toString();
     const expectedGasLimit = "0x186a0";
     const account = new web3Accounts().create();
@@ -60,6 +54,15 @@ describe("Wallet Withdraw", () => {
 
     const expectedAddress = account.address;
     const expectedInputValue = "0";
+
+    cy.visit(`${recoverRoutes.seed}`);
+
+    typeLightwalletRecoveryPhrase(words);
+
+    cy.get(tid("wallet-selector-register-email")).type(email);
+    cy.get(tid("wallet-selector-register-password")).type("strongpassword");
+    cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
+    cy.get(tid("recovery-success-btn-go-dashboard")).click();
 
     assertUserInDashboard();
     cy.get(tid("authorized-layout-wallet-button")).click();
@@ -77,12 +80,7 @@ describe("Wallet Withdraw", () => {
           ).click();
 
           cy.get(tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept")).click();
-          cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
-          // for some reason we have to wait and click twice here, although as a user it's only once..
-          cy.wait(500);
-          cy.get(tid("access-light-wallet-confirm")).click();
-          cy.get(tid("access-light-wallet-confirm")).click();
-
+          cy.get(tid("access-light-wallet-prompt-accept-button")).click();
           cy.get(tid("modals.shared.signing-message.modal"));
           cy.get(tid("modals.tx-sender.withdraw-flow.success"));
 

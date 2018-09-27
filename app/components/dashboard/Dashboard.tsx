@@ -10,7 +10,7 @@ import { UserInfo } from "./UserInfo";
 
 export const Dashboard = () => (
   <LayoutAuthorized>
-    <Row className="row-gutter-top">
+    <Row className="row-gutter-top" data-test-id="dashboard-application">
       <Col lg={8} xs={12}>
         <MyPortfolioWidget className="h-100" />
       </Col>

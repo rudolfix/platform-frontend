@@ -2,10 +2,10 @@ import * as cn from "classnames";
 import { uniqueId } from "lodash";
 import * as React from "react";
 
+import { FormattedMessage } from "react-intl-phraseapp";
 import { TTranslatedString } from "../../types";
 import * as styles from "./NewTable.module.scss";
 import { Panel } from "./Panel";
-import { FormattedMessage } from "react-intl-phraseapp";
 
 interface INewTableHeader {
   titles: (TTranslatedString | React.ReactNode)[];

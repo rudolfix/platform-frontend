@@ -12,7 +12,7 @@ import { neuTakeEvery } from "../sagas";
 import { convertToInvestorTicket } from "./utils";
 
 export function* loadEtosWithInvestorTickets(
-  { notificationCenter, contractsService }: TGlobalDependencies,
+  { notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "INVESTOR_TICKET_ETOS_LOAD") return;
@@ -22,7 +22,12 @@ export function* loadEtosWithInvestorTickets(
 
     const action = yield take("PUBLIC_ETOS_SET_PUBLIC_ETOS");
 
-    yield all(map(eto => put(actions.investorEtoTicket.loadEtoInvestorTicket(eto.etoId)), action.payload.etos));
+    yield all(
+      map(
+        eto => put(actions.investorEtoTicket.loadEtoInvestorTicket(eto.etoId)),
+        action.payload.etos,
+      ),
+    );
 
     yield;
   } catch (e) {
@@ -32,7 +37,7 @@ export function* loadEtosWithInvestorTickets(
 }
 
 export function* loadEtoInvestorTicket(
-  { notificationCenter, contractsService }: TGlobalDependencies,
+  { contractsService }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "INVESTOR_TICKET_LOAD") return;

@@ -6,11 +6,11 @@ import { MONEY_DECIMALS } from "../../../../config/constants";
 import { TPublicEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { EInvestmentErrorState, EInvestmentType } from "../../../../modules/investmentFlow/reducer";
 import {
-  selectICBMLockedEtherBalance,
-  selectICBMLockedEtherBalanceEuroAmount,
-  selectICBMLockedEuroTokenBalance,
   selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
+  selectLockedEtherBalance,
+  selectLockedEtherBalanceEuroAmount,
+  selectLockedEuroTokenBalance,
 } from "../../../../modules/wallet/selectors";
 import { IAppState } from "../../../../store";
 import { formatMoney } from "../../../../utils/Money.utils";
@@ -24,15 +24,15 @@ export function createWallets(state: IAppState): WalletSelectionData[] {
   const w = state.wallet;
   return [
     {
-      balanceEth: selectICBMLockedEtherBalance(w),
-      balanceEur: selectICBMLockedEtherBalanceEuroAmount(state),
+      balanceEth: selectLockedEtherBalance(w),
+      balanceEur: selectLockedEtherBalanceEuroAmount(state),
       type: EInvestmentType.ICBMEth,
       name: "ICBM Wallet",
       icon: ethIcon,
     },
     {
-      balanceNEuro: selectICBMLockedEuroTokenBalance(w),
-      balanceEur: selectICBMLockedEuroTokenBalance(w),
+      balanceNEuro: selectLockedEuroTokenBalance(w),
+      balanceEur: selectLockedEuroTokenBalance(w),
       type: EInvestmentType.ICBMnEuro,
       name: "ICBM Wallet",
       icon: neuroIcon,

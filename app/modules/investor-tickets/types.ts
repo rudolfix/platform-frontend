@@ -14,4 +14,6 @@ export interface IInvestorTicket {
   usedLockedAccount: boolean;
 }
 
-export type TETOWithInvestorTicket = TEtoWithCompanyAndContract & { investorTicket: IInvestorTicket };
+export type TETOWithInvestorTicket = TEtoWithCompanyAndContract & {
+  investorTicket: IInvestorTicket;
+};

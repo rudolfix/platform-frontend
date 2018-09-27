@@ -1,5 +1,10 @@
 import BigNumber from "bignumber.js";
-import { ETOStateOnChain, ICalculatedContribution, TEtoStartOfStates, IEtoTotalInvestment } from "./types";
+import {
+  ETOStateOnChain,
+  ICalculatedContribution,
+  IEtoTotalInvestment,
+  TEtoStartOfStates,
+} from "./types";
 
 export const convertToCalculatedContribution = ([
   isWhitelisted,
@@ -35,15 +40,9 @@ const convertToDate = (startOf: BigNumber): Date | undefined => {
   return new Date(startOf.mul(1000).toNumber());
 };
 
-export const convertToStateStartDate = (startOfStates: [
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber
-]): TEtoStartOfStates => {
+export const convertToStateStartDate = (
+  startOfStates: [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
+): TEtoStartOfStates => {
   const [
     startOfSetup,
     startOfWhitelist,

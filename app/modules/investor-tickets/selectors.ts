@@ -12,14 +12,16 @@ export const selectInvestorTicket = (state: IAppState, etoId: string) => {
   return investorState.investorEtoTickets[etoId];
 };
 
-export const selectEtoWithInvestorTickets = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
+export const selectEtoWithInvestorTickets = (
+  state: IAppState,
+): TETOWithInvestorTicket[] | undefined => {
   const etos = selectPublicEtos(state);
 
   if (etos && etos.every(eto => !!selectInvestorTicket(state, eto.etoId))) {
     return etos
       .filter(eto => eto.state === EtoState.ON_CHAIN)
       .filter(eto => eto.contract!.timedState !== ETOStateOnChain.Setup)
-      .map(eto => ({ ...eto, investorTicket: selectInvestorTicket(state, eto.etoId)!} ))
+      .map(eto => ({ ...eto, investorTicket: selectInvestorTicket(state, eto.etoId)! }))
       .filter(eto => !eto.investorTicket.equivEurUlps.isZero());
   }
 

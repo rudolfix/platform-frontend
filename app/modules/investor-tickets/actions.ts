@@ -8,5 +8,6 @@ export const investorEtoTicketActions = {
   claim: (etoId: string) => createAction("INVESTOR_TICKET_CLAIM", { etoId }),
 
   // state mutations
-  setEtoInvestorTicket: (etoId: string, ticket: IInvestorTicket) => createAction("INVESTOR_TICKET_SET", { etoId, ticket }),
+  setEtoInvestorTicket: (etoId: string, ticket: IInvestorTicket) =>
+    createAction("INVESTOR_TICKET_SET", { etoId, ticket }),
 };

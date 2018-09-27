@@ -29,4 +29,4 @@ function reportVisualRegression() {
 }
 
 checkPackageLock();
-// reportVisualRegression();
+reportVisualRegression();

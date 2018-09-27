@@ -2,7 +2,6 @@ import { find } from "lodash/fp";
 import { IAppState } from "../../store";
 import { IPublicEtoState } from "./reducer";
 import { TEtoWithCompanyAndContract } from "./types";
-import { createSelector } from "reselect";
 
 const selectPublicEtosState = (state: IAppState) => state.publicEtos;
 
@@ -21,7 +20,7 @@ export const selectEto = (state: IPublicEtoState, previewCode: string) =>
 
 export const selectEtoById = (state: IPublicEtoState, etoId: string) => state.publicEtos[etoId];
 
-export const selectCalculatedContributionByEtoId = (state: IPublicEtoState, etoId: string) => {
+export const selectCalculatedContributionByEtoId = (etoId: string, state: IPublicEtoState) => {
   const previewCode = selectEtoPreviewCode(state, etoId);
 
   if (previewCode) {
@@ -31,13 +30,13 @@ export const selectCalculatedContributionByEtoId = (state: IPublicEtoState, etoI
   return undefined;
 };
 
-export const selectEquityTokenCountByEtoId = (state: IPublicEtoState, etoId: string) => {
-  const contrib = selectCalculatedContributionByEtoId(state, etoId);
+export const selectEquityTokenCountByEtoId = (etoId: string, state: IPublicEtoState) => {
+  const contrib = selectCalculatedContributionByEtoId(etoId, state);
   return contrib && contrib.equityTokenInt.toString();
 };
 
-export const selectNeuRewardUlpsByEtoId = (state: IPublicEtoState, etoId: string) => {
-  const contrib = selectCalculatedContributionByEtoId(state, etoId);
+export const selectNeuRewardUlpsByEtoId = (etoId: string, state: IPublicEtoState) => {
+  const contrib = selectCalculatedContributionByEtoId(etoId, state);
   return contrib && contrib.neuRewardUlps.toString();
 };
 
@@ -73,7 +72,7 @@ export const selectEtoWithCompanyAndContractById = (
   return undefined;
 };
 
-export const selectPublicEtos = (state: IAppState): Array<TEtoWithCompanyAndContract> | undefined => {
+export const selectPublicEtos = (state: IAppState): TEtoWithCompanyAndContract[] | undefined => {
   const publicEtosState = selectPublicEtosState(state);
 
   if (publicEtosState.displayOrder) {

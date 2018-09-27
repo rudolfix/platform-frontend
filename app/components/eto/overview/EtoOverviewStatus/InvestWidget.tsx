@@ -55,7 +55,7 @@ const InvestWidgetComponent: React.SFC<TInvestWidgetProps> = ({
 
 const InvestWidget = appConnect<{}, IInvestWidgetDispatchProps, IInvestWidgetProps>({
   dispatchToProps: (d, p) => ({
-    startInvestmentFlow: () => d(actions.investmentFlow.investmentStart(p.etoId)),
+    startInvestmentFlow: () => d(actions.investmentFlow.startInvestment(p.etoId)),
   }),
 })(InvestWidgetComponent);
 

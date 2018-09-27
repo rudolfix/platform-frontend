@@ -16,7 +16,7 @@ import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
 import { SectionHeader } from "../../shared/SectionHeader";
 
 interface IStateProps {
-  etos: TEtoWithCompanyAndContract[];
+  etos: TEtoWithCompanyAndContract[] | undefined;
   wallet: IWalletState;
 }
 
@@ -29,52 +29,53 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
         <FormattedMessage id="dashboard.eto-opportunities" />
       </SectionHeader>
     </Col>
-    {etos.filter(eto => eto.state === EtoState.ON_CHAIN).map(eto => (
-      <Col xs={12} key={eto.etoId}>
-        <div className="mb-3">
-          <EtoOverviewStatus
-            preMoneyValuationEur={eto.preMoneyValuationEur}
-            existingCompanyShares={eto.existingCompanyShares}
-            equityTokensPerShare={eto.equityTokensPerShare}
-            investmentAmount={`€ ${(
-              ((eto.preMoneyValuationEur || 1) / (eto.existingCompanyShares || 1)) *
-              (eto.newSharesToIssue || 1)
-            ).toFixed(4)} - € 
+    {etos &&
+      etos.filter(eto => eto.state === EtoState.ON_CHAIN).map(eto => (
+        <Col xs={12} key={eto.etoId}>
+          <div className="mb-3">
+            <EtoOverviewStatus
+              preMoneyValuationEur={eto.preMoneyValuationEur}
+              existingCompanyShares={eto.existingCompanyShares}
+              equityTokensPerShare={eto.equityTokensPerShare}
+              investmentAmount={`€ ${(
+                ((eto.preMoneyValuationEur || 1) / (eto.existingCompanyShares || 1)) *
+                (eto.newSharesToIssue || 1)
+              ).toFixed(4)} - €
               ${(
                 ((eto.preMoneyValuationEur || 1) / (eto.existingCompanyShares || 1)) *
                 (eto.minimumNewSharesToIssue || 1)
               ).toFixed(4)}`}
-            contract={eto.contract}
-            wallet={wallet}
-            etoId={eto.etoId}
-            smartContractOnchain={eto.state === EtoState.ON_CHAIN}
-            prospectusApproved={keyBy(eto.documents, "documentType")["approved_prospectus"]}
-            termSheet={keyBy(eto.documents, "documentType")["termsheet_template"]}
-            canEnableBookbuilding={eto.canEnableBookbuilding}
-            etoStartDate={eto.startDate}
-            preEtoDuration={eto.whitelistDurationDays}
-            publicEtoDuration={eto.publicDurationDays}
-            inSigningDuration={eto.signingDurationDays}
-            preMoneyValuation={eto.preMoneyValuationEur}
-            newSharesGenerated={eto.newSharesToIssue}
-            newSharesToIssue={eto.newSharesToIssue}
-            tokenImage={{
-              alt: eto.equityTokenName || "",
-              srcSet: { "1x": eto.equityTokenImage || "" },
-            }}
-            tokenName={eto.equityTokenName || ""}
-            tokenSymbol={eto.equityTokenSymbol || ""}
-            campaigningWidget={{
-              investorsLimit: eto.maxPledges || 0,
-              maxPledge: eto.maxTicketEur || 0,
-              minPledge: eto.minTicketEur || 0,
-              isActivated: eto.isBookbuilding || false,
-              quote: (eto.company && eto.company.keyQuoteFounder) || "",
-            }}
-          />
-        </div>
-      </Col>
-    ))}
+              contract={eto.contract}
+              wallet={wallet}
+              etoId={eto.etoId}
+              smartContractOnchain={eto.state === EtoState.ON_CHAIN}
+              prospectusApproved={keyBy(eto.documents, "documentType")["approved_prospectus"]}
+              termSheet={keyBy(eto.documents, "documentType")["termsheet_template"]}
+              canEnableBookbuilding={eto.canEnableBookbuilding}
+              etoStartDate={eto.startDate}
+              preEtoDuration={eto.whitelistDurationDays}
+              publicEtoDuration={eto.publicDurationDays}
+              inSigningDuration={eto.signingDurationDays}
+              preMoneyValuation={eto.preMoneyValuationEur}
+              newSharesGenerated={eto.newSharesToIssue}
+              newSharesToIssue={eto.newSharesToIssue}
+              tokenImage={{
+                alt: eto.equityTokenName || "",
+                srcSet: { "1x": eto.equityTokenImage || "" },
+              }}
+              tokenName={eto.equityTokenName || ""}
+              tokenSymbol={eto.equityTokenSymbol || ""}
+              campaigningWidget={{
+                investorsLimit: eto.maxPledges || 0,
+                maxPledge: eto.maxTicketEur || 0,
+                minPledge: eto.minTicketEur || 0,
+                isActivated: eto.isBookbuilding || false,
+                quote: (eto.company && eto.company.keyQuoteFounder) || "",
+              }}
+            />
+          </div>
+        </Col>
+      ))}
   </>
 );
 

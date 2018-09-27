@@ -4,9 +4,10 @@ import { fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
+import { ContractsService } from "../../lib/web3/ContractsService";
 import { ITxData } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
-import { addBigNumbers, compareBigNumbers, divideBigNumbers } from "../../utils/BigNumberUtils";
+import { addBigNumbers, compareBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Money.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
@@ -15,9 +16,14 @@ import { loadComputedContributionFromContract } from "../public-etos/sagas";
 import { selectCalculatedContributionByEtoId, selectEtoById } from "../public-etos/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { selectLiquidEtherBalance } from "../wallet/selectors";
+import {
+  selectLiquidEtherBalance,
+  selectLockedEtherBalance,
+  selectLockedEuroTokenBalance,
+} from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import {
+  EBankTransferFlowState,
   EInvestmentCurrency,
   EInvestmentErrorState,
   EInvestmentType,
@@ -26,6 +32,7 @@ import {
 import {
   selectCurrencyByInvestmentType,
   selectInvestmentGasCostEth,
+  selectIsBankTransferModalOpened,
   selectIsICBMInvestment,
   selectReadyToInvest,
 } from "./selectors";
@@ -69,11 +76,12 @@ function* computeAndSetCurrencies(value: string, currency: EInvestmentCurrency):
 
 function validateInvestment(state: IAppState): EInvestmentErrorState | undefined {
   const investmentFlow = state.investmentFlow;
-  const value = investmentFlow.euroValueUlps;
+  const euroValue = investmentFlow.euroValueUlps;
+  const etherValue = investmentFlow.ethValueUlps;
   const wallet = state.wallet.data;
-  const contribs = selectCalculatedContributionByEtoId(state.publicEtos, investmentFlow.etoId);
+  const contribs = selectCalculatedContributionByEtoId(investmentFlow.etoId, state.publicEtos);
 
-  if (!contribs || !value || !wallet) return;
+  if (!contribs || !euroValue || !wallet) return;
 
   const gasPrice = selectInvestmentGasCostEth(investmentFlow);
 
@@ -81,24 +89,34 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
     return EInvestmentErrorState.NotEnoughEtherForGas;
   }
 
-  const etherValue = divideBigNumbers(value, selectEtherPriceEur(state.tokenPrice));
-
   if (investmentFlow.investmentType === EInvestmentType.InvestmentWallet) {
     if (
       compareBigNumbers(
         addBigNumbers([etherValue, gasPrice]),
         selectLiquidEtherBalance(state.wallet),
-      ) === 1
+      ) > 0
     ) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
-  if (compareBigNumbers(value, contribs.minTicketEurUlps) === -1) {
+  if (investmentFlow.investmentType === EInvestmentType.ICBMnEuro) {
+    if (compareBigNumbers(euroValue, selectLockedEuroTokenBalance(state.wallet)) > 0) {
+      return EInvestmentErrorState.ExceedsWalletBalance;
+    }
+  }
+
+  if (investmentFlow.investmentType === EInvestmentType.ICBMEth) {
+    if (compareBigNumbers(etherValue, selectLockedEtherBalance(state.wallet)) > 0) {
+      return EInvestmentErrorState.ExceedsWalletBalance;
+    }
+  }
+
+  if (compareBigNumbers(euroValue, contribs.minTicketEurUlps) === -1) {
     return EInvestmentErrorState.BelowMinimumTicketSize;
   }
 
-  if (compareBigNumbers(value, contribs.maxTicketEurUlps) === 1) {
+  if (compareBigNumbers(euroValue, contribs.maxTicketEurUlps) === 1) {
     return EInvestmentErrorState.AboveMaximumTicketSize;
   }
 
@@ -132,21 +150,98 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
 function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
-  yield put(actions.investmentFlow.investmentReset());
+  yield put(actions.investmentFlow.resetInvestment());
   yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
+  yield put(actions.kyc.kycLoadClientData());
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.startInvestment());
   yield setGasPrice();
 }
 
-function* stop(): any {
-  yield put(actions.investmentFlow.investmentReset());
+function* onTxModalHide(): any {
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
+  if (!selectIsBankTransferModalOpened(state)) {
+    yield put(actions.investmentFlow.resetInvestment());
+  }
 }
 
 function* setGasPrice(): any {
   const gas: IGasState = yield select((s: IAppState) => s.gas);
   yield put(actions.investmentFlow.setGasPrice(gas.gasPrice && gas.gasPrice.standard));
   yield put(actions.investmentFlow.validateInputs());
+}
+
+function createTxData(
+  state: IAppState,
+  txInput: string,
+  contractAddress: string,
+): ITxData | undefined {
+  return {
+    to: contractAddress,
+    from: selectEthereumAddressWithChecksum(state.web3),
+    data: txInput,
+    value: "0",
+    gas: state.investmentFlow.gasAmount,
+    gasPrice: state.investmentFlow.gasPrice,
+  };
+}
+
+function getEtherLockTransaction(
+  state: IAppState,
+  contractsService: ContractsService,
+  etoId: string,
+): ITxData | undefined {
+  const txInput = contractsService.etherLock
+    .transferTx(etoId, new BigNumber(state.investmentFlow.ethValueUlps), [""])
+    .getData();
+  return createTxData(state, txInput, contractsService.etherLock.address);
+}
+
+function getEuroLockTransaction(
+  state: IAppState,
+  contractsService: ContractsService,
+  etoId: string,
+): ITxData | undefined {
+  const txInput = contractsService.euroLock
+    .transferTx(etoId, new BigNumber(state.investmentFlow.euroValueUlps), [""])
+    .getData();
+  return createTxData(state, txInput, contractsService.euroLock.address);
+}
+
+function getEtherTokenTransaction(
+  state: IAppState,
+  contractsService: ContractsService,
+  etoId: string,
+): ITxData | undefined {
+  const etherTokenBalance = state.wallet.data!.etherTokenBalance;
+  const i = state.investmentFlow;
+  let txDetails: ITxData | undefined;
+
+  // transaction can be fully covered by etherTokens
+  if (compareBigNumbers(etherTokenBalance, i.ethValueUlps) >= 0) {
+    // need to call 3 args version of transfer method. See the abi in the contract.
+    // so we call the rawWeb3Contract directly
+    const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
+      "address,uint256,bytes"
+    ].getData(etoId, i.ethValueUlps, "");
+    txDetails = createTxData(state, txInput, contractsService.etherToken.address);
+
+    // fill up etherToken with ether from walle}t
+  } else {
+    const ethVal = new BigNumber(i.ethValueUlps);
+    const difference = ethVal.sub(etherTokenBalance);
+    const txCall = contractsService.etherToken.depositAndTransferTx(etoId, ethVal, [""]);
+    txDetails = {
+      to: contractsService.etherToken.address,
+      from: selectEthereumAddressWithChecksum(state.web3),
+      data: txCall.getData(),
+      value: difference.toString(),
+      gas: i.gasAmount,
+      gasPrice: i.gasPrice,
+    };
+  }
+
+  return txDetails;
 }
 
 function* generateTransaction({ contractsService }: TGlobalDependencies): any {
@@ -160,40 +255,16 @@ function* generateTransaction({ contractsService }: TGlobalDependencies): any {
 
   let txDetails: ITxData | undefined;
 
-  if (i.investmentType === EInvestmentType.InvestmentWallet) {
-    const etherTokenBalance = state.wallet.data!.etherTokenBalance;
-
-    // transaction can be fully covered by etherTokens
-    if (compareBigNumbers(etherTokenBalance, i.ethValueUlps) >= 0) {
-      // need to call 3 args version of transfer method. See the abi in the contract.
-      // so we call the rawWeb3Contract directly
-      const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
-        "address,uint256,bytes"
-      ].getData(eto.etoId, i.ethValueUlps, "");
-
-      txDetails = {
-        to: contractsService.etherToken.address,
-        from: selectEthereumAddressWithChecksum(state.web3),
-        data: txInput,
-        value: "0",
-        gas: i.gasAmount,
-        gasPrice: i.gasPrice,
-      };
-
-      // fill up etherToken with ether from wallet
-    } else {
-      const ethVal = new BigNumber(i.ethValueUlps);
-      const difference = ethVal.sub(etherTokenBalance);
-      const txCall = contractsService.etherToken.depositAndTransferTx(eto.etoId, ethVal, [""]);
-      txDetails = {
-        to: contractsService.etherToken.address,
-        from: selectEthereumAddressWithChecksum(state.web3),
-        data: txCall.getData(),
-        value: difference.round().toString(),
-        gas: i.gasAmount,
-        gasPrice: i.gasPrice,
-      };
-    }
+  switch (i.investmentType) {
+    case EInvestmentType.InvestmentWallet:
+      txDetails = getEtherTokenTransaction(state, contractsService, eto.etoId);
+      break;
+    case EInvestmentType.ICBMEth:
+      txDetails = getEtherLockTransaction(state, contractsService, eto.etoId);
+      break;
+    case EInvestmentType.ICBMnEuro:
+      txDetails = getEuroLockTransaction(state, contractsService, eto.etoId);
+      break;
   }
 
   if (txDetails) {
@@ -212,8 +283,17 @@ function* recalculateCurrencies(): any {
   }
 }
 
-function* cancelInvestment(): any {
+function* showBankTransferDetails(): any {
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
+  if (state.investmentType !== EInvestmentType.BankTransfer) return;
+  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Details));
   yield put(actions.txSender.txSenderHideModal());
+}
+
+function* showBankTransferSummary(): any {
+  const state: IInvestmentFlowState = yield select((s: IAppState) => s.investmentFlow);
+  if (state.investmentType !== EInvestmentType.BankTransfer) return;
+  yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Summary));
 }
 
 export function* investmentFlowSagas(): any {
@@ -221,8 +301,10 @@ export function* investmentFlowSagas(): any {
   yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs);
   yield takeEvery("INVESTMENT_FLOW_START", start);
   yield fork(neuTakeEvery, "INVESTMENT_FLOW_GENERATE_TX", generateTransaction);
-  yield takeEvery("TX_SENDER_HIDE_MODAL", stop);
-  yield takeEvery("PUBLIC_ETOS_SET_CURRENT_ETO", cancelInvestment); // cancel when current eto changes
+  yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS", showBankTransferDetails);
+  yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_SUMMARY", showBankTransferSummary);
+
+  yield takeEvery("TX_SENDER_HIDE_MODAL", onTxModalHide);
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);
 }

@@ -2,24 +2,32 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { selectMyAssets, selectMyPendingAssets } from "../../modules/investor-tickets/selectors";
+import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LoadingIndicator } from "../shared/LoadingIndicator";
-import { PortfolioLayout } from "./PortfolioLayout";
+import { PortfolioLayout, TPortfolioLayoutProps } from "./PortfolioLayout";
 
-export const Portfolio = compose(
+export type TStateProps = {
+  myAssets?: TETOWithInvestorTicket[];
+  pendingAssets?: TETOWithInvestorTicket[];
+};
+
+export const Portfolio = compose<TPortfolioLayoutProps, {}>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.investorEtoTicket.loadEtosWithInvestorTickets()),
   }),
-  appConnect({
+  appConnect<TStateProps>({
     stateToProps: state => ({
-      test: true,
       myAssets: selectMyAssets(state),
       pendingAssets: selectMyPendingAssets(state),
     }),
   }),
   withContainer(LayoutAuthorized),
-  branch(props => !props.myAssets && !props.pendingAssets, renderComponent(LoadingIndicator)),
+  branch(
+    (props: TStateProps) => !props.myAssets && !props.pendingAssets,
+    renderComponent(LoadingIndicator),
+  ),
 )(PortfolioLayout);

@@ -19,7 +19,11 @@ import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
 import { selectCalculatedContributionByEtoId, selectEtoById } from "./selectors";
-import { convertToCalculatedContribution, convertToEtoTotalInvestment, convertToStateStartDate } from "./utils";
+import {
+  convertToCalculatedContribution,
+  convertToEtoTotalInvestment,
+  convertToStateStartDate,
+} from "./utils";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter }: TGlobalDependencies,
@@ -171,7 +175,7 @@ function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): a
   const state: IPublicEtoState = yield select((s: IAppState) => s.publicEtos);
   const eto = selectEtoById(state, action.payload.etoId);
   if (!eto) return;
-  const contribution = selectCalculatedContributionByEtoId(state, eto.etoId);
+  const contribution = selectCalculatedContributionByEtoId(eto.etoId, state);
   if (!contribution || action.payload.investmentEurUlps) {
     yield neuCall(loadComputedContributionFromContract, eto, action.payload.investmentEurUlps);
   }

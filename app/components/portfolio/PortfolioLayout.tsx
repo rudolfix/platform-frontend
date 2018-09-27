@@ -23,7 +23,7 @@ import * as arrowIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as neuIcon from "../../assets/img/neu_icon.svg";
 import * as styles from "./PortfolioLayout.module.scss";
 
-type TProps = {
+export type TPortfolioLayoutProps = {
   myAssets: TETOWithInvestorTicket[];
   pendingAssets: TETOWithInvestorTicket[];
 };
@@ -36,7 +36,7 @@ const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): strin
   return divideBigNumbers(equityTokenInt, equivEurUlps).toString();
 };
 
-const PortfolioLayout: React.SFC<TProps> = ({ myAssets, pendingAssets }) => (
+const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({ myAssets, pendingAssets }) => (
   <>
     <SectionHeader layoutHasDecorator={false} className="mb-4">
       <FormattedMessage id="portfolio.section.asset-portfolio.title" />

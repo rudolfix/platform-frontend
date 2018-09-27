@@ -10,7 +10,7 @@ export interface IIcbmWalletBalanceModal {
 }
 
 const initialState: IIcbmWalletBalanceModal = {
-  isOpen: false,
+  isOpen: true,
   loading: false,
 };
 

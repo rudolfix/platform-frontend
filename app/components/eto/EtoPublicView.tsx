@@ -4,6 +4,7 @@ import { branch, compose } from "recompose";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
+import { selectEtoWithCompanyAndContractById } from "../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { IWalletState } from "../../modules/wallet/reducer";
 import { appConnect } from "../../store";

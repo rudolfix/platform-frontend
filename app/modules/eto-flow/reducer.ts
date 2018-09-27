@@ -30,7 +30,12 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         loading: false,
         saving: false,
       };
-
+    case "ETO_FLOW_LOAD_DATA_STOP":
+      return {
+        ...state,
+        loading: false,
+        saving: false,
+      };
     case "ETO_FLOW_SAVE_DATA_START":
     case "ETO_FLOW_SUBMIT_DATA_START":
       return {

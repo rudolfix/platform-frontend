@@ -31,6 +31,10 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
           ...state.publicEtos,
           ...action.payload.etos,
         },
+        companies: {
+          ...state.companies,
+          ...action.payload.companies,
+        },
       };
     case "PUBLIC_ETOS_SET_PUBLIC_ETO":
       return {

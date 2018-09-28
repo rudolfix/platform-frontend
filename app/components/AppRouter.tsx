@@ -9,7 +9,7 @@ import { Dashboard } from "./dashboard/Dashboard";
 import { Documents } from "./Documents";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
-import { Portfolio } from "./Portfolio";
+import { Portfolio } from "./portfolio";
 
 import { appRoutes } from "./appRoutes";
 import { EmailVerify } from "./EmailVerify";

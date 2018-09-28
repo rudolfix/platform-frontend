@@ -144,6 +144,7 @@ async function create<T>(ContractCls: IContractCls<T>, web3: any, address: strin
   }
 }
 
+// TODO: Move to TypeChain
 interface IContractCls<T> {
   new (web3: any, address: string): T;
   createAndValidate(web3: any, address: string): Promise<T>;

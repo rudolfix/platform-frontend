@@ -10,6 +10,7 @@ import {
   TPartialCompanyEtoData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { Button } from "../../../shared/buttons";
@@ -167,7 +168,7 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
     stateToProps: state => ({
       loadingData: state.etoFlow.loading,
       savingData: state.etoFlow.saving,
-      company: state.etoFlow.companyData,
+      company: selectIssuerCompany(state) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

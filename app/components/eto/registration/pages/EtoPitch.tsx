@@ -7,10 +7,10 @@ import { compose } from "redux";
 
 import { EtoPitchType, TPartialCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
-import { FormTextArea } from "../../../shared/forms";
-import { FormCategoryDistribution } from "../../../shared/forms/formField/FormCategoryDistribution";
+import { FormCategoryDistribution, FormTextArea } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -162,7 +162,7 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
+      stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

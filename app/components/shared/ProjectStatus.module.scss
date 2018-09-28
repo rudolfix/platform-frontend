@@ -1,3 +1,11 @@
+@mixin _set-indicator-color($eto-stage, $color) {
+  &:global(.#{unquote($eto-stage)}) {
+    &::before {
+      background-color: $color-orange;
+    }
+  }
+}
+
 .project-status {
   text-transform: uppercase;
   color: $color-graphite;
@@ -16,4 +24,7 @@
     flex-shrink: 0;
     background-color: $color-green-dark;
   }
+
+  // themes based on ETOStateOnChain values converted to kebab-case
+  @include _set-indicator-color(refund, $color-orange);
 }

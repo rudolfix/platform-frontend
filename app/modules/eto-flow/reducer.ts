@@ -1,19 +1,16 @@
-import { TPartialCompanyEtoData, TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
 export interface IEtoFlowState {
+  etoPreviewCode?: string;
   loading: boolean;
   saving: boolean;
-  etoData: TPartialEtoSpecData;
-  companyData: TPartialCompanyEtoData;
 }
 
 export const etoFlowInitialState: IEtoFlowState = {
+  etoPreviewCode: undefined,
   loading: false,
   saving: false,
-  etoData: {},
-  companyData: {},
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (
@@ -21,22 +18,15 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
   action,
 ): DeepReadonly<IEtoFlowState> => {
   switch (action.type) {
-    case "ETO_FLOW_LOAD_DATA_START":
+    case "ETO_FLOW_LOAD_ISSUER_ETO":
       return {
         ...state,
         loading: true,
       };
-    case "ETO_FLOW_LOAD_DATA":
+    case "ETO_FLOW_SET_ISSUER_ETO_PREVIEW_CODE":
       return {
         ...state,
-        etoData: {
-          ...state.etoData,
-          ...action.payload.data.etoData,
-        },
-        companyData: {
-          ...state.companyData,
-          ...action.payload.data.companyData,
-        },
+        etoPreviewCode: action.payload.etoPreviewCode,
         loading: false,
         saving: false,
       };

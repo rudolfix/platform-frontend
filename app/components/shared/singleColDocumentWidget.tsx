@@ -8,7 +8,7 @@ import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
-import { immutableDocumentTitle } from "../Documents";
+import { documentTitles } from "../Documents";
 import { Panel } from "./Panel";
 
 import * as styles from "./singleColDocumentWidget.module.scss";
@@ -50,7 +50,7 @@ export const SingleColDocumentsWidget: React.SFC<IProps> = ({
                   )
                 }
               >
-                {immutableDocumentTitle[documentType]}
+                {documentTitles[documentType]}
               </div>
             </Col>
           );

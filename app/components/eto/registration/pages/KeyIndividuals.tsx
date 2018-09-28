@@ -11,6 +11,7 @@ import {
   TPartialCompanyEtoData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { Button, ButtonIcon } from "../../../shared/buttons";
@@ -219,7 +220,7 @@ export const EtoRegistrationKeyIndividuals = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
+      stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

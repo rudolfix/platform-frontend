@@ -1,12 +1,20 @@
 import { get } from "lodash";
-import { tid } from "../../test/testUtils";
-import { appRoutes } from "../components/appRoutes";
+import { appRoutes } from "../../components/appRoutes";
+
+export function tid(id: string, rest?: string): string {
+  return `[data-test-id="${id}"]` + (rest ? ` ${rest}` : "");
+}
 
 export const numberRegExPattern = /\d+/g;
 
 export const assertEtoDashboard = () => {
   cy.url().should("contain", "/dashboard");
   cy.get(tid("eto-dashboard-application")).should("exist");
+};
+
+export const assertDashboard = () => {
+  cy.url().should("contain", "/dashboard");
+  cy.get(tid("dashboard-application")).should("exist");
 };
 
 export const goToDashboard = () => {
@@ -95,7 +103,9 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
 
 export const confirmAccessModal = (password: string) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
-  cy.get(tid("access-light-wallet-confirm")).click();
+  cy.get(tid("access-light-wallet-confirm"))
+    .wait(1500)
+    .click();
 };
 
 // todo: extract it to separate file

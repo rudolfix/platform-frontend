@@ -1,4 +1,3 @@
-import { tid } from "../../../../../test/testUtils";
 import {
   assertErrorModal,
   assertLatestEmailSentWithSalt,
@@ -7,8 +6,9 @@ import {
   mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
-} from "../../../../e2e-test-utils";
-import { recoverRoutes } from "../recoverRoutes";
+  tid,
+} from "../utils";
+import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";
 
 describe("Wallet recover", () => {
   const words = [

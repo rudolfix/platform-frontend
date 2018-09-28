@@ -125,7 +125,7 @@ function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): a
   const state: IPublicEtoState = yield select((s: IAppState) => s.publicEtos);
   const eto = selectEtoById(state, action.payload.etoId);
   if (!eto) return;
-  const contribution = selectCalculatedContributionByEtoId(state, eto.etoId);
+  const contribution = selectCalculatedContributionByEtoId(eto.etoId, state);
   if (!contribution || action.payload.investmentEurUlps) {
     yield neuCall(loadComputedContributionFromContract, eto, action.payload.investmentEurUlps);
   }

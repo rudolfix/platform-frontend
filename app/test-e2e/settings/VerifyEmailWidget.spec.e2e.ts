@@ -1,4 +1,3 @@
-import { tid } from "../../../../../test/testUtils";
 import {
   assertLatestEmailSentWithSalt,
   assertUserInDashboard,
@@ -11,7 +10,8 @@ import {
   goToSettings,
   registerWithLightWallet,
   verifyLatestUserEmail,
-} from "../../../../e2e-test-utils";
+  tid,
+} from "../utils";
 
 describe("Verify Email Widget", () => {
   it("should change user email after register", () => {
@@ -29,7 +29,9 @@ describe("Verify Email Widget", () => {
     assertVerifyEmailWidgetIsInNoEmailState();
 
     cy.get(tid("verify-email-widget-form-email-input")).type(secondEmail);
-    cy.get(tid("verify-email-widget-form-submit")).click();
+    cy.get(tid("verify-email-widget-form-submit"))
+      .wait(1500)
+      .click();
 
     confirmAccessModal(password);
 

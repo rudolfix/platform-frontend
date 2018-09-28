@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 
+import { Q18 } from "../../config/constants";
 import { PortfolioLayout } from "./PortfolioLayout";
 
 import * as neuIcon from "../../assets/img/neu_icon.svg";
@@ -21,8 +22,8 @@ storiesOf("PortfolioLayout", module)
           equityTokenName: "EXS",
           investorTicket: {
             equityTokenInt: new BigNumber(10000),
-            equivEurUlps: new BigNumber(20),
-            rewardNmkUlps: new BigNumber(0.5),
+            equivEurUlps: Q18.mul(20),
+            rewardNmkUlps: Q18.mul(0.5),
           },
           documents: {
             "document-hash": {
@@ -38,8 +39,8 @@ storiesOf("PortfolioLayout", module)
           equityTokenName: "TXA",
           investorTicket: {
             equityTokenInt: new BigNumber(1200),
-            equivEurUlps: new BigNumber(12),
-            rewardNmkUlps: new BigNumber(0.95),
+            equivEurUlps: Q18.mul(12),
+            rewardNmkUlps: Q18.mul(0.95),
           },
           documents: {
             "document-hash-1": {
@@ -69,8 +70,8 @@ storiesOf("PortfolioLayout", module)
           equityTokenName: "TXA",
           investorTicket: {
             equityTokenInt: new BigNumber(1200),
-            equivEurUlps: new BigNumber(12),
-            rewardNmkUlps: new BigNumber(0.95),
+            equivEurUlps: Q18.mul(12),
+            rewardNmkUlps: Q18.mul(0.95),
           },
           contract: {
             timedState: ETOStateOnChain.Whitelist,
@@ -85,8 +86,8 @@ storiesOf("PortfolioLayout", module)
           equityTokenName: "RAW",
           investorTicket: {
             equityTokenInt: new BigNumber(15000),
-            equivEurUlps: new BigNumber(120),
-            rewardNmkUlps: new BigNumber(0.45),
+            equivEurUlps: Q18.mul(120),
+            rewardNmkUlps: Q18.mul(0.45),
           },
           contract: {
             timedState: ETOStateOnChain.Signing,
@@ -98,8 +99,8 @@ storiesOf("PortfolioLayout", module)
           equityTokenName: "TEW",
           investorTicket: {
             equityTokenInt: new BigNumber(150000),
-            equivEurUlps: new BigNumber(12000),
-            rewardNmkUlps: new BigNumber(0.45),
+            equivEurUlps: Q18.mul(12000),
+            rewardNmkUlps: Q18.mul(0.45),
           },
           contract: {
             timedState: ETOStateOnChain.Refund,
@@ -111,8 +112,8 @@ storiesOf("PortfolioLayout", module)
           equityTokenName: "YUE",
           investorTicket: {
             equityTokenInt: new BigNumber(120000),
-            equivEurUlps: new BigNumber(12000),
-            rewardNmkUlps: new BigNumber(0.99),
+            equivEurUlps: Q18.mul(12000),
+            rewardNmkUlps: Q18.mul(0.99),
           },
           contract: {
             timedState: ETOStateOnChain.Claim,

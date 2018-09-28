@@ -5,7 +5,7 @@ import { call, fork, put, race, select, take } from "redux-saga/effects";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { TxWithMetadata } from "../../../lib/api/users/interfaces";
+import { TPendingTxs, TxWithMetadata } from "../../../lib/api/users/interfaces";
 import {
   InvalidChangeIdError,
   InvalidRlpDataError,
@@ -17,6 +17,7 @@ import {
 } from "../../../lib/web3/Web3Adapter";
 import { IAppState } from "../../../store";
 import { multiplyBigNumbers } from "../../../utils/BigNumberUtils";
+import { delay } from "../../../utils/delay";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
 import { onInvestmentTxModalHide } from "../../investmentFlow/sagas";
@@ -139,26 +140,31 @@ export function* txSendProcess(
   }
 }
 
-function* ensureNoPendingTx({ apiUserService, web3Manager, logger }: TGlobalDependencies): any {
-  yield updateTxs();
-  let txs: Array<TxWithMetadata> = yield select((s: IAppState) => s.txMonitor.txs);
+function* ensureNoPendingTx({ logger }: TGlobalDependencies, type: ETxSenderType): any {
+  while (true) {
+    yield neuCall(updateTxs);
+    let txs: TPendingTxs = yield select((s: IAppState) => s.txMonitor.txs);
+    if (!txs.pendingTransaction && txs.oooTransactions.length === 0) {
+      yield put(actions.txSender.txSenderWatchPendingTxsDone(type));
+      return;
+    }
 
-  if (txs.length >= 1) {
+    if (txs.pendingTransaction) {
+      const txHash = txs.pendingTransaction.transaction.hash;
+      // go to miner
+      yield put(
+        actions.txSender.txSenderSigned(txHash, txs.pendingTransaction
+          .transactionType as ETxSenderType),
+      );
+      yield neuCall(watchTxSubSaga, txHash);
+      return;
+    }
+
     yield put(actions.txSender.txSenderWatchPendingTxs());
 
-    while (txs.length > 0) {
-      const {
-        transaction: { hash: txHash },
-      } = txs[0];
-
-      logger.info("Watching tx: ", txHash);
-      yield web3Manager.internalWeb3Adapter.waitForTx({ txHash });
-
-      yield apiUserService.deletePendingTx(txHash);
-
-      yield neuCall(updateTxs);
-      txs = yield select((s: IAppState) => s.txMonitor.txs);
-    }
+    // here we can just wait
+    logger.info(`Waiting for out of bound transactions: ${txs.oooTransactions.length}`);
+    yield delay(3000);
   }
 }
 
@@ -174,7 +180,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
       throw new NotEnoughFundsError();
 
     const txHash: string = yield web3Manager.sendTransaction(txData);
-    yield put(actions.txSender.txSenderSigned(txHash));
+    yield put(actions.txSender.txSenderSigned(txHash, type));
     const txWithMetadata: TxWithMetadata = {
       transaction: {
         from: addHexPrefix(txData.from),

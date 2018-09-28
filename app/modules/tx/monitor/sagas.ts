@@ -1,7 +1,7 @@
 import { delay } from "redux-saga";
 import { put } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { TxWithMetadata } from "../../../lib/api/users/interfaces";
+import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { actions } from "../../actions";
 import { neuCall } from "../../sagas";
 import { neuTakeUntil } from "../../sagasUtils";
@@ -10,32 +10,34 @@ const TX_MONITOR_DELAY = 60000;
 
 async function getPendingTransactionsPromise({
   apiUserService,
-}: TGlobalDependencies): Promise<Array<TxWithMetadata>> {
+}: TGlobalDependencies): Promise<TPendingTxs> {
   return apiUserService.pendingTxs();
 }
 
 async function cleanPendingTransactionsPromise(
-  { web3Manager, apiUserService }: TGlobalDependencies,
-  apiPendingTx: Array<TxWithMetadata>,
-): Promise<any> {
-  const nodePendingTx = await Promise.all(
-    apiPendingTx.map(async tx => {
-      const transactionReceipt = await web3Manager.internalWeb3Adapter.getTransactionReceipt(
-        tx.transaction.hash,
-      );
-      // transactionReceipt should be null if transaction is not mined
-      if (transactionReceipt && transactionReceipt.blockNumber)
-        await apiUserService.deletePendingTx(tx.transaction.hash);
-      else return tx;
-    }),
-  );
-  return nodePendingTx.filter(tx => tx);
+  { web3Manager, apiUserService, logger }: TGlobalDependencies,
+  apiPendingTx: TPendingTxs,
+): Promise<TPendingTxs> {
+  // if there's pending transaction then resolve it
+  if (apiPendingTx.pendingTransaction) {
+    const txHash = apiPendingTx.pendingTransaction.transaction.hash;
+    logger.info("Resolving pending transaction with hash", txHash);
+    const transactionReceipt = await web3Manager.internalWeb3Adapter.getTransactionReceipt(txHash);
+    // transactionReceipt should be null if transaction is not mined
+    if (transactionReceipt && transactionReceipt.blockNumber) {
+      logger.info(`Resolved transaction ${txHash} at block ${transactionReceipt.blockNumber}`);
+      await apiUserService.deletePendingTx(txHash);
+      // it's resolved so remove
+      apiPendingTx.pendingTransaction = undefined;
+    }
+  }
+  return apiPendingTx;
 }
 
 export function* updateTxs(): any {
-  const apiPendingTx = yield neuCall(getPendingTransactionsPromise);
-  const txs = yield neuCall(cleanPendingTransactionsPromise, apiPendingTx);
-  yield put(actions.txMonitor.loadTxs(txs));
+  let apiPendingTx = yield neuCall(getPendingTransactionsPromise);
+  apiPendingTx = yield neuCall(cleanPendingTransactionsPromise, apiPendingTx);
+  yield put(actions.txMonitor.loadTxs(apiPendingTx));
 }
 
 function* txMonitor({ logger, notificationCenter }: TGlobalDependencies): any {

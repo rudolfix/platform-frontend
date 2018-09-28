@@ -4,7 +4,9 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import { EtoState, TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { EtoState, TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
+import { IWalletState } from "../../../modules/wallet/reducer";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
@@ -36,14 +38,15 @@ export const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#39465
 
 interface IProps {
   companyData: TCompanyEtoData;
-  etoData: TEtoSpecsData;
+  etoData: TEtoWithCompanyAndContract;
+  wallet?: IWalletState | undefined;
 }
 
 // TODO: There are lots of castings right now in this file, cause formerly the types of IProps was "any"
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wallet }) => {
   const preMoneyValuationEur = etoData.preMoneyValuationEur || 1;
   const existingCompanyShares = etoData.existingCompanyShares || 1;
   const newSharesToIssue = etoData.newSharesToIssue || 1;
@@ -111,6 +114,12 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
         />
 
         <EtoOverviewStatus
+          newSharesToIssue={etoData.newSharesToIssue}
+          preMoneyValuationEur={etoData.preMoneyValuationEur}
+          existingCompanyShares={etoData.existingCompanyShares}
+          equityTokensPerShare={etoData.equityTokensPerShare}
+          contract={etoData.contract}
+          wallet={wallet}
           etoId={etoData.etoId}
           tokenImage={{
             srcSet: {
@@ -121,17 +130,20 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           tokenName={etoData.equityTokenName || ""}
           tokenSymbol={etoData.equityTokenSymbol || ""}
           className="mb-4"
-          investmentAmount={0} //TODO: connect proper one
-          equityTokenPrice={0} //TODO: connect proper one
-          raisedAmount={0} //TODO: connect proper one
-          timeToClaim={0} //TODO: connect proper one
-          numberOfInvestors={0} //TODO: connect proper one
+          canEnableBookbuilding={etoData.canEnableBookbuilding}
+          investmentAmount={`€ ${(
+            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
+            (etoData.newSharesToIssue || 1)
+          ).toFixed(4)} - € 
+          ${(
+            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
+            (etoData.minimumNewSharesToIssue || 1)
+          ).toFixed(4)}`}
           newSharesGenerated={etoData.newSharesToIssue}
           smartContractOnchain={etoData.state === EtoState.ON_CHAIN}
-          prospectusApproved={!!documentsByType["approved_prospectus"]}
-          termSheet={!!documentsByType["termsheet_template"]}
+          prospectusApproved={documentsByType["approved_prospectus"]}
+          termSheet={documentsByType["termsheet_template"]}
           preMoneyValuation={etoData.preMoneyValuationEur}
-          status={etoData.state}
           etoStartDate={etoData.startDate}
           preEtoDuration={etoData.whitelistDurationDays}
           publicEtoDuration={etoData.publicDurationDays}
@@ -142,12 +154,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             minPledge: etoData.minTicketEur,
             isActivated: etoData.isBookbuilding,
             quote: companyData.keyQuoteFounder,
-          }}
-          publicWidget={{
-            investorsBacked: 0,
-            tokensGoal: 0,
-            raisedTokens: 0,
-            etoId: etoData.etoId,
           }}
         />
 

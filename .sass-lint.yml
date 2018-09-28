@@ -18,7 +18,9 @@ files:
     - 'app/components/shared/forms/formField/FormFieldDatePicker.module.scss'
 rules:
   no-transition-all: 0
-  nesting-depth: 4
+  nesting-depth:
+        - 4
+        - max-depth: 4
   property-sort-order: 0
   quotes:
     - 1

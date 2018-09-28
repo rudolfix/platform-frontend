@@ -17,9 +17,9 @@ import {
   selectEtoDocumentLoading,
 } from "../modules/eto-documents/selectors";
 import {
-  selectCurrentEtoState,
-  selectCurrentEtoTemplates,
   selectEtoLoading,
+  selectIssuerEtoState,
+  selectIssuerEtoTemplates,
 } from "../modules/eto-flow/selectors";
 import { appConnect } from "../store";
 import { DeepPartial } from "../types";
@@ -34,7 +34,7 @@ import { SingleColDocuments } from "./shared/singleColDocumentWidget";
 
 import * as styles from "./Documents.module.scss";
 
-export const immutableDocumentTitle: { [key: string]: string | React.ReactNode } = {
+export const documentTitles: { [key in EtoDocumentType]: string | React.ReactNode } = {
   company_token_holder_agreement: (
     <FormattedMessage id="eto.documents.company-token-holder-agreement" />
   ),
@@ -52,6 +52,7 @@ export const immutableDocumentTitle: { [key: string]: string | React.ReactNode }
   signed_investment_and_shareholder_agreement: (
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
   ),
+  other: <FormattedMessage id="eto.documents.other" />,
 };
 
 // Documents to be not presented
@@ -69,7 +70,7 @@ export const GeneratedDocuments: React.SFC<{
         }}
       >
         <DocumentTile
-          title={immutableDocumentTitle[document.documentType]}
+          title={documentTitles[document.documentType]}
           extension={".doc"}
           blank={false}
           onlyDownload={true}
@@ -131,7 +132,7 @@ class DocumentsComponent extends React.Component<IProps> {
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
                 {generalUploadables.map((key: EtoDocumentType, index: number) => {
-                  const typedFileName = immutableDocumentTitle[key];
+                  const typedFileName = documentTitles[key];
                   const canUpload =
                     stateInfo &&
                     stateInfo.canUploadInStates[EtoStateToCamelcase[etoState]].some(
@@ -202,12 +203,12 @@ interface IDispatchProps {
 export const Documents = compose<React.SFC>(
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: s => ({
-      etoFilesData: selectEtoDocumentData(s.etoDocuments),
-      loadingData: selectEtoLoading(s.etoFlow),
-      etoFileLoading: selectEtoDocumentLoading(s.etoDocuments),
-      etoState: selectCurrentEtoState(s.etoFlow),
-      etoLinks: selectCurrentEtoTemplates(s.etoFlow),
+    stateToProps: state => ({
+      etoFilesData: selectEtoDocumentData(state.etoDocuments),
+      loadingData: selectEtoLoading(state.etoFlow),
+      etoFileLoading: selectEtoDocumentLoading(state.etoDocuments),
+      etoState: selectIssuerEtoState(state),
+      etoLinks: selectIssuerEtoTemplates(state),
     }),
     dispatchToProps: dispatch => ({
       generateTemplate: document => dispatch(actions.etoDocuments.generateTemplate(document)),

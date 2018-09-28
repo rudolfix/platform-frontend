@@ -10,6 +10,7 @@ import {
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
@@ -94,7 +95,7 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.etoData,
+      stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

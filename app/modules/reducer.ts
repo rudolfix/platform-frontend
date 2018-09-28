@@ -9,6 +9,7 @@ import { genericModalReducer } from "./genericModal/reducer";
 import { icbmWalletBalanceModalReducer } from "./icbmWalletBalanceModal/reducer";
 import { initReducer } from "./init/reducer";
 import { investmentFlowReducer } from "./investmentFlow/reducer";
+import { investorTicketsReducer } from "./investor-tickets/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
@@ -41,6 +42,7 @@ export const appReducers = {
   accessWallet: accessWalletReducer,
   kyc: kycReducer,
   settings: settingsReducer,
+  investorTickets: investorTicketsReducer,
   tokenPrice: tokenPriceReducer,
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,

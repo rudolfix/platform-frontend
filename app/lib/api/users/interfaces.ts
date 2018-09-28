@@ -5,6 +5,7 @@ import * as YupTS from "../../yup-ts";
 export type TUserType = "investor" | "issuer";
 
 export interface IUser {
+  userId: string;
   backupCodesVerified?: boolean;
   language?: string;
   unverifiedEmail?: string;
@@ -34,6 +35,7 @@ export interface IVerifyEmailUser {
 
 export const UserValidator = Yup.object()
   .shape({
+    userId: Yup.string().required(),
     backupCodesVerified: Yup.boolean(),
     language: Yup.string(),
     unverifiedEmail: Yup.string(),

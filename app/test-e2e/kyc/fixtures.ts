@@ -1,31 +1,100 @@
-export const personData = {
+import { TFormFixture } from "../utils/forms";
+
+const kycPersonBaseForm: TFormFixture = {
   firstName: "John",
   lastName: "Doe",
-  birthday: {
-    day: "01",
-    month: "01",
-    year: "1990",
+  birthDate: {
+    value: "20/01/1980",
+    type: "date",
   },
-  street: "Cuvrystr. 9",
+  street: "Cuvrystr. 6",
   city: "Berlin",
-  country: "DE",
-  placeOfBirth: "UA",
-  nationality: "PL",
   zipCode: "10247",
-  isPoliticallyExposed: "true",
-  isUsCitizen: "false",
-  hasHighIncome: "false",
+  country: {
+    value: "DE",
+    type: "select",
+  },
+  placeOfBirth: {
+    value: "AT",
+    type: "select",
+  },
+  nationality: {
+    value: "PL",
+    type: "select",
+  },
+  isPoliticallyExposed: {
+    value: "false",
+    type: "select",
+  },
 };
 
-export type IPersonData = typeof personData;
-
-export const businessData = {
-  companyName: "John",
-  legalForm: "Doe",
-  street: "example",
-  city: "example",
-  country: "DE",
-  zipCode: "00000",
+export const kycInvidualForm: TFormFixture = {
+  ...kycPersonBaseForm,
+  isUsCitizen: {
+    value: "false",
+    type: "select",
+  },
+  isHighIncome: {
+    value: "true",
+    type: "select",
+  },
+  "kyc-personal-start-submit-form": {
+    value: "",
+    type: "submit",
+  },
 };
 
-export type IBusinessData = typeof businessData;
+export const kycLegalRepForm: TFormFixture = {
+  ...kycPersonBaseForm,
+  "kyc-company-legal-representative-save": {
+    value: "",
+    type: "submit",
+  },
+};
+
+export const kycLegalRepDocsForm: TFormFixture = {
+  "kyc-company-legal-representative-documents": {
+    value: "example.png",
+    type: "file",
+  },
+  "kyc-company-legal-representative-upload-and-submit": {
+    value: "",
+    type: "submit",
+  },
+};
+
+export const kycCompanyForm: TFormFixture = {
+  name: "Neufund",
+  registrationNumber: "123456789",
+  legalForm: "UG",
+  street: "Cuvrystraße 6",
+  city: "Berlin",
+  zipCode: "10247",
+  country: {
+    value: "DE",
+    type: "select",
+  },
+  "kyc-company-business-data-save": {
+    value: "",
+    type: "submit",
+  },
+};
+
+export const kycCorporateCompanyForm: TFormFixture = {
+  ...kycCompanyForm,
+  jurisdiction: {
+    value: "PL",
+    type: "select",
+  },
+};
+
+export const kycCompanyDocsForm: TFormFixture = {
+  "kyc-company-business-supporting-documents": {
+    value: "example.png",
+    type: "file",
+  },
+  "kyc-company-business-supporting-continue": {
+    value: "",
+    type: "submit",
+  },
+};

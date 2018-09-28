@@ -6,14 +6,15 @@ import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
+import { Q18 } from "../../config/constants";
 import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
 import { ETOStateOnChain } from "../../modules/public-etos/types";
-import { divideBigNumbers } from "../../utils/BigNumberUtils";
 import { documentTitles } from "../Documents";
 import { AssetPortfolio } from "../shared/AssetPortfolio";
 import { Button } from "../shared/buttons";
 import { Document } from "../shared/Document";
+import { Money } from "../shared/Money";
 import { NewTable, NewTableRow } from "../shared/NewTable";
 import { ProjectStatus } from "../shared/ProjectStatus";
 import { SectionHeader } from "../shared/SectionHeader";
@@ -33,7 +34,9 @@ const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): strin
     return "0";
   }
 
-  return divideBigNumbers(equityTokenInt, equivEurUlps).toString();
+  return Q18.mul(equityTokenInt)
+    .div(equivEurUlps)
+    .toFixed(4);
 };
 
 const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({ myAssets, pendingAssets }) => (
@@ -136,9 +139,17 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({ myAssets, pendingAs
                     <span>{equityTokenName}</span>
                   </>
                   <>{investorTicket.equityTokenInt.toString()}</>
-                  <>{investorTicket.equivEurUlps.toString()}</>
+                  <Money
+                    value={investorTicket.equivEurUlps.toString()}
+                    currency="eur"
+                    noCurrencySymbol
+                  />
                   <>{getNeuReward(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}</>
-                  <>{investorTicket.rewardNmkUlps.toString()}</>
+                  <Money
+                    value={investorTicket.rewardNmkUlps.toString()}
+                    currency="neu"
+                    noCurrencySymbol
+                  />
                   <>
                     {isWhitelistedOrPublic ? (
                       <>
@@ -190,9 +201,17 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({ myAssets, pendingAs
                     <span>{equityTokenName}</span>
                   </>
                   <>{investorTicket.equityTokenInt.toString()}</>
-                  <>{investorTicket.equivEurUlps.toString()}</>
+                  <Money
+                    value={investorTicket.equivEurUlps.toString()}
+                    currency="eur"
+                    noCurrencySymbol
+                  />
                   <>{getNeuReward(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}</>
-                  <>{investorTicket.rewardNmkUlps.toString()}</>
+                  <Money
+                    value={investorTicket.rewardNmkUlps.toString()}
+                    currency="neu"
+                    noCurrencySymbol
+                  />
                   <>
                     {map(
                       (document: IEtoDocument) => (

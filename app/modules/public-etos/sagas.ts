@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import { compose, keyBy, map, omit } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
+import { promisify } from "../../lib/contracts/typechain-runtime";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
@@ -156,11 +157,12 @@ export function* loadComputedContributionFromContract(
       amountEuroUlps || convertToBigInt((eto.minTicketEur && eto.minTicketEur.toString()) || "0");
 
     const from = selectEthereumAddressWithChecksum(state.web3);
-    const calculation = yield etoContract.calculateContribution(
+    // sorry no typechain, typechain has a bug with boolean casting
+    const calculation = yield promisify(etoContract.rawWeb3Contract.calculateContribution, [
       from,
       isICBM,
       new BigNumber(amountEuroUlps),
-    );
+    ]);
     yield put(
       actions.publicEtos.setCalculatedContribution(
         eto.previewCode,

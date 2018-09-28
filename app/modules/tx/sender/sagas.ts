@@ -16,8 +16,8 @@ import {
   UnknownEthNodeError,
 } from "../../../lib/web3/Web3Adapter";
 import { IAppState } from "../../../store";
-import { delay } from "../../../utils/delay";
 import { multiplyBigNumbers } from "../../../utils/BigNumberUtils";
+import { delay } from "../../../utils/delay";
 import { connectWallet } from "../../accessWallet/sagas";
 import { actions, TAction } from "../../actions";
 import { onInvestmentTxModalHide } from "../../investmentFlow/sagas";

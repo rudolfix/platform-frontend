@@ -8,7 +8,10 @@ import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
 import { selectKycRequestStatus, selectKycRequestType } from "../../modules/kyc/selectors";
-import { selectIcbmWalletConnected } from "../../modules/wallet/selectors";
+import {
+  selectIcbmWalletConnected,
+  selectLockedWalletConnected,
+} from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -24,6 +27,7 @@ import { SettingsWidgets } from "./SettingsWidgets";
 interface IStateProps {
   isLightWallet: boolean;
   isIcbmWalletConnected: boolean;
+  isLockedWalletConnected: boolean;
   userType?: TUserType;
   kycRequestType?: TKycRequestType;
   kycRequestStatus?: TRequestStatus;
@@ -32,6 +36,7 @@ interface IStateProps {
 export const SettingsComponent: React.SFC<IStateProps> = ({
   isLightWallet,
   isIcbmWalletConnected,
+  isLockedWalletConnected,
   userType,
   kycRequestType,
   kycRequestStatus,
@@ -59,6 +64,7 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
         </Col>
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
           !isIcbmWalletConnected &&
+          !isLockedWalletConnected &&
           isUserInvestor && (
             <Col lg={4} xs={12}>
               <CheckYourICBMWalletWidget />
@@ -100,6 +106,7 @@ export const Settings = compose<React.SFC>(
       kycRequestStatus: selectKycRequestStatus(s.kyc),
       kycRequestType: selectKycRequestType(s.kyc),
       isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
+      isLockedWalletConnected: selectLockedWalletConnected(s.wallet),
     }),
   }),
   onEnterAction({

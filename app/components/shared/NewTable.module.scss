@@ -39,4 +39,8 @@
 .cell {
   padding: 10px;
   vertical-align: top;
+
+  &-placeholder {
+    text-align: center;
+  }
 }

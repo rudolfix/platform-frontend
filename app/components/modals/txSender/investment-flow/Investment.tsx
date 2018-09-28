@@ -22,7 +22,7 @@ import {
 } from "../../../../modules/investmentFlow/selectors";
 import {
   selectEquityTokenCountByEtoId,
-  selectEtoById,
+  selectEtoWithCompanyAndContractById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
@@ -252,7 +252,8 @@ export const InvestmentSelection: React.SFC = compose<any>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const investmentFlow = state.investmentFlow;
-      const eto = selectEtoById(state.publicEtos, investmentFlow.etoId)!;
+
+      const eto = selectEtoWithCompanyAndContractById(state, investmentFlow.etoId)!;
       const eur = selectEurValueUlps(investmentFlow);
       return {
         eto,
@@ -270,7 +271,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
       };
     },
     dispatchToProps: dispatch => ({
-      sendTransaction: () => dispatch(actions.investmentFlow.generateInvestmentTx()),
+      sendTransaction: () => dispatch(actions.txSender.txSenderAcceptDraft()),
       showBankTransferDetails: () => dispatch(actions.investmentFlow.showBankTransferDetails()),
       changeEthValue: value =>
         dispatch(actions.investmentFlow.submitCurrencyValue(value, EInvestmentCurrency.Ether)),

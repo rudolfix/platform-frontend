@@ -1,3 +1,4 @@
+import * as Web3Utils from "web3-utils";
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
@@ -94,8 +95,9 @@ export const selectICBMLockedEuroTotalAmount = (state: IAppState) =>
     selectICBMLockedEuroTokenBalance(state.wallet),
   ]);
 
-export const selectICBMLockedWalletHasFunds = (state: IAppState): boolean =>
-  selectICBMLockedEuroTotalAmount(state) !== "0";
+export const selectICBMLockedWalletHasFunds = (state: IWalletState): boolean =>
+  addBigNumbers([selectICBMLockedEuroTokenBalance(state), selectICBMLockedEtherBalance(state)]) !==
+  "0";
 
 /**
  * Total wallet assets value
@@ -126,8 +128,6 @@ export const selectTotalEuroBalance = (state: IAppState) =>
     selectICBMLockedEuroTotalAmount(state),
   ]);
 
-export const selectIsLoaded = (state: IWalletState): boolean => !state.loading;
-
 export const selectEtherNeumarksDue = (state: IWalletState): string =>
   (state.data &&
     state.data.etherTokenICBMLockedWallet &&
@@ -142,10 +142,22 @@ export const selectEurNeumarksDue = (state: IWalletState): string =>
 
 export const selectIcbmWalletConnected = (state: IWalletState): boolean =>
   !!(
-    (state.data &&
-      state.data.etherTokenICBMLockedWallet &&
-      state.data.etherTokenICBMLockedWallet.unlockDate !== "0") ||
-    (state.data &&
-      state.data.euroTokenICBMLockedWallet &&
-      state.data.euroTokenICBMLockedWallet.unlockDate !== "0")
+    (state.data && state.data.etherTokenICBMLockedWallet.unlockDate !== "0") ||
+    (state.data && state.data.euroTokenICBMLockedWallet.unlockDate !== "0")
   );
+
+export const selectLockedWalletConnected = (state: IWalletState): boolean =>
+  !!(
+    (state.data && state.data.etherTokenLockedWallet.unlockDate !== "0") ||
+    (state.data && state.data.euroTokenLockedWallet.unlockDate !== "0")
+  );
+
+export const selectIsLoading = (state: IWalletState): boolean => state.loading;
+
+export const selectWalletError = (state: IWalletState): string | undefined => state.error;
+
+export const selectIsEtherUpgradeTargetSet = (state: IWalletState): boolean =>
+  state.data && Web3Utils.isAddress(state.data.etherTokenUpgradeTarget);
+
+export const selectIsEuroUpgradeTargetSet = (state: IWalletState): boolean =>
+  state.data && Web3Utils.isAddress(state.data.euroTokenUpgradeTarget);

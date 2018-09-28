@@ -1,6 +1,6 @@
 import * as promiseAll from "promise-all";
+import { fork, put, select, take } from "redux-saga/effects";
 
-import { fork, put, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ICBMLockedAccount } from "../../lib/contracts/ICBMLockedAccount";
 import { LockedAccount } from "../../lib/contracts/LockedAccount";
@@ -15,9 +15,10 @@ import { ILockedWallet, IWalletStateData } from "./reducer";
 function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
   try {
     const ethAddress = yield select((s: IAppState) => selectEthereumAddressWithChecksum(s.web3));
+    yield put(actions.gas.gasApiEnsureLoading());
+    yield take("GAS_API_LOADED");
 
     const state: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
-
     yield put(actions.wallet.loadWalletData(state));
     logger.info("Wallet Loaded");
   } catch (e) {
@@ -57,6 +58,8 @@ export async function loadWalletDataAsync(
       etherTokenICBMLockedWallet: loadICBMWallet(ethAddress, contractsService.icbmEtherLock),
       euroTokenLockedWallet: loadICBMWallet(ethAddress, contractsService.euroLock),
       etherTokenLockedWallet: loadICBMWallet(ethAddress, contractsService.etherLock),
+      etherTokenUpgradeTarget: contractsService.icbmEtherLock.currentMigrationTarget,
+      euroTokenUpgradeTarget: contractsService.icbmEuroLock.currentMigrationTarget,
     })),
     ...numericValuesToString(
       await promiseAll({

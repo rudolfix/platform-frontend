@@ -5,14 +5,14 @@ import { CommonHtmlProps } from "../../types";
 
 import * as styles from "./Panel.module.scss";
 
-export interface IPanelProps {
+export interface IPanelProps extends CommonHtmlProps {
   headerText?: string | React.ReactNode;
   rightComponent?: React.ReactNode;
   icon?: string;
   narrow?: boolean;
 }
 
-export const Panel: React.SFC<IPanelProps & CommonHtmlProps> = ({
+export const Panel: React.SFC<IPanelProps> = ({
   headerText,
   rightComponent,
   icon,

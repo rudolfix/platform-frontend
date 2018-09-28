@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import {
   selectIcbmWalletConnected,
+  selectLockedWalletConnected,
   selectNeuBalance,
   selectNeuBalanceEuroAmount,
 } from "../../../modules/wallet/selectors";
@@ -23,7 +24,8 @@ interface IBodyProps {
   error?: string;
   balanceNeu: string;
   balanceEur: string;
-  isIcbmWalletConnected: boolean;
+  isIcbmWalletConnected?: boolean;
+  isLockedWalletConnected?: boolean;
 }
 
 interface IStateProps {
@@ -32,6 +34,7 @@ interface IStateProps {
   balanceEur?: string;
   error?: string;
   isIcbmWalletConnected?: boolean;
+  isLockedWalletConnected?: boolean;
 }
 
 type IProps = TOwnProps & IStateProps;
@@ -39,6 +42,7 @@ type IProps = TOwnProps & IStateProps;
 export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
   error,
   isIcbmWalletConnected,
+  isLockedWalletConnected,
   balanceEur,
   balanceNeu,
 }) => {
@@ -54,7 +58,7 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
         </h3>
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" && (
           <>
-            {isIcbmWalletConnected || (
+            {!(isIcbmWalletConnected || isLockedWalletConnected) && (
               <p>
                 <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
                 <Link to={appRoutes.settings} className={styles.link}>
@@ -78,6 +82,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   isLoading,
   error,
   isIcbmWalletConnected,
+  isLockedWalletConnected,
   balanceEur,
   balanceNeu,
 }) => {
@@ -95,7 +100,8 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
         ) : (
           <MyPortfolioWidgetComponentBody
             {...{
-              isIcbmWalletConnected: isIcbmWalletConnected!,
+              isIcbmWalletConnected,
+              isLockedWalletConnected,
               balanceEur: balanceEur!,
               balanceNeu: balanceNeu!,
             }}
@@ -115,5 +121,6 @@ export const MyPortfolioWidget = appConnect<IStateProps, {}, TOwnProps>({
     balanceNeu: selectNeuBalance(s.wallet),
     balanceEur: selectNeuBalanceEuroAmount(s),
     isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
+    isLockedWalletConnected: selectLockedWalletConnected(s.wallet),
   }),
 })(MyPortfolioWidgetComponent);

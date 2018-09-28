@@ -9,7 +9,7 @@ import { delay } from "../../utils/delay";
 class Web3Error extends Error {}
 export class RevertedTransactionError extends Web3Error {}
 export class OutOfGasError extends Web3Error {}
-
+export class NotEnoughFundsError extends Web3Error {}
 export class EthNodeError extends Error {}
 export class LowGasNodeError extends EthNodeError {}
 export class LowNonceError extends EthNodeError {}

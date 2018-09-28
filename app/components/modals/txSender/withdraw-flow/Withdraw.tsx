@@ -47,7 +47,7 @@ export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchP
     <Formik<{}, ITxData>
       validationSchema={withdrawFormValidator}
       isInitialValid={false}
-      initialValues={{ gas: "100000", from: "", value: "", to: "" }}
+      initialValues={{ gas: "100000", from: "", value: "", to: "", gasPrice: "" }}
       onSubmit={data => {
         const gasPrice = gas.gasPrice!.standard;
         const value = Web3Utils.toWei(data.value, "ether");
@@ -130,7 +130,7 @@ export const Withdraw = appConnect<IWithdrawStateProps, ITxInitDispatchProps>({
     address: selectEthereumAddressWithChecksum(state.web3),
   }),
   dispatchToProps: d => ({
-    onAccept: (tx: ITxData) => d(actions.txSender.generateWithdrawTx(tx)),
+    onAccept: (tx: ITxData) => d(actions.txSender.txSenderAcceptDraft(tx)),
   }),
 })(WithdrawComponent);
 

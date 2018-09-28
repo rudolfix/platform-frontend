@@ -15,7 +15,6 @@ export const investmentFlowActions = {
   submitCurrencyValue: (value: string, currency: EInvestmentCurrency) =>
     createAction("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", { value, currency }),
   validateInputs: () => createSimpleAction("INVESTMENT_FLOW_VALIDATE_INPUTS"),
-  generateInvestmentTx: () => createSimpleAction("INVESTMENT_FLOW_GENERATE_TX"),
   showBankTransferDetails: () => createSimpleAction("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS"),
   showBankTransferSummary: () => createSimpleAction("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_SUMMARY"),
   // state mutations

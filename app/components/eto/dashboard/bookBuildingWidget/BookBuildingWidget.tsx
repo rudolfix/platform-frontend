@@ -84,7 +84,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
 export const BookBuildingWidget = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      bookBuildingState: selectIsBookBuilding(state.etoFlow),
+      bookBuildingState: selectIsBookBuilding(state),
     }),
     dispatchToProps: dispatch => ({
       startBookBuilding: () => dispatch(actions.etoFlow.changeBookBuildingStatus(true)),

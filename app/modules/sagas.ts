@@ -12,6 +12,7 @@ import { icbmWalletGetDataSagas } from "./icbmWalletBalanceModal/sagas";
 import { immutableFileSagas } from "./immutableFile/sagas";
 import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investmentFlow/sagas";
+import { investorTicketsSagas } from "./investor-tickets/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { etoSagas } from "./public-etos/sagas";
 import { settingsSagas } from "./settings/sagas";
@@ -31,6 +32,7 @@ import { web3Sagas } from "./web3/sagas";
 function* allSagas(): Iterator<effects.Effect> {
   yield effects.all([
     effects.fork(kycSagas),
+    effects.fork(investorTicketsSagas),
     effects.fork(initSagas),
     effects.fork(settingsSagas),
     effects.fork(web3Sagas),

@@ -11,6 +11,7 @@ import { icbmWalletBalanceModalActions } from "./icbmWalletBalanceModal/actions"
 import { immutableStorageActions } from "./immutableFile/actions";
 import { initActions } from "./init/actions";
 import { investmentFlowActions } from "./investmentFlow/actions";
+import { investorEtoTicketActions } from "./investor-tickets/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { personProfileModalActions } from "./personProfileModal/actions";
@@ -42,6 +43,7 @@ export const actions = {
   routing: routingActions,
   walletSelector: walletSelectorActions,
   web3: web3Actions,
+  investorEtoTicket: investorEtoTicketActions,
   userAgent: userAgentActions,
   auth: authActions,
   wallet: walletActions,
@@ -95,6 +97,7 @@ export const allActions = [
   investmentFlowActions,
   videoModalActions,
   personProfileModalActions,
+  investorEtoTicketActions,
 ];
 
 /**

@@ -1,3 +1,5 @@
+import { TEtoKeyIndividualType } from "../../../lib/api/eto/EtoApi.interfaces";
+
 export const selectActiveCarouselTab = (elements: any[]): number => {
   for (let element in elements) {
     const el = elements[parseInt(element, 10)];
@@ -12,4 +14,17 @@ export const selectActiveCarouselTab = (elements: any[]): number => {
   }
 
   return 0;
+};
+
+export const areThereIndividuals = (
+  individual: TEtoKeyIndividualType | undefined,
+): individual is TEtoKeyIndividualType => {
+  return (
+    !!individual &&
+    !!individual.members &&
+    !!individual.members[0] &&
+    // need to check whether name is not empty
+    // due to the way key individuals form saved values in past
+    !!individual.members[0].name.length
+  );
 };

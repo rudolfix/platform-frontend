@@ -6,7 +6,7 @@ import { MONEY_DECIMALS } from "../../../../config/constants";
 import { selectEurValueUlps } from "../../../../modules/investmentFlow/selectors";
 import {
   selectEquityTokenCountByEtoId,
-  selectEtoById,
+  selectEtoWithCompanyAndContractById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/public-etos/selectors";
 import { appConnect } from "../../../../store";
@@ -110,10 +110,10 @@ const BankTransferSummary = appConnect<IProps>({
     const i = state.investmentFlow;
     const p = state.publicEtos;
     // eto and computed values are guaranteed to be present at investment summary state
-    const eto = selectEtoById(p, i.etoId)!;
+    const eto = selectEtoWithCompanyAndContractById(state, i.etoId)!;
     return {
       summaryDocumentUrl: "fufu", // TODO: add proper agreement document link
-      companyName: eto.company.name!,
+      companyName: eto.company.name,
       investmentEur: selectEurValueUlps(i),
       equityTokens: selectEquityTokenCountByEtoId(i.etoId, p) as string,
       estimatedReward: selectNeuRewardUlpsByEtoId(i.etoId, p) as string,

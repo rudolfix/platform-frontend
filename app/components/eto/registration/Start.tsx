@@ -24,7 +24,7 @@ export const EtoRegisterComponent: React.SFC<IStateProps> = ({ isLoading }) => (
 );
 
 export const EtoRegister = compose<React.SFC>(
-  onEnterAction({ actionCreator: d => d(actions.etoFlow.loadDataStart()) }),
+  onEnterAction({ actionCreator: d => d(actions.etoFlow.loadIssuerEto()) }),
   appConnect<IStateProps>({
     stateToProps: s => ({
       isLoading: s.etoFlow.loading,

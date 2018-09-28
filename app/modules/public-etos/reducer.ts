@@ -1,37 +1,22 @@
-import BigNumber from "bignumber.js";
-
-import {
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-  TPublicEtoData,
-} from "../../lib/api/eto/EtoApi.interfaces";
+import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-
-export interface ICalculatedContribution {
-  isWhitelisted: boolean;
-  minTicketEurUlps: BigNumber;
-  maxTicketEurUlps: BigNumber;
-  equityTokenInt: BigNumber;
-  neuRewardUlps: BigNumber;
-  maxCapExceeded: boolean;
-}
+import { ICalculatedContribution, IEtoContractData } from "./types";
 
 export interface IPublicEtoState {
-  // only preview, endpoint eto-listing/eto-previews
-  previewEtoData?: TPartialEtoSpecData;
-  previewCompanyData?: TPartialCompanyEtoData;
-
-  // for endpoint eto-listing/etos
-  publicEtos: { [etoId: string]: TPublicEtoData | undefined };
-  calculatedContributions: { [etoId: string]: ICalculatedContribution };
-  displayOrder: string[];
+  publicEtos: { [previewCode: string]: TEtoSpecsData | undefined };
+  companies: { [companyId: string]: TCompanyEtoData | undefined };
+  calculatedContributions: { [previewCode: string]: ICalculatedContribution };
+  contracts: { [previewCode: string]: IEtoContractData };
+  displayOrder: string[] | undefined;
 }
 
 export const etoFlowInitialState: IPublicEtoState = {
   publicEtos: {},
+  companies: {},
   calculatedContributions: {},
-  displayOrder: [],
+  contracts: {},
+  displayOrder: undefined,
 };
 
 export const publicEtosReducer: AppReducer<IPublicEtoState> = (
@@ -46,13 +31,21 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
           ...state.publicEtos,
           ...action.payload.etos,
         },
+        companies: {
+          ...state.companies,
+          ...action.payload.companies,
+        },
       };
     case "PUBLIC_ETOS_SET_PUBLIC_ETO":
       return {
         ...state,
         publicEtos: {
           ...state.publicEtos,
-          [action.payload.eto.etoId]: action.payload.eto,
+          [action.payload.eto.previewCode]: action.payload.eto,
+        },
+        companies: {
+          ...state.companies,
+          [action.payload.company.companyId]: action.payload.company,
         },
       };
     case "PUBLIC_ETOS_SET_DISPLAY_ORDER":
@@ -65,15 +58,16 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
         ...state,
         calculatedContributions: {
           ...state.calculatedContributions,
-          [action.payload.etoId]: action.payload.contrib,
+          [action.payload.previewCode]: action.payload.contrib,
         },
       };
-    case "PUBLIC_ETOS_SET_PREVIEW_ETO":
-      const data = action.payload.data;
+    case "PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT":
       return {
         ...state,
-        previewEtoData: data && data.eto,
-        previewCompanyData: data && data.company,
+        contracts: {
+          ...state.contracts,
+          [action.payload.previewCode]: action.payload.data,
+        },
       };
   }
 

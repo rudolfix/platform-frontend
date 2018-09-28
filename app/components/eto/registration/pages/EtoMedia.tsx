@@ -7,7 +7,8 @@ import { compose } from "redux";
 
 import { EtoMediaType, TPartialCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
-import { etoMediaProgressOptions } from "../../../../modules/eto-flow/selectors";
+import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
+import { etoMediaProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { FormCheckbox, FormField } from "../../../shared/forms";
@@ -118,7 +119,7 @@ export const EtoRegistrationMedia = compose<React.SFC>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: s.etoFlow.companyData,
+      stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {

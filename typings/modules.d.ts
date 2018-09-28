@@ -23,4 +23,5 @@ declare module "react-blockies";
 declare module "qrcode";
 
 declare module "web3-utils";
+
 declare module "web3-eth-accounts";

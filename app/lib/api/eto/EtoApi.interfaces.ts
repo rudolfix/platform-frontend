@@ -75,27 +75,29 @@ const socialChannelsType = YupTS.array(
 
 export type TSocialChannelsType = YupTS.TypeOf<typeof socialChannelsType>;
 
-const groupType = YupTS.object({
+export const EtoKeyIndividualType = YupTS.object({
   members: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
-      role: YupTS.string(),
+      role: YupTS.string().optional(),
       image: YupTS.string().optional(),
       description: YupTS.string().optional(),
       website: YupTS.url().optional(),
       socialChannels: socialChannelsType.optional(),
     }),
-  ),
+  ).optional(),
 });
 
+export type TEtoKeyIndividualType = YupTS.TypeOf<typeof EtoKeyIndividualType>;
+
 export const EtoKeyIndividualsType = YupTS.object({
-  team: groupType.optional(),
-  advisors: groupType.optional(),
-  boardMembers: groupType.optional(),
-  notableInvestors: groupType.optional(),
-  keyCustomers: groupType.optional(),
-  partners: groupType.optional(),
-  keyAlliances: groupType.optional(),
+  team: EtoKeyIndividualType,
+  advisors: EtoKeyIndividualType.optional(),
+  boardMembers: EtoKeyIndividualType.optional(),
+  notableInvestors: EtoKeyIndividualType.optional(),
+  keyCustomers: EtoKeyIndividualType.optional(),
+  partners: EtoKeyIndividualType.optional(),
+  keyAlliances: EtoKeyIndividualType.optional(),
 });
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;

@@ -95,7 +95,13 @@ const EtoRegistrationRiskAssessmentComponent = (props: IProps) => {
       </Section>
       <Col>
         <Row className="justify-content-end">
-          <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
+          <Button
+            layout="primary"
+            className="mr-4"
+            type="submit"
+            isLoading={props.savingData}
+            data-test-id="eto-registration-risk-submit"
+          >
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

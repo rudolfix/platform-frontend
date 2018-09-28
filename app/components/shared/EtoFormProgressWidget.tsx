@@ -15,6 +15,7 @@ interface IProps {
   isLoading: boolean;
   disabled: boolean;
   readonly: boolean;
+  testingId?: string;
 }
 
 interface IButtonTextProps {
@@ -41,8 +42,9 @@ export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
   isLoading,
   disabled,
   readonly,
+  testingId,
 }) => (
-  <Panel>
+  <Panel testingId={testingId}>
     <Proportion width={100} height={108}>
       <div className={styles.contentWrapper}>
         {isLoading ? (

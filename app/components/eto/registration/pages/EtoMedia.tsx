@@ -104,7 +104,13 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
     </Section>
     <Col>
       <Row className="justify-content-end">
-        <Button layout="primary" className="mr-4" type="submit" isLoading={savingData}>
+        <Button
+          layout="primary"
+          className="mr-4"
+          type="submit"
+          isLoading={savingData}
+          data-test-id="eto-registration-media-submit"
+        >
           <FormattedMessage id="form.button.save" />
         </Button>
       </Row>

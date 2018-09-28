@@ -1,8 +1,9 @@
 import { tid } from "../utils";
 import { kycRoutes } from "../../components/kyc/routes";
-import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 import { personData } from "./fixtures";
-import { submitIndividualKYCForm, uploadFileToFieldWithTid, acceptWallet } from "./forms";
+import { submitIndividualKYCForm, acceptWallet } from "./forms";
+import { uploadFileToFieldWithTid } from "../utils/forms";
 
 const goToIndividualKYCFlow = () => {
   cy.visit(kycRoutes.start);

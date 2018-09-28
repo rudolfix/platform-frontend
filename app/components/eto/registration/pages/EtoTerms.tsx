@@ -183,7 +183,12 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
     {!readonly && (
       <Col>
         <Row className="justify-content-center">
-          <Button layout="primary" type="submit" isLoading={savingData}>
+          <Button
+            layout="primary"
+            type="submit"
+            isLoading={savingData}
+            data-test-id="eto-registration-eto-terms-submit"
+          >
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

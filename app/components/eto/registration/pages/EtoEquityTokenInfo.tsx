@@ -60,13 +60,19 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
         name="equityTokenImage"
         acceptedFiles="image/png"
         fileFormatInformation="*200 x 200px png"
+        data-test-id="eto-registration-token-logo"
         disabled={readonly}
       />
     </div>
     {!readonly && (
       <Col>
         <Row className="justify-content-center">
-          <Button layout="primary" type="submit" isLoading={savingData}>
+          <Button
+            layout="primary"
+            type="submit"
+            isLoading={savingData}
+            data-test-id="eto-registration-token-info-submit"
+          >
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

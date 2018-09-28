@@ -1,5 +1,6 @@
 import { kycRoutes } from "../../components/kyc/routes";
 import { tid } from "../utils";
+import { uploadFileToFieldWithTid } from "../utils/forms";
 import { DEFAULT_PASSWORD } from "../utils/userHelpers";
 import { IBusinessData, IPersonData } from "./fixtures";
 
@@ -55,22 +56,6 @@ export const submitIndividualKYCForm = (person: IPersonData) => {
   cy.get(tid("kyc-personal-start-submit-form")).click();
 
   cy.url().should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
-};
-
-export const uploadFileToFieldWithTid = (targetTid: string) => {
-  const dropEvent = {
-    dataTransfer: {
-      files: [] as any,
-    },
-  };
-
-  cy.fixture("example.png").then(picture => {
-    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: any) => {
-      dropEvent.dataTransfer.files.push(blob);
-    });
-  });
-
-  cy.get(tid(targetTid)).trigger("drop", dropEvent);
 };
 
 export const uploadBusinessSupportingDocumentsAndSubmitForm = () => {

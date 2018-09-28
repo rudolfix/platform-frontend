@@ -75,6 +75,7 @@ const EtoRegistrationTeamAndInvestorsComponent = (
         options={generateTagOptions(tagList)}
         name="categories"
         className="mb-4"
+        testId="eto-about-category"
       />
       <Row>
         <Col>
@@ -84,6 +85,7 @@ const EtoRegistrationTeamAndInvestorsComponent = (
             acceptedFiles="image/*"
             fileFormatInformation="*150 x 150 png"
             className="mb-3"
+            data-test-id="eto-registration-company-logo"
           />
         </Col>
         <Col>
@@ -93,13 +95,20 @@ const EtoRegistrationTeamAndInvestorsComponent = (
             acceptedFiles="image/*"
             fileFormatInformation="*1250 x 400 png"
             className="mb-3"
+            data-test-id="eto-registration-company-banner"
           />
         </Col>
       </Row>
     </Section>
     <Col>
       <Row className="justify-content-end">
-        <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
+        <Button
+          layout="primary"
+          className="mr-4"
+          type="submit"
+          isLoading={props.savingData}
+          data-test-id="eto-registration-company-information-submit"
+        >
           <FormattedMessage id="form.button.save" />
         </Button>
       </Row>

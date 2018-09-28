@@ -1,6 +1,6 @@
 import { tid } from "../utils";
 import { kycRoutes } from "../../components/kyc/routes";
-import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 import { personData, businessData } from "./fixtures";
 import {
   submitBusinessKYCForm,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TxSenderType } from "../../../../modules/tx/sender/reducer";
+import { ETxSenderType } from "../../../../modules/tx/sender/reducer";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { EtherscanTxLink } from "../../../shared/EtherscanLink";
 
@@ -10,7 +10,7 @@ import * as styles from "./TxPending.module.scss";
 export interface ITxPendingProps {
   blockId: number;
   txHash: string;
-  type: TxSenderType;
+  type: ETxSenderType;
 }
 
 export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash, type }) => (

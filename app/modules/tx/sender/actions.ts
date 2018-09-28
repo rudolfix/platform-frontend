@@ -10,7 +10,7 @@ export const txSenderActions = {
   txSenderAcceptDraft: (txData?: ITxData) => createAction("TX_SENDER_ACCEPT_DRAFT", txData!),
   txSenderAccept: () => createSimpleAction("TX_SENDER_ACCEPT"),
   // Signer actions
-  txSenderSigned: (txHash: string, type: TxSenderType) =>
+  txSenderSigned: (txHash: string, type: ETxSenderType) =>
     createAction("TX_SENDER_SIGNED", { txHash, type }),
   txSenderWalletPlugged: () => createSimpleAction("TX_SENDER_WALLET_PLUGGED"),
   // Block mining actions

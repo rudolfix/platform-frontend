@@ -140,7 +140,7 @@ export function* txSendProcess(
   }
 }
 
-function* ensureNoPendingTx({ logger }: TGlobalDependencies, type: TxSenderType): any {
+function* ensureNoPendingTx({ logger }: TGlobalDependencies, type: ETxSenderType): any {
   while (true) {
     yield neuCall(updateTxs);
     let txs: TPendingTxs = yield select((s: IAppState) => s.txMonitor.txs);
@@ -154,7 +154,7 @@ function* ensureNoPendingTx({ logger }: TGlobalDependencies, type: TxSenderType)
       // go to miner
       yield put(
         actions.txSender.txSenderSigned(txHash, txs.pendingTransaction
-          .transactionType as TxSenderType),
+          .transactionType as ETxSenderType),
       );
       yield neuCall(watchTxSubSaga, txHash);
       return;
@@ -179,7 +179,8 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
     if (userBalance.comparedTo(multiplyBigNumbers([txData.gasPrice, txData.gas])) < 0)
       throw new NotEnoughFundsError();
 
-    yield put(actions.txSender.txSenderSigned(txHash));
+    const txHash: string = yield web3Manager.sendTransaction(txData);
+    yield put(actions.txSender.txSenderSigned(txHash, type));
     const txWithMetadata: TxWithMetadata = {
       transaction: {
         from: addHexPrefix(txData.from),

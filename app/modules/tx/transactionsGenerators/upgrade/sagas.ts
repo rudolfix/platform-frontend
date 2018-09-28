@@ -27,7 +27,7 @@ export function* generateEuroUpgradeTransaction({ contractsService }: TGlobalDep
     selectICBMLockedEuroTokenBalance(state.wallet),
   );
 
-  if (!migrationTarget || new BigNumber(euroBalance).equals(0)) {
+  if (!migrationTarget || new BigNumber(euroBalance).isZero()) {
     throw new Error();
     // TODO: Add no balance error
   }

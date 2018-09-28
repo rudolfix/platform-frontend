@@ -177,15 +177,14 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
     yield put(actions.txSender.txSenderSigned(txHash));
     const txWithMetadata: TxWithMetadata = {
       transaction: {
-        from: txData.from,
-        gas: addHexPrefix(Number(txData.gas).toString(16)),
-        gasPrice: "0x" + Number(txData.gasPrice).toString(16),
-        hash: txHash,
-        input: txData.data || "0x0",
-        // TODO:Connect nonce
-        nonce: "0x0",
-        to: txData.to,
-        value: "0x" + Number(txData.value).toString(16),
+        from: addHexPrefix(txData.from),
+        gas: addHexPrefix(new BigNumber(txData.gas).toString(16)),
+        gasPrice: addHexPrefix(new BigNumber(txData.gasPrice).toString(16)),
+        hash: addHexPrefix(txHash),
+        input: addHexPrefix(txData.data || "0x0"),
+        nonce: addHexPrefix("0"),
+        to: addHexPrefix(txData.to),
+        value: addHexPrefix(new BigNumber(txData.value).toString(16)),
         blockHash: undefined,
         blockNumber: undefined,
         chainId: undefined,

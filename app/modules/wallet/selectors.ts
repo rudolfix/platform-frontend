@@ -152,7 +152,7 @@ export const selectLockedWalletConnected = (state: IWalletState): boolean =>
     (state.data && state.data.euroTokenLockedWallet.unlockDate !== "0")
   );
 
-export const selectIsLoading = (state: IWalletState): boolean => !!state.loading;
+export const selectIsLoading = (state: IWalletState): boolean => state.loading;
 
 export const selectWalletError = (state: IWalletState): string | undefined => state.error;
 

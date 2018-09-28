@@ -2,7 +2,6 @@ import { BigNumber } from "bignumber.js";
 import { put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ITxData } from "../../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
 import { selectEtherTokenBalance } from "../../../wallet/selectors";
@@ -16,7 +15,6 @@ export function* generateEthWithdrawTransaction(
 
   const txStateDetails = action.payload;
 
-  let txDetails: ITxData | undefined;
   if (!txStateDetails) return;
   const etherTokenBalance = yield select((s: IAppState) => selectEtherTokenBalance(s.wallet));
   const from = yield select((s: IAppState) => selectEthereumAddressWithChecksum(s.web3));
@@ -29,7 +27,7 @@ export function* generateEthWithdrawTransaction(
   const ethVal = new BigNumber(txStateDetails.value);
   const difference = ethVal.sub(etherTokenBalance);
 
-  txDetails = {
+  const txDetails = {
     to: contractsService.etherToken.address,
     from,
     data: txInput,

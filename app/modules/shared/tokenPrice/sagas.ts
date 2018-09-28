@@ -1,6 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { delay } from "redux-saga";
 import { put, select, takeLatest } from "redux-saga/effects";
+import { selectTokenPriceData } from "./selectors";
 
 import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -55,8 +56,8 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
       logger.info("Querying for tokenPrice");
 
       const tokenPriceData = yield neuCall(loadTokenPriceDataAsync);
-      const price: ITokenPriceStateData | undefined = yield select(
-        (s: IAppState) => s.tokenPrice.tokenPriceData,
+      const price: ITokenPriceStateData | undefined = yield select((s: IAppState) =>
+        selectTokenPriceData(s.tokenPrice),
       );
 
       if (

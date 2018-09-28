@@ -9,6 +9,7 @@ describe("auth > selectors", () => {
       const state: IAuthState = {
         jwt: "eyjwt",
         user: {
+          userId: "user-id",
           type: "investor",
           walletType: WalletType.LIGHT,
           walletSubtype: WalletSubType.UNKNOWN,
@@ -38,6 +39,7 @@ describe("auth > selectors", () => {
       const state: IAuthState = {
         jwt: "eyjwt",
         user: {
+          userId: "user-id",
           unverifiedEmail: "unverified@email.com",
           verifiedEmail: "some.verified@email.com",
           type: "investor",

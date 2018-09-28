@@ -11,7 +11,7 @@ import {
 } from "../../../../modules/investmentFlow/selectors";
 import {
   selectEquityTokenCountByEtoId,
-  selectEtoById,
+  selectEtoWithCompanyAndContractById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
@@ -144,11 +144,12 @@ export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps
   stateToProps: state => {
     const i = state.investmentFlow;
     const p = state.publicEtos;
+
     // eto and computed values are guaranteed to be present at investment summary state
-    const eto = selectEtoById(p, i.etoId)!;
+    const eto = selectEtoWithCompanyAndContractById(state, i.etoId)!;
     return {
       agreementUrl: "fufu", // TODO: add proper agreement document link
-      companyName: eto.company.name!,
+      companyName: eto.company.name,
       etoAddress: eto.etoId,
       investmentEth: selectEthValueUlps(i),
       investmentEur: selectEurValueUlps(i),

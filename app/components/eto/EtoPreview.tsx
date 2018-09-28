@@ -1,13 +1,9 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import {
-  TCompanyEtoData,
-  TEtoSpecsData,
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-} from "../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../modules/actions";
+import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
+import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutBase } from "../layouts/LayoutBase";
@@ -15,8 +11,7 @@ import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IStateProps {
-  companyData?: TPartialCompanyEtoData;
-  etoData?: TPartialEtoSpecData;
+  eto?: TEtoWithCompanyAndContract;
 }
 
 interface IRouterParams {
@@ -35,25 +30,18 @@ class EtoPreviewComponent extends React.Component<IProps> {
   }
 
   render(): React.ReactNode {
-    if (!this.props.companyData || !this.props.etoData) {
+    if (!this.props.eto) {
       return <LoadingIndicator />;
     }
 
-    return (
-      <EtoPublicComponent
-        // TODO: type casting needs to be resolved, but EtoPublicComponent required the full data, not the partial type
-        companyData={this.props.companyData as TCompanyEtoData}
-        etoData={this.props.etoData as TEtoSpecsData}
-      />
-    );
+    return <EtoPublicComponent companyData={this.props.eto.company} etoData={this.props.eto} />;
   }
 }
 
 export const EtoPreview = compose<React.SFC<IRouterParams>>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
-    stateToProps: state => ({
-      etoData: state.publicEtos.previewEtoData,
-      companyData: state.publicEtos.previewCompanyData,
+    stateToProps: (state, props) => ({
+      eto: selectEtoWithCompanyAndContract(state, props.previewCode),
     }),
     dispatchToProps: dispatch => ({
       loadEtoPreview: (previewCode: string) =>

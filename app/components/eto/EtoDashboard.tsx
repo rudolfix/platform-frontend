@@ -17,11 +17,11 @@ import {
   selectIsTermSheetSubmitted,
 } from "../../modules/eto-documents/selectors";
 import {
-  calculateGeneralEtoData,
   selectCombinedEtoCompanyData,
-  selectEtoState,
+  selectIssuerEtoState,
   selectShouldEtoDataLoad,
 } from "../../modules/eto-flow/selectors";
+import { calculateGeneralEtoData } from "../../modules/eto-flow/utils";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -257,11 +257,11 @@ export const EtoDashboard = compose<React.SFC>(
       backupCodesVerified: selectBackupCodesVerified(s.auth),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
       requestStatus: selectKycRequestStatus(s.kyc),
-      etoState: selectEtoState(s.etoFlow),
+      etoState: selectIssuerEtoState(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoDocuments),
       isPamphletSubmitted: selectIsPamphletSubmitted(s.etoDocuments),
       isProspectusSubmitted: selectIsProspectusSubmitted(s.etoDocuments),
-      etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s.etoFlow)),
+      etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s)),
     }),
     dispatchToProps: dispatch => ({
       loadFileDataStart: () => dispatch(actions.etoDocuments.loadFileDataStart()),

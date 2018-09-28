@@ -1,0 +1,30 @@
+.token-symbol-widget {
+  display: flex;
+  margin-bottom: 20px;
+  margin-top: 28px;
+  margin-left: 14px;
+}
+
+.token-image-wrapper {
+  margin-right: 10px;
+}
+
+.token-image {
+  @include circle;
+  @include responsive-size(width, 34px, 70px);
+  @include responsive-size(height, 34px, 70px);
+
+  overflow: hidden;
+}
+
+.token-name {
+  @include font-headline-medium;
+
+  color: $color-graphite-light;
+}
+
+.token-symbol {
+  @include font-label;
+
+  color: $color-graphite-light;
+}

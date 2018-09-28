@@ -37,6 +37,9 @@ interface IPointerProps {
   position?: number;
 }
 
+const day = 86400000;
+const today = Date.now();
+
 const TIMELINE_WIDTH = 1000;
 const TIMELINE_HEIGHT = 106;
 const TIMELINE_STAGES = 5;
@@ -57,7 +60,7 @@ const DatePoint: React.SFC<IDatePointProps> = ({ date, type }) => {
   return (
     <g transform="translate(-33 -9)">
       {date && (
-        <text className={styles.date}>
+        <text className={cn(date < today && styles.datePast, styles.date)}>
           <tspan x={12} y={50}>
             <FormattedDate value={date} />
           </tspan>
@@ -173,9 +176,6 @@ const Pointer: React.SFC<IPointerProps> = ({ position }) => {
 };
 
 export const EtoTimeline: React.SFC<IProps> = props => {
-  const day = 86400000;
-  const today = Date.now() + 50;
-
   // start/end dates of phases
   const preEtoStartDate = Date.parse(props.etoStartDate);
   const publicEtoStartDate = isNaN(preEtoStartDate)
@@ -211,7 +211,9 @@ export const EtoTimeline: React.SFC<IProps> = props => {
 
     if (today < inSigningEndDate) {
       return (
-        DEFAULT_BLOCK_WIDTH + ((today - preEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH
+        DEFAULT_BLOCK_WIDTH +
+        ((today - preEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH -
+        20
       );
     }
 

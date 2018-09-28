@@ -37,7 +37,7 @@
   padding: 20px 0;
   max-width: 200px;
 
-  > * {
+  span {
     width: 100%;
   }
 }
@@ -99,56 +99,6 @@
 
 // widgets
 
-.widget-public-eto {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 90%;
-
-  .header,
-  .investors-backed {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .investors-backed {
-    flex-basis: 40%;
-  }
-}
-
-.widget-claim {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .message {
-    max-width: 300px;
-    text-align: center;
-    margin-bottom: px-to-rem(20px);
-  }
-}
-
-.widget-pre-eto {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-
-  .title {
-    @include font-default;
-
-    margin-bottom: px-to-rem(8px);
-    text-transform: uppercase;
-  }
-
-  .zone {
-    @include font-label;
-
-    color: $color-orange;
-    margin-bottom: px-to-rem(8px);
-  }
-}
-
 .change-pledge {
   color: $color-green-dark;
   text-decoration: underline;
@@ -206,43 +156,7 @@
   }
 }
 
-.widget-token-symbol {
-  display: flex;
-  margin-bottom: 20px;
-  margin-top: 28px;
-  margin-left: 14px;
-
-  .token-image-wrapper {
-    margin-right: 10px;
-  }
-
-  .token-image {
-    @include circle;
-    @include responsive-size(width, 34px, 70px);
-    @include responsive-size(height, 34px, 70px);
-
-    overflow: hidden;
-  }
-
-  .token-name {
-    @include font-headline-medium;
-
-    color: $color-graphite-light;
-  }
-
-  .token-symbol {
-    @include font-label;
-
-    color: $color-graphite-light;
-  }
-}
-
 .token-details {
   display: flex;
   margin: px-to-rem(20px) 0;
-}
-
-.invest-now-button {
-  display: flex;
-  justify-content: center;
 }

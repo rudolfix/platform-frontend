@@ -1,14 +1,12 @@
 import * as React from "react";
 import { branch, compose } from "recompose";
 
-import {
-  TCompanyEtoData,
-  TEtoSpecsData,
-  TPublicEtoData,
-} from "../../lib/api/eto/EtoApi.interfaces";
 import { TUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
+import { selectEtoWithCompanyAndContractById } from "../../modules/public-etos/selectors";
+import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
+import { IWalletState } from "../../modules/wallet/reducer";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
@@ -18,8 +16,9 @@ import { LoadingIndicator } from "../shared/LoadingIndicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
 interface IStateProps {
-  eto?: TPublicEtoData;
+  eto?: TEtoWithCompanyAndContract;
   userType?: TUserType;
+  wallet?: IWalletState;
 }
 
 interface IRouterParams {
@@ -40,8 +39,9 @@ class EtoPreviewComponent extends React.Component<IProps> {
 
     return (
       <EtoPublicComponent
-        companyData={this.props.eto.company as TCompanyEtoData}
-        etoData={this.props.eto as TEtoSpecsData}
+        wallet={this.props.wallet}
+        companyData={this.props.eto.company}
+        etoData={this.props.eto}
       />
     );
   }
@@ -51,12 +51,14 @@ export const EtoPublicView = compose<IProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state.auth),
-      eto: state.publicEtos.publicEtos[props.etoId],
+      eto: selectEtoWithCompanyAndContractById(state, props.etoId),
+      wallet: state.wallet,
     }),
   }),
   onEnterAction({
     actionCreator: (dispatch, props) => {
       dispatch(actions.publicEtos.loadEto(props.etoId));
+      dispatch(actions.wallet.startLoadingWalletData());
     },
   }),
   branch<IStateProps>(

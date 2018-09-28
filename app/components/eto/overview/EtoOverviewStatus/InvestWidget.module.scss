@@ -1,0 +1,21 @@
+.invest-widget {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90%;
+}
+
+.header,
+.investors-backed {
+  display: flex;
+  justify-content: space-between;
+}
+
+.investors-backed {
+  flex-basis: 40%;
+}
+
+.invest-now-button {
+  display: flex;
+  justify-content: center;
+}

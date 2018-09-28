@@ -2,7 +2,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import { TCompanyEtoData, TEtoSpecsData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
 import { Panel } from "../../shared/Panel";
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
@@ -12,7 +13,7 @@ import * as styles from "./LegalInformationWidget.module.scss";
 
 interface IProps {
   companyData: TCompanyEtoData;
-  etoData: TEtoSpecsData;
+  etoData: TEtoWithCompanyAndContract;
 }
 
 export const LegalInformationWidget: React.SFC<IProps> = ({ companyData, etoData }) => {

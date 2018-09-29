@@ -19,7 +19,7 @@ module.exports = merge(configCommon, {
           ecma: 6,
         },
       }),
-      new OptimizeCSSAssetsPlugin({}),
+      new OptimizeCSSAssetsPlugin(),
     ],
   },
   output: {

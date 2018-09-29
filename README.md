@@ -24,6 +24,14 @@ yarn start
 Set NF_REMOTE_BACKEND_PROXY_ROOT variable in your .env file and run `yarn start:remote` to connect
 to remote backend.
 
+#### Running production build locally
+
+```sh
+yarn build:prod # build production bundle
+
+sh ./scripts/prod-like-srv.sh # run the server
+```
+
 #### Uploading contracts
 
 To upload modified version of Neufund Smartcontract that allows for easier blockchain development

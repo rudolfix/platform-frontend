@@ -1,13 +1,13 @@
-import { TxWithMetadata } from "../../../lib/api/users/interfaces";
+import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { AppReducer } from "../../../store";
 import { DeepReadonly } from "../../../types";
 
 export interface ITxMonitorState {
-  txs: Array<TxWithMetadata>;
+  txs: TPendingTxs;
 }
 
 const initialState: ITxMonitorState = {
-  txs: [],
+  txs: { pendingTransaction: undefined, oooTransactions: [] },
 };
 
 export const txMonitorReducer: AppReducer<ITxMonitorState> = (

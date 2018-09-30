@@ -93,6 +93,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...state,
         state: "MINING",
         txHash: action.payload.txHash,
+        type: action.payload.type,
       };
 
     case "TX_SENDER_REPORT_BLOCK":

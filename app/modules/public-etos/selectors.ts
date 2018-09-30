@@ -18,7 +18,9 @@ const selectEtoPreviewCode = (state: IPublicEtoState, etoId: string) => {
 export const selectEto = (state: IPublicEtoState, previewCode: string) =>
   state.publicEtos[previewCode];
 
-export const selectEtoById = (state: IPublicEtoState, etoId: string) => state.publicEtos[etoId];
+export const selectEtoById = (state: IPublicEtoState, etoId: string) => {
+  return state.publicEtos[selectEtoPreviewCode(state, etoId)!];
+};
 
 export const selectCalculatedContributionByEtoId = (etoId: string, state: IPublicEtoState) => {
   const previewCode = selectEtoPreviewCode(state, etoId);

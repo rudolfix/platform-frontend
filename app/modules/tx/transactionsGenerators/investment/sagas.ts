@@ -67,7 +67,7 @@ function getEtherTokenTransaction(
     ].getData(etoId, i.ethValueUlps, "");
     txDetails = createTxData(state, txInput, contractsService.etherToken.address);
 
-    // fill up etherToken with ether from walle}t
+    // fill up etherToken with ether from wallet
   } else {
     const ethVal = new BigNumber(i.ethValueUlps);
     const difference = ethVal.sub(etherTokenBalance);

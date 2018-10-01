@@ -5,7 +5,8 @@ import { compose } from "redux";
 import { selectIsAuthorized } from "../../../../../modules/auth/selectors";
 import { appConnect } from "../../../../../store";
 import { TTranslatedString } from "../../../../../types";
-import { Button } from "../../../../shared/buttons";
+import { appRoutes } from "../../../../appRoutes";
+import { ButtonLink } from "../../../../shared/buttons";
 import { CampaigningActivatedWidget } from "./CampaigningActivatedWidget";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -61,9 +62,9 @@ const LoggedOutCampaigning: React.SFC = () => {
       <div>
         <FormattedMessage id="shared-component.eto-overview.register-cta" />
       </div>
-      <Button className="mt-3">
+      <ButtonLink className="mt-3" to={appRoutes.register}>
         <FormattedMessage id="shared-component.eto-overview.register" />
-      </Button>
+      </ButtonLink>
     </div>
   );
 };

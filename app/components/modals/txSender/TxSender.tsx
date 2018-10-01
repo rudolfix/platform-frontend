@@ -115,7 +115,7 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
       return <SigningMessage />;
 
     case "MINING":
-      return <TxPending blockId={blockId!} txHash={txHash!} />;
+      return <TxPending blockId={blockId!} txHash={txHash!} type={type!} />;
 
     case "DONE":
       return <SuccessComponent type={type} txHash={txHash!} />;

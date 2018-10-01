@@ -12,17 +12,3 @@
 .document {
   flex-basis: 100%;
 }
-
-.document-link {
-  align-items: center;
-  cursor: pointer;
-  display: inline-flex;
-  font-weight: $font-weight-light;
-  margin-bottom: $spacing-vertical-lg-1;
-  text-decoration: underline;
-}
-
-.document-icon {
-  width: 18px;
-  margin-right: 10px;
-}

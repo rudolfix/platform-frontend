@@ -30,8 +30,9 @@ import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
 import { DocumentTile } from "./shared/Document";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
-import { SingleColDocuments } from "./shared/singleColDocumentWidget";
+import { SingleColDocuments } from "./shared/SingleColDocumentWidget";
 
+import { setDisplayName } from "recompose";
 import * as styles from "./Documents.module.scss";
 
 export const immutableDocumentTitle: { [key: string]: string | React.ReactNode } = {
@@ -200,6 +201,7 @@ interface IDispatchProps {
 }
 
 export const Documents = compose<React.SFC>(
+  setDisplayName("Documents"),
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

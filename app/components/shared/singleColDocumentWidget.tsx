@@ -1,6 +1,6 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { Col } from "reactstrap";
+import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
@@ -9,9 +9,12 @@ import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { immutableDocumentTitle } from "../Documents";
+import { DocumentTemplateButton } from "./DocumentLink"
+import { InlineIcon } from "./InlineIcon";
 import { Panel } from "./Panel";
 
-import * as styles from "./singleColDocumentWidget.module.scss";
+import * as link from "../../assets/img/inline_icons/social_link.svg";
+import * as styles from "./SingleColDocumentWidget.module.scss";
 
 interface IOwnProps {
   documents: IEtoDocument[];
@@ -24,7 +27,7 @@ interface IDispatchProps {
 
 type IProps = IOwnProps & IDispatchProps;
 
-export const SingleColDocumentsWidget: React.SFC<IProps> = ({
+const SingleColDocumentsWidget: React.SFC<IProps> = ({
   documents,
   className,
   title,
@@ -37,9 +40,7 @@ export const SingleColDocumentsWidget: React.SFC<IProps> = ({
         {documents.map(({ ipfsHash, mimeType, documentType }, i) => {
           return (
             <Col xs={12} className={styles.document} key={i}>
-              <i className={cn("fa fa-link", styles.documentIcon)} />
-              <div
-                className={styles.documentLink}
+              <DocumentTemplateButton
                 onClick={() =>
                   downloadImmutableFile(
                     {
@@ -49,9 +50,9 @@ export const SingleColDocumentsWidget: React.SFC<IProps> = ({
                     immutableDocumentName[documentType],
                   )
                 }
-              >
-                {immutableDocumentTitle[documentType]}
-              </div>
+                title={immutableDocumentTitle[documentType]}
+                altIcon={<InlineIcon svgIcon={link} />}
+              />
             </Col>
           );
         })}
@@ -60,7 +61,8 @@ export const SingleColDocumentsWidget: React.SFC<IProps> = ({
   );
 };
 
-export const SingleColDocuments = compose<React.SFC<IOwnProps>>(
+const SingleColDocuments = compose<React.SFC<IOwnProps>>(
+  setDisplayName("SingleColDocuments"),
   appConnect<{}, IDispatchProps>({
     dispatchToProps: dispatch => ({
       downloadImmutableFile: (fileId, name) =>
@@ -68,3 +70,5 @@ export const SingleColDocuments = compose<React.SFC<IOwnProps>>(
     }),
   }),
 )(SingleColDocumentsWidget);
+
+export {SingleColDocuments, SingleColDocumentsWidget}

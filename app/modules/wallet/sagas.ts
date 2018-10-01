@@ -1,4 +1,5 @@
 import * as promiseAll from "promise-all";
+import { delay } from "redux-saga"
 import { fork, put, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -9,8 +10,11 @@ import { EthereumAddress } from "../../types";
 import { actions } from "../actions";
 import { numericValuesToString } from "../contracts/utils";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { neuTakeUntil } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { ILockedWallet, IWalletStateData } from "./reducer";
+
+const WALLET_DATA_FETCHING_INTERVAL = 12000;
 
 function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
   try {
@@ -72,6 +76,14 @@ export async function loadWalletDataAsync(
   };
 }
 
+function* walletBalanceWatcher(): any {
+  while (true) {
+    yield neuCall(loadWalletDataSaga);
+    yield delay(WALLET_DATA_FETCHING_INTERVAL);
+  }
+}
+
 export function* walletSagas(): any {
   yield fork(neuTakeEvery, "WALLET_START_LOADING", loadWalletDataSaga);
+  yield neuTakeUntil("AUTH_LOAD_USER", "AUTH_LOGOUT", walletBalanceWatcher);
 }

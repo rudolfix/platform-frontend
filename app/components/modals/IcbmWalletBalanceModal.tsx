@@ -4,14 +4,22 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../modules/actions";
+import { IWalletMigrationData } from "../../modules/icbmWalletBalanceModal/reducer";
 import {
   selectAllNeumakrsDueIcbmModal,
   selectEtherBalanceIcbmModal,
   selectIcbmWalletEthAddress,
+  selectWalletMigrationData,
 } from "../../modules/icbmWalletBalanceModal/selectors";
+import { SelectIsVerificationFullyDone } from "../../modules/selectors";
+import { selectLockedWalletConnected } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
-import { Button, ButtonLink } from "../shared/buttons";
+import { appRoutes } from "../appRoutes";
+import { ConfettiEthereum } from "../landing/parts/ConfettiEthereum";
+import { SpinningEthereum } from "../landing/parts/SpinningEthereum";
+import { Button } from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { CopyToClipboard } from "../shared/CopyToClipboard";
 import { InlineIcon } from "../shared/InlineIcon";
 import { Money } from "../shared/Money";
@@ -21,9 +29,6 @@ import { ModalComponentBody } from "./ModalComponentBody";
 import * as iconEth from "../../assets/img/eth_icon.svg";
 import * as iconDownload from "../../assets/img/inline_icons/download.svg";
 import * as iconNeu from "../../assets/img/neu_icon.svg";
-import { appRoutes } from "../appRoutes";
-import { ConfettiEthereum } from "../landing/parts/ConfettiEthereum";
-import { SpinningEthereum } from "../landing/parts/SpinningEthereum";
 import * as styles from "./IcbmWalletBalanceModal.module.scss";
 
 interface IStateProps {
@@ -32,6 +37,9 @@ interface IStateProps {
   ethAddress?: string;
   neumarksDue: string;
   isLoading: boolean;
+  walletMigrationData?: IWalletMigrationData;
+  isVerificationFullyDone: boolean;
+  lockedWalletConnected: boolean;
 }
 
 interface IDispatchProps {
@@ -102,7 +110,11 @@ const BalanceBody: React.SFC<IStateProps> = ({
   );
 };
 
-const MigrateBody: React.SFC<{ step: number }> = ({ step }) => {
+const MigrateBody: React.SFC<{
+  icbmWalletAddress: string;
+  walletMigrationData: IWalletMigrationData;
+}> = ({ icbmWalletAddress, walletMigrationData }) => {
+  const step = walletMigrationData.migrationStep;
   return (
     <>
       <p className={styles.description}>
@@ -128,42 +140,45 @@ const MigrateBody: React.SFC<{ step: number }> = ({ step }) => {
         label={
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.from-icbm-wallet" />
         }
-        value="test value 1"
+        value={icbmWalletAddress}
         withCopy
       />
       <HighlightedField
         label={
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.to-smart-contract" />
         }
-        value="test value 2"
+        value={walletMigrationData.smartContractAddress}
         withCopy
       />
       <HighlightedField
         label={
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.amount-to-sent" />
         }
-        value="test value 3"
+        value={walletMigrationData.value}
         withCopy
       />
       <HighlightedField
         label={
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.gas-limit" />
         }
-        value="test value 4"
+        value={walletMigrationData.gasLimit}
         withCopy
       />
       <HighlightedField
         label={<FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.data" />}
-        value="test value 5"
+        value={walletMigrationData.migrationInputData}
         withCopy
       />
     </>
   );
 };
 
-const BalanceFooter: React.SFC<{ startMigration: () => void }> = ({ startMigration }) => {
+const BalanceFooter: React.SFC<{ startMigration: () => void; disabled?: boolean }> = ({
+  startMigration,
+  disabled,
+}) => {
   return (
-    <Button onClick={startMigration}>
+    <Button onClick={startMigration} disabled={disabled}>
       <FormattedMessage id="settings.modal.icbm-wallet-balance.button" />
     </Button>
   );
@@ -172,10 +187,8 @@ const BalanceFooter: React.SFC<{ startMigration: () => void }> = ({ startMigrati
 type TTransactionStatus = "success" | "waiting";
 
 const MigrateFooter: React.SFC<{
-  goToNextStep: () => void;
-  step: number;
   transactionStatus: TTransactionStatus;
-}> = ({ goToNextStep, step, transactionStatus }) => {
+}> = ({ transactionStatus }) => {
   return (
     <>
       {transactionStatus === "waiting" && (
@@ -189,23 +202,16 @@ const MigrateFooter: React.SFC<{
           <ConfettiEthereum className={styles.animatedEthereum} />
           <div>
             <FormattedMessage id="settings.modal.icbm-wallet-balance.footer.transaction-successful" />
-            {step === 1 && (
-              <Button layout="secondary" onClick={goToNextStep}>
-                <FormattedMessage id="settings.modal.icbm-wallet-balance.button.next-step" />
-              </Button>
-            )}
-            {step === 2 && (
-              <ButtonLink to={appRoutes.portfolio} layout="secondary">
-                <FormattedMessage id="settings.modal.icbm-wallet-balance.button.portfolio" />
-              </ButtonLink>
-            )}
+
+            <ButtonLink to={appRoutes.wallet} layout="secondary">
+              <FormattedMessage id="settings.modal.icbm-wallet-balance.button.wallet" />
+            </ButtonLink>
           </div>
         </div>
       )}
     </>
   );
 };
-
 class IcbmWalletBalanceComponent extends React.Component<
   IStateProps & IDispatchProps,
   { isMigrating: boolean; migrationStep: number }
@@ -219,13 +225,16 @@ class IcbmWalletBalanceComponent extends React.Component<
     this.setState({ isMigrating: true });
   };
 
-  private goToNextStep = () => {
-    this.setState(prevState => ({ migrationStep: prevState.migrationStep + 1 }));
-  };
-
   render(): React.ReactNode {
-    const { isOpen, onCancel } = this.props;
-    const { isMigrating, migrationStep } = this.state;
+    const {
+      isOpen,
+      onCancel,
+      isVerificationFullyDone,
+      lockedWalletConnected,
+      ethAddress,
+      walletMigrationData,
+    } = this.props;
+    const { isMigrating } = this.state;
 
     return (
       <Modal isOpen={isOpen} toggle={onCancel}>
@@ -239,16 +248,22 @@ class IcbmWalletBalanceComponent extends React.Component<
               )}
             </SectionHeader>
 
-            {isMigrating ? <MigrateBody step={migrationStep} /> : <BalanceBody {...this.props} />}
-
             {isMigrating ? (
-              <MigrateFooter
-                transactionStatus="success"
-                step={migrationStep}
-                goToNextStep={this.goToNextStep}
+              <MigrateBody
+                icbmWalletAddress={ethAddress!}
+                walletMigrationData={walletMigrationData!}
               />
             ) : (
-              <BalanceFooter startMigration={this.startMigration} />
+              <BalanceBody {...this.props} />
+            )}
+
+            {isMigrating ? (
+              lockedWalletConnected && <MigrateFooter transactionStatus="success" />
+            ) : (
+              <BalanceFooter
+                disabled={!isVerificationFullyDone}
+                startMigration={this.startMigration}
+              />
             )}
           </div>
         </ModalComponentBody>
@@ -264,6 +279,9 @@ export const IcbmWalletBalanceModal = appConnect<IStateProps, IDispatchProps>({
     ethAddress: selectIcbmWalletEthAddress(state.icbmWalletBalanceModal),
     neumarksDue: selectAllNeumakrsDueIcbmModal(state.icbmWalletBalanceModal),
     etherBalance: selectEtherBalanceIcbmModal(state.icbmWalletBalanceModal),
+    isVerificationFullyDone: SelectIsVerificationFullyDone(state),
+    walletMigrationData: selectWalletMigrationData(state.icbmWalletBalanceModal),
+    lockedWalletConnected: selectLockedWalletConnected(state.wallet),
   }),
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal()),

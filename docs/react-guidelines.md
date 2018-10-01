@@ -48,9 +48,11 @@ import * as styles from "./styles.module.scss"
 - functional components should always be of a type `React.SFC<IProps>` not `()=>..`
 - prefer destructing props object if there are not so many props (< 5)
   `({ onClick, className }) => ...` instead of `(props) => ...`
+- for complex component behavior, prefer to use `recompose` utils, than class components
 
 ## Class components:
 
+- prefer recompose, use only if unavoidable
 - avoid constructors: \* use class field declarations to set initial state, bind functions etc
 
 ```javascript
@@ -88,6 +90,7 @@ class Component extends React.Component<IProps, IState> {
 
 - use `appConnect<IStateProps, IDispatchProps, IOwnProps>`
 - use separate interfaces for props from state, dispatch, own
+- use `setDisplayName` for preserving the component name in react dev tools
 
 ## Redux Sagas
 

@@ -10,7 +10,6 @@ export interface IPanelProps extends CommonHtmlProps {
   rightComponent?: React.ReactNode;
   icon?: string;
   narrow?: boolean;
-  testingId?: string;
 }
 
 export const Panel: React.SFC<IPanelProps> = ({
@@ -20,7 +19,6 @@ export const Panel: React.SFC<IPanelProps> = ({
   className,
   children,
   narrow,
-  testingId,
   ...props
 }) => {
   const hasHeader = !!(headerText || rightComponent || icon);
@@ -28,7 +26,6 @@ export const Panel: React.SFC<IPanelProps> = ({
   return (
     <div
       {...props}
-      data-test-id={testingId}
       className={cn(styles.panel, className, hasHeader && "has-header", narrow && styles.narrow)}
     >
       {hasHeader && (

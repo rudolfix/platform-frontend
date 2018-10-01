@@ -7,7 +7,7 @@ import {
   registerWithLightWalletETO,
   verifyLatestUserEmail,
 } from "../utils";
-import { backupLightWalletSeed } from "../register/BackupSeed.spec.e2e";
+import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
 
 const password = "strongpassword";
 

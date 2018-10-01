@@ -48,6 +48,10 @@ export const createAndLoginNewUser = async (
 
   // create a user object on the backend
   await createUser(privateKey, userType, params.kyc);
+
+  // mark backup codes verified
+  await markBackupCodesVerified(jwt);
+
   cy.log(`Created wallet and ${userType} user with address ${address}`);
 };
 
@@ -160,4 +164,25 @@ export const getJWT = async (
   });
   const sig_result = await sig_response.json();
   return sig_result.jwt;
+};
+
+const USER_PATH = "/api/user/user/me";
+
+export const markBackupCodesVerified = async (jwt: string) => {
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `Bearer ${jwt}`,
+  };
+  const response = await fetch(USER_PATH, {
+    headers,
+    method: "GET",
+  });
+  const userJson = await response.json();
+
+  userJson.backup_codes_verified = true;
+  await fetch(USER_PATH, {
+    headers,
+    method: "PUT",
+    body: JSON.stringify(userJson),
+  });
 };

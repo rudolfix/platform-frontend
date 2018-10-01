@@ -141,7 +141,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
             disabled={!shouldEtoDataLoad}
             readonly={section.readonly}
             name={section.name}
-            testingId={section.testingId}
+            data-test-id={section.testingId}
           />
         </Col>
       ))}

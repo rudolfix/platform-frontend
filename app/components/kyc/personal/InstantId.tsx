@@ -54,7 +54,12 @@ export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDi
   >
     <img className={styles.image} src={idImage} alt="id now" />
     <div className="mb-5 text-center">
-      <Button onClick={props.onStartInstantId} svgIcon={linkOutIcon} iconPosition="icon-after">
+      <Button
+        onClick={props.onStartInstantId}
+        svgIcon={linkOutIcon}
+        iconPosition="icon-after"
+        data-test-id="kyc-go-to-outsourced-verification"
+      >
         <FormattedMessage id="kyc.personal.instant-id.go-to-video-verification" />
       </Button>
     </div>

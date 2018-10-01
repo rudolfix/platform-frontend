@@ -1,4 +1,4 @@
-import { DeepPartial, DeepReadonlyObject } from "../../../types";
+import { DeepPartial } from "../../../types";
 import * as YupTS from "../../yup-ts";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
@@ -75,27 +75,29 @@ const socialChannelsType = YupTS.array(
 
 export type TSocialChannelsType = YupTS.TypeOf<typeof socialChannelsType>;
 
-const groupType = YupTS.object({
+export const EtoKeyIndividualType = YupTS.object({
   members: YupTS.array(
     YupTS.object({
       name: YupTS.string(),
-      role: YupTS.string(),
+      role: YupTS.string().optional(),
       image: YupTS.string().optional(),
       description: YupTS.string().optional(),
       website: YupTS.url().optional(),
       socialChannels: socialChannelsType.optional(),
     }),
-  ),
+  ).optional(),
 });
 
+export type TEtoKeyIndividualType = YupTS.TypeOf<typeof EtoKeyIndividualType>;
+
 export const EtoKeyIndividualsType = YupTS.object({
-  team: groupType.optional(),
-  advisors: groupType.optional(),
-  boardMembers: groupType.optional(),
-  notableInvestors: groupType.optional(),
-  keyCustomers: groupType.optional(),
-  partners: groupType.optional(),
-  keyAlliances: groupType.optional(),
+  team: EtoKeyIndividualType,
+  advisors: EtoKeyIndividualType.optional(),
+  boardMembers: EtoKeyIndividualType.optional(),
+  notableInvestors: EtoKeyIndividualType.optional(),
+  keyCustomers: EtoKeyIndividualType.optional(),
+  partners: EtoKeyIndividualType.optional(),
+  keyAlliances: EtoKeyIndividualType.optional(),
 });
 
 type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
@@ -156,7 +158,12 @@ export const EtoMediaType = YupTS.object({
 
 type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
-export type TCompanyEtoData = TEtoTeamData &
+type TEtoCompanyBase = {
+  companyId: string;
+};
+
+export type TCompanyEtoData = TEtoCompanyBase &
+  TEtoTeamData &
   TEtoLegalData &
   TEtoProductVision &
   TEtoRiskAssessment &
@@ -240,6 +247,7 @@ interface IAdditionalEtoType {
   startDate: string;
   documents: TEtoDocumentTemplates;
   maxPledges: number;
+  canEnableBookbuilding: boolean;
 }
 
 export type TEtoSpecsData = TEtoTermsType &
@@ -258,12 +266,7 @@ export type TGeneralEtoData = {
 };
 
 // this is comming from the /etos endpoint for investors dashboard
-export type TPublicEtoData = DeepReadonlyObject<
-  TEtoSpecsData & {
-    company: TPartialCompanyEtoData;
-    etoId: string;
-  }
->;
+export type TPublicEtoData = TEtoSpecsData & { company: TCompanyEtoData };
 
 export const GeneralEtoDataType = YupTS.object({
   ...EtoTermsType.shape,

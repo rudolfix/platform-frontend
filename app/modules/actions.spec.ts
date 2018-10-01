@@ -13,7 +13,7 @@ describe("modules", () => {
 
       forEach(allActions, actionDict =>
         forEach(actionDict, (actionCreator: any, creatorName: string) => {
-          const action = actionCreator();
+          const action = actionCreator({});
           const type: string = action.type;
 
           // we have aliases for displaying generic modals
@@ -35,7 +35,7 @@ describe("modules", () => {
     it("should not have undefined types", () => {
       forEach(allActions, actionDict =>
         forEach(actionDict, (actionCreator: any, creatorName: string) => {
-          const action = actionCreator();
+          const action = actionCreator({});
           const type: string = action.type;
           expect(type, `Action type of creator ${creatorName} is undefined`).to.not.be.undefined;
         }),
@@ -45,7 +45,7 @@ describe("modules", () => {
     it("should not have values apart from payload and type", () => {
       forEach(allActions, actionDict =>
         forEach(actionDict, (actionCreator: any, creatorName: string) => {
-          const action = actionCreator();
+          const action = actionCreator({});
           const testAction = {
             ...action,
             type: "something",

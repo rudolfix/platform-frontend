@@ -5,12 +5,16 @@ import { GasModelShape } from "../../lib/api/GasApi";
 import { IAppState } from "../../store";
 import { actions } from "../actions";
 import { neuTakeEvery } from "../sagas";
+import { selectGasPrice, selectIsAlreadyLoaded } from "./selectors";
 
 function* ensureGasApiDataSaga({ gasApi, logger }: TGlobalDependencies): any {
   const isAlreadyLoaded: boolean = yield select(
-    (state: IAppState): boolean => !state.gas.loading && !!state.gas.gasPrice,
+    (state: IAppState): boolean => selectIsAlreadyLoaded(state.gas),
   );
+
   if (isAlreadyLoaded) {
+    const gasPrice: GasModelShape = yield select((state: IAppState) => selectGasPrice(state.gas));
+    yield put(actions.gas.gasApiLoaded({ data: gasPrice }));
     return;
   }
 

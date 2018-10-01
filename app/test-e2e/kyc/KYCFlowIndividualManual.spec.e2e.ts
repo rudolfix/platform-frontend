@@ -1,44 +1,8 @@
 import { tid } from "../utils";
 import { kycRoutes } from "../../components/kyc/routes";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
-
-interface IPersonData {
-  firstName: string;
-  lastName: string;
-  birthday: {
-    day: string;
-    month: string;
-    year: string;
-  };
-  street: string;
-  city: string;
-  country: string;
-  placeOfBirth: string;
-  nationality: string;
-  zipCode: string;
-  isPoliticallyExposed: string;
-  isUsCitizen: string;
-  hasHighIncome: string;
-}
-
-const personData: IPersonData = {
-  firstName: "John",
-  lastName: "Doe",
-  birthday: {
-    day: "01",
-    month: "01",
-    year: "1990",
-  },
-  street: "example",
-  city: "example",
-  country: "DE",
-  placeOfBirth: "UA",
-  nationality: "PL",
-  zipCode: "00000",
-  isPoliticallyExposed: "true",
-  isUsCitizen: "false",
-  hasHighIncome: "false",
-};
+import { personData } from "./fixtures";
+import { submitIndividualKYCForm, uploadFileToFieldWithTid, acceptWallet } from "./forms";
 
 const goToIndividualKYCFlow = () => {
   cy.visit(kycRoutes.start);
@@ -47,54 +11,14 @@ const goToIndividualKYCFlow = () => {
   cy.url().should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
 };
 
-const submitIndividualKYCForm = (person: IPersonData) => {
-  cy.get(tid("kyc-personal-start-first-name")).type(person.firstName);
-  cy.get(tid("kyc-personal-start-last-name")).type(person.lastName);
-
-  cy.get(tid("form-field-date-day")).type(person.birthday.day);
-  cy.get(tid("form-field-date-month")).type(person.birthday.month);
-  cy.get(tid("form-field-date-year")).type(person.birthday.year);
-
-  cy.get(tid("kyc-personal-start-street")).type(person.street);
-  cy.get(tid("kyc-personal-start-city")).type(person.city);
-  cy.get(tid("kyc-personal-start-zip-code")).type(person.zipCode);
-  cy.get(tid("kyc-personal-start-country")).select(person.country);
-  cy.get(tid("kyc-personal-start-place-of-birth")).select(person.placeOfBirth);
-  cy.get(tid("kyc-personal-start-nationality")).select(person.nationality);
-
-  cy.get(tid("kyc-personal-start-is-politically-exposed")).select(person.isPoliticallyExposed);
-  cy.get(tid("kyc-personal-start-is-us-citizen")).select(person.isUsCitizen);
-  cy.get(tid("kyc-personal-start-has-high-income")).select(person.hasHighIncome);
-
-  cy.get(tid("kyc-personal-start-submit-form")).click();
-
-  cy.url().should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
-};
-
 const goToIndividualManualVerification = () => {
   cy.get(tid("kyc-go-to-manual-verification")).click();
-
   cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
 };
 
 const uploadDocumentAndSubmitForm = () => {
-  const dropEvent = {
-    dataTransfer: {
-      files: [] as any,
-    },
-  };
-
-  cy.fixture("example.png").then(picture => {
-    return Cypress.Blob.base64StringToBlob(picture, "image/png").then((blob: any) => {
-      dropEvent.dataTransfer.files.push(blob);
-    });
-  });
-
-  cy.get(tid("kyc-personal-upload-dropzone")).trigger("drop", dropEvent);
-
+  uploadFileToFieldWithTid("kyc-personal-upload-dropzone");
   cy.get(tid("kyc-personal-upload-submit")).click();
-  cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
-  cy.get(tid("access-light-wallet-confirm")).click();
 };
 
 describe("KYC Personal flow with manual verification", () => {
@@ -105,7 +29,10 @@ describe("KYC Personal flow with manual verification", () => {
     submitIndividualKYCForm(personData);
     goToIndividualManualVerification();
     uploadDocumentAndSubmitForm();
+    acceptWallet();
 
     cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
+    // panel should now be in pending state
+    cy.get(tid("kyc-panel-pending"));
   });
 });

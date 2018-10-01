@@ -7,65 +7,83 @@ interface IProps {
   endDate: number;
 }
 
+interface IPlateProps {
+  value: number;
+  label: React.ReactNode | string;
+}
+
 interface IState {
   date: number;
 }
 
-const day = 86400000;
-const hour = day / 24;
-const minute = hour / 60000;
+const second = 1000;
+const minute = second * 60;
+const hour = minute * 60;
+const day = hour * 24;
+
+const Plate: React.SFC<IPlateProps> = ({ value, label }) => {
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.plate}>{value}</div>
+      <div className={styles.label}>{label}</div>
+    </div>
+  );
+};
 
 export class Counter extends React.Component<IProps, IState> {
-  interval: number | null = null;
-
   state = {
     date: this.props.endDate - Date.now(),
   };
 
+  timer: any = null;
+
   componentDidMount(): void {
-    this.interval = window.setInterval(() => {
-      this.setState(state => ({ date: state.date - 1000 }));
+    const { date } = this.state;
+
+    this.timer = setInterval(() => {
+      if (date < 0) {
+        clearInterval(this.timer);
+      }
+
+      this.setState(prevState => ({ date: prevState.date - 1000 }));
     }, 1000);
   }
 
   componentWillUnmount(): void {
-    if (this.interval !== null) {
-      window.clearInterval(this.interval);
+    if (this.timer !== null) {
+      window.clearInterval(this.timer);
     }
   }
 
   render(): React.ReactNode {
     const { date } = this.state;
 
-    const computedDays = parseInt(`${date / day}`, 10);
-    const computedHours = parseInt(`${(((date / day) % computedDays) * day) / hour}`, 10);
-    const computedMinutes = parseInt(
-      `${(((((date / day) % computedDays) * day) / hour) % computedHours) * minute}`,
-      10,
-    );
+    const computedDays = Math.floor(date / day);
+    const computedHours = Math.floor((date % day) / hour);
+    const computedMinutes = Math.floor((date % hour) / minute);
+    const computedSeconds = Math.floor((date % minute) / second);
 
     return (
       <div className={styles.counter}>
-        <div className={styles.wrapper}>
-          <div className={styles.plate}>{computedDays}</div>
-          <div className={styles.label}>
-            <FormattedMessage id="counter.label.days" />
-          </div>
-        </div>
+        <Plate
+          value={computedDays < 0 ? 0 : computedDays}
+          label={<FormattedMessage id="counter.label.days" />}
+        />
         {":"}
-        <div className={styles.wrapper}>
-          <div className={styles.plate}>{computedHours}</div>
-          <div className={styles.label}>
-            <FormattedMessage id="counter.label.hours" />
-          </div>
-        </div>
+        <Plate
+          value={computedHours < 0 ? 0 : computedHours}
+          label={<FormattedMessage id="counter.label.hours" />}
+        />
         {":"}
-        <div className={styles.wrapper}>
-          <div className={styles.plate}>{computedMinutes}</div>
-          <div className={styles.label}>
-            <FormattedMessage id="counter.label.minutes" />
-          </div>
-        </div>
+        <Plate
+          value={computedMinutes < 0 ? 0 : computedMinutes}
+          label={<FormattedMessage id="counter.label.minutes" />}
+        />
+        {":"}
+        <Plate
+          value={computedSeconds < 0 ? 0 : computedSeconds}
+          label={<FormattedMessage id="counter.label.seconds" />}
+        />
       </div>
     );
   }

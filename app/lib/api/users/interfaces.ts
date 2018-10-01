@@ -5,6 +5,7 @@ import * as YupTS from "../../yup-ts";
 export type TUserType = "investor" | "issuer";
 
 export interface IUser {
+  userId: string;
   backupCodesVerified?: boolean;
   language?: string;
   unverifiedEmail?: string;
@@ -34,6 +35,7 @@ export interface IVerifyEmailUser {
 
 export const UserValidator = Yup.object()
   .shape({
+    userId: Yup.string().required(),
     backupCodesVerified: Yup.boolean(),
     language: Yup.string(),
     unverifiedEmail: Yup.string(),
@@ -48,7 +50,7 @@ export const emailStatus = Yup.object().shape({
   isAvailable: Yup.boolean(),
 });
 
-const TxSchema = YupTS.object({
+export const TxSchema = YupTS.object({
   blockHash: YupTS.string().optional(),
   blockNumber: YupTS.string().optional(),
   chainId: YupTS.string().optional(),
@@ -69,6 +71,15 @@ export const TxWithMetadataSchema = YupTS.object({
   transactionType: YupTS.string(),
 });
 
+export const PendingTxsSchema = YupTS.object({
+  // it's a pending transaction issued by us
+  pendingTransaction: TxWithMetadataSchema.optional(),
+  // list of other pending transaction (out of bounds transactions) issued externally
+  oooTransactions: YupTS.array(TxSchema),
+});
+
 export type TxWithMetadata = YupTS.TypeOf<typeof TxWithMetadataSchema>;
+export type TPendingTxs = YupTS.TypeOf<typeof PendingTxsSchema>;
 export const TxWithMetadataValidator = TxWithMetadataSchema.toYup();
+export const TPendingTxsValidator = PendingTxsSchema.toYup();
 export const TxWithMetadataListValidator = YupTS.array(TxWithMetadataSchema).toYup();

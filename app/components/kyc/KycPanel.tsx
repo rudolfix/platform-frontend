@@ -15,6 +15,7 @@ interface IPropsKycPanel {
   description?: string | React.ReactNode;
   steps: IVerificationProgressStep[];
   title?: string | React.ReactNode;
+  testId?: string;
 }
 
 export const KycPanel: React.SFC<IPropsKycPanel> = ({
@@ -24,8 +25,9 @@ export const KycPanel: React.SFC<IPropsKycPanel> = ({
   description,
   backLink,
   isMaxWidth,
+  testId,
 }) => (
-  <div className={cn({ [styles.kycPanelMax]: isMaxWidth })}>
+  <div className={cn({ [styles.kycPanelMax]: isMaxWidth })} data-test-id={testId}>
     <Panel className="mt-4">
       <header className={styles.header}>
         <h2 className={styles.title}>

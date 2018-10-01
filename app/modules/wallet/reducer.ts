@@ -24,6 +24,8 @@ export interface IWalletStateData {
 
   euroTokenICBMLockedWallet: ILockedWallet;
   etherTokenICBMLockedWallet: ILockedWallet;
+  etherTokenUpgradeTarget?: string;
+  euroTokenUpgradeTarget?: string;
 }
 
 const walletInitialState: IWalletState = {
@@ -35,6 +37,11 @@ export const walletReducer: AppReducer<IWalletState> = (
   action,
 ): IWalletState => {
   switch (action.type) {
+    case "WALLET_START_LOADING":
+      return {
+        loading: true,
+        error: undefined,
+      };
     case "WALLET_LOAD_WALLET_DATA":
       return {
         loading: false,

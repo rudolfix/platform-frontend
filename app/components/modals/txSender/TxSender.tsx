@@ -4,9 +4,10 @@ import { Modal } from "reactstrap";
 
 import { ITxData } from "../../../lib/web3/Web3Manager";
 import { actions } from "../../../modules/actions";
-import { TxSenderState, TxSenderType } from "../../../modules/tx/sender/reducer";
+import { ETxSenderType, TxSenderState } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
+import { LoadingIndicator } from "../../shared/LoadingIndicator";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
 import { InvestmentSelection } from "./investment-flow/Investment";
@@ -22,7 +23,7 @@ import { Withdraw } from "./withdraw-flow/Withdraw";
 interface IStateProps {
   isOpen: boolean;
   state: TxSenderState;
-  type?: TxSenderType;
+  type?: ETxSenderType;
   details?: ITxData;
   blockId?: number;
   txHash?: string;
@@ -61,29 +62,34 @@ export interface ITxSummaryDispatchProps {
 }
 export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 
-const InitComponent: React.SFC<{ type: TxSenderType }> = ({ type }) => {
+const InitComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSelection />;
     case "WITHDRAW":
       return <Withdraw />;
+    default:
+      return <LoadingIndicator />;
   }
 };
 
-const SummaryComponent: React.SFC<{ type: TxSenderType }> = ({ type }) => {
+const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSummary />;
-    case "WITHDRAW":
+    default:
       return <WithdrawSummary />;
   }
 };
 
-const SuccessComponent: React.SFC<{ type: TxSenderType; txHash?: string }> = ({ type, txHash }) => {
+const SuccessComponent: React.SFC<{ type?: ETxSenderType; txHash?: string }> = ({
+  type,
+  txHash,
+}) => {
   switch (type) {
     case "INVEST":
       return <InvestmentSuccess txHash={txHash!} />;
-    case "WITHDRAW":
+    default:
       return <WithdrawSuccess txHash={txHash!} />;
   }
 };
@@ -100,10 +106,7 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
       return <InitComponent type={type} />;
 
     case "SUMMARY":
-      if (!type) {
-        throw new Error("Transaction type needs to be set at transaction summary state");
-      }
-      return <SummaryComponent type={type} />;
+      return <SummaryComponent type={type!} />;
 
     case "ACCESSING_WALLET":
       return <AccessWalletContainer />;
@@ -112,12 +115,9 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
       return <SigningMessage />;
 
     case "MINING":
-      return <TxPending blockId={blockId!} txHash={txHash!} />;
+      return <TxPending blockId={blockId!} txHash={txHash!} type={type!} />;
 
     case "DONE":
-      if (!type) {
-        throw new Error("Transaction type needs to be set at transaction done state");
-      }
       return <SuccessComponent type={type} txHash={txHash!} />;
 
     case "ERROR_SIGN":

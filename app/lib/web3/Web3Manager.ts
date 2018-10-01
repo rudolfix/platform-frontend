@@ -1,3 +1,4 @@
+import { BigNumber } from "bignumber.js";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -19,11 +20,10 @@ import { Web3Adapter } from "./Web3Adapter";
 export interface ITxData {
   to: string;
   value: string;
-  gas?: string;
-  gasPrice?: string;
+  gas: string;
+  gasPrice: string;
   data?: string;
   from: string;
-  gasLimit?: string;
   input?: string;
 }
 
@@ -119,6 +119,14 @@ export class Web3Manager {
   public async getTransactionByHash(txHash: string): Promise<Web3.Transaction> {
     if (this.personalWallet) {
       return this.personalWallet.web3Adapter.getTransactionByHash(txHash);
+    } else {
+      throw new Error("No wallet!");
+    }
+  }
+
+  public async getBalance(userAddress: string): Promise<BigNumber> {
+    if (this.personalWallet) {
+      return this.personalWallet.web3Adapter.getBalance(userAddress);
     } else {
       throw new Error("No wallet!");
     }

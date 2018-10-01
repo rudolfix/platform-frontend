@@ -1,12 +1,12 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { SingleColDocumentsWidget } from "./SingleColDocumentWidget";
 
 const documents: IEtoDocument[] = [{
   documentType:
-    "company_token_holder_agreement",
+    "company_token_holder_agreement" as EEtoDocumentType,
   form:
     "template",
   ipfsHash:
@@ -17,7 +17,7 @@ const documents: IEtoDocument[] = [{
     "company_token_holder_agreement"
 }, {
   documentType:
-    "investment_and_shareholder_agreement",
+    "investment_and_shareholder_agreement" as EEtoDocumentType,
   form:
     "template",
   ipfsHash:
@@ -28,7 +28,7 @@ const documents: IEtoDocument[] = [{
     "investment_and_shareholder_agreement",
 }, {
   documentType:
-    "pamphlet_template",
+    "pamphlet_template" as EEtoDocumentType,
   form:
     "template",
   ipfsHash:
@@ -39,7 +39,7 @@ const documents: IEtoDocument[] = [{
     "pamphlet_template_de",
 }, {
   documentType:
-    "prospectus_template",
+    "prospectus_template" as EEtoDocumentType,
   form:
     "template",
   ipfsHash:
@@ -50,7 +50,7 @@ const documents: IEtoDocument[] = [{
     "prospectus_template_de",
 }, {
   documentType:
-    "reservation_and_acquisition_agreement",
+    "reservation_and_acquisition_agreement" as EEtoDocumentType,
   form:
     "template",
   ipfsHash:
@@ -61,7 +61,7 @@ const documents: IEtoDocument[] = [{
     "reservation_and_acquisition_agreement",
 }, {
   documentType:
-    "termsheet_template",
+    "termsheet_template" as EEtoDocumentType,
   form:
     "template",
   ipfsHash:

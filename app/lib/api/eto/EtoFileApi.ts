@@ -3,7 +3,7 @@ import { inject, injectable } from "inversify";
 import { symbols } from "../../../di/symbols";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
-  EtoDocumentType,
+  EEtoDocumentType,
   IEtoDocument,
   IEtoFiles,
   TEtoDocumentTemplates,
@@ -29,7 +29,7 @@ export class EtoFileApi {
     return response.body;
   }
 
-  public async uploadEtoDocument(file: File, documentType: EtoDocumentType): Promise<IEtoDocument> {
+  public async uploadEtoDocument(file: File, documentType: EEtoDocumentType): Promise<IEtoDocument> {
     const data = new FormData();
     data.append("file", file);
     data.append(

@@ -191,6 +191,8 @@
   "eto.form.section.equity-token-information.tokens-per-share": "Tokens per share (token is not divisible) read only",
   "eto.form.section.eto-terms.fundraising-currency": "Fundraising currency",
   "eto.form.section.eto-terms.is-crowdfunding": "ETO is not under crowdfunding regulations",
+  "eto.form.section.eto-terms.maximum-discount-for-the-fixed-slot-investors": "Maximum discount for the fixed slot investors",
+  "eto.form.section.eto-terms.maximum-shares-to-be-issued-in-fixed-slots": "Maximum shares to be issued in fixed slots (hand picked deals)",
   "eto.form.section.eto-terms.maximum-ticket-size": "Maximum ticket size",
   "eto.form.section.eto-terms.minimum-ticket-size": "Minimum ticket size",
   "eto.form.section.eto-terms.pre-sale-duration": "Pre-Sale (whitelist) duration",

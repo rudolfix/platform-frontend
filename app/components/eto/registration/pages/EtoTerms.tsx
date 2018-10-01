@@ -174,6 +174,28 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
       </div>
     </div>
 
+    <Row>
+      <Col xs="12" md="6">
+        <div className="form-group">
+          <FormField
+            label={
+              <FormattedMessage id="eto.form.section.eto-terms.maximum-shares-to-be-issued-in-fixed-slots" />
+            }
+            name="newSharesToIssueInFixedSlots"
+            min="0"
+            type="number"
+          />
+        </div>
+      </Col>
+    </Row>
+
+    <div className="form-group">
+      <FormLabel>
+        <FormattedMessage id="eto.form.section.eto-terms.maximum-discount-for-the-fixed-slot-investors" />
+      </FormLabel>
+      <FormRange name="whitelistDiscountFraction" min={0} max={99} unit="%" step={1} />
+    </div>
+
     <FormTextArea
       disabled={readonly}
       className="mb-2 mt-2"
@@ -190,6 +212,12 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         </Row>
       </Col>
     )}
+
+    <Row className="justify-content-end">
+      <Button layout="primary" className="mr-4" type="submit" isLoading={savingData}>
+        <FormattedMessage id="form.button.save" />
+      </Button>
+    </Row>
   </EtoFormBase>
 );
 

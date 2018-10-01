@@ -203,6 +203,8 @@ export const EtoTermsType = YupTS.object({
   whitelistDurationDays: YupTS.number(),
   additionalTerms: YupTS.string().optional(),
   signingDurationDays: YupTS.number(),
+  newSharesToIssueInFixedSlots: YupTS.number(),
+  whitelistDiscountFraction: YupTS.number(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;

@@ -133,7 +133,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
   return (
     <>
       {sections.map((section, index) => (
-        <Col key={index} lg={4} xs={12} md={6} className="mb-4">
+        <Col key={index} lg={4} xs={12} md={6} className="mb-4" data-test-id={section.testingId}>
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={section.redirectTo}
@@ -141,7 +141,6 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
             disabled={!shouldEtoDataLoad}
             readonly={section.readonly}
             name={section.name}
-            data-test-id={section.testingId}
           />
         </Col>
       ))}

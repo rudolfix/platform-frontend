@@ -1,4 +1,5 @@
-import { CSSProperties, HTMLAttributes } from "react";
+import { FormikContext } from "formik";
+import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 type Dictionary<T> = { [id: string]: T };
@@ -79,3 +80,7 @@ export type TAcceptedFileType =
 // TODO: Correct TAcceptedFileType types it can contain more than one type
 
 export type Omit<T extends K, K> = Pick<T, Exclude<keyof T, keyof K>>;
+
+export type TFormikConnect = {
+  formik: FormikContext<any>;
+};

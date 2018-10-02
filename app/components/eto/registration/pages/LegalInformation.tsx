@@ -146,7 +146,13 @@ const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IPro
       {!readonly && (
         <Col>
           <Row className="justify-content-end">
-            <Button type="submit" layout="primary" className="mr-4" isLoading={savingData}>
+            <Button
+              type="submit"
+              layout="primary"
+              className="mr-4"
+              isLoading={savingData}
+              data-test-id="eto-registration-legal-information-submit"
+            >
               <FormattedMessage id="form.button.save" />
             </Button>
           </Row>

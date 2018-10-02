@@ -1,5 +1,4 @@
-import { Field, FieldProps, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 
 import * as styles from "./FormCheckbox.module.scss";
@@ -75,60 +74,58 @@ const RadioButtonComponent: React.SFC<IProps & IInternalProps> = ({
 };
 
 class FormCheckbox extends React.Component<IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   render(): React.ReactNode {
     const { name, checked, disabled } = this.props;
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     return (
-      <Field
-        name={name}
-        render={({ field }: FieldProps) => {
-          return (
-            <CheckboxComponent
-              {...this.props}
-              {...field}
-              checked={checked || values[name]}
-              onChange={() => setFieldValue(name, !values[name])}
-              disabled={disabled}
-            />
-          );
-        }}
-      />
+      <FormikConsumer>
+        {({ values, setFieldValue }) => (
+          <Field
+            name={name}
+            render={({ field }: FieldProps) => {
+              return (
+                <CheckboxComponent
+                  {...this.props}
+                  {...field}
+                  checked={checked || values[name]}
+                  onChange={() => setFieldValue(name, !values[name])}
+                  disabled={disabled}
+                />
+              );
+            }}
+          />
+        )}
+      </FormikConsumer>
     );
   }
 }
 
 class FormRadioButton extends React.Component<IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   render(): React.ReactNode {
     const { name, checked, disabled } = this.props;
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
 
     return (
-      <Field
-        name={name}
-        render={({ field }: FieldProps) => {
-          const { name } = field;
-          const { value } = this.props;
+      <FormikConsumer>
+        {({ values, setFieldValue }) => (
+          <Field
+            name={name}
+            render={({ field }: FieldProps) => {
+              const { name } = field;
+              const { value } = this.props;
 
-          return (
-            <RadioButtonComponent
-              {...this.props}
-              {...field}
-              checked={checked || values[name] === value}
-              onChange={() => setFieldValue(name, value)}
-              disabled={disabled}
-            />
-          );
-        }}
-      />
+              return (
+                <RadioButtonComponent
+                  {...this.props}
+                  {...field}
+                  checked={checked || values[name] === value}
+                  onChange={() => setFieldValue(name, value)}
+                  disabled={disabled}
+                />
+              );
+            }}
+          />
+        )}
+      </FormikConsumer>
     );
   }
 }

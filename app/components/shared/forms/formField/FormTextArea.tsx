@@ -1,5 +1,4 @@
-import { Field, FieldAttributes, FieldProps } from "formik";
-import * as PropTypes from "prop-types";
+import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormGroup, InputGroup, InputGroupAddon } from "reactstrap";
 
@@ -17,13 +16,9 @@ interface IFieldGroup {
   suffix?: string;
   charactersLimit?: number;
 }
-type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
+type FieldGroupProps = IFieldGroup & FieldAttributes<any> & CommonHtmlProps;
 export class FormTextArea extends React.Component<FieldGroupProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
-  render(): React.ReactChild {
+  render(): React.ReactNode {
     const {
       label,
       disabled,
@@ -34,7 +29,6 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
       className,
       charactersLimit,
     } = this.props;
-    const { touched, errors } = this.context.formik;
 
     const computedValue = (value: string | undefined, limit: number | undefined): string => {
       if (!value) {
@@ -53,39 +47,43 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
     };
 
     return (
-      <FormGroup>
-        {label && <FormLabel>{label}</FormLabel>}
-        <Field
-          name={name}
-          render={({ field }: FieldProps) => {
-            const { value } = field;
+      <FormikConsumer>
+        {({ touched, errors }) => (
+          <FormGroup>
+            {label && <FormLabel>{label}</FormLabel>}
+            <Field
+              name={name}
+              render={({ field }: FieldProps) => {
+                const { value } = field;
 
-            return (
-              <>
-                <InputGroup>
-                  {prefix && (
-                    <InputGroupAddon addonType="prepend" className={className}>
-                      {prefix}
-                    </InputGroupAddon>
-                  )}
-                  <textarea
-                    {...field}
-                    disabled={disabled}
-                    value={computedValue(value, charactersLimit)}
-                    placeholder={placeholder}
-                    className={className}
-                  />
-                  {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
-                </InputGroup>
-                {isNonValid(touched, errors, name) && (
-                  <div className={styles.errorLabel}>{errors[name]}</div>
-                )}
-                {charactersLimit && countedCharacters(value, charactersLimit)}
-              </>
-            );
-          }}
-        />
-      </FormGroup>
+                return (
+                  <>
+                    <InputGroup>
+                      {prefix && (
+                        <InputGroupAddon addonType="prepend" className={className}>
+                          {prefix}
+                        </InputGroupAddon>
+                      )}
+                      <textarea
+                        {...field}
+                        disabled={disabled}
+                        value={computedValue(value, charactersLimit)}
+                        placeholder={placeholder}
+                        className={className}
+                      />
+                      {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
+                    </InputGroup>
+                    {isNonValid(touched, errors, name) && (
+                      <div className={styles.errorLabel}>{errors[name]}</div>
+                    )}
+                    {charactersLimit && countedCharacters(value, charactersLimit)}
+                  </>
+                );
+              }}
+            />
+          </FormGroup>
+        )}
+      </FormikConsumer>
     );
   }
 }

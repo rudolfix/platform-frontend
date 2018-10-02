@@ -1,6 +1,5 @@
-import { Form, FormikProps } from "formik";
+import { Form, FormikConsumer } from "formik";
 import { throttle } from "lodash";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import * as Yup from "yup";
 
@@ -9,7 +8,6 @@ import {
   IProgressOptions,
   ProgressCalculator,
 } from "../../../modules/eto-flow/utils";
-
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
 
@@ -25,10 +23,6 @@ interface IFormPercentageDoneProps {
 }
 
 class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   calculate: ProgressCalculator;
 
   constructor(props: IFormPercentageDoneProps) {
@@ -40,9 +34,16 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
   }
 
   render(): React.ReactNode {
-    const { values } = this.context.formik as FormikProps<any>;
-    const calculatedFraction = this.calculate(values);
-    return <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />;
+    return (
+      <FormikConsumer>
+        {({ values }) => {
+          const calculatedFraction = this.calculate(values);
+          return (
+            <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />
+          );
+        }}
+      </FormikConsumer>
+    );
   }
 }
 

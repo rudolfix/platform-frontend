@@ -1,11 +1,10 @@
 import * as cn from "classnames";
-import { FieldArray, FormikProps, getIn } from "formik";
-import * as PropTypes from "prop-types";
+import { connect, FieldArray, getIn } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
 import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces";
-import { CommonHtmlProps } from "../../types";
+import { CommonHtmlProps, TFormikConnect } from "../../types";
 import { FormField } from "./forms";
 import { InlineIcon } from "./InlineIcon";
 
@@ -173,16 +172,12 @@ interface IState {
   filteredFields: boolean[];
 }
 
-export class SocialProfilesEditor extends React.Component<IProps, IState> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
+class SocialProfilesEditorLayout extends React.Component<IProps & TFormikConnect, IState> {
   state: IState = { selectedFields: [], filteredFields: [] };
 
   componentDidMount(): void {
-    const { values, setFieldValue } = this.context.formik as FormikProps<any>;
-    const { name, profiles } = this.props;
+    const { name, profiles, formik } = this.props;
+    const { values, setFieldValue } = formik;
 
     const socialMediaValues: TSocialChannelsType = getIn(values, name) || [];
     const selectedFields: boolean[] = [];
@@ -235,3 +230,5 @@ export class SocialProfilesEditor extends React.Component<IProps, IState> {
     );
   }
 }
+
+export const SocialProfilesEditor = connect<IProps, any>(SocialProfilesEditorLayout);

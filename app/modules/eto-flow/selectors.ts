@@ -45,6 +45,16 @@ export const selectIsBookBuilding = (state: IAppState): boolean | undefined => {
   return undefined;
 };
 
+export const selectCanEnableBookBuilding = (state: IAppState): boolean => {
+  const eto = selectIssuerEto(state);
+
+  if (eto) {
+    return eto.canEnableBookbuilding;
+  }
+
+  return false;
+};
+
 export const selectIssuerEtoState = (state: IAppState): EtoState | undefined => {
   const eto = selectIssuerEto(state);
 

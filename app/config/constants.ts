@@ -25,3 +25,8 @@ export const MAX_EXPIRATION_DIFF_MINUTES = 10;
  * Useful for money related calculations
  */
 export const Q18 = new BigNumber(10).pow(18);
+
+/**
+ * Represesnt zero address on Etherum - non existing address used by ERC20 to mark minting and burning
+ */
+export const ETHEREUM_ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";

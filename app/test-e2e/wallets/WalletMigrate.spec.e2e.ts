@@ -12,6 +12,8 @@ describe("Auto Login", () => {
     cy.visit("/settings");
     // just a basic check wether the dashboard is working
     // assertDashboard();
-    cy.get(tid("models.settings.icbm-wallet-widget.check-your-icbm-wallet-widget.address")).type("0x429123b08df32b0006fd1f3b0ef893a8993802f3{enter}");
+    cy.get(tid("models.settings.icbm-wallet-widget.check-your-icbm-wallet-widget.address")).type(
+      "0x429123b08df32b0006fd1f3b0ef893a8993802f3{enter}",
+    );
   });
 });

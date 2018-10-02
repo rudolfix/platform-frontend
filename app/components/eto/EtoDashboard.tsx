@@ -17,6 +17,7 @@ import {
   selectIsTermSheetSubmitted,
 } from "../../modules/eto-documents/selectors";
 import {
+  selectCanEnableBookBuilding,
   selectCombinedEtoCompanyData,
   selectIssuerEtoState,
   selectShouldEtoDataLoad,
@@ -47,6 +48,7 @@ interface IStateProps {
   shouldEtoDataLoad?: boolean;
   requestStatus?: TRequestStatus;
   etoState?: EtoState;
+  canEnableBookbuilding: boolean;
   etoFormProgress?: number;
   isTermSheetSubmitted?: boolean;
   isPamphletSubmitted?: boolean;
@@ -96,6 +98,7 @@ interface IEtoStateRender {
   isTermSheetSubmitted?: boolean;
   isPamphletSubmitted?: boolean;
   isProspectusSubmitted?: boolean;
+  canEnableBookbuilding: boolean;
 }
 
 const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
@@ -104,6 +107,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
   isTermSheetSubmitted,
   isPamphletSubmitted,
   isProspectusSubmitted,
+  canEnableBookbuilding,
 }) => {
   if (!etoState) {
     return <LoadingIndicator />;
@@ -119,7 +123,6 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
           <EtoProgressDashboardSection />
         </>
       );
-    case EtoState.ON_CHAIN:
     case EtoState.PENDING:
       return (
         <>
@@ -131,12 +134,11 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
       return (
         <>
           <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
-          <Col lg={4} xs={12}>
-            <ChoosePreEtoDateWidget />
-          </Col>
-          <Col lg={4} xs={12}>
-            <BookBuildingWidget />
-          </Col>
+          {canEnableBookbuilding && (
+            <Col lg={4} xs={12}>
+              <BookBuildingWidget />
+            </Col>
+          )}
           {!isPamphletSubmitted && (
             <Col lg={4} xs={12}>
               <UploadProspectusWidget />
@@ -157,17 +159,24 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
       return (
         <>
           <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
-          <Col lg={4} xs={12}>
-            <BookBuildingWidget />
-          </Col>
-          {!isPamphletSubmitted && (
+          {canEnableBookbuilding && (
             <Col lg={4} xs={12}>
-              <UploadProspectusWidget />
+              <BookBuildingWidget />
             </Col>
           )}
-          {!isProspectusSubmitted && (
+          <Col xs={12}>
+            <FormattedMessage id="eto-dashboard-application-description" />
+          </Col>
+          <ETOFormsProgressSection />
+        </>
+      );
+    case EtoState.ON_CHAIN:
+      return (
+        <>
+          <DashboardSection hasDecorator={false} title={<EtoProjectState status={etoState} />} />
+          {canEnableBookbuilding && (
             <Col lg={4} xs={12}>
-              <UploadPamphletWidget />
+              <BookBuildingWidget />
             </Col>
           )}
           <Col lg={4} xs={12}>
@@ -199,6 +208,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
       backupCodesVerified,
       requestStatus,
       etoState,
+      canEnableBookbuilding,
       isLightWallet,
       etoFormProgress,
       isTermSheetSubmitted,
@@ -238,6 +248,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
               isProspectusSubmitted={isProspectusSubmitted}
               shouldViewSubmissionSection={shouldViewSubmissionSection}
               etoState={etoState}
+              canEnableBookbuilding={canEnableBookbuilding}
             />
           ) : (
             <EtoProgressDashboardSection />
@@ -259,6 +270,7 @@ export const EtoDashboard = compose<React.SFC>(
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
       requestStatus: selectKycRequestStatus(s.kyc),
       etoState: selectIssuerEtoState(s),
+      canEnableBookbuilding: selectCanEnableBookBuilding(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s.etoDocuments),
       isPamphletSubmitted: selectIsPamphletSubmitted(s.etoDocuments),
       isProspectusSubmitted: selectIsProspectusSubmitted(s.etoDocuments),

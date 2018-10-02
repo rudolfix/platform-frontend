@@ -30,6 +30,7 @@ export const CampaigningActivatedUnapprovedInvestorWidget = compose<
     dispatchToProps: dispatch => ({
       showErrorModal: () => {
         dispatch(
+          // TODO: please translate
           actions.genericModal.showErrorModal(
             "Please update your account before proceeding.",
             "Head to Settings now.",

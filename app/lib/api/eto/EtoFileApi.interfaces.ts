@@ -17,22 +17,23 @@ export interface IEtoGeneratedFile {
   title: string;
 }
 
-export type EtoDocumentType =
-  | "reservation_and_acquisition_agreement"
-  | "company_token_holder_agreement"
-  | "investment_and_shareholder_agreement"
-  | "prospectus_template"
-  | "pamphlet_template"
-  | "termsheet_template"
-  | "approved_prospectus"
-  | "approved_pamphlet"
-  | "signed_investment_and_shareholder_agreement"
-  | "other";
+export enum EEtoDocumentType {
+  RESERVATION_AND_ACQUISITION_AGREEMENT = "reservation_and_acquisition_agreement",
+  COMPANY_TOKEN_HOLDER_AGREEMENT = "company_token_holder_agreement",
+  INVESTMENT_AND_SHAREHOLDER_AGREEMENT = "investment_and_shareholder_agreement",
+  PROSPECTUS_TEMPLATE = "prospectus_template",
+  PAMPHLET_TEMPLATE = "pamphlet_template",
+  TERMSHEET_TEMPLATE = "termsheet_template",
+  APPROVED_PROSPECTUS = "approved_prospectus",
+  APPROVED_PAMPHLET = "approved_pamphlet",
+  SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT = "signed_investment_and_shareholder_agreement",
+  OTHER = "other",
+}
 
 type etoFormType = "document" | "template";
 
 export interface IEtoDocument {
-  documentType: EtoDocumentType;
+  documentType: EEtoDocumentType;
   form: etoFormType;
   ipfsHash: string;
   mimeType: string;
@@ -47,8 +48,8 @@ type ISimpleFileInfo = "requiredTemplates" | "uploadableDocuments";
 export interface IEtoFiles {
   etoTemplates: TEtoDocumentTemplates;
   uploadedDocuments: TEtoDocumentTemplates;
-  stateInfo?: { [key in ISimpleFileInfo]: EtoDocumentType[] } &
-    { [key in IComplextFileInfo]: { [key in EtoStateToCamelcase]: EtoDocumentType[] } };
+  stateInfo?: { [key in ISimpleFileInfo]: EEtoDocumentType[] } &
+    { [key in IComplextFileInfo]: { [key in EtoStateToCamelcase]: EEtoDocumentType[] } };
 }
 
 export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };

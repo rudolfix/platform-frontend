@@ -1,18 +1,17 @@
-import { Form, Formik, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { Form, Formik, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Web3Utils from "web3-utils";
 
 import { actions } from "../../../modules/actions";
+import { selectIcbmMigrationWallet } from "../../../modules/icbmWalletBalanceModal/selectors";
+import { ILockedWallet } from "../../../modules/wallet/reducer";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/buttons";
 import { FormFieldColorful } from "../../shared/forms/formField/FormFieldColorful";
 import { Panel } from "../../shared/Panel";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import { selectIcbmMigrationWallet } from "../../../modules/icbmWalletBalanceModal/selectors";
-import { ILockedWallet } from "../../../modules/wallet/reducer";
 import * as styles from "./CheckYourICBMWalletWidget.module.scss";
 
 interface IDispatchProps {
@@ -24,31 +23,29 @@ interface IStateProps {
 }
 
 class FormContent extends React.Component {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   render(): React.ReactNode {
-    const { values } = this.context.formik as FormikProps<any>;
-
     return (
-      <>
-        <FormFieldColorful
-          name="address"
-          placeholder="0xff2bee8169957caa2f5a34af7bf8e717fea7f"
-          data-test-id="models.settings.icbm-wallet-widget.check-your-icbm-wallet-widget.address"
-        />
-        <Button
-          className={styles.button}
-          layout="secondary"
-          iconPosition="icon-after"
-          svgIcon={arrowRight}
-          type="submit"
-          disabled={!Web3Utils.isAddress(values.address)}
-        >
-          <FormattedMessage id="check-your-icbm-wallet-widget.submit" />
-        </Button>
-      </>
+      <FormikConsumer>
+        {({ values }) => (
+          <>
+            <FormFieldColorful
+              name="address"
+              placeholder="0xff2bee8169957caa2f5a34af7bf8e717fea7f"
+              data-test-id="models.settings.icbm-wallet-widget.check-your-icbm-wallet-widget.address"
+            />
+            <Button
+              className={styles.button}
+              layout="secondary"
+              iconPosition="icon-after"
+              svgIcon={arrowRight}
+              type="submit"
+              disabled={!Web3Utils.isAddress(values.address)}
+            >
+              <FormattedMessage id="check-your-icbm-wallet-widget.submit" />
+            </Button>
+          </>
+        )}
+      </FormikConsumer>
     );
   }
 }

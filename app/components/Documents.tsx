@@ -6,7 +6,7 @@ import { compose } from "redux";
 
 import { EtoState, EtoStateToCamelcase } from "../lib/api/eto/EtoApi.interfaces";
 import {
-  EtoDocumentType,
+  EEtoDocumentType,
   IEtoDocument,
   IEtoFiles,
   TEtoDocumentTemplates,
@@ -30,11 +30,12 @@ import { LayoutAuthorized } from "./layouts/LayoutAuthorized";
 import { DocumentTile } from "./shared/Document";
 import { LoadingIndicator } from "./shared/LoadingIndicator";
 import { SectionHeader } from "./shared/SectionHeader";
-import { SingleColDocuments } from "./shared/singleColDocumentWidget";
+import { SingleColDocuments } from "./shared/SingleColDocumentWidget";
 
+import { setDisplayName } from "recompose";
 import * as styles from "./Documents.module.scss";
 
-export const documentTitles: { [key in EtoDocumentType]: string | React.ReactNode } = {
+export const documentTitles: { [key in EEtoDocumentType]: string | React.ReactNode } = {
   company_token_holder_agreement: (
     <FormattedMessage id="eto.documents.company-token-holder-agreement" />
   ),
@@ -131,7 +132,7 @@ class DocumentsComponent extends React.Component<IProps> {
                 <Col xs={12} className={styles.groupName}>
                   APPROVED PROSPECTUS AND AGREEMENTS TO UPLOAD
                 </Col>
-                {generalUploadables.map((key: EtoDocumentType, index: number) => {
+                {generalUploadables.map((key: EEtoDocumentType, index: number) => {
                   const typedFileName = documentTitles[key];
                   const canUpload =
                     stateInfo &&
@@ -197,10 +198,11 @@ interface IStateProps {
 
 interface IDispatchProps {
   generateTemplate: (document: IEtoDocument) => void;
-  downloadDocumentByType: (documentType: EtoDocumentType) => void;
+  downloadDocumentByType: (documentType: EEtoDocumentType) => void;
 }
 
 export const Documents = compose<React.SFC>(
+  setDisplayName("Documents"),
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({

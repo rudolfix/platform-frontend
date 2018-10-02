@@ -27,7 +27,7 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
-  <div>
+  <div data-test-id="kyc-beneficial-owners">
     <HorizontalLine className={cn("mt-2", "mb-2")} />
     <h4 className={styles.sectionTitle}>
       <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />

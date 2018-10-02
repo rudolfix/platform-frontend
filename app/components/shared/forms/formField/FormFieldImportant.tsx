@@ -1,6 +1,5 @@
 import * as cn from "classnames";
-import { Field, FieldAttributes, FieldProps, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
@@ -32,16 +31,11 @@ interface IFieldGroup {
   placeholder?: string;
   errorMessage?: string | React.ReactNode;
   type?: InputType;
-  hasAvatar?: boolean;
 }
-type FieldGroupProps = IFieldGroup & FieldAttributes & CommonHtmlProps;
+type FieldGroupProps = IFieldGroup & FieldAttributes<any> & CommonHtmlProps;
 
 export class FormFieldImportant extends React.Component<FieldGroupProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
-  render(): React.ReactChild {
+  render(): React.ReactNode {
     const {
       type,
       placeholder,
@@ -50,43 +44,45 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
       errorMessage,
       validate,
       label,
-      hasAvatar,
       ...props
     } = this.props;
-    const formik: FormikProps<any> = this.context.formik;
-    const { errors, touched } = formik;
+
     const tooltipId = `${name}_error_notification`;
 
     return (
-      <>
-        {label && <FormLabel>{label}</FormLabel>}
-        <Field
-          name={name}
-          validate={validate}
-          render={({ field }: FieldProps) => (
-            <>
-              <InputGroup className={styles.inputGroup}>
-                <Input
-                  className={cn(className, formStyles.inputField, styles.input)}
-                  {...field}
-                  type={type}
-                  value={field.value || ""}
-                  placeholder={placeholder || ""}
-                  {...props as any}
-                />
-                <InputGroupAddon addonType="append" className={formStyles.addon}>
-                  {isNonValid(touched, errors, name) && (
-                    <>
-                      <img id={tooltipId} src={icon} />
-                      <CustomTooltip target={tooltipId}>{errorMessage}</CustomTooltip>
-                    </>
-                  )}
-                </InputGroupAddon>
-              </InputGroup>
-            </>
-          )}
-        />
-      </>
+      <FormikConsumer>
+        {({ touched, errors }) => (
+          <>
+            {label && <FormLabel>{label}</FormLabel>}
+            <Field
+              name={name}
+              validate={validate}
+              render={({ field }: FieldProps) => (
+                <>
+                  <InputGroup className={styles.inputGroup}>
+                    <Input
+                      className={cn(className, formStyles.inputField, styles.input)}
+                      {...field}
+                      type={type}
+                      value={field.value || ""}
+                      placeholder={placeholder || ""}
+                      {...props as any}
+                    />
+                    <InputGroupAddon addonType="append" className={formStyles.addon}>
+                      {isNonValid(touched, errors, name) && (
+                        <>
+                          <img id={tooltipId} src={icon} />
+                          <CustomTooltip target={tooltipId}>{errorMessage}</CustomTooltip>
+                        </>
+                      )}
+                    </InputGroupAddon>
+                  </InputGroup>
+                </>
+              )}
+            />
+          </>
+        )}
+      </FormikConsumer>
     );
   }
 }

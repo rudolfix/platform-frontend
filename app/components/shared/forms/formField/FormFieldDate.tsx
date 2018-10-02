@@ -1,12 +1,12 @@
-import { Field } from "formik";
-import * as PropTypes from "prop-types";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
 import { TTranslatedString } from "../../../../types";
+import { isValid } from "./utils";
+
 import * as styles from "./FormFieldDate.module.scss";
 import * as errorStyles from "./FormStyles.module.scss";
-import { isValid } from "./utils";
 
 interface IProps {
   disabled?: boolean;
@@ -24,10 +24,6 @@ const positionMap = {
 type FieldDateType = "year" | "month" | "day";
 
 export class FormFieldDate extends React.Component<IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   cache = {
     day: "",
     month: "",
@@ -62,90 +58,96 @@ export class FormFieldDate extends React.Component<IProps> {
 
   render(): React.ReactNode {
     const { name, label, "data-test-id": dataTestId, disabled } = this.props;
-    const { touched, errors } = this.context.formik;
-    const valid = isValid(touched, errors, name);
 
     return (
-      <FormGroup>
-        <div className={styles.dateField} data-test-id={dataTestId}>
-          <span className={styles.label}>{label}</span>
-          <div className={styles.inputsWrapper}>
-            <Field
-              name={name}
-              render={({ field }) => (
-                <div className={styles.inputWrapper}>
-                  <Input
-                    {...field}
-                    disabled={disabled}
-                    onChange={e => {
-                      this.onChange("day", e, field.onChange);
-                      // auto advance to next field
-                      const realValue = this.fromValue("day", e.target.value);
-                      if (realValue.length === 2) {
-                        this.monthInput!.focus();
-                      }
-                    }}
-                    value={this.fromValue("day", field.value)}
-                    placeholder="DD"
-                    valid={valid}
-                    maxLength={2}
-                    data-test-id="form-field-date-day"
+      <FormikConsumer>
+        {({ touched, errors }) => {
+          const valid = isValid(touched, errors, name);
+
+          return (
+            <FormGroup>
+              <div className={styles.dateField} data-test-id={dataTestId}>
+                <span className={styles.label}>{label}</span>
+                <div className={styles.inputsWrapper}>
+                  <Field
+                    name={name}
+                    render={({ field }: FieldProps) => (
+                      <div className={styles.inputWrapper}>
+                        <Input
+                          {...field}
+                          disabled={disabled}
+                          onChange={e => {
+                            this.onChange("day", e, field.onChange);
+                            // auto advance to next field
+                            const realValue = this.fromValue("day", e.target.value);
+                            if (realValue.length === 2) {
+                              this.monthInput!.focus();
+                            }
+                          }}
+                          value={this.fromValue("day", field.value)}
+                          placeholder="DD"
+                          valid={valid}
+                          maxLength={2}
+                          data-test-id="form-field-date-day"
+                        />
+                      </div>
+                    )}
+                  />
+                  {"/"}
+                  <Field
+                    name={this.props.name}
+                    render={({ field }: FieldProps) => (
+                      <div>
+                        <Input
+                          {...field}
+                          disabled={disabled}
+                          onChange={e => {
+                            this.onChange("month", e, field.onChange);
+                            // auto advance to next field
+                            const realValue = this.fromValue("month", e.target.value);
+                            if (realValue.length === 2) {
+                              this.yearInput!.focus();
+                            }
+                          }}
+                          value={this.fromValue("month", field.value)}
+                          placeholder="MM"
+                          valid={valid}
+                          maxLength={2}
+                          data-test-id="form-field-date-month"
+                          innerRef={this.saveMonthRef}
+                        />
+                      </div>
+                    )}
+                  />
+                  {"/"}
+                  <Field
+                    name={this.props.name}
+                    render={({ field }: FieldProps) => (
+                      <div className={styles.dateFieldYear}>
+                        <Input
+                          {...field}
+                          disabled={disabled}
+                          onChange={e => this.onChange("year", e, field.onChange)}
+                          value={this.fromValue("year", field.value)}
+                          placeholder="YYYY"
+                          valid={valid}
+                          maxLength={4}
+                          data-test-id="form-field-date-year"
+                          innerRef={this.saveYearRef}
+                        />
+                      </div>
+                    )}
                   />
                 </div>
-              )}
-            />
-            {"/"}
-            <Field
-              name={this.props.name}
-              render={({ field }) => (
-                <div>
-                  <Input
-                    {...field}
-                    disabled={disabled}
-                    onChange={e => {
-                      this.onChange("month", e, field.onChange);
-                      // auto advance to next field
-                      const realValue = this.fromValue("month", e.target.value);
-                      if (realValue.length === 2) {
-                        this.yearInput!.focus();
-                      }
-                    }}
-                    value={this.fromValue("month", field.value)}
-                    placeholder="MM"
-                    valid={valid}
-                    maxLength={2}
-                    data-test-id="form-field-date-month"
-                    innerRef={this.saveMonthRef}
-                  />
-                </div>
-              )}
-            />
-            {"/"}
-            <Field
-              name={this.props.name}
-              render={({ field }) => (
-                <div className={styles.dateFieldYear}>
-                  <Input
-                    {...field}
-                    disabled={disabled}
-                    onChange={e => this.onChange("year", e, field.onChange)}
-                    value={this.fromValue("year", field.value)}
-                    placeholder="YYYY"
-                    valid={valid}
-                    maxLength={4}
-                    data-test-id="form-field-date-year"
-                    innerRef={this.saveYearRef}
-                  />
-                </div>
-              )}
-            />
-          </div>
-        </div>
-        <div className={styles.errorLabel}>
-          {errors[name] &&
-            touched[name] && <div className={errorStyles.errorLabel}>{errors[name]}</div>}
-        </div>
-      </FormGroup>
+              </div>
+              <div className={styles.errorLabel}>
+                {errors[name] &&
+                  touched[name] && <div className={errorStyles.errorLabel}>{errors[name]}</div>}
+              </div>
+            </FormGroup>
+          );
+        }}
+      </FormikConsumer>
     );
   }
 }

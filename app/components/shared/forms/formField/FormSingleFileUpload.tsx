@@ -13,6 +13,7 @@ interface IOwnProps {
   label: string | React.ReactNode;
   acceptedFiles: TAcceptedFileType;
   fileFormatInformation: string;
+  "data-test-id"?: string;
 }
 interface IDispatchProps {
   uploadFile: (file: File, onDone: (error: any, fileUrl?: string) => any) => any;
@@ -75,6 +76,7 @@ export class FormSingleFileUploadComponent extends React.Component<
         name={name}
         render={({ field }: FieldProps) => (
           <SingleFileUpload
+            data-test-id={this.props["data-test-id"]}
             acceptedFiles={acceptedFiles}
             fileUploading={this.state.isUploading}
             fileFormatInformation={fileFormatInformation}

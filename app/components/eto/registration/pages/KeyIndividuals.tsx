@@ -161,6 +161,7 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
                 );
               })}
               <Button
+                data-test-id={`key-individuals-group-button-${name}`}
                 iconPosition="icon-before"
                 layout="secondary"
                 svgIcon={plusIcon}
@@ -221,7 +222,13 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
       />
       <Col>
         <Row className="justify-content-end">
-          <Button layout="primary" className="mr-4" type="submit" isLoading={props.savingData}>
+          <Button
+            layout="primary"
+            className="mr-4"
+            type="submit"
+            isLoading={props.savingData}
+            data-test-id="eto-registration-key-individuals-submit"
+          >
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

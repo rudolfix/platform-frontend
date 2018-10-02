@@ -81,7 +81,12 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     {!readonly && (
       <Col>
         <Row className="justify-content-center">
-          <Button layout="primary" type="submit" isLoading={savingData}>
+          <Button
+            layout="primary"
+            type="submit"
+            isLoading={savingData}
+            data-test-id="eto-registration-voting-rights-submit"
+          >
             <FormattedMessage id="form.button.save" />
           </Button>
         </Row>

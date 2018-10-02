@@ -70,7 +70,7 @@ export const fillForm = (fixture: TFormFixture, submit: boolean = true) => {
  * @param targetTid - test id of the dropzone field
  * @param fixture - which fixture to load
  */
-export const uploadFileToFieldWithTid = (targetTid: string, fixture: string = "example.png") => {
+export const uploadFileToFieldWithTid = (targetTid: string, fixture: string = "example.jpg") => {
   const dropEvent = {
     dataTransfer: {
       files: [] as any,

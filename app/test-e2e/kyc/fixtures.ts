@@ -54,7 +54,7 @@ export const kycLegalRepForm: TFormFixture = {
 
 export const kycLegalRepDocsForm: TFormFixture = {
   "kyc-company-legal-representative-documents": {
-    value: "example.png",
+    value: "example.jpg",
     type: "file",
   },
   "kyc-company-legal-representative-upload-and-submit": {
@@ -90,7 +90,7 @@ export const kycCorporateCompanyForm: TFormFixture = {
 
 export const kycCompanyDocsForm: TFormFixture = {
   "kyc-company-business-supporting-documents": {
-    value: "example.png",
+    value: "example.jpg",
     type: "file",
   },
   "kyc-company-business-supporting-continue": {

@@ -2,6 +2,14 @@ import { TFormFixture } from "../utils/forms";
 
 // about form
 export const aboutForm: TFormFixture = {
+  "eto-registration-company-logo": {
+    value: "example.jpg",
+    type: "file",
+  },
+  "eto-registration-company-banner": {
+    value: "example.jpg",
+    type: "file",
+  },
   brandName: "Davecoin",
   companyWebsite: "https://neufund.org",
   companyOneliner: "Free icecream for all",
@@ -11,14 +19,6 @@ export const aboutForm: TFormFixture = {
   "eto-about-category": {
     value: "Science",
     type: "tags",
-  },
-  "eto-registration-company-logo": {
-    value: "example.png",
-    type: "file",
-  },
-  "eto-registration-company-banner": {
-    value: "example.png",
-    type: "file",
   },
   "eto-registration-company-information-submit": {
     value: "",
@@ -187,12 +187,12 @@ export const riskForm: TFormFixture = {
 
 // token info
 export const equityTokenInfoForm: TFormFixture = {
-  equityTokenName: "Sharpcoin",
-  equityTokenSymbol: "X#C",
   "eto-registration-token-logo": {
-    value: "example.png",
+    value: "example.jpg",
     type: "file",
   },
+  equityTokenName: "Sharpcoin",
+  equityTokenSymbol: "X#C",
   "eto-registration-token-info-submit": {
     value: "",
     type: "submit",

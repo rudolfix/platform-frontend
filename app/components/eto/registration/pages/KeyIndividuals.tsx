@@ -161,6 +161,7 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
                 );
               })}
               <Button
+                data-test-id={`key-individuals-group-button-${name}`}
                 iconPosition="icon-before"
                 layout="secondary"
                 svgIcon={plusIcon}

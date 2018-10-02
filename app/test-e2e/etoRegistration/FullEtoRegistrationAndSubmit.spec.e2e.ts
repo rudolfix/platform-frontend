@@ -37,6 +37,13 @@ describe("Eto Forms", () => {
     assertEtoDashboard();
 
     cy.get(tid("eto-progress-widget-key-individuals", "button")).click();
+    // first click on all the add buttons to open the fields
+    cy.get(tid("key-individuals-group-button-advisors")).click();
+    cy.get(tid("key-individuals-group-button-keyAlliances")).click();
+    cy.get(tid("key-individuals-group-button-boardMembers")).click();
+    cy.get(tid("key-individuals-group-button-notableInvestors")).click();
+    cy.get(tid("key-individuals-group-button-keyCustomers")).click();
+    cy.get(tid("key-individuals-group-button-partners")).click();
     fillForm(etoKeyIndividualsForm);
     assertEtoDashboard();
 

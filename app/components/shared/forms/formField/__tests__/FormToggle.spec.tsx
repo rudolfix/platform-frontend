@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import * as React from "react";
 
 import { spy } from "sinon";
-import { clickFirstTid } from "../../../../../../test/integrationTestUtils";
+import { submit } from "../../../../../../test/integrationTestUtils";
 import { tid } from "../../../../../../test/testUtils";
 import { formWrapper } from "../form-utils";
 import { FormToggle } from "../FormToggle";
@@ -12,7 +12,7 @@ describe("Toggle", () => {
   const TRUE_VALUE = "TRUE VALUE";
   const FALSE_VALUE = "FALSE VALUE";
 
-  it("should toggle true value", () => {
+  it("should toggle true value", async () => {
     const submitFormHandler = spy();
 
     const Component = formWrapper({ toggle: TRUE_VALUE }, submitFormHandler)(() => (
@@ -32,13 +32,13 @@ describe("Toggle", () => {
       .last()
       .simulate("change", { target: { checked: false } });
 
-    clickFirstTid(component, "test-form-submit");
+    await submit(component);
 
     expect(submitFormHandler).to.be.calledOnce;
     expect(submitFormHandler).to.be.calledWith({ toggle: FALSE_VALUE });
   });
 
-  it("should toggle false value", () => {
+  it("should toggle false value", async () => {
     const submitFormHandler = spy();
 
     const Component = formWrapper({ toggle: FALSE_VALUE }, submitFormHandler)(() => (
@@ -58,13 +58,13 @@ describe("Toggle", () => {
       .last()
       .simulate("change", { target: { checked: true } });
 
-    clickFirstTid(component, "test-form-submit");
+    await submit(component);
 
     expect(submitFormHandler).to.be.calledOnce;
     expect(submitFormHandler).to.be.calledWith({ toggle: TRUE_VALUE });
   });
 
-  it("should set default value", () => {
+  it("should set default value", async () => {
     const submitFormHandler = spy();
 
     const Component = formWrapper({}, submitFormHandler)(() => (
@@ -79,7 +79,7 @@ describe("Toggle", () => {
     ));
     const component = mount(<Component />);
 
-    clickFirstTid(component, "test-form-submit");
+    await submit(component);
 
     expect(submitFormHandler).to.be.calledOnce;
     expect(submitFormHandler).to.be.calledWith({ toggle: FALSE_VALUE });

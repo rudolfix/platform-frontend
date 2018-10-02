@@ -3,13 +3,13 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { clickFirstTid } from "../../../../../../test/integrationTestUtils";
+import { submit } from "../../../../../../test/integrationTestUtils";
 import { tid } from "../../../../../../test/testUtils";
 import { formWrapper } from "../form-utils";
 import { FormFieldCheckbox, FormFieldCheckboxGroup } from "../FormFieldCheckboxGroup";
 
 describe("FormFieldCheckboxGroup", () => {
-  it("should work", () => {
+  it("should work", async () => {
     const submitFormHandler = spy();
 
     const Component = formWrapper({}, submitFormHandler)(() => (
@@ -20,28 +20,30 @@ describe("FormFieldCheckboxGroup", () => {
     ));
     const component = mount(<Component />);
 
-    const trigger = (id: string, value: boolean) => {
+    const changeAndSubmit = async (id: string, value: boolean) => {
       component
         .find(tid(id))
         .last()
         .simulate("change", { target: { checked: value } });
-      clickFirstTid(component, "test-form-submit");
+
+      await submit(component);
     };
 
-    trigger("a", true);
+    await changeAndSubmit("a", true);
+
     expect(submitFormHandler).to.be.calledOnce;
     expect(submitFormHandler).to.be.calledWith({ checkboxes: ["a"] });
 
-    trigger("b", true);
+    await changeAndSubmit("b", true);
     expect(submitFormHandler).to.be.calledTwice;
     expect(submitFormHandler).to.be.calledWith({ checkboxes: ["a", "b"] });
 
-    trigger("a", true);
+    await changeAndSubmit("a", true);
     expect(submitFormHandler).to.be.calledThrice;
     expect(submitFormHandler).to.be.calledWith({ checkboxes: ["b"] });
   });
 
-  it("should set default value", () => {
+  it("should set default value", async () => {
     const submitFormHandler = spy();
 
     const Component = formWrapper({}, submitFormHandler)(() => (
@@ -52,7 +54,7 @@ describe("FormFieldCheckboxGroup", () => {
     ));
     const component = mount(<Component />);
 
-    clickFirstTid(component, "test-form-submit");
+    await submit(component);
 
     expect(submitFormHandler).to.be.calledOnce;
     expect(submitFormHandler).to.be.calledWith({ checkboxes: [] });

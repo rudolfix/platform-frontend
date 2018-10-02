@@ -1,10 +1,10 @@
-import { Field, FieldProps, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { connect as formikConnect, Field, FieldProps, FormikContext } from "formik";
 import * as React from "react";
+import { compose } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { CommonHtmlProps, TAcceptedFileType } from "../../../../types";
+import { CommonHtmlProps, TAcceptedFileType, TFormikConnect } from "../../../../types";
 import { SingleFileUpload } from "../../SingleFileUpload";
 
 interface IOwnProps {
@@ -24,13 +24,9 @@ interface IState {
 }
 
 export class FormSingleFileUploadComponent extends React.Component<
-  IOwnProps & IDispatchProps & CommonHtmlProps,
+  IOwnProps & IDispatchProps & CommonHtmlProps & TFormikConnect,
   IState
 > {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   state = {
     isUploading: false,
   };
@@ -54,8 +50,8 @@ export class FormSingleFileUploadComponent extends React.Component<
   };
 
   private setValue(value?: string): void {
-    const { name } = this.props;
-    const { setFieldValue } = this.context.formik as FormikProps<any>;
+    const { name, formik } = this.props;
+    const { setFieldValue } = formik;
 
     setFieldValue(name, value);
   }
@@ -94,14 +90,24 @@ export class FormSingleFileUploadComponent extends React.Component<
   }
 }
 
-export const FormSingleFileUpload = appConnect<{}, IDispatchProps, IOwnProps>({
-  dispatchToProps: dispatch => ({
-    uploadFile: (file, onDone) =>
-      dispatch(actions.formSingleFileUpload.uploadFileStart(file, onDone)),
-    getFile: (fileUrl, onDone) =>
-      dispatch(actions.formSingleFileUpload.getFileStart(fileUrl, onDone)),
+export const FormSingleFileUpload = compose<
+  IOwnProps &
+    IDispatchProps &
+    CommonHtmlProps & {
+      formik: FormikContext<any>;
+    },
+  IOwnProps & CommonHtmlProps
+>(
+  appConnect<{}, IDispatchProps, IOwnProps>({
+    dispatchToProps: dispatch => ({
+      uploadFile: (file, onDone) =>
+        dispatch(actions.formSingleFileUpload.uploadFileStart(file, onDone)),
+      getFile: (fileUrl, onDone) =>
+        dispatch(actions.formSingleFileUpload.getFileStart(fileUrl, onDone)),
+    }),
+    options: {
+      pure: false,
+    },
   }),
-  options: {
-    pure: false,
-  },
-})(FormSingleFileUploadComponent);
+  formikConnect,
+)(FormSingleFileUploadComponent);

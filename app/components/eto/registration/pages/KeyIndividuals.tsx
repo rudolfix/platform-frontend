@@ -1,5 +1,4 @@
-import { FieldArray, FormikProps, withFormik } from "formik";
-import * as PropTypes from "prop-types";
+import { connect, FieldArray, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -15,7 +14,7 @@ import {
 import { actions } from "../../../../modules/actions";
 import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
-import { TTranslatedString } from "../../../../types";
+import { TFormikConnect, TTranslatedString } from "../../../../types";
 import { getField, isRequired } from "../../../../utils/yupUtils";
 import { Button, ButtonIcon } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
@@ -109,14 +108,10 @@ const Individual: React.SFC<IIndividual> = ({
   </FormHighlightGroup>
 );
 
-class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
+class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & TFormikConnect> {
   isEmpty(): boolean {
-    const { values } = this.context.formik as FormikProps<any>;
-    const { name } = this.props;
+    const { name, formik } = this.props;
+    const { values } = formik;
 
     const individuals = values[name];
 
@@ -128,8 +123,8 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   }
 
   componentDidMount(): void {
-    const { setFieldValue } = this.context.formik as FormikProps<any>;
-    const { name } = this.props;
+    const { name, formik } = this.props;
+    const { setFieldValue } = formik;
 
     if (this.isRequired() && this.isEmpty()) {
       setFieldValue(`${name}.members.0`, getBlankMember());
@@ -137,8 +132,8 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
   }
 
   render(): React.ReactNode {
-    const { title, name } = this.props;
-    const { values } = this.context.formik as FormikProps<any>;
+    const { title, name, formik } = this.props;
+    const { values } = formik;
     const individuals = this.isEmpty() ? [] : values[name].members;
 
     return (
@@ -176,6 +171,10 @@ class KeyIndividualsGroup extends React.Component<IKeyIndividualsGroup> {
     );
   }
 }
+
+const KeyIndividualsGroup = connect<IKeyIndividualsGroup, TEtoKeyIndividualType>(
+  KeyIndividualsGroupLayout,
+);
 
 const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
   const validator = EtoKeyIndividualsType.toYup();

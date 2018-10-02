@@ -19,24 +19,14 @@ import { WalletSelectionData } from "./InvestmentTypeSelector";
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
+import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 
 export function createWallets(state: IAppState): WalletSelectionData[] {
   const w = state.wallet;
-  return [
-    {
-      balanceEth: selectLockedEtherBalance(w),
-      balanceEur: selectLockedEtherBalanceEuroAmount(state),
-      type: EInvestmentType.ICBMEth,
-      name: "ICBM Wallet",
-      icon: ethIcon,
-    },
-    {
-      balanceNEuro: selectLockedEuroTokenBalance(w),
-      balanceEur: selectLockedEuroTokenBalance(w),
-      type: EInvestmentType.ICBMnEuro,
-      name: "ICBM Wallet",
-      icon: neuroIcon,
-    },
+  const icbmEther = selectLockedEtherBalance(w);
+  const icbmNeuro = selectLockedEuroTokenBalance(w);
+
+  const wallets: WalletSelectionData[] = [
     {
       balanceEth: selectLiquidEtherBalance(w),
       balanceEur: selectLiquidEtherBalanceEuroAmount(state),
@@ -50,6 +40,27 @@ export function createWallets(state: IAppState): WalletSelectionData[] {
       icon: euroIcon,
     },
   ];
+
+  if (compareBigNumbers(icbmNeuro, 0) > 0) {
+    wallets.unshift({
+      balanceNEuro: icbmNeuro,
+      balanceEur: selectLockedEuroTokenBalance(w),
+      type: EInvestmentType.ICBMnEuro,
+      name: "ICBM Wallet",
+      icon: neuroIcon,
+    });
+  }
+
+  if (compareBigNumbers(icbmEther, 0) > 0) {
+    wallets.unshift({
+      balanceEth: icbmEther,
+      balanceEur: selectLockedEtherBalanceEuroAmount(state),
+      type: EInvestmentType.ICBMEth,
+      name: "ICBM Wallet",
+      icon: ethIcon,
+    });
+  }
+  return wallets;
 }
 
 export function getInputErrorMessage(

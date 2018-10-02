@@ -85,7 +85,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
         </Col>
         {!isFirstElement && (
           <span className="pt-2">
-            {disabled && <ButtonIcon svgIcon={closeIcon} onClick={removeField} />}
+            {!disabled && <ButtonIcon svgIcon={closeIcon} onClick={removeField} />}
           </span>
         )}
       </Row>

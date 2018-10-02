@@ -1,9 +1,8 @@
-import { FieldArray, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { connect, FieldArray } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { CommonHtmlProps } from "../../types";
+import { CommonHtmlProps, TFormikConnect } from "../../types";
 import { ButtonIcon } from "./buttons";
 import { FormField } from "./forms";
 
@@ -75,22 +74,18 @@ interface IProps {
   blankField: object;
 }
 
-export class MediaLinksEditor extends React.Component<IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
+class MediaLinksEditorLayout extends React.Component<IProps & TFormikConnect> {
   componentDidMount(): void {
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const { name } = this.props;
+    const { name, formik } = this.props;
+    const { setFieldValue, values } = formik;
 
     if (!values[name]) setFieldValue(`${name}.0`, this.props.blankField);
   }
 
   render(): React.ReactNode {
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+    const { name, blankField, placeholder, formik } = this.props;
+    const { setFieldValue, values } = formik;
 
-    const { name, blankField, placeholder } = this.props;
     const mediaLinks: object[] = values[name] || [blankField];
     return (
       <FieldArray
@@ -124,3 +119,5 @@ export class MediaLinksEditor extends React.Component<IProps> {
     );
   }
 }
+
+export const MediaLinksEditor = connect<IProps, any>(MediaLinksEditorLayout);

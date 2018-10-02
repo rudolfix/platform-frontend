@@ -1,5 +1,5 @@
 .table-wrapper {
-  overflow: scroll;
+  overflow: auto;
 
   &:not(:global(.keep-rhythm)) {
     .cell {

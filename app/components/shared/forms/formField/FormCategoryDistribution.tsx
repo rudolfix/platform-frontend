@@ -1,12 +1,11 @@
-import { FieldArray, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { connect, FieldArray } from "formik";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import { CommonHtmlProps, TTranslatedString } from "../../../../types";
+import { CommonHtmlProps, TFormikConnect, TTranslatedString } from "../../../../types";
 import { ButtonIcon } from "../../buttons";
 import { FormHighlightGroup } from "../FormHighlightGroup";
-import { FormField } from "../index";
+import { FormField } from "./FormField";
 import { FormTextArea } from "./FormTextArea";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
@@ -94,19 +93,15 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
   </Row>
 );
 
-export class FormCategoryDistribution extends React.Component<
-  IProps & IExternalProps & CommonHtmlProps
+class FormCategoryDistributionLayout extends React.Component<
+  IProps & IExternalProps & CommonHtmlProps & TFormikConnect
 > {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   private blankField = { ...this.props.blankField };
   private suggestions = [...this.props.suggestions];
 
   componentWillMount(): void {
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const { name } = this.props;
+    const { name, formik } = this.props;
+    const { setFieldValue, values } = formik;
 
     if (!values[name]) {
       this.suggestions.forEach((_, index) => setFieldValue(`${name}.${index}`, this.blankField));
@@ -114,8 +109,17 @@ export class FormCategoryDistribution extends React.Component<
   }
 
   render(): React.ReactNode {
-    const { name, label, className, paragraphName, prefix, transformRatio, disabled } = this.props;
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
+    const {
+      name,
+      label,
+      className,
+      paragraphName,
+      prefix,
+      transformRatio,
+      disabled,
+      formik,
+    } = this.props;
+    const { setFieldValue, values } = formik;
 
     const categoryDistribution = values[name] || [];
     const formFieldKeys = Object.keys(this.blankField);
@@ -167,3 +171,7 @@ export class FormCategoryDistribution extends React.Component<
     );
   }
 }
+
+export const FormCategoryDistribution = connect<IProps & IExternalProps & CommonHtmlProps, any>(
+  FormCategoryDistributionLayout,
+);

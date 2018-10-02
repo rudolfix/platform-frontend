@@ -11,7 +11,7 @@ export interface IDocumentLinkProps {
   altIcon?: React.ReactNode;
 }
 
-export const DocumentLink: React.SFC<IDocumentLinkProps> = ({ url, name, altIcon }) => {
+const DocumentLink: React.SFC<IDocumentLinkProps> = ({ url, name, altIcon }) => {
   return (
     <a href={url} className={styles.documentLink} target="_blank">
       {altIcon || <Document extension={url} />}
@@ -19,3 +19,24 @@ export const DocumentLink: React.SFC<IDocumentLinkProps> = ({ url, name, altIcon
     </a>
   );
 };
+
+export interface IDocumentTemplateButtonProps {
+  title: string | React.ReactNode;
+  altIcon?: React.ReactNode;
+  onClick: () => void;
+}
+
+const DocumentTemplateButton: React.SFC<IDocumentTemplateButtonProps> = ({
+  onClick,
+  title,
+  altIcon,
+}) => {
+  return (
+    <button onClick={onClick} className={styles.documentLink}>
+      {altIcon || <Document extension="pdf" />}
+      {title}
+    </button>
+  );
+};
+
+export { DocumentLink, DocumentTemplateButton };

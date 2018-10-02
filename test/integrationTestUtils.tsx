@@ -9,6 +9,7 @@ import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { SinonSpy } from "sinon";
 
+import { delay } from "bluebird";
 import {
   createGlobalDependencies,
   customizerContainerWithMiddlewareApi,
@@ -19,6 +20,7 @@ import { symbols } from "../app/di/symbols";
 import { SignatureAuthApi } from "../app/lib/api/SignatureAuthApi";
 import { UsersApi } from "../app/lib/api/users/UsersApi";
 import { noopLogger } from "../app/lib/dependencies/Logger";
+import { IntlWrapper } from "../app/lib/intl/IntlWrapper";
 import { Storage } from "../app/lib/persistence/Storage";
 import { createMockStorage } from "../app/lib/persistence/Storage.mock";
 import { BrowserWalletConnector } from "../app/lib/web3/BrowserWallet";
@@ -28,15 +30,12 @@ import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
 import { createInjectMiddleware } from "../app/middlewares/redux-injectify";
 import { rootSaga } from "../app/modules/sagas";
 import { IAppState, reducers } from "../app/store";
+import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
-import { createMock, tid } from "./testUtils";
-import { delay } from "bluebird";
 import { globalFakeClock } from "./setupTestsHooks";
-import { WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL } from "../app/lib/web3/Web3Manager";
-import { IntlWrapper } from "../app/lib/intl/IntlWrapper";
-import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
+import { createMock, tid } from "./testUtils";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 
@@ -215,3 +214,17 @@ export function wrapWithIntl(component: React.ReactElement<any>): React.ReactEle
     </IntlProvider>
   );
 }
+
+const getCurrentSubmitCount = (element: ReactWrapper<any, any>) =>
+  element.find(tid("test-form-submit-count")).text();
+
+export const submit = async (element: ReactWrapper<any, any>): Promise<void> => {
+  const currentCount = getCurrentSubmitCount(element);
+
+  clickFirstTid(element, "test-form-submit");
+
+  await waitForPredicate(
+    () => currentCount !== getCurrentSubmitCount(element),
+    "Waiting for form to be submitted",
+  );
+};

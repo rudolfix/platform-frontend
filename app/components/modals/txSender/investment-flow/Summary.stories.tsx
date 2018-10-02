@@ -12,9 +12,8 @@ const data = {
   equityTokens: "500",
   estimatedReward: "40000000000000000000",
   etherPriceEur: "200",
-  agreementUrl: "somePDF.pdf",
 };
 
 storiesOf("Investment/InvestmentSummary", module).add("default", () => (
-  <InvestmentSummaryComponent {...data} onAccept={() => {}} />
+  <InvestmentSummaryComponent {...data} onAccept={() => {}} downloadAgreement={() => {}} />
 ));

@@ -1,4 +1,3 @@
-import { camelCase } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
@@ -49,7 +48,7 @@ interface IStateProps {
 }
 
 type IDispatchProps = ITxSummaryDispatchProps & {
-  downloadAgreement: () => void
+  downloadAgreement: (etoId: string) => void
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -131,7 +130,7 @@ const InvestmentSummaryComponent = injectIntlHelpers(
 
         <Row className="justify-content-center">
           <DocumentTemplateButton
-            onClick={downloadAgreement}
+            onClick={() => downloadAgreement(data.etoAddress)}
             title={<FormattedMessage id="investment-flow.summary.download-agreement" />}
           />
         </Row>
@@ -155,7 +154,6 @@ const InvestmentSummary = compose<IProps, {}>(
 
       // eto and computed values are guaranteed to be present at investment summary state
       const eto = selectEtoWithCompanyAndContractById(state, i.etoId)!;
-      const agreement = eto.templates[camelCase(EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT)]
 
       return {
         companyName: eto.company.name,
@@ -170,9 +168,8 @@ const InvestmentSummary = compose<IProps, {}>(
     },
     dispatchToProps: d => ({
       onAccept: () => d(actions.txSender.txSenderAccept()),
-      downloadDocumentTemplate: (document: IEtoDocument) => {
-        d(actions.immutableStorage.downloadImmutableFile(document as any, immutableDocumentName[document.documentType]))
-      }
+      downloadAgreement: (etoId: string) =>
+        d(actions.publicEtos.downloadDocumentByType(etoId, EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT))
     }),
   }),
 )(InvestmentSummaryComponent);

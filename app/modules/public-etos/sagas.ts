@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
+import { camelCase } from "lodash";
 import { compose, keyBy, map, omit } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
-import { promisify } from "../../lib/contracts/typechain-runtime";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
@@ -11,7 +11,9 @@ import {
   TEtoSpecsData,
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
+import { immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
+import { promisify } from "../../lib/contracts/typechain-runtime";
 import { IAppState } from "../../store";
 import { convertToBigInt } from "../../utils/Money.utils";
 import { actions, TAction } from "../actions";
@@ -19,7 +21,8 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
-import { selectCalculatedContributionByEtoId, selectEtoById } from "./selectors";
+import { selectCalculatedContributionByEtoId, selectEtoById, selectEtoWithCompanyAndContractById } from "./selectors";
+import { TEtoWithCompanyAndContract } from "./types";
 import {
   convertToCalculatedContribution,
   convertToEtoTotalInvestment,
@@ -183,9 +186,22 @@ function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): a
   }
 }
 
+function *downloadDocumentByType (_: TGlobalDependencies, action: TAction) : any {
+  if (action.type !== "PUBLIC_ETOS_DOWNLOAD_DOCUMENT_BY_TYPE") return;
+  const state: IAppState = yield select()
+  const eto = selectEtoById(state.publicEtos, action.payload.etoId)
+  if (eto) {
+    const document = eto.templates[camelCase(action.payload.documentType)]
+    if (document) {
+      yield put(actions.immutableStorage.downloadImmutableFile(document as any, immutableDocumentName[document.documentType]))
+    }
+  }
+}
+
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO_PREVIEW", loadEtoPreview);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO", loadEto);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION", loadCalculatedContribution);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_DOWNLOAD_DOCUMENT_BY_TYPE", downloadDocumentByType);
 }

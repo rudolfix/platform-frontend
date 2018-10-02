@@ -96,9 +96,6 @@ export function getInputErrorMessage(
 
 export function getInvestmentTypeMessages(type: EInvestmentType): React.ReactNode {
   switch (type) {
-    case EInvestmentType.ICBMEth:
-    case EInvestmentType.ICBMnEuro:
-      return <FormattedHTMLMessage id="investment-flow.icbm-wallet-info-message" tagName="p" />;
     case EInvestmentType.BankTransfer:
       return <FormattedHTMLMessage id="investment-flow.bank-transfer-info-message" tagName="p" />;
   }

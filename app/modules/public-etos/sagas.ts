@@ -21,8 +21,7 @@ import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { InvalidETOStateError } from "./errors";
 import { IPublicEtoState } from "./reducer";
-import { selectCalculatedContributionByEtoId, selectEtoById, selectEtoWithCompanyAndContractById } from "./selectors";
-import { TEtoWithCompanyAndContract } from "./types";
+import { selectCalculatedContributionByEtoId, selectEtoById } from "./selectors";
 import {
   convertToCalculatedContribution,
   convertToEtoTotalInvestment,
@@ -186,14 +185,23 @@ function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): a
   }
 }
 
-function *downloadDocumentByType (_: TGlobalDependencies, action: TAction) : any {
+function* downloadDocumentByType(_: TGlobalDependencies, action: TAction): any {
   if (action.type !== "PUBLIC_ETOS_DOWNLOAD_DOCUMENT_BY_TYPE") return;
-  const state: IAppState = yield select()
-  const eto = selectEtoById(state.publicEtos, action.payload.etoId)
+  const state: IAppState = yield select();
+  const eto = selectEtoById(state.publicEtos, action.payload.etoId);
   if (eto) {
-    const document = eto.templates[camelCase(action.payload.documentType)]
+    const document = eto.templates[camelCase(action.payload.documentType)];
     if (document) {
-      yield put(actions.immutableStorage.downloadImmutableFile(document as any, immutableDocumentName[document.documentType]))
+      yield put(
+        actions.immutableStorage.downloadImmutableFile(
+          {
+            ipfsHash: document.ipfsHash,
+            mimeType: document.mimeType,
+            asPdf: true,
+          },
+          immutableDocumentName[document.documentType],
+        ),
+      );
     }
   }
 }

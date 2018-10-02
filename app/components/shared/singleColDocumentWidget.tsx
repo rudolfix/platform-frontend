@@ -9,7 +9,7 @@ import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { documentTitles } from "../Documents";
-import { DocumentTemplateButton } from "./DocumentLink"
+import { DocumentTemplateButton } from "./DocumentLink";
 import { InlineIcon } from "./InlineIcon";
 import { Panel } from "./Panel";
 
@@ -71,4 +71,4 @@ const SingleColDocuments = compose<React.SFC<IOwnProps>>(
   }),
 )(SingleColDocumentsWidget);
 
-export {SingleColDocuments, SingleColDocumentsWidget}
+export { SingleColDocuments, SingleColDocumentsWidget };

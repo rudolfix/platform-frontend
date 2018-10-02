@@ -15,5 +15,11 @@ storiesOf("Document/DocumentLink", module)
   ));
 
 storiesOf("Document/DocumentTemplateButton", module)
-  .add("default", () => <DocumentTemplateButton title="my document template" onClick={() => {}}/>)
-  .add("custom icon", () => <DocumentTemplateButton title="my custom template" onClick={() => {}} altIcon={<InlineIcon svgIcon={link} />} />)
+  .add("default", () => <DocumentTemplateButton title="my document template" onClick={() => {}} />)
+  .add("custom icon", () => (
+    <DocumentTemplateButton
+      title="my custom template"
+      onClick={() => {}}
+      altIcon={<InlineIcon svgIcon={link} />}
+    />
+  ));

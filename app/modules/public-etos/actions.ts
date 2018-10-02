@@ -13,7 +13,7 @@ export const etoActions = {
   loadCalculatedContribution: (etoId: string, investmentEurUlps?: string) =>
     createAction("PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION", { etoId, investmentEurUlps }),
   downloadDocumentByType: (etoId: string, documentType: EEtoDocumentType) =>
-    createAction("PUBLIC_ETOS_DOWNLOAD_DOCUMENT_BY_TYPE", {etoId, documentType}),
+    createAction("PUBLIC_ETOS_DOWNLOAD_DOCUMENT_BY_TYPE", { etoId, documentType }),
   // state mutations
   setPublicEtos: ({
     etos,

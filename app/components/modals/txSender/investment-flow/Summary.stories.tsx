@@ -15,5 +15,5 @@ const data = {
 };
 
 storiesOf("Investment/InvestmentSummary", module).add("default", () => (
-  <InvestmentSummaryComponent {...data} onAccept={() => {}} downloadAgreement={() => {}}/>
+  <InvestmentSummaryComponent {...data} onAccept={() => {}} downloadAgreement={() => {}} />
 ));

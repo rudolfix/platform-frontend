@@ -24,7 +24,7 @@ import {
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/buttons";
-import { DocumentLink, DocumentTemplateButton } from "../../../shared/DocumentLink";
+import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
@@ -33,7 +33,7 @@ import { ITxSummaryDispatchProps } from "../TxSender";
 import { compose, setDisplayName } from "recompose";
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
-import { EEtoDocumentType, IEtoDocument, immutableDocumentName } from "../../../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
@@ -48,8 +48,8 @@ interface IStateProps {
 }
 
 type IDispatchProps = ITxSummaryDispatchProps & {
-  downloadAgreement: (etoId: string) => void
-}
+  downloadAgreement: (etoId: string) => void;
+};
 
 type IProps = IStateProps & IDispatchProps;
 
@@ -169,9 +169,14 @@ const InvestmentSummary = compose<IProps, {}>(
     dispatchToProps: d => ({
       onAccept: () => d(actions.txSender.txSenderAccept()),
       downloadAgreement: (etoId: string) =>
-        d(actions.publicEtos.downloadDocumentByType(etoId, EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT))
+        d(
+          actions.publicEtos.downloadDocumentByType(
+            etoId,
+            EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
+          ),
+        ),
     }),
   }),
 )(InvestmentSummaryComponent);
 
-export { InvestmentSummaryComponent, InvestmentSummary }
+export { InvestmentSummaryComponent, InvestmentSummary };

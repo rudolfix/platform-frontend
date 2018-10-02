@@ -29,7 +29,10 @@ export class EtoFileApi {
     return response.body;
   }
 
-  public async uploadEtoDocument(file: File, documentType: EEtoDocumentType): Promise<IEtoDocument> {
+  public async uploadEtoDocument(
+    file: File,
+    documentType: EEtoDocumentType,
+  ): Promise<IEtoDocument> {
     const data = new FormData();
     data.append("file", file);
     data.append(

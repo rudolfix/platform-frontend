@@ -24,14 +24,16 @@ import {
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { Button } from "../../../shared/buttons";
-import { DocumentLink } from "../../../shared/DocumentLink";
+import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps } from "../TxSender";
 
+import { compose, setDisplayName } from "recompose";
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
+import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
@@ -43,10 +45,13 @@ interface IStateProps {
   equityTokens: string;
   estimatedReward: string;
   etherPriceEur: string;
-  agreementUrl: string;
 }
 
-type IProps = IStateProps & ITxSummaryDispatchProps;
+type IDispatchProps = ITxSummaryDispatchProps & {
+  downloadAgreement: (etoId: string) => void;
+};
+
+type IProps = IStateProps & IDispatchProps;
 
 function formatEur(val?: string): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 0);
@@ -56,8 +61,8 @@ function formatEth(val?: string): string | undefined {
   return val && formatMoney(val, MONEY_DECIMALS, 4);
 }
 
-export const InvestmentSummaryComponent = injectIntlHelpers(
-  ({ agreementUrl, onAccept, gasCostEth, etherPriceEur, ...data }: IProps & IIntlProps) => {
+const InvestmentSummaryComponent = injectIntlHelpers(
+  ({ onAccept, downloadAgreement, gasCostEth, etherPriceEur, ...data }: IProps & IIntlProps) => {
     const equityTokens = (
       <span>
         {/* TODO: Change to actual custom token icon */}
@@ -124,9 +129,9 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
         </Row>
 
         <Row className="justify-content-center">
-          <DocumentLink
-            url={agreementUrl}
-            name={<FormattedMessage id="investment-flow.summary.download-agreement" />}
+          <DocumentTemplateButton
+            onClick={() => downloadAgreement(data.etoAddress)}
+            title={<FormattedMessage id="investment-flow.summary.download-agreement" />}
           />
         </Row>
 
@@ -140,26 +145,38 @@ export const InvestmentSummaryComponent = injectIntlHelpers(
   },
 );
 
-export const InvestmentSummary = appConnect<IStateProps, ITxSummaryDispatchProps>({
-  stateToProps: state => {
-    const i = state.investmentFlow;
-    const p = state.publicEtos;
+const InvestmentSummary = compose<IProps, {}>(
+  setDisplayName("InvestmentSummary"),
+  appConnect<IStateProps, ITxSummaryDispatchProps>({
+    stateToProps: state => {
+      const i = state.investmentFlow;
+      const p = state.publicEtos;
 
-    // eto and computed values are guaranteed to be present at investment summary state
-    const eto = selectEtoWithCompanyAndContractById(state, i.etoId)!;
-    return {
-      agreementUrl: "fufu", // TODO: add proper agreement document link
-      companyName: eto.company.name,
-      etoAddress: eto.etoId,
-      investmentEth: selectEthValueUlps(i),
-      investmentEur: selectEurValueUlps(i),
-      gasCostEth: selectInvestmentGasCostEth(i),
-      equityTokens: selectEquityTokenCountByEtoId(i.etoId, p) as string,
-      estimatedReward: selectNeuRewardUlpsByEtoId(i.etoId, p) as string,
-      etherPriceEur: selectEtherPriceEur(state.tokenPrice),
-    };
-  },
-  dispatchToProps: d => ({
-    onAccept: () => d(actions.txSender.txSenderAccept()),
+      // eto and computed values are guaranteed to be present at investment summary state
+      const eto = selectEtoWithCompanyAndContractById(state, i.etoId)!;
+
+      return {
+        companyName: eto.company.name,
+        etoAddress: eto.etoId,
+        investmentEth: selectEthValueUlps(i),
+        investmentEur: selectEurValueUlps(i),
+        gasCostEth: selectInvestmentGasCostEth(i),
+        equityTokens: selectEquityTokenCountByEtoId(i.etoId, p) as string,
+        estimatedReward: selectNeuRewardUlpsByEtoId(i.etoId, p) as string,
+        etherPriceEur: selectEtherPriceEur(state.tokenPrice),
+      };
+    },
+    dispatchToProps: d => ({
+      onAccept: () => d(actions.txSender.txSenderAccept()),
+      downloadAgreement: (etoId: string) =>
+        d(
+          actions.publicEtos.downloadPublicEtoDocumentByType(
+            etoId,
+            EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
+          ),
+        ),
+    }),
   }),
-})(InvestmentSummaryComponent);
+)(InvestmentSummaryComponent);
+
+export { InvestmentSummaryComponent, InvestmentSummary };

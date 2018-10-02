@@ -4,12 +4,22 @@
   font-weight: $font-weight-light;
   margin-bottom: $spacing-vertical-lg-1;
   text-decoration: underline;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
 
   :global {
+    .fa-link,
     .document-icon,
     .inline-icon {
       width: 18px;
       margin-right: 10px;
+      text-decoration: none;
+
+      &::after,
+      &::before {
+        text-decoration: none;
+      }
     }
   }
 }

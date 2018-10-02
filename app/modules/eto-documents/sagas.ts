@@ -1,9 +1,9 @@
 import { fork, put } from "redux-saga/effects";
 
-import { UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
+import { ETHEREUM_ZERO_ADDRESS, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
-import { EtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { downloadLink } from "../immutableFile/sagas";
@@ -17,13 +17,18 @@ export function* generateTemplate(
   try {
     const immutableFileId = action.payload.immutableFileId;
 
-    const templates = yield apiEtoFileService.getEtoTemplate({
-      documentType: immutableFileId.documentType,
-      name: immutableFileId.name,
-      form: "template",
-      ipfsHash: immutableFileId.ipfsHash,
-      mimeType: immutableFileId.mimeType,
-    });
+    const templates = yield apiEtoFileService.getEtoTemplate(
+      {
+        documentType: immutableFileId.documentType,
+        name: immutableFileId.name,
+        form: "template",
+        ipfsHash: immutableFileId.ipfsHash,
+        mimeType: immutableFileId.mimeType,
+      },
+      // token holder is required in on-chain state, use non-existing address
+      // to obtain issuer side template
+      { token_holder_ethereum_address: ETHEREUM_ZERO_ADDRESS },
+    );
     const generatedDocument = yield apiImmutableStorage.getFile({
       ...{
         ipfsHash: templates.ipfs_hash,
@@ -84,7 +89,7 @@ export function* loadEtoFileData({
 
 async function getDocumentOfTypePromise(
   { apiEtoFileService }: TGlobalDependencies,
-  documentType: EtoDocumentType,
+  documentType: EEtoDocumentType,
 ): Promise<IEtoDocument> {
   const documents: any = await apiEtoFileService.getAllEtoDocuments();
   const matchingDocument = Object.keys(documents).filter(ipfsHashKey => {

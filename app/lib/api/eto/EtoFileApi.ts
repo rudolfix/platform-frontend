@@ -1,9 +1,10 @@
 import { inject, injectable } from "inversify";
 
+import { Dictionary } from "lodash";
 import { symbols } from "../../../di/symbols";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
-  EtoDocumentType,
+  EEtoDocumentType,
   IEtoDocument,
   IEtoFiles,
   TEtoDocumentTemplates,
@@ -29,7 +30,10 @@ export class EtoFileApi {
     return response.body;
   }
 
-  public async uploadEtoDocument(file: File, documentType: EtoDocumentType): Promise<IEtoDocument> {
+  public async uploadEtoDocument(
+    file: File,
+    documentType: EEtoDocumentType,
+  ): Promise<IEtoDocument> {
     const data = new FormData();
     data.append("file", file);
     data.append(
@@ -78,10 +82,16 @@ export class EtoFileApi {
     return response.body;
   }
 
-  public async getEtoTemplate(etoDocument: IEtoDocument): Promise<IHttpResponse<IEtoDocument>> {
+  public async getEtoTemplate(
+    etoDocument: IEtoDocument,
+    inputs: Dictionary<string>,
+  ): Promise<IHttpResponse<IEtoDocument>> {
     const response = await this.httpClient.get<IHttpResponse<IEtoDocument>>({
       baseUrl: BASE_PATH,
       url: `${ETO_TEMPLATES_PATH}/${etoDocument.documentType}`,
+      queryParams: {
+        inputs: JSON.stringify(inputs),
+      },
       skipResponseParsing: true,
     });
     return response.body;
@@ -90,13 +100,15 @@ export class EtoFileApi {
   public async getSpecificEtoTemplate(
     etoId: string,
     etoDocument: IEtoDocument,
+    inputs: Dictionary<string>,
   ): Promise<IHttpResponse<IEtoDocument>> {
     const response = await this.httpClient.get<IHttpResponse<IEtoDocument>>({
       baseUrl: BASE_PATH,
       url: `${etoId}/${ETO_TEMPLATES_PATH}/${etoDocument.documentType}`,
       queryParams: {
-        input: JSON.stringify(etoDocument),
+        inputs: JSON.stringify(inputs),
       },
+      skipResponseParsing: true,
     });
 
     return response.body;

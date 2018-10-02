@@ -31,14 +31,12 @@ export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
           <InfoRow caption={<FormattedMessage id="withdraw-flow.to" />} value={txData.to} />
 
           <InfoRow
-            caption={<FormattedMessage id="withdraw-flow.cost" />}
+            caption={<FormattedMessage id="withdraw-flow.value" />}
             value={<Money currency="eth" value={txData.value} />}
           />
 
-          <InfoRow caption={<FormattedMessage id="withdraw-flow.gas" />} value={txData.gas} />
-
           <InfoRow
-            caption={<FormattedMessage id="withdraw-flow.gasPrice" />}
+            caption={<FormattedMessage id="withdraw-flow.transaction-cost" />}
             value={<GweiFormatter value={txData.gasPrice} />}
           />
         </InfoList>

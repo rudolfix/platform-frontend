@@ -55,9 +55,17 @@ interface IProps {
     url: string;
   };
   withCopy?: boolean;
+  dataTestId?: string;
 }
 
-const HighlightedField: React.SFC<IProps> = ({ label, value, icon, link, withCopy }) => {
+const HighlightedField: React.SFC<IProps> = ({
+  label,
+  value,
+  icon,
+  link,
+  withCopy,
+  dataTestId,
+}) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.highlightedHeader}>
@@ -74,7 +82,10 @@ const HighlightedField: React.SFC<IProps> = ({ label, value, icon, link, withCop
           </div>
         )}
       </div>
-      <div className={cn(styles.highlightedField, withCopy && "d-flex justify-content-between")}>
+      <div
+        className={cn(styles.highlightedField, withCopy && "d-flex justify-content-between")}
+        data-test-id={dataTestId}
+      >
         {withCopy && <CopyToClipboard value={value} />}
         {value}
       </div>
@@ -149,6 +160,7 @@ const MigrateBody: React.SFC<{
         }
         value={walletMigrationData.smartContractAddress}
         withCopy
+        dataTestId="modals.icbm-balance-modal.migrate-body.to"
       />
       <HighlightedField
         label={
@@ -163,11 +175,13 @@ const MigrateBody: React.SFC<{
         }
         value={walletMigrationData.gasLimit}
         withCopy
+        dataTestId="modals.icbm-balance-modal.migrate-body.gas-limit"
       />
       <HighlightedField
         label={<FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.data" />}
         value={walletMigrationData.migrationInputData}
         withCopy
+        dataTestId="modals.icbm-balance-modal.migrate-body.input-data"
       />
     </>
   );
@@ -178,7 +192,11 @@ const BalanceFooter: React.SFC<{ startMigration: () => void; disabled?: boolean 
   disabled,
 }) => {
   return (
-    <Button onClick={startMigration} disabled={disabled}>
+    <Button
+      onClick={startMigration}
+      disabled={disabled}
+      data-test-id="modals.icbm-balance-modal.balance-footer.generate-transaction"
+    >
       <FormattedMessage id="settings.modal.icbm-wallet-balance.button" />
     </Button>
   );

@@ -1,6 +1,5 @@
-import { Field, FormikProps } from "formik";
+import { connect, Field, FieldProps, FormikConsumer, FormikContext } from "formik";
 import { includes } from "lodash";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 
 import { CheckboxComponent } from "./FormCheckbox";
@@ -9,22 +8,22 @@ interface IFormFieldCheckboxGroupProps {
   name: string;
 }
 
-export class FormFieldCheckboxGroup extends React.Component<IFormFieldCheckboxGroupProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
+export class FormFieldCheckboxGroupLayout extends React.Component<
+  IFormFieldCheckboxGroupProps & {
+    formik: FormikContext<any>;
+  }
+> {
   componentWillMount(): void {
     this.setDefaultValueIfNeeded();
   }
 
   private setDefaultValueIfNeeded(): void {
-    const { name } = this.props;
-    const formik: FormikProps<any> = this.context.formik;
+    const { name, formik } = this.props;
+    const { setFieldValue } = formik;
     const value = formik.values[name];
 
     if (value === undefined) {
-      formik.setFieldValue(this.props.name, []);
+      setFieldValue(this.props.name, []);
     }
   }
 
@@ -35,51 +34,54 @@ export class FormFieldCheckboxGroup extends React.Component<IFormFieldCheckboxGr
   }
 }
 
+export const FormFieldCheckboxGroup = connect<IFormFieldCheckboxGroupProps, any>(
+  FormFieldCheckboxGroupLayout,
+);
+
 interface IFormFieldCheckboxProps {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
-export class FormFieldCheckbox extends React.Component<IFormFieldCheckboxProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
+const toggle = (values: string[], valueToToggle: string): string[] => {
+  const alreadyExists = includes(values, valueToToggle);
 
+  if (alreadyExists) {
+    return values.filter(v => v !== valueToToggle);
+  } else {
+    return [...values, valueToToggle];
+  }
+};
+
+export class FormFieldCheckbox extends React.Component<IFormFieldCheckboxProps> {
   render(): React.ReactNode {
     const { value, label, disabled, ...restProps } = this.props;
-    const { setFieldValue } = this.context.formik as FormikProps<any>;
 
     return (
-      <FormFieldNameContext.Consumer>
-        {fieldName => (
-          <Field
-            name={fieldName}
-            render={({ field }) => (
-              <CheckboxComponent
-                {...restProps}
+      <FormikConsumer>
+        {({ setFieldValue }) => (
+          <FormFieldNameContext.Consumer>
+            {fieldName => (
+              <Field
                 name={fieldName}
-                disabled={disabled}
-                label={label}
-                value={value}
-                checked={includes(field.value, value)}
-                onChange={() => setFieldValue(fieldName, this.toggle(field.value, value))}
+                render={({ field }: FieldProps) => (
+                  <CheckboxComponent
+                    {...restProps}
+                    name={fieldName}
+                    disabled={disabled}
+                    label={label}
+                    value={value}
+                    checked={includes(field.value, value)}
+                    onChange={() => setFieldValue(fieldName, toggle(field.value, value))}
+                  />
+                )}
               />
             )}
-          />
+          </FormFieldNameContext.Consumer>
         )}
-      </FormFieldNameContext.Consumer>
+      </FormikConsumer>
     );
-  }
-
-  private toggle(values: string[], valueToToggle: string): string[] {
-    const alreadyExists = includes(values, valueToToggle);
-
-    if (alreadyExists) {
-      return values.filter(v => v !== valueToToggle);
-    } else {
-      return [...values, valueToToggle];
-    }
   }
 }
 

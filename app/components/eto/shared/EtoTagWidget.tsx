@@ -1,6 +1,5 @@
 import * as cn from "classnames";
-import { Field, FieldProps, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { Creatable as ReactSelectCreatable } from "react-select";
 import Select from "react-virtualized-select";
@@ -76,35 +75,37 @@ const TagsFormEditor: React.SFC<ICombinedProps & IInternalProps> = props => (
 );
 
 export class EtoTagWidget extends React.Component<IProps & CommonHtmlProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   render(): React.ReactNode {
     const { name, selectedTagsLimit } = this.props;
-    const { setFieldValue, values } = this.context.formik as FormikProps<any>;
-    const selectedTags: string[] = values[name] || [];
 
     return (
-      <Field
-        name={name}
-        render={({ field }: FieldProps) => (
-          <TagsFormEditor
-            {...this.props}
-            {...field}
-            onChange={newTag => {
-              const isAlreadyOnTheList = selectedTags.some(tag => tag === newTag);
-              if (!isAlreadyOnTheList) setFieldValue(name, [...selectedTags, newTag]);
-            }}
-            handleSelectedTagClick={(clickedTag: string) => {
-              const listWithRemovedTag = selectedTags.filter(tag => tag !== clickedTag);
-              return setFieldValue(name, listWithRemovedTag);
-            }}
-            disabled={selectedTags.length === selectedTagsLimit}
-            values={selectedTags}
-          />
-        )}
-      />
+      <FormikConsumer>
+        {({ values, setFieldValue }) => {
+          const selectedTags: string[] = values[name] || [];
+
+          return (
+            <Field
+              name={name}
+              render={({ field }: FieldProps) => (
+                <TagsFormEditor
+                  {...this.props}
+                  {...field}
+                  onChange={newTag => {
+                    const isAlreadyOnTheList = selectedTags.some(tag => tag === newTag);
+                    if (!isAlreadyOnTheList) setFieldValue(name, [...selectedTags, newTag]);
+                  }}
+                  handleSelectedTagClick={(clickedTag: string) => {
+                    const listWithRemovedTag = selectedTags.filter(tag => tag !== clickedTag);
+                    return setFieldValue(name, listWithRemovedTag);
+                  }}
+                  disabled={selectedTags.length === selectedTagsLimit}
+                  values={selectedTags}
+                />
+              )}
+            />
+          );
+        }}
+      </FormikConsumer>
     );
   }
 }

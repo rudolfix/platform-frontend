@@ -260,7 +260,7 @@ interface IFieldGroup {
   "data-test-id"?: string;
 }
 
-type FieldGroupProps = IFieldGroup & FieldAttributes;
+type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
 const FormSelectCountryField: React.SFC<FieldGroupProps> = props => (
   <FormSelectField {...props} values={VALUES} />

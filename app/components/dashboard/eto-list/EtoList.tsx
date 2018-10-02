@@ -84,7 +84,7 @@ export const EtoList = compose<React.ComponentClass>(
   setDisplayName("EtoList"),
   onEnterAction({
     actionCreator: d => {
-      d(actions.wallet.startLoadingWalletData());
+      d(actions.wallet.loadWalletData());
       d(actions.publicEtos.loadEtos());
     },
   }),

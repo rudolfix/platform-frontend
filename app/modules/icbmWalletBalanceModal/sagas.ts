@@ -14,8 +14,8 @@ import { TAction } from "./../actions";
 import { IWalletMigrationData } from "./reducer";
 import { selectIcbmWalletEthAddress } from "./selectors";
 
+const BLOCK_MINING_TIME_DELAY = 12000;
 class IcbmWalletError extends Error {}
-
 class NoIcbmWalletError extends IcbmWalletError {}
 class SameUserError extends IcbmWalletError {}
 
@@ -41,6 +41,7 @@ function* loadIcbmWalletMigrationTransactionSaga({
     ] = yield contractsService.etherLock.getInvestorMigrationWallets(icbmEthAddress);
 
     const didUserConductFirstTransaction = !!(
+      investorMigrationWallet[0][0] &&
       investorMigrationWallet[0][0].toLowerCase() === currentEthAddress.toLowerCase() &&
       investorMigrationWallet[0].length === 1
     );
@@ -122,13 +123,15 @@ function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDep
       BigNumber[]
     ] = yield contractsService.etherLock.getInvestorMigrationWallets(icbmEthAddress);
     const didUserConductFirstTransaction = !!(
-      investorMigrationWallet[0][0] === currentEthAddress && investorMigrationWallet[0].length === 1
+      investorMigrationWallet[0][0] &&
+      investorMigrationWallet[0][0].toLowerCase() === currentEthAddress.toLowerCase() &&
+      investorMigrationWallet[0].length === 1
     );
     if (didUserConductFirstTransaction) {
       yield put(actions.icbmWalletBalanceModal.getWalletData(icbmEthAddress));
       return;
     }
-    yield delay(3000);
+    yield delay(BLOCK_MINING_TIME_DELAY);
   }
 }
 

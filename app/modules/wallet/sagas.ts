@@ -1,5 +1,5 @@
 import * as promiseAll from "promise-all";
-import { delay } from "redux-saga"
+import { delay } from "redux-saga";
 import { fork, put, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -23,7 +23,7 @@ function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
     yield take("GAS_API_LOADED");
 
     const state: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
-    yield put(actions.wallet.loadWalletData(state));
+    yield put(actions.wallet.saveWalletData(state));
     logger.info("Wallet Loaded");
   } catch (e) {
     yield put(actions.wallet.loadWalletDataError("Error while loading wallet data."));
@@ -84,6 +84,6 @@ function* walletBalanceWatcher(): any {
 }
 
 export function* walletSagas(): any {
-  yield fork(neuTakeEvery, "WALLET_START_LOADING", loadWalletDataSaga);
-  yield neuTakeUntil("AUTH_LOAD_USER", "AUTH_LOGOUT", walletBalanceWatcher);
+  yield fork(neuTakeEvery, "WALLET_LOAD_WALLET_DATA", loadWalletDataSaga);
+  yield neuTakeUntil("WALLET_START_WATCHING", "AUTH_LOGOUT", walletBalanceWatcher);
 }

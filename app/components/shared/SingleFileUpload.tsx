@@ -19,6 +19,7 @@ interface IProps {
   label: string | React.ReactNode;
   onDropFile: (file: File) => void;
   onDeleteFile: () => void;
+  "data-test-id"?: string;
 }
 
 export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> {
@@ -60,6 +61,7 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
         disabledClassName="disabled"
         className={cn(styles.dropzone, className)}
         style={style}
+        data-test-id={this.props["data-test-id"]}
       >
         <div className={styles.fakeDropzoneArea}>
           {hasFile ? <img src={file} alt="File uploaded" /> : dropzoneInner}

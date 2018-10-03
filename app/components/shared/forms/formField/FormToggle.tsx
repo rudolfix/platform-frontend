@@ -1,6 +1,7 @@
-import { Field, FieldProps, FormikProps } from "formik";
-import * as PropTypes from "prop-types";
+import { connect, Field, FieldProps } from "formik";
 import * as React from "react";
+
+import { TFormikConnect } from "../../../../types";
 
 import * as styles from "./FormToggle.module.scss";
 
@@ -50,11 +51,7 @@ export const ToggleComponent: React.SFC<IProps & IInternalProps> = ({
   );
 };
 
-export class FormToggle extends React.Component<IProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
+class FormToggleLayout extends React.Component<IProps & TFormikConnect> {
   static defaultProps = {
     trueValue: true,
     falseValue: false,
@@ -65,23 +62,25 @@ export class FormToggle extends React.Component<IProps> {
   }
 
   private setDefaultValueIfNeeded(): void {
-    const { name, falseValue } = this.props;
-    const formik: FormikProps<any> = this.context.formik;
-    const value = formik.values[name];
+    const { name, falseValue, formik } = this.props;
+    const { values, setFieldValue } = formik;
+
+    const value = values[name];
 
     if (value === undefined) {
-      formik.setFieldValue(this.props.name, falseValue);
+      setFieldValue(this.props.name, falseValue);
     }
   }
 
   private onChange = (e: React.ChangeEvent<any>) => {
-    const { trueValue, falseValue } = this.props;
-    const formik: FormikProps<any> = this.context.formik;
+    const { trueValue, falseValue, formik } = this.props;
+    const { setFieldValue } = formik;
+
     const isChecked = e.target.checked;
 
     const finalValue = isChecked ? trueValue : falseValue;
 
-    formik.setFieldValue(this.props.name, finalValue);
+    setFieldValue(this.props.name, finalValue);
   };
 
   render(): React.ReactNode {
@@ -102,3 +101,5 @@ export class FormToggle extends React.Component<IProps> {
     );
   }
 }
+
+export const FormToggle = connect<IProps, any>(FormToggleLayout);

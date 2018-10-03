@@ -62,60 +62,70 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
       redirectTo: etoRegisterRoutes.companyInformation,
       progress: companyInformationProgress,
       name: <FormattedMessage id="eto.form-progress-widget.about" />,
+      testingId: "eto-progress-widget-about",
       readonly: false,
     },
     {
       redirectTo: etoRegisterRoutes.legalInformation,
       progress: legalInformationProgress,
       name: <FormattedMessage id="eto.form-progress-widget.legal-info" />,
+      testingId: "eto-progress-widget-legal-info",
       readonly: etoStatus !== EtoState.PREVIEW,
     },
     {
       redirectTo: etoRegisterRoutes.etoInvestmentTerms,
       progress: etoInvestmentTermsProgress,
       name: <FormattedMessage id="eto.form-progress-widget.investment-terms" />,
+      testingId: "eto-progress-widget-investment-terms",
       readonly: etoStatus !== EtoState.PREVIEW,
     },
     {
       redirectTo: etoRegisterRoutes.etoTerms,
       progress: etoTermsProgress,
       name: <FormattedMessage id="eto.form-progress-widget.eto-terms" />,
+      testingId: "eto-progress-widget-eto-terms",
       readonly: etoStatus !== EtoState.PREVIEW,
     },
     {
       redirectTo: etoRegisterRoutes.keyIndividuals,
       progress: etoKeyIndividualsProgress,
       name: <FormattedMessage id="eto.form-progress-widget.key-individuals" />,
+      testingId: "eto-progress-widget-key-individuals",
       readonly: false,
     },
     {
       redirectTo: etoRegisterRoutes.productVision,
       progress: productVisionProgress,
       name: <FormattedMessage id="eto.form-progress-widget.product-vision" />,
+      testingId: "eto-progress-widget-product-vision",
       readonly: false,
     },
     {
       redirectTo: etoRegisterRoutes.etoMedia,
       progress: etoMediaProgress,
       name: <FormattedMessage id="eto.form-progress-widget.media" />,
+      testingId: "eto-progress-widget-media",
       readonly: false,
     },
     {
       redirectTo: etoRegisterRoutes.etoRiskAssessment,
       progress: etoRiskAssessmentProgress,
       name: <FormattedMessage id="eto.form-progress-widget.risk-assessment" />,
+      testingId: "eto-progress-widget-risk-assessment",
       readonly: false,
     },
     {
       redirectTo: etoRegisterRoutes.etoEquityTokenInfo,
       progress: etoEquityTokenInfoProgress,
       name: <FormattedMessage id="eto.form-progress-widget.equity-token-info" />,
+      testingId: "eto-progress-widget-equity-token-info",
       readonly: etoStatus !== EtoState.PREVIEW,
     },
     {
       redirectTo: etoRegisterRoutes.etoVotingRight,
       progress: etoVotingRightProgress,
       name: <FormattedMessage id="eto.form-progress-widget.voting-right" />,
+      testingId: "eto-progress-widget-voting-right",
       readonly: etoStatus !== EtoState.PREVIEW,
     },
   ];
@@ -123,7 +133,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
   return (
     <>
       {sections.map((section, index) => (
-        <Col key={index} lg={4} xs={12} md={6} className="mb-4">
+        <Col key={index} lg={4} xs={12} md={6} className="mb-4" data-test-id={section.testingId}>
           <EtoFormProgressWidget
             isLoading={loadingData}
             to={section.redirectTo}

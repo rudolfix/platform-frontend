@@ -1,6 +1,5 @@
-import { Field, FieldAttributes, FieldProps } from "formik";
+import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import { map, mapValues } from "lodash";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
@@ -47,13 +46,9 @@ interface IFieldGroup {
     [key: string]: boolean;
   };
 }
-type FieldGroupProps = IFieldGroup & FieldAttributes;
+type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
 export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
-  static contextTypes = {
-    formik: PropTypes.object,
-  };
-
   renderOptions = () =>
     this.props.customOptions
       ? this.props.customOptions
@@ -67,47 +62,52 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
           </option>
         ));
 
-  render(): React.ReactChild {
+  render(): React.ReactNode {
     const { label, name, extraMessage, "data-test-id": dataTestId, disabled } = this.props;
-    const { touched, errors, setFieldTouched } = this.context.formik;
-
-    //This is done due to the difference between reactstrap and @typings/reactstrap
-    const inputExtraProps = {
-      invalid: isNonValid(touched, errors, name),
-    } as any;
 
     return (
-      <FormGroup>
-        {label && <FormLabel>{label}</FormLabel>}
-        <div className={styles.customSelect}>
-          <Field
-            name={name}
-            render={({ field }: FieldProps) => (
-              <Input
-                {...field}
-                disabled={disabled}
-                onFocus={() => setFieldTouched(name, true)}
-                type="select"
-                value={field.value}
-                valid={isValid(touched, errors, name)}
-                data-test-id={dataTestId}
-                {...inputExtraProps}
-              >
-                {this.renderOptions()}
-              </Input>
-            )}
-          />
-        </div>
-        {extraMessage ? (
-          <div className={styles.noteLabel}>{extraMessage}</div>
-        ) : (
-          <>
-            {isNonValid(touched, errors, name) && (
-              <div className={styles.errorLabel}>{errors[name]}</div>
-            )}
-          </>
-        )}
-      </FormGroup>
+      <FormikConsumer>
+        {({ touched, errors, setFieldTouched }) => {
+          //This is done due to the difference between reactstrap and @typings/reactstrap
+          const inputExtraProps = {
+            invalid: isNonValid(touched, errors, name),
+          } as any;
+
+          return (
+            <FormGroup>
+              {label && <FormLabel>{label}</FormLabel>}
+              <div className={styles.customSelect}>
+                <Field
+                  name={name}
+                  render={({ field }: FieldProps) => (
+                    <Input
+                      {...field}
+                      disabled={disabled}
+                      onFocus={() => setFieldTouched(name, true)}
+                      type="select"
+                      value={field.value}
+                      valid={isValid(touched, errors, name)}
+                      data-test-id={dataTestId}
+                      {...inputExtraProps}
+                    >
+                      {this.renderOptions()}
+                    </Input>
+                  )}
+                />
+              </div>
+              {extraMessage ? (
+                <div className={styles.noteLabel}>{extraMessage}</div>
+              ) : (
+                <>
+                  {isNonValid(touched, errors, name) && (
+                    <div className={styles.errorLabel}>{errors[name]}</div>
+                  )}
+                </>
+              )}
+            </FormGroup>
+          );
+        }}
+      </FormikConsumer>
     );
   }
 }

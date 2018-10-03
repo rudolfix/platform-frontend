@@ -94,7 +94,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
   return (
     <>
       <PersonProfileModal />
-      <div>
+      <article data-test-id="eto.public-view">
         <Cover
           companyName={companyData.brandName}
           companyOneliner={companyData.companyOneliner}
@@ -569,7 +569,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
               )}
           </Col>
         </Row>
-      </div>
+      </article>
     </>
   );
 };

@@ -16,7 +16,7 @@ DO:
 <MyComponent title="good" />
 ```
 
-## Imports
+## Imports & Exports
 
 - imports should be grouped like this:
 
@@ -38,7 +38,23 @@ import * as styles from "./styles.module.scss"
 
 - each group should be separated by a new line
 - items in group should be automatically sorted automatically by linter
+
 - [DO NOT USE DEFAULT EXPORTS](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad)
+- export component variables at the end of a file, not directly at declaration, to prevent conponent
+  names in react dev tools.
+
+```javascript
+export const Component: React.SFC = () => <div />;
+```
+
+becomes:
+
+```javascript
+const Component: React.SFC = () => <div />;
+
+// at the end of the file
+export { Component };
+```
 
 ## Functional components:
 
@@ -48,9 +64,11 @@ import * as styles from "./styles.module.scss"
 - functional components should always be of a type `React.SFC<IProps>` not `()=>..`
 - prefer destructing props object if there are not so many props (< 5)
   `({ onClick, className }) => ...` instead of `(props) => ...`
+- for complex component behavior, prefer to use `recompose` utils, than class components
 
 ## Class components:
 
+- prefer recompose, use only if unavoidable
 - avoid constructors: \* use class field declarations to set initial state, bind functions etc
 
 ```javascript
@@ -88,6 +106,7 @@ class Component extends React.Component<IProps, IState> {
 
 - use `appConnect<IStateProps, IDispatchProps, IOwnProps>`
 - use separate interfaces for props from state, dispatch, own
+- use `setDisplayName` for preserving the component name in react dev tools
 
 ## Redux Sagas
 

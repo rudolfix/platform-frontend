@@ -13,13 +13,13 @@ import {
   selectLockedEuroTokenBalance,
 } from "../../../../modules/wallet/selectors";
 import { IAppState } from "../../../../store";
+import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { WalletSelectionData } from "./InvestmentTypeSelector";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
-import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 
 export function createWallets(state: IAppState): WalletSelectionData[] {
   const w = state.wallet;

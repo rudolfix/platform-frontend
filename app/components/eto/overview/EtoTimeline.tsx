@@ -37,7 +37,7 @@ interface IPointerProps {
   position?: number;
 }
 
-const today = Date.now();
+const now = Date.now();
 
 const TIMELINE_WIDTH = 1000;
 const TIMELINE_HEIGHT = 106;
@@ -68,7 +68,7 @@ const DatePoint: React.SFC<IDatePointProps> = ({ date, type, text }) => {
   return (
     <g transform="translate(-33 -9)">
       {date && (
-        <text className={cn(date > today && styles.datePast, styles.date)}>
+        <text className={cn(date > now && styles.datePast, styles.date)}>
           <tspan x="12" y="50">
             <FormattedDate value={date} />
           </tspan>
@@ -187,7 +187,7 @@ const Pointer: React.SFC<IPointerProps> = ({ position }) => {
       />
       <text className={styles.pointerLabel}>
         <tspan x="14" y="12">
-          <FormattedMessage id="shared-component.eto-timeline.today" />
+          <FormattedMessage id="shared-component.eto-timeline.now" />
         </tspan>
       </text>
     </g>
@@ -198,14 +198,6 @@ const getStartOfState = (state: ETOStateOnChain, startOfStates: TEtoStartOfState
   const startDate = startOfStates && startOfStates[state];
 
   return startDate ? startDate.getTime() : NaN;
-};
-
-const convertToStartOfDate = (epoch: number) => {
-  const date = new Date(epoch);
-
-  date.setHours(0, 0, 0);
-
-  return date.getTime();
 };
 
 export const EtoTimeline: React.SFC<IProps> = ({ startOfStates }) => {
@@ -234,16 +226,14 @@ export const EtoTimeline: React.SFC<IProps> = ({ startOfStates }) => {
 
   const pointerPosition = () => {
     const hasStartDate = !isNaN(preEtoStartDate);
-    const todayStartOfDay = convertToStartOfDate(today);
-    const preEtoStartOfDay = convertToStartOfDate(preEtoStartDate);
 
-    if (!hasStartDate || todayStartOfDay < preEtoStartOfDay) {
+    if (!hasStartDate || now < preEtoStartDate) {
       return POINTER_CAMPAINING_POSITION;
     }
 
     const calculatedPosition =
       CAMPAIGNING_BLOCK_WIDTH +
-      ((todayStartOfDay - preEtoStartOfDay) / totalTimeScope) * MORPHING_TIMELINE_WIDTH;
+      ((now - preEtoStartDate) / totalTimeScope) * MORPHING_TIMELINE_WIDTH;
 
     const position =
       calculatedPosition > MAX_POINTER_POSITION ? MAX_POINTER_POSITION : calculatedPosition;

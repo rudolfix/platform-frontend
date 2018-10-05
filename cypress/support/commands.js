@@ -23,3 +23,8 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("awaitedClick", { prevSubject: "element" }, (subject, options = {}) => {
+  cy.wait(500);
+  subject.click();
+});

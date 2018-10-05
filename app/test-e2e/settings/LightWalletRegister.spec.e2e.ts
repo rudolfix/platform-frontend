@@ -30,7 +30,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).click();
+    cy.get(tid("Header-logout")).awaitedClick();
 
     loginWithLightWallet(email, password);
 
@@ -43,7 +43,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).click();
+    cy.get(tid("Header-logout")).awaitedClick();
 
     loginWithLightWallet(email, password);
 
@@ -55,7 +55,7 @@ describe("Light wallet login / register", () => {
         cy.visit("eto/login/light");
         cy.contains(tid("light-wallet-login-with-email-email-field"), email);
         cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
-        cy.get(tid("wallet-selector-nuewallet.login-button")).click();
+        cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
 
         return assertUserInDashboard().then(() => {
           expect((window.localStorage as any).NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
@@ -92,7 +92,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).click();
+    cy.get(tid("Header-logout")).awaitedClick();
     cy.clearLocalStorage();
 
     cy.writeFile('/tmp/cypress-outout.log', 'test!')

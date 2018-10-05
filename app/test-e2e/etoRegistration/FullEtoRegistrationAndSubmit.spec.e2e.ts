@@ -20,50 +20,50 @@ describe("Eto Forms", () => {
     cy.visit("/dashboard");
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-about", "button")).click();
+    cy.get(tid("eto-progress-widget-about", "button")).awaitedClick();
     fillForm(aboutForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-legal-info", "button")).click();
+    cy.get(tid("eto-progress-widget-legal-info", "button")).awaitedClick();
     fillForm(legalInfoForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-investment-terms", "button")).click();
+    cy.get(tid("eto-progress-widget-investment-terms", "button")).awaitedClick();
     fillForm(investmentTermsForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-eto-terms", "button")).click();
+    cy.get(tid("eto-progress-widget-eto-terms", "button")).awaitedClick();
     fillForm(etoTermsForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-key-individuals", "button")).click();
+    cy.get(tid("eto-progress-widget-key-individuals", "button")).awaitedClick();
     // first click on all the add buttons to open the fields
-    cy.get(tid("key-individuals-group-button-advisors")).click();
-    cy.get(tid("key-individuals-group-button-keyAlliances")).click();
-    cy.get(tid("key-individuals-group-button-boardMembers")).click();
-    cy.get(tid("key-individuals-group-button-notableInvestors")).click();
-    cy.get(tid("key-individuals-group-button-keyCustomers")).click();
-    cy.get(tid("key-individuals-group-button-partners")).click();
+    cy.get(tid("key-individuals-group-button-advisors")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-keyAlliances")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-boardMembers")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-notableInvestors")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-keyCustomers")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-partners")).awaitedClick();
     fillForm(etoKeyIndividualsForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-product-vision", "button")).click();
+    cy.get(tid("eto-progress-widget-product-vision", "button")).awaitedClick();
     fillForm(productVisionForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-media", "button")).click();
+    cy.get(tid("eto-progress-widget-media", "button")).awaitedClick();
     fillForm(mediaForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-risk-assessment", "button")).click();
+    cy.get(tid("eto-progress-widget-risk-assessment", "button")).awaitedClick();
     fillForm(riskForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-equity-token-info", "button")).click();
+    cy.get(tid("eto-progress-widget-equity-token-info", "button")).awaitedClick();
     fillForm(equityTokenInfoForm);
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-voting-right", "button")).click();
+    cy.get(tid("eto-progress-widget-voting-right", "button")).awaitedClick();
     fillForm(votingRights);
     assertEtoDashboard();
   });

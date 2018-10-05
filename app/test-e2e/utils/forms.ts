@@ -61,7 +61,7 @@ export const fillForm = (fixture: TFormFixture, submit: boolean = true) => {
     }
   });
   if (submit) {
-    cy.get(tid(submitButtonTid)).click();
+    cy.get(tid(submitButtonTid)).awaitedClick();
   }
 };
 

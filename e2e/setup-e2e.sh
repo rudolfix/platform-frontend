@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 
-BACKEND_SHA=f793f6634cf3f172377cccb2e8c162da3cfc0dde
+BACKEND_SHA=a248b476ad7e528ddf545f38f4905e6d6927a811
 
 # we tag images with shorter SHA
 BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}

@@ -164,12 +164,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
               <FormattedMessage id="eto.public-view.eto-timeline" />
             </SectionHeader>
             <Panel>
-              <EtoTimeline
-                etoStartDate={etoData.startDate}
-                preEtoDuration={etoData.whitelistDurationDays}
-                publicEtoDuration={etoData.publicDurationDays}
-                inSigningDuration={etoData.signingDurationDays}
-              />
+              <EtoTimeline startOfStates={etoData.contract && etoData.contract.startOfStates} />
             </Panel>
           </Col>
         </Row>

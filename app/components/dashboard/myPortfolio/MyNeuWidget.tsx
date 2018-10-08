@@ -45,7 +45,6 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
               <FormattedMessage id="dashboard.my-neu-widget.about" />
             </Button>
           </a>
-          m
         </Col>
       </Row>
     </div>

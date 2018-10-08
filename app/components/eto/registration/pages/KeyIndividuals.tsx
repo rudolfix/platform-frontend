@@ -66,47 +66,45 @@ const Individual: React.SFC<IIndividual> = ({
   canRemove,
   index,
   groupFieldName,
-}) => (
-  <FormHighlightGroup>
-    {canRemove && (
-      <ButtonIcon svgIcon={closeIcon} onClick={onRemoveClick} className={styles.removeButton} />
-    )}
-    <FormField
-      name={`${groupFieldName}.members.${index}.name`}
-      label={<FormattedMessage id="eto.form.key-individuals.name" />}
-      placeholder="name"
-    />
-    <FormField
-      name={`${groupFieldName}.members.${index}.role`}
-      label={<FormattedMessage id="eto.form.key-individuals.role" />}
-      placeholder="role"
-    />
-    <FormTextArea
-      name={`${groupFieldName}.members.${index}.description`}
-      label={<FormattedMessage id="eto.form.key-individuals.short-bio" />}
-      placeholder=" "
-      charactersLimit={1200}
-    />
-    <FormSingleFileUpload
-      label={<FormattedMessage id="eto.form.key-individuals.image" />}
-      name={`${groupFieldName}.members.${index}.image`}
-      acceptedFiles="image/*"
-      fileFormatInformation="*150 x 150px png"
-    />
-    <FormField
-      className="mt-4"
-      name={`${groupFieldName}.members.${index}.website`}
-      placeholder="website"
-    />
-    <FormLabel className="mt-4 mb-2">
-      <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
-    </FormLabel>
-    <SocialProfilesEditor
-      profiles={SOCIAL_PROFILES_PERSON}
-      name={`${groupFieldName}.members.${index}.socialChannels`}
-    />
-  </FormHighlightGroup>
-);
+}) => {
+  const group = `${groupFieldName}.members.${index}`;
+
+  return (
+    <FormHighlightGroup>
+      {canRemove && (
+        <ButtonIcon svgIcon={closeIcon} onClick={onRemoveClick} className={styles.removeButton} />
+      )}
+      <FormField
+        name={`${group}.name`}
+        label={<FormattedMessage id="eto.form.key-individuals.name" />}
+        placeholder="name"
+      />
+      <FormField
+        name={`${group}.role`}
+        label={<FormattedMessage id="eto.form.key-individuals.role" />}
+        placeholder="role"
+      />
+      <FormTextArea
+        name={`${group}.description`}
+        label={<FormattedMessage id="eto.form.key-individuals.short-bio" />}
+        placeholder=" "
+        charactersLimit={1200}
+      />
+      <FormSingleFileUpload
+        label={<FormattedMessage id="eto.form.key-individuals.image" />}
+        name={`${group}.image`}
+        acceptedFiles="image/*"
+        fileFormatInformation="*150 x 150px png"
+        data-test-id={`${group}.image`}
+      />
+      <FormField className="mt-4" name={`${group}.website`} placeholder="website" />
+      <FormLabel className="mt-4 mb-2">
+        <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
+      </FormLabel>
+      <SocialProfilesEditor profiles={SOCIAL_PROFILES_PERSON} name={`${group}.socialChannels`} />
+    </FormHighlightGroup>
+  );
+};
 
 class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & TFormikConnect> {
   isEmpty(): boolean {

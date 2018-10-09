@@ -204,8 +204,6 @@ export const EtoTermsType = YupTS.object({
   whitelistDurationDays: YupTS.number(),
   additionalTerms: YupTS.string().optional(),
   signingDurationDays: YupTS.number(),
-  newSharesToIssueInFixedSlots: YupTS.number(),
-  whitelistDiscountFraction: YupTS.number(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
@@ -236,6 +234,8 @@ export const EtoInvestmentTermsType = YupTS.object({
   minimumNewSharesToIssue: YupTS.number().optional(),
   newSharesToIssueInWhitelist: YupTS.number().optional(),
   whitelistDiscountFraction: YupTS.number().optional(),
+  newSharesToIssueInFixedSlots: YupTS.number().optional(),
+  fixedSlotsMaximumDiscountFraction: YupTS.number().optional(),
 });
 
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;

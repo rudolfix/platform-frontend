@@ -62,6 +62,8 @@ export const investmentTermsForm: TFormFixture = {
   newSharesToIssue: "20000",
   newSharesToIssueInWhitelist: "5000",
   whitelistDiscountFraction: "20",
+  newSharesToIssueInFixedSlots: "1000",
+  fixedSlotsMaximumDiscountFraction: "50",
   "eto-registration-investment-terms-submit": {
     value: "",
     type: "submit",

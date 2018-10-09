@@ -29,9 +29,7 @@ describe("KYC Small Business flow with manual verification", () => {
     fillForm(kycLegalRepDocsForm, false);
 
     // add a new beneficial owner entry
-    cy.get(tid("kyc-beneficial-owner-add-new"))
-      .wait(1500)
-      .awaitedClick();
+    cy.get(tid("kyc-beneficial-owner-add-new")).awaitedClick();
     // remove him again
     cy.get(tid("kyc-beneficial-owner-delete")).awaitedClick();
 

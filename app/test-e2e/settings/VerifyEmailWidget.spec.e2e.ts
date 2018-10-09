@@ -29,7 +29,7 @@ describe("Verify Email Widget", () => {
     assertVerifyEmailWidgetIsInNoEmailState();
 
     cy.get(tid("verify-email-widget-form-email-input")).type(secondEmail);
-    cy.get(tid("verify-email-widget-form-submit")).awaitedClick()
+    cy.get(tid("verify-email-widget-form-submit")).awaitedClick();
 
     confirmAccessModal(password);
 

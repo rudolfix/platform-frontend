@@ -76,7 +76,9 @@ describe("Wallet Withdraw", () => {
             tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"),
           ).awaitedClick();
 
-          cy.get(tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept")).awaitedClick();
+          cy.get(
+            tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept"),
+          ).awaitedClick();
           cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
           // for some reason we have to wait and click twice here, although as a user it's only once..
           cy.wait(1000);

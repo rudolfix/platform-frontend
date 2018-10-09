@@ -12,6 +12,7 @@ import {
   riskForm,
   equityTokenInfoForm,
   votingRights,
+  etoKeyIndividualsFormOptional,
 } from "./fixtures";
 
 describe("Eto Forms", () => {
@@ -44,6 +45,8 @@ describe("Eto Forms", () => {
     cy.get(tid("key-individuals-group-button-notableInvestors")).click();
     cy.get(tid("key-individuals-group-button-keyCustomers")).click();
     cy.get(tid("key-individuals-group-button-partners")).click();
+    cy.get(tid("key-individuals-group-button-team")).click();
+    fillForm(etoKeyIndividualsFormOptional, false);
     fillForm(etoKeyIndividualsForm);
     assertEtoDashboard();
 

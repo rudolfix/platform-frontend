@@ -85,12 +85,15 @@ export const etoTermsForm: TFormFixture = {
 
 // key individuals
 // @TODO also upload individuals fotos and add social channels
-export const etoKeyIndividualsForm: TFormFixture = {
+
+export const etoKeyIndividualsFormOptional: TFormFixture = {
   "team.members.0.name": "Zoe",
   "team.members.0.role": "Boss",
   "team.members.0.description": "Yoga 4 life",
   "team.members.0.website": "http://www.zoe.com",
+};
 
+export const etoKeyIndividualsForm: TFormFixture = {
   "advisors.members.0.name": "Marcin",
   "advisors.members.0.role": "Boss",
   "advisors.members.0.description": "Yoga 4 life",

@@ -219,7 +219,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <FormattedMessage id="eto.public-view.token-terms.voting-rights" />
               </span>
               <span className={styles.value}>
-                {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
+                {etoData.generalVotingRule === "no_voting_rights" ? (
                   <FormattedMessage id="eto.public-view.token-terms.no" />
                 ) : (
                   <FormattedMessage id="eto.public-view.token-terms.yes" />
@@ -227,10 +227,10 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               </span>
             </div>
 
-            {etoData.liquidationPreferenceMultiplier !== undefined && (
+            {etoData.liquidationPreferenceMultiplier && (
               <div className={styles.entry}>
                 <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
+                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preference" />
                 </span>
                 <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
               </div>

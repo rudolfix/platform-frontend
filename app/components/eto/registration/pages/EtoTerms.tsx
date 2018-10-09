@@ -160,7 +160,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         <FormRadioButton
           disabled={readonly}
           name="enableTransferOnSuccess"
-          label={<FormattedMessage id="form.select.asap" />}
+          label={<FormattedMessage id="form.select.enabled" />}
           value={true}
         />
       </div>
@@ -168,38 +168,16 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         <FormRadioButton
           disabled={readonly}
           name="enableTransferOnSuccess"
-          label={<FormattedMessage id="eto.form.eto-terms.future-date" />}
+          label={<FormattedMessage id="form.select.disabled" />}
           value={false}
         />
       </div>
     </div>
 
-    <Row>
-      <Col xs="12" md="6">
-        <div className="form-group">
-          <FormField
-            label={
-              <FormattedMessage id="eto.form.section.eto-terms.maximum-shares-to-be-issued-in-fixed-slots" />
-            }
-            name="newSharesToIssueInFixedSlots"
-            min="0"
-            type="number"
-          />
-        </div>
-      </Col>
-    </Row>
-
-    <div className="form-group">
-      <FormLabel>
-        <FormattedMessage id="eto.form.section.eto-terms.maximum-discount-for-the-fixed-slot-investors" />
-      </FormLabel>
-      <FormRange name="whitelistDiscountFraction" min={0} max={99} unit="%" step={1} />
-    </div>
-
     <FormTextArea
       disabled={readonly}
       className="mb-2 mt-2"
-      label={<FormattedMessage id="eto.form.other" />}
+      label={<FormattedMessage id="eto.form.additional-terms" />}
       name="additionalTerms"
     />
 
@@ -217,12 +195,6 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         </Row>
       </Col>
     )}
-
-    <Row className="justify-content-end">
-      <Button layout="primary" className="mr-4" type="submit" isLoading={savingData}>
-        <FormattedMessage id="form.button.save" />
-      </Button>
-    </Row>
   </EtoFormBase>
 );
 

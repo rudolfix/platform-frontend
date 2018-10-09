@@ -13,9 +13,9 @@ import {
 } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { ButtonLink } from "../../shared/buttons";
+import { ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/LoadingIndicator";
-import { Money } from "../../shared/Money";
+import { ECurrencySymbol, Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -81,7 +81,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               <Money
                 value={totalAmount}
                 currency="eur"
-                noCurrencySymbol
+                currencySymbol={ECurrencySymbol.NONE}
                 className={cn(styles.money, "pl-1 pl-sm-2 m-0")}
               />
               <span className="pl-1">EUR</span>
@@ -106,7 +106,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
       rightComponent={
         <ButtonLink
           to={appRoutes.wallet}
-          layout="secondary"
+          layout={EButtonLayout.SECONDARY}
           iconPosition="icon-after"
           theme="dark"
           svgIcon={arrowRight}

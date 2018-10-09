@@ -16,7 +16,7 @@ import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { TFormikConnect, TTranslatedString } from "../../../../types";
 import { getField, isRequired } from "../../../../utils/yupUtils";
-import { Button, ButtonIcon } from "../../../shared/buttons";
+import { Button, ButtonIcon, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/formField/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/formField/FormSingleFileUpload";
@@ -158,7 +158,7 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
               <Button
                 data-test-id={`key-individuals-group-button-${name}`}
                 iconPosition="icon-before"
-                layout="secondary"
+                layout={EButtonLayout.SECONDARY}
                 svgIcon={plusIcon}
                 onClick={() => arrayHelpers.push(getBlankMember())}
               >
@@ -222,7 +222,7 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
       <Col>
         <Row className="justify-content-end">
           <Button
-            layout="primary"
+            layout={EButtonLayout.PRIMARY}
             className="mr-4"
             type="submit"
             isLoading={props.savingData}

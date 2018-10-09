@@ -15,15 +15,15 @@ export function* generateTemplate(
 ): any {
   if (action.type !== "ETO_DOCUMENTS_GENERATE_TEMPLATE") return;
   try {
-    const immutableFileId = action.payload.immutableFileId;
+    const document = action.payload.document;
 
     const templates = yield apiEtoFileService.getEtoTemplate(
       {
-        documentType: immutableFileId.documentType,
-        name: immutableFileId.name,
+        documentType: document.documentType,
+        name: document.name,
         form: "template",
-        ipfsHash: immutableFileId.ipfsHash,
-        mimeType: immutableFileId.mimeType,
+        ipfsHash: document.ipfsHash,
+        mimeType: document.mimeType,
       },
       // token holder is required in on-chain state, use non-existing address
       // to obtain issuer side template
@@ -37,9 +37,9 @@ export function* generateTemplate(
       },
       asPdf: false,
     });
-    yield neuCall(downloadLink, generatedDocument, immutableFileId.name, ".doc");
+    yield neuCall(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
-    logger.debug(e);
+    logger.error(e);
     notificationCenter.error("Failed to download file from IPFS");
   }
 }

@@ -12,7 +12,7 @@ import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
 import { ETOStateOnChain } from "../../modules/public-etos/types";
 import { documentTitles } from "../Documents";
 import { AssetPortfolio } from "../shared/AssetPortfolio";
-import { Button } from "../shared/buttons";
+import { Button, EButtonLayout } from "../shared/buttons";
 import { Document } from "../shared/Document";
 import { ECurrencySymbol, Money } from "../shared/Money";
 import { NewTable, NewTableRow } from "../shared/NewTable";
@@ -87,7 +87,7 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({ myAssets, pendingAs
             <span>value</span>
             {""}
             {""}
-            <Button layout="simple" svgIcon={arrowIcon} iconPosition="icon-after">
+            <Button layout={EButtonLayout.SIMPLE} svgIcon={arrowIcon} iconPosition="icon-after">
               <FormattedMessage id="portfolio.section.dividends-from-neu.table.claim" />
             </Button>
           </NewTableRow>
@@ -100,7 +100,7 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({ myAssets, pendingAs
             <span>value</span>
             {""}
             {""}
-            <Button layout="simple" svgIcon={arrowIcon} iconPosition="icon-after">
+            <Button layout={EButtonLayout.SIMPLE} svgIcon={arrowIcon} iconPosition="icon-after">
               <FormattedMessage id="portfolio.section.dividends-from-neu.table.claim" />
             </Button>
           </NewTableRow>

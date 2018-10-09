@@ -208,7 +208,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
               <FormattedMessage id="eto.public-view.legal-information.title" />
             </SectionHeader>
 
-            <LegalInformationWidget etoData={etoData} companyData={companyData} />
+            <LegalInformationWidget companyData={companyData} />
           </Col>
           {(isYouTubeVideoAvailable || isSlideShareAvailable) && (
             <Col xs={12} md={4} className="mb-4 flex-column d-flex">

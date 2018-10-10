@@ -1,18 +1,17 @@
-import { createAndLoginNewUser } from "../utils/userHelpers";
-import { tid, assertEtoDashboard } from "../utils";
+import { assertEtoDashboard, tid } from "../utils";
 import { fillForm } from "../utils/forms";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
   aboutForm,
-  legalInfoForm,
-  investmentTermsForm,
-  etoTermsForm,
-  etoKeyIndividualsForm,
-  productVisionForm,
-  mediaForm,
-  riskForm,
   equityTokenInfoForm,
+  etoKeyIndividualsForm,
+  etoTermsForm,
+  investmentTermsForm,
+  legalInfoForm,
+  mediaForm,
+  productVisionForm,
+  riskForm,
   votingRights,
-  etoKeyIndividualsFormOptional,
 } from "./fixtures";
 
 describe("Eto Forms", () => {
@@ -39,14 +38,13 @@ describe("Eto Forms", () => {
 
     cy.get(tid("eto-progress-widget-key-individuals", "button")).click();
     // first click on all the add buttons to open the fields
+    cy.get(tid("key-individuals-group-button-team")).click();
     cy.get(tid("key-individuals-group-button-advisors")).click();
     cy.get(tid("key-individuals-group-button-keyAlliances")).click();
     cy.get(tid("key-individuals-group-button-boardMembers")).click();
     cy.get(tid("key-individuals-group-button-notableInvestors")).click();
     cy.get(tid("key-individuals-group-button-keyCustomers")).click();
     cy.get(tid("key-individuals-group-button-partners")).click();
-    cy.get(tid("key-individuals-group-button-team")).click();
-    fillForm(etoKeyIndividualsFormOptional, false);
     fillForm(etoKeyIndividualsForm);
     assertEtoDashboard();
 

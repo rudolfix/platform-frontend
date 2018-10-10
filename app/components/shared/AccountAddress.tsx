@@ -23,7 +23,7 @@ const AccountAddress: React.SFC<IAccountAddressProps & CommonHtmlProps> = ({
       <Avatar seed={address} />
 
       <div className={styles.addressWrapper}>
-        <div className={styles.address} data-test-id="account-address.your.ether-address.div">
+        <div className={styles.address} data-test-id="account-address.your.ether-address.from-div">
           {address}
         </div>
         <div className={styles.transactionHistory}>

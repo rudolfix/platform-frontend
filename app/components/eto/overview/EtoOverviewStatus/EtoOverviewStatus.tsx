@@ -17,7 +17,7 @@ import { IWalletState } from "../../../../modules/wallet/reducer";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
-import { ProjectStatus } from "../../../shared/ProjectStatus";
+import { ETOState } from "../../../shared/ETOState";
 import { IResponsiveImage } from "../../../shared/ResponsiveImage";
 import { CampaigningWidget, ICampaigningWidget } from "./CampaigningWidget";
 
@@ -27,6 +27,7 @@ interface IProps {
   wallet: IWalletState | undefined;
   contract: IEtoContractData | undefined;
   etoId: string;
+  previewCode: string;
   prospectusApproved: IEtoDocument;
   canEnableBookbuilding: boolean;
   preEtoDuration: number | undefined;
@@ -47,16 +48,16 @@ interface IProps {
 }
 
 interface IStatusOfEto {
-  status: number;
+  previewCode: string;
 }
 
-const StatusOfEto: React.SFC<IStatusOfEto> = ({ status }) => {
+const StatusOfEto: React.SFC<IStatusOfEto> = ({ previewCode }) => {
   return (
     <div className={styles.statusOfEto}>
       <span className={styles.title}>
         <FormattedMessage id="shared-component.eto-overview.status-of-eto" />
       </span>
-      <ProjectStatus status={status} />
+      <ETOState previewCode={previewCode} />
     </div>
   );
 };
@@ -86,7 +87,7 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
     <div className={cn(styles.etoOverviewStatus, props.className)}>
       <div className={styles.overviewWrapper}>
         <div className={styles.statusWrapper}>
-          <StatusOfEto status={timedState} />
+          <StatusOfEto previewCode={props.previewCode} />
           <Link to={withParams(appRoutes.etoPublicView, { etoId: props.etoId })}>
             <TokenSymbolWidget
               tokenImage={props.tokenImage}

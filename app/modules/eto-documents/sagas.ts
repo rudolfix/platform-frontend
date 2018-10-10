@@ -1,9 +1,14 @@
+import { findKey } from "lodash/fp";
 import { fork, put } from "redux-saga/effects";
 
 import { ETHEREUM_ZERO_ADDRESS, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
-import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import {
+  EEtoDocumentType,
+  IEtoDocument,
+  TEtoDocumentTemplates,
+} from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { downloadLink } from "../immutableFile/sagas";
@@ -91,11 +96,11 @@ async function getDocumentOfTypePromise(
   { apiEtoFileService }: TGlobalDependencies,
   documentType: EEtoDocumentType,
 ): Promise<IEtoDocument> {
-  const documents: any = await apiEtoFileService.getAllEtoDocuments();
-  const matchingDocument = Object.keys(documents).filter(ipfsHashKey => {
-    if (documents[ipfsHashKey].documentType === documentType) return documents[ipfsHashKey];
-  });
-  return documents[matchingDocument[0]];
+  const documents: TEtoDocumentTemplates = await apiEtoFileService.getAllEtoDocuments();
+
+  const matchingDocument = findKey(document => document.documentType === documentType, documents);
+
+  return documents[matchingDocument!];
 }
 
 function* uploadEtoFile(

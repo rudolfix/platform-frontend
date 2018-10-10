@@ -22,8 +22,8 @@ import {
   multiplyBigNumbers,
 } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
-import { formatMoney } from "../../../../utils/Money.utils";
-import { Button } from "../../../shared/buttons";
+import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
+import { Button, EButtonLayout } from "../../../shared/buttons";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
@@ -99,7 +99,7 @@ const InvestmentSummaryComponent = injectIntlHelpers(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.token-price" />}
-              value={`${formatMoney(tokenPrice, MONEY_DECIMALS, 2)} €`}
+              value={`${formatMoney(tokenPrice, MONEY_DECIMALS, 4)} €`}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.eto-address" />}
@@ -107,7 +107,7 @@ const InvestmentSummaryComponent = injectIntlHelpers(
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.your-investment" />}
-              value={investment}
+              value={formatThousands(investment)}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
@@ -136,7 +136,7 @@ const InvestmentSummaryComponent = injectIntlHelpers(
         </Row>
 
         <Row className="justify-content-center mb-0 mt-0">
-          <Button layout="primary" type="button" onClick={onAccept}>
+          <Button layout={EButtonLayout.PRIMARY} type="button" onClick={onAccept}>
             <FormattedMessage id="investment-flow.confirm" />
           </Button>
         </Row>

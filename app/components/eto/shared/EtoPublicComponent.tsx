@@ -266,7 +266,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
 
             <EtoInvestmentTermsWidget
               etoData={etoData}
-              etoFilesData={documentsByType}
               computedMaxCapEur={computedMaxCapEur}
               computedMinCapEur={computedMinCapEur}
               computedMinNumberOfTokens={computedMinNumberOfTokens}

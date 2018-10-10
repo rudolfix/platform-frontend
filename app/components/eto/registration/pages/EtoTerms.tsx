@@ -10,7 +10,7 @@ import { actions } from "../../../../modules/actions";
 import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { etoTermsProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/buttons";
+import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormCheckbox, FormField, FormRadioButton, FormTextArea } from "../../../shared/forms";
 import {
   FormFieldCheckbox,
@@ -187,7 +187,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
       <Col>
         <Row className="justify-content-center">
           <Button
-            layout="primary"
+            layout={EButtonLayout.PRIMARY}
             type="submit"
             isLoading={savingData}
             data-test-id="eto-registration-eto-terms-submit"

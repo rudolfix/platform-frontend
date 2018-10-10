@@ -85,9 +85,9 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
       <div className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
         <FormattedMessage id="eto.form.eto-media.media-links" />
       </div>
-      <div className="offset-1 mb-3">
+      <p className="offset-1 mb-3">
         <FormattedMessage id="eto.form.eto-media.media-links-description" />
-      </div>
+      </p>
       <MediaLinksEditor
         name="companyNews"
         placeholder="Media Link"
@@ -96,9 +96,9 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
       <div className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
         <FormattedMessage id="eto.form.eto-media.campaigning-links" />
       </div>
-      <div className="offset-1 mb-3">
+      <p className="offset-1 mb-3">
         <FormattedMessage id="eto.form.eto-media.campaigning-links-description" />
-      </div>
+      </p>
       <MediaLinksEditor
         name="marketingLinks"
         placeholder="Document Link"

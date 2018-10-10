@@ -382,7 +382,7 @@ index 0000000..502626e
 +    process.exit(1);
 +}
 diff --git a/node_modules/cypress/types/index.d.ts b/node_modules/cypress/types/index.d.ts
-index 6c4d263..cb0c9ba 100644
+index 6c4d263..a06f594 100644
 --- a/node_modules/cypress/types/index.d.ts
 +++ b/node_modules/cypress/types/index.d.ts
 @@ -85,13 +85,13 @@ declare namespace Cypress {
@@ -415,7 +415,7 @@ index 6c4d263..cb0c9ba 100644
      click(x: number, y: number, options?: Partial<ClickOptions>): Chainable<Subject>
  
 +    /* Custom Method */
-+    awaitedClick(): void  
++    awaitedClick(waitDuration?: number): void  
 +
      /**
       * `cy.clock()` overrides native global functions related to time allowing them to be controlled

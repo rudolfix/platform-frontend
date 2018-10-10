@@ -44,7 +44,7 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
       <Row>
         <Col className="offset-1" xs={10}>
           <FormField name="companyVideo.url" placeholder="url" />
-        </Col >
+        </Col>
       </Row>
 
       <div className="offset-1 mb-2 font-weight-bold">

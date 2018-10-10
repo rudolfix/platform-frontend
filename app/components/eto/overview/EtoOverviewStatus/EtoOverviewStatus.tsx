@@ -12,7 +12,7 @@ import {
   TokenSymbolWidget,
 } from ".";
 import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
-import { ETOStateOnChain } from "../../../../modules/public-etos/types";
+import { ETOStateOnChain, IEtoContractData } from "../../../../modules/public-etos/types";
 import { IWalletState } from "../../../../modules/wallet/reducer";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
@@ -25,10 +25,9 @@ import * as styles from "./EtoOverviewStatus.module.scss";
 
 interface IProps {
   wallet: IWalletState | undefined;
-  contract: any;
+  contract: IEtoContractData | undefined;
   etoId: string;
   prospectusApproved: IEtoDocument;
-  etoStartDate: string;
   canEnableBookbuilding: boolean;
   preEtoDuration: number | undefined;
   publicEtoDuration: number | undefined;
@@ -40,11 +39,9 @@ interface IProps {
   preMoneyValuationEur: number | undefined;
   existingCompanyShares: number | undefined;
   equityTokensPerShare: number | undefined;
-  timedState: number;
   tokenImage: IResponsiveImage;
   tokenName: string;
   tokenSymbol: string;
-  smartContractOnchain: boolean;
   termSheet: IEtoDocument;
   newSharesToIssue: number | undefined;
 }
@@ -74,19 +71,22 @@ const PoweredByNeufund = () => {
 };
 
 const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
-  const preEtoStartDate = Date.parse(props.etoStartDate);
-
   const isEligibleToPreEto = !!(
     props.wallet &&
     props.wallet.data &&
     props.wallet.data.etherTokenICBMLockedWallet.LockedBalance !== "0"
   );
 
+  const smartContractOnChain = !!props.contract;
+
+  // It's possible for contract to be undefined if eto is not on chain yet
+  const timedState = props.contract ? props.contract.timedState : ETOStateOnChain.Setup;
+
   return (
     <div className={cn(styles.etoOverviewStatus, props.className)}>
       <div className={styles.overviewWrapper}>
         <div className={styles.statusWrapper}>
-          <StatusOfEto status={props.timedState} />
+          <StatusOfEto status={timedState} />
           <Link to={withParams(appRoutes.etoPublicView, { etoId: props.etoId })}>
             <TokenSymbolWidget
               tokenImage={props.tokenImage}
@@ -105,7 +105,7 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
             etoId={props.etoId}
             termSheet={props.termSheet}
             prospectusApproved={props.prospectusApproved}
-            smartContractOnchain={props.smartContractOnchain}
+            smartContractOnchain={smartContractOnChain}
           />
         </div>
 
@@ -151,7 +151,7 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
         <div className={styles.divider} />
 
         <div className={styles.stageContentWrapper}>
-          {props.timedState === ETOStateOnChain.Setup && (
+          {timedState === ETOStateOnChain.Setup && (
             <CampaigningWidget
               etoId={props.etoId}
               minPledge={props.campaigningWidget.minPledge}
@@ -161,62 +161,67 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
               investorsLimit={props.campaigningWidget.investorsLimit}
             />
           )}
-          {props.timedState === ETOStateOnChain.Whitelist &&
-            !isEligibleToPreEto && <CounterWidget endDate={preEtoStartDate} stage="Pre ETO" />}
-          {props.timedState === ETOStateOnChain.Whitelist &&
+          {timedState === ETOStateOnChain.Whitelist &&
+            !isEligibleToPreEto && (
+              <CounterWidget
+                endDate={props.contract!.startOfStates[ETOStateOnChain.Public]!}
+                stage="ETO"
+              />
+            )}
+          {timedState === ETOStateOnChain.Whitelist &&
             isEligibleToPreEto && (
               <InvestWidget
                 raisedTokens={parseInt(
-                  `${props.contract.totalInvestment.totalTokensInt.toString()}`,
+                  `${props.contract!.totalInvestment.totalTokensInt.toString()}`,
                   10,
                 )}
                 investorsBacked={parseInt(
-                  `${props.contract.totalInvestment.totalInvestors.toString()}`,
+                  `${props.contract!.totalInvestment.totalInvestors.toString()}`,
                   10,
                 )}
                 tokensGoal={(props.newSharesToIssue || 1) * (props.equityTokensPerShare || 1)}
                 etoId={props.etoId}
               />
             )}
-          {props.timedState === ETOStateOnChain.Public && (
+          {timedState === ETOStateOnChain.Public && (
             <InvestWidget
               raisedTokens={parseInt(
-                `${props.contract.totalInvestment.totalTokensInt.toString()}`,
+                `${props.contract!.totalInvestment.totalTokensInt.toString()}`,
                 10,
               )}
               investorsBacked={parseInt(
-                `${props.contract.totalInvestment.totalInvestors.toString()}`,
+                `${props.contract!.totalInvestment.totalInvestors.toString()}`,
                 10,
               )}
               tokensGoal={(props.newSharesToIssue || 1) * (props.equityTokensPerShare || 1)}
               etoId={props.etoId}
             />
           )}
-          {props.timedState === ETOStateOnChain.Claim && (
+          {timedState === ETOStateOnChain.Claim && (
             <ClaimWidget
               tokenName={props.tokenName}
-              totalInvestors={props.contract.totalInvestment.totalInvestors}
-              totalEquivEurUlps={props.contract.totalInvestment.totalEquivEurUlps}
+              totalInvestors={props.contract!.totalInvestment.totalInvestors.toNumber()}
+              totalEquivEurUlps={props.contract!.totalInvestment.totalEquivEurUlps}
               isPayout={false}
             />
           )}
-          {props.timedState === ETOStateOnChain.Signing && (
+          {timedState === ETOStateOnChain.Signing && (
             <ClaimWidget
               tokenName={props.tokenName}
-              totalInvestors={props.contract.totalInvestment.totalInvestors}
-              totalEquivEurUlps={props.contract.totalInvestment.totalEquivEurUlps}
+              totalInvestors={props.contract!.totalInvestment.totalInvestors.toNumber()}
+              totalEquivEurUlps={props.contract!.totalInvestment.totalEquivEurUlps}
               isPayout={false}
             />
           )}
-          {props.timedState === ETOStateOnChain.Payout && (
+          {timedState === ETOStateOnChain.Payout && (
             <ClaimWidget
               tokenName={props.tokenName}
-              totalInvestors={props.contract.totalInvestment.totalInvestors}
-              totalEquivEurUlps={props.contract.totalInvestment.totalEquivEurUlps}
+              totalInvestors={props.contract!.totalInvestment.totalInvestors.toNumber()}
+              totalEquivEurUlps={props.contract!.totalInvestment.totalEquivEurUlps}
               isPayout={true}
             />
           )}
-          {props.timedState === ETOStateOnChain.Refund && <RefundWidget />}
+          {timedState === ETOStateOnChain.Refund && <RefundWidget />}
         </div>
       </div>
     </div>

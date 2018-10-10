@@ -32,6 +32,9 @@ export const getChainIdRpc = (nodeAddress: string) =>
 export const sendRawTransactionRpc = (nodeAddress: string, data: string) =>
   requestFromWeb3Node(nodeAddress, "eth_sendRawTransaction", [data]);
 
+export const getTransactionReceipt = (nodeAddress: string, hash: string) =>
+  requestFromWeb3Node(nodeAddress, "eth_getTransactionReceipt", [hash]);
+
 export const sendTransactionRpc = (
   nodeAddress: string,
   from: string,

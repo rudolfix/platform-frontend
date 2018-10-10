@@ -18,7 +18,7 @@ import { TTranslatedString } from "../../types";
 import { appRoutes } from "../appRoutes";
 import { ConfettiEthereum } from "../landing/parts/ConfettiEthereum";
 import { SpinningEthereum } from "../landing/parts/SpinningEthereum";
-import { Button } from "../shared/buttons";
+import { Button, EButtonLayout } from "../shared/buttons";
 import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { CopyToClipboard } from "../shared/CopyToClipboard";
 import { InlineIcon } from "../shared/InlineIcon";
@@ -136,7 +136,9 @@ const MigrateBody: React.SFC<{
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.step.1.title" />
         )}
         {step === 2 && (
-          <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.step.2.title" />
+          <div data-test-id="modals.icbm-balance-modal.migrate-body.step-2">
+            <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.step.2.title" />
+          </div>
         )}
       </SectionHeader>
       <p className={styles.description}>
@@ -221,7 +223,11 @@ const MigrateFooter: React.SFC<{
           <div>
             <FormattedMessage id="settings.modal.icbm-wallet-balance.footer.transaction-successful" />
 
-            <ButtonLink to={appRoutes.wallet} layout="secondary">
+            <ButtonLink
+              to={appRoutes.wallet}
+              layout={EButtonLayout.SECONDARY}
+              data-test-id="modals.icbm-balance-modal.balance-footer.successful-transaction"
+            >
               <FormattedMessage id="settings.modal.icbm-wallet-balance.button.wallet" />
             </ButtonLink>
           </div>

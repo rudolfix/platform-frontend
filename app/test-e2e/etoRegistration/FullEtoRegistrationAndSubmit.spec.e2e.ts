@@ -1,5 +1,5 @@
 import { assertEtoDashboard, tid } from "../utils";
-import { fillForm } from "../utils/forms";
+import { fillForm, TFormFixture } from "../utils/forms";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
   aboutForm,
@@ -14,27 +14,26 @@ import {
   votingRights,
 } from "./fixtures";
 
+const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
+  cy.get(tid(section, "button")).click();
+  fillForm(sectionForm);
+  assertEtoDashboard();
+  cy.get(`${tid(section)} ${tid("chart-circle.progress")}`).should("contain", "100%");
+};
+
 describe("Eto Forms", () => {
   beforeEach(() => createAndLoginNewUser({ type: "issuer", kyc: "business" }));
   it("will fill and submit them all", () => {
     cy.visit("/dashboard");
     assertEtoDashboard();
 
-    cy.get(tid("eto-progress-widget-about", "button")).click();
-    fillForm(aboutForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-about", aboutForm);
 
-    cy.get(tid("eto-progress-widget-legal-info", "button")).click();
-    fillForm(legalInfoForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-legal-info", legalInfoForm);
 
-    cy.get(tid("eto-progress-widget-investment-terms", "button")).click();
-    fillForm(investmentTermsForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-investment-terms", investmentTermsForm);
 
-    cy.get(tid("eto-progress-widget-eto-terms", "button")).click();
-    fillForm(etoTermsForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-eto-terms", etoTermsForm);
 
     cy.get(tid("eto-progress-widget-key-individuals", "button")).click();
     // first click on all the add buttons to open the fields
@@ -47,25 +46,19 @@ describe("Eto Forms", () => {
     cy.get(tid("key-individuals-group-button-partners")).click();
     fillForm(etoKeyIndividualsForm);
     assertEtoDashboard();
+    cy.get(`${tid("eto-progress-widget-key-individuals")} ${tid("chart-circle.progress")}`).should(
+      "contain",
+      "100%",
+    );
 
-    cy.get(tid("eto-progress-widget-product-vision", "button")).click();
-    fillForm(productVisionForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-product-vision", productVisionForm);
 
-    cy.get(tid("eto-progress-widget-media", "button")).click();
-    fillForm(mediaForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-media", mediaForm);
 
-    cy.get(tid("eto-progress-widget-risk-assessment", "button")).click();
-    fillForm(riskForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-risk-assessment", riskForm);
 
-    cy.get(tid("eto-progress-widget-equity-token-info", "button")).click();
-    fillForm(equityTokenInfoForm);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-equity-token-info", equityTokenInfoForm);
 
-    cy.get(tid("eto-progress-widget-voting-right", "button")).click();
-    fillForm(votingRights);
-    assertEtoDashboard();
+    fillAndAssert("eto-progress-widget-voting-right", votingRights);
   });
 });

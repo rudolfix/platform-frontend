@@ -47,6 +47,7 @@ const EtoListComponent: React.SFC<IProps> = ({ etos, wallet }) => (
               contract={eto.contract!}
               wallet={wallet}
               etoId={eto.etoId}
+              previewCode={eto.previewCode}
               prospectusApproved={keyBy(eto.documents, "documentType")["approved_prospectus"]}
               termSheet={keyBy(eto.documents, "documentType")["termsheet_template"]}
               canEnableBookbuilding={eto.canEnableBookbuilding}

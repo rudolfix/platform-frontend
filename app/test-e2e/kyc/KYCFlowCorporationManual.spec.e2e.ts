@@ -26,7 +26,7 @@ describe("KYC Small Business flow with manual verification", () => {
 
     // uplaod legal rep data
     fillForm(kycLegalRepForm);
-    fillForm(kycLegalRepDocsForm, false);
+    fillForm(kycLegalRepDocsForm, { submit: false });
 
     // add a new beneficial owner entry
     cy.get(tid("kyc-beneficial-owner-add-new")).awaitedClick();

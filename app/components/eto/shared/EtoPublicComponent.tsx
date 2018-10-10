@@ -120,6 +120,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           equityTokensPerShare={etoData.equityTokensPerShare}
           contract={etoData.contract}
           wallet={wallet}
+          previewCode={etoData.previewCode}
           etoId={etoData.etoId}
           tokenImage={{
             srcSet: {

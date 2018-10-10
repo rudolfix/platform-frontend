@@ -111,9 +111,7 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
 
 export const confirmAccessModal = (password: string) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
-  cy.get(tid("access-light-wallet-confirm"))
-    .wait(1000)
-    .awaitedClick();
+  cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
 };
 
 // todo: extract it to separate file

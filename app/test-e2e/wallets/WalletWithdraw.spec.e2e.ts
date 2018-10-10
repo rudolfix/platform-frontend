@@ -11,6 +11,7 @@ import {
 } from "../utils";
 import { getTransactionByHashRpc, getBalanceRpc } from "../utils/ethRpcUtils";
 import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";
+import { confirmAccessModal } from "../utils/index";
 
 const Q18 = new BigNumber(10).pow(18);
 const GIGA_WEI = 1000000000;
@@ -79,8 +80,8 @@ describe("Wallet Withdraw", () => {
           cy.get(
             tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept"),
           ).awaitedClick();
-          cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
-          cy.get(tid("access-light-wallet-confirm")).awaitedClick();
+
+          confirmAccessModal(DEFAULT_PASSWORD);
 
           cy.get(tid("modals.shared.signing-message.modal"));
           cy.get(tid("modals.tx-sender.withdraw-flow.success"));

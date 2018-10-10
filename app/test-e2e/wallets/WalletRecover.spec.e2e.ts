@@ -52,7 +52,7 @@ describe("Wallet recover", () => {
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");
     cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
 
-    cy.get(tid("recovery-success-btn-go-dashboard")).click();
+    cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
 
     assertWaitForLatestEmailSentWithSalt(email);
 
@@ -153,7 +153,7 @@ describe("Wallet recover", () => {
 
     assertWaitForLatestEmailSentWithSalt(email.toLowerCase());
 
-    cy.get(tid("recovery-success-btn-go-dashboard")).click();
+    cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
 
     assertUserInDashboard();
   });
@@ -199,7 +199,7 @@ describe("Wallet recover", () => {
     cy.get(tid("wallet-selector-register-password")).type("strongpassword");
     cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
 
-    cy.get(tid("recovery-success-btn-go-dashboard")).click();
+    cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
 
     assertWaitForLatestEmailSentWithSalt(email);
 

@@ -85,7 +85,7 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
     }
   });
   if (submit) {
-    cy.get(tid(submitButtonTid)).click();
+    cy.get(tid(submitButtonTid)).awaitedClick();
   }
 };
 

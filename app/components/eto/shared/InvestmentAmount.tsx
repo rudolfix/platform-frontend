@@ -1,4 +1,6 @@
 import * as React from "react";
+
+import { ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
 import { ToHumanReadableForm } from "../../shared/ToHumanReadableForm";
 
 type TExternalProps = {
@@ -17,10 +19,19 @@ const InvestmentAmount: React.SFC<TExternalProps> = ({
   const minimumNewShares = (preMoneyValuationEur / existingCompanyShares) * minimumNewSharesToIssue;
   const newShares = (preMoneyValuationEur / existingCompanyShares) * newSharesToIssue;
 
-  return (
+  const value = (
     <ToHumanReadableForm number={minimumNewShares}>
       {divider => <ToHumanReadableForm number={newShares} divider={divider} />}
     </ToHumanReadableForm>
+  );
+
+  return (
+    <Money
+      format={EMoneyFormat.FLOAT}
+      currencySymbol={ECurrencySymbol.SYMBOL}
+      currency="eur"
+      value={value}
+    />
   );
 };
 

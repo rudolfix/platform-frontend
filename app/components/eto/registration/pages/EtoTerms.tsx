@@ -10,7 +10,13 @@ import { actions } from "../../../../modules/actions";
 import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormCheckbox, FormField, FormRadioButton, FormTextArea } from "../../../shared/forms";
+import {
+  FormCheckbox,
+  FormError,
+  FormField,
+  FormRadioButton,
+  FormTextArea,
+} from "../../../shared/forms";
 import {
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
@@ -172,6 +178,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           value={false}
         />
       </div>
+      <FormError name="enableTransferOnSuccess" />
     </div>
 
     <FormTextArea

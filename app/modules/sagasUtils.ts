@@ -29,6 +29,6 @@ export function* neuTakeOnly(action: TActionType, payload: any): any {
   // TODO: Remove Any and add correct type similar to "TActionType"
   while (true) {
     const takenAction = yield take(action);
-    if (takenAction.payload === payload) return;
+    if (JSON.stringify(takenAction.payload) === JSON.stringify(payload)) return;
   }
 }

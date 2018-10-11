@@ -12,8 +12,6 @@ describe("Auto Login", () => {
     createAndLoginNewUser({
       type: "investor",
       kyc: "individual",
-      seed:
-        "cattle cash squirrel fee confirm thumb armor wisdom author eternal apart mass hawk hover sign must beef improve sketch kite lesson pumpkin exist pattern",
     }));
 
   it("will auto login", () => {
@@ -94,8 +92,11 @@ describe("Auto Login", () => {
                                             NODE_ADDRESS,
                                             hash.body.result,
                                           ).then(receipt => {
+                                            console.log(receipt);
                                             cy.get(
-                                              tid("modals.icbm-balance-modal.migrate-body.step-2"),
+                                              tid(
+                                                "modals.icbm-balance-modal.balance-footer.successful-transaction",
+                                              ),
                                             );
                                           });
                                         });

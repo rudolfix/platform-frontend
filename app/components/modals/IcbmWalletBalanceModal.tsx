@@ -15,11 +15,9 @@ import { SelectIsVerificationFullyDone } from "../../modules/selectors";
 import { selectLockedWalletConnected } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
-import { appRoutes } from "../appRoutes";
 import { ConfettiEthereum } from "../landing/parts/ConfettiEthereum";
 import { SpinningEthereum } from "../landing/parts/SpinningEthereum";
 import { Button, EButtonLayout } from "../shared/buttons";
-import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { CopyToClipboard } from "../shared/CopyToClipboard";
 import { InlineIcon } from "../shared/InlineIcon";
 import { Money } from "../shared/Money";
@@ -44,6 +42,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   onCancel: () => void;
+  onGotoWallet: () => void;
 }
 
 interface IProps {
@@ -204,11 +203,15 @@ const BalanceFooter: React.SFC<{ startMigration: () => void; disabled?: boolean 
   );
 };
 
-type TTransactionStatus = "success" | "waiting";
+enum ETransactionStatus {
+  SUCCESS = "success",
+  WAITING = "waiting",
+}
 
 const MigrateFooter: React.SFC<{
-  transactionStatus: TTransactionStatus;
-}> = ({ transactionStatus }) => {
+  transactionStatus: ETransactionStatus;
+  onGotoWallet: () => void;
+}> = ({ transactionStatus, onGotoWallet }) => {
   return (
     <>
       {transactionStatus === "waiting" && (
@@ -223,13 +226,14 @@ const MigrateFooter: React.SFC<{
           <div>
             <FormattedMessage id="settings.modal.icbm-wallet-balance.footer.transaction-successful" />
 
-            <ButtonLink
-              to={appRoutes.wallet}
+            <Button
+              // to={appRoutes.wallet}
+              onClick={onGotoWallet}
               layout={EButtonLayout.SECONDARY}
               data-test-id="modals.icbm-balance-modal.balance-footer.successful-transaction"
             >
               <FormattedMessage id="settings.modal.icbm-wallet-balance.button.wallet" />
-            </ButtonLink>
+            </Button>
           </div>
         </div>
       )}
@@ -253,6 +257,7 @@ class IcbmWalletBalanceComponent extends React.Component<
     const {
       isOpen,
       onCancel,
+      onGotoWallet,
       isVerificationFullyDone,
       lockedWalletConnected,
       ethAddress,
@@ -282,7 +287,12 @@ class IcbmWalletBalanceComponent extends React.Component<
             )}
 
             {isMigrating ? (
-              lockedWalletConnected && <MigrateFooter transactionStatus="success" />
+              lockedWalletConnected && (
+                <MigrateFooter
+                  transactionStatus={ETransactionStatus.SUCCESS}
+                  onGotoWallet={onGotoWallet}
+                />
+              )
             ) : (
               <BalanceFooter
                 disabled={!isVerificationFullyDone}
@@ -309,5 +319,9 @@ export const IcbmWalletBalanceModal = appConnect<IStateProps, IDispatchProps>({
   }),
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal()),
+    onGotoWallet: () => {
+      dispatch(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal());
+      dispatch(actions.routing.goToWallet());
+    },
   }),
 })(IcbmWalletBalanceComponent);

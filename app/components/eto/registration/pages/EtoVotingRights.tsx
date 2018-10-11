@@ -6,7 +6,7 @@ import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import {
-  EtoVotingRightsType,
+  EtoVotingRightsType, TEtoVotingRightsType,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -54,10 +54,14 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     />
 
     <FormSelectField
-      customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => (
-        <option key={n} value={n}>
+      customOptions={
+        [(<option key="no_value" value="no_value" >
+          please select
+        </option>)].concat(
+        LIQUIDATION_PREFERENCE_VALUES.map(n => (
+        <option key={n} value={n} >
           {n}
-        </option>
+        </option>)
       ))}
       label={<FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />}
       name="liquidationPreferenceMultiplier"
@@ -121,7 +125,15 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   }),
   withFormik<IProps, TPartialEtoSpecData>({
     validationSchema: EtoVotingRightsType.toYup(),
-    mapPropsToValues: props => props.stateValues,
-    handleSubmit: (values, props) => props.props.saveData(values),
+    mapPropsToValues: props => ({...props.stateValues, liquidationPreferenceMultiplier : null as any}),
+    handleSubmit: (values, props) => props.props.saveData(values), //TODO filter key out if it is null, make the validator optional
   }),
 )(EtoVotingRightsComponent);
+
+
+// //Server rejects
+// const prefillDefaultValues = (values: Partial<TEtoVotingRightsType>) => {
+//   return ({...values,
+//     liquidationPreferenceMultiplier: values.liquidationPreferenceMultiplier === null
+//     || values.liquidationPreferenceMultiplier === undefined ?  0 : values.liquidationPreferenceMultiplier})
+// }

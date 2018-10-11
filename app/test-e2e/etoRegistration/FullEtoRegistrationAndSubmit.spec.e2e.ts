@@ -35,15 +35,15 @@ describe("Eto Forms", () => {
 
     fillAndAssert("eto-progress-widget-eto-terms", etoTermsForm);
 
-    cy.get(tid("eto-progress-widget-key-individuals", "button")).click();
+    cy.get(tid("eto-progress-widget-key-individuals", "button")).awaitedClick();
     // first click on all the add buttons to open the fields
     cy.get(tid("key-individuals-group-button-team")).click();
-    cy.get(tid("key-individuals-group-button-advisors")).click();
-    cy.get(tid("key-individuals-group-button-keyAlliances")).click();
-    cy.get(tid("key-individuals-group-button-boardMembers")).click();
-    cy.get(tid("key-individuals-group-button-notableInvestors")).click();
-    cy.get(tid("key-individuals-group-button-keyCustomers")).click();
-    cy.get(tid("key-individuals-group-button-partners")).click();
+    cy.get(tid("key-individuals-group-button-advisors")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-keyAlliances")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-boardMembers")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-notableInvestors")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-keyCustomers")).awaitedClick();
+    cy.get(tid("key-individuals-group-button-partners")).awaitedClick();
     fillForm(etoKeyIndividualsForm);
     assertEtoDashboard();
     cy.get(`${tid("eto-progress-widget-key-individuals")} ${tid("chart-circle.progress")}`).should(

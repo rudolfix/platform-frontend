@@ -1,29 +1,36 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { compose } from "recompose";
 
-import { TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { actions } from "../../../modules/actions";
 import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
+import { appConnect } from "../../../store";
+import { Button, EButtonLayout } from "../../shared/buttons";
 import { Document } from "../../shared/Document";
 import { Panel } from "../../shared/Panel";
 
 import * as styles from "./EtoInvestmentTermsWidget.module.scss";
 
-interface IProps {
+type TExternalProps = {
   etoData: TEtoWithCompanyAndContract;
-  etoFilesData: TEtoDocumentTemplates;
   computedNewSharePrice: number;
   computedMinCapEur: number;
   computedMinNumberOfTokens: number;
   computedMaxCapEur: number;
-}
+};
 
-export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
+type TDispatchProps = {
+  downloadDocument: (type: EEtoDocumentType) => void;
+};
+
+const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps> = ({
   etoData,
-  etoFilesData,
   computedNewSharePrice,
   computedMinCapEur,
   computedMinNumberOfTokens,
   computedMaxCapEur,
+  downloadDocument,
 }) => {
   return (
     <Panel className={styles.tokenTerms}>
@@ -66,29 +73,31 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <FormattedMessage id="eto.public-view.token-terms.investment-amount" />
               </span>
               <span className={styles.value}>
-                {"€ "} {computedMinCapEur.toFixed(4)} - {"€ "}
-                {computedMaxCapEur.toFixed(4)}
+                {"€ "} {computedMaxCapEur.toFixed(4)} - {"€ "}
+                {computedMinCapEur.toFixed(4)}
               </span>
             </div>
-            {/* TODO: It's not possible right now to change `discountScheme` therefore it was removed from interface */}
-            {/*{etoData.discountScheme && (*/}
-            {/*<div className={styles.entry}>*/}
-            {/*<span className={styles.label}>*/}
-            {/*<FormattedMessage id="eto.public-view.token-terms.price-discount" />*/}
-            {/*</span>*/}
-            {/*<span className={styles.value}>{etoData.discountScheme}</span>*/}
-            {/*</div>*/}
-            {/*)}*/}
-            {!!etoFilesData["signed_investment_and_shareholder_agreement"] && (
-              <a
-                href={`${etoFilesData["signed_investment_and_shareholder_agreement"]}`}
+            {etoData.discountScheme && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.price-discount" />
+                </span>
+                <span className={styles.value}>{etoData.discountScheme}</span>
+              </div>
+            )}
+            {etoData.templates.investmentAndShareholderAgreement && (
+              <Button
+                layout={EButtonLayout.INLINE}
+                onClick={() =>
+                  downloadDocument(EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT)
+                }
                 className={styles.groupDocumentLink}
               >
-                <div className={styles.icon}>
+                <span className={styles.icon}>
                   <Document extension="pdf" />
-                </div>
+                </span>
                 <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
-              </a>
+              </Button>
             )}
           </div>
         </div>
@@ -148,16 +157,19 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 </span>
               </div>
             )}
-            {!!etoFilesData["reservation_and_acquisition_agreement"] && (
-              <a
-                href={`${etoFilesData["reservation_and_acquisition_agreement"]}`}
+            {!!etoData.templates.reservationAndAcquisitionAgreement && (
+              <Button
+                layout={EButtonLayout.INLINE}
                 className={styles.groupDocumentLink}
+                onClick={() =>
+                  downloadDocument(EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT)
+                }
               >
-                <div className={styles.icon}>
+                <span className={styles.icon}>
                   <Document extension="pdf" />
-                </div>
+                </span>
                 <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
-              </a>
+              </Button>
             )}
           </div>
         </div>
@@ -208,14 +220,14 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
               </span>
               <span className={styles.value}>
                 {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
-                  <FormattedMessage id="eto.public-view.token-terms.disabled" />
+                  <FormattedMessage id="eto.public-view.token-terms.no" />
                 ) : (
-                  <FormattedMessage id="eto.public-view.token-terms.enabled" />
+                  <FormattedMessage id="eto.public-view.token-terms.yes" />
                 )}
               </span>
             </div>
 
-            {!!etoData.liquidationPreferenceMultiplier && (
+            {etoData.liquidationPreferenceMultiplier !== undefined && (
               <div className={styles.entry}>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
@@ -223,16 +235,17 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
                 <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
               </div>
             )}
-            {!!etoFilesData["company_token_holder_agreement"] && (
-              <a
-                href={`${etoFilesData["company_token_holder_agreement"]}`}
+            {!!etoData.templates.companyTokenHolderAgreement && (
+              <Button
+                layout={EButtonLayout.INLINE}
+                onClick={() => downloadDocument(EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT)}
                 className={styles.groupDocumentLink}
               >
-                <div className={styles.icon}>
+                <span className={styles.icon}>
                   <Document extension="pdf" />
-                </div>
+                </span>
                 <FormattedMessage id="eto.documents.tokenholder-agreement" />
-              </a>
+              </Button>
             )}
           </div>
         </div>
@@ -240,3 +253,12 @@ export const EtoInvestmentTermsWidget: React.SFC<IProps> = ({
     </Panel>
   );
 };
+
+export const EtoInvestmentTermsWidget = compose<TExternalProps & TDispatchProps, TExternalProps>(
+  appConnect<{}, TDispatchProps, TExternalProps>({
+    dispatchToProps: (dispatch, props) => ({
+      downloadDocument: (type: EEtoDocumentType) =>
+        dispatch(actions.publicEtos.downloadPublicEtoDocumentByType(props.etoData.etoId, type)),
+    }),
+  }),
+)(EtoInvestmentTermsWidgetLayout);

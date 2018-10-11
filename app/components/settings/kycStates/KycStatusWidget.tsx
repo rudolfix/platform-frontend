@@ -16,7 +16,7 @@ import {
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { UnionDictionary } from "../../../types";
-import { Button } from "../../shared/buttons";
+import { Button, EButtonLayout } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -27,7 +27,7 @@ import { WarningAlert } from "../../shared/WarningAlert";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-import { TUserType } from "../../../lib/api/users/interfaces";
+import { EUserType } from "../../../lib/api/users/interfaces";
 import * as styles from "./KycStatusWidget.module.scss";
 
 interface IStateProps {
@@ -37,7 +37,7 @@ interface IStateProps {
   isLoading: boolean;
   error?: string;
   externalKycUrl?: string;
-  userType: TUserType;
+  userType: EUserType;
 }
 
 interface IOwnProps {
@@ -112,10 +112,10 @@ const ActionButton = ({
   userType,
   onGoToWallet,
 }: IKycStatusWidgetProps) => {
-  if (requestStatus === "Accepted" && userType === "investor") {
+  if (requestStatus === "Accepted" && userType === EUserType.INVESTOR) {
     return (
       <Button
-        layout="secondary"
+        layout={EButtonLayout.SECONDARY}
         iconPosition="icon-after"
         svgIcon={arrowRight}
         onClick={onGoToWallet}
@@ -129,7 +129,7 @@ const ActionButton = ({
   if (requestStatus === "Draft" || requestStatus === "Pending") {
     return (
       <Button
-        layout="secondary"
+        layout={EButtonLayout.SECONDARY}
         iconPosition="icon-after"
         svgIcon={arrowRight}
         onClick={onGoToKycHome}
@@ -151,8 +151,9 @@ const ActionButton = ({
       requestOutsourcedStatus === "started")
   ) {
     return (
+      // TODO: Style anchor as button
       <a href={externalKycUrl}>
-        <Button layout="secondary" iconPosition="icon-after" svgIcon={arrowRight}>
+        <Button layout={EButtonLayout.SECONDARY} iconPosition="icon-after" svgIcon={arrowRight}>
           <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
         </Button>
       </a>

@@ -77,6 +77,12 @@ export const etoMediaProgressOptions: IProgressOptions = {
   },
 };
 
+export const etoInvestmentTermsProgressOptions: IProgressOptions = {
+  ignore: {
+    discountScheme: true,
+  },
+};
+
 export const calculateCompanyInformationProgress = getFormFractionDoneCalculator(
   EtoCompanyInformationType.toYup(),
 );
@@ -103,6 +109,7 @@ export const calculateEtoEquityTokenInfoProgress = getFormFractionDoneCalculator
 );
 export const calculateInvestmentTermsProgress = getFormFractionDoneCalculator(
   EtoInvestmentTermsType.toYup(),
+  etoInvestmentTermsProgressOptions,
 );
 
 export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {

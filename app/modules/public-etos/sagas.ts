@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { camelCase } from "lodash";
 import { compose, keyBy, map, omit } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
@@ -12,11 +11,13 @@ import {
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { promisify } from "../../lib/contracts/typechain-runtime";
 import { IAppState } from "../../store";
 import { convertToBigInt } from "../../utils/Money.utils";
 import { actions, TAction } from "../actions";
+import { selectUserType } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagas";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { InvalidETOStateError } from "./errors";
@@ -45,6 +46,19 @@ export function* loadEtoPreview(
     );
     const company = companyResponse.body;
 
+    // Load contract data if eto is already on blockchain
+    if (eto.state === EtoState.ON_CHAIN) {
+      // load investor tickets
+      const userType: EUserType | undefined = yield select((state: IAppState) =>
+        selectUserType(state.auth),
+      );
+      if (userType === EUserType.INVESTOR) {
+        yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
+      }
+
+      yield neuCall(loadEtoContact, eto);
+    }
+
     yield put(actions.publicEtos.setPublicEto({ eto, company }));
   } catch (e) {
     notificationCenter.error("Could not load ETO preview. Is the preview link correct?");
@@ -69,12 +83,20 @@ export function* loadEto(
     );
     const company = companyResponse.body;
 
-    yield put(actions.publicEtos.setPublicEto({ eto, company }));
-
     // Load contract data if eto is already on blockchain
     if (eto.state === EtoState.ON_CHAIN) {
+      // load investor tickets
+      const userType: EUserType | undefined = yield select((state: IAppState) =>
+        selectUserType(state.auth),
+      );
+      if (userType === EUserType.INVESTOR) {
+        yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
+      }
+
       yield neuCall(loadEtoContact, eto);
     }
+
+    yield put(actions.publicEtos.setPublicEto({ eto, company }));
   } catch (e) {
     notificationCenter.error("Could not load ETO. Is the link correct?");
 
@@ -136,6 +158,14 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
         .map(eto => neuCall(loadEtoContact, eto)),
     );
 
+    // load investor tickets
+    const userType: EUserType | undefined = yield select((state: IAppState) =>
+      selectUserType(state.auth),
+    );
+    if (userType === EUserType.INVESTOR) {
+      yield put(actions.investorEtoTicket.loadInvestorTickets(etosByPreviewCode));
+    }
+
     yield put(actions.publicEtos.setPublicEtos({ etos: etosByPreviewCode, companies }));
     yield put(actions.publicEtos.setEtosDisplayOrder(order));
   } catch (e) {
@@ -163,7 +193,7 @@ export function* loadComputedContributionFromContract(
     const calculation = yield promisify(etoContract.rawWeb3Contract.calculateContribution, [
       from,
       isICBM,
-      new BigNumber(amountEuroUlps),
+      amountEuroUlps,
     ]);
     yield put(
       actions.publicEtos.setCalculatedContribution(

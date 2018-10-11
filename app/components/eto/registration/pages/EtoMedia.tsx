@@ -10,7 +10,7 @@ import { actions } from "../../../../modules/actions";
 import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/buttons";
+import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormCheckbox, FormField } from "../../../shared/forms";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
@@ -37,31 +37,33 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
     progressOptions={etoMediaProgressOptions}
   >
     <Section>
-      <p className="offset-1 mb-2 font-weight-bold">
+      <div className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.youtube-video" />
-      </p>
+      </div>
+
       <Row>
         <Col className="offset-1" xs={10}>
           <FormField name="companyVideo.url" placeholder="url" />
         </Col>
       </Row>
 
-      <p className="offset-1 mb-2 font-weight-bold">
+      <div className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.slideshare" />
         <Tooltip
           className="ml-2 d-inline-block"
           content={<FormattedMessage id="eto.form.eto-media.slide-share.tooltip" />}
         />
-      </p>
+      </div>
+
       <Row>
         <Col className="offset-1" xs={10}>
           <FormField name="companySlideshare.url" placeholder="url" />
         </Col>
       </Row>
 
-      <p className="offset-1 mb-2 font-weight-bold">
+      <div className="offset-1 mb-2 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.social-channels" />
-      </p>
+      </div>
       <Row>
         <Col className="offset-1 mt-3">
           <FormCheckbox
@@ -80,9 +82,9 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
         </Col>
       </Row>
 
-      <p className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
+      <div className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
         <FormattedMessage id="eto.form.eto-media.media-links" />
-      </p>
+      </div>
       <p className="offset-1 mb-3">
         <FormattedMessage id="eto.form.eto-media.media-links-description" />
       </p>
@@ -91,9 +93,9 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
         placeholder="Media Link"
         blankField={{ publication: "", url: "", title: "" }}
       />
-      <p className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
+      <div className="offset-1 mb-1 mt-3 font-weight-bold text-uppercase">
         <FormattedMessage id="eto.form.eto-media.campaigning-links" />
-      </p>
+      </div>
       <p className="offset-1 mb-3">
         <FormattedMessage id="eto.form.eto-media.campaigning-links-description" />
       </p>
@@ -106,7 +108,7 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
     <Col>
       <Row className="justify-content-end">
         <Button
-          layout="primary"
+          layout={EButtonLayout.PRIMARY}
           className="mr-4"
           type="submit"
           isLoading={savingData}

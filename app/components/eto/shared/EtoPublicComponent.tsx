@@ -132,14 +132,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           tokenSymbol={etoData.equityTokenSymbol || ""}
           className="mb-4"
           canEnableBookbuilding={etoData.canEnableBookbuilding}
-          investmentAmount={`€ ${(
-            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
-            (etoData.newSharesToIssue || 1)
-          ).toFixed(4)} - €
-          ${(
-            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
-            (etoData.minimumNewSharesToIssue || 1)
-          ).toFixed(4)}`}
+          minimumNewSharesToIssue={etoData.minimumNewSharesToIssue}
           newSharesGenerated={etoData.newSharesToIssue}
           prospectusApproved={documentsByType["approved_prospectus"]}
           termSheet={documentsByType["termsheet_template"]}

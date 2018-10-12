@@ -1,6 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
@@ -100,7 +100,7 @@ export const RegisterWalletComponent: React.SFC<
       <Row>
         <Col xs={12} md={{ size: 8, offset: 2 }}>
           <InfoBlock>
-            <FormattedMessage id="wallet-selector.light.icbm-info.message" />{" "}
+            <FormattedHTMLMessage tagName="span" id="wallet-selector.light.icbm-info.message" />{" "}
             <Link
               to="https://neufund.freshdesk.com/support/solutions/articles/36000060442-icbm-investors-registration"
               target="_blank"

@@ -6,12 +6,11 @@ import { LocationDescriptor } from "history";
 import { RouterState } from "react-router-redux";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { selectIsAuthorized, selectUserType } from "../../../modules/auth/selectors";
-import { selectUrlWalletType } from "../../../modules/wallet-selector/selectors";
+import { selectWalletTypeFromQueryString } from "../../../modules/routing/selectors";
 import { EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
 import { loginWalletRoutes } from "../../walletSelector/walletRoutes";
-import { selectWalletTypeFromQueryString } from '../../../modules/routing/selectors';
 
 interface IStateProps {
   isAuthorized: boolean;

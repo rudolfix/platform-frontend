@@ -16,9 +16,9 @@ export const selectRedirectURLFromQueryString = (state: RouterState): string | u
   return redirect;
 };
 
-export const selectWalletTypeFromQueryString = (state: RouterState): EWalletType | undefined => {
+export const selectWalletTypeFromQueryString = (state: RouterState): EWalletType => {
   if (!(state.location && state.location.search)) {
-    return undefined;
+    return EWalletType.UNKNOWN;
   }
   const params = queryString.parse(state.location.search);
   const walletType: string | undefined = params.wallet_type;

@@ -112,7 +112,10 @@ export const RegisterWalletComponent: React.SFC<
       </Row>
       <Row className="justify-content-sm-center mt-3">
         <Col className="align-self-end col-sm-auto col-xs-12">
-          <h1 className="mb-4">
+          <h1
+            className="mb-4"
+            data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
+          >
             {props.restore ? (
               <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
             ) : (

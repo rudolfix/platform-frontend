@@ -1,10 +1,10 @@
-import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
-import { map, mapValues } from "lodash";
+import {Field, FieldAttributes, FieldProps, FormikConsumer} from "formik";
+import {map, mapValues} from "lodash";
 import * as React from "react";
-import { FormGroup, Input } from "reactstrap";
+import {FormGroup, Input} from "reactstrap";
 
-import { FormLabel } from "./FormLabel";
-import { isNonValid, isValid } from "./utils";
+import {FormLabel} from "./FormLabel";
+import {isNonValid, isValid} from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -36,6 +36,7 @@ interface IOwnProps {
   extraMessage?: string | React.ReactNode;
   "data-test-id"?: string;
 }
+
 interface IFieldGroup {
   label?: string | React.ReactNode;
   values?: {
@@ -46,6 +47,7 @@ interface IFieldGroup {
     [key: string]: boolean;
   };
 }
+
 type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
 export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
@@ -53,21 +55,21 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
     this.props.customOptions
       ? this.props.customOptions
       : map(this.props.values, (value, key) => (
-          <option
-            key={key}
-            value={key}
-            disabled={this.props.disabledValues && this.props.disabledValues[key]}
-          >
-            {value}
-          </option>
-        ));
+        <option
+          key={key}
+          value={key}
+          disabled={this.props.disabledValues && this.props.disabledValues[key]}
+        >
+          {value}
+        </option>
+      ));
 
   render(): React.ReactNode {
-    const { label, name, extraMessage, "data-test-id": dataTestId, disabled } = this.props;
+    const {label, name, extraMessage, "data-test-id": dataTestId, disabled, defaultValue} = this.props;
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldTouched }) => {
+        {({touched, errors, setFieldTouched, setFieldValue}) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -79,20 +81,32 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               <div className={styles.customSelect}>
                 <Field
                   name={name}
-                  render={({ field }: FieldProps) => (
-                    <Input
-                      {...field}
-                      disabled={disabled}
-                      onFocus={() => setFieldTouched(name, true)}
-                      type="select"
-                      value={field.value}
-                      valid={isValid(touched, errors, name)}
-                      data-test-id={dataTestId}
-                      {...inputExtraProps}
-                    >
-                      {this.renderOptions()}
-                    </Input>
-                  )}
+                  render={({field}:FieldProps) => {
+                    field.onChange = (e) => { //TODO move it somewhere else
+                      const value = e.target.value
+                      if(value === defaultValue){
+                        setFieldValue(name, undefined, false)
+                      } else {
+                        setFieldValue(name, e.target.value, true)
+                      }
+                    }
+                    return (
+                      <Input
+                        {...field}
+                        disabled={disabled}
+                        onFocus={() => setFieldTouched(name, true)}
+
+                        type="select"
+                        value={field.value}
+                        valid={isValid(touched, errors, name)}
+                        data-test-id={dataTestId}
+                        {...inputExtraProps}
+                      >
+                        {this.renderOptions()}
+                      </Input>
+                    )
+                  }
+                  }
                 />
               </div>
               {extraMessage ? (

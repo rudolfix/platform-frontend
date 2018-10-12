@@ -54,15 +54,19 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     />
 
     <FormSelectField
+      defaultValue={("not_set")}
       customOptions={
-        [(<option key="no_value" value="no_value" >
-          please select
-        </option>)].concat(
+        [
+          <option key={"not_set"} value={"not_set"}>
+            please select
+          </option>
+        ].concat(
         LIQUIDATION_PREFERENCE_VALUES.map(n => (
         <option key={n} value={n} >
           {n}
         </option>)
-      ))}
+      ))
+      }
       label={<FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />}
       name="liquidationPreferenceMultiplier"
       disabled={readonly}
@@ -108,10 +112,7 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        data.liquidationPreferenceMultiplier = parseFloat(
-          `${data.liquidationPreferenceMultiplier}`,
-        ); // Changes option's string value to number so it meets swagger requirements
-
+        console.log("data", data)
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
@@ -125,15 +126,23 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   }),
   withFormik<IProps, TPartialEtoSpecData>({
     validationSchema: EtoVotingRightsType.toYup(),
-    mapPropsToValues: props => ({...props.stateValues, liquidationPreferenceMultiplier : null as any}),
-    handleSubmit: (values, props) => props.props.saveData(values), //TODO filter key out if it is null, make the validator optional
+    mapPropsToValues: props => ({...props.stateValues, liquidationPreferenceMultiplier : undefined as any}),
+    handleSubmit: (values, props) => {
+      dataToCanonicalForm(values)
+      return props.props.saveData(values)
+    },
   }),
 )(EtoVotingRightsComponent);
 
-
-// //Server rejects
-// const prefillDefaultValues = (values: Partial<TEtoVotingRightsType>) => {
-//   return ({...values,
-//     liquidationPreferenceMultiplier: values.liquidationPreferenceMultiplier === null
-//     || values.liquidationPreferenceMultiplier === undefined ?  0 : values.liquidationPreferenceMultiplier})
-// }
+// This is the place to remove unset fields, clean up things
+// and manually convert values to a form that meets swagger requirements (like string -> float)
+const dataToCanonicalForm = (values: Partial<TEtoVotingRightsType>) => {
+  if (values.liquidationPreferenceMultiplier === undefined){ //is not set
+    delete values.liquidationPreferenceMultiplier
+  } else {
+    values.liquidationPreferenceMultiplier = parseFloat(
+      `${values.liquidationPreferenceMultiplier}`,
+    );
+  }
+  return values
+}

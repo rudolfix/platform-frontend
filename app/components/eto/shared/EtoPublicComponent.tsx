@@ -47,17 +47,6 @@ interface IProps {
 
 // TODO: Refactor to smaller components
 export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wallet }) => {
-  const preMoneyValuationEur = etoData.preMoneyValuationEur || 1;
-  const existingCompanyShares = etoData.existingCompanyShares || 1;
-  const newSharesToIssue = etoData.newSharesToIssue || 1;
-  const equityTokensPerShare = etoData.equityTokensPerShare || 1;
-  const minimumNewSharesToIssue = etoData.minimumNewSharesToIssue || 1;
-
-  const computedNewSharePrice = preMoneyValuationEur / existingCompanyShares;
-  const computedMinNumberOfTokens = newSharesToIssue * equityTokensPerShare;
-  const computedMinCapEur = computedNewSharePrice * newSharesToIssue;
-  const computedMaxCapEur = computedNewSharePrice * minimumNewSharesToIssue;
-
   const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
 
   const isTwitterFeedEnabled =
@@ -132,14 +121,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
           tokenSymbol={etoData.equityTokenSymbol || ""}
           className="mb-4"
           canEnableBookbuilding={etoData.canEnableBookbuilding}
-          investmentAmount={`€ ${(
-            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
-            (etoData.newSharesToIssue || 1)
-          ).toFixed(4)} - €
-          ${(
-            ((etoData.preMoneyValuationEur || 1) / (etoData.existingCompanyShares || 1)) *
-            (etoData.minimumNewSharesToIssue || 1)
-          ).toFixed(4)}`}
+          minimumNewSharesToIssue={etoData.minimumNewSharesToIssue}
           newSharesGenerated={etoData.newSharesToIssue}
           prospectusApproved={documentsByType["approved_prospectus"]}
           termSheet={documentsByType["termsheet_template"]}
@@ -262,13 +244,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
               <FormattedMessage id="eto.public-view.token-terms.title" />
             </SectionHeader>
 
-            <EtoInvestmentTermsWidget
-              etoData={etoData}
-              computedMaxCapEur={computedMaxCapEur}
-              computedMinCapEur={computedMinCapEur}
-              computedMinNumberOfTokens={computedMinNumberOfTokens}
-              computedNewSharePrice={computedNewSharePrice}
-            />
+            <EtoInvestmentTermsWidget etoData={etoData} />
           </Col>
         </Row>
 

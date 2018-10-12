@@ -29,7 +29,6 @@ export interface IStateProps {
 
 interface IDispatchProps {
   submitForm: (values: IFormValues) => void;
-  currentValues?: IFormValues;
 }
 
 const validationSchema = Yup.object().shape({
@@ -88,7 +87,11 @@ const RegisterEnhancedLightWalletForm = withFormik<
   IFormValues
 >({
   validationSchema: validationSchema,
-  mapPropsToValues: props => props.currentValues as IFormValues,
+  mapPropsToValues: () => ({
+    email: "",
+    password: "",
+    repeatPassword: "",
+  }),
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(RegisterLightWalletForm);
 

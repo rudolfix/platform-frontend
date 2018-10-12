@@ -1,3 +1,8 @@
+export enum ETransactionStatus {
+  SUCCESS = "0x01",
+  REVERTED = "0X00",
+}
+
 export const requestFromWeb3Node = (
   nodeAddress: string,
   methodName: string,

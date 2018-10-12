@@ -92,12 +92,12 @@ const HighlightedField: React.SFC<IProps> = ({
   );
 };
 
-const BalanceBody: React.SFC<IStateProps> = ({
-  ethAddress,
-  isLoading,
-  neumarksDue,
-  etherBalance,
-}) => {
+const BalanceBody: React.SFC<{
+  ethAddress: string;
+  isLoading: boolean;
+  neumarksDue: string;
+  etherBalance: string;
+}> = ({ ethAddress, isLoading, neumarksDue, etherBalance }) => {
   return (
     <>
       <HighlightedField
@@ -121,9 +121,8 @@ const BalanceBody: React.SFC<IStateProps> = ({
 };
 
 const MigrateBody: React.SFC<{
-  icbmWalletAddress: string;
   walletMigrationData: IWalletMigrationData;
-}> = ({ icbmWalletAddress, walletMigrationData }) => {
+}> = ({ walletMigrationData }) => {
   const step = walletMigrationData.migrationStep;
   return (
     <>
@@ -148,13 +147,6 @@ const MigrateBody: React.SFC<{
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.step.2description" />
         )}
       </p>
-      <HighlightedField
-        label={
-          <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.from-icbm-wallet" />
-        }
-        value={icbmWalletAddress}
-        withCopy
-      />
       <HighlightedField
         label={
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.to-smart-contract" />
@@ -193,13 +185,21 @@ const BalanceFooter: React.SFC<{ startMigration: () => void; disabled?: boolean 
   disabled,
 }) => {
   return (
-    <Button
-      onClick={startMigration}
-      disabled={disabled}
-      data-test-id="modals.icbm-balance-modal.balance-footer.generate-transaction"
-    >
-      <FormattedMessage id="settings.modal.icbm-wallet-balance.button" />
-    </Button>
+    <div className="d-flex flex-column justify-content-center">
+      {disabled && (
+        <p className="text-center">
+          <FormattedMessage id="settings.modal.icbm-wallet-balance.warning-message" />
+        </p>
+      )}
+      <Button
+        onClick={startMigration}
+        disabled={disabled}
+        layout={EButtonLayout.SECONDARY}
+        data-test-id="modals.icbm-balance-modal.balance-footer.generate-transaction"
+      >
+        <FormattedMessage id="settings.modal.icbm-wallet-balance.button" />
+      </Button>
+    </div>
   );
 };
 
@@ -214,20 +214,19 @@ const MigrateFooter: React.SFC<{
 }> = ({ transactionStatus, onGotoWallet }) => {
   return (
     <>
-      {transactionStatus === "waiting" && (
+      {transactionStatus === ETransactionStatus.WAITING && (
         <div className={styles.footerWaiting}>
           <SpinningEthereum className={styles.animatedEthereum} />
           <FormattedMessage id="settings.modal.icbm-wallet-balance.footer.waiting-for-transaction" />
         </div>
       )}
-      {transactionStatus === "success" && (
+      {transactionStatus === ETransactionStatus.SUCCESS && (
         <div className={styles.footerSuccess}>
           <ConfettiEthereum className={styles.animatedEthereum} />
           <div>
             <FormattedMessage id="settings.modal.icbm-wallet-balance.footer.transaction-successful" />
 
             <Button
-              // to={appRoutes.wallet}
               onClick={onGotoWallet}
               layout={EButtonLayout.SECONDARY}
               data-test-id="modals.icbm-balance-modal.balance-footer.successful-transaction"
@@ -240,7 +239,7 @@ const MigrateFooter: React.SFC<{
     </>
   );
 };
-class IcbmWalletBalanceComponent extends React.Component<
+export class IcbmWalletBalanceComponent extends React.Component<
   IStateProps & IDispatchProps,
   { isMigrating: boolean; migrationStep: number }
 > {
@@ -260,7 +259,6 @@ class IcbmWalletBalanceComponent extends React.Component<
       onGotoWallet,
       isVerificationFullyDone,
       lockedWalletConnected,
-      ethAddress,
       walletMigrationData,
     } = this.props;
     const { isMigrating } = this.state;
@@ -278,18 +276,20 @@ class IcbmWalletBalanceComponent extends React.Component<
             </SectionHeader>
 
             {isMigrating ? (
-              <MigrateBody
-                icbmWalletAddress={ethAddress!}
-                walletMigrationData={walletMigrationData!}
-              />
+              <MigrateBody walletMigrationData={walletMigrationData!} />
             ) : (
               <BalanceBody {...this.props} />
             )}
 
             {isMigrating ? (
-              lockedWalletConnected && (
+              lockedWalletConnected ? (
                 <MigrateFooter
                   transactionStatus={ETransactionStatus.SUCCESS}
+                  onGotoWallet={onGotoWallet}
+                />
+              ) : (
+                <MigrateFooter
+                  transactionStatus={ETransactionStatus.WAITING}
                   onGotoWallet={onGotoWallet}
                 />
               )

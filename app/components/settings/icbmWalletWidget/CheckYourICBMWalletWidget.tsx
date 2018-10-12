@@ -26,7 +26,7 @@ class FormContent extends React.Component {
   render(): React.ReactNode {
     return (
       <FormikConsumer>
-        {({ values }) => (
+        {({ values }: { values: { address: string } }) => (
           <>
             <FormFieldColorful
               name="address"
@@ -39,7 +39,7 @@ class FormContent extends React.Component {
               iconPosition="icon-after"
               svgIcon={arrowRight}
               type="submit"
-              disabled={!Web3Utils.isAddress(values.address)}
+              disabled={!Web3Utils.isAddress(values.address.toUpperCase())}
             >
               <FormattedMessage id="check-your-icbm-wallet-widget.submit" />
             </Button>

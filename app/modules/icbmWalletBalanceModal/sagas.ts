@@ -1,5 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { delay } from "bluebird";
+import { toChecksumAddress } from "ethereumjs-util";
 import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -23,6 +24,17 @@ function hasIcbmWallet(lockedWallet: ILockedWallet): boolean {
   return lockedWallet.unlockDate !== "0";
 }
 
+const didUserConductFirstTransaction = (
+  investorMigrationWallet: [string[], BigNumber[]],
+  currentEthAddress: string,
+) =>
+  // If a user added more than one address then we consider him to be a power user
+  !!(
+    investorMigrationWallet[0].length === 1 &&
+    investorMigrationWallet[0][0] &&
+    investorMigrationWallet[0][0].toLowerCase() === currentEthAddress.toLowerCase()
+  );
+
 function* loadIcbmWalletMigrationTransactionSaga({
   logger,
   notificationCenter,
@@ -40,20 +52,17 @@ function* loadIcbmWalletMigrationTransactionSaga({
       BigNumber[]
     ] = yield contractsService.etherLock.getInvestorMigrationWallets(icbmEthAddress);
 
-    const didUserConductFirstTransaction = !!(
-      investorMigrationWallet[0][0] &&
-      investorMigrationWallet[0][0].toLowerCase() === currentEthAddress.toLowerCase() &&
-      investorMigrationWallet[0].length === 1
-    );
     const etherLockAddress = yield contractsService.etherLock.address;
     const icbmEtherLockAddress = yield contractsService.icbmEtherLock.address;
 
-    const walletMigrationData: IWalletMigrationData = didUserConductFirstTransaction
-      ? // If a user added more than one address then we consider him to be a power user
-        {
+    const walletMigrationData: IWalletMigrationData = didUserConductFirstTransaction(
+      investorMigrationWallet,
+      currentEthAddress,
+    )
+      ? {
           migrationInputData: contractsService.icbmEtherLock.migrateTx().getData(),
           migrationStep: 2,
-          smartContractAddress: icbmEtherLockAddress,
+          smartContractAddress: toChecksumAddress(icbmEtherLockAddress),
           gasLimit: "400000",
           value: "0",
         }
@@ -62,8 +71,8 @@ function* loadIcbmWalletMigrationTransactionSaga({
             .setInvestorMigrationWalletTx(currentEthAddress)
             .getData(),
           migrationStep: 1,
-          smartContractAddress: etherLockAddress,
-          gasLimit: "200000",
+          smartContractAddress: toChecksumAddress(etherLockAddress),
+          gasLimit: "400000",
           value: "0",
         };
 
@@ -122,12 +131,8 @@ function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDep
       string[],
       BigNumber[]
     ] = yield contractsService.etherLock.getInvestorMigrationWallets(icbmEthAddress);
-    const didUserConductFirstTransaction = !!(
-      investorMigrationWallet[0][0] &&
-      investorMigrationWallet[0][0].toLowerCase() === currentEthAddress.toLowerCase() &&
-      investorMigrationWallet[0].length === 1
-    );
-    if (didUserConductFirstTransaction) {
+
+    if (didUserConductFirstTransaction(investorMigrationWallet, currentEthAddress)) {
       yield put(actions.icbmWalletBalanceModal.getWalletData(icbmEthAddress));
       return;
     }

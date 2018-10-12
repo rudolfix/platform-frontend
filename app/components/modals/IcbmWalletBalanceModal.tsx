@@ -27,6 +27,7 @@ import { ModalComponentBody } from "./ModalComponentBody";
 import * as iconEth from "../../assets/img/eth_icon.svg";
 import * as iconDownload from "../../assets/img/inline_icons/download.svg";
 import * as iconNeu from "../../assets/img/neu_icon.svg";
+import { LoadingIndicator } from "../shared/LoadingIndicator";
 import * as styles from "./IcbmWalletBalanceModal.module.scss";
 
 interface IStateProps {
@@ -93,7 +94,7 @@ const HighlightedField: React.SFC<IProps> = ({
 };
 
 const BalanceBody: React.SFC<{
-  ethAddress: string;
+  ethAddress?: string;
   isLoading: boolean;
   neumarksDue: string;
   etherBalance: string;
@@ -276,7 +277,11 @@ export class IcbmWalletBalanceComponent extends React.Component<
             </SectionHeader>
 
             {isMigrating ? (
-              <MigrateBody walletMigrationData={walletMigrationData!} />
+              walletMigrationData ? (
+                <MigrateBody walletMigrationData={walletMigrationData} />
+              ) : (
+                <LoadingIndicator />
+              )
             ) : (
               <BalanceBody {...this.props} />
             )}
@@ -288,10 +293,12 @@ export class IcbmWalletBalanceComponent extends React.Component<
                   onGotoWallet={onGotoWallet}
                 />
               ) : (
-                <MigrateFooter
-                  transactionStatus={ETransactionStatus.WAITING}
-                  onGotoWallet={onGotoWallet}
-                />
+                walletMigrationData && (
+                  <MigrateFooter
+                    transactionStatus={ETransactionStatus.WAITING}
+                    onGotoWallet={onGotoWallet}
+                  />
+                )
               )
             ) : (
               <BalanceFooter

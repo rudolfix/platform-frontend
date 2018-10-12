@@ -605,7 +605,7 @@
   "settings.modal.icbm-wallet-balance.button.wallet": "Wallet",
   "settings.modal.icbm-wallet-balance.eth-balance.label": "Your Ether Balance",
   "settings.modal.icbm-wallet-balance.footer.transaction-successful": "Transaction successful",
-  "settings.modal.icbm-wallet-balance.footer.waiting-for-transaction": "",
+  "settings.modal.icbm-wallet-balance.footer.waiting-for-transaction": "Waiting for transaction",
   "settings.modal.icbm-wallet-balance.icbm-wallet-address.label": "ICBM wallet address",
   "settings.modal.icbm-wallet-balance.neu-balance.label": "Amount of neu issued in ICBM",
   "settings.modal.icbm-wallet-balance.title.balance": "ICBM wallet balance",

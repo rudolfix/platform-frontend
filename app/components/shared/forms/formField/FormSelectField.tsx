@@ -7,6 +7,7 @@ import {FormLabel} from "./FormLabel";
 import {isNonValid, isValid} from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
+import FormattedMessage = ReactIntlPhrase.FormattedMessage;
 
 export const NONE_KEY = "";
 export const BOOL_TRUE_KEY = "true";
@@ -33,6 +34,8 @@ export const unboolify = <T extends {}>(values: T): T => {
 };
 
 interface IOwnProps {
+  isOptional?: boolean,
+  optionalLabel?: FormattedMessage
   extraMessage?: string | React.ReactNode;
   "data-test-id"?: string;
 }
@@ -51,21 +54,31 @@ interface IFieldGroup {
 type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
 export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
-  renderOptions = () =>
-    this.props.customOptions
-      ? this.props.customOptions
-      : map(this.props.values, (value, key) => (
-        <option
-          key={key}
-          value={key}
-          disabled={this.props.disabledValues && this.props.disabledValues[key]}
-        >
-          {value}
-        </option>
-      ));
+
+  renderOptions = (isOptional: boolean, optionalLabel: string|FormattedMessage) => {
+    const mainOptions = (this.props.customOptions
+        ? this.props.customOptions
+        : map(this.props.values, (value, key) => (
+          <option
+            key={key}
+            value={key}
+            disabled={this.props.disabledValues && this.props.disabledValues[key]}
+          >
+            {value}
+          </option>
+        ))
+    )
+    if (isOptional) {
+      return [<option key={"not_set"} value={"not_set"}>
+          {optionalLabel}
+        </option>].concat(mainOptions)
+    } else {
+      return mainOptions
+    }
+  }
 
   render(): React.ReactNode {
-    const {label, name, extraMessage, "data-test-id": dataTestId, disabled, defaultValue} = this.props;
+    const {label, name, extraMessage, "data-test-id": dataTestId, disabled, isOptional, optionalLabel} = this.props;
 
     return (
       <FormikConsumer>
@@ -75,34 +88,35 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
             invalid: isNonValid(touched, errors, name),
           } as any;
 
+          const setOrUnsetValue = (value: any) => {
+            if (value === "not_set") { //TODO make an enum
+              setFieldValue(name, undefined, false)
+            } else {
+              setFieldValue(name, value, true)
+            }
+          }
+
           return (
             <FormGroup>
               {label && <FormLabel>{label}</FormLabel>}
               <div className={styles.customSelect}>
                 <Field
                   name={name}
-                  render={({field}:FieldProps) => {
-                    field.onChange = (e) => { //TODO move it somewhere else
-                      const value = e.target.value
-                      if(value === defaultValue){
-                        setFieldValue(name, undefined, false)
-                      } else {
-                        setFieldValue(name, e.target.value, true)
-                      }
-                    }
+                  render={({field}: FieldProps) => {
+                    field.onChange = (e) => setOrUnsetValue(e.target.value)
                     return (
                       <Input
                         {...field}
                         disabled={disabled}
                         onFocus={() => setFieldTouched(name, true)}
-
                         type="select"
-                        value={field.value}
+                        //if value is not set, select the placeholder
+                        value={field.value === undefined ? "not_set" : field.value}
                         valid={isValid(touched, errors, name)}
                         data-test-id={dataTestId}
                         {...inputExtraProps}
                       >
-                        {this.renderOptions()}
+                        {this.renderOptions(isOptional, optionalLabel)}
                       </Input>
                     )
                   }

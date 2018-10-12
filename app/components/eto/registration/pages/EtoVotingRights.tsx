@@ -54,18 +54,14 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     />
 
     <FormSelectField
-      defaultValue={("not_set")}
+      isOptional={true}
+      optionalLabel={<FormattedMessage id={"eto.form.eto-voting-rights.please-select"}/>}
       customOptions={
-        [
-          <option key={"not_set"} value={"not_set"}>
-            please select
-          </option>
-        ].concat(
         LIQUIDATION_PREFERENCE_VALUES.map(n => (
         <option key={n} value={n} >
           {n}
         </option>)
-      ))
+      )
       }
       label={<FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />}
       name="liquidationPreferenceMultiplier"
@@ -102,6 +98,7 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     )}
   </EtoFormBase>
 );
+
 export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   setDisplayName("EtoVotingRights"),
   appConnect<IStateProps, IDispatchProps>({
@@ -112,7 +109,6 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
-        console.log("data", data)
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
@@ -126,10 +122,10 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   }),
   withFormik<IProps, TPartialEtoSpecData>({
     validationSchema: EtoVotingRightsType.toYup(),
-    mapPropsToValues: props => ({...props.stateValues, liquidationPreferenceMultiplier : undefined as any}),
+    // mapPropsToValues: props => ({...props.stateValues, liquidationPreferenceMultiplier : undefined as any}), //FIXME
+    mapPropsToValues: props => ({...props.stateValues}),
     handleSubmit: (values, props) => {
-      dataToCanonicalForm(values)
-      return props.props.saveData(values)
+      return props.props.saveData(dataToCanonicalForm(values))
     },
   }),
 )(EtoVotingRightsComponent);

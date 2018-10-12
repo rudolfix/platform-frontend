@@ -6,7 +6,8 @@ import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import {
-  EtoVotingRightsType, TEtoVotingRightsType,
+  EtoVotingRightsType,
+  TEtoVotingRightsType,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
@@ -55,14 +56,12 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
 
     <FormSelectField
       isOptional={true}
-      optionalLabel={<FormattedMessage id={"eto.form.eto-voting-rights.please-select"}/>}
-      customOptions={
-        LIQUIDATION_PREFERENCE_VALUES.map(n => (
-        <option key={n} value={n} >
+      optionalLabel={<FormattedMessage id={"eto.form.eto-voting-rights.please-select"} />}
+      customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => (
+        <option key={n} value={n}>
           {n}
-        </option>)
-      )
-      }
+        </option>
+      ))}
       label={<FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />}
       name="liquidationPreferenceMultiplier"
       disabled={readonly}
@@ -123,9 +122,9 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   withFormik<IProps, TPartialEtoSpecData>({
     validationSchema: EtoVotingRightsType.toYup(),
     // mapPropsToValues: props => ({...props.stateValues, liquidationPreferenceMultiplier : undefined as any}), //FIXME
-    mapPropsToValues: props => ({...props.stateValues}),
+    mapPropsToValues: props => ({ ...props.stateValues }),
     handleSubmit: (values, props) => {
-      return props.props.saveData(dataToCanonicalForm(values))
+      return props.props.saveData(dataToCanonicalForm(values));
     },
   }),
 )(EtoVotingRightsComponent);
@@ -133,12 +132,13 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
 // This is the place to remove unset fields, clean up things
 // and manually convert values to a form that meets swagger requirements (like string -> float)
 const dataToCanonicalForm = (values: Partial<TEtoVotingRightsType>) => {
-  if (values.liquidationPreferenceMultiplier === undefined){ //is not set
-    delete values.liquidationPreferenceMultiplier
+  if (values.liquidationPreferenceMultiplier === undefined) {
+    //is not set
+    delete values.liquidationPreferenceMultiplier;
   } else {
     values.liquidationPreferenceMultiplier = parseFloat(
       `${values.liquidationPreferenceMultiplier}`,
     );
   }
-  return values
-}
+  return values;
+};

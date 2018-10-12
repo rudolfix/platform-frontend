@@ -1,13 +1,13 @@
-import {Field, FieldAttributes, FieldProps, FormikConsumer} from "formik";
-import {map, mapValues} from "lodash";
+import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
+import { map, mapValues } from "lodash";
 import * as React from "react";
-import {FormGroup, Input} from "reactstrap";
+import { FormattedMessage } from "react-intl-phraseapp";
+import { FormGroup, Input } from "reactstrap";
 
-import {FormLabel} from "./FormLabel";
-import {isNonValid, isValid} from "./utils";
+import { FormLabel } from "./FormLabel";
+import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
-import FormattedMessage = ReactIntlPhrase.FormattedMessage;
 
 export const NONE_KEY = "";
 export const BOOL_TRUE_KEY = "true";
@@ -34,8 +34,8 @@ export const unboolify = <T extends {}>(values: T): T => {
 };
 
 interface IOwnProps {
-  isOptional?: boolean,
-  optionalLabel?: FormattedMessage
+  isOptional?: boolean;
+  optionalLabel?: FormattedMessage;
   extraMessage?: string | React.ReactNode;
   "data-test-id"?: string;
 }
@@ -54,11 +54,10 @@ interface IFieldGroup {
 type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
 export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
-
-  renderOptions = (isOptional: boolean, optionalLabel: string|FormattedMessage) => {
-    const mainOptions = (this.props.customOptions
-        ? this.props.customOptions
-        : map(this.props.values, (value, key) => (
+  renderOptions = (isOptional: boolean, optionalLabel: string | FormattedMessage) => {
+    const mainOptions = this.props.customOptions
+      ? this.props.customOptions
+      : map(this.props.values, (value, key) => (
           <option
             key={key}
             value={key}
@@ -66,35 +65,45 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
           >
             {value}
           </option>
-        ))
-    )
+        ));
     if (isOptional) {
-      return [<option key={"not_set"} value={"not_set"}>
+      return [
+        <option key={"not_set"} value={"not_set"}>
           {optionalLabel}
-        </option>].concat(mainOptions)
+        </option>,
+      ].concat(mainOptions);
     } else {
-      return mainOptions
+      return mainOptions;
     }
-  }
+  };
 
   render(): React.ReactNode {
-    const {label, name, extraMessage, "data-test-id": dataTestId, disabled, isOptional, optionalLabel} = this.props;
+    const {
+      label,
+      name,
+      extraMessage,
+      "data-test-id": dataTestId,
+      disabled,
+      isOptional,
+      optionalLabel,
+    } = this.props;
 
     return (
       <FormikConsumer>
-        {({touched, errors, setFieldTouched, setFieldValue}) => {
+        {({ touched, errors, setFieldTouched, setFieldValue }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
           } as any;
 
           const setOrUnsetValue = (value: any) => {
-            if (value === "not_set") { //TODO make an enum
-              setFieldValue(name, undefined, false)
+            if (value === "not_set") {
+              //TODO make an enum
+              setFieldValue(name, undefined, false);
             } else {
-              setFieldValue(name, value, true)
+              setFieldValue(name, value, true);
             }
-          }
+          };
 
           return (
             <FormGroup>
@@ -102,8 +111,8 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               <div className={styles.customSelect}>
                 <Field
                   name={name}
-                  render={({field}: FieldProps) => {
-                    field.onChange = (e) => setOrUnsetValue(e.target.value)
+                  render={({ field }: FieldProps) => {
+                    field.onChange = e => setOrUnsetValue(e.target.value);
                     return (
                       <Input
                         {...field}
@@ -118,9 +127,8 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
                       >
                         {this.renderOptions(isOptional, optionalLabel)}
                       </Input>
-                    )
-                  }
-                  }
+                    );
+                  }}
                 />
               </div>
               {extraMessage ? (

@@ -7,10 +7,10 @@ type TFormFieldFixture =
       type: "submit" | "tags" | "file" | "date" | "select" | "check" | "range";
     }
   | {
-      value: string,
-      setState: boolean,
-      type: "checkBox"
-  }
+      value: string;
+      mustBeChecked: boolean;
+      type: "checkBox";
+    }
   | {
       type: "media";
       values: Record<string, string>;
@@ -28,6 +28,8 @@ export const fillField = (key: string, value: string, parent: string = "body") =
       .type(value);
   });
 };
+
+
 
 /**
  * Fill out a form
@@ -57,8 +59,8 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
     // Need to investigate this further
     else if (field.type === "range") {
       cy.get(formField(key))
-        .invoke('val', field.value)
-        .trigger('change');
+        .invoke("val", field.value)
+        .trigger("change");
     }
     // click on a field
     else if (field.type === "check") {
@@ -68,12 +70,12 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
     }
     //check or uncheck a checkbox
     else if (field.type === "checkBox") {
-      const element = cy.get(formField(key))
-        if (field.setState === true){
-          element.check(field.value, { force: true });
-        } else {
-          element.uncheck(field.value, { force: true });
-        }
+      const element = cy.get(formField(key));
+      if (field.mustBeChecked === true) {
+        element.check(field.value, { force: true });
+      } else {
+        element.uncheck(field.value, { force: true });
+      }
     }
     // tags
     else if (field.type === "tags") {
@@ -131,3 +133,4 @@ export const uploadFileToFieldWithTid = (targetTid: string, fixture: string = "e
 
   cy.get(tid(targetTid)).trigger("drop", dropEvent);
 };
+

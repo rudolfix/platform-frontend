@@ -14,18 +14,32 @@ interface IProps {
   companyData: TCompanyEtoData;
 }
 
-export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
-  let shareholdersCopy = companyData.shareholders;
-  if (companyData.shareholders && companyData.companyShares) {
-    const assignedShares = companyData.shareholders.reduce((s, v) => s + v.shares, 0);
-    if (assignedShares < companyData.companyShares) {
-      shareholdersCopy = companyData.shareholders.slice();
-      shareholdersCopy.push({
+const generateShareholders = (
+  shareholders: TCompanyEtoData["shareholders"],
+  companyShares: number,
+) => {
+  const assignedShares = shareholders.reduce((acc, shareholder) => {
+    return shareholder ? (acc += shareholder.shares) : acc;
+  }, 0);
+
+  if (assignedShares < companyShares) {
+    return [
+      ...shareholders,
+      {
         fullName: "Others",
-        shares: companyData.companyShares - assignedShares,
-      });
-    }
+        shares: companyShares - assignedShares,
+      },
+    ];
   }
+  return shareholders;
+};
+
+export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
+  const shareholdersData = generateShareholders(
+    companyData.shareholders,
+    companyData.companyShares,
+  );
+
   return (
     <Panel className={styles.legalInformation}>
       <Row>
@@ -107,21 +121,18 @@ export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
         </Col>
 
         <Col>
-          {companyData.companyShares &&
-            shareholdersCopy && (
-              <ChartDoughnut
-                className="mb-3"
-                data={{
-                  datasets: [
-                    {
-                      data: shareholdersCopy.map(d => d && d.shares),
-                      backgroundColor: shareholdersCopy.map((_, i: number) => CHART_COLORS[i]),
-                    },
-                  ],
-                  labels: shareholdersCopy.map(d => d && d.fullName),
-                }}
-              />
-            )}
+          <ChartDoughnut
+            className="mb-3"
+            data={{
+              datasets: [
+                {
+                  data: shareholdersData.map(d => d && d.shares),
+                  backgroundColor: shareholdersData.map((_, i: number) => CHART_COLORS[i]),
+                },
+              ],
+              labels: shareholdersData.map(d => d && d.fullName),
+            }}
+          />
         </Col>
       </Row>
     </Panel>

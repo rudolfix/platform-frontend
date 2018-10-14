@@ -74,30 +74,30 @@ export const investmentTermsForm: TFormFixture = {
 export const etoTermsForm: TFormFixture = {
   currencies: {
     value: "eth",
-    setState: false,
-    type: "checkBox"
+    mustBeChecked: false,
+    type: "checkBox",
   },
   notUnderCrowdfundingRegulations: {
     value: "",
-    type: "check"
+    type: "check",
   },
   prospectusLanguage: {
     value: "DE",
-    type: "check"
+    type: "check",
   },
   minTicketEur: "750",
   maxTicketEur: "10000",
-  whitelistDurationDays:{
+  whitelistDurationDays: {
     value: "5",
-    type: "range"
+    type: "range",
   },
-  publicDurationDays:{
+  publicDurationDays: {
     value: "14",
-    type: "range"
+    type: "range",
   },
-  signingDurationDays:{
+  signingDurationDays: {
     value: "15",
-    type: "range"
+    type: "range",
   },
   additionalTerms: "There must always be sausage in the fridge!",
   enableTransferOnSuccess: {

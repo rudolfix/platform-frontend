@@ -1,5 +1,5 @@
-import { forEach } from "lodash";
-import { formField, tid } from "./selectors";
+import { findKey, forEach } from "lodash";
+import { formField, formFieldErrorMessage, tid } from "./selectors";
 
 type TFormFieldFixture =
   | {
@@ -15,6 +15,9 @@ type TFormFieldFixture =
       type: "media";
       values: Record<string, string>;
     }
+  | {
+      type: "submit";
+    }
   | string;
 
 export type TFormFixture = {
@@ -29,7 +32,8 @@ export const fillField = (key: string, value: string, parent: string = "body") =
   });
 };
 
-
+const isSubmitField = (field: TFormFieldFixture) =>
+  typeof field === "object" && field.type === "submit";
 
 /**
  * Fill out a form
@@ -37,7 +41,6 @@ export const fillField = (key: string, value: string, parent: string = "body") =
  * @param submit - wether to submit the form or not, default true
  */
 export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: boolean } = {}) => {
-  let submitButtonTid = "";
   forEach(fixture, (field, key) => {
     // the default is just typing a string into the input
     if (typeof field === "string") {
@@ -79,7 +82,8 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
     }
     // tags
     else if (field.type === "tags") {
-      cy.get(tid(key, "input"))
+      cy.get(formField(key))
+        .then($form => $form.find("input"))
         .type(field.value, { force: true, timeout: 20 })
         .wait(1000)
         .type("{enter}", { force: true });
@@ -103,14 +107,30 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
         });
       });
     }
-    // also remember main submitt button
-    else if (field.type === "submit") {
-      submitButtonTid = key;
-    }
   });
+
   if (submit) {
-    cy.get(tid(submitButtonTid)).awaitedClick();
+    const submitField = findKey(fixture, isSubmitField);
+
+    if (!submitField) {
+      throw new Error("Please provide 'submit' fixture");
+    }
+
+    cy.get(tid(submitField)).awaitedClick();
   }
+};
+
+/**
+ * Returns field error message.
+ * In case there is no error empty string is returned
+ * @param formTid Form TID
+ * @param key Field name
+ * @returns Chainable string
+ */
+export const getFieldError = (formTid: string, key: string): Cypress.Chainable<string> => {
+  const errorMessageTid = formFieldErrorMessage(key);
+
+  return cy.get(formTid).then($form => $form.find(errorMessageTid).text());
 };
 
 /**

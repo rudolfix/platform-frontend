@@ -153,4 +153,3 @@ export const uploadFileToFieldWithTid = (targetTid: string, fixture: string = "e
 
   cy.get(tid(targetTid)).trigger("drop", dropEvent);
 };
-

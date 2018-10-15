@@ -9,15 +9,12 @@ import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Document } from "../../shared/Document";
 import { Panel } from "../../shared/Panel";
+import { InvestmentAmount } from "../shared/InvestmentAmount";
 
 import * as styles from "./EtoInvestmentTermsWidget.module.scss";
 
 type TExternalProps = {
   etoData: TEtoWithCompanyAndContract;
-  computedNewSharePrice: number;
-  computedMinCapEur: number;
-  computedMinNumberOfTokens: number;
-  computedMaxCapEur: number;
 };
 
 type TDispatchProps = {
@@ -26,12 +23,11 @@ type TDispatchProps = {
 
 const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps> = ({
   etoData,
-  computedNewSharePrice,
-  computedMinCapEur,
-  computedMinNumberOfTokens,
-  computedMaxCapEur,
   downloadDocument,
 }) => {
+  const computedNewSharePrice = etoData.preMoneyValuationEur / etoData.existingCompanyShares;
+  const computedMinNumberOfTokens = etoData.newSharesToIssue * etoData.equityTokensPerShare;
+
   return (
     <Panel className={styles.tokenTerms}>
       <div className={styles.content}>
@@ -73,8 +69,12 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <FormattedMessage id="eto.public-view.token-terms.investment-amount" />
               </span>
               <span className={styles.value}>
-                {"€ "} {computedMaxCapEur.toFixed(4)} - {"€ "}
-                {computedMinCapEur.toFixed(4)}
+                <InvestmentAmount
+                  newSharesToIssue={etoData.newSharesToIssue}
+                  existingCompanyShares={etoData.existingCompanyShares}
+                  preMoneyValuationEur={etoData.preMoneyValuationEur}
+                  minimumNewSharesToIssue={etoData.minimumNewSharesToIssue}
+                />
               </span>
             </div>
             {etoData.discountScheme && (
@@ -219,7 +219,8 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <FormattedMessage id="eto.public-view.token-terms.voting-rights" />
               </span>
               <span className={styles.value}>
-                {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
+                {etoData.generalVotingRule === "no_voting_rights" ||
+                etoData.generalVotingRule === "negative" ? (
                   <FormattedMessage id="eto.public-view.token-terms.no" />
                 ) : (
                   <FormattedMessage id="eto.public-view.token-terms.yes" />
@@ -227,14 +228,13 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               </span>
             </div>
 
-            {etoData.liquidationPreferenceMultiplier !== undefined && (
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
-                </span>
-                <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
-              </div>
-            )}
+            <div className={styles.entry}>
+              <span className={styles.label}>
+                <FormattedMessage id="eto.public-view.token-terms.liquidation-preference" />
+              </span>
+              <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
+            </div>
+
             {!!etoData.templates.companyTokenHolderAgreement && (
               <Button
                 layout={EButtonLayout.INLINE}

@@ -10,7 +10,13 @@ import { actions } from "../../../../modules/actions";
 import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormCheckbox, FormField, FormRadioButton, FormTextArea } from "../../../shared/forms";
+import {
+  FormCheckbox,
+  FormError,
+  FormField,
+  FormRadioButton,
+  FormTextArea,
+} from "../../../shared/forms";
 import {
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
@@ -160,7 +166,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         <FormRadioButton
           disabled={readonly}
           name="enableTransferOnSuccess"
-          label={<FormattedMessage id="form.select.asap" />}
+          label={<FormattedMessage id="form.select.enabled" />}
           value={true}
         />
       </div>
@@ -168,16 +174,17 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         <FormRadioButton
           disabled={readonly}
           name="enableTransferOnSuccess"
-          label={<FormattedMessage id="eto.form.eto-terms.future-date" />}
+          label={<FormattedMessage id="form.select.disabled" />}
           value={false}
         />
       </div>
+      <FormError name="enableTransferOnSuccess" />
     </div>
 
     <FormTextArea
       disabled={readonly}
       className="mb-2 mt-2"
-      label={<FormattedMessage id="eto.form.other" />}
+      label={<FormattedMessage id="eto.form.additional-terms" />}
       name="additionalTerms"
     />
 

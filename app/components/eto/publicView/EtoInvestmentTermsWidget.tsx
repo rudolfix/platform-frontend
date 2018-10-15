@@ -228,14 +228,13 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               </span>
             </div>
 
-            {etoData.liquidationPreferenceMultiplier && (
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preference" />
-                </span>
-                <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
-              </div>
-            )}
+            <div className={styles.entry}>
+              <span className={styles.label}>
+                <FormattedMessage id="eto.public-view.token-terms.liquidation-preference" />
+              </span>
+              <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
+            </div>
+
             {!!etoData.templates.companyTokenHolderAgreement && (
               <Button
                 layout={EButtonLayout.INLINE}

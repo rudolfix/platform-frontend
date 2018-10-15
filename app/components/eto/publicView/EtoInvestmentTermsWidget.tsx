@@ -219,7 +219,8 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <FormattedMessage id="eto.public-view.token-terms.voting-rights" />
               </span>
               <span className={styles.value}>
-                {etoData.generalVotingRule === "no_voting_rights" || "negative" ? (
+                {etoData.generalVotingRule === "no_voting_rights" ||
+                etoData.generalVotingRule === "negative" ? (
                   <FormattedMessage id="eto.public-view.token-terms.no" />
                 ) : (
                   <FormattedMessage id="eto.public-view.token-terms.yes" />

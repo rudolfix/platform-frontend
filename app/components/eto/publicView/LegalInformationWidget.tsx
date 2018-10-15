@@ -18,20 +18,24 @@ const generateShareholders = (
   shareholders: TCompanyEtoData["shareholders"],
   companyShares: number,
 ) => {
-  const assignedShares = shareholders.reduce((acc, shareholder) => {
-    return shareholder ? (acc += shareholder.shares) : acc;
-  }, 0);
+  if (shareholders === undefined) {
+    return [];
+  } else {
+    const assignedShares = shareholders.reduce((acc, shareholder) => {
+      return shareholder ? (acc += shareholder.shares) : acc;
+    }, 0);
 
-  if (assignedShares < companyShares) {
-    return [
-      ...shareholders,
-      {
-        fullName: "Others",
-        shares: companyShares - assignedShares,
-      },
-    ];
+    if (assignedShares < companyShares) {
+      return [
+        ...shareholders,
+        {
+          fullName: "Others",
+          shares: companyShares - assignedShares,
+        },
+      ];
+    }
+    return shareholders;
   }
-  return shareholders;
 };
 
 export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {

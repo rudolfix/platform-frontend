@@ -271,7 +271,10 @@
   "eto.public-view.legal-information.legal-form": "Legal form",
   "eto.public-view.legal-information.number-of-employees": "Number of employees",
   "eto.public-view.legal-information.number-of-founders": "Number of founders",
+<<<<<<<<< Temporary merge branch 1
+=========
   "eto.public-view.legal-information.pre-money-valuation": "Pre-money valuation",
+>>>>>>>>> Temporary merge branch 2
   "eto.public-view.legal-information.registration-number": "Registration number",
   "eto.public-view.legal-information.title": "Legal information",
   "eto.public-view.product-vision.title": "Pitch",

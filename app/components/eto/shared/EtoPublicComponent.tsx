@@ -35,6 +35,7 @@ import * as styles from "./EtoPublicComponent.module.scss";
 const DEFAULT_PLACEHOLDER = "N/A";
 
 export const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#394652", "#c4c5c6"];
+export const DEFAULT_CHART_COLOR = "#c4c5c6";
 
 interface IProps {
   companyData: TCompanyEtoData;
@@ -188,7 +189,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
               <FormattedMessage id="eto.public-view.legal-information.title" />
             </SectionHeader>
 
-            <LegalInformationWidget etoData={etoData} companyData={companyData} />
+            <LegalInformationWidget companyData={companyData} />
           </Col>
           {(isYouTubeVideoAvailable || isSlideShareAvailable) && (
             <Col xs={12} md={4} className="mb-4 flex-column d-flex">

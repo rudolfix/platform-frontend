@@ -228,10 +228,10 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               </span>
             </div>
 
-            {etoData.liquidationPreferenceMultiplier !== undefined && (
+            {etoData.liquidationPreferenceMultiplier && (
               <div className={styles.entry}>
                 <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preferences" />
+                  <FormattedMessage id="eto.public-view.token-terms.liquidation-preference" />
                 </span>
                 <span className={styles.value}>{etoData.liquidationPreferenceMultiplier}x</span>
               </div>

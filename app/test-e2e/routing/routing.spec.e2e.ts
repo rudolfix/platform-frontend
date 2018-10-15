@@ -1,4 +1,3 @@
-import { registerWithLightWallet } from "../utils";
 import { tid } from "../utils/index";
 
 const assertUserInLightWalletLoginPage = () => {
@@ -17,7 +16,7 @@ const assertUserInLedgerWalletLoginPage = () => {
   cy.get(tid("modals.wallet-selector.ledger-wallet.title"));
 };
 
-describe("Platform Routing Tests", () => {
+describe("Platform Authentication Routing Tests", () => {
   it("should open login with light wallet", () => {
     cy.visit("/login");
     assertUserInLightWalletLoginPage();

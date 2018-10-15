@@ -26,6 +26,7 @@ $_active-color: lighten($_hover-color, 20%);
     display: flex;
     flex-shrink: 0;
     justify-content: center;
+    margin-top: px-to-rem(8px);
     padding: px-to-rem(8px) px-to-rem(20px);
     position: relative;
     text-align: center;

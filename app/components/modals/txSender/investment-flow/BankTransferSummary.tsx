@@ -137,7 +137,7 @@ const BankTransferSummary = compose<IProps, {}>(
     dispatchToProps: d => ({
       downloadAgreement: (etoId: string) =>
         d(
-          actions.publicEtos.downloadPublicEtoDocumentByType(
+          actions.publicEtos.downloadPublicEtoTemplateByType(
             etoId,
             EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
           ),

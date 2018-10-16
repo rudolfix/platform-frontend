@@ -7,6 +7,7 @@ import { CounterWidget, InvestWidget, TagsWidget, TokenSymbolWidget } from ".";
 import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { ETOStateOnChain, IEtoContractData } from "../../../../modules/public-etos/types";
 import { IWalletState } from "../../../../modules/wallet/reducer";
+import { selectLockedWalletConnected } from "../../../../modules/wallet/selectors";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
@@ -67,12 +68,7 @@ const PoweredByNeufund = () => {
 };
 
 const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
-  const isEligibleToPreEto = !!(
-    props.wallet &&
-    props.wallet.data &&
-    props.wallet.data.etherTokenICBMLockedWallet.LockedBalance !== "0"
-  );
-
+  const isEligibleToPreEto = props.wallet && selectLockedWalletConnected(props.wallet);
   const smartContractOnChain = !!props.contract;
 
   // It's possible for contract to be undefined if eto is not on chain yet
@@ -154,16 +150,28 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
         <div className={styles.divider} />
 
         <div className={styles.stageContentWrapper}>
-          {timedState === ETOStateOnChain.Setup && (
-            <CampaigningWidget
-              etoId={props.etoId}
-              minPledge={props.campaigningWidget.minPledge}
-              maxPledge={props.campaigningWidget.maxPledge}
-              isActivated={props.campaigningWidget.isActivated}
-              quote={props.campaigningWidget.quote}
-              investorsLimit={props.campaigningWidget.investorsLimit}
-            />
-          )}
+          {timedState === ETOStateOnChain.Setup &&
+            (!props.campaigningWidget.isActivated &&
+            props.contract &&
+            props.contract.startOfStates[ETOStateOnChain.Whitelist]! > new Date() ? (
+              <CounterWidget
+                endDate={
+                  props.contract.startOfStates[
+                    isEligibleToPreEto ? ETOStateOnChain.Whitelist : ETOStateOnChain.Public
+                  ]!
+                }
+                stage={isEligibleToPreEto ? "PRE-ETO" : "ETO"}
+              />
+            ) : (
+              <CampaigningWidget
+                etoId={props.etoId}
+                minPledge={props.campaigningWidget.minPledge}
+                maxPledge={props.campaigningWidget.maxPledge}
+                isActivated={props.campaigningWidget.isActivated}
+                quote={props.campaigningWidget.quote}
+                investorsLimit={props.campaigningWidget.investorsLimit}
+              />
+            ))}
           {timedState === ETOStateOnChain.Whitelist &&
             !isEligibleToPreEto && (
               <CounterWidget

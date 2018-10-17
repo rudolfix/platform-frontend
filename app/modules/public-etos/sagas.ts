@@ -10,7 +10,7 @@ import {
   TEtoSpecsData,
   TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces";
-import { immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { promisify } from "../../lib/contracts/typechain-runtime";
@@ -215,24 +215,32 @@ function* loadCalculatedContribution(_: TGlobalDependencies, action: TAction): a
   }
 }
 
-function* downloadDocumentByType(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "PUBLIC_ETOS_DOWNLOAD_DOCUMENT_BY_TYPE") return;
+function* download(document: IEtoDocument): any {
+  if (document) {
+    yield put(
+      actions.immutableStorage.downloadImmutableFile(
+        {
+          ipfsHash: document.ipfsHash,
+          mimeType: document.mimeType,
+          asPdf: true,
+        },
+        immutableDocumentName[document.documentType],
+      ),
+    );
+  }
+}
+
+function* downloadDocument(_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "PUBLIC_ETOS_DOWNLOAD_DOCUMENT") return;
+  yield download(action.payload.document);
+}
+
+function* downloadTemplateByType(_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "PUBLIC_ETOS_DOWNLOAD_TEMPLATE_BY_TYPE") return;
   const state: IAppState = yield select();
   const eto = selectEtoById(state.publicEtos, action.payload.etoId);
   if (eto) {
-    const document = eto.templates[camelCase(action.payload.documentType)];
-    if (document) {
-      yield put(
-        actions.immutableStorage.downloadImmutableFile(
-          {
-            ipfsHash: document.ipfsHash,
-            mimeType: document.mimeType,
-            asPdf: true,
-          },
-          immutableDocumentName[document.documentType],
-        ),
-      );
-    }
+    yield download(eto.templates[camelCase(action.payload.documentType)]);
   }
 }
 
@@ -241,5 +249,6 @@ export function* etoSagas(): any {
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO", loadEto);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_CALCULATED_CONTRIBUTION", loadCalculatedContribution);
-  yield fork(neuTakeEvery, "PUBLIC_ETOS_DOWNLOAD_DOCUMENT_BY_TYPE", downloadDocumentByType);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_DOWNLOAD_DOCUMENT", downloadDocument);
+  yield fork(neuTakeEvery, "PUBLIC_ETOS_DOWNLOAD_TEMPLATE_BY_TYPE", downloadTemplateByType);
 }

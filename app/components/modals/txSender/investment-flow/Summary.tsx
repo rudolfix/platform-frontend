@@ -173,7 +173,7 @@ const InvestmentSummary = compose<IProps, {}>(
       onAccept: () => d(actions.txSender.txSenderAccept()),
       downloadAgreement: (etoId: string) =>
         d(
-          actions.publicEtos.downloadPublicEtoDocumentByType(
+          actions.publicEtos.downloadPublicEtoTemplateByType(
             etoId,
             EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
           ),

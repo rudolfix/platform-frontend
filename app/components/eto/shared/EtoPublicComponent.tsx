@@ -180,7 +180,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData, wa
                   <p className="mb-4">{companyData.companyDescription}</p>
                 )}
                 {companyData.keyQuoteInvestor && (
-                  <p className={cn(styles.quote, "mb-4")}>"{companyData.keyQuoteInvestor}"</p>
+                  <p className={cn(styles.quote, "mb-4")}>{companyData.keyQuoteInvestor}</p>
                 )}
               </Panel>
             )}

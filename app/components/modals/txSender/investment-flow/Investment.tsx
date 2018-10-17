@@ -154,6 +154,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
       <Row>
         <Col>
           <FormFieldRaw
+            data-test-id="invest-modal-eur-field"
             prefix="€"
             errorMsg={getInputErrorMessage(errorState, eto)}
             placeholder={`${intl.formatIntlMessage(
@@ -169,6 +170,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
         </Col>
         <Col>
           <FormFieldRaw
+            data-test-id="invest-modal-eth-field"
             prefix="ETH"
             placeholder={`${intl.formatIntlMessage(
               "investment-flow.min-ticket-size",
@@ -244,6 +246,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
           layout={EButtonLayout.PRIMARY}
           type="submit"
           disabled={!readyToInvest}
+          data-test-id="invest-modal-invest-now-button"
         >
           <FormattedMessage id="investment-flow.invest-now" />
         </Button>

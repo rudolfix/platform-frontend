@@ -82,7 +82,12 @@ const CampaigningActivatedInvestorWidgetLayout: React.SFC<
               <FormInput size={InputSize.SMALL} type="number" name="amount" prefix="€" />
             </div>
             <div className={styles.value}>
-              <Button type="submit" size={ButtonSize.SMALL} width={ButtonWidth.BLOCK}>
+              <Button
+                data-test-id="eto-bookbuilding-back-now"
+                type="submit"
+                size={ButtonSize.SMALL}
+                width={ButtonWidth.BLOCK}
+              >
                 <FormattedMessage id="shared-component.eto-overview.back-now" />
               </Button>
             </div>

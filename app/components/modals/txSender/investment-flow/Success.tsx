@@ -16,7 +16,7 @@ interface IDispatchProps {
 }
 
 const InvestmentSuccessComponent: React.SFC<IDispatchProps> = ({ goToPortfolio, txHash }) => (
-  <div className="text-center">
+  <div className="text-center" data-test-id="investment-flow.success.title">
     <ConfettiEthereum className="mb-3" />
     <h3 className={styles.title}>
       <FormattedMessage id="investment-flow.success.title" />

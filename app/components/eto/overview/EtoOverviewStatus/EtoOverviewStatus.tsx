@@ -75,7 +75,10 @@ const EtoOverviewStatus: React.SFC<IProps & CommonHtmlProps> = props => {
   const timedState = props.contract ? props.contract.timedState : ETOStateOnChain.Setup;
 
   return (
-    <div className={cn(styles.etoOverviewStatus, props.className)}>
+    <div
+      className={cn(styles.etoOverviewStatus, props.className)}
+      data-test-id={`eto-overview-${props.etoId}`}
+    >
       <div className={styles.overviewWrapper}>
         <div className={styles.statusWrapper}>
           <StatusOfEto previewCode={props.previewCode} />

@@ -140,7 +140,12 @@ const InvestmentSummaryComponent = ({
       </Row>
 
       <Row className="justify-content-center mb-0 mt-0">
-        <Button layout={EButtonLayout.PRIMARY} type="button" onClick={onAccept}>
+        <Button
+          layout={EButtonLayout.PRIMARY}
+          type="button"
+          onClick={onAccept}
+          data-test-id="invest-modal-summary-confirm-button"
+        >
           <FormattedMessage id="investment-flow.confirm" />
         </Button>
       </Row>

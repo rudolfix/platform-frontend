@@ -205,6 +205,10 @@ $_active-color: lighten($_hover-color, 20%);
   width: 20px;
   height: 20px;
 
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+
   &:hover {
     :global(.inline-icon) {
       color: $color-brand;

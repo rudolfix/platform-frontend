@@ -3,13 +3,12 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { actions } from "../../../../../modules/actions";
-import { selectIsInvestor, selectIsVerifiedInvestor } from "../../../../../modules/auth/selectors";
+import { selectIsInvestor } from "../../../../../modules/auth/selectors";
 import { selectBookbuildingStats } from "../../../../../modules/bookbuilding-flow/selectors";
 import { appConnect } from "../../../../../store";
 import { onEnterAction } from "../../../../../utils/OnEnterAction";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money";
 import { CampaigningActivatedInvestorWidget } from "./CampaigningActivatedInvestorWidget";
-import { CampaigningActivatedUnapprovedInvestorWidget } from "./CampaigningActivatedUnapprovedInvestorWidget";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
 
@@ -23,7 +22,6 @@ export interface IExternalProps {
 interface IStateProps {
   pledgedAmount: number | null;
   investorsCount: number | null;
-  isVerifiedInvestor: boolean;
   isInvestor: boolean;
 }
 
@@ -32,9 +30,8 @@ type IProps = IExternalProps & IStateProps;
 const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
   investorsLimit,
   pledgedAmount,
-  isInvestor,
   investorsCount,
-  isVerifiedInvestor,
+  isInvestor,
   etoId,
   minPledge,
   maxPledge,
@@ -61,16 +58,15 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
         {investorsCount !== null ? investorsCount : "-"} out of {investorsLimit} whitelisted
       </span>
     </div>
-    {isInvestor &&
-      (isVerifiedInvestor ? (
-        <CampaigningActivatedInvestorWidget
-          minPledge={minPledge}
-          maxPledge={maxPledge}
-          etoId={etoId}
-        />
-      ) : (
-        <CampaigningActivatedUnapprovedInvestorWidget minPledge={minPledge} maxPledge={maxPledge} />
-      ))}
+    {isInvestor && (
+      <CampaigningActivatedInvestorWidget
+        investorsLimit={investorsLimit}
+        etoId={etoId}
+        minPledge={minPledge}
+        maxPledge={maxPledge}
+        investorsCount={investorsCount}
+      />
+    )}
   </div>
 );
 
@@ -81,7 +77,6 @@ const CampaigningActivatedWidget = compose<React.SFC<IExternalProps>>(
 
       return {
         isInvestor: selectIsInvestor(state),
-        isVerifiedInvestor: selectIsVerifiedInvestor(state),
         pledgedAmount: stats ? stats.pledgedAmount : null,
         investorsCount: stats ? stats.investorsCount : null,
       };

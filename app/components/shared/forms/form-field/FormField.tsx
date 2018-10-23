@@ -10,9 +10,9 @@ interface IFieldGroup {
 
 type FieldGroupProps = IFieldGroup & FormInputProps;
 
-export const FormField: React.SFC<FieldGroupProps> = ({ label, ...inputProps }) => (
+export const FormField: React.SFC<FieldGroupProps> = ({ label, name, ...inputProps }) => (
   <FormGroup>
-    {label && <FormLabel>{label}</FormLabel>}
-    <FormInput {...inputProps} />
+    {label && <FormLabel name={name}>{label}</FormLabel>}
+    <FormInput name={name} {...inputProps} />
   </FormGroup>
 );

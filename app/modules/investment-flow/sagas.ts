@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers } from "../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../utils/Money.utils";
+import { convertToBigInt } from "../../utils/Number.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";

@@ -19,7 +19,8 @@ import {
   divideBigNumbers,
   multiplyBigNumbers,
 } from "../../../../utils/BigNumberUtils";
-import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
+import { formatMoney } from "../../../../utils/Money.utils";
+import { formatThousands } from "../../../../utils/Number.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";

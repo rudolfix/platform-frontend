@@ -4,11 +4,11 @@ import { Q18 } from "../config/constants";
 import { invariant } from "./invariant";
 
 export function formatMoney(
-  value: string | BigNumber,
+  value: string | BigNumber | number,
   currencyDecimals: number,
   decimalPlaces?: number,
 ): string {
-  const money = new BigNumber(value);
+  const money = new BigNumber(value.toString());
   const moneyInPrimaryBase = money.div(new BigNumber(10).pow(currencyDecimals));
   return decimalPlaces !== undefined
     ? moneyInPrimaryBase.toFixed(decimalPlaces, BigNumber.ROUND_UP)

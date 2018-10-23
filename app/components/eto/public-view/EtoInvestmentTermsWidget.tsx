@@ -71,6 +71,10 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               <span className={styles.value}>
                 <InvestmentAmount
                   newSharesToIssue={etoData.newSharesToIssue}
+                  newSharesToIssueInFixedSlots={etoData.newSharesToIssueInFixedSlots}
+                  newSharesToIssueInWhitelist={etoData.newSharesToIssueInWhitelist}
+                  fixedSlotsMaximumDiscountFraction={etoData.fixedSlotsMaximumDiscountFraction}
+                  whitelistDiscountFraction={etoData.whitelistDiscountFraction}
                   existingCompanyShares={etoData.existingCompanyShares}
                   preMoneyValuationEur={etoData.preMoneyValuationEur}
                   minimumNewSharesToIssue={etoData.minimumNewSharesToIssue}

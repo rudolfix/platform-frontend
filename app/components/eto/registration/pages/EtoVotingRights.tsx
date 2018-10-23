@@ -65,7 +65,7 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     />
 
     <div className="form-group">
-      <FormLabel>
+      <FormLabel name="generalVotingRule">
         <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
       </FormLabel>
       <FormToggle

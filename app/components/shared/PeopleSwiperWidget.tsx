@@ -44,21 +44,17 @@ interface IDispatchProps {
 }
 
 class PeopleSwiperWidgetComponent extends React.Component<IOwnProps & IDispatchProps> {
-  swiper: any = null;
-
-  swiperRef = (ref: any) => {
-    if (ref) this.swiper = ref.swiper;
-  };
+  swiperRef = React.createRef();
 
   goNext = () => {
-    if (this.swiper) {
-      this.swiper.slideNext();
+    if (this.swiperRef.current !== null) {
+      (this.swiperRef.current as any).swiper.slideNext();
     }
   };
 
   goPrev = () => {
-    if (this.swiper) {
-      this.swiper.slidePrev();
+    if (this.swiperRef.current !== null) {
+      (this.swiperRef.current as any).swiper.slidePrev();
     }
   };
 
@@ -76,15 +72,16 @@ class PeopleSwiperWidgetComponent extends React.Component<IOwnProps & IDispatchP
           slidesPerView: 2,
         },
         992: {
-          slidesPerView: slidesPerView - 2,
+          slidesPerView: isHorizontal ? (isSingle ? 1 : 2) : 4,
         },
         1200: {
-          slidesPerView: slidesPerView - 1,
+          slidesPerView: isHorizontal ? (isSingle ? 1 : 2) : 5,
         },
       },
       observer: true,
       centeredSlides: isSingle,
       slidesPerView,
+      wrapperClass: people.length === 3 ? styles.swiperWrapperCentered : styles.swiperWrapper,
     };
 
     return (
@@ -92,8 +89,9 @@ class PeopleSwiperWidgetComponent extends React.Component<IOwnProps & IDispatchP
         <Swiper {...swiperSettings} ref={this.swiperRef}>
           {people.map(({ image, name, description, role, socialChannels, website }, i) => {
             return (
-              <div
+              <button
                 key={i}
+                className={styles.clickable}
                 onClick={() =>
                   showPersonModal(name, role, description, image, socialChannels, website)
                 }
@@ -106,7 +104,7 @@ class PeopleSwiperWidgetComponent extends React.Component<IOwnProps & IDispatchP
                   srcSet={{ "1x": image }}
                   layout={isHorizontal ? "horizontal" : "vertical"}
                 />
-              </div>
+              </button>
             );
           })}
         </Swiper>

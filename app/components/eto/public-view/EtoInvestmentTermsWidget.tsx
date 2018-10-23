@@ -8,7 +8,9 @@ import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Document } from "../../shared/Document";
+import { ECurrencySymbol, Money, selectCurrencyCode } from "../../shared/Money";
 import { Panel } from "../../shared/Panel";
+import { Percentage } from "../../shared/Percentage";
 import { InvestmentAmount } from "../shared/InvestmentAmount";
 
 import * as styles from "./EtoInvestmentTermsWidget.module.scss";
@@ -26,7 +28,6 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
   downloadDocument,
 }) => {
   const computedNewSharePrice = etoData.preMoneyValuationEur / etoData.existingCompanyShares;
-  const computedMinNumberOfTokens = etoData.newSharesToIssue * etoData.equityTokensPerShare;
 
   return (
     <Panel className={styles.tokenTerms}>
@@ -57,6 +58,24 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
             )}
             <div className={styles.entry}>
               <span className={styles.label}>
+                <FormattedMessage id="eto.public-view.token-terms.new-shares-to-issue" />
+              </span>
+              <span className={styles.value}>
+                {etoData.minimumNewSharesToIssue}
+                {" - "}
+                {etoData.newSharesToIssue}
+              </span>
+            </div>
+            {etoData.newSharesToIssueInWhitelist && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.new-shares-to-issue-in-whitelist" />
+                </span>
+                <span className={styles.value}>{etoData.newSharesToIssueInWhitelist}</span>
+              </div>
+            )}
+            <div className={styles.entry}>
+              <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
               </span>
               <span className={styles.value}>
@@ -64,6 +83,16 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 {computedNewSharePrice.toFixed(4)}
               </span>
             </div>
+            {etoData.whitelistDiscountFraction && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.whitelist-discount" />
+                </span>
+                <span className={styles.value}>
+                  <Percentage>{etoData.whitelistDiscountFraction}</Percentage>
+                </span>
+              </div>
+            )}
             <div className={styles.entry}>
               <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.token-terms.investment-amount" />
@@ -77,14 +106,6 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 />
               </span>
             </div>
-            {etoData.discountScheme && (
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.price-discount" />
-                </span>
-                <span className={styles.value}>{etoData.discountScheme}</span>
-              </div>
-            )}
             {etoData.templates.investmentAndShareholderAgreement && (
               <Button
                 layout={EButtonLayout.INLINE}
@@ -117,14 +138,6 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <span className={styles.value}>{etoData.equityTokensPerShare}</span>
               </div>
             )}
-            {!!computedMinNumberOfTokens && (
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.tokens-to-issue" />
-                </span>
-                <span className={styles.value}>{computedMinNumberOfTokens}</span>
-              </div>
-            )}
             {!!(computedNewSharePrice && etoData.equityTokensPerShare) && (
               <div className={styles.entry}>
                 <span className={styles.label}>
@@ -132,6 +145,46 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 </span>
                 <span className={styles.value}>
                   € {(computedNewSharePrice / etoData.equityTokensPerShare).toFixed(4)}
+                </span>
+              </div>
+            )}
+            {!!etoData.minTicketEur && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.ticket-size" />
+                </span>
+                <span className={styles.value}>
+                  <Money
+                    currency="eur"
+                    currencySymbol={ECurrencySymbol.SYMBOL}
+                    value={
+                      <>
+                        {etoData.minTicketEur}
+                        {" - "}
+                        {etoData.maxTicketEur ? (
+                          etoData.maxTicketEur
+                        ) : (
+                          <FormattedMessage id="common.number-quantity.unlimited" />
+                        )}
+                      </>
+                    }
+                  />
+                </span>
+              </div>
+            )}
+            {!!etoData.minTicketEur && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.currencies.label" />
+                </span>
+                <span className={styles.value}>
+                  <FormattedMessage
+                    id="eto.public-view.token-terms.currencies.value"
+                    values={{
+                      eth: selectCurrencyCode("eth"),
+                      nEur: selectCurrencyCode("eur_token"),
+                    }}
+                  />
                 </span>
               </div>
             )}

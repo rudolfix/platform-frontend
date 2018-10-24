@@ -7,7 +7,7 @@ import { compose } from "recompose";
 import { CounterWidget, InvestWidget, TagsWidget, TokenSymbolWidget } from ".";
 import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
-import { ETOStateOnChain, IEtoContractData } from "../../../../modules/public-etos/types";
+import { EETOStateOnChain, IEtoContractData } from "../../../../modules/public-etos/types";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
@@ -78,10 +78,10 @@ const EtoStatusManager = (
   props: IProps & CommonHtmlProps & IWithIsEligibleToPreEto & IStateProps,
 ) => {
   // It's possible for contract to be undefined if eto is not on chain yet
-  const timedState = props.contract ? props.contract.timedState : ETOStateOnChain.Setup;
+  const timedState = props.contract ? props.contract.timedState : EETOStateOnChain.Setup;
 
   switch (timedState) {
-    case ETOStateOnChain.Setup: {
+    case EETOStateOnChain.Setup: {
       if (props.isAuthorized) {
         if (props.campaigningWidget.isActivated) {
           return (
@@ -94,13 +94,13 @@ const EtoStatusManager = (
           );
         } else if (
           props.contract &&
-          props.contract.startOfStates[ETOStateOnChain.Whitelist]! > new Date()
+          props.contract.startOfStates[EETOStateOnChain.Whitelist]! > new Date()
         ) {
           return (
             <CounterWidget
               endDate={
                 props.contract.startOfStates[
-                  props.isEligibleToPreEto ? ETOStateOnChain.Whitelist : ETOStateOnChain.Public
+                  props.isEligibleToPreEto ? EETOStateOnChain.Whitelist : EETOStateOnChain.Public
                 ]!
               }
               stage={props.isEligibleToPreEto ? "PRE-ETO" : "ETO"}
@@ -117,7 +117,7 @@ const EtoStatusManager = (
         return <LoggedOutCampaigning />;
       }
     }
-    case ETOStateOnChain.Whitelist: {
+    case EETOStateOnChain.Whitelist: {
       if (props.isEligibleToPreEto) {
         return (
           <InvestWidget
@@ -130,14 +130,14 @@ const EtoStatusManager = (
       } else {
         return (
           <CounterWidget
-            endDate={props.contract!.startOfStates[ETOStateOnChain.Public]!}
+            endDate={props.contract!.startOfStates[EETOStateOnChain.Public]!}
             stage="ETO"
           />
         );
       }
     }
 
-    case ETOStateOnChain.Public: {
+    case EETOStateOnChain.Public: {
       return (
         <InvestWidget
           raisedTokens={props.contract!.totalInvestment.totalTokensInt.toNumber()}
@@ -148,9 +148,9 @@ const EtoStatusManager = (
       );
     }
 
-    case ETOStateOnChain.Claim:
-    case ETOStateOnChain.Signing:
-    case ETOStateOnChain.Payout: {
+    case EETOStateOnChain.Claim:
+    case EETOStateOnChain.Signing:
+    case EETOStateOnChain.Payout: {
       return (
         <ClaimWidget
           etoId={props.etoId}
@@ -162,7 +162,7 @@ const EtoStatusManager = (
       );
     }
 
-    case ETOStateOnChain.Refund: {
+    case EETOStateOnChain.Refund: {
       return <RefundWidget etoId={props.etoId} timedState={timedState} />;
     }
 

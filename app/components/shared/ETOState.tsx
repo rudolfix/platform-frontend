@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
-import { ETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 
 import * as styles from "./ETOState.module.scss";
@@ -29,7 +29,7 @@ interface IStateProps {
   eto: TEtoWithCompanyAndContract;
 }
 
-const statusToName: Record<EtoState | ETOStateOnChain, React.ReactNode> = {
+const statusToName: Record<EtoState | EETOStateOnChain, React.ReactNode> = {
   [EtoState.PREVIEW]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
   [EtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
   [EtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
@@ -38,19 +38,19 @@ const statusToName: Record<EtoState | ETOStateOnChain, React.ReactNode> = {
   ),
   [EtoState.ON_CHAIN]: <FormattedMessage id="shared-component.eto-overview.status-on-chain" />,
   // on chain state mappings
-  [ETOStateOnChain.Setup]: <FormattedMessage id="eto.status.onchain.setup" />,
-  [ETOStateOnChain.Whitelist]: <FormattedMessage id="eto.status.onchain.whitelist" />,
-  [ETOStateOnChain.Public]: <FormattedMessage id="eto.status.onchain.public" />,
-  [ETOStateOnChain.Signing]: <FormattedMessage id="eto.status.onchain.signing" />,
-  [ETOStateOnChain.Claim]: <FormattedMessage id="eto.status.onchain.claim" />,
-  [ETOStateOnChain.Payout]: <FormattedMessage id="eto.status.onchain.payout" />,
-  [ETOStateOnChain.Refund]: <FormattedMessage id="eto.status.onchain.refund" />,
+  [EETOStateOnChain.Setup]: <FormattedMessage id="eto.status.onchain.setup" />,
+  [EETOStateOnChain.Whitelist]: <FormattedMessage id="eto.status.onchain.whitelist" />,
+  [EETOStateOnChain.Public]: <FormattedMessage id="eto.status.onchain.public" />,
+  [EETOStateOnChain.Signing]: <FormattedMessage id="eto.status.onchain.signing" />,
+  [EETOStateOnChain.Claim]: <FormattedMessage id="eto.status.onchain.claim" />,
+  [EETOStateOnChain.Payout]: <FormattedMessage id="eto.status.onchain.payout" />,
+  [EETOStateOnChain.Refund]: <FormattedMessage id="eto.status.onchain.refund" />,
 };
 
-const stateToClassName: Partial<Record<EtoState | ETOStateOnChain, string>> = {
+const stateToClassName: Partial<Record<EtoState | EETOStateOnChain, string>> = {
   [EtoState.PENDING]: styles.pending,
   [EtoState.LISTED]: styles.listed,
-  [ETOStateOnChain.Refund]: styles.refund,
+  [EETOStateOnChain.Refund]: styles.refund,
 };
 
 const ETOStateLayout: React.SFC<IStateProps & IExternalProps> = ({

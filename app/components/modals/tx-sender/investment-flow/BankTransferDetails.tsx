@@ -9,6 +9,7 @@ import {
   selectBankTransferReferenceCode,
 } from "../../../../modules/investment-flow/selectors";
 import { selectClientCountry, selectClientName } from "../../../../modules/kyc/selectors";
+import { ETxSenderType } from "../../../../modules/tx/sender/reducer";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { formatMoney } from "../../../../utils/Money.utils";
@@ -39,7 +40,7 @@ interface IDispatchProps extends ITxSummaryDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 const BankTransferDetailsComponent = injectIntlHelpers(
-  ({ onAccept, onGasStipendChange, ...data }: IProps & IIntlProps) => {
+  ({ onAccept, onChange, onGasStipendChange, ...data }: IProps & IIntlProps) => {
     return (
       <Container className={styles.container}>
         <Row className="mt-0">
@@ -132,6 +133,14 @@ const BankTransferDetailsComponent = injectIntlHelpers(
           <Button layout={EButtonLayout.PRIMARY} type="button" onClick={onAccept}>
             <FormattedMessage id="investment-flow.confirm" />
           </Button>
+          <Button
+            layout={EButtonLayout.SECONDARY}
+            type="button"
+            onClick={onChange}
+            data-test-id="invest-modal-summary-change-button"
+          >
+            <FormattedMessage id="investment-flow.change" />
+          </Button>
         </Row>
       </Container>
     );
@@ -153,6 +162,7 @@ const BankTransferDetails = appConnect<IStateProps, IDispatchProps>({
   },
   dispatchToProps: d => ({
     onAccept: () => d(actions.investmentFlow.showBankTransferSummary()),
+    onChange: () => d(actions.investmentFlow.changeBankTransfer(ETxSenderType.INVEST)),
     onGasStipendChange: () => d(actions.investmentFlow.toggleBankTransferGasStipend()),
   }),
 })(BankTransferDetailsComponent);

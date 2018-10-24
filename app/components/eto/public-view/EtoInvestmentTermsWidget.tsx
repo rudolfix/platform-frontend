@@ -8,6 +8,8 @@ import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Document } from "../../shared/Document";
+import { ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
+import { NumberFormat } from "../../shared/NumberFormat";
 import { Panel } from "../../shared/Panel";
 import { InvestmentAmount } from "../shared/InvestmentAmount";
 
@@ -42,8 +44,12 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                   <FormattedMessage id="eto.public-view.token-terms.pre-money-valuation" />
                 </span>
                 <span className={styles.value}>
-                  {"€ "}
-                  {etoData.preMoneyValuationEur}
+                  <Money
+                    value={etoData.preMoneyValuationEur}
+                    currency="eur"
+                    format={EMoneyFormat.FLOAT}
+                    currencySymbol={ECurrencySymbol.SYMBOL}
+                  />
                 </span>
               </div>
             )}
@@ -52,7 +58,9 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.existing-shares" />
                 </span>
-                <span className={styles.value}>{etoData.existingCompanyShares}</span>
+                <span className={styles.value}>
+                  <NumberFormat value={etoData.existingCompanyShares} />
+                </span>
               </div>
             )}
             <div className={styles.entry}>
@@ -60,8 +68,12 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <FormattedMessage id="eto.public-view.token-terms.new-share-price" />
               </span>
               <span className={styles.value}>
-                {"€ "}
-                {computedNewSharePrice.toFixed(4)}
+                <Money
+                  value={computedNewSharePrice}
+                  currency="eur"
+                  format={EMoneyFormat.FLOAT}
+                  currencySymbol={ECurrencySymbol.SYMBOL}
+                />
               </span>
             </div>
             <div className={styles.entry}>
@@ -118,7 +130,9 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />
                 </span>
-                <span className={styles.value}>{etoData.equityTokensPerShare}</span>
+                <span className={styles.value}>
+                  <NumberFormat value={etoData.equityTokensPerShare} />
+                </span>
               </div>
             )}
             {!!computedMinNumberOfTokens && (
@@ -126,7 +140,9 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.token-terms.tokens-to-issue" />
                 </span>
-                <span className={styles.value}>{computedMinNumberOfTokens}</span>
+                <span className={styles.value}>
+                  <NumberFormat value={computedMinNumberOfTokens} />
+                </span>
               </div>
             )}
             {!!(computedNewSharePrice && etoData.equityTokensPerShare) && (
@@ -135,7 +151,12 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                   <FormattedMessage id="eto.public-view.token-terms.token-price" />
                 </span>
                 <span className={styles.value}>
-                  € {(computedNewSharePrice / etoData.equityTokensPerShare).toFixed(4)}
+                  <Money
+                    value={computedNewSharePrice / etoData.equityTokensPerShare}
+                    currency="eur"
+                    format={EMoneyFormat.FLOAT}
+                    currencySymbol={ECurrencySymbol.SYMBOL}
+                  />
                 </span>
               </div>
             )}
@@ -258,7 +279,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
   );
 };
 
-export const EtoInvestmentTermsWidget = compose<TExternalProps & TDispatchProps, TExternalProps>(
+const EtoInvestmentTermsWidget = compose<TExternalProps & TDispatchProps, TExternalProps>(
   appConnect<{}, TDispatchProps, TExternalProps>({
     dispatchToProps: dispatch => ({
       downloadDocument: (document: IEtoDocument) =>
@@ -266,3 +287,5 @@ export const EtoInvestmentTermsWidget = compose<TExternalProps & TDispatchProps,
     }),
   }),
 )(EtoInvestmentTermsWidgetLayout);
+
+export { EtoInvestmentTermsWidget, EtoInvestmentTermsWidgetLayout };

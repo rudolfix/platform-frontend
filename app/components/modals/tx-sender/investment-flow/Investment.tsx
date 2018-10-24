@@ -34,7 +34,8 @@ import {
   subtractBigNumbers,
 } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
-import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
+import { formatMoney } from "../../../../utils/Money.utils";
+import { formatThousands } from "../../../../utils/Number.utils";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";

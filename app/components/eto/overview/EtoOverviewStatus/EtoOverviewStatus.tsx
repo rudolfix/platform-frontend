@@ -84,7 +84,11 @@ const EtoStatusManager = ({
             <CounterWidget endDate={eto.contract!.startOfStates[nextState]!} state={nextState} />
           );
         } else {
-          return <div className={styles.quote}>{eto.company.keyQuoteFounder}</div>;
+          return (
+            <div data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
+              {eto.company.keyQuoteFounder}
+            </div>
+          );
         }
       } else {
         return <LoggedOutCampaigning />;

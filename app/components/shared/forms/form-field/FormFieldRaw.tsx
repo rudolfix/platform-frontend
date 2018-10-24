@@ -4,7 +4,7 @@ import { FormGroup, Input, InputGroup, InputGroupAddon, InputProps } from "react
 
 import { CommonHtmlProps } from "../../../../types";
 import { IFormInputExternalProps } from "./FormInput";
-import { FormLabel } from "./FormLabel";
+import { FormLabelRaw } from "./FormLabel";
 import { computedValue, countedCharacters } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
@@ -75,7 +75,7 @@ export class FormFieldRaw extends React.Component<FieldGroupRawProps> {
 
     return (
       <FormGroup>
-        {label && <FormLabel>{label}</FormLabel>}
+        {label && <FormLabelRaw>{label}</FormLabelRaw>}
         <InputGroup className={cn(invalid && "is-invalid")}>
           {prefix && (
             <InputGroupAddon addonType="prepend" className={cn(styles.addon, addonStyle)}>

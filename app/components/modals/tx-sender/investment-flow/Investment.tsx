@@ -47,6 +47,7 @@ import {
   createWallets,
   formatEth,
   formatEur,
+  formatVaryingDecimals,
   getInputErrorMessage,
   getInvestmentTypeMessages,
 } from "./utils";
@@ -189,7 +190,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
             placeholder={`${intl.formatIntlMessage(
               "investment-flow.min-ticket-size",
             )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
-            value={ethValue && formatMoney(ethValue, MONEY_DECIMALS)}
+            value={formatVaryingDecimals(ethValue)}
             className="form-control"
             renderInput={props => (
               <MaskedInput
@@ -199,7 +200,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
                   thousandsSeparatorSymbol: " ",
                   allowDecimal: true,
                   decimalLimit: 4,
-                  integerLimit: 15,
+                  integerLimit: 15, // integer limit due to weird behavior on large inputs
                 })}
                 onChange={e => changeEthValue(e.target.value)}
               />

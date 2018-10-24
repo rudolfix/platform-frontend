@@ -29,7 +29,7 @@ interface IStateProps {
   eto: TEtoWithCompanyAndContract;
 }
 
-const statusToName: Record<EtoState | ETOStateOnChain, React.ReactNode> = {
+export const statusToName: Record<EtoState | ETOStateOnChain, JSX.Element> = {
   [EtoState.PREVIEW]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
   [EtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
   [EtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,

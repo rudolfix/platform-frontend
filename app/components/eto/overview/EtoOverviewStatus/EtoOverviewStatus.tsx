@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { compose } from "recompose";
 
 import { CounterWidget, InvestWidget, TagsWidget, TokenSymbolWidget } from ".";
+import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
 import { ETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../modules/public-etos/types";
 import { appConnect } from "../../../../store";
@@ -64,6 +65,9 @@ const EtoStatusManager = ({
   switch (timedState) {
     case ETOStateOnChain.Setup: {
       if (isAuthorized) {
+        const isWaitingForWhitelistToStart =
+          eto.contract && eto.contract.startOfStates[ETOStateOnChain.Whitelist]! > new Date();
+
         if (eto.isBookbuilding) {
           return (
             <LoggedInCampaigning
@@ -73,19 +77,11 @@ const EtoStatusManager = ({
               investorsLimit={eto.maxPledges || 0}
             />
           );
-        } else if (
-          eto.contract &&
-          eto.contract.startOfStates[ETOStateOnChain.Whitelist]! > new Date()
-        ) {
+        } else if (isWaitingForWhitelistToStart) {
+          const nextState = isEligibleToPreEto ? ETOStateOnChain.Whitelist : ETOStateOnChain.Public;
+
           return (
-            <CounterWidget
-              endDate={
-                eto.contract.startOfStates[
-                  isEligibleToPreEto ? ETOStateOnChain.Whitelist : ETOStateOnChain.Public
-                ]!
-              }
-              stage={isEligibleToPreEto ? "PRE-ETO" : "ETO"}
-            />
+            <CounterWidget endDate={eto.contract!.startOfStates[nextState]!} state={nextState} />
           );
         } else {
           return <div className={styles.quote}>{eto.company.keyQuoteFounder}</div>;
@@ -108,7 +104,7 @@ const EtoStatusManager = ({
         return (
           <CounterWidget
             endDate={eto.contract!.startOfStates[ETOStateOnChain.Public]!}
-            stage="ETO"
+            state={ETOStateOnChain.Public}
           />
         );
       }
@@ -182,8 +178,8 @@ const EtoOverviewStatusLayout: React.SFC<
         <div className={styles.tagsWrapper}>
           <TagsWidget
             etoId={eto.etoId}
-            termSheet={documentsByType["termsheet_template"]}
-            prospectusApproved={documentsByType["approved_prospectus"]}
+            termSheet={documentsByType[EEtoDocumentType.TERMSHEET_TEMPLATE]}
+            prospectusApproved={documentsByType[EEtoDocumentType.APPROVED_PROSPECTUS]}
             smartContractOnchain={smartContractOnChain}
           />
         </div>

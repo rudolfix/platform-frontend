@@ -298,7 +298,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         errorState: selectErrorState(investmentFlow),
         gasCostEth: selectInvestmentGasCostEth(state.investmentFlow),
         investmentType: selectInvestmentType(investmentFlow),
-        wallets: createWallets(state),
+        wallets: createWallets(investmentFlow.etoId, state),
         neuReward: selectNeuRewardUlpsByEtoId(investmentFlow.etoId, state),
         equityTokenCount: selectEquityTokenCountByEtoId(investmentFlow.etoId, state),
         showTokens: !!(eur && investmentFlow.isValidatedInput),

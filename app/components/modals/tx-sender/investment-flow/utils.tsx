@@ -23,13 +23,19 @@ import { WalletSelectionData } from "./InvestmentTypeSelector";
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
+import { selectIsWhitelisted } from "../../../../modules/investor-tickets/selectors";
+import {
+  selectEtoOnChainState,
+  selectEtoOnChainStateById,
+} from "../../../../modules/public-etos/selectors";
+import { EETOStateOnChain } from "../../../../modules/public-etos/types";
 
-export function createWallets(state: IAppState): WalletSelectionData[] {
+export function createWallets(etoId: string, state: IAppState): WalletSelectionData[] {
   const w = state.wallet;
   const icbmEther = selectLockedEtherBalance(w);
   const icbmNeuro = selectLockedEuroTokenBalance(w);
 
-  const wallets: WalletSelectionData[] = [
+  let wallets: WalletSelectionData[] = [
     {
       balanceEth: selectLiquidEtherBalance(w),
       balanceEur: selectLiquidEtherBalanceEuroAmount(state),
@@ -43,6 +49,11 @@ export function createWallets(state: IAppState): WalletSelectionData[] {
       icon: euroIcon,
     },
   ];
+
+  const etoState = selectEtoOnChainStateById(state.publicEtos, etoId);
+  if (etoState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(etoId, state)) {
+    wallets = [];
+  }
 
   if (compareBigNumbers(icbmNeuro, 0) > 0) {
     wallets.unshift({

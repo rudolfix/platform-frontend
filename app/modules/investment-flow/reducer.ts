@@ -109,6 +109,11 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
         ...state,
         bankTransferGasStipend: !state.bankTransferGasStipend,
       };
+    case "INVESTMENT_FLOW_BANK_TRANSFER_CHANGE":
+      return {
+        ...state,
+        bankTransferFlowState: undefined,
+      };
   }
 
   return state;

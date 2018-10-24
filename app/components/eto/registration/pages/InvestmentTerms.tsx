@@ -258,7 +258,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
   );
 };
 
-export const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
+const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
   setDisplayName("EtoInvestmentTerms"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
@@ -285,3 +285,5 @@ export const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoInvestmentTermsComponent);
+
+export { EtoInvestmentTerms };

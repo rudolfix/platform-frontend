@@ -6,8 +6,7 @@ import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
-import { Button, EButtonLayout } from "../../shared/buttons";
-import { Document } from "../../shared/Document";
+import { DocumentTemplateButton } from "../../shared/DocumentLink";
 import { Panel } from "../../shared/Panel";
 import { InvestmentAmount } from "../shared/InvestmentAmount";
 
@@ -86,18 +85,12 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               </div>
             )}
             {etoData.templates.investmentAndShareholderAgreement && (
-              <Button
-                layout={EButtonLayout.INLINE}
+              <DocumentTemplateButton
+                title={<FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />}
                 onClick={() =>
                   downloadDocument(etoData.templates.investmentAndShareholderAgreement)
                 }
-                className={styles.groupDocumentLink}
-              >
-                <span className={styles.icon}>
-                  <Document extension="pdf" />
-                </span>
-                <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
-              </Button>
+              />
             )}
           </div>
         </div>
@@ -158,18 +151,14 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               </div>
             )}
             {!!etoData.templates.reservationAndAcquisitionAgreement && (
-              <Button
-                layout={EButtonLayout.INLINE}
-                className={styles.groupDocumentLink}
+              <DocumentTemplateButton
+                title={
+                  <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
+                }
                 onClick={() =>
                   downloadDocument(etoData.templates.reservationAndAcquisitionAgreement)
                 }
-              >
-                <span className={styles.icon}>
-                  <Document extension="pdf" />
-                </span>
-                <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
-              </Button>
+              />
             )}
           </div>
         </div>
@@ -236,16 +225,10 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
             </div>
 
             {!!etoData.templates.companyTokenHolderAgreement && (
-              <Button
-                layout={EButtonLayout.INLINE}
+              <DocumentTemplateButton
+                title={<FormattedMessage id="eto.documents.tokenholder-agreement" />}
                 onClick={() => downloadDocument(etoData.templates.companyTokenHolderAgreement)}
-                className={styles.groupDocumentLink}
-              >
-                <span className={styles.icon}>
-                  <Document extension="pdf" />
-                </span>
-                <FormattedMessage id="eto.documents.tokenholder-agreement" />
-              </Button>
+              />
             )}
           </div>
         </div>

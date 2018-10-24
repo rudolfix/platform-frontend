@@ -4,6 +4,8 @@ import { Col, Row } from "reactstrap";
 
 import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
+import { ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
+import { NumberFormat } from "../../shared/NumberFormat";
 import { Panel } from "../../shared/Panel";
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
 import { CHART_COLORS } from "../shared/EtoPublicComponent";
@@ -86,7 +88,9 @@ export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.legal-information.number-of-founders" />
                 </span>
-                <span className={styles.value}>{companyData.numberOfFounders}</span>
+                <span className={styles.value}>
+                  <NumberFormat value={companyData.numberOfFounders} />
+                </span>
               </div>
             )}
             {companyData.numberOfEmployees && (
@@ -110,7 +114,14 @@ export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.legal-information.last-funding-amount" />
                 </span>
-                <span className={styles.value}>{`€ ${companyData.lastFundingSizeEur}`}</span>
+                <span className={styles.value}>
+                  <Money
+                    value={companyData.lastFundingSizeEur}
+                    currency="eur"
+                    format={EMoneyFormat.FLOAT}
+                    currencySymbol={ECurrencySymbol.SYMBOL}
+                  />
+                </span>
               </div>
             )}
             {companyData.companyShares && (
@@ -118,7 +129,9 @@ export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
                 <span className={styles.label}>
                   <FormattedMessage id="eto.public-view.legal-information.existing-shares" />
                 </span>
-                <span className={styles.value}>{companyData.companyShares}</span>
+                <span className={styles.value}>
+                  <NumberFormat value={companyData.companyShares} />
+                </span>
               </div>
             )}
           </div>

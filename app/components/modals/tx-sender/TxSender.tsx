@@ -60,6 +60,7 @@ export interface ITxSummaryStateProps {
 }
 export interface ITxSummaryDispatchProps {
   onAccept: () => any;
+  onChange?: () => any;
 }
 export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 

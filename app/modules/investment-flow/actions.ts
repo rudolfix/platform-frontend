@@ -1,4 +1,5 @@
 import { createAction, createSimpleAction } from "../actionsUtils";
+import { ETxSenderType } from "../tx/sender/reducer";
 import {
   EBankTransferFlowState,
   EInvestmentCurrency,
@@ -17,6 +18,8 @@ export const investmentFlowActions = {
   validateInputs: () => createSimpleAction("INVESTMENT_FLOW_VALIDATE_INPUTS"),
   showBankTransferDetails: () => createSimpleAction("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS"),
   showBankTransferSummary: () => createSimpleAction("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_SUMMARY"),
+  changeBankTransfer: (type: ETxSenderType) =>
+    createAction("INVESTMENT_FLOW_BANK_TRANSFER_CHANGE", { type }),
   // state mutations
   setEtoId: (etoId: string) => createAction("INVESTMENT_FLOW_SET_ETO_ID", { etoId }),
   setEthValue: (value: string) =>

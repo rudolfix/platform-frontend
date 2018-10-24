@@ -280,6 +280,7 @@
   "eto.public-view.legal-information.registration-number": "Registration number",
   "eto.public-view.legal-information.title": "Legal information",
   "eto.public-view.product-vision.title": "Pitch",
+  "eto.public-view.token-terms.authorized-capital": "Authorized capital",
   "eto.public-view.token-terms.currencies.label": "Currencies",
   "eto.public-view.token-terms.currencies.value": "{eth} and {nEur}",
   "eto.public-view.token-terms.days": "Days",

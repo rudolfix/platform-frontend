@@ -63,6 +63,16 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 </span>
               </div>
             )}
+            {etoData.authorizedCapitalShares && (
+              <div className={styles.entry}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto.public-view.token-terms.authorized-capital" />
+                </span>
+                <span className={styles.value}>
+                  <NumberFormat value={etoData.authorizedCapitalShares} />
+                </span>
+              </div>
+            )}
             <div className={styles.entry}>
               <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.token-terms.new-shares-to-issue" />
@@ -190,22 +200,20 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 </span>
               </div>
             )}
-            {!!etoData.minTicketEur && (
-              <div className={styles.entry}>
-                <span className={styles.label}>
-                  <FormattedMessage id="eto.public-view.token-terms.currencies.label" />
-                </span>
-                <span className={styles.value}>
-                  <FormattedMessage
-                    id="eto.public-view.token-terms.currencies.value"
-                    values={{
-                      eth: selectCurrencyCode("eth"),
-                      nEur: selectCurrencyCode("eur_token"),
-                    }}
-                  />
-                </span>
-              </div>
-            )}
+            <div className={styles.entry}>
+              <span className={styles.label}>
+                <FormattedMessage id="eto.public-view.token-terms.currencies.label" />
+              </span>
+              <span className={styles.value}>
+                <FormattedMessage
+                  id="eto.public-view.token-terms.currencies.value"
+                  values={{
+                    eth: selectCurrencyCode("eth"),
+                    nEur: selectCurrencyCode("eur_token"),
+                  }}
+                />
+              </span>
+            </div>
             {!!etoData.whitelistDurationDays && (
               <div className={styles.entry}>
                 <span className={styles.label}>

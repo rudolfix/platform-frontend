@@ -1,6 +1,6 @@
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../utils/Money.utils";
+import { convertToBigInt } from "../../utils/Number.utils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EInvestmentCurrency, EInvestmentType, IInvestmentFlowState } from "./reducer";
 

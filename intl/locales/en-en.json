@@ -394,6 +394,7 @@
   "investment-flow.bank-transfer.reference-code": "your reference code",
   "investment-flow.bank-transfer.to-account": "to account",
   "investment-flow.calculate-investment": "calculate investment",
+  "investment-flow.change": "change",
   "investment-flow.confirm": "confirm",
   "investment-flow.equity-tokens": "Equity Tokens",
   "investment-flow.error-message.above-maximum-ticket-size": "The amount is above the maximum ticket size of {maxAmount}",

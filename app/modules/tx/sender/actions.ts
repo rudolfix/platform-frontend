@@ -1,5 +1,5 @@
+import { ITxData } from "../../../lib/web3/Web3Manager";
 import { createAction, createSimpleAction } from "../../actionsUtils";
-import { ITxData } from "./../../../lib/web3/Web3Manager";
 import { ETokenType, ETxSenderType } from "./reducer";
 
 export const txSenderActions = {
@@ -9,6 +9,7 @@ export const txSenderActions = {
   // User awaiting actions
   txSenderAcceptDraft: (txData?: ITxData) => createAction("TX_SENDER_ACCEPT_DRAFT", txData!),
   txSenderAccept: () => createSimpleAction("TX_SENDER_ACCEPT"),
+  txSenderChange: (type: ETxSenderType) => createAction("TX_SENDER_CHANGE", { type }),
   // Signer actions
   txSenderSigned: (txHash: string, type: ETxSenderType) =>
     createAction("TX_SENDER_SIGNED", { txHash, type }),

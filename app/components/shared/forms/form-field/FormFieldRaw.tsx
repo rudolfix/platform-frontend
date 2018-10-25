@@ -55,7 +55,9 @@ export class FormFieldRaw extends React.Component<FieldGroupRawProps> {
       ...props,
     };
 
-    const InputElement: any = renderInput ? renderInput : Input;
+    const renderInputElement = renderInput
+      ? renderInput
+      : (props: FieldGroupRawProps) => <Input {...props} />;
 
     return (
       <FormGroup>
@@ -66,7 +68,7 @@ export class FormFieldRaw extends React.Component<FieldGroupRawProps> {
               {prefix}
             </InputGroupAddon>
           )}
-          <InputElement {...inputProps} />
+          {renderInputElement(inputProps)}
           {suffix && (
             <InputGroupAddon addonType="append" className={cn(styles.addon, addonStyle)}>
               {suffix}

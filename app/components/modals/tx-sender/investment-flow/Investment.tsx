@@ -4,7 +4,7 @@ import MaskedInput from "react-text-mask";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { withHandlers, withProps } from "recompose";
 import { compose } from "redux";
-import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import { createNumberMask } from "text-mask-addons";
 
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { TPublicEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";

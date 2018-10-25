@@ -9,7 +9,7 @@ import { selectEtoWithCompanyAndContractById } from "../../modules/public-etos/s
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
-import { LoadingIndicator } from "../shared/LoadingIndicator";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus";
 
 interface IStateProps {

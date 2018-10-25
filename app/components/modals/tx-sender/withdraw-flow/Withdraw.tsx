@@ -13,7 +13,7 @@ import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { Button } from "../../../shared/buttons";
 import { FormFieldImportant } from "../../../shared/forms/form-field/FormFieldImportant";
 import { FormLabelRaw } from "../../../shared/forms/form-field/FormLabel";
-import { LoadingIndicator } from "../../../shared/LoadingIndicator";
+import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { ITxInitDispatchProps } from "../TxSender";
 

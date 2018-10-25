@@ -7,7 +7,7 @@ import { actions } from "../../../modules/actions";
 import { ETxSenderType, TxSenderState } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
-import { LoadingIndicator } from "../../shared/LoadingIndicator";
+import { LoadingIndicator } from "../../shared/loading-indicator";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
 import { InvestmentSelection } from "./investment-flow/Investment";
@@ -60,6 +60,7 @@ export interface ITxSummaryStateProps {
 }
 export interface ITxSummaryDispatchProps {
   onAccept: () => any;
+  onChange?: () => any;
 }
 export type TSummaryComponentProps = ITxSummaryStateProps & ITxSummaryDispatchProps;
 

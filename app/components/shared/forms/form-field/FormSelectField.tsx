@@ -75,7 +75,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
 
           return (
             <FormGroup>
-              {label && <FormLabel>{label}</FormLabel>}
+              {label && <FormLabel name={name}>{label}</FormLabel>}
               <div className={styles.customSelect}>
                 <Field
                   name={name}

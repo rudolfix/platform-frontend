@@ -32,7 +32,7 @@ export class FormFieldColorful extends React.Component<FieldGroupProps> {
 
           return (
             <FormGroup>
-              {label && <FormLabel>{label}</FormLabel>}
+              {label && <FormLabel name={name}>{label}</FormLabel>}
               <Field
                 name={name}
                 render={({ field }: FieldProps) => {

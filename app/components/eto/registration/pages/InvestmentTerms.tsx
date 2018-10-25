@@ -9,6 +9,7 @@ import {
   EtoInvestmentTermsType,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
+import { getInvestmentAmount, getSharePrice } from "../../../../lib/api/eto/EtoUtils";
 import { actions } from "../../../../modules/actions";
 import { selectIssuerEto } from "../../../../modules/eto-flow/selectors";
 import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
@@ -16,8 +17,10 @@ import { appConnect } from "../../../../store";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
+import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
 import { FormTransformingField } from "../../../shared/forms/form-field/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
+import { EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {
@@ -37,19 +40,32 @@ interface IDispatchProps {
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
 const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingData, readonly }) => {
-  const preMoneyValuationEur = stateValues.preMoneyValuationEur || 1;
   const existingCompanyShares = stateValues.existingCompanyShares || 1;
   const newSharesToIssue = stateValues.newSharesToIssue || 1;
   const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
   const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 0;
 
-  const computedNewSharePrice = preMoneyValuationEur / existingCompanyShares;
   const computedMaxNumberOfTokens = newSharesToIssue * equityTokensPerShare;
   const computedMinNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
   const computedMaxCapPercent = (newSharesToIssue / existingCompanyShares) * 100;
   const computedMinCapPercent = (minimumNewSharesToIssue / existingCompanyShares) * 100;
 
-  const computedTokenPrice = computedNewSharePrice / equityTokensPerShare;
+  const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount({
+    minimumNewSharesToIssue: stateValues.minimumNewSharesToIssue,
+    newSharesToIssue: stateValues.newSharesToIssue,
+    newSharesToIssueInFixedSlots: stateValues.newSharesToIssueInFixedSlots,
+    newSharesToIssueInWhitelist: stateValues.newSharesToIssueInWhitelist,
+    preMoneyValuationEur: stateValues.preMoneyValuationEur,
+    fixedSlotsMaximumDiscountFraction: stateValues.fixedSlotsMaximumDiscountFraction,
+    whitelistDiscountFraction: stateValues.whitelistDiscountFraction,
+    existingCompanyShares: stateValues.existingCompanyShares,
+  });
+  const sharePrice = getSharePrice({
+    preMoneyValuationEur: stateValues.preMoneyValuationEur,
+    existingCompanyShares: stateValues.existingCompanyShares,
+  });
+
+  const computedTokenPrice = sharePrice / equityTokensPerShare;
 
   return (
     <EtoFormBase
@@ -160,14 +176,14 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
       />
 
       <FormHighlightGroup>
-        <FormField
+        <FormFieldRaw
           label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
           prefix="€"
           name="newSharePrice"
-          value={formatMoney(`${computedNewSharePrice}`, 1, 8)}
+          value={formatMoney(`${sharePrice}`, 1, 8)}
           disabled
         />
-        <FormField
+        <FormFieldRaw
           label={<FormattedMessage id="eto.form.section.investment-terms.equity-token-price" />}
           name="equityTokenPrice"
           prefix="€"
@@ -177,27 +193,27 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
         />
         <Row>
           <Col sm={12} md={6} className="mb-4">
-            <FormField
+            <FormFieldRaw
               label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
               prefix="€"
               placeholder="read only"
               name="minNumberOfTokens"
-              value={computedMinNumberOfTokens}
+              value={getFormattedMoney(minInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
               disabled
             />
           </Col>
           <Col sm={12} md={6} className="mb-4">
-            <FormField
+            <FormFieldRaw
               label={<FormattedMessage id="eto.form.section.investment-terms.total-investment" />}
               prefix="€"
               placeholder="read only"
               name="totalInvestment"
-              value={computedMaxNumberOfTokens}
+              value={getFormattedMoney(maxInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
               disabled
             />
           </Col>
           <Col sm={12} md={6}>
-            <FormField
+            <FormFieldRaw
               label={<FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />}
               placeholder="read only"
               name="minCapEur"
@@ -206,7 +222,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             />
           </Col>
           <Col sm={12} md={6}>
-            <FormField
+            <FormFieldRaw
               label={<FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />}
               placeholder="read only"
               name="maxCapEur"
@@ -215,7 +231,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             />
           </Col>
           <Col sm={12} md={6}>
-            <FormField
+            <FormFieldRaw
               label={
                 <FormattedMessage id="eto.form.section.investment-terms.minimum-shares-generated" />
               }
@@ -226,7 +242,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             />
           </Col>
           <Col sm={12} md={6}>
-            <FormField
+            <FormFieldRaw
               label={
                 <FormattedMessage id="eto.form.section.investment-terms.maximum-shares-generated" />
               }
@@ -257,7 +273,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
   );
 };
 
-export const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
+const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
   setDisplayName("EtoInvestmentTerms"),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
@@ -284,3 +300,5 @@ export const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoInvestmentTermsComponent);
+
+export { EtoInvestmentTerms };

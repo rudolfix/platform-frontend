@@ -53,7 +53,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
       <FormikConsumer>
         {({ touched, errors }) => (
           <>
-            {label && <FormLabel>{label}</FormLabel>}
+            {label && <FormLabel name={name}>{label}</FormLabel>}
             <Field
               name={name}
               validate={validate}

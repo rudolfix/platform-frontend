@@ -11,15 +11,21 @@ import {
   selectEurValueUlps,
   selectInvestmentGasCostEth,
 } from "../../../../modules/investment-flow/selectors";
+import {
+  selectEquityTokenCountByEtoId,
+  selectNeuRewardUlpsByEtoId,
+} from "../../../../modules/investor-tickets/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
+import { ETxSenderType } from "../../../../modules/tx/sender/reducer";
 import { appConnect } from "../../../../store";
 import {
   addBigNumbers,
   divideBigNumbers,
   multiplyBigNumbers,
 } from "../../../../utils/BigNumberUtils";
-import { formatMoney, formatThousands } from "../../../../utils/Money.utils";
+import { formatMoney } from "../../../../utils/Money.utils";
+import { formatThousands } from "../../../../utils/Number.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
@@ -29,10 +35,7 @@ import { ITxSummaryDispatchProps } from "../TxSender";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
-import {
-  selectEquityTokenCountByEtoId,
-  selectNeuRewardUlpsByEtoId,
-} from "../../../../modules/investor-tickets/selectors";
+
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
@@ -62,6 +65,7 @@ function formatEth(val?: string): string | undefined {
 
 const InvestmentSummaryComponent = ({
   onAccept,
+  onChange,
   downloadAgreement,
   gasCostEth,
   etherPriceEur,
@@ -112,6 +116,7 @@ const InvestmentSummaryComponent = ({
           <InfoRow
             caption={<FormattedMessage id="investment-flow.summary.your-investment" />}
             value={formatThousands(investment)}
+            dataTestId="invest-modal-summary-your-investment"
           />
           <InfoRow
             caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
@@ -148,6 +153,14 @@ const InvestmentSummaryComponent = ({
         >
           <FormattedMessage id="investment-flow.confirm" />
         </Button>
+        <Button
+          layout={EButtonLayout.SECONDARY}
+          type="button"
+          onClick={onChange}
+          data-test-id="invest-modal-summary-change-button"
+        >
+          <FormattedMessage id="investment-flow.change" />
+        </Button>
       </Row>
     </Container>
   );
@@ -175,6 +188,7 @@ const InvestmentSummary = compose<IProps, {}>(
     },
     dispatchToProps: d => ({
       onAccept: () => d(actions.txSender.txSenderAccept()),
+      onChange: () => d(actions.txSender.txSenderChange(ETxSenderType.INVEST)),
       downloadAgreement: (etoId: string) =>
         d(
           actions.publicEtos.downloadPublicEtoTemplateByType(

@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers } from "../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../utils/Money.utils";
+import { convertToBigInt } from "../../utils/Number.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";
@@ -195,6 +195,11 @@ function* showBankTransferSummary(): any {
   yield put(actions.investmentFlow.setBankTransferFlowState(EBankTransferFlowState.Summary));
 }
 
+function* bankTransferChange(action: TAction): any {
+  if (action.type !== "INVESTMENT_FLOW_BANK_TRANSFER_CHANGE") return;
+  yield put(actions.txSender.txSenderChange(action.payload.type));
+}
+
 export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", processCurrencyValue);
   yield takeLatest("INVESTMENT_FLOW_VALIDATE_INPUTS", neuCall, validateAndCalculateInputs);
@@ -203,4 +208,5 @@ export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS", showBankTransferDetails);
   yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);
+  yield takeEvery("INVESTMENT_FLOW_BANK_TRANSFER_CHANGE", bankTransferChange);
 }

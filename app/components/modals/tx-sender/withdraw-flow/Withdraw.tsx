@@ -12,8 +12,8 @@ import { appConnect } from "../../../../store";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { Button } from "../../../shared/buttons";
 import { FormFieldImportant } from "../../../shared/forms/form-field/FormFieldImportant";
-import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
-import { LoadingIndicator } from "../../../shared/LoadingIndicator";
+import { FormLabelRaw } from "../../../shared/forms/form-field/FormLabel";
+import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { ITxInitDispatchProps } from "../TxSender";
 
@@ -86,9 +86,9 @@ export const WithdrawComponent: React.SFC<IWithdrawStateProps & ITxInitDispatchP
             </Col>
 
             <Col xs={12} className="mb-4">
-              <FormLabel>
+              <FormLabelRaw>
                 <FormattedMessage id="modal.sent-eth.gas-price" />
-              </FormLabel>
+              </FormLabelRaw>
               <GasComponent {...gas} />
             </Col>
 

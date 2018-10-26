@@ -18,10 +18,10 @@ import { onEnterAction } from "../../utils/OnEnterAction";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
-import { ChangeEmail } from "./changeEmail/ChangeEmail";
-import { YourEthereumAddressWidget } from "./ethereumAddressWidget/YourEthereumAddressWidget";
-import { CheckYourICBMWalletWidget } from "./icbmWalletWidget/CheckYourICBMWalletWidget";
-import { PersonalAccountDetails } from "./personalAccountDetails/PersonalAccountDetails";
+import { ChangeEmail } from "./change-email/ChangeEmail";
+import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";
+import { CheckYourICBMWalletWidget } from "./icbm-wallet-widget/CheckYourICBMWalletWidget";
+import { PersonalAccountDetails } from "./personal-account-details/PersonalAccountDetails";
 import { SettingsWidgets } from "./SettingsWidgets";
 
 interface IStateProps {
@@ -98,7 +98,7 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
 };
 
 export const Settings = compose<React.SFC>(
-  onEnterAction({ actionCreator: d => d(actions.wallet.startLoadingWalletData()) }),
+  onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
   appConnect<IStateProps>({
     stateToProps: s => ({
       isLightWallet: selectIsLightWallet(s.web3),

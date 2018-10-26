@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { InlineIcon } from "../InlineIcon";
-import { LoadingIndicator } from "../LoadingIndicator";
+import { LoadingIndicator } from "../loading-indicator";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as closeIcon from "../../../assets/img/inline_icons/close.svg";
@@ -96,9 +96,9 @@ Button.defaultProps = {
 };
 
 const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
-  <div className={cn(styles.buttonIcon, className)} onClick={onClick}>
+  <button className={cn(styles.buttonIcon, className)} onClick={onClick}>
     <InlineIcon {...props} width="20px" height="20px" />
-  </div>
+  </button>
 );
 
 const ButtonClose: React.SFC<IGeneralButton> = props => (

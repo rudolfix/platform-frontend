@@ -1,11 +1,15 @@
 import { get } from "lodash";
 import { appRoutes } from "../../components/appRoutes";
+import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
+import { DEFAULT_PASSWORD } from "./userHelpers";
 
 export function tid(id: string, rest?: string): string {
   return `[data-test-id="${id}"]` + (rest ? ` ${rest}` : "");
 }
 
 export const numberRegExPattern = /\d+/g;
+
+export const charRegExPattern = /[^a-z0-9]/gi;
 
 export const assertEtoDashboard = () => {
   cy.url().should("contain", "/dashboard");
@@ -15,6 +19,11 @@ export const assertEtoDashboard = () => {
 export const assertDashboard = () => {
   cy.url().should("contain", "/dashboard");
   cy.get(tid("dashboard-application")).should("exist");
+};
+
+export const assertRegister = () => {
+  cy.url().should("contain", walletRegisterRoutes.light);
+  cy.get(tid("register-layout")).should("exist");
 };
 
 export const goToDashboard = () => {
@@ -109,7 +118,7 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
   cy.get(tid("btn-send")).awaitedClick();
 };
 
-export const confirmAccessModal = (password: string) => {
+export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
   cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
 };
@@ -174,4 +183,9 @@ export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
 
   return assertUserInDashboard();
+};
+
+export const acceptWallet = () => {
+  cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
+  cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
 };

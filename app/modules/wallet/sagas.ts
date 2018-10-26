@@ -1,5 +1,7 @@
 import * as promiseAll from "promise-all";
+import { delay } from "redux-saga";
 import { fork, put, select, take } from "redux-saga/effects";
+import { selectIsSmartContractInitDone } from "./../init/selectors";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ICBMLockedAccount } from "../../lib/contracts/ICBMLockedAccount";
@@ -9,8 +11,11 @@ import { EthereumAddress } from "../../types";
 import { actions } from "../actions";
 import { numericValuesToString } from "../contracts/utils";
 import { neuCall, neuTakeEvery } from "../sagas";
+import { neuTakeOnly, neuTakeUntil } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { ILockedWallet, IWalletStateData } from "./reducer";
+
+const WALLET_DATA_FETCHING_INTERVAL = 12000;
 
 function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
   try {
@@ -19,7 +24,7 @@ function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
     yield take("GAS_API_LOADED");
 
     const state: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
-    yield put(actions.wallet.loadWalletData(state));
+    yield put(actions.wallet.saveWalletData(state));
     logger.info("Wallet Loaded");
   } catch (e) {
     yield put(actions.wallet.loadWalletDataError("Error while loading wallet data."));
@@ -72,6 +77,20 @@ export async function loadWalletDataAsync(
   };
 }
 
+function* walletBalanceWatcher(): any {
+  const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
+
+  if (!isSmartContractsInitialized) {
+    yield neuTakeOnly("INIT_DONE", { initType: "smartcontractsInit" });
+  }
+
+  while (true) {
+    yield neuCall(loadWalletDataSaga);
+    yield delay(WALLET_DATA_FETCHING_INTERVAL);
+  }
+}
+
 export function* walletSagas(): any {
-  yield fork(neuTakeEvery, "WALLET_START_LOADING", loadWalletDataSaga);
+  yield fork(neuTakeEvery, "WALLET_LOAD_WALLET_DATA", loadWalletDataSaga);
+  yield neuTakeUntil("AUTH_LOAD_USER", "AUTH_LOGOUT", walletBalanceWatcher);
 }

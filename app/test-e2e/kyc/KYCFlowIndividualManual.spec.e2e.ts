@@ -1,9 +1,8 @@
-import { tid } from "../utils";
 import { kycRoutes } from "../../components/kyc/routes";
+import { confirmAccessModal, tid } from "../utils";
+import { fillForm, uploadMultipleFilesToFieldWithTid } from "../utils/forms";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { kycInvidualForm } from "./fixtures";
-import { uploadFileToFieldWithTid, fillForm } from "../utils/forms";
-import { acceptWallet } from "./util";
 
 describe("KYC Personal flow with manual verification", () => {
   beforeEach(() => createAndLoginNewUser({ type: "investor" }));
@@ -22,11 +21,11 @@ describe("KYC Personal flow with manual verification", () => {
     cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
 
     // upload file
-    uploadFileToFieldWithTid("kyc-personal-upload-dropzone");
+    uploadMultipleFilesToFieldWithTid("kyc-personal-upload-dropzone", ["example.jpg"]);
 
     // submt request and accept with the wallet
     cy.get(tid("kyc-personal-upload-submit")).awaitedClick();
-    acceptWallet();
+    confirmAccessModal();
 
     // panel should now be in pending state
     cy.get(tid("kyc-panel-pending"));

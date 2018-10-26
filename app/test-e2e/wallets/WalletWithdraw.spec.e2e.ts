@@ -10,7 +10,7 @@ import {
   goToDashboard,
 } from "../utils";
 import { getTransactionByHashRpc, getBalanceRpc } from "../utils/ethRpcUtils";
-import { recoverRoutes } from "../../components/walletSelector/walletRecover/recoverRoutes";
+import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/recoverRoutes";
 import { confirmAccessModal } from "../utils/index";
 
 const Q18 = new BigNumber(10).pow(18);
@@ -64,7 +64,7 @@ describe("Wallet Withdraw", () => {
 
     assertUserInDashboard();
     cy.get(tid("authorized-layout-wallet-button")).awaitedClick();
-    cy.get(tid("account-address.your.ether-address.div")).then(accountAddress => {
+    cy.get(tid("account-address.your.ether-address.from-div")).then(accountAddress => {
       cy.get(tid("wallet-balance.ether.shared-component.withdraw.button")).awaitedClick();
       cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(
         expectedAddress,

@@ -1,5 +1,5 @@
 import * as cn from "classnames";
-import { keyBy, some } from "lodash";
+import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -26,7 +26,6 @@ import { EtoInvestmentTermsWidget } from "../public-view/EtoInvestmentTermsWidge
 import { LegalInformationWidget } from "../public-view/LegalInformationWidget";
 import { areThereIndividuals, selectActiveCarouselTab } from "./EtoPublicComponent.utils";
 
-import * as token_icon from "../../../assets/img/token_icon.svg";
 import * as styles from "./EtoPublicComponent.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
@@ -57,8 +56,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       ? (socialChannels.find(c => c.type === "twitter") as any).url
       : "";
 
-  const documentsByType = keyBy(etoData.documents, document => document.documentType);
-
   return (
     <>
       <PersonProfileModal />
@@ -81,40 +78,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           tags={companyData.categories}
         />
 
-        <EtoOverviewStatus
-          newSharesToIssue={etoData.newSharesToIssue}
-          preMoneyValuationEur={etoData.preMoneyValuationEur}
-          existingCompanyShares={etoData.existingCompanyShares}
-          equityTokensPerShare={etoData.equityTokensPerShare}
-          contract={etoData.contract}
-          previewCode={etoData.previewCode}
-          etoId={etoData.etoId}
-          tokenImage={{
-            srcSet: {
-              "1x": etoData.equityTokenImage || token_icon,
-            },
-            alt: `${etoData.equityTokenSymbol} - ${etoData.equityTokenName}`,
-          }}
-          tokenName={etoData.equityTokenName || ""}
-          tokenSymbol={etoData.equityTokenSymbol || ""}
-          className="mb-4"
-          canEnableBookbuilding={etoData.canEnableBookbuilding}
-          minimumNewSharesToIssue={etoData.minimumNewSharesToIssue}
-          newSharesGenerated={etoData.newSharesToIssue}
-          prospectusApproved={documentsByType["approved_prospectus"]}
-          termSheet={documentsByType["termsheet_template"]}
-          preMoneyValuation={etoData.preMoneyValuationEur}
-          preEtoDuration={etoData.whitelistDurationDays}
-          publicEtoDuration={etoData.publicDurationDays}
-          inSigningDuration={etoData.signingDurationDays}
-          quote={companyData.keyQuoteFounder}
-          campaigningWidget={{
-            investorsLimit: etoData.maxPledges,
-            maxPledge: etoData.maxTicketEur,
-            minPledge: etoData.minTicketEur,
-            isActivated: etoData.isBookbuilding,
-          }}
-        />
+        <EtoOverviewStatus eto={etoData} className="mb-4" />
 
         <Row>
           <Col className="mb-4">

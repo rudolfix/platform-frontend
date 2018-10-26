@@ -19,12 +19,13 @@ interface IProps {
   prefix?: string;
   selectedCategory?: { name: string; percentage: number };
   transformRatio?: number;
+  valuePlaceholder?: TTranslatedString | string;
+  keyPlaceholder?:TTranslatedString | string
 }
 interface IInternalProps {
   addField: () => void;
   removeField: () => void;
   isLastElement: boolean;
-  placeholder: string;
   isFirstElement: boolean;
   formFieldKeys: string[];
 }
@@ -40,7 +41,8 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
   isFirstElement,
   removeField,
   isLastElement,
-  placeholder,
+  keyPlaceholder,
+  valuePlaceholder,
   addField,
   formFieldKeys,
   prefix,
@@ -57,7 +59,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
           <FormField
             disabled={disabled}
             name={`${name}.${formFieldKeys[0]}`}
-            placeholder={placeholder}
+            placeholder={keyPlaceholder}
           />
         </Col>
       </Row>
@@ -72,6 +74,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
               prefix={prefix}
               name={`${name}.${formFieldKeys[1]}`}
               ratio={transformRatio}
+              placeholder={valuePlaceholder}
             />
           ) : (
             <FormField
@@ -80,6 +83,7 @@ const SingleCategoryDistributionComponent: React.SFC<IProps & IInternalProps> = 
               prefix={prefix}
               name={`${name}.${formFieldKeys[1]}`}
               type="number"
+              placeholder={valuePlaceholder}
             />
           )}
         </Col>
@@ -116,6 +120,7 @@ class FormCategoryDistributionLayout extends React.Component<
       paragraphName,
       prefix,
       transformRatio,
+      valuePlaceholder,
       disabled,
       formik,
     } = this.props;
@@ -152,7 +157,8 @@ class FormCategoryDistributionLayout extends React.Component<
                           arrayHelpers.remove(index);
                           this.suggestions.splice(index, 1);
                         }}
-                        placeholder={this.suggestions[index] || "Other"}
+                        keyPlaceholder={this.suggestions[index] || "Other"}
+                        valuePlaceholder={valuePlaceholder}
                         addField={() => {
                           setFieldValue(`${name}.${index + 1}`, this.blankField);
                         }}

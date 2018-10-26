@@ -136,7 +136,7 @@ const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IPro
         />
         <FormCategoryDistribution
           name="shareholders"
-          prefix="No."
+          valuePlaceholder={"Amount"}
           label={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
           suggestions={["Full Name"]}
           blankField={{ fullName: "", shares: "" }}

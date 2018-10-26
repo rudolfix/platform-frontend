@@ -1,5 +1,5 @@
+import { ITxData } from "../../../lib/web3/Web3Manager";
 import { AppReducer } from "../../../store";
-import { ITxData } from "./../../../lib/web3/Web3Manager";
 
 export enum ETxSenderType {
   WITHDRAW = "WITHDRAW",
@@ -113,6 +113,13 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...initialState,
         state: "ERROR_SIGN",
         error: action.payload.error,
+      };
+    //Change Actions
+    case "TX_SENDER_CHANGE":
+      return {
+        ...state,
+        state: "INIT",
+        type: action.payload.type,
       };
   }
 

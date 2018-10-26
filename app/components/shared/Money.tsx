@@ -3,7 +3,8 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { MONEY_DECIMALS } from "../../config/constants";
-import { formatMoney, formatThousands } from "../../utils/Money.utils";
+import { formatMoney } from "../../utils/Money.utils";
+import { NumberFormat } from "./NumberFormat";
 
 import * as styles from "./Money.module.scss";
 
@@ -73,10 +74,23 @@ const selectCurrencySymbol = (currency: TCurrency): string => {
   }
 };
 
-function getFormattedMoney(value: string | BigNumber, currency: TCurrency): string {
-  const decimalPlaces = selectDecimalPlaces(currency);
+function getFormatDecimals(format: EMoneyFormat): number {
+  switch (format) {
+    case EMoneyFormat.WEI:
+      return MONEY_DECIMALS;
+    case EMoneyFormat.FLOAT:
+      return 0;
+    default:
+      throw new Error("Unsupported money format");
+  }
+}
 
-  return formatMoney(value, MONEY_DECIMALS, decimalPlaces);
+export function getFormattedMoney(
+  value: string | number | BigNumber,
+  currency: TCurrency,
+  format: EMoneyFormat,
+): string {
+  return formatMoney(value, getFormatDecimals(format), selectDecimalPlaces(currency));
 }
 
 const Money: React.SFC<IProps> = ({
@@ -97,14 +111,12 @@ const Money: React.SFC<IProps> = ({
 
   const money =
     format === EMoneyFormat.WEI && !React.isValidElement(value)
-      ? getFormattedMoney(value as BigNumber, currency)
+      ? getFormattedMoney(value as BigNumber, currency, EMoneyFormat.WEI)
       : value;
 
-  const formattedMoney =
-    !doNotSeparateThousands && !React.isValidElement(money)
-      ? formatThousands(money.toString())
-      : money;
+  const doFormat = !doNotSeparateThousands && !React.isValidElement(money);
 
+  const formattedMoney = doFormat ? <NumberFormat value={money as string} /> : money;
   return (
     <span {...props} className={cn(styles.money, transfer, props.className, theme)}>
       {currencySymbol === ECurrencySymbol.SYMBOL && (

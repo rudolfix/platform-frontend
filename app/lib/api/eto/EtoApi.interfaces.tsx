@@ -240,7 +240,7 @@ export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType
 
 export const EtoVotingRightsType = YupTS.object({
   nominee: YupTS.string(),
-  liquidationPreferenceMultiplier: YupTS.number().optional(),
+  liquidationPreferenceMultiplier: YupTS.number(),
   generalVotingRule: YupTS.string(),
 });
 

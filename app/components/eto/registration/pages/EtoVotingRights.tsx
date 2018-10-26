@@ -17,6 +17,7 @@ import { Button, EButtonLayout } from "../../../shared/buttons";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormToggle } from "../../../shared/forms/form-field/FormToggle";
+import {applyDefaults} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 
 // TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
@@ -25,6 +26,11 @@ const TOKEN_HOLDERS_RIGHTS = {
 };
 
 const LIQUIDATION_PREFERENCE_VALUES = [0, 1, 1.5, 2];
+
+const defaults = {
+  liquidationPreferenceMultiplier: 0,
+  generalVotingRule: "positive"
+};
 
 interface IExternalProps {
   readonly: boolean;
@@ -55,8 +61,6 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     />
 
     <FormSelectField
-      isOptional={true}
-      optionalLabel={<FormattedMessage id={"eto.form.eto-voting-rights.please-select"} />}
       customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => (
         <option key={n} value={n}>
           {n}
@@ -121,24 +125,17 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   }),
   withFormik<IProps, TPartialEtoSpecData>({
     validationSchema: EtoVotingRightsType.toYup(),
-    // mapPropsToValues: props => ({...props.stateValues, liquidationPreferenceMultiplier : undefined as any}), //FIXME
-    mapPropsToValues: props => ({ ...props.stateValues }),
+    mapPropsToValues: props => applyDefaults(props.stateValues, defaults),
     handleSubmit: (values, props) => {
       return props.props.saveData(dataToCanonicalForm(values));
     },
   }),
 )(EtoVotingRightsComponent);
 
-// This is the place to remove unset fields, clean up things
-// and manually convert values to a form that meets swagger requirements (like string -> float)
+
 const dataToCanonicalForm = (values: Partial<TEtoVotingRightsType>) => {
-  if (values.liquidationPreferenceMultiplier === undefined) {
-    //is not set
-    delete values.liquidationPreferenceMultiplier;
-  } else {
     values.liquidationPreferenceMultiplier = parseFloat(
       `${values.liquidationPreferenceMultiplier}`,
     );
-  }
   return values;
 };

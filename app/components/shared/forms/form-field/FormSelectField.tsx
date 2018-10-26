@@ -1,7 +1,6 @@
 import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import { map, mapValues } from "lodash";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup, Input } from "reactstrap";
 
 import { FormLabel } from "./FormLabel";
@@ -34,12 +33,9 @@ export const unboolify = <T extends {}>(values: T): T => {
 };
 
 interface IOwnProps {
-  isOptional?: boolean;
-  optionalLabel?: FormattedMessage;
   extraMessage?: string | React.ReactNode;
   "data-test-id"?: string;
 }
-
 interface IFieldGroup {
   label?: string | React.ReactNode;
   values?: {
@@ -50,60 +46,32 @@ interface IFieldGroup {
     [key: string]: boolean;
   };
 }
-
 type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
 export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
-  renderOptions = (isOptional: boolean, optionalLabel: string | FormattedMessage) => {
-    const mainOptions = this.props.customOptions
+  renderOptions = () =>
+    this.props.customOptions
       ? this.props.customOptions
       : map(this.props.values, (value, key) => (
-          <option
-            key={key}
-            value={key}
-            disabled={this.props.disabledValues && this.props.disabledValues[key]}
-          >
-            {value}
-          </option>
-        ));
-    if (isOptional) {
-      return [
-        <option key={"not_set"} value={"not_set"}>
-          {optionalLabel}
-        </option>,
-      ].concat(mainOptions);
-    } else {
-      return mainOptions;
-    }
-  };
+        <option
+          key={key}
+          value={key}
+          disabled={this.props.disabledValues && this.props.disabledValues[key]}
+        >
+          {value}
+        </option>
+      ));
 
   render(): React.ReactNode {
-    const {
-      label,
-      name,
-      extraMessage,
-      "data-test-id": dataTestId,
-      disabled,
-      isOptional,
-      optionalLabel,
-    } = this.props;
+    const { label, name, extraMessage, "data-test-id": dataTestId, disabled } = this.props;
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldTouched, setFieldValue }) => {
+        {({ touched, errors, setFieldTouched }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
           } as any;
-
-          const setOrUnsetValue = (value: any) => {
-            if (value === "not_set") {
-              //TODO make an enum
-              setFieldValue(name, undefined, false);
-            } else {
-              setFieldValue(name, value, true);
-            }
-          };
 
           return (
             <FormGroup>
@@ -111,24 +79,20 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               <div className={styles.customSelect}>
                 <Field
                   name={name}
-                  render={({ field }: FieldProps) => {
-                    field.onChange = e => setOrUnsetValue(e.target.value);
-                    return (
-                      <Input
-                        {...field}
-                        disabled={disabled}
-                        onFocus={() => setFieldTouched(name, true)}
-                        type="select"
-                        //if value is not set, select the placeholder
-                        value={field.value === undefined ? "not_set" : field.value}
-                        valid={isValid(touched, errors, name)}
-                        data-test-id={dataTestId}
-                        {...inputExtraProps}
-                      >
-                        {this.renderOptions(isOptional, optionalLabel)}
-                      </Input>
-                    );
-                  }}
+                  render={({ field }: FieldProps) => (
+                    <Input
+                      {...field}
+                      disabled={disabled}
+                      onFocus={() => setFieldTouched(name, true)}
+                      type="select"
+                      value={field.value}
+                      valid={isValid(touched, errors, name)}
+                      data-test-id={dataTestId}
+                      {...inputExtraProps}
+                    >
+                      {this.renderOptions()}
+                    </Input>
+                  )}
                 />
               </div>
               {extraMessage ? (

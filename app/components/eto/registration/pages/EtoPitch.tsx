@@ -14,6 +14,7 @@ import { ArryOfKeyValueFields, FormTextArea } from "../../../shared/forms";
 import {sanitizeKeyValueCompoundField} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import {FormHighlightGroup} from "../../../shared/forms/FormHighlightGroup";
 
 interface IStateProps {
   loadingData: boolean;
@@ -98,16 +99,22 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
           placeholder="Describe"
           name="keyBenefitsForInvestors"
         />
-
-        <ArryOfKeyValueFields
-          label={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
-          name="useOfCapitalList"
-          paragraphName="useOfCapital"
-          suggestions={distributionSuggestions}
-          prefix="%"
-          transformRatio={100}
-          fieldNames={['description','percent']}
-        />
+        <FormHighlightGroup
+          title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
+        >
+          <FormTextArea
+            name={"useOfCapital"}
+            placeholder="Detail"
+            disabled={false}
+          />
+          <ArryOfKeyValueFields
+            name="useOfCapitalList"
+            suggestions={distributionSuggestions}
+            prefix="%"
+            transformRatio={100}
+            fieldNames={['description','percent']}
+          />
+        </FormHighlightGroup>
 
         <FormTextArea
           className="my-2"

@@ -23,6 +23,7 @@ import {
 import {sanitizeKeyValueCompoundField} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import {FormHighlightGroup} from "../../../shared/forms/FormHighlightGroup";
 
 interface IStateProps {
   loadingData: boolean;
@@ -135,14 +136,17 @@ const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IPro
           name="companyShares"
           disabled={readonly}
         />
-        <ArryOfKeyValueFields
-          name="shareholders"
-          valuePlaceholder={"Amount"}
-          label={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
-          suggestions={["Full Name"]}
-          fieldNames={[ 'fullName','shares']}
-          disabled={readonly}
-        />
+        <FormHighlightGroup
+          title={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
+        >
+          <ArryOfKeyValueFields
+            name="shareholders"
+            valuePlaceholder={"Amount"}
+            suggestions={["Full Name"]}
+            fieldNames={[ 'fullName','shares']}
+            disabled={readonly}
+          />
+        </FormHighlightGroup>
       </Section>
       {!readonly && (
         <Col>

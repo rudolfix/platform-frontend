@@ -27,7 +27,7 @@
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc && yarn intl:extract:check",
     "lint:fix": "concurrently -p \"[{name}]\" -n \"TSLINT/PRETTIER,SASS/TSC/INTL\" -c \"bgYellow.bold,bgMagenta.bold\" \"yarn tslint:fix && yarn format:fix\" \"yarn sasslint && yarn tsc && yarn intl:extract\"",
-    "test:browser": "mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts ./test/setupTestsHooks.ts ./app/**/*.spec.ts?(x)",
+    "test:browser": "mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts './test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
     "test:browser:watch": "mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts --watch --watch-extensions ts,tsx ./test/setupTestsHooks.ts ./app/**/*.spec.ts?(x)",
     "test:browser-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts 'test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
     "test:node": "NODE_ENV=test mocha --require ts-node/register --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",

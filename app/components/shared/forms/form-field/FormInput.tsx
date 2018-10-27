@@ -3,6 +3,7 @@ import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
+import { get} from 'lodash'
 
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { FormError } from "./FormError";
@@ -31,6 +32,14 @@ export interface IFormInputExternalProps {
 
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
 
+const transform = (value: string, charactersLimit?: number) => {
+  return value === undefined ? "" : computedValue(value, charactersLimit);
+};
+
+const transformBack = (value: string) => {
+  return value && value.trim().length ? value : undefined;
+};
+
 /**
  * Formik connected form input without FormGroup and FormLabel.
  */
@@ -53,11 +62,14 @@ export class FormInput extends React.Component<FormInputProps> {
       min,
       max,
       size,
+      compoundFieldValidation,
+      neighborName,
+      setAllFieldsTouched,
       ...props
     } = this.props;
     return (
       <FormikConsumer>
-        {({ touched, errors }) => {
+        {({ touched, values, errors, setFieldTouched, validateForm, setFieldValue }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -66,8 +78,12 @@ export class FormInput extends React.Component<FormInputProps> {
           return (
             <Field
               name={name}
+              validate={compoundFieldValidation
+                ? (value:any) => compoundFieldValidation(value)
+                : undefined
+              }
               render={({ field }: FieldProps) => {
-                const val = computedValue(field.value, charactersLimit);
+                const val = transform(field.value, charactersLimit);
                 return (
                   <>
                     <InputGroup size={size}>
@@ -90,6 +106,17 @@ export class FormInput extends React.Component<FormInputProps> {
                           isValid(touched, errors, name) && "is-invalid",
                         )}
                         {...field}
+                        onChange={e => {
+                          setFieldTouched(name);
+                          setFieldValue(name, transformBack(e.target.value));
+                        }}
+                        onBlur={e=>{
+                          setFieldTouched(name);
+                          validateForm();
+                          if(setAllFieldsTouched !== undefined && field.value!==undefined){
+                            setAllFieldsTouched(true);
+                          }
+                        }}
                         type={type}
                         value={val}
                         valid={isValid(touched, errors, name)}

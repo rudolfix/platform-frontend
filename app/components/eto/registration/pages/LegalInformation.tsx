@@ -22,6 +22,7 @@ import {
 } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import {sanitizeKeyValueCompoundField} from "../../utils";
 
 interface IStateProps {
   loadingData: boolean;
@@ -139,7 +140,7 @@ const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IPro
           valuePlaceholder={"Amount"}
           label={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
           suggestions={["Full Name"]}
-          blankField={{ fullName: "", shares: "" }}
+          fieldNames={[ 'fullName','shares']}
           disabled={readonly}
         />
       </Section>
@@ -172,7 +173,10 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
-        dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
+        const sanitizedData = {...data,
+          useOfCapitalList : data.useOfCapitalList !== undefined && sanitizeKeyValueCompoundField(data.useOfCapitalList)
+        };
+        dispatch(actions.etoFlow.saveDataStart({ companyData: sanitizedData, etoData: {} }));
       },
     }),
   }),

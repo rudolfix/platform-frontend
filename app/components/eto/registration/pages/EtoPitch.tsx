@@ -13,6 +13,7 @@ import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormCategoryDistribution, FormTextArea } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import {sanitizeKeyValueCompoundField} from "../../utils";
 
 interface IStateProps {
   loadingData: boolean;
@@ -105,10 +106,7 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
           suggestions={distributionSuggestions}
           prefix="%"
           transformRatio={100}
-          blankField={{
-            description: "",
-            percent: 0,
-          }}
+          fieldNames={['description','percent']}
         />
 
         <FormTextArea
@@ -166,9 +164,12 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
+        const sanitizedData = {...data,
+          useOfCapitalList : data.useOfCapitalList !== undefined && sanitizeKeyValueCompoundField(data.useOfCapitalList)
+        };
         dispatch(
           actions.etoFlow.saveDataStart({
-            companyData: data,
+            companyData: sanitizedData,
             etoData: {},
           }),
         );
@@ -181,3 +182,4 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationPitchComponent);
+

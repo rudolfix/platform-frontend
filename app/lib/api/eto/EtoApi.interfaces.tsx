@@ -23,7 +23,7 @@ const tagsType = YupTS.string();
 const EtoCapitalListType = YupTS.object({
   description: YupTS.string().optional(),
   percent: YupTS.number().optional(),
-});
+}).optional();
 
 export const EtoCompanyInformationType = YupTS.object({
   brandName: YupTS.string(),
@@ -122,8 +122,8 @@ export const EtoLegalInformationType = YupTS.object({
   companyShares: YupTS.number(),
   shareholders: YupTS.array(
     YupTS.object({
-      fullName: YupTS.string(),
-      shares: YupTS.number(),
+      fullName: YupTS.string().optional(),
+      shares: YupTS.number().optional(),
     }).optional(),
   ),
 });

@@ -38,7 +38,6 @@ function* loadClientData(): any {
 let kycWidgetWatchDelay: number = 1000;
 function* kycRefreshWidgetSaga(): any {
   kycWidgetWatchDelay = 1000;
-
   while (true) {
     const status: TRequestStatus | undefined = yield select((s: IAppState) =>
       selectKycRequestStatus(s.kyc),
@@ -54,10 +53,13 @@ function* kycRefreshWidgetSaga(): any {
     );
 
     if (
-      outsourcedStatus === "started" ||
-      outsourcedStatus === "canceled" ||
-      outsourcedStatus === "aborted" ||
-      outsourcedStatus === "review_pending"
+      status === "Pending" ||
+      status === "Outsourced" && outsourcedStatus && (
+        outsourcedStatus === "started" ||
+        outsourcedStatus === "canceled" ||
+        outsourcedStatus === "aborted" ||
+        outsourcedStatus === "review_pending"
+      )
     ) {
       yield put(actions.kyc.kycLoadIndividualRequest(true));
     }

@@ -35,6 +35,8 @@ import {
 } from "./reducer";
 import {
   selectCurrencyByInvestmentType,
+  selectEthValueUlps,
+  selectEurValueUlps,
   selectInvestmentEtoId,
   selectInvestmentGasCostEth,
   selectInvestmentType,
@@ -50,8 +52,8 @@ function* processCurrencyValue(action: TAction): any {
   const curr = action.payload.currency;
   const oldVal =
     curr === EInvestmentCurrency.Ether
-      ? state.investmentFlow.ethValueUlps
-      : state.investmentFlow.euroValueUlps;
+      ? selectEthValueUlps(state.investmentFlow)
+      : selectEurValueUlps(state.investmentFlow);
 
   // stop if value has not changed. allows editing fractions without overriding user input.
   if (compareBigNumbers(oldVal || "0", value || "0") === 0) return;

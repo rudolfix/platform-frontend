@@ -12,7 +12,7 @@ import { wallets } from "./InvestmentTypeSelector.stories";
 
 const Investment = injectIntlHelpers(InvestmentSelectionComponent);
 
-storiesOf("Investment/Modal", module).add("default", () => (
+storiesOf("Investment/Form", module).add("default with error", () => (
   <Container>
     <Investment
       wallets={wallets}
@@ -20,13 +20,13 @@ storiesOf("Investment/Modal", module).add("default", () => (
       changeEuroValue={() => {}}
       changeInvestmentType={() => {}}
       equityTokenCount={"1234"}
-      errorState={EInvestmentErrorState.NotEnoughEtherForGas}
-      ethValue={"123412341234123412341234"}
+      errorState={EInvestmentErrorState.ExceedsWalletBalance}
+      ethValue={"1234123412341232341234"}
       // tslint:disable-next-line:no-object-literal-type-assertion
       eto={{ etoId: 11234 } as any}
       euroValue={"123412341234123412341234"}
-      gasCostEth={"123412341234123412341234"}
-      gasCostEuro={"123412341234123412341234"}
+      gasCostEth={"123412323412341234"}
+      gasCostEuro={"12341234123412341234"}
       etherPriceEur={"123412341234123412341234"}
       investEntireBalance={() => {}}
       investmentType={EInvestmentType.InvestmentWallet}
@@ -36,7 +36,7 @@ storiesOf("Investment/Modal", module).add("default", () => (
       readyToInvest={false}
       investNow={() => {}}
       showTokens={true}
-      totalCostEth={"123412341234123412341234"}
+      totalCostEth={"1234141234123412341234"}
       totalCostEur={"123412341234123412341234"}
       sendTransaction={() => {}}
       showBankTransferDetails={() => {}}

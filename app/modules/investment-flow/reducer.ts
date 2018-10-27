@@ -69,6 +69,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
         ...investmentFlowInitialState,
         etoId: state.etoId,
         gasPrice: state.gasPrice,
+        activeInvestmentTypes: state.activeInvestmentTypes,
         investmentType: action.payload.type,
       };
     case "INVESTMENT_FLOW_SET_ETO_ID":
@@ -110,6 +111,11 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         bankTransferGasStipend: !state.bankTransferGasStipend,
+      };
+    case "INVESTMENT_FLOW_SET_ACTIVE_INVESTMENT_TYPES":
+      return {
+        ...state,
+        ...action.payload,
       };
     case "INVESTMENT_FLOW_BANK_TRANSFER_CHANGE":
       return {

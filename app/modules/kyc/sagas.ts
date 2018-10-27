@@ -44,7 +44,10 @@ function* kycRefreshWidgetSaga(): any {
     );
 
     // if its accepted we can stop whole mechanism
-    if (status === "Accepted") {
+    if (
+      status === "Accepted" ||
+      status === "Rejected"
+    ) {
       return;
     }
 

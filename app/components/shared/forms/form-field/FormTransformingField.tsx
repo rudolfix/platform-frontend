@@ -1,15 +1,14 @@
 import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
+import {get} from 'lodash'
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
-import {get} from 'lodash'
 
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { FormLabel } from "./FormLabel";
 import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
-import {FormInput} from "./FormInput";
 
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -60,7 +59,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
 
     return (
       <FormikConsumer>
-        {({ touched, errors, values,setFieldValue,setFieldTouched, validateForm }) => {
+        {({ touched, errors,setFieldValue,setFieldTouched, validateForm }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -90,7 +89,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
                         setFieldTouched(name);
                         setFieldValue(name, transformBack(e.target.valueAsNumber, ratio));
                       }}
-                      onBlur={e=>{
+                      onBlur={()=>{
                         setFieldTouched(name);
                         validateForm();
                         if(setAllFieldsTouched !== undefined && field.value !== undefined){

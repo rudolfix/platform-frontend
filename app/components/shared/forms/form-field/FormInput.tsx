@@ -3,7 +3,6 @@ import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
-import { get} from 'lodash'
 
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { FormError } from "./FormError";
@@ -36,8 +35,14 @@ const transform = (value: string, charactersLimit?: number) => {
   return value === undefined ? "" : computedValue(value, charactersLimit);
 };
 
-const transformBack = (value: string) => {
-  return value && value.trim().length ? value : undefined;
+const transformBack = (value: number|string) => {
+  if(value && typeof value === "number"){
+    return value;
+  } else if (value && typeof value === "string"){
+    return value.trim().length > 0 ? value : undefined
+  } else {
+    return undefined
+  }
 };
 
 /**
@@ -69,7 +74,7 @@ export class FormInput extends React.Component<FormInputProps> {
     } = this.props;
     return (
       <FormikConsumer>
-        {({ touched, values, errors, setFieldTouched, validateForm, setFieldValue }) => {
+        {({ touched, errors, setFieldTouched, validateForm, setFieldValue }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -108,9 +113,9 @@ export class FormInput extends React.Component<FormInputProps> {
                         {...field}
                         onChange={e => {
                           setFieldTouched(name);
-                          setFieldValue(name, transformBack(e.target.value));
+                          setFieldValue(name, transformBack(type === "number" ? e.target.valueAsNumber :e.target.value));
                         }}
-                        onBlur={e=>{
+                        onBlur={()=>{
                           setFieldTouched(name);
                           validateForm();
                           if(setAllFieldsTouched !== undefined && field.value!==undefined){

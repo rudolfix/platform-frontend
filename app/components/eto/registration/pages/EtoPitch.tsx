@@ -10,10 +10,10 @@ import { actions } from "../../../../modules/actions";
 import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormCategoryDistribution, FormTextArea } from "../../../shared/forms";
+import { ArryOfKeyValueFields, FormTextArea } from "../../../shared/forms";
+import {sanitizeKeyValueCompoundField} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
-import {sanitizeKeyValueCompoundField} from "../../utils";
 
 interface IStateProps {
   loadingData: boolean;
@@ -99,7 +99,7 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
           name="keyBenefitsForInvestors"
         />
 
-        <FormCategoryDistribution
+        <ArryOfKeyValueFields
           label={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
           name="useOfCapitalList"
           paragraphName="useOfCapital"

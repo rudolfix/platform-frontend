@@ -1,19 +1,16 @@
 import {connect, FieldArray} from "formik";
+import {get} from 'lodash'
 import * as React from "react";
 import {Col, Row} from "reactstrap";
 import * as Yup from 'yup'
-import {get, set} from 'lodash'
 
 import {CommonHtmlProps, TFormikConnect, TTranslatedString} from "../../../../types";
 import {ButtonIcon} from "../../buttons";
 import {FormInput} from "./FormInput";
 import {FormTransformingField} from "./FormTransformingField";
-import * as styles from "./FormStyles.module.scss";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
-import {updateValidator} from "../../../../modules/eto-flow/utils";
-import {isNonValid} from "./utils";
 
 
 interface IProps {
@@ -34,7 +31,6 @@ interface IInternalProps {
   isFirstElement: boolean;
   formFieldKeys: string[];
   validationSchema:{fields:{[key:string]:Yup.Schema<any>}};
-
 }
 
 interface IExternalProps {
@@ -49,10 +45,9 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
   validationSchema = this.props.validationSchema;
 
   setAllFieldsTouched = (isTouched:boolean) => {
-    Object.keys(get(this.props.formik.values,this.name)).map(key => {
+    return Object.keys(get(this.props.formik.values,this.name)).map(key => {
       this.props.formik.setFieldTouched(`${this.name}.${key}`, isTouched)
     })
-
   };
 
   compoundFieldValidation = (fieldName:string, neighborName:string) => {
@@ -71,7 +66,6 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
       }
     }
   };
-
 
   render = () => {
     const {
@@ -153,7 +147,7 @@ const EtoCapitalListTypeEmpty = Yup.object().shape({
 });
 
 
-class ArryOfKeyValueCompoundFields extends React.Component<IProps & IExternalProps & CommonHtmlProps & TFormikConnect> {
+class ArryOfKeyValueFieldsBase extends React.Component<IProps & IExternalProps & CommonHtmlProps & TFormikConnect> {
 
   private blankField = this.props.fieldNames.reduce((acc:any, key:string)=> {acc[key] = undefined; return acc},{});
   private suggestions = [...this.props.suggestions];
@@ -161,7 +155,6 @@ class ArryOfKeyValueCompoundFields extends React.Component<IProps & IExternalPro
   private validationSchema = this.props.formik.validationSchema().fields[this.props.name]._subType;
 
   componentWillMount(): void {
-    console.log('blankfield', this.blankField)
     if (!get(this.props.formik.values,this.props.name)) {
       this.suggestions.forEach((_, index) => this.setFieldValue(`${this.props.name}.${index}`,
         this.blankField
@@ -229,6 +222,6 @@ const KeyValueCompoundField = connect<IProps & IInternalProps>(
   KeyValueCompoundFieldBase
 );
 
-export const FormCategoryDistribution = connect<IProps & IExternalProps & CommonHtmlProps, any>(
-  ArryOfKeyValueCompoundFields,
+export const ArryOfKeyValueFields = connect<IProps & IExternalProps & CommonHtmlProps, any>(
+  ArryOfKeyValueFieldsBase,
 );

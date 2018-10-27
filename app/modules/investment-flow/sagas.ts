@@ -6,13 +6,19 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers } from "../../utils/BigNumberUtils";
+import { isLessThanNDays } from "../../utils/Date.utils";
 import { convertToBigInt } from "../../utils/Number.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { IGasState } from "../gas/reducer";
 import { loadComputedContributionFromContract } from "../investor-tickets/sagas";
-import { selectCalculatedContribution } from "../investor-tickets/selectors";
-import { selectEtoById } from "../public-etos/selectors";
+import { selectCalculatedContribution, selectIsWhitelisted } from "../investor-tickets/selectors";
+import {
+  selectEtoById,
+  selectEtoOnChainStateById,
+  selectEtoWithCompanyAndContractById,
+} from "../public-etos/selectors";
+import { EETOStateOnChain } from "../public-etos/types";
 import { neuCall } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import {
@@ -29,7 +35,9 @@ import {
 } from "./reducer";
 import {
   selectCurrencyByInvestmentType,
+  selectInvestmentEtoId,
   selectInvestmentGasCostEth,
+  selectInvestmentType,
   selectIsBankTransferModalOpened,
   selectIsICBMInvestment,
 } from "./selectors";
@@ -161,6 +169,7 @@ function* start(action: TAction): any {
   yield put(actions.gas.gasApiEnsureLoading());
   yield put(actions.txSender.startInvestment());
   yield setGasPrice();
+  yield getActiveInvestmentTypes();
 }
 
 export function* onInvestmentTxModalHide(): any {
@@ -174,6 +183,45 @@ function* setGasPrice(): any {
   const gas: IGasState = yield select((s: IAppState) => s.gas);
   yield put(actions.investmentFlow.setGasPrice(gas.gasPrice && gas.gasPrice.standard));
   yield put(actions.investmentFlow.validateInputs());
+}
+
+function* getActiveInvestmentTypes(): any {
+  const state: IAppState = yield select();
+  const etoId = selectInvestmentEtoId(state.investmentFlow);
+  const eto = selectEtoWithCompanyAndContractById(state, etoId);
+
+  let activeTypes: EInvestmentType[] = [
+    EInvestmentType.InvestmentWallet,
+    EInvestmentType.BankTransfer,
+  ];
+
+  // no bank transfer 3 days befor eto end
+  const etoEndDate = eto && eto.contract && eto.contract.startOfStates[EETOStateOnChain.Signing];
+  if (etoEndDate && isLessThanNDays(new Date(), etoEndDate, 3)) {
+    activeTypes.splice(1); // remove bank transfer
+  }
+
+  // no regular investment if not whitelisted in pre eto
+  const etoState = selectEtoOnChainStateById(state.publicEtos, etoId);
+  if (etoState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(etoId, state)) {
+    activeTypes = [];
+  }
+
+  // only ICBM investment if balance available
+  if (compareBigNumbers(selectLockedEuroTokenBalance(state.wallet), 0) > 0) {
+    activeTypes.unshift(EInvestmentType.ICBMnEuro);
+  }
+  if (compareBigNumbers(selectLockedEtherBalance(state.wallet), 0) > 0) {
+    activeTypes.unshift(EInvestmentType.ICBMEth);
+  }
+
+  yield put(actions.investmentFlow.setActiveInvestmentTypes(activeTypes));
+
+  // guarantee that current type is inside active types.
+  const currentType = selectInvestmentType(state.investmentFlow);
+  if (currentType && !activeTypes.includes(currentType)) {
+    yield put(actions.investmentFlow.selectInvestmentType(activeTypes[0]));
+  }
 }
 
 function* recalculateCurrencies(): any {

@@ -8,9 +8,6 @@ import {
   EInvestmentErrorState,
   EInvestmentType,
 } from "../../../../modules/investment-flow/reducer";
-import { selectIsWhitelisted } from "../../../../modules/investor-tickets/selectors";
-import { selectEtoOnChainStateById } from "../../../../modules/public-etos/selectors";
-import { EETOStateOnChain } from "../../../../modules/public-etos/types";
 import {
   selectLiquidEtherBalance,
   selectLiquidEtherBalanceEuroAmount,
@@ -19,59 +16,50 @@ import {
   selectLockedEuroTokenBalance,
 } from "../../../../modules/wallet/selectors";
 import { IAppState } from "../../../../store";
-import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { WalletSelectionData } from "./InvestmentTypeSelector";
 
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
+import { selectInvestmentActiveTypes } from "../../../../modules/investment-flow/selectors";
+import { Dictionary } from "../../../../types";
 
-export function createWallets(etoId: string, state: IAppState): WalletSelectionData[] {
+export function createWallets(state: IAppState): WalletSelectionData[] {
   const w = state.wallet;
   const icbmEther = selectLockedEtherBalance(w);
   const icbmNeuro = selectLockedEuroTokenBalance(w);
 
-  let wallets: WalletSelectionData[] = [
-    {
+  const wallets: Dictionary<WalletSelectionData> = {
+    [EInvestmentType.InvestmentWallet]: {
       balanceEth: selectLiquidEtherBalance(w),
       balanceEur: selectLiquidEtherBalanceEuroAmount(state),
       type: EInvestmentType.InvestmentWallet,
       name: "Investment Wallet",
       icon: ethIcon,
     },
-    {
+    [EInvestmentType.BankTransfer]: {
       type: EInvestmentType.BankTransfer,
       name: "Direct Bank Transfer",
       icon: euroIcon,
     },
-  ];
-
-  const etoState = selectEtoOnChainStateById(state.publicEtos, etoId);
-  if (etoState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(etoId, state)) {
-    wallets = [];
-  }
-
-  if (compareBigNumbers(icbmNeuro, 0) > 0) {
-    wallets.unshift({
-      balanceNEuro: icbmNeuro,
-      balanceEur: selectLockedEuroTokenBalance(w),
+    [EInvestmentType.ICBMnEuro]: {
       type: EInvestmentType.ICBMnEuro,
       name: "ICBM Wallet",
+      balanceNEuro: icbmNeuro,
+      balanceEur: selectLockedEuroTokenBalance(w),
       icon: neuroIcon,
-    });
-  }
-
-  if (compareBigNumbers(icbmEther, 0) > 0) {
-    wallets.unshift({
-      balanceEth: icbmEther,
-      balanceEur: selectLockedEtherBalanceEuroAmount(state),
+    },
+    [EInvestmentType.ICBMEth]: {
       type: EInvestmentType.ICBMEth,
       name: "ICBM Wallet",
+      balanceEth: icbmEther,
+      balanceEur: selectLockedEtherBalanceEuroAmount(state),
       icon: ethIcon,
-    });
-  }
-  return wallets;
+    },
+  };
+
+  return selectInvestmentActiveTypes(state.investmentFlow).map(t => wallets[t]);
 }
 
 export function getInputErrorMessage(
@@ -105,7 +93,7 @@ export function getInputErrorMessage(
   }
 }
 
-export function getInvestmentTypeMessages(type: EInvestmentType): React.ReactNode {
+export function getInvestmentTypeMessages(type?: EInvestmentType): React.ReactNode {
   switch (type) {
     case EInvestmentType.BankTransfer:
       return <FormattedHTMLMessage id="investment-flow.bank-transfer-info-message" tagName="p" />;

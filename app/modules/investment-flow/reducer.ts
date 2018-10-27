@@ -34,7 +34,8 @@ export interface IInvestmentFlowState {
   etoId: string;
   euroValueUlps: string;
   ethValueUlps: string;
-  investmentType: EInvestmentType;
+  investmentType?: EInvestmentType;
+  activeInvestmentTypes: EInvestmentType[];
   errorState?: EInvestmentErrorState;
   gasAmount: string;
   gasPrice: string;
@@ -48,6 +49,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   euroValueUlps: "",
   ethValueUlps: "",
   investmentType: EInvestmentType.InvestmentWallet,
+  activeInvestmentTypes: [],
   gasAmount: INVESTMENT_GAS_AMOUNT,
   gasPrice: "0",
   isValidatedInput: false,

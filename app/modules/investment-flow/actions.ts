@@ -11,7 +11,7 @@ export const investmentFlowActions = {
   // public actions
   startInvestment: (etoId: string) => createAction("INVESTMENT_FLOW_START", { etoId }),
   resetInvestment: () => createSimpleAction("INVESTMENT_FLOW_RESET"),
-  selectInvestmentType: (type: EInvestmentType) =>
+  selectInvestmentType: (type?: EInvestmentType) =>
     createAction("INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE", { type }),
   submitCurrencyValue: (value: string, currency: EInvestmentCurrency) =>
     createAction("INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE", { value, currency }),
@@ -35,4 +35,6 @@ export const investmentFlowActions = {
     createAction("INVESTMENT_FLOW_SET_BANK_TRANSFER_FLOW_STATE", { state }),
   toggleBankTransferGasStipend: () =>
     createSimpleAction("INVESTMENT_FLOW_TOGGLE_BANK_TRANSFER_GAS_STIPEND"),
+  setActiveInvestmentTypes: (activeInvestmentTypes: EInvestmentType[]) =>
+    createAction("INVESTMENT_FLOW_SET_ACTIVE_INVESTMENT_TYPES", { activeInvestmentTypes }),
 };

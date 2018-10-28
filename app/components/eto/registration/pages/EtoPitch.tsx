@@ -103,7 +103,7 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
           title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
         >
           <FormTextArea
-            name={"useOfCapital"}
+            name="useOfCapital"
             placeholder="Detail"
             disabled={false}
           />

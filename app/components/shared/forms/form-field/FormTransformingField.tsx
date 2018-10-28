@@ -5,7 +5,7 @@ import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { FormLabel } from "./FormLabel";
-import { isNonValid, isValid } from "./utils";
+import {isFieldRequired, isNonValid, isValid} from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -40,12 +40,13 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
       className,
       addonStyle,
       ratio,
+      disabled,
       ...props
     } = this.props;
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldValue }) => {
+        {({ touched, errors, setFieldValue, validationSchema }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -73,6 +74,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
                       type="number"
                       valid={isValid(touched, errors, name)}
                       placeholder={placeholder || label}
+                      disabled={disabled && isFieldRequired(validationSchema,name)}
                       {...inputExtraProps}
                       {...props}
                     />

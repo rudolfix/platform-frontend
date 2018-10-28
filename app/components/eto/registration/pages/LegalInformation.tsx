@@ -71,22 +71,22 @@ const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IPro
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.legal-company-name" />}
           name="name"
-          disabled
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.legal-form" />}
           name="legalForm"
-          disabled
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.company-state-address" />}
           name="street"
-          disabled
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.city-country" />}
           name="country"
-          disabled
+          disabled={readonly}
         />
         <FormField
           label={<FormattedMessage id="eto.form.legal-information.registration-number" />}

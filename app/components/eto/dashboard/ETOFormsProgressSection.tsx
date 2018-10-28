@@ -70,7 +70,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
       progress: legalInformationProgress,
       name: <FormattedMessage id="eto.form-progress-widget.legal-info" />,
       testingId: "eto-progress-widget-legal-info",
-      readonly: etoStatus !== EtoState.PREVIEW,
+      readonly: false,
     },
     {
       redirectTo: etoRegisterRoutes.etoInvestmentTerms,

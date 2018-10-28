@@ -125,7 +125,7 @@ export const EtoLegalInformationType = YupTS.object({
       fullName: YupTS.string(),
       shares: YupTS.number(),
     }).optional(),
-  ),
+  ).optional(),
 });
 
 type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;

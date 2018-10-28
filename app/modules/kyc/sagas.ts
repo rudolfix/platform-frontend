@@ -18,16 +18,16 @@ import {
   TRequestOutsourcedStatus,
   TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
+import {EUserType} from "../../lib/api/users/interfaces";
 import { IAppAction, IAppState } from "../../store";
 import { ensurePermissionsArePresent } from "../auth/sagas";
+import {selectUserType} from "../auth/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
 import {
   selectCombinedBeneficialOwnerOwnership,
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
 } from "./selectors";
-import {selectUserType} from "../auth/selectors";
-import {EUserType} from "../../lib/api/users/interfaces";
 
 function* loadClientData(): any {
   yield put(actions.kyc.kycLoadIndividualData());
@@ -41,7 +41,7 @@ let kycWidgetWatchDelay: number = 1000;
 function* kycRefreshWidgetSaga(): any {
   kycWidgetWatchDelay = 1000;
   while (true) {
-    const userType: EUserType = yield select((s:IAppState) => selectUserType(s.auth))
+    const userType: EUserType = yield select((s:IAppState) => selectUserType(s.auth));
     const status: TRequestStatus | undefined = yield select((s: IAppState) =>
       selectKycRequestStatus(s.kyc),
     );
@@ -68,7 +68,6 @@ function* kycRefreshWidgetSaga(): any {
         outsourcedStatus === "review_pending"
       )
     ) {
-      console.log('--->polling')
       userType === "investor"
         ? yield put(actions.kyc.kycLoadIndividualRequest(true))
         : yield put(actions.kyc.kycLoadBusinessRequest())

@@ -111,6 +111,7 @@ export const Settings = compose<React.SFC>(
   }),
   onEnterAction({
     actionCreator: dispatch => {
+      // dispatch(actions.kyc.kycLoadBusinessData())
       dispatch(actions.kyc.kycLoadIndividualData());
     },
   }),

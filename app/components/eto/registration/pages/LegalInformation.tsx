@@ -20,10 +20,10 @@ import {
   FormFieldDate,
   FormSelectField,
 } from "../../../shared/forms";
-import {sanitizeKeyValueCompoundField} from "../../utils";
+import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
+import { sanitizeKeyValueCompoundField } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
-import {FormHighlightGroup} from "../../../shared/forms/FormHighlightGroup";
 
 interface IStateProps {
   loadingData: boolean;
@@ -143,7 +143,7 @@ const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IPro
             name="shareholders"
             valuePlaceholder={"Amount"}
             suggestions={["Full Name"]}
-            fieldNames={[ 'fullName','shares']}
+            fieldNames={["fullName", "shares"]}
             disabled={readonly}
           />
         </FormHighlightGroup>
@@ -177,8 +177,10 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
-        const sanitizedData = {...data,
-          shareholders : data.shareholders !== undefined && sanitizeKeyValueCompoundField(data.shareholders)
+        const sanitizedData = {
+          ...data,
+          shareholders:
+            data.shareholders !== undefined && sanitizeKeyValueCompoundField(data.shareholders),
         };
         dispatch(actions.etoFlow.saveDataStart({ companyData: sanitizedData, etoData: {} }));
       },

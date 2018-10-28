@@ -1,17 +1,16 @@
-import {connect, FieldArray} from "formik";
-import {get} from 'lodash'
+import { connect, FieldArray } from "formik";
+import { get } from "lodash";
 import * as React from "react";
-import {Col, Row} from "reactstrap";
-import * as Yup from 'yup'
+import { Col, Row } from "reactstrap";
+import * as Yup from "yup";
 
-import {CommonHtmlProps, TFormikConnect, TTranslatedString} from "../../../../types";
-import {ButtonIcon} from "../../buttons";
-import {FormInput} from "./FormInput";
-import {FormTransformingField} from "./FormTransformingField";
+import { CommonHtmlProps, TFormikConnect, TTranslatedString } from "../../../../types";
+import { ButtonIcon } from "../../buttons";
+import { FormInput } from "./FormInput";
+import { FormTransformingField } from "./FormTransformingField";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
-
 
 interface IProps {
   disabled?: boolean;
@@ -23,14 +22,14 @@ interface IProps {
 }
 
 interface IInternalProps {
-  addField: (e:Event) => void;
-  removeField: (e:Event) => void;
+  addField: (e: Event) => void;
+  removeField: (e: Event) => void;
   isLastElement: boolean;
   keyPlaceholder?: string;
   valuePlaceholder?: string;
   isFirstElement: boolean;
   formFieldKeys: string[];
-  validationSchema:{fields:{[key:string]:Yup.Schema<any>}};
+  validationSchema: { fields: { [key: string]: Yup.Schema<any> } };
 }
 
 interface IExternalProps {
@@ -40,31 +39,30 @@ interface IExternalProps {
   valuePlaceholder?: string;
 }
 
-class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps & TFormikConnect>{
-  name=this.props.name;
+class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps & TFormikConnect> {
+  name = this.props.name;
   validationSchema = this.props.validationSchema;
 
-  setAllFieldsTouched = (isTouched:boolean) => {
-    return Object.keys(get(this.props.formik.values,this.name)).map(key => {
-      this.props.formik.setFieldTouched(`${this.name}.${key}`, isTouched)
-    })
+  setAllFieldsTouched = (isTouched: boolean) => {
+    return Object.keys(get(this.props.formik.values, this.name)).map(key => {
+      this.props.formik.setFieldTouched(`${this.name}.${key}`, isTouched);
+    });
   };
 
-  compoundFieldValidation = (fieldName:string, neighborName:string) => {
+  compoundFieldValidation = (fieldName: string, neighborName: string) => {
     const schema = this.validationSchema.fields[fieldName];
     return (value: any) => {
-
       const neighborValue = get(this.props.formik.values, neighborName);
       if (neighborValue !== undefined && value === undefined) {
-        return "please fill out both fields"
+        return "please fill out both fields";
       } else {
         try {
-          schema.validateSync(value)
-        }catch (e) {
-          return e.errors
+          schema.validateSync(value);
+        } catch (e) {
+          return e.errors;
         }
       }
-    }
+    };
   };
 
   render = () => {
@@ -79,98 +77,102 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
       formFieldKeys,
       prefix,
       transformRatio,
-      name
+      name,
     } = this.props;
     return (
       <>
-      <Row>
-        <Col xs={8}>
-          <Row className="justify-content-center">
-            <Col xs={1} className="pt-2">
-              {isLastElement && !disabled && <ButtonIcon svgIcon={plusIcon} onClick={addField}/>}
-            </Col>
-            <Col>
-              <FormInput
-                disabled={disabled}
-                name={`${name}.${formFieldKeys[0]}`}
-                placeholder={keyPlaceholder}
-                setAllFieldsTouched={this.setAllFieldsTouched}
-                compoundFieldValidation={this.compoundFieldValidation(formFieldKeys[0],`${name}.${formFieldKeys[1]}`)}
-              />
-            </Col>
-          </Row>
-        </Col>
-        <Col>
-          <Row>
-            <Col xs={9}>
-              {(
-                <FormTransformingField
+        <Row>
+          <Col xs={8}>
+            <Row className="justify-content-center">
+              <Col xs={1} className="pt-2">
+                {isLastElement && !disabled && <ButtonIcon svgIcon={plusIcon} onClick={addField} />}
+              </Col>
+              <Col>
+                <FormInput
                   disabled={disabled}
-                  min="0"
-                  prefix={prefix}
-                  name={`${name}.${formFieldKeys[1]}`}
-                  ratio={transformRatio}
+                  name={`${name}.${formFieldKeys[0]}`}
+                  placeholder={keyPlaceholder}
                   setAllFieldsTouched={this.setAllFieldsTouched}
-                  placeholder={valuePlaceholder}
-                  compoundFieldValidation={this.compoundFieldValidation(formFieldKeys[1],`${name}.${formFieldKeys[0]}`)}
+                  compoundFieldValidation={this.compoundFieldValidation(
+                    formFieldKeys[0],
+                    `${name}.${formFieldKeys[1]}`,
+                  )}
                 />
+              </Col>
+            </Row>
+          </Col>
+          <Col>
+            <Row>
+              <Col xs={9}>
+                {
+                  <FormTransformingField
+                    disabled={disabled}
+                    min="0"
+                    prefix={prefix}
+                    name={`${name}.${formFieldKeys[1]}`}
+                    ratio={transformRatio}
+                    setAllFieldsTouched={this.setAllFieldsTouched}
+                    placeholder={valuePlaceholder}
+                    compoundFieldValidation={this.compoundFieldValidation(
+                      formFieldKeys[1],
+                      `${name}.${formFieldKeys[0]}`,
+                    )}
+                  />
+                }
+              </Col>
+              {!isFirstElement && (
+                <span className="pt-2">
+                  {!disabled && <ButtonIcon svgIcon={closeIcon} onClick={removeField} />}
+                </span>
               )}
-            </Col>
-            {!isFirstElement && (
-              <span className="pt-2">
-            {!disabled && <ButtonIcon svgIcon={closeIcon} onClick={removeField}/>}
-          </span>
-            )}
-          </Row>
-        </Col>
-      </Row>
-      <Row>
-      </Row>
+            </Row>
+          </Col>
+        </Row>
+        <Row />
       </>
-    )
-  }
+    );
+  };
 }
 
-export const lazy = Yup.lazy(
-  (value:any) => {
-    return value['fullName'] === undefined && value['shares'] === undefined ? EtoCapitalListTypeEmpty : EtoCapitalListTypeFull
-  });
+export const lazy = Yup.lazy((value: any) => {
+  return value["fullName"] === undefined && value["shares"] === undefined
+    ? EtoCapitalListTypeEmpty
+    : EtoCapitalListTypeFull;
+});
 
 const EtoCapitalListTypeFull = Yup.object().shape({
-  fullName: Yup.string().max(256).required('both values are required'),
-  shares: Yup.number().required('both values are required') //TODO max message
+  fullName: Yup.string()
+    .max(256)
+    .required("both values are required"),
+  shares: Yup.number().required("both values are required"), //TODO max message
 });
 
 const EtoCapitalListTypeEmpty = Yup.object().shape({
   fullName: Yup.string().notRequired(),
-  shares: Yup.number().notRequired()
+  shares: Yup.number().notRequired(),
 });
 
-
-class ArryOfKeyValueFieldsBase extends React.Component<IProps & IExternalProps & CommonHtmlProps & TFormikConnect> {
-
-  private blankField = this.props.fieldNames.reduce((acc:any, key:string)=> {acc[key] = undefined; return acc},{});
+class ArryOfKeyValueFieldsBase extends React.Component<
+  IProps & IExternalProps & CommonHtmlProps & TFormikConnect
+> {
+  private blankField = this.props.fieldNames.reduce((acc: any, key: string) => {
+    acc[key] = undefined;
+    return acc;
+  }, {});
   private suggestions = [...this.props.suggestions];
   private setFieldValue = this.props.formik.setFieldValue;
   private validationSchema = this.props.formik.validationSchema().fields[this.props.name]._subType;
 
   componentWillMount(): void {
-    if (!get(this.props.formik.values,this.props.name)) {
-      this.suggestions.forEach((_, index) => this.setFieldValue(`${this.props.name}.${index}`,
-        this.blankField
-      ));
+    if (!get(this.props.formik.values, this.props.name)) {
+      this.suggestions.forEach((_, index) =>
+        this.setFieldValue(`${this.props.name}.${index}`, this.blankField),
+      );
     }
   }
 
   render(): React.ReactNode {
-    const {
-      prefix,
-      transformRatio,
-      disabled,
-      formik,
-      name,
-      valuePlaceholder,
-    } = this.props;
+    const { prefix, transformRatio, disabled, formik, name, valuePlaceholder } = this.props;
 
     const categoryDistribution = get(formik.values, name) || [];
     const formFieldKeys = this.props.fieldNames;
@@ -192,7 +194,7 @@ class ArryOfKeyValueFieldsBase extends React.Component<IProps & IExternalProps &
                     formFieldKeys={formFieldKeys}
                     prefix={prefix}
                     name={`${name}.${index}`}
-                    removeField={(e:Event) => {
+                    removeField={(e: Event) => {
                       e.preventDefault();
                       arrayHelpers.remove(index);
                       this.suggestions.splice(index, 1);
@@ -217,10 +219,7 @@ class ArryOfKeyValueFieldsBase extends React.Component<IProps & IExternalProps &
   }
 }
 
-
-const KeyValueCompoundField = connect<IProps & IInternalProps>(
-  KeyValueCompoundFieldBase
-);
+const KeyValueCompoundField = connect<IProps & IInternalProps>(KeyValueCompoundFieldBase);
 
 export const ArryOfKeyValueFields = connect<IProps & IExternalProps & CommonHtmlProps, any>(
   ArryOfKeyValueFieldsBase,

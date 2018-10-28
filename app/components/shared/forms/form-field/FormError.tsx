@@ -1,5 +1,5 @@
 import { FormikConsumer, getIn } from "formik";
-import {get} from 'lodash'
+import { get } from "lodash";
 import * as React from "react";
 import { isNonValid } from "./utils";
 
@@ -15,7 +15,7 @@ const FormError: React.SFC<IProps> = ({ name, defaultMessage }) => (
     {({ touched, errors, submitCount }) => {
       const touchedSubmitCountIncluded = {
         ...touched,
-        [name]: get(touched,name) || submitCount > 0,
+        [name]: get(touched, name) || submitCount > 0,
       };
 
       return (

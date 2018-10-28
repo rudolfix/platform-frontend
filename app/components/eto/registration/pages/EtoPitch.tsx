@@ -11,10 +11,10 @@ import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { ArryOfKeyValueFields, FormTextArea } from "../../../shared/forms";
-import {sanitizeKeyValueCompoundField} from "../../utils";
+import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
+import { sanitizeKeyValueCompoundField } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
-import {FormHighlightGroup} from "../../../shared/forms/FormHighlightGroup";
 
 interface IStateProps {
   loadingData: boolean;
@@ -102,17 +102,13 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
         <FormHighlightGroup
           title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
         >
-          <FormTextArea
-            name="useOfCapital"
-            placeholder="Detail"
-            disabled={false}
-          />
+          <FormTextArea name="useOfCapital" placeholder="Detail" disabled={false} />
           <ArryOfKeyValueFields
             name="useOfCapitalList"
             suggestions={distributionSuggestions}
             prefix="%"
             transformRatio={100}
-            fieldNames={['description','percent']}
+            fieldNames={["description", "percent"]}
           />
         </FormHighlightGroup>
 
@@ -171,8 +167,11 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
-        const sanitizedData = {...data,
-          useOfCapitalList : data.useOfCapitalList !== undefined && sanitizeKeyValueCompoundField(data.useOfCapitalList)
+        const sanitizedData = {
+          ...data,
+          useOfCapitalList:
+            data.useOfCapitalList !== undefined &&
+            sanitizeKeyValueCompoundField(data.useOfCapitalList),
         };
         dispatch(
           actions.etoFlow.saveDataStart({
@@ -189,4 +188,3 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationPitchComponent);
-

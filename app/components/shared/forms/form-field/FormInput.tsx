@@ -35,13 +35,13 @@ const transform = (value: string, charactersLimit?: number) => {
   return value === undefined ? "" : computedValue(value, charactersLimit);
 };
 
-const transformBack = (value: number|string) => {
-  if(value && typeof value === "number"){
+const transformBack = (value: number | string) => {
+  if (value && typeof value === "number") {
     return value;
-  } else if (value && typeof value === "string"){
-    return value.trim().length > 0 ? value : undefined
+  } else if (value && typeof value === "string") {
+    return value.trim().length > 0 ? value : undefined;
   } else {
-    return undefined
+    return undefined;
   }
 };
 
@@ -83,9 +83,8 @@ export class FormInput extends React.Component<FormInputProps> {
           return (
             <Field
               name={name}
-              validate={compoundFieldValidation
-                ? (value:any) => compoundFieldValidation(value)
-                : undefined
+              validate={
+                compoundFieldValidation ? (value: any) => compoundFieldValidation(value) : undefined
               }
               render={({ field }: FieldProps) => {
                 const val = transform(field.value, charactersLimit);
@@ -113,12 +112,17 @@ export class FormInput extends React.Component<FormInputProps> {
                         {...field}
                         onChange={e => {
                           setFieldTouched(name);
-                          setFieldValue(name, transformBack(type === "number" ? e.target.valueAsNumber :e.target.value));
+                          setFieldValue(
+                            name,
+                            transformBack(
+                              type === "number" ? e.target.valueAsNumber : e.target.value,
+                            ),
+                          );
                         }}
-                        onBlur={()=>{
+                        onBlur={() => {
                           setFieldTouched(name);
                           validateForm();
-                          if(setAllFieldsTouched !== undefined && field.value!==undefined){
+                          if (setAllFieldsTouched !== undefined && field.value !== undefined) {
                             setAllFieldsTouched(true);
                           }
                         }}

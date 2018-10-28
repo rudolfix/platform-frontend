@@ -13,7 +13,7 @@ storiesOf("Form/CategoryDistribution", module)
         name="test"
         paragraphName="paragraph"
         suggestions={["suggestion1", "suggestion2", "suggestion3"]}
-        fieldNames={[ "description","percent"]}
+        fieldNames={["description", "percent"]}
       />
     )),
   )
@@ -31,7 +31,7 @@ storiesOf("Form/CategoryDistribution", module)
         name="test"
         paragraphName="paragraph"
         suggestions={["suggestion1", "suggestion2", "suggestion3"]}
-        fieldNames={[ "description","percent"]}
+        fieldNames={["description", "percent"]}
       />
     )),
   );

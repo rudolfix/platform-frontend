@@ -26,6 +26,8 @@ import {
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
 } from "./selectors";
+import {selectUserType} from "../auth/selectors";
+import {EUserType} from "../../lib/api/users/interfaces";
 
 function* loadClientData(): any {
   yield put(actions.kyc.kycLoadIndividualData());
@@ -39,6 +41,7 @@ let kycWidgetWatchDelay: number = 1000;
 function* kycRefreshWidgetSaga(): any {
   kycWidgetWatchDelay = 1000;
   while (true) {
+    const userType: EUserType = yield select((s:IAppState) => selectUserType(s.auth))
     const status: TRequestStatus | undefined = yield select((s: IAppState) =>
       selectKycRequestStatus(s.kyc),
     );
@@ -46,7 +49,8 @@ function* kycRefreshWidgetSaga(): any {
     // if its accepted we can stop whole mechanism
     if (
       status === "Accepted" ||
-      status === "Rejected"
+      status === "Rejected" ||
+      status === "Ignored"
     ) {
       return;
     }
@@ -64,7 +68,10 @@ function* kycRefreshWidgetSaga(): any {
         outsourcedStatus === "review_pending"
       )
     ) {
-      yield put(actions.kyc.kycLoadIndividualRequest(true));
+      console.log('--->polling')
+      userType === "investor"
+        ? yield put(actions.kyc.kycLoadIndividualRequest(true))
+        : yield put(actions.kyc.kycLoadBusinessRequest())
     }
 
     yield delay(kycWidgetWatchDelay);

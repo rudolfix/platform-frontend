@@ -97,7 +97,7 @@ const InvestorMenu: React.SFC<{ actionRequiredSettings: boolean }> = ({
       />
       <MenuEntry
         svgString={iconHelp}
-        to={externalRoutes.freshdesk}
+        to={`${externalRoutes.neufundSupport}/home`}
         menuName={<FormattedMessage id="menu.help" />}
         target="_blank"
       />

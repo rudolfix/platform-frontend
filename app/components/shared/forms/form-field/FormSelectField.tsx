@@ -53,14 +53,14 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
     this.props.customOptions
       ? this.props.customOptions
       : map(this.props.values, (value, key) => (
-        <option
-          key={key}
-          value={key}
-          disabled={this.props.disabledValues && this.props.disabledValues[key]}
-        >
-          {value}
-        </option>
-      ));
+          <option
+            key={key}
+            value={key}
+            disabled={this.props.disabledValues && this.props.disabledValues[key]}
+          >
+            {value}
+          </option>
+        ));
 
   render(): React.ReactNode {
     const { label, name, extraMessage, "data-test-id": dataTestId, disabled } = this.props;

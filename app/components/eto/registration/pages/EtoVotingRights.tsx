@@ -17,7 +17,7 @@ import { Button, EButtonLayout } from "../../../shared/buttons";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormToggle } from "../../../shared/forms/form-field/FormToggle";
-import {applyDefaults} from "../../utils";
+import { applyDefaults } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 
 // TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
@@ -29,7 +29,7 @@ const LIQUIDATION_PREFERENCE_VALUES = [0, 1, 1.5, 2];
 
 const defaults = {
   liquidationPreferenceMultiplier: 0,
-  generalVotingRule: "positive"
+  generalVotingRule: "positive",
 };
 
 interface IExternalProps {
@@ -132,10 +132,7 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   }),
 )(EtoVotingRightsComponent);
 
-
 const dataToCanonicalForm = (values: Partial<TEtoVotingRightsType>) => {
-    values.liquidationPreferenceMultiplier = parseFloat(
-      `${values.liquidationPreferenceMultiplier}`,
-    );
+  values.liquidationPreferenceMultiplier = parseFloat(`${values.liquidationPreferenceMultiplier}`);
   return values;
 };

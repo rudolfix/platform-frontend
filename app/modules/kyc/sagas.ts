@@ -15,18 +15,18 @@ import {
   IKycIndividualData,
   IKycLegalRepresentative,
   IKycRequestState,
+  TKycRequestType,
   TRequestOutsourcedStatus,
   TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
-import {EUserType} from "../../lib/api/users/interfaces";
 import { IAppAction, IAppState } from "../../store";
 import { ensurePermissionsArePresent } from "../auth/sagas";
-import {selectUserType} from "../auth/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
 import {
   selectCombinedBeneficialOwnerOwnership,
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
+  selectKycRequestType,
 } from "./selectors";
 
 function* loadClientData(): any {
@@ -38,20 +38,17 @@ function* loadClientData(): any {
  * whole watcher feature is just a temporary workaround for a lack of real time communication with backend
  */
 let kycWidgetWatchDelay: number = 1000;
-function* kycRefreshWidgetSaga(): any {
+function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): any {
   kycWidgetWatchDelay = 1000;
   while (true) {
-    const userType: EUserType = yield select((s:IAppState) => selectUserType(s.auth));
+    const requestType: TKycRequestType = yield select((s: IAppState) =>
+      selectKycRequestType(s.kyc),
+    );
     const status: TRequestStatus | undefined = yield select((s: IAppState) =>
       selectKycRequestStatus(s.kyc),
     );
 
-    // if its accepted we can stop whole mechanism
-    if (
-      status === "Accepted" ||
-      status === "Rejected" ||
-      status === "Ignored"
-    ) {
+    if (status === "Accepted" || status === "Rejected" || status === "Ignored") {
       return;
     }
 
@@ -61,16 +58,17 @@ function* kycRefreshWidgetSaga(): any {
 
     if (
       status === "Pending" ||
-      status === "Outsourced" && outsourcedStatus && (
-        outsourcedStatus === "started" ||
-        outsourcedStatus === "canceled" ||
-        outsourcedStatus === "aborted" ||
-        outsourcedStatus === "review_pending"
-      )
+      (status === "Outsourced" &&
+        outsourcedStatus &&
+        (outsourcedStatus === "started" ||
+          outsourcedStatus === "canceled" ||
+          outsourcedStatus === "aborted" ||
+          outsourcedStatus === "review_pending"))
     ) {
-      userType === "investor"
+      requestType === "individual"
         ? yield put(actions.kyc.kycLoadIndividualRequest(true))
-        : yield put(actions.kyc.kycLoadBusinessRequest())
+        : yield put(actions.kyc.kycLoadBusinessRequest());
+      logger.info("KYC refreshed", status, requestType);
     }
 
     yield delay(kycWidgetWatchDelay);
@@ -92,7 +90,7 @@ let watchTask: any;
 function* kycRefreshWidgetSagaWatcher(): any {
   while (true) {
     yield take("KYC_WATCHER_START");
-    watchTask = yield fork(kycRefreshWidgetSaga);
+    watchTask = yield fork(neuCall, kycRefreshWidgetSaga);
   }
 }
 

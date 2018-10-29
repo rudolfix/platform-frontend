@@ -191,20 +191,35 @@ function* getActiveInvestmentTypes(): any {
   const state: IAppState = yield select();
   const etoId = selectInvestmentEtoId(state.investmentFlow);
   const eto = selectEtoWithCompanyAndContractById(state, etoId);
+  const etoState = selectEtoOnChainStateById(state.publicEtos, etoId);
 
   let activeTypes: EInvestmentType[] = [
     EInvestmentType.InvestmentWallet,
     EInvestmentType.BankTransfer,
   ];
 
-  // no bank transfer 3 days befor eto end
+  // no public bank transfer 3 days before eto end
   const etoEndDate = eto && eto.contract && eto.contract.startOfStates[EETOStateOnChain.Signing];
-  if (etoEndDate && isLessThanNDays(new Date(), etoEndDate, 3)) {
+  if (
+    etoState === EETOStateOnChain.Public &&
+    etoEndDate &&
+    isLessThanNDays(new Date(), etoEndDate, 3)
+  ) {
+    activeTypes.splice(1); // remove bank transfer
+  }
+
+  // no whitelist bank transfer 3 days before public eto
+  const etoEndWhitelistDate =
+    eto && eto.contract && eto.contract.startOfStates[EETOStateOnChain.Public];
+  if (
+    etoState === EETOStateOnChain.Whitelist &&
+    etoEndWhitelistDate &&
+    isLessThanNDays(new Date(), etoEndWhitelistDate, 3)
+  ) {
     activeTypes.splice(1); // remove bank transfer
   }
 
   // no regular investment if not whitelisted in pre eto
-  const etoState = selectEtoOnChainStateById(state.publicEtos, etoId);
   if (etoState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(etoId, state)) {
     activeTypes = [];
   }

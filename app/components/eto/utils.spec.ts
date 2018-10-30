@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
-import { sanitizeKeyValueCompoundField } from "./utils";
-import { applyDefaults } from "./utils";
+import { applyDefaults, sanitizeKeyValueCompoundField } from "./utils";
 
 describe("sanitizeKeyValueCompoundField", () => {
   it("returns an array without empty objects", () => {
@@ -12,6 +11,8 @@ describe("sanitizeKeyValueCompoundField", () => {
   it("returns undefined if resulting array is empty", () => {
     const input = [{ a: undefined, b: undefined }, { a: undefined }];
     expect(sanitizeKeyValueCompoundField(input)).to.be.undefined;
+  });
+});
 
 describe("applyDefaults", () => {
   it("sets defaults if value is missing/undefined", () => {

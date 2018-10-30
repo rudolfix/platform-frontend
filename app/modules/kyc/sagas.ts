@@ -71,7 +71,7 @@ function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): any {
     ) {
       requestType === "individual"
         ? yield put(actions.kyc.kycLoadIndividualRequest(true))
-        : yield put(actions.kyc.kycLoadBusinessRequest());
+        : yield put(actions.kyc.kycLoadBusinessRequest(true));
       logger.info("KYC refreshed", status, requestType);
     }
 
@@ -573,7 +573,9 @@ function* loadBusinessRequest(
 ): Iterator<any> {
   if (action.type !== "KYC_LOAD_BUSINESS_REQUEST_STATE") return;
   try {
-    yield put(actions.kyc.kycUpdateBusinessRequestState(true));
+    if (!action.payload.inBackground) {
+      yield put(actions.kyc.kycUpdateBusinessRequestState(true));
+    }
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.getBusinessRequest();
     yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
   } catch (e) {

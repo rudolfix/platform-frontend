@@ -18,11 +18,14 @@ interface IFieldGroup {
   suffix?: string;
   addonStyle?: string;
   maxLength?: string;
-  ratio: number;
+  ratio?: number;
+  customValidation?: (value: any) => string | Function | Promise<void> | undefined;
+  customOnBlur?: any;
 }
-type FieldGroupProps = IFieldGroup & FieldAttributes<any> & CommonHtmlProps;
 
-const transform = (value: number, ratio: number) => {
+type FieldGroupProps = IFieldGroup & FieldAttributes<{}> & CommonHtmlProps;
+
+const transform = (value: number, ratio?: number) => {
   if (value && !Number.isNaN(value)) {
     // if user types in more than 100 percent (=> internal value is larger than 1),
     // value*ratio returns a weird number due to JS number rounding behavior
@@ -51,15 +54,14 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
       className,
       addonStyle,
       ratio,
-      compoundFieldValidation,
-      setAllFieldsTouched,
-      neighborName,
+      customValidation,
+      customOnBlur,
       ...props
     } = this.props;
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldValue, setFieldTouched, validateForm }) => {
+        {({ touched, errors, setFieldValue, setFieldTouched }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -70,11 +72,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
               {label && <FormLabel name={name}>{label}</FormLabel>}
               <Field
                 name={name}
-                validate={
-                  compoundFieldValidation
-                    ? (value: any) => compoundFieldValidation(value)
-                    : undefined
-                }
+                validate={customValidation}
                 render={({ field }: FieldProps) => (
                   <InputGroup>
                     {prefix && (
@@ -90,13 +88,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
                         setFieldTouched(name);
                         setFieldValue(name, transformBack(e.target.valueAsNumber, ratio));
                       }}
-                      onBlur={() => {
-                        setFieldTouched(name);
-                        validateForm();
-                        if (setAllFieldsTouched !== undefined && field.value !== undefined) {
-                          setAllFieldsTouched(true);
-                        }
-                      }}
+                      onBlur={customOnBlur}
                       type="number"
                       valid={isValid(touched, errors, name)}
                       placeholder={placeholder || label}

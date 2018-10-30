@@ -2,13 +2,13 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { formWrapper } from "./form-utils";
-import { ArryOfKeyValueFields } from "./FormCategoryDistribution";
+import { ArrayOfKeyValueFields } from "./FormCategoryDistribution";
 
 storiesOf("Form/CategoryDistribution", module)
   .add(
     "default",
     formWrapper({})(() => (
-      <ArryOfKeyValueFields
+      <ArrayOfKeyValueFields
         label="HOW WILL YOU USE THE RAISED CAPITAL?"
         name="test"
         paragraphName="paragraph"
@@ -25,7 +25,7 @@ storiesOf("Form/CategoryDistribution", module)
         { description: "ESOP", percent: "30" },
       ],
     })(() => (
-      <ArryOfKeyValueFields
+      <ArrayOfKeyValueFields
         transformRatio={100}
         label="HOW WILL YOU USE THE RAISED CAPITAL?"
         name="test"

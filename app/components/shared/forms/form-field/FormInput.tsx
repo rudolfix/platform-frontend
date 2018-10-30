@@ -27,6 +27,8 @@ export interface IFormInputExternalProps {
   maxLength?: string;
   charactersLimit?: number;
   size?: InputSize;
+  customValidation?: (value: any) => string | Function | Promise<void> | undefined;
+  customOnBlur?: any;
 }
 
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
@@ -36,9 +38,9 @@ const transform = (value: string, charactersLimit?: number) => {
 };
 
 const transformBack = (value: number | string) => {
-  if (value && typeof value === "number") {
+  if (typeof value === "number") {
     return value;
-  } else if (value && typeof value === "string") {
+  } else if (typeof value === "string") {
     return value.trim().length > 0 ? value : undefined;
   } else {
     return undefined;
@@ -67,14 +69,13 @@ export class FormInput extends React.Component<FormInputProps> {
       min,
       max,
       size,
-      compoundFieldValidation,
-      neighborName,
-      setAllFieldsTouched,
+      customValidation,
+      customOnBlur,
       ...props
     } = this.props;
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldTouched, validateForm, setFieldValue }) => {
+        {({ touched, errors, setFieldTouched, setFieldValue }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -83,9 +84,7 @@ export class FormInput extends React.Component<FormInputProps> {
           return (
             <Field
               name={name}
-              validate={
-                compoundFieldValidation ? (value: any) => compoundFieldValidation(value) : undefined
-              }
+              validate={customValidation}
               render={({ field }: FieldProps) => {
                 const val = transform(field.value, charactersLimit);
                 return (
@@ -119,13 +118,7 @@ export class FormInput extends React.Component<FormInputProps> {
                             ),
                           );
                         }}
-                        onBlur={() => {
-                          setFieldTouched(name);
-                          validateForm();
-                          if (setAllFieldsTouched !== undefined && field.value !== undefined) {
-                            setAllFieldsTouched(true);
-                          }
-                        }}
+                        onBlur={customOnBlur}
                         type={type}
                         value={val}
                         valid={isValid(touched, errors, name)}

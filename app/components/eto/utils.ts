@@ -1,10 +1,10 @@
-export const sanitizeKeyValueCompoundField = (data: any) => {
-  const arr = data.reduce((acc: any, compoundField: any) => {
+export interface ICompoundField {
+  [x: string]: string | number | undefined;
+}
+
+export const sanitizeKeyValueCompoundField = (data: ICompoundField[] | undefined) =>
+  data &&
+  data.filter(compoundField => {
     const keys = Object.keys(compoundField);
-    if (compoundField[keys[0]] !== undefined && compoundField[keys[1]] !== undefined) {
-      acc.push(compoundField);
-    }
-    return acc;
-  }, []);
-  return arr.length ? arr : undefined;
-};
+    return compoundField[keys[0]] !== undefined && compoundField[keys[1]] !== undefined;
+  });

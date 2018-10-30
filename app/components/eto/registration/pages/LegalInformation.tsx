@@ -15,13 +15,13 @@ import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
-  ArryOfKeyValueFields,
+  ArrayOfKeyValueFields,
   FormField,
   FormFieldDate,
   FormSelectField,
 } from "../../../shared/forms";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { sanitizeKeyValueCompoundField } from "../../utils";
+import { ICompoundField, sanitizeKeyValueCompoundField } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -139,7 +139,7 @@ const EtoRegistrationLegalInformationComponent = ({ readonly, savingData }: IPro
         <FormHighlightGroup
           title={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
         >
-          <ArryOfKeyValueFields
+          <ArrayOfKeyValueFields
             name="shareholders"
             valuePlaceholder={"Amount"}
             suggestions={["Full Name"]}
@@ -179,8 +179,7 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
       saveData: (data: TPartialCompanyEtoData) => {
         const sanitizedData = {
           ...data,
-          shareholders:
-            data.shareholders !== undefined && sanitizeKeyValueCompoundField(data.shareholders),
+          shareholders: sanitizeKeyValueCompoundField(data.shareholders as ICompoundField[]),
         };
         dispatch(actions.etoFlow.saveDataStart({ companyData: sanitizedData, etoData: {} }));
       },

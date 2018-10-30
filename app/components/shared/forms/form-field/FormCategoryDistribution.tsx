@@ -1,6 +1,7 @@
 import { connect, FieldArray } from "formik";
 import { get } from "lodash";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import * as Yup from "yup";
 
@@ -43,10 +44,12 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
   name = this.props.name;
   validationSchema = this.props.validationSchema;
 
-  setAllFieldsTouched = (isTouched: boolean) => {
-    return Object.keys(get(this.props.formik.values, this.name)).map(key => {
-      this.props.formik.setFieldTouched(`${this.name}.${key}`, isTouched);
-    });
+  setAllFieldsTouched = (event: any, isTouched?: boolean) => {
+    if (event.target.value !== undefined) {
+      return Object.keys(get(this.props.formik.values, this.name)).map(key => {
+        this.props.formik.setFieldTouched(`${this.name}.${key}`, isTouched);
+      });
+    }
   };
 
   compoundFieldValidation = (fieldName: string, neighborName: string) => {
@@ -54,7 +57,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
     return (value: any) => {
       const neighborValue = get(this.props.formik.values, neighborName);
       if (neighborValue !== undefined && value === undefined) {
-        return "please fill out both fields";
+        return <FormattedMessage id="form.field.error.both-fields-required" />;
       } else {
         try {
           schema.validateSync(value);
@@ -92,8 +95,8 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
                   disabled={disabled}
                   name={`${name}.${formFieldKeys[0]}`}
                   placeholder={keyPlaceholder}
-                  setAllFieldsTouched={this.setAllFieldsTouched}
-                  compoundFieldValidation={this.compoundFieldValidation(
+                  customOnBlur={this.setAllFieldsTouched}
+                  customValidation={this.compoundFieldValidation(
                     formFieldKeys[0],
                     `${name}.${formFieldKeys[1]}`,
                   )}
@@ -111,9 +114,9 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
                     prefix={prefix}
                     name={`${name}.${formFieldKeys[1]}`}
                     ratio={transformRatio}
-                    setAllFieldsTouched={this.setAllFieldsTouched}
+                    customOnBlur={this.setAllFieldsTouched}
                     placeholder={valuePlaceholder}
-                    compoundFieldValidation={this.compoundFieldValidation(
+                    customValidation={this.compoundFieldValidation(
                       formFieldKeys[1],
                       `${name}.${formFieldKeys[0]}`,
                     )}
@@ -134,25 +137,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
   };
 }
 
-export const lazy = Yup.lazy((value: any) => {
-  return value["fullName"] === undefined && value["shares"] === undefined
-    ? EtoCapitalListTypeEmpty
-    : EtoCapitalListTypeFull;
-});
-
-const EtoCapitalListTypeFull = Yup.object().shape({
-  fullName: Yup.string()
-    .max(256)
-    .required("both values are required"),
-  shares: Yup.number().required("both values are required"), //TODO max message
-});
-
-const EtoCapitalListTypeEmpty = Yup.object().shape({
-  fullName: Yup.string().notRequired(),
-  shares: Yup.number().notRequired(),
-});
-
-class ArryOfKeyValueFieldsBase extends React.Component<
+class ArrayOfKeyValueFieldsBase extends React.Component<
   IProps & IExternalProps & CommonHtmlProps & TFormikConnect
 > {
   private blankField = this.props.fieldNames.reduce((acc: any, key: string) => {
@@ -221,6 +206,6 @@ class ArryOfKeyValueFieldsBase extends React.Component<
 
 const KeyValueCompoundField = connect<IProps & IInternalProps>(KeyValueCompoundFieldBase);
 
-export const ArryOfKeyValueFields = connect<IProps & IExternalProps & CommonHtmlProps, any>(
-  ArryOfKeyValueFieldsBase,
+export const ArrayOfKeyValueFields = connect<IProps & IExternalProps & CommonHtmlProps, any>(
+  ArrayOfKeyValueFieldsBase,
 );

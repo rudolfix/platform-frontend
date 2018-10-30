@@ -10,9 +10,9 @@ import { actions } from "../../../../modules/actions";
 import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { ArryOfKeyValueFields, FormTextArea } from "../../../shared/forms";
+import { ArrayOfKeyValueFields, FormTextArea } from "../../../shared/forms";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { sanitizeKeyValueCompoundField } from "../../utils";
+import { ICompoundField, sanitizeKeyValueCompoundField } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -103,7 +103,7 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
           title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
         >
           <FormTextArea name="useOfCapital" placeholder="Detail" disabled={false} />
-          <ArryOfKeyValueFields
+          <ArrayOfKeyValueFields
             name="useOfCapitalList"
             suggestions={distributionSuggestions}
             prefix="%"
@@ -169,9 +169,9 @@ export const EtoRegistrationPitch = compose<React.SFC>(
       saveData: (data: TPartialCompanyEtoData) => {
         const sanitizedData = {
           ...data,
-          useOfCapitalList:
-            data.useOfCapitalList !== undefined &&
-            sanitizeKeyValueCompoundField(data.useOfCapitalList),
+          useOfCapitalList: sanitizeKeyValueCompoundField(
+            data.useOfCapitalList as ICompoundField[],
+          ),
         };
         dispatch(
           actions.etoFlow.saveDataStart({

@@ -158,7 +158,8 @@
     text-decoration: none;
 
     &:hover,
-    &:active {
+    &:active,
+    &:focus {
       color: $color-brand;
     }
   }

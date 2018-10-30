@@ -105,7 +105,6 @@ export function* txSendProcess(
   try {
     yield put(actions.gas.gasApiEnsureLoading());
     yield put(actions.txSender.txSenderShowModal(TransactionType));
-
     yield neuCall(ensureNoPendingTx, TransactionType);
 
     let txDetails;

@@ -28,7 +28,6 @@ export interface IFormInputExternalProps {
   charactersLimit?: number;
   size?: InputSize;
   customValidation?: (value: any) => string | Function | Promise<void> | undefined;
-  customOnBlur?: any;
 }
 
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
@@ -70,7 +69,6 @@ export class FormInput extends React.Component<FormInputProps> {
       max,
       size,
       customValidation,
-      customOnBlur,
       ...props
     } = this.props;
     return (
@@ -118,7 +116,6 @@ export class FormInput extends React.Component<FormInputProps> {
                             ),
                           );
                         }}
-                        onBlur={customOnBlur}
                         type={type}
                         value={val}
                         valid={isValid(touched, errors, name)}

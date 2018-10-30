@@ -95,7 +95,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
                   disabled={disabled}
                   name={`${name}.${formFieldKeys[0]}`}
                   placeholder={keyPlaceholder}
-                  customOnBlur={this.setAllFieldsTouched}
+                  onBlur={this.setAllFieldsTouched}
                   customValidation={this.compoundFieldValidation(
                     formFieldKeys[0],
                     `${name}.${formFieldKeys[1]}`,
@@ -114,7 +114,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
                     prefix={prefix}
                     name={`${name}.${formFieldKeys[1]}`}
                     ratio={transformRatio}
-                    customOnBlur={this.setAllFieldsTouched}
+                    onBlur={this.setAllFieldsTouched}
                     placeholder={valuePlaceholder}
                     customValidation={this.compoundFieldValidation(
                       formFieldKeys[1],

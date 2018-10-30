@@ -20,7 +20,6 @@ interface IFieldGroup {
   maxLength?: string;
   ratio?: number;
   customValidation?: (value: any) => string | Function | Promise<void> | undefined;
-  customOnBlur?: any;
 }
 
 type FieldGroupProps = IFieldGroup & FieldAttributes<{}> & CommonHtmlProps;
@@ -55,7 +54,6 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
       addonStyle,
       ratio,
       customValidation,
-      customOnBlur,
       ...props
     } = this.props;
 
@@ -88,7 +86,6 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
                         setFieldTouched(name);
                         setFieldValue(name, transformBack(e.target.valueAsNumber, ratio));
                       }}
-                      onBlur={customOnBlur}
                       type="number"
                       valid={isValid(touched, errors, name)}
                       placeholder={placeholder || label}

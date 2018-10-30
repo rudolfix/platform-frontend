@@ -10,23 +10,17 @@ import {
 
 import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { actions } from "../../../../../modules/actions";
-import { selectMyPledge } from "../../../../../modules/bookbuilding-flow/selectors";
 import { appConnect } from "../../../../../store";
-import { onEnterAction } from "../../../../../utils/OnEnterAction";
 import {
   CampaigningActivatedInvestorApprovedWidgetLayout,
   CampaigningFormState,
   ICampaigningActivatedInvestorWidgetLayoutProps,
 } from "./CampaigningActivatedInvestorApprovedWidgetLayout";
-import { ILoggedInCampaigningProps } from "./CampaigningWidget";
 
 export interface IExternalProps {
   etoId: string;
   minPledge: number;
   maxPledge?: number;
-}
-
-interface IStateProps {
   pledge?: IPledge;
 }
 
@@ -60,10 +54,7 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
   ICampaigningActivatedInvestorWidgetLayoutProps,
   IExternalProps
 >(
-  appConnect<IStateProps, IDispatchProps, ILoggedInCampaigningProps>({
-    stateToProps: (state, props) => ({
-      pledge: selectMyPledge(props.etoId, state),
-    }),
+  appConnect<{}, IDispatchProps, IExternalProps>({
     dispatchToProps: (dispatch, props) => ({
       savePledge: (newPledge: IPledge) => {
         dispatch(actions.bookBuilding.savePledge(props.etoId, newPledge));
@@ -86,7 +77,7 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
       moveToView: () => () => ({ formState: CampaigningFormState.VIEW }),
     },
   ),
-  lifecycle<IStateProps & ILocalStateHandlersProps, {}>({
+  lifecycle<ILocalStateHandlersProps & IExternalProps, {}>({
     componentDidUpdate(prevProps): void {
       const pledge = this.props.pledge;
 
@@ -101,11 +92,15 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
       }
     },
   }),
-  withProps<IWithProps, IStateProps>(({ pledge }) => ({
+  withProps<IWithProps, IExternalProps>(({ pledge }) => ({
     pledgedAmount: pledge ? pledge.amountEur : "",
   })),
   withHandlers<
-    IStateProps & IDispatchProps & ILocalStateProps & ILocalStateHandlersProps,
+    IExternalProps &
+      IDispatchProps &
+      ILocalStateProps &
+      ILocalStateHandlersProps &
+      ILocalStateProps,
     IHandlersProps
   >({
     showMyEmail: ({ pledge, savePledge, changeConsentToRevealEmail }) => (
@@ -131,11 +126,6 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
       moveToView();
     },
     changePledge: ({ moveToEdit }) => moveToEdit,
-  }),
-  onEnterAction({
-    actionCreator: (dispatch, props) => {
-      dispatch(actions.bookBuilding.loadPledge(props.etoId));
-    },
   }),
 )(CampaigningActivatedInvestorApprovedWidgetLayout);
 

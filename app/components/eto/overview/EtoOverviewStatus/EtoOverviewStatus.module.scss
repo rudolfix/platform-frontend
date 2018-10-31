@@ -151,6 +151,13 @@
   .neufund {
     font-size: 16px;
     margin-top: -2px;
+    text-decoration: none;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: $color-brand;
+    }
   }
 }
 

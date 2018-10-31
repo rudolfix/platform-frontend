@@ -10,7 +10,6 @@ import { isLessThanNDays } from "../../utils/Date.utils";
 import { convertToBigInt } from "../../utils/Number.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
-import { IGasState } from "../gas/reducer";
 import { loadComputedContributionFromContract } from "../investor-tickets/sagas";
 import { selectCalculatedContribution, selectIsWhitelisted } from "../investor-tickets/selectors";
 import {
@@ -21,6 +20,7 @@ import {
 import { EETOStateOnChain } from "../public-etos/types";
 import { neuCall } from "../sagas";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
+import { selectTxGasCostEth } from "../tx/sender/selectors";
 import {
   selectLiquidEtherBalance,
   selectLockedEtherBalance,
@@ -38,7 +38,6 @@ import {
   selectEthValueUlps,
   selectEurValueUlps,
   selectInvestmentEtoId,
-  selectInvestmentGasCostEth,
   selectInvestmentType,
   selectIsBankTransferModalOpened,
   selectIsICBMInvestment,
@@ -95,14 +94,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
 
   if (!contribs || !euroValue || !wallet) return;
 
-  const gasPrice = selectInvestmentGasCostEth(investmentFlow);
-
-  if (
-    investmentFlow.investmentType !== EInvestmentType.BankTransfer &&
-    compareBigNumbers(gasPrice, wallet.etherBalance) > 0
-  ) {
-    return EInvestmentErrorState.NotEnoughEtherForGas;
-  }
+  const gasPrice = selectTxGasCostEth(state.txSender);
 
   if (investmentFlow.investmentType === EInvestmentType.InvestmentWallet) {
     if (
@@ -168,9 +160,7 @@ function* start(action: TAction): any {
   yield put(actions.investmentFlow.resetInvestment());
   yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
   yield put(actions.kyc.kycLoadClientData());
-  yield put(actions.gas.gasApiEnsureLoading());
-  yield put(actions.txSender.startInvestment());
-  yield setGasPrice();
+  yield put(actions.txTransactions.startInvestment());
   yield getActiveInvestmentTypes();
 }
 
@@ -179,12 +169,6 @@ export function* onInvestmentTxModalHide(): any {
   if (!selectIsBankTransferModalOpened(state)) {
     yield put(actions.investmentFlow.resetInvestment());
   }
-}
-
-function* setGasPrice(): any {
-  const gas: IGasState = yield select((s: IAppState) => s.gas);
-  yield put(actions.investmentFlow.setGasPrice(gas.gasPrice && gas.gasPrice.standard));
-  yield put(actions.investmentFlow.validateInputs());
 }
 
 function* getActiveInvestmentTypes(): any {
@@ -276,7 +260,6 @@ export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_START", start);
   yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_SUMMARY", showBankTransferSummary);
   yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS", showBankTransferDetails);
-  yield takeEvery("GAS_API_LOADED", setGasPrice);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);
   yield takeEvery("INVESTMENT_FLOW_BANK_TRANSFER_CHANGE", bankTransferChange);
 }

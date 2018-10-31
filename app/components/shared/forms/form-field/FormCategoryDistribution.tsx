@@ -42,7 +42,6 @@ interface IExternalProps {
 
 class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps & TFormikConnect> {
   name = this.props.name;
-  validationSchema = this.props.validationSchema;
 
   setAllFieldsTouched = (event: any, isTouched?: boolean) => {
     if (event.target.value !== undefined) {
@@ -53,14 +52,16 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
   };
 
   compoundFieldValidation = (fieldName: string, neighborName: string) => {
-    const schema = this.validationSchema.fields[fieldName];
+    const schema = this.props.validationSchema && this.props.validationSchema.fields[fieldName];
     return (value: any) => {
       const neighborValue = get(this.props.formik.values, neighborName);
       if (neighborValue !== undefined && value === undefined) {
         return <FormattedMessage id="form.field.error.both-fields-required" />;
       } else {
         try {
-          schema.validateSync(value);
+          if (schema) {
+            schema.validateSync(value);
+          }
         } catch (e) {
           return e.errors;
         }
@@ -146,7 +147,9 @@ class ArrayOfKeyValueFieldsBase extends React.Component<
   }, {});
   private suggestions = [...this.props.suggestions];
   private setFieldValue = this.props.formik.setFieldValue;
-  private validationSchema = this.props.formik.validationSchema().fields[this.props.name]._subType;
+  private validationSchema =
+    this.props.formik.validationSchema &&
+    this.props.formik.validationSchema().fields[this.props.name]._subType;
 
   componentWillMount(): void {
     if (!get(this.props.formik.values, this.props.name)) {

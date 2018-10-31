@@ -28,6 +28,7 @@ export interface IFormInputExternalProps {
   charactersLimit?: number;
   size?: InputSize;
   customValidation?: (value: any) => string | Function | Promise<void> | undefined;
+  ignoreTouched?: boolean;
 }
 
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
@@ -69,6 +70,8 @@ export class FormInput extends React.Component<FormInputProps> {
       max,
       size,
       customValidation,
+      validate,
+      ignoreTouched,
       ...props
     } = this.props;
     return (
@@ -76,13 +79,14 @@ export class FormInput extends React.Component<FormInputProps> {
         {({ touched, errors, setFieldTouched, setFieldValue }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
-            invalid: isNonValid(touched, errors, name),
+            invalid: isNonValid(touched, errors, name, ignoreTouched),
           } as any;
 
           return (
             <Field
               name={name}
               validate={customValidation}
+              validate={validate}
               render={({ field }: FieldProps) => {
                 const val = transform(field.value, charactersLimit);
                 return (
@@ -135,7 +139,11 @@ export class FormInput extends React.Component<FormInputProps> {
                         </InputGroupAddon>
                       )}
                     </InputGroup>
-                    <FormError name={name} defaultMessage={errorMsg} />
+                    <FormError
+                      name={name}
+                      defaultMessage={errorMsg}
+                      ignoreTouched={ignoreTouched}
+                    />
                     {charactersLimit && <div>{countedCharacters(val, charactersLimit)}</div>}
 
                     {min &&

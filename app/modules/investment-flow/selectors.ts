@@ -15,6 +15,11 @@ export const selectErrorState = (state: IInvestmentFlowState) => state.errorStat
 
 export const selectInvestmentType = (state: IInvestmentFlowState) => state.investmentType;
 
+export const selectInvestmentEtoId = (state: IInvestmentFlowState) => state.etoId;
+
+export const selectInvestmentActiveTypes = (state: IInvestmentFlowState) =>
+  state.activeInvestmentTypes;
+
 // Derived Values
 
 export const selectIsICBMInvestment = (state: IInvestmentFlowState) =>

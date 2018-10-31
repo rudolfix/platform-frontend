@@ -2,7 +2,8 @@ $indicator-size: 16px;
 
 .checkbox {
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
+  vertical-align: bottom;
 
   :global(.form-group) & {
     align-items: start;

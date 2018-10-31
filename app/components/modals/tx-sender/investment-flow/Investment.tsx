@@ -60,7 +60,7 @@ interface IStateProps {
   euroValue: string;
   ethValue: string;
   etherPriceEur: string;
-  investmentType: EInvestmentType;
+  investmentType?: EInvestmentType;
   gasCostEth: string;
   errorState?: EInvestmentErrorState;
   equityTokenCount?: string;

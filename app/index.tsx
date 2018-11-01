@@ -62,11 +62,11 @@ function renderApp(
   Component: React.ComponentClass,
 ): void {
   const mountNode = document.getElementById("app");
-  //key={forceRerenderInDevMode()}
+
   ReactDOM.render(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
-        <ConnectedRouter  history={history}>
+        <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
           <IntlProviderAndInjector>
             <Component />
           </IntlProviderAndInjector>

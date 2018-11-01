@@ -46,8 +46,10 @@
 
 .input-field {
   &:disabled {
-    &::placeholder {
-      color: $color-black;
-    }
+    color: $color-silver;
+  }
+
+  &::placeholder {
+    color: $color-black;
   }
 }

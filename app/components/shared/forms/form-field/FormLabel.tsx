@@ -3,7 +3,7 @@ import { FormikConsumer } from "formik";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../../../types";
-import {isFieldRequired} from "./utils";
+import { isFieldRequired } from "./utils";
 
 import * as styles from "./FormLabel.module.scss";
 

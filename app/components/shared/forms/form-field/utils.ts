@@ -48,12 +48,12 @@ export const countedCharacters = (val: InputProps["value"] = "", limit: number) 
   return `${val.length}/${limit}`;
 };
 
-export const isFieldRequired = (validationSchema:any,name:string) => {
-  if (validationSchema){
+export const isFieldRequired = (validationSchema: any, name: string) => {
+  if (validationSchema) {
     const schema = isFunction(validationSchema) ? validationSchema() : validationSchema;
     const fieldSchema = getFieldSchema(name, schema);
     return isRequired(fieldSchema);
   } else {
-    return false
+    return false;
   }
-}
+};

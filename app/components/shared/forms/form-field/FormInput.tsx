@@ -6,8 +6,7 @@ import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { FormError } from "./FormError";
-import {computedValue, countedCharacters, isFieldRequired, isNonValid, isValid} from "./utils";
-import {getFieldSchema, isRequired} from "../../../../utils/yupUtils";
+import { computedValue, countedCharacters, isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -77,7 +76,7 @@ export class FormInput extends React.Component<FormInputProps> {
     } = this.props;
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldTouched, setFieldValue, validationSchema }) => {
+        {({ touched, errors, setFieldTouched, setFieldValue }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name, ignoreTouched),

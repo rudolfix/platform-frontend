@@ -3,8 +3,8 @@ import { map, mapValues } from "lodash";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
-import {isFieldRequired, isNonValid, isValid} from "./utils";
 import { FormLabel } from "./FormLabel";
+import { isFieldRequired, isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -82,7 +82,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
                   render={({ field }: FieldProps) => (
                     <Input
                       {...field}
-                      disabled={disabled && isFieldRequired(validationSchema,name)}
+                      disabled={disabled && isFieldRequired(validationSchema, name)}
                       onFocus={() => setFieldTouched(name, true)}
                       type="select"
                       value={field.value}

@@ -16,6 +16,11 @@ export const assertEtoDashboard = () => {
   cy.get(tid("eto-dashboard-application")).should("exist");
 };
 
+export const assertEtoDocuments = () => {
+  cy.url().should("contain", "/documents");
+  cy.get(tid("eto-documents")).should("exist");
+};
+
 export const assertDashboard = () => {
   cy.url().should("contain", "/dashboard");
   cy.get(tid("dashboard-application")).should("exist");
@@ -86,6 +91,10 @@ export const assertBackupSeedWidgetVisible = (shouldNotExist?: boolean) => {
 
 export const assertErrorModal = () => {
   cy.get(tid("components.modals.generic-modal.title")).should("exist");
+};
+
+export const assertButtonIsActive = (id: string) => {
+  return cy.get(tid(id)).should("be.not.disabled");
 };
 
 export const typeEmailPassword = (email: string, password: string) => {

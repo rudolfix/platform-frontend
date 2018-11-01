@@ -1,10 +1,11 @@
 import * as React from "react";
-import { branch, compose } from "recompose";
+import { branch, renderComponent } from "recompose";
+import { compose } from "redux";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
-import { selectEtoWithCompanyAndContractById } from "../../modules/public-etos/selectors";
+import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -20,35 +21,27 @@ interface IStateProps {
 }
 
 interface IRouterParams {
-  etoId: string;
+  previewCode: string;
 }
 
-interface IDispatchProps {
-  loadEto: () => void;
-}
+type TProps = {
+  eto: TEtoWithCompanyAndContract;
+};
 
-type IProps = IStateProps & IDispatchProps & IRouterParams;
+const EtoPublicViewLayout: React.SFC<TProps> = ({ eto }) => (
+  <EtoPublicComponent companyData={eto.company} etoData={eto} />
+);
 
-class EtoPreviewComponent extends React.Component<IProps> {
-  render(): React.ReactNode {
-    if (!this.props.eto) {
-      return <LoadingIndicator />;
-    }
-
-    return <EtoPublicComponent companyData={this.props.eto.company} etoData={this.props.eto} />;
-  }
-}
-
-export const EtoPublicView = compose<IProps, IRouterParams>(
-  appConnect<IStateProps, IDispatchProps, IRouterParams>({
+export const EtoPublicView = compose<React.SFC<IRouterParams>>(
+  appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state.auth),
-      eto: selectEtoWithCompanyAndContractById(state, props.etoId),
+      eto: selectEtoWithCompanyAndContract(state, props.previewCode),
     }),
   }),
   onEnterAction({
     actionCreator: (dispatch, props) => {
-      dispatch(actions.publicEtos.loadEto(props.etoId));
+      dispatch(actions.publicEtos.loadEtoPreview(props.previewCode));
     },
   }),
   branch<IStateProps>(
@@ -56,4 +49,5 @@ export const EtoPublicView = compose<IProps, IRouterParams>(
     withContainer(LayoutAuthorized),
     withContainer(LayoutBase),
   ),
-)(EtoPreviewComponent);
+  branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
+)(EtoPublicViewLayout);

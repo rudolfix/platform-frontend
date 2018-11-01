@@ -1,15 +1,17 @@
 import { findKey, forEach } from "lodash";
+
+import { Dictionary } from "../../types";
+import { acceptWallet } from "./index";
 import { formField, formFieldErrorMessage, tid } from "./selectors";
 
 type TFormFieldFixture =
   | {
       value: string;
-      type: "submit" | "tags" | "single-file" | "date" | "select" | "check" | "range";
+      type: "submit" | "tags" | "single-file" | "date" | "select" | "range" | "radio";
     }
   | {
-      value: string;
-      mustBeChecked: boolean;
-      type: "checkBox";
+      values: Dictionary<boolean>;
+      type: "checkbox";
     }
   | {
       type: "media";
@@ -21,6 +23,11 @@ type TFormFieldFixture =
     }
   | {
       type: "submit";
+    }
+  | {
+      type: "custom";
+      method: string;
+      value: any;
     }
   | string;
 
@@ -42,9 +49,13 @@ const isSubmitField = (field: TFormFieldFixture) =>
 /**
  * Fill out a form
  * @param fixture - Which form fixture to load
- * @param submit - wether to submit the form or not, default true
+ * @param submit - whether to submit the form or not, default true
+ * @param methods - custom methods to fill input
  */
-export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: boolean } = {}) => {
+export const fillForm = (
+  fixture: TFormFixture,
+  { submit = true, methods = {} }: { submit?: boolean; methods?: any } = {},
+) => {
   forEach(fixture, (field, key) => {
     // the default is just typing a string into the input
     if (typeof field === "string") {
@@ -69,20 +80,21 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
         .invoke("val", field.value)
         .trigger("change");
     }
-    // click on a field
-    else if (field.type === "check") {
-      cy.get(formField(key))
-        .first()
-        .check({ force: true });
+    // check or uncheck a radio
+    else if (field.type === "radio") {
+      cy.get(formField(key)).check(field.value, { force: true });
     }
     //check or uncheck a checkbox
-    else if (field.type === "checkBox") {
+    else if (field.type === "checkbox") {
       const element = cy.get(formField(key));
-      if (field.mustBeChecked === true) {
-        element.check(field.value, { force: true });
-      } else {
-        element.uncheck(field.value, { force: true });
-      }
+
+      forEach(field.values, (checked, value) => {
+        if (checked) {
+          element.check(value, { force: true });
+        } else {
+          element.uncheck(value, { force: true });
+        }
+      });
     }
     // tags
     else if (field.type === "tags") {
@@ -111,6 +123,14 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
           fillField(`social-profiles.profile-input.${key}`, value, socialProfilesTid);
         });
       });
+    } else if (field.type === "custom") {
+      const method = methods[field.method];
+
+      if (!method) {
+        throw new Error(`Cannot find custom method ${method}`);
+      }
+
+      method(key, field.value);
     }
   });
 
@@ -118,7 +138,7 @@ export const fillForm = (fixture: TFormFixture, { submit = true }: { submit?: bo
     const submitField = findKey(fixture, isSubmitField);
 
     if (!submitField) {
-      throw new Error("Please provide 'submit' fixture");
+      throw new Error("Please provide ' submit' fixture");
     }
 
     cy.get(tid(submitField)).awaitedClick();
@@ -139,26 +159,29 @@ export const getFieldError = (formTid: string, key: string): Cypress.Chainable<s
 };
 
 /**
+ * Upload ipfs document to a dropzone field
+ * @param targetTid - test id of the dropzone field
+ * @param fixture - which fixture to load
+ */
+export const uploadDocumentToFieldWithTid = (targetTid: string, fixture: string) => {
+  cy.get(tid(targetTid, tid("eto-add-document-drop-zone"))).dropFile(fixture);
+
+  cy.get(tid("documents-ipfs-modal-continue")).click();
+  acceptWallet();
+
+  cy.get(tid(targetTid, tid("documents-download-document"))).should("exist");
+};
+
+/**
  * Upload single file to a dropzone field
  * @param targetTid - test id of the dropzone field
  * @param fixture - which fixture to load
  */
 export const uploadSingleFileToFieldWithTid = (targetTid: string, fixture: string) => {
-  cy.fixture(fixture)
-    .then(picture => Cypress.Blob.base64StringToBlob(picture, "image/png"))
-    .then(blob => {
-      const dropEvent = {
-        dataTransfer: {
-          files: [blob],
-        },
-      };
-
-      const target = cy.get(tid(targetTid));
-
-      target.trigger("drop", dropEvent);
-
-      target.within(() => cy.get(tid("single-file-upload-delete-file")).should("exist"));
-    });
+  cy.get(tid(targetTid)).within(() => {
+    cy.root().dropFile(fixture);
+    cy.get(tid("single-file-upload-delete-file")).should("exist");
+  });
 };
 
 /**
@@ -168,25 +191,10 @@ export const uploadSingleFileToFieldWithTid = (targetTid: string, fixture: strin
  */
 export const uploadMultipleFilesToFieldWithTid = (targetTid: string, fixtures: string[]) => {
   fixtures.forEach(fixture =>
-    cy
-      .fixture(fixture)
-      .then(file => Cypress.Blob.base64StringToBlob(file))
-      .then(blob => {
-        const nameSegments = fixture.split("/");
-        const name = nameSegments[nameSegments.length - 1];
-        const testFile = new File([blob], name, { type: "image/png" });
+    cy.get(tid(targetTid)).within(() => {
+      cy.get(tid("multi-file-upload-dropzone")).dropFile(fixture);
 
-        const dropEvent = {
-          dataTransfer: {
-            files: [testFile],
-          },
-        };
-
-        cy.get(tid(targetTid)).within(() => {
-          cy.get(tid("multi-file-upload-dropzone")).trigger("drop", dropEvent);
-
-          cy.get(tid(`multi-file-upload-file-${fixture}`)).should("exist");
-        });
-      }),
+      cy.get(tid(`multi-file-upload-file-${fixture}`)).should("exist");
+    }),
   );
 };

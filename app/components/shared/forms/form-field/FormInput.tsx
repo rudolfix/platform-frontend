@@ -28,9 +28,25 @@ export interface IFormInputExternalProps {
   maxLength?: string;
   charactersLimit?: number;
   size?: InputSize;
+  customValidation?: (value: any) => string | Function | Promise<void> | undefined;
+  ignoreTouched?: boolean;
 }
 
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
+
+const transform = (value: string, charactersLimit?: number) => {
+  return value === undefined ? "" : computedValue(value, charactersLimit);
+};
+
+const transformBack = (value: number | string) => {
+  if (typeof value === "number") {
+    return value;
+  } else if (typeof value === "string") {
+    return value.trim().length > 0 ? value : undefined;
+  } else {
+    return undefined;
+  }
+};
 
 /**
  * Formik connected form input without FormGroup and FormLabel.
@@ -55,20 +71,23 @@ export class FormInput extends React.Component<FormInputProps> {
       max,
       size,
       disabled,
+      customValidation,
+      ignoreTouched,
       ...props
     } = this.props;
     return (
       <FormikConsumer>
-        {({ touched, errors,validationSchema }) => {
+        {({ touched, errors, setFieldTouched, setFieldValue, validationSchema }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
-            invalid: isNonValid(touched, errors, name),
+            invalid: isNonValid(touched, errors, name, ignoreTouched),
           } as any;
           return (
             <Field
               name={name}
+              validate={customValidation}
               render={({ field }: FieldProps) => {
-                const val = computedValue(field.value, charactersLimit);
+                const val = transform(field.value, charactersLimit);
                 return (
                   <>
                     <InputGroup size={size}>
@@ -91,11 +110,20 @@ export class FormInput extends React.Component<FormInputProps> {
                           isValid(touched, errors, name) && "is-invalid",
                         )}
                         {...field}
+                        onChange={e => {
+                          setFieldTouched(name);
+                          setFieldValue(
+                            name,
+                            transformBack(
+                              type === "number" ? e.target.valueAsNumber : e.target.value,
+                            ),
+                          );
+                        }}
                         type={type}
                         value={val}
                         valid={isValid(touched, errors, name)}
                         placeholder={placeholder}
-                        disabled={disabled && isFieldRequired(validationSchema,name)}
+                        disabled={disabled}
                         {...inputExtraProps}
                         {...props}
                       />
@@ -111,7 +139,11 @@ export class FormInput extends React.Component<FormInputProps> {
                         </InputGroupAddon>
                       )}
                     </InputGroup>
-                    <FormError name={name} defaultMessage={errorMsg} />
+                    <FormError
+                      name={name}
+                      defaultMessage={errorMsg}
+                      ignoreTouched={ignoreTouched}
+                    />
                     {charactersLimit && <div>{countedCharacters(val, charactersLimit)}</div>}
 
                     {min &&

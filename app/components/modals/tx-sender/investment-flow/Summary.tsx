@@ -9,6 +9,7 @@ import { actions } from "../../../../modules/actions";
 import {
   selectEthValueUlps,
   selectEurValueUlps,
+  selectIsICBMInvestment,
 } from "../../../../modules/investment-flow/selectors";
 import {
   selectEquityTokenCountByEtoId,
@@ -17,6 +18,7 @@ import {
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { ETxSenderType } from "../../../../modules/tx/interfaces";
+import { selectTxGasCostEth } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
 import {
   addBigNumbers,
@@ -26,15 +28,17 @@ import {
 import { formatMoney } from "../../../../utils/Money.utils";
 import { formatThousands } from "../../../../utils/Number.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
+import { CustomTooltip } from "../../../shared/CustomTooltip";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps } from "../TxSender";
+import { formatEth, formatEur } from "./utils";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
+import * as info from "../../../../assets/img/notifications/info.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
-import { selectTxGasCostEth } from "../../../../modules/tx/sender/selectors";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
@@ -46,6 +50,7 @@ interface IStateProps {
   equityTokens: string;
   estimatedReward: string;
   etherPriceEur: string;
+  isIcbm?: boolean;
 }
 
 type IDispatchProps = ITxSummaryDispatchProps & {
@@ -54,22 +59,29 @@ type IDispatchProps = ITxSummaryDispatchProps & {
 
 type IProps = IStateProps & IDispatchProps;
 
-function formatEur(val?: string): string | undefined {
-  return val && formatMoney(val, MONEY_DECIMALS, 0);
-}
+const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
+  const neuMsg = <FormattedMessage id="investment-flow.summary.estimated-reward" />;
+  const icbmMsg = (
+    <>
+      {neuMsg}
+      <img className={styles.infoIcon} id="tooltip-target-neu" src={info} />
+      <CustomTooltip target="tooltip-target-neu">
+        <FormattedMessage id="investment-flow.message.no-icbm-neu-reward" />
+      </CustomTooltip>
+    </>
+  );
+  return isIcbm ? icbmMsg : neuMsg;
+};
 
-function formatEth(val?: string): string | undefined {
-  return val && formatMoney(val, MONEY_DECIMALS, 4);
-}
-
-const InvestmentSummaryComponent = ({
+const InvestmentSummaryComponent: React.SFC<IProps> = ({
   onAccept,
   onChange,
   downloadAgreement,
   gasCostEth,
   etherPriceEur,
+  isIcbm,
   ...data
-}: IProps) => {
+}) => {
   const equityTokens = (
     <span>
       {/* TODO: Change to actual custom token icon */}
@@ -125,10 +137,7 @@ const InvestmentSummaryComponent = ({
             caption={<FormattedMessage id="investment-flow.summary.equity-tokens" />}
             value={equityTokens}
           />
-          <InfoRow
-            caption={<FormattedMessage id="investment-flow.summary.estimated-reward" />}
-            value={estimatedReward}
-          />
+          <InfoRow caption={<NeuRewardCaption isIcbm={isIcbm} />} value={estimatedReward} />
           <InfoRow
             caption={<FormattedMessage id="investment-flow.summary.transaction-value" />}
             value={total}
@@ -183,6 +192,7 @@ const InvestmentSummary = compose<IProps, {}>(
         equityTokens: selectEquityTokenCountByEtoId(i.etoId, state) as string,
         estimatedReward: selectNeuRewardUlpsByEtoId(i.etoId, state) as string,
         etherPriceEur: selectEtherPriceEur(state.tokenPrice),
+        isIcbm: selectIsICBMInvestment(i),
       };
     },
     dispatchToProps: d => ({

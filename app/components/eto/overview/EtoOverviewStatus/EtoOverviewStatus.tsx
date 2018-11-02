@@ -21,11 +21,12 @@ import { ButtonLink } from "../../../shared/buttons";
 import { ETOState } from "../../../shared/ETOState";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
-import { LoggedInCampaigning, LoggedOutCampaigning } from "./CampaigningWidget";
+import { CampaigningActivatedWidget } from "./CampaigningWidget";
 import { ClaimWidget, RefundWidget } from "./ClaimRefundWidget";
 import { IWithIsEligibleToPreEto, withIsEligibleToPreEto } from "./withIsEligibleToPreEto";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
+import { RegisterNowWidget } from "./RegisterNowWidget";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
@@ -74,35 +75,23 @@ const EtoStatusManager = ({
   switch (timedState) {
     case EETOStateOnChain.Setup: {
       if (isAuthorized) {
-        const isWaitingForWhitelistToStart =
-          eto.contract && eto.contract.startOfStates[EETOStateOnChain.Whitelist]! > new Date();
+        const nextState = isEligibleToPreEto ? EETOStateOnChain.Whitelist : EETOStateOnChain.Public;
+        const nextStateStartDate = eto.contract ? eto.contract.startOfStates[nextState] : undefined;
 
-        if (eto.isBookbuilding) {
-          return (
-            <LoggedInCampaigning
-              maxPledge={eto.maxTicketEur || 0}
-              minPledge={eto.minTicketEur || 0}
-              etoId={eto.etoId}
-              investorsLimit={eto.maxPledges || 0}
-            />
-          );
-        } else if (isWaitingForWhitelistToStart) {
-          const nextState = isEligibleToPreEto
-            ? EETOStateOnChain.Whitelist
-            : EETOStateOnChain.Public;
-
-          return (
-            <CounterWidget endDate={eto.contract!.startOfStates[nextState]!} state={nextState} />
-          );
-        } else {
-          return (
-            <div data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
-              {eto.company.keyQuoteFounder}
-            </div>
-          );
-        }
+        return (
+          <CampaigningActivatedWidget
+            maxPledge={eto.maxTicketEur}
+            minPledge={eto.minTicketEur}
+            etoId={eto.etoId}
+            investorsLimit={eto.maxPledges}
+            nextState={nextState}
+            nextStateStartDate={nextStateStartDate}
+            isActive={eto.isBookbuilding}
+            keyQuoteFounder={eto.company.keyQuoteFounder}
+          />
+        );
       } else {
-        return <LoggedOutCampaigning />;
+        return <RegisterNowWidget />;
       }
     }
     case EETOStateOnChain.Whitelist: {

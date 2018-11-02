@@ -1,8 +1,5 @@
 import * as React from "react";
-import { compose } from "redux";
 
-import { selectIsVerifiedInvestor } from "../../../../../modules/auth/selectors";
-import { appConnect } from "../../../../../store";
 import { CampaigningActivatedInvestorApprovedWidget } from "./CampaigningActivatedInvestorApprovedWidget";
 import { CampaigningActivatedUnapprovedInvestorWidget } from "./CampaigningActivatedUnapprovedInvestorWidget";
 
@@ -13,15 +10,10 @@ export interface IExternalProps {
   minPledge: number;
   maxPledge?: number;
   pledge?: IPledge;
-}
-
-interface IStateProps {
   isVerifiedInvestor: boolean;
 }
 
-type IProps = IExternalProps & IStateProps;
-
-const CampaigningActivatedInvestorWidgetLayout: React.SFC<IProps> = ({
+const CampaigningActivatedInvestorWidget: React.SFC<IExternalProps> = ({
   isVerifiedInvestor,
   etoId,
   minPledge,
@@ -38,15 +30,5 @@ const CampaigningActivatedInvestorWidgetLayout: React.SFC<IProps> = ({
   ) : (
     <CampaigningActivatedUnapprovedInvestorWidget minPledge={minPledge} maxPledge={maxPledge} />
   );
-
-const CampaigningActivatedInvestorWidget = compose<React.SFC<IExternalProps>>(
-  appConnect<IStateProps, {}, IExternalProps>({
-    stateToProps: state => {
-      return {
-        isVerifiedInvestor: selectIsVerifiedInvestor(state),
-      };
-    },
-  }),
-)(CampaigningActivatedInvestorWidgetLayout);
 
 export { CampaigningActivatedInvestorWidget };

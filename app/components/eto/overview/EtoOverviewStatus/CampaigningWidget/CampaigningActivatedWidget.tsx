@@ -5,7 +5,7 @@ import { compose } from "redux";
 
 import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { actions } from "../../../../../modules/actions";
-import { selectIsInvestor } from "../../../../../modules/auth/selectors";
+import { selectIsInvestor, selectIsVerifiedInvestor } from "../../../../../modules/auth/selectors";
 import {
   selectBookbuildingStats,
   selectMyPledge,
@@ -36,6 +36,7 @@ interface IStateProps {
   investorsCount: number;
   isInvestor: boolean;
   pledge?: IPledge;
+  isVerifiedInvestor: boolean;
 }
 
 interface IWithProps {
@@ -60,6 +61,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
   isActive,
   keyQuoteFounder,
   pledge,
+  isVerifiedInvestor,
 }) => {
   if (isActive && !isInvestorsLimitReached) {
     return (
@@ -91,6 +93,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
             minPledge={minPledge}
             maxPledge={maxPledge}
             pledge={pledge}
+            isVerifiedInvestor={isVerifiedInvestor}
           />
         )}
       </div>
@@ -141,6 +144,7 @@ const CampaigningActivatedWidget = compose<React.SFC<IExternalProps>>(
 
       return {
         isInvestor: selectIsInvestor(state),
+        isVerifiedInvestor: selectIsVerifiedInvestor(state),
         pledgedAmount: stats ? stats.pledgedAmount : null,
         investorsCount: stats ? stats.investorsCount : 0,
         pledge: selectMyPledge(props.etoId, state),
@@ -151,7 +155,7 @@ const CampaigningActivatedWidget = compose<React.SFC<IExternalProps>>(
     actionCreator: (dispatch, props) => {
       dispatch(actions.bookBuilding.loadBookBuildingStats(props.etoId));
 
-      if (props.isInvestor) {
+      if (props.isInvestor && props.isVerifiedInvestor) {
         dispatch(actions.bookBuilding.loadPledge(props.etoId));
       }
     },

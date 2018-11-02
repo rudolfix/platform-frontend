@@ -39,7 +39,7 @@ export const EtoRegisterRouter: React.SFC = () => (
     />
     <Route path={etoRegisterRoutes.etoTerms} component={EtoRegistrationTerms} exact />
     <Route path={etoRegisterRoutes.etoEquityTokenInfo} component={EtoEquityTokenInfo} exact />
-    <Route path={etoRegisterRoutes.etoVotingRight} component={EtoVotingRights} exact />
+    <Route path={etoRegisterRoutes.etoVotingRights} component={EtoVotingRights} exact />
     <Route path={etoRegisterRoutes.etoInvestmentTerms} component={EtoInvestmentTerms} exact />
     <Route path={etoRegisterRoutes.etoMedia} component={EtoRegistrationMedia} exact />
     <Redirect to={etoRegisterRoutes.companyInformation} />

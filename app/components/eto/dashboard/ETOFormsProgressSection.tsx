@@ -19,7 +19,7 @@ import {
   calculateEtoMediaProgress,
   calculateEtoRiskAssessmentProgress,
   calculateEtoTermsProgress,
-  calculateEtoVotingRightProgress,
+  calculateEtoVotingRightsProgress,
   calculateInvestmentTermsProgress,
   calculateLegalInformationProgress,
   calculateProductVisionProgress,
@@ -44,7 +44,7 @@ export interface IStateProps {
   etoMediaProgress: number;
   etoRiskAssessmentProgress: number;
   etoEquityTokenInfoProgress: number;
-  etoVotingRightProgress: number;
+  etoVotingRightsProgress: number;
   etoInvestmentTermsProgress: number;
 }
 
@@ -60,7 +60,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
   etoMediaProgress,
   etoRiskAssessmentProgress,
   etoEquityTokenInfoProgress,
-  etoVotingRightProgress,
+  etoVotingRightsProgress,
   etoInvestmentTermsProgress,
 }) => {
   const sections = [
@@ -121,7 +121,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
     },
     {
       id: EEtoFormTypes.EtoVotingRights,
-      progress: etoVotingRightProgress,
+      progress: etoVotingRightsProgress,
       name: <FormattedMessage id="eto.form-progress-widget.voting-right" />,
       testingId: "eto-progress-widget-voting-right",
     },
@@ -156,7 +156,7 @@ export const ETOFormsProgressSection = appConnect<IStateProps, {}>({
     legalInformationProgress: calculateLegalInformationProgress(selectIssuerCompany(state)),
     productVisionProgress: calculateProductVisionProgress(selectIssuerCompany(state)),
     etoMediaProgress: calculateEtoMediaProgress(selectIssuerCompany(state)),
-    etoVotingRightProgress: calculateEtoVotingRightProgress(selectIssuerEto(state)),
+    etoVotingRightsProgress: calculateEtoVotingRightsProgress(selectIssuerEto(state)),
     etoEquityTokenInfoProgress: calculateEtoEquityTokenInfoProgress(selectIssuerEto(state)),
     etoRiskAssessmentProgress: calculateEtoRiskAssessmentProgress(selectIssuerCompany(state)),
     etoInvestmentTermsProgress: calculateInvestmentTermsProgress(selectIssuerEto(state)),

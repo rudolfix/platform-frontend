@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import { map, mapValues } from "lodash";
 import * as React from "react";
@@ -76,7 +77,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
           return (
             <FormGroup>
               {label && <FormLabel name={name}>{label}</FormLabel>}
-              <div className={styles.customSelect}>
+              <div className={cn(styles.customSelect, disabled && styles.disabled)}>
                 <Field
                   name={name}
                   render={({ field }: FieldProps) => (

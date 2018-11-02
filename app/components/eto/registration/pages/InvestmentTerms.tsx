@@ -9,8 +9,8 @@ import {
   EtoInvestmentTermsType,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
+import { etoFromIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import {
-  etoFromIsReadonly,
   getInvestmentAmount,
   getSharePrice,
 } from "../../../../lib/api/eto/EtoUtils";

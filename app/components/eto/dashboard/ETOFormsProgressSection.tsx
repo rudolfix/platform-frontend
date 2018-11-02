@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 
 import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
-import { etoFromIsReadonly } from "../../../lib/api/eto/EtoUtils";
+import { etoFromIsReadonly } from "../../../lib/api/eto/EtoApiUtils";
 import {
   selectIsGeneralEtoLoading,
   selectIssuerCompany,

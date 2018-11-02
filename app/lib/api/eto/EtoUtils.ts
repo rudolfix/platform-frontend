@@ -1,6 +1,4 @@
-import { EEtoFormTypes } from "../../../modules/eto-flow/types";
 import { FirstParameterType, OmitKeys } from "../../../types";
-import { EtoState } from "./EtoApi.interfaces";
 
 type TInvestmentAmountOwnArguments = {
   newSharesToIssue: number | undefined;
@@ -75,14 +73,4 @@ const getMaxInvestmentAmountWithDiscount = ({
   }
 
   return amount;
-};
-
-export const etoFromIsReadonly = (formName: EEtoFormTypes, etoState?: EtoState) => {
-  const readOnlyForms = [
-    EEtoFormTypes.EtoEquityTokenInfo,
-    EEtoFormTypes.EtoTerms,
-    EEtoFormTypes.EtoVotingRights,
-    EEtoFormTypes.EtoInvestmentTerms,
-  ];
-  return etoState !== EtoState.PREVIEW && readOnlyForms.includes(formName);
 };

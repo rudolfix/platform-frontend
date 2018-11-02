@@ -6,7 +6,7 @@ import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import { EtoTermsType, TPartialEtoSpecData } from "../../../../lib/api/eto/EtoApi.interfaces";
-import { etoFromIsReadonly } from "../../../../lib/api/eto/EtoUtils";
+import { etoFromIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import { actions } from "../../../../modules/actions";
 import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";

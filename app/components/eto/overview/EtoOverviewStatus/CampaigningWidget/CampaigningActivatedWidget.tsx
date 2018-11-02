@@ -10,7 +10,7 @@ import {
   selectBookbuildingStats,
   selectMyPledge,
 } from "../../../../../modules/bookbuilding-flow/selectors";
-import { ETOStateOnChain } from "../../../../../modules/public-etos/types";
+import { EETOStateOnChain } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
 import { onEnterAction } from "../../../../../utils/OnEnterAction";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money";
@@ -25,7 +25,7 @@ export interface IExternalProps {
   investorsLimit: number;
   minPledge: number;
   maxPledge?: number;
-  nextState: ETOStateOnChain;
+  nextState: EETOStateOnChain;
   nextStateStartDate?: Date;
   isActive: boolean;
   keyQuoteFounder: string;

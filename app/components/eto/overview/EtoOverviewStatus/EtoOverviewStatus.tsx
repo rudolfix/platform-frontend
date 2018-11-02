@@ -9,7 +9,10 @@ import { CounterWidget, InvestWidget, TagsWidget, TokenSymbolWidget } from ".";
 import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
 import { selectIsActionRequiredSettings } from "../../../../modules/notifications/selectors";
-import { ETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../modules/public-etos/types";
+import {
+  EETOStateOnChain,
+  TEtoWithCompanyAndContract,
+} from "../../../../modules/public-etos/types";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
@@ -67,12 +70,12 @@ const EtoStatusManager = ({
   settingsUpdateRequired,
 }: IExternalProps & IStateProps & IWithIsEligibleToPreEto) => {
   // It's possible for contract to be undefined if eto is not on chain yet
-  const timedState = eto.contract ? eto.contract.timedState : ETOStateOnChain.Setup;
+  const timedState = eto.contract ? eto.contract.timedState : EETOStateOnChain.Setup;
 
   switch (timedState) {
-    case ETOStateOnChain.Setup: {
+    case EETOStateOnChain.Setup: {
       if (isAuthorized) {
-        const nextState = isEligibleToPreEto ? ETOStateOnChain.Whitelist : ETOStateOnChain.Public;
+        const nextState = isEligibleToPreEto ? EETOStateOnChain.Whitelist : EETOStateOnChain.Public;
         const nextStateStartDate = eto.contract ? eto.contract.startOfStates[nextState] : undefined;
 
         return (
@@ -91,7 +94,7 @@ const EtoStatusManager = ({
         return <RegisterNowWidget />;
       }
     }
-    case ETOStateOnChain.Whitelist: {
+    case EETOStateOnChain.Whitelist: {
       if (isEligibleToPreEto) {
         return (
           <InvestWidget
@@ -104,14 +107,14 @@ const EtoStatusManager = ({
       } else {
         return (
           <CounterWidget
-            endDate={eto.contract!.startOfStates[ETOStateOnChain.Public]!}
-            state={ETOStateOnChain.Public}
+            endDate={eto.contract!.startOfStates[EETOStateOnChain.Public]!}
+            state={EETOStateOnChain.Public}
           />
         );
       }
     }
 
-    case ETOStateOnChain.Public: {
+    case EETOStateOnChain.Public: {
       if (settingsUpdateRequired) {
         return (
           <ButtonLink to={appRoutes.settings}>
@@ -130,9 +133,9 @@ const EtoStatusManager = ({
       }
     }
 
-    case ETOStateOnChain.Claim:
-    case ETOStateOnChain.Signing:
-    case ETOStateOnChain.Payout: {
+    case EETOStateOnChain.Claim:
+    case EETOStateOnChain.Signing:
+    case EETOStateOnChain.Payout: {
       return (
         <ClaimWidget
           etoId={eto.etoId}
@@ -144,7 +147,7 @@ const EtoStatusManager = ({
       );
     }
 
-    case ETOStateOnChain.Refund: {
+    case EETOStateOnChain.Refund: {
       return <RefundWidget etoId={eto.etoId} timedState={timedState} />;
     }
 

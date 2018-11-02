@@ -1,6 +1,5 @@
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { INVESTMENT_GAS_AMOUNT } from "./../tx/transactions/investment/sagas";
 
 export enum EInvestmentType {
   InvestmentWallet = "INVESTMENT_WALLET",
@@ -30,12 +29,12 @@ export interface IInvestmentFlowState {
   etoId: string;
   euroValueUlps: string;
   ethValueUlps: string;
-  investmentType: EInvestmentType;
+  investmentType?: EInvestmentType;
+  activeInvestmentTypes: EInvestmentType[];
   errorState?: EInvestmentErrorState;
   isValidatedInput: boolean;
   bankTransferFlowState?: EBankTransferFlowState;
   bankTransferGasStipend?: boolean;
-  gasAmount: string;
 }
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
@@ -43,8 +42,8 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   euroValueUlps: "",
   ethValueUlps: "",
   investmentType: EInvestmentType.InvestmentWallet,
+  activeInvestmentTypes: [],
   isValidatedInput: false,
-  gasAmount: INVESTMENT_GAS_AMOUNT,
 };
 
 export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
@@ -60,6 +59,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...investmentFlowInitialState,
         etoId: state.etoId,
+        activeInvestmentTypes: state.activeInvestmentTypes,
         investmentType: action.payload.type,
       };
     case "INVESTMENT_FLOW_SET_ETO_ID":
@@ -96,6 +96,11 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...state,
         bankTransferGasStipend: !state.bankTransferGasStipend,
+      };
+    case "INVESTMENT_FLOW_SET_ACTIVE_INVESTMENT_TYPES":
+      return {
+        ...state,
+        ...action.payload,
       };
     case "INVESTMENT_FLOW_BANK_TRANSFER_CHANGE":
       return {

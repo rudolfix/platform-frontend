@@ -9,7 +9,7 @@ import {
   EtoInvestmentTermsType,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
-import { etoFromIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
+import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import { getInvestmentAmount, getSharePrice } from "../../../../lib/api/eto/EtoUtils";
 import { actions } from "../../../../modules/actions";
 import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
@@ -282,7 +282,7 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
       stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
-      readonly: etoFromIsReadonly(EEtoFormTypes.EtoInvestmentTerms, selectIssuerEtoState(s)),
+      readonly: etoFormIsReadonly(EEtoFormTypes.EtoInvestmentTerms, selectIssuerEtoState(s)),
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

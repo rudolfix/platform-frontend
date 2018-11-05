@@ -10,7 +10,7 @@ import {
   TEtoVotingRightsType,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
-import { etoFromIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
+import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import { actions } from "../../../../modules/actions";
 import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
@@ -111,7 +111,7 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
       stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
-      readonly: etoFromIsReadonly(EEtoFormTypes.EtoVotingRights, selectIssuerEtoState(s)),
+      readonly: etoFormIsReadonly(EEtoFormTypes.EtoVotingRights, selectIssuerEtoState(s)),
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

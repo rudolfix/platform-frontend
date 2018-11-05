@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 
 import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
-import { etoFromIsReadonly } from "../../../lib/api/eto/EtoApiUtils";
+import { etoFormIsReadonly } from "../../../lib/api/eto/EtoApiUtils";
 import {
   selectIsGeneralEtoLoading,
   selectIssuerCompany,
@@ -137,7 +137,7 @@ const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
             progress={shouldEtoDataLoad ? section.progress : 0}
             disabled={!shouldEtoDataLoad}
             name={section.name}
-            readonly={etoFromIsReadonly(section.id, etoStatus)}
+            readonly={etoFormIsReadonly(section.id, etoStatus)}
           />
         </Col>
       ))}

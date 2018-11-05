@@ -1,4 +1,10 @@
 .widget {
+  @include media-breakpoint-only(md) {
+    flex-direction: row;
+    justify-content: space-around;
+    flex-grow: 1;
+  }
+
   display: flex;
   flex-direction: column;
   justify-content: center;

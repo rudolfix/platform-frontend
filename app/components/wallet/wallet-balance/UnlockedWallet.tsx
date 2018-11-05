@@ -45,7 +45,7 @@ export const UnlockedWallet: React.SFC<IUnlockedWallet> = ({
           currencyTotal="eur"
           largeNumber={data.neuroAmount}
           value={data.neuroEuroAmount}
-          onWithdrawClick={withdrawEth}
+          //TODO: add nEuro withdraw
           // TODO: add on depositClick when euro token flow exists
         />
 

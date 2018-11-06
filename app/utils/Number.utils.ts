@@ -26,3 +26,13 @@ export function convertToBigInt(value: TBigNumberVariant, currencyDecimals?: num
   const moneyInWei = q.mul(value);
   return moneyInWei.toFixed(0, BigNumber.ROUND_UP);
 }
+
+type TNormalizeOptions = { min: number; max: number; minAllowed: number; maxAllowed: number };
+
+export function normalize(options: TNormalizeOptions, value: number): number {
+  return (
+    ((options.maxAllowed - options.minAllowed) * (value - options.min)) /
+      (options.max - options.min) +
+    options.minAllowed
+  );
+}

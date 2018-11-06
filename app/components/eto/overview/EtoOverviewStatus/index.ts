@@ -1,5 +1,5 @@
 export * from "./EtoOverviewStatus";
 export * from "./CounterWidget";
-export * from "./InvestWidget";
+export * from "./InvestmentWidget/InvestmentWidget";
 export * from "./TokenSymbolWidget";
 export * from "./TagsWidget";

@@ -2,7 +2,6 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../types";
-import { invariant } from "../../utils/invariant";
 
 import * as styles from "./PercentageIndicatorBar.module.scss";
 
@@ -15,75 +14,113 @@ interface ICommonProps {
   theme?: TTheme;
 }
 
-type TProps =
-  | {
-      percent: number;
-      fraction?: number;
-    }
-  | {
-      percent?: number;
-      fraction: number;
-      layout?: TLayout;
-    };
+type TProps = {
+  percent?: number;
+  progress?: TProgressBarProps[];
+  renderProgressBar?: () => React.ReactNode;
+  svgGroupStyle?: React.SVGProps<SVGGElement>;
+  svgHeight?: number;
+};
 
 type IProps = ICommonProps & TProps;
 
 const DEFAULT_CURVE = 20;
 const NARROW_CURVE = 5;
 
-export function selectPercentage(props: IProps): number {
-  if (props.percent !== undefined) {
-    return props.percent;
-  }
+type TProgressBarExternalProps = {
+  theme?: TTheme;
+  progress?: number;
+  withoutRadius?: boolean;
+};
 
-  if (props.fraction !== undefined) {
-    return props.fraction * 100;
-  }
+type TProgressBarProps = TProgressBarExternalProps & CommonHtmlProps;
 
-  invariant(false, "You need to provide percent or fraction to PercentageIndicatorBar component");
+const PercentageIndicatorContext = React.createContext({
+  computedHeight: 0,
+  computedCurve: 0,
+});
 
-  return 1;
-}
+const BackgroundBar: React.SFC<CommonHtmlProps> = ({ className, style }) => (
+  <PercentageIndicatorContext.Consumer>
+    {({ computedHeight, computedCurve }) => (
+      <rect
+        className={cn(styles.background, className)}
+        height={computedHeight}
+        rx={computedCurve}
+        ry={computedCurve}
+        style={style}
+      />
+    )}
+  </PercentageIndicatorContext.Consumer>
+);
+
+const ProgressBar: React.SFC<TProgressBarProps> = ({
+  theme,
+  style,
+  withoutRadius = false,
+  progress = 100,
+}) => (
+  <PercentageIndicatorContext.Consumer>
+    {({ computedHeight, computedCurve }) => (
+      <rect
+        className={cn(styles.progress, { [styles.progressGreen]: theme === "green" })}
+        width={`${progress}%`}
+        height={computedHeight}
+        rx={withoutRadius ? 0 : computedCurve}
+        ry={withoutRadius ? 0 : computedCurve}
+        style={style}
+      />
+    )}
+  </PercentageIndicatorContext.Consumer>
+);
 
 /**
  * Takes either percentage value or fraction. Makes sure that % is rounded to the nearest integer.
  */
-export const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = props => {
-  const { percent: _percent, fraction: _fraction, ...htmlProps } = props;
-  const percent = Math.round(selectPercentage(props));
-
-  const isNarrow = props.layout === "narrow";
+const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = ({
+  percent,
+  progress,
+  theme,
+  layout,
+  children,
+  svgGroupStyle,
+  svgHeight,
+  ...htmlProps
+}) => {
+  const isNarrow = layout === "narrow";
   const computedCurve = isNarrow ? NARROW_CURVE : DEFAULT_CURVE;
   const computedHeight = isNarrow ? 10 : 38;
 
   return (
-    <div
-      {...htmlProps}
-      className={cn(styles.percentageIndicatorBar, htmlProps.className, props.theme)}
-    >
-      {!isNarrow && (
-        <span className={styles.label} data-test-id="percentage-indicator-bar-value">
-          {percent}%
-        </span>
-      )}
-      <svg width="100%" height={computedHeight}>
-        <defs>
-          <clipPath id="percent-indicator-bar">
-            <rect width="100%" height={computedHeight} rx={computedCurve} ry={computedCurve} />
-          </clipPath>
-        </defs>
-        <g clipPath="url(#percent-indicator-bar)">
-          <rect className={styles.background} height="100%" rx={computedCurve} ry={computedCurve} />
-          <rect
-            className={styles.progress}
-            width="100%"
-            height="100%"
-            rx={computedCurve}
-            ry={computedCurve}
-            style={{ transform: `translateX(${percent - 100}%)` }}
-          />
-        </g>
-      </svg>
-    </div>
+    <PercentageIndicatorContext.Provider value={{ computedHeight, computedCurve }}>
+      <div {...htmlProps} className={cn(styles.percentageIndicatorBar, htmlProps.className, theme)}>
+        {!isNarrow && (
+          <span className={styles.label} data-test-id="percentage-indicator-bar-value">
+            {Math.round(percent!)}%
+          </span>
+        )}
+        <svg width="100%" height={svgHeight || computedHeight}>
+          <defs>
+            <clipPath id="percent-indicator-bar">
+              <rect width="100%" height={computedHeight} rx={computedCurve} ry={computedCurve} />
+            </clipPath>
+          </defs>
+          <g {...svgGroupStyle}>
+            <g clipPath="url(#percent-indicator-bar)">
+              <BackgroundBar />
+
+              {progress ? (
+                progress.map((progressProps, i) => <ProgressBar key={i} {...progressProps} />)
+              ) : (
+                <ProgressBar style={{ transform: `translateX(${percent! - 100}%)` }} />
+              )}
+            </g>
+            {children}
+          </g>
+        </svg>
+      </div>
+    </PercentageIndicatorContext.Provider>
   );
 };
+
+export { PercentageIndicatorBar, ProgressBar, TProgressBarProps };

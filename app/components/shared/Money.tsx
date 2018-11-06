@@ -120,13 +120,13 @@ const Money: React.SFC<IProps> = ({
   return (
     <span {...props} className={cn(styles.money, transfer, props.className, theme)}>
       {currencySymbol === ECurrencySymbol.SYMBOL && (
-        <span className={cn(currencyClassName)} style={currencyStyle}>
+        <span className={cn(styles.currency, currencyClassName)} style={currencyStyle}>
           {selectCurrencySymbol(currency)}
         </span>
       )}
       {formattedMoney}
       {currencySymbol === ECurrencySymbol.CODE && (
-        <span className={cn(currencyClassName)} style={currencyStyle}>
+        <span className={cn(styles.currency, currencyClassName)} style={currencyStyle}>
           {" "}
           {selectCurrencyCode(currency)}
         </span>

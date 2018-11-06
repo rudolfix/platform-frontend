@@ -5,14 +5,14 @@
   height: 90%;
 }
 
-.header,
-.investors-backed {
+.header {
   display: flex;
   justify-content: space-between;
+  text-transform: uppercase;
 }
 
-.investors-backed {
-  flex-basis: 40%;
+.amount {
+  display: block;
 }
 
 .invest-now-button {

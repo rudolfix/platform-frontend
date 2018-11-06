@@ -23,6 +23,7 @@ import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
 import { FormTransformingField } from "../../../shared/forms/form-field/FormTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
+import { convert, convertFractionToPercentage, convertPercentageToFraction } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {
@@ -41,7 +42,8 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingData, readonly }) => {
+const EtoInvestmentTermsComponent: React.SFC<IProps> = p => {
+  const { stateValues, savingData, readonly } = p;
   const existingCompanyShares = stateValues.existingCompanyShares || 1;
   const newSharesToIssue = stateValues.newSharesToIssue || 1;
   const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
@@ -68,7 +70,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
   });
 
   const computedTokenPrice = sharePrice / equityTokensPerShare;
-
   return (
     <EtoFormBase
       title={<FormattedMessage id="eto.form.investment-terms.title" />}
@@ -78,6 +79,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
         placeholder="1000000"
+        value={10000}
         name="equityTokensPerShare"
         disabled={readonly}
       />
@@ -87,6 +89,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
         prefix="€"
         name="shareNominalValueEur"
         type="number"
+        value={1}
         min="1"
         disabled={readonly}
       />
@@ -107,7 +110,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
         name="existingCompanyShares"
         type="number"
         min="1"
-        disabled={readonly}
+        disabled={true}
       />
       <FormField
         label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
@@ -286,12 +289,11 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
+        const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
-            etoData: {
-              ...data,
-            },
+            etoData: convertedData,
           }),
         );
       },
@@ -299,9 +301,19 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
   }),
   withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
     validationSchema: EtoInvestmentTermsType.toYup(),
-    mapPropsToValues: props => props.stateValues,
+    mapPropsToValues: props => convert(props.stateValues, toFormState),
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoInvestmentTermsComponent);
 
 export { EtoInvestmentTerms };
+
+const toFormState = {
+  whitelistDiscountFraction: convertFractionToPercentage,
+  fixedSlotsMaximumDiscountFraction: convertFractionToPercentage,
+};
+
+const fromFormState = {
+  whitelistDiscountFraction: convertPercentageToFraction,
+  fixedSlotsMaximumDiscountFraction: convertPercentageToFraction,
+};

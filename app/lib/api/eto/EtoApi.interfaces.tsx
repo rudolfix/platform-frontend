@@ -251,10 +251,10 @@ export const EtoVotingRightsType = YupTS.object({
 export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
 export const EtoInvestmentTermsType = YupTS.object({
-  equityTokensPerShare: YupTS.number(), //optional?
-  shareNominalValueEur: YupTS.number(), //optional?
+  equityTokensPerShare: YupTS.number(),
+  shareNominalValueEur: YupTS.number(),
   preMoneyValuationEur: YupTS.number(),
-  existingCompanyShares: YupTS.number(),
+  existingCompanyShares: YupTS.number().optional(),
   authorizedCapitalShares: YupTS.number().optional(),
   newSharesToIssue: YupTS.number(),
   minimumNewSharesToIssue: YupTS.number(),

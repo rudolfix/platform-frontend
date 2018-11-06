@@ -1,5 +1,4 @@
 import * as cn from "classnames";
-import { uniqueId } from "lodash";
 import * as React from "react";
 
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -37,7 +36,7 @@ class NewTableRow extends React.Component<INewTableRow> {
       <tr className={styles.row}>
         {React.Children.map(children, child => {
           return (
-            <td className={styles.cell} key={uniqueId("table-row")}>
+            <td className={styles.cell} key={JSON.stringify(child)}>
               {child}
             </td>
           );

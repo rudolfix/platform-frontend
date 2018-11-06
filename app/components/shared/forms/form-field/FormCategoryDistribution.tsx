@@ -108,13 +108,25 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
           <Col>
             <Row>
               <Col xs={9}>
-                {
-                  <FormTransformingField
+                {transformRatio
+                  ? <FormTransformingField
                     disabled={disabled}
                     min="0"
                     prefix={prefix}
                     name={`${name}.${formFieldKeys[1]}`}
                     ratio={transformRatio}
+                    onBlur={this.setAllFieldsTouched}
+                    placeholder={valuePlaceholder}
+                    customValidation={this.compoundFieldValidation(
+                      formFieldKeys[1],
+                      `${name}.${formFieldKeys[0]}`,
+                    )}
+                  />
+                  : <FormInput
+                    disabled={disabled}
+                    min="0"
+                    prefix={prefix}
+                    name={`${name}.${formFieldKeys[1]}`}
                     onBlur={this.setAllFieldsTouched}
                     placeholder={valuePlaceholder}
                     customValidation={this.compoundFieldValidation(

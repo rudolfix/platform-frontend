@@ -7,7 +7,6 @@ import { compose } from "redux";
 
 import {
   EtoVotingRightsType,
-  TEtoVotingRightsType,
   TPartialEtoSpecData,
 } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
@@ -19,7 +18,7 @@ import { Button, EButtonLayout } from "../../../shared/buttons";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormToggle } from "../../../shared/forms/form-field/FormToggle";
-import { applyDefaults } from "../../utils";
+import { applyDefaults, convert, parseStringToFloat } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 
 // TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
@@ -115,12 +114,11 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
+        const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
-            etoData: {
-              ...data,
-            },
+            etoData: convertedData,
           }),
         );
       },
@@ -129,13 +127,10 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
   withFormik<IProps, TPartialEtoSpecData>({
     validationSchema: EtoVotingRightsType.toYup(),
     mapPropsToValues: props => applyDefaults(props.stateValues, defaults),
-    handleSubmit: (values, props) => {
-      return props.props.saveData(dataToCanonicalForm(values));
-    },
+    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoVotingRightsComponent);
 
-const dataToCanonicalForm = (values: Partial<TEtoVotingRightsType>) => {
-  values.liquidationPreferenceMultiplier = parseFloat(`${values.liquidationPreferenceMultiplier}`);
-  return values;
+const fromFormState = {
+  liquidationPreferenceMultiplier: parseStringToFloat,
 };

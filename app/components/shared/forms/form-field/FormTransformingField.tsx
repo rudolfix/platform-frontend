@@ -5,10 +5,10 @@ import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
+import { convertToPrecision } from "../../../eto/utils";
 import { FormLabel } from "./FormLabel";
-import { isNonValid, isValid } from "./utils";
-
 import * as styles from "./FormStyles.module.scss";
+import { isNonValid, isValid } from "./utils";
 
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -23,29 +23,6 @@ interface IFieldGroup {
 }
 
 type FieldGroupProps = IFieldGroup & FieldAttributes<{}> & CommonHtmlProps;
-
-const transform = (value: number, ratio?: number) => {
-    if (value && !Number.isNaN(value)) {
-    //no ratio, no transformation
-    if(value && !ratio){
-      return value
-    } else if (value && ratio) {
-      //sometimes value*ratio returns a weird number due to JS number rounding behavior
-      // example: 1.11 * 100 === 111.00000000000001
-      // we derive necessary precision from user input and chop the value down to this precision
-      const precision = value && value.toString().split(".").length > 1 ? value.toString().split(".")[1].length : 0;
-      const res = parseFloat((value * ratio).toFixed(precision - 2)).toLocaleString();
-      console.log(value*ratio);
-      return res
-    }
-  }else {
-    return "";
-  }
-};
-const transformBack = (value: number, ratio?: number) => {
-  const result = ratio !== undefined ? value / ratio : value;
-  return value && !Number.isNaN(value) ? result : undefined;
-};
 
 export class FormTransformingField extends React.Component<FieldGroupProps> {
   render(): React.ReactNode {
@@ -66,7 +43,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldValue, setFieldTouched }) => {
+        {({ touched, errors, setFieldValue }) => {
           //This is done due to the difference between reactstrap and @typings/reactstrap
           const inputExtraProps = {
             invalid: isNonValid(touched, errors, name),
@@ -88,12 +65,11 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
                     <Input
                       className={cn(className, styles.inputField)}
                       {...field}
-                      value={transform(field.value, ratio) || ""}
-                      onChange={e => {
-                        setFieldTouched(name);
-                        setFieldValue(name, transformBack(e.target.valueAsNumber, ratio));
+                      onBlur={e => {
+                        setFieldValue(name, convertToPrecision(e.target.valueAsNumber, 2));
                       }}
                       type="number"
+                      value={field.value}
                       valid={isValid(touched, errors, name)}
                       placeholder={placeholder || label}
                       disabled={disabled}

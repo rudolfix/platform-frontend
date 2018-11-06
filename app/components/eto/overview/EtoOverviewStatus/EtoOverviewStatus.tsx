@@ -210,7 +210,15 @@ const EtoOverviewStatusLayout: React.SFC<
               />
             </div>
 
-            <div className={cn(styles.divider, "d-md-none", styles.breakSm)} />
+            <div
+              className={cn(
+                styles.divider,
+                "d-md-none",
+                "d-lg-block",
+                "d-xl-block",
+                styles.breakSm,
+              )}
+            />
 
             <div className={cn(styles.groupWrapper, styles.breakSm)}>
               <div className={styles.group}>

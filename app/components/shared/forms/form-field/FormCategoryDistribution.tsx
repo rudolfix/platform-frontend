@@ -108,8 +108,8 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
           <Col>
             <Row>
               <Col xs={9}>
-                {transformRatio
-                  ? <FormTransformingField
+                {transformRatio ? (
+                  <FormTransformingField
                     disabled={disabled}
                     min="0"
                     prefix={prefix}
@@ -122,7 +122,8 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
                       `${name}.${formFieldKeys[0]}`,
                     )}
                   />
-                  : <FormInput
+                ) : (
+                  <FormInput
                     disabled={disabled}
                     min="0"
                     prefix={prefix}
@@ -134,7 +135,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
                       `${name}.${formFieldKeys[0]}`,
                     )}
                   />
-                }
+                )}
               </Col>
               {!isFirstElement && (
                 <span className="pt-2">

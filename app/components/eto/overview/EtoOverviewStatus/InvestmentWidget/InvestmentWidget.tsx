@@ -4,10 +4,12 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../../../modules/actions";
 import { TEtoWithCompanyAndContract } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
-import { Button } from "../../../../shared/buttons";
+import { withParams } from "../../../../../utils/withParams";
+import { appRoutes } from "../../../../appRoutes";
+import { Button, ButtonLink } from "../../../../shared/buttons";
 import { Money } from "../../../../shared/Money";
+import { EtoWidgetContext } from "../../../EtoWidgetView";
 import { InvestmentProgress } from "./InvestmentProgress";
-
 import * as styles from "./InvestmentWidget.module.scss";
 
 export interface IInvestmentWidgetProps {
@@ -47,9 +49,22 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({ startInvestment
       </div>
       <InvestmentProgress eto={eto} />
       <div className={styles.investNowButton}>
-        <Button onClick={startInvestmentFlow} data-test-id={`eto-invest-now-button-${eto.etoId}`}>
-          <FormattedMessage id="shared-component.eto-overview.invest-now" />
-        </Button>
+        <EtoWidgetContext.Consumer>
+          {previewCode =>
+            previewCode ? (
+              <ButtonLink to={withParams(appRoutes.etoPublicView, { previewCode })} target="_blank">
+                <FormattedMessage id="shared-component.eto-overview.invest-now" />
+              </ButtonLink>
+            ) : (
+              <Button
+                onClick={startInvestmentFlow}
+                data-test-id={`eto-invest-now-button-${eto.etoId}`}
+              >
+                <FormattedMessage id="shared-component.eto-overview.invest-now" />
+              </Button>
+            )
+          }
+        </EtoWidgetContext.Consumer>
       </div>
     </div>
   );

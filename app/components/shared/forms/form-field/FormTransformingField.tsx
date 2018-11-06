@@ -25,18 +25,20 @@ interface IFieldGroup {
 type FieldGroupProps = IFieldGroup & FieldAttributes<{}> & CommonHtmlProps;
 
 const transform = (value: number, ratio?: number) => {
-  console.log("transform", (value && value.toString()),
-    (value && value.toString().split(".")[1].length),
-    value*ratio, (value &&value.toPrecision(3)))
-  if (value && !Number.isNaN(value)) {
-    // if user types in more than 100 percent (=> internal value is larger than 1),
-    // value*ratio returns a weird number due to JS number rounding behavior
-    // example: 1.11 * 100 === 111.00000000000001
-    // here we manually check for this condition and round down the result
-    const precision = value && value.toString().split(".")[1].length;
-    console.log("precision",precision, value && (value * ratio).toFixed(precision - 2))
-    return ratio !== undefined ? value * ratio : value;
-  } else {
+    if (value && !Number.isNaN(value)) {
+    //no ratio, no transformation
+    if(value && !ratio){
+      return value
+    } else if (value && ratio) {
+      //sometimes value*ratio returns a weird number due to JS number rounding behavior
+      // example: 1.11 * 100 === 111.00000000000001
+      // we derive necessary precision from user input and chop the value down to this precision
+      const precision = value && value.toString().split(".").length > 1 ? value.toString().split(".")[1].length : 0;
+      const res = parseFloat((value * ratio).toFixed(precision - 2)).toLocaleString();
+      console.log(value*ratio);
+      return res
+    }
+  }else {
     return "";
   }
 };

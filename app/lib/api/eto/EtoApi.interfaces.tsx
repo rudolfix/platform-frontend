@@ -34,7 +34,7 @@ export const EtoCompanyInformationType = YupTS.object({
   companyDescription: YupTS.string(),
   keyQuoteFounder: YupTS.string(),
   keyQuoteInvestor: YupTS.string().optional(),
-  categories: YupTS.array(tagsType),
+  categories: YupTS.array(tagsType).optional(),
   companyLogo: YupTS.string().optional(),
   companyBanner: YupTS.string().optional(),
 });
@@ -204,8 +204,7 @@ export enum EtoStateToCamelcase {
 
 export const EtoTermsType = YupTS.object({
   currencies: YupTS.array(YupTS.string()),
-  prospectusLanguage: YupTS.string().optional(),
-  publicDurationDays: YupTS.number(),
+  prospectusLanguage: YupTS.string(),
   minTicketEur: YupTS.number().enhance((v: NumberSchema) => {
     const minTicketEur = PlatformTerms.MIN_TICKET_EUR_ULPS.div(Q18).toNumber();
 
@@ -228,8 +227,9 @@ export const EtoTermsType = YupTS.object({
   enableTransferOnSuccess: YupTS.boolean(),
   notUnderCrowdfundingRegulations: YupTS.onlyTrue(),
   whitelistDurationDays: YupTS.number(),
-  additionalTerms: YupTS.string().optional(),
+  publicDurationDays: YupTS.number(),
   signingDurationDays: YupTS.number(),
+  additionalTerms: YupTS.string().optional(),
 });
 
 export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
@@ -251,8 +251,8 @@ export const EtoVotingRightsType = YupTS.object({
 export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
 export const EtoInvestmentTermsType = YupTS.object({
-  equityTokensPerShare: YupTS.number(),
-  shareNominalValueEur: YupTS.number(),
+  equityTokensPerShare: YupTS.number(), //optional?
+  shareNominalValueEur: YupTS.number(), //optional?
   preMoneyValuationEur: YupTS.number(),
   existingCompanyShares: YupTS.number(),
   authorizedCapitalShares: YupTS.number().optional(),

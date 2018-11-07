@@ -19,6 +19,7 @@ import { FormField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/form-field/FormSingleFileUpload";
 import { EtoFormBase } from "../EtoFormBase";
+import {Section} from "../Shared";
 
 interface IExternalProps {
   readonly: boolean;
@@ -41,7 +42,9 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
     title={<FormattedMessage id="eto.form.eto-equity-token-info.title" />}
     validator={EtoEquityTokenInfoType.toYup()}
   >
-    <FormField
+  <Section>
+
+  <FormField
       label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
       placeholder="Token name"
       name="equityTokenName"
@@ -67,6 +70,8 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
         disabled={readonly}
       />
     </div>
+  </Section>
+
     {!readonly && (
       <Col>
         <Row className="justify-content-center">

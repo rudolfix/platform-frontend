@@ -24,6 +24,7 @@ import { FormTransformingField } from "../../../shared/forms/form-field/FormTran
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
 import { EtoFormBase } from "../EtoFormBase";
+import {Section} from "../Shared";
 
 interface IExternalProps {
   readonly: boolean;
@@ -75,6 +76,8 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
       validator={EtoInvestmentTermsType.toYup()}
       progressOptions={etoInvestmentTermsProgressOptions}
     >
+      <Section>
+
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
         placeholder="1000000"
@@ -256,6 +259,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           </Col>
         </Row>
       </FormHighlightGroup>
+      </Section>
 
       {!readonly && (
         <Col>

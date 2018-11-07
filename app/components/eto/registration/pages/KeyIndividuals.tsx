@@ -28,6 +28,7 @@ import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg"
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import * as styles from "./KeyIndividuals.module.scss";
+import {Section} from "../Shared";
 
 interface IStateProps {
   loadingData: boolean;
@@ -184,8 +185,9 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
     <EtoFormBase
       title={<FormattedMessage id="eto.form.key-individuals.title" />}
       validator={validator}
-    >
-      <KeyIndividualsGroup
+    >      <Section>
+
+    <KeyIndividualsGroup
         title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
         name="team"
       />
@@ -213,6 +215,8 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
         title={<FormattedMessage id="eto.form.key-individuals.section.partners.title" />}
         name="partners"
       />
+    </Section>
+
       <Col>
         <Row className="justify-content-end">
           <Button

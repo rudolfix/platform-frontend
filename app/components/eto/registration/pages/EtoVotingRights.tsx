@@ -21,6 +21,7 @@ import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormToggle } from "../../../shared/forms/form-field/FormToggle";
 import { applyDefaults } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
+import {Section} from "../Shared";
 
 // TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
 const TOKEN_HOLDERS_RIGHTS = {
@@ -55,7 +56,9 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
     title={<FormattedMessage id="eto.form.eto-voting-rights.title" />}
     validator={EtoVotingRightsType.toYup()}
   >
-    <FormSelectField
+  <Section>
+
+  <FormSelectField
       values={TOKEN_HOLDERS_RIGHTS}
       label={<FormattedMessage id="eto.form.section.token-holders-rights.nominee" />}
       name="nominee"
@@ -86,6 +89,7 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
         disabled={readonly}
       />
     </div>
+  </Section>
 
     {!readonly && (
       <Col>

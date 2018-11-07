@@ -55,8 +55,7 @@ export const EtoFormBase: React.SFC<IProps & IFormPercentageDoneProps> = ({
   progressOptions,
   "data-test-id": dataTestId,
 }) => (
-  <div data-test-id={dataTestId}>
-    <Form className={styles.form}>
+    <Form className={styles.form} data-test-id={dataTestId}>
       <h4 className={styles.header}>{title}</h4>
 
       <Section>
@@ -65,5 +64,4 @@ export const EtoFormBase: React.SFC<IProps & IFormPercentageDoneProps> = ({
 
       {children}
     </Form>
-  </div>
 );

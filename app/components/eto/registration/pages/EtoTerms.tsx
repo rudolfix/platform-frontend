@@ -26,6 +26,7 @@ import {
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormRange } from "../../../shared/forms/form-field/FormRange";
 import { EtoFormBase } from "../EtoFormBase";
+import {Section} from "../Shared";
 
 interface IExternalProps {
   readonly: boolean;
@@ -60,7 +61,9 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
       title={<FormattedMessage id="eto.form.eto-terms.title" />}
       validator={EtoTermsType.toYup()}
     >
-      <FormLabel name="currencies">
+    <Section>
+
+    <FormLabel name="currencies">
         <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
       </FormLabel>
       <div className="form-group">
@@ -190,6 +193,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         label={<FormattedMessage id="eto.form.additional-terms" />}
         name="additionalTerms"
       />
+    </Section>
 
       {!readonly && (
         <Col>

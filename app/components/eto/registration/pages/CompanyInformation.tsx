@@ -5,6 +5,7 @@ import { Col, Row } from "reactstrap";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
+import * as styles from '../Shared.module.scss'
 import {
   EtoCompanyInformationType,
   TPartialCompanyEtoData,
@@ -105,19 +106,16 @@ const EtoRegistrationTeamAndInvestorsComponent = (
         </Col>
       </Row>
     </Section>
-    <Col>
-      <Row className="justify-content-end">
+    <Section className={styles.buttonSection}>
         <Button
           layout={EButtonLayout.PRIMARY}
-          className="mr-4"
           type="submit"
           isLoading={props.savingData}
           data-test-id="eto-registration-company-information-submit"
         >
           <FormattedMessage id="form.button.save" />
         </Button>
-      </Row>
-    </Col>
+    </Section>
   </EtoFormBase>
 );
 

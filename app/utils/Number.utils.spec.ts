@@ -29,10 +29,10 @@ describe("NumberUtils", () => {
 
   describe("normalize", () => {
     it("should normalize given number to a specified range", () => {
-      expect(normalize({ min: 0, max: 100, minAllowed: 0, maxAllowed: 1 }, 100)).to.eq(1);
-      expect(normalize({ min: 0, max: 100, minAllowed: 0, maxAllowed: 1 }, 0)).to.eq(0);
-      expect(normalize({ min: 0, max: 100, minAllowed: 0, maxAllowed: 1 }, 25)).to.eq(0.25);
-      expect(normalize({ min: 0, max: 100, minAllowed: 0, maxAllowed: 1 }, 80)).to.eq(0.8);
+      expect(normalize({ min: 0, max: 100 }, 100)).to.eq(1);
+      expect(normalize({ min: 0, max: 100 }, 0)).to.eq(0);
+      expect(normalize({ min: 0, max: 100 }, 25)).to.eq(0.25);
+      expect(normalize({ min: 0, max: 100 }, 80)).to.eq(0.8);
     });
   });
 });

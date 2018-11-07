@@ -113,8 +113,8 @@ export function* loadEtoContact(
     }
 
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
-    const etherTokenContract: EtherToken = yield contractsService.etherToken;
-    const euroTokenContract: EuroToken = yield contractsService.euroToken;
+    const etherTokenContract: EtherToken = contractsService.etherToken;
+    const euroTokenContract: EuroToken = contractsService.euroToken;
 
     const etherTokenBalance = yield etherTokenContract.balanceOf(etoContract.address);
     const euroTokenBalance = yield euroTokenContract.balanceOf(etoContract.address);

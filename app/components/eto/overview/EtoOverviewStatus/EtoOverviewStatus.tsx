@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { compose } from "recompose";
 
-import { CounterWidget, TagsWidget, TokenSymbolWidget } from ".";
+import { CounterWidget, TagsWidget } from ".";
 import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
 import { selectIsActionRequiredSettings } from "../../../../modules/notifications/selectors";
@@ -29,6 +29,7 @@ import { IWithIsEligibleToPreEto, withIsEligibleToPreEto } from "./withIsEligibl
 
 import * as styles from "./EtoOverviewStatus.module.scss";
 import { RegisterNowWidget } from "./RegisterNowWidget";
+import { TokenSymbolWidget } from "./TokenSymbolWidget";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;

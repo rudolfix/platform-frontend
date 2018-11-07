@@ -10,6 +10,7 @@ import { Button, ButtonLink } from "../../../../shared/buttons";
 import { Money } from "../../../../shared/Money";
 import { EtoWidgetContext } from "../../../EtoWidgetView";
 import { InvestmentProgress } from "./InvestmentProgress";
+
 import * as styles from "./InvestmentWidget.module.scss";
 
 export interface IInvestmentWidgetProps {
@@ -26,7 +27,7 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({ startInvestment
   const totalInvestors = eto.contract!.totalInvestment.totalInvestors.toNumber();
 
   return (
-    <div className={styles.investWidget}>
+    <div className={styles.investmentWidget}>
       <div className={styles.header}>
         <div>
           <Money

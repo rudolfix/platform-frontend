@@ -24,54 +24,54 @@ type TProps = {
 
 type IProps = ICommonProps & TProps;
 
-const DEFAULT_CURVE = 20;
-const NARROW_CURVE = 5;
+type TProgressBarBaseProps = {
+  height: number;
+  radius: number;
+};
 
 type TProgressBarExternalProps = {
   theme?: TTheme;
   progress?: number;
-  withoutRadius?: boolean;
+  height?: number;
+  radius?: number;
 };
 
 type TProgressBarProps = TProgressBarExternalProps & CommonHtmlProps;
 
-const PercentageIndicatorContext = React.createContext({
-  computedHeight: 0,
-  computedCurve: 0,
-});
+const DEFAULT_CURVE = 20;
+const NARROW_CURVE = 5;
 
-const BackgroundBar: React.SFC<CommonHtmlProps> = ({ className, style }) => (
-  <PercentageIndicatorContext.Consumer>
-    {({ computedHeight, computedCurve }) => (
-      <rect
-        className={cn(styles.background, className)}
-        height={computedHeight}
-        rx={computedCurve}
-        ry={computedCurve}
-        style={style}
-      />
-    )}
-  </PercentageIndicatorContext.Consumer>
+const BackgroundBar: React.SFC<TProgressBarBaseProps & TProgressBarBaseProps & CommonHtmlProps> = ({
+  className,
+  style,
+  height,
+  radius,
+}) => (
+  <rect
+    width="100%"
+    height={height}
+    className={cn(styles.background, className)}
+    rx={radius}
+    ry={radius}
+    style={style}
+  />
 );
 
 const ProgressBar: React.SFC<TProgressBarProps> = ({
   theme,
   style,
-  withoutRadius = false,
   progress = 100,
+  height,
+  radius,
 }) => (
-  <PercentageIndicatorContext.Consumer>
-    {({ computedHeight, computedCurve }) => (
-      <rect
-        className={cn(styles.progress, { [styles.progressGreen]: theme === "green" })}
-        width={`${progress}%`}
-        height={computedHeight}
-        rx={withoutRadius ? 0 : computedCurve}
-        ry={withoutRadius ? 0 : computedCurve}
-        style={style}
-      />
-    )}
-  </PercentageIndicatorContext.Consumer>
+  <rect
+    className={cn(styles.progress, { [styles.progressGreen]: theme === "green" })}
+    width={`${progress}%`}
+    height={height}
+    rx={radius}
+    ry={radius}
+    style={style}
+  />
 );
 
 /**
@@ -92,34 +92,39 @@ const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = ({
   const computedHeight = isNarrow ? 10 : 38;
 
   return (
-    <PercentageIndicatorContext.Provider value={{ computedHeight, computedCurve }}>
-      <div {...htmlProps} className={cn(styles.percentageIndicatorBar, htmlProps.className, theme)}>
-        {!isNarrow && (
-          <span className={styles.label} data-test-id="percentage-indicator-bar-value">
-            {Math.round(percent!)}%
-          </span>
-        )}
-        <svg width="100%" height={svgHeight || computedHeight}>
-          <defs>
-            <clipPath id="percent-indicator-bar">
-              <rect width="100%" height={computedHeight} rx={computedCurve} ry={computedCurve} />
-            </clipPath>
-          </defs>
-          <g {...svgGroupStyle}>
-            <g clipPath="url(#percent-indicator-bar)">
-              <BackgroundBar />
+    <div {...htmlProps} className={cn(styles.percentageIndicatorBar, htmlProps.className, theme)}>
+      {!isNarrow && (
+        <span className={styles.label} data-test-id="percentage-indicator-bar-value">
+          {Math.round(percent!)}%
+        </span>
+      )}
+      <svg width="100%" height={svgHeight || computedHeight}>
+        <defs>
+          <clipPath id="percent-indicator-bar">
+            <rect width="100%" height={computedHeight} rx={computedCurve} ry={computedCurve} />
+          </clipPath>
+        </defs>
+        <g {...svgGroupStyle}>
+          <g clipPath="url(#percent-indicator-bar)">
+            <BackgroundBar radius={computedCurve} height={computedHeight} />
 
-              {progress ? (
-                progress.map((progressProps, i) => <ProgressBar key={i} {...progressProps} />)
-              ) : (
-                <ProgressBar style={{ transform: `translateX(${percent! - 100}%)` }} />
-              )}
-            </g>
-            {children}
+            {progress ? (
+              progress.map((progressProps, i) => (
+                <ProgressBar
+                  key={i}
+                  height={computedHeight}
+                  radius={computedCurve}
+                  {...progressProps}
+                />
+              ))
+            ) : (
+              <ProgressBar style={{ transform: `translateX(${percent! - 100}%)` }} />
+            )}
           </g>
-        </svg>
-      </div>
-    </PercentageIndicatorContext.Provider>
+          {children}
+        </g>
+      </svg>
+    </div>
   );
 };
 

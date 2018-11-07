@@ -18,18 +18,6 @@ type TProps = {
   eto: TEtoWithCompanyAndContract;
 };
 
-export function getNormalizedPercentage(value: number, max: number): number {
-  return normalize(
-    {
-      minAllowed: 0,
-      maxAllowed: 100,
-      min: 0,
-      max,
-    },
-    value,
-  );
-}
-
 type TLabelExternalProps = {
   label: string;
   width: number;
@@ -48,18 +36,17 @@ const InvestmentProgress: React.SFC<TProps> = ({ eto }) => {
   const calculatedPercentage = getInvestmentCalculatedPercentage(eto);
   const currentProgressPercentage = getCurrentInvestmentProgressPercentage(eto);
 
-  const successOfEtoNormalized = getNormalizedPercentage(100, calculatedPercentage);
-  const currentProgressOfEtoNormalized = getNormalizedPercentage(
-    currentProgressPercentage,
-    calculatedPercentage,
-  );
+  const getNormalizedValue = normalize({ min: 0, max: calculatedPercentage });
+
+  const successOfEtoNormalized = getNormalizedValue(100);
+  const currentProgressOfEtoNormalized = getNormalizedValue(currentProgressPercentage);
 
   const progress: TProgressBarProps[] = [
-    { progress: Math.ceil(currentProgressOfEtoNormalized), theme: "green" },
+    { progress: Math.ceil(currentProgressOfEtoNormalized * 100), theme: "green" },
   ];
 
   if (currentProgressOfEtoNormalized > successOfEtoNormalized) {
-    progress.push({ progress: successOfEtoNormalized, withoutRadius: true });
+    progress.push({ progress: successOfEtoNormalized * 100, radius: 0 });
   }
 
   return (
@@ -70,13 +57,13 @@ const InvestmentProgress: React.SFC<TProps> = ({ eto }) => {
       svgGroupStyle={{ transform: `translate(0 4)` }}
       svgHeight={40}
     >
-      <rect x={`${successOfEtoNormalized}%`} y={-6} className={cn(styles.successPoint)} />
+      <rect x={`${successOfEtoNormalized * 100}%`} y={-6} className={cn(styles.successPoint)} />
 
       <Label label="0%" width={0} textAnchor="start" />
 
-      <Label label="100%" width={successOfEtoNormalized} />
+      <Label label="100%" width={successOfEtoNormalized * 100} />
 
-      <Label label={`${calculatedPercentage}%`} width={100} textAnchor="end" />
+      <Label label={`${Math.round(calculatedPercentage)}%`} width={100} textAnchor="end" />
     </PercentageIndicatorBar>
   );
 };

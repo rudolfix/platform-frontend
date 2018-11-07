@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
@@ -14,9 +13,7 @@ interface IStateProps {
 }
 
 export const EtoRegisterComponent: React.SFC<IStateProps> = ({ isLoading }) => (
-  <LayoutAuthorized>
-        {isLoading ? <LoadingIndicator /> : <EtoRegistrationPanel />}
-  </LayoutAuthorized>
+  <LayoutAuthorized>{isLoading ? <LoadingIndicator /> : <EtoRegistrationPanel />}</LayoutAuthorized>
 );
 
 export const EtoRegister = compose<React.SFC>(

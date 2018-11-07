@@ -26,7 +26,8 @@ import {
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormRange } from "../../../shared/forms/form-field/FormRange";
 import { EtoFormBase } from "../EtoFormBase";
-import {Section} from "../Shared";
+import { Section } from "../Shared";
+import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {
   readonly: boolean;
@@ -61,153 +62,154 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
       title={<FormattedMessage id="eto.form.eto-terms.title" />}
       validator={EtoTermsType.toYup()}
     >
-    <Section>
+      <Section>
+        <FormLabel name="currencies">
+          <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
+        </FormLabel>
+        <div className="form-group">
+          <FormFieldCheckboxGroup name="currencies">
+            {currencies.map(currency => (
+              <FormFieldCheckbox
+                key={currency}
+                label={CURRENCIES[currency]}
+                value={currency}
+                disabled={readonly}
+              />
+            ))}
+          </FormFieldCheckboxGroup>
+        </div>
 
-    <FormLabel name="currencies">
-        <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
-      </FormLabel>
-      <div className="form-group">
-        <FormFieldCheckboxGroup name="currencies">
-          {currencies.map(currency => (
-            <FormFieldCheckbox
-              key={currency}
-              label={CURRENCIES[currency]}
-              value={currency}
+        <Row>
+          <Col>
+            <FormField
+              label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
+              placeholder="1"
+              prefix="€"
+              name="minTicketEur"
+              type="number"
+              min="1"
               disabled={readonly}
             />
-          ))}
-        </FormFieldCheckboxGroup>
-      </div>
+          </Col>
+          <Col>
+            <FormField
+              label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
+              placeholder="Unlimited"
+              prefix="€"
+              name="maxTicketEur"
+              type="number"
+              min="1"
+              disabled={readonly}
+            />
+          </Col>
+        </Row>
 
-      <Row>
-        <Col>
-          <FormField
-            label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
-            placeholder="1"
-            prefix="€"
-            name="minTicketEur"
-            type="number"
-            min="1"
+        <div className="form-group">
+          <FormCheckbox
             disabled={readonly}
-          />
-        </Col>
-        <Col>
-          <FormField
-            label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
-            placeholder="Unlimited"
-            prefix="€"
-            name="maxTicketEur"
-            type="number"
-            min="1"
-            disabled={readonly}
-          />
-        </Col>
-      </Row>
-
-      <div className="form-group">
-        <FormCheckbox
-          disabled={readonly}
-          name="notUnderCrowdfundingRegulations"
-          label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
-        />
-      </div>
-
-      <div className="form-group">
-        <FormLabel name="prospectusLanguage">
-          <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
-        </FormLabel>
-        <div>
-          <FormRadioButton name="prospectusLanguage" label="DE" value="de" disabled={readonly} />
-        </div>
-        <div>
-          <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <FormLabel name="whitelistDurationDays">
-          <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
-        </FormLabel>
-        <FormRange
-          disabled={readonly}
-          name="whitelistDurationDays"
-          min={1}
-          unitMin={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />}
-          max={14}
-          unitMax={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />}
-        />
-      </div>
-
-      <div className="form-group">
-        <FormLabel name="publicDurationDays">
-          <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
-        </FormLabel>
-        <FormRange
-          disabled={readonly}
-          name="publicDurationDays"
-          min={0}
-          unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
-          max={60}
-        />
-      </div>
-
-      <div className="form-group">
-        <FormLabel name="signingDurationDays">
-          <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
-        </FormLabel>
-        <FormRange
-          disabled={readonly}
-          name="signingDurationDays"
-          min={14}
-          unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
-          max={60}
-        />
-      </div>
-
-      <div className="form-group">
-        <FormLabel name="enableTransferOnSuccess">
-          <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
-        </FormLabel>
-        <div>
-          <FormRadioButton
-            disabled={readonly}
-            name="enableTransferOnSuccess"
-            label={<FormattedMessage id="form.select.enabled" />}
-            value={true}
+            name="notUnderCrowdfundingRegulations"
+            label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
           />
         </div>
-        <div>
-          <FormRadioButton
+
+        <div className="form-group">
+          <FormLabel name="prospectusLanguage">
+            <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
+          </FormLabel>
+          <div>
+            <FormRadioButton name="prospectusLanguage" label="DE" value="de" disabled={readonly} />
+          </div>
+          <div>
+            <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <FormLabel name="whitelistDurationDays">
+            <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
+          </FormLabel>
+          <FormRange
             disabled={readonly}
-            name="enableTransferOnSuccess"
-            label={<FormattedMessage id="form.select.disabled" />}
-            value={false}
+            name="whitelistDurationDays"
+            min={1}
+            unitMin={
+              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />
+            }
+            max={14}
+            unitMax={
+              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />
+            }
           />
         </div>
-        <FormError name="enableTransferOnSuccess" />
-      </div>
 
-      <FormTextArea
-        disabled={readonly}
-        className="mb-2 mt-2"
-        label={<FormattedMessage id="eto.form.additional-terms" />}
-        name="additionalTerms"
-      />
-    </Section>
+        <div className="form-group">
+          <FormLabel name="publicDurationDays">
+            <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
+          </FormLabel>
+          <FormRange
+            disabled={readonly}
+            name="publicDurationDays"
+            min={0}
+            unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
+            max={60}
+          />
+        </div>
+
+        <div className="form-group">
+          <FormLabel name="signingDurationDays">
+            <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
+          </FormLabel>
+          <FormRange
+            disabled={readonly}
+            name="signingDurationDays"
+            min={14}
+            unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
+            max={60}
+          />
+        </div>
+
+        <div className="form-group">
+          <FormLabel name="enableTransferOnSuccess">
+            <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
+          </FormLabel>
+          <div>
+            <FormRadioButton
+              disabled={readonly}
+              name="enableTransferOnSuccess"
+              label={<FormattedMessage id="form.select.enabled" />}
+              value={true}
+            />
+          </div>
+          <div>
+            <FormRadioButton
+              disabled={readonly}
+              name="enableTransferOnSuccess"
+              label={<FormattedMessage id="form.select.disabled" />}
+              value={false}
+            />
+          </div>
+          <FormError name="enableTransferOnSuccess" />
+        </div>
+
+        <FormTextArea
+          disabled={readonly}
+          className="mb-2 mt-2"
+          label={<FormattedMessage id="eto.form.additional-terms" />}
+          name="additionalTerms"
+        />
+      </Section>
 
       {!readonly && (
-        <Col>
-          <Row className="justify-content-center">
-            <Button
-              layout={EButtonLayout.PRIMARY}
-              type="submit"
-              isLoading={savingData}
-              data-test-id="eto-registration-eto-terms-submit"
-            >
-              <FormattedMessage id="form.button.save" />
-            </Button>
-          </Row>
-        </Col>
+        <Section className={styles.buttonSection}>
+          <Button
+            layout={EButtonLayout.PRIMARY}
+            type="submit"
+            isLoading={savingData}
+            data-test-id="eto-registration-eto-terms-submit"
+          >
+            <FormattedMessage id="form.button.save" />
+          </Button>
+        </Section>
       )}
     </EtoFormBase>
   );

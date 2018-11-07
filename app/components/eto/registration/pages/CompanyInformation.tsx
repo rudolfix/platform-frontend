@@ -5,7 +5,6 @@ import { Col, Row } from "reactstrap";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import * as styles from '../Shared.module.scss'
 import {
   EtoCompanyInformationType,
   TPartialCompanyEtoData,
@@ -20,6 +19,7 @@ import { FormSingleFileUpload } from "../../../shared/forms/form-field/FormSingl
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+import * as styles from "../Shared.module.scss";
 
 interface IStateProps {
   loadingData: boolean;
@@ -107,14 +107,14 @@ const EtoRegistrationTeamAndInvestorsComponent = (
       </Row>
     </Section>
     <Section className={styles.buttonSection}>
-        <Button
-          layout={EButtonLayout.PRIMARY}
-          type="submit"
-          isLoading={props.savingData}
-          data-test-id="eto-registration-company-information-submit"
-        >
-          <FormattedMessage id="form.button.save" />
-        </Button>
+      <Button
+        layout={EButtonLayout.PRIMARY}
+        type="submit"
+        isLoading={props.savingData}
+        data-test-id="eto-registration-company-information-submit"
+      >
+        <FormattedMessage id="form.button.save" />
+      </Button>
     </Section>
   </EtoFormBase>
 );

@@ -20,7 +20,7 @@ import { formatMoney } from "../../../../utils/Money.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
 import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
-import { FormTransformingField } from "../../../shared/forms/form-field/FormTransformingField";
+import { NumberTransformingField } from "../../../shared/forms/form-field/NumberTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
 import { convert, convertFractionToPercentage, convertPercentageToFraction } from "../../utils";
@@ -42,8 +42,7 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-const EtoInvestmentTermsComponent: React.SFC<IProps> = p => {
-  const { stateValues, savingData, readonly } = p;
+const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingData, readonly }) => {
   const existingCompanyShares = stateValues.existingCompanyShares || 1;
   const newSharesToIssue = stateValues.newSharesToIssue || 1;
   const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
@@ -149,7 +148,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = p => {
         min="1"
         disabled={readonly}
       />
-      <FormTransformingField
+      <NumberTransformingField
         label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
         placeholder=" "
         name="whitelistDiscountFraction"
@@ -168,7 +167,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = p => {
         min="1"
         disabled={readonly}
       />
-      <FormTransformingField
+      <NumberTransformingField
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors" />
         }

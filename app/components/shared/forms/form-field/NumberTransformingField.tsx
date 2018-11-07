@@ -7,8 +7,9 @@ import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { convertToPrecision } from "../../../eto/utils";
 import { FormLabel } from "./FormLabel";
-import * as styles from "./FormStyles.module.scss";
 import { isNonValid, isValid } from "./utils";
+
+import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -24,7 +25,7 @@ interface IFieldGroup {
 
 type FieldGroupProps = IFieldGroup & FieldAttributes<{}> & CommonHtmlProps;
 
-export class FormTransformingField extends React.Component<FieldGroupProps> {
+export class NumberTransformingField extends React.Component<FieldGroupProps> {
   render(): React.ReactNode {
     const {
       label,

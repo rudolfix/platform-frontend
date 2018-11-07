@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { CommonHtmlProps, TFormikConnect, TTranslatedString } from "../../../../types";
 import { ButtonIcon } from "../../buttons";
 import { FormInput } from "./FormInput";
-import { FormTransformingField } from "./FormTransformingField";
+import { NumberTransformingField } from "./NumberTransformingField";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
@@ -109,7 +109,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
             <Row>
               <Col xs={9}>
                 {transformRatio ? (
-                  <FormTransformingField
+                  <NumberTransformingField
                     disabled={disabled}
                     min="0"
                     prefix={prefix}

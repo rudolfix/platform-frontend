@@ -1,7 +1,5 @@
 import { cloneDeep, get, set } from "lodash";
 
-import { TPartialEtoSpecData } from "../../lib/api/eto/EtoApi.interfaces";
-
 export interface ICompoundField {
   [x: string]: string | number | undefined;
 }
@@ -31,12 +29,12 @@ export const applyDefaults = (data: any, defaults: any) => {
   }, dataCopy);
 };
 
-export const convert = (data: TPartialEtoSpecData, convertion: any) => {
+export const convert = (data: any, conversionSpec: any) => {
   if (data) {
     const dataCopy = cloneDeep(data);
-    Object.keys(convertion).forEach(key => {
+    Object.keys(conversionSpec).forEach(key => {
       const fieldValue = get(dataCopy, key);
-      set(dataCopy, key, convertField(fieldValue, convertion[key]));
+      set(dataCopy, key, convertField(fieldValue, conversionSpec[key]));
     });
     return dataCopy;
   } else {

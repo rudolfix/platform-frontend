@@ -10,7 +10,7 @@ import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
 import { UsersApi } from "../lib/api/users/UsersApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
 import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
-import { ILogger, noopLogger } from "../lib/dependencies/Logger";
+import { DevConsoleLogger, ILogger, noopLogger } from "../lib/dependencies/Logger";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
 import { Storage } from "../lib/persistence/Storage";
 import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
@@ -64,7 +64,7 @@ export function setupBindings(config: IConfig): Container {
   if (process.env.NODE_ENV === "production") {
     container.bind(symbols.logger).toConstantValue(noopLogger);
   } else {
-    container.bind<ILogger>(symbols.logger).toConstantValue(noopLogger); //new DevConsoleLogger()); FIXME!!!!!
+    container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
   }
 
   // classes

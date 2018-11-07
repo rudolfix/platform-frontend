@@ -15,11 +15,7 @@ interface IStateProps {
 
 export const EtoRegisterComponent: React.SFC<IStateProps> = ({ isLoading }) => (
   <LayoutAuthorized>
-    <Row>
-      <Col xs={12} lg={{ size: 8, offset: 2 }}>
         {isLoading ? <LoadingIndicator /> : <EtoRegistrationPanel />}
-      </Col>
-    </Row>
   </LayoutAuthorized>
 );
 

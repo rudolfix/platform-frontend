@@ -59,6 +59,21 @@ export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
   textPosition?: ButtonTextPosition;
 }
 
+const buttonLayoutClassNames: Record<EButtonLayout, string> = {
+  [EButtonLayout.PRIMARY]: styles.buttonPrimary,
+  [EButtonLayout.SECONDARY]: styles.buttonSecondary,
+  [EButtonLayout.INLINE]: styles.buttonInline,
+  [EButtonLayout.SIMPLE]: styles.buttonSimple,
+};
+
+const buttonThemeClassNames: Record<TButtonTheme, string> = {
+  dark: styles.buttonDark,
+  white: styles.buttonWhite,
+  brand: styles.buttonBrand,
+  silver: styles.buttonSilver,
+  graphite: styles.buttonGraphite,
+};
+
 const Button: React.SFC<IButtonProps> = ({
   children,
   layout,
@@ -75,7 +90,14 @@ const Button: React.SFC<IButtonProps> = ({
   ...props
 }) => (
   <button
-    className={cn(styles.button, layout, iconPosition, theme, size, width)}
+    className={cn(
+      styles.button,
+      buttonLayoutClassNames[layout!],
+      iconPosition,
+      { [buttonThemeClassNames[theme!]]: layout !== EButtonLayout.INLINE },
+      size,
+      width,
+    )}
     disabled={disabled || isLoading}
     type={type}
     {...props}
@@ -105,7 +127,7 @@ Button.defaultProps = {
 
 const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
   <button className={cn(styles.buttonIcon, className)} onClick={onClick}>
-    <InlineIcon {...props} width="20px" height="20px" />
+    <InlineIcon {...props} />
   </button>
 );
 

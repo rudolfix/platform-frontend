@@ -23,7 +23,6 @@
     "app/**/*.json",
     "typings/**/*.ts",
     "test/**/*.ts",
-    "test/**/*.tsx",
-    "cypress/cypress-retries.ts"
+    "test/**/*.tsx"
   ]
 }

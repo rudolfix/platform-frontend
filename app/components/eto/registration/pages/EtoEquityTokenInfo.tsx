@@ -84,7 +84,7 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
   </EtoFormBase>
 );
 
-export const EtoEquityTokenInfo = compose<React.SFC<IExternalProps>>(
+const EtoEquityTokenInfo = compose<React.SFC<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoEquityTokenInfo),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
@@ -112,3 +112,5 @@ export const EtoEquityTokenInfo = compose<React.SFC<IExternalProps>>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoEquityTokenInfoComponent);
+
+export {EtoEquityTokenInfoComponent, EtoEquityTokenInfo}

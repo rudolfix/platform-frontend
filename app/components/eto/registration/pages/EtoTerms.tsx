@@ -209,7 +209,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
   );
 };
 
-export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
+const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoTerms),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
@@ -237,3 +237,5 @@ export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationTermsComponent);
+
+export { EtoRegistrationTerms, EtoRegistrationTermsComponent };

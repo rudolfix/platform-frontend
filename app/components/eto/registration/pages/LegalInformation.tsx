@@ -159,7 +159,7 @@ const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => {
   );
 };
 
-export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>>(
+const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>>(
   setDisplayName(EEtoFormTypes.LegalInformation),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
@@ -183,3 +183,5 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
     handleSubmit: (values, { props }) => props.saveData(values),
   }),
 )(EtoRegistrationLegalInformationComponent);
+
+export { EtoRegistrationLegalInformation, EtoRegistrationLegalInformationComponent };

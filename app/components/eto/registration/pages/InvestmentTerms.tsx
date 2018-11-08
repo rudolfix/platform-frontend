@@ -304,4 +304,4 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
   }),
 )(EtoInvestmentTermsComponent);
 
-export { EtoInvestmentTerms };
+export { EtoInvestmentTerms, EtoInvestmentTermsComponent };

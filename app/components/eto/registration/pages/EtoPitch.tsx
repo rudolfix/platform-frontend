@@ -158,7 +158,7 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
   );
 };
 
-export const EtoRegistrationPitch = compose<React.SFC>(
+const EtoRegistrationPitch = compose<React.SFC>(
   setDisplayName(EEtoFormTypes.ProductVision),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
@@ -189,3 +189,5 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationPitchComponent);
+
+export { EtoRegistrationPitch, EtoRegistrationPitchComponent };

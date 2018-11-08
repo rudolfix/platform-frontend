@@ -57,7 +57,7 @@ const BackgroundBar: React.SFC<TProgressBarBaseProps & TProgressBarBaseProps & C
   />
 );
 
-const ProgressBar: React.SFC<TProgressBarProps> = ({
+const ProgressBar: React.SFC<TProgressBarBaseProps & TProgressBarProps> = ({
   theme,
   style,
   progress = 100,
@@ -118,7 +118,11 @@ const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = ({
                 />
               ))
             ) : (
-              <ProgressBar style={{ transform: `translateX(${percent! - 100}%)` }} />
+              <ProgressBar
+                style={{ transform: `translateX(${percent! - 100}%)` }}
+                radius={computedCurve}
+                height={computedHeight}
+              />
             )}
           </g>
           {children}

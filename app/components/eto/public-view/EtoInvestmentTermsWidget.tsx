@@ -46,7 +46,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
   etoData,
   downloadDocument,
 }) => {
-  const computedNewSharePrice = etoData.preMoneyValuationEur / etoData.existingCompanyShares!;
+  const computedNewSharePrice = etoData.preMoneyValuationEur / etoData.existingCompanyShares;
 
   return (
     <Panel className={styles.tokenTerms}>

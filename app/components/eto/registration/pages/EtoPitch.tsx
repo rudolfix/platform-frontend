@@ -13,7 +13,12 @@ import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { ArrayOfKeyValueFields, FormTextArea } from "../../../shared/forms";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { convert, sanitizeKeyValueCompoundField } from "../../utils";
+import {
+  convert,
+  convertInArray,
+  convertPercentageToFraction,
+  sanitizeKeyValueCompoundField,
+} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -186,5 +191,8 @@ export const EtoRegistrationPitch = compose<React.SFC>(
 )(EtoRegistrationPitchComponent);
 
 const fromFormState = {
-  useOfCapitalList: sanitizeKeyValueCompoundField,
+  useOfCapitalList: [
+    sanitizeKeyValueCompoundField,
+    convertInArray.bind(null, "percent", convertPercentageToFraction),
+  ],
 };

@@ -13,10 +13,6 @@ export const aboutFormRequired: TFormFixture = {
   companyWebsite: "https://neufund.org",
   companyOneliner: "Free icecream for all",
   keyQuoteFounder: "Let's make it a great day.",
-  categories: {
-    value: "Science",
-    type: "tags",
-  },
 };
 
 export const aboutForm: TFormFixture = {
@@ -36,7 +32,7 @@ export const aboutForm: TFormFixture = {
 // legal info
 export const legalInfoRequiredForm: TFormFixture = {
   foundingDate: {
-    value: "22/02/99",
+    value: "22/02/1999",
     type: "date",
   },
   companyShares: "5000",
@@ -69,7 +65,7 @@ export const legalInfoForm: TFormFixture = {
 export const investmentTermsRequiredForm: TFormFixture = {
   shareNominalValueEur: "1",
   preMoneyValuationEur: "1000000",
-  existingCompanyShares: "1000",
+  existingCompanyShares: "100",
   minimumNewSharesToIssue: "10000",
   newSharesToIssue: "20000",
   "eto-registration-investment-terms-submit": {
@@ -92,6 +88,10 @@ export const investmentTermsForm: TFormFixture = {
 // eto terms
 export const etoTermsRequiredForm: TFormFixture = {
   minTicketEur: "750",
+  prospectusLanguage: {
+    value: "de",
+    type: "radio",
+  },
   whitelistDurationDays: {
     value: "5",
     type: "range",
@@ -367,7 +367,7 @@ export const equityTokenInfoForm: TFormFixture = {
 // voting rights
 export const votingRights: TFormFixture = {
   liquidationPreferenceMultiplier: {
-    value: "1.5",
+    value: "2",
     type: "select",
   },
   "eto-registration-voting-rights-submit": {

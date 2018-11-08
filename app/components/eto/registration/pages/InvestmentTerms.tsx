@@ -23,7 +23,12 @@ import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
 import { NumberTransformingField } from "../../../shared/forms/form-field/NumberTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
-import { convert, convertFractionToPercentage, convertPercentageToFraction } from "../../utils";
+import {
+  convert,
+  convertFractionToPercentage,
+  convertPercentageToFraction,
+  parseStringToFloat,
+} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 
 interface IExternalProps {
@@ -109,7 +114,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
         name="existingCompanyShares"
         type="number"
         min="1"
-        disabled={true}
+        disabled={readonly}
       />
       <FormField
         label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
@@ -315,4 +320,5 @@ const toFormState = {
 const fromFormState = {
   whitelistDiscountFraction: convertPercentageToFraction,
   fixedSlotsMaximumDiscountFraction: convertPercentageToFraction,
+  equityTokensPerShare: parseStringToFloat,
 };

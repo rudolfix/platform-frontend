@@ -22,7 +22,12 @@ import {
   FormSelectField,
 } from "../../../shared/forms";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { convert, sanitizeKeyValueCompoundField } from "../../utils";
+import {
+  convert,
+  convertInArray,
+  parseStringToInteger,
+  sanitizeKeyValueCompoundField,
+} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -182,5 +187,8 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
 )(EtoRegistrationLegalInformationComponent);
 
 const fromFormState = {
-  shareholders: sanitizeKeyValueCompoundField,
+  shareholders: [
+    sanitizeKeyValueCompoundField,
+    convertInArray.bind(null, "shares", parseStringToInteger),
+  ],
 };

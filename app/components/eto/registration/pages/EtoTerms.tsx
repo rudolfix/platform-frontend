@@ -27,6 +27,8 @@ import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormRange } from "../../../shared/forms/form-field/FormRange";
 import { EtoFormBase } from "../EtoFormBase";
 
+import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
+
 interface IExternalProps {
   readonly: boolean;
 }
@@ -119,6 +121,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         <div>
           <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
         </div>
+        <FormError name="prospectusLanguage" className={formStyles.errorLabelAlignLeft} />
       </div>
 
       <div className="form-group">
@@ -181,7 +184,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
             value={false}
           />
         </div>
-        <FormError name="enableTransferOnSuccess" />
+        <FormError name="enableTransferOnSuccess" className={formStyles.errorLabelAlignLeft} />
       </div>
 
       <FormTextArea

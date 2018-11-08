@@ -1,4 +1,4 @@
-import { cloneDeep, get, set } from "lodash";
+import { cloneDeep, flow, get, set } from "lodash";
 
 export interface ICompoundField {
   [x: string]: string | number | undefined;
@@ -43,7 +43,11 @@ export const convert = (data: any, conversionSpec: any) => {
 };
 
 const convertField = (input: any, f: any) => {
-  return input !== undefined && input !== null ? f(input) : input;
+  if (Array.isArray(f)) {
+    return flow(f)(input);
+  } else {
+    return input !== undefined && input !== null ? f(input) : input;
+  }
 };
 
 export const convertPercentageToFraction = (data: number) => {
@@ -54,9 +58,18 @@ export const convertFractionToPercentage = (data: number) => {
   return parseFloat((data * 100).toFixed(2));
 };
 
-export const parseStringToFloat = (data: string | number) => {
+export const parseStringToFloat = (data: string | number | undefined) => {
   if (typeof data === "string") {
     const result = parseFloat(data);
+    return Number.isNaN(result) ? undefined : result;
+  } else {
+    return data;
+  }
+};
+
+export const parseStringToInteger = (data: string | number | undefined) => {
+  if (typeof data === "string") {
+    const result = parseInt(data, 10);
     return Number.isNaN(result) ? undefined : result;
   } else {
     return data;
@@ -74,4 +87,11 @@ export const convertToPrecision = (data: number, precision: number) => {
   } else {
     return undefined;
   }
+};
+
+export const convertInArray = (path: string, f: any, arr: any[]) => {
+  return arr.map(element => {
+    const result = f(get(element, path));
+    return set(element, path, result);
+  });
 };

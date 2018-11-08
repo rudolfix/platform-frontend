@@ -4,6 +4,7 @@ import {
   applyDefaults,
   convert,
   convertFractionToPercentage,
+  convertInArray,
   convertPercentageToFraction,
   convertToPrecision,
   parseStringToFloat,
@@ -43,16 +44,18 @@ describe("applyDefaults", () => {
 });
 
 describe("convert", () => {
-  it("iterates through conversionSpec object, gets data, denoted as key of conversion spec, and applies conversion functions to it", () => {
-    const bla2fufu = (input: any) => (input === "bla" ? "fufu" : input);
-    const data = {
-      key1: "bla",
-      key2: {
-        key2_1: "bla",
-        key2_2: "foobar",
-      },
-    };
+  const bla2fufu = (input: any) => (input === "bla" ? "fufu" : input);
+  const fufu2pfui = (input: any) => (input === "fufu" ? "pfui" : input);
 
+  const data = {
+    key1: "bla",
+    key2: {
+      key2_1: "bla",
+      key2_2: "foobar",
+    },
+  };
+
+  it("iterates through conversionSpec object, gets data, denoted as key of conversion spec, and applies conversion functions to it", () => {
     const spec = {
       key1: bla2fufu,
       "key2.key2_1": bla2fufu,
@@ -60,6 +63,21 @@ describe("convert", () => {
 
     const expectedOutput = {
       key1: "fufu",
+      key2: {
+        key2_1: "fufu",
+        key2_2: "foobar",
+      },
+    };
+    expect(convert(data, spec)).to.deep.equal(expectedOutput);
+  });
+  it("takes an array of functions and creates a pipeline", () => {
+    const spec = {
+      key1: [bla2fufu, fufu2pfui],
+      "key2.key2_1": bla2fufu,
+    };
+
+    const expectedOutput = {
+      key1: "pfui",
       key2: {
         key2_1: "fufu",
         key2_2: "foobar",
@@ -90,7 +108,7 @@ describe("convertFractionToPercentage", () => {
 describe("parseStringToFloat", () => {
   it("tries to parse string to float and returns a float or an undefined", () => {
     const goodString = "2.56";
-    const badString = "bla";
+    const badString = "dateSchema";
 
     expect((parseStringToFloat(goodString) as number).toString()).to.be.equal(goodString);
     expect(parseStringToFloat(badString)).to.be.undefined;
@@ -100,9 +118,27 @@ describe("parseStringToFloat", () => {
 describe("convertToPrecision", () => {
   it("imitates converting a floating point to a fixed precision number, returns undefined if input is invalid", () => {
     const float = 2.3456;
-    const badData = parseInt("bla", 2);
+    const badData = parseInt("dateSchema", 2);
     const expectedResult = "2.35";
     expect((convertToPrecision(float, 2) as number).toString()).equal(expectedResult);
     expect(convertToPrecision(badData, 2)).is.undefined;
+  });
+});
+
+describe("convertInArray", () => {
+  it("iterates over an array of objects and applies conversion functions to its elements", () => {
+    const conversionFunction = (data: any) => parseInt(data, 10);
+    const data = {
+      key1: [{ elementKey1: "bla", elementKey2: "25" }, { elementKey1: "blo", elementKey2: "27" }],
+    };
+    const conversionSpec = {
+      key1: convertInArray.bind(null, "elementKey2", conversionFunction),
+    };
+
+    const expectedOutput = {
+      key1: [{ elementKey1: "bla", elementKey2: 25 }, { elementKey1: "blo", elementKey2: 27 }],
+    };
+
+    expect(convert(data, conversionSpec)).to.be.deep.equal(expectedOutput);
   });
 });

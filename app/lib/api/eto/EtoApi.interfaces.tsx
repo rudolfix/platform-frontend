@@ -1,10 +1,11 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { NumberSchema } from "yup";
+import { NumberSchema, StringSchema } from "yup";
 
 import { PlatformTerms, Q18 } from "../../../config/constants";
 import { DeepPartial } from "../../../types";
 import * as YupTS from "../../yup-ts";
+import { dateSchema } from "../util/schemaHelpers";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
 /** COMPANY ETO RELATED INTERFACES
@@ -24,7 +25,7 @@ const EtoCapitalListType = YupTS.object({
   description: YupTS.string().optional(),
   percent: YupTS.number()
     .optional()
-    .enhance(v => v.max(1, "value cannot exceed 100%")),
+    .enhance(v => v.max(100, "value cannot exceed 100%")),
 }).optional();
 
 export const EtoCompanyInformationType = YupTS.object({
@@ -116,7 +117,8 @@ export const EtoLegalInformationType = YupTS.object({
   country: YupTS.string(),
   vatNumber: YupTS.string().optional(),
   registrationNumber: YupTS.string(),
-  foundingDate: YupTS.string(),
+  foundingDate: YupTS.string().enhance((v: StringSchema) => dateSchema(v)),
+
   numberOfEmployees: YupTS.string().optional(),
   companyStage: YupTS.string().optional(),
   numberOfFounders: YupTS.number().optional(),
@@ -254,7 +256,7 @@ export const EtoInvestmentTermsType = YupTS.object({
   equityTokensPerShare: YupTS.number(),
   shareNominalValueEur: YupTS.number(),
   preMoneyValuationEur: YupTS.number(),
-  existingCompanyShares: YupTS.number().optional(),
+  existingCompanyShares: YupTS.number(),
   authorizedCapitalShares: YupTS.number().optional(),
   newSharesToIssue: YupTS.number(),
   minimumNewSharesToIssue: YupTS.number(),

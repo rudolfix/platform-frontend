@@ -5,6 +5,7 @@ import { AccountBalance } from "../../shared/AccountBalance";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { IPanelProps } from "../../shared/Panel";
 import { IWalletValues, WalletBalanceContainer } from "./WalletBalance";
+import { isWalletNotEmpty } from "./utils";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as neuroIcon from "../../../assets/img/nEUR_icon.svg";
@@ -39,18 +40,20 @@ export const IcbmWallet: React.SFC<IIcbmWallet> = ({
         <h4 className={styles.title}>
           <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
         </h4>
-        <AccountBalance
-          icon={neuroIcon}
-          currency="eur_token"
-          currencyTotal="eur"
-          largeNumber={data.neuroAmount}
-          value={data.neuroEuroAmount}
-          onUpgradeClick={data.neuroEuroAmount === "0" ? undefined : onUpgradeEuroClick}
-          disabled={!data.isEuroUpgradeTargetSet}
-        />
-
-        <HorizontalLine className="my-3" />
-
+        {isWalletNotEmpty(data.neuroAmount) && (
+          <>
+            <AccountBalance
+              icon={neuroIcon}
+              currency="eur_token"
+              currencyTotal="eur"
+              largeNumber={data.neuroAmount}
+              value={data.neuroEuroAmount}
+              onUpgradeClick={data.neuroEuroAmount === "0" ? undefined : onUpgradeEuroClick}
+              disabled={!data.isEuroUpgradeTargetSet}
+            />
+            <HorizontalLine className="my-3" />
+          </>
+        )}
         <AccountBalance
           icon={ethIcon}
           currency="eth"

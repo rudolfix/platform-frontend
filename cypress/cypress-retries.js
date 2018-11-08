@@ -7,6 +7,9 @@ const _ = require("lodash");
 * Set number of retries in MAX_NUM_RUNS
 */
 
+// This script was taken from issue 1313 in Cypress
+// https://github.com/cypress-io/cypress/issues/1313
+
 const MAX_NUM_RUNS = 3;
 
 const DEFAULT_CONFIG = {

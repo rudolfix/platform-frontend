@@ -209,7 +209,7 @@
   "eto.form.section.eto-terms.token-tradable": "Is the token tradable?",
   "eto.form.section.investment-terms.authorized-capital": "Authorized capital",
   "eto.form.section.investment-terms.equity-token-price": "Equity token price",
-  "eto.form.section.investment-terms.existing-shares": "Existing shares (you can change this value in the Legal Information form)",
+  "eto.form.section.investment-terms.existing-shares": "Existing shares",
   "eto.form.section.investment-terms.fully-diluted-pre-money-valuation": "Pre-Money Valuation",
   "eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors": "Maximum fixed slots discount",
   "eto.form.section.investment-terms.maximum-new-shares-to-issue": "Maximum new shares to issue",

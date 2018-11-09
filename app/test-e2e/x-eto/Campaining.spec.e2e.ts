@@ -55,7 +55,7 @@ describe("Eto campaining state", () => {
         kyc: "business",
       }).then(() => {
         cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-
+        cy.reload();
         fillForm({
           amount: "10000",
           consentToRevealEmail: {
@@ -78,7 +78,7 @@ describe("Eto campaining state", () => {
           kyc: "business",
         }).then(() => {
           cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-
+          cy.reload();
           fillForm({
             amount: "15000",
             "eto-bookbuilding-back-now": { type: "submit" },

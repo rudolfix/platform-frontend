@@ -18,6 +18,7 @@ import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/Soc
 import { Tooltip } from "../../../shared/Tooltip";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+
 import * as styles from "../Shared.module.scss";
 
 interface IStateProps {

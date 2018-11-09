@@ -23,11 +23,11 @@ import { FormSection } from "../../../shared/forms/FormSection";
 import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
-import * as styles from "../Shared.module.scss";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
+import * as styles from "../Shared.module.scss";
 import * as localStyles from "./KeyIndividuals.module.scss";
 
 interface IStateProps {
@@ -167,6 +167,7 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
                 layout={EButtonLayout.SECONDARY}
                 svgIcon={plusIcon}
                 onClick={() => arrayHelpers.push(getBlankMember())}
+                className={localStyles.addButton}
               >
                 <FormattedMessage id="eto.form.key-individuals.add" />
               </Button>
@@ -190,7 +191,6 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
       title={<FormattedMessage id="eto.form.key-individuals.title" />}
       validator={validator}
     >
-      {" "}
       <Section>
         <KeyIndividualsGroup
           title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}

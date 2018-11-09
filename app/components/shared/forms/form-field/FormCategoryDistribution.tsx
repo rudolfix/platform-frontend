@@ -4,13 +4,14 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
-import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
-import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
 import { CommonHtmlProps, TFormikConnect, TTranslatedString } from "../../../../types";
 import { ButtonIcon, ButtonIconPlaceholder } from "../../buttons";
-import * as styles from "./FormCategoryDistribution.module.scss";
 import { FormInput } from "./FormInput";
 import { FormTransformingField } from "./FormTransformingField";
+
+import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
+import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
+import * as styles from "./FormCategoryDistribution.module.scss";
 
 interface IProps {
   disabled?: boolean;

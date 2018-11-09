@@ -710,6 +710,7 @@
   "shared-component.eto-overview.status-listed": "Campaigning",
   "shared-component.eto-overview.status-of-eto": "Status of eto",
   "shared-component.eto-overview.status-on-chain": "On chain",
+  "shared-component.eto-overview.status-prospectus-approved": "Campaigning",
   "shared-component.eto-overview.success": "Successful ETO",
   "shared-component.eto-overview.success.summary": "Equivalent to {totalAmount} raised by {totalInvestors} investors",
   "shared-component.eto-overview.term-sheet": "Term sheet",

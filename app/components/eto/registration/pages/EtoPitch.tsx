@@ -193,6 +193,6 @@ export const EtoRegistrationPitch = compose<React.SFC>(
 const fromFormState = {
   useOfCapitalList: [
     removeEmptyKeyValueFields(),
-    convertInArray({percent:convertPercentageToFraction()}),
+    convertInArray({ percent: convertPercentageToFraction() }),
   ],
 };

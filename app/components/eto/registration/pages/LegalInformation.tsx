@@ -24,7 +24,8 @@ import {
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import {
   convert,
-  convertInArray, parseStringToFloat,
+  convertInArray,
+  parseStringToFloat,
   parseStringToInteger,
   removeEmptyKeyValueFields,
 } from "../../utils";
@@ -187,11 +188,8 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
 )(EtoRegistrationLegalInformationComponent);
 
 const fromFormState = {
-  shareholders: [
-    removeEmptyKeyValueFields(),
-    convertInArray({shares: parseStringToInteger()}),
-  ],
-  companyShares:parseStringToInteger(),
-  lastFundingSizeEur:parseStringToFloat(),
-  numberOfFounders:parseStringToInteger(),
+  shareholders: [removeEmptyKeyValueFields(), convertInArray({ shares: parseStringToInteger() })],
+  companyShares: parseStringToInteger(),
+  lastFundingSizeEur: parseStringToFloat(),
+  numberOfFounders: parseStringToInteger(),
 };

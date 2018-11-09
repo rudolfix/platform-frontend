@@ -16,7 +16,6 @@ export const applyDefaults = (data: any, defaults: any) => {
   }, dataCopy);
 };
 
-
 /**** DATA CONVERSION FUNCTIONS ****/
 
 export const convert = (data: any, conversionSpec: any) => {
@@ -40,33 +39,32 @@ const convertField = (input: any, f: any) => {
   }
 };
 
-export const convertInArray = (conversionSpec: any ) =>
-  (arr: any[]) => {
-    return arr.map(element => {
-      return convert(element,conversionSpec);
-    });
-  };
+export const convertInArray = (conversionSpec: any) => (arr: any[]) => {
+  return arr.map(element => {
+    return convert(element, conversionSpec);
+  });
+};
 
 //removes data left from empty key-value fields, e.g. {key:undefined,value:undefined}
-export const removeEmptyKeyValueFields = () =>
-  (data: ICompoundField[] | undefined) => {
-    if (data !== undefined && data !== null) {
-      const cleanData = data.filter(compoundField => {
-        const keys = Object.keys(compoundField);
-        return compoundField[keys[0]] !== undefined && compoundField[keys[1]] !== undefined;
-      });
-      return cleanData.length ? cleanData : undefined;
-    } else {
-      return undefined;
-    }
-  };
+export const removeEmptyKeyValueFields = () => (data: ICompoundField[] | undefined) => {
+  if (data !== undefined && data !== null) {
+    const cleanData = data.filter(compoundField => {
+      const keys = Object.keys(compoundField);
+      return compoundField[keys[0]] !== undefined && compoundField[keys[1]] !== undefined;
+    });
+    return cleanData.length ? cleanData : undefined;
+  } else {
+    return undefined;
+  }
+};
 
-export const convertPercentageToFraction = () => (data: number) => parseFloat((data / 100).toPrecision(4));
+export const convertPercentageToFraction = () => (data: number) =>
+  parseFloat((data / 100).toPrecision(4));
 
-export const convertFractionToPercentage = () => (data: number) => parseFloat((data * 100).toFixed(2));
+export const convertFractionToPercentage = () => (data: number) =>
+  parseFloat((data * 100).toFixed(2));
 
-export const parseStringToFloat = () =>
-  (data: string | number | undefined) => {
+export const parseStringToFloat = () => (data: string | number | undefined) => {
   if (typeof data === "string") {
     const result = parseFloat(data);
     return Number.isNaN(result) ? undefined : result;
@@ -75,8 +73,7 @@ export const parseStringToFloat = () =>
   }
 };
 
-export const parseStringToInteger = () =>
-  (data: string | number | undefined) => {
+export const parseStringToInteger = () => (data: string | number | undefined) => {
   if (typeof data === "string") {
     const result = parseInt(data, 10);
     return Number.isNaN(result) ? undefined : result;
@@ -85,8 +82,7 @@ export const parseStringToInteger = () =>
   }
 };
 
-export const convertToPrecision = (precision: number) =>
-  (data: number) => {
+export const convertToPrecision = (precision: number) => (data: number) => {
   if (data && !Number.isNaN(data)) {
     return parseFloat(
       data.toLocaleString(undefined, {
@@ -98,4 +94,3 @@ export const convertToPrecision = (precision: number) =>
     return undefined;
   }
 };
-

@@ -27,7 +27,8 @@ import {
   convert,
   convertFractionToPercentage,
   convertPercentageToFraction,
-  parseStringToFloat, parseStringToInteger,
+  parseStringToFloat,
+  parseStringToInteger,
 } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 
@@ -323,5 +324,5 @@ const fromFormState = {
   existingCompanyShares: parseStringToInteger(),
   newSharesToIssueInFixedSlots: parseStringToInteger(),
   newSharesToIssueInWhitelist: parseStringToInteger(),
-  shareNominalValueEur:parseStringToFloat()
+  shareNominalValueEur: parseStringToFloat(),
 };

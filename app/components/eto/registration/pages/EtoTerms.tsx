@@ -28,7 +28,7 @@ import { FormRange } from "../../../shared/forms/form-field/FormRange";
 import { EtoFormBase } from "../EtoFormBase";
 
 import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
-import {convert, convertPercentageToFraction, parseStringToInteger} from "../../utils";
+import { convert, parseStringToInteger } from "../../utils";
 
 interface IExternalProps {
   readonly: boolean;
@@ -241,10 +241,8 @@ export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
   }),
 )(EtoRegistrationTermsComponent);
 
-
 const fromFormState = {
   publicDurationDays: parseStringToInteger(),
-  signingDurationDays:parseStringToInteger(),
-  whitelistDurationDays:parseStringToInteger()
+  signingDurationDays: parseStringToInteger(),
+  whitelistDurationDays: parseStringToInteger(),
 };
-

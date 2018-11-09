@@ -127,9 +127,9 @@ describe("convertToPrecision", () => {
 
 describe("convertInArray", () => {
   it("iterates over an array of objects and applies respective conversion specs to its elements", () => {
-    const conversionFunction1 = () =>(data: any) => data === "blo" ? "wow" : data;
+    const conversionFunction1 = () => (data: any) => (data === "blo" ? "wow" : data);
     const conversionFunction2 = () => (data: any) => parseInt(data, 10);
-    const conversionFunction3 = (n:number) => (data: any) => data === n ? n * 100 : data;
+    const conversionFunction3 = (n: number) => (data: any) => (data === n ? n * 100 : data);
 
     const data = {
       key1: [{ elementKey1: "bla", elementKey2: "25" }, { elementKey1: "blo", elementKey2: "27" }],
@@ -137,12 +137,12 @@ describe("convertInArray", () => {
     };
 
     const conversionSpecKey1 = {
-      elementKey1: conversionFunction1()
+      elementKey1: conversionFunction1(),
     };
 
     const conversionSpecKey2 = {
-      elementKey1:conversionFunction1(),
-      elementKey2:[conversionFunction2(), conversionFunction3(25)]
+      elementKey1: conversionFunction1(),
+      elementKey2: [conversionFunction2(), conversionFunction3(25)],
     };
 
     const conversionSpec = {

@@ -67,7 +67,7 @@ export class NumberTransformingField extends React.Component<FieldGroupProps> {
                       className={cn(className, styles.inputField)}
                       {...field}
                       onBlur={e => {
-                        setFieldValue(name, convertToPrecision(e.target.valueAsNumber, 2));
+                        setFieldValue(name, convertToPrecision(2)(e.target.valueAsNumber));
                       }}
                       type="number"
                       value={field.value}

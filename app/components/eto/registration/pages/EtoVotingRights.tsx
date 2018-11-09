@@ -132,5 +132,5 @@ export const EtoVotingRights = compose<React.SFC<IExternalProps>>(
 )(EtoVotingRightsComponent);
 
 const fromFormState = {
-  liquidationPreferenceMultiplier: parseStringToFloat,
+  liquidationPreferenceMultiplier: parseStringToFloat(),
 };

@@ -28,6 +28,7 @@ import { FormRange } from "../../../shared/forms/form-field/FormRange";
 import { EtoFormBase } from "../EtoFormBase";
 
 import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
+import {convert, convertPercentageToFraction, parseStringToInteger} from "../../utils";
 
 interface IExternalProps {
   readonly: boolean;
@@ -223,12 +224,11 @@ export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
+        const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
-            etoData: {
-              ...data,
-            },
+            etoData: convertedData,
           }),
         );
       },
@@ -240,3 +240,11 @@ export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationTermsComponent);
+
+
+const fromFormState = {
+  publicDurationDays: parseStringToInteger(),
+  signingDurationDays:parseStringToInteger(),
+  whitelistDurationDays:parseStringToInteger()
+};
+

@@ -27,7 +27,7 @@ import {
   convert,
   convertFractionToPercentage,
   convertPercentageToFraction,
-  parseStringToFloat,
+  parseStringToFloat, parseStringToInteger,
 } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 
@@ -313,12 +313,16 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
 export { EtoInvestmentTerms };
 
 const toFormState = {
-  whitelistDiscountFraction: convertFractionToPercentage,
-  fixedSlotsMaximumDiscountFraction: convertFractionToPercentage,
+  whitelistDiscountFraction: convertFractionToPercentage(),
+  fixedSlotsMaximumDiscountFraction: convertFractionToPercentage(),
 };
 
 const fromFormState = {
-  whitelistDiscountFraction: convertPercentageToFraction,
-  fixedSlotsMaximumDiscountFraction: convertPercentageToFraction,
-  equityTokensPerShare: parseStringToFloat,
+  whitelistDiscountFraction: convertPercentageToFraction(),
+  fixedSlotsMaximumDiscountFraction: convertPercentageToFraction(),
+  equityTokensPerShare: parseStringToInteger(),
+  existingCompanyShares: parseStringToInteger(),
+  newSharesToIssueInFixedSlots: parseStringToInteger(),
+  newSharesToIssueInWhitelist: parseStringToInteger(),
+  shareNominalValueEur:parseStringToFloat()
 };

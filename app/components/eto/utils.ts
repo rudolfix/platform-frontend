@@ -4,19 +4,6 @@ export interface ICompoundField {
   [x: string]: string | number | undefined;
 }
 
-//removes data left from empty key-value fields, e.g. {key:undefined,value:undefined}
-export const sanitizeKeyValueCompoundField = (data: ICompoundField[] | undefined) => {
-  if (data !== undefined && data !== null) {
-    const cleanData = data.filter(compoundField => {
-      const keys = Object.keys(compoundField);
-      return compoundField[keys[0]] !== undefined && compoundField[keys[1]] !== undefined;
-    });
-    return cleanData.length ? cleanData : undefined;
-  } else {
-    return undefined;
-  }
-};
-
 //TODO this is very primitive for now. First we need determine how/where to store defaults
 export const applyDefaults = (data: any, defaults: any) => {
   const dataCopy = { ...data };
@@ -28,6 +15,10 @@ export const applyDefaults = (data: any, defaults: any) => {
     return acc;
   }, dataCopy);
 };
+
+/**** DATA CONVERSION FUNCTIONS ****/
+
+
 
 export const convert = (data: any, conversionSpec: any) => {
   if (data) {
@@ -50,15 +41,33 @@ const convertField = (input: any, f: any) => {
   }
 };
 
-export const convertPercentageToFraction = (data: number) => {
-  return parseFloat((data / 100).toPrecision(4));
-};
+export const convertInArray = (conversionSpec: any ) =>
+  (arr: any[]) => {
+    return arr.map(element => {
+      return convert(element,conversionSpec);
+    });
+  };
 
-export const convertFractionToPercentage = (data: number) => {
-  return parseFloat((data * 100).toFixed(2));
-};
+//removes data left from empty key-value fields, e.g. {key:undefined,value:undefined}
+export const removeEmptyKeyValueFields = () =>
+  (data: ICompoundField[] | undefined) => {
+    if (data !== undefined && data !== null) {
+      const cleanData = data.filter(compoundField => {
+        const keys = Object.keys(compoundField);
+        return compoundField[keys[0]] !== undefined && compoundField[keys[1]] !== undefined;
+      });
+      return cleanData.length ? cleanData : undefined;
+    } else {
+      return undefined;
+    }
+  };
 
-export const parseStringToFloat = (data: string | number | undefined) => {
+export const convertPercentageToFraction = () => (data: number) => parseFloat((data / 100).toPrecision(4));
+
+export const convertFractionToPercentage = () => (data: number) => parseFloat((data * 100).toFixed(2));
+
+export const parseStringToFloat = () =>
+  (data: string | number | undefined) => {
   if (typeof data === "string") {
     const result = parseFloat(data);
     return Number.isNaN(result) ? undefined : result;
@@ -67,7 +76,8 @@ export const parseStringToFloat = (data: string | number | undefined) => {
   }
 };
 
-export const parseStringToInteger = (data: string | number | undefined) => {
+export const parseStringToInteger = () =>
+  (data: string | number | undefined) => {
   if (typeof data === "string") {
     const result = parseInt(data, 10);
     return Number.isNaN(result) ? undefined : result;
@@ -76,7 +86,8 @@ export const parseStringToInteger = (data: string | number | undefined) => {
   }
 };
 
-export const convertToPrecision = (data: number, precision: number) => {
+export const convertToPrecision = (precision: number) =>
+  (data: number) => {
   if (data && !Number.isNaN(data)) {
     return parseFloat(
       data.toLocaleString(undefined, {
@@ -89,9 +100,3 @@ export const convertToPrecision = (data: number, precision: number) => {
   }
 };
 
-export const convertInArray = (path: string, f: any, arr: any[]) => {
-  return arr.map(element => {
-    const result = f(get(element, path));
-    return set(element, path, result);
-  });
-};

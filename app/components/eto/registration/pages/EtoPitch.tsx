@@ -17,7 +17,7 @@ import {
   convert,
   convertInArray,
   convertPercentageToFraction,
-  sanitizeKeyValueCompoundField,
+  removeEmptyKeyValueFields,
 } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
@@ -192,7 +192,7 @@ export const EtoRegistrationPitch = compose<React.SFC>(
 
 const fromFormState = {
   useOfCapitalList: [
-    sanitizeKeyValueCompoundField,
-    convertInArray.bind(null, "percent", convertPercentageToFraction),
+    removeEmptyKeyValueFields(),
+    convertInArray({percent:convertPercentageToFraction()}),
   ],
 };

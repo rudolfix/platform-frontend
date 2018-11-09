@@ -5,10 +5,11 @@ import { assertRegister, confirmAccessModal } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
+import { etoFixtureAddressByName } from "../utils";
 
 describe("Eto campaining state", () => {
   it("should show Register button when not logged in", () => {
-    const ETO_ID = "0x0d69BfC43EB3500A8A747Df979C22e3609B62A20";
+    const ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
 
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
     cy.get(tid("eto.public-view")).should("exist");
@@ -19,7 +20,7 @@ describe("Eto campaining state", () => {
   });
 
   it("should show founders quote when logged in and campaigning date is not set", () => {
-    const ETO_ID = "0x051B9140Cb2FC1134E6fc8be2c2E270d0be45788";
+    const ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
 
     createAndLoginNewUser({
       type: "issuer",
@@ -33,7 +34,7 @@ describe("Eto campaining state", () => {
   });
 
   it("should allow to pledge by investor", () => {
-    const ETO_ID = "0x0d69BfC43EB3500A8A747Df979C22e3609B62A20";
+    const ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
 
     createAndLoginNewUser({
       type: "issuer",

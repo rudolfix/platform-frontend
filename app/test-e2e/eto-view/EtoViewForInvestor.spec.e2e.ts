@@ -2,12 +2,15 @@ import { tid } from "../../../test/testUtils";
 import { appRoutes } from "../../components/appRoutes";
 import { withParams } from "../../utils/withParams";
 import { createAndLoginNewUser } from "../utils/userHelpers";
+import { etoFixtureAddressByName } from "../utils";
 import { assertEtoView } from "./EtoViewUtils";
 
-const ETO_ID = "0x0d69BfC43EB3500A8A747Df979C22e3609B62A20";
-
 describe("Eto Investor View", () => {
-  beforeEach(() => createAndLoginNewUser({ type: "investor", kyc: "business" }));
+  let ETO_ID: string;
+  beforeEach(() => {
+    createAndLoginNewUser({ type: "investor", kyc: "business" });
+    ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
+  });
 
   it("should load empty Eto", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));

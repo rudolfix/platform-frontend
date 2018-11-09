@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { UnlockedWallet } from "./UnlockedWallet";
 
-storiesOf("ICBM Wallet", module)
+storiesOf("Unlocked Wallet", module)
   .add("Normal Wallet", () => (
     <UnlockedWallet
       depositEth={() => {}}
@@ -46,34 +46,6 @@ storiesOf("ICBM Wallet", module)
     />
   ))
   .add("With Both Values", () => (
-    <UnlockedWallet
-      depositEth={() => {}}
-      withdrawEth={() => {}}
-      address="0x"
-      data={{
-        ethAmount: "1",
-        ethEuroAmount: "1",
-        neuroAmount: "1",
-        neuroEuroAmount: "1",
-        totalEuroAmount: "0",
-      }}
-    />
-  ))
-  .add("With Both Values But no Callback Function", () => (
-    <UnlockedWallet
-      depositEth={() => {}}
-      withdrawEth={() => {}}
-      address="0x"
-      data={{
-        ethAmount: "1",
-        ethEuroAmount: "1",
-        neuroAmount: "1",
-        neuroEuroAmount: "1",
-        totalEuroAmount: "0",
-      }}
-    />
-  ))
-  .add("With Both Values and Callbacks but target not set", () => (
     <UnlockedWallet
       depositEth={() => {}}
       withdrawEth={() => {}}

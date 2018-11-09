@@ -50,7 +50,8 @@ storiesOf("ICBM Wallet", module)
         totalEuroAmount: "0",
       }}
     />
-  )).add("With Both Values", () => (
+  ))
+  .add("With Both Values", () => (
     <IcbmWallet
       onUpgradeEtherClick={() => {}}
       onUpgradeEuroClick={() => {}}
@@ -65,7 +66,8 @@ storiesOf("ICBM Wallet", module)
         totalEuroAmount: "0",
       }}
     />
-  )).add("With Both Values But no Callback Function", () => (
+  ))
+  .add("With Both Values But no Callback Function", () => (
     <IcbmWallet
       data={{
         hasFunds: true,
@@ -78,7 +80,8 @@ storiesOf("ICBM Wallet", module)
         totalEuroAmount: "0",
       }}
     />
-  )).add("With Both Values and Callbacks but target not set", () => (
+  ))
+  .add("With Both Values and Callbacks but target not set", () => (
     <IcbmWallet
       onUpgradeEtherClick={() => {}}
       onUpgradeEuroClick={() => {}}

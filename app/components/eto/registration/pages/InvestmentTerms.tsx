@@ -190,7 +190,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           prefix="€"
           name="newSharePrice"
           value={formatMoney(`${sharePrice}`, 1, 8)}
-          disabled={readonly}
+          readOnly={true}
         />
         <FormFieldRaw
           label={<FormattedMessage id="eto.form.section.investment-terms.equity-token-price" />}
@@ -198,7 +198,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           prefix="€"
           placeholder="read only"
           value={formatMoney(`${computedTokenPrice}`, 1, 8)}
-          disabled={readonly}
+          readOnly={true}
         />
         <Row>
           <Col sm={12} md={6} className="mb-4">
@@ -208,7 +208,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
               placeholder="read only"
               name="minNumberOfTokens"
               value={getFormattedMoney(minInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
-              disabled={readonly}
+              readOnly={true}
             />
           </Col>
           <Col sm={12} md={6} className="mb-4">
@@ -218,7 +218,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
               placeholder="read only"
               name="totalInvestment"
               value={getFormattedMoney(maxInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
-              disabled={readonly}
+              readOnly={true}
             />
           </Col>
           <Col sm={12} md={6}>
@@ -227,7 +227,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
               placeholder="read only"
               name="minCapEur"
               value={computedMinNumberOfTokens}
-              disabled={readonly}
+              readOnly={true}
             />
           </Col>
           <Col sm={12} md={6}>
@@ -236,7 +236,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
               placeholder="read only"
               name="maxCapEur"
               value={computedMaxNumberOfTokens}
-              disabled={readonly}
+              readOnly={true}
             />
           </Col>
           <Col sm={12} md={6}>
@@ -247,7 +247,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
               prefix="%"
               name="minSharesGenerated"
               value={computedMinCapPercent.toFixed(4)}
-              disabled={readonly}
+              readOnly={true}
             />
           </Col>
           <Col sm={12} md={6}>
@@ -258,7 +258,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
               prefix="%"
               name="maxSharesGenerated"
               value={computedMaxCapPercent.toFixed(4)}
-              disabled={readonly}
+              readOnly={true}
             />
           </Col>
         </Row>

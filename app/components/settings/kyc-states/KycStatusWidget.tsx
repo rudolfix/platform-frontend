@@ -6,7 +6,11 @@ import { compose } from "redux";
 
 import { TRequestOutsourcedStatus, TRequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectIsUserEmailVerified, selectUserType } from "../../../modules/auth/selectors";
+import {
+  selectBackupCodesVerified,
+  selectIsUserEmailVerified,
+  selectUserType,
+} from "../../../modules/auth/selectors";
 import {
   selectExternalKycUrl,
   selectKycRequestOutsourcedStatus,
@@ -35,6 +39,7 @@ interface IStateProps {
   requestOutsourcedStatus?: TRequestOutsourcedStatus;
   isUserEmailVerified: boolean;
   isLoading: boolean;
+  backupCodesVerified: boolean;
   error?: string;
   externalKycUrl?: string;
   userType: EUserType;
@@ -112,6 +117,7 @@ const ActionButton = ({
   externalKycUrl,
   userType,
   onGoToWallet,
+  backupCodesVerified,
 }: IKycStatusWidgetProps) => {
   if (requestStatus === "Accepted" && userType === EUserType.INVESTOR) {
     return (
@@ -120,7 +126,7 @@ const ActionButton = ({
         iconPosition="icon-after"
         svgIcon={arrowRight}
         onClick={onGoToWallet}
-        disabled={!isUserEmailVerified}
+        disabled={!isUserEmailVerified || !backupCodesVerified}
       >
         <FormattedMessage id="kyc.request-state.go-to-wallet" />
       </Button>
@@ -134,7 +140,7 @@ const ActionButton = ({
         iconPosition="icon-after"
         svgIcon={arrowRight}
         onClick={onGoToKycHome}
-        disabled={!isUserEmailVerified}
+        disabled={!isUserEmailVerified || !backupCodesVerified}
       >
         {requestStatus === "Draft" ? (
           <FormattedMessage id="settings.kyc-status-widget.start-kyc-process" />
@@ -219,6 +225,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
     stateToProps: s => ({
       isUserEmailVerified: selectIsUserEmailVerified(s.auth),
       userType: selectUserType(s.auth)!,
+      backupCodesVerified: selectBackupCodesVerified(s.auth),
       requestStatus: selectKycRequestStatus(s.kyc),
       requestOutsourcedStatus: selectKycRequestOutsourcedStatus(s.kyc),
       externalKycUrl: selectExternalKycUrl(s.kyc),

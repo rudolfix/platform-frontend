@@ -5,6 +5,9 @@ import { UnlockedWallet } from "./UnlockedWallet";
 storiesOf("ICBM Wallet", module)
   .add("Normal Wallet", () => (
     <UnlockedWallet
+      depositEth={() => {}}
+      withdrawEth={() => {}}
+      address="0x"
       data={{
         ethAmount: "0",
         ethEuroAmount: "0",
@@ -16,6 +19,9 @@ storiesOf("ICBM Wallet", module)
   ))
   .add("With Eth only", () => (
     <UnlockedWallet
+      depositEth={() => {}}
+      withdrawEth={() => {}}
+      address="0x"
       data={{
         ethAmount: "1",
         ethEuroAmount: "1",
@@ -27,6 +33,9 @@ storiesOf("ICBM Wallet", module)
   ))
   .add("With Euro only", () => (
     <UnlockedWallet
+      depositEth={() => {}}
+      withdrawEth={() => {}}
+      address="0x"
       data={{
         ethAmount: "0",
         ethEuroAmount: "0",
@@ -38,6 +47,9 @@ storiesOf("ICBM Wallet", module)
   ))
   .add("With Both Values", () => (
     <UnlockedWallet
+      depositEth={() => {}}
+      withdrawEth={() => {}}
+      address="0x"
       data={{
         ethAmount: "1",
         ethEuroAmount: "1",
@@ -49,6 +61,9 @@ storiesOf("ICBM Wallet", module)
   ))
   .add("With Both Values But no Callback Function", () => (
     <UnlockedWallet
+      depositEth={() => {}}
+      withdrawEth={() => {}}
+      address="0x"
       data={{
         ethAmount: "1",
         ethEuroAmount: "1",
@@ -60,10 +75,10 @@ storiesOf("ICBM Wallet", module)
   ))
   .add("With Both Values and Callbacks but target not set", () => (
     <UnlockedWallet
+      depositEth={() => {}}
+      withdrawEth={() => {}}
+      address="0x"
       data={{
-        hasFunds: true,
-        isEtherUpgradeTargetSet: false,
-        isEuroUpgradeTargetSet: false,
         ethAmount: "1",
         ethEuroAmount: "1",
         neuroAmount: "1",

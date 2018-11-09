@@ -192,8 +192,10 @@ const EtoOverviewStatusLayout: React.SFC<
             <div className={styles.tagsWrapper}>
               <TagsWidget
                 etoId={eto.etoId}
-                termSheet={documentsByType[EEtoDocumentType.TERMSHEET_TEMPLATE]}
-                prospectusApproved={documentsByType[EEtoDocumentType.APPROVED_PROSPECTUS]}
+                termSheet={documentsByType[EEtoDocumentType.SIGNED_TERMSHEET]}
+                prospectusApproved={
+                  documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]
+                }
                 smartContractOnchain={smartContractOnChain}
               />
             </div>
@@ -233,6 +235,7 @@ const EtoOverviewStatusLayout: React.SFC<
                     newSharesToIssueInWhitelist={eto.newSharesToIssueInWhitelist}
                     fixedSlotsMaximumDiscountFraction={eto.fixedSlotsMaximumDiscountFraction}
                     whitelistDiscountFraction={eto.whitelistDiscountFraction}
+                    publicDiscountFraction={eto.publicDiscountFraction}
                     existingCompanyShares={eto.existingCompanyShares}
                     preMoneyValuationEur={eto.preMoneyValuationEur}
                     minimumNewSharesToIssue={eto.minimumNewSharesToIssue}

@@ -83,9 +83,9 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
         placeholder="1000000"
-        value={10000}
         name="equityTokensPerShare"
-        disabled={readonly}
+        value={10000}
+        disabled={true}
       />
       <FormField
         label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
@@ -93,7 +93,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
         prefix="€"
         name="shareNominalValueEur"
         type="number"
-        value={1}
         min="1"
         disabled={readonly}
       />

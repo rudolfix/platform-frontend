@@ -34,7 +34,7 @@ export interface IFormInputExternalProps {
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
 
 const transform = (value: string, charactersLimit?: number) => {
-  return value !== undefined ? computedValue(value, charactersLimit) : undefined;
+  return value !== undefined ? computedValue(value, charactersLimit) : "";
 };
 
 const transformBack = (value: number | string) => {

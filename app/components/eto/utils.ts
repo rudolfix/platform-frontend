@@ -4,7 +4,7 @@ export interface ICompoundField {
   [x: string]: string | number | undefined;
 }
 
-//TODO this is very primitive for now. First we need determine how/where to store defaults
+//TODO remove it. Data should come from backend with all defaults set
 export const applyDefaults = (data: any, defaults: any) => {
   const dataCopy = { ...data };
 
@@ -16,9 +16,8 @@ export const applyDefaults = (data: any, defaults: any) => {
   }, dataCopy);
 };
 
+
 /**** DATA CONVERSION FUNCTIONS ****/
-
-
 
 export const convert = (data: any, conversionSpec: any) => {
   if (data) {

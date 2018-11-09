@@ -63,7 +63,7 @@ export const legalInfoForm: TFormFixture = {
 
 // investment terms
 export const investmentTermsRequiredForm: TFormFixture = {
-  shareNominalValueEur: "1",
+  shareNominalValueEur: "3",
   preMoneyValuationEur: "1000000",
   existingCompanyShares: "100",
   minimumNewSharesToIssue: "10000",

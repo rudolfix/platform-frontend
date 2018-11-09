@@ -34,7 +34,8 @@ describe("Eto campaining state", () => {
   });
 
   it("should allow to pledge by investor", () => {
-    const ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
+    // eto ID must match issuer SEED below
+    const ETO_ID = etoFixtureAddressByName("ETOInSetupState")!;
 
     createAndLoginNewUser({
       type: "issuer",

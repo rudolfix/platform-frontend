@@ -47,6 +47,9 @@ describe("Eto campaining state", () => {
 
       confirmAccessModal();
 
+      // give it a chance to settle before logging out
+      cy.wait(5000);
+
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",
@@ -66,6 +69,9 @@ describe("Eto campaining state", () => {
 
         cy.get(tid("eto-bookbuilding-amount-backed")).should("contain", "€10 000");
         cy.get(tid("eto-bookbuilding-investors-backed")).should("contain", "1");
+
+        // give it a chance to settle before logging out
+        cy.wait(5000);
 
         createAndLoginNewUser({
           type: "investor",

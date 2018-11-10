@@ -64,21 +64,38 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
       validator={EtoTermsType.toYup()}
     >
       <Section>
-        <FormLabel name="currencies">
-          <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
-        </FormLabel>
-        <div className="form-group">
-          <FormFieldCheckboxGroup name="currencies">
-            {currencies.map(currency => (
-              <FormFieldCheckbox
-                key={currency}
-                label={CURRENCIES[currency]}
-                value={currency}
-                disabled={readonly}
-              />
-            ))}
-          </FormFieldCheckboxGroup>
-        </div>
+      <FormLabel name="currencies">
+        <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
+      </FormLabel>
+
+      <div className="form-group">
+        <FormCheckbox
+          disabled={readonly}
+          name="allowRetailInvestors"
+          label={<FormattedMessage id="eto.form.section.eto-terms.is-retail-eto-temp" />}
+        />
+      </div>
+
+      <div className="form-group">
+        <FormCheckbox
+          disabled={readonly}
+          name="notUnderCrowdfundingRegulations"
+          label={<FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding" />}
+        />
+      </div>
+
+      <div className="form-group">
+        <FormFieldCheckboxGroup name="currencies">
+          {currencies.map(currency => (
+            <FormFieldCheckbox
+              key={currency}
+              label={CURRENCIES[currency]}
+              value={currency}
+              disabled={readonly}
+            />
+          ))}
+        </FormFieldCheckboxGroup>
+      </div>
 
         <Row>
           <Col>

@@ -60,8 +60,12 @@ export function setupBindings(config: IConfig): Container {
     .toConstantValue(config.ethereumNetwork);
   container.bind<IConfig>(symbols.config).toConstantValue(config);
 
-  container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
-
+  // @todo different logger could be injected to each class with additional info like name of the file etc.
+  if (process.env.NODE_ENV === "production") {
+    container.bind(symbols.logger).toConstantValue(noopLogger);
+  } else {
+    container.bind<ILogger>(symbols.logger).toConstantValue(new DevConsoleLogger());
+  }
   // classes
   container
     .bind<IHttpClient>(symbols.jsonHttpClient)

@@ -77,116 +77,119 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
       validator={EtoInvestmentTermsType.toYup()}
       progressOptions={etoInvestmentTermsProgressOptions}
     >
-      <FormField
-        label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
-        placeholder="1000000"
-        name="equityTokensPerShare"
-        disabled={readonly}
-      />
-      <FormField
-        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
-        placeholder="1"
-        prefix="€"
-        name="shareNominalValueEur"
-        type="number"
-        min="1"
-        disabled={readonly}
-      />
-      <FormField
-        label={
-          <FormattedMessage id="eto.form.section.investment-terms.fully-diluted-pre-money-valuation" />
-        }
-        placeholder=" "
-        prefix="€"
-        name="preMoneyValuationEur"
-        type="number"
-        min="1"
-        disabled={readonly}
-      />
-      <FormField
-        label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
-        placeholder="Number of existing shares"
-        name="existingCompanyShares"
-        type="number"
-        min="1"
-        disabled={readonly}
-      />
-      <FormField
-        label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
-        placeholder="Number of shares"
-        name="authorizedCapitalShares"
-        type="number"
-        disabled={readonly}
-      />
-      <FormField
-        label={
-          <FormattedMessage id="eto.form.section.investment-terms.minimum-new-shares-to-issue" />
-        }
-        placeholder="Number of shares"
-        name="minimumNewSharesToIssue"
-        type="number"
-        min="1"
-        disabled={readonly}
-      />
-      <FormField
-        label={
-          <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue" />
-        }
-        placeholder="Number of shares"
-        name="newSharesToIssue"
-        type="number"
-        min="1"
-        disabled={readonly}
-      />
-      <FormTransformingField
-        label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
-        placeholder=" "
-        name="publicDiscountFraction"
-        type="number"
-        prefix="%"
-        ratio={100}
-        disabled={readonly}
-      />
-      <FormField
-        label={
-          <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue-pre-eto" />
-        }
-        placeholder="Number of shares"
-        name="newSharesToIssueInWhitelist"
-        type="number"
-        min="1"
-        disabled={readonly}
-      />
-      <FormTransformingField
-        label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
-        placeholder=" "
-        name="whitelistDiscountFraction"
-        type="number"
-        prefix="%"
-        ratio={100}
-        disabled={readonly}
-      />
-      <FormField
-        label={
-          <FormattedMessage id="eto.form.section.investment-terms.maximum-shares-to-be-issued-in-fixed-slots" />
-        }
-        placeholder="Number of shares"
-        name="newSharesToIssueInFixedSlots"
-        type="number"
-        min="1"
-        disabled={readonly}
-      />
-      <FormTransformingField
-        label={
-          <FormattedMessage id="eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors" />
-        }
-        placeholder=" "
-        name="fixedSlotsMaximumDiscountFraction"
-        type="number"
-        prefix="%"
-        ratio={100}
-        disabled={readonly}
-      />
+      <Section>
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />
+          }
+          placeholder="1000000"
+          name="equityTokensPerShare"
+          disabled={true}
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
+          placeholder="1"
+          prefix="€"
+          name="shareNominalValueEur"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.fully-diluted-pre-money-valuation" />
+          }
+          placeholder=" "
+          prefix="€"
+          name="preMoneyValuationEur"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
+          placeholder="Number of existing shares"
+          name="existingCompanyShares"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+        <FormField
+          label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
+          placeholder="Number of shares"
+          name="authorizedCapitalShares"
+          type="number"
+          disabled={readonly}
+        />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.minimum-new-shares-to-issue" />
+          }
+          placeholder="Number of shares"
+          name="minimumNewSharesToIssue"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue" />
+          }
+          placeholder="Number of shares"
+          name="newSharesToIssue"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+        <FormTransformingField
+          label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
+          placeholder=" "
+          name="publicDiscountFraction"
+          type="number"
+          prefix="%"
+          ratio={100}
+          disabled={readonly}
+        />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue-pre-eto" />
+          }
+          placeholder="Number of shares"
+          name="newSharesToIssueInWhitelist"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+        <FormTransformingField
+          label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
+          placeholder=" "
+          name="whitelistDiscountFraction"
+          type="number"
+          prefix="%"
+          ratio={100}
+          disabled={readonly}
+        />
+        <FormField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.maximum-shares-to-be-issued-in-fixed-slots" />
+          }
+          placeholder="Number of shares"
+          name="newSharesToIssueInFixedSlots"
+          type="number"
+          min="1"
+          disabled={readonly}
+        />
+        <FormTransformingField
+          label={
+            <FormattedMessage id="eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors" />
+          }
+          placeholder=" "
+          name="fixedSlotsMaximumDiscountFraction"
+          type="number"
+          prefix="%"
+          ratio={100}
+          disabled={readonly}
+        />
 
         <FormHighlightGroup>
           <FormFieldRaw
@@ -195,6 +198,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             name="newSharePrice"
             value={formatMoney(`${sharePrice}`, 1, 8)}
             disabled={readonly}
+            readOnly={true}
           />
           <FormFieldRaw
             label={<FormattedMessage id="eto.form.section.investment-terms.equity-token-price" />}
@@ -203,6 +207,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             placeholder="read only"
             value={formatMoney(`${computedTokenPrice}`, 1, 8)}
             disabled={readonly}
+            readOnly={true}
           />
           <Row>
             <Col sm={12} md={6} className="mb-4">
@@ -213,6 +218,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 name="minNumberOfTokens"
                 value={getFormattedMoney(minInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
                 disabled={readonly}
+                readOnly={true}
               />
             </Col>
             <Col sm={12} md={6} className="mb-4">
@@ -223,6 +229,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 name="totalInvestment"
                 value={getFormattedMoney(maxInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
                 disabled={readonly}
+                readOnly={true}
               />
             </Col>
             <Col sm={12} md={6}>
@@ -234,6 +241,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 name="minCapEur"
                 value={computedMinNumberOfTokens}
                 disabled={readonly}
+                readOnly={true}
               />
             </Col>
             <Col sm={12} md={6}>
@@ -245,6 +253,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 name="maxCapEur"
                 value={computedMaxNumberOfTokens}
                 disabled={readonly}
+                readOnly={true}
               />
             </Col>
             <Col sm={12} md={6}>
@@ -256,6 +265,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 name="minSharesGenerated"
                 value={computedMinCapPercent.toFixed(4)}
                 disabled={readonly}
+                readOnly={true}
               />
             </Col>
             <Col sm={12} md={6}>
@@ -267,6 +277,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 name="maxSharesGenerated"
                 value={computedMaxCapPercent.toFixed(4)}
                 disabled={readonly}
+                readOnly={true}
               />
             </Col>
           </Row>

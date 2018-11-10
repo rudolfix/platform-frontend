@@ -32,6 +32,7 @@ import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import { EUserType } from "../../../lib/api/users/interfaces";
+import { selectIsLightWallet } from "../../../modules/web3/selectors";
 import * as styles from "./KycStatusWidget.module.scss";
 
 interface IStateProps {
@@ -126,14 +127,14 @@ const ActionButton = ({
         iconPosition="icon-after"
         svgIcon={arrowRight}
         onClick={onGoToWallet}
-        disabled={!isUserEmailVerified || !backupCodesVerified}
+        disabled={!isUserEmailVerified}
       >
         <FormattedMessage id="kyc.request-state.go-to-wallet" />
       </Button>
     );
   }
 
-  if (requestStatus === "Draft" || requestStatus === "Pending") {
+  if (requestStatus === "Draft") {
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
@@ -142,11 +143,21 @@ const ActionButton = ({
         onClick={onGoToKycHome}
         disabled={!isUserEmailVerified || !backupCodesVerified}
       >
-        {requestStatus === "Draft" ? (
-          <FormattedMessage id="settings.kyc-status-widget.start-kyc-process" />
-        ) : (
-          <FormattedMessage id="settings.kyc-status-widget.submit-additional-documents" />
-        )}
+        <FormattedMessage id="settings.kyc-status-widget.start-kyc-process" />
+      </Button>
+    );
+  }
+
+  if (requestStatus === "Pending") {
+    return (
+      <Button
+        layout={EButtonLayout.SECONDARY}
+        iconPosition="icon-after"
+        svgIcon={arrowRight}
+        onClick={onGoToKycHome}
+        disabled={!isUserEmailVerified}
+      >
+        <FormattedMessage id="settings.kyc-status-widget.submit-additional-documents" />
       </Button>
     );
   }
@@ -225,7 +236,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
     stateToProps: s => ({
       isUserEmailVerified: selectIsUserEmailVerified(s.auth),
       userType: selectUserType(s.auth)!,
-      backupCodesVerified: selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s.auth) || !selectIsLightWallet(s.web3),
       requestStatus: selectKycRequestStatus(s.kyc),
       requestOutsourcedStatus: selectKycRequestOutsourcedStatus(s.kyc),
       externalKycUrl: selectExternalKycUrl(s.kyc),

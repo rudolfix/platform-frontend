@@ -26,26 +26,26 @@ export const LockedWallet: React.SFC<ILockedWallet> = ({ data, className, header
         <h4 className={styles.title}>
           <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
         </h4>
-        {isWalletNotEmpty(data.ethEuroAmount) && (
-          <>
-            <AccountBalance
-              icon={neuroIcon}
-              currency="eur_token"
-              currencyTotal="eur"
-              largeNumber={data.neuroAmount}
-              value={data.neuroEuroAmount}
-            />
-            <HorizontalLine className="my-3" />
-          </>
+        {isWalletNotEmpty(data.neuroEuroAmount) && (
+          <AccountBalance
+            icon={neuroIcon}
+            currency="eur_token"
+            currencyTotal="eur"
+            largeNumber={data.neuroAmount}
+            value={data.neuroEuroAmount}
+          />
         )}
-
-        <AccountBalance
-          icon={ethIcon}
-          currency="eth"
-          currencyTotal="eur"
-          largeNumber={data.ethAmount}
-          value={data.ethEuroAmount}
-        />
+        {isWalletNotEmpty(data.neuroAmount) &&
+          isWalletNotEmpty(data.ethAmount) && <HorizontalLine className="my-3" />}
+        {isWalletNotEmpty(data.ethAmount) && (
+          <AccountBalance
+            icon={ethIcon}
+            currency="eth"
+            currencyTotal="eur"
+            largeNumber={data.ethAmount}
+            value={data.ethEuroAmount}
+          />
+        )}
       </section>
     </WalletBalanceContainer>
   );

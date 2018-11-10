@@ -41,28 +41,29 @@ export const IcbmWallet: React.SFC<IIcbmWallet> = ({
           <FormattedMessage id="shared-component.wallet-balance.title.account-balance" />
         </h4>
         {isWalletNotEmpty(data.neuroAmount) && (
-          <>
-            <AccountBalance
-              icon={neuroIcon}
-              currency="eur_token"
-              currencyTotal="eur"
-              largeNumber={data.neuroAmount}
-              value={data.neuroEuroAmount}
-              onUpgradeClick={data.neuroEuroAmount === "0" ? undefined : onUpgradeEuroClick}
-              disabled={!data.isEuroUpgradeTargetSet}
-            />
-            <HorizontalLine className="my-3" />
-          </>
+          <AccountBalance
+            icon={neuroIcon}
+            currency="eur_token"
+            currencyTotal="eur"
+            largeNumber={data.neuroAmount}
+            value={data.neuroEuroAmount}
+            onUpgradeClick={data.neuroEuroAmount === "0" ? undefined : onUpgradeEuroClick}
+            disabled={!data.isEuroUpgradeTargetSet}
+          />
         )}
-        <AccountBalance
-          icon={ethIcon}
-          currency="eth"
-          currencyTotal="eur"
-          largeNumber={data.ethAmount}
-          value={data.ethEuroAmount}
-          onUpgradeClick={data.ethEuroAmount === "0" ? undefined : onUpgradeEtherClick}
-          disabled={!data.isEtherUpgradeTargetSet}
-        />
+        {isWalletNotEmpty(data.neuroAmount) &&
+          isWalletNotEmpty(data.ethAmount) && <HorizontalLine className="my-3" />}
+        {isWalletNotEmpty(data.ethAmount) && (
+          <AccountBalance
+            icon={ethIcon}
+            currency="eth"
+            currencyTotal="eur"
+            largeNumber={data.ethAmount}
+            value={data.ethEuroAmount}
+            onUpgradeClick={data.ethAmount === "0" ? undefined : onUpgradeEtherClick}
+            disabled={!data.isEtherUpgradeTargetSet}
+          />
+        )}
       </section>
     </WalletBalanceContainer>
   );

@@ -45,7 +45,7 @@ describe("Eto Forms", () => {
       assertEtoDocuments();
 
       const documentsForm: TFormFixture = {
-        "form.name.termsheet_template": {
+        "form.name.signed_termsheet": {
           value: "example.pdf",
           method: "document",
           type: "custom",

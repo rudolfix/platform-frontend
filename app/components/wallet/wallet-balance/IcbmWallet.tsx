@@ -4,8 +4,8 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { AccountBalance } from "../../shared/AccountBalance";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { IPanelProps } from "../../shared/Panel";
-import { IWalletValues, WalletBalanceContainer } from "./WalletBalance";
 import { isWalletNotEmpty } from "./utils";
+import { IWalletValues, WalletBalanceContainer } from "./WalletBalance";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
 import * as neuroIcon from "../../../assets/img/nEUR_icon.svg";

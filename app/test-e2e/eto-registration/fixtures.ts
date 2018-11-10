@@ -77,9 +77,10 @@ export const investmentTermsForm: TFormFixture = {
   ...investmentTermsRequiredForm,
   authorizedCapitalShares: "100",
   newSharesToIssueInWhitelist: "5000",
-  whitelistDiscountFraction: "20",
+  publicDiscountFraction: "40",
+  whitelistDiscountFraction: "50",
   newSharesToIssueInFixedSlots: "1000",
-  fixedSlotsMaximumDiscountFraction: "50",
+  fixedSlotsMaximumDiscountFraction: "60",
   "eto-registration-investment-terms-submit": {
     type: "submit",
   },
@@ -109,6 +110,10 @@ export const etoTermsRequiredForm: TFormFixture = {
     type: "radio",
   },
   notUnderCrowdfundingRegulations: {
+    values: { true: true },
+    type: "checkbox",
+  },
+  allowRetailInvestors: {
     values: { true: true },
     type: "checkbox",
   },

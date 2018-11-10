@@ -143,6 +143,15 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
         min="1"
         disabled={readonly}
       />
+      <FormTransformingField
+        label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
+        placeholder=" "
+        name="publicDiscountFraction"
+        type="number"
+        prefix="%"
+        ratio={100}
+        disabled={readonly}
+      />
       <FormField
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue-pre-eto" />

@@ -37,7 +37,7 @@ export const statusToName: Record<
   [EtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
   [EtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
   [EtoState.PROSPECTUS_APPROVED]: (
-    <FormattedMessage id="shared-component.eto-status.prospectus-approved" />
+    <FormattedMessage id="shared-component.eto-overview.status-prospectus-approved" />
   ),
   [EtoState.ON_CHAIN]: <FormattedMessage id="shared-component.eto-overview.status-on-chain" />,
   // on chain state mappings

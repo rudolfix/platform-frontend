@@ -66,6 +66,23 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
       <FormLabel name="currencies">
         <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
       </FormLabel>
+
+      <div className="form-group">
+        <FormCheckbox
+          disabled={readonly}
+          name="allowRetailInvestors"
+          label={<FormattedMessage id="eto.form.section.eto-terms.is-retail-eto-temp" />}
+        />
+      </div>
+
+      <div className="form-group">
+        <FormCheckbox
+          disabled={readonly}
+          name="notUnderCrowdfundingRegulations"
+          label={<FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding" />}
+        />
+      </div>
+
       <div className="form-group">
         <FormFieldCheckboxGroup name="currencies">
           {currencies.map(currency => (
@@ -103,14 +120,6 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           />
         </Col>
       </Row>
-
-      <div className="form-group">
-        <FormCheckbox
-          disabled={readonly}
-          name="notUnderCrowdfundingRegulations"
-          label={<FormattedMessage id="eto.form.section.eto-terms.is-crowdfunding" />}
-        />
-      </div>
 
       <div className="form-group">
         <FormLabel name="prospectusLanguage">

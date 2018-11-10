@@ -4,7 +4,7 @@ import { withParams } from "../../utils/withParams";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
-const ETO_ID = "0xef2260A8e516393F313e0E659b1A357198D73eE";
+const ETO_ID = "0xef2260A8e516393F313e0E659b1A3571e98D73eE";
 
 describe("Eto Investor View", () => {
   beforeEach(() => createAndLoginNewUser({ type: "investor" }));

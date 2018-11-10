@@ -143,7 +143,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
         min="1"
         disabled={readonly}
       />
-      <FormTransformingField
+      <NumberTransformingField
         label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
         placeholder=" "
         name="publicDiscountFraction"

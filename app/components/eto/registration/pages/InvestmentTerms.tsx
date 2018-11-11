@@ -91,6 +91,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           }
           placeholder="1000000"
           name="equityTokensPerShare"
+          value={10000}
           disabled={true}
         />
         <FormField
@@ -237,7 +238,9 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             </Col>
             <Col sm={12} md={6}>
               <FormFieldRaw
-                label={<FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />}
+                label={
+                  <FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />
+                }
                 placeholder="read only"
                 name="minCapEur"
                 value={computedMinNumberOfTokens}
@@ -246,7 +249,9 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             </Col>
             <Col sm={12} md={6}>
               <FormFieldRaw
-                label={<FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />}
+                label={
+                  <FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />
+                }
                 placeholder="read only"
                 name="maxCapEur"
                 value={computedMaxNumberOfTokens}
@@ -338,4 +343,5 @@ const fromFormState = {
   newSharesToIssueInFixedSlots: parseStringToInteger(),
   newSharesToIssueInWhitelist: parseStringToInteger(),
   shareNominalValueEur: parseStringToFloat(),
+  publicDiscountFraction: convertPercentageToFraction(),
 };

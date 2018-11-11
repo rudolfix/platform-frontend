@@ -47,7 +47,7 @@ export const NumberTransformingField = ({
       } as any;
 
       return (
-        <FormGroup>
+        <FormGroup className={styles.keyValueField}>
           {label && <FormLabel name={name}>{label}</FormLabel>}
           <Field
             name={name}
@@ -66,7 +66,7 @@ export const NumberTransformingField = ({
                     setFieldValue(name, convertToPrecision(2)(e.target.valueAsNumber));
                   }}
                   type="number"
-                  value={field.value}
+                  value={field.value !== undefined ? field.value : ""}
                   valid={isValid(touched, errors, name)}
                   placeholder={placeholder || label}
                   disabled={disabled}

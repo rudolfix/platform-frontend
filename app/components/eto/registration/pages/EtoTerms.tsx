@@ -25,12 +25,12 @@ import {
 } from "../../../shared/forms/form-field/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormRange } from "../../../shared/forms/form-field/FormRange";
+import { convert, parseStringToInteger } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
-import { convert, parseStringToInteger } from "../../utils";
 
-import * as styles from "../Shared.module.scss";
 import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
+import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {
   readonly: boolean;

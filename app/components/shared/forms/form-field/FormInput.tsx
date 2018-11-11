@@ -116,7 +116,9 @@ export class FormInput extends React.Component<FormInputProps> {
                           setFieldValue(
                             name,
                             transformBack(
-                              type === "number" ? e.target.valueAsNumber : e.target.value,
+                              type === "number" && e.target.value !== ""
+                                ? e.target.valueAsNumber
+                                : e.target.value,
                             ),
                           );
                         }}

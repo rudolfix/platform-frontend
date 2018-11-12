@@ -63,3 +63,9 @@
     color: $color-black;
   }
 }
+
+// sass-lint:disable no-important
+// this is needed for backward compatibility of FormGroup
+.key-value-field {
+  margin-bottom: 0 !important;
+}

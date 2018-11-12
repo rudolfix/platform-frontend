@@ -1,7 +1,6 @@
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
@@ -16,6 +15,8 @@ import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { ICompoundField, sanitizeKeyValueCompoundField } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+
+import * as styles from "../Shared.module.scss";
 
 interface IStateProps {
   loadingData: boolean;
@@ -141,19 +142,16 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
           name="marketingApproach"
         />
       </Section>
-      <Col>
-        <Row className="justify-content-end">
-          <Button
-            layout={EButtonLayout.PRIMARY}
-            className="mr-4"
-            type="submit"
-            isLoading={props.savingData}
-            data-test-id="eto-registration-product-vision-submit"
-          >
-            Save
-          </Button>
-        </Row>
-      </Col>
+      <Section className={styles.buttonSection}>
+        <Button
+          layout={EButtonLayout.PRIMARY}
+          type="submit"
+          isLoading={props.savingData}
+          data-test-id="eto-registration-product-vision-submit"
+        >
+          Save
+        </Button>
+      </Section>
     </EtoFormBase>
   );
 };

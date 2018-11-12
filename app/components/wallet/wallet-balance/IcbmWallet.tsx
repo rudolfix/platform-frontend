@@ -47,7 +47,7 @@ export const IcbmWallet: React.SFC<IIcbmWallet> = ({
             currencyTotal="eur"
             largeNumber={data.neuroAmount}
             value={data.neuroEuroAmount}
-            onUpgradeClick={data.neuroEuroAmount === "0" ? undefined : onUpgradeEuroClick}
+            onUpgradeClick={onUpgradeEuroClick}
             disabled={!data.isEuroUpgradeTargetSet}
           />
         )}
@@ -60,7 +60,7 @@ export const IcbmWallet: React.SFC<IIcbmWallet> = ({
             currencyTotal="eur"
             largeNumber={data.ethAmount}
             value={data.ethEuroAmount}
-            onUpgradeClick={data.ethAmount === "0" ? undefined : onUpgradeEtherClick}
+            onUpgradeClick={onUpgradeEtherClick}
             disabled={!data.isEtherUpgradeTargetSet}
           />
         )}

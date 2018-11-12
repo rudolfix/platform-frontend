@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { CommonHtmlProps, TFormikConnect, TTranslatedString } from "../../../../types";
 import { ButtonIcon, ButtonIconPlaceholder } from "../../buttons";
 import { FormInput } from "./FormInput";
-import { FormTransformingField } from "./FormTransformingField";
+import { NumberTransformingField } from "./NumberTransformingField";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
@@ -101,20 +101,34 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
               `${name}.${formFieldKeys[1]}`,
             )}
           />
-
-          <FormTransformingField
-            disabled={disabled}
-            min="0"
-            prefix={prefix}
-            name={`${name}.${formFieldKeys[1]}`}
-            ratio={transformRatio}
-            onBlur={this.setAllFieldsTouched}
-            placeholder={valuePlaceholder}
-            customValidation={this.compoundFieldValidation(
-              formFieldKeys[1],
-              `${name}.${formFieldKeys[0]}`,
-            )}
-          />
+          {transformRatio ? (
+            <NumberTransformingField
+              disabled={disabled}
+              min="0"
+              prefix={prefix}
+              name={`${name}.${formFieldKeys[1]}`}
+              ratio={transformRatio}
+              onBlur={this.setAllFieldsTouched}
+              placeholder={valuePlaceholder}
+              customValidation={this.compoundFieldValidation(
+                formFieldKeys[1],
+                `${name}.${formFieldKeys[0]}`,
+              )}
+            />
+          ) : (
+            <FormInput
+              disabled={disabled}
+              min="0"
+              prefix={prefix}
+              name={`${name}.${formFieldKeys[1]}`}
+              onBlur={this.setAllFieldsTouched}
+              placeholder={valuePlaceholder}
+              customValidation={this.compoundFieldValidation(
+                formFieldKeys[1],
+                `${name}.${formFieldKeys[0]}`,
+              )}
+            />
+          )}
         </div>
 
         {!isFirstElement && !disabled ? (

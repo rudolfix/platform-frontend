@@ -89,7 +89,7 @@ export interface IKycBeneficialOwner extends IKycPerson {
 }
 export const KycBeneficialOwnerSchema = KycPersonSchema.concat(
   Yup.object().shape({
-    ownership: Yup.number(),
+    ownership: Yup.number().max(100),
     id: Yup.string(),
   }),
 );

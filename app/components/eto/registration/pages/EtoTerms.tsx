@@ -25,9 +25,11 @@ import {
 } from "../../../shared/forms/form-field/FormFieldCheckboxGroup";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormRange } from "../../../shared/forms/form-field/FormRange";
+import { convert, parseStringToInteger } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
+import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
 import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {
@@ -132,6 +134,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           <div>
             <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
           </div>
+          <FormError name="prospectusLanguage" className={formStyles.errorLabelAlignLeft} />
         </div>
 
         <div className="form-group">
@@ -198,7 +201,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
               value={false}
             />
           </div>
-          <FormError name="enableTransferOnSuccess" />
+          <FormError name="enableTransferOnSuccess" className={formStyles.errorLabelAlignLeft} />
         </div>
 
         <FormTextArea
@@ -236,12 +239,11 @@ export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
+        const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
-            etoData: {
-              ...data,
-            },
+            etoData: convertedData,
           }),
         );
       },
@@ -253,3 +255,9 @@ export const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationTermsComponent);
+
+const fromFormState = {
+  publicDurationDays: parseStringToInteger(),
+  signingDurationDays: parseStringToInteger(),
+  whitelistDurationDays: parseStringToInteger(),
+};

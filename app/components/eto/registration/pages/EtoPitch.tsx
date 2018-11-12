@@ -12,7 +12,12 @@ import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { ArrayOfKeyValueFields, FormTextArea } from "../../../shared/forms";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { ICompoundField, sanitizeKeyValueCompoundField } from "../../utils";
+import {
+  convert,
+  convertInArray,
+  convertPercentageToFraction,
+  removeEmptyKeyValueFields,
+} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -166,15 +171,10 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
-        const sanitizedData = {
-          ...data,
-          useOfCapitalList: sanitizeKeyValueCompoundField(
-            data.useOfCapitalList as ICompoundField[],
-          ),
-        };
+        const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
-            companyData: sanitizedData,
+            companyData: convertedData,
             etoData: {},
           }),
         );
@@ -187,3 +187,10 @@ export const EtoRegistrationPitch = compose<React.SFC>(
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationPitchComponent);
+
+const fromFormState = {
+  useOfCapitalList: [
+    removeEmptyKeyValueFields(),
+    convertInArray({ percent: convertPercentageToFraction() }),
+  ],
+};

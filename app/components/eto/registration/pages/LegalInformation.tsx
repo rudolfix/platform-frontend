@@ -21,7 +21,13 @@ import {
   FormSelectField,
 } from "../../../shared/forms";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { ICompoundField, sanitizeKeyValueCompoundField } from "../../utils";
+import {
+  convert,
+  convertInArray,
+  parseStringToFloat,
+  parseStringToInteger,
+  removeEmptyKeyValueFields,
+} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 import * as styles from "../Shared.module.scss";
@@ -166,11 +172,8 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
-        const sanitizedData = {
-          ...data,
-          shareholders: sanitizeKeyValueCompoundField(data.shareholders as ICompoundField[]),
-        };
-        dispatch(actions.etoFlow.saveDataStart({ companyData: sanitizedData, etoData: {} }));
+        const convertedData = convert(data, fromFormState);
+        dispatch(actions.etoFlow.saveDataStart({ companyData: convertedData, etoData: {} }));
       },
     }),
   }),
@@ -180,3 +183,10 @@ export const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>
     handleSubmit: (values, { props }) => props.saveData(values),
   }),
 )(EtoRegistrationLegalInformationComponent);
+
+const fromFormState = {
+  shareholders: [removeEmptyKeyValueFields(), convertInArray({ shares: parseStringToInteger() })],
+  companyShares: parseStringToInteger(),
+  lastFundingSizeEur: parseStringToFloat(),
+  numberOfFounders: parseStringToInteger(),
+};

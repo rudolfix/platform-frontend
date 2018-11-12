@@ -192,7 +192,7 @@
   "eto.form.section.equity-token-information.token-image": "Token image",
   "eto.form.section.equity-token-information.token-name": "Token name",
   "eto.form.section.equity-token-information.token-symbol": "Token symbol",
-  "eto.form.section.equity-token-information.tokens-per-share": "Tokens per share (token is not divisible) read only",
+  "eto.form.section.equity-token-information.tokens-per-share": "Tokens per share (token is not divisible)",
   "eto.form.section.eto-terms.fundraising-currency": "Fundraising currency",
   "eto.form.section.eto-terms.is-not-crowdfunding": "ETO is not under crowdfunding regulations",
   "eto.form.section.eto-terms.is-retail-eto-temp": "ETO is under prospectus regulations (retail) [TEMP]",

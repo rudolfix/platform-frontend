@@ -63,6 +63,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
     fixedSlotsMaximumDiscountFraction: stateValues.fixedSlotsMaximumDiscountFraction,
     whitelistDiscountFraction: stateValues.whitelistDiscountFraction,
     existingCompanyShares: stateValues.existingCompanyShares,
+    publicDiscountFraction: stateValues.publicDiscountFraction,
   });
   const sharePrice = getSharePrice({
     preMoneyValuationEur: stateValues.preMoneyValuationEur,

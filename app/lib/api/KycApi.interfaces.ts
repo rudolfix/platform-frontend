@@ -7,6 +7,8 @@ import {
   restrictedCountry,
 } from "./util/schemaHelpers";
 
+const percentageLimit = 100;
+
 export type TKycRequestType = "business" | "individual";
 
 export interface IKycPerson {
@@ -87,9 +89,10 @@ export interface IKycBeneficialOwner extends IKycPerson {
   ownership?: number;
   id?: string;
 }
+
 export const KycBeneficialOwnerSchema = KycPersonSchema.concat(
   Yup.object().shape({
-    ownership: Yup.number().max(100),
+    ownership: Yup.number().max(percentageLimit),
     id: Yup.string(),
   }),
 );

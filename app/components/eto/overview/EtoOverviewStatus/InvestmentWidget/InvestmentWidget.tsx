@@ -64,7 +64,10 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
                 <FormattedMessage id="shared-component.eto-overview.invest-now" />
               </ButtonLink>
             ) : isAuthorized && settingsUpdateRequired ? (
-              <ButtonLink to={appRoutes.settings}>
+              <ButtonLink
+                to={appRoutes.settings}
+                data-test-id="eto-overview-settings-update-required-to-invest"
+              >
                 <FormattedMessage id="shared-component.eto-overview.settings-update-required" />
               </ButtonLink>
             ) : (

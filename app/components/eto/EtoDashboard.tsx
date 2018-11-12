@@ -259,7 +259,6 @@ class EtoDashboardComponent extends React.Component<IProps> {
       (backupCodesVerified || !isLightWallet) &&
       requestStatus === "Accepted"
     );
-
     const shouldViewSubmissionSection = !!(
       etoFormProgress && etoFormProgress >= SUBMIT_PROPOSAL_THRESHOLD
     );

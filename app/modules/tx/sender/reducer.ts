@@ -67,6 +67,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...initialState,
         state: ETxSenderState.WATCHING_PENDING_TXS,
+        txHash: action.payload.txHash,
       };
 
     case "TX_SENDER_WATCH_PENDING_TXS_DONE":

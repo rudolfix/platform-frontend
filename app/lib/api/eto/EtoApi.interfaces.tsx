@@ -154,11 +154,11 @@ const companyNewsType = YupTS.array(
 export const EtoMediaType = YupTS.object({
   companyVideo: YupTS.object({
     title: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
-    url: YupTS.url(),
+    url: YupTS.url().optional(),
   }).optional(),
   companySlideshare: YupTS.object({
     title: YupTS.string().optional(), // optional in contrast to swagger, because filled in programmatically.
-    url: YupTS.url(),
+    url: YupTS.url().optional(),
   }).optional(),
 
   socialChannels: socialChannelsType.optional(),

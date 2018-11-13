@@ -530,6 +530,7 @@
   "modal.txsender.error-message.gas-too-low": "Gas is too low",
   "modal.txsender.error-message.invalid-chain-id": "Invalid chain id",
   "modal.txsender.error-message.invalid-rlp-tx": "Invalid RLP transaction",
+  "modal.txsender.error-message.ledger-contracts-disabled": "Ledger contracts option is disabled",
   "modal.txsender.error-message.nonce-too-low": "Nonce is too low",
   "modal.txsender.error-message.not-enough-ether-for-gas": "Sorry your wallet does not contain enough Ether to cover the Gas for the transaction",
   "modal.txsender.error-message.not-enough-funds": "Not enough funds",

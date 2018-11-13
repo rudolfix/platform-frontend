@@ -23,7 +23,9 @@ const tagsType = YupTS.string();
 
 const EtoCapitalListType = YupTS.object({
   description: YupTS.string().optional(),
-  percent: percentage,
+  percent: YupTS.number()
+    .optional()
+    .enhance(() => percentage),
 }).optional();
 
 export const EtoCompanyInformationType = YupTS.object({

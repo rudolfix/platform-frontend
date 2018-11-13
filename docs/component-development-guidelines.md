@@ -27,3 +27,9 @@ enum EMyEnum {
   UPPERCASE_CONSTANT = "uppercase_constant"
 }
 ```
+
+## Constants 
+- prefer all constants with UPPER_CASE 
+```javascript
+const TIMES_TO_OPEN = 5 
+```

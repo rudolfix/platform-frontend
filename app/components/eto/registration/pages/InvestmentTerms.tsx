@@ -20,11 +20,19 @@ import { formatMoney } from "../../../../utils/Money.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
 import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
-import { FormTransformingField } from "../../../shared/forms/form-field/FormTransformingField";
+import { NumberTransformingField } from "../../../shared/forms/form-field/NumberTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
+import {
+  convert,
+  convertFractionToPercentage,
+  convertPercentageToFraction,
+  parseStringToFloat,
+  parseStringToInteger,
+} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+
 import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {
@@ -71,7 +79,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
   });
 
   const computedTokenPrice = sharePrice / equityTokensPerShare;
-
   return (
     <EtoFormBase
       title={<FormattedMessage id="eto.form.investment-terms.title" />}
@@ -85,6 +92,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           }
           placeholder="1000000"
           name="equityTokensPerShare"
+          value={10000}
           disabled={true}
         />
         <FormField
@@ -142,7 +150,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           min="1"
           disabled={readonly}
         />
-        <FormTransformingField
+        <NumberTransformingField
           label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
           placeholder=" "
           name="publicDiscountFraction"
@@ -161,7 +169,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           min="1"
           disabled={readonly}
         />
-        <FormTransformingField
+        <NumberTransformingField
           label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
           placeholder=" "
           name="whitelistDiscountFraction"
@@ -180,7 +188,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           min="1"
           disabled={readonly}
         />
-        <FormTransformingField
+        <NumberTransformingField
           label={
             <FormattedMessage id="eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors" />
           }
@@ -198,7 +206,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             prefix="€"
             name="newSharePrice"
             value={formatMoney(`${sharePrice}`, 1, 8)}
-            disabled={readonly}
             readOnly={true}
           />
           <FormFieldRaw
@@ -207,7 +214,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
             prefix="€"
             placeholder="read only"
             value={formatMoney(`${computedTokenPrice}`, 1, 8)}
-            disabled={readonly}
             readOnly={true}
           />
           <Row>
@@ -218,7 +224,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 placeholder="read only"
                 name="minNumberOfTokens"
                 value={getFormattedMoney(minInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
-                disabled={readonly}
                 readOnly={true}
               />
             </Col>
@@ -229,7 +234,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 placeholder="read only"
                 name="totalInvestment"
                 value={getFormattedMoney(maxInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
-                disabled={readonly}
                 readOnly={true}
               />
             </Col>
@@ -241,7 +245,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 placeholder="read only"
                 name="minCapEur"
                 value={computedMinNumberOfTokens}
-                disabled={readonly}
                 readOnly={true}
               />
             </Col>
@@ -253,7 +256,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 placeholder="read only"
                 name="maxCapEur"
                 value={computedMaxNumberOfTokens}
-                disabled={readonly}
                 readOnly={true}
               />
             </Col>
@@ -265,7 +267,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 prefix="%"
                 name="minSharesGenerated"
                 value={computedMinCapPercent.toFixed(4)}
-                disabled={readonly}
                 readOnly={true}
               />
             </Col>
@@ -277,7 +278,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 prefix="%"
                 name="maxSharesGenerated"
                 value={computedMaxCapPercent.toFixed(4)}
-                disabled={readonly}
                 readOnly={true}
               />
             </Col>
@@ -312,12 +312,11 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {
+        const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
             companyData: {},
-            etoData: {
-              ...data,
-            },
+            etoData: convertedData,
           }),
         );
       },
@@ -325,9 +324,25 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
   }),
   withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
     validationSchema: EtoInvestmentTermsType.toYup(),
-    mapPropsToValues: props => props.stateValues,
+    mapPropsToValues: props => convert(props.stateValues, toFormState),
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoInvestmentTermsComponent);
 
 export { EtoInvestmentTerms };
+
+const toFormState = {
+  whitelistDiscountFraction: convertFractionToPercentage(),
+  fixedSlotsMaximumDiscountFraction: convertFractionToPercentage(),
+};
+
+const fromFormState = {
+  whitelistDiscountFraction: convertPercentageToFraction(),
+  fixedSlotsMaximumDiscountFraction: convertPercentageToFraction(),
+  equityTokensPerShare: parseStringToInteger(),
+  existingCompanyShares: parseStringToInteger(),
+  newSharesToIssueInFixedSlots: parseStringToInteger(),
+  newSharesToIssueInWhitelist: parseStringToInteger(),
+  shareNominalValueEur: parseStringToFloat(),
+  publicDiscountFraction: convertPercentageToFraction(),
+};

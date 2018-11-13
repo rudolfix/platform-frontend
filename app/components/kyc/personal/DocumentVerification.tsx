@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { Button, EButtonLayout } from "../../shared/buttons";
+import { Button } from "../../shared/buttons";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 
@@ -49,9 +49,30 @@ export const KycPersonalDocumentVerificationComponent: React.SFC<
 > = ({ ...props }) => (
   <KycPanel
     steps={personalSteps}
-    description={<FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />}
     backLink={kycRoutes.individualStart}
+    isMaxWidth={false}
+    fullHeightContent={true}
   >
+    <div className={styles.description} data-test-id="kyc-panel-description">
+      <FormattedHTMLMessage
+        tagName="span"
+        id="kyc.personal.instant-id.manual-verification-description"
+      />
+    </div>
+
+    <div className="mb-5 text-center">
+      <Button
+        onClick={props.onManualVerification}
+        svgIcon={arrowRightIcon}
+        iconPosition="icon-after"
+        data-test-id="kyc-go-to-manual-verification"
+      >
+        <FormattedMessage id="kyc.personal.instant-id.go-to-manual-verification" />
+      </Button>
+    </div>
+    <div className={styles.description} data-test-id="kyc-panel-description">
+      <FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />
+    </div>
     <img className={styles.image} src={idImage} alt="id now" />
     <div className="mb-5 text-center">
       <Button
@@ -61,23 +82,6 @@ export const KycPersonalDocumentVerificationComponent: React.SFC<
         data-test-id="kyc-go-to-outsourced-verification"
       >
         <FormattedMessage id="kyc.personal.instant-id.go-to-video-verification" />
-      </Button>
-    </div>
-    <p className="text-center">
-      <FormattedHTMLMessage
-        tagName="span"
-        id="kyc.personal.instant-id.manual-verification-description"
-      />
-    </p>
-    <div className="text-center">
-      <Button
-        layout={EButtonLayout.SECONDARY}
-        onClick={props.onManualVerification}
-        svgIcon={arrowRightIcon}
-        iconPosition="icon-after"
-        data-test-id="kyc-go-to-manual-verification"
-      >
-        <FormattedMessage id="kyc.personal.instant-id.go-to-manual-verification" />
       </Button>
     </div>
   </KycPanel>

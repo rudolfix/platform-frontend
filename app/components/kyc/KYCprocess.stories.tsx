@@ -12,10 +12,10 @@ import { KYCBeneficialOwnersComponent } from "./business/BeneficialOwners";
 import { KycBusinessDataComponent } from "./business/BusinessData";
 import { KycLegalRepresentativeComponent } from "./business/LegalRepresentative";
 import { KycBusinessStartComponent } from "./business/Start";
+import { KycPersonalDocumentVerificationComponent } from "./personal/DocumentVerification";
 import { KYCPersonalStartComponent } from "./personal/Start";
 import { KYCUploadComponent } from "./personal/Upload";
 import { KYCStartComponent } from "./start/Start";
-import {KycPersonalDocumentVerificationComponent} from "./personal/DocumentVerification";
 
 const personalData = {
   firstName: "Sergiej",

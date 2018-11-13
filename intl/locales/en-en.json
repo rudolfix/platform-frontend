@@ -352,6 +352,8 @@
   "form.field.error.object.no-unknown": "Field cannot have keys not specified in the object shape",
   "form.field.error.older-than-18": "You must be older than 18 years",
   "form.field.error.one-of": "Must be one of the following values: {values}",
+  "form.field.error.percentage.max": "Value cannot exceed {max}%",
+  "form.field.error.percentage.min": "Value cannot be less than {min}%",
   "form.field.error.required": "This field is required",
   "form.field.error.restricted-country": "Unfortunately we do not accept investors or companies with residency in your country due to regulatory restrictions",
   "form.field.error.string.email": "Must be a valid email",

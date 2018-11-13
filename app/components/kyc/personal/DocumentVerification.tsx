@@ -12,7 +12,7 @@ import { kycRoutes } from "../routes";
 import * as idImage from "../../../assets/img/id_now.svg";
 import * as arrowRightIcon from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as linkOutIcon from "../../../assets/img/inline_icons/link_out_small.svg";
-import * as styles from "./InstantId.module.scss";
+import * as styles from "./DocumentVerification.module.scss";
 
 export const personalSteps = [
   {
@@ -44,9 +44,9 @@ interface IProps {
   layout: TKycRequestType;
 }
 
-export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDispatchProps> = ({
-  ...props
-}) => (
+export const KycPersonalDocumentVerificationComponent: React.SFC<
+  IProps & IStateProps & IDispatchProps
+> = ({ ...props }) => (
   <KycPanel
     steps={personalSteps}
     description={<FormattedHTMLMessage tagName="span" id="kyc.personal.instant-id.description" />}
@@ -83,11 +83,11 @@ export const KycPersonalInstantIdComponent: React.SFC<IProps & IStateProps & IDi
   </KycPanel>
 );
 
-export const KycPersonalInstantId = compose<React.SFC>(
+export const KycPersonalDocumentVerification = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: dispatch => ({
       onStartInstantId: () => dispatch(actions.kyc.kycStartInstantId()),
       onManualVerification: () => dispatch(actions.routing.goToKYCIndividualUpload()),
     }),
   }),
-)(KycPersonalInstantIdComponent);
+)(KycPersonalDocumentVerificationComponent);

@@ -19,7 +19,7 @@ describe("KYC Personal flow with manual verification", () => {
       cy.get(tid("kyc-go-to-outsourced-verification")).awaitedClick();
 
       // we should now be on the outsourced page
-      cy.url().should("eq", `https://localhost:9090${kycRoutes.individualInstantId}`);
+      cy.url().should("eq", `https://localhost:9090${kycRoutes.individualDocumentVerification}`);
     });
   });
 });

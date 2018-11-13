@@ -192,7 +192,7 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
   },
 );
 
-const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
+const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualData>({
   validationSchema: KycIndividualDataSchemaRequired,
   isInitialValid: (props: any) => KycIndividualDataSchemaRequired.isValidSync(props.currentValues),
   mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
@@ -202,7 +202,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycIndividualData>({
   },
 })(KYCForm);
 
-const KYCPersonalStartComponent: React.SFC<IProps> = props => {
+export const KYCPersonalStartComponent: React.SFC<IStateProps & IDispatchProps> = props => {
   return (
     <KycPanel steps={personalSteps} backLink={kycRoutes.start}>
       <KycDisclaimer className="pb-5" />

@@ -39,7 +39,7 @@ export function* loadIssuerEto({ apiEtoService, notificationCenter }: TGlobalDep
 }
 
 export function* changeBookBuildingStatus(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES") return;
@@ -47,7 +47,7 @@ export function* changeBookBuildingStatus(
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      "Confirm Changing your book building",
+      intlWrapper.intl.formatIntlMessage("eto.modal.change-bookbuilding-status"),
     );
     yield apiEtoService.changeBookBuildingState(action.payload.status);
   } catch (e) {

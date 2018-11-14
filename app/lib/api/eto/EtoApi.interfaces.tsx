@@ -18,7 +18,7 @@ import {
 } from "../../../config/constants";
 import { DeepPartial } from "../../../types";
 import * as YupTS from "../../yup-ts";
-import { dateSchema } from "../util/schemaHelpers";
+import { dateSchema, percentage } from "../util/schemaHelpers";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 
 /** COMPANY ETO RELATED INTERFACES
@@ -38,7 +38,7 @@ const EtoCapitalListType = YupTS.object({
   description: YupTS.string().optional(),
   percent: YupTS.number()
     .optional()
-    .enhance(v => v.max(100, "value cannot exceed 100%")),
+    .enhance(() => percentage),
 }).optional();
 
 export const EtoCompanyInformationType = YupTS.object({

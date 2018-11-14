@@ -4,6 +4,9 @@ import { call, put, race, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs, TxWithMetadata } from "../../../lib/api/users/interfaces";
+import { BrowserWalletError } from "../../../lib/web3/BrowserWallet";
+import { LedgerContractsDisabledError, LedgerError } from "../../../lib/web3/LedgerWallet";
+import { LightError } from "../../../lib/web3/LightWallet";
 import { ITxData } from "../../../lib/web3/types";
 import {
   InvalidChangeIdError,
@@ -14,6 +17,7 @@ import {
   OutOfGasError,
   UnknownEthNodeError,
 } from "../../../lib/web3/Web3Adapter";
+import { SignerError, SignerRejectConfirmationError } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
 import { connectWallet } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
@@ -93,11 +97,17 @@ export function* txSendProcess(
       return yield put(actions.txSender.txSenderError(ETransactionErrorType.INVALID_RLP_TX));
     } else if (error instanceof InvalidChangeIdError) {
       return yield put(actions.txSender.txSenderError(ETransactionErrorType.INVALID_CHAIN_ID));
-    } else if (error instanceof UnknownEthNodeError) {
-      return yield put(actions.txSender.txSenderError(ETransactionErrorType.TX_WAS_REJECTED));
     } else if (error instanceof NotEnoughEtherForGasError) {
       return yield put(
         actions.txSender.txSenderError(ETransactionErrorType.NOT_ENOUGH_ETHER_FOR_GAS),
+      );
+    } else if (error instanceof UnknownEthNodeError) {
+      return yield put(actions.txSender.txSenderError(ETransactionErrorType.UNKNOWN_ERROR));
+    } else if (error instanceof SignerRejectConfirmationError) {
+      return yield put(actions.txSender.txSenderError(ETransactionErrorType.TX_WAS_REJECTED));
+    } else if (error instanceof LedgerContractsDisabledError) {
+      return yield put(
+        actions.txSender.txSenderError(ETransactionErrorType.LEDGER_CONTRACTS_DISABLED),
       );
     } else {
       return yield put(actions.txSender.txSenderError(ETransactionErrorType.UNKNOWN_ERROR));
@@ -170,6 +180,15 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
 
     return txHash;
   } catch (error) {
+    if (
+      error instanceof LedgerError ||
+      error instanceof LightError ||
+      error instanceof BrowserWalletError ||
+      error instanceof SignerError
+    ) {
+      throw error;
+    }
+
     // @see https://github.com/paritytech/parity-ethereum/blob/61f4534e2a5f9c947661af0eaf4af5b76456efe0/rpc/src/v1/helpers/errors.rs#L304
     if (
       error.code === -32010 &&
@@ -177,6 +196,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
     ) {
       return yield put(actions.txSender.txSenderError(ETransactionErrorType.NOT_ENOUGH_FUNDS));
     }
+
     if (
       (error.code === -32000 && error.message === "intrinsic gas too low") ||
       (error.code === -32010 &&
@@ -189,20 +209,24 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
     if (error.code === -32010 && error.message.startsWith("Transaction nonce is too low")) {
       throw new LowNonceError();
     }
+
     if (
       error.code === -32010 &&
       error.message.startsWith("There are too many transactions in the queue")
     ) {
       throw new LongTransactionQueError();
     }
+
     if (error.code === -32010 && error.message.startsWith("Invalid RLP data")) {
       throw new InvalidRlpDataError();
     }
+
     if (error.code === -32010 && error.message.startsWith("Invalid chain id")) {
       throw new InvalidChangeIdError();
     }
+
+    throw new UnknownEthNodeError();
   }
-  throw new UnknownEthNodeError();
 }
 
 function* watchPendingOOOTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {

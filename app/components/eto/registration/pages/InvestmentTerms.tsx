@@ -88,7 +88,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           prefix="€"
           name="shareNominalValueEur"
           type="number"
-          min="1"
           disabled={readonly}
         />
         <FormField
@@ -99,7 +98,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           prefix="€"
           name="preMoneyValuationEur"
           type="number"
-          min="1"
           disabled={readonly}
         />
         <FormField
@@ -107,7 +105,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           placeholder="Number of existing shares"
           name="existingCompanyShares"
           type="number"
-          min="1"
           disabled={readonly}
         />
         <FormField
@@ -124,7 +121,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           placeholder="Number of shares"
           name="minimumNewSharesToIssue"
           type="number"
-          min="1"
           disabled={readonly}
         />
         <FormField
@@ -134,7 +130,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           placeholder="Number of shares"
           name="newSharesToIssue"
           type="number"
-          min="1"
           disabled={readonly}
         />
         <NumberTransformingField
@@ -153,7 +148,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           placeholder="Number of shares"
           name="newSharesToIssueInWhitelist"
           type="number"
-          min="1"
           disabled={readonly}
         />
         <NumberTransformingField
@@ -172,7 +166,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           placeholder="Number of shares"
           name="newSharesToIssueInFixedSlots"
           type="number"
-          min="1"
           disabled={readonly}
         />
         <NumberTransformingField

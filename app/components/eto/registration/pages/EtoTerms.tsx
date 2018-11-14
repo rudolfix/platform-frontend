@@ -124,7 +124,6 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
               prefix="€"
               name="minTicketEur"
               type="number"
-              min="1"
               disabled={readonly}
             />
           </Col>
@@ -135,7 +134,6 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
               prefix="€"
               name="maxTicketEur"
               type="number"
-              min="1"
               disabled={readonly}
             />
           </Col>
@@ -161,11 +159,9 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           <FormRange
             disabled={readonly}
             name="whitelistDurationDays"
-            min={1}
             unitMin={
               <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />
             }
-            max={14}
             unitMax={
               <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />
             }
@@ -179,9 +175,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           <FormRange
             disabled={readonly}
             name="publicDurationDays"
-            min={0}
             unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
-            max={60}
           />
         </div>
 
@@ -192,9 +186,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           <FormRange
             disabled={readonly}
             name="signingDurationDays"
-            min={14}
             unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
-            max={60}
           />
         </div>
 

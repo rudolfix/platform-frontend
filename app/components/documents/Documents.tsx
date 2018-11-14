@@ -19,8 +19,8 @@ import {
   selectEtoDocumentLoading,
 } from "../../modules/eto-documents/selectors";
 import {
-  selectEtoLoading,
   selectIssuerEtoDocuments,
+  selectIssuerEtoLoading,
   selectIssuerEtoState,
   selectIssuerEtoTemplates,
 } from "../../modules/eto-flow/selectors";
@@ -209,7 +209,7 @@ export const Documents = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       etoFilesData: selectEtoDocumentData(state.etoDocuments),
-      loadingData: selectEtoLoading(state.etoFlow),
+      loadingData: selectIssuerEtoLoading(state),
       etoFileLoading: selectEtoDocumentLoading(state.etoDocuments),
       etoState: selectIssuerEtoState(state),
       etoTemplates: selectIssuerEtoTemplates(state)!,

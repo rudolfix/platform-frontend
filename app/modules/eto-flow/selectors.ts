@@ -9,23 +9,22 @@ import { IAppState } from "../../store";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectEtoDocumentLoading } from "../eto-documents/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
-import { selectEto, selectEtoWithCompanyAndContract } from "../public-etos/selectors";
-import { IEtoFlowState } from "./types";
+import { selectEtoWithCompanyAndContract, selectPublicEto } from "../public-etos/selectors";
 
-export const selectIssuerEtoPreviewCode = (state: IEtoFlowState) => state.etoPreviewCode;
+export const selectIssuerEtoPreviewCode = (state: IAppState) => state.etoFlow.etoPreviewCode;
 
 export const selectIssuerEto = (state: IAppState) => {
-  const issuerEtoPreviewCode = selectIssuerEtoPreviewCode(state.etoFlow);
+  const issuerEtoPreviewCode = selectIssuerEtoPreviewCode(state);
 
   if (issuerEtoPreviewCode) {
-    return selectEto(state.publicEtos, issuerEtoPreviewCode);
+    return selectPublicEto(state, issuerEtoPreviewCode);
   }
 
   return undefined;
 };
 
 export const selectIssuerEtoWithCompanyAndContract = (state: IAppState) => {
-  const issuerEtoPreviewCode = selectIssuerEtoPreviewCode(state.etoFlow);
+  const issuerEtoPreviewCode = selectIssuerEtoPreviewCode(state);
 
   if (issuerEtoPreviewCode) {
     return selectEtoWithCompanyAndContract(state, issuerEtoPreviewCode);
@@ -74,7 +73,7 @@ export const selectIssuerCompany = (state: IAppState): TCompanyEtoData | undefin
   return undefined;
 };
 
-export const selectEtoLoading = (state: IEtoFlowState): boolean => state.loading;
+export const selectIssuerEtoLoading = (state: IAppState): boolean => state.etoFlow.loading;
 
 export const selectCombinedEtoCompanyData = (
   state: IAppState,
@@ -129,4 +128,4 @@ export const selectShouldEtoDataLoad = (state: IAppState) =>
   selectKycRequestStatus(state.kyc) === "Accepted" && selectIsUserEmailVerified(state.auth);
 
 export const selectIsGeneralEtoLoading = (state: IAppState) =>
-  selectEtoLoading(state.etoFlow) && selectEtoDocumentLoading(state.etoDocuments);
+  selectIssuerEtoLoading(state) && selectEtoDocumentLoading(state.etoDocuments);

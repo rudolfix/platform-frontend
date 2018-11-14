@@ -13,7 +13,10 @@ export interface IIcbmWalletBalanceModal {
   isOpen: boolean;
   loading: boolean;
   icbmWalletEthAddress?: string;
-  lockedWallet?: ILockedWallet;
+  lockedWallet?: {
+    lockedEtherIcbmWallet: ILockedWallet;
+    lockedEuroIcbmWallet: ILockedWallet;
+  };
   walletMigrationData?: IWalletMigrationData[];
   currentMigrationStep: TWalletMigrationSteps;
   isMigrating: boolean;

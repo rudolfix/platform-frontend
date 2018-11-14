@@ -101,9 +101,10 @@ function* loadIcbmWalletMigrationSaga(
     if (!isIcbmUser) throw new NoIcbmWalletError();
 
     yield put(
-      actions.icbmWalletBalanceModal.loadIcbmWalletData(
-        migrationWalletData.etherTokenICBMLockedWallet,
-      ),
+      actions.icbmWalletBalanceModal.loadIcbmWalletData({
+        lockedEtherIcbmWallet: migrationWalletData.etherTokenICBMLockedWallet,
+        lockedEuroIcbmWallet: migrationWalletData.euroTokenICBMLockedWallet,
+      }),
     );
     yield neuCall(loadIcbmWalletMigrationTransactionSaga);
   } catch (e) {

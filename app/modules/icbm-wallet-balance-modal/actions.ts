@@ -10,8 +10,10 @@ export const icbmWalletBalanceModalActions = {
   getWalletData: (icbmWalletEthAddress: string) =>
     createAction("ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA", { icbmWalletEthAddress }),
   //Setters
-  loadIcbmWalletData: (data: ILockedWallet) =>
-    createAction("ICBM_WALLET_BALANCE_MODAL_LOAD_WALLET_DATA", { data }),
+  loadIcbmWalletData: (data: {
+    lockedEtherIcbmWallet: ILockedWallet;
+    lockedEuroIcbmWallet: ILockedWallet;
+  }) => createAction("ICBM_WALLET_BALANCE_MODAL_LOAD_WALLET_DATA", { data }),
   loadIcbmMigrationData: (walletMigrationData: IWalletMigrationData[]) =>
     createAction("ICBM_WALLET_BALANCE_MODAL_LOAD_MIGRATION_DATA", {
       walletMigrationData,

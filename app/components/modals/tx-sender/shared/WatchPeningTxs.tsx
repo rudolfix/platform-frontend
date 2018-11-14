@@ -7,8 +7,8 @@ import { EtherscanTxLink } from "../../../shared/EtherscanLink";
 import * as styles from "./TxPending.module.scss";
 
 export interface IProps {
-  txHash: string;
-  blockId: number;
+  txHash?: string;
+  blockId?: number;
 }
 
 export const WatchPendingTxs: React.SFC<IProps> = ({ txHash, blockId }) => (
@@ -23,13 +23,17 @@ export const WatchPendingTxs: React.SFC<IProps> = ({ txHash, blockId }) => (
       <FormattedMessage id="tx-sender.tx-pending-watching.description" />
     </p>
 
-    <EtherscanTxLink txHash={txHash} className={styles.txHash}>
-      <FormattedMessage id="tx-sender.tx-pending.hash-label" /> {txHash}
-    </EtherscanTxLink>
+    {txHash && (
+      <EtherscanTxLink txHash={txHash} className={styles.txHash}>
+        <FormattedMessage id="tx-sender.tx-pending.hash-label" /> {txHash}
+      </EtherscanTxLink>
+    )}
 
-    <p>
-      <FormattedMessage id="tx-sender.tx-pending.block-number-label" />
-      <span className={styles.blockId}>{blockId}</span>
-    </p>
+    {blockId && (
+      <p>
+        <FormattedMessage id="tx-sender.tx-pending.block-number-label" />
+        <span className={styles.blockId}>{blockId}</span>
+      </p>
+    )}
   </div>
 );

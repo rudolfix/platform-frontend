@@ -14,7 +14,7 @@ import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-f
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormField, FormSelectField } from "../../../shared/forms";
+import { FormField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/form-field/FormSingleFileUpload";
 import { EtoFormBase } from "../EtoFormBase";
@@ -37,30 +37,11 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-const allowRetailOptions = [
-  {
-    msg: <FormattedMessage id="eto.form.eto-equity-token-info.hnwi-eto" />,
-    value: false,
-  },
-  {
-    msg: <FormattedMessage id="eto.form.eto-equity-token-info.retail-eto" />,
-    value: true,
-  },
-];
-
 const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-equity-token-info.title" />}
     validator={EtoEquityTokenInfoType.toYup()}
   >
-    <FormSelectField
-      name="allowRetailInvestors"
-      customOptions={allowRetailOptions.map((opt, i) => (
-        <option key={i} value={opt.value as any /* TODO: proper type */}>
-          {opt.msg}
-        </option>
-      ))}
-    />
     <Section>
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}

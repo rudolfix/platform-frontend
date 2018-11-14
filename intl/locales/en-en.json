@@ -779,6 +779,8 @@
   "transaction-state.confirmed": "Transaction confirmed",
   "transaction-state.pending": "Pending transaction",
   "transaction-state.reverted": "Transaction reverted",
+  "tx-sender.tx-pending-watching.description": "You have submitted transaction outside of Neufund Platform and it still remains in the Ethereum pending pool waiting to be executed and included in new block. Neufund Platform prevents submitting more transactions if you have still pending one. In most cases this leads to unexpected problems as only one transaction with the same nonce will be mined. We'll wait until transaction specified below is mined.",
+  "tx-sender.tx-pending-watching.title": "EXTERNAL PENDING TRANSACTION DETECTED",
   "tx-sender.tx-pending.block-number-label": "Block number:",
   "tx-sender.tx-pending.description": "Your transaction has been broadcasted to the network and is waiting to be confirmed. It may take up to 3 hours or more to confirm. While this transaction is pending you will be blocked from making another transaction on the platform.",
   "tx-sender.tx-pending.hash-label": "Transaction Hash:",

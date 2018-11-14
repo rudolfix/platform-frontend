@@ -102,7 +102,7 @@ const SuccessComponent: React.SFC<{ type?: ETxSenderType; txHash?: string }> = (
 function renderBody({ state, blockId, txHash, type, error }: Props): React.ReactNode {
   switch (state) {
     case ETxSenderState.WATCHING_PENDING_TXS:
-      return <WatchPendingTxs />;
+      return <WatchPendingTxs txHash={txHash} blockId={blockId} />;
 
     case ETxSenderState.INIT:
       if (!type) {

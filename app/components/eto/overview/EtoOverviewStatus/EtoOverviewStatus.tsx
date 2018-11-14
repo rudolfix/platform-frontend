@@ -216,17 +216,7 @@ const EtoOverviewStatusLayout: React.SFC<
                   <FormattedMessage id="shared-component.eto-overview-status.investment-amount" />
                 </span>
                 <span className={styles.value}>
-                  <InvestmentAmount
-                    newSharesToIssue={eto.newSharesToIssue}
-                    newSharesToIssueInFixedSlots={eto.newSharesToIssueInFixedSlots}
-                    newSharesToIssueInWhitelist={eto.newSharesToIssueInWhitelist}
-                    fixedSlotsMaximumDiscountFraction={eto.fixedSlotsMaximumDiscountFraction}
-                    whitelistDiscountFraction={eto.whitelistDiscountFraction}
-                    publicDiscountFraction={eto.publicDiscountFraction}
-                    existingCompanyShares={eto.existingCompanyShares}
-                    preMoneyValuationEur={eto.preMoneyValuationEur}
-                    minimumNewSharesToIssue={eto.minimumNewSharesToIssue}
-                  />
+                  <InvestmentAmount etoData={eto} />
                 </span>
               </div>
               <div className={styles.group}>

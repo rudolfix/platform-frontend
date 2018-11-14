@@ -125,19 +125,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
             )}
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.investment-amount" />}
-              value={
-                <InvestmentAmount
-                  newSharesToIssue={etoData.newSharesToIssue}
-                  newSharesToIssueInFixedSlots={etoData.newSharesToIssueInFixedSlots}
-                  newSharesToIssueInWhitelist={etoData.newSharesToIssueInWhitelist}
-                  fixedSlotsMaximumDiscountFraction={etoData.fixedSlotsMaximumDiscountFraction}
-                  whitelistDiscountFraction={etoData.whitelistDiscountFraction}
-                  publicDiscountFraction={etoData.publicDiscountFraction}
-                  existingCompanyShares={etoData.existingCompanyShares}
-                  preMoneyValuationEur={etoData.preMoneyValuationEur}
-                  minimumNewSharesToIssue={etoData.minimumNewSharesToIssue}
-                />
-              }
+              value={<InvestmentAmount etoData={etoData} />}
               data-test-id="eto-public-view-investment-amount"
             />
             {etoData.templates.investmentAndShareholderAgreementTemplate && (

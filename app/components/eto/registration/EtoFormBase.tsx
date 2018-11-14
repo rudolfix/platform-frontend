@@ -40,7 +40,10 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
         {({ values }) => {
           const calculatedFraction = this.calculate(values);
           return (
-            <PercentageIndicatorBar className={styles.progressBar} fraction={calculatedFraction} />
+            <PercentageIndicatorBar
+              className={styles.progressBar}
+              percent={calculatedFraction * 100}
+            />
           );
         }}
       </FormikConsumer>
@@ -55,15 +58,13 @@ export const EtoFormBase: React.SFC<IProps & IFormPercentageDoneProps> = ({
   progressOptions,
   "data-test-id": dataTestId,
 }) => (
-  <div data-test-id={dataTestId}>
-    <Form className={styles.form}>
-      <h4 className={styles.header}>{title}</h4>
+  <Form className={styles.form} data-test-id={dataTestId}>
+    <h4 className={styles.header}>{title}</h4>
 
-      <Section>
-        <PercentageFormDone validator={validator} progressOptions={progressOptions} />
-      </Section>
+    <Section>
+      <PercentageFormDone validator={validator} progressOptions={progressOptions} />
+    </Section>
 
-      {children}
-    </Form>
-  </div>
+    {children}
+  </Form>
 );

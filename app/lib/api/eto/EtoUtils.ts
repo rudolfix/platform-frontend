@@ -1,4 +1,6 @@
+import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { FirstParameterType, OmitKeys } from "../../../types";
+import { TEtoSpecsData } from "./EtoApi.interfaces";
 
 type TInvestmentAmountOwnArguments = {
   newSharesToIssue: number | undefined;
@@ -47,6 +49,7 @@ const getMaxInvestmentAmountWithDiscount = ({
   newSharesToIssueInWhitelist = 0,
   fixedSlotsMaximumDiscountFraction = 0,
   whitelistDiscountFraction = 0,
+  publicDiscountFraction = 0,
 }) => {
   if (sharePrice === 0 || shares === 0) {
     return 0;
@@ -69,8 +72,18 @@ const getMaxInvestmentAmountWithDiscount = ({
   }
 
   if (shares > 0) {
-    amount += shares * sharePrice;
+    amount += shares * sharePrice * (1 - publicDiscountFraction);
   }
 
   return amount;
+};
+
+export const getInvestmentCalculatedPercentage = (eto: TEtoSpecsData) => {
+  return (eto.newSharesToIssue / eto.minimumNewSharesToIssue) * 100;
+};
+
+export const getCurrentInvestmentProgressPercentage = (eto: TEtoWithCompanyAndContract) => {
+  const totalTokensInt = eto.contract!.totalInvestment.totalTokensInt.toNumber();
+
+  return (totalTokensInt / (eto.minimumNewSharesToIssue * eto.equityTokensPerShare)) * 100;
 };

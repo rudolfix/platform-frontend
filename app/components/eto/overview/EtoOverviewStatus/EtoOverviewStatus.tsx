@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { compose } from "recompose";
 
-import { CounterWidget, InvestWidget, TagsWidget, TokenSymbolWidget } from ".";
+import { CounterWidget, TagsWidget } from ".";
 import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
 import { selectIsActionRequiredSettings } from "../../../../modules/notifications/selectors";
@@ -17,17 +17,18 @@ import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
-import { ButtonLink } from "../../../shared/buttons";
 import { ETOState } from "../../../shared/ETOState";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { CampaigningActivatedWidget } from "./CampaigningWidget";
 import { ClaimWidget, RefundWidget } from "./ClaimRefundWidget";
+import { InvestmentWidget } from "./InvestmentWidget";
 import { IWithIsEligibleToPreEto, withIsEligibleToPreEto } from "./withIsEligibleToPreEto";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
 import { RegisterNowWidget } from "./RegisterNowWidget";
+import { TokenSymbolWidget } from "./TokenSymbolWidget";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
@@ -73,98 +74,72 @@ const EtoStatusManager = ({
   // It's possible for contract to be undefined if eto is not on chain yet
   const timedState = eto.contract ? eto.contract.timedState : EETOStateOnChain.Setup;
 
-  return (
-    <EtoWidgetContext.Consumer>
-      {context => {
-        switch (timedState) {
-          case EETOStateOnChain.Setup: {
-            if (isAuthorized) {
-              const nextState = isEligibleToPreEto
-                ? EETOStateOnChain.Whitelist
-                : EETOStateOnChain.Public;
-              const nextStateStartDate = eto.contract
-                ? eto.contract.startOfStates[nextState]
-                : undefined;
+  switch (timedState) {
+    case EETOStateOnChain.Setup: {
+      if (isAuthorized) {
+        const nextState = isEligibleToPreEto ? EETOStateOnChain.Whitelist : EETOStateOnChain.Public;
+        const nextStateStartDate = eto.contract ? eto.contract.startOfStates[nextState] : undefined;
 
-              return (
-                <CampaigningActivatedWidget
-                  maxPledge={eto.maxTicketEur}
-                  minPledge={eto.minTicketEur}
-                  etoId={eto.etoId}
-                  investorsLimit={eto.maxPledges}
-                  nextState={nextState}
-                  nextStateStartDate={nextStateStartDate}
-                  isActive={eto.isBookbuilding}
-                  keyQuoteFounder={eto.company.keyQuoteFounder}
-                />
-              );
-            } else {
-              return <RegisterNowWidget />;
-            }
-          }
-          case EETOStateOnChain.Whitelist: {
-            if (isEligibleToPreEto) {
-              return (
-                <InvestWidget
-                  raisedTokens={eto.contract!.totalInvestment.totalTokensInt.toNumber()}
-                  investorsBacked={eto.contract!.totalInvestment.totalInvestors.toNumber()}
-                  tokensGoal={(eto.newSharesToIssue || 1) * (eto.equityTokensPerShare || 1)}
-                  etoId={eto.etoId}
-                />
-              );
-            } else {
-              return (
-                <CounterWidget
-                  endDate={eto.contract!.startOfStates[EETOStateOnChain.Public]!}
-                  state={EETOStateOnChain.Public}
-                />
-              );
-            }
-          }
+        return (
+          <CampaigningActivatedWidget
+            maxPledge={eto.maxTicketEur}
+            minPledge={eto.minTicketEur}
+            etoId={eto.etoId}
+            investorsLimit={eto.maxPledges}
+            nextState={nextState}
+            nextStateStartDate={nextStateStartDate}
+            isActive={eto.isBookbuilding}
+            keyQuoteFounder={eto.company.keyQuoteFounder}
+          />
+        );
+      } else {
+        return <RegisterNowWidget />;
+      }
+    }
+    case EETOStateOnChain.Whitelist: {
+      if (isEligibleToPreEto) {
+        return <InvestmentWidget eto={eto} />;
+      } else {
+        return (
+          <CounterWidget
+            endDate={eto.contract!.startOfStates[EETOStateOnChain.Public]!}
+            state={EETOStateOnChain.Public}
+          />
+        );
+      }
+    }
 
-          case EETOStateOnChain.Public: {
-            if (settingsUpdateRequired && !context) {
-              return (
-                <ButtonLink to={appRoutes.settings}>
-                  <FormattedMessage id="shared-component.eto-overview.settings-update-required" />
-                </ButtonLink>
-              );
-            } else {
-              return (
-                <InvestWidget
-                  raisedTokens={eto.contract!.totalInvestment.totalTokensInt.toNumber()}
-                  investorsBacked={eto.contract!.totalInvestment.totalInvestors.toNumber()}
-                  tokensGoal={(eto.newSharesToIssue || 1) * (eto.equityTokensPerShare || 1)}
-                  etoId={eto.etoId}
-                />
-              );
-            }
-          }
+    case EETOStateOnChain.Public: {
+      return (
+        <InvestmentWidget
+          eto={eto}
+          settingsUpdateRequired={settingsUpdateRequired}
+          isAuthorized={isAuthorized}
+        />
+      );
+    }
 
-          case EETOStateOnChain.Claim:
-          case EETOStateOnChain.Signing:
-          case EETOStateOnChain.Payout: {
-            return (
-              <ClaimWidget
-                etoId={eto.etoId}
-                tokenName={eto.equityTokenName || ""}
-                totalInvestors={eto.contract!.totalInvestment.totalInvestors.toNumber()}
-                totalEquivEurUlps={eto.contract!.totalInvestment.totalEquivEurUlps}
-                timedState={timedState}
-              />
-            );
-          }
+    case EETOStateOnChain.Claim:
+    case EETOStateOnChain.Signing:
+    case EETOStateOnChain.Payout: {
+      return (
+        <ClaimWidget
+          etoId={eto.etoId}
+          tokenName={eto.equityTokenName || ""}
+          totalInvestors={eto.contract!.totalInvestment.totalInvestors.toNumber()}
+          totalEquivEurUlps={eto.contract!.totalInvestment.totalEquivEurUlps}
+          timedState={timedState}
+        />
+      );
+    }
 
-          case EETOStateOnChain.Refund: {
-            return <RefundWidget etoId={eto.etoId} timedState={timedState} />;
-          }
+    case EETOStateOnChain.Refund: {
+      return <RefundWidget etoId={eto.etoId} timedState={timedState} />;
+    }
 
-          default:
-            throw new Error(`State (${timedState}) is not known. Please provide implementation.`);
-        }
-      }}
-    </EtoWidgetContext.Consumer>
-  );
+    default:
+      throw new Error(`State (${timedState}) is not known. Please provide implementation.`);
+  }
 };
 
 const EtoOverviewStatusLayout: React.SFC<
@@ -204,8 +179,10 @@ const EtoOverviewStatusLayout: React.SFC<
             <div className={styles.tagsWrapper}>
               <TagsWidget
                 etoId={eto.etoId}
-                termSheet={documentsByType[EEtoDocumentType.TERMSHEET_TEMPLATE]}
-                prospectusApproved={documentsByType[EEtoDocumentType.APPROVED_PROSPECTUS]}
+                termSheet={documentsByType[EEtoDocumentType.SIGNED_TERMSHEET]}
+                prospectusApproved={
+                  documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]
+                }
                 smartContractOnchain={smartContractOnChain}
               />
             </div>
@@ -245,6 +222,7 @@ const EtoOverviewStatusLayout: React.SFC<
                     newSharesToIssueInWhitelist={eto.newSharesToIssueInWhitelist}
                     fixedSlotsMaximumDiscountFraction={eto.fixedSlotsMaximumDiscountFraction}
                     whitelistDiscountFraction={eto.whitelistDiscountFraction}
+                    publicDiscountFraction={eto.publicDiscountFraction}
                     existingCompanyShares={eto.existingCompanyShares}
                     preMoneyValuationEur={eto.preMoneyValuationEur}
                     minimumNewSharesToIssue={eto.minimumNewSharesToIssue}

@@ -1,12 +1,10 @@
-import { createAndLoginNewUser } from "../utils/userHelpers";
-import { tid } from "../utils";
 import { INV_EMPTY_HAS_KYC } from "../constants";
-import { waitUntilEtoIsInState } from "./utils";
-
-const PUBLIC_ETO_ID = "0x560687Db44b19Ce8347A2D35873Dd95269dDF6bC";
+import { etoFixtureAddressByName, tid } from "../utils";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Try and invest without money", () => {
   it("do", () => {
+    const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     createAndLoginNewUser({
       type: "investor",
       kyc: "business",

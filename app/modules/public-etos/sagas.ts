@@ -14,7 +14,9 @@ import {
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
+import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
+import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { selectUserType } from "../auth/selectors";
@@ -26,7 +28,7 @@ import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate } from "./utils";
 
 export function* loadEtoPreview(
-  { apiEtoService, notificationCenter }: TGlobalDependencies,
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "PUBLIC_ETOS_LOAD_ETO_PREVIEW") return;
@@ -57,13 +59,15 @@ export function* loadEtoPreview(
 
     yield put(actions.publicEtos.setPublicEto({ eto, company }));
   } catch (e) {
+    logger.error("Could not load eto by preview code", e);
+
     notificationCenter.error("Could not load ETO preview. Is the preview link correct?");
     yield put(actions.routing.goToDashboard());
   }
 }
 
 export function* loadEto(
-  { apiEtoService, notificationCenter }: TGlobalDependencies,
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "PUBLIC_ETOS_LOAD_ETO") return;
@@ -94,6 +98,8 @@ export function* loadEto(
 
     yield put(actions.publicEtos.setPublicEto({ eto, company }));
   } catch (e) {
+    logger.error("Could not load eto by id", e);
+
     notificationCenter.error("Could not load ETO. Is the link correct?");
 
     yield put(actions.routing.goToDashboard());
@@ -111,7 +117,11 @@ export function* loadEtoContact(
     }
 
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
+    const etherTokenContract: EtherToken = contractsService.etherToken;
+    const euroTokenContract: EuroToken = contractsService.euroToken;
 
+    const etherTokenBalance = yield etherTokenContract.balanceOf(etoContract.address);
+    const euroTokenBalance = yield euroTokenContract.balanceOf(etoContract.address);
     const timedStateRaw = yield etoContract.timedState;
     const totalInvestmentRaw = yield etoContract.totalInvestment();
     const startOfStatesRaw = yield etoContract.startOfStates;
@@ -119,7 +129,11 @@ export function* loadEtoContact(
     yield put(
       actions.publicEtos.setEtoDataFromContract(eto.previewCode, {
         timedState: timedStateRaw.toNumber(),
-        totalInvestment: convertToEtoTotalInvestment(totalInvestmentRaw),
+        totalInvestment: convertToEtoTotalInvestment(
+          totalInvestmentRaw,
+          euroTokenBalance,
+          etherTokenBalance,
+        ),
         startOfStates: convertToStateStartDate(startOfStatesRaw),
       }),
     );

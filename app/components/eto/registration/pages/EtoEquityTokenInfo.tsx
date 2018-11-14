@@ -1,7 +1,6 @@
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
@@ -19,6 +18,8 @@ import { FormField, FormSelectField } from "../../../shared/forms";
 import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/form-field/FormSingleFileUpload";
 import { EtoFormBase } from "../EtoFormBase";
+import { Section } from "../Shared";
+import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {
   readonly: boolean;
@@ -60,20 +61,20 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
         </option>
       ))}
     />
-    <FormField
-      label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
-      placeholder="Token name"
-      name="equityTokenName"
-      disabled={readonly}
-    />
-    <FormField
-      label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
-      placeholder="3 - 4 characters"
-      maxLength="4"
-      name="equityTokenSymbol"
-      disabled={readonly}
-    />
-    <div className="form-group">
+    <Section>
+      <FormField
+        label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
+        placeholder="Token name"
+        name="equityTokenName"
+        disabled={readonly}
+      />
+      <FormField
+        label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+        placeholder="3 - 4 characters"
+        maxLength="4"
+        name="equityTokenSymbol"
+        disabled={readonly}
+      />
       <FormLabel name="equityTokenImage">
         <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
       </FormLabel>
@@ -85,20 +86,19 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
         data-test-id="eto-registration-token-logo"
         disabled={readonly}
       />
-    </div>
+    </Section>
+
     {!readonly && (
-      <Col>
-        <Row className="justify-content-center">
-          <Button
-            layout={EButtonLayout.PRIMARY}
-            type="submit"
-            isLoading={savingData}
-            data-test-id="eto-registration-token-info-submit"
-          >
-            <FormattedMessage id="form.button.save" />
-          </Button>
-        </Row>
-      </Col>
+      <Section className={styles.buttonSection}>
+        <Button
+          layout={EButtonLayout.PRIMARY}
+          type="submit"
+          isLoading={savingData}
+          data-test-id="eto-registration-token-info-submit"
+        >
+          <FormattedMessage id="form.button.save" />
+        </Button>
+      </Section>
     )}
   </EtoFormBase>
 );

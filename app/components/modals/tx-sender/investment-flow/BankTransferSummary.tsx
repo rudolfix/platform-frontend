@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 import { compose, setDisplayName } from "recompose";
 
-import { MONEY_DECIMALS } from "../../../../config/constants";
 import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import {
@@ -18,14 +17,13 @@ import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-
 import { ETxSenderType } from "../../../../modules/tx/interfaces";
 import { appConnect } from "../../../../store";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
-import { formatMoney } from "../../../../utils/Money.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps } from "../TxSender";
-import { formatEur } from "./utils";
+import { formatEurTsd } from "./utils";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
@@ -61,7 +59,7 @@ const BankTransferSummaryComponent: React.SFC<IProps> = ({
   );
   const estimatedReward = (
     <span>
-      <img src={neuIcon} /> {formatEur(data.estimatedReward)} NEU
+      <img src={neuIcon} /> {formatEurTsd(data.estimatedReward)} NEU
     </span>
   );
 
@@ -94,13 +92,14 @@ const BankTransferSummaryComponent: React.SFC<IProps> = ({
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.summary.token-price" />}
-              value={`${formatMoney(tokenPrice, MONEY_DECIMALS, 2)} €`}
+              value={`${formatEurTsd(tokenPrice)} €`}
             />
             <InfoRow
               caption={
                 <FormattedMessage id="investment-flow.bank-transfer-summary.estimated-investment" />
               }
-              value={`${formatEur(investmentEur)} €`}
+              value={`${formatEurTsd(investmentEur)} €`}
+              dataTestId="invest-modal-bank-transfer-summary-amount"
             />
             <InfoRow
               caption={
@@ -124,7 +123,12 @@ const BankTransferSummaryComponent: React.SFC<IProps> = ({
       </Row>
 
       <Row className="justify-content-center mb-0 mt-0">
-        <Button layout={EButtonLayout.PRIMARY} type="button" onClick={onAccept}>
+        <Button
+          layout={EButtonLayout.PRIMARY}
+          type="button"
+          onClick={onAccept}
+          data-test-id="invest-modal-summary-confirm-button"
+        >
           <FormattedMessage id="investment-flow.confirm" />
         </Button>
         <Button
@@ -151,8 +155,9 @@ const BankTransferSummary = compose<IProps, {}>(
         etoAddress: eto.etoId,
         companyName: eto.company.name,
         investmentEur: selectInvestmentEurValueUlps(state),
-        equityTokens: selectEquityTokenCountByEtoId(etoId, state) as string,
-        estimatedReward: selectNeuRewardUlpsByEtoId(etoId, state) as string,
+        // tslint:disable: no-useless-cast
+        equityTokens: selectEquityTokenCountByEtoId(etoId, state)!,
+        estimatedReward: selectNeuRewardUlpsByEtoId(etoId, state)!,
       };
     },
     dispatchToProps: d => ({

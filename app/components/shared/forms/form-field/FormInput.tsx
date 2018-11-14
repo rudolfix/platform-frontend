@@ -24,7 +24,7 @@ export interface IFormInputExternalProps {
   prefix?: string | React.ReactNode;
   suffix?: string | React.ReactNode;
   addonStyle?: string;
-  maxLength?: string;
+  maxLength?: number;
   charactersLimit?: number;
   size?: InputSize;
   customValidation?: (value: any) => string | Function | Promise<void> | undefined;
@@ -34,7 +34,7 @@ export interface IFormInputExternalProps {
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
 
 const transform = (value: string, charactersLimit?: number) => {
-  return value === undefined ? "" : computedValue(value, charactersLimit);
+  return value !== undefined ? computedValue(value, charactersLimit) : "";
 };
 
 const transformBack = (value: number | string) => {
@@ -72,6 +72,7 @@ export class FormInput extends React.Component<FormInputProps> {
       disabled,
       customValidation,
       ignoreTouched,
+      maxLength,
       ...props
     } = this.props;
     return (
@@ -103,6 +104,7 @@ export class FormInput extends React.Component<FormInputProps> {
                         </InputGroupAddon>
                       )}
                       <Input
+                        maxLength={maxLength}
                         className={cn(
                           className,
                           styles.inputField,
@@ -114,7 +116,9 @@ export class FormInput extends React.Component<FormInputProps> {
                           setFieldValue(
                             name,
                             transformBack(
-                              type === "number" ? e.target.valueAsNumber : e.target.value,
+                              type === "number" && e.target.value !== ""
+                                ? e.target.valueAsNumber
+                                : e.target.value,
                             ),
                           );
                         }}

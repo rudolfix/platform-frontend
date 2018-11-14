@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import * as Web3Utils from "web3-utils";
+import { ETHEREUM_ZERO_ADDRESS } from "../../../app/config/constants";
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
 import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
@@ -10,7 +11,7 @@ import { IWalletState } from "./reducer";
  * Simple State Selectors
  */
 export const selectNeuBalanceEuroAmount = (state: IAppState): string =>
-  multiplyBigNumbers([selectNeuPriceEur(state.tokenPrice), selectNeuBalance(state.wallet)]);
+  multiplyBigNumbers([selectNeuPriceEur(state), selectNeuBalance(state.wallet)]);
 
 export const selectNeuBalance = (state: IWalletState): string =>
   (state.data && state.data.neuBalance) || "0";
@@ -31,10 +32,7 @@ export const selectLiquidEtherBalance = (state: IWalletState) =>
   (state.data && addBigNumbers([state.data.etherBalance, state.data.etherTokenBalance])) || "0";
 
 export const selectLiquidEtherBalanceEuroAmount = (state: IAppState) =>
-  multiplyBigNumbers([
-    selectEtherPriceEur(state.tokenPrice),
-    selectLiquidEtherBalance(state.wallet),
-  ]);
+  multiplyBigNumbers([selectEtherPriceEur(state), selectLiquidEtherBalance(state.wallet)]);
 
 export const selectLiquidEuroTokenBalance = (state: IWalletState) =>
   (state.data && state.data.euroTokenBalance) || "0";
@@ -55,10 +53,7 @@ export const selectLockedEtherBalance = (state: IWalletState) =>
   "0";
 
 export const selectLockedEtherBalanceEuroAmount = (state: IAppState) =>
-  multiplyBigNumbers([
-    selectEtherPriceEur(state.tokenPrice),
-    selectLockedEtherBalance(state.wallet),
-  ]);
+  multiplyBigNumbers([selectEtherPriceEur(state), selectLockedEtherBalance(state.wallet)]);
 
 export const selectLockedEuroTokenBalance = (state: IWalletState) =>
   (state.data &&
@@ -85,7 +80,7 @@ export const selectICBMLockedEtherBalance = (state: IAppState): string =>
   "0";
 
 export const selectICBMLockedEtherBalanceEuroAmount = (state: IAppState) =>
-  multiplyBigNumbers([selectEtherPriceEur(state.tokenPrice), selectICBMLockedEtherBalance(state)]);
+  multiplyBigNumbers([selectEtherPriceEur(state), selectICBMLockedEtherBalance(state)]);
 
 export const selectICBMLockedEuroTokenBalance = (state: IAppState) =>
   (state.wallet &&
@@ -151,10 +146,10 @@ export const selectIcbmWalletConnected = (state: IWalletState): boolean =>
     (state.data && state.data.euroTokenICBMLockedWallet.unlockDate !== "0")
   );
 
-export const selectLockedWalletConnected = (state: IWalletState): boolean =>
+export const selectLockedWalletConnected = (state: IAppState): boolean =>
   !!(
-    (state.data && state.data.etherTokenLockedWallet.unlockDate !== "0") ||
-    (state.data && state.data.euroTokenLockedWallet.unlockDate !== "0")
+    (state.wallet.data && state.wallet.data.etherTokenLockedWallet.unlockDate !== "0") ||
+    (state.wallet.data && state.wallet.data.euroTokenLockedWallet.unlockDate !== "0")
   );
 
 export const selectIsLoading = (state: IWalletState): boolean => state.loading;
@@ -162,10 +157,14 @@ export const selectIsLoading = (state: IWalletState): boolean => state.loading;
 export const selectWalletError = (state: IWalletState): string | undefined => state.error;
 
 export const selectIsEtherUpgradeTargetSet = (state: IAppState): boolean =>
-  state.wallet.data && Web3Utils.isAddress(state.wallet.data.etherTokenUpgradeTarget);
+  state.wallet.data &&
+  Web3Utils.isAddress(state.wallet.data.etherTokenUpgradeTarget) &&
+  state.wallet.data.etherTokenUpgradeTarget! !== ETHEREUM_ZERO_ADDRESS;
 
 export const selectIsEuroUpgradeTargetSet = (state: IAppState): boolean =>
-  state.wallet.data && Web3Utils.isAddress(state.wallet.data.euroTokenUpgradeTarget);
+  state.wallet.data &&
+  Web3Utils.isAddress(state.wallet.data.euroTokenUpgradeTarget) &&
+  state.wallet.data.euroTokenUpgradeTarget! !== ETHEREUM_ZERO_ADDRESS;
 
 /**General State Selectors */
 export const selectMaxAvailableEther = (state: IAppState): string =>

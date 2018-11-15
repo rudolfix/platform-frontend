@@ -8,6 +8,7 @@ import { compose } from "recompose";
 import { CounterWidget, TagsWidget } from ".";
 import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
+import { selectIsEligibleToPreEto } from "../../../../modules/investor-tickets/selectors";
 import {
   EETOStateOnChain,
   TEtoWithCompanyAndContract,
@@ -23,11 +24,10 @@ import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { CampaigningActivatedWidget } from "./CampaigningWidget";
 import { ClaimWidget, RefundWidget } from "./ClaimRefundWidget";
 import { InvestmentWidget } from "./InvestmentWidget";
-import { IWithIsEligibleToPreEto, withIsEligibleToPreEto } from "./withIsEligibleToPreEto";
-
-import * as styles from "./EtoOverviewStatus.module.scss";
 import { RegisterNowWidget } from "./RegisterNowWidget";
 import { TokenSymbolWidget } from "./TokenSymbolWidget";
+
+import * as styles from "./EtoOverviewStatus.module.scss";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
@@ -39,6 +39,7 @@ interface IStatusOfEto {
 
 interface IStateProps {
   isAuthorized: boolean;
+  isEligibleToPreEto: boolean;
 }
 
 const StatusOfEto: React.SFC<IStatusOfEto> = ({ previewCode }) => {
@@ -67,7 +68,7 @@ const EtoStatusManager = ({
   eto,
   isAuthorized,
   isEligibleToPreEto,
-}: IExternalProps & IStateProps & IWithIsEligibleToPreEto) => {
+}: IExternalProps & IStateProps) => {
   // It's possible for contract to be undefined if eto is not on chain yet
   const timedState = eto.contract ? eto.contract.timedState : EETOStateOnChain.Setup;
 
@@ -133,9 +134,12 @@ const EtoStatusManager = ({
   }
 };
 
-const EtoOverviewStatusLayout: React.SFC<
-  IExternalProps & CommonHtmlProps & IWithIsEligibleToPreEto & IStateProps
-> = ({ eto, className, isAuthorized, isEligibleToPreEto }) => {
+const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & IStateProps> = ({
+  eto,
+  className,
+  isAuthorized,
+  isEligibleToPreEto,
+}) => {
   const smartContractOnChain = !!eto.contract;
 
   const documentsByType = keyBy(eto.documents, document => document.documentType);
@@ -253,13 +257,13 @@ const EtoOverviewStatusLayout: React.SFC<
 };
 
 export const EtoOverviewStatus = compose<
-  IExternalProps & CommonHtmlProps & IWithIsEligibleToPreEto & IStateProps,
+  IExternalProps & CommonHtmlProps & IStateProps,
   IExternalProps & CommonHtmlProps
 >(
   appConnect<IStateProps, {}, IExternalProps>({
-    stateToProps: state => ({
+    stateToProps: (state, props) => ({
       isAuthorized: selectIsAuthorized(state.auth),
+      isEligibleToPreEto: selectIsEligibleToPreEto(props.eto.etoId, state),
     }),
   }),
-  withIsEligibleToPreEto,
 )(EtoOverviewStatusLayout);

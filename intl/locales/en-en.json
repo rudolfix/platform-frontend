@@ -871,6 +871,7 @@
   "wallet.deposit-funds.menu.eth": "Receive ETH",
   "wallet.deposit-funds.menu.eur": "Transfer nEUR",
   "wallet.deposit-funds.name": "Transfer funds / Receive",
+  "wallet.icbm.reservation-agreement": "Amended ICBM Reservation Agreement",
   "wallet.name": "Wallet",
   "wallet.total": "Total",
   "withdraw-flow.summary": "Transaction Summary",

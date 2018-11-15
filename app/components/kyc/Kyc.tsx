@@ -176,7 +176,7 @@ class RequestStateInfo extends React.Component<IProps> {
 }
 
 export const KycComponent: React.SFC<IProps> = props => {
-  const router = props.requestStatus === "Draft" ? <KycRouter /> : <div />; //TODO replace this with null
+  const router = props.requestStatus === "Draft" ? <KycRouter /> : null;
 
   return (
     <LayoutAuthorized>

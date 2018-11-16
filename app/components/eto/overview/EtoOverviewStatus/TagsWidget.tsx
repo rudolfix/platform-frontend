@@ -16,6 +16,7 @@ export interface ITagsWidget {
   prospectusApproved: IEtoDocument;
   smartContractOnchain: boolean;
   etoId: string;
+  allowRetailEto?: boolean;
 }
 
 type TDispatchProps = {
@@ -33,6 +34,7 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
   smartContractOnchain,
   etoId,
   downloadDocument,
+  allowRetailEto,
 }) => {
   return (
     <EtoWidgetContext.Consumer>
@@ -56,23 +58,40 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
               text={<FormattedMessage id="shared-component.eto-overview.term-sheet" />}
             />
           )}
-          {hasDocument(prospectusApproved) ? (
-            <Tag
-              onClick={() => downloadDocument(prospectusApproved)}
-              to={previewCode ? withParams(appRoutes.etoPublicView, { previewCode }) : undefined}
-              target={previewCode ? "_blank" : undefined}
-              size="small"
-              theme="green"
-              layout="ghost"
-              text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
-            />
+          {allowRetailEto ? (
+            hasDocument(prospectusApproved) ? (
+              <Tag
+                onClick={() => downloadDocument(prospectusApproved)}
+                to={previewCode ? withParams(appRoutes.etoPublicView, { previewCode }) : undefined}
+                target={previewCode ? "_blank" : undefined}
+                size="small"
+                theme="green"
+                layout="ghost"
+                text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
+              />
+            ) : (
+              <Tag
+                size="small"
+                theme="silver"
+                layout="ghost"
+                text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
+              />
+            )
           ) : (
-            <Tag
-              size="small"
-              theme="silver"
-              layout="ghost"
-              text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
-            />
+            <>
+              <Tag
+                size="small"
+                theme="silver"
+                layout="ghost"
+                text={<FormattedMessage id="shared-component.eto-overview.investment-memorandum" />}
+              />
+              <Tag
+                size="small"
+                theme="silver"
+                layout="ghost"
+                text={<FormattedMessage id="shared-component.eto-overview.infoblatt-approved" />}
+              />
+            </>
           )}
           {smartContractOnchain ? (
             <Tag
@@ -108,4 +127,4 @@ const TagsWidget = compose<TLayoutProps, ITagsWidget>(
   }),
 )(TagsWidgetLayout);
 
-export { TagsWidget };
+export { TagsWidget, TagsWidgetLayout };

@@ -189,6 +189,7 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
             <div className={styles.tagsWrapper}>
               <TagsWidget
                 etoId={eto.etoId}
+                allowRetailEto={eto.allowRetailInvestors}
                 termSheet={documentsByType[EEtoDocumentType.SIGNED_TERMSHEET]}
                 prospectusApproved={
                   documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]

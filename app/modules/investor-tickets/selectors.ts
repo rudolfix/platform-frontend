@@ -1,6 +1,8 @@
 import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { IAppState } from "../../store";
-import { selectPublicEtos } from "../public-etos/selectors";
+import {
+  selectPublicEtos,
+} from "../public-etos/selectors";
 import { EETOStateOnChain } from "../public-etos/types";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import { TETOWithInvestorTicket } from "./types";

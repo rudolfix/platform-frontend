@@ -7,8 +7,10 @@ import { compose } from "recompose";
 
 import { CounterWidget, TagsWidget } from ".";
 import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
+import { getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
 import { selectIsEligibleToPreEto } from "../../../../modules/investor-tickets/selectors";
+import { selectEtoOnChainStateById } from "../../../../modules/public-etos/selectors";
 import {
   EETOStateOnChain,
   TEtoWithCompanyAndContract,
@@ -40,6 +42,7 @@ interface IStatusOfEto {
 interface IStateProps {
   isAuthorized: boolean;
   isEligibleToPreEto: boolean;
+  isPreEto?: boolean;
 }
 
 const StatusOfEto: React.SFC<IStatusOfEto> = ({ previewCode }) => {
@@ -139,10 +142,21 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
   className,
   isAuthorized,
   isEligibleToPreEto,
+  isPreEto,
 }) => {
   const smartContractOnChain = !!eto.contract;
 
   const documentsByType = keyBy(eto.documents, document => document.documentType);
+
+  let { tokenPrice } = getShareAndTokenPrice(eto);
+
+  const showWhitelistDiscount = eto.whitelistDiscountFraction && isEligibleToPreEto && isPreEto;
+  const showPublicDiscount = !showWhitelistDiscount && eto.publicDiscountFraction;
+  if (showWhitelistDiscount) {
+    tokenPrice *= 1 - eto.whitelistDiscountFraction!;
+  } else if (showPublicDiscount) {
+    tokenPrice *= 1 - eto.publicDiscountFraction!;
+  }
 
   return (
     <EtoWidgetContext.Consumer>
@@ -226,15 +240,14 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
                 </span>
                 <span className={styles.value}>
                   <Money
-                    value={
-                      (eto.preMoneyValuationEur || 0) /
-                      (eto.existingCompanyShares || 1) /
-                      (eto.equityTokensPerShare || 1)
-                    }
+                    value={tokenPrice}
                     currency="eur"
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />
+                  {!!showWhitelistDiscount &&
+                    ` (-${Math.floor(eto.whitelistDiscountFraction! * 100)}%)`}
+                  {!!showPublicDiscount && ` (-${Math.floor(eto.publicDiscountFraction! * 100)}%)`}
                 </span>
               </div>
             </div>
@@ -256,7 +269,7 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
   );
 };
 
-export const EtoOverviewStatus = compose<
+const EtoOverviewStatus = compose<
   IExternalProps & CommonHtmlProps & IStateProps,
   IExternalProps & CommonHtmlProps
 >(
@@ -264,6 +277,9 @@ export const EtoOverviewStatus = compose<
     stateToProps: (state, props) => ({
       isAuthorized: selectIsAuthorized(state.auth),
       isEligibleToPreEto: selectIsEligibleToPreEto(props.eto.etoId, state),
+      isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
     }),
   }),
 )(EtoOverviewStatusLayout);
+
+export { EtoOverviewStatusLayout, EtoOverviewStatus };

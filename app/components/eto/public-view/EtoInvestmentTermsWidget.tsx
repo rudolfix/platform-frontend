@@ -116,13 +116,6 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               }
               data-test-id="eto-public-view-new-share-price"
             />
-            {etoData.whitelistDiscountFraction && (
-              <Entry
-                label={<FormattedMessage id="eto.public-view.token-terms.whitelist-discount" />}
-                value={<Percentage>{etoData.whitelistDiscountFraction}</Percentage>}
-                data-test-id="eto-public-view-whitelist-discount"
-              />
-            )}
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.investment-amount" />}
               value={<InvestmentAmount etoData={etoData} />}
@@ -165,6 +158,20 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                   />
                 }
                 data-test-id="eto-public-view-token-price"
+              />
+            )}
+            {!!etoData.whitelistDiscountFraction && (
+              <Entry
+                label={<FormattedMessage id="eto.public-view.token-terms.whitelist-discount" />}
+                value={<Percentage>{etoData.whitelistDiscountFraction}</Percentage>}
+                data-test-id="eto-public-view-whitelist-discount"
+              />
+            )}
+            {!!etoData.publicDiscountFraction && (
+              <Entry
+                label={<FormattedMessage id="eto.public-view.token-terms.public-discount" />}
+                value={<Percentage>{etoData.publicDiscountFraction}</Percentage>}
+                data-test-id="eto-public-view-public-discount"
               />
             )}
             {!!etoData.minTicketEur && (

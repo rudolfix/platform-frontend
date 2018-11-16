@@ -21,6 +21,7 @@ import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { ETOState } from "../../../shared/ETOState";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
+import { Percentage } from "../../../shared/Percentage";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { CampaigningActivatedWidget } from "./CampaigningWidget";
@@ -245,9 +246,20 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />
-                  {!!showWhitelistDiscount &&
-                    ` (-${Math.floor(eto.whitelistDiscountFraction! * 100)}%)`}
-                  {!!showPublicDiscount && ` (-${Math.floor(eto.publicDiscountFraction! * 100)}%)`}
+                  {!!showWhitelistDiscount && (
+                    <>
+                      {" (-"}
+                      <Percentage>{eto.whitelistDiscountFraction!}</Percentage>
+                      {")"}
+                    </>
+                  )}
+                  {!!showPublicDiscount && (
+                    <>
+                      {" (-"}
+                      <Percentage>{eto.publicDiscountFraction!}</Percentage>
+                      {")"}
+                    </>
+                  )}
                 </span>
               </div>
             </div>

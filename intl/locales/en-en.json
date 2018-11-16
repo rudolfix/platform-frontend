@@ -304,6 +304,7 @@
   "eto.public-view.token-terms.nominee": "Nominee",
   "eto.public-view.token-terms.pre-eto-duration": "Pre-eto duration",
   "eto.public-view.token-terms.pre-money-valuation": "Pre-money valuation",
+  "eto.public-view.token-terms.public-discount": "Public ETO discount",
   "eto.public-view.token-terms.public-eto-duration": "Public ETO duration",
   "eto.public-view.token-terms.public-offer-duration": "Signing duration",
   "eto.public-view.token-terms.ticket-size": "Ticket size",

@@ -42,7 +42,7 @@ export const assertRegister = () => {
 };
 
 export const goToDashboard = () => {
-  cy.visit("/");
+  cy.visit("/dashboard");
 };
 
 export const goToSettings = () => {

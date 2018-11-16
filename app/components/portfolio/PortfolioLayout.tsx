@@ -100,6 +100,9 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
       <Col className="mb-4">
         <NewTable
           keepRhythm={true}
+          placeholder={
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.placeholder" />
+          }
           titles={[
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.token" />,
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.balance" />,

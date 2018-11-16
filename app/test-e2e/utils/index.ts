@@ -17,6 +17,8 @@ export const numberRegExPattern = /\d+/g;
 
 export const letterRegExPattern = /[^0-9]/gi;
 
+export const letterKeepDotRegExPattern = /[^0-9.]/gi;
+
 export const charRegExPattern = /[^a-z0-9]/gi;
 
 export const assertEtoDashboard = () => {

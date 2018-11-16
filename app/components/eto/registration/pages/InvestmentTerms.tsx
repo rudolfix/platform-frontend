@@ -16,6 +16,7 @@ import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-f
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
+import { TTranslatedString } from "../../../../types";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
@@ -33,7 +34,6 @@ import {
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
-import { TTranslatedString } from "../../../../types";
 import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {

@@ -56,17 +56,19 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
         name="equityTokenSymbol"
         disabled={readonly}
       />
-      <FormLabel name="equityTokenImage">
-        <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
-      </FormLabel>
-      <FormSingleFileUpload
-        label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
-        name="equityTokenImage"
-        acceptedFiles="image/png"
-        fileFormatInformation="*200 x 200px png"
-        data-test-id="eto-registration-token-logo"
-        disabled={readonly}
-      />
+      <div className="form-group">
+        <FormLabel name="equityTokenImage">
+          <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
+        </FormLabel>
+        <FormSingleFileUpload
+          label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+          name="equityTokenImage"
+          acceptedFiles="image/png"
+          fileFormatInformation="*200 x 200px png"
+          data-test-id="eto-registration-token-logo"
+          disabled={readonly}
+        />
+      </div>
     </Section>
 
     {!readonly && (

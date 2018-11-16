@@ -8,8 +8,8 @@ import {
   TWalletMigrationSteps,
 } from "../../../modules/icbm-wallet-balance-modal/reducer";
 import {
-  selectAllNeumakrsDueIcbmModal,
   selectEtherBalanceIcbmModal,
+  selectEtherNeumarksDueIcbmModal,
   selectIcbmModalIsFirstTransactionDone,
   selectIcbmModalIsMigrating,
   selectIcbmModalIsSecondTransactionDone,
@@ -115,7 +115,7 @@ const IcbmWalletBalanceModal = compose<any, any>(
       isOpen: state.icbmWalletBalanceModal.isOpen,
       isLoading: state.icbmWalletBalanceModal.loading,
       ethAddress: selectIcbmWalletEthAddress(state.icbmWalletBalanceModal),
-      neumarksDue: selectAllNeumakrsDueIcbmModal(state.icbmWalletBalanceModal),
+      neumarksDue: selectEtherNeumarksDueIcbmModal(state.icbmWalletBalanceModal),
       etherBalance: selectEtherBalanceIcbmModal(state.icbmWalletBalanceModal),
       isVerificationFullyDone: SelectIsVerificationFullyDone(state),
       walletMigrationData: selectWalletMigrationData(state.icbmWalletBalanceModal),

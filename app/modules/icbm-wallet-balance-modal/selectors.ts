@@ -1,4 +1,3 @@
-import { addBigNumbers } from "../../utils/BigNumberUtils";
 import { IAppState } from "./../../store";
 import { IIcbmWalletBalanceModal, IWalletMigrationData, TWalletMigrationSteps } from "./reducer";
 
@@ -6,17 +5,13 @@ export const selectIcbmWalletEthAddress = (state: IIcbmWalletBalanceModal): stri
   state.icbmWalletEthAddress;
 
 export const selectEtherNeumarksDueIcbmModal = (state: IIcbmWalletBalanceModal): string =>
-  (state.lockedWallet && state.lockedWallet.lockedEtherIcbmWallet.neumarksDue) || "0";
+  (state.icbmLockedEthWallet && state.icbmLockedEthWallet.neumarksDue) || "0";
 
 export const selectEurNeumarksDueIcbmModal = (state: IIcbmWalletBalanceModal): string =>
-  (state.lockedWallet && state.lockedWallet.lockedEuroIcbmWallet.neumarksDue) || "0";
-
-export const selectAllNeumakrsDueIcbmModal = (state: IIcbmWalletBalanceModal): string =>
-  addBigNumbers([selectEtherNeumarksDueIcbmModal(state), selectEurNeumarksDueIcbmModal(state)]);
+  (state.icbmLockedEthWallet && state.icbmLockedEthWallet.neumarksDue) || "0";
 
 export const selectEtherBalanceIcbmModal = (state: IIcbmWalletBalanceModal): string =>
-  (state.lockedWallet && state.lockedWallet.lockedEtherIcbmWallet.LockedBalance) || "0";
-
+  (state.icbmLockedEthWallet && state.icbmLockedEthWallet.LockedBalance) || "0";
 
 export const selectWalletMigrationData = (
   state: IIcbmWalletBalanceModal,

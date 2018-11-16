@@ -41,9 +41,7 @@ function* loadIcbmWalletMigrationTransactionSaga({
 }: TGlobalDependencies): any {
   try {
     const currentEthAddress: string = yield select(selectEthereumAddressWithChecksum);
-    const icbmEthAddress: string = yield select((s: IAppState) =>
-      selectIcbmWalletEthAddress(s.icbmWalletBalanceModal),
-    );
+    const icbmEthAddress: string = yield select(selectIcbmWalletEthAddress);
     const isFirstTxDone: boolean = yield select(selectIcbmModalIsFirstTransactionDone);
 
     const investorMigrationWallet: [
@@ -88,9 +86,8 @@ function* loadIcbmWalletMigrationSaga(
   { logger, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): any {
-  const ethAddress = yield select((s: IAppState) =>
-    selectIcbmWalletEthAddress(s.icbmWalletBalanceModal),
-  );
+  const ethAddress = yield select(selectIcbmWalletEthAddress);
+
   if (action.type !== "ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA") return;
   try {
     const userAddress = yield select(selectEthereumAddressWithChecksum);
@@ -113,7 +110,7 @@ function* loadIcbmWalletMigrationSaga(
       return notificationCenter.error("ICBM Wallet not found for given Ethereum address");
     if (e instanceof SameUserError) return notificationCenter.error("This is your current address");
     // Default Error
-    return notificationCenter.error("Error while loading wallet data");
+    return notificationCenter.error("Error while loading ICBM Wallet data");
   }
 }
 

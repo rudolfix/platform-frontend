@@ -4,7 +4,6 @@ import { toChecksumAddress } from "ethereumjs-util";
 import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { downloadLink } from "../immutable-file/sagas";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
@@ -117,9 +116,7 @@ function* loadIcbmWalletMigrationSaga(
 
 function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDependencies): any {
   const currentEthAddress = yield select(selectEthereumAddressWithChecksum);
-  const icbmEthAddress = yield select((s: IAppState) =>
-    selectIcbmWalletEthAddress(s.icbmWalletBalanceModal),
-  );
+  const icbmEthAddress = yield select(selectIcbmWalletEthAddress);
   if (currentEthAddress === icbmEthAddress) return;
   let isFirstRun = true;
 

@@ -2,14 +2,18 @@ import { IAppState } from "./../../store";
 import { IIcbmWalletBalanceModal, IWalletMigrationData, TWalletMigrationSteps } from "./reducer";
 
 // ICBM Wallet Selectors
-export const selectIcbmWalletEthAddress = (state: IIcbmWalletBalanceModal): string | undefined =>
-  state.icbmWalletEthAddress;
+export const selectIcbmWalletEthAddress = (state: IAppState): string | undefined =>
+  state.icbmWalletBalanceModal.icbmWalletEthAddress;
 
-export const selectEtherNeumarksDueIcbmModal = (state: IIcbmWalletBalanceModal): string =>
-  (state.icbmLockedEthWallet && state.icbmLockedEthWallet.neumarksDue) || "0";
+export const selectEtherNeumarksDueIcbmModal = (state: IAppState): string =>
+  (state.icbmWalletBalanceModal.icbmLockedEthWallet &&
+    state.icbmWalletBalanceModal.icbmLockedEthWallet.neumarksDue) ||
+  "0";
 
-export const selectEtherBalanceIcbmModal = (state: IIcbmWalletBalanceModal): string =>
-  (state.icbmLockedEthWallet && state.icbmLockedEthWallet.LockedBalance) || "0";
+export const selectEtherBalanceIcbmModal = (state: IAppState): string =>
+  (state.icbmWalletBalanceModal.icbmLockedEthWallet &&
+    state.icbmWalletBalanceModal.icbmLockedEthWallet.LockedBalance) ||
+  "0";
 
 // Migration Tool Selectors
 export const selectWalletMigrationData = (

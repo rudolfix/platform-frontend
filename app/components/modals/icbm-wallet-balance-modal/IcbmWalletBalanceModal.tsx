@@ -117,9 +117,9 @@ const IcbmWalletBalanceModal = compose<any, any>(
     stateToProps: state => ({
       isOpen: state.icbmWalletBalanceModal.isOpen,
       isLoading: state.icbmWalletBalanceModal.loading,
-      ethAddress: selectIcbmWalletEthAddress(state.icbmWalletBalanceModal),
-      neumarksDue: selectEtherNeumarksDueIcbmModal(state.icbmWalletBalanceModal),
-      etherBalance: selectEtherBalanceIcbmModal(state.icbmWalletBalanceModal),
+      ethAddress: selectIcbmWalletEthAddress(state),
+      neumarksDue: selectEtherNeumarksDueIcbmModal(state),
+      etherBalance: selectEtherBalanceIcbmModal(state),
       isVerificationFullyDone: SelectIsVerificationFullyDone(state),
       walletMigrationData: selectWalletMigrationData(state.icbmWalletBalanceModal),
       lockedWalletConnected: selectLockedWalletConnected(state),

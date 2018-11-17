@@ -255,6 +255,7 @@ export function* lightWalletBackupWatch({
   intlWrapper: {
     intl: { formatIntlMessage },
   },
+  logger,
 }: TGlobalDependencies): Iterator<any> {
   try {
     const user = yield select((state: IAppState) => state.auth.user);
@@ -267,6 +268,7 @@ export function* lightWalletBackupWatch({
     yield loadUser();
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
+    logger.error("Light Wallet connection error", e);
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
     );

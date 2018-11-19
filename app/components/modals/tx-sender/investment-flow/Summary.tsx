@@ -75,7 +75,7 @@ const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
 };
 
 const formatTokenPrice = (fullTokenPrice: number, actualTokenPrice: number) => {
-  const discount = Math.floor((1 - actualTokenPrice / fullTokenPrice) * 100);
+  const discount = Math.round((1 - actualTokenPrice / fullTokenPrice) * 100);
   let priceString = "€ " + formatThousands(actualTokenPrice.toString());
   if (discount >= 1) {
     priceString += ` (-${discount}%)`;

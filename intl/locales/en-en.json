@@ -801,6 +801,7 @@
   "wallet-selector.ledger.derivation-path-selector.placeholder": "Enter derivation path",
   "wallet-selector.ledger.login": "Login with Ledger Nano",
   "wallet-selector.ledger.register": "Register with Ledger Nano",
+  "wallet-selector.ledger.select-address": "Your Ledger Nano has many addresses. Your ETH and NEU balance is displayed next to each address.<br />Please choose the one you want to register with.",
   "wallet-selector.ledger.select-wallet": "Select your wallet for registration",
   "wallet-selector.ledger.start.browser-support": "Ensure you enable \"Browser support\" on your ledger",
   "wallet-selector.ledger.start.connection-status": "Connection status:",

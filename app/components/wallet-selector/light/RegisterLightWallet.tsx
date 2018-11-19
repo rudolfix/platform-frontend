@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
@@ -60,7 +61,7 @@ class RegisterLightWalletForm extends React.Component<
   };
 
   render = () => (
-    <Form className={styles.form}>
+    <Form>
       <FormField
         placeholder={`${this.props.intl.formatIntlMessage("wallet-selector.register.email")}`}
         type="email"
@@ -118,27 +119,29 @@ export const RegisterWalletComponent: React.SFC<
 > = props => {
   return (
     <>
-      <div className={cn(styles.wrapper)}>
-        <h1
-          className="mb-4"
-          data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
-        >
-          {props.restore ? (
-            <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
-          ) : (
-            <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
-          )}
-        </h1>
-        <div className={styles.explanation}>
-          <FormattedMessage tagName="p" id="wallet-selector.neuwallet.explanation-1" />
-        </div>
+      <Row className={cn(styles.wrapper, "justify-content-sm-center mt-3")}>
+        <Col className="align-self-end col-sm-auto col-xs-12">
+          <h1
+            className="mb-4"
+            data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
+          >
+            {props.restore ? (
+              <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
+            ) : (
+              <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
+            )}
+          </h1>
+          <div className={styles.explanation}>
+            <FormattedMessage tagName="p" id="wallet-selector.neuwallet.explanation-1" />
+          </div>
 
-        <RegisterEnhancedLightWalletForm {...props} />
+          <RegisterEnhancedLightWalletForm {...props} />
 
-        <div>
-          <FormattedHTMLMessage tagName="p" id="wallet-selector.neuwallet.explanation-2" />
-        </div>
-      </div>
+          <div className={styles.explanation}>
+            <FormattedHTMLMessage tagName="span" id="wallet-selector.neuwallet.explanation-2" />
+          </div>
+        </Col>
+      </Row>
     </>
   );
 };

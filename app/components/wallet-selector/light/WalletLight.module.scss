@@ -1,18 +1,5 @@
-.wrapper {
-  display: flex;
-  flex-flow: column;
-  flex:  1 0 100%;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  max-width: px-to-rem(500px);
-}
-
-.form {
-  width: 100%;
-}
-
 .explanation {
+  max-width: px-to-rem(500px);
   text-align: justify;
   hyphens: auto;
   margin-bottom: px-to-rem(40px);

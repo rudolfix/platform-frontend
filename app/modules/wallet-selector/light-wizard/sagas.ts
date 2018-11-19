@@ -255,6 +255,7 @@ export function* lightWalletBackupWatch({
   intlWrapper: {
     intl: { formatIntlMessage },
   },
+  logger,
 }: TGlobalDependencies): Iterator<any> {
   try {
     const user = yield select((state: IAppState) => state.auth.user);
@@ -264,9 +265,10 @@ export function* lightWalletBackupWatch({
       formatIntlMessage("modules.wallet-selector.light-wizard.sagas.backup-recovery"),
       formatIntlMessage("modules.wallet-selector.light-wizard.sagas.successfully.backed-up"),
     );
-    yield effects.call(loadUser);
+    yield loadUser();
     yield effects.put(actions.routing.goToSettings());
   } catch (e) {
+    logger.error("Light Wallet connection error", e);
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
     );

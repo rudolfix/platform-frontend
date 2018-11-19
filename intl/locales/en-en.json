@@ -471,7 +471,7 @@
   "kyc.personal.current.address": "Current address",
   "kyc.personal.high-income": "Is your income above 5.000 EUR monthly, or do you have more than 100.000 EUR of assets available?",
   "kyc.personal.income.disclaimer": "The German Federal Financial Supervisory Authority requires us to ensure that our clients invest within their means",
-  "kyc.personal.instant-id.description": "<b>Video Verification (via IDnow):</b> YBy selecting video verification, you will be redirected to our verification partner IDnow where an agent will verify your proof of identity and proof of address during a short video call. You may complete this process via your computer or mobile phone. The verification results will be presented to you shortly after the call is completed.",
+  "kyc.personal.instant-id.description": "<b>Video Verification (via IDnow):</b> By selecting video verification, you will be redirected to our verification partner IDnow where an agent will verify your proof of identity and proof of address during a short video call. You may complete this process via your computer or mobile phone. The verification results will be presented to you shortly after the call is completed.",
   "kyc.personal.instant-id.go-to-manual-verification": "BEGIN MANUAL VERIFICATION",
   "kyc.personal.instant-id.go-to-video-verification": "BEGIN VIDEO VERIFICATION",
   "kyc.personal.instant-id.manual-verification-description": "<b>Manual Verification</b>: By selecting manual verification, you will be asked to upload clear color copies of your proof of identity and proof of address. One of our KYC representatives will review your documents and contact you within 1 business day.",

@@ -144,7 +144,7 @@ export const DocumentsComponent: React.SFC<IProps> = ({
                       key={index}
                       document={allTemplates[key]}
                       generateTemplate={generateTemplate}
-                      documentTitle={documentTitles[key as EEtoDocumentType]}
+                      documentTitle={documentTitles[allTemplates[key].documentType]}
                     />
                   );
                 })}

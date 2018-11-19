@@ -63,6 +63,16 @@ export const selectIssuerEtoState = (state: IAppState): EtoState | undefined => 
   return undefined;
 };
 
+export const selectIssuerEtoIsRetail = (state: IAppState): boolean => {
+  const eto = selectIssuerEto(state);
+
+  if (eto) {
+    return eto.allowRetailInvestors;
+  }
+
+  return false;
+};
+
 export const selectIssuerCompany = (state: IAppState): TCompanyEtoData | undefined => {
   const eto = selectIssuerEtoWithCompanyAndContract(state);
 

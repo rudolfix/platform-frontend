@@ -138,6 +138,10 @@ const EtoStatusManager = ({
   }
 };
 
+function applyDiscountToPrice(price: number, discountFraction: number): number {
+  return price * (1 - discountFraction);
+}
+
 const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & IStateProps> = ({
   eto,
   className,
@@ -151,12 +155,14 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
 
   let { tokenPrice } = getShareAndTokenPrice(eto);
 
-  const showWhitelistDiscount = eto.whitelistDiscountFraction && isEligibleToPreEto && isPreEto;
-  const showPublicDiscount = !showWhitelistDiscount && eto.publicDiscountFraction;
+  const showWhitelistDiscount = Boolean(
+    eto.whitelistDiscountFraction && isEligibleToPreEto && isPreEto,
+  );
+  const showPublicDiscount = Boolean(!showWhitelistDiscount && eto.publicDiscountFraction);
   if (showWhitelistDiscount) {
-    tokenPrice *= 1 - eto.whitelistDiscountFraction!;
+    tokenPrice = applyDiscountToPrice(tokenPrice, eto.whitelistDiscountFraction!);
   } else if (showPublicDiscount) {
-    tokenPrice *= 1 - eto.publicDiscountFraction!;
+    tokenPrice = applyDiscountToPrice(tokenPrice, eto.publicDiscountFraction!);
   }
 
   return (
@@ -242,19 +248,22 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
                 </span>
                 <span className={styles.value}>
                   <Money
-                    value={tokenPrice}
+                    value={tokenPrice.toLocaleString(undefined, {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 8,
+                    })}
                     currency="eur"
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />
-                  {!!showWhitelistDiscount && (
+                  {showWhitelistDiscount && (
                     <>
                       {" (-"}
                       <Percentage>{eto.whitelistDiscountFraction!}</Percentage>
                       {")"}
                     </>
                   )}
-                  {!!showPublicDiscount && (
+                  {showPublicDiscount && (
                     <>
                       {" (-"}
                       <Percentage>{eto.publicDiscountFraction!}</Percentage>

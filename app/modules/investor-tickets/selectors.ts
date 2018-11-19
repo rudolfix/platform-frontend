@@ -87,9 +87,7 @@ export const selectIsWhitelisted = (etoId: string, state: IAppState) => {
 };
 
 export const selectIsEligibleToPreEto = (etoId: string, state: IAppState) => {
-  const wallet = state.wallet;
-  const isLockedWalletConnected = !!wallet && selectLockedWalletConnected(state);
-
+  const isLockedWalletConnected = selectLockedWalletConnected(state);
   const isWhitelisted = selectIsWhitelisted(etoId, state);
   return isLockedWalletConnected || isWhitelisted;
 };

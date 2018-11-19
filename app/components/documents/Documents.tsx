@@ -58,7 +58,7 @@ interface IDispatchProps {
 
 export type TDocumentTitles = { [key in EEtoDocumentType]: TTranslatedString };
 
-export const getDocumentTitles = (isRetailEto: boolean = false) => ({
+export const getDocumentTitles = (isRetailEto: boolean) => ({
   company_token_holder_agreement: (
     <FormattedMessage id="eto.documents.company-token-holder-agreement" />
   ),

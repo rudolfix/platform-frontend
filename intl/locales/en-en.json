@@ -699,7 +699,6 @@
   "shared-component.eto-overview.delete": "Delete",
   "shared-component.eto-overview.error.max-pledge": "The amount is above the maximum pledge size of {maxPledge}",
   "shared-component.eto-overview.error.min-pledge": "The amount is below the minimum pledge size of {minPledge}",
-  "shared-component.eto-overview.infoblatt-approved": "Infoblatt approved",
   "shared-component.eto-overview.invest-now": "Invest now",
   "shared-component.eto-overview.investment-memorandum": "Investment memorandum",
   "shared-component.eto-overview.investors": "{totalInvestors, plural, one {# investor} other {# investors}}",

@@ -1,18 +1,17 @@
+import * as cn from "classnames";
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
-import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
-import { externalRoutes } from "../../externalRoutes";
 import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
-import { InfoBlock } from "../../shared/InfoBlock";
+
+import * as styles from "./WalletLight.module.scss";
 
 const EMAIL = "email";
 const PASSWORD = "password";
@@ -61,7 +60,7 @@ class RegisterLightWalletForm extends React.Component<
   };
 
   render = () => (
-    <Form>
+    <Form className={styles.form}>
       <FormField
         placeholder={`${this.props.intl.formatIntlMessage("wallet-selector.register.email")}`}
         type="email"
@@ -119,36 +118,27 @@ export const RegisterWalletComponent: React.SFC<
 > = props => {
   return (
     <>
-      <Row>
-        <Col xs={12} md={{ size: 8, offset: 2 }}>
-          <InfoBlock>
-            <FormattedHTMLMessage tagName="span" id="wallet-selector.light.icbm-info.message" />{" "}
-            <Link
-              to={`${
-                externalRoutes.neufundSupport
-              }/solutions/articles/36000060442-icbm-investors-registration`}
-              target="_blank"
-            >
-              <FormattedMessage id="wallet-selector.light.icbm-info.read-more-here" />
-            </Link>
-          </InfoBlock>
-        </Col>
-      </Row>
-      <Row className="justify-content-sm-center mt-3">
-        <Col className="align-self-end col-sm-auto col-xs-12">
-          <h1
-            className="mb-4"
-            data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
-          >
-            {props.restore ? (
-              <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
-            ) : (
-              <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
-            )}
-          </h1>
-          <RegisterEnhancedLightWalletForm {...props} />
-        </Col>
-      </Row>
+      <div className={cn(styles.wrapper)}>
+        <h1
+          className="mb-4"
+          data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
+        >
+          {props.restore ? (
+            <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
+          ) : (
+            <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
+          )}
+        </h1>
+        <div className={styles.explanation}>
+          <FormattedMessage tagName="p" id="wallet-selector.neuwallet.explanation-1" />
+        </div>
+
+        <RegisterEnhancedLightWalletForm {...props} />
+
+        <div>
+          <FormattedHTMLMessage tagName="p" id="wallet-selector.neuwallet.explanation-2" />
+        </div>
+      </div>
     </>
   );
 };

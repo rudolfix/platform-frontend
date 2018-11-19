@@ -16,6 +16,7 @@ export interface ITagsWidget {
   prospectusApproved: IEtoDocument;
   smartContractOnchain: boolean;
   etoId: string;
+  allowRetailEto?: boolean;
 }
 
 type TDispatchProps = {
@@ -33,7 +34,14 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
   smartContractOnchain,
   etoId,
   downloadDocument,
+  allowRetailEto,
 }) => {
+  const approvedDocumentTitle = allowRetailEto ? (
+    <FormattedMessage id="shared-component.eto-overview.prospectus-approved" />
+  ) : (
+    <FormattedMessage id="shared-component.eto-overview.investment-memorandum" />
+  );
+
   return (
     <EtoWidgetContext.Consumer>
       {previewCode => (
@@ -64,15 +72,10 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
               size={ETagSize.SMALL}
               theme="green"
               layout="ghost"
-              text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
+              text={approvedDocumentTitle}
             />
           ) : (
-            <Tag
-              size={ETagSize.SMALL}
-              theme="silver"
-              layout="ghost"
-              text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
-            />
+            <Tag size={ETagSize.SMALL} theme="silver" layout="ghost" text={approvedDocumentTitle} />
           )}
           {smartContractOnchain ? (
             <Tag
@@ -108,4 +111,4 @@ const TagsWidget = compose<TLayoutProps, ITagsWidget>(
   }),
 )(TagsWidgetLayout);
 
-export { TagsWidget };
+export { TagsWidget, TagsWidgetLayout };

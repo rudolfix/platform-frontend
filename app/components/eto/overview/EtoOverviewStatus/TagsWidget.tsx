@@ -36,6 +36,12 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
   downloadDocument,
   allowRetailEto,
 }) => {
+  const approvedDocumentTitle = allowRetailEto ? (
+    <FormattedMessage id="shared-component.eto-overview.prospectus-approved" />
+  ) : (
+    <FormattedMessage id="shared-component.eto-overview.investment-memorandum" />
+  );
+
   return (
     <EtoWidgetContext.Consumer>
       {previewCode => (
@@ -58,40 +64,18 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
               text={<FormattedMessage id="shared-component.eto-overview.term-sheet" />}
             />
           )}
-          {allowRetailEto ? (
-            hasDocument(prospectusApproved) ? (
-              <Tag
-                onClick={() => downloadDocument(prospectusApproved)}
-                to={previewCode ? withParams(appRoutes.etoPublicView, { previewCode }) : undefined}
-                target={previewCode ? "_blank" : undefined}
-                size="small"
-                theme="green"
-                layout="ghost"
-                text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
-              />
-            ) : (
-              <Tag
-                size="small"
-                theme="silver"
-                layout="ghost"
-                text={<FormattedMessage id="shared-component.eto-overview.prospectus-approved" />}
-              />
-            )
+          {hasDocument(prospectusApproved) ? (
+            <Tag
+              onClick={() => downloadDocument(prospectusApproved)}
+              to={previewCode ? withParams(appRoutes.etoPublicView, { previewCode }) : undefined}
+              target={previewCode ? "_blank" : undefined}
+              size="small"
+              theme="green"
+              layout="ghost"
+              text={approvedDocumentTitle}
+            />
           ) : (
-            <>
-              <Tag
-                size="small"
-                theme="silver"
-                layout="ghost"
-                text={<FormattedMessage id="shared-component.eto-overview.investment-memorandum" />}
-              />
-              <Tag
-                size="small"
-                theme="silver"
-                layout="ghost"
-                text={<FormattedMessage id="shared-component.eto-overview.infoblatt-approved" />}
-              />
-            </>
+            <Tag size="small" theme="silver" layout="ghost" text={approvedDocumentTitle} />
           )}
           {smartContractOnchain ? (
             <Tag

@@ -76,9 +76,14 @@ export const selectEquityTokenCountByEtoId = (etoId: string, state: IAppState) =
   return contrib && contrib.equityTokenInt.toString();
 };
 
-export const selectEtoMinTicketEurUlpsById = (etoId: string, state: IAppState) => {
+export const selectEtoTicketSizesById = (etoId: string, state: IAppState) => {
   const contrib = selectCalculatedContribution(etoId, state);
-  return contrib && contrib.minTicketEurUlps;
+  return (
+    contrib && {
+      minTicketEurUlps: contrib.minTicketEurUlps,
+      maxTicketEurUlps: contrib.maxTicketEurUlps,
+    }
+  );
 };
 
 export const selectNeuRewardUlpsByEtoId = (etoId: string, state: IAppState) => {

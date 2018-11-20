@@ -25,7 +25,7 @@ import {
 } from "../../../../modules/investment-flow/selectors";
 import {
   selectEquityTokenCountByEtoId,
-  selectEtoMinTicketEurUlpsById,
+  selectEtoTicketSizesById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-tickets/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
@@ -73,7 +73,10 @@ interface IStateProps {
   neuReward?: string;
   readyToInvest: boolean;
   showTokens: boolean;
-  minTicketEurUlps?: BigNumber;
+  etoTicketSizes?: {
+    minTicketEurUlps: BigNumber;
+    maxTicketEurUlps: BigNumber;
+  };
 }
 
 interface IDispatchProps {
@@ -90,6 +93,7 @@ interface IWithProps {
   isWalletBalanceKnown: boolean;
   minTicketEth: string;
   minTicketEur: string;
+  maxTicketEur: string;
   totalCostEth: string;
   totalCostEur: string;
 }
@@ -117,6 +121,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
   isWalletBalanceKnown,
   minTicketEth,
   minTicketEur,
+  maxTicketEur,
   neuReward,
   readyToInvest,
   investNow,
@@ -161,7 +166,12 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
           <FormFieldRaw
             data-test-id="invest-modal-eur-field"
             prefix="€"
-            errorMsg={getInputErrorMessage(errorState, eto)}
+            errorMsg={getInputErrorMessage(
+              errorState,
+              eto.equityTokenName,
+              maxTicketEur,
+              minTicketEur,
+            )}
             placeholder={`${intl.formatIntlMessage(
               "investment-flow.min-ticket-size",
             )} ${minTicketEur} €`}
@@ -305,7 +315,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         equityTokenCount: selectEquityTokenCountByEtoId(etoId, state),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
-        minTicketEurUlps: selectEtoMinTicketEurUlpsById(etoId, state),
+        etoTicketSizes: selectEtoTicketSizesById(etoId, state),
       };
     },
     dispatchToProps: dispatch => ({
@@ -324,7 +334,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
     ({
       eto,
       ethValue,
-      minTicketEurUlps,
+      etoTicketSizes,
       investmentType,
       gasCostEth,
       euroValue,
@@ -335,11 +345,16 @@ export const InvestmentSelection: React.SFC = compose<any>(
       const gasCostEther = isBankTransfer ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEther, etherPriceEur]);
       const minTicketEur =
-        (minTicketEurUlps && minTicketEurUlps.div(Q18).toFixed()) ||
+        (etoTicketSizes && etoTicketSizes.minTicketEurUlps.div(Q18).toFixed()) ||
         (eto.minTicketEur && eto.minTicketEur.toString()) ||
+        "0";
+      const maxTicketEur =
+        (etoTicketSizes && etoTicketSizes.maxTicketEurUlps.div(Q18).toFixed()) ||
+        (eto.maxTicketEur && eto.maxTicketEur.toString()) ||
         "0";
       return {
         minTicketEur,
+        maxTicketEur,
         minTicketEth: multiplyBigNumbers([minTicketEur, eurPriceEther]),
         gasCostEuro,
         gasCostEth: gasCostEther,

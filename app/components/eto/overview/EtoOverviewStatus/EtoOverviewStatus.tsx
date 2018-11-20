@@ -22,6 +22,7 @@ import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { ETOState } from "../../../shared/ETOState";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
+import { NumberFormat } from "../../../shared/NumberFormat";
 import { Percentage } from "../../../shared/Percentage";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
@@ -241,7 +242,9 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
                 <span className={styles.label}>
                   <FormattedMessage id="shared-component.eto-overview-status.new-shares-generated" />
                 </span>
-                <span className={styles.value}>{eto.newSharesToIssue}</span>
+                <span className={styles.value}>
+                  <NumberFormat value={eto.newSharesToIssue} />
+                </span>
               </div>
               <div className={styles.group}>
                 <span className={styles.label}>

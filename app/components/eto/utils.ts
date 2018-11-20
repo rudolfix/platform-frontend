@@ -41,10 +41,14 @@ const convertField = (input: any, f: any) => {
   }
 };
 
-export const convertInArray = (conversionSpec: any) => (arr: any[]) => {
-  return arr.map(element => {
-    return convert(element, conversionSpec);
-  });
+export const convertInArray = (conversionSpec: any) => (data: any[]) => {
+  if (Array.isArray(data)) {
+    return data.map(element => {
+      return convert(element, conversionSpec);
+    });
+  } else {
+    return data;
+  }
 };
 
 const findNonEmptyKeyValueField = (data: any) => {

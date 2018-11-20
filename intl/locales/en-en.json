@@ -823,6 +823,7 @@
   "wallet-selector.light.icbm-info.read-more-here": "Read more here",
   "wallet-selector.login": "Login",
   "wallet-selector.login.help-link": "Wallet recovery",
+  "wallet-selector.neuwallet.email-error": "Please enter a valid email address",
   "wallet-selector.neuwallet.login-instructions": "To login with your Light Wallet, please click on the access link we sent to your email address after you created your Light Wallet. Having trouble finding the link? You can also recover your wallet using your recovery phrase here",
   "wallet-selector.neuwallet.login-link-text": "Do you have an account?",
   "wallet-selector.neuwallet.login.prompt": "Sign in to your Light Wallet.",

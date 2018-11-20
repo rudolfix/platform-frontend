@@ -22,10 +22,7 @@ import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selec
 import { ETxSenderType } from "../../../../modules/tx/interfaces";
 import { selectTxGasCostEth } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
-import {
-  addBigNumbers,
-  multiplyBigNumbers,
-} from "../../../../utils/BigNumberUtils";
+import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatThousands } from "../../../../utils/Number.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { CustomTooltip } from "../../../shared/CustomTooltip";

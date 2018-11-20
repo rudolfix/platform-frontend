@@ -495,6 +495,7 @@
   "kyc.request-state.pending.title": "Identity Verification for personal account",
   "kyc.request-state.rejected.description": "Your Verification Process request was rejected",
   "kyc.request-state.rejected.title": "Verification Process request rejected",
+  "kyc.start.description": "The identity verification process helps us get to know you, and will enable a regulated investment process. <b>Regulatory requirements dictate that we verify each new user account</b>. This keeps our platform secure and helps prevent unlawful activity. Once your identity has been successfully verified, you’ll be able to begin investing and enjoy benefits of the Neufund platform. <br /> <br />By choosing to verify a personal account, you are stating that you will invest in your own name. If you intend to invest on behalf of a legal entity, please choose the company verification option.",
   "kyc.start.go-to-company": "I am verifying a company account",
   "kyc.start.go-to-personal": "I am verifying my personal account",
   "kyc.start.title": "Start your Verification Process",

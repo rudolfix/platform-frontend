@@ -1,10 +1,9 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { KycPanel } from "../KycPanel";
 import { Panels } from "../shared/Panels";
@@ -36,6 +35,9 @@ interface IProps {
 export const KYCStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel steps={personalSteps} title={formatIntlMessage("kyc.start.title")} isMaxWidth={true}>
+      <p>
+        <FormattedHTMLMessage tagName="span" id="kyc.start.description" />
+      </p>
       <Panels
         panels={[
           {

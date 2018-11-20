@@ -102,12 +102,16 @@ function* loadIcbmWalletMigrationSaga(
         migrationWalletData.etherTokenICBMLockedWallet,
       ),
     );
+    yield put(actions.icbmWalletBalanceModal.showIcbmWalletBalanceModal());
     yield neuCall(loadIcbmWalletMigrationTransactionSaga);
   } catch (e) {
+    yield put(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal());
     logger.error("Load ICBM migration wallet", e);
     // todo: all texts to text resources
     if (e instanceof NoIcbmWalletError)
-      return notificationCenter.error("ICBM Wallet not found for given Ethereum address");
+      return notificationCenter.error(
+        "We were unable to find an ICBM wallet for the entered address.",
+      );
     if (e instanceof SameUserError) return notificationCenter.error("This is your current address");
     // Default Error
     return notificationCenter.error("Error while loading ICBM Wallet data");
@@ -191,7 +195,8 @@ export function* icbmWalletGetDataSagas(): any {
     "ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA",
     loadIcbmWalletMigrationSaga,
   );
-  yield neuTakeUntil(
+  yield fork(
+    neuTakeUntil,
     "ICBM_WALLET_BALANCE_MODAL_SHOW",
     "ICBM_WALLET_BALANCE_MODAL_HIDE",
     icbmWalletMigrationTransactionWatcher,

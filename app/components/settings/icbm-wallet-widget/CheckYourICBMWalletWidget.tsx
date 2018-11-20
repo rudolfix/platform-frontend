@@ -66,7 +66,6 @@ export const CheckYourICBMWalletWidget = appConnect<{}, IDispatchProps>({
   dispatchToProps: dispatch => ({
     loadICBMWallet: (address: string) => {
       dispatch(actions.icbmWalletBalanceModal.getWalletData(address));
-      dispatch(actions.icbmWalletBalanceModal.showIcbmWalletBalanceModal());
     },
   }),
 })(CheckYourICBMWalletWidgetComponent);

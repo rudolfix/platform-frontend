@@ -3,6 +3,7 @@ import { keyBy } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
+import { push } from "react-router-redux";
 import { compose } from "recompose";
 
 import { CounterWidget, TagsWidget } from ".";
@@ -34,10 +35,15 @@ import * as styles from "./EtoOverviewStatus.module.scss";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
+  publicView?: boolean;
 }
 
 interface IStatusOfEto {
   previewCode: string;
+}
+
+interface IDispatchProps {
+  navigateToEto: () => void;
 }
 
 interface IStateProps {
@@ -142,13 +148,9 @@ function applyDiscountToPrice(price: number, discountFraction: number): number {
   return price * (1 - discountFraction);
 }
 
-const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & IStateProps> = ({
-  eto,
-  className,
-  isAuthorized,
-  isEligibleToPreEto,
-  isPreEto,
-}) => {
+const EtoOverviewStatusLayout: React.SFC<
+  IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps
+> = ({ eto, className, isAuthorized, isEligibleToPreEto, isPreEto, navigateToEto, publicView }) => {
   const smartContractOnChain = !!eto.contract;
 
   const documentsByType = keyBy(eto.documents, document => document.documentType);
@@ -173,7 +175,10 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
           data-test-id={`eto-overview-${eto.etoId}`}
         >
           <StatusOfEto previewCode={eto.previewCode} />
-          <div className={styles.overviewWrapper}>
+          <div
+            className={styles.overviewWrapper}
+            onClick={({ target, currentTarget }) => target === currentTarget && navigateToEto()}
+          >
             <div className={styles.statusWrapper}>
               <Link
                 to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}
@@ -284,7 +289,13 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
               />
             </div>
           </div>
-          <PoweredByNeufund />
+          {previewCode ? (
+            <PoweredByNeufund />
+          ) : !publicView ? (
+            <Link to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}>
+              <FormattedMessage id="shared-component.eto-overview.more-details" />
+            </Link>
+          ) : null}
         </div>
       )}
     </EtoWidgetContext.Consumer>
@@ -292,14 +303,18 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
 };
 
 const EtoOverviewStatus = compose<
-  IExternalProps & CommonHtmlProps & IStateProps,
+  IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps,
   IExternalProps & CommonHtmlProps
 >(
-  appConnect<IStateProps, {}, IExternalProps>({
+  appConnect<IStateProps, IDispatchProps, IExternalProps>({
     stateToProps: (state, props) => ({
       isAuthorized: selectIsAuthorized(state.auth),
       isEligibleToPreEto: selectIsEligibleToPreEto(props.eto.etoId, state),
       isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
+    }),
+    dispatchToProps: (dispatch, { eto }) => ({
+      navigateToEto: () =>
+        dispatch(push(withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode }))),
     }),
   }),
 )(EtoOverviewStatusLayout);

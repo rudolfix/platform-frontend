@@ -8,6 +8,8 @@ import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { KycPanel } from "../KycPanel";
 import { Panels } from "../shared/Panels";
 
+import * as styles from "../KycPanel.module.scss";
+
 export const personalSteps = [
   {
     label: <FormattedMessage id="kyc.steps.representation" />,
@@ -35,7 +37,7 @@ interface IProps {
 export const KYCStartComponent = injectIntlHelpers<IProps>(
   ({ intl: { formatIntlMessage }, ...props }) => (
     <KycPanel steps={personalSteps} title={formatIntlMessage("kyc.start.title")} isMaxWidth={true}>
-      <p>
+      <p className={styles.textFieldNarrow}>
         <FormattedHTMLMessage tagName="span" id="kyc.start.description" />
       </p>
       <Panels

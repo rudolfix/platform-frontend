@@ -48,6 +48,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
             theme="graphite"
             svgIcon={arrowRightIcon}
             onClick={onUpgradeClick}
+            data-test-id={dataTestId && dataTestId + ".shared-component.upgrade.button"}
             disabled={disabled}
           >
             <FormattedMessage id="shared-component.account-balance.upgrade" />

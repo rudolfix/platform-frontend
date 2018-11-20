@@ -3,7 +3,7 @@ import { etoFixtureAddressByName } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
-describe("Invest with full icbm wallet", () => {
+describe("Invest with bank transfer", () => {
   it("do", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     createAndLoginNewUser({

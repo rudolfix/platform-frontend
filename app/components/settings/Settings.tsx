@@ -109,4 +109,9 @@ export const Settings = compose<React.SFC>(
       isLockedWalletConnected: selectLockedWalletConnected(s),
     }),
   }),
+  onEnterAction({
+    actionCreator: dispatch => {
+      dispatch(actions.kyc.kycLoadIndividualData());
+    },
+  }),
 )(SettingsComponent);

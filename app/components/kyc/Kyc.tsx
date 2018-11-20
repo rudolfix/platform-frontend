@@ -19,6 +19,7 @@ import { KycPanel } from "./KycPanel";
 import { KycRouter } from "./Router";
 import { KYCAddDocuments } from "./shared/AddDocuments";
 
+import * as addFile from "../../assets/img/inline_icons/add_file.svg";
 import * as arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 
 export const personalSteps = [
@@ -76,7 +77,15 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-class RequestStateInfo extends React.Component<IProps> {
+interface IState {
+  showAdditionalFileUpload: boolean;
+}
+
+class RequestStateInfo extends React.Component<IProps, IState> {
+  state = {
+    showAdditionalFileUpload: false,
+  };
+
   componentDidMount(): void {
     if (this.props.requestStatus === "Pending") {
       this.props.showModal(
@@ -126,9 +135,21 @@ class RequestStateInfo extends React.Component<IProps> {
           description={<FormattedMessage id="kyc.request-state.pending.description" />}
           testId="kyc-panel-pending"
         >
-          {this.props.pendingRequestType && (
-            <KYCAddDocuments uploadType={this.props.pendingRequestType} />
+          {!this.state.showAdditionalFileUpload && (
+            <Button
+              layout={EButtonLayout.SECONDARY}
+              iconPosition="icon-before"
+              svgIcon={addFile}
+              onClick={() => this.setState({ showAdditionalFileUpload: true })}
+            >
+              <FormattedMessage id="kyc.request-state.pending.add-files-button" />
+            </Button>
           )}
+          {this.props.pendingRequestType &&
+            this.state.showAdditionalFileUpload && (
+              <KYCAddDocuments uploadType={this.props.pendingRequestType} />
+            )}
+          <br /> <br />
           {settingsButton}
         </KycPanel>
       );

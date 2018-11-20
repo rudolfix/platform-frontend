@@ -33,7 +33,7 @@ import {
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/buttons";
-import { individualRequirements, MultiFileUpload } from "../../shared/MultiFileUpload";
+import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/Tooltip";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
@@ -186,7 +186,6 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
-        requirements={individualRequirements}
       />
     </div>
   );

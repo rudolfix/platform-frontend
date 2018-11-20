@@ -765,6 +765,7 @@
   "shared-component.to-human-readable-form.million.other": "million",
   "shared-component.to-human-readable-form.thousand.one": "thousand",
   "shared-component.to-human-readable-form.thousand.other": "thousand",
+  "shared-component.wallet-balance.explanation": "Here you can see your available balance and manage your wallet by adding or withdrawing funds.",
   "shared-component.wallet-balance.title.account-address": "Wallet address:",
   "shared-component.wallet-balance.title.account-balance": "Available balance:",
   "shared-component.wallet-icbm.already-upgraded-message": "You have successfully upgraded your ICBM wallet. You may now use these funds to invest in ETOs.",

@@ -27,6 +27,7 @@ export interface IFormInputExternalProps {
   charactersLimit?: number;
   size?: InputSize;
   customValidation?: (value: any) => string | Function | Promise<void> | undefined;
+  customOnBlur?: Function;
   ignoreTouched?: boolean;
 }
 
@@ -65,11 +66,10 @@ export class FormInput extends React.Component<FormInputProps> {
       addonStyle,
       charactersLimit,
       errorMsg,
-      min,
-      max,
       size,
       disabled,
       customValidation,
+      customOnBlur,
       ignoreTouched,
       maxLength,
       ...props
@@ -88,7 +88,7 @@ export class FormInput extends React.Component<FormInputProps> {
               render={({ field }: FieldProps) => {
                 const val = transform(field.value, charactersLimit);
                 return (
-                  <>
+                  <div>
                     <InputGroup size={size}>
                       {prefix && (
                         <InputGroupAddon
@@ -121,6 +121,11 @@ export class FormInput extends React.Component<FormInputProps> {
                             ),
                           );
                         }}
+                        onBlur={e => {
+                          if (customOnBlur) {
+                            customOnBlur(e);
+                          }
+                        }}
                         type={type}
                         value={val}
                         valid={isValid(touched, errors, name)}
@@ -147,7 +152,7 @@ export class FormInput extends React.Component<FormInputProps> {
                       ignoreTouched={ignoreTouched}
                     />
                     {charactersLimit && <div>{countedCharacters(val, charactersLimit)}</div>}
-                  </>
+                  </div>
                 );
               }}
             />

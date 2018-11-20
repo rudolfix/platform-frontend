@@ -41,9 +41,7 @@ const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): strin
     return "0";
   }
 
-  return Q18.mul(equityTokenInt)
-    .div(equivEurUlps)
-    .toFixed(4);
+  return equivEurUlps.div(Q18.mul(equityTokenInt)).toFixed(8);
 };
 
 const transactions: any[] = []; // TODO: Connect source of data
@@ -200,13 +198,13 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
               <Money
                 value={myNeuBalanceEuroAmount}
                 currency="eur"
-                currencySymbol={ECurrencySymbol.SYMBOL}
+                currencySymbol={ECurrencySymbol.NONE}
               />
               <Money
                 value={neuPrice}
                 format={EMoneyFormat.FLOAT}
                 currency="eur"
-                currencySymbol={ECurrencySymbol.SYMBOL}
+                currencySymbol={ECurrencySymbol.NONE}
               />
               <>{"-"}</>
               <Link

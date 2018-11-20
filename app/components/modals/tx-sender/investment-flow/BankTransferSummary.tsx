@@ -49,21 +49,23 @@ const BankTransferSummaryComponent: React.SFC<IProps> = ({
   downloadAgreement,
   onAccept,
   onChange,
-  ...data
+  equityTokens,
+  estimatedReward,
+  etoAddress,
 }) => {
-  const equityTokens = (
+  const equityTokensValue = (
     <span>
       {/* TODO: Change to actual custom token icon */}
-      <img src={tokenIcon} /> {data.equityTokens}
+      <img src={tokenIcon} /> {equityTokens}
     </span>
   );
-  const estimatedReward = (
+  const estimatedRewardValue = (
     <span>
-      <img src={neuIcon} /> {formatEurTsd(data.estimatedReward)} NEU
+      <img src={neuIcon} /> {formatEurTsd(estimatedReward)} NEU
     </span>
   );
 
-  const tokenPrice = divideBigNumbers(investmentEur, data.equityTokens);
+  const tokenPrice = divideBigNumbers(investmentEur, equityTokens);
 
   return (
     <Container className={styles.container}>
@@ -105,11 +107,11 @@ const BankTransferSummaryComponent: React.SFC<IProps> = ({
               caption={
                 <FormattedMessage id="investment-flow.bank-transfer-summary.equity-tokens" />
               }
-              value={equityTokens}
+              value={equityTokensValue}
             />
             <InfoRow
               caption={<FormattedMessage id="investment-flow.bank-transfer-summary.neu-reward" />}
-              value={estimatedReward}
+              value={estimatedRewardValue}
             />
           </InfoList>
         </Col>
@@ -117,7 +119,7 @@ const BankTransferSummaryComponent: React.SFC<IProps> = ({
 
       <Row className="justify-content-center">
         <DocumentTemplateButton
-          onClick={() => downloadAgreement(data.etoAddress)}
+          onClick={() => downloadAgreement(etoAddress)}
           title={<FormattedMessage id="investment-flow.summary.download-agreement" />}
         />
       </Row>

@@ -670,7 +670,7 @@
   "settings.verify-email-widget.change-email": "Change your email",
   "settings.verify-email-widget.email-is-verified": "Thank you for verifying your email address. We will never share your email address with anyone, and will only email you regarding important updates.",
   "settings.verify-email-widget.email-placeholder": "Your email address",
-  "settings.verify-email-widget.enter-email": "We have sent a link to the email address you entered. Please check your inbox (or your spam folder) to verify your email address. Once verified, you may proceed to the next step. You provided us with the following email address:",
+  "settings.verify-email-widget.enter-email": "Please enter and verify your email address below. We will not share your email address with anyone, and will only email you regarding important updates.",
   "settings.verify-email-widget.header": "EMAIL VERIFICATION",
   "settings.verify-email-widget.resend-link": "Resend link",
   "settings.verify-email-widget.unverified-email": "We have sent a link to the email address you entered. Please check your inbox (or your spam folder) to verify your email address. Once verified, you’ll be able to proceed to the next step.",

@@ -28,6 +28,17 @@ export function convertToBigInt(value: TBigNumberVariant, currencyDecimals?: num
   return moneyInWei.toFixed(0, BigNumber.ROUND_UP);
 }
 
+export function formatFlexiPrecision(
+  value: number | string,
+  maxPrecision: number,
+  minPrecision = 0,
+): string {
+  return parseFloat(value as string).toLocaleString(undefined, {
+    maximumFractionDigits: maxPrecision,
+    minimumFractionDigits: minPrecision,
+  });
+}
+
 type TNormalizeOptions = { min: number; max: number };
 
 function normalizeValue(options: TNormalizeOptions, value: number): number {

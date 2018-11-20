@@ -30,6 +30,7 @@ import { InvestmentWidget } from "./InvestmentWidget";
 import { RegisterNowWidget } from "./RegisterNowWidget";
 import { TokenSymbolWidget } from "./TokenSymbolWidget";
 
+import { formatFlexiPrecision } from "../../../../utils/Number.utils";
 import * as styles from "./EtoOverviewStatus.module.scss";
 
 interface IExternalProps {
@@ -248,10 +249,7 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
                 </span>
                 <span className={styles.value}>
                   <Money
-                    value={tokenPrice.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 8,
-                    })}
+                    value={formatFlexiPrecision(tokenPrice, 8)}
                     currency="eur"
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}

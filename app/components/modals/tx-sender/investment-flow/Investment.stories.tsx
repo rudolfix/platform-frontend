@@ -33,7 +33,7 @@ storiesOf("Investment/Form", module).add("default with error", () => (
       investmentType={EInvestmentType.InvestmentWallet}
       isWalletBalanceKnown={true}
       minTicketEth={"12341234123412341234"}
-      minTicketEur={1234}
+      minTicketEur={"1234"}
       readyToInvest={false}
       investNow={() => {}}
       showTokens={true}

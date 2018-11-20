@@ -76,6 +76,11 @@ export const selectEquityTokenCountByEtoId = (etoId: string, state: IAppState) =
   return contrib && contrib.equityTokenInt.toString();
 };
 
+export const selectEtoMinTicketEurUlpsById = (etoId: string, state: IAppState) => {
+  const contrib = selectCalculatedContribution(etoId, state);
+  return contrib && contrib.minTicketEurUlps;
+};
+
 export const selectNeuRewardUlpsByEtoId = (etoId: string, state: IAppState) => {
   const contrib = selectCalculatedContribution(etoId, state);
   return contrib && contrib.neuRewardUlps.toString();

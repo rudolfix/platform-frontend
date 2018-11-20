@@ -1,3 +1,4 @@
+import { BigNumber } from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import MaskedInput from "react-text-mask";
@@ -6,7 +7,7 @@ import { withHandlers, withProps } from "recompose";
 import { compose } from "redux";
 import { createNumberMask } from "text-mask-addons";
 
-import { TPublicEtoData } from "../../../../lib/api/eto/EtoApi.interfaces";
+import { Q18 } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
 import {
   EInvestmentCurrency,
@@ -24,9 +25,11 @@ import {
 } from "../../../../modules/investment-flow/selectors";
 import {
   selectEquityTokenCountByEtoId,
+  selectEtoMinTicketEurUlpsById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-tickets/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
+import { TEtoWithCompanyAndContract } from "../../../../modules/public-etos/types";
 import {
   selectEtherPriceEur,
   selectEurPriceEther,
@@ -57,7 +60,7 @@ import {
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
-  eto: TPublicEtoData;
+  eto: TEtoWithCompanyAndContract;
   wallets: WalletSelectionData[];
   euroValue: string;
   ethValue: string;
@@ -70,6 +73,7 @@ interface IStateProps {
   neuReward?: string;
   readyToInvest: boolean;
   showTokens: boolean;
+  minTicketEurUlps?: BigNumber;
 }
 
 interface IDispatchProps {
@@ -85,7 +89,7 @@ interface IWithProps {
   gasCostEuro: string;
   isWalletBalanceKnown: boolean;
   minTicketEth: string;
-  minTicketEur: number;
+  minTicketEur: string;
   totalCostEth: string;
   totalCostEur: string;
 }
@@ -301,6 +305,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         equityTokenCount: selectEquityTokenCountByEtoId(etoId, state),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
+        minTicketEurUlps: selectEtoMinTicketEurUlpsById(etoId, state),
       };
     },
     dispatchToProps: dispatch => ({
@@ -316,11 +321,23 @@ export const InvestmentSelection: React.SFC = compose<any>(
     }),
   }),
   withProps<IWithProps, IStateProps>(
-    ({ eto, ethValue, investmentType, gasCostEth, euroValue, etherPriceEur, eurPriceEther }) => {
+    ({
+      eto,
+      ethValue,
+      minTicketEurUlps,
+      investmentType,
+      gasCostEth,
+      euroValue,
+      etherPriceEur,
+      eurPriceEther,
+    }) => {
       const isBankTransfer = investmentType === EInvestmentType.BankTransfer;
       const gasCostEther = isBankTransfer ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEther, etherPriceEur]);
-      const minTicketEur = eto.minTicketEur || 0;
+      const minTicketEur =
+        (minTicketEurUlps && minTicketEurUlps.div(Q18).toFixed()) ||
+        (eto.minTicketEur && eto.minTicketEur.toString()) ||
+        "0";
       return {
         minTicketEur,
         minTicketEth: multiplyBigNumbers([minTicketEur, eurPriceEther]),

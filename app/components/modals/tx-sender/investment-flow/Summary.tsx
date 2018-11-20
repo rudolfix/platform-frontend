@@ -24,10 +24,8 @@ import { selectTxGasCostEth } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
 import {
   addBigNumbers,
-  divideBigNumbers,
   multiplyBigNumbers,
 } from "../../../../utils/BigNumberUtils";
-import { formatMoney } from "../../../../utils/Money.utils";
 import { formatThousands } from "../../../../utils/Number.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { CustomTooltip } from "../../../shared/CustomTooltip";
@@ -36,12 +34,16 @@ import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps } from "../TxSender";
-import { formatEthTsd, formatEurTsd } from "./utils";
+import {
+  formatEthTsd,
+  formatEurTsd,
+  formatSummaryTokenPrice,
+  getActualTokenPriceEur,
+} from "./utils";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as info from "../../../../assets/img/notifications/info.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
-import { MONEY_DECIMALS } from "../../../../config/constants";
 import * as styles from "./Summary.module.scss";
 
 interface IStateProps {
@@ -76,15 +78,6 @@ const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
   return isIcbm ? icbmMsg : neuMsg;
 };
 
-const formatTokenPrice = (fullTokenPrice: number, actualTokenPrice: number) => {
-  const discount = Math.round((1 - actualTokenPrice / fullTokenPrice) * 100);
-  let priceString = "€ " + formatThousands(actualTokenPrice.toString());
-  if (discount >= 1) {
-    priceString += ` (-${discount}%)`;
-  }
-  return priceString;
-};
-
 const InvestmentSummaryComponent: React.SFC<IProps> = ({
   onAccept,
   onChange,
@@ -117,13 +110,9 @@ const InvestmentSummaryComponent: React.SFC<IProps> = ({
   const totalCostEur = addBigNumbers([gasCostEuro, investmentEur]);
 
   const total = `€ ${formatEurTsd(totalCostEur)} ≈ ${formatEthTsd(totalCostEth)} ETH`;
-  const actualTokenPrice = formatMoney(
-    divideBigNumbers(investmentEur, equityTokens),
-    MONEY_DECIMALS,
-    8,
-  );
+  const actualTokenPrice = getActualTokenPriceEur(investmentEur, equityTokens);
   const { tokenPrice: fullTokenPrice } = getShareAndTokenPrice(eto);
-  const formattedTokenPrice = formatTokenPrice(fullTokenPrice, parseFloat(actualTokenPrice));
+  const formattedTokenPrice = formatSummaryTokenPrice(fullTokenPrice, parseFloat(actualTokenPrice));
 
   return (
     <Container className={styles.container}>

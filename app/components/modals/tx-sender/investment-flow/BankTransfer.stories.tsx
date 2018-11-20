@@ -1,5 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+
 import { TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { BankTransferDetailsComponent } from "./BankTransferDetails";
 import { BankTransferSummaryComponent } from "./BankTransferSummary";

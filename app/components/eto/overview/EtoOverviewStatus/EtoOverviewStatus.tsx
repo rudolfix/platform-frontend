@@ -17,6 +17,7 @@ import {
 } from "../../../../modules/public-etos/types";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
+import { formatFlexiPrecision } from "../../../../utils/Number.utils";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { ETOState } from "../../../shared/ETOState";
@@ -30,7 +31,6 @@ import { InvestmentWidget } from "./InvestmentWidget";
 import { RegisterNowWidget } from "./RegisterNowWidget";
 import { TokenSymbolWidget } from "./TokenSymbolWidget";
 
-import { formatFlexiPrecision } from "../../../../utils/Number.utils";
 import * as styles from "./EtoOverviewStatus.module.scss";
 
 interface IExternalProps {

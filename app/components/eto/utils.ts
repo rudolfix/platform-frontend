@@ -1,4 +1,5 @@
 import { cloneDeep, flow, get, set } from "lodash";
+
 import { formatFlexiPrecision } from "../../utils/Number.utils";
 
 export interface ICompoundField {

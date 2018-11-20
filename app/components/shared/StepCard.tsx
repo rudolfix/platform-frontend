@@ -9,6 +9,6 @@ interface IStepCardProps {
 export const StepCard: React.SFC<IStepCardProps> = ({ img, text }) => (
   <div className={styles.stepCard}>
     <img src={img} className="mb-3" />
-    <div>{text}</div>
+    <span>{text}</span>
   </div>
 );

@@ -1,12 +1,15 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+
+import { Button, EButtonLayout } from "../../shared/buttons";
+import { StepCard } from "../../shared/StepCard";
+
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 import * as noComputer from "../../../assets/img/seed_backup/no_computer.svg";
 import * as safe from "../../../assets/img/seed_backup/safe.svg";
 import * as write from "../../../assets/img/seed_backup/write.svg";
-import { Button, EButtonLayout } from "../../shared/buttons";
-import { StepCard } from "../../shared/StepCard";
+import * as styles from "./BackupSeed.module.scss";
 
 interface IBackupSeedIntroProps {
   onNext: () => void;
@@ -15,7 +18,7 @@ interface IBackupSeedIntroProps {
 
 export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNext }) => (
   <>
-    <Row className="mb-4 text-center">
+    <Row className={styles.stepCardWrapper}>
       <StepCard
         img={write}
         text={<FormattedMessage id="settings.backup-seed-intro.write-all-words" />}

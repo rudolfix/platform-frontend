@@ -14,6 +14,7 @@ import { ArrayOfKeyValueFields, FormTextArea } from "../../../shared/forms";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import {
   convert,
+  convertFractionToPercentage,
   convertInArray,
   convertPercentageToFraction,
   removeEmptyKeyValueFields,
@@ -183,10 +184,14 @@ const EtoRegistrationPitch = compose<React.SFC>(
   }),
   withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
     validationSchema: EtoPitchType.toYup(),
-    mapPropsToValues: props => props.stateValues,
+    mapPropsToValues: props => convert(props.stateValues, toFormState),
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationPitchComponent);
+
+const toFormState = {
+  useOfCapitalList: [convertInArray({ percent: convertFractionToPercentage() })],
+};
 
 const fromFormState = {
   useOfCapitalList: [

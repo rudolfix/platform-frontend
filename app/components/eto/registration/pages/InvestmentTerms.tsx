@@ -330,6 +330,7 @@ const toFormState = {
   whitelistDiscountFraction: convertFractionToPercentage(),
   publicDiscountFraction: convertFractionToPercentage(),
   fixedSlotsMaximumDiscountFraction: convertFractionToPercentage(),
+  publicDiscountFraction: convertFractionToPercentage(),
 };
 
 const fromFormState = {

@@ -39,6 +39,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
         currencyTotal={currencyTotal}
         largeNumber={largeNumber}
         value={value}
+        data-test-id={dataTestId && dataTestId + ".balance-values"}
       />
       <div className={styles.buttons}>
         {onUpgradeClick && (

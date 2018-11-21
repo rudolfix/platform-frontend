@@ -217,7 +217,7 @@
   "eto.form.section.investment-terms.fully-diluted-pre-money-valuation": "Pre-Money Valuation",
   "eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors": "Maximum fixed slots discount",
   "eto.form.section.investment-terms.maximum-new-shares-to-issue": "Maximum new shares to issue",
-  "eto.form.section.investment-terms.maximum-new-shares-to-issue-": "Maximum new shares to issue in whitelist",
+  "eto.form.section.investment-terms.maximum-new-shares-to-issue-pre-eto": "Maximum new shares to issue in whitelist",
   "eto.form.section.investment-terms.maximum-shares-generated": "Maximum shares generated",
   "eto.form.section.investment-terms.maximum-shares-to-be-issued-in-fixed-slots": "Maximum new shares to issue in fixed slots",
   "eto.form.section.investment-terms.maximum-token-cap": "Maximum token cap",

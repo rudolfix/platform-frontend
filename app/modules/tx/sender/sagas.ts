@@ -84,6 +84,7 @@ export function* txSendProcess(
     yield call(connectWallet);
     yield put(actions.txSender.txSenderWalletPlugged());
     const txHash = yield neuCall(sendTxSubSaga);
+
     yield neuCall(watchTxSubSaga, txHash);
   } catch (error) {
     logger.error(error);
@@ -257,16 +258,16 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
           break;
         case EEventEmitterChannelEvents.TX_MINED:
           return yield put(actions.txSender.txSenderTxMined());
+        // Non terminal errors - Tx Mining should continue
         case EEventEmitterChannelEvents.ERROR:
           logger.error("Error while tx watching: ", result.error);
-          return yield put(
-            actions.txSender.txSenderError(ETransactionErrorType.ERROR_WHILE_WATCHING_TX),
-          );
+          break;
+        // Terminal errors - Tx Mining should exit
         case EEventEmitterChannelEvents.OUT_OF_GAS:
-          logger.error("Error Transaction Reverted: ", result.error);
+          logger.info("Error Transaction out of gas: ", result.error);
           return yield put(actions.txSender.txSenderError(ETransactionErrorType.OUT_OF_GAS));
         case EEventEmitterChannelEvents.REVERTED_TRANSACTION:
-          logger.error("Error Transaction Reverted: ", result.error);
+          logger.warn("Error Transaction Reverted: ", result.error);
           return yield put(actions.txSender.txSenderError(ETransactionErrorType.REVERTED_TX));
       }
     }

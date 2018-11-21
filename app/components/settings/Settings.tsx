@@ -41,7 +41,7 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
   kycRequestType,
   kycRequestStatus,
 }) => {
-  const isPersonalDataProcessed = kycRequestStatus !== "Draft";
+  const isPersonalDataProcessed = kycRequestStatus === "Pending" || kycRequestStatus === "Accepted";
   const isUserInvestor = userType === EUserType.INVESTOR;
   const isIndividual = kycRequestType === "individual";
 
@@ -108,5 +108,10 @@ export const Settings = compose<React.SFC>(
       isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
       isLockedWalletConnected: selectLockedWalletConnected(s),
     }),
+  }),
+  onEnterAction({
+    actionCreator: dispatch => {
+      dispatch(actions.kyc.kycLoadIndividualData());
+    },
   }),
 )(SettingsComponent);

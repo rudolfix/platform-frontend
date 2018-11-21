@@ -42,7 +42,7 @@ export const icbmWalletBalanceModalReducer: AppReducer<IIcbmWalletBalanceModal> 
       };
     case "ICBM_WALLET_BALANCE_MODAL_HIDE":
       return {
-        ...state,
+        ...initialState,
         isOpen: false,
       };
     case "ICBM_WALLET_BALANCE_MODAL_GET_WALLET_DATA":

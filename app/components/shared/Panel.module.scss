@@ -29,7 +29,7 @@
   text-transform: uppercase;
   position: relative;
 
-  &:global(.has-icon) {
+  &.has-icon {
     &::before {
       display: none;
     }

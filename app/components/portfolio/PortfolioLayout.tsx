@@ -60,9 +60,10 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
   <>
     {process.env.NF_ASSETS_PORTFOLIO_COMPONENT_VISIBLE === "1" && (
       <>
-        <SectionHeader layoutHasDecorator={false} className="mb-4">
+        <SectionHeader layoutHasDecorator={false} className="mt-4 mb-4">
           <FormattedMessage id="portfolio.section.asset-portfolio.title" />
         </SectionHeader>
+
         <Row>
           <Col className="mb-4">
             <AssetPortfolio
@@ -83,18 +84,21 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
       </>
     )}
 
+    <SectionHeader layoutHasDecorator={false} className="mb-4">
+      <FormattedMessage id="portfolio.section.my-proceeds.title" />
+    </SectionHeader>
+
     <Row>
-      <Col className="mb-4 mt-4">
-        <ClaimedDividends
-          headerText={<FormattedMessage id="portfolio.section.dividends-from-neu.title" />}
-          className="h-100"
-          totalEurValue="0"
-          recentPayouts={transactions}
-        />
+      <Col className="mb-4">
+        <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
       </Col>
     </Row>
 
-    <SectionHeader layoutHasDecorator={false} className="mb-4">
+    <SectionHeader
+      layoutHasDecorator={false}
+      className="mb-4"
+      description={<FormattedMessage id="portfolio.section.reserved-assets.description" />}
+    >
       <FormattedMessage id="portfolio.section.reserved-assets.title" />
     </SectionHeader>
 
@@ -169,7 +173,11 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
       </Col>
     </Row>
 
-    <SectionHeader layoutHasDecorator={false} className="mb-4">
+    <SectionHeader
+      layoutHasDecorator={false}
+      className="mb-4"
+      description={<FormattedMessage id="portfolio.section.your-assets.description" />}
+    >
       <FormattedMessage id="portfolio.section.your-assets.title" />
     </SectionHeader>
 

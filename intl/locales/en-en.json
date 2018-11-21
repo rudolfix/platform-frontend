@@ -365,7 +365,7 @@
   "form.field.error.string.lowercase": "Please enter a lowercase sequence of characters",
   "form.field.error.string.matches": "It must match the following: '{regex}'",
   "form.field.error.string.max": "Password must be at most {max} characters long",
-  "form.field.error.string.min": "Password must be at least {min} characters log",
+  "form.field.error.string.min": "Password must be at least {min} characters long",
   "form.field.error.string.trim": "Please enter a trimmed sequence of characters",
   "form.field.error.string.uppercase": "It must be an upper case sequence of characters",
   "form.field.error.string.url": "Please enter a valid URL",

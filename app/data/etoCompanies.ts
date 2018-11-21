@@ -42,12 +42,12 @@ export const etoCompaniesCards: Array<EtoData> = [
         {
           text: "blockchain",
           layout: "ghost-bold",
-          theme: "default",
+          theme: "white",
         },
         {
           text: "germany",
           layout: "ghost-bold",
-          theme: "default",
+          theme: "white",
         },
       ],
       name: "NEUFUND",

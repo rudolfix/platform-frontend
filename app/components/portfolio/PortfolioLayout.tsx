@@ -41,7 +41,8 @@ const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): strin
     return "0";
   }
 
-  return equivEurUlps.div(Q18.mul(equityTokenInt)).toFixed(8);
+  const equityToken = Q18.mul(equityTokenInt);
+  return equivEurUlps.div(equityToken).toFixed(8);
 };
 
 const transactions: any[] = []; // TODO: Connect source of data

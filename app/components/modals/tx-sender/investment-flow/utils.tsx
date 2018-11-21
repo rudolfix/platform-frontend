@@ -135,7 +135,7 @@ export function getActualTokenPriceEur(
 
 export const formatSummaryTokenPrice = (fullTokenPrice: number, actualTokenPrice: number) => {
   const discount = Math.round((1 - actualTokenPrice / fullTokenPrice) * 100);
-  let priceString = "€ " + formatThousands(actualTokenPrice.toString());
+  let priceString = formatThousands(actualTokenPrice.toString());
   if (discount >= 1) {
     priceString += ` (-${discount}%)`;
   }

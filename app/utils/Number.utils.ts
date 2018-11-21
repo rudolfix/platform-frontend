@@ -32,10 +32,12 @@ export function formatFlexiPrecision(
   value: number | string,
   maxPrecision: number,
   minPrecision = 0,
+  useGrouping = false,
 ): string {
   return parseFloat(value as string).toLocaleString(undefined, {
     maximumFractionDigits: maxPrecision,
     minimumFractionDigits: minPrecision,
+    useGrouping,
   });
 }
 

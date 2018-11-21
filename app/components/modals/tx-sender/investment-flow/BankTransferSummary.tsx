@@ -68,7 +68,10 @@ const BankTransferSummaryComponent: React.SFC<IProps> = ({
 
   const actualTokenPrice = getActualTokenPriceEur(investmentEur, equityTokens);
   const { tokenPrice: fullTokenPrice } = getShareAndTokenPrice(eto);
-  const formattedTokenPrice = formatSummaryTokenPrice(fullTokenPrice, parseFloat(actualTokenPrice));
+  const formattedTokenPrice = `€ ${formatSummaryTokenPrice(
+    fullTokenPrice,
+    parseFloat(actualTokenPrice),
+  )}`;
 
   return (
     <Container className={styles.container}>

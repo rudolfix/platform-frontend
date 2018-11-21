@@ -17,6 +17,7 @@ import {
 } from "../../../../modules/public-etos/types";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
+import { formatFlexiPrecision } from "../../../../utils/Number.utils";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { ETOState } from "../../../shared/ETOState";
@@ -251,10 +252,7 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
                 </span>
                 <span className={styles.value}>
                   <Money
-                    value={tokenPrice.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 8,
-                    })}
+                    value={formatFlexiPrecision(tokenPrice, 8)}
                     currency="eur"
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}

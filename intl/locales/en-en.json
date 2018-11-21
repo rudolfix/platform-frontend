@@ -405,7 +405,7 @@
   "investment-flow.bank-transfer-summary.explanation": "You will receive an email with the below investment summary, if your investment is successful you will recieve another email in 2 to 3 days confirming your investment.",
   "investment-flow.bank-transfer-summary.neu-reward": "estimated neu reward",
   "investment-flow.bank-transfer.account-name": "account name",
-  "investment-flow.bank-transfer.amount": "AMOUNT OF ETH TO SEND:",
+  "investment-flow.bank-transfer.amount": "AMOUNT OF EUR TO SEND:",
   "investment-flow.bank-transfer.bank-details-instructions": "Funds must be transferred from a bank account matching the verified users' name and country of this account and include your reference number. <strong> If the investment is not accepted you will get an email from our support team with an explanation and funds will be returned back to your bank account once the ETO is completed.</strong>",
   "investment-flow.bank-transfer.bic": "BIC",
   "investment-flow.bank-transfer.country": "country",

@@ -465,7 +465,7 @@
   "kyc.modal.submit-description.external-wallet": "To submit your identity verification request, please provide your signature on your Ledger Nano or on MetaMask.",
   "kyc.modal.submit-title": "Confirm your identity verification request",
   "kyc.modal.verification.description": "We will review your documents within 1 business day and contact you if we require further information. Otherwise, we will notify you by email once your account has been successfully verified.",
-  "kyc.modal.verification.settings-button": "Go to settings",
+  "kyc.modal.verification.settings-button": "Go to My Profile",
   "kyc.modal.verification.title": "Thank you for submitting your identity verification request!",
   "kyc.panel.business-verification": "Identity verification for company account",
   "kyc.panel.go-back": "BACK",

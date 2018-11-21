@@ -238,6 +238,15 @@ function* submitIndividualRequest(
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitIndividualRequest();
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
+    yield put(
+      actions.genericModal.showGenericModal(
+        formatIntlMessage("kyc.modal.verification.title"),
+        formatIntlMessage("kyc.modal.verification.description"),
+        undefined,
+        formatIntlMessage("kyc.modal.verification.settings-button"),
+        actions.routing.goToSettings(),
+      ),
+    );
   } catch {
     yield put(actions.kyc.kycUpdateIndividualRequestState(false));
     notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem.submitting"));
@@ -624,6 +633,15 @@ function* submitBusinessRequest(
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitBusinessRequest();
     yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
+    yield put(
+      actions.genericModal.showGenericModal(
+        formatIntlMessage("kyc.modal.verification.title"),
+        formatIntlMessage("kyc.modal.verification.description"),
+        undefined,
+        formatIntlMessage("kyc.modal.verification.settings-button"),
+        actions.routing.goToSettings(),
+      ),
+    );
   } catch {
     yield put(actions.kyc.kycUpdateBusinessRequestState(false));
     notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem.submitting"));

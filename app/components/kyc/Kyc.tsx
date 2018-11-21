@@ -72,7 +72,6 @@ interface IDispatchProps {
   reopenRequest: () => void;
   goToWallet: () => void;
   goToDashboard: () => void;
-  showModal: (title: string | React.ReactNode, text: string | React.ReactNode) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
@@ -85,15 +84,6 @@ class RequestStateInfo extends React.Component<IProps, IState> {
   state = {
     showAdditionalFileUpload: false,
   };
-
-  componentDidMount(): void {
-    if (this.props.requestStatus === "Pending") {
-      this.props.showModal(
-        <FormattedMessage id="kyc.modal.verification.title" />,
-        <FormattedMessage id="kyc.modal.verification.description" />,
-      );
-    }
-  }
 
   render(): React.ReactNode {
     const steps = this.props.pendingRequestType === "business" ? businessSteps : personalSteps;
@@ -221,8 +211,6 @@ export const Kyc = compose<React.SFC>(
       reopenRequest: () => {},
       goToWallet: () => dispatch(actions.routing.goToWallet()),
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
-      showModal: (title: string | React.ReactNode, text: string | React.ReactNode) =>
-        dispatch(actions.genericModal.showGenericModal(title, text)),
     }),
     options: { pure: false },
   }),

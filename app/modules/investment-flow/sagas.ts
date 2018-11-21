@@ -7,7 +7,7 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../lib/web3/types";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { isLessThanNDays } from "../../utils/Date.utils";
+import { isLessThanNHours } from "../../utils/Date.utils";
 import { convertToBigInt } from "../../utils/Number.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
@@ -45,6 +45,12 @@ import {
   selectIsBankTransferModalOpened,
   selectIsICBMInvestment,
 } from "./selectors";
+
+// default: 3 days
+const HOURS_TO_DISABLE_BANK_TRANSFER = parseInt(
+  process.env.NF_HOURS_TO_DISABLE_BANK_TRANSFER_INVESTMENT || "72",
+  10,
+);
 
 function* processCurrencyValue(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE") return;
@@ -180,7 +186,10 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
     if (etoContract) {
       const isICBM = selectIsICBMInvestment(state);
-      yield neuCall(loadComputedContributionFromContract, eto, value, isICBM);
+      const contribution = yield neuCall(loadComputedContributionFromContract, eto, value, isICBM);
+
+      yield put(actions.investorEtoTicket.setCalculatedContribution(eto.etoId, contribution));
+
       state = yield select();
       yield put(actions.investmentFlow.setErrorState(validateInvestment(state)));
 
@@ -233,7 +242,7 @@ function* getActiveInvestmentTypes(): any {
   if (
     etoState === EETOStateOnChain.Public &&
     etoEndDate &&
-    isLessThanNDays(new Date(), etoEndDate, 3)
+    isLessThanNHours(new Date(), etoEndDate, HOURS_TO_DISABLE_BANK_TRANSFER)
   ) {
     activeTypes.splice(1); // remove bank transfer
   }
@@ -244,7 +253,7 @@ function* getActiveInvestmentTypes(): any {
   if (
     etoState === EETOStateOnChain.Whitelist &&
     etoEndWhitelistDate &&
-    isLessThanNDays(new Date(), etoEndWhitelistDate, 3)
+    isLessThanNHours(new Date(), etoEndWhitelistDate, HOURS_TO_DISABLE_BANK_TRANSFER)
   ) {
     activeTypes.splice(1); // remove bank transfer
   }

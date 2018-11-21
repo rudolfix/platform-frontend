@@ -76,7 +76,7 @@ export const KYCUploadComponent = ({
           disabled={!props.files || props.files.length === 0}
           data-test-id="kyc-personal-upload-submit"
         >
-          <FormattedMessage id="form.button.submit" />
+          <FormattedMessage id="form.button.submit-request" />
         </Button>
       </div>
     </KycPanel>

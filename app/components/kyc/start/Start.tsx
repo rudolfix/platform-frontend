@@ -64,7 +64,7 @@ export const KYCStart = compose<React.SFC>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       goToPerson: () => dispatch(actions.routing.goToKYCIndividualStart()),
-      goToCompany: () => dispatch(actions.routing.goToKYCBusinessStart()),
+      goToCompany: () => dispatch(actions.routing.goToKYCBusinessData()),
     }),
   }),
 )(KYCStartComponent);

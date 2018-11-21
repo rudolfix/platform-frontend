@@ -193,8 +193,6 @@ const FileUploadList: React.SFC<IProps & { lrDataValid: boolean }> = props => {
 
 const BeneficialOwners: React.SFC<IProps & { lrDataValid: boolean }> = props => {
   if (!props.lrDataValid || props.files.length === 0) return null;
-  if (!(props.businessData && props.businessData.legalFormType === "corporate")) return null;
-
   return <KYCBeneficialOwners />;
 };
 

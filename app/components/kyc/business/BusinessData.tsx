@@ -98,14 +98,11 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycBusinessData> & IProps>(
         label={formatIntlMessage("form.label.country")}
         name="country"
       />
-      {props.currentValues &&
-        props.currentValues.legalFormType === "corporate" && (
-          <FormSelectCountryField
-            data-test-id="kyc-company-business-data-jurisdiction"
-            label={formatIntlMessage("form.label.jurisdiction")}
-            name="jurisdiction"
-          />
-        )}
+      <FormSelectCountryField
+        data-test-id="kyc-company-business-data-jurisdiction"
+        label={formatIntlMessage("form.label.jurisdiction")}
+        name="jurisdiction"
+      />
       <div className="p-4 text-center">
         <Button
           data-test-id="kyc-company-business-data-save"
@@ -160,7 +157,7 @@ export const KycBusinessDataComponent = ({
     <KycPanel
       steps={businessSteps}
       description={formatIntlMessage("kyc.business.business-data.description")}
-      backLink={kycRoutes.businessStart}
+      backLink={kycRoutes.start}
     >
       <KycDisclaimer className="pb-5" />
       <KYCEnhancedForm {...props} />

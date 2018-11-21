@@ -122,6 +122,7 @@ function* uploadEtoFile(
     yield neuCall(
       ensurePermissionsArePresent,
       [UPLOAD_IMMUTABLE_DOCUMENT],
+      formatIntlMessage("eto.modal.submit-title"),
       formatIntlMessage("eto.modal.submit-description"),
     );
 

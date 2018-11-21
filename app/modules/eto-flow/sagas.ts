@@ -119,6 +119,7 @@ export function* submitEtoData(
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_ETO_PERMISSION],
+      formatIntlMessage("eto.modal.submit-title"),
       formatIntlMessage("eto.modal.submit-description"),
     );
     yield apiEtoService.submitCompanyAndEto();

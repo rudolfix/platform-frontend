@@ -203,6 +203,7 @@ export const KycLegalRepresentativeComponent = ({
   const lrDataValid = KycLegalRepresentativeSchemaRequired.isValidSync(props.legalRepresentative);
   return (
     <KycPanel
+      title={<FormattedMessage id="kyc.panel.business-verification" />}
       steps={businessSteps}
       description={formatIntlMessage("kyc.business.legal-representative.description")}
       backLink={kycRoutes.businessData}

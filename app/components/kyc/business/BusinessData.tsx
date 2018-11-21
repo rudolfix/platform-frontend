@@ -156,6 +156,7 @@ export const KycBusinessDataComponent = ({
   return (
     <KycPanel
       steps={businessSteps}
+      title={<FormattedMessage id="kyc.panel.business-verification" />}
       description={formatIntlMessage("kyc.business.business-data.description")}
       backLink={kycRoutes.start}
     >

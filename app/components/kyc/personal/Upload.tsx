@@ -55,6 +55,7 @@ export const KYCUploadComponent = ({
 }: IProps & IStateProps & IDispatchProps & IIntlProps) => {
   return (
     <KycPanel
+      title={<FormattedMessage id="kyc.panel.individual-verification" />}
       steps={personalSteps}
       description={formatIntlMessage("kyc.personal.uploadId.description")}
       backLink={kycRoutes.individualStart}

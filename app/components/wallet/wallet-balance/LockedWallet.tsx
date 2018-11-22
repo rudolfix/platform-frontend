@@ -33,6 +33,7 @@ export const LockedWallet: React.SFC<ILockedWallet> = ({ data, className, header
             currencyTotal="eur"
             largeNumber={data.neuroAmount}
             value={data.neuroEuroAmount}
+            dataTestId="lockedEuroWallet"
           />
         )}
         {isWalletNotEmpty(data.neuroAmount) &&
@@ -44,6 +45,7 @@ export const LockedWallet: React.SFC<ILockedWallet> = ({ data, className, header
             currencyTotal="eur"
             largeNumber={data.ethAmount}
             value={data.ethEuroAmount}
+            dataTestId="lockedEtherWallet"
           />
         )}
       </section>

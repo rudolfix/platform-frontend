@@ -14,7 +14,7 @@ describe("Upgrade icbm wallet", () => {
     }).then(() => {
       let icbmBalance: number;
       cy.visit("/wallet");
-      cy.get(tid("icbmEuroWallet.balance-values-large-value")).should($e => {
+      cy.get(tid("icbmNeuroWallet.balance-values-large-value")).should($e => {
         const icbmBalance = parseFloat(extractNumber($e.text()));
         expect(icbmBalance).to.be.greaterThan(0);
       });

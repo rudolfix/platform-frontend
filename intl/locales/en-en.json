@@ -829,7 +829,7 @@
   "wallet-selector.neuwallet.email-error": "Please enter a valid email address",
   "wallet-selector.neuwallet.explanation-1": "In a few steps, you’ll be able to start investing on blockchain! The first step is to create your wallet. The Light Wallet is a starter solution for those who are new to blockchain. For larger balances, we recommend using a Ledger Nano.",
   "wallet-selector.neuwallet.explanation-2": "IMPORTANT NOTE: You are the only person with access to the private key of the Light Wallet. For your protection, your private key information cannot be accessed, stored or retrieved by anyone else. This gives you full control but this also means that you are responsible for safeguarding the private key to your wallet and the recovery phase.",
-  "wallet-selector.neuwallet.login-instructions": "To login with your Light Wallet, please click on the access link we sent to your email address after you created your Light Wallet. Having trouble finding the link? You can also recover your wallet using your recovery phrase here",
+  "wallet-selector.neuwallet.login-instructions": "To login with your Light Wallet, please click on the access link we sent to your email address after you created your Light Wallet. Having trouble finding the link? You can also recover your wallet using your recovery phrase <a href={url}>here</a>",
   "wallet-selector.neuwallet.login-link-text": "Do you have an account?",
   "wallet-selector.neuwallet.login.prompt": "Sign in to your Light Wallet.",
   "wallet-selector.neuwallet.register": "Register",

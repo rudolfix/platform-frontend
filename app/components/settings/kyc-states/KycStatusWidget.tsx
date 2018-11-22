@@ -5,6 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { TRequestOutsourcedStatus, TRequestStatus } from "../../../lib/api/KycApi.interfaces";
+import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectBackupCodesVerified,
@@ -18,21 +19,20 @@ import {
   selectWidgetError,
   selectWidgetLoading,
 } from "../../../modules/kyc/selectors";
+import { selectIsLightWallet } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { UnionDictionary } from "../../../types";
-import { Button, EButtonLayout } from "../../shared/buttons";
-import { Panel } from "../../shared/Panel";
-
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
+import { externalRoutes } from "../../externalRoutes";
+import { Button, EButtonLayout } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/loading-indicator";
+import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-import { EUserType } from "../../../lib/api/users/interfaces";
-import { selectIsLightWallet } from "../../../modules/web3/selectors";
 import * as styles from "./KycStatusWidget.module.scss";
 
 interface IStateProps {
@@ -59,10 +59,28 @@ export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
 
 const statusTextMap: UnionDictionary<TRequestStatus, React.ReactNode> = {
   Accepted: <FormattedMessage id="settings.kyc-status-widget.status.accepted" />,
-  Rejected: <FormattedMessage id="settings.kyc-status-widget.status.rejected" />,
+  Rejected: (
+    <FormattedHTMLMessage
+      tagName="span"
+      id="settings.kyc-status-widget.status.rejected"
+      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+    />
+  ),
   Ignored: <FormattedMessage id="settings.kyc-status-widget.status.ignored" />,
-  Pending: <FormattedMessage id="settings.kyc-status-widget.status.pending" />,
-  Draft: <FormattedMessage id="settings.kyc-status-widget.status.draft" />,
+  Pending: (
+    <FormattedHTMLMessage
+      tagName="span"
+      id="settings.kyc-status-widget.status.pending"
+      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+    />
+  ),
+  Draft: (
+    <FormattedHTMLMessage
+      tagName="span"
+      id="settings.kyc-status-widget.status.draft"
+      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+    />
+  ),
   Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
 };
 
@@ -74,6 +92,7 @@ const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.R
     <FormattedHTMLMessage
       id="settings.kyc-status-widget.status.outsourced.abortedOrCancelled"
       tagName="span"
+      values={{ url: `${externalRoutes.neufundSupport}/home` }}
     />
   ),
   canceled: (
@@ -82,8 +101,20 @@ const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.R
       tagName="span"
     />
   ),
-  other: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.other-info" />,
-  started: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
+  other: (
+    <FormattedHTMLMessage
+      tagName="span"
+      id="settings.kyc-status-widget.status.outsourced.other-info"
+      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+    />
+  ),
+  started: (
+    <FormattedHTMLMessage
+      tagName="span"
+      id="settings.kyc-status-widget.status.outsourced"
+      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+    />
+  ),
   success: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />,
   success_data_changed: (
     <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />

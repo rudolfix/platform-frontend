@@ -43,6 +43,9 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
         <h3>
           <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
         </h3>
+        <p>
+          <FormattedMessage id="dashboard.my-portfolio-widget.explanation" />
+        </p>
       </div>
       <MyNeuWidget balanceNeu={balanceNeu} balanceEur={balanceEur} />
     </div>
@@ -58,13 +61,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   balanceNeu,
 }) => {
   return (
-    <Panel
-      headerText={
-        <FormattedMessage id="components.dashboard.my-portfolio.my-portfolio-widget.header-text" />
-      }
-      className={className}
-      style={style}
-    >
+    <Panel className={className} style={style}>
       <>
         {isLoading ? (
           <LoadingIndicator />

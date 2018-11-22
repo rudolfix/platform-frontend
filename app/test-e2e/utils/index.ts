@@ -144,6 +144,10 @@ export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
 };
 
+export const closeModal = () => {
+  cy.get(tid("modal-close-button")).click();
+};
+
 // todo: extract it to separate file
 // do it after moving all e2e tests back into cypress directory
 export const mockApiUrl = "https://localhost:9090/api/external-services-mock/";

@@ -1,6 +1,6 @@
 import { SignerRejectConfirmationError, SignerTimeoutError } from "./Web3Manager";
 
-export function mapSignerErrorToErrorMessage(e: Error): string {
+export function mapSignerErrorToErrorMessage(e: Error): string | undefined {
   if (e instanceof SignerRejectConfirmationError) {
     return "Message signing was rejected";
   }
@@ -9,5 +9,5 @@ export function mapSignerErrorToErrorMessage(e: Error): string {
     return "There is timeout when signing your message";
   }
 
-  return "Unknown error";
+  return undefined;
 }

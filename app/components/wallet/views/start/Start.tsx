@@ -70,7 +70,7 @@ export const WalletStartComponent: React.SFC<TProps> = ({
     <LoadingIndicator />
   ) : (
     <>
-      <Row className="row-gutter-top">
+      <Row className="row-gutter-top" data-test-id="wallet-start-container">
         <Col lg={6} xs={12}>
           <UnlockedWallet
             className="h-100"
@@ -104,11 +104,14 @@ export const WalletStartComponent: React.SFC<TProps> = ({
           </Col>
         )}
       </Row>
-      <Row>
-        <Col className="my-4">
-          <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
-        </Col>
-      </Row>
+
+      {process.env.NF_WALLET_MY_PROCEEDS_VISIBLE === "1" && (
+        <Row>
+          <Col className="my-4">
+            <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
+          </Col>
+        </Row>
+      )}
     </>
   );
 };

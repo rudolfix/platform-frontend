@@ -35,6 +35,7 @@ export interface ILogger {
   debug(...args: LogArg[]): void;
   warn(...args: ErrorArgs[]): void;
   error(...args: ErrorArgs[]): void;
+  fatal(message: string, error: Error, data?: object): void;
   setUser(user: TUser | null): void;
 }
 
@@ -67,6 +68,11 @@ export class DevConsoleLogger implements ILogger {
   error(...args: ErrorArgs[]): void {
     // tslint:disable-next-line
     console.error(...args);
+  }
+
+  fatal(message: string, error: Error, data?: object): void {
+    // tslint:disable-next-line
+    console.error(message, error, data);
   }
 }
 
@@ -129,6 +135,21 @@ export class SentryLogger implements ILogger {
 
     captureException(error);
   }
+
+  fatal(message: string, error: Error, data?: object): void {
+    withScope(scope => {
+      addBreadcrumb({
+        message,
+        data,
+        category: "logger",
+        level: Severity.Fatal,
+      });
+
+      scope.setLevel(Severity.Fatal);
+
+      captureException(error);
+    });
+  }
 }
 
 export const noopLogger: ILogger = {
@@ -138,4 +159,5 @@ export const noopLogger: ILogger = {
   debug: () => {},
   warn: () => {},
   error: () => {},
+  fatal: () => {},
 };

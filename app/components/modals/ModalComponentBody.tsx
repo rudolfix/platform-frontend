@@ -14,7 +14,7 @@ export const ModalComponentBody: React.SFC<IModalComponentProps> = ({
 }) => (
   <Panel className={styles.modal} {...props}>
     <div className={styles.header}>
-      <ButtonClose onClick={onClose} />
+      <ButtonClose data-test-id="modal-close-button" onClick={onClose} />
     </div>
     <div className={styles.body}>{children}</div>
   </Panel>

@@ -34,16 +34,20 @@ export const browserWizardFlows = {
           await web3Manager.plugPersonalWallet(browserWallet);
           dispatch(actions.walletSelector.connected());
         } catch (e) {
-          logger.warn("Error while trying to connect with browser wallet: ", e);
-
           if (e instanceof BrowserWalletAccountApprovalRejectedError) {
             dispatch(actions.walletSelector.browserWalletAccountApprovalRejectedError());
           } else {
-            dispatch(
-              actions.walletSelector.browserWalletConnectionError(
-                mapBrowserWalletErrorToErrorMessage(e),
-              ),
-            );
+            const message = mapBrowserWalletErrorToErrorMessage(e);
+
+            // Unknown error message
+            if (message === undefined) {
+              logger.error("Error while trying to connect with browser wallet", e);
+              dispatch(
+                actions.walletSelector.browserWalletConnectionError("Web3 wallet not available"),
+              );
+            } else {
+              dispatch(actions.walletSelector.browserWalletConnectionError(message));
+            }
           }
         }
       }

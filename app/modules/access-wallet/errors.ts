@@ -19,7 +19,10 @@ export class MismatchedWalletAddressError extends Error {
   }
 }
 
-export function mapSignMessageErrorToErrorMessage(error: Error): string {
+/**
+ * Returns error message or undefined if error is unknown
+ */
+export function mapSignMessageErrorToErrorMessage(error: Error): string | undefined {
   if (error instanceof BrowserWalletError) {
     return mapBrowserWalletErrorToErrorMessage(error);
   }
@@ -35,5 +38,5 @@ export function mapSignMessageErrorToErrorMessage(error: Error): string {
   if (error instanceof MismatchedWalletAddressError) {
     return error.message;
   }
-  return "Unknown error";
+  return undefined;
 }

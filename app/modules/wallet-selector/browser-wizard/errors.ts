@@ -7,7 +7,10 @@ import {
 } from "../../../lib/web3/BrowserWallet";
 import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
 
-export function mapBrowserWalletErrorToErrorMessage(e: Error): string {
+/**
+ * Returns error message or undefined if error is unknown
+ */
+export function mapBrowserWalletErrorToErrorMessage(e: Error): string | undefined {
   if (e instanceof BrowserWalletLockedError) {
     return "Your wallet seems to be locked — we can't access any accounts";
   }
@@ -25,6 +28,7 @@ export function mapBrowserWalletErrorToErrorMessage(e: Error): string {
   if (e instanceof BrowserWalletAccountApprovalPendingError) {
     return "Data approval pending";
   }
-  return "Web3 wallet not available";
+
+  return undefined;
 }
 //TODO: ADD TRANSLATIONS

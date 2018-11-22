@@ -12,7 +12,7 @@ const commonProps = {
   step: 1,
   userType: EUserType.INVESTOR,
   onGoToKycHome: () => {},
-  onGoToWallet: () => {},
+  onGoToDashboard: () => {},
 };
 
 storiesOf("KYC/StatusWidget", module)

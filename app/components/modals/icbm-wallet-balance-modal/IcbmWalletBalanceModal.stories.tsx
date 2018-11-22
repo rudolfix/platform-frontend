@@ -1,7 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { IcbmWalletBalanceComponent } from "./IcbmWalletBalanceModal";
+import { ModalComponentBody } from "../../modals/ModalComponentBody";
+
+import { IcbmWalletBalanceComponentInner } from "./IcbmWalletBalanceModal";
 
 export const dummyEthereumAddress = "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359";
 
@@ -21,8 +23,13 @@ const walletMigrationMockData = [
 ];
 
 storiesOf("ICBMWalletModalComponant", module)
+  .addDecorator(story => (
+    <div style={{ maxWidth: "37.5rem" }}>
+      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
+    </div>
+  ))
   .add("Missing Verifications", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={false}
       lockedWalletConnected={false}
@@ -44,7 +51,7 @@ storiesOf("ICBMWalletModalComponant", module)
     />
   ))
   .add("Missing Migration Target", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={true}
       lockedWalletConnected={false}
@@ -66,7 +73,7 @@ storiesOf("ICBMWalletModalComponant", module)
     />
   ))
   .add("Balance Modal All verifications done", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={true}
       lockedWalletConnected={false}
@@ -88,7 +95,7 @@ storiesOf("ICBMWalletModalComponant", module)
     />
   ))
   .add("With All verifications Step 1", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={true}
       lockedWalletConnected={false}
@@ -111,7 +118,7 @@ storiesOf("ICBMWalletModalComponant", module)
     />
   ))
   .add("With All verifications Step 1 Success", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={true}
       lockedWalletConnected={false}
@@ -135,7 +142,7 @@ storiesOf("ICBMWalletModalComponant", module)
     />
   ))
   .add("With All verifications Step 2", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={true}
       lockedWalletConnected={false}
@@ -158,7 +165,7 @@ storiesOf("ICBMWalletModalComponant", module)
     />
   ))
   .add("With All verifications Success", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={true}
       lockedWalletConnected={true}
@@ -182,7 +189,7 @@ storiesOf("ICBMWalletModalComponant", module)
     />
   ))
   .add("Wallet Loading", () => (
-    <IcbmWalletBalanceComponent
+    <IcbmWalletBalanceComponentInner
       isOpen={true}
       isVerificationFullyDone={true}
       lockedWalletConnected={false}

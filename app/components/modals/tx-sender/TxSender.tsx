@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
 import { ITxData } from "../../../lib/web3/types";
@@ -121,7 +122,12 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
       return <SummaryComponent type={type!} />;
 
     case ETxSenderState.ACCESSING_WALLET:
-      return <AccessWalletContainer />;
+      return (
+        <AccessWalletContainer
+          title={<FormattedMessage id="modals.tx-sender.confirm-title" />}
+          message={<FormattedMessage id="modals.tx-sender.confirm-description" />}
+        />
+      );
 
     case ETxSenderState.SIGNING:
       return <SigningMessage />;

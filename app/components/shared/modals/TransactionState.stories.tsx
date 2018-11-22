@@ -1,11 +1,18 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Modal } from "reactstrap";
 
+import { ModalComponentBody } from "../../modals/ModalComponentBody";
 import { DocumentLink } from "../DocumentLink";
 import { TransactionState } from "./TransactionState";
 
 storiesOf("Modals/TransactionState", module)
+  .addDecorator(story => (
+    <Modal isOpen={true} toggle={() => {}} centered fade={false}>
+      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
+    </Modal>
+  ))
   .add("pending", () => (
     <TransactionState state="pending" txHash="234523451234" blockNumber={12343456}>
       <p>

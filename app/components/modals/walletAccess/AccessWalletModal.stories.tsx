@@ -16,7 +16,7 @@ const props = {
 
 storiesOf("AccessWalletModal", module)
   .addDecorator(story => (
-    <Modal isOpen={true} toggle={() => {}} centered>
+    <Modal isOpen={true} toggle={() => {}} centered fade={false}>
       <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
     </Modal>
   ))

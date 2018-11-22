@@ -314,8 +314,8 @@ export function* obtainJWT(
 export function* ensurePermissionsArePresent(
   { jwtStorage }: TGlobalDependencies,
   permissions: Array<string> = [],
-  title: string = "",
-  message: string = "",
+  title: string,
+  message: string,
 ): Iterator<any> {
   // check wether all permissions are present and still valid
   const jwt = jwtStorage.get();

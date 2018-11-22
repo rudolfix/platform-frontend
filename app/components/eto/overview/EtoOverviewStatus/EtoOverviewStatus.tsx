@@ -163,6 +163,16 @@ function applyDiscountToPrice(price: number, discountFraction: number): number {
   return price * (1 - discountFraction);
 }
 
+function onEtoNavigationClick(
+  navigate: () => void,
+): (event: React.MouseEvent<HTMLDivElement>) => void {
+  return function({ target, currentTarget }: React.MouseEvent<HTMLDivElement>): void {
+    if (target === currentTarget) {
+      navigate();
+    }
+  };
+}
+
 const EtoOverviewStatusLayout: React.SFC<
   IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps
 > = ({
@@ -199,11 +209,8 @@ const EtoOverviewStatusLayout: React.SFC<
           data-test-id={`eto-overview-${eto.etoId}`}
         >
           <StatusOfEto previewCode={eto.previewCode} />
-          <div
-            className={styles.overviewWrapper}
-            onClick={({ target, currentTarget }) => target === currentTarget && navigateToEto()}
-          >
-            <div className={styles.statusWrapper}>
+          <div className={styles.overviewWrapper} onClick={onEtoNavigationClick(navigateToEto)}>
+            <div className={styles.statusWrapper} onClick={onEtoNavigationClick(navigateToEto)}>
               <Link
                 to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}
                 target={previewCode ? "_blank" : ""}

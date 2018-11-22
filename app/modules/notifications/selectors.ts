@@ -31,7 +31,7 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
  * Hides notification on blacklisted routes.
  */
 export const selectIsVisibleSecurityNotification = (state: IAppState): boolean => {
-  const disallowedViewsPaths = [appRoutes.settings, appRoutes.kyc];
+  const disallowedViewsPaths = [appRoutes.profile, appRoutes.kyc];
 
   if (
     state.router.location &&

@@ -1,7 +1,7 @@
 import { appRoutes } from "../appRoutes";
 
-const parentRoutePath = appRoutes.settings;
+const parentRoutePath = appRoutes.profile;
 
-export const settingsRoutes = {
+export const profileRoutes = {
   seedBackup: parentRoutePath + "/seed-backup",
 };

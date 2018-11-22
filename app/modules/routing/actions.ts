@@ -30,7 +30,7 @@ export const routingActions = {
 
   // dashboard
   goToDashboard: () => createRoutingAction(appRoutes.dashboard),
-  goToSettings: () => createRoutingAction(appRoutes.settings),
+  goToProfile: () => createRoutingAction(appRoutes.profile),
 
   // registration
   goToRegister: () => createRoutingAction(appRoutes.register),

@@ -9,7 +9,7 @@ import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
-import { settingsRoutes } from "../routes";
+import { profileRoutes } from "../routes";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
@@ -38,7 +38,7 @@ export const BackupSeedWidgetComponent: React.SFC<
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
-      data-test-id="settings.backup-seed-widget"
+      data-test-id="profile.backup-seed-widget"
     >
       {backupCodesVerified ? (
         <div
@@ -50,7 +50,7 @@ export const BackupSeedWidgetComponent: React.SFC<
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <ButtonLink
-              to={settingsRoutes.seedBackup}
+              to={profileRoutes.seedBackup}
               layout={EButtonLayout.SECONDARY}
               iconPosition="icon-after"
               svgIcon={arrowRight}
@@ -69,7 +69,7 @@ export const BackupSeedWidgetComponent: React.SFC<
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <ButtonLink
-              to={settingsRoutes.seedBackup}
+              to={profileRoutes.seedBackup}
               data-test-id="backup-seed-widget-link-button"
               layout={EButtonLayout.SECONDARY}
               iconPosition="icon-after"

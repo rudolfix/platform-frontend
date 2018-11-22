@@ -27,12 +27,12 @@ describe("Wallet Migration Flow", () => {
     }).then(() => {
       const privKeyHex = "0x79177f5833b64c8fdcc9862f5a779b8ff0e1853bf6e9e4748898d4b6de7e8c93";
       const account = new web3Accounts().privateKeyToAccount(privKeyHex);
-      cy.visit("/settings");
-      cy.get(tid("models.settings.icbm-wallet-widget.check-your-icbm-wallet-widget.address")).type(
+      cy.visit("/profile");
+      cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget.address")).type(
         ADDRESS + "{enter}",
       );
       // Assert that the values of NEU and ETHER are correct
-      cy.get(tid("settings.modal.icbm-wallet-balance.neu-balance")).then(data => {
+      cy.get(tid("profile.modal.icbm-wallet-balance.neu-balance")).then(data => {
         const neuBalance = new BigNumber(FIXTURE_ACCOUNTS[ADDRESS].icbmEtherLockBalance[1])
           .div(FIXTURE_DIV_CONSTANT)
           .round();
@@ -41,7 +41,7 @@ describe("Wallet Migration Flow", () => {
           .div(Q18)
           .round(4);
 
-        cy.get(tid("settings.modal.icbm-wallet-balance.eth-balance")).then(ethData => {
+        cy.get(tid("profile.modal.icbm-wallet-balance.eth-balance")).then(ethData => {
           const walletEthBalance = new BigNumber(
             ethData.text().replace(letterKeepDotRegExPattern, ""),
           );

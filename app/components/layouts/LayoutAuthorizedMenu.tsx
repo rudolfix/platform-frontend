@@ -186,10 +186,10 @@ const InvestorMenu: React.SFC<IStateProps & IDispatchProps & IWithProps> = ({
       />
       <MenuEntryLink
         svgString={iconFingerprint}
-        to={appRoutes.settings}
+        to={appRoutes.profile}
         menuName={<FormattedMessage id="menu.settings" />}
         actionRequired={actionRequiredSettings}
-        data-test-id="authorized-layout-settings-button"
+        data-test-id="authorized-layout-profile-button"
         isActive={isLinkActive}
       />
       {process.env.NF_SHOW_INVESTOR_IDENTITY && (
@@ -242,10 +242,10 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad
       />
       <MenuEntryLink
         svgString={iconFingerprint}
-        to={appRoutes.settings}
+        to={appRoutes.profile}
         menuName={<FormattedMessage id="menu.settings" />}
         actionRequired={actionRequiredSettings}
-        data-test-id="authorized-layout-settings-button"
+        data-test-id="authorized-layout-profile-button"
       />
     </div>
   </div>

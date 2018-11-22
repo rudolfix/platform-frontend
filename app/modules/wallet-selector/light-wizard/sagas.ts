@@ -269,7 +269,7 @@ export function* lightWalletBackupWatch({
       formatIntlMessage("modules.wallet-selector.light-wizard.sagas.successfully.backed-up"),
     );
     yield loadUser();
-    yield effects.put(actions.routing.goToSettings());
+    yield effects.put(actions.routing.goToProfile());
   } catch (e) {
     logger.error("Light Wallet Backup Error", e);
     yield put(

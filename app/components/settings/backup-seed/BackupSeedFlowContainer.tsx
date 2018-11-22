@@ -1,8 +1,9 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Col, Row } from "reactstrap";
 
+import { TTranslatedString } from "../../../types";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { Panel } from "../../shared/Panel";
@@ -89,6 +90,26 @@ class BackupSeedFlowContainerLayout extends React.Component<
     }
   }
 
+  renderDescriptionText(backupStep: EBackupStep): TTranslatedString {
+    switch (backupStep) {
+      case EBackupStep.INTRO:
+        return <FormattedMessage id="settings.backup-seed-flow-container.follow-instructions" />;
+      case EBackupStep.FIRST_HALF:
+        return <FormattedMessage id="settings.backup-seed-flow-container.write-seed-on-paper" />;
+      case EBackupStep.SECOND_HALF:
+        return <FormattedMessage id="settings.backup-seed-flow-container.write-seed-on-paper" />;
+      case EBackupStep.VERIFY:
+        return (
+          <FormattedHTMLMessage
+            tagName="span"
+            id="settings.backup-seed-flow-container.confirm-seed"
+          />
+        );
+      default:
+        throw new Error("Backup step is unknown");
+    }
+  }
+
   render(): React.ReactNode {
     const steps = this.props.backupCodesVerified ? 3 : 4;
     return (
@@ -102,9 +123,7 @@ class BackupSeedFlowContainerLayout extends React.Component<
                 headerText={
                   <FormattedMessage id="settings.backup-seed-flow-container.safety-message" />
                 }
-                descText={
-                  <FormattedMessage id="settings.backup-seed-flow-container.follow-instructions" />
-                }
+                descText={this.renderDescriptionText(this.state.backupStep)}
                 warning
               />
               {this.renderBackupPage(this.state.backupStep)}

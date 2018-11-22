@@ -37,8 +37,20 @@ const eto = {
 
 storiesOf("ETO/MaxCapExceededWidget", module)
   .add("pre-eto", () => (
-    <EtoMaxCapExceededComponent isPreEto={true} eto={eto} etherPriceEur={"100"} />
+    <EtoMaxCapExceededComponent
+      isPreEto={true}
+      eto={eto}
+      etherPriceEur={"100"}
+      isWaitingForNextStateToStart={true}
+      nextStateStartDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
+    />
   ))
   .add("public", () => (
-    <EtoMaxCapExceededComponent isPreEto={false} eto={eto} etherPriceEur={"100"} />
+    <EtoMaxCapExceededComponent
+      isPreEto={false}
+      eto={eto}
+      etherPriceEur={"100"}
+      isWaitingForNextStateToStart={false}
+      nextStateStartDate={new Date("+1 day")}
+    />
   ));

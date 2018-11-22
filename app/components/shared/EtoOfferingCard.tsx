@@ -30,6 +30,7 @@ export interface IEtoOfferingProps {
   className?: string;
   teaser?: boolean;
   bannerWithGif?: boolean;
+  replaceSelector?: string;
 }
 
 export interface ISizeProps {

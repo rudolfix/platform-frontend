@@ -164,7 +164,7 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
           <Row className="my-4 text-center">
             <Col className={styles.placeholderHeight}>
               <Button data-test-id="seed-verify-button-next" onClick={this.props.onNext}>
-                <FormattedMessage id="form.button.continue" />
+                <FormattedMessage id="settings.backup-seed-flow-container.confirm-seed.go-to-my-profile" />
               </Button>
             </Col>
           </Row>

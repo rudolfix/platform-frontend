@@ -388,6 +388,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         width: 100,
       },
       teaser: true,
+      replaceSelector: "founders",
     },
   },
   {
@@ -494,7 +495,8 @@ export const etoCompaniesCards: Array<EtoData> = [
 ];
 
 if (process.env.NF_FOUNDERS_BANK_VISIBLE) {
-  etoCompaniesCards[6] = {
+  const foundersIndex = etoCompaniesCards.findIndex(v => v.data.replaceSelector === "founders");
+  etoCompaniesCards[foundersIndex] = {
     data: {
       tags: [
         {

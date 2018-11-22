@@ -129,10 +129,16 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       }
       return yield effect;
     } catch (e) {
-      yield effects.put(
-        actions.signMessageModal.signingError(mapSignMessageErrorToErrorMessage(e)),
-      );
-      if (e instanceof SignerError) throw e;
+      const message = mapSignMessageErrorToErrorMessage(e);
+
+      if (message === undefined) {
+        yield effects.put(actions.signMessageModal.signingError("Unknown error"));
+      } else {
+        yield effects.put(actions.signMessageModal.signingError(message));
+      }
+
+      if (e instanceof SignerError || message === undefined) throw e;
+
       yield delay(500);
     }
   }

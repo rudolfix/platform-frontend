@@ -258,10 +258,7 @@ export const EtoTimeline: React.SFC<IProps> = ({ startOfStates }) => {
               width={preEtoWidth}
               theme="fluorescent-blue"
             />
-            <DatePoint
-              date={preEtoStartDate}
-              text={<FormattedMessage id="eto-timeline.eto-start" />}
-            />
+            <DatePoint date={preEtoStartDate} type="short" />
           </g>
           <g transform={`translate(${CAMPAIGNING_BLOCK_WIDTH + preEtoWidth})`}>
             <Block
@@ -269,7 +266,10 @@ export const EtoTimeline: React.SFC<IProps> = ({ startOfStates }) => {
               width={publicEtoWidth}
               theme="green"
             />
-            <DatePoint date={publicEtoStartDate} type="short" />
+            <DatePoint
+              date={publicEtoStartDate}
+              text={<FormattedMessage id="eto-timeline.eto-start" />}
+            />
           </g>
           <g transform={`translate(${CAMPAIGNING_BLOCK_WIDTH + preEtoWidth + publicEtoWidth})`}>
             <Block

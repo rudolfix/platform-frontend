@@ -48,7 +48,10 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
         <>
           {hasDocument(termSheet) ? (
             <Tag
-              onClick={() => downloadDocument(termSheet)}
+              onClick={e => {
+                downloadDocument(termSheet);
+                e.stopPropagation();
+              }}
               to={previewCode ? withParams(appRoutes.etoPublicView, { previewCode }) : undefined}
               target={previewCode ? "_blank" : undefined}
               size={ETagSize.SMALL}
@@ -66,7 +69,10 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
           )}
           {hasDocument(prospectusApproved) ? (
             <Tag
-              onClick={() => downloadDocument(prospectusApproved)}
+              onClick={e => {
+                downloadDocument(prospectusApproved);
+                e.stopPropagation();
+              }}
               to={previewCode ? withParams(appRoutes.etoPublicView, { previewCode }) : undefined}
               target={previewCode ? "_blank" : undefined}
               size={ETagSize.SMALL}
@@ -79,6 +85,7 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
           )}
           {smartContractOnchain ? (
             <Tag
+              onClick={e => e.stopPropagation()}
               component={EtherscanAddressLink}
               componentProps={{ address: etoId }}
               to={previewCode ? withParams(appRoutes.etoPublicView, { previewCode }) : undefined}

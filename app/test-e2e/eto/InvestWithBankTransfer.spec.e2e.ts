@@ -1,5 +1,6 @@
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
 import { etoFixtureAddressByName } from "../utils";
+import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -31,6 +32,12 @@ describe("Invest with full icbm wallet", () => {
 
       cy.get(tid("invest-modal-summary-confirm-button")).click();
       cy.get(tid("invest-modal-bank-transfer-details-title"));
+      cy.get(tid("invest-modal-bank-transfer-details-amount")).should($e =>
+        expect($e.text().trim()).to.match(/133[\.|,]00/),
+      );
+      cy.get(tid("investment-flow.bank-transfer.details.gas-stipend-checkbox")).uncheck({
+        force: true,
+      });
       cy.get(tid("invest-modal-bank-transfer-details-amount")).should($e =>
         expect($e.text().trim()).to.match(/123[\.|,]00/),
       );

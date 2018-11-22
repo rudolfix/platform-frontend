@@ -52,7 +52,7 @@ interface IOwnProps {
 
 interface IDispatchProps {
   onGoToKycHome: () => void;
-  onGoToWallet: () => void;
+  onGoToDashboard: () => void;
 }
 
 export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
@@ -117,7 +117,7 @@ const ActionButton = ({
   isUserEmailVerified,
   externalKycUrl,
   userType,
-  onGoToWallet,
+  onGoToDashboard,
   backupCodesVerified,
 }: IKycStatusWidgetProps) => {
   if (requestStatus === "Accepted" && userType === EUserType.INVESTOR) {
@@ -126,10 +126,10 @@ const ActionButton = ({
         layout={EButtonLayout.SECONDARY}
         iconPosition="icon-after"
         svgIcon={arrowRight}
-        onClick={onGoToWallet}
+        onClick={onGoToDashboard}
         disabled={!isUserEmailVerified}
       >
-        <FormattedMessage id="kyc.request-state.go-to-wallet" />
+        <FormattedMessage id="kyc.request-state.go-to-dashboard" />
       </Button>
     );
   }
@@ -246,7 +246,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
     }),
     dispatchToProps: dispatch => ({
       onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),
-      onGoToWallet: () => dispatch(actions.routing.goToWallet()),
+      onGoToDashboard: () => dispatch(actions.routing.goToDashboard()),
     }),
   }),
   // note: initial data for this view are loaded as part of app init process

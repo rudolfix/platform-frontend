@@ -81,7 +81,7 @@ const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormVal
         name="email"
         data-test-id="verify-email-widget-form-email-input"
       />
-      <div className={cn("d-flex justify-content-end text-center flex-wrap", styles.buttons)}>
+      <div className={cn("d-flex justify-content-end text-center flex-wrap")}>
         {props.isThereUnverifiedEmail && (
           <Button
             data-test-id="verify-email-widget-form-cancel"
@@ -121,7 +121,7 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({
   revertCancelEmail,
   isThereUnverifiedEmail,
 }) => (
-  <div className={styles.panelBody} data-test-id="settings.verify-email-widget.no-email-state">
+  <div data-test-id="settings.verify-email-widget.no-email-state">
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
     </p>
@@ -136,7 +136,7 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({
 
 const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
   <div
-    className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}
+    className={cn("d-flex flex-wrap align-content-around")}
     data-test-id="settings.verify-email-widget.verified-email-state"
   >
     <p className={cn(styles.text, "pt-2")}>
@@ -160,12 +160,12 @@ const UnVerifiedUser: React.SFC<{
   cancelEmail: () => void;
 }> = ({ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }) => (
   <div
-    className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}
+    className={cn("d-flex flex-wrap align-content-around")}
     data-test-id="settings.verify-email-widget.unverified-email-state"
   >
     {verifiedEmail && (
       <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
-        <p className="mb-0 text-center">
+        <p className="text-center">
           <b>
             <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
           </b>
@@ -176,7 +176,7 @@ const UnVerifiedUser: React.SFC<{
     {unverifiedEmail && (
       <>
         <Col xs={12} className="d-flex justify-content-center">
-          <p className="mb-0 text-center">
+          <p className="text-center">
             <FormattedMessage id="settings.verify-email-widget.unverified-email" />:{" "}
             {unverifiedEmail}
           </p>

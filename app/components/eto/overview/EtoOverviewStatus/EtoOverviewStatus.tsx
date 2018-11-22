@@ -196,6 +196,7 @@ const EtoOverviewStatusLayout: React.SFC<IExternalProps & CommonHtmlProps & ISta
                 target={previewCode ? "_blank" : ""}
               >
                 <TokenSymbolWidget
+                  brandName={eto.company.brandName}
                   tokenImage={{
                     alt: eto.equityTokenName || "",
                     srcSet: { "1x": eto.equityTokenImage || "" },

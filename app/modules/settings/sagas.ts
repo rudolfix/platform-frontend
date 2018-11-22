@@ -31,7 +31,9 @@ export function* addNewEmail(
   );
   const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
 
-  const emailModalTitle = isEmailAvailable ? "Update Email" : "Add Email";
+  const emailModalTitle = isEmailAvailable
+    ? formatIntlMessage("modules.settings.sagas.add-new-email.update-title")
+    : formatIntlMessage("modules.settings.sagas.add-new-email.add-title");
 
   try {
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());

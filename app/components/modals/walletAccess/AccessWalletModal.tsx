@@ -1,18 +1,19 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../../modules/actions";
 import { selectIsUnlocked, selectWalletType } from "../../../modules/web3/selectors";
+import { EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
+import { HiResImage } from "../../shared/HiResImage";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 
 import * as ledgerConfirm from "../../../assets/img/wallet_selector/ledger_confirm.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
-import { EWalletType } from "../../../modules/web3/types";
-import { HiResImage } from "../../shared/HiResImage";
 import * as styles from "./AccessWalletModal.module.scss";
 
 interface IStateProps {
@@ -53,7 +54,7 @@ export const AccessWalletContainerComponent: React.SFC<IStateProps & IDispatchPr
       <div>
         <img src={ledgerConfirm} className="mt-1 mb-3" />
         <div className={cn("mt-2", styles.info)}>
-          Please confirm this action with your Ledger Nano!
+          <FormattedMessage id="modal.access-wallet.ledger-info" />
         </div>
       </div>
     )}
@@ -66,7 +67,7 @@ export const AccessWalletContainerComponent: React.SFC<IStateProps & IDispatchPr
           className="mt-3 mb-3"
         />
         <div className={cn("mt-2", styles.info)}>
-          Please confirm this action with your Metamask wallet!
+          <FormattedMessage id="modal.access-wallet.metamask-info" />
         </div>
       </div>
     )}

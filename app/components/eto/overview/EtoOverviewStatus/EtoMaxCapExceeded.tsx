@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "recompose";
+import { compose, withProps } from "recompose";
 
 import { selectEtoOnChainStateById } from "../../../../modules/public-etos/selectors";
 import {
@@ -12,6 +12,7 @@ import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selec
 import { appConnect } from "../../../../store";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
 import { EMoneyFormat, Money } from "../../../shared/Money";
+import { CounterWidget } from "./CounterWidget";
 import { InvestmentProgress } from "./InvestmentWidget/InvestmentProgress";
 import { Message } from "./Message";
 
@@ -26,24 +27,33 @@ interface IStateProps {
   isPreEto: boolean;
 }
 
-const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps> = ({
+interface IWithProps {
+  isWaitingForNextStateToStart: boolean;
+  nextStateStartDate: Date;
+}
+
+const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps & IWithProps> = ({
   eto,
   etherPriceEur,
   isPreEto,
+  isWaitingForNextStateToStart,
+  nextStateStartDate,
 }) => {
-  return (
+  return isPreEto && isWaitingForNextStateToStart ? (
+    <div className={styles.maxCapExceeded}>
+      <CounterWidget
+        endDate={nextStateStartDate}
+        state={EETOStateOnChain.Public}
+        alternativeText={
+          <FormattedMessage id="shared-component.eto-overview.pre-eto.max-cap-reached" />
+        }
+      />
+    </div>
+  ) : (
     <div className={styles.maxCapExceeded}>
       <div className={cn(styles.header, styles.center)}>
         <div>
-          <Message
-            title={
-              isPreEto ? (
-                <FormattedMessage id="shared-component.eto-overview.pre-eto.success" />
-              ) : (
-                <FormattedMessage id="shared-component.eto-overview.success" />
-              )
-            }
-          />
+          <Message title={<FormattedMessage id="shared-component.eto-overview.success" />} />
         </div>
       </div>
       <div className={styles.header}>
@@ -69,11 +79,7 @@ const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps> = ({
           />
         </div>
         <div className={cn(styles.capReached, "text-uppercase")}>
-          {isPreEto ? (
-            <FormattedMessage id="shared-component.eto-overview.pre-eto.max-cap-reached" />
-          ) : (
-            <FormattedMessage id="shared-component.eto-overview.max-cap-reached" />
-          )}
+          <FormattedMessage id="shared-component.eto-overview.max-cap-reached" />
         </div>
       </div>
       <InvestmentProgress eto={eto} />
@@ -81,12 +87,20 @@ const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps> = ({
   );
 };
 
-const EtoMaxCapExceededWidget = compose<IExternalProps & IStateProps, IExternalProps>(
+const EtoMaxCapExceededWidget = compose<IExternalProps & IStateProps & IWithProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => ({
       etherPriceEur: selectEtherPriceEur(state),
       isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
     }),
+  }),
+  withProps<IWithProps, IStateProps & IExternalProps>(({ eto }) => {
+    const publicStartDate = eto.contract!.startOfStates[EETOStateOnChain.Public];
+
+    return {
+      isWaitingForNextStateToStart: !!publicStartDate && publicStartDate > new Date(),
+      nextStateStartDate: publicStartDate!,
+    };
   }),
 )(EtoMaxCapExceededComponent);
 

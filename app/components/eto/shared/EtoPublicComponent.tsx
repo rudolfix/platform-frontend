@@ -78,7 +78,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           tags={companyData.categories}
         />
 
-        <EtoOverviewStatus eto={etoData} className="mb-4" />
+        <EtoOverviewStatus eto={etoData} className="mb-4" publicView={true} />
 
         <Row>
           <Col className="mb-4">

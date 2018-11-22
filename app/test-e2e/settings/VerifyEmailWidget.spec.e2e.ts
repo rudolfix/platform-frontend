@@ -7,7 +7,7 @@ import {
   clearEmailServer,
   confirmAccessModal,
   convertToUniqueEmail,
-  goToSettings,
+  goToProfile,
   registerWithLightWallet,
   verifyLatestUserEmail,
   tid,
@@ -23,7 +23,7 @@ describe("Verify Email Widget", () => {
     clearEmailServer();
     assertUserInDashboard();
 
-    goToSettings();
+    goToProfile();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();
     cy.get(tid("verify-email-widget.change-email.button")).awaitedClick();
     assertVerifyEmailWidgetIsInNoEmailState();

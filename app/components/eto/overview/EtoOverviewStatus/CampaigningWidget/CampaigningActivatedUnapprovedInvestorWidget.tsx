@@ -33,9 +33,9 @@ export const CampaigningActivatedUnapprovedInvestorWidget = compose<
           // TODO: please translate
           actions.genericModal.showErrorModal(
             "Please update your account before proceeding.",
-            "Head to Settings now.",
-            "Go to settings",
-            routingActions.goToSettings(),
+            "Head to Profile now.",
+            "Go to profile",
+            routingActions.goToProfile(),
           ),
         );
       },

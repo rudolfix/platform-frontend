@@ -72,14 +72,14 @@ export const settingsNotification = () => ({
   id: Date.now(),
   type: NotificationType.WARNING,
   text: NotificationText.COMPLETE_UPDATE_ACCOUNT,
-  actionLinkText: "Go to settings",
-  onClickAction: routingActions.goToSettings(),
+  actionLinkText: "Go to profile",
+  onClickAction: routingActions.goToProfile(),
 });
 
 export const settingsNotificationInvestor = () => ({
   id: Date.now(),
   type: NotificationType.WARNING,
   text: NotificationText.COMPLETE_REQUEST_NOTIFICATION,
-  onClickAction: routingActions.goToSettings(),
+  onClickAction: routingActions.goToProfile(),
   clickable: true,
 });

@@ -22,7 +22,7 @@ export function* addNewEmail(
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
-  if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;
+  if (action.type !== "PROFILE_ADD_NEW_EMAIL") return;
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
@@ -72,7 +72,7 @@ export function* resendEmail(
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
-  if (action.type !== "SETTINGS_RESEND_EMAIL") return;
+  if (action.type !== "PROFILE_RESEND_EMAIL") return;
 
   const user = yield select((s: IAppState) => selectUser(s.auth));
   const email = user.unverifiedEmail;
@@ -118,12 +118,12 @@ export function* loadSeedOrReturnToSettings({
     );
   } catch (e) {
     logger.error("Failed to load seed", e);
-    yield put(actions.routing.goToSettings());
+    yield put(actions.routing.goToProfile());
   }
 }
 
-export const settingsSagas = function*(): Iterator<effects.Effect> {
-  yield fork(neuTakeEvery, "SETTINGS_ADD_NEW_EMAIL", addNewEmail);
-  yield fork(neuTakeEvery, "SETTINGS_RESEND_EMAIL", resendEmail);
-  yield fork(neuTakeEvery, "LOAD_SEED_OR_RETURN_TO_SETTINGS", loadSeedOrReturnToSettings);
+export const profileSagas = function*(): Iterator<effects.Effect> {
+  yield fork(neuTakeEvery, "PROFILE_ADD_NEW_EMAIL", addNewEmail);
+  yield fork(neuTakeEvery, "PROFILE_RESEND_EMAIL", resendEmail);
+  yield fork(neuTakeEvery, "LOAD_SEED_OR_RETURN_TO_PROFILE", loadSeedOrReturnToSettings);
 };

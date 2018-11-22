@@ -70,7 +70,7 @@ export const ChangeEmail = compose<React.SFC>(
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) => {
-        dispatch(actions.settings.addNewEmail(values.email));
+        dispatch(actions.profile.addNewEmail(values.email));
       },
     }),
   }),

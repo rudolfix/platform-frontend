@@ -83,6 +83,7 @@ const BankTransferDetailsComponent = injectIntlHelpers(
                     name="gas-stipend"
                     label={<FormattedMessage id="investment-flow.bank-transfer.gas-stipend" />}
                     onChange={handleCheckbox}
+                    data-test-id="investment-flow.bank-transfer.details.gas-stipend-checkbox"
                   />
                 </p>
               </Col>

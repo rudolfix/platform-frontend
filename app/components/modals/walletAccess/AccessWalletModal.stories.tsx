@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { Modal } from "reactstrap";
 import { EWalletType } from "../../../modules/web3/types";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainerComponent } from "./AccessWalletModal";
@@ -16,9 +15,9 @@ const props = {
 
 storiesOf("AccessWalletModal", module)
   .addDecorator(story => (
-    <Modal isOpen={true} toggle={() => {}} centered fade={false}>
+    <div style={{ maxWidth: "37.5rem" }}>
       <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </Modal>
+    </div>
   ))
   .add("lightwallet", () => <AccessWalletContainerComponent {...props} />)
   .add("lightwallet-unlocked", () => (

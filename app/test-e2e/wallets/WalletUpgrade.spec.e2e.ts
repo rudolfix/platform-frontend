@@ -27,7 +27,10 @@ describe("Upgrade icbm wallet", () => {
       cy.get(tid("lockedEuroWallet.balance-values-large-value")).should($e => {
         const val = parseFloat(extractNumber($e.text()));
         expect(val).to.be.greaterThan(0);
-        expect(val).equal(icbmBalance);
+        expect(val).to.equal(icbmBalance);
+      });
+      cy.get(tid("wallet-start-container")).should($e => {
+        expect($e.find(tid("icbmNeuroWallet.balance-values-large-value")).length).to.equal(0);
       });
     });
   });

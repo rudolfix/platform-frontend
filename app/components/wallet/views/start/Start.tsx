@@ -70,7 +70,7 @@ export const WalletStartComponent: React.SFC<TProps> = ({
     <LoadingIndicator />
   ) : (
     <>
-      <Row className="row-gutter-top">
+      <Row className="row-gutter-top" data-test-id="wallet-start-container">
         <Col lg={6} xs={12}>
           <UnlockedWallet
             className="h-100"

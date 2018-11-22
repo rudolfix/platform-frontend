@@ -534,7 +534,7 @@
   "modal.shared.signing-message.transaction-error.title": "Transaction error",
   "modal.txsender.error-message.error-while-watching-tx": "Error while watching transaction.",
   "modal.txsender.error-message.failed-to-generate-tx": "Error while generating transaction",
-  "modal.txsender.error-message.gas-too-low": "Ooops! The Gas you set is too low. Plesae adjust and try again.",
+  "modal.txsender.error-message.gas-too-low": "Ooops! The Gas you set is too low. Please adjust and try again.",
   "modal.txsender.error-message.invalid-chain-id": "Ooops! The chain ID is invalid.",
   "modal.txsender.error-message.invalid-rlp-tx": "Oops! RLP transaction is invalid.",
   "modal.txsender.error-message.ledger-contracts-disabled": "Please enable Contract Support on your Ledger Nano and try again.",

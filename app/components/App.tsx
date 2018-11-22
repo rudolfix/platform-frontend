@@ -49,7 +49,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
   componentDidCatch(error: Error, errorInfo: object): void {
     this.setState({ renderingError: error });
 
-    this.logger.error(error, errorInfo);
+    this.logger.fatal("Fatal app error", error, errorInfo);
   }
 
   render(): React.ReactNode {

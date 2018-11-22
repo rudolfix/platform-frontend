@@ -543,7 +543,7 @@
   "modal.txsender.error-message.not-enough-funds": "There is not enough funds",
   "modal.txsender.error-message.out-of-gas": "Your transaction requires more Gas",
   "modal.txsender.error-message.reverted-tx": "Your transaction was reverted",
-  "modal.txsender.error-message.too-many-tx-in-queue": "Sorry! There are too many transactions in queue. Please wait and try again.",
+  "modal.txsender.error-message.too-many-tx-in-queue": "Sorry! There are too many transactions in the queue. Please wait and try again.",
   "modal.txsender.error-message.tx-was-rejected": "Sorry! Your transaction has been rejected. Please check your wallet and try again.",
   "modals.tx-sender.withdraw-flow.withdraw-component.errors.field-is-required": "This field is required",
   "modals.tx-sender.withdraw-flow.withdraw-component.errors.not-ethereum-address": "This Ethereum Address is invalid",

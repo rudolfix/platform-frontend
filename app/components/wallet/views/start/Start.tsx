@@ -104,11 +104,14 @@ export const WalletStartComponent: React.SFC<TProps> = ({
           </Col>
         )}
       </Row>
-      <Row>
-        <Col className="my-4">
-          <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
-        </Col>
-      </Row>
+
+      {process.env.NF_WALLET_MY_PROCEEDS_VISIBLE === "1" && (
+        <Row>
+          <Col className="my-4">
+            <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
+          </Col>
+        </Row>
+      )}
     </>
   );
 };

@@ -63,6 +63,8 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
       {formState === CampaigningFormState.VIEW ? (
         <div className={styles.group}>
           <div className={styles.label}>
+            <FormattedMessage id="eto-overview.campaigning.your-commitment" />
+            <br />
             {"€ "}
             {pledgedAmount}
           </div>
@@ -84,7 +86,8 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
           validationSchema={generateCampaigningValidation(minPledge, maxPledge)}
         >
           <Form className={styles.group}>
-            <div className={cn(styles.label, styles.labelNoUppercase)}>
+            <div className={cn(styles.label)}>
+              <FormattedMessage id="eto-overview.campaigning.indicate-commitment" />
               <FormInput
                 size={InputSize.SMALL}
                 name="amount"

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName, withProps } from "recompose";
 import { compose } from "redux";
 
@@ -20,6 +20,7 @@ import { CampaigningActivatedInvestorApprovedWidget } from "./CampaigningActivat
 
 import { appRoutes } from "../../../../appRoutes";
 import { ButtonLink } from "../../../../shared/buttons";
+import { Tooltip } from "../../../../shared/Tooltip";
 import * as styles from "../EtoOverviewStatus.module.scss";
 
 export interface IExternalProps {
@@ -77,7 +78,17 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
               {pledgedAmount ? (
                 <FormattedMessage id="eto-overview.campaigning.whitelist-status.label-subscribed" />
               ) : (
-                <FormattedMessage id="eto-overview.campaigning.whitelist-status.label-not-subscribed" />
+                <>
+                  <FormattedMessage id="eto-overview.campaigning.whitelist-status.label-not-subscribed" />
+                  <Tooltip
+                    content={
+                      <FormattedHTMLMessage
+                        tagName="div"
+                        id="eto-overview.campaigning.whitelist-status.label-not-subscribed-description-text"
+                      />
+                    }
+                  />
+                </>
               )}
             </span>
           </div>

@@ -243,7 +243,7 @@ function* watchPendingOOOTxSubSaga({ logger }: TGlobalDependencies, txHash: stri
     }
   } finally {
     watchTxChannel.close();
-    logger.info("Stopped Watching for TX", txHash);
+    logger.info("Stopped Watching for TX", { txHash });
   }
 }
 
@@ -260,19 +260,19 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
           return yield put(actions.txSender.txSenderTxMined());
         // Non terminal errors - Tx Mining should continue
         case EEventEmitterChannelEvents.ERROR:
-          logger.error("Error while tx watching: ", result.error);
+          logger.error("Error while tx watching: ", result.error, { txHash });
           break;
         // Terminal errors - Tx Mining should exit
         case EEventEmitterChannelEvents.OUT_OF_GAS:
-          logger.info("Error Transaction out of gas: ", result.error);
+          logger.warn("Error Transaction out of gas: ", result.error, { txHash });
           return yield put(actions.txSender.txSenderError(ETransactionErrorType.OUT_OF_GAS));
         case EEventEmitterChannelEvents.REVERTED_TRANSACTION:
-          logger.warn("Error Transaction Reverted: ", result.error);
+          logger.warn("Error Transaction Reverted: ", result.error, { txHash });
           return yield put(actions.txSender.txSenderError(ETransactionErrorType.REVERTED_TX));
       }
     }
   } finally {
     watchTxChannel.close();
-    logger.info("Stopped Watching for TXs");
+    logger.info("Stopped Watching for TXs", { txHash });
   }
 }

@@ -32,6 +32,7 @@ export const WatchPendingTxs: React.SFC<IProps> = ({ txHash, blockId }) => (
     {blockId && (
       <p>
         <FormattedMessage id="tx-sender.tx-pending.block-number-label" />
+        {": "}
         <span className={styles.blockId}>{blockId}</span>
       </p>
     )}

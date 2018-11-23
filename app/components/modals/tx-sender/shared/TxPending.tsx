@@ -13,12 +13,12 @@ export interface ITxPendingProps {
   type: ETxSenderType;
 }
 
-export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash, type }) => (
+export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash }) => (
   <div className="text-center" test-data-id="modals.shared.tx-pending.modal">
     <SpinningEthereum className="mb-3" />
 
     <h3 className={styles.title}>
-      <FormattedMessage id="tx-sender.tx-pending.title" /> {type}
+      <FormattedMessage id="tx-sender.tx-pending.title" />
     </h3>
 
     <p>
@@ -31,6 +31,7 @@ export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash, type })
 
     <p>
       <FormattedMessage id="tx-sender.tx-pending.block-number-label" />
+      {": "}
       <span className={styles.blockId}>{blockId}</span>
     </p>
   </div>

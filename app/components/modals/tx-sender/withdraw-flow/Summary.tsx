@@ -64,7 +64,7 @@ export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
           className="mt-4"
           data-test-id="modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept"
         >
-          Accept
+          <FormattedMessage id="withdraw-flow.confirm" />
         </Button>
       </Col>
     </Row>

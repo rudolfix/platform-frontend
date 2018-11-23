@@ -98,7 +98,8 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IIntlProps> = ({
               <span>
                 {isLoginRoute ? (
                   <>
-                    <FormattedMessage id="wallet-selector.login.help-link" />{" "}
+                    <FormattedMessage id="wallet-selector.login.help-link" />
+                    <br />
                     <Link to={appRoutes.restore}>
                       <strong>
                         <FormattedMessage id="wallet-selector.help-link.label" />

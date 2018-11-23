@@ -21,4 +21,11 @@ storiesOf("MyPortfolioWidget", module)
       isLoading={false}
       {...{ balanceEur: "0", balanceNeu: "0", isIcbmWalletConnected: true }}
     />
+  ))
+  .add("error", () => (
+    <MyPortfolioWidgetComponent
+      isLoading={false}
+      error={"bla bla error"}
+      {...{ balanceEur: "0", balanceNeu: "0", isIcbmWalletConnected: true }}
+    />
   ));

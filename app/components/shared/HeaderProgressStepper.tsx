@@ -13,6 +13,7 @@ interface IProps {
   headerText: TTranslatedString;
   descText?: TTranslatedString;
   warning?: boolean;
+  headerClassName?: string;
 }
 
 export const HeaderProgressStepper: React.SFC<IProps> = props => (
@@ -24,7 +25,7 @@ export const HeaderProgressStepper: React.SFC<IProps> = props => (
     </Row>
     <Row className="mt-4 mb-4 text-center">
       <Col>
-        <h2 className={cn("font-weight-bold", props.warning && styles.warning)}>
+        <h2 className={cn(styles.bold, props.warning && styles.warning, props.headerClassName)}>
           {props.headerText}
         </h2>
         {props.descText && <p className="pt-3">{props.descText}</p>}

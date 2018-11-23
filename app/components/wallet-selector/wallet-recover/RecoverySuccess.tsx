@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
@@ -11,6 +11,8 @@ import { appConnect } from "../../../store";
 import { Button } from "../../shared/buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { recoverRoutes } from "./recoverRoutes";
+
+import * as styles from "./RecoverySuccess.module.scss";
 
 interface IStateProps {
   userType: EUserType;
@@ -25,7 +27,17 @@ export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> =
 }) => (
   <div>
     <Col className="mt-4 pb-5">
-      <HeaderProgressStepper headerText="Reset your Password" steps={8} currentStep={8} />
+      <HeaderProgressStepper
+        headerText={
+          <FormattedHTMLMessage
+            tagName="span"
+            id="components.wallet-selector.wallet-recover.recovery-success.save-access-link"
+          />
+        }
+        steps={8}
+        currentStep={8}
+        headerClassName={styles.header}
+      />
     </Col>
     <Col className="mt-4 mb-5 mx-auto">
       <h5 className="text-center">

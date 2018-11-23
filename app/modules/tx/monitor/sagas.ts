@@ -42,13 +42,12 @@ export function* updateTxs(): any {
   yield put(actions.txMonitor.setPendingTxs(apiPendingTx));
 }
 
-function* txMonitor({ logger, notificationCenter }: TGlobalDependencies): any {
+function* txMonitor({ logger }: TGlobalDependencies): any {
   while (true) {
     logger.info("Querying for pending txs...");
     try {
       yield neuCall(updateTxs);
     } catch (e) {
-      notificationCenter.error("Error while trying to get pending transactions");
       logger.error("Error getting pending txs", e);
     }
 

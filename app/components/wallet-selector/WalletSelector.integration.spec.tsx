@@ -276,7 +276,7 @@ describe("Wallet selector integration", () => {
 
     // there is no wallet in browser (BrowserWallet thrown BrowserWalletMissingError)
     expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
-      "We did not detect any Web3 wallet",
+      "Please check if the MetaMask extension is enabled in your browser. We were unable to detect any wallet.",
     );
 
     // wallet in browser is locked

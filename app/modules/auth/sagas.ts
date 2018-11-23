@@ -1,6 +1,7 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
+import { externalRoutes } from "../../components/externalRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
@@ -219,7 +220,7 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
 
 function* handleSignInUser({
   intlWrapper: {
-    intl: { formatIntlMessage },
+    intl: { formatIntlMessage, formatHTMLMessage },
   },
   logger,
 }: TGlobalDependencies): Iterator<any> {
@@ -243,8 +244,9 @@ function* handleSignInUser({
     } else {
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          formatIntlMessage(
-            "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+          formatHTMLMessage(
+            { id: "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems" },
+            { url: `${externalRoutes.neufundSupport}/home` },
           ),
         ),
       );

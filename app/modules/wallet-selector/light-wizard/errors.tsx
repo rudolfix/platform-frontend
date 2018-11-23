@@ -11,7 +11,7 @@ import {
 //TODO add translations
 export function mapLightWalletErrorToErrorMessage(e: Error): string {
   if (e instanceof LightWrongPasswordSaltError) {
-    return "wallet-selector.neuwallet.errors.password-incorrect";
+    return "Password is not correct";
   }
   if (e instanceof LightSignMessageError) {
     return "Cannot sign personal message";
@@ -29,7 +29,7 @@ export function mapLightWalletErrorToErrorMessage(e: Error): string {
     return "The password you entered is incorrect. Please try again.";
   }
   if (e instanceof LightWalletWrongMnemonic) {
-    return "Recovery phrase entered is not correct.";
+    return "Something went wrong. Please enter your 24 word recovery and try again.";
   }
 
   return "Light Wallet is unavailable";

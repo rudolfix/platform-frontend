@@ -1,15 +1,14 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
+import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
-
-import { FormattedMessage } from "react-intl-phraseapp";
-import { actions } from "../../../modules/actions";
 import { FormConstantField } from "../../shared/forms/form-field/FormConstantField";
 import { WarningAlert } from "../../shared/WarningAlert";
 
@@ -18,7 +17,9 @@ const PASSWORD = "password";
 const emailValidator = Yup.string().email();
 
 export const LoginValidator = Yup.object().shape({
-  password: Yup.string().required(),
+  password: Yup.string().required((
+    <FormattedMessage id="wallet-selector.neuwallet.password-is-mandatory" />
+  ) as any),
   email: emailValidator,
 });
 

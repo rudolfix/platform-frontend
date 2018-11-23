@@ -1,6 +1,6 @@
 import { tid } from "../utils";
 
-const navigateToSettings = () => cy.get(tid("authorized-layout-settings-button")).awaitedClick();
+const navigateToProfile = () => cy.get(tid("authorized-layout-profile-button")).awaitedClick();
 
 const extractSeedFromDOM = (seed: string): string[] =>
   seed
@@ -12,7 +12,7 @@ const extractRandomWordIndexFromDOM = (indexArray: string): string[] =>
   indexArray.replace(/[a-z]/g, "").split(" ");
 
 export const backupLightWalletSeed = () => {
-  navigateToSettings();
+  navigateToProfile();
 
   cy.get(tid("backup-seed-widget-link-button")).awaitedClick();
   cy.get(tid("access-light-wallet-prompt-accept-button")).awaitedClick();

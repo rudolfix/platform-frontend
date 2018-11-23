@@ -15,9 +15,6 @@ export const LoginHelp: React.SFC<void> = () => (
       </h2>
     </Col>
     <Col md={10} className="mb-5 mt-5 offset-md-1 ">
-      <h5 className="font-weight-bold mb-2">
-        <FormattedMessage id="wallet-selector.recover.help.wallet-id-missing" />
-      </h5>
       <p>
         <FormattedMessage id="wallet-selector.recover.help.email-login" />
       </p>

@@ -14,6 +14,7 @@ import { selectTxValidationState } from "../../../../modules/tx/sender/selectors
 import { selectMaxAvailableEther } from "../../../../modules/wallet/selectors";
 import { doesUserHaveEnoughEther, validateAddress } from "../../../../modules/web3/utils";
 import { appConnect } from "../../../../store";
+import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { Button } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
@@ -79,11 +80,12 @@ const getWithdrawFormSchema = (maxEther: string) =>
     ),
   }).toYup();
 
-const WithdrawComponent: React.SFC<TProps> = ({
+const WithdrawComponent: React.SFC<TProps & IIntlProps> = ({
   onAccept,
   maxEther,
   onValidateHandler,
   validationState,
+  intl,
 }) => (
   <div>
     <SpinningEthereum />
@@ -123,7 +125,7 @@ const WithdrawComponent: React.SFC<TProps> = ({
                     name="value"
                     type="number"
                     label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
-                    placeholder="Please enter value in eth"
+                    placeholder={intl.formatIntlMessage("modal.sent-eth.eth-amount-placeholder")}
                     data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
                     ignoreTouched={true}
                     onChange={(e: any) => {
@@ -158,7 +160,7 @@ const WithdrawComponent: React.SFC<TProps> = ({
   </div>
 );
 
-const Withdraw = compose<TProps, {}>(
+const Withdraw = compose<TProps & IIntlProps, {}>(
   appConnect<IStateProps, ITxInitDispatchProps>({
     stateToProps: state => ({
       maxEther: selectMaxAvailableEther(state),
@@ -179,6 +181,7 @@ const Withdraw = compose<TProps, {}>(
         });
     },
   }),
+  injectIntlHelpers,
 )(WithdrawComponent);
 
 export { Withdraw, WithdrawComponent };

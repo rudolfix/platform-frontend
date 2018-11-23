@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { branch, compose, renderComponent } from "recompose";
 
 import { selectNeuBalance, selectNeuBalanceEuroAmount } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
@@ -43,6 +44,9 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
         <h3>
           <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
         </h3>
+        <p>
+          <FormattedMessage id="dashboard.my-portfolio-widget.explanation" />
+        </p>
       </div>
       <MyNeuWidget balanceNeu={balanceNeu} balanceEur={balanceEur} />
     </div>
@@ -58,13 +62,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   balanceNeu,
 }) => {
   return (
-    <Panel
-      headerText={
-        <FormattedMessage id="components.dashboard.my-portfolio.my-portfolio-widget.header-text" />
-      }
-      className={className}
-      style={style}
-    >
+    <Panel className={className} style={style}>
       <>
         {isLoading ? (
           <LoadingIndicator />
@@ -83,11 +81,20 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   );
 };
 
-export const MyPortfolioWidget = appConnect<IStateProps, {}, TOwnProps>({
-  stateToProps: s => ({
-    isLoading: s.wallet.loading,
-    error: s.wallet.error,
-    balanceNeu: selectNeuBalance(s.wallet),
-    balanceEur: selectNeuBalanceEuroAmount(s),
+export const LoadingComponent: React.SFC<IProps> = ({ className, style }) => (
+  <Panel className={className} style={style}>
+    <LoadingIndicator />
+  </Panel>
+);
+
+export const MyPortfolioWidget = compose<IStateProps, TOwnProps>(
+  appConnect<IStateProps, {}, TOwnProps>({
+    stateToProps: s => ({
+      isLoading: s.wallet.loading,
+      error: s.wallet.error,
+      balanceNeu: selectNeuBalance(s.wallet),
+      balanceEur: selectNeuBalanceEuroAmount(s),
+    }),
   }),
-})(MyPortfolioWidgetComponent);
+  branch((props: IStateProps) => props.isLoading, renderComponent(LoadingComponent)),
+)(MyPortfolioWidgetComponent);

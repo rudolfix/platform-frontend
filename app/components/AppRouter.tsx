@@ -22,7 +22,7 @@ import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
 import { BackupSeed } from "./settings/backup-seed/BackupSeed";
 import { EmailVerify } from "./settings/EmailVerify";
-import { settingsRoutes } from "./settings/routes";
+import { profileRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
 import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
 import { WalletSelector } from "./wallet-selector/WalletSelector";
@@ -97,13 +97,13 @@ export const AppRouter: React.SFC = () => (
       issuerComponent={EmailVerify}
     />
     <OnlyAuthorizedRoute
-      path={appRoutes.settings}
+      path={appRoutes.profile}
       investorComponent={Settings}
       issuerComponent={Settings}
       exact
     />
     <OnlyAuthorizedRoute
-      path={settingsRoutes.seedBackup}
+      path={profileRoutes.seedBackup}
       investorComponent={BackupSeed}
       issuerComponent={BackupSeed}
       exact

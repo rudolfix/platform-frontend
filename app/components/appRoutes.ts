@@ -18,7 +18,7 @@ export const appRoutes = {
   wallet: "/wallet",
   dashboard: "/dashboard",
   documents: "/documents",
-  settings: "/settings",
+  profile: "/profile",
   demo: "/demo",
   eto: "/eto",
   etoLanding: "/eto-landing",

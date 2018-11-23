@@ -13,8 +13,8 @@ import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investment-flow/sagas";
 import { investorTicketsSagas } from "./investor-tickets/sagas";
 import { kycSagas } from "./kyc/sagas";
+import { profileSagas } from "./profile/sagas";
 import { etoSagas } from "./public-etos/sagas";
-import { settingsSagas } from "./settings/sagas";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
@@ -34,7 +34,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(kycSagas),
     effects.fork(investorTicketsSagas),
     effects.fork(initSagas),
-    effects.fork(settingsSagas),
+    effects.fork(profileSagas),
     effects.fork(web3Sagas),
     effects.fork(authSagas),
     effects.fork(walletSelectorSagas),

@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
+import { externalRoutes } from "../../externalRoutes";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { KycStatusWidgetComponent } from "./KycStatusWidget";
 
@@ -40,8 +41,15 @@ describe("<KycStatusWidgetComponent />", () => {
       />,
     );
 
-    expect(component.contains(<FormattedMessage id="settings.kyc-status-widget.status.draft" />)).to
-      .be.true;
+    expect(
+      component.contains(
+        <FormattedHTMLMessage
+          tagName="span"
+          id="settings.kyc-status-widget.status.draft"
+          values={{ url: `${externalRoutes.neufundSupport}/home` }}
+        />,
+      ),
+    ).to.be.true;
   });
 
   it("should render loading indicator", () => {

@@ -14,8 +14,8 @@ import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./person-profile-modal/reducer";
+import { profileReducer } from "./profile/reducer";
 import { publicEtosReducer } from "./public-etos/reducer";
-import { settingsReducer } from "./settings/reducer";
 import { tokenPriceReducer } from "./shared/tokenPrice/reducer";
 import { txMonitorReducer } from "./tx/monitor/reducer";
 import { txSenderReducer } from "./tx/sender/reducer";
@@ -41,7 +41,7 @@ export const appReducers = {
   genericModal: genericModalReducer,
   accessWallet: accessWalletReducer,
   kyc: kycReducer,
-  settings: settingsReducer,
+  profile: profileReducer,
   investorTickets: investorTicketsReducer,
   tokenPrice: tokenPriceReducer,
   init: initReducer,

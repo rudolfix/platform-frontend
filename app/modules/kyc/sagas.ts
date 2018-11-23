@@ -237,7 +237,7 @@ function* submitIndividualRequest(
         formatIntlMessage("kyc.modal.verification.description"),
         undefined,
         formatIntlMessage("kyc.modal.verification.settings-button"),
-        actions.routing.goToSettings(),
+        actions.routing.goToProfile(),
       ),
     );
   } catch {
@@ -627,7 +627,7 @@ function* submitBusinessRequest(
         formatIntlMessage("kyc.modal.verification.description"),
         undefined,
         formatIntlMessage("kyc.modal.verification.settings-button"),
-        actions.routing.goToSettings(),
+        actions.routing.goToProfile(),
       ),
     );
   } catch {

@@ -17,9 +17,9 @@ import { investorEtoTicketActions } from "./investor-tickets/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { personProfileModalActions } from "./person-profile-modal/actions";
+import { profileActions } from "./profile/actions";
 import { etoActions } from "./public-etos/actions";
 import { routingActions } from "./routing/actions";
-import { settingsActions } from "./settings/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
 import { tokenPriceActions } from "./shared/tokenPrice/actions";
@@ -38,7 +38,7 @@ import { web3Actions } from "./web3/actions";
 export const actions = {
   txValidator: txValidatorActions,
   txTransactions: txTransactionsActions,
-  settings: settingsActions,
+  profile: profileActions,
   immutableStorage: immutableStorageActions,
   verifyEmail: verifyEmailActions,
   genericModal: genericModalActions,

@@ -70,7 +70,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   reopenRequest: () => void;
-  goToSettings: () => void;
+  goToProfile: () => void;
   goToDashboard: () => void;
 }
 
@@ -96,7 +96,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
           onClick={
             this.props.userType === EUserType.INVESTOR
               ? this.props.goToDashboard
-              : this.props.goToSettings
+              : this.props.goToProfile
           }
         >
           {this.props.userType === EUserType.INVESTOR ? (
@@ -209,7 +209,7 @@ export const Kyc = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},
-      goToSettings: () => dispatch(actions.routing.goToSettings()),
+      goToProfile: () => dispatch(actions.routing.goToProfile()),
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
     }),
     options: { pure: false },

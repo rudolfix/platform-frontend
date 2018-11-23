@@ -259,7 +259,7 @@ function* verifyUserEmail(): Iterator<any> {
   const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield loadUser();
-  yield effects.put(actions.routing.goToSettings());
+  yield effects.put(actions.routing.goToProfile());
 }
 
 /**

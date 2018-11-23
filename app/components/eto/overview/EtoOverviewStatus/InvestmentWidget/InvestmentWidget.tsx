@@ -86,7 +86,7 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
                 </Button>
               ) : (
                 <ButtonLink
-                  to={appRoutes.settings}
+                  to={appRoutes.profile}
                   data-test-id="eto-overview-settings-update-required-to-invest"
                 >
                   <FormattedMessage id="shared-component.eto-overview.settings-update-required" />

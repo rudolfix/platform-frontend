@@ -617,7 +617,6 @@
   "settings.backup-seed-display.next-words": "next {wordNumber} words",
   "settings.backup-seed-display.previous-words": "previous {wordNumber} words",
   "settings.backup-seed-flow-container.confirm-seed": "Please confirm your recovery phrase by entering the words that were displayed on the previous two screens. <br/>Note that you are only being asked to enter certain words (e.g., word 16) from your recovery phrase.",
-  "settings.backup-seed-flow-container.confirm-seed.go-to-my-profile": "Go to My Profile",
   "settings.backup-seed-flow-container.follow-instructions": "Please follow the instructions below:",
   "settings.backup-seed-flow-container.safety-message": "The recovery phrase is crucial to ensure the safety of your assets.",
   "settings.backup-seed-flow-container.write-seed-on-paper": "Please write down each word on a piece of paper in the exact order it is displayed on-screen.",

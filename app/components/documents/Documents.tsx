@@ -59,14 +59,12 @@ interface IDispatchProps {
 export type TDocumentTitles = { [key in EEtoDocumentType]: TTranslatedString };
 
 export const getDocumentTitles = (isRetailEto: boolean) => ({
-  company_token_holder_agreement: (
-    <FormattedMessage id="eto.documents.company-token-holder-agreement" />
-  ),
+  company_token_holder_agreement: <FormattedMessage id="eto.documents.tokenholder-agreement" />,
   reservation_and_acquisition_agreement: (
     <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
   ),
   investment_and_shareholder_agreement_template: (
-    <FormattedMessage id="eto.documents.investment-and-shareholder-agreement-template" />
+    <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
   ),
   pamphlet_template: <FormattedMessage id="eto.documents.pamphlet_template" />,
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-template" />,
@@ -76,10 +74,10 @@ export const getDocumentTitles = (isRetailEto: boolean) => ({
   ),
   // in document collection
   investment_and_shareholder_agreement: (
-    <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
+    <FormattedMessage id="eto.documents.signed-investment-and-shareholder-agreement" />
   ),
   signed_investment_and_shareholder_agreement: (
-    <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
+    <FormattedMessage id="eto.documents.signed-investment-and-shareholder-agreement" />
   ),
   approved_investor_offering_document: isRetailEto ? (
     <FormattedMessage id="eto.documents.approved-investor-prospectus-document" />

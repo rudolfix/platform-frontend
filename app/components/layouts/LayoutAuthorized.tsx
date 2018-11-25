@@ -10,6 +10,7 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 
+import { AcceptTosModal } from "../modals/accept-tos-modal/AcceptTosModal";
 import * as styles from "./LayoutAuthorized.module.scss";
 import * as sharedStyles from "./LayoutShared.module.scss";
 
@@ -30,7 +31,7 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
     </div>
 
     <Footer />
-
+    <AcceptTosModal />
     <DepositEthModal />
     <TxSenderModal />
     <IcbmWalletBalanceModal />

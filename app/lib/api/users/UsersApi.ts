@@ -131,6 +131,17 @@ export class UsersApi {
     return ensureWalletTypesInUser(response.body);
   }
 
+  public async setLatestAcceptedTos(agreementHash: string): Promise<IUser> {
+    const response = await this.httpClient.put<IUser>({
+      baseUrl: USER_API_ROOT,
+      url: "/user/me/tos",
+      responseSchema: UserValidator,
+      allowedStatusCodes: [404, 409],
+      body: { latest_accepted_tos_ipfs: agreementHash },
+    });
+    return ensureWalletTypesInUser(response.body);
+  }
+
   public async pendingTxs(): Promise<TPendingTxs> {
     const response = await this.httpClient.get<Array<TxWithMetadata>>({
       baseUrl: USER_API_ROOT,

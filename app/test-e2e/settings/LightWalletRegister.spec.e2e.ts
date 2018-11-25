@@ -12,6 +12,7 @@ import {
   verifyLatestUserEmail,
   tid,
   assertButtonIsActive,
+  acceptTOS,
 } from "../utils";
 
 describe("Light wallet login / register", () => {
@@ -67,7 +68,7 @@ describe("Light wallet login / register", () => {
     });
   });
 
-  it("should return an error when logging with same email", () => {
+  it.only("should return an error when logging with same email", () => {
     const email = convertToUniqueEmail("dave@neufund.org");
     const password = "strongpassword";
 
@@ -75,6 +76,8 @@ describe("Light wallet login / register", () => {
     cy.visit("/register");
     typeEmailPassword(email, password);
     assertUserInDashboard();
+    acceptTOS();
+    cy.wait(5000); // wait for the tos to settle
     verifyLatestUserEmail();
     logoutViaTopRightButton();
     cy.clearLocalStorage();

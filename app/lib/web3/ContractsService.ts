@@ -19,9 +19,9 @@ import * as knownInterfaces from "../contracts/knownInterfaces.json";
 
 @injectable()
 export class ContractsService {
-  private universeContract!: Universe;
   private etoCommitmentCache: { [etoId: string]: ETOCommitment } = {};
 
+  public universeContract!: Universe;
   public neumark!: Neumark;
   public euroToken!: EuroToken;
   public etherToken!: EtherToken;
@@ -84,7 +84,6 @@ export class ContractsService {
     this.platformTerms = await create(PlatformTerms, web3, platformTermsAddress);
     this.euroToken = await create(EuroToken, web3, euroTokenAddress);
     this.etherToken = await create(EtherToken, web3, etherTokenAddress);
-
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");
   }
 
@@ -103,11 +102,7 @@ export class ContractsService {
  * In dev mode it will validate contract code to ease web3 development pains. In prod it will assume that address is correct, saving some network calls.
  */
 async function create<T>(ContractCls: IContractCls<T>, web3: any, address: string): Promise<T> {
-  if (process.env.NODE_ENV === "production") {
-    return new ContractCls(web3, address);
-  } else {
-    return await ContractCls.createAndValidate(web3, address);
-  }
+  return new ContractCls(web3, address);
 }
 
 // TODO: Move to TypeChain

@@ -7,6 +7,7 @@ import {
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
   tid,
+  acceptTOS,
 } from "../utils";
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/recoverRoutes";
 
@@ -64,7 +65,7 @@ describe("Wallet recover", () => {
     // remove this for now...
     // cy.contains(tid("my-wallet-widget-eth-token-large-value"), "ETH999 938.8591");
     // cy.contains(tid("my-wallet-widget-eth-token-value"), "483 930 410.24 EUR");
-
+    acceptTOS();
     cy.get(tid("authorized-layout-profile-button")).click();
     cy.get(tid("account-address.your.ether-address.from-div")).then(value => {
       expect(value[0].innerText).to.equal(expectedGeneratedAddress);
@@ -151,7 +152,6 @@ describe("Wallet recover", () => {
     assertWaitForLatestEmailSentWithSalt(email.toLowerCase());
 
     cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
-
     assertUserInDashboard();
   });
 

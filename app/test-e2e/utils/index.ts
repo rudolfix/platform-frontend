@@ -121,6 +121,7 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 
   typeEmailPassword(email, password);
+  acceptTOS();
 };
 
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {
@@ -142,6 +143,10 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
 export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
   cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
+};
+
+export const confirmAccessModalNoPW = () => {
+  cy.get(tid("access-light-wallet-prompt-accept-button")).awaitedClick(1500);
 };
 
 export const closeModal = () => {
@@ -191,6 +196,13 @@ export const registerWithLightWallet = (
   cy.get(tid("wallet-selector-register-button")).awaitedClick();
   cy.get(tid("wallet-selector-register-button")).should("be.disabled");
   assertUserInDashboard();
+  acceptTOS();
+};
+
+export const acceptTOS = () => {
+  cy.get(tid("modals.accept-tos.download-button")).awaitedClick();
+  cy.get(tid("modals.accept-tos.accept-button")).awaitedClick();
+  cy.get(tid("access-light-wallet-prompt-accept-button")).awaitedClick();
 };
 
 export const logoutViaTopRightButton = () => {

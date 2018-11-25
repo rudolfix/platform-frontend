@@ -2,6 +2,7 @@ import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
 import { externalRoutes } from "../../components/externalRoutes";
+import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
@@ -254,6 +255,42 @@ function* handleSignInUser({
   }
 }
 
+function* handleAcceptCurrentAgreement({
+  apiUserService,
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
+}: TGlobalDependencies): Iterator<any> {
+  const currentAgreementHash = yield select((s: IAppState) => s.auth.currentAgreementHash);
+  yield neuCall(
+    ensurePermissionsArePresent,
+    [SIGN_TOS],
+    formatIntlMessage("settings.modal.accept-tos.permission.title"),
+    formatIntlMessage("settings.modal.accept-tos.permission.text"),
+  );
+  const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
+  yield effects.put(actions.auth.setUser(user));
+}
+
+function* handleDownloadCurrentAgreement({
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
+}: TGlobalDependencies): Iterator<any> {
+  const currentAgreementHash = yield select((s: IAppState) => s.auth.currentAgreementHash);
+  const fileName = formatIntlMessage("settings.modal.accept-tos.filename");
+  yield effects.put(
+    actions.immutableStorage.downloadImmutableFile(
+      {
+        ipfsHash: currentAgreementHash,
+        mimeType: "application/pdf",
+        asPdf: true,
+      },
+      fileName,
+    ),
+  );
+}
+
 function* verifyUserEmail(): Iterator<any> {
   const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
   const urlEmail = yield select((s: IAppState) => selectEmailFromQueryString(s.router));
@@ -333,9 +370,26 @@ export function* ensurePermissionsArePresent(
   }
 }
 
+/**
+ * Handle ToS / agreement
+ */
+export function* loadCurrentAgreement({
+  contractsService,
+  logger,
+}: TGlobalDependencies): Iterator<any> {
+  logger.info("Loading current agreement hash");
+
+  const result = yield contractsService.universeContract.currentAgreement();
+  let currentAgreementHash = result[2] as string;
+  currentAgreementHash = currentAgreementHash.replace("ipfs:", "");
+  yield effects.put(actions.auth.setCurrentAgreementHash(currentAgreementHash));
+}
+
 export const authSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
   yield fork(neuTakeEvery, "AUTH_SET_USER", setUser);
   yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
+  yield fork(neuTakeEvery, "ACCEPT_CURRENT_AGREEMENT", handleAcceptCurrentAgreement);
+  yield fork(neuTakeEvery, "DOWNLOAD_CURRENT_AGREEMENT", handleDownloadCurrentAgreement);
 };

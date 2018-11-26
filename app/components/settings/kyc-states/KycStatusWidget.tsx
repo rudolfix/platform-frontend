@@ -250,14 +250,14 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </WarningAlert>
         </div>
       ) : (
-        <div className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}>
+        <section className={cn(styles.section)}>
           <p className={cn(styles.text, "pt-2")}>
             {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <ActionButton {...props} />
           </Col>
-        </div>
+        </section>
       )}
     </Panel>
   );

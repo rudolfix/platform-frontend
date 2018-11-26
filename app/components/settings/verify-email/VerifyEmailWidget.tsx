@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
@@ -121,8 +121,8 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({
   revertCancelEmail,
   isThereUnverifiedEmail,
 }) => (
-  <div data-test-id="profile.verify-email-widget.no-email-state">
-    <p className={styles.customPaddingTop}>
+  <div data-test-id="profile.verify-email-widget.no-email-state" className={styles.noEmailUser}>
+    <p>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
     </p>
     <SetEmailEnhancedForm
@@ -135,8 +135,8 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({
 );
 
 const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
-  <div
-    className={cn("d-flex flex-wrap align-content-around")}
+  <section
+    className={styles.section}
     data-test-id="profile.verify-email-widget.verified-email-state"
   >
     <p className={cn(styles.text, "pt-2")}>
@@ -144,13 +144,13 @@ const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) 
     </p>
     <Col xs={12} className="d-flex justify-content-center" data-test-id="email-verified">
       <p>
-        <b>
+        <strong>
           <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
-        </b>
+        </strong>
         {verifiedEmail}
       </p>
     </Col>
-  </div>
+  </section>
 );
 
 const UnVerifiedUser: React.SFC<{
@@ -159,52 +159,48 @@ const UnVerifiedUser: React.SFC<{
   unverifiedEmail?: string;
   cancelEmail: () => void;
 }> = ({ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }) => (
-  <div
-    className={cn("d-flex flex-wrap align-content-around")}
+  <section
+    className={styles.section}
     data-test-id="profile.verify-email-widget.unverified-email-state"
   >
     {verifiedEmail && (
-      <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
-        <p className="text-center">
-          <b>
-            <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
-          </b>
-          {verifiedEmail}
-        </p>
-      </Col>
+      <p className="pt-2">
+        <strong>
+          <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
+        </strong>
+        {verifiedEmail}
+      </p>
     )}
     {unverifiedEmail && (
-      <>
-        <Col xs={12} className="d-flex justify-content-center">
-          <p className="text-center">
-            <FormattedMessage id="settings.verify-email-widget.unverified-email" />:{" "}
-            {unverifiedEmail}
-          </p>
-        </Col>
-      </>
+      <p className={cn(styles.text, "pt-2")}>
+        <FormattedMessage id="settings.verify-email-widget.unverified-email" />:{" "}
+        <strong>{unverifiedEmail}</strong>
+      </p>
     )}
 
-    <Col xs={12} className="d-flex justify-content-between px-0">
-      <Button
-        layout={EButtonLayout.SECONDARY}
-        className="p-0"
-        onClick={cancelEmail}
-        data-test-id="verify-email-widget.change-email.button"
-      >
-        <FormattedMessage id="settings.verify-email-widget.change-email" />
-      </Button>
-      <Button
-        layout={EButtonLayout.SECONDARY}
-        className="p-0"
-        iconPosition="icon-after"
-        svgIcon={arrowRight}
-        onClick={resendEmail}
-        data-test-id="resend-link"
-      >
-        <FormattedMessage id="settings.verify-email-widget.resend-link" />
-      </Button>
-    </Col>
-  </div>
+    <Row className="justify-content-between">
+      <Col className="pr-0">
+        <Button
+          layout={EButtonLayout.SECONDARY}
+          onClick={cancelEmail}
+          data-test-id="verify-email-widget.change-email.button"
+        >
+          <FormattedMessage id="settings.verify-email-widget.change-email" />
+        </Button>
+      </Col>
+      <Col className="text-right pl-0">
+        <Button
+          layout={EButtonLayout.SECONDARY}
+          iconPosition="icon-after"
+          svgIcon={arrowRight}
+          onClick={resendEmail}
+          data-test-id="resend-link"
+        >
+          <FormattedMessage id="settings.verify-email-widget.resend-link" />
+        </Button>
+      </Col>
+    </Row>
+  </section>
 );
 
 export const VerifyEmailWidgetComponent: React.SFC<

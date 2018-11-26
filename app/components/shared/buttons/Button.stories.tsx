@@ -11,7 +11,11 @@ storiesOf("buttons/default", module)
     <>
       <Button>primary</Button>
       <br />
+      <br />
       <Button disabled>primary disabled</Button>
+      <br />
+      <br />
+      <Button isLoading>loading</Button>
     </>
   ))
   .add("secondary", () => (
@@ -100,11 +104,10 @@ storiesOf("buttons/default", module)
     <>
       <Button width={ButtonWidth.NORMAL}>normal button</Button>
       <br />
-      <Button width={ButtonWidth.BLOCK}>wide button</Button>
       <br />
+      <Button width={ButtonWidth.BLOCK}>wide button</Button>
     </>
-  ))
-  .add("loading", () => <Button isLoading>Primary</Button>);
+  ));
 
 storiesOf("buttons/ArrowRight", module).add("primary", () => (
   <ButtonArrowRight>primary</ButtonArrowRight>

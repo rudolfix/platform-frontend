@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { render, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
+
 import { createMount } from "../../../../test/createMount";
 import { waitUntilDoesntThrow, wrapWithIntl } from "../../../../test/integrationTestUtils";
 import { tid } from "../../../../test/testUtils";

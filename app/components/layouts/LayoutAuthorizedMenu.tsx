@@ -251,9 +251,10 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad
   </div>
 );
 
-export const LayoutAuthorizedMenuComponent: React.SFC<
-  IStateProps & IDispatchProps & IWithProps
-> = ({ userType, ...props }) => {
+const LayoutAuthorizedMenuComponent: React.SFC<IStateProps & IDispatchProps & IWithProps> = ({
+  userType,
+  ...props
+}) => {
   switch (userType) {
     case EUserType.INVESTOR:
       return <InvestorMenu data-test-id="investor-menu" {...props} />;
@@ -264,7 +265,7 @@ export const LayoutAuthorizedMenuComponent: React.SFC<
   }
 };
 
-export const LayoutAuthorizedMenu = compose<IStateProps & IDispatchProps & IWithProps, {}>(
+const LayoutAuthorizedMenu = compose<IStateProps & IDispatchProps & IWithProps, {}>(
   appConnect<IStateProps, {}>({
     stateToProps: state => ({
       userType: selectUserType(state.auth),
@@ -281,3 +282,5 @@ export const LayoutAuthorizedMenu = compose<IStateProps & IDispatchProps & IWith
     isLinkActive: props => match => match && !props.isIdentityModalOpened,
   }),
 )(LayoutAuthorizedMenuComponent);
+
+export { InvestorMenu, IssuerMenu, LayoutAuthorizedMenu, LayoutAuthorizedMenuComponent };

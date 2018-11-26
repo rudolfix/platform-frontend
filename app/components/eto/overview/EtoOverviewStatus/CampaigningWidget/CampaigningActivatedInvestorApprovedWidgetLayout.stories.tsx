@@ -6,7 +6,7 @@ import {
   CampaigningFormState,
 } from "./CampaigningActivatedInvestorApprovedWidgetLayout";
 
-storiesOf("CampaigningActivatedInvestorApprovedWidgetLayout", module)
+storiesOf("ETO/CampaigningActivatedInvestorApprovedWidgetLayout", module)
   .add("default", () => (
     <>
       <CampaigningActivatedInvestorApprovedWidgetLayout

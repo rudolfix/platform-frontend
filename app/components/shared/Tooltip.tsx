@@ -9,13 +9,16 @@ import * as styles from "./Tooltip.module.scss";
 
 interface IProps {
   content: TTranslatedString;
+  alignLeft?: boolean;
 }
 
-export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ content, className }) => (
-  <div className={cn(className, styles.tooltipWrapper)} onClick={e => e.preventDefault()}>
+export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ content, className, alignLeft }) => (
+  <span className={cn(className, styles.tooltipWrapper)} onClick={e => e.preventDefault()}>
     <span className={styles.tooltip}>
       <InlineIcon svgIcon={icon} />
     </span>
-    <p className={styles.tooltipText}>{content}</p>
-  </div>
+    <p className={cn(styles.tooltipText, alignLeft ? styles.alignLeft : styles.alignCenter)}>
+      {content}
+    </p>
+  </span>
 );

@@ -51,11 +51,19 @@ $icon-size: 18px;
     transition: 100ms ease-out;
     width: 90vw;
     will-change: transform opacity;
+    text-transform: initial;
   }
 
   @include media-breakpoint-down (md) {
     font-size: .8em;
     margin-top: px-to-rem(6px);
   }
+}
 
+.align-center {
+  text-align: center;
+}
+
+.align-left {
+  text-align: left;
 }

@@ -197,7 +197,7 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
     const probableUserType: EUserType = yield select((s: IAppState) => selectUrlUserType(s.router));
     yield effects.put(actions.walletSelector.messageSigning());
 
-    yield neuCall(obtainJWT);
+    yield neuCall(obtainJWT, [SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
     // tslint:disable-next-line
     walletStorage.set(web3Manager.personalWallet!.getMetadata());

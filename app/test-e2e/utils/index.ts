@@ -202,7 +202,6 @@ export const registerWithLightWallet = (
 export const acceptTOS = () => {
   cy.get(tid("modals.accept-tos.download-button")).awaitedClick();
   cy.get(tid("modals.accept-tos.accept-button")).awaitedClick();
-  cy.get(tid("access-light-wallet-prompt-accept-button")).awaitedClick();
 };
 
 export const logoutViaTopRightButton = () => {

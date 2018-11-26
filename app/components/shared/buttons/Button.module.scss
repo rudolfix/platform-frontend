@@ -46,7 +46,8 @@ $_active-color: lighten($_hover-color, 20%);
     color: $neu-pale-grey;
     cursor: not-allowed;
 
-    &:hover {
+    &:hover,
+    &.is-active {
       .content {
         color: $color-gray;
         background-color: transparent;
@@ -67,7 +68,8 @@ $_active-color: lighten($_hover-color, 20%);
       min-width: px-to-rem(138px);
     }
 
-    &:hover {
+    &:hover,
+    &.is-active  {
       .content {
         background-color: $_hover-color;
         border-color: $_hover-color;
@@ -104,7 +106,8 @@ $_active-color: lighten($_hover-color, 20%);
     font-weight: $font-weight-bold;
     text-transform: uppercase;
 
-    &:hover {
+    &:hover,
+    &.is-active  {
       color: $_hover-color;
     }
 
@@ -128,17 +131,20 @@ $_active-color: lighten($_hover-color, 20%);
   &-inline {
     @include font-default;
 
+    &:hover,
+    &.is-active,
+    &:focus {
+      .content {
+        text-decoration: none;
+      }
+    }
+
     .content {
       padding: 0;
       margin-top: 0;
       justify-content: initial;
 
       text-decoration: underline;
-
-      &:hover,
-      &:focus {
-        text-decoration: none;
-      }
     }
   }
 
@@ -221,7 +227,8 @@ $_active-color: lighten($_hover-color, 20%);
   border: 0;
   background-color: transparent;
 
-  &:hover {
+  &:hover,
+  &.is-active {
     :global(.inline-icon) {
       color: $color-brand;
     }

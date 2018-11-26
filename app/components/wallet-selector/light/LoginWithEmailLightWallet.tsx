@@ -53,7 +53,8 @@ const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props
     <div className="text-center">
       <Button
         type="submit"
-        disabled={!props.isValid || props.isLoading}
+        disabled={!props.isValid}
+        isLoading={props.isLoading}
         data-test-id="wallet-selector-nuewallet.login-button"
       >
         Login
@@ -69,30 +70,28 @@ const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
 
 export const LoginWithEmailLightWalletComponent: React.SFC<
   IDispatchProps & IStateProps & IOwnProps
-> = props => {
-  return (
-    <>
-      <Row>
-        <p className="small mx-auto">
-          <FormattedMessage id="wallet-selector.neuwallet.login.prompt" />
-        </p>
-      </Row>
-      <Row>
-        <Col xs={12}>
-          <FormConstantField
-            value={props.email}
-            className="mb-2"
-            data-test-id="light-wallet-login-with-email-email-field"
-            valid={emailValidator.isValidSync(props.email)}
-            errorMessage={<FormattedMessage id="wallet-selector.neuwallet.email-error" />}
-          />
-          <LoginEnhancedLightWalletForm {...props} />
-          {props.errorMsg && <WarningAlert>{props.errorMsg}</WarningAlert>}
-        </Col>
-      </Row>
-    </>
-  );
-};
+> = props => (
+  <>
+    <Row>
+      <p className="small mx-auto">
+        <FormattedMessage id="wallet-selector.neuwallet.login.prompt" />
+      </p>
+    </Row>
+    <Row>
+      <Col md={{ offset: 2, size: 8 }}>
+        <FormConstantField
+          value={props.email}
+          className="mb-2"
+          data-test-id="light-wallet-login-with-email-email-field"
+          valid={emailValidator.isValidSync(props.email)}
+          errorMessage={<FormattedMessage id="wallet-selector.neuwallet.email-error" />}
+        />
+        <LoginEnhancedLightWalletForm {...props} />
+        {props.errorMsg && <WarningAlert className="mt-3">{props.errorMsg}</WarningAlert>}
+      </Col>
+    </Row>
+  </>
+);
 
 export const LoginWithEmailLightWallet = compose<React.SFC<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({

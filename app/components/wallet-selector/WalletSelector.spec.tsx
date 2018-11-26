@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { dummyIntl } from "../../utils/injectIntlHelpers.fixtures";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletSelectorComponent } from "./WalletSelector";
 
@@ -15,7 +14,7 @@ describe("<WalletSelector />", () => {
         oppositeRoute="oppositeRoute"
         userType="investor"
         isLoginRoute
-        intl={dummyIntl}
+        openICBMModal={() => {}}
       />,
     );
 

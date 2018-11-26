@@ -56,10 +56,11 @@ export const LoginHelp: React.SFC<void> = () => (
     <Col md={12}>
       <Row className="ml-2 mt-5 pt-5 mr-2 justify-content-between align-items-center">
         <Link to={loginWalletRoutes.light}>
-          <i className="fa fa-lg fa-angle-left mr-1" /> BACK
+          <i className="fa fa-lg fa-angle-left mr-1" />
+          BACK
         </Link>
         <a href="https://support.neufund.org/support/home" target="_blank">
-          <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />{" "}
+          <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />
           <i className="fa fa-lg fa-angle-right ml-1" />
         </a>
       </Row>

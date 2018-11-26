@@ -12,6 +12,7 @@
 .wrapper {
   position: relative;
   display: block;
+  color: $body-color;
   width: 100%;
   cursor: pointer;
 }
@@ -64,7 +65,6 @@
 .checked {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  color: $body-color;
   border-right: .5em solid $neu-seaweed;
 
   img {

@@ -253,6 +253,12 @@ const EtoOverviewStatusLayout: React.SFC<
             <div className={cn(styles.groupWrapper, styles.breakSm)}>
               <div className={styles.group}>
                 <span className={styles.label}>
+                  <FormattedMessage id="shared-component.eto-overview-status.key-investment-terms" />
+                  {":"}
+                </span>
+              </div>
+              <div className={styles.group}>
+                <span className={styles.label}>
                   <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
                 </span>
                 <span className={styles.value}>

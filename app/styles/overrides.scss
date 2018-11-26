@@ -11,12 +11,12 @@
 @import "./elements/button";
 @import "./elements/form";
 @import "./elements/iframe";
+@import "./elements/img";
 @import "./elements/input";
-@import "./elements/ul";
+@import "./elements/label";
 @import "./elements/table";
 @import "./elements/textarea";
-@import "./elements/label";
-@import "./elements/img";
+@import "./elements/ul";
 
 .form-group {
   margin-bottom: $spacing-vertical-lg-1;

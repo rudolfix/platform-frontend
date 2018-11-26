@@ -1,3 +1,4 @@
+import { LocationDescriptor } from "history";
 import { push } from "react-router-redux";
 
 import { appRoutes } from "../../components/appRoutes";
@@ -6,16 +7,16 @@ import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/r
 import { walletRoutes } from "../../components/wallet/routes";
 import { createAction } from "../actionsUtils";
 
-const createRoutingAction = (path: string) => push(path);
+const createRoutingAction = (location: LocationDescriptor) => push(location);
 
 export const routingActions = {
   // navigation primitives
   goBack: () => createAction("GO_BACK", {}),
-  goTo: (absolutePath: string) => createRoutingAction(absolutePath),
+  goTo: (location: LocationDescriptor) => createRoutingAction(location),
 
   // default routes
-  goHome: () => createRoutingAction("/"),
-  goEtoHome: () => createRoutingAction("/eto-landing"),
+  goHome: () => createRoutingAction(appRoutes.root),
+  goEtoHome: () => createRoutingAction(appRoutes.etoLanding),
 
   //kyc routes
   goToKYCHome: () => createRoutingAction(kycRoutes.start),

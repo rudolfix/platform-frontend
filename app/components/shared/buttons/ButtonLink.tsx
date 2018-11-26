@@ -1,56 +1,88 @@
-import { LocationDescriptor } from "history";
-import { omit } from "lodash/fp";
+import { createPath, LocationDescriptor } from "history";
 import * as React from "react";
-import { RouterProps, withRouter } from "react-router";
-import { compose, mapProps, setDisplayName, withHandlers } from "recompose";
+import { matchPath } from "react-router";
+import { compose, mapProps, setDisplayName } from "recompose";
 
+import { routingActions } from "../../../modules/routing/actions";
+import { appConnect } from "../../../store";
 import { Omit } from "../../../types";
 import { Button, IButtonProps, IGeneralButton } from "./Button";
 
 type TButtonLinkToProps = {
   to: LocationDescriptor;
   target?: string;
+  isActive?: boolean;
 };
 
 type TButtonLinkComponentProps = {
   component?: React.ComponentType<IButtonProps>;
 };
 
-type TButtonHandlersProps = {
+type TButtonWithProps = {
+  isActive: boolean;
+};
+
+type TButtonStateProps = {
+  currentPath: string | null;
+};
+
+type TButtonDispatchProps = {
   navigate: () => void;
 };
 
 type TButtonWithoutOnClick = Omit<IButtonProps, IGeneralButton>;
 
-type TProps = TButtonLinkComponentProps & TButtonHandlersProps & TButtonWithoutOnClick;
+type TProps = TButtonLinkComponentProps & TButtonDispatchProps & TButtonWithoutOnClick;
 
-const LinkButtonComponent: React.SFC<TProps> = ({
+const ButtonLinkLayout: React.SFC<TProps> = ({
   navigate,
   children,
+  isActive,
   component: Component = Button,
   ...rest
 }) => (
-  <Component {...rest} onClick={navigate}>
+  <Component {...rest} onClick={navigate} isActive={isActive}>
     {children}
   </Component>
 );
 
-export const ButtonLink = compose<
+const ButtonLink = compose<
   TProps,
   TButtonLinkToProps & TButtonLinkComponentProps & TButtonWithoutOnClick
 >(
   setDisplayName("ButtonLink"),
-  withRouter,
-  withHandlers<RouterProps & TButtonLinkToProps, TButtonHandlersProps>({
-    navigate: ({ history, to, target }) => () => {
-      if (target && to) {
-        return window.open(typeof to === "string" ? to : "", target);
-      }
-      return history.push(to as any);
-    },
+  appConnect<TButtonStateProps, TButtonDispatchProps, TButtonLinkToProps>({
+    stateToProps: state => ({
+      currentPath: state.router.location && state.router.location.pathname,
+    }),
+    dispatchToProps: (dispatch, { target, to }) => ({
+      navigate: () => {
+        if (target && to) {
+          return window.open(typeof to === "string" ? to : createPath(to), target);
+        }
+
+        return dispatch(routingActions.goTo(to));
+      },
+    }),
   }),
-  mapProps<RouterProps & TButtonLinkToProps, TProps>(
-    // Remove unneeded props as they are passed through to underlying component
-    omit(["history", "to", "staticContext", "location", "match"]),
+  mapProps<TButtonWithProps, TButtonStateProps & TButtonLinkToProps>(
+    ({ currentPath, to, isActive, ...rest }) => {
+      const path = typeof to === "string" ? to : to.pathname!;
+
+      return {
+        isActive:
+          // allow to overwrite active state with custom logic
+          isActive === undefined
+            ? !!currentPath &&
+              !!matchPath(path, {
+                path: currentPath,
+                exact: true,
+              })
+            : isActive,
+        ...rest,
+      };
+    },
   ),
-)(LinkButtonComponent);
+)(ButtonLinkLayout);
+
+export { ButtonLink, ButtonLinkLayout };

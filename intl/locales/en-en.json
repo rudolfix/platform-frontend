@@ -258,6 +258,8 @@
   "eto.overview.funds-distribution.table.value-eur": "Value EUR",
   "eto.overview.permission-modal.confirm-pledge": "Confirm your commitment",
   "eto.overview.permission-modal.confirm-pledge-description": "Please use your wallet to confirm your whitelist commitment.",
+  "eto.overview.permission-modal.confirm-pledge-description-removal": "Please use your wallet to delete your whitelist commitment.",
+  "eto.overview.permission-modal.confirm-pledge-removal": "Delete my commitment",
   "eto.overview.raised-amount.raised-over-time": "Amount raised over time",
   "eto.overview.raised-amount.total": "Total",
   "eto.overview.raised-amount.transaction-time.first": "First transaction recorded",

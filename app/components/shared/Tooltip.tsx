@@ -11,20 +11,30 @@ import * as styles from "./Tooltip.module.scss";
 interface IProps {
   content: TTranslatedString;
   isOpen?: boolean;
+  alignLeft?: boolean;
 }
 
 let tooltipCount = 0;
 
-export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({ content, className, isOpen }) => {
+export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({
+  content,
+  className,
+  isOpen,
+  alignLeft,
+}) => {
   const tooltipId = `tooltip-${tooltipCount++}`;
   return (
-    <div className={cn(className, styles.tooltipWrapper)} onClick={e => e.preventDefault()}>
+    <span className={cn(className, styles.tooltipWrapper)} onClick={e => e.preventDefault()}>
       <span className={styles.tooltip} id={tooltipId}>
         <InlineIcon svgIcon={icon} />
       </span>
-      <CustomTooltip isOpen={isOpen} target={tooltipId}>
+      <CustomTooltip
+        isOpen={isOpen}
+        target={tooltipId}
+        className={cn(alignLeft && styles.alignLeft)}
+      >
         {content}
       </CustomTooltip>
-    </div>
+    </span>
   );
 };

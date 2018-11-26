@@ -8,7 +8,7 @@ describe("Wallet backup e2e recovery phrase", () => {
   });
 
   it("should raise an error that user is already used", () => {
-    registerWithLightWalletETO("0xE6Ad2@neufund.org", "strongpassword");
+    registerWithLightWalletETO("0xE6Ad2@neufund.org", "strongpassword", false);
 
     assertErrorModal();
   });

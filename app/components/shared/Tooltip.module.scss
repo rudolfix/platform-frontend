@@ -25,3 +25,8 @@ $icon-size: 18px;
     width: px-to-rem($icon-size);
   }
 }
+
+// sass-lint:disable force-element-nesting
+:global(.tooltip).align-left>:global(.tooltip-inner) {
+  text-align: left;
+}

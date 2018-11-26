@@ -8,6 +8,7 @@ import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { FormFieldColorful } from "../../shared/forms/form-field/FormFieldColorful";
 import { Panel } from "../../shared/Panel";
+import { Tooltip } from "../../shared/Tooltip";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./CheckYourICBMWalletWidget.module.scss";
@@ -44,10 +45,17 @@ class FormContent extends React.Component {
   }
 }
 
-const CheckYourICBMWalletWidgetComponent: React.SFC<IDispatchProps> = ({ loadICBMWallet }) => {
+export const CheckYourICBMWalletWidgetComponent: React.SFC<IDispatchProps> = ({
+  loadICBMWallet,
+}) => {
   return (
     <Panel
-      headerText={<FormattedMessage id="check-your-icbm-wallet-widget.header" />}
+      headerText={
+        <>
+          <FormattedMessage id="check-your-icbm-wallet-widget.header" />
+          <Tooltip content={<FormattedMessage id="icbm-wallet.tooltip" />} alignLeft={true} />
+        </>
+      }
       className="h-100"
     >
       <p>

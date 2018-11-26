@@ -11,6 +11,7 @@ Pre-login user for faster tests
 const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
 const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
 const JWT_KEY = "NF_JWT";
+const CURRENT_AGREEMENT = "QmZP5jN7W7oG7Kh4HsYPNtJ6naGTC3PHGx7vUgbTTGU7kN";
 
 export const createAndLoginNewUser = (
   params: {
@@ -56,6 +57,8 @@ export const createAndLoginNewUser = (
 
     // mark backup codes verified
     await markBackupCodesVerified(jwt);
+    // set correct agreement
+    await setCorrectAgreement(jwt);
 
     if (params.clearPendingTransactions) {
       await clearPendingTransactions(jwt, address);
@@ -120,6 +123,7 @@ export const createUser = (
   if (kyc) {
     path += `&kyc=${kyc}`;
   }
+
   return fetch(path, {
     method: "POST",
   });
@@ -145,7 +149,7 @@ export const getJWT = async (
     address,
     salt: "4abc08069f8c6d26becd80fe96fbeaf4d17b84cdbe7071a8197ab5370bb85876",
     signer_type: "eth_sign",
-    permissions: [],
+    permissions: ["sign-tos"],
   };
   const ch_response = await fetch(CHALLENGE_PATH, {
     headers,
@@ -181,6 +185,7 @@ export const getJWT = async (
 };
 
 const USER_PATH = "/api/user/user/me";
+const USER_TOS_PATH = USER_PATH + "/tos";
 
 export const markBackupCodesVerified = async (jwt: string) => {
   const headers = {
@@ -198,6 +203,21 @@ export const markBackupCodesVerified = async (jwt: string) => {
     headers,
     method: "PUT",
     body: JSON.stringify(userJson),
+  });
+};
+
+export const setCorrectAgreement = async (jwt: string) => {
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `Bearer ${jwt}`,
+  };
+
+  await fetch(USER_TOS_PATH, {
+    headers,
+    method: "PUT",
+    body: JSON.stringify({
+      latest_accepted_tos_ipfs: CURRENT_AGREEMENT,
+    }),
   });
 };
 

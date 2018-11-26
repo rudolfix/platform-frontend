@@ -5,6 +5,7 @@ import { DeepReadonly } from "../../types";
 export interface IAuthState {
   user?: IUser;
   jwt?: string;
+  currentAgreementHash?: string;
 }
 
 const authInitialState: IAuthState = {};
@@ -23,6 +24,11 @@ export const authReducer: AppReducer<IAuthState> = (
       return {
         ...state,
         jwt: action.payload.jwt,
+      };
+    case "SET_CURRENT_AGREEMENT_HASH":
+      return {
+        ...state,
+        currentAgreementHash: action.payload.currentAgreementHash,
       };
     //Log out is done on whole state instead of just AUTH reducer
   }

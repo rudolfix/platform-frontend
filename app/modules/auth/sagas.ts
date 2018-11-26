@@ -290,7 +290,7 @@ function* handleDownloadCurrentAgreement({
     actions.immutableStorage.downloadImmutableFile(
       {
         ipfsHash: currentAgreementHash,
-        mimeType: "application/pdf",
+        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         asPdf: true,
       },
       fileName,

@@ -117,11 +117,15 @@ export const typeEmailPassword = (email: string, password: string) => {
   cy.get(tid("wallet-selector-register-button")).awaitedClick();
 };
 
-export const registerWithLightWalletETO = (email: string, password: string) => {
+export const registerWithLightWalletETO = (
+  email: string,
+  password: string,
+  acceptTos: boolean = true,
+) => {
   cy.visit("eto/register/light");
 
   typeEmailPassword(email, password);
-  acceptTOS();
+  if (acceptTos) acceptTOS();
 };
 
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {

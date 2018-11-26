@@ -8,10 +8,6 @@ const lorem =
 
 storiesOf("Basic UI/Tooltip", module).add("default", () => (
   <div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <Tooltip content={lorem} />
+    <Tooltip content={lorem} isOpen={true} />
   </div>
 ));

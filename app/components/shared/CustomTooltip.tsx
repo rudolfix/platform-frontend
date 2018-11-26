@@ -30,17 +30,16 @@ export class CustomTooltip extends React.Component<TooltipProps & IProps> {
   render(): React.ReactChild {
     const { target, className, isOpen, toggle, children, ...props } = this.props;
     return (
-      <>
-        <Tooltip
-          className={styles.tooltip}
-          target={target}
-          isOpen={this.state.tooltipOpen}
-          toggle={toggle || this.toggle}
-          {...props}
-        >
-          {children}
-        </Tooltip>
-      </>
+      <Tooltip
+        className={styles.tooltip}
+        target={target}
+        autohide={false}
+        isOpen={this.state.tooltipOpen}
+        toggle={toggle || this.toggle}
+        {...props}
+      >
+        {children}
+      </Tooltip>
     );
   }
 }

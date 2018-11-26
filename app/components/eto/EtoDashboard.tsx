@@ -301,7 +301,7 @@ export const EtoDashboard = compose<React.SFC>(
       isEmailVerified: selectIsUserEmailVerified(s.auth),
       isLightWallet: selectIsLightWallet(s.web3),
       verifiedEmail: selectVerifiedUserEmail(s.auth),
-      backupCodesVerified: selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
       requestStatus: selectKycRequestStatus(s.kyc),
       etoState: selectIssuerEtoState(s),

@@ -91,7 +91,7 @@ export const BackupSeedWidgetComponentWithIntl = injectIntlHelpers<
 export const BackupSeedWidget = compose<React.SFC<IOwnProps>>(
   appConnect<IStateProps & IDispatchProps, IOwnProps>({
     stateToProps: s => ({
-      backupCodesVerified: selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s),
     }),
   }),
 )(BackupSeedWidgetComponentWithIntl);

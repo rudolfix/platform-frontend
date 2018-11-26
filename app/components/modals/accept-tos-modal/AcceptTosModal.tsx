@@ -3,11 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../../modules/actions";
+import { selectIsLatestAgreementAccepted } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-
-import { ModalComponentBody } from "../ModalComponentBody";
-
 import { Button, EButtonLayout } from "../../shared/buttons";
+import { ModalComponentBody } from "../ModalComponentBody";
 
 interface IStateProps {
   isOpen: boolean;
@@ -36,7 +35,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
 
   render(): React.ReactNode {
     return (
-      <div className="text-center">
+      <section className="text-center">
         <h1>
           <FormattedMessage id="settings.modal.accept-tos.title" />
         </h1>
@@ -62,7 +61,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
             <FormattedMessage id="settings.modal.accept-tos.accept-button" />
           </Button>
         </div>
-      </div>
+      </section>
     );
   }
 }
@@ -77,8 +76,7 @@ const AcceptTosModalComponent: React.SFC<IStateProps & IDispatchProps> = props =
 
 export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
-    isOpen: !!(s.auth.user && s.auth.user.latestAcceptedTosIpfs !== s.auth.currentAgreementHash),
-    hasEverAccepted: !!(s.auth.user && s.auth.user.latestAcceptedTosIpfs),
+    isOpen: selectIsLatestAgreementAccepted(s),
   }),
   dispatchToProps: dispatch => ({
     onDownloadTos: () => dispatch(actions.auth.downloadCurrentAgreement()),

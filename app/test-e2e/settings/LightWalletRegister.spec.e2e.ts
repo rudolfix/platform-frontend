@@ -68,7 +68,7 @@ describe("Light wallet login / register", () => {
     });
   });
 
-  it.only("should return an error when logging with same email", () => {
+  it("should return an error when logging with same email", () => {
     const email = convertToUniqueEmail("dave@neufund.org");
     const password = "strongpassword";
 

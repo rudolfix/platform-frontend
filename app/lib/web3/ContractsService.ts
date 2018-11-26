@@ -102,7 +102,11 @@ export class ContractsService {
  * In dev mode it will validate contract code to ease web3 development pains. In prod it will assume that address is correct, saving some network calls.
  */
 async function create<T>(ContractCls: IContractCls<T>, web3: any, address: string): Promise<T> {
-  return new ContractCls(web3, address);
+  if (process.env.NODE_ENV === "production") {
+    return new ContractCls(web3, address);
+  } else {
+    return await ContractCls.createAndValidate(web3, address);
+  }
 }
 
 // TODO: Move to TypeChain

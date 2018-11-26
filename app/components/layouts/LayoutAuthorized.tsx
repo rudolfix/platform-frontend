@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
+import { AcceptTosModal } from "../modals/accept-tos-modal/AcceptTosModal";
 import { DepositEthModal } from "../modals/DepositEthModal";
 import { IcbmWalletBalanceModal } from "../modals/icbm-wallet-balance-modal/IcbmWalletBalanceModal";
 import { BankTransferFlowModal } from "../modals/tx-sender/investment-flow/BankTransferFlow";
@@ -10,7 +11,6 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 
-import { AcceptTosModal } from "../modals/accept-tos-modal/AcceptTosModal";
 import * as styles from "./LayoutAuthorized.module.scss";
 import * as sharedStyles from "./LayoutShared.module.scss";
 

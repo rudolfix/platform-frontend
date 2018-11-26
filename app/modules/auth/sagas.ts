@@ -2,6 +2,7 @@ import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
 import { externalRoutes } from "../../components/externalRoutes";
+import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
@@ -25,7 +26,7 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
-import { selectVerifiedUserEmail } from "./selectors";
+import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -196,7 +197,7 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
     const probableUserType: EUserType = yield select((s: IAppState) => selectUrlUserType(s.router));
     yield effects.put(actions.walletSelector.messageSigning());
 
-    yield neuCall(obtainJWT);
+    yield neuCall(obtainJWT, [SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
     // tslint:disable-next-line
     walletStorage.set(web3Manager.personalWallet!.getMetadata());
@@ -252,6 +253,49 @@ function* handleSignInUser({
       );
     }
   }
+}
+
+function* handleAcceptCurrentAgreement({
+  apiUserService,
+  logger,
+  notificationCenter,
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
+}: TGlobalDependencies): Iterator<any> {
+  const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
+  yield neuCall(
+    ensurePermissionsArePresent,
+    [SIGN_TOS],
+    formatIntlMessage("settings.modal.accept-tos.permission.title"),
+    formatIntlMessage("settings.modal.accept-tos.permission.text"),
+  );
+  try {
+    const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
+    yield effects.put(actions.auth.setUser(user));
+  } catch (e) {
+    notificationCenter.error("There was a problem with accepting Terms and Conditions");
+    logger.error("Could not accept Terms and Conditions");
+  }
+}
+
+function* handleDownloadCurrentAgreement({
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
+}: TGlobalDependencies): Iterator<any> {
+  const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
+  const fileName = formatIntlMessage("settings.modal.accept-tos.filename");
+  yield effects.put(
+    actions.immutableStorage.downloadImmutableFile(
+      {
+        ipfsHash: currentAgreementHash,
+        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        asPdf: true,
+      },
+      fileName,
+    ),
+  );
 }
 
 function* verifyUserEmail(): Iterator<any> {
@@ -333,9 +377,26 @@ export function* ensurePermissionsArePresent(
   }
 }
 
+/**
+ * Handle ToS / agreement
+ */
+export function* loadCurrentAgreement({
+  contractsService,
+  logger,
+}: TGlobalDependencies): Iterator<any> {
+  logger.info("Loading current agreement hash");
+
+  const result = yield contractsService.universeContract.currentAgreement();
+  let currentAgreementHash = result[2] as string;
+  currentAgreementHash = currentAgreementHash.replace("ipfs:", "");
+  yield effects.put(actions.auth.setCurrentAgreementHash(currentAgreementHash));
+}
+
 export const authSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
   yield fork(neuTakeEvery, "AUTH_SET_USER", setUser);
   yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
+  yield fork(neuTakeEvery, "ACCEPT_CURRENT_AGREEMENT", handleAcceptCurrentAgreement);
+  yield fork(neuTakeEvery, "DOWNLOAD_CURRENT_AGREEMENT", handleDownloadCurrentAgreement);
 };

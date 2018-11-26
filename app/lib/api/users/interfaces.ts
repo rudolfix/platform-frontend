@@ -10,6 +10,7 @@ export enum EUserType {
 export interface IUser {
   userId: string;
   backupCodesVerified?: boolean;
+  latestAcceptedTosIpfs?: string;
   language?: string;
   unverifiedEmail?: string;
   verifiedEmail?: string;
@@ -40,6 +41,7 @@ export const UserValidator = Yup.object()
   .shape({
     userId: Yup.string().required(),
     backupCodesVerified: Yup.boolean(),
+    latestAcceptedTosIpfs: Yup.string(),
     language: Yup.string(),
     unverifiedEmail: Yup.string(),
     verifiedEmail: Yup.string(),

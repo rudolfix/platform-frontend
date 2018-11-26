@@ -23,8 +23,8 @@ const TokenSymbolWidget: React.SFC<ITokenSymbolWidgetProps> = ({
         <ResponsiveImage {...tokenImage} className={styles.tokenImage} />
       </div>
       <div>
-        <h3 className={styles.tokenName}>{brandName}</h3>
-        <h4 className={styles.tokenSymbol}>
+        <h3 className={styles.brandName}>{brandName}</h3>
+        <h4 className={styles.tokenName}>
           {tokenName}
           {tokenSymbol && ` (${tokenSymbol})`}
         </h4>

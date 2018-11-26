@@ -22,7 +22,7 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
   return (
     !selectIsUserEmailVerified(state.auth) ||
     (!selectBackupCodesVerified(state) && selectWalletType(state.web3) === EWalletType.LIGHT) ||
-    !includes(["Outsourced", "Pending", "Accepted"], selectKycRequestStatus(state.kyc))
+    !includes(["Outsourced", "Pending", "Accepted"], selectKycRequestStatus(state))
   );
 };
 

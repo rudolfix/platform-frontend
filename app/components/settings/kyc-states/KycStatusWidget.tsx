@@ -14,7 +14,6 @@ import {
 } from "../../../modules/auth/selectors";
 import {
   selectExternalKycUrl,
-  selectIsClaimsVerified,
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
   selectWidgetError,
@@ -44,7 +43,6 @@ interface IStateProps {
   error?: string;
   externalKycUrl?: string;
   userType: EUserType;
-  isClaimVerified: boolean;
 }
 
 interface IOwnProps {
@@ -124,7 +122,6 @@ const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.R
 
 const getStatus = (
   selectIsUserEmailVerified: boolean,
-  isClaimVerified: boolean,
   requestStatus?: TRequestStatus,
   requestOutsourcedStatus?: TRequestOutsourcedStatus,
 ): React.ReactNode => {
@@ -140,16 +137,11 @@ const getStatus = (
     return outsourcedStatusTextMap[requestOutsourcedStatus];
   }
 
-  if (requestStatus === "Accepted" && !isClaimVerified) {
-    return statusTextMap["Pending"];
-  }
-
   return statusTextMap[requestStatus];
 };
 
 const ActionButton = ({
   requestStatus,
-  isClaimVerified,
   requestOutsourcedStatus,
   onGoToKycHome,
   isUserEmailVerified,
@@ -158,7 +150,7 @@ const ActionButton = ({
   onGoToDashboard,
   backupCodesVerified,
 }: IKycStatusWidgetProps) => {
-  if (requestStatus === "Accepted" && isClaimVerified && userType === EUserType.INVESTOR) {
+  if (requestStatus === "Accepted" && userType === EUserType.INVESTOR) {
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
@@ -227,7 +219,6 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
     isLoading,
     error,
     step,
-    isClaimVerified,
   } = props;
 
   return (
@@ -236,7 +227,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
       headerText={<FormattedMessage id="settings.kyc-widget.header" values={{ step }} />}
       rightComponent={
         !isLoading &&
-        (requestStatus === "Accepted" && isClaimVerified ? (
+        (requestStatus === "Accepted" ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
         ) : (
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
@@ -260,12 +251,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
       ) : (
         <div className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}>
           <p className={cn(styles.text, "pt-2")}>
-            {getStatus(
-              isUserEmailVerified,
-              isClaimVerified,
-              requestStatus,
-              requestOutsourcedStatus,
-            )}
+            {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <ActionButton {...props} />
@@ -282,11 +268,10 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
       isUserEmailVerified: selectIsUserEmailVerified(state.auth),
       userType: selectUserType(state.auth)!,
       backupCodesVerified: selectBackupCodesVerified(state),
-      requestStatus: selectKycRequestStatus(state.kyc),
+      requestStatus: selectKycRequestStatus(state),
       requestOutsourcedStatus: selectKycRequestOutsourcedStatus(state.kyc),
       externalKycUrl: selectExternalKycUrl(state.kyc),
       isLoading: selectWidgetLoading(state.kyc),
-      isClaimVerified: selectIsClaimsVerified(state),
       error: selectWidgetError(state.kyc),
     }),
     dispatchToProps: dispatch => ({

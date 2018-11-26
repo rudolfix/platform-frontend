@@ -202,7 +202,7 @@ export const Kyc = compose<React.SFC>(
     stateToProps: state => ({
       requestLoading:
         state.kyc.individualRequestStateLoading || state.kyc.businessRequestStateLoading,
-      requestStatus: selectKycRequestStatus(state.kyc),
+      requestStatus: selectKycRequestStatus(state),
       redirectUrl: selectKycOutSourcedURL(state.kyc),
       pendingRequestType: selectPendingKycRequestType(state.kyc),
       userType: selectUserType(state.auth)!,

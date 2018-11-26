@@ -6,5 +6,5 @@ export const SelectIsVerificationFullyDone = (s: IAppState) =>
   !!(
     selectIsUserEmailVerified(s.auth) &&
     selectBackupCodesVerified(s) &&
-    selectKycRequestStatus(s.kyc) === "Accepted"
+    selectKycRequestStatus(s) === "Accepted"
   );

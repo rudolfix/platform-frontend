@@ -34,7 +34,7 @@ export const selectDoesEmailExist = (state: IAuthState): boolean =>
   selectIsThereUnverifiedEmail(state) || selectIsUserEmailVerified(state);
 
 export const selectIsUserVerified = (state: IAppState): boolean =>
-  selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state.kyc) === "Accepted";
+  selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state) === "Accepted";
 
 export const selectIsInvestor = (state: IAppState): boolean =>
   selectUserType(state.auth) === EUserType.INVESTOR;

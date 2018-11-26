@@ -103,7 +103,7 @@ export const Settings = compose<React.SFC>(
     stateToProps: s => ({
       isLightWallet: selectIsLightWallet(s.web3),
       userType: selectUserType(s.auth),
-      kycRequestStatus: selectKycRequestStatus(s.kyc),
+      kycRequestStatus: selectKycRequestStatus(s),
       kycRequestType: selectKycRequestType(s.kyc),
       isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
       isLockedWalletConnected: selectLockedWalletConnected(s),

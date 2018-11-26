@@ -220,6 +220,12 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
   }
 }
 
+enum SignInUserErrorMessages {
+  MESSAGE_SIGNING_REJECTED = "messageSigningRejected",
+  MESSAGE_SIGNING_TIMEOUT = "messageSigningTimeout",
+  SERVER_CONNECTION_FAILURE = "serverConnectionFailure"
+}
+
 function* handleSignInUser({
   intlWrapper: {
     intl: { formatIntlMessage, formatHTMLMessage },

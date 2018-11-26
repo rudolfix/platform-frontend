@@ -48,6 +48,8 @@ storiesOf("buttons/default", module)
     <>
       <Button theme="white">primary</Button>
       <br />
+      <Button theme="neon">neon</Button>
+      <br />
       <Button theme="white" disabled>
         primary disabled
       </Button>
@@ -89,6 +91,8 @@ storiesOf("buttons/default", module)
       <Button size={ButtonSize.NORMAL}>normal button</Button>
       <br />
       <Button size={ButtonSize.SMALL}>small button</Button>
+      <br />
+      <Button size={ButtonSize.HUGE}>huge button</Button>
       <br />
     </>
   ))

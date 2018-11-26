@@ -19,9 +19,9 @@ import * as knownInterfaces from "../contracts/knownInterfaces.json";
 
 @injectable()
 export class ContractsService {
-  private universeContract!: Universe;
   private etoCommitmentCache: { [etoId: string]: ETOCommitment } = {};
 
+  public universeContract!: Universe;
   public neumark!: Neumark;
   public euroToken!: EuroToken;
   public etherToken!: EtherToken;
@@ -84,7 +84,6 @@ export class ContractsService {
     this.platformTerms = await create(PlatformTerms, web3, platformTermsAddress);
     this.euroToken = await create(EuroToken, web3, euroTokenAddress);
     this.etherToken = await create(EtherToken, web3, etherTokenAddress);
-
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");
   }
 

@@ -54,7 +54,11 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = 
           <Row>
             <Col tag="section" md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
               <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>
-                <FormattedMessage id="wallet-selector.tabs.title" />
+                {isLoginRoute ? (
+                  <FormattedMessage id="wallet-selector.tabs.login.title" />
+                ) : (
+                  <FormattedMessage id="wallet-selector.tabs.register.title" />
+                )}
               </h1>
               <div className={styles.walletChooserButtons}>
                 {(userType === "investor" ||

@@ -1,7 +1,7 @@
 @import "../neufund-theme";
 
 :not(.pure) {
-  ul {
+  & > ul {
     list-style: none;
     padding: 0;
 

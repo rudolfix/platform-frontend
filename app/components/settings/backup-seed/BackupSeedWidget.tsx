@@ -6,7 +6,6 @@ import { compose } from "redux";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { profileRoutes } from "../routes";
@@ -23,14 +22,12 @@ interface IStateProps {
 interface IOwnProps {
   step: number;
 }
-interface IDispatchProps {}
 
-export const BackupSeedWidgetComponent: React.SFC<
-  IStateProps & IDispatchProps & IIntlProps & IOwnProps
-> = ({ intl: { formatIntlMessage }, backupCodesVerified, step }) => {
+const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupCodesVerified }) => {
   return (
     <Panel
-      headerText={formatIntlMessage("settings.backup-seed-widget.header", { step })}
+      className="h-100"
+      headerText={<FormattedMessage id="settings.backup-seed-widget.header" />}
       rightComponent={
         backupCodesVerified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
@@ -84,14 +81,12 @@ export const BackupSeedWidgetComponent: React.SFC<
   );
 };
 
-export const BackupSeedWidgetComponentWithIntl = injectIntlHelpers<
-  IStateProps & IDispatchProps & IOwnProps
->(BackupSeedWidgetComponent);
-
-export const BackupSeedWidget = compose<React.SFC<IOwnProps>>(
-  appConnect<IStateProps & IDispatchProps, IOwnProps>({
+const BackupSeedWidget = compose<React.SFC<IOwnProps>>(
+  appConnect<IStateProps, IOwnProps>({
     stateToProps: s => ({
       backupCodesVerified: selectBackupCodesVerified(s.auth),
     }),
   }),
-)(BackupSeedWidgetComponentWithIntl);
+)(BackupSeedWidgetComponent);
+
+export { BackupSeedWidget, BackupSeedWidgetComponent };

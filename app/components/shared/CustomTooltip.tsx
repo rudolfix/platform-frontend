@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { Tooltip, TooltipProps } from "reactstrap";
 
@@ -30,17 +31,16 @@ export class CustomTooltip extends React.Component<TooltipProps & IProps> {
   render(): React.ReactChild {
     const { target, className, isOpen, toggle, children, ...props } = this.props;
     return (
-      <>
-        <Tooltip
-          className={styles.tooltip}
-          target={target}
-          isOpen={this.state.tooltipOpen}
-          toggle={toggle || this.toggle}
-          {...props}
-        >
-          {children}
-        </Tooltip>
-      </>
+      <Tooltip
+        className={cn(styles.tooltip, className)}
+        target={target}
+        autohide={false}
+        isOpen={this.state.tooltipOpen}
+        toggle={toggle || this.toggle}
+        {...props}
+      >
+        {children}
+      </Tooltip>
     );
   }
 }

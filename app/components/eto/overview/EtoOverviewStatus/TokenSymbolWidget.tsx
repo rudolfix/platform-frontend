@@ -6,14 +6,16 @@ import * as styles from "./TokenSymbolWidget.module.scss";
 
 export interface ITokenSymbolWidgetProps {
   tokenImage: IResponsiveImage;
-  tokenName: string | undefined;
-  tokenSymbol: string | undefined;
+  brandName?: string;
+  tokenName?: string;
+  tokenSymbol?: string;
 }
 
 const TokenSymbolWidget: React.SFC<ITokenSymbolWidgetProps> = ({
   tokenSymbol,
   tokenName,
   tokenImage,
+  brandName,
 }) => {
   return (
     <div className={styles.tokenSymbolWidget}>
@@ -21,8 +23,11 @@ const TokenSymbolWidget: React.SFC<ITokenSymbolWidgetProps> = ({
         <ResponsiveImage {...tokenImage} className={styles.tokenImage} />
       </div>
       <div>
-        <h3 className={styles.tokenName}>{tokenName}</h3>
-        <h4 className={styles.tokenSymbol}>{tokenSymbol}</h4>
+        <h3 className={styles.brandName}>{brandName}</h3>
+        <h4 className={styles.tokenName}>
+          {tokenName}
+          {tokenSymbol && ` (${tokenSymbol})`}
+        </h4>
       </div>
     </div>
   );

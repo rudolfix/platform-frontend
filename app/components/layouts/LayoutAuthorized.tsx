@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
+import { AcceptTosModal } from "../modals/accept-tos-modal/AcceptTosModal";
 import { DepositEthModal } from "../modals/DepositEthModal";
 import { IcbmWalletBalanceModal } from "../modals/icbm-wallet-balance-modal/IcbmWalletBalanceModal";
 import { BankTransferFlowModal } from "../modals/tx-sender/investment-flow/BankTransferFlow";
@@ -30,7 +31,7 @@ export const LayoutAuthorized: React.SFC = ({ children }) => (
     </div>
 
     <Footer />
-
+    <AcceptTosModal />
     <DepositEthModal />
     <TxSenderModal />
     <IcbmWalletBalanceModal />

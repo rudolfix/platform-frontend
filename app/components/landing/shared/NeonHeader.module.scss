@@ -1,0 +1,19 @@
+.neon-header-wrapper {
+  position: relative;
+}
+
+.neon-header {
+  @include headline-huge;
+
+  color: $neu-charcoal-grey;
+  padding: px-to-rem(12px) px-to-rem(32px);
+  text-transform: uppercase;
+  position: relative;
+}
+
+.neon {
+  width: 330px;
+  height: 33px;
+  background-color: $neu-neon-yellow;
+  position: absolute;
+}

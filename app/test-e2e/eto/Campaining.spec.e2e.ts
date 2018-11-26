@@ -14,7 +14,7 @@ describe("Eto campaining state", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
     cy.get(tid("eto.public-view")).should("exist");
 
-    cy.get(tid("logged-out-campaigning-register")).click();
+    cy.get(tid("logged-out-campaigning-register")).awaitedClick();
 
     assertRegister();
   });
@@ -44,7 +44,7 @@ describe("Eto campaining state", () => {
     }).then(() => {
       cy.visit(appRoutes.dashboard);
 
-      cy.get(tid("eto-flow-start-bookbuilding")).click();
+      cy.get(tid("eto-flow-start-bookbuilding")).awaitedClick();
 
       confirmAccessModal();
 

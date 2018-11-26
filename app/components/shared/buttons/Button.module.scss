@@ -93,6 +93,10 @@ $_active-color: lighten($_hover-color, 20%);
       }
     }
 
+    &:global(.huge) {
+      border: px-to-rem(1px) solid currentColor;
+    }
+
     &:global(.block) {
       .content {
         min-width: auto;
@@ -167,6 +171,17 @@ $_active-color: lighten($_hover-color, 20%);
     }
   }
 
+  &:global(.huge) {
+    @include font-headline-medium;
+
+    min-width: px-to-rem(216px);
+
+    .content {
+      padding: px-to-rem(12px) px-to-rem(60px);
+      border: 0;
+    }
+  }
+
   // themes
   &-white {
     color: $neu-white-two;
@@ -186,6 +201,16 @@ $_active-color: lighten($_hover-color, 20%);
 
     :local(.content) {
       border-color: $color-brand;
+    }
+  }
+
+  &-neon {
+    background-color: $neu-neon-yellow;
+    color: $color-graphite;
+    border: px-to-rem(1px) solid $neu-neon-yellow;
+
+    :local(.content) {
+      border-color: $neu-neon-yellow;
     }
   }
 

@@ -1,11 +1,13 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
 import { etoCompaniesCards } from "../../data/etoCompanies";
 import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
 import { EtoCard } from "../shared/EtoCard";
 import { Features } from "./parts/Features";
+import { LandingFeatured } from "./parts/LandingFeatured";
 import { LandingHeader } from "./parts/LandingHeader";
 import { Testimonials } from "./parts/Testimonials";
 
@@ -14,15 +16,21 @@ import * as styles from "./Landing.module.scss";
 export const Landing: React.SFC = () => (
   <LayoutUnauthorized>
     <div className={cn(styles.landingWrapper, "pure")} data-test-id="landing-page">
-      <LandingHeader />
-      <Features />
+      {process.env.NF_FEATURED_ETO_PREVIEW_CODE ? (
+        <LandingFeatured />
+      ) : (
+        <>
+          <LandingHeader />
+          <Features />
+        </>
+      )}
 
       <section className={styles.equityTokenOfferings}>
         <Container>
           <Row>
             <Col>
               <h2 className={styles.etoCardsHeader}>
-                Meet the first off-chain companies tokenizing their shares under German jurisdiction
+                <FormattedMessage id="platform.landing.meet-tokenizing-companies" />
               </h2>
             </Col>
           </Row>

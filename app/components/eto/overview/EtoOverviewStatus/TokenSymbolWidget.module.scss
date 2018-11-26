@@ -16,13 +16,13 @@
   overflow: hidden;
 }
 
-.token-name {
+.brand-name {
   @include font-headline-medium;
 
   color: $color-graphite-light;
 }
 
-.token-symbol {
+.token-name {
   @include font-label;
 
   color: $color-graphite-light;

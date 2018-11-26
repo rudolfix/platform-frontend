@@ -20,7 +20,9 @@ const eto = {
   equityTokensPerShare: 10,
   publicDiscountFraction: 0.2,
   whitelistDiscountFraction: 0.3,
-  company: {},
+  equityTokenName: "TokenName",
+  equityTokenSymbol: "TKN",
+  company: { brandName: "BrandName" },
   contract: {
     timedState: EETOStateOnChain.Whitelist,
     totalInvestment: { totalInvestors: new BigNumber("123"), totalTokensInt: new BigNumber("234") },

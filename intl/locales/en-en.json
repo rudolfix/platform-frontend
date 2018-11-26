@@ -715,6 +715,7 @@
   "shared-component.eto-form-progress-widget.edit": "Edit",
   "shared-component.eto-form-progress-widget.show": "Show",
   "shared-component.eto-overview-status.equity-token-price": "Equity Token Price",
+  "shared-component.eto-overview-status.included-discount-percentage": "incl. {percentage}% discount",
   "shared-component.eto-overview-status.investment-amount": "Investment amount",
   "shared-component.eto-overview-status.key-investment-terms": "Key investment terms",
   "shared-component.eto-overview-status.new-shares-generated": "New shares generated",

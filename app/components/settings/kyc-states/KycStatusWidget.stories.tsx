@@ -11,6 +11,7 @@ const commonProps = {
   error: undefined,
   step: 1,
   userType: EUserType.INVESTOR,
+  isClaimVerified: true,
   onGoToKycHome: () => {},
   onGoToDashboard: () => {},
 };

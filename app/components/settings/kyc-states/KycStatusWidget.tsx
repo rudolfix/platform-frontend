@@ -14,12 +14,12 @@ import {
 } from "../../../modules/auth/selectors";
 import {
   selectExternalKycUrl,
+  selectIsClaimsVerified,
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
   selectWidgetError,
   selectWidgetLoading,
 } from "../../../modules/kyc/selectors";
-import { selectIsLightWallet } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { UnionDictionary } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -44,6 +44,7 @@ interface IStateProps {
   error?: string;
   externalKycUrl?: string;
   userType: EUserType;
+  isClaimVerified: boolean;
 }
 
 interface IOwnProps {
@@ -123,6 +124,7 @@ const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.R
 
 const getStatus = (
   selectIsUserEmailVerified: boolean,
+  isClaimVerified: boolean,
   requestStatus?: TRequestStatus,
   requestOutsourcedStatus?: TRequestOutsourcedStatus,
 ): React.ReactNode => {
@@ -138,11 +140,16 @@ const getStatus = (
     return outsourcedStatusTextMap[requestOutsourcedStatus];
   }
 
+  if (requestStatus === "Accepted" && !isClaimVerified) {
+    return statusTextMap["Pending"];
+  }
+
   return statusTextMap[requestStatus];
 };
 
 const ActionButton = ({
   requestStatus,
+  isClaimVerified,
   requestOutsourcedStatus,
   onGoToKycHome,
   isUserEmailVerified,
@@ -151,7 +158,7 @@ const ActionButton = ({
   onGoToDashboard,
   backupCodesVerified,
 }: IKycStatusWidgetProps) => {
-  if (requestStatus === "Accepted" && userType === EUserType.INVESTOR) {
+  if (requestStatus === "Accepted" && isClaimVerified && userType === EUserType.INVESTOR) {
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
@@ -220,6 +227,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
     isLoading,
     error,
     step,
+    isClaimVerified,
   } = props;
 
   return (
@@ -228,7 +236,7 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
       headerText={<FormattedMessage id="settings.kyc-widget.header" values={{ step }} />}
       rightComponent={
         !isLoading &&
-        (requestStatus === "Accepted" ? (
+        (requestStatus === "Accepted" && isClaimVerified ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" />
         ) : (
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
@@ -252,7 +260,12 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
       ) : (
         <div className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}>
           <p className={cn(styles.text, "pt-2")}>
-            {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
+            {getStatus(
+              isUserEmailVerified,
+              isClaimVerified,
+              requestStatus,
+              requestOutsourcedStatus,
+            )}
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <ActionButton {...props} />
@@ -265,15 +278,16 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
 
 export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
-    stateToProps: s => ({
-      isUserEmailVerified: selectIsUserEmailVerified(s.auth),
-      userType: selectUserType(s.auth)!,
-      backupCodesVerified: selectBackupCodesVerified(s.auth) || !selectIsLightWallet(s.web3),
-      requestStatus: selectKycRequestStatus(s.kyc),
-      requestOutsourcedStatus: selectKycRequestOutsourcedStatus(s.kyc),
-      externalKycUrl: selectExternalKycUrl(s.kyc),
-      isLoading: selectWidgetLoading(s.kyc),
-      error: selectWidgetError(s.kyc),
+    stateToProps: state => ({
+      isUserEmailVerified: selectIsUserEmailVerified(state.auth),
+      userType: selectUserType(state.auth)!,
+      backupCodesVerified: selectBackupCodesVerified(state),
+      requestStatus: selectKycRequestStatus(state.kyc),
+      requestOutsourcedStatus: selectKycRequestOutsourcedStatus(state.kyc),
+      externalKycUrl: selectExternalKycUrl(state.kyc),
+      isLoading: selectWidgetLoading(state.kyc),
+      isClaimVerified: selectIsClaimsVerified(state),
+      error: selectWidgetError(state.kyc),
     }),
     dispatchToProps: dispatch => ({
       onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),

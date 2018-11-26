@@ -27,7 +27,6 @@ import { appRoutes } from "../../../appRoutes";
 import { ETOState } from "../../../shared/ETOState";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { NumberFormat } from "../../../shared/NumberFormat";
-import { Percentage } from "../../../shared/Percentage";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { CampaigningActivatedWidget } from "./CampaigningWidget";
@@ -216,6 +215,7 @@ const EtoOverviewStatusLayout: React.SFC<
                 target={previewCode ? "_blank" : ""}
               >
                 <TokenSymbolWidget
+                  brandName={eto.company.brandName}
                   tokenImage={{
                     alt: eto.equityTokenName || "",
                     srcSet: { "1x": eto.equityTokenImage || "" },
@@ -299,15 +299,21 @@ const EtoOverviewStatusLayout: React.SFC<
                   />
                   {showWhitelistDiscount && (
                     <>
-                      {" (-"}
-                      <Percentage>{eto.whitelistDiscountFraction!}</Percentage>
+                      {" ("}
+                      <FormattedMessage
+                        id="shared-component.eto-overview-status.included-discount-percentage"
+                        values={{ percentage: eto.whitelistDiscountFraction! * 100 }}
+                      />
                       {")"}
                     </>
                   )}
                   {showPublicDiscount && (
                     <>
-                      {" (-"}
-                      <Percentage>{eto.publicDiscountFraction!}</Percentage>
+                      {" ("}
+                      <FormattedMessage
+                        id="shared-component.eto-overview-status.included-discount-percentage"
+                        values={{ percentage: eto.publicDiscountFraction! * 100 }}
+                      />
                       {")"}
                     </>
                   )}

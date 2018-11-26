@@ -6,18 +6,34 @@ import {
   CampaigningFormState,
 } from "./CampaigningActivatedInvestorApprovedWidgetLayout";
 
-storiesOf("CampaigningActivatedInvestorApprovedWidgetLayout", module).add("default", () => (
-  <>
-    <CampaigningActivatedInvestorApprovedWidgetLayout
-      pledgedAmount={10}
-      consentToRevealEmail={true}
-      backNow={() => "back now"}
-      formState={CampaigningFormState.VIEW}
-      showMyEmail={() => {}}
-      changePledge={() => {}}
-      deletePledge={() => {}}
-      minPledge={2}
-      maxPledge={100}
-    />
-  </>
-));
+storiesOf("ETO/CampaigningActivatedInvestorApprovedWidgetLayout", module)
+  .add("default", () => (
+    <>
+      <CampaigningActivatedInvestorApprovedWidgetLayout
+        pledgedAmount={10}
+        consentToRevealEmail={true}
+        backNow={() => "back now"}
+        formState={CampaigningFormState.VIEW}
+        showMyEmail={() => {}}
+        changePledge={() => {}}
+        deletePledge={() => {}}
+        minPledge={2}
+        maxPledge={100}
+      />
+    </>
+  ))
+  .add("editing", () => (
+    <>
+      <CampaigningActivatedInvestorApprovedWidgetLayout
+        pledgedAmount={10}
+        consentToRevealEmail={true}
+        backNow={() => "back now"}
+        formState={CampaigningFormState.EDIT}
+        showMyEmail={() => {}}
+        changePledge={() => {}}
+        deletePledge={() => {}}
+        minPledge={2}
+        maxPledge={100}
+      />
+    </>
+  ));

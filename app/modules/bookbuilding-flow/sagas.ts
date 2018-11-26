@@ -54,9 +54,9 @@ export function* deleteMyPledge(
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      intlWrapper.intl.formatIntlMessage("eto.overview.permission-modal.confirm-pledge"),
+      intlWrapper.intl.formatIntlMessage("eto.overview.permission-modal.confirm-pledge-removal"),
       intlWrapper.intl.formatIntlMessage(
-        "eto.overview.permission-modal.confirm-pledge-description",
+        "eto.overview.permission-modal.confirm-pledge-description-removal",
       ),
     );
 

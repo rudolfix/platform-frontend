@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName, withProps } from "recompose";
 import { compose } from "redux";
 
@@ -16,8 +16,11 @@ import { onEnterAction } from "../../../../../utils/OnEnterAction";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money";
 import { CounterWidget } from "../index";
 import { Message } from "../Message";
-import { CampaigningActivatedInvestorWidget } from "./CampaigningActivatedInvestorWidget";
+import { CampaigningActivatedInvestorApprovedWidget } from "./CampaigningActivatedInvestorApprovedWidget";
 
+import { appRoutes } from "../../../../appRoutes";
+import { ButtonLink } from "../../../../shared/buttons";
+import { Tooltip } from "../../../../shared/Tooltip";
 import * as styles from "../EtoOverviewStatus.module.scss";
 
 export interface IExternalProps {
@@ -65,40 +68,74 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
 }) => {
   if (isActive && !isInvestorsLimitReached) {
     return (
-      <div className={styles.groupWrapper}>
-        <div className={styles.group}>
-          <span className={styles.label}>
-            <FormattedMessage id="shared-component.eto-overview.amount-backed" />
-          </span>
-          <span className={styles.value} data-test-id="eto-bookbuilding-amount-backed">
-            <Money
-              value={pledgedAmount}
-              currency="eur"
-              format={EMoneyFormat.FLOAT}
-              currencySymbol={ECurrencySymbol.SYMBOL}
-            />
-          </span>
+      <>
+        <div className={styles.groupWrapper}>
+          <div className={styles.group}>
+            <span className={styles.label}>
+              <FormattedMessage id="eto-overview.campaigning.whitelist-status" />
+            </span>
+            <span className={styles.value} data-test-id="eto-bookbuilding-amount-backed">
+              {pledge ? (
+                <FormattedMessage id="eto-overview.campaigning.whitelist-status.label-subscribed" />
+              ) : (
+                <>
+                  <FormattedMessage id="eto-overview.campaigning.whitelist-status.label-not-subscribed" />
+                  <Tooltip
+                    content={
+                      <FormattedHTMLMessage
+                        tagName="div"
+                        id="eto-overview.campaigning.whitelist-status.label-not-subscribed-description-text"
+                      />
+                    }
+                  />
+                </>
+              )}
+            </span>
+          </div>
+          <div className={styles.group}>
+            <span className={styles.label}>
+              <FormattedMessage id="shared-component.eto-overview.amount-backed" />
+            </span>
+            <span className={styles.value} data-test-id="eto-bookbuilding-amount-backed">
+              <Money
+                value={pledgedAmount}
+                currency="eur"
+                format={EMoneyFormat.FLOAT}
+                currencySymbol={ECurrencySymbol.SYMBOL}
+              />
+            </span>
+          </div>
+          <div className={styles.group}>
+            <span className={styles.label}>
+              <FormattedMessage id="shared-component.eto-overview.investors-backed" />
+            </span>
+            <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
+              {investorsCount !== null ? investorsLimit - investorsCount : investorsLimit} out of{" "}
+              {investorsLimit} slots remaining
+              {/* TODO: Move to translations once the format is stable */}
+            </span>
+          </div>
+          {isInvestor &&
+            isVerifiedInvestor && (
+              <CampaigningActivatedInvestorApprovedWidget
+                etoId={etoId}
+                minPledge={minPledge}
+                maxPledge={maxPledge}
+                pledge={pledge}
+              />
+            )}
         </div>
-        <div className={styles.group}>
-          <span className={styles.label}>
-            <FormattedMessage id="shared-component.eto-overview.investors-backed" />
-          </span>
-          <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
-            {investorsCount !== null ? investorsLimit - investorsCount : investorsLimit} out of{" "}
-            {investorsLimit} slots remaining
-          </span>
-          {/* TODO: Move to translations once the format is stable */}
-        </div>
-        {isInvestor && (
-          <CampaigningActivatedInvestorWidget
-            etoId={etoId}
-            minPledge={minPledge}
-            maxPledge={maxPledge}
-            pledge={pledge}
-            isVerifiedInvestor={isVerifiedInvestor}
-          />
-        )}
-      </div>
+        {isInvestor &&
+          !isVerifiedInvestor && (
+            <ButtonLink
+              className="mb-3"
+              to={appRoutes.profile}
+              data-test-id="eto-overview-settings-update-required-to-invest"
+            >
+              <FormattedMessage id="shared-component.eto-overview.settings-update-required" />
+            </ButtonLink>
+          )}
+      </>
     );
   }
 

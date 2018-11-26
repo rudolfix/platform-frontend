@@ -714,6 +714,7 @@
   "shared-component.eto-form-progress-widget.show": "Show",
   "shared-component.eto-overview-status.equity-token-price": "Equity Token Price",
   "shared-component.eto-overview-status.investment-amount": "Investment amount",
+  "shared-component.eto-overview-status.key-investment-terms": "Key investment terms",
   "shared-component.eto-overview-status.new-shares-generated": "New shares generated",
   "shared-component.eto-overview-status.pre-money-valuation": "Pre-money valuation",
   "shared-component.eto-overview.amount-backed": "Total whitelist commitment",

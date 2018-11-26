@@ -14,10 +14,10 @@ type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite";
 type TIconPosition = "icon-before" | "icon-after";
 
 export enum EButtonLayout {
-  PRIMARY = "primary",
-  SECONDARY = "secondary",
-  INLINE = "inline",
-  SIMPLE = "simple",
+  PRIMARY = styles.buttonPrimary,
+  SECONDARY = styles.buttonSecondary,
+  INLINE = styles.buttonInline,
+  SIMPLE = styles.buttonSimple,
 }
 
 export enum ButtonSize {
@@ -56,15 +56,9 @@ export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
   size?: ButtonSize;
   width?: ButtonWidth;
   isLoading?: boolean;
+  isActive?: boolean;
   textPosition?: ButtonTextPosition;
 }
-
-const buttonLayoutClassNames: Record<EButtonLayout, string> = {
-  [EButtonLayout.PRIMARY]: styles.buttonPrimary,
-  [EButtonLayout.SECONDARY]: styles.buttonSecondary,
-  [EButtonLayout.INLINE]: styles.buttonInline,
-  [EButtonLayout.SIMPLE]: styles.buttonSimple,
-};
 
 const buttonThemeClassNames: Record<TButtonTheme, string> = {
   dark: styles.buttonDark,
@@ -91,6 +85,7 @@ const Button: React.ComponentType<
       isLoading,
       type,
       textPosition,
+      isActive,
       ...props
     },
     ref,
@@ -99,9 +94,12 @@ const Button: React.ComponentType<
       ref={ref}
       className={cn(
         styles.button,
-        buttonLayoutClassNames[layout!],
+        layout,
         iconPosition,
-        { [buttonThemeClassNames[theme!]]: layout !== EButtonLayout.INLINE },
+        {
+          [buttonThemeClassNames[theme!]]: layout !== EButtonLayout.INLINE,
+          [styles.isActive]: isActive,
+        },
         size,
         width,
       )}

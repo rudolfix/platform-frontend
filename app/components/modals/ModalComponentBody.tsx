@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ButtonClose } from "../shared/buttons";
 import { Panel } from "../shared/Panel";
+
 import * as styles from "./ModalComponentBody.module.scss";
 
 export interface IModalComponentProps {

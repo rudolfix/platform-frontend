@@ -48,6 +48,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
               theme="white"
               className={cn(styles.registerButton, styles.resizableButton)}
               data-test-id="Header-register-eto"
+              isActive={false}
               to={appRoutes.registerEto}
             >
               REGISTER
@@ -56,6 +57,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
               theme="white"
               className={styles.resizableButton}
               data-test-id="Header-login-eto"
+              isActive={false}
               to={appRoutes.loginEto}
             >
               LOGIN
@@ -67,6 +69,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
               theme="white"
               className={cn(styles.registerButton, styles.resizableButton)}
               data-test-id="Header-register"
+              isActive={false}
               to={walletRegisterRoutes.light}
             >
               REGISTER
@@ -75,6 +78,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
               theme="white"
               className={styles.resizableButton}
               data-test-id="Header-login"
+              isActive={false}
               to={loginWalletRoutes.light}
             >
               LOGIN

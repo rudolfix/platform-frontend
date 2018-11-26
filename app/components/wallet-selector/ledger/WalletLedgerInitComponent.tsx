@@ -46,11 +46,8 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
   intl,
 }) => (
   <>
-    <Row>
-      <Col>
-        <LedgerHeader />
-      </Col>
-    </Row>
+    <LedgerHeader />
+
     {errorMessage && (
       <Row className="justify-content-center">
         <WarningAlert className="my-4">

@@ -1,0 +1,11 @@
+.title {
+  @include headline-large;
+}
+
+.explanation {
+  @include font-tab;
+}
+
+.note {
+  @include font-button-small;
+}

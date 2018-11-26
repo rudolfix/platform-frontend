@@ -66,7 +66,7 @@ const ETOStateLayout: React.SFC<IStateProps & IExternalProps> = ({
   return (
     <div
       className={cn(styles.projectStatus, stateToClassName[status], size, layout)}
-      data-test-id="eto-state"
+      data-test-id={`eto-state-${status}`}
     >
       {statusToName[status]}
     </div>

@@ -6,5 +6,5 @@ export const submitProposal = () => {
   cy.get(tid("eto-dashboard-submit-proposal")).click();
   acceptWallet();
 
-  cy.get(tid("eto-state")).should("contain", "Proposal in review");
+  cy.get(tid("eto-state-pending")).should("exist");
 };

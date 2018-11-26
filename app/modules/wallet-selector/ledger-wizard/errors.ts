@@ -1,9 +1,9 @@
-import { LedgerLockedError } from "../../../lib/web3/LedgerWallet";
+import {LedgerLockedError} from "../../../lib/web3/LedgerWallet";
+import {LedgerErrorMessage} from "../../../config/errorMessages";
 
-export function mapLedgerErrorToErrorMessage(error: Error): string {
+export function mapLedgerErrorToErrorMessage(error: Error): LedgerErrorMessage {
   if (error instanceof LedgerLockedError) {
-    return "Please unlock your Ledger Nano S by entering your PIN code on the device.";
+    return LedgerErrorMessage.LEDGER_LOCKED;
   }
-  return "Ledger Nano S is not available";
+  return LedgerErrorMessage.LEDGER_GENERIC_ERROR;
 }
-//TODO: add translation

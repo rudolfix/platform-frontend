@@ -934,5 +934,6 @@
   "withdraw-flow.transaction-cost": "Transaction cost",
   "withdraw-flow.value": "Amount sent",
   "your-ethereum-address-widget.explanation": "This is the wallet address you are registered with on Neufund.",
-  "your-ethereum-address-widget.header": "Wallet address"
+  "your-ethereum-address-widget.header": "Wallet address",
+  "error.message.mismatched-wallet-address": "Plugged wallet address is: {actualAddress}, expected wallet address is: {desiredAddress}"
 }

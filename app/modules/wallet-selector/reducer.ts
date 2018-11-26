@@ -1,8 +1,11 @@
 import { AppReducer } from "../../store";
 
+import {ErrorWithData} from "../../config/errorMessages";
+import {DeepReadonly} from "../../types";
+
 export interface IWalletSelectorState {
   isMessageSigning: boolean;
-  messageSigningError?: string;
+  messageSigningError?: DeepReadonly<ErrorWithData>;
 }
 
 const walletSelectorInitialState: IWalletSelectorState = {

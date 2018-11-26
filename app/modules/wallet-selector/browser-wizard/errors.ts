@@ -5,27 +5,25 @@ import {
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
 } from "../../../lib/web3/BrowserWallet";
+import {BrowserWalletErrorMessage} from "../../../config/errorMessages";
 
-/**
- * Returns error message or undefined if error is unknown
- */
-export function mapBrowserWalletErrorToErrorMessage(e: Error): string | undefined {
+
+export function mapBrowserWalletErrorToErrorMessage(e: Error): BrowserWalletErrorMessage {
   if (e instanceof BrowserWalletLockedError) {
-    return "Your wallet seems to be locked — we can't access any accounts";
+    return BrowserWalletErrorMessage.BROWSER_WALLET_IS_LOCKED;
   }
   if (e instanceof BrowserWalletMismatchedNetworkError) {
-    return "Please connect your wallet to the \"Main Ethereum Network\" by selecting from the \"Networks\" drop-down menu in MetaMask.";
+    return BrowserWalletErrorMessage.BROWSER_WALLET_CONNECTED_TO_WRONG_NETWORK;
   }
   if (e instanceof BrowserWalletMissingError) {
-    return "Please check if the MetaMask extension is enabled in your browser. We were unable to detect any wallet.";
+    return BrowserWalletErrorMessage.BROWSER_WALLET_NOT_ENABLED;
   }
   if (e instanceof BrowserWalletAccountApprovalRejectedError) {
-    return "Data approval rejected";
+    return BrowserWalletErrorMessage.BROWSER_WALLET_ACCOUNT_APPROVAL_REJECTED;
   }
   if (e instanceof BrowserWalletAccountApprovalPendingError) {
-    return "Please check MetaMask to confirm this action.";
+    return BrowserWalletErrorMessage.BROWSER_WALLET_ACCOUNT_APPROVAL_PENDING;
   }
 
-  return undefined;
+  return BrowserWalletErrorMessage.BROWSER_WALLET_GENERIC_ERROR;
 }
-//TODO: ADD TRANSLATIONS

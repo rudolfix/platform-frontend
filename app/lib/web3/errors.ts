@@ -1,14 +1,14 @@
-import { SignerRejectConfirmationError, SignerTimeoutError } from "./Web3Manager";
+import {SignerRejectConfirmationError, SignerTimeoutError} from "./Web3Manager";
+import {SignerErrorMessage} from "../../config/errorMessages";
 
-//TODO add translations
-export function mapSignerErrorToErrorMessage(e: Error): string | undefined {
+export function mapSignerErrorToErrorMessage(e: Error): SignerErrorMessage {
   if (e instanceof SignerRejectConfirmationError) {
-    return "Message signing was rejected";
+    return SignerErrorMessage.SIGNER_REJECTED_CONFIRMATION;
   }
 
   if (e instanceof SignerTimeoutError) {
-    return "Oops! Looks like the request timed out. Please try again.";
+    return SignerErrorMessage.SIGNER_TIMEOUT;
   }
 
-  return undefined;
+  return SignerErrorMessage.SIGNER_GENERIC_ERROR;
 }

@@ -7,30 +7,30 @@ import {
   LightWalletWrongPassword,
   LightWrongPasswordSaltError,
 } from "../../../lib/web3/LightWallet";
+import {LightWalletErrorMessage} from "../../../config/errorMessages";
 
-//TODO add translations
-export function mapLightWalletErrorToErrorMessage(e: Error): string {
+export function mapLightWalletErrorToErrorMessage(e: Error): LightWalletErrorMessage {
   if (e instanceof LightWrongPasswordSaltError) {
-    return "Password is not correct";
+    return LightWalletErrorMessage.LIGHT_WALLET_WRONG_PASSWORD_SALT;
   }
   if (e instanceof LightSignMessageError) {
-    return "Cannot sign personal message";
+    return LightWalletErrorMessage.LIGHT_WALLET_SIGN_MESSAGE;
   }
   if (e instanceof LightCreationError) {
-    return "Cannot create new Light Wallet";
+    return LightWalletErrorMessage.LIGHT_WALLET_CREATION_ERROR;
   }
   if (e instanceof LightDeserializeError) {
-    return "There was a problem with Vault retrieval";
+    return LightWalletErrorMessage.LIGHT_WALLET_DESERIALIZE;
   }
   if (e instanceof LightKeyEncryptError) {
-    return "There was a problem with Light Wallet encryption";
+    return LightWalletErrorMessage.LIGHT_WALLET_ENCRYPTION_ERROR;
   }
   if (e instanceof LightWalletWrongPassword) {
-    return "The password you entered is incorrect. Please try again.";
+    return LightWalletErrorMessage.LIGHT_WALLET_WRONG_PASSWORD;
   }
   if (e instanceof LightWalletWrongMnemonic) {
-    return "Something went wrong. Please enter your 24 word recovery and try again.";
+    return LightWalletErrorMessage.LIGHT_WALLET_WRONG_MNEMONIC;
   }
 
-  return "Light Wallet is unavailable";
+  return LightWalletErrorMessage.LIGHT_WALLET_GENERIC_ERROR;
 }

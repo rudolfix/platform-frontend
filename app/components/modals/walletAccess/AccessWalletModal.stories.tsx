@@ -3,6 +3,7 @@ import * as React from "react";
 import { EWalletType } from "../../../modules/web3/types";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainerComponent } from "./AccessWalletModal";
+import {BrowserWalletErrorMessage, MismatchedWalletAddressErrorMessage} from "../../../config/errorMessages";
 
 const props = {
   title: "Verify your email",
@@ -26,6 +27,24 @@ storiesOf("AccessWalletModal", module)
   .add("metamask", () => (
     <AccessWalletContainerComponent {...props} walletType={EWalletType.BROWSER} />
   ))
+  .add("metamask with error", () => {
+    const data = {...props, errorMessage: {errorType: BrowserWalletErrorMessage.BROWSER_WALLET_CONNECTED_TO_WRONG_NETWORK}}
+    return (
+    <AccessWalletContainerComponent {...data} walletType={EWalletType.BROWSER} />
+  )}
+  )
   .add("ledger", () => (
-    <AccessWalletContainerComponent {...props} walletType={EWalletType.LEDGER} />
-  ));
+      <AccessWalletContainerComponent {...props} walletType={EWalletType.LEDGER} />
+    ))
+  .add("ledger with error", () => {
+    const testData = {
+      ...props,
+      errorMessage: {
+        errorType: MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS,
+        errorData: {actualAddress: '12345', desiredAddress: '56789'}
+      }
+    };
+    return (
+      <AccessWalletContainerComponent {...testData} walletType={EWalletType.LEDGER} />
+    )
+  });

@@ -67,8 +67,8 @@ export const BackupSeed = appConnect<IStateProps, IDispatchProps>({
   }),
   dispatchToProps: dispatch => ({
     verifyBackupPhrase: () => dispatch(actions.walletSelector.lightWalletBackedUp()),
-    onCancel: () => dispatch(actions.routing.goToSettings()),
-    getSeed: () => dispatch(actions.settings.loadSeedOrReturnToSettings()),
+    onCancel: () => dispatch(actions.routing.goToProfile()),
+    getSeed: () => dispatch(actions.profile.loadSeedOrReturnToProfile()),
     clearSeed: () => dispatch(actions.web3.clearSeedFromState()),
   }),
 })(BackupSeedComponent);

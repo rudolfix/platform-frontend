@@ -1,59 +1,9 @@
-.wallet-chooser {
-  font-size: $smaller-font-size;
-  letter-spacing: -.2px;
+.wallet-chooser-title {
+  @include headline-large;
 }
 
-.wallet {
-  cursor: pointer;
-  text-transform: uppercase;
-  color: $gray3;
-
-  &::after {
-    content: attr(data-text);
-    font-weight: $font-weight-bold;
-    display: block;
-    margin-left: calc(#{$spacer * 2} + 6px); // this makes up for | pipe
-    visibility: hidden;
-    height: 0;
-  }
-
-  &:hover,
-  &:focus {
-    text-decoration: none;
-  }
-
-  &::before {
-    content: "|";
-    margin: 0 $spacer;
-    color: $gray2;
-    text-shadow: none;
-    font-weight: $font-weight-normal;
-  }
-
-  &:first-of-type {
-    &::before {
-      display: none;
-    }
-
-    &::after {
-      margin: 0;
-    }
-  }
-
-  &:global(.active) {
-    font-weight: $font-weight-bold;
-    color: $neu-black;
-
-    span {
-      border-bottom: px-to-rem(1px) solid $neu-piss-yellow;
-    }
-  }
-
-  @include media-breakpoint-down(sm) {
-    text-align: center;
-
-    &::before {
-      display: none;
-    }
-  }
+.wallet-chooser-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }

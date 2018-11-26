@@ -1,10 +1,5 @@
-/* tslint:disable: no-submodule-imports */
-import "react-select/dist/react-select.css";
-import "react-virtualized-select/styles.css";
-import "react-virtualized/styles.css";
-/* tslint:enable: no-submodule-imports */
-
 import * as Mnemonic from "bitcore-mnemonic";
+import * as cn from "classnames";
 import { range } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -17,6 +12,12 @@ import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
 import * as styles from "./BackupSeedVerify.module.scss";
+
+/* tslint:disable: no-submodule-imports */
+import "react-select/dist/react-select.css";
+import "react-virtualized-select/styles.css";
+import "react-virtualized/styles.css";
+/* tslint:enable: no-submodule-imports */
 
 const WORDS_TO_VERIFY = 4;
 
@@ -99,16 +100,11 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
 
   getValidationStyle = (wordOnPageNumber: number): string => {
     const validationWord = this.state.verificationWords[wordOnPageNumber];
-
-    if (validationWord.isValid === true) {
-      return styles.valid;
+    if (validationWord.isValid === undefined) {
+      return "";
+    } else {
+      return validationWord.isValid ? styles.valid : styles.invalid;
     }
-
-    if (validationWord.isValid === false) {
-      return styles.invalid;
-    }
-
-    return "";
   };
 
   isInvalid = (): boolean => {
@@ -161,36 +157,30 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
           </Col>
         </Row>
         {this.isValid() && (
-          <Row className="my-4 text-center">
-            <Col className={styles.placeholderHeight}>
-              <Button data-test-id="seed-verify-button-next" onClick={this.props.onNext}>
-                <FormattedMessage id="form.button.continue" />
-              </Button>
-            </Col>
-          </Row>
+          <div className={cn(styles.placeholderHeight, styles.row, styles.center)}>
+            <Button data-test-id="seed-verify-button-next" onClick={this.props.onNext}>
+              <FormattedMessage id="form.button.continue" />
+            </Button>
+          </div>
         )}
         {this.isInvalid() && (
-          <Row className="my-4 justify-content-center">
-            <WarningAlert
-              data-test-id="seed-verify-invalid-msg"
-              className={styles.placeholderHeight}
-            >
-              <FormattedMessage id="settings.backup-seed-verify.recheck-words-message" />
-            </WarningAlert>
-          </Row>
+          <WarningAlert
+            data-test-id="seed-verify-invalid-msg"
+            className={cn(styles.placeholderHeight)}
+          >
+            <FormattedMessage id="settings.backup-seed-verify.recheck-words-message" />
+          </WarningAlert>
         )}
-        <Row>
-          <Col>
-            <Button
-              layout={EButtonLayout.SECONDARY}
-              iconPosition="icon-before"
-              svgIcon={arrowLeft}
-              onClick={this.props.onBack}
-            >
-              <FormattedMessage id="form.button.back" />
-            </Button>
-          </Col>
-        </Row>
+        <div className={cn(styles.row)}>
+          <Button
+            layout={EButtonLayout.SECONDARY}
+            iconPosition="icon-before"
+            svgIcon={arrowLeft}
+            onClick={this.props.onBack}
+          >
+            <FormattedMessage id="form.button.back" />
+          </Button>
+        </div>
       </>
     );
   }

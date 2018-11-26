@@ -61,7 +61,7 @@ storiesOf("VerifyEmailWidgetComponent", module)
       step={1}
     />
   ))
-  .add("Cancellation in process", () => (
+  .add("cancellation in process", () => (
     <VerifyEmailWidgetComponent
       intl={dummyIntl}
       isUserEmailVerified={false}

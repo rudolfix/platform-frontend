@@ -10,12 +10,7 @@ import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectDoesEmailExist, selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
-import {
-  selectLightWalletSalt,
-  selectPreviousLightWalletSalt,
-  selectWalletType,
-} from "../web3/selectors";
-import { EWalletType } from "../web3/types";
+import { selectLightWalletSalt, selectPreviousLightWalletSalt } from "../web3/selectors";
 
 export function* addNewEmail(
   {
@@ -27,47 +22,26 @@ export function* addNewEmail(
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
-  if (action.type !== "SETTINGS_ADD_NEW_EMAIL") return;
+  if (action.type !== "PROFILE_ADD_NEW_EMAIL") return;
 
   const email = action.payload.email;
   const user = yield select((s: IAppState) => selectUser(s.auth));
-  const walletType = yield select((s: IAppState) => selectWalletType(s.web3));
   const salt = yield select(
     (s: IAppState) => selectLightWalletSalt(s.web3) || selectPreviousLightWalletSalt(s.web3),
   );
   const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
 
-  const emailModalTitle = isEmailAvailable ? "Email Update" : "Add Email";
-
-  let addEmailMessage;
+  const emailModalTitle = isEmailAvailable
+    ? formatIntlMessage("modules.settings.sagas.add-new-email.update-title")
+    : formatIntlMessage("modules.settings.sagas.add-new-email.add-title");
 
   try {
-    switch (walletType) {
-      case EWalletType.BROWSER:
-        addEmailMessage = formatIntlMessage(
-          "modules.settings.sagas.add-new-email.confirm-browser-wallet",
-        );
-        break;
-      case EWalletType.LEDGER:
-        addEmailMessage = formatIntlMessage(
-          "modules.settings.sagas.add-new-email.confirm-ledger-wallet",
-        );
-        break;
-      case EWalletType.LIGHT:
-        addEmailMessage = formatIntlMessage(
-          "modules.settings.sagas.add-new-email.confirm-light-wallet",
-        );
-        break;
-      default:
-        throw new Error("Wrong wallet type");
-    }
-
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
       emailModalTitle,
-      addEmailMessage,
+      formatIntlMessage("modules.settings.sagas.add-new-email.confirm-description"),
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
     notificationCenter.info(
@@ -98,7 +72,7 @@ export function* resendEmail(
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
-  if (action.type !== "SETTINGS_RESEND_EMAIL") return;
+  if (action.type !== "PROFILE_RESEND_EMAIL") return;
 
   const user = yield select((s: IAppState) => selectUser(s.auth));
   const email = user.unverifiedEmail;
@@ -135,17 +109,21 @@ export function* loadSeedOrReturnToSettings({
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
-      formatIntlMessage("modules.settings.sagas.load-seed-return-settings.access-recovery-phrase"),
-      "",
+      formatIntlMessage(
+        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-title",
+      ),
+      formatIntlMessage(
+        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description",
+      ),
     );
   } catch (e) {
     logger.error("Failed to load seed", e);
-    yield put(actions.routing.goToSettings());
+    yield put(actions.routing.goToProfile());
   }
 }
 
-export const settingsSagas = function*(): Iterator<effects.Effect> {
-  yield fork(neuTakeEvery, "SETTINGS_ADD_NEW_EMAIL", addNewEmail);
-  yield fork(neuTakeEvery, "SETTINGS_RESEND_EMAIL", resendEmail);
-  yield fork(neuTakeEvery, "LOAD_SEED_OR_RETURN_TO_SETTINGS", loadSeedOrReturnToSettings);
+export const profileSagas = function*(): Iterator<effects.Effect> {
+  yield fork(neuTakeEvery, "PROFILE_ADD_NEW_EMAIL", addNewEmail);
+  yield fork(neuTakeEvery, "PROFILE_RESEND_EMAIL", resendEmail);
+  yield fork(neuTakeEvery, "LOAD_SEED_OR_RETURN_TO_PROFILE", loadSeedOrReturnToSettings);
 };

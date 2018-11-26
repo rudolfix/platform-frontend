@@ -2,15 +2,18 @@ import * as cn from "classnames";
 import * as React from "react";
 import { Col, Row } from "reactstrap";
 
-import * as styles from "./HeaderProgressStepper.module.scss";
+import { TTranslatedString } from "../../types";
 import { ProgressStepper } from "./ProgressStepper";
+
+import * as styles from "./HeaderProgressStepper.module.scss";
 
 interface IProps {
   steps: number;
   currentStep: number;
-  headerText: string | React.ReactNode;
-  descText?: string | React.ReactNode;
+  headerText: TTranslatedString;
+  descText?: TTranslatedString;
   warning?: boolean;
+  headerClassName?: string;
 }
 
 export const HeaderProgressStepper: React.SFC<IProps> = props => (
@@ -20,9 +23,9 @@ export const HeaderProgressStepper: React.SFC<IProps> = props => (
         <ProgressStepper steps={props.steps} currentStep={props.currentStep} />
       </Col>
     </Row>
-    <Row className="mt-4 mb-5 text-center">
+    <Row className="mt-4 mb-4 text-center">
       <Col>
-        <h2 className={cn("font-weight-bold", props.warning && styles.warning)}>
+        <h2 className={cn(styles.bold, props.warning && styles.warning, props.headerClassName)}>
           {props.headerText}
         </h2>
         {props.descText && <p className="pt-3">{props.descText}</p>}

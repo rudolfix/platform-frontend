@@ -73,13 +73,13 @@ export const BalanceModal: React.SFC<IBalanceModal> = ({
       />
       <HighlightedField
         label={<FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />}
-        dataTestId="settings.modal.icbm-wallet-balance.neu-balance"
+        dataTestId="profile.modal.icbm-wallet-balance.neu-balance"
         value={<Money currency="neu" value={neumarksDue} />}
         icon={iconNeu}
       />
       <HighlightedField
         label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
-        dataTestId="settings.modal.icbm-wallet-balance.eth-balance"
+        dataTestId="profile.modal.icbm-wallet-balance.eth-balance"
         value={<Money value={etherBalance} currency="eth" />}
         icon={iconEth}
       />

@@ -12,7 +12,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers"
 import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
 
-import * as styles from "./WalletLight.module.scss";
+import * as styles from "./RegisterLightWallet.module.scss";
 
 const EMAIL = "email";
 const PASSWORD = "password";
@@ -42,7 +42,9 @@ const validationSchema = Yup.object().shape({
     .min(8),
   [REPEAT_PASSWORD]: Yup.string()
     .required()
-    .oneOf([Yup.ref(PASSWORD)], "Passwords are not equal"),
+    .oneOf([Yup.ref(PASSWORD)], (
+      <FormattedMessage id="wallet-selector.neuwallet.passwords-do-not-match" />
+    ) as any),
 });
 class RegisterLightWalletForm extends React.Component<
   FormikProps<IFormValues> & IStateProps & IIntlProps & { restore: boolean }
@@ -61,31 +63,30 @@ class RegisterLightWalletForm extends React.Component<
   };
 
   render = () => (
-    <Form>
+    <Form className="my-3">
       <FormField
-        placeholder={`${this.props.intl.formatIntlMessage("wallet-selector.register.email")}`}
+        placeholder={this.props.intl.formatIntlMessage("wallet-selector.register.email")}
         type="email"
         name={EMAIL}
         data-test-id="wallet-selector-register-email"
       />
       <FormField
         type="password"
-        placeholder={`${this.props.intl.formatIntlMessage("wallet-selector.register.password")}`}
+        placeholder={this.props.intl.formatIntlMessage("wallet-selector.register.password")}
         name={PASSWORD}
         data-test-id="wallet-selector-register-password"
       />
       <FormField
         type="password"
-        placeholder={`${this.props.intl.formatIntlMessage(
-          "wallet-selector.register.confirm-password",
-        )}`}
+        placeholder={this.props.intl.formatIntlMessage("wallet-selector.register.confirm-password")}
         name={REPEAT_PASSWORD}
         data-test-id="wallet-selector-register-confirm-password"
       />
-      <div className="text-center">
+      <div className="text-center my-4">
         <Button
           type="submit"
-          disabled={this.props.isSubmitting || !this.props.isValid || this.props.isLoading}
+          isLoading={this.props.isSubmitting || this.props.isLoading}
+          disabled={!this.props.isValid}
           data-test-id="wallet-selector-register-button"
         >
           {this.props.restore ? (
@@ -116,35 +117,33 @@ const RegisterEnhancedLightWalletForm: React.SFC = compose<any>(
 
 export const RegisterWalletComponent: React.SFC<
   IDispatchProps & IStateProps & { restore: boolean }
-> = props => {
-  return (
-    <>
-      <Row className={cn(styles.wrapper, "justify-content-sm-center mt-3")}>
-        <Col className="align-self-end col-sm-auto col-xs-12">
-          <h1
-            className="mb-4"
-            data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
-          >
-            {props.restore ? (
-              <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
-            ) : (
-              <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
-            )}
-          </h1>
-          <div className={styles.explanation}>
-            <FormattedMessage tagName="p" id="wallet-selector.neuwallet.explanation-1" />
-          </div>
+> = props => (
+  <>
+    <h2
+      className={cn(styles.title, "text-center mb-4")}
+      data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
+    >
+      {props.restore ? (
+        <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
+      ) : (
+        <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
+      )}
+    </h2>
+    <p className={styles.explanation}>
+      <FormattedMessage tagName="span" id="wallet-selector.neuwallet.explanation-1" />
+    </p>
 
-          <RegisterEnhancedLightWalletForm {...props} />
+    <Row>
+      <Col md={{ size: 8, offset: 2 }}>
+        <RegisterEnhancedLightWalletForm {...props} />
+      </Col>
+    </Row>
 
-          <div className={styles.explanation}>
-            <FormattedHTMLMessage tagName="span" id="wallet-selector.neuwallet.explanation-2" />
-          </div>
-        </Col>
-      </Row>
-    </>
-  );
-};
+    <p className={styles.note}>
+      <FormattedHTMLMessage tagName="span" id="wallet-selector.neuwallet.explanation-2" />
+    </p>
+  </>
+);
 
 export const RegisterLightWallet = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps, { restore: boolean }>({

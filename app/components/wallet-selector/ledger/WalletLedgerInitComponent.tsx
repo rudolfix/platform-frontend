@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { compose } from "redux";
+import { branch, compose, renderComponent } from "recompose";
 
 import { ledgerWizardFlows } from "../../../modules/wallet-selector/ledger-wizard/flows";
 import { appConnect } from "../../../store";
@@ -41,121 +41,59 @@ interface IWalletLedgerInitComponentProps {
   errorMessage?: string;
 }
 
-interface IWalletLedgerInitComponentState {
-  showLedgerBrowserSupport: boolean;
-}
+export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps & IIntlProps> = ({
+  errorMessage,
+  intl,
+}) => (
+  <>
+    <LedgerHeader />
 
-export class WalletLedgerInitComponent extends React.Component<
-  IWalletLedgerInitComponentProps & IIntlProps,
-  IWalletLedgerInitComponentState
-> {
-  state = {
-    showLedgerBrowserSupport: false,
-  };
+    {errorMessage && (
+      <Row className="justify-content-center">
+        <WarningAlert className="my-4">
+          <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
+          <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
+        </WarningAlert>
+      </Row>
+    )}
+    <Row>
+      <InitStep
+        header={intl.formatIntlMessage("wallet-selector.ledger.start.step1.header")}
+        img={imgStep1}
+        desc={intl.formatIntlMessage("wallet-selector.ledger.start.step1.description")}
+      />
+      <InitStep
+        header={intl.formatIntlMessage("wallet-selector.ledger.start.step2.header")}
+        img={imgStep2}
+        desc={intl.formatIntlMessage("wallet-selector.ledger.start.step2.description")}
+      />
+      <InitStep
+        header={intl.formatIntlMessage("wallet-selector.ledger.start.step3.header")}
+        img={imgStep3}
+        desc={intl.formatIntlMessage("wallet-selector.ledger.start.step3.description")}
+      />
+    </Row>
+    <Row>
+      <InitStep
+        header={intl.formatIntlMessage("wallet-selector.ledger.start.step4.header")}
+        img={imgStep4}
+        desc={intl.formatIntlMessage("wallet-selector.ledger.start.step4.description")}
+      />
+      <InitStep
+        header={intl.formatIntlMessage("wallet-selector.ledger.start.step5.header")}
+        img={imgStep5}
+        desc={intl.formatIntlMessage("wallet-selector.ledger.start.step5.description")}
+      />
+      <InitStep
+        header={intl.formatIntlMessage("wallet-selector.ledger.start.step6.header")}
+        img={imgStep6}
+        desc={intl.formatIntlMessage("wallet-selector.ledger.start.step6.description")}
+      />
+    </Row>
+  </>
+);
 
-  handleShowSupport = () => {
-    this.setState(s => ({
-      showLedgerBrowserSupport: !s.showLedgerBrowserSupport,
-    }));
-  };
-
-  render(): React.ReactNode {
-    if (this.props.isInitialConnectionInProgress) {
-      return <LoadingIndicator />;
-    }
-    return (
-      <>
-        <Row>
-          <Col>
-            <LedgerHeader />
-          </Col>
-        </Row>
-        {this.props.errorMessage && (
-          <Row className="justify-content-center">
-            <WarningAlert className="my-4">
-              <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
-              <span data-test-id="ledger-wallet-error-msg">{this.props.errorMessage}</span>
-            </WarningAlert>
-          </Row>
-        )}
-        <Row>
-          <InitStep
-            header={this.props.intl.formatIntlMessage("wallet-selector.ledger.start.step1.header")}
-            img={imgStep1}
-            desc={this.props.intl.formatIntlMessage(
-              "wallet-selector.ledger.start.step1.description",
-            )}
-          />
-          <InitStep
-            header={this.props.intl.formatIntlMessage("wallet-selector.ledger.start.step2.header")}
-            img={imgStep2}
-            desc={this.props.intl.formatIntlMessage(
-              "wallet-selector.ledger.start.step2.description",
-            )}
-          />
-          <InitStep
-            header={this.props.intl.formatIntlMessage("wallet-selector.ledger.start.step3.header")}
-            img={imgStep3}
-            desc={this.props.intl.formatIntlMessage(
-              "wallet-selector.ledger.start.step3.description",
-            )}
-          />
-        </Row>
-        <Row className={cn("justify-content-center", styles.ledgerBrowser)}>
-          <button
-            onClick={this.handleShowSupport}
-            className={cn(
-              styles.drawerButton,
-              this.state.showLedgerBrowserSupport ? "mt-3 mb-4" : "mt-3",
-            )}
-          >
-            <FormattedMessage id="wallet-selector.ledger.start.browser-support" />
-            <i
-              aria-hidden="true"
-              className={cn(
-                "fa fa-lg ml-3",
-                this.state.showLedgerBrowserSupport ? "fa-angle-up" : "fa-angle-down",
-              )}
-            />
-          </button>
-        </Row>
-        {this.state.showLedgerBrowserSupport && (
-          <Row>
-            <InitStep
-              header={this.props.intl.formatIntlMessage(
-                "wallet-selector.ledger.start.step4.header",
-              )}
-              img={imgStep4}
-              desc={this.props.intl.formatIntlMessage(
-                "wallet-selector.ledger.start.step4.description",
-              )}
-            />
-            <InitStep
-              header={this.props.intl.formatIntlMessage(
-                "wallet-selector.ledger.start.step5.header",
-              )}
-              img={imgStep5}
-              desc={this.props.intl.formatIntlMessage(
-                "wallet-selector.ledger.start.step5.description",
-              )}
-            />
-            <InitStep
-              header={this.props.intl.formatIntlMessage(
-                "wallet-selector.ledger.start.step6.header",
-              )}
-              img={imgStep6}
-              desc={this.props.intl.formatIntlMessage(
-                "wallet-selector.ledger.start.step6.description",
-              )}
-            />
-          </Row>
-        )}
-      </>
-    );
-  }
-}
-
-export const WalletLedgerInit = compose<React.SFC>(
+export const WalletLedgerInit = compose<IWalletLedgerInitComponentProps & IIntlProps, {}>(
   withActionWatcher({
     actionCreator: dispatch => dispatch(ledgerWizardFlows.tryEstablishingConnectionWithLedger),
     interval: LEDGER_RECONNECT_INTERVAL,
@@ -166,5 +104,9 @@ export const WalletLedgerInit = compose<React.SFC>(
       errorMessage: state.ledgerWizardState.errorMsg,
     }),
   }),
+  branch<IWalletLedgerInitComponentProps>(
+    props => props.isInitialConnectionInProgress,
+    renderComponent(LoadingIndicator),
+  ),
   injectIntlHelpers,
 )(WalletLedgerInitComponent);

@@ -26,7 +26,11 @@ interface IStateProps {
 
 interface IHandlersProps {
   closeModal: () => void;
-  onClick: () => void;
+  onClick?: () => void;
+}
+
+interface IReduxProps {
+  dispatch: AppDispatch;
 }
 
 export const genericModalIcons = {
@@ -34,7 +38,7 @@ export const genericModalIcons = {
   exclamation: <img src={warningIcon} className={styles.icon} aria-hidden="true" />,
 };
 
-const GenericModalComponent: React.SFC<IStateProps & IHandlersProps> = ({
+const GenericModalLayout: React.SFC<IStateProps & IHandlersProps> = ({
   onClick,
   closeModal,
   isOpen,
@@ -77,11 +81,7 @@ const GenericModalComponent: React.SFC<IStateProps & IHandlersProps> = ({
   );
 };
 
-interface IReduxProps {
-  dispatch: AppDispatch;
-}
-
-export const GenericModal = compose<IStateProps & IHandlersProps, {}>(
+const GenericModal = compose<IStateProps & IHandlersProps, {}>(
   setDisplayName("GenericModal"),
   appConnect<IStateProps>({
     stateToProps: state => ({
@@ -100,4 +100,6 @@ export const GenericModal = compose<IStateProps & IHandlersProps, {}>(
       }
     },
   }),
-)(GenericModalComponent);
+)(GenericModalLayout);
+
+export { GenericModal, GenericModalLayout };

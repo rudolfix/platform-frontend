@@ -1,6 +1,7 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
+import { externalRoutes } from "../../../components/externalRoutes";
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
@@ -161,8 +162,9 @@ export function* lightWalletRegisterWatch(
         yield put(
           actions.genericModal.showErrorModal(
             "Error",
-            intlWrapper.intl.formatIntlMessage(
-              "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+            intlWrapper.intl.formatHTMLMessage(
+              { id: "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems" },
+              { url: `${externalRoutes.neufundSupport}/home` },
             ),
           ),
         );
@@ -244,8 +246,9 @@ export function* lightWalletRecoverWatch(
         yield put(
           actions.genericModal.showErrorModal(
             "Error",
-            intlWrapper.intl.formatIntlMessage(
-              "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems",
+            intlWrapper.intl.formatHTMLMessage(
+              { id: "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems" },
+              { url: `${externalRoutes.neufundSupport}/home` },
             ),
           ),
         );
@@ -269,7 +272,7 @@ export function* lightWalletBackupWatch({
       formatIntlMessage("modules.wallet-selector.light-wizard.sagas.successfully.backed-up"),
     );
     yield loadUser();
-    yield effects.put(actions.routing.goToSettings());
+    yield effects.put(actions.routing.goToProfile());
   } catch (e) {
     logger.error("Light Wallet Backup Error", e);
     yield put(

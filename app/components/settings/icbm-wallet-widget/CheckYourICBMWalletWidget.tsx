@@ -25,7 +25,7 @@ class FormContent extends React.Component {
             <FormFieldColorful
               name="address"
               placeholder="0xff2bee8169957caa2f5a34af7bf8e717fea7f"
-              data-test-id="models.settings.icbm-wallet-widget.check-your-icbm-wallet-widget.address"
+              data-test-id="models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget.address"
             />
             <Button
               className={styles.button}

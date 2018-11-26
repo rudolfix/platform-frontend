@@ -23,7 +23,7 @@ import { Panel } from "../../shared/Panel";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
-import { selectIsCancelEmail } from "../../../modules/settings/reducer";
+import { selectIsCancelEmail } from "../../../modules/profile/reducer";
 import * as styles from "./VerifyEmailWidget.module.scss";
 
 interface IStateProps {
@@ -81,7 +81,7 @@ const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormVal
         name="email"
         data-test-id="verify-email-widget-form-email-input"
       />
-      <div className={cn("d-flex justify-content-end text-center flex-wrap", styles.buttons)}>
+      <div className={cn("d-flex justify-content-end text-center flex-wrap")}>
         {props.isThereUnverifiedEmail && (
           <Button
             data-test-id="verify-email-widget-form-cancel"
@@ -121,7 +121,7 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({
   revertCancelEmail,
   isThereUnverifiedEmail,
 }) => (
-  <div className={styles.panelBody} data-test-id="settings.verify-email-widget.no-email-state">
+  <div data-test-id="profile.verify-email-widget.no-email-state">
     <p className={styles.customPaddingTop}>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
     </p>
@@ -136,8 +136,8 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({
 
 const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
   <div
-    className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}
-    data-test-id="settings.verify-email-widget.verified-email-state"
+    className={cn("d-flex flex-wrap align-content-around")}
+    data-test-id="profile.verify-email-widget.verified-email-state"
   >
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
@@ -160,12 +160,12 @@ const UnVerifiedUser: React.SFC<{
   cancelEmail: () => void;
 }> = ({ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }) => (
   <div
-    className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}
-    data-test-id="settings.verify-email-widget.unverified-email-state"
+    className={cn("d-flex flex-wrap align-content-around")}
+    data-test-id="profile.verify-email-widget.unverified-email-state"
   >
     {verifiedEmail && (
       <Col xs={12} className="d-flex justify-content-center d-lg-none d-xl-block">
-        <p className="mb-0 text-center">
+        <p className="text-center">
           <b>
             <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
           </b>
@@ -176,7 +176,7 @@ const UnVerifiedUser: React.SFC<{
     {unverifiedEmail && (
       <>
         <Col xs={12} className="d-flex justify-content-center">
-          <p className="mb-0 text-center">
+          <p className="text-center">
             <FormattedMessage id="settings.verify-email-widget.unverified-email" />:{" "}
             {unverifiedEmail}
           </p>
@@ -239,7 +239,7 @@ export const VerifyEmailWidgetComponent: React.SFC<
           <img src={warningIcon} className={styles.icon} aria-hidden="true" />
         )
       }
-      data-test-id="settings.verify-email-widget"
+      data-test-id="profile.verify-email-widget"
     >
       {shouldViewVerifiedUser && (
         <VerifiedUser {...{ verifiedEmail, cancelEmail }} data-test-id="verified-section" />
@@ -265,19 +265,19 @@ export const VerifyEmailWidget = compose<React.SFC<IOwnProps>>(
       verifiedEmail: selectVerifiedUserEmail(s.auth),
       unverifiedEmail: selectUnverifiedUserEmail(s.auth),
       isLocked: selectIsConnectedButtonLocked(s.verifyEmailWidgetState),
-      isEmailTemporaryCancelled: selectIsCancelEmail(s.settings),
+      isEmailTemporaryCancelled: selectIsCancelEmail(s.profile),
     }),
     dispatchToProps: dispatch => ({
       resendEmail: () => {
-        dispatch(actions.settings.resendEmail());
+        dispatch(actions.profile.resendEmail());
       },
       addNewEmail: (values: { email: string }) => {
-        dispatch(actions.settings.addNewEmail(values.email));
+        dispatch(actions.profile.addNewEmail(values.email));
       },
       cancelEmail: () => {
-        dispatch(actions.settings.cancelEmail());
+        dispatch(actions.profile.cancelEmail());
       },
-      revertCancelEmail: () => dispatch(actions.settings.revertCancelEmail()),
+      revertCancelEmail: () => dispatch(actions.profile.revertCancelEmail()),
     }),
   }),
   injectIntlHelpers,

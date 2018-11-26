@@ -1,15 +1,14 @@
 import { Form, FormikProps, withFormik } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
+import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
-
-import { FormattedMessage } from "react-intl-phraseapp";
-import { actions } from "../../../modules/actions";
 import { FormConstantField } from "../../shared/forms/form-field/FormConstantField";
 import { WarningAlert } from "../../shared/WarningAlert";
 
@@ -18,7 +17,9 @@ const PASSWORD = "password";
 const emailValidator = Yup.string().email();
 
 export const LoginValidator = Yup.object().shape({
-  password: Yup.string().required(),
+  password: Yup.string().required((
+    <FormattedMessage id="wallet-selector.neuwallet.password-is-mandatory" />
+  ) as any),
   email: emailValidator,
 });
 
@@ -52,7 +53,8 @@ const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props
     <div className="text-center">
       <Button
         type="submit"
-        disabled={!props.isValid || props.isLoading}
+        disabled={!props.isValid}
+        isLoading={props.isLoading}
         data-test-id="wallet-selector-nuewallet.login-button"
       >
         Login
@@ -68,30 +70,28 @@ const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
 
 export const LoginWithEmailLightWalletComponent: React.SFC<
   IDispatchProps & IStateProps & IOwnProps
-> = props => {
-  return (
-    <>
-      <Row>
-        <p className="small mx-auto">
-          <FormattedMessage id="wallet-selector.neuwallet.login.prompt" />
-        </p>
-      </Row>
-      <Row>
-        <Col xs={12}>
-          <FormConstantField
-            value={props.email}
-            className="mb-2"
-            data-test-id="light-wallet-login-with-email-email-field"
-            valid={emailValidator.isValidSync(props.email)}
-            errorMessage={<FormattedMessage id="wallet-selector.neuwallet.email-error" />}
-          />
-          <LoginEnhancedLightWalletForm {...props} />
-          {props.errorMsg && <WarningAlert>{props.errorMsg}</WarningAlert>}
-        </Col>
-      </Row>
-    </>
-  );
-};
+> = props => (
+  <>
+    <Row>
+      <p className="small mx-auto">
+        <FormattedMessage id="wallet-selector.neuwallet.login.prompt" />
+      </p>
+    </Row>
+    <Row>
+      <Col md={{ offset: 2, size: 8 }}>
+        <FormConstantField
+          value={props.email}
+          className="mb-2"
+          data-test-id="light-wallet-login-with-email-email-field"
+          valid={emailValidator.isValidSync(props.email)}
+          errorMessage={<FormattedMessage id="wallet-selector.neuwallet.email-error" />}
+        />
+        <LoginEnhancedLightWalletForm {...props} />
+        {props.errorMsg && <WarningAlert className="mt-3">{props.errorMsg}</WarningAlert>}
+      </Col>
+    </Row>
+  </>
+);
 
 export const LoginWithEmailLightWallet = compose<React.SFC<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({

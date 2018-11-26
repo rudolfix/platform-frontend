@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import web3Accounts from "web3-eth-accounts";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
-import { assertUserInDashboard, goToDashboard, tid } from "../utils";
+import { assertUserInDashboard, closeModal, goToDashboard, tid } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 import { confirmAccessModal } from "../utils/index";
 

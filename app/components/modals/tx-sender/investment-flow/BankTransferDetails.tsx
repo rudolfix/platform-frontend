@@ -14,10 +14,12 @@ import {
 import { selectClientCountry, selectClientName } from "../../../../modules/kyc/selectors";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { CopyToClipboard } from "../../../shared/CopyToClipboard";
 import { CheckboxComponent } from "../../../shared/forms";
 import { Heading } from "../../../shared/modals/Heading";
+import { Tooltip } from "../../../shared/Tooltip";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { formatEurTsd } from "./utils";
@@ -71,7 +73,10 @@ const BankTransferDetailsComponent = injectIntlHelpers(
             <Row>
               <Col>
                 <p>
-                  <FormattedMessage id="investment-flow.bank-transfer.general-instructions" />
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="investment-flow.bank-transfer.general-instructions"
+                  />
                 </p>
                 <FormattedHTMLMessage
                   tagName="p"
@@ -81,8 +86,18 @@ const BankTransferDetailsComponent = injectIntlHelpers(
                   <CheckboxComponent
                     checked={data.gasStipend}
                     name="gas-stipend"
-                    label={<FormattedMessage id="investment-flow.bank-transfer.gas-stipend" />}
+                    label={
+                      <>
+                        <FormattedMessage id="investment-flow.bank-transfer.gas-stipend" />
+                        <Tooltip
+                          content={
+                            <FormattedMessage id="investment-flow.bank-transfer.gas-stipend-tooltip" />
+                          }
+                        />
+                      </>
+                    }
                     onChange={handleCheckbox}
+                    data-test-id="investment-flow.bank-transfer.details.gas-stipend-checkbox"
                   />
                 </p>
               </Col>
@@ -186,6 +201,11 @@ const BankTransferDetails = compose<IProps, {}>(
     dispatchToProps: d => ({
       onGasStipendChange: () => d(actions.investmentFlow.toggleBankTransferGasStipend()),
     }),
+  }),
+  onEnterAction({
+    actionCreator: d => {
+      d(actions.investmentFlow.generateBankTransferReference());
+    },
   }),
   withHandlers<IProps, IHandlerProps>({
     handleCheckbox: ({ onGasStipendChange }) => (e: any) => {

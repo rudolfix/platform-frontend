@@ -59,9 +59,8 @@ type IProps = IStateProps &
     isMigrating?: boolean;
     success?: boolean;
   };
-const IcbmWalletBalanceComponent: React.SFC<IProps> = ({
-  isOpen,
-  onCancel,
+
+export const IcbmWalletBalanceComponentInner: React.SFC<IProps> = ({
   onGotoWallet,
   isVerificationFullyDone,
   walletMigrationData,
@@ -77,36 +76,40 @@ const IcbmWalletBalanceComponent: React.SFC<IProps> = ({
   currentMigrationStep,
   goToNextStep,
   downloadICBMAgreement,
-}) => {
+}) => (
+  <div className={styles.content}>
+    {!walletMigrationData || !ethAddress || isLoading ? (
+      <LoadingIndicator />
+    ) : isWalletMigrating ? (
+      <MigrateModal
+        walletMigrationData={walletMigrationData[currentMigrationStep - 1]}
+        migrationStep={currentMigrationStep}
+        onGotoWallet={onGotoWallet}
+        goToNextStep={goToNextStep}
+        success={
+          (currentMigrationStep === 1 && isFirstTxDone) ||
+          (currentMigrationStep === 2 && isSecondTxDone)
+        }
+        // TODO: Make better
+      />
+    ) : (
+      <BalanceModal
+        startMigration={startWalletMigration}
+        isVerificationFullyDone={isVerificationFullyDone && isEtherMigrationTargetSet}
+        ethAddress={ethAddress}
+        neumarksDue={neumarksDue}
+        etherBalance={etherBalance}
+        downloadICBMAgreement={downloadICBMAgreement}
+      />
+    )}
+  </div>
+);
+
+const IcbmWalletBalanceComponent: React.SFC<IProps> = (props: IProps) => {
   return (
-    <Modal isOpen={isOpen} toggle={onCancel}>
-      <ModalComponentBody onClose={onCancel}>
-        <div className={styles.content}>
-          {!walletMigrationData || !ethAddress || isLoading ? (
-            <LoadingIndicator />
-          ) : isWalletMigrating ? (
-            <MigrateModal
-              walletMigrationData={walletMigrationData[currentMigrationStep - 1]}
-              migrationStep={currentMigrationStep}
-              onGotoWallet={onGotoWallet}
-              goToNextStep={goToNextStep}
-              success={
-                (currentMigrationStep === 1 && isFirstTxDone) ||
-                (currentMigrationStep === 2 && isSecondTxDone)
-              }
-              // TODO: Make better
-            />
-          ) : (
-            <BalanceModal
-              startMigration={startWalletMigration}
-              isVerificationFullyDone={isVerificationFullyDone && isEtherMigrationTargetSet}
-              ethAddress={ethAddress}
-              neumarksDue={neumarksDue}
-              etherBalance={etherBalance}
-              downloadICBMAgreement={downloadICBMAgreement}
-            />
-          )}
-        </div>
+    <Modal isOpen={props.isOpen} toggle={props.onCancel}>
+      <ModalComponentBody onClose={props.onCancel}>
+        <IcbmWalletBalanceComponentInner {...props} />
       </ModalComponentBody>
     </Modal>
   );

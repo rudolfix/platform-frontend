@@ -10,6 +10,7 @@ export interface IPanelProps extends CommonHtmlProps {
   rightComponent?: React.ReactNode;
   icon?: string;
   narrow?: boolean;
+  centerContent?: boolean;
 }
 
 const Panel: React.SFC<IPanelProps> = ({
@@ -19,6 +20,7 @@ const Panel: React.SFC<IPanelProps> = ({
   className,
   children,
   narrow,
+  centerContent,
   ...props
 }) => {
   const hasHeader = !!(headerText || rightComponent || icon);
@@ -32,7 +34,9 @@ const Panel: React.SFC<IPanelProps> = ({
           {rightComponent && <div className={styles.right}>{rightComponent}</div>}
         </header>
       )}
-      <div className={styles.content}>{children}</div>
+      <div className={cn(styles.content, centerContent ? "justify-content-center" : null)}>
+        {children}
+      </div>
     </div>
   );
 };

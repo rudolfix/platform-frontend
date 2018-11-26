@@ -24,7 +24,6 @@ import { selectUser } from "../auth/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
 import { selectIsSmartContractInitDone } from "../init/selectors";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
-import { selectIsExternalWallet } from "../web3/selectors";
 import {
   selectCombinedBeneficialOwnerOwnership,
   selectKycRequestOutsourcedStatus,
@@ -223,17 +222,11 @@ function* submitIndividualRequest(
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_REQUEST") return;
   try {
-    const isExternalWallet: boolean = yield select((state: IAppState) =>
-      selectIsExternalWallet(state.web3),
-    );
-
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],
       formatIntlMessage("kyc.modal.submit-title"),
-      isExternalWallet
-        ? formatIntlMessage("kyc.modal.submit-description.external-wallet")
-        : undefined,
+      formatIntlMessage("kyc.modal.submit-description"),
     );
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitIndividualRequest();
@@ -244,7 +237,7 @@ function* submitIndividualRequest(
         formatIntlMessage("kyc.modal.verification.description"),
         undefined,
         formatIntlMessage("kyc.modal.verification.settings-button"),
-        actions.routing.goToSettings(),
+        actions.routing.goToProfile(),
       ),
     );
   } catch {
@@ -618,16 +611,11 @@ function* submitBusinessRequest(
       return;
     }
 
-    const isExternalWallet: boolean = yield select((state: IAppState) =>
-      selectIsExternalWallet(state.web3),
-    );
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],
       formatIntlMessage("kyc.modal.submit-title"),
-      isExternalWallet
-        ? formatIntlMessage("kyc.modal.submit-description.external-wallet")
-        : undefined,
+      formatIntlMessage("kyc.modal.submit-description"),
     );
 
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
@@ -639,7 +627,7 @@ function* submitBusinessRequest(
         formatIntlMessage("kyc.modal.verification.description"),
         undefined,
         formatIntlMessage("kyc.modal.verification.settings-button"),
-        actions.routing.goToSettings(),
+        actions.routing.goToProfile(),
       ),
     );
   } catch {

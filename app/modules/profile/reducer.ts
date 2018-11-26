@@ -1,26 +1,26 @@
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
-export interface ISettings {
+export interface IProfile {
   isEmailTemporaryCancelled: boolean;
 }
 
-const initialState: ISettings = {
+const initialState: IProfile = {
   isEmailTemporaryCancelled: false,
 };
 
-export const settingsReducer: AppReducer<ISettings> = (
+export const profileReducer: AppReducer<IProfile> = (
   state = initialState,
   action,
-): DeepReadonly<ISettings> => {
+): DeepReadonly<IProfile> => {
   switch (action.type) {
-    case "SETTINGS_CANCEL_EMAIL":
+    case "PROFILE_CANCEL_EMAIL":
       return {
         ...state,
         isEmailTemporaryCancelled: true,
       };
-    case "SETTINGS_ADD_NEW_EMAIL":
-    case "SETTINGS_REVERT_CANCEL_EMAIL":
+    case "PROFILE_ADD_NEW_EMAIL":
+    case "PROFILE_REVERT_CANCEL_EMAIL":
       return {
         ...state,
         isEmailTemporaryCancelled: false,
@@ -30,4 +30,4 @@ export const settingsReducer: AppReducer<ISettings> = (
   return state;
 };
 
-export const selectIsCancelEmail = (state: ISettings): boolean => state.isEmailTemporaryCancelled;
+export const selectIsCancelEmail = (state: IProfile): boolean => state.isEmailTemporaryCancelled;

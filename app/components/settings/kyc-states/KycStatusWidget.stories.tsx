@@ -12,7 +12,7 @@ const commonProps = {
   step: 1,
   userType: EUserType.INVESTOR,
   onGoToKycHome: () => {},
-  onGoToWallet: () => {},
+  onGoToDashboard: () => {},
 };
 
 storiesOf("KYC/StatusWidget", module)
@@ -66,6 +66,14 @@ storiesOf("KYC/StatusWidget", module)
   .add("outsourced-review_pending", () => (
     <KycStatusWidgetComponent
       {...commonProps}
+      userType={EUserType.INVESTOR}
+      requestStatus="Outsourced"
+      requestOutsourcedStatus="review_pending"
+    />
+  ))
+  .add("error", () => (
+    <KycStatusWidgetComponent
+      {...{ ...commonProps, error: "bla bla error", loading: true }}
       userType={EUserType.INVESTOR}
       requestStatus="Outsourced"
       requestOutsourcedStatus="review_pending"

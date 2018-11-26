@@ -15,8 +15,12 @@ interface IStateProps {
 export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ address }) => (
   <Panel
     className="h-100"
+    centerContent={false}
     headerText={<FormattedMessage id="your-ethereum-address-widget.header" />}
   >
+    <p>
+      <FormattedMessage id="your-ethereum-address-widget.explanation" />
+    </p>
     <div className={styles.panelBody}>
       <AccountAddress address={address} />
     </div>

@@ -42,7 +42,7 @@ export const NormalKycRouter: React.SFC = () => (
 
 export const EtoKycRouter: React.SFC = () => (
   <SwitchConnected>
-    <Route path={kycRoutes.start} component={KycLegalRepresentative} exact />
+    <Route path={kycRoutes.start} component={KycBusinessData} exact />
 
     {/* Business Only*/}
     <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />

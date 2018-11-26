@@ -70,7 +70,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   reopenRequest: () => void;
-  goToWallet: () => void;
+  goToProfile: () => void;
   goToDashboard: () => void;
 }
 
@@ -95,14 +95,14 @@ class RequestStateInfo extends React.Component<IProps, IState> {
           svgIcon={arrowLeft}
           onClick={
             this.props.userType === EUserType.INVESTOR
-              ? this.props.goToWallet
-              : this.props.goToDashboard
+              ? this.props.goToDashboard
+              : this.props.goToProfile
           }
         >
           {this.props.userType === EUserType.INVESTOR ? (
-            <FormattedMessage id="kyc.request-state.go-to-wallet" />
-          ) : (
             <FormattedMessage id="kyc.request-state.go-to-dashboard" />
+          ) : (
+            <FormattedMessage id="kyc.request-state.go-to-profile" />
           )}
         </Button>
       </div>
@@ -209,7 +209,7 @@ export const Kyc = compose<React.SFC>(
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},
-      goToWallet: () => dispatch(actions.routing.goToWallet()),
+      goToProfile: () => dispatch(actions.routing.goToProfile()),
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
     }),
     options: { pure: false },

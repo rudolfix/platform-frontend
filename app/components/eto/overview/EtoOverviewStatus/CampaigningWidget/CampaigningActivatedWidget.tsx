@@ -110,7 +110,8 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
               <FormattedMessage id="shared-component.eto-overview.investors-backed" />
             </span>
             <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
-              {investorsCount !== null ? investorsCount : "-"} out of {investorsLimit} whitelisted
+              {investorsCount !== null ? investorsLimit - investorsCount : investorsLimit} out of{" "}
+              {investorsLimit} slots remaining
             </span>
           </div>
           {isInvestor &&
@@ -127,7 +128,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
           !isVerifiedInvestor && (
             <ButtonLink
               className="mb-3"
-              to={appRoutes.settings}
+              to={appRoutes.profile}
               data-test-id="eto-overview-settings-update-required-to-invest"
             >
               <FormattedMessage id="shared-component.eto-overview.settings-update-required" />
@@ -211,4 +212,4 @@ const CampaigningActivatedWidget = compose<React.SFC<IExternalProps>>(
   setDisplayName("CampaigningActivatedWidget"),
 )(CampaigningActivatedWidgetComponent);
 
-export { CampaigningActivatedWidget };
+export { CampaigningActivatedWidget, CampaigningActivatedWidgetComponent };

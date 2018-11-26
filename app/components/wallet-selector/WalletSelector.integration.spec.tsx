@@ -35,6 +35,7 @@ import { Web3ManagerMock } from "../../lib/web3/Web3Manager.mock";
 import { actions } from "../../modules/actions";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
+import { ButtonLink } from "../shared/buttons";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./browser/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "./ledger/WalletLedgerInitComponent";
 import { walletRegisterRoutes } from "./walletRoutes";
@@ -130,7 +131,7 @@ describe("Wallet selector integration", () => {
     // ensure that ledger tab is selected
     mountedComponent
       .find(tid("wallet-selector-ledger"))
-      .find("a")
+      .find(ButtonLink)
       .simulate("click", { button: 0 });
 
     await waitForTid(mountedComponent, "ledger-wallet-error-msg");
@@ -270,13 +271,13 @@ describe("Wallet selector integration", () => {
     // select wallet in browser tab is selected
     mountedComponent
       .find(tid("wallet-selector-browser"))
-      .find("a")
+      .find(ButtonLink)
       .simulate("click", { button: 0 });
     await waitForTid(mountedComponent, "browser-wallet-error-msg");
 
     // there is no wallet in browser (BrowserWallet thrown BrowserWalletMissingError)
     expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
-      "We did not detect any Web3 wallet",
+      "Please check if the MetaMask extension is enabled in your browser. We were unable to detect any wallet.",
     );
 
     // wallet in browser is locked

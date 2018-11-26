@@ -5,26 +5,27 @@ import {
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
 } from "../../../lib/web3/BrowserWallet";
-import { ethereumNetworkIdToNetworkName } from "../../web3/utils";
 
-export function mapBrowserWalletErrorToErrorMessage(e: Error): string {
+/**
+ * Returns error message or undefined if error is unknown
+ */
+export function mapBrowserWalletErrorToErrorMessage(e: Error): string | undefined {
   if (e instanceof BrowserWalletLockedError) {
     return "Your wallet seems to be locked — we can't access any accounts";
   }
   if (e instanceof BrowserWalletMismatchedNetworkError) {
-    return `Your wallet is connected to the wrong network: ${ethereumNetworkIdToNetworkName(
-      e.actualNetworkId,
-    )}. Please change the network`;
+    return "Please connect your wallet to the \"Main Ethereum Network\" by selecting from the \"Networks\" drop-down menu in MetaMask.";
   }
   if (e instanceof BrowserWalletMissingError) {
-    return "We did not detect any Web3 wallet";
+    return "Please check if the MetaMask extension is enabled in your browser. We were unable to detect any wallet.";
   }
   if (e instanceof BrowserWalletAccountApprovalRejectedError) {
     return "Data approval rejected";
   }
   if (e instanceof BrowserWalletAccountApprovalPendingError) {
-    return "Data approval pending";
+    return "Please check MetaMask to confirm this action.";
   }
-  return "Web3 wallet not available";
+
+  return undefined;
 }
 //TODO: ADD TRANSLATIONS

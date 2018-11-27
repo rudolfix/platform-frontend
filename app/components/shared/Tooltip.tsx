@@ -27,11 +27,15 @@ export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({
   const tooltipId = targetId || `tooltip-${tooltipCount++}`;
   return (
     <span className={cn(className, styles.tooltipWrapper)} onClick={e => e.preventDefault()}>
-      <span key={tooltipId} className={styles.tooltip} id={tooltipId}>
+      <span
+        key={tooltipId} // add specific key to recreate dom, when tooltipId changed dynamically
+        className={styles.tooltip}
+        id={tooltipId}
+      >
         <InlineIcon svgIcon={icon} />
       </span>
       <CustomTooltip
-        key={`${tooltipId}-container`}
+        key={`${tooltipId}-container`} // add specific key to recreate dom, when tooltipId changed dynamically
         isOpen={isOpen}
         target={tooltipId}
         className={cn(alignLeft && styles.alignLeft)}

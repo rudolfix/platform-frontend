@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { delay } from "redux-saga";
-import { put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { put, select, take, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
@@ -22,7 +22,8 @@ import { EETOStateOnChain } from "../public-etos/types";
 import { neuCall } from "../sagasUtils";
 import { selectEtherPriceEur, selectEurPriceEther } from "../shared/tokenPrice/selectors";
 import { ETxSenderType } from "../tx/interfaces";
-import { selectTxGasCostEth } from "../tx/sender/selectors";
+import { selectTxGasCostEthUlps } from "../tx/sender/selectors";
+import { generateInvestmentTransaction } from "../tx/transactions/investment/sagas";
 import { txValidateSaga } from "../tx/validator/sagas";
 import {
   selectLiquidEtherBalance,
@@ -114,7 +115,7 @@ function* investEntireBalance(): any {
       break;
 
     case EInvestmentType.InvestmentWallet:
-      const gasCostEth = selectTxGasCostEth(state);
+      const gasCostEth = selectTxGasCostEthUlps(state);
       balance = selectLiquidEtherBalance(state.wallet);
       balance = subtractBigNumbers([balance, gasCostEth]);
       yield computeAndSetCurrencies(balance, EInvestmentCurrency.Ether);
@@ -135,7 +136,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
 
   if (!contribs || !euroValue || !wallet) return;
 
-  const gasPrice = selectTxGasCostEth(state);
+  const gasPrice = selectTxGasCostEthUlps(state);
 
   if (investmentFlow.investmentType === EInvestmentType.InvestmentWallet) {
     if (
@@ -215,6 +216,7 @@ function* start(action: TAction): any {
   yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
   yield put(actions.kyc.kycLoadClientData());
   yield put(actions.txTransactions.startInvestment());
+  yield take("TX_SENDER_WATCH_PENDING_TXS_DONE");
   yield getActiveInvestmentTypes();
   yield resetTxValidations();
 }
@@ -314,7 +316,8 @@ function* bankTransferChange(action: TAction): any {
 
 function* resetTxValidations(): any {
   yield put(actions.txValidator.setValidationState());
-  yield put(actions.txSender.setTransactionData());
+  const initialTxData = yield neuCall(generateInvestmentTransaction);
+  yield put(actions.txSender.setTransactionData(initialTxData));
 }
 
 export function* investmentFlowSagas(): any {

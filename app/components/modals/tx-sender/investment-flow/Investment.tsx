@@ -35,7 +35,7 @@ import {
   selectEurPriceEther,
 } from "../../../../modules/shared/tokenPrice/selectors";
 import { EValidationState } from "../../../../modules/tx/sender/reducer";
-import { selectTxGasCostEth } from "../../../../modules/tx/sender/selectors";
+import { selectTxGasCostEthUlps } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
@@ -238,6 +238,13 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
       <Container className={styles.container} fluid>
         <Row>
           <Col>
+            <p className="mb-0">
+              <FormattedMessage id="investment-flow.you-will-receive" />
+            </p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <FormGroup>
               <Label>
                 <FormattedMessage id="investment-flow.equity-tokens" />
@@ -308,7 +315,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         euroValue: eur,
         ethValue: selectInvestmentEthValueUlps(state),
         errorState: selectInvestmentErrorState(state),
-        gasCostEth: selectTxGasCostEth(state),
+        gasCostEth: selectTxGasCostEthUlps(state),
         investmentType: selectInvestmentType(state),
         wallets: createWallets(state),
         neuReward: selectNeuRewardUlpsByEtoId(etoId, state),
@@ -342,7 +349,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
       eurPriceEther,
     }) => {
       const isBankTransfer = investmentType === EInvestmentType.BankTransfer;
-      const gasCostEther = isBankTransfer ? "0" : gasCostEth;
+      const gasCostEther = isBankTransfer || !ethValue ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEther, etherPriceEur]);
       const minTicketEur =
         (etoTicketSizes && etoTicketSizes.minTicketEurUlps.div(Q18).toFixed()) ||

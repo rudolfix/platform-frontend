@@ -59,6 +59,10 @@
 }
 
 .input-field {
+  &::placeholder {
+    font-size: .9em;
+  }
+
   &:disabled {
     color: $color-silver;
 

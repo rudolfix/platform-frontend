@@ -9,23 +9,23 @@ import {BrowserWalletErrorMessage, ErrorWithData} from '../../../components/tran
 
 
 
-export function mapBrowserWalletErrorToErrorMessage(e: Error): BrowserWalletErrorMessage {
+export function mapBrowserWalletErrorToErrorMessage(e: Error): ErrorWithData {
   if (e instanceof BrowserWalletLockedError) {
-    return  BrowserWalletErrorMessage.WALLET_IS_LOCKED;
+    return  { messageType: BrowserWalletErrorMessage.WALLET_IS_LOCKED};
   }
   if (e instanceof BrowserWalletMismatchedNetworkError) {
-    return BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK;
+    return  { messageType: BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK};
   }
   if (e instanceof BrowserWalletMissingError) {
-    return BrowserWalletErrorMessage.WALLET_NOT_ENABLED;
+    return  { messageType: BrowserWalletErrorMessage.WALLET_NOT_ENABLED};
   }
   if (e instanceof BrowserWalletAccountApprovalRejectedError) {
-    return BrowserWalletErrorMessage.ACCOUNT_APPROVAL_REJECTED;
+    return  { messageType: BrowserWalletErrorMessage.ACCOUNT_APPROVAL_REJECTED};
   }
   if (e instanceof BrowserWalletAccountApprovalPendingError) {
-    return BrowserWalletErrorMessage.ACCOUNT_APPROVAL_PENDING;
+    return  { messageType: BrowserWalletErrorMessage.ACCOUNT_APPROVAL_PENDING};
   }
 
-  return BrowserWalletErrorMessage.GENERIC_ERROR;
+  return  { messageType: BrowserWalletErrorMessage.GENERIC_ERROR};
 }
 

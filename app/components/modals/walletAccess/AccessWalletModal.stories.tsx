@@ -28,7 +28,7 @@ storiesOf("AccessWalletModal", module)
     <AccessWalletContainerComponent {...props} walletType={EWalletType.BROWSER} />
   ))
   .add("metamask with error", () => {
-    const data = {...props, errorMessage: {errorType: BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK}}
+    const data = {...props, errorMessage: {messageType: BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK}}
     return (
     <AccessWalletContainerComponent {...data} walletType={EWalletType.BROWSER} />
   )}
@@ -40,8 +40,8 @@ storiesOf("AccessWalletModal", module)
     const testData = {
       ...props,
       errorMessage: {
-        errorType: MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS,
-        errorData: {actualAddress: '12345', desiredAddress: '56789'}
+        messageType: MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS,
+        messageData: {actualAddress: '12345', desiredAddress: '56789'}
       }
     };
     return (

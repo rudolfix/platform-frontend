@@ -1,7 +1,6 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
-import { externalRoutes } from "../../../components/externalRoutes";
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
@@ -41,6 +40,12 @@ import { EWalletSubType, EWalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
+import {
+  BackupRecovery,
+  GenericError,
+  mapEnumToTranslation,
+  SignInUserErrorMessage
+} from "../../../components/translatedMessages/errorMessages";
 
 export async function retrieveMetadataFromVaultAPI(
   { lightWalletUtil, vaultApi }: TGlobalDependencies,
@@ -126,7 +131,7 @@ export async function setupLightWalletPromise(
 }
 
 export function* lightWalletRegisterWatch(
-  { intlWrapper, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   try {
@@ -143,32 +148,18 @@ export function* lightWalletRegisterWatch(
     yield neuCall(signInUser);
   } catch (e) {
     yield effects.put(actions.walletSelector.reset());
-    if (e instanceof EmailAlreadyExists)
-      yield put(
-        actions.genericModal.showErrorModal(
-          "Error",
-          intlWrapper.intl.formatIntlMessage(
-            "modules.auth.sagas.sign-in-user.email-already-exists",
-          ),
-        ),
-      );
-    else {
-      logger.error("Light wallet Register Error", e);
-      if (e instanceof LightError)
-        yield put(
-          actions.genericModal.showErrorModal("Error", mapLightWalletErrorToErrorMessage(e)),
-        );
-      else
-        yield put(
-          actions.genericModal.showErrorModal(
-            "Error",
-            intlWrapper.intl.formatHTMLMessage(
-              { id: "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems" },
-              { url: `${externalRoutes.neufundSupport}/home` },
-            ),
-          ),
-        );
+
+    let error;
+    if (e instanceof EmailAlreadyExists){
+      error = mapEnumToTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
+    }  else if (e instanceof LightError )  {
+      logger.error("Light wallet recovery error", e);
+      error = mapEnumToTranslation(mapLightWalletErrorToErrorMessage(e))
+    } else {
+      error = mapEnumToTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
     }
+
+    yield put(actions.genericModal.showErrorModal("Error", error))
   }
 }
 
@@ -181,7 +172,7 @@ async function checkEmailPromise(
 }
 
 export function* lightWalletRecoverWatch(
-  { intlWrapper, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   try {
@@ -227,40 +218,22 @@ export function* lightWalletRecoverWatch(
     yield put(actions.routing.goToSuccessfulRecovery());
   } catch (e) {
     yield effects.put(actions.walletSelector.reset());
-    if (e instanceof EmailAlreadyExists)
-      yield put(
-        actions.genericModal.showErrorModal(
-          "Error",
-          intlWrapper.intl.formatIntlMessage(
-            "modules.auth.sagas.sign-in-user.email-already-exists",
-          ),
-        ),
-      );
-    else {
+
+    let error;
+    if (e instanceof EmailAlreadyExists){
+      error = mapEnumToTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
+    }  else if (e instanceof LightError )  {
       logger.error("Light wallet recovery error", e);
-      if (e instanceof LightError)
-        yield put(
-          actions.genericModal.showErrorModal("Error", mapLightWalletErrorToErrorMessage(e)),
-        );
-      else {
-        yield put(
-          actions.genericModal.showErrorModal(
-            "Error",
-            intlWrapper.intl.formatHTMLMessage(
-              { id: "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems" },
-              { url: `${externalRoutes.neufundSupport}/home` },
-            ),
-          ),
-        );
-      }
+      error = mapEnumToTranslation(mapLightWalletErrorToErrorMessage(e))
+    } else {
+      error = mapEnumToTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
     }
+
+    yield put(actions.genericModal.showErrorModal("Error", error))
   }
 }
 
 export function* lightWalletBackupWatch({
-  intlWrapper: {
-    intl: { formatIntlMessage },
-  },
   logger,
 }: TGlobalDependencies): Iterator<any> {
   try {
@@ -268,8 +241,8 @@ export function* lightWalletBackupWatch({
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield neuCall(
       displayInfoModalSaga,
-      formatIntlMessage("modules.wallet-selector.light-wizard.sagas.backup-recovery"),
-      formatIntlMessage("modules.wallet-selector.light-wizard.sagas.successfully.backed-up"),
+      mapEnumToTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_TITLE}),
+      mapEnumToTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_DESCRIPTION}),
     );
     yield loadUser();
     yield effects.put(actions.routing.goToProfile());

@@ -1,7 +1,8 @@
 import { createAction, createSimpleAction } from "../../actionsUtils";
+import {ErrorWithData} from "../../../components/translatedMessages/errorMessages";
 
 export const lightWizardActions = {
-  lightWalletConnectionError: (errorMsg: string) =>
+  lightWalletConnectionError: (errorMsg: ErrorWithData) =>
     createAction("LIGHT_WALLET_CONNECTION_ERROR", { errorMsg }),
   lightWalletReset: () => createSimpleAction("LIGHT_WALLET_RESET"),
   lightWalletLogin: (email: string, password: string) =>

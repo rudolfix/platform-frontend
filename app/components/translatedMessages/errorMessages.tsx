@@ -9,21 +9,23 @@ interface ITranslationValues {
 }
 
 export interface ErrorWithData {
-  errorType: ErrorMessage;
-  errorData?: Object;
+  messageType: TranslatedMessageType;
+  messageData?: Object;
 }
 
-export type ErrorMessage =
+export type TranslatedMessageType =
   | GenericError
   | SignInUserErrorMessage
   | BrowserWalletErrorMessage
   | LedgerErrorMessage
   | LightWalletErrorMessage
   | SignerErrorMessage
-  | MismatchedWalletAddressErrorMessage;
+  | MismatchedWalletAddressErrorMessage
+  | BackupRecovery
 
 export enum GenericError {
   GENERIC_ERROR = "genericError",
+  USER_ALREADY_EXISTS = "userAlreadyExists"
 }
 
 export enum SignInUserErrorMessage {
@@ -67,14 +69,24 @@ export enum MismatchedWalletAddressErrorMessage {
   MISMATCHED_WALLET_ADDRESS = "mismatchedWalletAddress",
 }
 
-export const MapEnumToTranslation = ({
-  errorType,
-  errorData,
+export enum BackupRecovery {
+  BACKUP_SUCCESS_TITLE = "backupSuccessTitle",
+  BACKUP_SUCCESS_DESCRIPTION = "backupSuccessDescription",
+}
+
+export const mapEnumToTranslation = ({
+  messageType,
+  messageData,
 }: ErrorWithData): TTranslatedString => {
-  switch (errorType) {
+  switch (messageType) {
+    case BackupRecovery.BACKUP_SUCCESS_TITLE:
+      return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.backup-recovery"/>;
+    case BackupRecovery.BACKUP_SUCCESS_DESCRIPTION:
+      return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.successfully.backed-up"/>;
     case GenericError.GENERIC_ERROR:
       return <FormattedMessage id="error-message.generic-error"/>;
-
+    case GenericError.USER_ALREADY_EXISTS:
+      return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists"/>;
     case SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED:
       return <FormattedMessage id="modules.auth.sagas.sign-in-user.message-signing-was-rejected" />;
     case SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT:
@@ -136,7 +148,7 @@ export const MapEnumToTranslation = ({
       return (
         <FormattedMessage
           id="error-message.mismatched-wallet-address"
-          values={errorData as ITranslationValues}
+          values={messageData as ITranslationValues}
         />
       );
   }

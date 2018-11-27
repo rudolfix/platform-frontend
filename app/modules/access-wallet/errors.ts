@@ -22,22 +22,22 @@ export class MismatchedWalletAddressError extends Error {
 
 export function mapSignMessageErrorToErrorMessage(error: Error): ErrorWithData {
   if (error instanceof BrowserWalletError) {
-    return { errorType: mapBrowserWalletErrorToErrorMessage(error) };
+    return mapBrowserWalletErrorToErrorMessage(error);
   }
   if (error instanceof LedgerError) {
-    return { errorType: mapLedgerErrorToErrorMessage(error)};
+    return mapLedgerErrorToErrorMessage(error);
   }
   if (error instanceof LightWalletError) {
-    return {errorType: mapLightWalletErrorToErrorMessage(error)};
+    return mapLightWalletErrorToErrorMessage(error);
   }
   if (error instanceof SignerError) {
-    return { errorType: mapSignerErrorToErrorMessage(error)};
+    return mapSignerErrorToErrorMessage(error);
   }
   if (error instanceof MismatchedWalletAddressError) {
-    return { errorType: MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS,
-      errorData :{desiredAddress: error.desiredAddress, actualAddress: error.actualAddress}
+    return { messageType: MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS,
+      messageData :{desiredAddress: error.desiredAddress, actualAddress: error.actualAddress}
     };
   }
 
-  return {errorType: GenericError.GENERIC_ERROR};
+  return {messageType: GenericError.GENERIC_ERROR};
 }

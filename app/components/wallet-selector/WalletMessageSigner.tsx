@@ -12,7 +12,7 @@ import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";
 
 import * as styles from "./WalletMessageSigner.module.scss";
-import {ErrorWithData, MapEnumToTranslation} from "../translatedMessages/errorMessages";
+import {ErrorWithData, mapEnumToTranslation} from "../translatedMessages/errorMessages";
 
 interface IStateProps {
   errorMsg?: ErrorWithData;
@@ -38,11 +38,11 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
   ) : (
     <>
       <MessageSignPrompt />
-      {console.log("MapEnumToTranslation",errorMsg,MapEnumToTranslation(errorMsg as any))}
+      {console.log("mapEnumToTranslation",errorMsg,mapEnumToTranslation(errorMsg as any))}
       {errorMsg ? (
         <Row className="justify-content-center">
           <Col>
-            <WarningAlert className="my-4 text-center">{MapEnumToTranslation(errorMsg)}</WarningAlert>
+            <WarningAlert className="my-4 text-center">{mapEnumToTranslation(errorMsg)}</WarningAlert>
           </Col>
         </Row>
       ) : (

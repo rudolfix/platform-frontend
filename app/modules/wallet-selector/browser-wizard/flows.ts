@@ -38,9 +38,9 @@ export const browserWizardFlows = {
           if (e instanceof BrowserWalletAccountApprovalRejectedError) {
             dispatch(actions.walletSelector.browserWalletAccountApprovalRejectedError());
           } else {
-            const message = mapBrowserWalletErrorToErrorMessage(e);
-            dispatch(actions.walletSelector.browserWalletConnectionError({errorType:message}));
-            if (message === BrowserWalletErrorMessage.GENERIC_ERROR) {
+            const error = mapBrowserWalletErrorToErrorMessage(e);
+            dispatch(actions.walletSelector.browserWalletConnectionError(error));
+            if (error.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {
               logger.error("Error while trying to connect with browser wallet", e);
             }
           }

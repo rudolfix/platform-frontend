@@ -133,7 +133,7 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       const errorData = mapSignMessageErrorToErrorMessage(e);
       yield effects.put(actions.signMessageModal.signingError(errorData));
 
-      if (e instanceof SignerError || errorData.errorType === GenericError.GENERIC_ERROR) throw e;
+      if (e instanceof SignerError || errorData.messageType === GenericError.GENERIC_ERROR) throw e;
 
       yield delay(500);
     }

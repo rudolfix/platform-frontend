@@ -1,15 +1,15 @@
 import {SignerRejectConfirmationError, SignerTimeoutError} from "./Web3Manager";
-import {SignerErrorMessage} from '../../components/translatedMessages/errorMessages'
+import {ErrorWithData, SignerErrorMessage} from '../../components/translatedMessages/errorMessages'
 
-export function mapSignerErrorToErrorMessage(e: Error): SignerErrorMessage {
+export function mapSignerErrorToErrorMessage(e: Error): ErrorWithData {
   if (e instanceof SignerRejectConfirmationError) {
-    return SignerErrorMessage.CONFIRMATION_REJECTED;
+    return {messageType: SignerErrorMessage.CONFIRMATION_REJECTED};
   }
 
   if (e instanceof SignerTimeoutError) {
-    return SignerErrorMessage.TIMEOUT;
+    return {messageType: SignerErrorMessage.TIMEOUT};
   }
 
-  return SignerErrorMessage.GENERIC_ERROR;
+  return {messageType: SignerErrorMessage.GENERIC_ERROR};
 }
 

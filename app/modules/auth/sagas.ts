@@ -232,15 +232,15 @@ function* handleSignInUser({
     logger.error("User Sign in error", e);
     if (e instanceof SignerRejectConfirmationError) {
       yield effects.put(
-        actions.walletSelector.messageSigningError({errorType:SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED}),
+        actions.walletSelector.messageSigningError({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED}),
       );
     } else if (e instanceof SignerTimeoutError) {
       yield effects.put(
-        actions.walletSelector.messageSigningError({errorType: SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT}),
+        actions.walletSelector.messageSigningError({messageType: SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT}),
       );
     } else {
       yield effects.put(
-        actions.walletSelector.messageSigningError({errorType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE}),
+        actions.walletSelector.messageSigningError({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE}),
       );
     }
   }

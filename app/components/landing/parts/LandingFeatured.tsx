@@ -6,13 +6,13 @@ import { appRoutes } from "../../appRoutes";
 import { EtoWidgetView } from "../../eto/EtoWidgetView";
 import { externalRoutes } from "../../externalRoutes";
 import { ButtonLink, ButtonSize, EButtonLayout } from "../../shared/buttons";
-import { NeonHeader } from "../shared/NeonHeader";
+import { ENeonHeaderSize, NeonHeader } from "../shared/NeonHeader";
 
 import * as styles from "./LandingFeatured.module.scss";
 
 const LandingFeatured: React.SFC = () => (
   <section className={styles.landingFeaturedWrapper}>
-    <NeonHeader>
+    <NeonHeader size={ENeonHeaderSize.BIG}>
       <FormattedHTMLMessage id="platform.landing.featured.header" tagName="span" />
     </NeonHeader>
     <p className={styles.landingFeaturedDescription}>

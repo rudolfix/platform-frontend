@@ -28,6 +28,15 @@ export class CustomTooltip extends React.Component<TooltipProps & IProps> {
     }
   }
 
+  componentDidCatch(error: any, info: any): void {
+    // tslint:disable-next-line:no-console
+    console.error(error, info);
+    // trigger a rerender to update current dom
+    // this prevents errors where the DOM node with the current target id
+    // seems not to be found
+    this.setState({ tooltipOpen: this.state.tooltipOpen });
+  }
+
   render(): React.ReactChild {
     const { target, className, isOpen, toggle, children, ...props } = this.props;
     return (

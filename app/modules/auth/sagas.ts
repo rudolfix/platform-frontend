@@ -276,7 +276,7 @@ function* handleAcceptCurrentAgreement({
     yield effects.put(actions.auth.setUser(user));
   } catch (e) {
     notificationCenter.error("There was a problem with accepting Terms and Conditions");
-    logger.error("Could not accept Terms and Conditions");
+    logger.error("Could not accept Terms and Conditions", e);
   }
 }
 
@@ -393,10 +393,14 @@ export function* loadCurrentAgreement({
     yield neuTakeOnly("INIT_DONE", { initType: "smartcontractsInit" });
   }
 
-  const result = yield contractsService.universeContract.currentAgreement();
-  let currentAgreementHash = result[2] as string;
-  currentAgreementHash = currentAgreementHash.replace("ipfs:", "");
-  yield effects.put(actions.auth.setCurrentAgreementHash(currentAgreementHash));
+  try {
+    const result = yield contractsService.universeContract.currentAgreement();
+    let currentAgreementHash = result[2] as string;
+    currentAgreementHash = currentAgreementHash.replace("ipfs:", "");
+    yield effects.put(actions.auth.setCurrentAgreementHash(currentAgreementHash));
+  } catch (e) {
+    logger.error("Could not load current agreement", e);
+  }
 }
 
 export const authSagas = function*(): Iterator<effects.Effect> {

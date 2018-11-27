@@ -1,6 +1,5 @@
-import { LocationChangeAction } from "react-router-redux";
 import { effects } from "redux-saga";
-import { fork, put, select, take } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -92,27 +91,17 @@ export function* checkIfSmartcontractsInitNeeded(): any {
   return !isDoneOrInProgress;
 }
 
-/**
- * We don't require app initialization on index (/) page so we are gonna watch location change action until navigation happens
- */
-export function* initSmartcontractsDelayed(): any {
+export function* initSmartcontractsOnce(): any {
   const isNeeded = yield checkIfSmartcontractsInitNeeded();
   if (!isNeeded) {
     return;
   }
 
-  while (true) {
-    const action: LocationChangeAction = yield take("@@router/LOCATION_CHANGE");
-
-    if (action.payload && action.payload.pathname !== "/") {
-      yield put(actions.init.start("smartcontractsInit"));
-      return;
-    }
-  }
+  yield put(actions.init.start("smartcontractsInit"));
 }
 
 export const initSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "INIT_START", initStartSaga);
   // Smart Contracts are only initialized once during the whole life cycle of the app
-  yield fork(initSmartcontractsDelayed);
+  yield fork(initSmartcontractsOnce);
 };

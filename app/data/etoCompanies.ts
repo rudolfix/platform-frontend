@@ -20,66 +20,14 @@ import * as myswoopbadge from "../assets/img/eto_offers/myswoopbadge@1x.jpg";
 import * as myswoopbadge2 from "../assets/img/eto_offers/myswoopbadge@2x.jpg";
 import * as myswoophover from "../assets/img/eto_offers/myswoophover@1x.jpg";
 import * as myswoop2hover from "../assets/img/eto_offers/myswoophover@2x.jpg";
-import * as neufund from "../assets/img/eto_offers/neufund@1x.png";
-import * as neufund2 from "../assets/img/eto_offers/neufund@2x.png";
-import * as neufundhover from "../assets/img/eto_offers/neufundhover@1x.png";
-import * as neufundhover2 from "../assets/img/eto_offers/neufundhover@2x.png";
 import * as nextbigthing from "../assets/img/eto_offers/nextbigthing.jpg";
 import * as nextbigthing2 from "../assets/img/eto_offers/nextbigthing@2x.jpg";
 import * as nextbigthinghover from "../assets/img/eto_offers/nextbigthinghover@1x.jpg";
 import * as nextbigthing2hover from "../assets/img/eto_offers/nextbigthinghover@2x.jpg";
-import * as unitihover from "../assets/img/eto_offers/uniti.gif";
-import * as uniti from "../assets/img/eto_offers/uniti@1x.jpg";
-import * as uniti2 from "../assets/img/eto_offers/uniti@2x.jpg";
 
 export type EtoData = { data: IEtoOfferingProps };
 
 export const etoCompaniesCards: Array<EtoData> = [
-  {
-    data: {
-      roundName: "series a+",
-      tags: [
-        {
-          text: "blockchain",
-          layout: "ghost-bold",
-          theme: "white",
-        },
-        {
-          text: "germany",
-          layout: "ghost-bold",
-          theme: "white",
-        },
-      ],
-      name: "NEUFUND",
-      description:
-        "Neufund provides an end to end solution for asset tokenization and issuance. Our set of protocols for enhanced ownership allows anyone to give real-world assets a representation on the Ethereum Blockchain in form of legally-binding security tokens.",
-      quote: {
-        text:
-          "Driven by the idea of making the investment world more inclusive, Neufund has already shaped a better future of fundraising. Looking at their progress over the last 2 years, I’m excited for what's to come.",
-        credits: "Frank Thelen, Freigeist Capital",
-      },
-      topImage: {
-        srcSet: {
-          "1x": neufund,
-          "2x": neufund2,
-        },
-        alt: "",
-        height: 50,
-        width: 100,
-      },
-      quoteImage: {
-        srcSet: {
-          "1x": neufundhover,
-          "2x": neufundhover2,
-        },
-        alt: "",
-        height: 35,
-        width: 100,
-      },
-      to:
-        "https://blog.neufund.org/first-ever-public-offering-of-equity-on-blockchain-86d8e27c477f",
-    },
-  },
   {
     data: {
       roundName: "series d",
@@ -120,49 +68,6 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       to: "https://itunes.apple.com/de/app/brille24/id1262362205?l=en&mt=8",
       bannerWithGif: true,
-    },
-  },
-  {
-    data: {
-      roundName: "seed",
-      tags: [
-        {
-          text: "automotive",
-          layout: "ghost-bold",
-          theme: "white",
-        },
-        {
-          text: "sweden",
-          layout: "ghost-bold",
-          theme: "white",
-        },
-      ],
-      name: "UNITI",
-      description:
-        "Uniti is the Swedish electric car startup offering what CNBC has called “the car of the future.” Safe & affordable EVs with premium technology and a progressive design — it’s what we do.",
-      quote: {
-        text: "",
-        credits: "",
-      },
-      topImage: {
-        srcSet: {
-          "1x": uniti,
-          "2x": uniti2,
-        },
-        alt: "",
-        height: 50,
-        width: 100,
-      },
-      quoteImage: {
-        srcSet: {
-          "1x": unitihover,
-        },
-        alt: "",
-        height: 261,
-        width: 525,
-      },
-      bannerWithGif: true,
-      to: "https://www.youtube.com/watch?v=49JASBTng-4",
     },
   },
   {

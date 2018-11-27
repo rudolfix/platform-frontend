@@ -23,7 +23,7 @@ const LandingFeatured: React.SFC = () => (
       />
     </p>
     <section className={cn(styles.landingFeaturesContainer, "pure")}>
-      <h3>
+      <h3 className={cn(styles.landingFeaturesHeader)}>
         <FormattedMessage id="platform.landing.list.header" />
       </h3>
       <ul className={styles.landingFeatures}>

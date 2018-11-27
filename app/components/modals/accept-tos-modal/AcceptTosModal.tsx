@@ -3,7 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../../modules/actions";
-import { selectIsLatestAgreementAccepted } from "../../../modules/auth/selectors";
+import {
+  selectIsLatestAgreementAccepted,
+  selectIsLatestAgreementLoaded,
+} from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
@@ -83,7 +86,7 @@ const AcceptTosModalComponent: React.SFC<IStateProps & IDispatchProps> = props =
 
 export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
-    isOpen: selectIsLatestAgreementAccepted(s),
+    isOpen: !selectIsLatestAgreementAccepted(s) && selectIsLatestAgreementLoaded(s),
   }),
   dispatchToProps: dispatch => ({
     onDownloadTos: () => dispatch(actions.auth.downloadCurrentAgreement()),

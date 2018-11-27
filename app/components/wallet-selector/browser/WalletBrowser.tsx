@@ -14,7 +14,7 @@ import { HorizontalLine } from "../../shared/HorizontalLine";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { StepCard } from "../../shared/StepCard";
 import { WarningAlert } from "../../shared/WarningAlert";
-import {ErrorWithData, mapEnumToTranslation} from "../../translatedMessages/messages";
+import {IMessage, getMessageTranslation} from "../../translatedMessages/messages";
 
 import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
@@ -23,7 +23,7 @@ import * as styles from "./WalletBrowser.module.scss";
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 
 interface IWalletBrowserProps {
-  errorMessage?: ErrorWithData;
+  errorMessage?: IMessage;
   isLoading: boolean;
   isLoginRoute: boolean;
   approvalRejected: boolean;
@@ -56,7 +56,7 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps & IWalletBrow
         {errorMessage &&
           <Row className="justify-content-center mb-4">
             <WarningAlert>
-              <span data-test-id="browser-wallet-error-msg">{mapEnumToTranslation(errorMessage)}</span>
+              <span data-test-id="browser-wallet-error-msg">{getMessageTranslation(errorMessage)}</span>
             </WarningAlert>
           </Row>
         }
@@ -104,7 +104,7 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps & IWalletBrow
 export const WalletBrowser = compose<React.SFC>(
   appConnect<IWalletBrowserProps, IWalletBrowserDispatchProps>({
     stateToProps: state => ({
-      errorMessage: state.browserWalletWizardState.errorMsg as ErrorWithData,
+      errorMessage: state.browserWalletWizardState.errorMsg as IMessage,
       isLoading: state.browserWalletWizardState.isLoading,
       isLoginRoute: selectIsLoginRoute(state.router),
       approvalRejected: state.browserWalletWizardState.approvalRejected,

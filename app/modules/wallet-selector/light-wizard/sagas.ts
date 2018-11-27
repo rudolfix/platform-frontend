@@ -43,7 +43,7 @@ import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
 import {
   BackupRecovery,
   GenericError,
-  mapEnumToTranslation,
+  getMessageTranslation,
   SignInUserErrorMessage
 } from "../../../components/translatedMessages/messages";
 
@@ -151,12 +151,12 @@ export function* lightWalletRegisterWatch(
 
     let error;
     if (e instanceof EmailAlreadyExists){
-      error = mapEnumToTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
+      error = getMessageTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
     }  else if (e instanceof LightError )  {
       logger.error("Light wallet recovery error", e);
-      error = mapEnumToTranslation(mapLightWalletErrorToErrorMessage(e))
+      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e))
     } else {
-      error = mapEnumToTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
+      error = getMessageTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
     }
 
     yield put(actions.genericModal.showErrorModal("Error", error))
@@ -221,12 +221,12 @@ export function* lightWalletRecoverWatch(
 
     let error;
     if (e instanceof EmailAlreadyExists){
-      error = mapEnumToTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
+      error = getMessageTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
     }  else if (e instanceof LightError )  {
       logger.error("Light wallet recovery error", e);
-      error = mapEnumToTranslation(mapLightWalletErrorToErrorMessage(e))
+      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e))
     } else {
-      error = mapEnumToTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
+      error = getMessageTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
     }
 
     yield put(actions.genericModal.showErrorModal("Error", error))
@@ -241,8 +241,8 @@ export function* lightWalletBackupWatch({
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield neuCall(
       displayInfoModalSaga,
-      mapEnumToTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_TITLE}),
-      mapEnumToTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_DESCRIPTION}),
+      getMessageTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_TITLE}),
+      getMessageTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_DESCRIPTION}),
     );
     yield loadUser();
     yield effects.put(actions.routing.goToProfile());

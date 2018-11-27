@@ -1,8 +1,8 @@
 import { createAction, createSimpleAction } from "../../actionsUtils";
-import {ErrorWithData} from "../../../components/translatedMessages/messages";
+import {IMessage} from "../../../components/translatedMessages/messages";
 
 export const browserWizardActions = {
-  browserWalletConnectionError: (errorMsg: ErrorWithData) =>
+  browserWalletConnectionError: (errorMsg: IMessage) =>
     createAction("BROWSER_WALLET_CONNECTION_ERROR", { errorMsg }),
   browserWalletAccountApprovalRejectedError: () =>
     createSimpleAction("BROWSER_WALLET_APPROVAL_REJECTED"),

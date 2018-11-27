@@ -1,6 +1,6 @@
 import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ILedgerAccount } from "./reducer";
-import {ErrorWithData} from "../../../components/translatedMessages/messages";
+import {IMessage} from "../../../components/translatedMessages/messages";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/1'/0", "44'/60'/0'/0"]; // TODO this should be taken from config
 
@@ -13,7 +13,7 @@ export const ledgerWizardActions = {
 
   ledgerConnectionEstablished: () => createSimpleAction("LEDGER_CONNECTION_ESTABLISHED"),
 
-  ledgerConnectionEstablishedError: (errorMsg: ErrorWithData) =>
+  ledgerConnectionEstablishedError: (errorMsg: IMessage) =>
     createAction("LEDGER_CONNECTION_ESTABLISHED_ERROR", { errorMsg }),
 
   setLedgerWizardDerivationPathPrefix: (derivationPathPrefix: string) =>

@@ -7,7 +7,7 @@ import {EthereumAddress} from "../../types";
 import {mapBrowserWalletErrorToErrorMessage} from "../wallet-selector/browser-wizard/errors";
 import {mapLedgerErrorToErrorMessage} from "../wallet-selector/ledger-wizard/errors";
 import {mapLightWalletErrorToErrorMessage} from "../wallet-selector/light-wizard/errors";
-import {ErrorWithData,MismatchedWalletAddressErrorMessage,GenericError } from "../../components/translatedMessages/messages";
+import {IMessage,MismatchedWalletAddressErrorMessage,GenericError } from "../../components/translatedMessages/messages";
 
 export class MismatchedWalletAddressError extends Error {
   constructor(
@@ -20,7 +20,7 @@ export class MismatchedWalletAddressError extends Error {
   }
 }
 
-export function mapSignMessageErrorToErrorMessage(error: Error): ErrorWithData {
+export function mapSignMessageErrorToErrorMessage(error: Error): IMessage {
   if (error instanceof BrowserWalletError) {
     return mapBrowserWalletErrorToErrorMessage(error);
   }

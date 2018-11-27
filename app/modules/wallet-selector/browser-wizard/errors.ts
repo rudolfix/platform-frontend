@@ -5,11 +5,11 @@ import {
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
 } from "../../../lib/web3/BrowserWallet";
-import {BrowserWalletErrorMessage, ErrorWithData} from '../../../components/translatedMessages/messages'
+import {BrowserWalletErrorMessage, IMessage} from '../../../components/translatedMessages/messages'
 
 
 
-export function mapBrowserWalletErrorToErrorMessage(e: Error): ErrorWithData {
+export function mapBrowserWalletErrorToErrorMessage(e: Error): IMessage {
   if (e instanceof BrowserWalletLockedError) {
     return  { messageType: BrowserWalletErrorMessage.WALLET_IS_LOCKED};
   }

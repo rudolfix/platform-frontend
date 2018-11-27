@@ -130,10 +130,10 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       }
       return yield effect;
     } catch (e) {
-      const errorData = mapSignMessageErrorToErrorMessage(e);
-      yield effects.put(actions.signMessageModal.signingError(errorData));
+      const error = mapSignMessageErrorToErrorMessage(e);
+      yield effects.put(actions.signMessageModal.signingError(error));
 
-      if (e instanceof SignerError || errorData.messageType === GenericError.GENERIC_ERROR) throw e;
+      if (e instanceof SignerError || error.messageType === GenericError.GENERIC_ERROR) throw e;
 
       yield delay(500);
     }

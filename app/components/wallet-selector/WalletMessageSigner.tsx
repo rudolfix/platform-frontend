@@ -12,10 +12,10 @@ import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";
 
 import * as styles from "./WalletMessageSigner.module.scss";
-import {ErrorWithData, mapEnumToTranslation} from "../translatedMessages/messages";
+import {IMessage, getMessageTranslation} from "../translatedMessages/messages";
 
 interface IStateProps {
-  errorMsg?: ErrorWithData;
+  errorMsg?: IMessage;
   isLightWallet: boolean;
 }
 
@@ -38,11 +38,11 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
   ) : (
     <>
       <MessageSignPrompt />
-      {console.log("mapEnumToTranslation",errorMsg,mapEnumToTranslation(errorMsg as any))}
+      {console.log("getMessageTranslation",errorMsg,getMessageTranslation(errorMsg as any))}
       {errorMsg ? (
         <Row className="justify-content-center">
           <Col>
-            <WarningAlert className="my-4 text-center">{mapEnumToTranslation(errorMsg)}</WarningAlert>
+            <WarningAlert className="my-4 text-center">{getMessageTranslation(errorMsg)}</WarningAlert>
           </Col>
         </Row>
       ) : (
@@ -63,7 +63,7 @@ MessageSignerComponent.displayName = "MessageSignerComponent";
 export const WalletMessageSigner = compose(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: state => ({
-      errorMsg: state.walletSelector.messageSigningError as ErrorWithData,
+      errorMsg: state.walletSelector.messageSigningError as IMessage,
       isLightWallet: selectIsLightWallet(state.web3),
     }),
     dispatchToProps: (dispatch, ownProps) => ({

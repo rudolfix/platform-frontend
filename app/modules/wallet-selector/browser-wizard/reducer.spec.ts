@@ -1,10 +1,11 @@
 import { expect } from "chai";
 import { actions } from "../../actions";
 import { browserWalletWizardInitialState, browserWalletWizardReducer } from "./reducer";
+import {GenericError} from "../../../components/translatedMessages/messages";
 
 describe("Wallet selector > Browser wizard > reducer", () => {
   it("should act on BROWSER_WALLET_CONNECTION_ERROR action", () => {
-    const expectedErrorMsg = "some error";
+    const expectedErrorMsg = {messageType:GenericError.GENERIC_ERROR};
 
     const actualState = browserWalletWizardReducer(
       undefined,

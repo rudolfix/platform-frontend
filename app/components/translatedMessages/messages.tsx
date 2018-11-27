@@ -8,7 +8,7 @@ interface ITranslationValues {
   [SignInUserErrorMessages: string]: string;
 }
 
-export interface ErrorWithData {
+export interface IMessage {
   messageType: TranslatedMessageType;
   messageData?: Object;
 }
@@ -74,10 +74,10 @@ export enum BackupRecovery {
   BACKUP_SUCCESS_DESCRIPTION = "backupSuccessDescription",
 }
 
-export const mapEnumToTranslation = ({
+export const getMessageTranslation = ({
   messageType,
   messageData,
-}: ErrorWithData): TTranslatedString => {
+}: IMessage): TTranslatedString => {
   switch (messageType) {
     case BackupRecovery.BACKUP_SUCCESS_TITLE:
       return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.backup-recovery"/>;

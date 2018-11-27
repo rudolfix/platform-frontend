@@ -4,13 +4,13 @@ import * as React from "react";
 import { noop } from "redux-saga/utils";
 import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { WalletBrowserComponent } from "./WalletBrowser";
+import {BrowserWalletErrorMessage} from "../../translatedMessages/messages";
 
 storiesOf("Wallet selector/Browser", module)
   .add("initial loading state", () => (
     <WalletBrowserComponent
       isLoading={true}
       isLoginRoute
-      intl={dummyIntl}
       approvalRejected={false}
       handleReset={noop}
     />
@@ -18,9 +18,8 @@ storiesOf("Wallet selector/Browser", module)
   .add("error message", () => (
     <WalletBrowserComponent
       isLoading={false}
-      errorMessage={"Error message"}
+      errorMessage={{messageType: BrowserWalletErrorMessage.GENERIC_ERROR}}
       isLoginRoute
-      intl={dummyIntl}
       approvalRejected={false}
       handleReset={noop}
     />
@@ -28,9 +27,8 @@ storiesOf("Wallet selector/Browser", module)
   .add("approval rejected", () => (
     <WalletBrowserComponent
       isLoading={false}
-      errorMessage={"Error message"}
+      errorMessage={{messageType: BrowserWalletErrorMessage.GENERIC_ERROR}}
       isLoginRoute
-      intl={dummyIntl}
       approvalRejected={true}
       handleReset={noop}
     />

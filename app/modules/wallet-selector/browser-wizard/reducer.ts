@@ -1,7 +1,9 @@
 import { AppReducer } from "../../../store";
+import {DeepReadonly} from "../../../types";
+import {ErrorWithData} from "../../../components/translatedMessages/messages";
 
 export interface IBrowserWalletWizardState {
-  errorMsg?: string;
+  errorMsg?: DeepReadonly<ErrorWithData>;
   isLoading: boolean;
   approvalRejected: boolean;
 }

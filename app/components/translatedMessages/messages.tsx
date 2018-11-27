@@ -115,7 +115,8 @@ export const mapEnumToTranslation = ({
       return <FormattedMessage id="error-message.browser-wallet.account-approval-pending"/>;
     case BrowserWalletErrorMessage.GENERIC_ERROR:
       return <FormattedMessage id="error-message.browser-wallet.generic-error"/>;
-    case LedgerErrorMessage.LEDGER_LOCKED:
+
+      case LedgerErrorMessage.LEDGER_LOCKED:
       return <FormattedMessage id="error-message.ledger.ledger-locked"/>;
     case LedgerErrorMessage.GENERIC_ERROR:
       return <FormattedMessage id="error-message.ledger.generic-error"/>;

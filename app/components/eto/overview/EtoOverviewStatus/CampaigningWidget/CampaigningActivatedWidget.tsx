@@ -132,7 +132,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
               to={appRoutes.profile}
               data-test-id="eto-overview-settings-update-required-to-invest"
             >
-              <FormattedMessage id="shared-component.eto-overview.settings-update-required" />
+              <FormattedMessage id="shared-component.eto-overview.verify-to-whitelist" />
             </ButtonLink>
           )}
       </>

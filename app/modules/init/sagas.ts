@@ -7,7 +7,7 @@ import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TAction } from "../actions";
-import { loadCurrentAgreement, loadJwt, loadUser } from "../auth/sagas";
+import { loadJwt, loadUser } from "../auth/sagas";
 import { selectUserType } from "../auth/selectors";
 import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
@@ -18,7 +18,6 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any 
     yield web3Manager.initialize();
 
     yield neuCall(initializeContracts);
-    yield neuCall(loadCurrentAgreement);
 
     yield put(actions.init.done("smartcontractsInit"));
   } catch (e) {

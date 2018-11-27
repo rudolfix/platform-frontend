@@ -93,17 +93,9 @@ class RequestStateInfo extends React.Component<IProps, IState> {
           layout={EButtonLayout.SECONDARY}
           iconPosition="icon-before"
           svgIcon={arrowLeft}
-          onClick={
-            this.props.userType === EUserType.INVESTOR
-              ? this.props.goToDashboard
-              : this.props.goToProfile
-          }
+          onClick={this.props.goToProfile}
         >
-          {this.props.userType === EUserType.INVESTOR ? (
-            <FormattedMessage id="kyc.request-state.go-to-dashboard" />
-          ) : (
-            <FormattedMessage id="kyc.request-state.go-to-profile" />
-          )}
+          <FormattedMessage id="kyc.request-state.go-to-profile" />
         </Button>
       </div>
     );

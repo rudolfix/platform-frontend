@@ -1,6 +1,6 @@
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import {BrowserWalletErrorMessage, ErrorWithData} from "../../config/errorMessages";
+import {BrowserWalletErrorMessage, ErrorWithData} from "../../components/translatedMessages/errorMessages";
 
 export interface ISignMessageModalState {
   isModalOpen: boolean;

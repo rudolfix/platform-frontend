@@ -10,6 +10,7 @@ import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
+import {BrowserWalletErrorMessage} from "../../../components/translatedMessages/errorMessages";
 
 export const browserWizardFlows = {
   resetApprovalRequestBrowserWalletWizard: injectableFn(
@@ -38,15 +39,9 @@ export const browserWizardFlows = {
             dispatch(actions.walletSelector.browserWalletAccountApprovalRejectedError());
           } else {
             const message = mapBrowserWalletErrorToErrorMessage(e);
-
-            // Unknown error message
-            if (message === undefined) {
+            dispatch(actions.walletSelector.browserWalletConnectionError({errorType:message}));
+            if (message === BrowserWalletErrorMessage.GENERIC_ERROR) {
               logger.error("Error while trying to connect with browser wallet", e);
-              dispatch(
-                actions.walletSelector.browserWalletConnectionError("Web3 wallet not available"),
-              );
-            } else {
-              dispatch(actions.walletSelector.browserWalletConnectionError(message));
             }
           }
         }

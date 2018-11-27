@@ -12,7 +12,7 @@ import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";
 
 import * as styles from "./WalletMessageSigner.module.scss";
-import {ErrorWithData, MapEnumToTranslation} from "../../config/errorMessages";
+import {ErrorWithData, MapEnumToTranslation} from "../translatedMessages/errorMessages";
 
 interface IStateProps {
   errorMsg?: ErrorWithData;

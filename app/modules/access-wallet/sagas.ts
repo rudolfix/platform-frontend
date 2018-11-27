@@ -22,7 +22,7 @@ import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
 import { EWalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
-import {BrowserWalletErrorMessage, GenericError} from "../../config/errorMessages";
+import {BrowserWalletErrorMessage, GenericError} from "../../components/translatedMessages/errorMessages";
 
 export async function ensureWalletConnection({
   web3Manager,
@@ -131,12 +131,7 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       return yield effect;
     } catch (e) {
       const errorData = mapSignMessageErrorToErrorMessage(e);
-
-      if (errorData === undefined) {
-        yield effects.put(actions.signMessageModal.signingError({errorType:BrowserWalletErrorMessage.BROWSER_WALLET_GENERIC_ERROR}));
-      } else {
-        yield effects.put(actions.signMessageModal.signingError(errorData));
-      }
+      yield effects.put(actions.signMessageModal.signingError(errorData));
 
       if (e instanceof SignerError || errorData.errorType === GenericError.GENERIC_ERROR) throw e;
 

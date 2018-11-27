@@ -1,5 +1,5 @@
 import { createAction, createSimpleAction } from "../actionsUtils";
-import { ErrorWithData} from "../../config/errorMessages";
+import { ErrorWithData} from "../../components/translatedMessages/errorMessages";
 
 export const accessWalletActions = {
   showAccessWalletModal: (title: string, message: string) =>

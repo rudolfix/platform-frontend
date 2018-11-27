@@ -7,30 +7,31 @@ import {
   LightWalletWrongPassword,
   LightWrongPasswordSaltError,
 } from "../../../lib/web3/LightWallet";
-import {LightWalletErrorMessage} from "../../../config/errorMessages";
+import {LightWalletErrorMessage} from '../../../components/translatedMessages/errorMessages'
 
 export function mapLightWalletErrorToErrorMessage(e: Error): LightWalletErrorMessage {
   if (e instanceof LightWrongPasswordSaltError) {
-    return LightWalletErrorMessage.LIGHT_WALLET_WRONG_PASSWORD_SALT;
+    return LightWalletErrorMessage.WRONG_PASSWORD_SALT;
   }
   if (e instanceof LightSignMessageError) {
-    return LightWalletErrorMessage.LIGHT_WALLET_SIGN_MESSAGE;
+    return LightWalletErrorMessage.SIGN_MESSAGE;
   }
   if (e instanceof LightCreationError) {
-    return LightWalletErrorMessage.LIGHT_WALLET_CREATION_ERROR;
+    return LightWalletErrorMessage.CREATION_ERROR;
   }
   if (e instanceof LightDeserializeError) {
-    return LightWalletErrorMessage.LIGHT_WALLET_DESERIALIZE;
+    return LightWalletErrorMessage.DESERIALIZE;
   }
   if (e instanceof LightKeyEncryptError) {
-    return LightWalletErrorMessage.LIGHT_WALLET_ENCRYPTION_ERROR;
+    return LightWalletErrorMessage.ENCRYPTION_ERROR;
   }
   if (e instanceof LightWalletWrongPassword) {
-    return LightWalletErrorMessage.LIGHT_WALLET_WRONG_PASSWORD;
+    return LightWalletErrorMessage.WRONG_PASSWORD;
   }
   if (e instanceof LightWalletWrongMnemonic) {
-    return LightWalletErrorMessage.LIGHT_WALLET_WRONG_MNEMONIC;
+    return LightWalletErrorMessage.WRONG_MNEMONIC;
   }
 
-  return LightWalletErrorMessage.LIGHT_WALLET_GENERIC_ERROR;
+  return LightWalletErrorMessage.GENERIC_ERROR;
 }
+

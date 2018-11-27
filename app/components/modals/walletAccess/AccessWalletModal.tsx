@@ -11,7 +11,7 @@ import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
-import {ErrorWithData, MapEnumToTranslation} from '../../../config/errorMessages';
+import {ErrorWithData, MapEnumToTranslation} from '../../translatedMessages/errorMessages';
 
 import * as ledgerConfirm from "../../../assets/img/wallet_selector/ledger_confirm.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";

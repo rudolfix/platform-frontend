@@ -3,7 +3,7 @@ import * as React from "react";
 import { EWalletType } from "../../../modules/web3/types";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainerComponent } from "./AccessWalletModal";
-import {BrowserWalletErrorMessage, MismatchedWalletAddressErrorMessage} from "../../../config/errorMessages";
+import {BrowserWalletErrorMessage, MismatchedWalletAddressErrorMessage} from "../../translatedMessages/errorMessages";
 
 const props = {
   title: "Verify your email",
@@ -28,7 +28,7 @@ storiesOf("AccessWalletModal", module)
     <AccessWalletContainerComponent {...props} walletType={EWalletType.BROWSER} />
   ))
   .add("metamask with error", () => {
-    const data = {...props, errorMessage: {errorType: BrowserWalletErrorMessage.BROWSER_WALLET_CONNECTED_TO_WRONG_NETWORK}}
+    const data = {...props, errorMessage: {errorType: BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK}}
     return (
     <AccessWalletContainerComponent {...data} walletType={EWalletType.BROWSER} />
   )}

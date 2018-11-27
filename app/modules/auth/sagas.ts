@@ -15,9 +15,10 @@ import { IAppState } from "../../store";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../access-wallet/sagas";
 import { actions, TAction } from "../actions";
+import { selectIsSmartContractInitDone } from "../init/selectors";
 import { loadKycRequestData } from "../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../routing/selectors";
-import { neuCall, neuTakeEvery } from "../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { selectUrlUserType } from "../wallet-selector/selectors";
 import { loadPreviousWallet } from "../web3/sagas";
 import {
@@ -275,7 +276,7 @@ function* handleAcceptCurrentAgreement({
     yield effects.put(actions.auth.setUser(user));
   } catch (e) {
     notificationCenter.error("There was a problem with accepting Terms and Conditions");
-    logger.error("Could not accept Terms and Conditions");
+    logger.error("Could not accept Terms and Conditions", e);
   }
 }
 
@@ -386,10 +387,20 @@ export function* loadCurrentAgreement({
 }: TGlobalDependencies): Iterator<any> {
   logger.info("Loading current agreement hash");
 
-  const result = yield contractsService.universeContract.currentAgreement();
-  let currentAgreementHash = result[2] as string;
-  currentAgreementHash = currentAgreementHash.replace("ipfs:", "");
-  yield effects.put(actions.auth.setCurrentAgreementHash(currentAgreementHash));
+  const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
+
+  if (!isSmartContractsInitialized) {
+    yield neuTakeOnly("INIT_DONE", { initType: "smartcontractsInit" });
+  }
+
+  try {
+    const result = yield contractsService.universeContract.currentAgreement();
+    let currentAgreementHash = result[2] as string;
+    currentAgreementHash = currentAgreementHash.replace("ipfs:", "");
+    yield effects.put(actions.auth.setCurrentAgreementHash(currentAgreementHash));
+  } catch (e) {
+    logger.error("Could not load current agreement", e);
+  }
 }
 
 export const authSagas = function*(): Iterator<effects.Effect> {
@@ -399,4 +410,5 @@ export const authSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
   yield fork(neuTakeEvery, "ACCEPT_CURRENT_AGREEMENT", handleAcceptCurrentAgreement);
   yield fork(neuTakeEvery, "DOWNLOAD_CURRENT_AGREEMENT", handleDownloadCurrentAgreement);
+  yield fork(neuTakeEvery, "AUTH_SET_USER", loadCurrentAgreement);
 };

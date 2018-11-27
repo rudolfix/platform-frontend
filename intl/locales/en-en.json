@@ -771,6 +771,7 @@
   "shared-component.eto-overview.success": "ETO was successful",
   "shared-component.eto-overview.success.summary": "An equivalent of {totalAmount} has been raised by {totalInvestors} investors",
   "shared-component.eto-overview.term-sheet": "Term sheet",
+  "shared-component.eto-overview.verify-to-whitelist": "Verify your identity to commit",
   "shared-component.eto-overview.whitelist.success": "Whitelist is full",
   "shared-component.eto-overview.whitelist.success.summary": "{totalInvestors, plural, one {# investor} other {# investors}} have committed {totalAmount}",
   "shared-component.eto-overview.your-pledge": "your commitment",

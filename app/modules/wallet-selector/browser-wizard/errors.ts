@@ -5,7 +5,7 @@ import {
   BrowserWalletMismatchedNetworkError,
   BrowserWalletMissingError,
 } from "../../../lib/web3/BrowserWallet";
-import {BrowserWalletErrorMessage, ErrorWithData} from '../../../components/translatedMessages/errorMessages'
+import {BrowserWalletErrorMessage, ErrorWithData} from '../../../components/translatedMessages/messages'
 
 
 

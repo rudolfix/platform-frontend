@@ -83,7 +83,8 @@ export const mapEnumToTranslation = ({
       return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.backup-recovery"/>;
     case BackupRecovery.BACKUP_SUCCESS_DESCRIPTION:
       return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.successfully.backed-up"/>;
-    case GenericError.GENERIC_ERROR:
+
+      case GenericError.GENERIC_ERROR:
       return <FormattedMessage id="error-message.generic-error"/>;
     case GenericError.USER_ALREADY_EXISTS:
       return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists"/>;

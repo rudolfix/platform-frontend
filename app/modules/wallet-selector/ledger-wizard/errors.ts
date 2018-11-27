@@ -1,5 +1,5 @@
 import {LedgerLockedError} from "../../../lib/web3/LedgerWallet";
-import {LedgerErrorMessage, ErrorWithData} from '../../../components/translatedMessages/errorMessages'
+import {LedgerErrorMessage, ErrorWithData} from '../../../components/translatedMessages/messages'
 
 export function mapLedgerErrorToErrorMessage(error: Error): ErrorWithData {
   if (error instanceof LedgerLockedError) {

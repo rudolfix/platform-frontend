@@ -1,5 +1,5 @@
 import { createAction, createSimpleAction } from "../../actionsUtils";
-import {ErrorWithData} from "../../../components/translatedMessages/errorMessages";
+import {ErrorWithData} from "../../../components/translatedMessages/messages";
 
 export const lightWizardActions = {
   lightWalletConnectionError: (errorMsg: ErrorWithData) =>

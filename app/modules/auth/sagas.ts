@@ -28,7 +28,7 @@ import {
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
-import { SignInUserErrorMessage } from '../../components/translatedMessages/errorMessages'
+import { SignInUserErrorMessage } from '../../components/translatedMessages/messages'
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();

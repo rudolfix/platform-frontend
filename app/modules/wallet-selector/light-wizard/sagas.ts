@@ -45,7 +45,7 @@ import {
   GenericError,
   mapEnumToTranslation,
   SignInUserErrorMessage
-} from "../../../components/translatedMessages/errorMessages";
+} from "../../../components/translatedMessages/messages";
 
 export async function retrieveMetadataFromVaultAPI(
   { lightWalletUtil, vaultApi }: TGlobalDependencies,

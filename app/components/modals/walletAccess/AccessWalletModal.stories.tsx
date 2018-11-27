@@ -3,7 +3,7 @@ import * as React from "react";
 import { EWalletType } from "../../../modules/web3/types";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainerComponent } from "./AccessWalletModal";
-import {BrowserWalletErrorMessage, MismatchedWalletAddressErrorMessage} from "../../translatedMessages/errorMessages";
+import {BrowserWalletErrorMessage, MismatchedWalletAddressErrorMessage} from "../../translatedMessages/messages";
 
 const props = {
   title: "Verify your email",

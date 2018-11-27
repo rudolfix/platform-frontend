@@ -1,5 +1,5 @@
 import {SignerRejectConfirmationError, SignerTimeoutError} from "./Web3Manager";
-import {ErrorWithData, SignerErrorMessage} from '../../components/translatedMessages/errorMessages'
+import {ErrorWithData, SignerErrorMessage} from '../../components/translatedMessages/messages'
 
 export function mapSignerErrorToErrorMessage(e: Error): ErrorWithData {
   if (e instanceof SignerRejectConfirmationError) {

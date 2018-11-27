@@ -10,7 +10,7 @@ import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
-import {BrowserWalletErrorMessage} from "../../../components/translatedMessages/errorMessages";
+import {BrowserWalletErrorMessage} from "../../../components/translatedMessages/messages";
 
 export const browserWizardFlows = {
   resetApprovalRequestBrowserWalletWizard: injectableFn(

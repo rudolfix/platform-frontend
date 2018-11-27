@@ -1,6 +1,6 @@
 import { AppReducer } from "../../store";
 
-import {ErrorWithData} from "../../components/translatedMessages/errorMessages";
+import {ErrorWithData} from "../../components/translatedMessages/messages";
 import {DeepReadonly} from "../../types";
 
 export interface IWalletSelectorState {

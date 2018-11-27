@@ -7,7 +7,6 @@ import { compose } from "redux";
 import { walletFlows } from "../../../modules/wallet-selector/flows";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { withActionWatcher } from "../../../utils/withActionWatcher";
 import { Button } from "../../shared/buttons";
 import { HiResImage } from "../../shared/HiResImage";
@@ -33,15 +32,12 @@ interface IWalletBrowserDispatchProps {
   handleReset: () => void;
 }
 
-export const WalletBrowserComponent: React.SFC<
-  IWalletBrowserProps & IWalletBrowserDispatchProps & IIntlProps
-> = ({
+export const WalletBrowserComponent: React.SFC<IWalletBrowserProps & IWalletBrowserDispatchProps> = ({
   errorMessage,
   isLoading,
   isLoginRoute,
   approvalRejected,
-  handleReset,
-  intl: { formatIntlMessage },
+  handleReset
 }) => (
   <div>
     <h1 className="text-center mb-3" data-test-id="modals.wallet-selector.wallet-browser.title">
@@ -76,8 +72,8 @@ export const WalletBrowserComponent: React.SFC<
           </>
         )}
         <div className={styles.stepCardWrapper}>
-          <StepCard img={browserIcon} text={formatIntlMessage("wallet-selector.browser.steps.2")} />
-          <StepCard img={lockIcon} text={formatIntlMessage("wallet-selector.browser.steps.3")} />
+          <StepCard img={browserIcon} text={<FormattedMessage id="wallet-selector.browser.steps.2"/>} />
+          <StepCard img={lockIcon} text={<FormattedMessage id="wallet-selector.browser.steps.3"/>} />
         </div>
 
         <HorizontalLine className="mb-4" />
@@ -117,6 +113,5 @@ export const WalletBrowser = compose<React.SFC>(
   withActionWatcher({
     actionCreator: dispatch => dispatch(walletFlows.tryConnectingWithBrowserWallet),
     interval: BROWSER_WALLET_RECONNECT_INTERVAL,
-  }),
-  injectIntlHelpers,
+  })
 )(WalletBrowserComponent);

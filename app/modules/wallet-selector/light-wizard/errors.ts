@@ -7,7 +7,7 @@ import {
   LightWalletWrongPassword,
   LightWrongPasswordSaltError,
 } from "../../../lib/web3/LightWallet";
-import {ErrorWithData, LightWalletErrorMessage} from '../../../components/translatedMessages/errorMessages'
+import {ErrorWithData, LightWalletErrorMessage} from '../../../components/translatedMessages/messages'
 
 export function mapLightWalletErrorToErrorMessage(e: Error): ErrorWithData {
   if (e instanceof LightWrongPasswordSaltError) {

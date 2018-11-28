@@ -36,6 +36,7 @@ export const statusToName: Record<
   [EtoState.PREVIEW]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
   [EtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
   [EtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
+
   [EtoState.PROSPECTUS_APPROVED]: (
     <FormattedMessage id="shared-component.eto-overview.status-prospectus-approved" />
   ),
@@ -56,7 +57,7 @@ const stateToClassName: Partial<Record<EtoState | EETOStateOnChain, string>> = {
   [EETOStateOnChain.Refund]: styles.refund,
 };
 
-const ETOStateLayout: React.SFC<IStateProps & IExternalProps> = ({
+export const ETOStateLayout: React.SFC<IStateProps & IExternalProps> = ({
   eto,
   size = EProjectStatusSize.MEDIUM,
   layout = EProjecStatusLayout.NORMAL,

@@ -162,7 +162,7 @@ export function* lightWalletRegisterWatch(
       );
     }
 
-    yield put(actions.genericModal.showErrorModal("Error", error));
+    yield put(actions.genericModal.showErrorModal("Error", error)); //TODO refactor errorModal to accept TMessage
   }
 }
 
@@ -234,7 +234,7 @@ export function* lightWalletRecoverWatch(
       );
     }
 
-    yield put(actions.genericModal.showErrorModal("Error", error));
+    yield put(actions.genericModal.showErrorModal("Error", error)); //TODO refactor errorModal to accept TMessage
   }
 }
 

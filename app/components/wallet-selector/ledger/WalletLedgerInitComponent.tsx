@@ -10,6 +10,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers"
 import { withActionWatcher } from "../../../utils/withActionWatcher";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { WarningAlert } from "../../shared/WarningAlert";
+import { TMessage } from "../../translatedMessages/utils";
 import { LedgerHeader } from "./LedgerHeader";
 
 import * as imgStep1 from "../../../assets/img/wallet_selector/ledger_login_step_1.svg";
@@ -18,7 +19,6 @@ import * as imgStep3 from "../../../assets/img/wallet_selector/ledger_login_step
 import * as imgStep4 from "../../../assets/img/wallet_selector/ledger_login_step_4.svg";
 import * as imgStep5 from "../../../assets/img/wallet_selector/ledger_login_step_5.svg";
 import * as imgStep6 from "../../../assets/img/wallet_selector/ledger_login_step_6.svg";
-import { TMessage } from "../../translatedMessages/utils";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;

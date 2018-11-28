@@ -10,12 +10,12 @@ import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
 import { getMessageTranslation } from "../../translatedMessages/messages";
+import { TMessage } from "../../translatedMessages/utils";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 
 import * as ledgerConfirm from "../../../assets/img/wallet_selector/ledger_confirm.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
-import { TMessage } from "../../translatedMessages/utils";
 import * as styles from "./AccessWalletModal.module.scss";
 
 interface IStateProps {

@@ -11,8 +11,8 @@ import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
-
 import { TMessage } from "../../translatedMessages/utils";
+
 import * as styles from "./RegisterLightWallet.module.scss";
 
 const EMAIL = "email";

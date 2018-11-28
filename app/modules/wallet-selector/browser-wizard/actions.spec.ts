@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";

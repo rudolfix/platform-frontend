@@ -1,6 +1,5 @@
-import { AppReducer } from "../../store";
-
 import { TMessage } from "../../components/translatedMessages/utils";
+import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
 export interface IWalletSelectorState {

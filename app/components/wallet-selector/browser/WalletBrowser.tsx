@@ -15,13 +15,13 @@ import { LoadingIndicator } from "../../shared/loading-indicator";
 import { StepCard } from "../../shared/StepCard";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { getMessageTranslation } from "../../translatedMessages/messages";
+import { TMessage } from "../../translatedMessages/utils";
 
 import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
-import { TMessage } from "../../translatedMessages/utils";
 import * as styles from "./WalletBrowser.module.scss";
 
-export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
+export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000; //TODO move it to config constants
 
 interface IWalletBrowserProps {
   errorMessage?: TMessage;

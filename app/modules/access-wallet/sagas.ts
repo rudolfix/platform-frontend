@@ -135,7 +135,7 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
 
       if (e instanceof SignerError || error.messageType === GenericError.GENERIC_ERROR) throw e;
 
-      yield delay(500);
+      yield delay(500); //TODO replace it with redux-saga delay
     }
   }
 }

@@ -9,10 +9,21 @@
     margin-bottom: 0;
   }
 
+  &::placeholder {
+    font-size: .9em;
+  }
+
   label {
     margin-bottom: .25rem;
   }
+}
 
+.disabled-input {
+
+  // sass-lint:disable force-pseudo-nesting
+  &:global(.form-control)::placeholder {
+    color: $color-silver;
+  }
 }
 
 .invest-all {

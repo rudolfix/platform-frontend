@@ -1,4 +1,5 @@
 import { BigNumber } from "bignumber.js";
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import MaskedInput from "react-text-mask";
@@ -96,6 +97,7 @@ interface IWithProps {
   maxTicketEur: string;
   totalCostEth: string;
   totalCostEur: string;
+  isBankTransfer: boolean;
 }
 
 interface IHandlersProps {
@@ -129,6 +131,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
   totalCostEth,
   totalCostEur,
   wallets,
+  isBankTransfer,
 }) => (
   <>
     <Container className={styles.container} fluid>
@@ -203,7 +206,8 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
               "investment-flow.min-ticket-size",
             )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
             value={formatVaryingDecimals(ethValue)}
-            className="form-control"
+            className={cn("form-control", isBankTransfer && styles.disabledInput)}
+            disabled={isBankTransfer}
             renderInput={props => (
               <MaskedInput
                 {...props}
@@ -250,7 +254,9 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
                 <FormattedMessage id="investment-flow.equity-tokens" />
               </Label>
               <InfoAlert>
-                {(showTokens && equityTokenCount && formatThousands(equityTokenCount.toString())) ||
+                {(showTokens &&
+                  equityTokenCount &&
+                  `${eto.equityTokenSymbol} ${formatThousands(equityTokenCount.toString())}`) ||
                   "\xA0" /* non breaking space*/}
               </InfoAlert>
             </FormGroup>
@@ -262,7 +268,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
                 <FormattedMessage id="investment-flow.estimated-neu-tokens" />
               </Label>
               <InfoAlert>
-                {(showTokens && neuReward && formatEurTsd(neuReward)) || "\xA0"}
+                {(showTokens && neuReward && `NEU ${formatEurTsd(neuReward)}`) || "\xA0"}
               </InfoAlert>
             </FormGroup>
           </Col>
@@ -272,12 +278,15 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
     <Container className={styles.container} fluid>
       <Row>
         <Col className={styles.summary}>
-          <div>
-            + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
-            <span className={styles.orange} data-test-id="invest-modal-gas-cost">
-              {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
-            </span>
-          </div>
+          {gasCostEth &&
+            gasCostEth !== "0" && (
+              <div>
+                + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
+                <span className={styles.orange} data-test-id="invest-modal-gas-cost">
+                  {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
+                </span>
+              </div>
+            )}
           <div>
             <FormattedMessage id="investment-flow.total" />:{" "}
             <span className={styles.orange}>
@@ -360,6 +369,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         (eto.maxTicketEur && eto.maxTicketEur.toString()) ||
         "0";
       return {
+        isBankTransfer,
         minTicketEur,
         maxTicketEur,
         minTicketEth: multiplyBigNumbers([minTicketEur, eurPriceEther]),

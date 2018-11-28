@@ -50,6 +50,7 @@ storiesOf("Investment/Form", module)
         totalCostEur={"123412341234123412341234"}
         sendTransaction={() => {}}
         showBankTransferSummary={() => {}}
+        isBankTransfer={false}
       />
     </Container>
   ))
@@ -83,6 +84,7 @@ storiesOf("Investment/Form", module)
         totalCostEur={"123412341234123412341234"}
         sendTransaction={() => {}}
         showBankTransferSummary={() => {}}
+        isBankTransfer={true}
       />
     </Container>
   ));

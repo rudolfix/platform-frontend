@@ -27,6 +27,7 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
+import { MessageSignCancelledError } from "./errors";
 import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -359,7 +360,7 @@ export function* obtainJWT(
  * on the current jwt
  */
 export function* ensurePermissionsArePresent(
-  { jwtStorage }: TGlobalDependencies,
+  { jwtStorage, logger }: TGlobalDependencies,
   permissions: Array<string> = [],
   title: string,
   message: string,
@@ -373,8 +374,12 @@ export function* ensurePermissionsArePresent(
   try {
     const obtainJwtEffect = neuCall(obtainJWT, permissions);
     yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message);
-  } catch {
-    throw new Error("Message signing failed");
+  } catch (error) {
+    if (error instanceof MessageSignCancelledError) {
+      logger.info("Signing Cancelled");
+    } else {
+      throw new Error("Message signing failed");
+    }
   }
 }
 

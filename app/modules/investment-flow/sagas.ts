@@ -212,13 +212,17 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
 function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
+  const etoId = action.payload.etoId;
+  const state: IAppState = yield select();
   yield put(actions.investmentFlow.resetInvestment());
-  yield put(actions.investmentFlow.setEtoId(action.payload.etoId));
+  yield put(actions.investmentFlow.setEtoId(etoId));
   yield put(actions.kyc.kycLoadClientData());
   yield put(actions.txTransactions.startInvestment());
+  yield put(actions.investorEtoTicket.loadEtoInvestorTicket(selectPublicEtoById(state, etoId)!));
+
   yield take("TX_SENDER_WATCH_PENDING_TXS_DONE");
   yield getActiveInvestmentTypes();
-  yield resetTxValidations();
+  yield resetTxDataAndValidations();
 }
 
 export function* onInvestmentTxModalHide(): any {
@@ -314,7 +318,7 @@ function* bankTransferChange(action: TAction): any {
   yield put(actions.txSender.txSenderChange(action.payload.type));
 }
 
-function* resetTxValidations(): any {
+function* resetTxDataAndValidations(): any {
   yield put(actions.txValidator.setValidationState());
   const initialTxData = yield neuCall(generateInvestmentTransaction);
   yield put(actions.txSender.setTransactionData(initialTxData));
@@ -328,6 +332,6 @@ export function* investmentFlowSagas(): any {
   yield takeEvery("INVESTMENT_FLOW_SHOW_BANK_TRANSFER_DETAILS", showBankTransferDetails);
   yield takeEvery("TOKEN_PRICE_SAVE", recalculateCurrencies);
   yield takeEvery("INVESTMENT_FLOW_BANK_TRANSFER_CHANGE", bankTransferChange);
-  yield takeEvery("INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE", resetTxValidations);
+  yield takeEvery("INVESTMENT_FLOW_SELECT_INVESTMENT_TYPE", resetTxDataAndValidations);
   yield takeEvery("INVESTMENT_FLOW_INVEST_ENTIRE_BALANCE", investEntireBalance);
 }

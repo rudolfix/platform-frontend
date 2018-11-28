@@ -25,8 +25,8 @@ import {
   selectIsReadyToInvest,
 } from "../../../../modules/investment-flow/selectors";
 import {
+  selectCalculatedEtoTicketSizesUlpsById,
   selectEquityTokenCountByEtoId,
-  selectEtoTicketSizesById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-tickets/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
@@ -335,7 +335,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         equityTokenCount: selectEquityTokenCountByEtoId(etoId, state),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
-        etoTicketSizes: selectEtoTicketSizesById(etoId, state),
+        etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(etoId, state),
       };
     },
     dispatchToProps: dispatch => ({

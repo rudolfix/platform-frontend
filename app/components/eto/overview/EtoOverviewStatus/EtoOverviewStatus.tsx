@@ -19,6 +19,7 @@ import {
   EETOStateOnChain,
   TEtoWithCompanyAndContract,
 } from "../../../../modules/public-etos/types";
+import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { formatFlexiPrecision } from "../../../../utils/Number.utils";
@@ -49,6 +50,7 @@ interface IStatusOfEto {
 
 interface IDispatchProps {
   navigateToEto: () => void;
+  openInNewWindow: () => void;
 }
 
 interface IStateProps {
@@ -164,9 +166,14 @@ function applyDiscountToPrice(price: number, discountFraction: number): number {
 
 function onEtoNavigationClick(
   navigate: () => void,
+  openInNewWindow: (() => void) | undefined,
 ): (event: React.MouseEvent<HTMLDivElement>) => void {
   return function({ target, currentTarget }: React.MouseEvent<HTMLDivElement>): void {
     if (target === currentTarget) {
+      if (openInNewWindow) {
+        openInNewWindow();
+        return;
+      }
       navigate();
     }
   };
@@ -183,6 +190,7 @@ const EtoOverviewStatusLayout: React.SFC<
   maxCapExceeded,
   navigateToEto,
   publicView,
+  openInNewWindow,
 }) => {
   const smartContractOnChain = !!eto.contract;
 
@@ -208,8 +216,17 @@ const EtoOverviewStatusLayout: React.SFC<
           data-test-id={`eto-overview-${eto.etoId}`}
         >
           <StatusOfEto previewCode={eto.previewCode} />
-          <div className={styles.overviewWrapper} onClick={onEtoNavigationClick(navigateToEto)}>
-            <div className={styles.statusWrapper} onClick={onEtoNavigationClick(navigateToEto)}>
+          <div
+            className={styles.overviewWrapper}
+            onClick={onEtoNavigationClick(navigateToEto, previewCode ? openInNewWindow : undefined)}
+          >
+            <div
+              className={styles.statusWrapper}
+              onClick={onEtoNavigationClick(
+                navigateToEto,
+                previewCode ? openInNewWindow : undefined,
+              )}
+            >
               <Link
                 to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}
                 target={previewCode ? "_blank" : ""}
@@ -359,6 +376,12 @@ const EtoOverviewStatus = compose<
     dispatchToProps: (dispatch, { eto }) => ({
       navigateToEto: () =>
         dispatch(push(withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode }))),
+      openInNewWindow: () =>
+        dispatch(
+          routingActions.openInNewWindow(
+            withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode }),
+          ),
+        ),
     }),
   }),
 )(EtoOverviewStatusLayout);

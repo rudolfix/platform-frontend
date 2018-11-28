@@ -1,4 +1,4 @@
-import { createPath, LocationDescriptor } from "history";
+import { LocationDescriptor } from "history";
 import * as React from "react";
 import { matchPath } from "react-router";
 import { compose, mapProps, setDisplayName } from "recompose";
@@ -57,8 +57,8 @@ const ButtonLink = compose<
     }),
     dispatchToProps: (dispatch, { target, to }) => ({
       navigate: () => {
-        if (target && to) {
-          return window.open(typeof to === "string" ? to : createPath(to), target);
+        if (target && to && typeof to === "string") {
+          return dispatch(routingActions.openInNewWindow(to, target));
         }
 
         return dispatch(routingActions.goTo(to));

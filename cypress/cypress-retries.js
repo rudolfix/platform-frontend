@@ -16,7 +16,7 @@ const DEFAULT_CONFIG = {
   // spec: './cypress/integration/retries/**/*',
   browser: "Chrome",
   record: true,
-
+  taskTimeout: 240000,
   // parallelization options
   group: "main",
   parallel: true,

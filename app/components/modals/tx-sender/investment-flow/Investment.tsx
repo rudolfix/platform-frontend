@@ -179,7 +179,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
               "investment-flow.min-ticket-size",
             )} ${minTicketEur} €`}
             value={formatVaryingDecimals(euroValue)}
-            className="form-control"
+            className={cn("form-control", styles.investInput)}
             renderInput={props => (
               <MaskedInput
                 {...props}
@@ -206,7 +206,11 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
               "investment-flow.min-ticket-size",
             )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
             value={formatVaryingDecimals(ethValue)}
-            className={cn("form-control", isBankTransfer && styles.disabledInput)}
+            className={cn(
+              "form-control",
+              styles.investInput,
+              isBankTransfer && styles.disabledInput,
+            )}
             disabled={isBankTransfer}
             renderInput={props => (
               <MaskedInput
@@ -256,7 +260,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
               <InfoAlert>
                 {(showTokens &&
                   equityTokenCount &&
-                  `${eto.equityTokenSymbol} ${formatThousands(equityTokenCount.toString())}`) ||
+                  `${formatThousands(equityTokenCount.toString())} ${eto.equityTokenSymbol}`) ||
                   "\xA0" /* non breaking space*/}
               </InfoAlert>
             </FormGroup>
@@ -268,7 +272,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
                 <FormattedMessage id="investment-flow.estimated-neu-tokens" />
               </Label>
               <InfoAlert>
-                {(showTokens && neuReward && `NEU ${formatEurTsd(neuReward)}`) || "\xA0"}
+                {(showTokens && neuReward && `${formatEurTsd(neuReward)} NEU`) || "\xA0"}
               </InfoAlert>
             </FormGroup>
           </Col>

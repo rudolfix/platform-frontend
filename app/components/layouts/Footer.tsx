@@ -15,7 +15,7 @@ export const Footer: React.SFC = () => {
             <FormattedMessage id="footer.links.imprint" />
           </Link>
           <Link
-            to="https://neufund.org/cms_resources/fifthforceprivacypolicy20180524.pdf"
+            to="https://neufund.org/cms_resources/fifth-force-privacy-policy-2018-11-26.pdf"
             target="_blank"
           >
             <FormattedMessage id="footer.links.privacy-policy" />

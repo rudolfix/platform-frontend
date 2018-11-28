@@ -50,5 +50,9 @@ export const routingActions = {
   goToDepositEuroToken: () => createRoutingAction(walletRoutes.euroToken),
   goToDepositEth: () => createRoutingAction(walletRoutes.eth),
 
+  // external paths
+  openInNewWindow: (path: string, target: string = "_blank") =>
+    createAction("@@router/OPEN_IN_NEW_WINDOW", { path, target }),
+
   // other...
 };

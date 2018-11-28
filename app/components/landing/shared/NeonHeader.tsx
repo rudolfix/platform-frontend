@@ -1,18 +1,29 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { TTranslatedString } from "../../../types";
 
 import * as styles from "./NeonHeader.module.scss";
 
-interface IExternalProps {
-  children: TTranslatedString;
+enum ENeonHeaderSize {
+  NORMAL = styles.neonHeaderWrapperNormal,
+  BIG = styles.neonHeaderWrapperBig,
 }
 
-const NeonHeader: React.SFC<IExternalProps> = ({ children }) => (
-  <header className={styles.neonHeaderWrapper}>
+interface IExternalProps {
+  children: TTranslatedString;
+  size?: ENeonHeaderSize;
+}
+
+const NeonHeader: React.SFC<IExternalProps> = ({ children, size }) => (
+  <header className={cn(styles.neonHeaderWrapper, size)}>
     <div className={styles.neon} />
     <h1 className={styles.neonHeader}>{children}</h1>
   </header>
 );
 
-export { NeonHeader };
+NeonHeader.defaultProps = {
+  size: ENeonHeaderSize.NORMAL,
+};
+
+export { NeonHeader, ENeonHeaderSize };

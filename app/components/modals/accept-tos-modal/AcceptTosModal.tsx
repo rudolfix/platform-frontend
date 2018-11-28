@@ -3,7 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
 import { actions } from "../../../modules/actions";
-import { selectIsLatestAgreementAccepted } from "../../../modules/auth/selectors";
+import {
+  selectIsLatestAgreementAccepted,
+  selectIsLatestAgreementLoaded,
+} from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
@@ -15,6 +18,7 @@ interface IStateProps {
 interface IDispatchProps {
   onAccept: () => void;
   onDownloadTos: () => void;
+  onLogout: () => void;
 }
 
 interface IState {
@@ -61,6 +65,11 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
             <FormattedMessage id="settings.modal.accept-tos.accept-button" />
           </Button>
         </div>
+        <div>
+          <Button onClick={this.props.onLogout} layout={EButtonLayout.SIMPLE}>
+            <FormattedMessage id="settings.modal.accept-tos.logout-button" />
+          </Button>
+        </div>
         {/* this is a small div element used by the e2e tests to accept the ToU without having to download them, which does not work on electron */}
         {/* a cleaner solution would be greatly appreciated, force: click does not work here :( */}
         <div
@@ -83,10 +92,11 @@ const AcceptTosModalComponent: React.SFC<IStateProps & IDispatchProps> = props =
 
 export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
-    isOpen: selectIsLatestAgreementAccepted(s),
+    isOpen: !selectIsLatestAgreementAccepted(s) && selectIsLatestAgreementLoaded(s),
   }),
   dispatchToProps: dispatch => ({
     onDownloadTos: () => dispatch(actions.auth.downloadCurrentAgreement()),
     onAccept: () => dispatch(actions.auth.acceptCurrentAgreement()),
+    onLogout: () => dispatch(actions.auth.logout()),
   }),
 })(AcceptTosModalComponent);

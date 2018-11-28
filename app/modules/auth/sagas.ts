@@ -178,7 +178,7 @@ function* logoutWatcher(
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "AUTH_LOGOUT") return;
-  const { userType } = action.type;
+  const { userType } = action.payload;
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
   if (userType === EUserType.INVESTOR || !userType) {

@@ -1,13 +1,17 @@
-import {BrowserWalletError} from "../../lib/web3/BrowserWallet";
-import {mapSignerErrorToErrorMessage} from "../../lib/web3/errors";
-import {LedgerError} from "../../lib/web3/LedgerWallet";
-import {LightWalletError} from "../../lib/web3/LightWallet";
-import {SignerError} from "../../lib/web3/Web3Manager";
-import {EthereumAddress} from "../../types";
-import {mapBrowserWalletErrorToErrorMessage} from "../wallet-selector/browser-wizard/errors";
-import {mapLedgerErrorToErrorMessage} from "../wallet-selector/ledger-wizard/errors";
-import {mapLightWalletErrorToErrorMessage} from "../wallet-selector/light-wizard/errors";
-import {IMessage,MismatchedWalletAddressErrorMessage,GenericError } from "../../components/translatedMessages/messages";
+import {
+  GenericError,
+  MismatchedWalletAddressErrorMessage,
+} from "../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../components/translatedMessages/utils";
+import { BrowserWalletError } from "../../lib/web3/BrowserWallet";
+import { mapSignerErrorToErrorMessage } from "../../lib/web3/errors";
+import { LedgerError } from "../../lib/web3/LedgerWallet";
+import { LightWalletError } from "../../lib/web3/LightWallet";
+import { SignerError } from "../../lib/web3/Web3Manager";
+import { EthereumAddress } from "../../types";
+import { mapBrowserWalletErrorToErrorMessage } from "../wallet-selector/browser-wizard/errors";
+import { mapLedgerErrorToErrorMessage } from "../wallet-selector/ledger-wizard/errors";
+import { mapLightWalletErrorToErrorMessage } from "../wallet-selector/light-wizard/errors";
 
 export class MismatchedWalletAddressError extends Error {
   constructor(
@@ -20,7 +24,7 @@ export class MismatchedWalletAddressError extends Error {
   }
 }
 
-export function mapSignMessageErrorToErrorMessage(error: Error): IMessage {
+export function mapSignMessageErrorToErrorMessage(error: Error): TMessage {
   if (error instanceof BrowserWalletError) {
     return mapBrowserWalletErrorToErrorMessage(error);
   }
@@ -34,10 +38,11 @@ export function mapSignMessageErrorToErrorMessage(error: Error): IMessage {
     return mapSignerErrorToErrorMessage(error);
   }
   if (error instanceof MismatchedWalletAddressError) {
-    return { messageType: MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS,
-      messageData :{desiredAddress: error.desiredAddress, actualAddress: error.actualAddress}
-    };
+    return createMessage(MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS, {
+      desiredAddress: error.desiredAddress,
+      actualAddress: error.actualAddress,
+    });
   }
 
-  return {messageType: GenericError.GENERIC_ERROR};
+  return createMessage(GenericError.GENERIC_ERROR);
 }

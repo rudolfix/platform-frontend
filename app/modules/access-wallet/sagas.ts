@@ -2,6 +2,7 @@ import { delay } from "bluebird";
 import { Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
+import { GenericError } from "../../components/translatedMessages/messages";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
@@ -22,7 +23,6 @@ import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
 import { EWalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
-import {BrowserWalletErrorMessage, GenericError} from "../../components/translatedMessages/messages";
 
 export async function ensureWalletConnection({
   web3Manager,

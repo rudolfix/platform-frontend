@@ -14,16 +14,17 @@ import { HorizontalLine } from "../../shared/HorizontalLine";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { StepCard } from "../../shared/StepCard";
 import { WarningAlert } from "../../shared/WarningAlert";
-import {IMessage, getMessageTranslation} from "../../translatedMessages/messages";
+import { getMessageTranslation } from "../../translatedMessages/messages";
 
 import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
+import { TMessage } from "../../translatedMessages/utils";
 import * as styles from "./WalletBrowser.module.scss";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 
 interface IWalletBrowserProps {
-  errorMessage?: IMessage;
+  errorMessage?: TMessage;
   isLoading: boolean;
   isLoginRoute: boolean;
   approvalRejected: boolean;
@@ -33,13 +34,9 @@ interface IWalletBrowserDispatchProps {
   handleReset: () => void;
 }
 
-export const WalletBrowserComponent: React.SFC<IWalletBrowserProps & IWalletBrowserDispatchProps> = ({
-  errorMessage,
-  isLoading,
-  isLoginRoute,
-  approvalRejected,
-  handleReset
-}) => (
+export const WalletBrowserComponent: React.SFC<
+  IWalletBrowserProps & IWalletBrowserDispatchProps
+> = ({ errorMessage, isLoading, isLoginRoute, approvalRejected, handleReset }) => (
   <div>
     <h1 className="text-center mb-3" data-test-id="modals.wallet-selector.wallet-browser.title">
       {isLoginRoute ? (
@@ -53,13 +50,15 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps & IWalletBrow
       <LoadingIndicator />
     ) : (
       <div>
-        {errorMessage &&
+        {errorMessage && (
           <Row className="justify-content-center mb-4">
             <WarningAlert>
-              <span data-test-id="browser-wallet-error-msg">{getMessageTranslation(errorMessage)}</span>
+              <span data-test-id="browser-wallet-error-msg">
+                {getMessageTranslation(errorMessage)}
+              </span>
             </WarningAlert>
           </Row>
-        }
+        )}
         {approvalRejected && (
           <>
             <Row className="justify-content-center mb-4">
@@ -75,8 +74,14 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps & IWalletBrow
           </>
         )}
         <div className={styles.stepCardWrapper}>
-          <StepCard img={browserIcon} text={<FormattedMessage id="wallet-selector.browser.steps.2"/>} />
-          <StepCard img={lockIcon} text={<FormattedMessage id="wallet-selector.browser.steps.3"/>} />
+          <StepCard
+            img={browserIcon}
+            text={<FormattedMessage id="wallet-selector.browser.steps.2" />}
+          />
+          <StepCard
+            img={lockIcon}
+            text={<FormattedMessage id="wallet-selector.browser.steps.3" />}
+          />
         </div>
 
         <HorizontalLine className="mb-4" />
@@ -104,7 +109,7 @@ export const WalletBrowserComponent: React.SFC<IWalletBrowserProps & IWalletBrow
 export const WalletBrowser = compose<React.SFC>(
   appConnect<IWalletBrowserProps, IWalletBrowserDispatchProps>({
     stateToProps: state => ({
-      errorMessage: state.browserWalletWizardState.errorMsg as IMessage,
+      errorMessage: state.browserWalletWizardState.errorMsg as TMessage,
       isLoading: state.browserWalletWizardState.isLoading,
       isLoginRoute: selectIsLoginRoute(state.router),
       approvalRejected: state.browserWalletWizardState.approvalRejected,
@@ -116,5 +121,5 @@ export const WalletBrowser = compose<React.SFC>(
   withActionWatcher({
     actionCreator: dispatch => dispatch(walletFlows.tryConnectingWithBrowserWallet),
     interval: BROWSER_WALLET_RECONNECT_INTERVAL,
-  })
+  }),
 )(WalletBrowserComponent);

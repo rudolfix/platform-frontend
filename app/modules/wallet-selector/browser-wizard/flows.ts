@@ -1,3 +1,4 @@
+import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { GetState } from "../../../di/setupBindings";
 import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../../lib/dependencies/Logger";
@@ -10,7 +11,6 @@ import { injectableFn } from "../../../middlewares/redux-injectify";
 import { AppDispatch } from "../../../store";
 import { actions } from "../../actions";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
-import {BrowserWalletErrorMessage} from "../../../components/translatedMessages/messages";
 
 export const browserWizardFlows = {
   resetApprovalRequestBrowserWalletWizard: injectableFn(

@@ -1,6 +1,13 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
+import {
+  BackupRecovery,
+  GenericError,
+  getMessageTranslation,
+  SignInUserErrorMessage,
+} from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { CHANGE_EMAIL_PERMISSION } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
@@ -40,12 +47,6 @@ import { EWalletSubType, EWalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
-import {
-  BackupRecovery,
-  GenericError,
-  getMessageTranslation,
-  SignInUserErrorMessage
-} from "../../../components/translatedMessages/messages";
 
 export async function retrieveMetadataFromVaultAPI(
   { lightWalletUtil, vaultApi }: TGlobalDependencies,
@@ -150,16 +151,18 @@ export function* lightWalletRegisterWatch(
     yield effects.put(actions.walletSelector.reset());
 
     let error;
-    if (e instanceof EmailAlreadyExists){
-      error = getMessageTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
-    }  else if (e instanceof LightError )  {
+    if (e instanceof EmailAlreadyExists) {
+      error = getMessageTranslation(createMessage(GenericError.USER_ALREADY_EXISTS));
+    } else if (e instanceof LightError) {
       logger.error("Light wallet recovery error", e);
-      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e))
+      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e));
     } else {
-      error = getMessageTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
+      error = getMessageTranslation(
+        createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
+      );
     }
 
-    yield put(actions.genericModal.showErrorModal("Error", error))
+    yield put(actions.genericModal.showErrorModal("Error", error));
   }
 }
 
@@ -220,29 +223,29 @@ export function* lightWalletRecoverWatch(
     yield effects.put(actions.walletSelector.reset());
 
     let error;
-    if (e instanceof EmailAlreadyExists){
-      error = getMessageTranslation({messageType: GenericError.USER_ALREADY_EXISTS});
-    }  else if (e instanceof LightError )  {
+    if (e instanceof EmailAlreadyExists) {
+      error = getMessageTranslation(createMessage(GenericError.USER_ALREADY_EXISTS));
+    } else if (e instanceof LightError) {
       logger.error("Light wallet recovery error", e);
-      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e))
+      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e));
     } else {
-      error = getMessageTranslation({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE})
+      error = getMessageTranslation(
+        createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
+      );
     }
 
-    yield put(actions.genericModal.showErrorModal("Error", error))
+    yield put(actions.genericModal.showErrorModal("Error", error));
   }
 }
 
-export function* lightWalletBackupWatch({
-  logger,
-}: TGlobalDependencies): Iterator<any> {
+export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Iterator<any> {
   try {
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield neuCall(
       displayInfoModalSaga,
-      getMessageTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_TITLE}),
-      getMessageTranslation({messageType: BackupRecovery.BACKUP_SUCCESS_DESCRIPTION}),
+      getMessageTranslation(createMessage(BackupRecovery.BACKUP_SUCCESS_TITLE)),
+      getMessageTranslation(createMessage(BackupRecovery.BACKUP_SUCCESS_DESCRIPTION)),
     );
     yield loadUser();
     yield effects.put(actions.routing.goToProfile());

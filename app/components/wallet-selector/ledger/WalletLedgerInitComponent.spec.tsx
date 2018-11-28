@@ -4,11 +4,13 @@ import * as React from "react";
 
 import { tid } from "../../../../test/testUtils";
 import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
+import { LedgerErrorMessage } from "../../translatedMessages/messages";
+import { createMessage } from "../../translatedMessages/utils";
 import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
 
 describe("<WalletLedgerInitComponent />", () => {
   it("should render error message", () => {
-    const errorMsg = "some error";
+    const errorMsg = createMessage(LedgerErrorMessage.GENERIC_ERROR);
     const component = shallow(
       <WalletLedgerInitComponent
         errorMessage={errorMsg}

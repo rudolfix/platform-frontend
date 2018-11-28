@@ -18,6 +18,7 @@ import * as imgStep3 from "../../../assets/img/wallet_selector/ledger_login_step
 import * as imgStep4 from "../../../assets/img/wallet_selector/ledger_login_step_4.svg";
 import * as imgStep5 from "../../../assets/img/wallet_selector/ledger_login_step_5.svg";
 import * as imgStep6 from "../../../assets/img/wallet_selector/ledger_login_step_6.svg";
+import { TMessage } from "../../translatedMessages/utils";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;
@@ -38,7 +39,7 @@ const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
 
 interface IWalletLedgerInitComponentProps {
   isInitialConnectionInProgress: boolean;
-  errorMessage?: string;
+  errorMessage?: TMessage;
 }
 
 export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps & IIntlProps> = ({

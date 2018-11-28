@@ -1,9 +1,9 @@
+import { TMessage } from "../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../store";
-import {DeepReadonly} from "../../../types";
-import {IMessage} from "../../../components/translatedMessages/messages";
+import { DeepReadonly } from "../../../types";
 
 export interface IBrowserWalletWizardState {
-  errorMsg?: DeepReadonly<IMessage>;
+  errorMsg?: DeepReadonly<TMessage>;
   isLoading: boolean;
   approvalRejected: boolean;
 }

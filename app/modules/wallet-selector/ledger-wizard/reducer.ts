@@ -1,3 +1,4 @@
+import { TMessage } from "../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../store";
 import { DeepReadonly } from "../../../types";
 
@@ -14,7 +15,7 @@ export interface ILedgerAccount {
 export interface ILedgerWizardState {
   isInitialConnectionInProgress: boolean;
   isConnectionEstablished: boolean;
-  errorMsg?: string;
+  errorMsg?: TMessage;
   isLoadingAddresses: boolean;
   derivationPathPrefix: string; // TODO: it can be optional, not required for advanced - false
   index: number; // TODO: it can be optional, not required for advanced - false

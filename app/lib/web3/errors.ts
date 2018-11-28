@@ -1,15 +1,17 @@
-import {SignerRejectConfirmationError, SignerTimeoutError} from "./Web3Manager";
-import {IMessage, SignerErrorMessage} from '../../components/translatedMessages/messages'
+import { SignerErrorMessage } from "../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../components/translatedMessages/utils";
+import { SignerRejectConfirmationError, SignerTimeoutError } from "./Web3Manager";
 
-export function mapSignerErrorToErrorMessage(e: Error): IMessage {
+export function mapSignerErrorToErrorMessage(e: Error): TMessage {
+  let messageType = SignerErrorMessage.GENERIC_ERROR;
+
   if (e instanceof SignerRejectConfirmationError) {
-    return {messageType: SignerErrorMessage.CONFIRMATION_REJECTED};
+    messageType = SignerErrorMessage.CONFIRMATION_REJECTED;
   }
 
   if (e instanceof SignerTimeoutError) {
-    return {messageType: SignerErrorMessage.TIMEOUT};
+    messageType = SignerErrorMessage.TIMEOUT;
   }
 
-  return {messageType: SignerErrorMessage.GENERIC_ERROR};
+  return createMessage(messageType);
 }
-

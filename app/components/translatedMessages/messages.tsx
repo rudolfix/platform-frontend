@@ -1,16 +1,12 @@
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { externalRoutes } from "../externalRoutes";
 import { TTranslatedString } from "../../types";
+import { externalRoutes } from "../externalRoutes";
+import { TMessage } from "./utils";
 
 interface ITranslationValues {
   [SignInUserErrorMessages: string]: string;
-}
-
-export interface IMessage {
-  messageType: TranslatedMessageType;
-  messageData?: Object;
 }
 
 export type TranslatedMessageType =
@@ -21,11 +17,11 @@ export type TranslatedMessageType =
   | LightWalletErrorMessage
   | SignerErrorMessage
   | MismatchedWalletAddressErrorMessage
-  | BackupRecovery
+  | BackupRecovery;
 
 export enum GenericError {
   GENERIC_ERROR = "genericError",
-  USER_ALREADY_EXISTS = "userAlreadyExists"
+  USER_ALREADY_EXISTS = "userAlreadyExists",
 }
 
 export enum SignInUserErrorMessage {
@@ -77,17 +73,19 @@ export enum BackupRecovery {
 export const getMessageTranslation = ({
   messageType,
   messageData,
-}: IMessage): TTranslatedString => {
+}: TMessage): TTranslatedString => {
   switch (messageType) {
     case BackupRecovery.BACKUP_SUCCESS_TITLE:
-      return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.backup-recovery"/>;
+      return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.backup-recovery" />;
     case BackupRecovery.BACKUP_SUCCESS_DESCRIPTION:
-      return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.successfully.backed-up"/>;
+      return (
+        <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.successfully.backed-up" />
+      );
 
-      case GenericError.GENERIC_ERROR:
-      return <FormattedMessage id="error-message.generic-error"/>;
+    case GenericError.GENERIC_ERROR:
+      return <FormattedMessage id="error-message.generic-error" />;
     case GenericError.USER_ALREADY_EXISTS:
-      return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists"/>;
+      return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists" />;
     case SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED:
       return <FormattedMessage id="modules.auth.sagas.sign-in-user.message-signing-was-rejected" />;
     case SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT:
@@ -108,45 +106,44 @@ export const getMessageTranslation = ({
         <FormattedMessage id="error-message.browser-wallet.wallet-connected-to-wrong-network" />
       );
     case BrowserWalletErrorMessage.WALLET_NOT_ENABLED:
-      return <FormattedMessage id="error-message.browser-wallet.wallet-not-enabled"/>;
+      return <FormattedMessage id="error-message.browser-wallet.wallet-not-enabled" />;
     case BrowserWalletErrorMessage.ACCOUNT_APPROVAL_REJECTED:
-      return <FormattedMessage id="error-message.browser-wallet.account-approval-rejected"/>;
+      return <FormattedMessage id="error-message.browser-wallet.account-approval-rejected" />;
     case BrowserWalletErrorMessage.ACCOUNT_APPROVAL_PENDING:
-      return <FormattedMessage id="error-message.browser-wallet.account-approval-pending"/>;
+      return <FormattedMessage id="error-message.browser-wallet.account-approval-pending" />;
     case BrowserWalletErrorMessage.GENERIC_ERROR:
-      return <FormattedMessage id="error-message.browser-wallet.generic-error"/>;
+      return <FormattedMessage id="error-message.browser-wallet.generic-error" />;
 
-      case LedgerErrorMessage.LEDGER_LOCKED:
-      return <FormattedMessage id="error-message.ledger.ledger-locked"/>;
+    case LedgerErrorMessage.LEDGER_LOCKED:
+      return <FormattedMessage id="error-message.ledger.ledger-locked" />;
     case LedgerErrorMessage.GENERIC_ERROR:
-      return <FormattedMessage id="error-message.ledger.generic-error"/>;
+      return <FormattedMessage id="error-message.ledger.generic-error" />;
 
     case LightWalletErrorMessage.WRONG_PASSWORD_SALT:
-      return <FormattedMessage id="error-message.light-wallet.wrong-password-salt"/>;
+      return <FormattedMessage id="error-message.light-wallet.wrong-password-salt" />;
     case LightWalletErrorMessage.SIGN_MESSAGE:
-      return <FormattedMessage id="error-message.light-wallet.sign-message"/>;
+      return <FormattedMessage id="error-message.light-wallet.sign-message" />;
     case LightWalletErrorMessage.CREATION_ERROR:
-      return <FormattedMessage id="error-message.light-wallet.creation-error"/>;
+      return <FormattedMessage id="error-message.light-wallet.creation-error" />;
     case LightWalletErrorMessage.DESERIALIZE:
-      return <FormattedMessage id="error-message.light-wallet.deserialize"/>;
+      return <FormattedMessage id="error-message.light-wallet.deserialize" />;
     case LightWalletErrorMessage.ENCRYPTION_ERROR:
-      return <FormattedMessage id="error-message.light-wallet.encryption-error"/>;
+      return <FormattedMessage id="error-message.light-wallet.encryption-error" />;
     case LightWalletErrorMessage.WRONG_PASSWORD:
-      return <FormattedMessage id="error-message.light-wallet.wrong-password"/>;
+      return <FormattedMessage id="error-message.light-wallet.wrong-password" />;
     case LightWalletErrorMessage.WRONG_MNEMONIC:
-      return <FormattedMessage id="error-message.light-wallet.wrong-mnemonic"/>;
+      return <FormattedMessage id="error-message.light-wallet.wrong-mnemonic" />;
     case LightWalletErrorMessage.GENERIC_ERROR:
-      return <FormattedMessage id="error-message.light-wallet.generic-error"/>;
-
+      return <FormattedMessage id="error-message.light-wallet.generic-error" />;
 
     case SignerErrorMessage.CONFIRMATION_REJECTED:
-      return <FormattedMessage id="error-message.signer.signer-rejected-confirmation"/>;
+      return <FormattedMessage id="error-message.signer.signer-rejected-confirmation" />;
     case SignerErrorMessage.TIMEOUT:
-      return <FormattedMessage id="error-message.signer.timeout"/>;
+      return <FormattedMessage id="error-message.signer.timeout" />;
     case SignerErrorMessage.GENERIC_ERROR:
-      return <FormattedMessage id="error-message.signer.generic-error"/>;
+      return <FormattedMessage id="error-message.signer.generic-error" />;
 
-      case MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS:
+    case MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS:
       return (
         <FormattedMessage
           id="error-message.mismatched-wallet-address"

@@ -1,7 +1,8 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
-import { externalRoutes } from "../../components/externalRoutes";
+import { SignInUserErrorMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
@@ -28,7 +29,6 @@ import {
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
-import { SignInUserErrorMessage } from '../../components/translatedMessages/messages'
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -221,26 +221,28 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
   }
 }
 
-
-
-function* handleSignInUser({
-  logger,
-}: TGlobalDependencies): Iterator<any> {
+function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(signInUser);
   } catch (e) {
     logger.error("User Sign in error", e);
     if (e instanceof SignerRejectConfirmationError) {
       yield effects.put(
-        actions.walletSelector.messageSigningError({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED}),
+        actions.walletSelector.messageSigningError(
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED),
+        ),
       );
     } else if (e instanceof SignerTimeoutError) {
       yield effects.put(
-        actions.walletSelector.messageSigningError({messageType: SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT}),
+        actions.walletSelector.messageSigningError(
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT),
+        ),
       );
     } else {
       yield effects.put(
-        actions.walletSelector.messageSigningError({messageType:SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE}),
+        actions.walletSelector.messageSigningError(
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
+        ),
       );
     }
   }

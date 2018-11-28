@@ -1,10 +1,10 @@
+import { TMessage } from "../../components/translatedMessages/utils";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import {BrowserWalletErrorMessage, IMessage} from "../../components/translatedMessages/messages";
 
 export interface ISignMessageModalState {
   isModalOpen: boolean;
-  errorMessage?: DeepReadonly<IMessage>;
+  errorMessage?: DeepReadonly<TMessage>;
   modalTitle?: string;
   modalMessage?: string;
 }

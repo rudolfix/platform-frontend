@@ -1,5 +1,4 @@
 const cypress = require("cypress");
-const crypto = require("crypto");
 const _ = require("lodash");
 
 /*
@@ -27,7 +26,9 @@ const DEFAULT_CONFIG = {
 };
 
 // id unique to the machine
-const uniqueId = crypto.randomBytes(3).toString("hex");
+const uniqueId = Math.random()
+  .toString(16)
+  .substr(2, 6);
 
 let totalFailuresIncludingRetries = 0;
 

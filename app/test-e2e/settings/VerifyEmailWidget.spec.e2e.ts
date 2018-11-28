@@ -13,6 +13,9 @@ import {
 } from "../utils";
 
 describe("Verify Email Widget", () => {
+  beforeEach(() => {
+    cy.clearLocalStorage();
+  });
   it("should change user email after register", () => {
     const firstEmail = "moe-wallet-backup-e2e@test.com";
     const secondEmail = convertToUniqueEmail(firstEmail);

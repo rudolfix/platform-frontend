@@ -18,6 +18,7 @@ interface IStateProps {
 interface IDispatchProps {
   onAccept: () => void;
   onDownloadTos: () => void;
+  onLogout: () => void;
 }
 
 interface IState {
@@ -64,6 +65,11 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
             <FormattedMessage id="settings.modal.accept-tos.accept-button" />
           </Button>
         </div>
+        <div>
+          <Button onClick={this.props.onLogout} layout={EButtonLayout.SIMPLE}>
+            <FormattedMessage id="settings.modal.accept-tos.logout-button" />
+          </Button>
+        </div>
         {/* this is a small div element used by the e2e tests to accept the ToU without having to download them, which does not work on electron */}
         {/* a cleaner solution would be greatly appreciated, force: click does not work here :( */}
         <div
@@ -91,5 +97,6 @@ export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
   dispatchToProps: dispatch => ({
     onDownloadTos: () => dispatch(actions.auth.downloadCurrentAgreement()),
     onAccept: () => dispatch(actions.auth.acceptCurrentAgreement()),
+    onLogout: () => dispatch(actions.auth.logout()),
   }),
 })(AcceptTosModalComponent);

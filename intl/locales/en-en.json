@@ -679,6 +679,7 @@
   "settings.modal.accept-tos.accept-button": "I have read and understood",
   "settings.modal.accept-tos.download-button": "Download our Terms of Use",
   "settings.modal.accept-tos.filename": "neufund_terms_of_use",
+  "settings.modal.accept-tos.logout-button": "Don't accept and log out",
   "settings.modal.accept-tos.permission.text": "Please confirm that you want to accept our Terms of Use",
   "settings.modal.accept-tos.permission.title": "Accept our Terms of use",
   "settings.modal.accept-tos.text": "We would like you to read and confirm that you agree with our Terms of Use. This is an important step for you to understand our product.",

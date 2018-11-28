@@ -27,7 +27,7 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
-import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
+import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -180,8 +180,8 @@ function* logoutWatcher(
 
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
-
-  if (action.payload.userType === EUserType.INVESTOR) {
+  const userType: EUserType | undefined = yield select(selectUserType);
+  if (userType === EUserType.INVESTOR || !userType) {
     yield effects.put(actions.routing.goHome());
   } else {
     yield effects.put(actions.routing.goEtoHome());

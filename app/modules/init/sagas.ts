@@ -77,7 +77,7 @@ export function* initStartSaga(_: TGlobalDependencies, action: TAction): Iterato
 
 export function* cleanupAndLogoutSaga(): Iterator<any> {
   const userType: EUserType = yield effects.select((s: IAppState) => selectUserType(s.auth));
-  yield put(actions.auth.logout(userType));
+  yield put(actions.auth.logout());
   userType === EUserType.INVESTOR
     ? yield put(actions.routing.goToLogin())
     : yield put(actions.routing.goToEtoLogin());

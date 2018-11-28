@@ -7,6 +7,7 @@ const props = {
   isOpen: true,
   onAccept: () => {},
   onDownloadTos: () => {},
+  onLogout: () => {},
 };
 
 storiesOf("AcceptTosModal", module)

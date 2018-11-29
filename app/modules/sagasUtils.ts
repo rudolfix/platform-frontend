@@ -1,4 +1,5 @@
 import { isEqual } from "lodash/fp";
+import { delay } from "redux-saga";
 import {
   call,
   Effect,
@@ -71,6 +72,15 @@ export function* neuTakeOnly(action: TActionType, payload: any): any {
     const takenAction = yield take(action);
     if (isEqual(takenAction.payload, payload)) return;
   }
+}
+
+/**
+ *  Delay util specified date
+ */
+export function delayUntil(date: Date): Promise<true> {
+  const time = date.getTime() - Date.now();
+
+  return delay(time);
 }
 
 /**

@@ -2,8 +2,7 @@ import { FormikContext } from "formik";
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-type Dictionary<T> = { [id: string]: T };
-type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
+type Dictionary<T> = Record<string, T>;
 
 type AsInterface<T> = { [K in keyof T]: T[K] };
 

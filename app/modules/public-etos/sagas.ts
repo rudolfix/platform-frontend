@@ -2,7 +2,7 @@ import { camelCase } from "lodash";
 import { compose, keyBy, map, omit } from "lodash/fp";
 import { LOCATION_CHANGE } from "react-router-redux";
 import { delay } from "redux-saga";
-import { all, fork, put, select } from "redux-saga/effects";
+import { all, fork, put, race, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
@@ -18,12 +18,17 @@ import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
+import { Dictionary } from "../../types";
 import { actions, TAction } from "../actions";
 import { selectUserType } from "../auth/selectors";
-import { neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
+import { delayUntil, neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
-import { selectEtoWithCompanyAndContract, selectPublicEtoById } from "./selectors";
+import {
+  selectEtoOnChainNextStateStartDate,
+  selectEtoWithCompanyAndContract,
+  selectPublicEtoById,
+} from "./selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate } from "./utils";
 
@@ -147,7 +152,7 @@ function* watchEtoSetAction(_: TGlobalDependencies, action: TAction): any {
 
   const previewCode = action.payload.eto.previewCode;
 
-  yield neuCall(watchEto, previewCode);
+  yield neuFork(watchEto, previewCode);
 }
 
 function* watchEtosSetAction(_: TGlobalDependencies, action: TAction): any {
@@ -161,14 +166,27 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
     selectEtoWithCompanyAndContract(state, previewCode),
   );
 
-  if (
-    eto.state === EtoState.ON_CHAIN &&
-    [EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(eto.contract!.timedState)
-  ) {
-    yield delay(etoInProgressPoolingDelay);
-  } else {
-    yield delay(etoNormalPoolingDelay);
+  let strategies: Dictionary<Promise<true>> = {
+    default: delay(etoNormalPoolingDelay),
+  };
+
+  if (eto.state === EtoState.ON_CHAIN) {
+    if ([EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(eto.contract!.timedState)) {
+      strategies.inProgress = delay(etoInProgressPoolingDelay);
+    }
+
+    const nextStartDate: Date | undefined = yield select((state: IAppState) =>
+      selectEtoOnChainNextStateStartDate(state, previewCode),
+    );
+    if (nextStartDate) {
+      // add small delay to start date to avoid fetching eto in same state
+      const startDateWithDelay = new Date(nextStartDate.getTime() + 5000);
+
+      strategies.nextState = delayUntil(startDateWithDelay);
+    }
   }
+
+  yield race(strategies);
 
   yield put(actions.publicEtos.loadEtoPreview(previewCode));
 }

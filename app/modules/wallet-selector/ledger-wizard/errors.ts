@@ -1,9 +1,12 @@
+import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../../components/translatedMessages/utils";
 import { LedgerLockedError } from "../../../lib/web3/LedgerWallet";
 
-export function mapLedgerErrorToErrorMessage(error: Error): string {
+export function mapLedgerErrorToErrorMessage(error: Error): TMessage {
+  let messageType = LedgerErrorMessage.GENERIC_ERROR;
+
   if (error instanceof LedgerLockedError) {
-    return "Please unlock your Ledger Nano S by entering your PIN code on the device.";
+    messageType = LedgerErrorMessage.LEDGER_LOCKED;
   }
-  return "Ledger Nano S is not available";
+  return createMessage(messageType);
 }
-//TODO: add translation

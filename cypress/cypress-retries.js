@@ -1,5 +1,4 @@
 const cypress = require("cypress");
-const crypto = require("crypto");
 const _ = require("lodash");
 
 /*
@@ -17,17 +16,21 @@ const DEFAULT_CONFIG = {
   // spec: './cypress/integration/retries/**/*',
   browser: "electron",
   record: true,
-
+  taskTimeout: 240000,
   // parallelization options
   group: "main",
   parallel: true,
 
   // only necessary if recording specs from a local machine
-  // ciBuildId: crypto.randomBytes(6).toString('hex')
+  /* ciBuildId: Math.random()
+    .toString(16)
+    .substr(2, 6), */
 };
 
 // id unique to the machine
-const uniqueId = crypto.randomBytes(3).toString("hex");
+const uniqueId = Math.random()
+  .toString(16)
+  .substr(2, 6);
 
 let totalFailuresIncludingRetries = 0;
 
@@ -44,6 +47,10 @@ const run = (num, spec, retryGroup) => {
 
   return cypress.run(config).then(
     results => {
+      if (results.failures > 0) {
+        console.log(`Run exited with "${results.message}", \n very naughty?`);
+        return process.exit(-1);
+      }
       if (results.totalFailed) {
         totalFailuresIncludingRetries += results.totalFailed;
 
@@ -85,4 +92,7 @@ const run = (num, spec, retryGroup) => {
 };
 
 // kick off the run with the default specs
-run(0);
+run(0).catch(error => {
+  console.log(`Run exited with ${error}, bad config?`);
+  return process.exit(-1);
+});

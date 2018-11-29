@@ -9,6 +9,8 @@ import { EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
+import { getMessageTranslation } from "../../translatedMessages/messages";
+import { TMessage } from "../../translatedMessages/utils";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 
@@ -17,7 +19,7 @@ import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
 import * as styles from "./AccessWalletModal.module.scss";
 
 interface IStateProps {
-  errorMsg?: TTranslatedString;
+  errorMessage?: TMessage;
   title?: TTranslatedString;
   message?: TTranslatedString;
   walletType: EWalletType | undefined;
@@ -36,7 +38,7 @@ interface IExternalProps {
 export const AccessWalletContainerComponent: React.SFC<IStateProps & IDispatchProps> = ({
   title,
   message,
-  errorMsg,
+  errorMessage,
   isUnlocked,
   onAccept,
   walletType,
@@ -71,14 +73,16 @@ export const AccessWalletContainerComponent: React.SFC<IStateProps & IDispatchPr
         </div>
       </div>
     )}
-    {errorMsg && <p className={cn("mt-3", styles.error)}>{errorMsg}</p>}
+    {errorMessage && (
+      <p className={cn("mt-3", styles.error)}>{getMessageTranslation(errorMessage)}</p>
+    )}
   </div>
 );
 
 export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IExternalProps>({
   stateToProps: (s, external) => ({
     isOpen: s.accessWallet.isModalOpen,
-    errorMsg: s.accessWallet.modalErrorMsg,
+    errorMessage: s.accessWallet.errorMessage as TMessage,
     title: external.title ? external.title : s.accessWallet.modalTitle,
     message: external.message ? external.message : s.accessWallet.modalMessage,
     walletType: selectWalletType(s.web3),

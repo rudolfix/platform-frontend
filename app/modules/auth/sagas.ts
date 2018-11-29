@@ -1,7 +1,8 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
-import { externalRoutes } from "../../components/externalRoutes";
+import { SignInUserErrorMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
@@ -18,7 +19,7 @@ import { actions, TAction } from "../actions";
 import { selectIsSmartContractInitDone } from "../init/selectors";
 import { loadKycRequestData } from "../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../routing/selectors";
-import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeOnly } from "../sagasUtils";
 import { selectUrlUserType } from "../wallet-selector/selectors";
 import { loadPreviousWallet } from "../web3/sagas";
 import {
@@ -27,6 +28,7 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
+import { MessageSignCancelledError } from "./errors";
 import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
@@ -177,11 +179,10 @@ function* logoutWatcher(
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "AUTH_LOGOUT") return;
-
+  const { userType } = action.payload;
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
-
-  if (action.payload.userType === EUserType.INVESTOR) {
+  if (userType === EUserType.INVESTOR || !userType) {
     yield effects.put(actions.routing.goHome());
   } else {
     yield effects.put(actions.routing.goEtoHome());
@@ -220,36 +221,27 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
   }
 }
 
-function* handleSignInUser({
-  intlWrapper: {
-    intl: { formatIntlMessage, formatHTMLMessage },
-  },
-  logger,
-}: TGlobalDependencies): Iterator<any> {
+function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(signInUser);
   } catch (e) {
-    // TODO: Move all text errors to UX Component
     logger.error("User Sign in error", e);
     if (e instanceof SignerRejectConfirmationError) {
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-was-rejected"),
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED),
         ),
       );
     } else if (e instanceof SignerTimeoutError) {
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT),
         ),
       );
     } else {
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          formatHTMLMessage(
-            { id: "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems" },
-            { url: `${externalRoutes.neufundSupport}/home` },
-          ),
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
         ),
       );
     }
@@ -359,7 +351,7 @@ export function* obtainJWT(
  * on the current jwt
  */
 export function* ensurePermissionsArePresent(
-  { jwtStorage }: TGlobalDependencies,
+  { jwtStorage, logger }: TGlobalDependencies,
   permissions: Array<string> = [],
   title: string,
   message: string,
@@ -373,8 +365,12 @@ export function* ensurePermissionsArePresent(
   try {
     const obtainJwtEffect = neuCall(obtainJWT, permissions);
     yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message);
-  } catch {
-    throw new Error("Message signing failed");
+  } catch (error) {
+    if (error instanceof MessageSignCancelledError) {
+      logger.info("Signing Cancelled");
+    } else {
+      throw new Error("Message signing failed");
+    }
   }
 }
 
@@ -404,7 +400,7 @@ export function* loadCurrentAgreement({
 }
 
 export const authSagas = function*(): Iterator<effects.Effect> {
-  yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
+  yield fork(neuTakeLatest, "AUTH_LOGOUT", logoutWatcher);
   yield fork(neuTakeEvery, "AUTH_SET_USER", setUser);
   yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);

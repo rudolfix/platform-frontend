@@ -1,9 +1,10 @@
+import { TMessage } from "../../components/translatedMessages/utils";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
 export interface ISignMessageModalState {
   isModalOpen: boolean;
-  modalErrorMsg?: string;
+  errorMessage?: DeepReadonly<TMessage>;
   modalTitle?: string;
   modalMessage?: string;
 }
@@ -15,13 +16,13 @@ const initialState: ISignMessageModalState = {
 export const accessWalletReducer: AppReducer<ISignMessageModalState> = (
   state = initialState,
   action,
-): DeepReadonly<ISignMessageModalState> => {
+): ISignMessageModalState => {
   switch (action.type) {
     case "SHOW_ACCESS_WALLET_MODAL":
       return {
         ...state,
         isModalOpen: true,
-        modalErrorMsg: undefined,
+        errorMessage: undefined,
         modalTitle: action.payload.title,
         modalMessage: action.payload.message,
       };
@@ -33,13 +34,13 @@ export const accessWalletReducer: AppReducer<ISignMessageModalState> = (
     case "ACCESS_WALLET_SIGNING_ERROR":
       return {
         ...state,
-        modalErrorMsg: action.payload.errorMsg,
+        errorMessage: action.payload.errorMessage,
       };
     case "ACCESS_WALLET_CLEAR_SIGNING_ERROR":
     case "ACCESS_WALLET_ACCEPT":
       return {
         ...state,
-        modalErrorMsg: undefined,
+        errorMessage: undefined,
       };
   }
 

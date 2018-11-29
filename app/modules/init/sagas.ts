@@ -1,9 +1,7 @@
-import { LocationChangeAction } from "react-router-redux";
 import { effects } from "redux-saga";
-import { fork, put, select, take } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TAction } from "../actions";
@@ -33,6 +31,7 @@ function* initApp({ logger }: TGlobalDependencies): any {
     yield neuCall(detectUserAgent);
 
     const jwt = yield neuCall(loadJwt);
+    const userType = yield select(selectUserType);
 
     if (jwt) {
       if (isJwtExpiringLateEnough(jwt)) {
@@ -43,13 +42,13 @@ function* initApp({ logger }: TGlobalDependencies): any {
           }
           yield loadUser();
         } catch (e) {
-          yield cleanupAndLogoutSaga();
+          yield put(actions.auth.logout(userType));
           logger.error(
             "Cannot retrieve account. This could happen b/c account was deleted on backend",
           );
         }
       } else {
-        yield cleanupAndLogoutSaga();
+        yield put(actions.auth.logout(userType));
         logger.warn("JTW expiring too soon.");
       }
     }
@@ -76,14 +75,6 @@ export function* initStartSaga(_: TGlobalDependencies, action: TAction): Iterato
   }
 }
 
-export function* cleanupAndLogoutSaga(): Iterator<any> {
-  const userType: EUserType = yield effects.select((s: IAppState) => selectUserType(s.auth));
-  yield put(actions.auth.logout(userType));
-  userType === EUserType.INVESTOR
-    ? yield put(actions.routing.goToLogin())
-    : yield put(actions.routing.goToEtoLogin());
-}
-
 export function* checkIfSmartcontractsInitNeeded(): any {
   const isDoneOrInProgress: boolean = yield select(
     (s: IAppState) => s.init.smartcontractsInit.done || s.init.smartcontractsInit.inProgress,
@@ -92,27 +83,17 @@ export function* checkIfSmartcontractsInitNeeded(): any {
   return !isDoneOrInProgress;
 }
 
-/**
- * We don't require app initialization on index (/) page so we are gonna watch location change action until navigation happens
- */
-export function* initSmartcontractsDelayed(): any {
+export function* initSmartcontractsOnce(): any {
   const isNeeded = yield checkIfSmartcontractsInitNeeded();
   if (!isNeeded) {
     return;
   }
 
-  while (true) {
-    const action: LocationChangeAction = yield take("@@router/LOCATION_CHANGE");
-
-    if (action.payload && action.payload.pathname !== "/") {
-      yield put(actions.init.start("smartcontractsInit"));
-      return;
-    }
-  }
+  yield put(actions.init.start("smartcontractsInit"));
 }
 
 export const initSagas = function*(): Iterator<effects.Effect> {
   yield fork(neuTakeEvery, "INIT_START", initStartSaga);
   // Smart Contracts are only initialized once during the whole life cycle of the app
-  yield fork(initSmartcontractsDelayed);
+  yield fork(initSmartcontractsOnce);
 };

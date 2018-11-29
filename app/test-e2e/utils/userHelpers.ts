@@ -4,6 +4,8 @@ import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 
+import { tid } from "../../../test/testUtils";
+
 /*
 Pre-login user for faster tests
 */
@@ -20,6 +22,7 @@ export const createAndLoginNewUser = (
     seed?: string;
     clearPendingTransactions?: boolean;
     onlyLogin?: boolean;
+    permissions?: string[];
   } = {},
 ) => {
   return cy.clearLocalStorage().then(async ls => {
@@ -48,7 +51,7 @@ export const createAndLoginNewUser = (
     );
 
     // fetch a token and store it in local storage
-    const jwt = await getJWT(address, lightWalletInstance, walletKey);
+    const jwt = await getJWT(address, lightWalletInstance, walletKey, params.permissions);
     ls.setItem(JWT_KEY, `"${jwt}"`);
 
     if (!params.onlyLogin)
@@ -140,6 +143,7 @@ export const getJWT = async (
   address: string,
   lightWalletInstance: any,
   walletKey: any,
+  permissions: string[] = [],
 ): Promise<string> => {
   // first get a challenge
   const headers = {
@@ -149,7 +153,7 @@ export const getJWT = async (
     address,
     salt: "4abc08069f8c6d26becd80fe96fbeaf4d17b84cdbe7071a8197ab5370bb85876",
     signer_type: "eth_sign",
-    permissions: ["sign-tos"],
+    permissions: ["sign-tos", ...permissions],
   };
   const ch_response = await fetch(CHALLENGE_PATH, {
     headers,
@@ -231,4 +235,20 @@ export const clearPendingTransactions = async (jwt: string, address: string) => 
     headers,
     method: "DELETE",
   });
+};
+
+export const makeAuthenticatedCall = async (path: string, config: RequestInit) =>
+  await fetch(path, {
+    ...config,
+    headers: {
+      ...config.headers,
+      "Content-Type": "application/json",
+      authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY) as string)}`,
+    },
+  });
+
+export const logout = () => {
+  cy.log("logging out");
+  cy.get(tid("Header-logout")).awaitedClick();
+  cy.wait(2000);
 };

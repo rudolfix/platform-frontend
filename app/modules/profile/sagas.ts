@@ -7,6 +7,7 @@ import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
 import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../access-wallet/sagas";
 import { actions, TAction } from "../actions";
+import { MessageSignCancelledError } from "../auth/errors";
 import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
 import { selectDoesEmailExist, selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
@@ -116,8 +117,12 @@ export function* loadSeedOrReturnToSettings({
         "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description",
       ),
     );
-  } catch (e) {
-    logger.error("Failed to load seed", e);
+  } catch (error) {
+    if (error instanceof MessageSignCancelledError) {
+      logger.info("Signing Cancelled");
+    } else {
+      logger.error("Failed to load seed", error);
+    }
     yield put(actions.routing.goToProfile());
   }
 }

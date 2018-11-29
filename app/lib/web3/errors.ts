@@ -1,14 +1,17 @@
+import { SignerErrorMessage } from "../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../components/translatedMessages/utils";
 import { SignerRejectConfirmationError, SignerTimeoutError } from "./Web3Manager";
 
-//TODO add translations
-export function mapSignerErrorToErrorMessage(e: Error): string | undefined {
+export function mapSignerErrorToErrorMessage(e: Error): TMessage {
+  let messageType = SignerErrorMessage.GENERIC_ERROR;
+
   if (e instanceof SignerRejectConfirmationError) {
-    return "Message signing was rejected";
+    messageType = SignerErrorMessage.CONFIRMATION_REJECTED;
   }
 
   if (e instanceof SignerTimeoutError) {
-    return "Oops! Looks like the request timed out. Please try again.";
+    messageType = SignerErrorMessage.TIMEOUT;
   }
 
-  return undefined;
+  return createMessage(messageType);
 }

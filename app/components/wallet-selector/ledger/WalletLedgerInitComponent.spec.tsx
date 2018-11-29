@@ -4,11 +4,14 @@ import * as React from "react";
 
 import { tid } from "../../../../test/testUtils";
 import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
+import { getMessageTranslation, LedgerErrorMessage } from "../../translatedMessages/messages";
+import { createMessage } from "../../translatedMessages/utils";
 import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
 
 describe("<WalletLedgerInitComponent />", () => {
   it("should render error message", () => {
-    const errorMsg = "some error";
+    const errorMsg = createMessage(LedgerErrorMessage.GENERIC_ERROR);
+    const expectedResult = getMessageTranslation(errorMsg);
     const component = shallow(
       <WalletLedgerInitComponent
         errorMessage={errorMsg}
@@ -16,6 +19,12 @@ describe("<WalletLedgerInitComponent />", () => {
         intl={dummyIntl}
       />,
     );
-    expect(component.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(errorMsg);
+
+    expect(
+      component
+        .find(tid("ledger-wallet-error-msg"))
+        .children()
+        .get(0),
+    ).to.be.deep.eq(expectedResult);
   });
 });

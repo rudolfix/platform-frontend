@@ -27,6 +27,9 @@ const loginWithLightWalletETO = (testEmail: string, password: string) => {
 };
 
 describe("Light Wallet ETO Login", () => {
+  beforeEach(() => {
+    cy.clearLocalStorage();
+  });
   it("should register logout then login as an investor", () => {
     const testEmail = convertToUniqueEmail("moe@test.com");
     loginWithLightWalletETO(testEmail, password);

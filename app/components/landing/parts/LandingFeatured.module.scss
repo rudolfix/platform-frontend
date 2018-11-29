@@ -10,14 +10,12 @@
   padding-right: px-to-rem(32px);
 }
 
-.landing-features-container {
-  h3 {
-    @include headline-bigger;
+.landing-features-header {
+  @include headline-bigger;
 
-    text-transform: uppercase;
-    margin-top: px-to-rem(45px);
-    margin-bottom: px-to-rem(45px);
-  }
+  text-transform: uppercase;
+  margin-top: px-to-rem(45px);
+  margin-bottom: px-to-rem(45px);
 }
 
 .landing-featured-description,

@@ -2,6 +2,7 @@ import { delay } from "bluebird";
 import { Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
+import { GenericError } from "../../components/translatedMessages/messages";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
@@ -16,6 +17,7 @@ import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
+import { MessageSignCancelledError } from "../auth/errors";
 import { neuCall } from "../sagasUtils";
 import { unlockWallet } from "../web3/sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
@@ -129,17 +131,12 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       }
       return yield effect;
     } catch (e) {
-      const message = mapSignMessageErrorToErrorMessage(e);
+      const error = mapSignMessageErrorToErrorMessage(e);
+      yield effects.put(actions.signMessageModal.signingError(error));
 
-      if (message === undefined) {
-        yield effects.put(actions.signMessageModal.signingError("Unknown error"));
-      } else {
-        yield effects.put(actions.signMessageModal.signingError(message));
-      }
+      if (e instanceof SignerError || error.messageType === GenericError.GENERIC_ERROR) throw e;
 
-      if (e instanceof SignerError || message === undefined) throw e;
-
-      yield delay(500);
+      yield delay(500); //TODO replace it with redux-saga delay
     }
   }
 }
@@ -168,7 +165,7 @@ export function* accessWalletAndRunEffect(
   // if the cancel action was called
   // throw here
   if (cancel) {
-    throw new Error("Cancelled");
+    throw new MessageSignCancelledError("Cancelled");
   }
 
   return result;
@@ -179,22 +176,4 @@ export function* accessWalletAndRunEffect(
  */
 export function* connectWallet(): any {
   yield connectWalletAndRunEffect(call(() => {}));
-}
-
-/**
- * Main Message signing entry point
- * Can be moved elsewhere later
- */
-export function* signMessage(
-  { web3Manager }: TGlobalDependencies,
-  messageToSign: string,
-  title: string = "",
-  message: string = "",
-): any {
-  try {
-    const signEffect = call(web3Manager.sign.bind(web3Manager), messageToSign);
-    return yield call(accessWalletAndRunEffect, signEffect, title, message);
-  } catch {
-    throw new Error("Message signing failed");
-  }
 }

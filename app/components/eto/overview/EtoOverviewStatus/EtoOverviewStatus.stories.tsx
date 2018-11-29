@@ -47,6 +47,7 @@ storiesOf("ETO/EtoOverviewStatus", module)
         isEligibleToPreEto={true}
         maxCapExceeded={false}
         navigateToEto={() => {}}
+        openInNewWindow={() => {}}
       />
     </EtoWidgetContext.Provider>
   ))
@@ -59,6 +60,7 @@ storiesOf("ETO/EtoOverviewStatus", module)
         isPreEto={true}
         maxCapExceeded={false}
         navigateToEto={() => {}}
+        openInNewWindow={() => {}}
       />
     </EtoWidgetContext.Provider>
   ))
@@ -70,6 +72,7 @@ storiesOf("ETO/EtoOverviewStatus", module)
         isEligibleToPreEto={true}
         maxCapExceeded={false}
         navigateToEto={() => {}}
+        openInNewWindow={() => {}}
       />
     </EtoWidgetContext.Provider>
   ));

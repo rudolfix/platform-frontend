@@ -10,6 +10,7 @@ export interface IEtoTotalInvestment {
   etherTokenBalance: BigNumber;
 }
 
+// Order is important. Next state is calculated by adding 1 to current state.
 export enum EETOStateOnChain {
   Setup = 0, // Initial state
   Whitelist = 1,

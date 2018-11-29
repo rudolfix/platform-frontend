@@ -1,7 +1,10 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
+import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { noopLogger } from "../../../lib/dependencies/Logger";
 import { IBrowserWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
@@ -82,7 +85,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
       expect(dispatchMock).to.be.calledWithExactly(
         actions.walletSelector.browserWalletConnectionError(
-          "Your wallet seems to be locked — we can't access any accounts",
+          createMessage(BrowserWalletErrorMessage.WALLET_IS_LOCKED),
         ),
       );
     });

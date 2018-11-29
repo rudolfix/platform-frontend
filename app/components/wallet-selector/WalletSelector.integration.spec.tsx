@@ -36,6 +36,8 @@ import { actions } from "../../modules/actions";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons";
+import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";
+import { createMessage } from "../translatedMessages/utils";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./browser/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "./ledger/WalletLedgerInitComponent";
 import { walletRegisterRoutes } from "./walletRoutes";
@@ -119,7 +121,7 @@ describe("Wallet selector integration", () => {
     container
       .get<Web3ManagerMock>(symbols.web3Manager)
       .initializeMock(internalWeb3AdapterMock, dummyNetworkId);
-
+    const error = createMessage(LedgerErrorMessage.GENERIC_ERROR);
     const mountedComponent = createMount(
       wrapWithProviders(WalletSelector, {
         container,
@@ -136,9 +138,12 @@ describe("Wallet selector integration", () => {
 
     await waitForTid(mountedComponent, "ledger-wallet-error-msg");
 
-    expect(mountedComponent.find(tid("ledger-wallet-error-msg")).text()).to.be.eq(
-      "Ledger Nano S is not available",
-    );
+    expect(
+      mountedComponent
+        .find(tid("ledger-wallet-error-msg"))
+        .children()
+        .get(0),
+    ).to.be.deep.eq(getMessageTranslation(error));
 
     // simulate successful connection
     ledgerWalletConnectorMock.reMock({

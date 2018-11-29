@@ -72,6 +72,23 @@ export const selectEtoOnChainState = (
   return contracts && contracts.timedState;
 };
 
+export const selectEtoOnChainNextStateStartDate = (
+  state: IAppState,
+  previewCode: string,
+): Date | undefined => {
+  const eto = selectEtoWithCompanyAndContract(state, previewCode);
+
+  if (eto) {
+    const nextState: EETOStateOnChain | undefined = eto.contract!.timedState + 1;
+
+    if (nextState) {
+      return eto.contract!.startOfStates[nextState];
+    }
+  }
+
+  return undefined;
+};
+
 export const selectEtoOnChainStateById = (
   state: IAppState,
   etoId: string,

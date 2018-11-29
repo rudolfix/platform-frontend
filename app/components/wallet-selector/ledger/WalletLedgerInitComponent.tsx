@@ -10,6 +10,8 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers"
 import { withActionWatcher } from "../../../utils/withActionWatcher";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { WarningAlert } from "../../shared/WarningAlert";
+import { getMessageTranslation } from "../../translatedMessages/messages";
+import { TMessage } from "../../translatedMessages/utils";
 import { LedgerHeader } from "./LedgerHeader";
 
 import * as imgStep1 from "../../../assets/img/wallet_selector/ledger_login_step_1.svg";
@@ -38,7 +40,7 @@ const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
 
 interface IWalletLedgerInitComponentProps {
   isInitialConnectionInProgress: boolean;
-  errorMessage?: string;
+  errorMessage?: TMessage;
 }
 
 export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps & IIntlProps> = ({
@@ -52,7 +54,7 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
       <Row className="justify-content-center">
         <WarningAlert className="my-4">
           <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
-          <span data-test-id="ledger-wallet-error-msg">{errorMessage}</span>
+          <span data-test-id="ledger-wallet-error-msg">{getMessageTranslation(errorMessage)}</span>
         </WarningAlert>
       </Row>
     )}

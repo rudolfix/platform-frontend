@@ -14,7 +14,7 @@ const MAX_NUM_RUNS = 3;
 const DEFAULT_CONFIG = {
   // you can omit 'spec' if you just want all your tests to run
   // spec: './cypress/integration/retries/**/*',
-  browser: "Chrome",
+  browser: "Electron",
   record: true,
   taskTimeout: 240000,
   // parallelization options

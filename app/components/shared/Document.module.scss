@@ -4,7 +4,8 @@
     color: $color-blue;
   }
 
-  &:global(.pdf) {
+  &:global(.pdf),
+  &:global(.csv) {
     color: $neu-bright-orange;
   }
 }

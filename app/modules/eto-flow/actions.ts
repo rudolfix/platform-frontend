@@ -1,4 +1,4 @@
-import { TGeneralEtoData } from "../../lib/api/eto/EtoApi.interfaces";
+import {TBookbuildingStatsArrayType, TGeneralEtoData} from "../../lib/api/eto/EtoApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const etoFlowActions = {
@@ -12,4 +12,9 @@ export const etoFlowActions = {
     createAction("ETO_FLOW_SAVE_DATA_START", { data }),
   changeBookBuildingStatus: (status: boolean) =>
     createAction("ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", { status }),
+  bookBuildingStartWatch: () => createSimpleAction("ETO_FLOW_BOOKBUILDING_WATCHER_START"),
+  bookBuildingStopWatch: () => createSimpleAction("ETO_FLOW_BOOKBUILDING_WATCHER_STOP"),
+  loadDetailedBookBuildingStats: () => createSimpleAction("ETO_FLOW_LOAD_BOOKBUILDING_STATS"),
+  setDetailedBookBuildingStats: (stats:TBookbuildingStatsArrayType) => createAction("ETO_FLOW_SET_BOOKBUILDING_STATS", {stats}),
+  downloadBookBuildingStats: () => createSimpleAction("ETO_FLOW_DOWNLOAD_BOOKBUILDING_STATS")
 };

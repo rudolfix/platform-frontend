@@ -5,6 +5,10 @@
   .loading {
     margin: px-to-rem(50px) auto 0;
   }
+  display: grid;
+  grid-template: auto / 1fr;
+  grid-gap: 1rem;
+  grid-auto-flow: row;
 }
 
 .icon {
@@ -13,6 +17,22 @@
 }
 
 .text {
-  min-height: px-to-rem(108px);
+  //min-height: px-to-rem(108px); FIXME remove line
   max-height: px-to-rem(108px);
+  margin: 0;
+  padding: 0;
+}
+
+.group-wrapper {
+  display: grid;
+  grid-template: auto / 50% 50%;
+  grid-gap: 0.3rem;
+}
+
+.label {
+  @include font-label;
+}
+
+.button {
+  margin: 0 auto;
 }

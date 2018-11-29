@@ -681,6 +681,8 @@
   "settings.book-building-widget.proposal-accepted": "Your proposal has been accepted and your company profile is now public. The next step is the whitelisting.",
   "settings.book-building-widget.start-book-building": "Start whitelisting",
   "settings.book-building-widget.stop-book-building": "Stop whitelisting",
+  "settings.book-building-stats-widget.title": "Bookbuilding stats",
+  "eto-bookbuilding-widget.download-bookbuilding-stats": "Download as CSV",
   "settings.change-email-component.header": "CHANGE MY EMAIL ADDRESS",
   "settings.change-email-component.text": "From now on we will send emails to the new address provided by you",
   "settings.choose-pre-eto-date": "Choose Presale Date",

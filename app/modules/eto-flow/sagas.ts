@@ -1,11 +1,11 @@
-import { effects } from "redux-saga";
+import {delay, effects} from "redux-saga";
 import { fork, put } from "redux-saga/effects";
 
-import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
+import {BOOKBUILDING_WATCHER_DELAY, DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION} from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
-  EtoState,
+  EtoState, TBookbuildingStatsType,
   TCompanyEtoData,
   TEtoSpecsData,
   TPartialEtoSpecData,
@@ -13,8 +13,8 @@ import {
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { loadEtoContact } from "../public-etos/sagas";
-import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { selectIssuerCompany, selectIssuerEto } from "./selectors";
+import {neuCall, neuTakeEvery, neuTakeLatest, neuTakeUntil} from "../sagasUtils";
+import {selectBookBuildingStats, selectIssuerCompany, selectIssuerEto} from "./selectors";
 
 export function* loadIssuerEto({
   apiEtoService,
@@ -64,6 +64,60 @@ export function* changeBookBuildingStatus(
   }
 }
 
+
+export function* watchBookBuildingStats(
+  { logger }:TGlobalDependencies
+):any {
+  while (true) {
+    logger.info("Querying for bookbuilding stats...");
+    try {
+      yield neuCall(doLoadDetailedBookBuildingStats)
+    } catch (e) {
+      logger.error("Error getting bookbuilding stats", e);
+    }
+    yield delay(BOOKBUILDING_WATCHER_DELAY);
+  }
+}
+
+export function* loadBookBuildingStats(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_LOAD_BOOKBUILDING_STATS") return;
+  yield neuCall(doLoadDetailedBookBuildingStats)
+}
+
+export function* doLoadDetailedBookBuildingStats(
+  { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies
+): any {
+  try {
+    const detailedStatsResponse: IHttpResponse<any> = yield apiEtoService.getDetailedBookBuildingStats();
+
+    yield put(actions.etoFlow.setDetailedBookBuildingStats(detailedStatsResponse.body));
+  } catch (e) {
+    notificationCenter.error(
+      intlWrapper.intl.formatIntlMessage(
+        "eto.overview.error-notification.failed-to-bookbuilding-stats",
+      ),
+    );
+
+    logger.error(`Failed to load bookbuilding stats pledge`, e);
+  }
+}
+
+export function* downloadBookBuildingStats (
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TAction,
+):any {
+  if (action.type !== "ETO_FLOW_DOWNLOAD_BOOKBUILDING_STATS") return;
+  const stats = yield effects.select(selectBookBuildingStats);
+  const dataAsString = stats.map(
+    (el:TBookbuildingStatsType) => `${el.email ? el.email : "******"},${el.amountEur},${el.insertedAt},${el.updatedAt}`
+  ).join("\r\n");
+  const file = `data:text/csv,${encodeURIComponent(dataAsString)}`;
+  yield window.open(file, "_self");
+}
+
 function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecData {
   // formik will pass empty strings into numeric fields that are optional, see
   // https://github.com/jaredpalmer/formik/pull/827
@@ -89,7 +143,7 @@ export function* saveEtoData(
     });
     if (currentEtoData.state === EtoState.PREVIEW)
       yield apiEtoService.putMyEto(
-        stripEtoDataOptionalFields({
+        stripEtoDataOptionalFields({ //TODO this is already being done on form save. Need to synchronize with convert() method
           ...currentEtoData,
           ...action.payload.data.etoData,
         }),
@@ -137,4 +191,7 @@ export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
+  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_BOOKBUILDING_STATS", loadBookBuildingStats);
+  yield fork(neuTakeUntil, "ETO_FLOW_BOOKBUILDING_WATCHER_START", "ETO_FLOW_BOOKBUILDING_WATCHER_STOP", watchBookBuildingStats);
+  yield fork(neuTakeLatest, "ETO_FLOW_DOWNLOAD_BOOKBUILDING_STATS", downloadBookBuildingStats)
 }

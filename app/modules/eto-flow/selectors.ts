@@ -33,14 +33,19 @@ export const selectIssuerEtoWithCompanyAndContract = (state: IAppState) => {
   return undefined;
 };
 
-export const selectIsBookBuilding = (state: IAppState): boolean | undefined => {
+export const selectIsBookBuilding = (state: IAppState): boolean => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
     return eto.isBookbuilding;
+    // return true
   }
 
-  return undefined;
+  return false; //FIXME
+};
+
+export const selectBookBuildingStats = (state: IAppState) => {
+  return state.etoFlow.bookbuildingStats ? state.etoFlow.bookbuildingStats : null
 };
 
 export const selectCanEnableBookBuilding = (state: IAppState): boolean => {

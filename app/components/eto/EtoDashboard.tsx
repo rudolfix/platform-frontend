@@ -46,7 +46,7 @@ interface IStateProps {
   requestStatus?: TRequestStatus;
   etoState?: EtoState;
   previewCode?: string;
-  canEnableWhitelisting: boolean;
+  canEnableBookbuilding: boolean;
   etoFormProgress?: number;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
@@ -94,7 +94,7 @@ interface IEtoStateRender {
   shouldViewSubmissionSection?: boolean;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
-  canEnableWhitelisting: boolean;
+  canEnableBookbuilding: boolean;
   previewCode?: string;
 }
 
@@ -103,7 +103,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
   shouldViewSubmissionSection,
   isTermSheetSubmitted,
   isOfferingDocumentSubmitted,
-  canEnableWhitelisting,
+  canEnableBookbuilding,
   previewCode,
 }) => {
   if (!previewCode) {
@@ -114,7 +114,6 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
       size={EProjectStatusSize.LARGE}
       layout={EProjecStatusLayout.BLACK}
     />;
-
   switch (etoState) {
     case EtoState.PREVIEW:
       return (
@@ -142,8 +141,8 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
             hasDecorator={false}
             title={dashboardTitle}
           />
-          {canEnableWhitelisting && (
-            <Col lg={4} xs={12}>
+          {canEnableBookbuilding && (
+            <Col lg={8} xs={12}>
               <BookBuildingWidget />
             </Col>
           )}
@@ -165,8 +164,8 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
             hasDecorator={false}
             title={dashboardTitle}
           />
-          {canEnableWhitelisting && (
-            <Col lg={4} xs={12}>
+          {canEnableBookbuilding && (
+            <Col lg={8} xs={12}>
               <BookBuildingWidget />
             </Col>
           )}
@@ -183,8 +182,8 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
             hasDecorator={false}
             title={dashboardTitle}
           />
-          {canEnableWhitelisting && (
-            <Col lg={4} xs={12}>
+          {canEnableBookbuilding && (
+            <Col lg={8} xs={12}>
               <BookBuildingWidget />
             </Col>
           )}
@@ -220,7 +219,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
       backupCodesVerified,
       requestStatus,
       etoState,
-      canEnableWhitelisting,
+      canEnableBookbuilding,
       isLightWallet,
       etoFormProgress,
       isTermSheetSubmitted,
@@ -258,7 +257,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
               isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
               shouldViewSubmissionSection={shouldViewSubmissionSection}
               etoState={etoState}
-              canEnableWhitelisting={canEnableWhitelisting}
+              canEnableBookbuilding={canEnableBookbuilding}
               previewCode={previewCode}
             />
           ) : (
@@ -281,7 +280,7 @@ export const EtoDashboard = compose<React.SFC>(
       requestStatus: selectKycRequestStatus(s.kyc),
       etoState: selectIssuerEtoState(s),
       previewCode: selectIssuerEtoPreviewCode(s),
-      canEnableWhitelisting: selectCanEnableBookBuilding(s), //FIXME change selector name
+      canEnableBookbuilding: selectCanEnableBookBuilding(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
       isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),
       etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s)),

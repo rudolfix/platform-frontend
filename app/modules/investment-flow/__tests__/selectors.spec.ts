@@ -37,9 +37,15 @@ describe("investment-flow > selectors", () => {
       const code3 = selectBankTransferReferenceCode(
         createStateWithAddress("0x822060c96E012Bf88D08635A543210D1029b658D", "uzehdmdkeikskmm"),
       );
-      expect(code1).to.equal("NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF 1234567890");
-      expect(code2).to.equal("NF bppom/Pof3/JRdNFqGmEF4dEejU REF abcdefghijklo");
-      expect(code3).to.equal("NF giBgyW4BK/iNCGNaVDIQ0QKbZY0 REF uzehdmdkeikskmm");
+      expect(code1).to.equal(
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF 1234567890",
+      );
+      expect(code2).to.equal(
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF bppom/Pof3/JRdNFqGmEF4dEejU REF abcdefghijklo",
+      );
+      expect(code3).to.equal(
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF giBgyW4BK/iNCGNaVDIQ0QKbZY0 REF uzehdmdkeikskmm",
+      );
     });
 
     it("adds a gas stipend appendix", () => {
@@ -50,7 +56,9 @@ describe("investment-flow > selectors", () => {
       state.investmentFlow.bankTransferGasStipend = true;
 
       const code = selectBankTransferReferenceCode(state);
-      expect(code).to.equal("NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF 88888888888 G");
+      expect(code).to.equal(
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF 88888888888 G",
+      );
     });
 
     it("adds a whitelist appendix if eto state is Whitelist", () => {
@@ -64,19 +72,25 @@ describe("investment-flow > selectors", () => {
       );
 
       let code = selectBankTransferReferenceCode(state);
-      expect(code).to.equal("NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd");
+      expect(code).to.equal(
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd",
+      );
 
       (publicEtoSelectors.selectEtoOnChainStateById as sinon.SinonStub).returns(
         EETOStateOnChain.Whitelist,
       );
 
       code = selectBankTransferReferenceCode(state);
-      expect(code).to.equal("NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd WL");
+      expect(code).to.equal(
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd WL",
+      );
 
       state.investmentFlow.bankTransferGasStipend = true;
 
       code = selectBankTransferReferenceCode(state);
-      expect(code).to.equal("NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd G WL");
+      expect(code).to.equal(
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd G WL",
+      );
     });
   });
 });

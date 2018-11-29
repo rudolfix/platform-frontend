@@ -293,7 +293,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
             )}
           <div>
             <FormattedMessage id="investment-flow.total" />:{" "}
-            <span className={styles.orange}>
+            <span className={styles.orange} data-test-id="invest-modal-total-cost">
               {formatEurTsd(totalCostEur)} € ≈ ETH {formatEthTsd(totalCostEth)}
             </span>
           </div>

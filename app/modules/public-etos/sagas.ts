@@ -21,7 +21,7 @@ import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
 import { actions, TAction } from "../actions";
 import { selectUserType } from "../auth/selectors";
-import { delayUntil, neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
+import { neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
 import {
@@ -161,6 +161,44 @@ function* watchEtosSetAction(_: TGlobalDependencies, action: TAction): any {
   yield all(map(eto => neuFork(watchEto, eto.previewCode), action.payload.etos));
 }
 
+const etoNextStateCount: Dictionary<number | undefined> = {};
+function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: string): any {
+  const nextStartDate: Date | undefined = yield select((state: IAppState) =>
+    selectEtoOnChainNextStateStartDate(state, previewCode),
+  );
+
+  if (nextStartDate) {
+    const timeToNextState = nextStartDate.getTime() - Date.now();
+
+    if (timeToNextState > 0) {
+      etoNextStateCount[previewCode] = undefined;
+      // add small delay to start date to avoid fetching eto in same state
+      return timeToNextState + 2000;
+    }
+
+    // if timeToNextState is negative then user and ethereum clock are not in sync
+    // in that case pool eto in two time intervals of 2 and 5 seconds
+    // if after than state time is still negative log warning message
+    const nextStateWatchCount = etoNextStateCount[previewCode];
+    if (nextStateWatchCount === undefined) {
+      etoNextStateCount[previewCode] = 1;
+      return 2000;
+    }
+
+    if (nextStateWatchCount === 1) {
+      etoNextStateCount[previewCode] = 2;
+      return 5000;
+    }
+
+    logger.warn(
+      "ETO next state pooling failed.",
+      new Error("User and ethereum clocks are not in sync"),
+    );
+  }
+
+  return undefined;
+}
+
 function* watchEto(_: TGlobalDependencies, previewCode: string): any {
   const eto: TEtoWithCompanyAndContract = yield select((state: IAppState) =>
     selectEtoWithCompanyAndContract(state, previewCode),
@@ -175,14 +213,9 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
       strategies.inProgress = delay(etoInProgressPoolingDelay);
     }
 
-    const nextStartDate: Date | undefined = yield select((state: IAppState) =>
-      selectEtoOnChainNextStateStartDate(state, previewCode),
-    );
-    if (nextStartDate) {
-      // add small delay to start date to avoid fetching eto in same state
-      const startDateWithDelay = new Date(nextStartDate.getTime() + 5000);
-
-      strategies.nextState = delayUntil(startDateWithDelay);
+    const nextStateDelay: number = yield neuCall(calculateNextStateDelay, previewCode);
+    if (nextStateDelay) {
+      strategies.nextState = delay(nextStateDelay);
     }
   }
 

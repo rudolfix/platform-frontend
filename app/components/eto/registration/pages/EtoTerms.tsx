@@ -99,12 +99,11 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           />
         </div>
 
-        <FormLabel name="currencies">
-          <FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />
-        </FormLabel>
-
         <div className="form-group">
-          <FormFieldCheckboxGroup name="currencies">
+          <FormFieldCheckboxGroup
+            name="currencies"
+            label={<FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />}
+          >
             {currencies.map(currency => (
               <FormFieldCheckbox
                 key={currency}

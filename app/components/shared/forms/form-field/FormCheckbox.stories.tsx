@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { formWrapper } from "./form-utils";
+import { formWrapper } from "./testingUtils";
 
 import { FormCheckbox, FormRadioButton } from "./FormCheckbox";
 
@@ -19,24 +19,16 @@ storiesOf("Form/ Checkbox && RadioButton", module)
   )
   .add(
     "checkbox with long labels",
-    formWrapper({ bwm: false, audi: false, ford: true, volvo: true })(() => (
+    formWrapper({ bwm: false, audi: true })(() => (
       <>
-        <div className="form-group">
-          <FormCheckbox
-            name="bmw"
-            label=" No shareholder loans exist and at Closing Date the Company does not have any outstanding liabilities vis-à-vis Existing Shareholders or related parties. asdf asdf asdf asdf asdf asdf asdf l(kj(lkj asdf asdf as df asdf)) bmw"
-          />
-        </div>
-        <div className="form-group">
-          <FormCheckbox name="bmw" label="bmw" />
-          <FormCheckbox name="audi" label="audi" />
-          <FormCheckbox name="ford" label="ford" />
-          <FormCheckbox name="volvo" label="volvo" />
-          <FormCheckbox
-            name="bmw"
-            label=" No shareholder loans exist and at Closing Date the Company does not have any outstanding liabilities vis-à-vis Existing Shareholders or related parties. asdf asdf asdf asdf asdf asdf asdf l(kj(lkj asdf asdf as df asdf)) bmw"
-          />
-        </div>
+        <FormCheckbox
+          name="bmw"
+          label="Well, sail me cloud, ye stormy furner! Ooh, never blow a son. Aww, avast. Golly gosh! Pieces o' yellow fever are forever big. Arrr there's nothing like the mighty desolation hobbling on the swabbie. Well! Pieces o' beauty are forever black. Clear beauties lead to the amnesty."
+        />
+        <FormCheckbox
+          name="audi"
+          label="Well, sail me cloud, ye stormy furner! Ooh, never blow a son. Aww, avast. Golly gosh! Pieces o' yellow fever are forever big. Arrr there's nothing like the mighty desolation hobbling on the swabbie. Well! Pieces o' beauty are forever black. Clear beauties lead to the amnesty."
+        />
       </>
     )),
   )

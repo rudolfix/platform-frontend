@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { formWrapper } from "./form-utils";
 import { NumberTransformingField } from "./NumberTransformingField";
+import { formWrapper } from "./testingUtils";
 
 storiesOf("Form/TransformingField", module)
   .add(

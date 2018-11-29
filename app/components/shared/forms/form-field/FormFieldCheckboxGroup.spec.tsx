@@ -5,8 +5,8 @@ import { spy } from "sinon";
 
 import { submit } from "../../../../../test/integrationTestUtils";
 import { tid } from "../../../../../test/testUtils";
-import { formWrapper } from "./form-utils";
 import { FormFieldCheckbox, FormFieldCheckboxGroup } from "./FormFieldCheckboxGroup";
+import { formWrapper } from "./testingUtils";
 
 describe("FormFieldCheckboxGroup", () => {
   it("should work", async () => {

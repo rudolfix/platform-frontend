@@ -109,11 +109,13 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
             <span className={styles.label}>
               <FormattedMessage id="shared-component.eto-overview.investors-backed" />
             </span>
-            <span className={styles.value} data-test-id="eto-bookbuilding-remaining-slots">
-              {investorsCount !== null ? investorsLimit - investorsCount : investorsLimit}{" "}
+            <span className={styles.value}>
+              <span data-test-id="eto-bookbuilding-remaining-slots">
+                {investorsCount !== null ? investorsLimit - investorsCount : investorsLimit}
+              </span>{" "}
+              out of {investorsLimit} slots remaining
+              {/* TODO: Move to translations once the format is stable */}
             </span>
-            out of {investorsLimit} slots remaining
-            {/* TODO: Move to translations once the format is stable */}
           </div>
           {isInvestor &&
             isVerifiedInvestor && (

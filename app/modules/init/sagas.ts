@@ -2,7 +2,6 @@ import { effects } from "redux-saga";
 import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TAction } from "../actions";
@@ -32,6 +31,7 @@ function* initApp({ logger }: TGlobalDependencies): any {
     yield neuCall(detectUserAgent);
 
     const jwt = yield neuCall(loadJwt);
+    const userType = yield select(selectUserType);
 
     if (jwt) {
       if (isJwtExpiringLateEnough(jwt)) {
@@ -42,13 +42,13 @@ function* initApp({ logger }: TGlobalDependencies): any {
           }
           yield loadUser();
         } catch (e) {
-          yield cleanupAndLogoutSaga();
+          yield put(actions.auth.logout(userType));
           logger.error(
             "Cannot retrieve account. This could happen b/c account was deleted on backend",
           );
         }
       } else {
-        yield cleanupAndLogoutSaga();
+        yield put(actions.auth.logout(userType));
         logger.warn("JTW expiring too soon.");
       }
     }
@@ -73,14 +73,6 @@ export function* initStartSaga(_: TGlobalDependencies, action: TAction): Iterato
     default:
       throw new Error("Unrecognized init type!");
   }
-}
-
-export function* cleanupAndLogoutSaga(): Iterator<any> {
-  const userType: EUserType = yield effects.select((s: IAppState) => selectUserType(s.auth));
-  yield put(actions.auth.logout());
-  userType === EUserType.INVESTOR
-    ? yield put(actions.routing.goToLogin())
-    : yield put(actions.routing.goToEtoLogin());
 }
 
 export function* checkIfSmartcontractsInitNeeded(): any {

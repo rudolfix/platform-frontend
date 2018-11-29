@@ -6,8 +6,8 @@ import { selectKycRequestStatus } from "../kyc/selectors";
 import { IAuthState } from "./reducer";
 
 export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
-export const selectUserType = (state: IAuthState): EUserType | undefined =>
-  state.user && state.user.type;
+export const selectUserType = (state: IAppState): EUserType | undefined =>
+  state.auth.user && state.auth.user.type;
 
 export const selectUserEmail = (state: IAuthState): string | undefined =>
   state.user && (state.user.unverifiedEmail || state.user.verifiedEmail);
@@ -36,7 +36,7 @@ export const selectIsUserVerified = (state: IAppState): boolean =>
   selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state.kyc) === "Accepted";
 
 export const selectIsInvestor = (state: IAppState): boolean =>
-  selectUserType(state.auth) === EUserType.INVESTOR;
+  selectUserType(state) === EUserType.INVESTOR;
 
 export const selectIsVerifiedInvestor = createSelector(
   selectIsInvestor,

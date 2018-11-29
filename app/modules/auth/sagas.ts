@@ -18,7 +18,7 @@ import { actions, TAction } from "../actions";
 import { selectIsSmartContractInitDone } from "../init/selectors";
 import { loadKycRequestData } from "../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../routing/selectors";
-import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeOnly } from "../sagasUtils";
 import { selectUrlUserType } from "../wallet-selector/selectors";
 import { loadPreviousWallet } from "../web3/sagas";
 import {
@@ -28,7 +28,7 @@ import {
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { MessageSignCancelledError } from "./errors";
-import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
+import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -178,10 +178,9 @@ function* logoutWatcher(
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "AUTH_LOGOUT") return;
-
+  const { userType } = action.payload;
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
-  const userType: EUserType | undefined = yield select(selectUserType);
   if (userType === EUserType.INVESTOR || !userType) {
     yield effects.put(actions.routing.goHome());
   } else {
@@ -409,7 +408,7 @@ export function* loadCurrentAgreement({
 }
 
 export const authSagas = function*(): Iterator<effects.Effect> {
-  yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
+  yield fork(neuTakeLatest, "AUTH_LOGOUT", logoutWatcher);
   yield fork(neuTakeEvery, "AUTH_SET_USER", setUser);
   yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);

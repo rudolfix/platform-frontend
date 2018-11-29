@@ -16,6 +16,9 @@ import {
 } from "../utils";
 
 describe("Light wallet login / register", () => {
+  beforeEach(() => {
+    cy.clearLocalStorage();
+  });
   it("should register user with light-wallet and send email", () => {
     const email = "moe@test.com";
     const password = "strongpassword";

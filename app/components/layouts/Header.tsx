@@ -3,9 +3,9 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "reactstrap";
 
+import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectIsAuthorized, selectUserType } from "../../modules/auth/selectors";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { appConnect } from "../../store";
 import { appRoutes } from "../appRoutes";
 import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";

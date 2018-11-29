@@ -28,7 +28,7 @@ import {
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { MessageSignCancelledError } from "./errors";
-import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
+import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();

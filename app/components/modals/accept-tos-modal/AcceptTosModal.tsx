@@ -2,16 +2,16 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
+import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectIsLatestAgreementAccepted,
   selectIsLatestAgreementLoaded,
+  selectUserType,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { ModalComponentBody } from "../ModalComponentBody";
-import { selectUserType } from "../../../modules/auth/selectors";
-import { EUserType } from "../../../lib/api/users/interfaces";
 
 interface IStateProps {
   isOpen: boolean;

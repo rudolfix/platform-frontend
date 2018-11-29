@@ -112,7 +112,7 @@ describe("Eto campaining state", () => {
           cy.wait(1000);
           createAndLoginNewUser({
             type: "investor",
-            kyc: "business",
+            kyc: "individual",
           }).then(() => {
             cy.wait(1000);
             cy.reload();

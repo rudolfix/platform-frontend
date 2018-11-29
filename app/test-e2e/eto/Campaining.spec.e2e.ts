@@ -1,11 +1,12 @@
 import { appRoutes } from "../../components/appRoutes";
+import { extractNumber } from "../../utils/StringUtils";
 import { withParams } from "../../utils/withParams";
 import { ISSUER_SETUP } from "../constants";
+import { etoFixtureAddressByName } from "../utils";
 import { assertRegister, confirmAccessModal } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
-import { createAndLoginNewUser } from "../utils/userHelpers";
-import { etoFixtureAddressByName } from "../utils";
+import { createAndLoginNewUser, logout, makeAuthenticatedCall } from "../utils/userHelpers";
 
 describe("Eto campaining state", () => {
   it("should show Register button when not logged in", () => {
@@ -41,54 +42,78 @@ describe("Eto campaining state", () => {
       type: "issuer",
       kyc: "business",
       seed: ISSUER_SETUP,
+      permissions: ["do-bookbuilding"],
     }).then(() => {
-      cy.visit(appRoutes.dashboard);
-
-      cy.get(tid("eto-flow-start-bookbuilding")).awaitedClick();
-
-      confirmAccessModal();
-
-      // give it a chance to settle before logging out
-      cy.wait(5000);
-
-      createAndLoginNewUser({
-        type: "investor",
-        kyc: "business",
+      // make sure bookbuilding is off (especially after CI retry)
+      return makeAuthenticatedCall("/api/eto-listing/etos/me/bookbuilding", {
+        method: "PUT",
+        body: JSON.stringify({
+          is_bookbuilding: false,
+        }),
       }).then(() => {
-        cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-        cy.reload();
-        fillForm({
-          amount: "10000",
-          consentToRevealEmail: {
-            type: "radio",
-            value: "true",
-          },
-          "eto-bookbuilding-back-now": { type: "submit" },
-        });
+        cy.visit(appRoutes.dashboard);
 
-        confirmAccessModal();
-
-        cy.get(tid("eto-bookbuilding-amount-backed")).should("contain", "€10 000");
-        cy.get(tid("eto-bookbuilding-investors-backed")).should("contain", "1");
+        cy.get(tid("eto-flow-start-bookbuilding")).awaitedClick();
 
         // give it a chance to settle before logging out
         cy.wait(5000);
+        logout();
 
+        cy.reload();
+        cy.wait(1000);
         createAndLoginNewUser({
           type: "investor",
           kyc: "business",
         }).then(() => {
-          cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
+          cy.wait(1000);
           cy.reload();
+
+          cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
+
+          let amount: number;
+          let freeSlots: number;
+          cy.get(tid("eto-bookbuilding-amount-backed"));
+          cy.get(tid("eto-bookbuilding-remaining-slots"));
+
           fillForm({
-            amount: "15000",
+            amount: "1000",
+            consentToRevealEmail: {
+              type: "radio",
+              value: "true",
+            },
             "eto-bookbuilding-back-now": { type: "submit" },
           });
 
           confirmAccessModal();
 
-          cy.get(tid("eto-bookbuilding-amount-backed")).should("contain", "€25 000");
-          cy.get(tid("eto-bookbuilding-investors-backed")).should("contain", "2");
+          cy.get(tid("eto-bookbuilding-amount-backed"));
+          cy.get(tid("eto-bookbuilding-remaining-slots"));
+
+          // give it a chance to settle before logging out
+          cy.wait(5000);
+
+          logout();
+
+          cy.reload();
+          cy.wait(1000);
+          createAndLoginNewUser({
+            type: "investor",
+            kyc: "individual",
+          }).then(() => {
+            cy.wait(1000);
+            cy.reload();
+
+            cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
+            fillForm({
+              amount: "1500",
+              "eto-bookbuilding-back-now": { type: "submit" },
+            });
+
+            confirmAccessModal();
+
+            cy.get(tid("eto-bookbuilding-amount-backed"));
+            cy.get(tid("eto-bookbuilding-remaining-slots"));
+          });
         });
       });
     });

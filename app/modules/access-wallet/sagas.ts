@@ -17,6 +17,7 @@ import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
+import { MessageSignCancelledError } from "../auth/errors";
 import { neuCall } from "../sagasUtils";
 import { unlockWallet } from "../web3/sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
@@ -164,7 +165,7 @@ export function* accessWalletAndRunEffect(
   // if the cancel action was called
   // throw here
   if (cancel) {
-    throw new Error("Cancelled");
+    throw new MessageSignCancelledError("Cancelled");
   }
 
   return result;
@@ -175,22 +176,4 @@ export function* accessWalletAndRunEffect(
  */
 export function* connectWallet(): any {
   yield connectWalletAndRunEffect(call(() => {}));
-}
-
-/**
- * Main Message signing entry point
- * Can be moved elsewhere later
- */
-export function* signMessage(
-  { web3Manager }: TGlobalDependencies,
-  messageToSign: string,
-  title: string = "",
-  message: string = "",
-): any {
-  try {
-    const signEffect = call(web3Manager.sign.bind(web3Manager), messageToSign);
-    return yield call(accessWalletAndRunEffect, signEffect, title, message);
-  } catch {
-    throw new Error("Message signing failed");
-  }
 }

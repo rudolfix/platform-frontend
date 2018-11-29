@@ -73,7 +73,8 @@ describe("Eto campaining state", () => {
           let amount: number;
           let freeSlots: number;
           cy.get(tid("eto-bookbuilding-amount-backed")).should($e => {
-            amount = parseInt(extractNumber($e.text().trim()));
+            const text = $e.text().trim();
+            amount = text === "-" ? 0 : parseInt(extractNumber(text));
             expect(Number.isNaN(amount)).to.be.false;
           });
           cy.get(tid("eto-bookbuilding-remaining-slots")).should($e => {

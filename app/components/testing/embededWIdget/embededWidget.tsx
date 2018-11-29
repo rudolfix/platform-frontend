@@ -10,14 +10,14 @@ import { withParams } from "../../../utils/withParams";
 import { appRoutes } from "../../appRoutes";
 
 interface IStateProps {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContract | undefined;
 }
 
 interface IRouterParams {
   etoId: string;
 }
 
-const TestEmbededWidgetComponent: React.SFC<IStateProps & IRouterParams> = ({ eto }) => {
+const TestEmbededWidgetComponent: React.SFC<IRouterParams & IStateProps> = ({ eto }) => {
   return (
     <>
       <h3>This widget testing page</h3>
@@ -33,8 +33,8 @@ const TestEmbededWidgetComponent: React.SFC<IStateProps & IRouterParams> = ({ et
   );
 };
 
-const TestEmbededWidget = compose<any, any>(
-  appConnect<any, any, any>({
+const TestEmbededWidget = compose<IRouterParams & IStateProps, IRouterParams>(
+  appConnect<IStateProps, {}, IRouterParams & IRouterParams>({
     stateToProps: (state, props) => ({
       eto: selectEtoWithCompanyAndContractById(state, props.etoId),
     }),

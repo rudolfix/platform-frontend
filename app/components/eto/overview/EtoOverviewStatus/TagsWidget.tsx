@@ -58,6 +58,7 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
               theme="green"
               layout="ghost"
               text={<FormattedMessage id="shared-component.eto-overview.term-sheet" />}
+              dataTestId="eto-overview-term-sheet-button"
             />
           ) : (
             <Tag
@@ -79,6 +80,7 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
               theme="green"
               layout="ghost"
               text={approvedDocumentTitle}
+              dataTestId="eto-overview-prospectus-approved-button"
             />
           ) : (
             <Tag size={ETagSize.SMALL} theme="silver" layout="ghost" text={approvedDocumentTitle} />
@@ -94,6 +96,7 @@ const TagsWidgetLayout: React.SFC<TLayoutProps> = ({
               theme="green"
               layout="ghost"
               text={<FormattedMessage id="shared-component.eto-overview.smart-contract-on-chain" />}
+              dataTestId="eto-overview-smart-contract-on-chain-button"
             />
           ) : (
             <Tag

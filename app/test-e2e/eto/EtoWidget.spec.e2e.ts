@@ -41,13 +41,50 @@ describe("Eto widget page", () => {
   it("Any", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInSetupState")!;
 
+    (window as any).open = cy.stub().as("windowOpen");
+
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
-    (cy.get("iframe") as any)
-      .iframe()
-      .find(tid("logged-out-campaigning-register"))
-      .click();
-    cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register);
+    (cy.get("iframe") as any).iframe().within(($iframe: any) => {
+      cy.wrap($iframe)
+        .find(tid("logged-out-campaigning-register"))
+        .click();
+
+      cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register, "_blank");
+
+      cy.wrap($iframe)
+        .find(tid("eto-overview-status-token"))
+        .should("have.attr", "target", "_blank");
+
+      cy.wrap($iframe)
+        .find(tid("eto-overview-term-sheet-button"))
+        .should("have.attr", "target", "_blank");
+
+      cy.wrap($iframe)
+        .find(tid("eto-overview-term-sheet-button"))
+        .should("have.attr", "href")
+        .and("match", new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })));
+
+      cy.wrap($iframe)
+        .find(tid("eto-overview-prospectus-approved-button"))
+        .should("have.attr", "target", "_blank");
+
+      cy.wrap($iframe)
+        .find(tid("eto-overview-prospectus-approved-button"))
+        .should("have.attr", "href")
+        .and("match", new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })));
+
+      cy.wrap($iframe)
+        .find(tid("eto-overview-smart-contract-on-chain-button"))
+        .should("have.attr", "target", "_blank");
+
+      cy.wrap($iframe)
+        .find(tid("eto-overview-smart-contract-on-chain-button"))
+        .should("have.attr", "href")
+        .and("match", new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })));
+
+      cy.wrap($iframe).find(tid("eto-overview-powered-by"));
+    });
   });
 
   it("ETOInSetupState", () => {
@@ -59,7 +96,8 @@ describe("Eto widget page", () => {
       .iframe()
       .find(tid("logged-out-campaigning-register"))
       .click();
-    cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register);
+
+    cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register, "_blank");
   });
 
   it("ETOInWhitelistState", () => {
@@ -67,7 +105,7 @@ describe("Eto widget page", () => {
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
-    (cy.get("iframe") as any).iframe().find(tid("eto-whitelist-count-down"));
+    (cy.get("iframe") as any).iframe().find(tid("eto-whitelist-count-down"), "_blank");
   });
 
   it("ETOInPublicState", () => {

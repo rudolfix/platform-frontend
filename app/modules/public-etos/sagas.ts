@@ -193,6 +193,7 @@ function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: 
     logger.warn(
       "ETO next state pooling failed.",
       new Error("User and ethereum clocks are not in sync"),
+      { etoPreviewCode: previewCode },
     );
   }
 

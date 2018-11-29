@@ -9,6 +9,7 @@ import { loadJwt, loadUser } from "../auth/sagas";
 import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
+import { selectUserType } from "../auth/selectors";
 
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
   try {
@@ -30,6 +31,7 @@ function* initApp({ logger }: TGlobalDependencies): any {
     yield neuCall(detectUserAgent);
 
     const jwt = yield neuCall(loadJwt);
+    const userType = yield select(selectUserType);
 
     if (jwt) {
       if (isJwtExpiringLateEnough(jwt)) {
@@ -40,13 +42,13 @@ function* initApp({ logger }: TGlobalDependencies): any {
           }
           yield loadUser();
         } catch (e) {
-          yield put(actions.auth.logout());
+          yield put(actions.auth.logout(userType));
           logger.error(
             "Cannot retrieve account. This could happen b/c account was deleted on backend",
           );
         }
       } else {
-        yield put(actions.auth.logout());
+        yield put(actions.auth.logout(userType));
         logger.warn("JTW expiring too soon.");
       }
     }

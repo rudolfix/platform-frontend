@@ -2,10 +2,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
+import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectIsLatestAgreementAccepted,
   selectIsLatestAgreementLoaded,
+  selectUserType,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
@@ -13,12 +15,13 @@ import { ModalComponentBody } from "../ModalComponentBody";
 
 interface IStateProps {
   isOpen: boolean;
+  userType?: EUserType;
 }
 
 interface IDispatchProps {
   onAccept: () => void;
   onDownloadTos: () => void;
-  onLogout: () => void;
+  onLogout: (userType?: EUserType) => void;
 }
 
 interface IState {
@@ -38,6 +41,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
   };
 
   render(): React.ReactNode {
+    const { userType, onLogout, onAccept } = this.props;
     return (
       <section className="text-center">
         <h1>
@@ -57,7 +61,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
         </div>
         <div className="mt-4 mb-2">
           <Button
-            onClick={this.props.onAccept}
+            onClick={onAccept}
             layout={EButtonLayout.PRIMARY}
             disabled={!this.state.tosDownloaded}
             data-test-id="modals.accept-tos.accept-button"
@@ -66,7 +70,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
           </Button>
         </div>
         <div>
-          <Button onClick={this.props.onLogout} layout={EButtonLayout.SIMPLE}>
+          <Button onClick={() => onLogout(userType)} layout={EButtonLayout.SIMPLE}>
             <FormattedMessage id="settings.modal.accept-tos.logout-button" />
           </Button>
         </div>
@@ -74,7 +78,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
         {/* a cleaner solution would be greatly appreciated, force: click does not work here :( */}
         <div
           data-test-id="modals.accept-tos.accept-button-hidden"
-          onClick={this.props.onAccept}
+          onClick={onAccept}
           style={{ height: 5 }}
         />
       </section>
@@ -93,10 +97,11 @@ const AcceptTosModalComponent: React.SFC<IStateProps & IDispatchProps> = props =
 export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isOpen: !selectIsLatestAgreementAccepted(s) && selectIsLatestAgreementLoaded(s),
+    userType: selectUserType(s),
   }),
   dispatchToProps: dispatch => ({
     onDownloadTos: () => dispatch(actions.auth.downloadCurrentAgreement()),
     onAccept: () => dispatch(actions.auth.acceptCurrentAgreement()),
-    onLogout: () => dispatch(actions.auth.logout()),
+    onLogout: (userType?: EUserType) => dispatch(actions.auth.logout(userType)),
   }),
 })(AcceptTosModalComponent);

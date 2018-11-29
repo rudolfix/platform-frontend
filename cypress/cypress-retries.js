@@ -14,7 +14,7 @@ const MAX_NUM_RUNS = 3;
 const DEFAULT_CONFIG = {
   // you can omit 'spec' if you just want all your tests to run
   // spec: './cypress/integration/retries/**/*',
-  browser: "Electron",
+  browser: "electron",
   record: true,
   taskTimeout: 240000,
   // parallelization options
@@ -22,9 +22,9 @@ const DEFAULT_CONFIG = {
   parallel: true,
 
   // only necessary if recording specs from a local machine
-  ciBuildId: Math.random()
+  /* ciBuildId: Math.random()
     .toString(16)
-    .substr(2, 6),
+    .substr(2, 6), */
 };
 
 // id unique to the machine
@@ -68,7 +68,6 @@ const run = (num, spec, retryGroup) => {
           console.log(`Ran a total of '${MAX_NUM_RUNS}' times but still have failures. Exiting...`);
           return process.exit(totalFailuresIncludingRetries);
         }
-        test: e2e: cypress: record;
 
         console.log(`Retrying '${specs.length}' specs...`);
         console.log(specs);

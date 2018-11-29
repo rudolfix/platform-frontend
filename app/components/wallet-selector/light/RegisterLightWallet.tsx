@@ -11,6 +11,7 @@ import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
+import { TMessage } from "../../translatedMessages/utils";
 
 import * as styles from "./RegisterLightWallet.module.scss";
 
@@ -26,7 +27,7 @@ export interface IFormValues {
 
 export interface IStateProps {
   isLoading?: boolean;
-  errorMsg?: string;
+  errorMsg?: TMessage;
 }
 
 interface IDispatchProps {
@@ -148,7 +149,7 @@ export const RegisterWalletComponent: React.SFC<
 export const RegisterLightWallet = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps, { restore: boolean }>({
     stateToProps: state => ({
-      errorMsg: state.lightWalletWizard.errorMsg,
+      errorMsg: state.lightWalletWizard.errorMsg as TMessage,
       isLoading: state.lightWalletWizard.isLoading,
     }),
     dispatchToProps: dispatch => ({

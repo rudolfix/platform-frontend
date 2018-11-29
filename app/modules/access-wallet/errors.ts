@@ -1,3 +1,8 @@
+import {
+  GenericError,
+  MismatchedWalletAddressErrorMessage,
+} from "../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../components/translatedMessages/utils";
 import { BrowserWalletError } from "../../lib/web3/BrowserWallet";
 import { mapSignerErrorToErrorMessage } from "../../lib/web3/errors";
 import { LedgerError } from "../../lib/web3/LedgerWallet";
@@ -19,10 +24,7 @@ export class MismatchedWalletAddressError extends Error {
   }
 }
 
-/**
- * Returns error message or undefined if error is unknown
- */
-export function mapSignMessageErrorToErrorMessage(error: Error): string | undefined {
+export function mapSignMessageErrorToErrorMessage(error: Error): TMessage {
   if (error instanceof BrowserWalletError) {
     return mapBrowserWalletErrorToErrorMessage(error);
   }
@@ -36,7 +38,11 @@ export function mapSignMessageErrorToErrorMessage(error: Error): string | undefi
     return mapSignerErrorToErrorMessage(error);
   }
   if (error instanceof MismatchedWalletAddressError) {
-    return error.message;
+    return createMessage(MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS, {
+      desiredAddress: error.desiredAddress,
+      actualAddress: error.actualAddress,
+    });
   }
-  return undefined;
+
+  return createMessage(GenericError.GENERIC_ERROR);
 }

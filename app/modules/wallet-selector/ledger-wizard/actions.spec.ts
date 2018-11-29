@@ -4,6 +4,8 @@ import { spy } from "sinon";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
+import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { Neumark } from "../../../lib/contracts/Neumark";
 import { ILedgerWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { ContractsService } from "../../../lib/web3/ContractsService";
@@ -67,7 +69,9 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       );
 
       expect(mockDispatch).to.be.calledWithExactly(
-        actions.walletSelector.ledgerConnectionEstablishedError("Ledger Nano S is not available"),
+        actions.walletSelector.ledgerConnectionEstablishedError(
+          createMessage(LedgerErrorMessage.GENERIC_ERROR),
+        ),
       );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
@@ -356,7 +360,9 @@ describe("verifyIfLedgerStillConnected", () => {
 
     expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
     expect(dispatchMock).to.be.calledWithExactly(
-      actions.walletSelector.ledgerConnectionEstablishedError("Ledger Nano S is not available"),
+      actions.walletSelector.ledgerConnectionEstablishedError(
+        createMessage(LedgerErrorMessage.GENERIC_ERROR),
+      ),
     );
   });
 });

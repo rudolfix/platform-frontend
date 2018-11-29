@@ -1,3 +1,4 @@
+import { TMessage } from "../../../components/translatedMessages/utils";
 import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ILedgerAccount } from "./reducer";
 
@@ -12,7 +13,7 @@ export const ledgerWizardActions = {
 
   ledgerConnectionEstablished: () => createSimpleAction("LEDGER_CONNECTION_ESTABLISHED"),
 
-  ledgerConnectionEstablishedError: (errorMsg: string) =>
+  ledgerConnectionEstablishedError: (errorMsg: TMessage) =>
     createAction("LEDGER_CONNECTION_ESTABLISHED_ERROR", { errorMsg }),
 
   setLedgerWizardDerivationPathPrefix: (derivationPathPrefix: string) =>

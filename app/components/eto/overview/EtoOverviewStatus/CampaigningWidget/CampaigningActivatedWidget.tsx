@@ -74,7 +74,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
             <span className={styles.label}>
               <FormattedMessage id="eto-overview.campaigning.whitelist-status" />
             </span>
-            <span className={styles.value} data-test-id="eto-bookbuilding-amount-backed">
+            <span className={styles.value}>
               {pledge ? (
                 <FormattedMessage id="eto-overview.campaigning.whitelist-status.label-subscribed" />
               ) : (

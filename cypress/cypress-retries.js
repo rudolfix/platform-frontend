@@ -9,7 +9,7 @@ const _ = require("lodash");
 // This script was taken from issue 1313 in Cypress
 // https://github.com/cypress-io/cypress/issues/1313
 
-const MAX_NUM_RUNS = 1;
+const MAX_NUM_RUNS = 3;
 
 const DEFAULT_CONFIG = {
   // you can omit 'spec' if you just want all your tests to run
@@ -22,7 +22,9 @@ const DEFAULT_CONFIG = {
   parallel: true,
 
   // only necessary if recording specs from a local machine
-  // ciBuildId: crypto.randomBytes(6).toString('hex')
+  ciBuildId: Math.random()
+    .toString(16)
+    .substr(2, 6),
 };
 
 // id unique to the machine
@@ -45,6 +47,10 @@ const run = (num, spec, retryGroup) => {
 
   return cypress.run(config).then(
     results => {
+      if (results.failures === 1) {
+        console.log(`Run exited with "${results.message}", \n very naughty?`);
+        return process.exit(-1);
+      }
       if (results.totalFailed) {
         totalFailuresIncludingRetries += results.totalFailed;
 
@@ -62,6 +68,7 @@ const run = (num, spec, retryGroup) => {
           console.log(`Ran a total of '${MAX_NUM_RUNS}' times but still have failures. Exiting...`);
           return process.exit(totalFailuresIncludingRetries);
         }
+        test: e2e: cypress: record;
 
         console.log(`Retrying '${specs.length}' specs...`);
         console.log(specs);
@@ -86,7 +93,4 @@ const run = (num, spec, retryGroup) => {
 };
 
 // kick off the run with the default specs
-run(0).catch(e => {
-  console.log(`Run exited with ${e}, Cypress failed to run`);
-  return process.exit(-1);
-});
+run(0);

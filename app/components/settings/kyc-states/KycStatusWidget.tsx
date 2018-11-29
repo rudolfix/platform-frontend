@@ -21,7 +21,6 @@ import {
 } from "../../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
-import { UnionDictionary } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { externalRoutes } from "../../externalRoutes";
@@ -57,7 +56,7 @@ interface IDispatchProps {
 
 export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
 
-const statusTextMap: UnionDictionary<TRequestStatus, React.ReactNode> = {
+const statusTextMap: Record<TRequestStatus, React.ReactNode> = {
   Accepted: <FormattedMessage id="settings.kyc-status-widget.status.accepted" />,
   Rejected: (
     <FormattedHTMLMessage
@@ -84,7 +83,7 @@ const statusTextMap: UnionDictionary<TRequestStatus, React.ReactNode> = {
   Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
 };
 
-const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.ReactNode> = {
+const outsourcedStatusTextMap: Record<TRequestOutsourcedStatus, React.ReactNode> = {
   review_pending: (
     <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />
   ),

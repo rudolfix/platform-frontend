@@ -47,7 +47,7 @@ const run = (num, spec, retryGroup) => {
 
   return cypress.run(config).then(
     results => {
-      if (results.failures === 1) {
+      if (results.failures > 0) {
         console.log(`Run exited with "${results.message}", \n very naughty?`);
         return process.exit(-1);
       }
@@ -92,4 +92,7 @@ const run = (num, spec, retryGroup) => {
 };
 
 // kick off the run with the default specs
-run(0);
+run(0).catch(error => {
+  console.log(`Run exited with ${error}, bad config?`);
+  return process.exit(-1);
+});

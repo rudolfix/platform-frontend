@@ -240,3 +240,10 @@ export const etoFixtureAddressByName = (name: string) => {
   )! as EthereumAddress;
   return makeEthereumAddressChecksummed(address);
 };
+
+export const etoPreviewCodeByName = (name: string) => {
+  const address = Object.keys(ETO_FIXTURES).find(
+    a => ETO_FIXTURES[a].name === name,
+  )! as EthereumAddress;
+  return makeEthereumAddressChecksummed(address);
+};

@@ -48,7 +48,7 @@ export function* loadEtoPreview(
     if (eto.state === EtoState.ON_CHAIN) {
       // load investor tickets
       const userType: EUserType | undefined = yield select((state: IAppState) =>
-        selectUserType(state.auth),
+        selectUserType(state),
       );
       if (userType === EUserType.INVESTOR) {
         yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
@@ -87,7 +87,7 @@ export function* loadEto(
     if (eto.state === EtoState.ON_CHAIN) {
       // load investor tickets
       const userType: EUserType | undefined = yield select((state: IAppState) =>
-        selectUserType(state.auth),
+        selectUserType(state),
       );
       if (userType === EUserType.INVESTOR) {
         yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
@@ -201,7 +201,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
 
     // load investor tickets
     const userType: EUserType | undefined = yield select((state: IAppState) =>
-      selectUserType(state.auth),
+      selectUserType(state),
     );
     if (userType === EUserType.INVESTOR) {
       yield put(actions.investorEtoTicket.loadInvestorTickets(etosByPreviewCode));

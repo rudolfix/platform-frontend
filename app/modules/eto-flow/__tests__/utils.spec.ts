@@ -143,8 +143,9 @@ describe("eto-flow > utils", () => {
     };
     const data = [pledge1, pledge2];
     const expectedOutput =
-      "adsflasdf@asdfasdf.ru,55562,2018-11-30T10:24:38.394206Z,2018-11-30T10:24:38.394216Z\r\n" +
-      "(anonymous pledge),1245567,2018-11-30T10:24:38.394206Z,2018-11-30T10:24:38.394216Z";
+      `email,amount,"submitted on","updated on"\r\n` +
+      `"adsflasdf@asdfasdf.ru",55562,2018-11-30,2018-11-30\r\n` +
+      `(anonymous pledge),1245567,2018-11-30,2018-11-30`;
     expect(bookBuildingStatsToCsvString(data)).to.eq(expectedOutput);
   });
   it("creates a dataUri string with CSV mime type", () => {

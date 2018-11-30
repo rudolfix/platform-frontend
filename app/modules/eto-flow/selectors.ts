@@ -43,14 +43,18 @@ export const selectIsBookBuilding = (state: IAppState): boolean => {
   return false;
 };
 
-export const selectBookBuildingStats = (state: IAppState) => {
-  return state.etoFlow.bookbuildingStats ? state.etoFlow.bookbuildingStats : [];
-};
-
 export const selectMaxPledges = (state: IAppState) => {
   const eto = selectIssuerEto(state);
 
   return eto !== undefined ? eto.maxPledges : null;
+};
+
+export const selectEtoId = (state: IAppState) => {
+  const eto = selectIssuerEto(state);
+  if (eto) {
+    return eto.etoId;
+  }
+  return undefined;
 };
 
 export const selectCanEnableBookBuilding = (state: IAppState): boolean => {

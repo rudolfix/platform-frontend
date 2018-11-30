@@ -3,10 +3,9 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { TBookbuildingStatsType } from "../../../../lib/api/eto/EtoApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import {
-  selectBookBuildingStats,
+  selectEtoId,
   selectIsBookBuilding,
   selectMaxPledges,
 } from "../../../../modules/eto-flow/selectors";
@@ -18,31 +17,34 @@ import { Document } from "../../../shared/Document";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { Panel } from "../../../shared/Panel";
-import { countPledgeMoney } from "./utils";
 
+import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces";
+import { selectBookbuildingStats } from "../../../../modules/bookbuilding-flow/selectors";
 import { TTranslatedString } from "../../../../types";
+import { LoadingIndicator } from "../../../shared/loading-indicator";
 import * as styles from "../../etoContentWidget.module.scss";
 
 interface IDispatchProps {
-  startBookBuilding: () => void;
-  stopBookBuilding: () => void;
+  startBookBuilding: (etoId: string) => void;
+  stopBookBuilding: (etoId: string) => void;
   downloadCSV: () => void;
 }
 
 interface IStateProps {
   bookBuildingEnabled?: boolean;
-  bookBuildingStats: TBookbuildingStatsType[];
+  bookBuildingStats: IBookBuildingStats;
   maxPledges: number | null;
+  etoId?: string;
 }
 
-interface IBookBuildingStats {
-  bookBuildingStats: TBookbuildingStatsType[];
+interface IBookBuilding {
+  bookBuildingStats: IBookBuildingStats;
   downloadCSV: () => void;
   maxPledges: number | null;
 }
 
 interface ILayoutProps {
-  onClick: () => void;
+  onClick: (etoId: string) => void;
   headerText: TTranslatedString;
   text: TTranslatedString;
   buttonText: TTranslatedString;
@@ -50,41 +52,44 @@ interface ILayoutProps {
 
 type IProps = IDispatchProps & IStateProps;
 
-const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBookBuildingStats) => (
-  <>
-    <div className={styles.groupWrapper}>
-      <span className={styles.label}>
-        <FormattedMessage id="shared-component.eto-overview.amount-backed" />
-      </span>
-      <span className={styles.value}>
-        <Money
-          value={countPledgeMoney(bookBuildingStats)}
-          currency="eur"
-          format={EMoneyFormat.FLOAT}
-          currencySymbol={ECurrencySymbol.SYMBOL}
-        />
-      </span>
-      <span className={styles.label}>
-        <FormattedMessage id="shared-component.eto-overview.investors-backed" />
-      </span>
-      <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
-        {maxPledges !== null ? (
-          <FormattedMessage
-            id="settings.book-building-stats-widget.number-of-pledges"
-            values={{ pledges: bookBuildingStats.length, maxPledges }}
+const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBookBuilding) =>
+  bookBuildingStats !== undefined ? (
+    <>
+      <div className={styles.groupWrapper}>
+        <span className={styles.label}>
+          <FormattedMessage id="shared-component.eto-overview.amount-backed" />
+        </span>
+        <span className={styles.value}>
+          <Money
+            value={bookBuildingStats.pledgedAmount}
+            currency="eur"
+            format={EMoneyFormat.FLOAT}
+            currencySymbol={ECurrencySymbol.SYMBOL}
           />
-        ) : null}
-      </span>
-    </div>
-    {bookBuildingStats.length > 0 ? (
-      <DocumentTemplateButton
-        onClick={downloadCSV}
-        title={<FormattedMessage id="eto-bookbuilding-widget.download-bookbuilding-stats" />}
-        altIcon={<Document extension="csv" />}
-      />
-    ) : null}
-  </>
-);
+        </span>
+        <span className={styles.label}>
+          <FormattedMessage id="shared-component.eto-overview.investors-backed" />
+        </span>
+        <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
+          {maxPledges !== null ? (
+            <FormattedMessage
+              id="settings.book-building-stats-widget.number-of-pledges"
+              values={{ pledges: bookBuildingStats.investorsCount, maxPledges }}
+            />
+          ) : null}
+        </span>
+      </div>
+      {bookBuildingStats.investorsCount > 0 ? (
+        <DocumentTemplateButton
+          onClick={downloadCSV}
+          title={<FormattedMessage id="eto-bookbuilding-widget.download-bookbuilding-stats" />}
+          altIcon={<Document extension="csv" />}
+        />
+      ) : null}
+    </>
+  ) : (
+    <LoadingIndicator className={styles.loadingNoMargin} />
+  );
 
 const BookBuildingWidgetLayout: React.SFC<ILayoutProps> = ({
   children,
@@ -117,17 +122,18 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   stopBookBuilding,
   bookBuildingStats,
   downloadCSV,
+  etoId,
 }) => {
-  if (!bookBuildingEnabled && !bookBuildingStats.length) {
+  if (!bookBuildingEnabled && !bookBuildingStats.investorsCount) {
     return (
       <BookBuildingWidgetLayout
         headerText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}
         text={<FormattedMessage id="settings.book-building-widget.proposal-accepted" />}
         buttonText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}
-        onClick={startBookBuilding}
+        onClick={() => startBookBuilding(etoId as string)}
       />
     );
-  } else if (!bookBuildingEnabled && bookBuildingStats.length) {
+  } else if (!bookBuildingEnabled && bookBuildingStats.investorsCount) {
     return (
       <BookBuildingWidgetLayout
         headerText={<FormattedMessage id="settings.book-building-widget.book-building-diabled" />}
@@ -135,7 +141,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
         buttonText={
           <FormattedMessage id="settings.book-building-widget.reactivate-book-building" />
         }
-        onClick={startBookBuilding}
+        onClick={() => startBookBuilding(etoId as string)}
       >
         <BookBuildingStats
           bookBuildingStats={bookBuildingStats}
@@ -150,7 +156,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
         headerText={<FormattedMessage id="settings.book-building-widget.book-building-enabled" />}
         text={<FormattedMessage id="settings.book-building-widget.book-building-enabled-text" />}
         buttonText={<FormattedMessage id="settings.book-building-widget.stop-book-building" />}
-        onClick={stopBookBuilding}
+        onClick={() => stopBookBuilding(etoId as string)}
       >
         <BookBuildingStats
           bookBuildingStats={bookBuildingStats}
@@ -166,17 +172,18 @@ export const BookBuildingWidget = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       bookBuildingEnabled: selectIsBookBuilding(state),
-      bookBuildingStats: selectBookBuildingStats(state),
+      bookBuildingStats: selectBookbuildingStats(selectEtoId(state) as string, state),
       maxPledges: selectMaxPledges(state),
+      etoId: selectEtoId(state),
     }),
     dispatchToProps: dispatch => ({
-      startBookBuilding: () => {
+      startBookBuilding: etoId => {
         dispatch(actions.etoFlow.changeBookBuildingStatus(true));
-        dispatch(actions.etoFlow.bookBuildingStartWatch());
+        dispatch(actions.bookBuilding.bookBuildingStartWatch(etoId));
       },
-      stopBookBuilding: () => {
+      stopBookBuilding: etoId => {
         dispatch(actions.etoFlow.changeBookBuildingStatus(false));
-        dispatch(actions.etoFlow.bookBuildingStopWatch());
+        dispatch(actions.bookBuilding.bookBuildingStopWatch(etoId));
       },
       downloadCSV: () => {
         dispatch(actions.etoFlow.downloadBookBuildingStats());
@@ -186,16 +193,16 @@ export const BookBuildingWidget = compose<React.SFC>(
   onEnterAction({
     actionCreator: (dispatch, props) => {
       if (props.bookBuildingEnabled) {
-        dispatch(actions.etoFlow.bookBuildingStartWatch());
+        dispatch(actions.bookBuilding.bookBuildingStartWatch(props.etoId));
       } else {
-        dispatch(actions.etoFlow.loadDetailedBookBuildingStats());
+        dispatch(actions.bookBuilding.loadBookBuildingStats(props.etoId));
       }
     },
   }),
   onLeaveAction({
     actionCreator: (dispatch, props) => {
       if (props.bookBuildingEnabled) {
-        dispatch(actions.etoFlow.bookBuildingStopWatch());
+        dispatch(actions.bookBuilding.bookBuildingStopWatch(props.etoId));
       }
     },
   }),

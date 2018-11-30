@@ -1,11 +1,7 @@
-import { delay, effects } from "redux-saga";
+import { effects } from "redux-saga";
 import { fork, put } from "redux-saga/effects";
 
-import {
-  BOOKBUILDING_WATCHER_DELAY,
-  DO_BOOK_BUILDING,
-  SUBMIT_ETO_PERMISSION,
-} from "../../config/constants";
+import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
@@ -17,9 +13,9 @@ import {
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { loadEtoContact } from "../public-etos/sagas";
-import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
-import { selectBookBuildingStats, selectIssuerCompany, selectIssuerEto } from "./selectors";
-import { bookBuildingStatsToCsvString, createCsvDataUri } from "./utils";
+import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
+import { selectIssuerCompany, selectIssuerEto } from "./selectors";
+import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
 export function* loadIssuerEto({
   apiEtoService,
@@ -69,52 +65,27 @@ export function* changeBookBuildingStatus(
   }
 }
 
-export function* watchBookBuildingStats({ logger }: TGlobalDependencies): any {
-  while (true) {
-    logger.info("Querying for bookbuilding stats...");
-    try {
-      yield neuCall(doLoadDetailedBookBuildingStats);
-    } catch (e) {
-      logger.error("Error getting bookbuilding stats", e);
-    }
-    yield delay(BOOKBUILDING_WATCHER_DELAY);
-  }
-}
-
-export function* loadBookBuildingStats(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "ETO_FLOW_LOAD_BOOK_BUILDING_STATS") return;
-  yield neuCall(doLoadDetailedBookBuildingStats);
-}
-
-export function* doLoadDetailedBookBuildingStats({
-  apiEtoService,
-  notificationCenter,
-  logger,
-  intlWrapper,
-}: TGlobalDependencies): any {
+export function* downloadBookBuildingStats(
+  { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS") return;
   try {
     const detailedStatsResponse: IHttpResponse<
       any
     > = yield apiEtoService.getDetailedBookBuildingStats();
 
-    yield put(actions.etoFlow.setDetailedBookBuildingStats(detailedStatsResponse.body));
+    const dataAsString = yield bookBuildingStatsToCsvString(detailedStatsResponse.body);
+
+    yield downloadFile(createCsvDataUri(dataAsString), "whitelisted_investors.csv");
   } catch (e) {
     notificationCenter.error(
       intlWrapper.intl.formatIntlMessage(
         "eto.overview.error-notification.failed-to-bookbuilding-stats",
       ),
     );
-
     logger.error(`Failed to load bookbuilding stats pledge`, e);
   }
-}
-
-export function* downloadBookBuildingStats(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS") return;
-
-  const stats = yield effects.select(selectBookBuildingStats);
-  const dataAsString = bookBuildingStatsToCsvString(stats);
-  yield window.open(createCsvDataUri(dataAsString), "_self");
 }
 
 function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecData {
@@ -191,12 +162,5 @@ export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
-  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_BOOK_BUILDING_STATS", loadBookBuildingStats);
-  yield fork(
-    neuTakeUntil,
-    "ETO_FLOW_BOOKBUILDING_WATCHER_START",
-    "ETO_FLOW_BOOKBUILDING_WATCHER_STOP",
-    watchBookBuildingStats,
-  );
   yield fork(neuTakeLatest, "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS", downloadBookBuildingStats);
 }

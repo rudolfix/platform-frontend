@@ -1,14 +1,22 @@
 import { fork, put } from "redux-saga/effects";
 
-import { DO_BOOK_BUILDING } from "../../config/constants";
+import { BOOKBUILDING_WATCHER_DELAY, DO_BOOK_BUILDING } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
 import { IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces";
+import { delay } from "../../utils/delay";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
-import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { DELETE_PLEDGE, LOAD_BOOKBUILDING_FLOW_STATS, LOAD_PLEDGE, SAVE_PLEDGE } from "./actions";
+import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
+import {
+  DELETE_PLEDGE,
+  LOAD_BOOKBUILDING_FLOW_STATS,
+  LOAD_PLEDGE,
+  SAVE_PLEDGE,
+  UNWATCH_BOOKBUILDING_FLOW_STATS,
+  WATCH_BOOKBUILDING_FLOW_STATS,
+} from "./actions";
 
 export function* saveMyPledge(
   { apiEtoPledgeService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
@@ -74,6 +82,18 @@ export function* deleteMyPledge(
   }
 }
 
+export function* watchBookBuildingStats({ logger }: TGlobalDependencies, action: TAction): any {
+  while (true) {
+    logger.info("Querying for bookbuilding stats...");
+    try {
+      yield neuCall(loadBookBuildingStats, { ...action, type: LOAD_BOOKBUILDING_FLOW_STATS });
+    } catch (e) {
+      logger.error("Error getting bookbuilding stats", e);
+    }
+    yield delay(BOOKBUILDING_WATCHER_DELAY);
+  }
+}
+
 export function* loadBookBuildingStats(
   { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
   action: TAction,
@@ -120,6 +140,12 @@ export function* loadMyPledge(
 
 export function* bookBuildingFlowSagas(): any {
   yield fork(neuTakeEvery, LOAD_BOOKBUILDING_FLOW_STATS, loadBookBuildingStats);
+  yield fork(
+    neuTakeUntil,
+    WATCH_BOOKBUILDING_FLOW_STATS,
+    UNWATCH_BOOKBUILDING_FLOW_STATS,
+    watchBookBuildingStats,
+  );
   yield fork(neuTakeEvery, LOAD_PLEDGE, loadMyPledge);
   yield fork(neuTakeEvery, SAVE_PLEDGE, saveMyPledge);
   yield fork(neuTakeEvery, DELETE_PLEDGE, deleteMyPledge);

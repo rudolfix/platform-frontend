@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import {ETOFormsProgressSectionComponent} from './ETOFormsProgressSection'
-import {EtoState} from "../../../lib/api/eto/EtoApi.interfaces";
+import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
+import { ETOFormsProgressSectionComponent } from "./ETOFormsProgressSection";
 
 const data = {
   etoStatus: EtoState.LISTED,
@@ -17,10 +17,9 @@ const data = {
   etoRiskAssessmentProgress: 1,
   etoEquityTokenInfoProgress: 1,
   etoVotingRightsProgress: 1,
-  etoInvestmentTermsProgress: 1
+  etoInvestmentTermsProgress: 1,
 };
 
-storiesOf("ETO/ETOFormsProgressSection", module)
-  .add("default", () => (
-    <ETOFormsProgressSectionComponent {...data} />
-  ));
+storiesOf("ETO/ETOFormsProgressSection", module).add("default", () => (
+  <ETOFormsProgressSectionComponent {...data} />
+));

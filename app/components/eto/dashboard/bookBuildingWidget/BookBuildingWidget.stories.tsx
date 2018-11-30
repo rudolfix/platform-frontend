@@ -1,17 +1,15 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { dummyIntl } from "../../../../utils/injectIntlHelpers.fixtures";
-
 import { BookBuildingWidgetComponent } from "./BookBuildingWidget";
 
 const data = {
   startBookBuilding: () => {},
   stopBookBuilding: () => {},
-  downloadCSV: ()=>{},
-  bookBuildingEnabled:false,
+  downloadCSV: () => {},
+  bookBuildingEnabled: false,
   bookBuildingStats: [],
-  maxPledges: 500
+  maxPledges: 500,
 };
 
 const pledge1 = {
@@ -35,39 +33,30 @@ const pledge2 = {
   userId: "12341234123",
 };
 
-
 storiesOf("BookBuildingWidget", module)
   .add("whitelisting not started", () => {
-    return (
-      <BookBuildingWidgetComponent {...data}/>
-    )
+    return <BookBuildingWidgetComponent {...data} />;
   })
   .add("whitelisting started, no data yet", () => {
     const testData = {
       ...data,
-      bookBuildingEnabled: true
+      bookBuildingEnabled: true,
     };
-    return (
-      <BookBuildingWidgetComponent {...testData}/>
-    )
+    return <BookBuildingWidgetComponent {...testData} />;
   })
   .add("whitelisting started, there are pledges", () => {
     const testData = {
       ...data,
       bookBuildingEnabled: true,
-      bookBuildingStats: [pledge1, pledge2]
+      bookBuildingStats: [pledge1, pledge2],
     };
-    return (
-      <BookBuildingWidgetComponent {...testData}/>
-    )
+    return <BookBuildingWidgetComponent {...testData} />;
   })
   .add("whitelisting paused", () => {
     const testData = {
       ...data,
       bookBuildingEnabled: false,
-      bookBuildingStats: [pledge1, pledge2]
+      bookBuildingStats: [pledge1, pledge2],
     };
-    return (
-      <BookBuildingWidgetComponent {...testData}/>
-    )
+    return <BookBuildingWidgetComponent {...testData} />;
   });

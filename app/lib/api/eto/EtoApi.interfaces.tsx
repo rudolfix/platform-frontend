@@ -316,15 +316,15 @@ interface IAdditionalEtoType {
 }
 
 export type TBookbuildingStatsType = {
-  amountEur: number,
-  consentToRevealEmail: boolean,
-  currency: string,
-  email?: string,
-  etoId?: string,
-  insertedAt: string,
-  updatedAt: string,
-  userId: string,
-}
+  amountEur: number;
+  consentToRevealEmail: boolean;
+  currency: string;
+  email?: string;
+  etoId?: string;
+  insertedAt: string;
+  updatedAt: string;
+  userId: string;
+};
 
 export type TEtoSpecsData = TEtoTermsType &
   TEtoEquityTokenInfoType &

@@ -10,7 +10,8 @@ import {
   EtoRiskAssessmentType,
   EtoTermsType,
   EtoVotingRightsType,
-  GeneralEtoDataType, TBookbuildingStatsType,
+  GeneralEtoDataType,
+  TBookbuildingStatsType,
 } from "../../lib/api/eto/EtoApi.interfaces";
 
 function getErrorsNumber(validator: Yup.Schema<any>, data?: any): number {
@@ -139,8 +140,14 @@ export function getFormFractionDoneCalculator(
 }
 
 export const bookBuildingStatsToCsvString = (stats: TBookbuildingStatsType[]) =>
-  stats.map(
-    (el:TBookbuildingStatsType) => `${el.email ? el.email : "(anonymous pledge)"},${el.amountEur},${el.insertedAt},${el.updatedAt}`
-  ).join("\r\n");
+  stats
+    .map(
+      (el: TBookbuildingStatsType) =>
+        `${el.email ? el.email : "(anonymous pledge)"},${el.amountEur},${el.insertedAt},${
+          el.updatedAt
+        }`,
+    )
+    .join("\r\n");
 
-export const createCsvDataUri = (dataAsString: string) => `data:text/csv,${encodeURIComponent(dataAsString)}`;
+export const createCsvDataUri = (dataAsString: string) =>
+  `data:text/csv,${encodeURIComponent(dataAsString)}`;

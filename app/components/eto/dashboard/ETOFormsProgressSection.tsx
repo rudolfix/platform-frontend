@@ -145,7 +145,6 @@ export const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
   );
 };
 
-
 export const ETOFormsProgressSection = appConnect<IStateProps, {}>({
   stateToProps: state => ({
     etoStatus: selectIssuerEtoState(state),

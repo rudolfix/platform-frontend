@@ -109,11 +109,13 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
   if (!previewCode) {
     return <LoadingIndicator />;
   }
-  const dashboardTitle = <ETOState
+  const dashboardTitle = (
+    <ETOState
       previewCode={previewCode}
       size={EProjectStatusSize.LARGE}
       layout={EProjecStatusLayout.BLACK}
-    />;
+    />
+  );
   switch (etoState) {
     case EtoState.PREVIEW:
       return (
@@ -127,20 +129,14 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
     case EtoState.PENDING:
       return (
         <>
-          <DashboardSection
-            hasDecorator={false}
-            title={dashboardTitle}
-          />
+          <DashboardSection hasDecorator={false} title={dashboardTitle} />
           <ETOFormsProgressSection />
         </>
       );
     case EtoState.LISTED:
       return (
         <>
-          <DashboardSection
-            hasDecorator={false}
-            title={dashboardTitle}
-          />
+          <DashboardSection hasDecorator={false} title={dashboardTitle} />
           {canEnableBookbuilding && (
             <Col lg={8} xs={12}>
               <BookBuildingWidget />
@@ -160,10 +156,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
     case EtoState.PROSPECTUS_APPROVED:
       return (
         <>
-          <DashboardSection
-            hasDecorator={false}
-            title={dashboardTitle}
-          />
+          <DashboardSection hasDecorator={false} title={dashboardTitle} />
           {canEnableBookbuilding && (
             <Col lg={8} xs={12}>
               <BookBuildingWidget />
@@ -178,10 +171,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
     case EtoState.ON_CHAIN:
       return (
         <>
-          <DashboardSection
-            hasDecorator={false}
-            title={dashboardTitle}
-          />
+          <DashboardSection hasDecorator={false} title={dashboardTitle} />
           {canEnableBookbuilding && (
             <Col lg={8} xs={12}>
               <BookBuildingWidget />
@@ -197,12 +187,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
         </>
       );
     default:
-      return (
-        <DashboardSection
-          hasDecorator={false}
-          title={dashboardTitle}
-        />
-      );
+      return <DashboardSection hasDecorator={false} title={dashboardTitle} />;
   }
 };
 

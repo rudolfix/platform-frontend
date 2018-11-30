@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
-import {countPledgeMoney } from "./utils";
+import { countPledgeMoney } from "./utils";
 
-describe.only("countPledgeMoney", () => {
+describe("countPledgeMoney", () => {
   it("iterates over pledge data array and sums all money", () => {
     const pledge1 = {
       amountEur: 55562,
@@ -25,7 +25,7 @@ describe.only("countPledgeMoney", () => {
       userId: "12341234123",
     };
 
-    const data = [pledge1,pledge2];
+    const data = [pledge1, pledge2];
     const expectedOutput = 1301129;
 
     expect(countPledgeMoney(data)).to.be.equal(expectedOutput);

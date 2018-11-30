@@ -1,14 +1,15 @@
 .content {
+  display: grid;
+  grid-template: auto / 1fr;
+  grid-gap: .8rem;
+  grid-auto-flow: row;
+
   min-height: px-to-rem(178px);
   max-height: px-to-rem(178px);
 
   .loading {
     margin: px-to-rem(50px) auto 0;
   }
-  display: grid;
-  grid-template: auto / 1fr;
-  grid-gap: .8rem;
-  grid-auto-flow: row;
 }
 
 .icon {
@@ -25,7 +26,7 @@
 .group-wrapper {
   display: grid;
   grid-template: auto / 50% 50%;
-  grid-gap: 0.1rem;
+  grid-gap: .1rem;
 }
 
 .label {
@@ -40,5 +41,6 @@
 //need to override button padding here, because there's too little space
 //TODO sort this out with designers
 .button-override {
-  padding-top: 0 !important; // sass-lint:disable no-important
+  // sass-lint:disable no-important
+  padding-top: 0 !important;
 }

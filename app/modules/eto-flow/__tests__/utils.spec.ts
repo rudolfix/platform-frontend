@@ -2,9 +2,10 @@ import { expect } from "chai";
 import * as Yup from "yup";
 
 import {
-  bookBuildingStatsToCsvString, createCsvDataUri,
+  bookBuildingStatsToCsvString,
+  createCsvDataUri,
   getFormFractionDoneCalculator,
-  getInitialDataForFractionCalculation
+  getInitialDataForFractionCalculation,
 } from "../utils";
 
 describe("eto-flow > selectors", () => {
@@ -140,14 +141,15 @@ describe("eto-flow > utils", () => {
       updatedAt: "2018-11-30T10:24:38.394216Z",
       userId: "12341234123",
     };
-    const data = [pledge1,pledge2];
-    const expectedOutput = 'adsflasdf@asdfasdf.ru,55562,2018-11-30T10:24:38.394206Z,2018-11-30T10:24:38.394216Z\r\n'
-                          +'(anonymous pledge),1245567,2018-11-30T10:24:38.394206Z,2018-11-30T10:24:38.394216Z';
-    expect(bookBuildingStatsToCsvString(data)).to.eq(expectedOutput)
+    const data = [pledge1, pledge2];
+    const expectedOutput =
+      "adsflasdf@asdfasdf.ru,55562,2018-11-30T10:24:38.394206Z,2018-11-30T10:24:38.394216Z\r\n" +
+      "(anonymous pledge),1245567,2018-11-30T10:24:38.394206Z,2018-11-30T10:24:38.394216Z";
+    expect(bookBuildingStatsToCsvString(data)).to.eq(expectedOutput);
   });
   it("creates a dataUri string with CSV mime type", () => {
     const input = "x=test";
     const expectedOutput = `data:text/csv,x%3Dtest`;
-    expect(createCsvDataUri(input)).to.eq(expectedOutput)
-  })
+    expect(createCsvDataUri(input)).to.eq(expectedOutput);
+  });
 });

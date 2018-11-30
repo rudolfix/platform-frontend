@@ -6,7 +6,7 @@ export const etoFlowInitialState: IEtoFlowState = {
   etoPreviewCode: undefined,
   loading: false,
   saving: false,
-  bookbuildingStats: []
+  bookbuildingStats: [],
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (
@@ -38,11 +38,11 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         ...state,
         saving: true,
       };
-    case "ETO_FLOW_SET_BOOKBUILDING_STATS":
+    case "ETO_FLOW_SET_BOOK_BUILDING_STATS":
       return {
         ...state,
-        bookbuildingStats: action.payload.stats
-      }
+        bookbuildingStats: action.payload.stats,
+      };
   }
   return state;
 };

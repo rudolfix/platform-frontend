@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -27,7 +28,9 @@ const CounterWidget: React.SFC<ICounterWidgetProps> = ({ endDate, state, alterna
           />
         )}
       </div>
-      <div className={styles.zone}>{endDate.toUTCString()}</div>
+      <div className={styles.zone}>
+        <time dateTime={endDate.toISOString()}>{moment.utc(endDate).format("llll z")}</time>
+      </div>
       <Counter endDate={endDate} />
     </div>
   );

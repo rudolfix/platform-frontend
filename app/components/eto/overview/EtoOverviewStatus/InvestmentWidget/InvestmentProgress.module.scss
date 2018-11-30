@@ -10,5 +10,7 @@
 }
 
 .label {
+  @include font-label-small;
+
   fill: $neu-slate-grey;
 }

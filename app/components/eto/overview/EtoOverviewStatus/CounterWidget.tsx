@@ -29,7 +29,7 @@ const CounterWidget: React.SFC<ICounterWidgetProps> = ({ endDate, state, alterna
         )}
       </div>
       <div className={styles.zone}>
-        <time dateTime={endDate.toISOString()}>{moment.utc(endDate).format("lll z")}</time>
+        <time dateTime={endDate.toISOString()}>{moment.utc(endDate).format("llll z")}</time>
       </div>
       <Counter endDate={endDate} />
     </div>

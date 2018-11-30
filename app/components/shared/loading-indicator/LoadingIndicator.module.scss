@@ -1,16 +1,16 @@
 @keyframes cuve {
   0% {
-    background-color: darken($color-brand, 20%);
+    background-color: darken($neu-piss-yellow, 20%);
     transform: rotateY(-90deg) perspective(50px);
   }
 
   50% {
-    background: lighten($color-brand, 20%);
+    background: lighten($neu-piss-yellow, 20%);
     transform: rotateY(0deg);
   }
 
   100% {
-    background: darken($color-brand, 20%);
+    background: darken($neu-piss-yellow, 20%);
     transform: rotateY(90deg) perspective(50px);
     transform-origin: 100% 50%;
   }
@@ -39,7 +39,7 @@
   span {
     @include rect(15px);
 
-    background-color: $color-brand;
+    background-color: $neu-piss-yellow;
     display: inline-block;
     transform-origin: 0 50%;
 

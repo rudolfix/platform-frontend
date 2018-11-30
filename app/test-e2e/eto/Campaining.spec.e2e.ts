@@ -70,11 +70,6 @@ describe("Eto campaining state", () => {
 
           cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
 
-          let amount: number;
-          let freeSlots: number;
-          cy.get(tid("eto-bookbuilding-amount-backed"));
-          cy.get(tid("eto-bookbuilding-remaining-slots"));
-
           fillForm({
             amount: "1000",
             consentToRevealEmail: {
@@ -86,6 +81,7 @@ describe("Eto campaining state", () => {
 
           confirmAccessModal();
 
+          // TODO: add propper assertion, that works with retries
           cy.get(tid("eto-bookbuilding-amount-backed"));
           cy.get(tid("eto-bookbuilding-remaining-slots"));
 

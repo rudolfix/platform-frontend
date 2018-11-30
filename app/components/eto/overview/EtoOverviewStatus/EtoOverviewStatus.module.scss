@@ -6,9 +6,9 @@ $divider-margin: 3%;
     padding-left: $divider-margin;
   }
 
-  background-color: $color-white;
+  background-color: $neu-white-two;
   box-shadow: $shadow-bottom-black;
-  color: $color-graphite-light;
+  color: $neu-slate-grey;
   padding: px-to-rem(8px) $divider-margin px-to-rem(8px) px-to-rem(14px);
   position: relative;
 }
@@ -133,8 +133,8 @@ $divider-margin: 3%;
     margin: 20px 0;
   }
 
-  border-left: thin $color-silver solid;
-  border-bottom: thin $color-silver solid;
+  border-left: thin $neu-silver solid;
+  border-bottom: thin $neu-silver solid;
 
   margin: 10px $divider-margin;
 }
@@ -151,15 +151,15 @@ $divider-margin: 3%;
 }
 
 .change-pledge {
-  @include pledge-actions-button($color-green-dark);
+  @include pledge-actions-button($neu-seaweed);
 }
 
 .delete-pledge {
-  @include pledge-actions-button($color-orange);
+  @include pledge-actions-button($neu-bright-orange);
 }
 
 .ends-in {
-  color: $color-orange;
+  color: $neu-bright-orange;
   font-size: 10px;
   text-align: center;
   text-transform: uppercase;
@@ -174,7 +174,7 @@ $divider-margin: 3%;
   font-size: 12px;
   letter-spacing: -.2px;
   display: flex;
-  color: $color-graphite;
+  color: $neu-greyish-brown;
   text-transform: uppercase;
 
   .title {
@@ -198,7 +198,7 @@ $divider-margin: 3%;
     &:hover,
     &:active,
     &:focus {
-      color: $color-brand;
+      color: $neu-piss-yellow;
     }
   }
 }

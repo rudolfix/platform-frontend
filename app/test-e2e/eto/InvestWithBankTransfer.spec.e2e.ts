@@ -23,7 +23,9 @@ describe("Invest with bank transfer", () => {
       cy.wait(1000);
 
       // no gas cost on bank transfer
-      cy.get(tid("invest-modal-gas-cost")).should("contain", "ETH 0.0000");
+      cy.get(tid("invest-modal-total-cost")).should($e =>
+        expect($e.text().trim()).to.match(/123[\.|,]00/),
+      );
       cy.get(tid("invest-modal-invest-now-button")).click();
 
       cy.get(tid("invest-modal-bank-transfer-summary-amount")).should($e =>

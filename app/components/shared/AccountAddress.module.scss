@@ -7,7 +7,7 @@
   @include font-label;
 
   border: 0;
-  color: $color-graphite-light;
+  color: $neu-slate-grey;
   min-height: 1em;
   text-transform: none;
   padding: 0;
@@ -18,7 +18,7 @@
 .transaction-history {
   @include font-label-small;
 
-  color: $color-silver;
+  color: $neu-silver;
   text-transform: none;
 }
 

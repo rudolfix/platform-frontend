@@ -24,7 +24,7 @@
 .profile {
   @include circle(30px);
 
-  background-color: $color-graphite;
+  background-color: $neu-greyish-brown;
   flex-shrink: 0;
   margin-bottom: 12px;
   margin-right: 15px;
@@ -33,7 +33,7 @@
   transition: 300ms $ease-out-expo background-color;
 
   &:hover {
-    background-color: $color-brand;
+    background-color: $neu-piss-yellow;
 
     :local(.label) {
       transform: translate(-50%, -50px);
@@ -44,14 +44,14 @@
   .icon {
     &,
     &:hover {
-      color: $color-white;
+      color: $neu-white-two;
     }
   }
 }
 
 
 .label {
-  color: $color-graphite;
+  color: $neu-greyish-brown;
   position: absolute;
   bottom: 0;
   pointer-events: none;
@@ -69,7 +69,7 @@
   }
 
   .content {
-    background-color: $color-white;
+    background-color: $neu-white-two;
     padding: 5px 7px;
     z-index: $z-index-base;
   }
@@ -77,7 +77,7 @@
   .ornament {
     @include rect(9px);
 
-    background-color: $color-white;
+    background-color: $neu-white-two;
     content: "";
     position: absolute;
     left: 50%;

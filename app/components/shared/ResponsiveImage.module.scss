@@ -1,11 +1,11 @@
 .responsive-image {
   &:global {
     &.dark {
-      background-color: $color-silver;
+      background-color: $neu-silver;
     }
 
     &.light {
-      background-color: $color-white;
+      background-color: $neu-white-two;
     }
 
     &.transparent {

@@ -15,14 +15,14 @@
 
 .addon {
   &:global(.is-invalid) {
-    border-color: $color-red;
+    border-color: $neu-red;
   }
 
   > :global(.input-group-text) {
     background-color: transparent;
     padding: 0 0 px-to-rem(4px) px-to-rem(10px);
     border: 0;
-    border-bottom: 1px solid $color-graphite;
+    border-bottom: 1px solid $neu-greyish-brown;
   }
 }
 
@@ -49,18 +49,18 @@
 
   &.disabled {
     &::after {
-      @include triangle-down(14px, 9px, $color-silver);
+      @include triangle-down(14px, 9px, $neu-silver);
     }
 
     & select {
-      color: $color-silver;
+      color: $neu-silver;
     }
   }
 }
 
 .input-field {
   &:disabled {
-    color: $color-silver;
+    color: $neu-silver;
 
     &::placeholder {
       color: $color-black;

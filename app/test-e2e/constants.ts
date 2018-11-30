@@ -1,6 +1,8 @@
 // Fixtures for testing
 // https://github.com/Neufund/platform-backend/blob/master/deploy/FIXTURES.md
 
+export const INV_ETH_ICBM_NO_KYC =
+  "argue resemble sustain tattoo know goat parade idea science okay loan float solution used order dune essay achieve illness keen guitar stumble idea strike";
 export const INV_EMPTY_HAS_KYC =
   "else width refuse blood month clock rib blast adjust surprise gather potato olympic post area creek power student oak inflict memory document when scene";
 export const INV_EUR_ICBM_HAS_KYC_SEED =

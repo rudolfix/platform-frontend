@@ -16,7 +16,7 @@ const Investment = injectIntlHelpers(InvestmentSelectionComponent);
 
 storiesOf("Investment/Form", module)
   .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
+    <div style={{ maxWidth: "47.5rem" }}>
       <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
     </div>
   ))
@@ -50,6 +50,7 @@ storiesOf("Investment/Form", module)
         totalCostEur={"123412341234123412341234"}
         sendTransaction={() => {}}
         showBankTransferSummary={() => {}}
+        isBankTransfer={false}
       />
     </Container>
   ))
@@ -66,8 +67,8 @@ storiesOf("Investment/Form", module)
         // tslint:disable-next-line:no-object-literal-type-assertion
         eto={{ etoId: 11234 } as any}
         euroValue={"123412341234123412341234"}
-        gasCostEth={"123412323412341234"}
-        gasCostEuro={"12341234123412341234"}
+        gasCostEth={"0"}
+        gasCostEuro={"0"}
         etherPriceEur={"123412341234123412341234"}
         eurPriceEther={"0.123412341234123412341234"}
         investEntireBalance={() => {}}
@@ -83,6 +84,7 @@ storiesOf("Investment/Form", module)
         totalCostEur={"123412341234123412341234"}
         sendTransaction={() => {}}
         showBankTransferSummary={() => {}}
+        isBankTransfer={true}
       />
     </Container>
   ));

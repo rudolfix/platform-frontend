@@ -2,15 +2,15 @@ $_side-padding: 12px;
 
 .input-wrapper {
   display: flex;
-  border: 1px solid $color-graphite;
+  border: 1px solid $neu-greyish-brown;
   padding: 10px $_side-padding;
 
   &:global(.is-valid) {
-    border-color: $color-green-dark;
+    border-color: $neu-seaweed;
   }
 
   &:global(.is-invalid) {
-    border-color: $color-orange;
+    border-color: $neu-bright-orange;
   }
 
   :global(.form-control) {

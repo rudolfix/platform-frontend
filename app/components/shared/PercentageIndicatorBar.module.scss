@@ -6,10 +6,10 @@
   position: relative;
 
   &:global(.green) {
-    color: $color-green-dark;
+    color: $neu-seaweed;
 
     .label {
-      color: darken($color-green-dark, 30%);
+      color: darken($neu-seaweed, 30%);
     }
   }
 
@@ -27,7 +27,7 @@
     transition: 500ms ease-in-out transform;
 
     &--green {
-      color: $color-green-dark;
+      color: $neu-seaweed;
     }
   }
 

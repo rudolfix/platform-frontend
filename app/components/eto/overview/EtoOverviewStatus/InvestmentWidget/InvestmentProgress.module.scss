@@ -6,9 +6,11 @@
 .success-point {
   width: 3px;
   height: 20px;
-  fill: $color-green-dark;
+  fill: $neu-seaweed;
 }
 
 .label {
-  fill: $color-graphite-light;
+  @include font-label-small;
+
+  fill: $neu-slate-grey;
 }

@@ -15,8 +15,8 @@ $track-width: 48px;
   &:disabled {
     ~ .track {
       opacity: .5;
-      background-color: $color-silver;
-      border: $track-border-width solid $color-silver;
+      background-color: $neu-silver;
+      border: $track-border-width solid $neu-silver;
     }
   }
 
@@ -46,7 +46,7 @@ $track-width: 48px;
   border-radius: $track-width / 2;
   background-color: currentColor;
   border: $track-border-width solid currentColor;
-  color: $color-silver;
+  color: $neu-silver;
   transition: 300ms $ease-out-expo background-color;
 
   &:hover {
@@ -57,7 +57,7 @@ $track-width: 48px;
 .indicator {
   @include circle($indicator-size);
 
-  background-color: $color-white;
+  background-color: $neu-white-two;
   box-shadow: $shadow1;
   transition: 200ms $ease-out-expo transform;
   will-change: transform;

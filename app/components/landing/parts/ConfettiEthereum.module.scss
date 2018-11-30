@@ -2,7 +2,7 @@ $size: 10em;
 
 $color-purple: #20e06e;
 $color-yellow: #ff6d00;
-$color-red: #ff6e83;
+$neu-red: #ff6e83;
 $color-cyan: #d5e20f;
 $animation-duration: 1.2s;
 
@@ -147,7 +147,7 @@ $debug-animation-count: infinite; // infinite | 1
     }
 
     &-color-3 {
-      background-color: $color-red;
+      background-color: $neu-red;
     }
 
     &-color-4 {

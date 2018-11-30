@@ -49,14 +49,14 @@
   background-color: transparent;
 
   &:global(.is-selected) {
-    color: $color-blue-dark;
+    color: $neu-charcoal-grey;
 
     &:hover {
-      color: lighten($color-blue-dark, 10%);
+      color: lighten($neu-charcoal-grey, 10%);
     }
   }
 
   &:hover {
-    color: lighten($color-blue-dark, 5%);
+    color: lighten($neu-charcoal-grey, 5%);
   }
 }

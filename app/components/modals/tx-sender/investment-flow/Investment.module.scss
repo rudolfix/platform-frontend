@@ -5,14 +5,15 @@
 }
 
 .invest-input {
-  &:global(.form-group) {
-    margin-bottom: 0;
+  &::placeholder {
+    font-size: .9em;
   }
 
-  label {
-    margin-bottom: .25rem;
+  &.disabled-input {
+    &::placeholder {
+      color: $neu-silver;
+    }
   }
-
 }
 
 .invest-all {

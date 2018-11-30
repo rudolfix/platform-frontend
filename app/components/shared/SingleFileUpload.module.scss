@@ -30,7 +30,7 @@ $component-height: px-to-rem(120px);
   @include font-tab;
 
   border: px-to-rem(2px) dashed $neu-silver;
-  color: $color-graphite-light;
+  color: $neu-slate-grey;
   cursor: pointer;
   display: flex;
   font-weight: $font-weight-bold;
@@ -48,6 +48,6 @@ $component-height: px-to-rem(120px);
 }
 
 .accepted-files {
-  color: $color-graphite-light;
+  color: $neu-slate-grey;
   margin-left: px-to-rem(20px);
 }

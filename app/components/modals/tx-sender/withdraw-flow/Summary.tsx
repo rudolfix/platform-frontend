@@ -3,7 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
 import { actions } from "../../../../modules/actions";
-import { selectTxGasCostEth, selectTxSummaryData } from "../../../../modules/tx/sender/selectors";
+import {
+  selectTxGasCostEthUlps,
+  selectTxSummaryData,
+} from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
@@ -74,7 +77,7 @@ export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
 export const WithdrawSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispatchProps>({
   stateToProps: state => ({
     txData: selectTxSummaryData(state)!,
-    txCost: selectTxGasCostEth(state),
+    txCost: selectTxGasCostEthUlps(state),
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),

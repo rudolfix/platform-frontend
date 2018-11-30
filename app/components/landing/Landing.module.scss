@@ -1,5 +1,5 @@
 .landing-wrapper {
-  background: $color-white url("../../assets/img/footer-dots.png") repeat-x bottom;
+  background: $neu-white-two url("../../assets/img/footer-dots.png") repeat-x bottom;
   width: 100%;
   min-height: 100%;
   flex-grow: 1;
@@ -135,7 +135,7 @@
   letter-spacing: -.03125rem;
 
   margin: $spacing-vertical-lg-1 0;
-  color: $color-graphite;
+  color: $neu-greyish-brown;
   text-transform: uppercase;
 }
 
@@ -150,7 +150,7 @@
   }
 
   font-size: px-to-rem(28);
-  color: $color-graphite;
+  color: $neu-greyish-brown;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -162,7 +162,7 @@
 
     content: "";
     display: inline-block;
-    background-color: $color-brand;
+    background-color: $neu-piss-yellow;
     margin: 0 px-to-rem(16px);
   }
 

@@ -34,7 +34,7 @@ export const wallets: WalletSelectionData[] = [
   },
   {
     type: EInvestmentType.BankTransfer,
-    name: "Direct Bank Transfer",
+    name: "Invest with EUR",
     icon: euroIcon,
   },
 ];

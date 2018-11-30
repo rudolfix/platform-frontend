@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { Button, ButtonSize, ButtonWidth } from "../../../../shared/buttons";
-import { CheckboxComponent, FormInput, InputSize } from "../../../../shared/forms";
+import { CheckboxLayout, FormInput, InputSize } from "../../../../shared/forms";
 import { Tooltip } from "../../../../shared/Tooltip";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -52,7 +52,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
           />
         </label>
         <div className={styles.value}>
-          <CheckboxComponent
+          <CheckboxLayout
             name="consentToRevealEmail"
             inputId="consentToRevealEmail"
             checked={consentToRevealEmail}

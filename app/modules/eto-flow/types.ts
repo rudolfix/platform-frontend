@@ -1,11 +1,10 @@
-import {DeepReadonly} from "../../types";
-import {TBookbuildingStatsArrayType} from "../../lib/api/eto/EtoApi.interfaces";
+import { TBookbuildingStatsType} from "../../lib/api/eto/EtoApi.interfaces";
 
 export interface IEtoFlowState {
   etoPreviewCode?: string;
   loading: boolean;
   saving: boolean;
-  bookbuildingStats: DeepReadonly<TBookbuildingStatsArrayType>;
+  bookbuildingStats: TBookbuildingStatsType[];
 }
 
 export enum EEtoFormTypes {

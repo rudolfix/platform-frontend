@@ -1,5 +1,5 @@
 import {
-  EtoState,
+  EtoState, TBookbuildingStatsType,
   TCompanyEtoData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
@@ -38,14 +38,23 @@ export const selectIsBookBuilding = (state: IAppState): boolean => {
 
   if (eto) {
     return eto.isBookbuilding;
-    // return true
   }
 
-  return false; //FIXME
+  return false;
 };
 
 export const selectBookBuildingStats = (state: IAppState) => {
-  return state.etoFlow.bookbuildingStats ? state.etoFlow.bookbuildingStats : null
+  return state.etoFlow.bookbuildingStats
+    ? state.etoFlow.bookbuildingStats
+    : []
+};
+
+export const selectMaxPledges = (state: IAppState) => {
+  const eto = selectIssuerEto(state);
+
+  return eto !== undefined
+    ?  eto.maxPledges
+    : null
 };
 
 export const selectCanEnableBookBuilding = (state: IAppState): boolean => {

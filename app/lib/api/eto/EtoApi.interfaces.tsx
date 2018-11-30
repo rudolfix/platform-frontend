@@ -326,8 +326,6 @@ export type TBookbuildingStatsType = {
   userId: string,
 }
 
-export type TBookbuildingStatsArrayType = [TBookbuildingStatsType]
-
 export type TEtoSpecsData = TEtoTermsType &
   TEtoEquityTokenInfoType &
   TEtoVotingRightsType &

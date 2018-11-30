@@ -52,44 +52,41 @@ interface ILayoutProps {
 
 type IProps = IDispatchProps & IStateProps;
 
-const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBookBuilding) =>
-  bookBuildingStats !== undefined ? (
-    <>
-      <div className={styles.groupWrapper}>
-        <span className={styles.label}>
-          <FormattedMessage id="shared-component.eto-overview.amount-backed" />
-        </span>
-        <span className={styles.value}>
-          <Money
-            value={bookBuildingStats.pledgedAmount}
-            currency="eur"
-            format={EMoneyFormat.FLOAT}
-            currencySymbol={ECurrencySymbol.SYMBOL}
-          />
-        </span>
-        <span className={styles.label}>
-          <FormattedMessage id="shared-component.eto-overview.investors-backed" />
-        </span>
-        <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
-          {maxPledges !== null ? (
-            <FormattedMessage
-              id="settings.book-building-stats-widget.number-of-pledges"
-              values={{ pledges: bookBuildingStats.investorsCount, maxPledges }}
-            />
-          ) : null}
-        </span>
-      </div>
-      {bookBuildingStats.investorsCount > 0 ? (
-        <DocumentTemplateButton
-          onClick={downloadCSV}
-          title={<FormattedMessage id="eto-bookbuilding-widget.download-bookbuilding-stats" />}
-          altIcon={<Document extension="csv" />}
+const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBookBuilding) => (
+  <>
+    <div className={styles.groupWrapper}>
+      <span className={styles.label}>
+        <FormattedMessage id="shared-component.eto-overview.amount-backed" />
+      </span>
+      <span className={styles.value}>
+        <Money
+          value={bookBuildingStats.pledgedAmount}
+          currency="eur"
+          format={EMoneyFormat.FLOAT}
+          currencySymbol={ECurrencySymbol.SYMBOL}
         />
-      ) : null}
-    </>
-  ) : (
-    <LoadingIndicator className={styles.loadingNoMargin} />
-  );
+      </span>
+      <span className={styles.label}>
+        <FormattedMessage id="shared-component.eto-overview.investors-backed" />
+      </span>
+      <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
+        {maxPledges !== null ? (
+          <FormattedMessage
+            id="settings.book-building-stats-widget.number-of-pledges"
+            values={{ pledges: bookBuildingStats.investorsCount, maxPledges }}
+          />
+        ) : null}
+      </span>
+    </div>
+    {bookBuildingStats.investorsCount > 0 ? (
+      <DocumentTemplateButton
+        onClick={downloadCSV}
+        title={<FormattedMessage id="eto-bookbuilding-widget.download-bookbuilding-stats" />}
+        altIcon={<Document extension="csv" />}
+      />
+    ) : null}
+  </>
+);
 
 const BookBuildingWidgetLayout: React.SFC<ILayoutProps> = ({
   children,
@@ -124,7 +121,10 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   downloadCSV,
   etoId,
 }) => {
-  if (!bookBuildingEnabled && !bookBuildingStats.investorsCount) {
+  if (bookBuildingStats === undefined) {
+    //TODO data loading state
+    return <LoadingIndicator className={styles.loading} />;
+  } else if (!bookBuildingEnabled && bookBuildingStats.investorsCount === 0) {
     return (
       <BookBuildingWidgetLayout
         headerText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}

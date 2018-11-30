@@ -42,7 +42,7 @@ export function createWallets(state: IAppState): WalletSelectionData[] {
     },
     [EInvestmentType.BankTransfer]: {
       type: EInvestmentType.BankTransfer,
-      name: "Direct Bank Transfer (EUR)",
+      name: "Invest with EUR",
       icon: euroIcon,
     },
     [EInvestmentType.ICBMnEuro]: {

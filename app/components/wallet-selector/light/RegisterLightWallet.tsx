@@ -120,20 +120,19 @@ export const RegisterWalletComponent: React.SFC<
   IDispatchProps & IStateProps & { restore: boolean }
 > = props => (
   <>
-    <h2
-      className={cn(styles.title, "text-center mb-4")}
-      data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
-    >
-      {props.restore ? (
-        <FormattedMessage id="wallet-selector.neuwallet.restore-prompt" />
-      ) : (
-        <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
-      )}
-    </h2>
-    <p className={styles.explanation}>
-      <FormattedMessage tagName="span" id="wallet-selector.neuwallet.explanation-1" />
-    </p>
-
+    {props.restore ? null : (
+      <>
+        <h2
+          className={cn(styles.title, "text-center mb-4")}
+          data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
+        >
+          <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
+        </h2>
+        <p className={styles.explanation}>
+          <FormattedMessage tagName="span" id="wallet-selector.neuwallet.explanation-1" />
+        </p>
+      </>
+    )}
     <Row>
       <Col md={{ size: 8, offset: 2 }}>
         <RegisterEnhancedLightWalletForm {...props} />

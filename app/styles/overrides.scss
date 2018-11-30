@@ -2,8 +2,10 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
+
+@import "./mixins/index";
+@import "./variables/index";
 @import "./variables";
-@import "./utils";
 @import "./global";
 @import "./react-slick-overrides";
 
@@ -41,8 +43,8 @@ textarea {
   @include font-default;
 
   border: 0;
-  border-bottom: 1px solid $color-graphite;
-  color: $color-graphite;
+  border-bottom: 1px solid $neu-greyish-brown;
+  color: $neu-greyish-brown;
   padding: 0 px-to-rem(10px) px-to-rem(4px);
   background-color: transparent;
 
@@ -55,7 +57,7 @@ textarea {
     &,
     &:focus {
       background-color: transparent;
-      border-color: $color-graphite;
+      border-color: $neu-greyish-brown;
     }
   }
 }
@@ -118,11 +120,11 @@ textarea {
 
 .modal-content {
   border: 0;
-  border-top: 3px solid $color-brand;
+  border-top: 3px solid $neu-piss-yellow;
 }
 
 .modal-backdrop {
-  background-color: $color-blue-dark;
+  background-color: $neu-charcoal-grey;
 
   &:global(.show) {
     opacity: 0.75;

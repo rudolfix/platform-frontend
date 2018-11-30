@@ -1,7 +1,7 @@
 $card-heigh: px-to-rem(440px);
 
 .card {
-  background-color: $color-white;
+  background-color: $neu-white-two;
   box-shadow: $shadow;
   height: 100%;
   width: 100%;
@@ -64,7 +64,7 @@ $card-heigh: px-to-rem(440px);
 
 .round-label {
   display: flex;
-  fill: $color-graphite;
+  fill: $neu-greyish-brown;
   min-width: px-to-rem(130px);
   width: 36%;
   height: px-to-rem(110px);
@@ -84,7 +84,7 @@ $card-heigh: px-to-rem(440px);
       font-size: px-to-rem(14px);
     }
 
-    color: $color-white;
+    color: $neu-white-two;
     text-transform: uppercase;
     text-align: center;
     margin-top: 10%;
@@ -212,7 +212,7 @@ $card-heigh: px-to-rem(440px);
   @include font-default;
 
   height: 100%;
-  color: $color-white;
+  color: $neu-white-two;
   flex-direction: column;
   justify-content: center;
   align-items: center;

@@ -1,8 +1,8 @@
 // sass-lint:disable no-vendor-prefixes
-$track-color: $color-silver !default;
-$track-color-disabled: lighten($color-silver, 10%) !default;
+$track-color: $neu-silver !default;
+$track-color-disabled: lighten($neu-silver, 10%) !default;
 $thumb-color: $color-green !default;
-$thumb-color-disabled: $color-silver !default
+$thumb-color-disabled: $neu-silver !default
 
 $thumb-radius: 8px !default;
 $thumb-height: 16px !default;

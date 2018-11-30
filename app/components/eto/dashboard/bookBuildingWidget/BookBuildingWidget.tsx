@@ -3,25 +3,25 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
+import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectBookbuildingStats } from "../../../../modules/bookbuilding-flow/selectors";
 import {
   selectEtoId,
   selectIsBookBuilding,
   selectMaxPledges,
 } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
+import { TTranslatedString } from "../../../../types";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../../utils/OnLeaveAction";
 import { ButtonArrowRight } from "../../../shared/buttons";
 import { Document } from "../../../shared/Document";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
+import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { Panel } from "../../../shared/Panel";
 
-import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces";
-import { selectBookbuildingStats } from "../../../../modules/bookbuilding-flow/selectors";
-import { TTranslatedString } from "../../../../types";
-import { LoadingIndicator } from "../../../shared/loading-indicator";
 import * as styles from "../../etoContentWidget.module.scss";
 
 interface IDispatchProps {

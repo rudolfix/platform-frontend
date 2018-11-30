@@ -224,6 +224,7 @@
   "eto.form.section.eto-terms.fundraising-currency": "Fundraising currency",
   "eto.form.section.eto-terms.is-hnwi-eto": "ETO is for tickets above EUR 100.000 (HNWI ETO)",
   "eto.form.section.eto-terms.is-not-crowdfunding": "ETO is not under crowdfunding regulations",
+  "eto.form.section.eto-terms.is-not-crowdfunding.error": "Crowdfunding based ETOs are not supported right now",
   "eto.form.section.eto-terms.is-retail-eto": "ETO is under prospectus regulations (RETAIL ETO)",
   "eto.form.section.eto-terms.maximum-ticket-size": "Maximum ticket size in Public Sale",
   "eto.form.section.eto-terms.maximum-ticket-size.error.less-than-minimum": "The maximum ticket size is less than minimum",

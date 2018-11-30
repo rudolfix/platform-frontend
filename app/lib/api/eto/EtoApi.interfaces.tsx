@@ -240,7 +240,9 @@ export const EtoTermsType = YupTS.object({
       ),
     ),
   enableTransferOnSuccess: YupTS.boolean(),
-  notUnderCrowdfundingRegulations: YupTS.onlyTrue(),
+  notUnderCrowdfundingRegulations: YupTS.onlyTrue(
+    <FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding.error" />,
+  ),
   allowRetailInvestors: YupTS.boolean(),
   whitelistDurationDays: YupTS.number().enhance(v =>
     v.min(WHITELIST_DURATION_DAYS.min).max(WHITELIST_DURATION_DAYS.max),

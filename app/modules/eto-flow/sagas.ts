@@ -15,6 +15,7 @@ import { ensurePermissionsArePresent } from "../auth/sagas";
 import { loadEtoContact } from "../public-etos/sagas";
 import {neuCall, neuTakeEvery, neuTakeLatest, neuTakeUntil} from "../sagasUtils";
 import {selectBookBuildingStats, selectIssuerCompany, selectIssuerEto} from "./selectors";
+import {bookBuildingStatsToCsvString, createCsvDataUri} from "./utils";
 
 export function* loadIssuerEto({
   apiEtoService,
@@ -110,12 +111,10 @@ export function* downloadBookBuildingStats (
   action: TAction,
 ):any {
   if (action.type !== "ETO_FLOW_DOWNLOAD_BOOKBUILDING_STATS") return;
+
   const stats = yield effects.select(selectBookBuildingStats);
-  const dataAsString = stats.map(
-    (el:TBookbuildingStatsType) => `${el.email ? el.email : "******"},${el.amountEur},${el.insertedAt},${el.updatedAt}`
-  ).join("\r\n");
-  const file = `data:text/csv,${encodeURIComponent(dataAsString)}`;
-  yield window.open(file, "_self");
+  const dataAsString = bookBuildingStatsToCsvString(stats);
+  yield window.open(createCsvDataUri(dataAsString), "_self");
 }
 
 function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecData {

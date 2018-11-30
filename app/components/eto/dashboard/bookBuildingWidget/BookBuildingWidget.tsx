@@ -14,15 +14,10 @@ import {ECurrencySymbol, EMoneyFormat, Money} from "../../../shared/Money";
 import { DocumentTemplateButton} from "../../../shared/DocumentLink";
 import {TBookbuildingStatsType} from "../../../../lib/api/eto/EtoApi.interfaces";
 import {Document} from "../../../shared/Document";
+import {countPledgeMoney } from "./utils";
 
 import * as styles from "../../etoContentWidget.module.scss";
-
-//FIXME move it somewhere
-const countMoney = (bookBuildingStats:any) => bookBuildingStats.reduce((acc:number, element:TBookbuildingStatsType) => {
-  acc += element.amountEur;
-  return acc
-}, 0);
-// end FIXME
+import {TTranslatedString} from "../../../../types";
 
 interface IDispatchProps {
   startBookBuilding: () => void;
@@ -51,6 +46,13 @@ interface IBookBuildingStats {
   maxPledges: number | null
 }
 
+interface ILayoutProps {
+  onClick: () => void;
+  headerText: TTranslatedString;
+  text: TTranslatedString;
+  buttonText: TTranslatedString;
+}
+
 type IProps = IDispatchProps & IStateProps;
 
 const BookBuildingStats = ({bookBuildingStats, maxPledges, downloadCSV}:IBookBuildingStats) => (
@@ -61,7 +63,7 @@ const BookBuildingStats = ({bookBuildingStats, maxPledges, downloadCSV}:IBookBui
       </span>
       <span className={styles.value}>
         <Money
-          value={countMoney(bookBuildingStats)}
+          value={countPledgeMoney(bookBuildingStats)}
           currency="eur"
           format={EMoneyFormat.FLOAT}
           currencySymbol={ECurrencySymbol.SYMBOL}
@@ -72,8 +74,9 @@ const BookBuildingStats = ({bookBuildingStats, maxPledges, downloadCSV}:IBookBui
       </span>
       <span className={styles.value} data-test-id="eto-bookbuilding-investors-backed">
         {maxPledges !== null
-          ? <FormattedMessage id="settings.book-building-stats-widget.number-of-pledges"
-                              values={{pledges: bookBuildingStats.length, maxPledges}}
+          ? <FormattedMessage
+              id="settings.book-building-stats-widget.number-of-pledges"
+              values={{pledges: bookBuildingStats.length, maxPledges}}
             />
           : null
         }
@@ -90,97 +93,71 @@ const BookBuildingStats = ({bookBuildingStats, maxPledges, downloadCSV}:IBookBui
   </>
 );
 
-const BookBuildingNotStarted: React.SFC<IBookBuildingDisabled> = ({
-   startBookBuilding,
- }) => {
-  return (
-    <Panel headerText={<FormattedMessage id="settings.book-building-widget.start-book-building"/>}>
-      <div className={styles.content}>
-        <p className={cn(styles.text)}>
-          <FormattedMessage id="settings.book-building-widget.proposal-accepted" />
-        </p>
-        <div className={styles.button}>
-          <ButtonArrowRight onClick={startBookBuilding} data-test-id="eto-flow-start-bookbuilding">
-            <FormattedMessage id="settings.book-building-widget.start-book-building" />
-          </ButtonArrowRight>
-        </div>
-      </div>
-    </Panel>
-  )};
-
-const BookBuildingPaused: React.SFC<IBookBuildingDisabled & IBookBuildingStats> = ({
-    startBookBuilding,
-    bookBuildingStats,
-    maxPledges,
-    downloadCSV
-  }) => {
-  return (
-  <Panel headerText={<FormattedMessage id="settings.book-building-widget.book-building-diabled"/>}>
+const BookBuildingWidgetLayout:React.SFC<ILayoutProps> = ({children, onClick, headerText, text, buttonText}) => (
+  <Panel headerText={headerText}>
     <div className={styles.content}>
-      <p className={cn(styles.text)}>
-        <FormattedMessage id="settings.book-building-widget.book-building-disabled-text" />
-      </p>
-      {<BookBuildingStats bookBuildingStats={bookBuildingStats} downloadCSV={downloadCSV} maxPledges={maxPledges}/>}
-      <div className={styles.button}>
-      <ButtonArrowRight onClick={startBookBuilding} data-test-id="eto-flow-start-bookbuilding">
-        <FormattedMessage id="settings.book-building-widget.reactivate-book-building" />
-      </ButtonArrowRight>
+      <p className={cn(styles.text)}>{text}</p>
+      {children}
+      <div className={styles.widgetButton}>
+        <ButtonArrowRight
+          onClick={onClick}
+          data-test-id="eto-flow-start-bookbuilding"
+          className={styles.buttonOverride}
+        >
+          {buttonText}
+        </ButtonArrowRight>
       </div>
     </div>
   </Panel>
-)};
-
-const BookBuildingEnabled: React.SFC<IBookBuildingEnabled & IBookBuildingStats> = ({
-  stopBookBuilding,
-  bookBuildingStats,
-  maxPledges,
-  downloadCSV
-}) => {
-  console.log("bookBuildingStats:", bookBuildingStats);
-  return (
-  <Panel headerText={<FormattedMessage id="settings.book-building-widget.book-building-enabled"/>}>
-    <div className={styles.content}>
-      <p className={cn(styles.text)}>
-        <FormattedMessage id="settings.book-building-widget.book-building-enabled-text" />
-      </p>
-      {<BookBuildingStats bookBuildingStats={bookBuildingStats} downloadCSV={downloadCSV} maxPledges={maxPledges}/>}
-      <ButtonArrowRight onClick={stopBookBuilding}>
-        <FormattedMessage id="settings.book-building-widget.stop-book-building" />
-      </ButtonArrowRight>
-    </div>
-  </Panel>
-)};
+);
 
 export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
-  startBookBuilding,
-  bookBuildingEnabled,
-  maxPledges,
-  stopBookBuilding,
-  bookBuildingStats,
-  downloadCSV
-}) => {
+     startBookBuilding,
+     bookBuildingEnabled,
+     maxPledges,
+     stopBookBuilding,
+     bookBuildingStats,
+     downloadCSV
+   }) => {
   if (!bookBuildingEnabled && !bookBuildingStats.length) {
     return (
-      <BookBuildingNotStarted
-        startBookBuilding={startBookBuilding}
+      <BookBuildingWidgetLayout
+        headerText={<FormattedMessage id="settings.book-building-widget.start-book-building"/>}
+        text={<FormattedMessage id="settings.book-building-widget.proposal-accepted" />}
+        buttonText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}
+        onClick={startBookBuilding}
       />
     )
   } else if (!bookBuildingEnabled && bookBuildingStats.length) {
     return (
-      <BookBuildingPaused
-        startBookBuilding={startBookBuilding}
-        bookBuildingStats={bookBuildingStats}
-        maxPledges={maxPledges}
-        downloadCSV={downloadCSV}
-      />
+      <BookBuildingWidgetLayout
+        headerText={<FormattedMessage id="settings.book-building-widget.book-building-diabled"/>}
+        text={<FormattedMessage id="settings.book-building-widget.book-building-disabled-text" />}
+        buttonText={<FormattedMessage id="settings.book-building-widget.reactivate-book-building" />}
+        onClick={startBookBuilding}
+      >
+        <BookBuildingStats
+          bookBuildingStats={bookBuildingStats}
+          downloadCSV={downloadCSV}
+          maxPledges={maxPledges}
+        />
+      </BookBuildingWidgetLayout>
     )
   } else {
-    return (<BookBuildingEnabled
-      stopBookBuilding={stopBookBuilding}
-      bookBuildingStats={bookBuildingStats}
-      maxPledges={maxPledges}
-      downloadCSV={downloadCSV}
-    />)
+    return (
+      <BookBuildingWidgetLayout
+        headerText={<FormattedMessage id="settings.book-building-widget.book-building-enabled"/>}
+        text={<FormattedMessage id="settings.book-building-widget.book-building-enabled-text" />}
+        buttonText={<FormattedMessage id="settings.book-building-widget.stop-book-building" />}
+        onClick={stopBookBuilding}
+      >
+        <BookBuildingStats
+          bookBuildingStats={bookBuildingStats}
+          downloadCSV={downloadCSV}
+          maxPledges={maxPledges}
+        />
+      </BookBuildingWidgetLayout>
+    )
   }
 };
 
@@ -220,5 +197,5 @@ export const BookBuildingWidget = compose<React.SFC>(
         dispatch(actions.etoFlow.bookBuildingStopWatch())
       }
     }
-  })
+  }),
 )(BookBuildingWidgetComponent);

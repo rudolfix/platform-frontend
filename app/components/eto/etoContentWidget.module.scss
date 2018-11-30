@@ -7,7 +7,7 @@
   }
   display: grid;
   grid-template: auto / 1fr;
-  grid-gap: 1rem;
+  grid-gap: .8rem;
   grid-auto-flow: row;
 }
 
@@ -25,14 +25,20 @@
 .group-wrapper {
   display: grid;
   grid-template: auto / 50% 50%;
-  grid-gap: 0.3rem;
+  grid-gap: 0.1rem;
 }
 
 .label {
   @include font-label;
 }
 
-.button {
+.widget-button {
   margin: 0 auto;
   align-self: end;
+}
+
+//need to override button padding here, because there's too little space
+//TODO sort this out with designers
+.button-override {
+  padding-top: 0 !important; // sass-lint:disable no-important
 }

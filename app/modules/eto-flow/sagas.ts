@@ -13,8 +13,9 @@ import {
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { loadEtoContact } from "../public-etos/sagas";
-import { neuCall, neuTakeEvery } from "../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { selectIssuerCompany, selectIssuerEto } from "./selectors";
+import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
 export function* loadIssuerEto({
   apiEtoService,
@@ -64,6 +65,29 @@ export function* changeBookBuildingStatus(
   }
 }
 
+export function* downloadBookBuildingStats(
+  { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS") return;
+  try {
+    const detailedStatsResponse: IHttpResponse<
+      any
+    > = yield apiEtoService.getDetailedBookBuildingStats();
+
+    const dataAsString = yield bookBuildingStatsToCsvString(detailedStatsResponse.body);
+
+    yield downloadFile(createCsvDataUri(dataAsString), "whitelisted_investors.csv");
+  } catch (e) {
+    notificationCenter.error(
+      intlWrapper.intl.formatIntlMessage(
+        "eto.overview.error-notification.failed-to-bookbuilding-stats",
+      ),
+    );
+    logger.error(`Failed to load bookbuilding stats pledge`, e);
+  }
+}
+
 function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecData {
   // formik will pass empty strings into numeric fields that are optional, see
   // https://github.com/jaredpalmer/formik/pull/827
@@ -90,6 +114,7 @@ export function* saveEtoData(
     if (currentEtoData.state === EtoState.PREVIEW)
       yield apiEtoService.putMyEto(
         stripEtoDataOptionalFields({
+          //TODO this is already being done on form save. Need to synchronize with convert() method
           ...currentEtoData,
           ...action.payload.data.etoData,
         }),
@@ -137,4 +162,5 @@ export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
+  yield fork(neuTakeLatest, "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS", downloadBookBuildingStats);
 }

@@ -7,7 +7,7 @@ interface IOnLeaveActionDispatchProps {
 }
 
 interface IOnLeaveActionOptions {
-  actionCreator: (dispatch: AppDispatch) => void;
+  actionCreator: (dispatch: AppDispatch, props: any) => void;
   pure?: boolean;
 }
 
@@ -21,8 +21,8 @@ export const onLeaveAction: (
 ) => React.ComponentClass = options => WrappedComponent =>
   connect<{}, IOnLeaveActionDispatchProps>(
     undefined,
-    dispatch => ({
-      enterAction: () => options.actionCreator(dispatch),
+    (dispatch, props) => ({
+      enterAction: () => options.actionCreator(dispatch, props),
     }),
     undefined,
     {

@@ -11,7 +11,7 @@
   }
 
   box-shadow: $shadow-bottom-black-light;
-  color: $color-white;
+  color: $neu-white-two;
   display: flex;
   flex-direction: column;
   padding: px-to-rem(10px) px-to-rem(12px);
@@ -25,7 +25,7 @@
     }
 
     &.warning {
-      $_color-bg: rgba($color-orange, .54);
+      $_color-bg: rgba($neu-bright-orange, .54);
 
       background-color: $_color-bg;
     }

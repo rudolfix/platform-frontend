@@ -1,5 +1,5 @@
 .panel {
-  background-color: $color-white;
+  background-color: $neu-white-two;
   box-shadow: $shadow-bottom-black;
   display: flex;
   flex-direction: column;
@@ -38,7 +38,7 @@
   &::before {
     @include rect(2px, 12px);
 
-    background-color: $color-brand;
+    background-color: $neu-piss-yellow;
     content: "";
     margin-right: 12px;
   }

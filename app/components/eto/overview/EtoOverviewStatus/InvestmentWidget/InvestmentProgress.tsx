@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import {
   getCurrentInvestmentProgressPercentage,
@@ -12,6 +13,7 @@ import {
   TProgressBarProps,
 } from "../../../../shared/PercentageIndicatorBar";
 
+import { TTranslatedString } from "../../../../../types";
 import * as styles from "./InvestmentProgress.module.scss";
 
 type TProps = {
@@ -19,14 +21,14 @@ type TProps = {
 };
 
 type TLabelExternalProps = {
-  label: string;
+  label: TTranslatedString;
   width: number;
   textAnchor?: "start" | "end" | "middle";
 };
 
 const Label: React.SFC<TLabelExternalProps> = ({ label, width, textAnchor = "middle" }) => {
   return (
-    <text x={`${width}%`} y={32} textAnchor={textAnchor} className={styles.label}>
+    <text x={`${width}%`} y={30} textAnchor={textAnchor} className={styles.label}>
       {label}
     </text>
   );
@@ -59,11 +61,16 @@ const InvestmentProgress: React.SFC<TProps> = ({ eto }) => {
     >
       <rect x={`${successOfEtoNormalized * 100}%`} y={-6} className={cn(styles.successPoint)} />
 
-      <Label label="0%" width={0} textAnchor="start" />
+      <Label
+        label={<FormattedMessage id="shared-component.eto-overview.invest.min-amount" />}
+        width={successOfEtoNormalized * 100}
+      />
 
-      <Label label="100%" width={successOfEtoNormalized * 100} />
-
-      <Label label={`${Math.round(calculatedPercentage)}%`} width={100} textAnchor="end" />
+      <Label
+        label={<FormattedMessage id="shared-component.eto-overview.invest.max-amount" />}
+        width={100}
+        textAnchor="end"
+      />
     </PercentageIndicatorBar>
   );
 };

@@ -32,7 +32,7 @@
 
   // state: active
   &:global(.is-active) {
-    border-bottom-color: $color-brand;
+    border-bottom-color: $neu-piss-yellow;
   }
 
   // state: with ornament
@@ -43,7 +43,7 @@
       &::after {
         @include rect(1px, 100%);
 
-        background-color: $color-silver;
+        background-color: $neu-silver;
         content: "";
         display: block;
         position: absolute;

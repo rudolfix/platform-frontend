@@ -179,17 +179,17 @@ const InvestorMenu: React.SFC<IStateProps & IDispatchProps & IWithProps> = ({
         isActive={isLinkActive}
       />
       <MenuEntryLink
-        svgString={iconHelp}
-        to={`${externalRoutes.neufundSupport}/home`}
-        menuName={<FormattedMessage id="menu.help" />}
-        isActive={isLinkActive}
-      />
-      <MenuEntryLink
         svgString={iconFingerprint}
         to={appRoutes.profile}
         menuName={<FormattedMessage id="menu.settings" />}
         actionRequired={actionRequiredSettings}
         data-test-id="authorized-layout-profile-button"
+        isActive={isLinkActive}
+      />
+      <MenuEntryLink
+        svgString={iconHelp}
+        to={`${externalRoutes.neufundSupport}/home`}
+        menuName={<FormattedMessage id="menu.help" />}
         isActive={isLinkActive}
       />
       {process.env.NF_SHOW_INVESTOR_IDENTITY && (
@@ -236,16 +236,16 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad
         data-test-id="authorized-layout-wallet-button"
       />
       <MenuEntryLink
-        svgString={iconHelp}
-        to={`${externalRoutes.neufundSupport}/home`}
-        menuName={<FormattedMessage id="menu.help" />}
-      />
-      <MenuEntryLink
         svgString={iconFingerprint}
         to={appRoutes.profile}
         menuName={<FormattedMessage id="menu.settings" />}
         actionRequired={actionRequiredSettings}
         data-test-id="authorized-layout-profile-button"
+      />
+      <MenuEntryLink
+        svgString={iconHelp}
+        to={`${externalRoutes.neufundSupport}/home`}
+        menuName={<FormattedMessage id="menu.help" />}
       />
     </div>
   </div>
@@ -268,7 +268,7 @@ const LayoutAuthorizedMenuComponent: React.SFC<IStateProps & IDispatchProps & IW
 const LayoutAuthorizedMenu = compose<IStateProps & IDispatchProps & IWithProps, {}>(
   appConnect<IStateProps, {}>({
     stateToProps: state => ({
-      userType: selectUserType(state.auth),
+      userType: selectUserType(state),
       actionRequiredSettings: selectIsActionRequiredSettings(state),
       shouldEtoDataLoad: selectShouldEtoDataLoad(state),
       isIdentityModalOpened: selectGenericModalIsOpen(state.genericModal),

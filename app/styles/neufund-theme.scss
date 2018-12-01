@@ -3,7 +3,8 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
-@import "./utils";
+
+@import "./mixins/index";
+@import "./variables/index";
 @import "./variables";
-@import "./config/index";
-@import "./tools/index";
+

@@ -17,7 +17,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpe
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { CopyToClipboard } from "../../../shared/CopyToClipboard";
-import { CheckboxComponent } from "../../../shared/forms";
+import { CheckboxLayout } from "../../../shared/forms";
 import { Heading } from "../../../shared/modals/Heading";
 import { Tooltip } from "../../../shared/Tooltip";
 import { InfoList } from "../shared/InfoList";
@@ -83,7 +83,7 @@ const BankTransferDetailsComponent = injectIntlHelpers(
                   id="investment-flow.bank-transfer.bank-details-instructions"
                 />
                 <p>
-                  <CheckboxComponent
+                  <CheckboxLayout
                     checked={data.gasStipend}
                     name="gas-stipend"
                     label={

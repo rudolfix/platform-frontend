@@ -1,4 +1,7 @@
 import { expect } from "chai";
+
+import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { actions } from "../../actions";
 import {
   DEFAULT_DERIVATION_PATH_PREFIX,
@@ -151,7 +154,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     const action = actions.walletSelector.ledgerConnectionEstablished();
     const initialState = {
       ...ledgerWizardInitialState,
-      errorMsg: "some error",
+      errorMsg: createMessage(LedgerErrorMessage.GENERIC_ERROR),
     };
 
     const newState = ledgerWizardReducer(initialState, action);
@@ -170,7 +173,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
   });
 
   it("should act on LEDGER_CONNECTION_ESTABLISHED_ERROR action", () => {
-    const expectedErrorMsg = "LEDGER ERROR";
+    const expectedErrorMsg = createMessage(LedgerErrorMessage.GENERIC_ERROR);
     const action = actions.walletSelector.ledgerConnectionEstablishedError(expectedErrorMsg);
 
     const newState = ledgerWizardReducer(getCommonInitialState(), action);

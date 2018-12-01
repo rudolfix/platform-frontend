@@ -26,7 +26,7 @@ export const withCanClaimToken = <T extends IWithProps>(wrapper: React.Component
     appConnect<IStateProps, {}, IExternalProps>({
       stateToProps: (state, props) => ({
         doesInvestorInvest: selectHasInvestorTicket(state, props.etoId),
-        userType: selectUserType(state.auth),
+        userType: selectUserType(state),
       }),
     }),
     withProps<IWithProps, IExternalProps & IStateProps>(props => ({

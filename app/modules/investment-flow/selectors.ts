@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Number.utils";
@@ -78,8 +79,9 @@ export const selectBankTransferReferenceCode = (state: IAppState) => {
   const base64 = btoa(byteString).replace("=", "");
 
   const reference = state.investmentFlow.bankTransferReference;
+  const date = moment().format("DD-MM-YYYY");
 
-  let code = `NF ${base64} REF ${reference}`;
+  let code = `Investment Amount, Reservation and Acquisition Agreement from ${date} NF ${base64} REF ${reference}`;
   if (selectIsBankTransferGasStipend(state)) {
     code += " G";
   }

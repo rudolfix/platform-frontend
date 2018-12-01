@@ -2,6 +2,7 @@ import { delay } from "bluebird";
 import { Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
+import { GenericError } from "../../components/translatedMessages/messages";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   IBrowserWalletMetadata,
@@ -130,17 +131,12 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       }
       return yield effect;
     } catch (e) {
-      const message = mapSignMessageErrorToErrorMessage(e);
+      const error = mapSignMessageErrorToErrorMessage(e);
+      yield effects.put(actions.signMessageModal.signingError(error));
 
-      if (message === undefined) {
-        yield effects.put(actions.signMessageModal.signingError("Unknown error"));
-      } else {
-        yield effects.put(actions.signMessageModal.signingError(message));
-      }
+      if (e instanceof SignerError || error.messageType === GenericError.GENERIC_ERROR) throw e;
 
-      if (e instanceof SignerError || message === undefined) throw e;
-
-      yield delay(500);
+      yield delay(500); //TODO replace it with redux-saga delay
     }
   }
 }

@@ -35,7 +35,7 @@ describe("Upgrade icbm wallet", () => {
     });
   });
 
-  it("do eth upgrade", () => {
+  it.skip("do eth upgrade", () => {
     createAndLoginNewUser({
       type: "investor",
       kyc: "business",

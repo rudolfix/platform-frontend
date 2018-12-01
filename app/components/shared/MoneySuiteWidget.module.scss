@@ -4,7 +4,7 @@
   &:global(.light) {
     .money,
     .total-money {
-      color: $color-white;
+      color: $neu-white-two;
     }
   }
 
@@ -32,13 +32,13 @@
   .money {
     @include font-default;
 
-    color: $color-graphite-light;
+    color: $neu-slate-grey;
   }
 
   .total-money {
     @include font-tab;
 
-    color: $color-silver;
+    color: $neu-silver;
   }
 
   .green {

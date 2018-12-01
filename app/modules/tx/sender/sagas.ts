@@ -137,7 +137,7 @@ function* ensureNoPendingTx({ logger }: TGlobalDependencies, type: ETxSenderType
     }
 
     if (txs.oooTransactions.length) {
-      const txHash = txs.oooTransactions[1].hash;
+      const txHash = txs.oooTransactions[0].hash;
       // go to miner
       yield put(actions.txSender.txSenderWatchPendingTxs(txHash));
       logger.info(`Waiting for out of bound transactions: ${txs.oooTransactions.length}`);
@@ -238,6 +238,9 @@ function* watchPendingOOOTxSubSaga({ logger }: TGlobalDependencies, txHash: stri
       if (result.type === EEventEmitterChannelEvents.NEW_BLOCK) {
         yield put(actions.txSender.txSenderReportBlock(result.blockId));
       } else {
+        if (result.type === EEventEmitterChannelEvents.ERROR) {
+          logger.warn(`Error while watching pending Tx ${txHash}`, result.error);
+        }
         return;
       }
     }

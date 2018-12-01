@@ -66,6 +66,6 @@ export const KycRouterComponent: React.SFC<IStateProps> = ({ userType }) => {
 
 export const KycRouter = appConnect<IStateProps, {}>({
   stateToProps: s => ({
-    userType: selectUserType(s.auth),
+    userType: selectUserType(s),
   }),
 })(KycRouterComponent);

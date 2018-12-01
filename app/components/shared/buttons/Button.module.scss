@@ -1,8 +1,8 @@
 // sass-lint:disable force-pseudo-nesting
 // sass-lint:disable nesting-depth
 
-$_hover-color: $color-brand;
-$_focus-color: $color-brand;
+$_hover-color: $neu-piss-yellow;
+$_focus-color: $neu-piss-yellow;
 $_active-color: lighten($_hover-color, 20%);
 
 .button {
@@ -36,6 +36,12 @@ $_active-color: lighten($_hover-color, 20%);
     text-align: center;
     text-decoration: inherit;
     transition: 200ms ease-out all; // sass-lint:disable-line no-transition-all
+
+    // makes button same in height with different content (for e.g. loading indicator)
+    &::before {
+      content: "\A0"; // space character
+      width: 0;
+    }
   }
 
   &:disabled,
@@ -49,7 +55,7 @@ $_active-color: lighten($_hover-color, 20%);
     &:hover,
     &.is-active {
       .content {
-        color: $color-gray;
+        color: $neu-pale-grey;
         background-color: transparent;
         border-color: currentColor;
       }
@@ -73,7 +79,7 @@ $_active-color: lighten($_hover-color, 20%);
       .content {
         background-color: $_hover-color;
         border-color: $_hover-color;
-        color: $color-white;
+        color: $neu-white-two;
       }
     }
 
@@ -81,7 +87,7 @@ $_active-color: lighten($_hover-color, 20%);
       .content {
         background-color: $_active-color;
         border-color: $_active-color;
-        color: $color-white;
+        color: $neu-white-two;
       }
     }
 
@@ -192,21 +198,21 @@ $_active-color: lighten($_hover-color, 20%);
   }
 
   &-graphite {
-    color: $color-graphite-light;
+    color: $neu-slate-grey;
   }
 
   &-brand {
-    background-color: $color-brand;
-    color: $color-graphite;
+    background-color: $neu-piss-yellow;
+    color: $neu-greyish-brown;
 
     :local(.content) {
-      border-color: $color-brand;
+      border-color: $neu-piss-yellow;
     }
   }
 
   &-neon {
     background-color: $neu-neon-yellow;
-    color: $color-graphite;
+    color: $neu-greyish-brown;
     border: px-to-rem(1px) solid $neu-neon-yellow;
 
     :local(.content) {
@@ -255,7 +261,7 @@ $_active-color: lighten($_hover-color, 20%);
   &:hover,
   &.is-active {
     :global(.inline-icon) {
-      color: $color-brand;
+      color: $neu-piss-yellow;
     }
   }
 }

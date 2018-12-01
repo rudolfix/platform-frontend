@@ -8,7 +8,6 @@ import { withHandlers, withProps } from "recompose";
 import { compose } from "redux";
 import { createNumberMask } from "text-mask-addons";
 
-import { Q18 } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
 import {
   EInvestmentCurrency,
@@ -25,8 +24,8 @@ import {
   selectIsReadyToInvest,
 } from "../../../../modules/investment-flow/selectors";
 import {
+  selectCalculatedEtoTicketSizesUlpsById,
   selectEquityTokenCountByEtoId,
-  selectEtoTicketSizesById,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-tickets/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
@@ -335,7 +334,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         equityTokenCount: selectEquityTokenCountByEtoId(etoId, state),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
-        etoTicketSizes: selectEtoTicketSizesById(etoId, state),
+        etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(etoId, state),
       };
     },
     dispatchToProps: dispatch => ({
@@ -352,7 +351,6 @@ export const InvestmentSelection: React.SFC = compose<any>(
   }),
   withProps<IWithProps, IStateProps>(
     ({
-      eto,
       ethValue,
       etoTicketSizes,
       investmentType,
@@ -364,14 +362,8 @@ export const InvestmentSelection: React.SFC = compose<any>(
       const isBankTransfer = investmentType === EInvestmentType.BankTransfer;
       const gasCostEther = isBankTransfer || !ethValue ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEther, etherPriceEur]);
-      const minTicketEur =
-        (etoTicketSizes && etoTicketSizes.minTicketEurUlps.div(Q18).toFixed()) ||
-        (eto.minTicketEur && eto.minTicketEur.toString()) ||
-        "0";
-      const maxTicketEur =
-        (etoTicketSizes && etoTicketSizes.maxTicketEurUlps.div(Q18).toFixed()) ||
-        (eto.maxTicketEur && eto.maxTicketEur.toString()) ||
-        "0";
+      const minTicketEur = formatEur(etoTicketSizes && etoTicketSizes.minTicketEurUlps) || "0";
+      const maxTicketEur = formatEur(etoTicketSizes && etoTicketSizes.maxTicketEurUlps) || "0";
       return {
         isBankTransfer,
         minTicketEur,

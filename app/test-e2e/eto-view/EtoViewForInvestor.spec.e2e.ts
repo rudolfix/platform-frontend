@@ -41,7 +41,7 @@ describe("Eto Investor View", () => {
     // TOKEN HOLDER RIGHTS section
     cy.get(tid("eto-public-view-nominee")).should("contain", "Neumini UG");
     cy.get(tid("eto-public-view-public-offer-duration")).should("contain", "14 Days");
-    cy.get(tid("eto-public-view-token-tradability")).should("contain", "Disabled");
+    cy.get(tid("eto-public-view-token-tradability")).should("contain", "Currently not tradable");
     cy.get(tid("eto-public-view-voting-rights")).should("contain", "Yes");
     cy.get(tid("eto-public-view-liquidation-preference")).should("contain", "0.5x");
   });

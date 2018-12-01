@@ -1,7 +1,12 @@
 import { expect } from "chai";
 import * as Yup from "yup";
 
-import { getFormFractionDoneCalculator, getInitialDataForFractionCalculation } from "../utils";
+import {
+  bookBuildingStatsToCsvString,
+  createCsvDataUri,
+  getFormFractionDoneCalculator,
+  getInitialDataForFractionCalculation,
+} from "../utils";
 
 describe("eto-flow > selectors", () => {
   describe("selectFormFractionDone", () => {
@@ -111,5 +116,41 @@ describe("eto-flow > selectors", () => {
         obj: { foo: { bar: undefined } },
       });
     });
+  });
+});
+
+describe("eto-flow > utils", () => {
+  it("converts bookBuildingStats to string in CSV format", () => {
+    const pledge1 = {
+      amountEur: 55562,
+      consentToRevealEmail: true,
+      currency: "blablacoin",
+      email: "adsflasdf@asdfasdf.ru",
+      etoId: "12312345345457567",
+      insertedAt: "2018-11-30T10:24:38.394206Z",
+      updatedAt: "2018-11-30T10:24:38.394216Z",
+      userId: "1123412123",
+    };
+
+    const pledge2 = {
+      amountEur: 1245567,
+      consentToRevealEmail: false,
+      currency: "blablacoin",
+      etoId: "12312345345457567",
+      insertedAt: "2018-11-30T10:24:38.394206Z",
+      updatedAt: "2018-11-30T10:24:38.394216Z",
+      userId: "12341234123",
+    };
+    const data = [pledge1, pledge2];
+    const expectedOutput =
+      `email,amount,"submitted on","updated on"\r\n` +
+      `"adsflasdf@asdfasdf.ru",55562,2018-11-30,2018-11-30\r\n` +
+      `(anonymous pledge),1245567,2018-11-30,2018-11-30`;
+    expect(bookBuildingStatsToCsvString(data)).to.eq(expectedOutput);
+  });
+  it("creates a dataUri string with CSV mime type", () => {
+    const input = "x=test";
+    const expectedOutput = `data:text/csv,x%3Dtest`;
+    expect(createCsvDataUri(input)).to.eq(expectedOutput);
   });
 });

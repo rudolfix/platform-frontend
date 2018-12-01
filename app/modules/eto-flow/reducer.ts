@@ -6,6 +6,7 @@ export const etoFlowInitialState: IEtoFlowState = {
   etoPreviewCode: undefined,
   loading: false,
   saving: false,
+  bookbuildingStats: [],
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (

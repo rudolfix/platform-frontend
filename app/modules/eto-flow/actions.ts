@@ -12,4 +12,5 @@ export const etoFlowActions = {
     createAction("ETO_FLOW_SAVE_DATA_START", { data }),
   changeBookBuildingStatus: (status: boolean) =>
     createAction("ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", { status }),
+  downloadBookBuildingStats: () => createSimpleAction("ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS"),
 };

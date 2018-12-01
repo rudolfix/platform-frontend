@@ -1,7 +1,10 @@
+import { TBookbuildingStatsType } from "../../lib/api/eto/EtoApi.interfaces";
+
 export interface IEtoFlowState {
   etoPreviewCode?: string;
   loading: boolean;
   saving: boolean;
+  bookbuildingStats: TBookbuildingStatsType[];
 }
 
 export enum EEtoFormTypes {

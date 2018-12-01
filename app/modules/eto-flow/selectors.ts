@@ -33,13 +33,27 @@ export const selectIssuerEtoWithCompanyAndContract = (state: IAppState) => {
   return undefined;
 };
 
-export const selectIsBookBuilding = (state: IAppState): boolean | undefined => {
+export const selectIsBookBuilding = (state: IAppState): boolean => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
     return eto.isBookbuilding;
   }
 
+  return false;
+};
+
+export const selectMaxPledges = (state: IAppState) => {
+  const eto = selectIssuerEto(state);
+
+  return eto !== undefined ? eto.maxPledges : null;
+};
+
+export const selectEtoId = (state: IAppState) => {
+  const eto = selectIssuerEto(state);
+  if (eto) {
+    return eto.etoId;
+  }
   return undefined;
 };
 

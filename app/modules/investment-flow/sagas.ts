@@ -12,7 +12,11 @@ import { convertToBigInt } from "../../utils/Number.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { loadComputedContributionFromContract } from "../investor-tickets/sagas";
-import { selectCalculatedContribution, selectIsWhitelisted } from "../investor-tickets/selectors";
+import {
+  selectCalculatedContribution,
+  selectCalculatedEtoTicketSizesUlpsById,
+  selectIsWhitelisted,
+} from "../investor-tickets/selectors";
 import {
   selectEtoOnChainStateById,
   selectEtoWithCompanyAndContractById,
@@ -133,8 +137,9 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   const etherValue = investmentFlow.ethValueUlps;
   const wallet = state.wallet.data;
   const contribs = selectCalculatedContribution(investmentFlow.etoId, state);
+  const ticketSizes = selectCalculatedEtoTicketSizesUlpsById(investmentFlow.etoId, state);
 
-  if (!contribs || !euroValue || !wallet) return;
+  if (!contribs || !euroValue || !wallet || !ticketSizes) return;
 
   const gasPrice = selectTxGasCostEthUlps(state);
 
@@ -161,11 +166,11 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
     }
   }
 
-  if (compareBigNumbers(euroValue, contribs.minTicketEurUlps) < 0) {
+  if (compareBigNumbers(euroValue, ticketSizes.minTicketEurUlps) < 0) {
     return EInvestmentErrorState.BelowMinimumTicketSize;
   }
 
-  if (compareBigNumbers(euroValue, contribs.maxTicketEurUlps) > 0) {
+  if (compareBigNumbers(euroValue, ticketSizes.maxTicketEurUlps) > 0) {
     return EInvestmentErrorState.AboveMaximumTicketSize;
   }
 

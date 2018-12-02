@@ -110,8 +110,8 @@ const InvestmentSummaryComponent: React.SFC<IProps> = ({
   const actualTokenPrice = getActualTokenPriceEur(investmentEur, equityTokens);
   const { tokenPrice: fullTokenPrice } = getShareAndTokenPrice(eto);
   const formattedTokenPrice = `€ ${formatSummaryTokenPrice(
-    fullTokenPrice,
-    parseFloat(actualTokenPrice),
+    fullTokenPrice.toString(),
+    actualTokenPrice,
   )}`;
 
   return (

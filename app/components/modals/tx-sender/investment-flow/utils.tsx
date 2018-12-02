@@ -139,10 +139,13 @@ export function getActualTokenPriceEur(
   return formatMoney(divideBigNumbers(investmentEurUlps, equityTokenCount), MONEY_DECIMALS, 8);
 }
 
-export const formatSummaryTokenPrice = (fullTokenPrice: number, actualTokenPrice: number) => {
-  const discount = Math.round((1 - actualTokenPrice / fullTokenPrice) * 100);
+export const formatSummaryTokenPrice = (fullTokenPrice: string, actualTokenPrice: string) => {
+  const discount = new BigNumber(1)
+    .sub(new BigNumber(actualTokenPrice).div(new BigNumber(fullTokenPrice)))
+    .mul(100)
+    .round(0, 4);
   let priceString = formatThousands(actualTokenPrice.toString());
-  if (discount >= 1) {
+  if (discount.gte(1)) {
     priceString += ` (-${discount}%)`;
   }
   return priceString;

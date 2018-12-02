@@ -113,7 +113,7 @@ export const selectCalculatedEtoTicketSizesUlpsById = (etoId: string, state: IAp
   if (min && max) {
     if (eto && investorTicket) {
       const { tokenPrice } = getShareAndTokenPrice(eto);
-      min = BigNumber.max(min.sub(investorTicket.equivEurUlps), Q18.mul(tokenPrice));
+      min = BigNumber.max(min.sub(investorTicket.equivEurUlps), Q18.mul(tokenPrice.toString()));
       max = BigNumber.max(max.sub(investorTicket.equivEurUlps), 0);
     }
 

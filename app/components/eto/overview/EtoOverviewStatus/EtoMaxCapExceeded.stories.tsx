@@ -1,5 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import BigNumber from "bignumber.js";
+import * as MockDate from "mockdate";
 import * as React from "react";
 
 import {
@@ -7,6 +8,7 @@ import {
   TEtoWithCompanyAndContract,
 } from "../../../../modules/public-etos/types";
 import { EtoMaxCapExceededComponent } from "./EtoMaxCapExceeded";
+import { ReactNode } from "react";
 
 // tslint:disable-next-line:no-object-literal-type-assertion
 const eto = {
@@ -35,9 +37,25 @@ const eto = {
   },
 } as TEtoWithCompanyAndContract;
 
+class EtoMaxCapExceededComponentWithMockedDate extends React.Component<any> {
+  constructor(props: any) {
+    super(props);
+
+    MockDate.set("1/1/2020");
+  }
+
+  render(): React.ReactNode {
+    return <EtoMaxCapExceededComponent {...this.props as any} />;
+  }
+
+  componentWillMount(): void {
+    MockDate.reset();
+  }
+}
+
 storiesOf("ETO/MaxCapExceededWidget", module)
   .add("pre-eto", () => (
-    <EtoMaxCapExceededComponent
+    <EtoMaxCapExceededComponentWithMockedDate
       isPreEto={true}
       eto={eto}
       etherPriceEur={"100"}

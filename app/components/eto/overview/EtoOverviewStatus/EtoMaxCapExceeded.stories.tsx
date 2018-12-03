@@ -40,28 +40,28 @@ class EtoMaxCapExceededComponentWithMockedDate extends React.Component<any> {
   constructor(props: any) {
     super(props);
 
-    MockDate.set("1/1/2020");
+    MockDate.set("1/1/2000");
   }
 
   render(): React.ReactNode {
-    return <EtoMaxCapExceededComponent {...this.props as any} />;
+    return (
+      <EtoMaxCapExceededComponent
+        isPreEto={true}
+        eto={eto}
+        etherPriceEur={"100"}
+        isWaitingForNextStateToStart={true}
+        nextStateStartDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
+      />
+    );
   }
 
-  componentWillMount(): void {
+  componentWillUnmount(): void {
     MockDate.reset();
   }
 }
 
 storiesOf("ETO/MaxCapExceededWidget", module)
-  .add("pre-eto", () => (
-    <EtoMaxCapExceededComponentWithMockedDate
-      isPreEto={true}
-      eto={eto}
-      etherPriceEur={"100"}
-      isWaitingForNextStateToStart={true}
-      nextStateStartDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
-    />
-  ))
+  .add("pre-eto", () => <EtoMaxCapExceededComponentWithMockedDate />)
   .add("public", () => (
     <EtoMaxCapExceededComponent
       isPreEto={false}

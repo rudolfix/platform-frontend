@@ -1,7 +1,6 @@
 {
   "core": {
-    "actualDir": "__screenshots__",
-    "thresholdRate": 0.1
+    "actualDir": "__screenshots__"
   },
   "plugins": {
     "reg-simple-keygen-plugin": {

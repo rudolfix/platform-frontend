@@ -8,7 +8,6 @@ import {
   TEtoWithCompanyAndContract,
 } from "../../../../modules/public-etos/types";
 import { EtoMaxCapExceededComponent } from "./EtoMaxCapExceeded";
-import { ReactNode } from "react";
 
 // tslint:disable-next-line:no-object-literal-type-assertion
 const eto = {

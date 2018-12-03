@@ -41,6 +41,7 @@ const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps & IWith
 }) => {
   return isPreEto && isWaitingForNextStateToStart ? (
     <div className={styles.maxCapExceeded}>
+      <p>Test</p>
       <CounterWidget
         endDate={nextStateStartDate}
         state={EETOStateOnChain.Public}

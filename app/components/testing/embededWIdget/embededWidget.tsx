@@ -20,7 +20,7 @@ interface IRouterParams {
 const TestEmbededWidgetComponent: React.SFC<IRouterParams & IStateProps> = ({ eto }) => {
   return (
     <>
-      <h3>This widget testing page</h3>
+      <h3>Eto widget testing page</h3>
       {eto &&
         eto.previewCode && (
           <iframe

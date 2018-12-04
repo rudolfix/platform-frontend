@@ -1,13 +1,16 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { compose } from "redux";
+import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import { ButtonLink, EButtonLayout } from "./buttons";
 import { ChartCircle, IChartCircleProps } from "./charts/ChartCircle";
+import { createErrorBoundary } from "./ErrorBoundary";
+import { ErrorBoundaryPanel } from "./ErrorBoundaryPanel";
 import { LoadingIndicator } from "./loading-indicator";
 import { Panel } from "./Panel";
 import { Proportion } from "./Proportion";
 
-import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./EtoFormProgressWidget.module.scss";
 
 interface IProps {
@@ -34,7 +37,7 @@ const ButtonText: React.SFC<IButtonTextProps> = ({ isInProgress, readonly }) => 
   return <FormattedMessage id="shared-component.eto-form-progress-widget.edit" />;
 };
 
-export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
+export const EtoFormProgressWidgetComponent: React.SFC<IProps & IChartCircleProps> = ({
   to,
   progress,
   name,
@@ -71,3 +74,7 @@ export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = ({
     </Proportion>
   </Panel>
 );
+
+export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = compose<
+  React.SFC<IProps & IChartCircleProps>
+>(createErrorBoundary(ErrorBoundaryPanel))(EtoFormProgressWidgetComponent);

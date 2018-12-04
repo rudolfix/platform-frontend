@@ -7,6 +7,8 @@ import { compose } from "redux";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { ButtonArrowRight } from "../../../shared/buttons";
+import { createErrorBoundary } from "../../../shared/ErrorBoundary";
+import { ErrorBoundaryPanel } from "../../../shared/ErrorBoundaryPanel";
 import { Panel } from "../../../shared/Panel";
 
 import * as styles from "../../etoContentWidget.module.scss";
@@ -33,6 +35,7 @@ export const SubmitProposalWidgetComponent: React.SFC<IDispatchProps> = ({ submi
 };
 
 export const SubmitProposalWidget = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
       submitProposal: () => dispatch(actions.etoFlow.submitDataStart()),

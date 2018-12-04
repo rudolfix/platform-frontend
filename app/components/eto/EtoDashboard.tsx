@@ -26,6 +26,8 @@ import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
+import { createErrorBoundary } from "../shared/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/ErrorBoundaryLayoutAuthorized";
 import { EProjecStatusLayout, EProjectStatusSize, ETOState } from "../shared/ETOState";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
@@ -255,6 +257,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
 }
 
 export const EtoDashboard = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       isEmailVerified: selectIsUserEmailVerified(s.auth),

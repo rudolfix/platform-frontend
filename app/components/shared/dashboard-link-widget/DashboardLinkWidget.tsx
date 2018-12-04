@@ -9,7 +9,7 @@ import { Panel } from "../Panel";
 import * as styles from "./DashboardLinkWidget.module.scss";
 
 interface IProps {
-  title: string;
+  title: TTranslatedString;
   text: TTranslatedString;
   to: H.LocationDescriptor;
   buttonText: TTranslatedString;

@@ -10,12 +10,15 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { createErrorBoundary } from "../shared/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { PortfolioLayout, TPortfolioLayoutProps } from "./PortfolioLayout";
 
 export type TStateProps = Partial<TPortfolioLayoutProps>;
 
 export const Portfolio = compose<TPortfolioLayoutProps, {}>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.publicEtos.loadEtos()),
   }),

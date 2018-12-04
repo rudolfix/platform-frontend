@@ -17,6 +17,8 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { createErrorBoundary } from "../shared/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/ErrorBoundaryLayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ChangeEmail } from "./change-email/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";
@@ -98,6 +100,7 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
 };
 
 export const Settings = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
   appConnect<IStateProps>({
     stateToProps: state => ({

@@ -77,9 +77,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           }}
           tags={companyData.categories}
         />
-
         <EtoOverviewStatus eto={etoData} className="mb-4" publicView={true} />
-
         <Row>
           <Col className="mb-4">
             <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -90,7 +88,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Panel>
           </Col>
         </Row>
-
         <Row className="align-items-stretch">
           <Col
             xs={12}
@@ -179,7 +176,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Col>
           )}
         </Row>
-
         <Row>
           <Col className="mb-4">
             <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -189,7 +185,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <EtoInvestmentTermsWidget etoData={etoData} />
           </Col>
         </Row>
-
         {areThereIndividuals(companyData.team) && (
           <Row>
             <Col className="mb-4">
@@ -208,7 +203,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Col>
           </Row>
         )}
-
         {(areThereIndividuals(companyData.advisors) ||
           areThereIndividuals(companyData.notableInvestors) ||
           areThereIndividuals(companyData.partners) ||
@@ -326,7 +320,6 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             </Col>
           </Row>
         )}
-
         <Row>
           <Col sm={12} md={8} className="mb-4">
             {(companyData.inspiration ||
@@ -511,7 +504,7 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
                   <SectionHeader layoutHasDecorator={false} className="mb-4">
                     <FormattedMessage id="eto.form.media-links.title" />
                   </SectionHeader>
-                  <MediaLinksWidget links={companyData.companyNews.reverse() as ILink[]} />
+                  <MediaLinksWidget links={[...companyData.companyNews].reverse() as ILink[]} />
                 </>
               )}
           </Col>

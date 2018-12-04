@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { withHandlers, withProps } from "recompose";
@@ -26,6 +27,7 @@ import {
 import {
   selectCalculatedEtoTicketSizesUlpsById,
   selectEquityTokenCountByEtoId,
+  selectHasInvestorTicket,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-tickets/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
@@ -57,6 +59,7 @@ import {
   getInvestmentTypeMessages,
 } from "./utils";
 
+import { appRoutes } from "../../../appRoutes";
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
@@ -73,6 +76,7 @@ interface IStateProps {
   neuReward?: string;
   readyToInvest: boolean;
   showTokens: boolean;
+  hasPreviouslyInvested?: boolean;
   etoTicketSizes?: {
     minTicketEurUlps: BigNumber;
     maxTicketEurUlps: BigNumber;
@@ -131,6 +135,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
   totalCostEur,
   wallets,
   isBankTransfer,
+  hasPreviouslyInvested,
 }) => (
   <>
     <Container className={styles.container} fluid>
@@ -276,6 +281,19 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
             </FormGroup>
           </Col>
         </Row>
+        {hasPreviouslyInvested && (
+          <Row>
+            <Col>
+              <p className="mb-0 mt-0">
+                <FormattedMessage id="investment-flow.you-already-invested" />
+                <br />
+                <Link to={appRoutes.portfolio}>
+                  <FormattedMessage id="investment-flow.see-your-portfolio-for-details" />
+                </Link>
+              </p>
+            </Col>
+          </Row>
+        )}
       </Container>
     </section>
     <Container className={styles.container} fluid>
@@ -335,6 +353,7 @@ export const InvestmentSelection: React.SFC = compose<any>(
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
         etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(etoId, state),
+        hasPreviouslyInvested: selectHasInvestorTicket(state, etoId),
       };
     },
     dispatchToProps: dispatch => ({

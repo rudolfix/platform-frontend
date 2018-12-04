@@ -1,5 +1,13 @@
 import BigNumber from "bignumber.js";
-import { EETOStateOnChain, IEtoTotalInvestment, TEtoStartOfStates } from "./types";
+
+import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { Overwrite } from "../../types";
+import {
+  EETOStateOnChain,
+  IEtoTotalInvestment,
+  TEtoStartOfStates,
+  TEtoWithCompanyAndContract,
+} from "./types";
 
 export const convertToEtoTotalInvestment = (
   [totalEquivEurUlps, totalTokensInt, totalInvestors]: [BigNumber, BigNumber, BigNumber],
@@ -44,3 +52,12 @@ export const convertToStateStartDate = (
     [EETOStateOnChain.Refund]: startOfRefund,
   };
 };
+
+export function isOnChain(
+  eto: TEtoWithCompanyAndContract,
+): eto is Overwrite<
+  TEtoWithCompanyAndContract,
+  { contract: Exclude<TEtoWithCompanyAndContract["contract"], undefined> }
+> {
+  return eto.state === EtoState.ON_CHAIN && eto.contract !== undefined;
+}

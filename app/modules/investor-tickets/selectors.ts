@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 
 import { Q18 } from "../../config/constants";
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../store";
 import { selectPublicEtoById, selectPublicEtos } from "../public-etos/selectors";
 import { EETOStateOnChain } from "../public-etos/types";
+import { isOnChain } from "../public-etos/utils";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import { ICalculatedContribution, TETOWithInvestorTicket } from "./types";
 
@@ -37,8 +37,8 @@ export const selectEtoWithInvestorTickets = (
 
   if (etos) {
     return etos
-      .filter(eto => eto.state === EtoState.ON_CHAIN)
-      .filter(eto => eto.contract!.timedState !== EETOStateOnChain.Setup)
+      .filter(isOnChain)
+      .filter(eto => eto.contract.timedState !== EETOStateOnChain.Setup)
       .filter(eto => selectHasInvestorTicket(state, eto.etoId))
       .map(eto => ({
         ...eto,

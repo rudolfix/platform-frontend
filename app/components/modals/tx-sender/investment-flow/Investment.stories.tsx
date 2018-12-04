@@ -51,6 +51,7 @@ storiesOf("Investment/Form", module)
         sendTransaction={() => {}}
         showBankTransferSummary={() => {}}
         isBankTransfer={false}
+        hasPreviouslyInvested={true}
       />
     </Container>
   ))

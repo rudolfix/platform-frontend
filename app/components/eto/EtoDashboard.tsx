@@ -98,7 +98,7 @@ interface IEtoStateRender {
   previewCode?: string;
 }
 
-const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
+const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
   etoState,
   shouldViewSubmissionSection,
   isTermSheetSubmitted,
@@ -237,7 +237,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
           )}
 
           {shouldEtoDataLoad ? (
-            <EtoStateViewRender
+            <EtoDashboardStateViewComponent
               isTermSheetSubmitted={isTermSheetSubmitted}
               isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
               shouldViewSubmissionSection={shouldViewSubmissionSection}
@@ -254,7 +254,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
   }
 }
 
-export const EtoDashboard = compose<React.SFC>(
+const EtoDashboard = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       isEmailVerified: selectIsUserEmailVerified(s.auth),
@@ -275,3 +275,5 @@ export const EtoDashboard = compose<React.SFC>(
     }),
   }),
 )(EtoDashboardComponent);
+
+export { EtoDashboard, EtoDashboardComponent, EtoDashboardStateViewComponent };

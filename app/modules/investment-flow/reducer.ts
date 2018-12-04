@@ -114,7 +114,9 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
         bankTransferFlowState: undefined,
       };
     case "GENERATE_BANK_TRANSFER_REFERENCE":
-      const bankTransferReference = btoa(cryptoRandomString(9)).replace("=", "");
+      const bankTransferReference = btoa(cryptoRandomString(9))
+        .replace("=", "")
+        .toUpperCase();
       return {
         ...state,
         bankTransferReference,

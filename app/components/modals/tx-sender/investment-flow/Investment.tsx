@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { withHandlers, withProps } from "recompose";
@@ -58,6 +59,7 @@ import {
   getInvestmentTypeMessages,
 } from "./utils";
 
+import { appRoutes } from "../../../appRoutes";
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
@@ -284,6 +286,10 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
             <Col>
               <p className="mb-0 mt-0">
                 <FormattedMessage id="investment-flow.you-already-invested" />
+                <br />
+                <Link to={appRoutes.portfolio}>
+                  <FormattedMessage id="investment-flow.see-your-portfolio-for-details" />
+                </Link>
               </p>
             </Col>
           </Row>

@@ -91,29 +91,27 @@ class MediaLinksEditorLayout extends React.Component<IProps & TFormikConnect> {
       <FieldArray
         name={name}
         render={arrayHelpers =>
-          mediaLinks
-            .map((_: object, index: number) => {
-              const isLastElement = !(index < mediaLinks.length - 1);
-              const isFirstElement = index === 0;
-              return (
-                <SingleMediaLinkField
-                  blankField={blankField}
-                  name={`${name}.${index}`}
-                  formFieldKey={"url"}
-                  onRemoveClick={() => {
-                    arrayHelpers.remove(index);
-                  }}
-                  onAddClick={() => {
-                    setFieldValue(`${name}.${index + 1}`, blankField);
-                  }}
-                  placeholder={placeholder}
-                  isFirstElement={isFirstElement}
-                  isLastElement={isLastElement}
-                  key={`${name}.${index}`}
-                />
-              );
-            })
-            .reverse()
+          mediaLinks.map((_: object, index: number) => {
+            const isLastElement = !(index < mediaLinks.length - 1);
+            const isFirstElement = index === 0;
+            return (
+              <SingleMediaLinkField
+                blankField={blankField}
+                name={`${name}.${index}`}
+                formFieldKey={"url"}
+                onRemoveClick={() => {
+                  arrayHelpers.remove(index);
+                }}
+                onAddClick={() => {
+                  setFieldValue(`${name}.${index + 1}`, blankField);
+                }}
+                placeholder={placeholder}
+                isFirstElement={isFirstElement}
+                isLastElement={isLastElement}
+                key={`${name}.${index}`}
+              />
+            );
+          })
         }
       />
     );

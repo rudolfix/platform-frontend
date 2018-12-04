@@ -15,8 +15,4 @@ const data = {
 
 storiesOf("Charts/Doughnut", module)
   .addDecorator(story => <div style={{ width: "25em" }}>{story()}</div>)
-  .add("default", () => (
-    <div>
-      <ChartDoughnut data={data} />
-    </div>
-  ));
+  .add("default", () => <ChartDoughnut data={data} />);

@@ -146,7 +146,7 @@ export const ChartDoughnut: React.SFC<IProps> = ({ data, layout, className, defa
           legend={{ display: false }}
           height={100}
           width={100}
-          options={{ ...chartOptions }}
+          options={chartOptions}
         />
       </div>
       <div className={styles.legendWrapper}>

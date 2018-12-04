@@ -115,12 +115,14 @@ export function* loadEtoContact(
   { contractsService, logger }: TGlobalDependencies,
   eto: TPublicEtoData,
 ): any {
-  try {
-    if (eto.state !== EtoState.ON_CHAIN) {
-      logger.error(new InvalidETOStateError(eto.state, EtoState.ON_CHAIN));
-      return;
-    }
+  if (eto.state !== EtoState.ON_CHAIN) {
+    logger.error("Invalid eto state", new InvalidETOStateError(eto.state, EtoState.ON_CHAIN), {
+      etoId: eto.etoId,
+    });
+    return;
+  }
 
+  try {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
     const etherTokenContract: EtherToken = contractsService.etherToken;
     const euroTokenContract: EuroToken = contractsService.euroToken;
@@ -143,7 +145,7 @@ export function* loadEtoContact(
       }),
     );
   } catch (e) {
-    logger.error("ETO contract data could not be loaded", e);
+    logger.error("ETO contract data could not be loaded", e, { etoId: eto.etoId });
   }
 }
 

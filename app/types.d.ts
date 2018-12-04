@@ -88,6 +88,8 @@ export type Omit<T extends K, K> = Pick<T, Exclude<keyof T, keyof K>>;
 
 export type OmitKeys<T, K> = Pick<T, Exclude<keyof T, K>>;
 
+export type Overwrite<T1, T2> = { [P in Exclude<keyof T1, keyof T2>]: T1[P] } & T2;
+
 export type TFormikConnect = {
   formik: FormikContext<any>;
 };

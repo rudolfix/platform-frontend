@@ -22,3 +22,12 @@
     padding-left: px-to-rem(10px);
   }
 }
+
+.tooltip {
+  display: flex;
+  flex-flow: column;
+  padding: .1rem .5rem;
+  background-color: $neu-white-two;
+  border: 1px solid $neu-charcoal-grey;
+  border-radius: .2rem;
+}

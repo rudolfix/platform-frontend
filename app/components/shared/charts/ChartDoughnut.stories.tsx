@@ -4,7 +4,7 @@ import * as React from "react";
 import { ChartDoughnut } from "./ChartDoughnut";
 
 const data = {
-  labels: ["ETH", "nEUR"],
+  labels: ["ETH", "a quite lengthy nEUR label"],
   datasets: [
     {
       data: [100, 50],
@@ -13,4 +13,6 @@ const data = {
   ],
 };
 
-storiesOf("Charts/Doughnut", module).add("default", () => <ChartDoughnut data={data} />);
+storiesOf("Charts/Doughnut", module)
+  .addDecorator(story => <div style={{ width: "25em" }}>{story()}</div>)
+  .add("default", () => <ChartDoughnut data={data} />);

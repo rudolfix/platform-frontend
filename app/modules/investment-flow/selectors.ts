@@ -71,7 +71,7 @@ export const selectIsBankTransferModalOpened = (state: IAppState) =>
 export const selectBankTransferReferenceCode = (state: IAppState) => {
   const addressHex = selectEthereumAddressWithChecksum(state);
 
-  const reference = state.investmentFlow.bankTransferReference;
+  const reference = state.investmentFlow.bankTransferReference.toUpperCase();
   const date = moment().format("DD-MM-YYYY");
 
   let code = `Investment Amount, Reservation and Acquisition Agreement from ${date} NF ${addressHex} REF ${reference}`;

@@ -38,13 +38,13 @@ describe("investment-flow > selectors", () => {
         createStateWithAddress("0x822060c96E012Bf88D08635A543210D1029b658D", "uzehdmdkeikskmm"),
       );
       expect(code1).to.equal(
-        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF 1234567890",
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3 REF 1234567890",
       );
       expect(code2).to.equal(
-        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF bppom/Pof3/JRdNFqGmEF4dEejU REF abcdefghijklo",
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x6e9A689BF3E87F7fc945D345A869841787447a35 REF ABCDEFGHIJKLO",
       );
       expect(code3).to.equal(
-        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF giBgyW4BK/iNCGNaVDIQ0QKbZY0 REF uzehdmdkeikskmm",
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x822060c96E012Bf88D08635A543210D1029b658D REF UZEHDMDKEIKSKMM",
       );
     });
 
@@ -57,7 +57,7 @@ describe("investment-flow > selectors", () => {
 
       const code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(
-        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF 88888888888 G",
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3 REF 88888888888 G",
       );
     });
 
@@ -73,7 +73,7 @@ describe("investment-flow > selectors", () => {
 
       let code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(
-        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd",
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3 REF DDDDDDDDDDD",
       );
 
       (publicEtoSelectors.selectEtoOnChainStateById as sinon.SinonStub).returns(
@@ -82,14 +82,14 @@ describe("investment-flow > selectors", () => {
 
       code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(
-        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd WL",
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3 REF DDDDDDDDDDD WL",
       );
 
       state.investmentFlow.bankTransferGasStipend = true;
 
       code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(
-        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF ddddddddddd G WL",
+        "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3 REF DDDDDDDDDDD G WL",
       );
     });
   });

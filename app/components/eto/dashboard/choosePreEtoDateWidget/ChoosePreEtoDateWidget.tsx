@@ -5,7 +5,6 @@ import { Col } from "reactstrap";
 import { compose } from "redux";
 
 import { appConnect } from "../../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { DatePicker } from "../../../shared/DatePicker";
 import { Panel } from "../../../shared/Panel";
 
@@ -15,11 +14,9 @@ interface IDispatchProps {
   setEtoDate: () => void;
 }
 
-const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlProps> = ({
-  intl: { formatIntlMessage },
-}) => {
+const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps> = () => {
   return (
-    <Panel headerText={formatIntlMessage("settings.choose-pre-eto-date")}>
+    <Panel headerText={<FormattedMessage id="settings.choose-pre-eto-date" />}>
       <div className={styles.content}>
         <p className={cn(styles.text, "pt-2")}>
           <FormattedMessage id="settings.choose-pre-eto-date.book-building-will-stop" />
@@ -38,7 +35,6 @@ const ChoosePreEtoDateWidget = compose<React.SFC>(
       setEtoDate: () => {},
     }),
   }),
-  injectIntlHelpers,
 )(ChoosePreEtoDateWidgetComponent);
 
 export { ChoosePreEtoDateWidgetComponent, ChoosePreEtoDateWidget };

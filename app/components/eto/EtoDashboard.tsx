@@ -29,6 +29,7 @@ import { SettingsWidgets } from "../settings/SettingsWidgets";
 import { EProjecStatusLayout, EProjectStatusSize, ETOState } from "../shared/ETOState";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
+import { ChooseEtoStartDateWidget } from "./dashboard/chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
 import { ChoosePreEtoDateWidget } from "./dashboard/choosePreEtoDateWidget/ChoosePreEtoDateWidget";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
 import { SubmitProposalWidget } from "./dashboard/submitProposalWidget/SubmitProposalWidget";
@@ -179,6 +180,9 @@ const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
           )}
           <Col lg={4} xs={12}>
             <ChoosePreEtoDateWidget />
+          </Col>
+          <Col lg={4} xs={12}>
+            <ChooseEtoStartDateWidget />
           </Col>
           <Col xs={12}>
             <FormattedHTMLMessage tagName="span" id="eto-dashboard-application-description" />

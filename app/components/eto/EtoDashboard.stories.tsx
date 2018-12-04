@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import BigNumber from "bignumber.js";
 import * as React from "react";
+import { Row } from "reactstrap";
 
 import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
@@ -28,7 +29,7 @@ const eto = {
 
 const state = {
   etoState: EtoState.ON_CHAIN,
-  canEnableBookbuilding: true,
+  canEnableBookbuilding: false,
   isTermSheetSubmitted: true,
   isOfferingDocumentSubmitted: true,
   shouldViewSubmissionSection: true,
@@ -45,4 +46,8 @@ storiesOf("ETO-Flow/Dashboard/StateView", module)
       },
     }),
   )
-  .add("State OnChain", () => <EtoDashboardStateViewComponent {...state} />);
+  .add("State OnChain", () => (
+    <Row className="row-gutter-top">
+      <EtoDashboardStateViewComponent {...state} />
+    </Row>
+  ));

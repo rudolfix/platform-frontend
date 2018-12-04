@@ -25,7 +25,6 @@ import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { Panel } from "../../../shared/Panel";
 
 import * as styles from "../../etoContentWidget.module.scss";
-import { createErrorBoundary} from "./ErrorBoundary";
 
 interface IDispatchProps {
   startBookBuilding: (etoId: string) => void;
@@ -99,19 +98,19 @@ const BookBuildingWidgetLayout: React.SFC<ILayoutProps> = ({
   buttonText,
 }) => (
   <Panel headerText={headerText}>
-      <div className={styles.content.asdf[0]}>
-        <p className={cn(styles.text)}>{text}</p>
-        {children}
-        <div className={styles.widgetButton}>
-          <ButtonArrowRight
-            onClick={onClick}
-            data-test-id="eto-flow-start-bookbuilding"
-            className={styles.buttonOverride}
-          >
-            {buttonText}
-          </ButtonArrowRight>
-        </div>
+    <div className={styles.content}>
+      <p className={cn(styles.text)}>{text}</p>
+      {children}
+      <div className={styles.widgetButton}>
+        <ButtonArrowRight
+          onClick={onClick}
+          data-test-id="eto-flow-start-bookbuilding"
+          className={styles.buttonOverride}
+        >
+          {buttonText}
+        </ButtonArrowRight>
       </div>
+    </div>
   </Panel>
 );
 

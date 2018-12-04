@@ -12,57 +12,46 @@ describe("Eto widget page", () => {
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
-    cy.get("iframe")
-      .iframe()
-      .within(($iframe: any) => {
-        cy.wrap($iframe)
-          .find(tid("logged-out-campaigning-register"))
-          .click();
+    cy.iframe("iframe").within(($iframe: any) => {
+      cy.wrap($iframe)
+        .find(tid("logged-out-campaigning-register"))
+        .click();
 
-        cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register, "_blank");
+      cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register, "_blank");
 
-        cy.wrap($iframe)
-          .find(tid("eto-overview-status-token"))
-          .should("have.attr", "target", "_blank");
+      cy.wrap($iframe)
+        .find(tid("eto-overview-status-token"))
+        .should("have.attr", "target", "_blank");
 
-        cy.wrap($iframe)
-          .find(tid("eto-overview-term-sheet-button"))
-          .should("have.attr", "target", "_blank");
+      cy.wrap($iframe)
+        .find(tid("eto-overview-term-sheet-button"))
+        .should("have.attr", "target", "_blank");
 
-        cy.wrap($iframe)
-          .find(tid("eto-overview-term-sheet-button"))
-          .should("have.attr", "href")
-          .and(
-            "match",
-            new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })),
-          );
+      cy.wrap($iframe)
+        .find(tid("eto-overview-term-sheet-button"))
+        .should("have.attr", "href")
+        .and("match", new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })));
 
-        cy.wrap($iframe)
-          .find(tid("eto-overview-prospectus-approved-button"))
-          .should("have.attr", "target", "_blank");
+      cy.wrap($iframe)
+        .find(tid("eto-overview-prospectus-approved-button"))
+        .should("have.attr", "target", "_blank");
 
-        cy.wrap($iframe)
-          .find(tid("eto-overview-prospectus-approved-button"))
-          .should("have.attr", "href")
-          .and(
-            "match",
-            new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })),
-          );
+      cy.wrap($iframe)
+        .find(tid("eto-overview-prospectus-approved-button"))
+        .should("have.attr", "href")
+        .and("match", new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })));
 
-        cy.wrap($iframe)
-          .find(tid("eto-overview-smart-contract-on-chain-button"))
-          .should("have.attr", "target", "_blank");
+      cy.wrap($iframe)
+        .find(tid("eto-overview-smart-contract-on-chain-button"))
+        .should("have.attr", "target", "_blank");
 
-        cy.wrap($iframe)
-          .find(tid("eto-overview-smart-contract-on-chain-button"))
-          .should("have.attr", "href")
-          .and(
-            "match",
-            new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })),
-          );
+      cy.wrap($iframe)
+        .find(tid("eto-overview-smart-contract-on-chain-button"))
+        .should("have.attr", "href")
+        .and("match", new RegExp(insecureWithParams(appRoutes.etoPublicView, { previewCode: "" })));
 
-        cy.wrap($iframe).find(tid("eto-overview-powered-by"));
-      });
+      cy.wrap($iframe).find(tid("eto-overview-powered-by"));
+    });
   });
 
   it("ETOInSetupState", () => {
@@ -70,8 +59,7 @@ describe("Eto widget page", () => {
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
-    cy.get("iframe")
-      .iframe()
+    cy.iframe("iframe")
       .find(tid("logged-out-campaigning-register"))
       .click();
 
@@ -83,9 +71,7 @@ describe("Eto widget page", () => {
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
-    cy.get("iframe")
-      .iframe()
-      .find(tid("eto-whitelist-count-down"));
+    cy.iframe("iframe").find(tid("eto-whitelist-count-down"));
   });
 
   it("ETOInPublicState", () => {
@@ -93,8 +79,7 @@ describe("Eto widget page", () => {
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
-    cy.get("iframe")
-      .iframe()
+    cy.iframe("iframe")
       .find(tid("eto-widget-invest-now-button"))
       .click();
 

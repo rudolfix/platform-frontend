@@ -1,16 +1,31 @@
-import { captureException } from "@sentry/browser";
+import * as PropTypes from "prop-types";
 import * as React from "react";
 import { ComponentEnhancer, nest, withProps } from "recompose";
+
+import { symbols } from "../../../di/symbols";
+import { ILogger } from "../../../lib/dependencies/Logger";
+import { IInversifyProviderContext } from "../../../utils/InversifyProvider";
 
 interface IErrorBoundaryState {
   hasError: boolean;
 }
 
 class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
-  state = { hasError: false };
+  static contextTypes = {
+    container: PropTypes.object,
+  };
 
-  componentDidCatch(error: Error | null, errorInfo: object): void {
-    captureException({ error, errorInfo: JSON.stringify(errorInfo, null, 2) }); //Error goes to Sentry
+  logger: ILogger;
+
+  constructor(props: any, context: IInversifyProviderContext) {
+    super(props);
+
+    this.state = { hasError: false };
+    this.logger = context.container.get<ILogger>(symbols.logger);
+  }
+
+  componentDidCatch(error: Error, errorInfo: object): void {
+    this.logger.fatal("A critical error occurred", error, errorInfo);
     this.setState({ hasError: true });
   }
 

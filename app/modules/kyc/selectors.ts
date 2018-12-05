@@ -11,7 +11,9 @@ export const selectKycRequestStatus = (state: IAppState): TRequestStatus | undef
   const userKycType = selectKycRequestType(state.kyc);
   switch (userKycType) {
     case "business":
-      return state.kyc.businessRequestState!.status;
+      return state.kyc.businessRequestState!.status === "Accepted" && !selectIsClaimsVerified(state)
+        ? "Pending"
+        : state.kyc.businessRequestState!.status;
     case "individual":
       return state.kyc.individualRequestState!.status === "Accepted" &&
         !selectIsClaimsVerified(state)

@@ -265,7 +265,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: state => ({
       isUserEmailVerified: selectIsUserEmailVerified(state.auth),
-      userType: selectUserType(state.auth)!,
+      userType: selectUserType(state)!,
       backupCodesVerified: selectBackupCodesVerified(state),
       requestStatus: selectKycRequestStatus(state),
       requestOutsourcedStatus: selectKycRequestOutsourcedStatus(state.kyc),

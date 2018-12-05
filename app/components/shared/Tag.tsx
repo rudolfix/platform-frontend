@@ -28,6 +28,7 @@ export interface ITag {
   component?: React.ComponentType<any>;
   componentProps?: any;
   target?: string;
+  dataTestId?: string;
 }
 
 export const Tag: React.SFC<ITag> = ({
@@ -43,6 +44,7 @@ export const Tag: React.SFC<ITag> = ({
   component: Component,
   componentProps = {},
   target,
+  dataTestId,
 }) => {
   const classes = cn(styles.tag, layout, size, theme, className);
   const tagContent = (
@@ -55,7 +57,7 @@ export const Tag: React.SFC<ITag> = ({
 
   if (to) {
     return (
-      <Link to={to} className={classes} target={target}>
+      <Link to={to} className={classes} target={target} data-test-id={dataTestId}>
         {tagContent}
       </Link>
     );

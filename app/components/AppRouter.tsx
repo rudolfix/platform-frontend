@@ -13,6 +13,7 @@ import { Portfolio } from "./portfolio";
 
 import { SwitchConnected } from "../utils/connectedRouting";
 import { appRoutes } from "./appRoutes";
+import { e2eRoutes } from "./e2eRoutes";
 import { EtoIssuerView } from "./eto/EtoIssuerView";
 import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoPublicViewByContractId } from "./eto/EtoPublicViewByContractId";
@@ -24,6 +25,7 @@ import { BackupSeed } from "./settings/backup-seed/BackupSeed";
 import { EmailVerify } from "./settings/EmailVerify";
 import { profileRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
+import { TestEmbededWidget } from "./testing/embededWIdget/embededWidget";
 import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
@@ -109,6 +111,15 @@ export const AppRouter: React.SFC = () => (
       exact
     />
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} issuerComponent={Kyc} />
+
+    {/*Routes used only in E2E tests*/}
+    {(window as any).Cypress && (
+      <Route
+        path={e2eRoutes.embededWidget}
+        render={({ match }) => <TestEmbededWidget etoId={match.params.etoId} />}
+        exact
+      />
+    )}
     <Redirect to={appRoutes.root} />
   </SwitchConnected>
 );

@@ -123,11 +123,6 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   downloadCSV,
   etoId,
 }) => {
-  {
-    (() => {
-      throw new Error("BookBuildingStats test ERROR");
-    })();
-  }
   if (bookBuildingStats === undefined) {
     //TODO data loading state
     return <LoadingIndicator className={styles.loading} />;

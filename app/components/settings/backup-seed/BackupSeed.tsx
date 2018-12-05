@@ -5,8 +5,8 @@ import { actions } from "../../../modules/actions";
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { selectIsUnlocked, selectSeed } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
-import { createErrorBoundary } from "../../shared/ErrorBoundary";
-import { ErrorBoundaryLayoutAuthorized } from "../../shared/ErrorBoundaryLayoutAuthorized";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { BackupSeedFlowContainer } from "./BackupSeedFlowContainer";
 

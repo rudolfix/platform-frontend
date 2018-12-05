@@ -7,8 +7,8 @@ import { compose } from "redux";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { DatePicker } from "../../../shared/DatePicker";
-import { createErrorBoundary } from "../../../shared/ErrorBoundary";
-import { ErrorBoundaryPanel } from "../../../shared/ErrorBoundaryPanel";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { Panel } from "../../../shared/Panel";
 
 import * as styles from "../../etoContentWidget.module.scss";

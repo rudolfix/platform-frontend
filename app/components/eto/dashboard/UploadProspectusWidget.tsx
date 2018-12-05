@@ -4,8 +4,8 @@ import { compose } from "recompose";
 
 import { appRoutes } from "../../appRoutes";
 import { DashboardLinkWidget } from "../../shared/dashboard-link-widget/DashboardLinkWidget";
-import { createErrorBoundary } from "../../shared/ErrorBoundary";
-import { ErrorBoundaryPanel } from "../../shared/ErrorBoundaryPanel";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 
 export const UploadProspectusWidgetComponent: React.SFC<{}> = () => (
   <DashboardLinkWidget

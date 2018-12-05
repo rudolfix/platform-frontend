@@ -11,9 +11,9 @@ import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
-import { createErrorBoundary } from "../shared/ErrorBoundary";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/ErrorBoundaryLayoutAuthorized";
-import { ErrorBoundaryLayoutBase } from "../shared/ErrorBoundaryLayoutBase";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayoutBase } from "../shared/errorBoundary/ErrorBoundaryLayoutBase";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 

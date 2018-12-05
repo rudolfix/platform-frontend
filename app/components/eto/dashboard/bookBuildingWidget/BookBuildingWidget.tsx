@@ -18,8 +18,8 @@ import { onLeaveAction } from "../../../../utils/OnLeaveAction";
 import { ButtonArrowRight } from "../../../shared/buttons";
 import { Document } from "../../../shared/Document";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
-import { createErrorBoundary } from "../../../shared/ErrorBoundary";
-import { ErrorBoundaryPanel } from "../../../shared/ErrorBoundaryPanel";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { Panel } from "../../../shared/Panel";
@@ -123,6 +123,11 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   downloadCSV,
   etoId,
 }) => {
+  {
+    (() => {
+      throw new Error("BookBuildingStats test ERROR");
+    })();
+  }
   if (bookBuildingStats === undefined) {
     //TODO data loading state
     return <LoadingIndicator className={styles.loading} />;

@@ -5,8 +5,8 @@ import { compose } from "redux";
 import { withContainer } from "../../../utils/withContainer";
 import { LayoutRegisterLogin } from "../../layouts/LayoutRegisterLogin";
 import { LayoutUnauthorized } from "../../layouts/LayoutUnauthorized";
-import { createErrorBoundary } from "../../shared/ErrorBoundary";
-import { ErrorBoundaryLayoutUnauthorized } from "../../shared/ErrorBoundaryLayoutUnauthorized";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutUnauthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
 import { RecoverRouter } from "./RecoverRouter";
 
 export const WalletRecoverMainComponent: React.SFC = () => (

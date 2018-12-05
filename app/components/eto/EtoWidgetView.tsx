@@ -7,7 +7,7 @@ import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selec
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
-import { createErrorBoundary } from "../shared/ErrorBoundary";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus";
 

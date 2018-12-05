@@ -2,8 +2,8 @@ import * as React from "react";
 import { compose } from "redux";
 
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { createErrorBoundary } from "../shared/ErrorBoundary";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/ErrorBoundaryLayoutAuthorized";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { WalletRouter } from "./Router";
 
 export const WalletComponent: React.SFC = () => (

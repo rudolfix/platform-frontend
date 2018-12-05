@@ -15,8 +15,8 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { createErrorBoundary } from "../shared/ErrorBoundary";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/ErrorBoundaryLayoutAuthorized";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 

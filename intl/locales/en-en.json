@@ -48,6 +48,7 @@
   "documents.generated-documents": "generated documents",
   "documents.legal-documents": "LEGAL DOCUMENTS",
   "documents.please-fill-the-eto-forms-in-order-to-generate-templates": "Please fill the ETO forms in order to generate templates",
+  "error-boundary.main-error-message": "An error occured",
   "error-boundary.widget-error-message": "There was an error while loading this widget",
   "error-message.browser-wallet.account-approval-pending": "Please check MetaMask to confirm this action.",
   "error-message.browser-wallet.account-approval-rejected": "Data approval rejected.",

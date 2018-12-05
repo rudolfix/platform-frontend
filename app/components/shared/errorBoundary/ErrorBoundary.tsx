@@ -9,8 +9,8 @@ interface IErrorBoundaryState {
 class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
   state = { hasError: false };
 
-  componentDidCatch(error: Error | null): void {
-    captureException(error); //Error goes to Sentry
+  componentDidCatch(error: Error | null, errorInfo: object): void {
+    captureException({ error, errorInfo: JSON.stringify(errorInfo, null, 2) }); //Error goes to Sentry
     this.setState({ hasError: true });
   }
 
@@ -23,7 +23,7 @@ class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
   }
 }
 
-const createErrorBoundary = (layout: any): ComponentEnhancer<any, any> => {
+const createErrorBoundary = (layout: React.ReactNode): ComponentEnhancer<any, any> => {
   return WrappedComponent => nest(withProps({ layout })(ErrorBoundary), WrappedComponent);
 };
 

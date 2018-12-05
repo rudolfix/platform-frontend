@@ -9,8 +9,8 @@ import { withContainer } from "../../utils/withContainer";
 import { appRoutes } from "../appRoutes";
 import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
 import { CenteredListWithTitle } from "../shared/CenteredListWithTitle";
-import { createErrorBoundary } from "../shared/ErrorBoundary";
-import { ErrorBoundaryLayoutUnauthorized } from "../shared/ErrorBoundaryLayoutUnauthorized";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
 import { OffToOnCompany } from "./shared/OffToOnChainCompany";
 import { RegisterCta } from "./shared/RegisterCta";
 

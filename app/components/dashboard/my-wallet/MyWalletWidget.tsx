@@ -23,6 +23,7 @@ import { LoadingIndicator } from "../../shared/loading-indicator";
 import { ECurrencySymbol, Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
+import { Tooltip } from "../../shared/Tooltip";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
@@ -107,6 +108,10 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
                   <Link to={appRoutes.profile} className={styles.link}>
                     <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
                   </Link>
+                  <Tooltip
+                    content={<FormattedMessage id="icbm-wallet.tooltip" />}
+                    alignLeft={true}
+                  />
                 </p>
               </Col>
             </Row>

@@ -9,7 +9,7 @@
 
 .project-status {
   text-transform: uppercase;
-  color: $color-graphite;
+  color: $neu-greyish-brown;
   display: flex;
   align-items: center;
   font-size: 12px;
@@ -34,7 +34,7 @@
     color: $neu-black;
   }
 
-  @include _set-indicator-color(refund, $color-orange);
+  @include _set-indicator-color(refund, $neu-bright-orange);
   @include _set-indicator-color(listed, $blue-light);
   @include _set-indicator-color(pending, $neu-bright-orange);
 }

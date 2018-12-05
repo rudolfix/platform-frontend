@@ -11,7 +11,11 @@ storiesOf("buttons/default", module)
     <>
       <Button>primary</Button>
       <br />
+      <br />
       <Button disabled>primary disabled</Button>
+      <br />
+      <br />
+      <Button isLoading>loading</Button>
     </>
   ))
   .add("secondary", () => (
@@ -47,6 +51,8 @@ storiesOf("buttons/default", module)
   .add("white theme", () => (
     <>
       <Button theme="white">primary</Button>
+      <br />
+      <Button theme="neon">neon</Button>
       <br />
       <Button theme="white" disabled>
         primary disabled
@@ -90,17 +96,18 @@ storiesOf("buttons/default", module)
       <br />
       <Button size={ButtonSize.SMALL}>small button</Button>
       <br />
+      <Button size={ButtonSize.HUGE}>huge button</Button>
+      <br />
     </>
   ))
   .add("with width", () => (
     <>
       <Button width={ButtonWidth.NORMAL}>normal button</Button>
       <br />
-      <Button width={ButtonWidth.BLOCK}>wide button</Button>
       <br />
+      <Button width={ButtonWidth.BLOCK}>wide button</Button>
     </>
-  ))
-  .add("loading", () => <Button isLoading>Primary</Button>);
+  ));
 
 storiesOf("buttons/ArrowRight", module).add("primary", () => (
   <ButtonArrowRight>primary</ButtonArrowRight>

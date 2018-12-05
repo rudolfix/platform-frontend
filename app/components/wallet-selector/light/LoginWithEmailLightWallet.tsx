@@ -11,6 +11,8 @@ import { Button } from "../../shared/buttons";
 import { FormField } from "../../shared/forms";
 import { FormConstantField } from "../../shared/forms/form-field/FormConstantField";
 import { WarningAlert } from "../../shared/WarningAlert";
+import { getMessageTranslation } from "../../translatedMessages/messages";
+import { TMessage } from "../../translatedMessages/utils";
 
 const PASSWORD = "password";
 
@@ -33,7 +35,7 @@ interface IDispatchProps {
 
 interface IStateProps {
   isLoading: boolean;
-  errorMsg?: string;
+  errorMsg?: TMessage;
 }
 
 interface IOwnProps {
@@ -87,7 +89,9 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
           errorMessage={<FormattedMessage id="wallet-selector.neuwallet.email-error" />}
         />
         <LoginEnhancedLightWalletForm {...props} />
-        {props.errorMsg && <WarningAlert className="mt-3">{props.errorMsg}</WarningAlert>}
+        {props.errorMsg && (
+          <WarningAlert className="mt-3">{getMessageTranslation(props.errorMsg)}</WarningAlert>
+        )}
       </Col>
     </Row>
   </>
@@ -96,7 +100,7 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
 export const LoginWithEmailLightWallet = compose<React.SFC<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: state => ({
-      errorMsg: state.lightWalletWizard.errorMsg,
+      errorMsg: state.lightWalletWizard.errorMsg as TMessage,
       isLoading: state.lightWalletWizard.isLoading,
     }),
     dispatchToProps: (dispatch, ownProps) => ({

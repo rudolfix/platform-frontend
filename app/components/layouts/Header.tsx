@@ -17,12 +17,12 @@ import * as styles from "./Header.module.scss";
 
 interface IStateProps {
   isAuthorized: boolean;
-  userType: EUserType;
   location: any;
+  userType?: EUserType;
 }
 
 interface IDispatchProps {
-  logout: (userType: EUserType) => void;
+  logout: (userType?: EUserType) => void;
 }
 
 export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
@@ -93,11 +93,11 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
 export const Header = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     isAuthorized: selectIsAuthorized(s.auth),
-    userType: selectUserType(s.auth)!,
     location: s.router.location && s.router.location.pathname,
+    userType: selectUserType(s),
   }),
   dispatchToProps: dispatch => ({
-    logout: (userType: EUserType) => {
+    logout: (userType?: EUserType) => {
       dispatch(actions.auth.logout(userType));
     },
   }),

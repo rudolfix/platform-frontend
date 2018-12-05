@@ -142,13 +142,6 @@ const people: Array<IPersonInfoProps> = [
     link: "https://innovationhub.innogy.com/",
   },
   {
-    imageSrc: "landing/testimonials/people/Sunstone Capital",
-    fullName: "MAX & ALINA NIEDERHOFER",
-    description:
-      "Max, general partner of Sunstone Capital & Alina, previously banker at Jefferies, former CFO of Natural Cycles and now an advisor to Bored Panda",
-    link: "https://www.sunstone.eu/",
-  },
-  {
     imageSrc: "landing/testimonials/people/piotr wilam",
     fullName: "PIOTR WILAM",
     description:

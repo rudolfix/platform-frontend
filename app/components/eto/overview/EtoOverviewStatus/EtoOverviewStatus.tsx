@@ -19,6 +19,7 @@ import {
   EETOStateOnChain,
   TEtoWithCompanyAndContract,
 } from "../../../../modules/public-etos/types";
+import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { formatFlexiPrecision } from "../../../../utils/Number.utils";
@@ -27,7 +28,6 @@ import { appRoutes } from "../../../appRoutes";
 import { ETOState } from "../../../shared/ETOState";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { NumberFormat } from "../../../shared/NumberFormat";
-import { Percentage } from "../../../shared/Percentage";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { CampaigningActivatedWidget } from "./CampaigningWidget";
@@ -50,6 +50,7 @@ interface IStatusOfEto {
 
 interface IDispatchProps {
   navigateToEto: () => void;
+  openInNewWindow: () => void;
 }
 
 interface IStateProps {
@@ -72,7 +73,7 @@ const StatusOfEto: React.SFC<IStatusOfEto> = ({ previewCode }) => {
 
 const PoweredByNeufund = () => {
   return (
-    <div className={styles.poweredByNeufund}>
+    <div className={styles.poweredByNeufund} data-test-id="eto-overview-powered-by">
       <div className={styles.powered}>Powered by</div>
       <Link className={styles.neufund} target={"_blank"} to={"https://neufund.org"}>
         NEUFUND
@@ -165,9 +166,14 @@ function applyDiscountToPrice(price: number, discountFraction: number): number {
 
 function onEtoNavigationClick(
   navigate: () => void,
+  openInNewWindow: (() => void) | undefined,
 ): (event: React.MouseEvent<HTMLDivElement>) => void {
   return function({ target, currentTarget }: React.MouseEvent<HTMLDivElement>): void {
     if (target === currentTarget) {
+      if (openInNewWindow) {
+        openInNewWindow();
+        return;
+      }
       navigate();
     }
   };
@@ -184,6 +190,7 @@ const EtoOverviewStatusLayout: React.SFC<
   maxCapExceeded,
   navigateToEto,
   publicView,
+  openInNewWindow,
 }) => {
   const smartContractOnChain = !!eto.contract;
 
@@ -209,13 +216,24 @@ const EtoOverviewStatusLayout: React.SFC<
           data-test-id={`eto-overview-${eto.etoId}`}
         >
           <StatusOfEto previewCode={eto.previewCode} />
-          <div className={styles.overviewWrapper} onClick={onEtoNavigationClick(navigateToEto)}>
-            <div className={styles.statusWrapper} onClick={onEtoNavigationClick(navigateToEto)}>
+          <div
+            className={styles.overviewWrapper}
+            onClick={onEtoNavigationClick(navigateToEto, previewCode ? openInNewWindow : undefined)}
+          >
+            <div
+              className={styles.statusWrapper}
+              onClick={onEtoNavigationClick(
+                navigateToEto,
+                previewCode ? openInNewWindow : undefined,
+              )}
+            >
               <Link
                 to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}
                 target={previewCode ? "_blank" : ""}
+                data-test-id="eto-overview-status-token"
               >
                 <TokenSymbolWidget
+                  brandName={eto.company.brandName}
                   tokenImage={{
                     alt: eto.equityTokenName || "",
                     srcSet: { "1x": eto.equityTokenImage || "" },
@@ -251,6 +269,12 @@ const EtoOverviewStatusLayout: React.SFC<
             />
 
             <div className={cn(styles.groupWrapper, styles.breakSm)}>
+              <div className={styles.group}>
+                <span className={styles.label}>
+                  <FormattedMessage id="shared-component.eto-overview-status.key-investment-terms" />
+                  {":"}
+                </span>
+              </div>
               <div className={styles.group}>
                 <span className={styles.label}>
                   <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
@@ -293,15 +317,21 @@ const EtoOverviewStatusLayout: React.SFC<
                   />
                   {showWhitelistDiscount && (
                     <>
-                      {" (-"}
-                      <Percentage>{eto.whitelistDiscountFraction!}</Percentage>
+                      {" ("}
+                      <FormattedMessage
+                        id="shared-component.eto-overview-status.included-discount-percentage"
+                        values={{ percentage: eto.whitelistDiscountFraction! * 100 }}
+                      />
                       {")"}
                     </>
                   )}
                   {showPublicDiscount && (
                     <>
-                      {" (-"}
-                      <Percentage>{eto.publicDiscountFraction!}</Percentage>
+                      {" ("}
+                      <FormattedMessage
+                        id="shared-component.eto-overview-status.included-discount-percentage"
+                        values={{ percentage: eto.publicDiscountFraction! * 100 }}
+                      />
                       {")"}
                     </>
                   )}
@@ -347,6 +377,12 @@ const EtoOverviewStatus = compose<
     dispatchToProps: (dispatch, { eto }) => ({
       navigateToEto: () =>
         dispatch(push(withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode }))),
+      openInNewWindow: () =>
+        dispatch(
+          routingActions.openInNewWindow(
+            withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode }),
+          ),
+        ),
     }),
   }),
 )(EtoOverviewStatusLayout);

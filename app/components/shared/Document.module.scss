@@ -4,8 +4,9 @@
     color: $color-blue;
   }
 
-  &:global(.pdf) {
-    color: $color-orange;
+  &:global(.pdf),
+  &:global(.csv) {
+    color: $neu-bright-orange;
   }
 }
 
@@ -24,7 +25,7 @@
 }
 
 .tile {
-  background-color: $color-white;
+  background-color: $neu-white-two;
   color: $gray5;
   border: 1px solid $gray10;
   width: px-to-rem(160px);

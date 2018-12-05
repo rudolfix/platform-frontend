@@ -38,7 +38,7 @@ const EtoPublicViewByContractIdLayout: React.SFC<TProps> = ({ eto }) => (
 export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
-      userType: selectUserType(state.auth),
+      userType: selectUserType(state),
       eto: selectEtoWithCompanyAndContractById(state, props.etoId),
     }),
   }),

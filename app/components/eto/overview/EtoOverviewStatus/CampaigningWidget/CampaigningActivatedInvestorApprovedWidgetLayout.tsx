@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { Button, ButtonSize, ButtonWidth } from "../../../../shared/buttons";
-import { CheckboxComponent, FormInput, InputSize } from "../../../../shared/forms";
+import { CheckboxLayout, FormInput, InputSize } from "../../../../shared/forms";
 import { Tooltip } from "../../../../shared/Tooltip";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -52,7 +52,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
           />
         </label>
         <div className={styles.value}>
-          <CheckboxComponent
+          <CheckboxLayout
             name="consentToRevealEmail"
             inputId="consentToRevealEmail"
             checked={consentToRevealEmail}
@@ -63,6 +63,8 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
       {formState === CampaigningFormState.VIEW ? (
         <div className={styles.group}>
           <div className={styles.label}>
+            <FormattedMessage id="eto-overview.campaigning.your-commitment" />
+            <br />
             {"€ "}
             {pledgedAmount}
           </div>
@@ -84,7 +86,8 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
           validationSchema={generateCampaigningValidation(minPledge, maxPledge)}
         >
           <Form className={styles.group}>
-            <div className={cn(styles.label, styles.labelNoUppercase)}>
+            <div className={cn(styles.label)}>
+              <FormattedMessage id="eto-overview.campaigning.indicate-commitment" />
               <FormInput
                 size={InputSize.SMALL}
                 name="amount"

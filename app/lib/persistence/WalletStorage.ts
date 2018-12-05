@@ -46,7 +46,7 @@ export class WalletStorage<TWalletMetadata> {
   }
 
   public set(value: TWalletMetadata, forcedUserType?: EUserType): void {
-    const userType = forcedUserType || selectUserType(this.getState().auth);
+    const userType = forcedUserType || selectUserType(this.getState());
 
     switch (userType) {
       case EUserType.ISSUER:
@@ -61,7 +61,7 @@ export class WalletStorage<TWalletMetadata> {
   }
 
   public get(forcedUserType?: EUserType): TWalletMetadata | undefined {
-    const userType = forcedUserType || selectUserType(this.getState().auth);
+    const userType = forcedUserType || selectUserType(this.getState());
 
     switch (userType) {
       case EUserType.ISSUER:

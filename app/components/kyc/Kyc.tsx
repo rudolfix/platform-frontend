@@ -93,17 +93,9 @@ class RequestStateInfo extends React.Component<IProps, IState> {
           layout={EButtonLayout.SECONDARY}
           iconPosition="icon-before"
           svgIcon={arrowLeft}
-          onClick={
-            this.props.userType === EUserType.INVESTOR
-              ? this.props.goToDashboard
-              : this.props.goToProfile
-          }
+          onClick={this.props.goToProfile}
         >
-          {this.props.userType === EUserType.INVESTOR ? (
-            <FormattedMessage id="kyc.request-state.go-to-dashboard" />
-          ) : (
-            <FormattedMessage id="kyc.request-state.go-to-profile" />
-          )}
+          <FormattedMessage id="kyc.request-state.go-to-profile" />
         </Button>
       </div>
     );
@@ -205,7 +197,7 @@ export const Kyc = compose<React.SFC>(
       requestStatus: selectKycRequestStatus(state),
       redirectUrl: selectKycOutSourcedURL(state.kyc),
       pendingRequestType: selectPendingKycRequestType(state.kyc),
-      userType: selectUserType(state.auth)!,
+      userType: selectUserType(state)!,
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},

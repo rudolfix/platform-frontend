@@ -5,15 +5,17 @@ import {
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
   clearEmailServer,
-  confirmAccessModal,
   convertToUniqueEmail,
-  goToProfile,
   registerWithLightWallet,
   verifyLatestUserEmail,
   tid,
+  confirmAccessModalNoPW,
 } from "../utils";
 
 describe("Verify Email Widget", () => {
+  beforeEach(() => {
+    cy.clearLocalStorage();
+  });
   it("should change user email after register", () => {
     const firstEmail = "moe-wallet-backup-e2e@test.com";
     const secondEmail = convertToUniqueEmail(firstEmail);
@@ -23,7 +25,7 @@ describe("Verify Email Widget", () => {
     clearEmailServer();
     assertUserInDashboard();
 
-    goToProfile();
+    cy.get(tid("authorized-layout-profile-button")).awaitedClick();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();
     cy.get(tid("verify-email-widget.change-email.button")).awaitedClick();
     assertVerifyEmailWidgetIsInNoEmailState();
@@ -31,7 +33,7 @@ describe("Verify Email Widget", () => {
     cy.get(tid("verify-email-widget-form-email-input")).type(secondEmail);
     cy.get(tid("verify-email-widget-form-submit")).awaitedClick();
 
-    confirmAccessModal(password);
+    confirmAccessModalNoPW();
 
     // Email server takes time before getting the request
     assertWaitForLatestEmailSentWithSalt(secondEmail);

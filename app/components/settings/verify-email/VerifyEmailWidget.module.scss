@@ -1,4 +1,11 @@
-.custom-padding-top {
+.section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.no-email-user {
   padding-top: px-to-rem(12px);
 }
 

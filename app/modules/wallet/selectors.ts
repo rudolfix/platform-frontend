@@ -4,7 +4,7 @@ import { ETHEREUM_ZERO_ADDRESS } from "../../../app/config/constants";
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
 import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
-import { selectTxGasCostEth } from "../tx/sender/selectors";
+import { selectTxGasCostEthUlps } from "../tx/sender/selectors";
 import { IWalletState } from "./reducer";
 
 /**
@@ -168,4 +168,4 @@ export const selectIsEuroUpgradeTargetSet = (state: IAppState): boolean =>
 
 /**General State Selectors */
 export const selectMaxAvailableEther = (state: IAppState): string =>
-  subtractBigNumbers([selectLiquidEtherBalance(state.wallet), selectTxGasCostEth(state)]);
+  subtractBigNumbers([selectLiquidEtherBalance(state.wallet), selectTxGasCostEthUlps(state)]);

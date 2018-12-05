@@ -12,9 +12,13 @@ import {
   verifyLatestUserEmail,
   tid,
   assertButtonIsActive,
+  acceptTOS,
 } from "../utils";
 
 describe("Light wallet login / register", () => {
+  beforeEach(() => {
+    cy.clearLocalStorage();
+  });
   it("should register user with light-wallet and send email", () => {
     const email = "moe@test.com";
     const password = "strongpassword";
@@ -75,6 +79,8 @@ describe("Light wallet login / register", () => {
     cy.visit("/register");
     typeEmailPassword(email, password);
     assertUserInDashboard();
+    acceptTOS();
+    cy.wait(5000); // wait for the tos to settle
     verifyLatestUserEmail();
     logoutViaTopRightButton();
     cy.clearLocalStorage();

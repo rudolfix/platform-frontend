@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Number.utils";
@@ -68,18 +69,12 @@ export const selectIsBankTransferModalOpened = (state: IAppState) =>
   selectIsReadyToInvest(state);
 
 export const selectBankTransferReferenceCode = (state: IAppState) => {
-  const addressHex = selectEthereumAddressWithChecksum(state).slice(2);
+  const addressHex = selectEthereumAddressWithChecksum(state);
 
-  const bytes: number[] = [];
-  for (let c = 0; c < addressHex.length; c += 2) {
-    bytes.push(parseInt(addressHex.substr(c, 2), 16));
-  }
-  const byteString = bytes.map(n => String.fromCharCode(n)).join("");
-  const base64 = btoa(byteString).replace("=", "");
+  const reference = state.investmentFlow.bankTransferReference.toUpperCase();
+  const date = moment().format("DD-MM-YYYY");
 
-  const reference = state.investmentFlow.bankTransferReference;
-
-  let code = `NF ${base64} REF ${reference}`;
+  let code = `Investment Amount, Reservation and Acquisition Agreement from ${date} NF ${addressHex} REF ${reference}`;
   if (selectIsBankTransferGasStipend(state)) {
     code += " G";
   }

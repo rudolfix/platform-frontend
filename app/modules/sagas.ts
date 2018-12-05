@@ -15,6 +15,7 @@ import { investorTicketsSagas } from "./investor-tickets/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { profileSagas } from "./profile/sagas";
 import { etoSagas } from "./public-etos/sagas";
+import { routingSagas } from "./routing/sagas";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
@@ -54,6 +55,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(txMonitorSagas),
     effects.fork(tokenPriceSagas),
     effects.fork(investmentFlowSagas),
+    effects.fork(routingSagas),
   ]);
 }
 

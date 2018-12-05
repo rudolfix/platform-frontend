@@ -10,7 +10,7 @@ import { CommonHtmlProps } from "../../../types";
 
 import * as styles from "./Button.module.scss";
 
-type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite";
+type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite" | "neon";
 type TIconPosition = "icon-before" | "icon-after";
 
 export enum EButtonLayout {
@@ -23,6 +23,7 @@ export enum EButtonLayout {
 export enum ButtonSize {
   NORMAL = "",
   SMALL = "small",
+  HUGE = "huge",
 }
 
 export enum ButtonWidth {
@@ -66,6 +67,7 @@ const buttonThemeClassNames: Record<TButtonTheme, string> = {
   brand: styles.buttonBrand,
   silver: styles.buttonSilver,
   graphite: styles.buttonGraphite,
+  neon: styles.buttonNeon,
 };
 
 const Button: React.ComponentType<

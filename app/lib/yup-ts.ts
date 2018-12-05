@@ -1,6 +1,7 @@
 import { mapValues } from "lodash";
 import * as Yup from "yup";
-import { Dictionary } from "../types";
+
+import { Dictionary, TTranslatedString } from "../types";
 
 export const object = <T>(objectShape: T) => new ObjectYTS(objectShape);
 export const string = () => new StringYTS();
@@ -8,11 +9,11 @@ export const url = () => new StringYTS().enhance((v: Yup.StringSchema) => v.url(
 export const array = <T extends YTS<any>>(shape: T) => new ArrayYTS(shape);
 export const number = () => new NumberYTS();
 export const boolean = () => new BooleanYTS();
-export const onlyTrue = () =>
+export const onlyTrue = (message?: TTranslatedString) =>
   new BooleanYTS().enhance(v =>
     v.test(
       "isTrue",
-      "This field must be set to true",
+      message || ("This field must be set to true" as any),
       value => value === undefined || value === true,
     ),
   );

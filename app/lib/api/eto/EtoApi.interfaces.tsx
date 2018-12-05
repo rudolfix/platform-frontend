@@ -240,7 +240,9 @@ export const EtoTermsType = YupTS.object({
       ),
     ),
   enableTransferOnSuccess: YupTS.boolean(),
-  notUnderCrowdfundingRegulations: YupTS.onlyTrue(),
+  notUnderCrowdfundingRegulations: YupTS.onlyTrue(
+    <FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding.error" />,
+  ),
   allowRetailInvestors: YupTS.boolean(),
   whitelistDurationDays: YupTS.number().enhance(v =>
     v.min(WHITELIST_DURATION_DAYS.min).max(WHITELIST_DURATION_DAYS.max),
@@ -313,6 +315,17 @@ interface IAdditionalEtoType {
   canEnableBookbuilding: boolean;
 }
 
+export type TBookbuildingStatsType = {
+  amountEur: number;
+  consentToRevealEmail: boolean;
+  currency: string;
+  email?: string;
+  etoId?: string;
+  insertedAt: string;
+  updatedAt: string;
+  userId: string;
+};
+
 export type TEtoSpecsData = TEtoTermsType &
   TEtoEquityTokenInfoType &
   TEtoVotingRightsType &
@@ -328,7 +341,7 @@ export type TGeneralEtoData = {
   companyData: TPartialCompanyEtoData;
 };
 
-// this is comming from the /etos endpoint for investors dashboard
+// this is coming from the /etos endpoint for investors dashboard
 export type TPublicEtoData = TEtoSpecsData & { company: TCompanyEtoData };
 
 export const GeneralEtoDataType = YupTS.object({

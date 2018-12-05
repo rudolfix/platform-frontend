@@ -7,8 +7,8 @@ import { selectIsLightWallet } from "../web3/selectors";
 import { IAuthState } from "./reducer";
 
 export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
-export const selectUserType = (state: IAuthState): EUserType | undefined =>
-  state.user && state.user.type;
+export const selectUserType = (state: IAppState): EUserType | undefined =>
+  state.auth.user && state.auth.user.type;
 
 export const selectUserEmail = (state: IAuthState): string | undefined =>
   state.user && (state.user.unverifiedEmail || state.user.verifiedEmail);
@@ -37,10 +37,23 @@ export const selectIsUserVerified = (state: IAppState): boolean =>
   selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state) === "Accepted";
 
 export const selectIsInvestor = (state: IAppState): boolean =>
-  selectUserType(state.auth) === EUserType.INVESTOR;
+  selectUserType(state) === EUserType.INVESTOR;
 
 export const selectIsVerifiedInvestor = createSelector(
   selectIsInvestor,
   selectIsUserVerified,
   (isInvestor, isUserVerified) => isInvestor && isUserVerified,
 );
+
+export const selectCurrentAgreementHash = (state: IAppState): string | undefined =>
+  state.auth.currentAgreementHash;
+
+export const selectIsLatestAgreementAccepted = (state: IAppState): boolean =>
+  !!(
+    state.auth.user &&
+    state.auth.currentAgreementHash &&
+    state.auth.user.latestAcceptedTosIpfs === state.auth.currentAgreementHash
+  );
+
+export const selectIsLatestAgreementLoaded = (state: IAppState) =>
+  !!state.auth.currentAgreementHash;

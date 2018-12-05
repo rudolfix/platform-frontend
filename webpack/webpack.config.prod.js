@@ -2,6 +2,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const webpack = require("webpack");
 
 const merge = require("webpack-merge");
 const path = require("path");
@@ -12,6 +13,10 @@ const paths = require("./paths");
 module.exports = merge(configCommon, {
   mode: "production",
   optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+    runtimeChunk: true,
     minimizer: [
       new UglifyJsPlugin({
         parallel: true,
@@ -20,10 +25,11 @@ module.exports = merge(configCommon, {
         },
       }),
       new OptimizeCSSAssetsPlugin(),
+      new webpack.HashedModuleIdsPlugin(),
     ],
   },
   output: {
-    filename: "[hash].[name].min.js",
+    filename: "[chunkhash].[name].min.js",
   },
   plugins: [
     new CleanWebpackPlugin(paths.dist, {

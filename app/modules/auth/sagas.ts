@@ -1,7 +1,9 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
-import { externalRoutes } from "../../components/externalRoutes";
+import { SignInUserErrorMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
+import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
@@ -14,9 +16,10 @@ import { IAppState } from "../../store";
 import { hasValidPermissions } from "../../utils/JWTUtils";
 import { accessWalletAndRunEffect } from "../access-wallet/sagas";
 import { actions, TAction } from "../actions";
+import { selectIsSmartContractInitDone } from "../init/selectors";
 import { loadKycRequestData } from "../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../routing/selectors";
-import { neuCall, neuTakeEvery } from "../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeOnly } from "../sagasUtils";
 import { selectUrlUserType } from "../wallet-selector/selectors";
 import { loadPreviousWallet } from "../web3/sagas";
 import {
@@ -25,7 +28,8 @@ import {
   selectEthereumAddressWithChecksum,
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
-import { selectVerifiedUserEmail } from "./selectors";
+import { MessageSignCancelledError } from "./errors";
+import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -175,11 +179,10 @@ function* logoutWatcher(
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "AUTH_LOGOUT") return;
-
+  const { userType } = action.payload;
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
-
-  if (action.payload.userType === EUserType.INVESTOR) {
+  if (userType === EUserType.INVESTOR || !userType) {
     yield effects.put(actions.routing.goHome());
   } else {
     yield effects.put(actions.routing.goEtoHome());
@@ -196,7 +199,7 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
     const probableUserType: EUserType = yield select((s: IAppState) => selectUrlUserType(s.router));
     yield effects.put(actions.walletSelector.messageSigning());
 
-    yield neuCall(obtainJWT);
+    yield neuCall(obtainJWT, [SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
     // tslint:disable-next-line
     walletStorage.set(web3Manager.personalWallet!.getMetadata());
@@ -218,40 +221,74 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
   }
 }
 
-function* handleSignInUser({
-  intlWrapper: {
-    intl: { formatIntlMessage, formatHTMLMessage },
-  },
-  logger,
-}: TGlobalDependencies): Iterator<any> {
+function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(signInUser);
   } catch (e) {
-    // TODO: Move all text errors to UX Component
     logger.error("User Sign in error", e);
     if (e instanceof SignerRejectConfirmationError) {
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-was-rejected"),
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED),
         ),
       );
     } else if (e instanceof SignerTimeoutError) {
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          formatIntlMessage("modules.auth.sagas.sign-in-user.message-signing-timeout"),
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT),
         ),
       );
     } else {
       yield effects.put(
         actions.walletSelector.messageSigningError(
-          formatHTMLMessage(
-            { id: "modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems" },
-            { url: `${externalRoutes.neufundSupport}/home` },
-          ),
+          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
         ),
       );
     }
   }
+}
+
+function* handleAcceptCurrentAgreement({
+  apiUserService,
+  logger,
+  notificationCenter,
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
+}: TGlobalDependencies): Iterator<any> {
+  const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
+  yield neuCall(
+    ensurePermissionsArePresent,
+    [SIGN_TOS],
+    formatIntlMessage("settings.modal.accept-tos.permission.title"),
+    formatIntlMessage("settings.modal.accept-tos.permission.text"),
+  );
+  try {
+    const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
+    yield effects.put(actions.auth.setUser(user));
+  } catch (e) {
+    notificationCenter.error("There was a problem with accepting Terms and Conditions");
+    logger.error("Could not accept Terms and Conditions", e);
+  }
+}
+
+function* handleDownloadCurrentAgreement({
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
+}: TGlobalDependencies): Iterator<any> {
+  const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
+  const fileName = formatIntlMessage("settings.modal.accept-tos.filename");
+  yield effects.put(
+    actions.immutableStorage.downloadImmutableFile(
+      {
+        ipfsHash: currentAgreementHash,
+        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        asPdf: true,
+      },
+      fileName,
+    ),
+  );
 }
 
 function* verifyUserEmail(): Iterator<any> {
@@ -314,7 +351,7 @@ export function* obtainJWT(
  * on the current jwt
  */
 export function* ensurePermissionsArePresent(
-  { jwtStorage }: TGlobalDependencies,
+  { jwtStorage, logger }: TGlobalDependencies,
   permissions: Array<string> = [],
   title: string,
   message: string,
@@ -328,14 +365,46 @@ export function* ensurePermissionsArePresent(
   try {
     const obtainJwtEffect = neuCall(obtainJWT, permissions);
     yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message);
-  } catch {
-    throw new Error("Message signing failed");
+  } catch (error) {
+    if (error instanceof MessageSignCancelledError) {
+      logger.info("Signing Cancelled");
+    } else {
+      throw new Error("Message signing failed");
+    }
+  }
+}
+
+/**
+ * Handle ToS / agreement
+ */
+export function* loadCurrentAgreement({
+  contractsService,
+  logger,
+}: TGlobalDependencies): Iterator<any> {
+  logger.info("Loading current agreement hash");
+
+  const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
+
+  if (!isSmartContractsInitialized) {
+    yield neuTakeOnly("INIT_DONE", { initType: "smartcontractsInit" });
+  }
+
+  try {
+    const result = yield contractsService.universeContract.currentAgreement();
+    let currentAgreementHash = result[2] as string;
+    currentAgreementHash = currentAgreementHash.replace("ipfs:", "");
+    yield effects.put(actions.auth.setCurrentAgreementHash(currentAgreementHash));
+  } catch (e) {
+    logger.error("Could not load current agreement", e);
   }
 }
 
 export const authSagas = function*(): Iterator<effects.Effect> {
-  yield fork(neuTakeEvery, "AUTH_LOGOUT", logoutWatcher);
+  yield fork(neuTakeLatest, "AUTH_LOGOUT", logoutWatcher);
   yield fork(neuTakeEvery, "AUTH_SET_USER", setUser);
   yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
+  yield fork(neuTakeEvery, "ACCEPT_CURRENT_AGREEMENT", handleAcceptCurrentAgreement);
+  yield fork(neuTakeEvery, "DOWNLOAD_CURRENT_AGREEMENT", handleDownloadCurrentAgreement);
+  yield fork(neuTakeEvery, "AUTH_SET_USER", loadCurrentAgreement);
 };

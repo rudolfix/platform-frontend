@@ -2,8 +2,7 @@ import { FormikContext } from "formik";
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-type Dictionary<T> = { [id: string]: T };
-type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
+type Dictionary<T> = Record<string, T>;
 
 type AsInterface<T> = { [K in keyof T]: T[K] };
 
@@ -88,6 +87,8 @@ export type TAcceptedFileType =
 export type Omit<T extends K, K> = Pick<T, Exclude<keyof T, keyof K>>;
 
 export type OmitKeys<T, K> = Pick<T, Exclude<keyof T, K>>;
+
+export type Overwrite<T1, T2> = { [P in Exclude<keyof T1, keyof T2>]: T1[P] } & T2;
 
 export type TFormikConnect = {
   formik: FormikContext<any>;

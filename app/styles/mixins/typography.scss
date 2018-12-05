@@ -25,6 +25,11 @@
   font-size: px-to-rem(28px);
 }
 
+@mixin headline-bigger {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(24px);
+}
+
 @mixin font-headline {
   font-family: $headings-font-family;
   font-size: px-to-rem(20px);

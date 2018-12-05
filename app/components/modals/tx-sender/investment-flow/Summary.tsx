@@ -20,7 +20,7 @@ import {
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { ETxSenderType } from "../../../../modules/tx/interfaces";
-import { selectTxGasCostEth } from "../../../../modules/tx/sender/selectors";
+import { selectTxGasCostEthUlps } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatThousands } from "../../../../utils/Number.utils";
@@ -110,8 +110,8 @@ const InvestmentSummaryComponent: React.SFC<IProps> = ({
   const actualTokenPrice = getActualTokenPriceEur(investmentEur, equityTokens);
   const { tokenPrice: fullTokenPrice } = getShareAndTokenPrice(eto);
   const formattedTokenPrice = `€ ${formatSummaryTokenPrice(
-    fullTokenPrice,
-    parseFloat(actualTokenPrice),
+    fullTokenPrice.toString(),
+    actualTokenPrice,
   )}`;
 
   return (
@@ -200,7 +200,7 @@ const InvestmentSummary = compose<IProps, {}>(
         companyName: eto.company.name,
         investmentEth: selectInvestmentEthValueUlps(state),
         investmentEur: selectInvestmentEurValueUlps(state),
-        gasCostEth: selectTxGasCostEth(state),
+        gasCostEth: selectTxGasCostEthUlps(state),
         // tslint:disable: no-useless-cast
         equityTokens: selectEquityTokenCountByEtoId(etoId, state)!,
         estimatedReward: selectNeuRewardUlpsByEtoId(etoId, state)!,

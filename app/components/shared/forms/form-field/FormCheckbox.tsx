@@ -1,8 +1,9 @@
 import * as cn from "classnames";
-import { Field, FieldProps, FormikConsumer } from "formik";
+import { Field, FieldProps } from "formik";
 import * as React from "react";
 
 import * as styles from "./FormCheckbox.module.scss";
+import { FormError } from "./FormError";
 
 interface IProps {
   inputId?: string;
@@ -19,7 +20,7 @@ interface IInternalProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
+const CheckboxLayout: React.SFC<IProps & IInternalProps> = ({
   name,
   label,
   value = "true",
@@ -50,7 +51,7 @@ const CheckboxComponent: React.SFC<IProps & IInternalProps> = ({
   );
 };
 
-const RadioButtonComponent: React.SFC<IProps & IInternalProps> = ({
+const RadioButtonLayout: React.SFC<IProps & IInternalProps> = ({
   name,
   label,
   value = "true",
@@ -79,29 +80,34 @@ const RadioButtonComponent: React.SFC<IProps & IInternalProps> = ({
   );
 };
 
+/*
+ * Conditional checkbox.
+ * Use when there is a need to represent true/false value (checked === true).
+ * If array of values is needed use FormFieldCheckboxGroup
+ * @todo Rename to FormFieldConditional (or something better) as FormCheckbox can be misleading with FormFieldCheckbox
+ */
 class FormCheckbox extends React.Component<IProps> {
   render(): React.ReactNode {
     const { name, checked, disabled } = this.props;
 
     return (
-      <FormikConsumer>
-        {({ values, setFieldValue }) => (
-          <Field
-            name={name}
-            render={({ field }: FieldProps) => {
-              return (
-                <CheckboxComponent
-                  {...field}
-                  {...this.props}
-                  checked={checked || values[name]}
-                  onChange={() => setFieldValue(name, !values[name])}
-                  disabled={disabled}
-                />
-              );
-            }}
-          />
-        )}
-      </FormikConsumer>
+      <Field
+        name={name}
+        render={({ field, form }: FieldProps) => {
+          return (
+            <>
+              <CheckboxLayout
+                {...field}
+                {...this.props}
+                checked={checked || form.values[name]}
+                onChange={() => form.setFieldValue(name, !form.values[name])}
+                disabled={disabled}
+              />
+              <FormError name={name} className="text-left" />
+            </>
+          );
+        }}
+      />
     );
   }
 }
@@ -111,28 +117,24 @@ class FormRadioButton extends React.Component<IProps> {
     const { name, checked, disabled } = this.props;
 
     return (
-      <FormikConsumer>
-        {({ values, setFieldValue }) => (
-          <Field
-            name={name}
-            render={({ field }: FieldProps) => {
-              const { value } = this.props;
+      <Field
+        name={name}
+        render={({ field, form }: FieldProps) => {
+          const { value } = this.props;
 
-              return (
-                <RadioButtonComponent
-                  {...field}
-                  {...this.props}
-                  checked={checked || values[name] === value}
-                  onChange={() => setFieldValue(name, value)}
-                  disabled={disabled}
-                />
-              );
-            }}
-          />
-        )}
-      </FormikConsumer>
+          return (
+            <RadioButtonLayout
+              {...field}
+              {...this.props}
+              checked={checked || form.values[name] === value}
+              onChange={() => form.setFieldValue(name, value)}
+              disabled={disabled}
+            />
+          );
+        }}
+      />
     );
   }
 }
 
-export { RadioButtonComponent, FormRadioButton, FormCheckbox, CheckboxComponent };
+export { RadioButtonLayout, FormRadioButton, FormCheckbox, CheckboxLayout };

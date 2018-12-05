@@ -36,7 +36,7 @@ const getEtherLockTransaction = (
   etoId: string,
 ) => {
   const txData = contractsService.etherLock
-    .transferTx(etoId, new BigNumber(state.investmentFlow.ethValueUlps), [""])
+    .transferTx(etoId, new BigNumber(state.investmentFlow.ethValueUlps || "0"), [""])
     .getData();
   return createInvestmentTxData(state, txData, contractsService.etherLock.address);
 };
@@ -47,7 +47,7 @@ const getEuroLockTransaction = (
   etoId: string,
 ) => {
   const txData = contractsService.euroLock
-    .transferTx(etoId, new BigNumber(state.investmentFlow.euroValueUlps), [""])
+    .transferTx(etoId, new BigNumber(state.investmentFlow.euroValueUlps || "0"), [""])
     .getData();
   return createInvestmentTxData(state, txData, contractsService.euroLock.address);
 };
@@ -58,7 +58,7 @@ function getEtherTokenTransaction(
   etoId: string,
 ): ITxData {
   const etherTokenBalance = selectEtherTokenBalance(state);
-  const etherValue = state.investmentFlow.ethValueUlps;
+  const etherValue = state.investmentFlow.ethValueUlps || "0";
 
   if (!etherTokenBalance) {
     throw new Error("No ether Token Balance");

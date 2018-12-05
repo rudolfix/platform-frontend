@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { formWrapper } from "./form-utils";
+import { formWrapper } from "./testingUtils";
 
 import { FormRange } from "./FormRange";
 

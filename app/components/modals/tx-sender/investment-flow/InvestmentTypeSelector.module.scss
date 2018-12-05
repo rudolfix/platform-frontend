@@ -15,6 +15,11 @@
   color: $body-color;
   width: 100%;
   cursor: pointer;
+
+  img {
+    opacity: 1;
+  }
+
 }
 
 .input {
@@ -66,10 +71,6 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   border-right: .5em solid $neu-seaweed;
-
-  img {
-    opacity: 1;
-  }
 
   .balance {
     margin-right: .7em;

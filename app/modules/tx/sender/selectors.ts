@@ -12,7 +12,7 @@ export const selectTxType = (state: IAppState) => state.txSender.type;
 export const selectTxSummaryData = (state: IAppState) =>
   state.txSender.summaryData || state.txSender.txDetails;
 
-export const selectTxGasCostEth = (state: IAppState): string => {
+export const selectTxGasCostEthUlps = (state: IAppState): string => {
   const details = selectTxDetails(state);
   const gasPrice = (details && details.gasPrice) || "0";
   const gasLimit = (details && details.gas) || "0";

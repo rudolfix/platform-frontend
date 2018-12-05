@@ -104,4 +104,11 @@ export class EtoApi {
       url: ETOS_PATH + "/" + etoId + "/bookbuilding-stats",
     });
   }
+
+  public getDetailedBookBuildingStats(): Promise<IHttpResponse<any>> {
+    return this.authorizedHttpClient.get<any>({
+      baseUrl: BASE_PATH,
+      url: ETOS_PATH + "/me/pledges",
+    });
+  }
 }

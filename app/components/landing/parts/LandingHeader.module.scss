@@ -15,14 +15,14 @@
 
   font-weight: $font-weight-light;
   text-transform: uppercase;
-  color: $color-graphite;
+  color: $neu-greyish-brown;
 
   &::after {
     content: "";
     display: block;
     width: 30%;
     height: px-to-rem(4px);
-    background-color: $color-brand;
+    background-color: $neu-piss-yellow;
     margin-bottom: $spacing-vertical-lg-3;
     margin-top: $spacing-vertical-lg-1;
   }

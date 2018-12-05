@@ -20,42 +20,13 @@ $icon-size: 18px;
 
   cursor: help;
 
-  &:hover {
-    + .tooltip-text {
-      transform: translate(-50%, -110%) scale(1);
-      opacity: 1;
-    }
-  }
-
   :global(.inline-icon) {
     height: px-to-rem($icon-size);
     width: px-to-rem($icon-size);
   }
 }
 
-.tooltip-text {
-  @include media-breakpoint-up (md) {
-    background-color: $neu-charcoal-grey;
-    box-shadow: $shadow;
-    color: $neu-white-two;
-    font-size: px-to-rem(12px);
-    left: px-to-rem($icon-size / 2);
-    max-width: px-to-rem(340px);
-    opacity: 0;
-    padding: px-to-rem(14px);
-    pointer-events: none;
-    position: absolute;
-    top: px-to-rem(-5px);
-    transform-origin: center bottom;
-    transform: translate(-50%, -100%) scale(.8);
-    transition: 100ms ease-out;
-    width: 90vw;
-    will-change: transform opacity;
-  }
-
-  @include media-breakpoint-down (md) {
-    font-size: .8em;
-    margin-top: px-to-rem(6px);
-  }
-
+// sass-lint:disable force-element-nesting
+:global(.tooltip).align-left>:global(.tooltip-inner) {
+  text-align: left;
 }

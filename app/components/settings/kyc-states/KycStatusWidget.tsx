@@ -20,7 +20,6 @@ import {
   selectWidgetLoading,
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { UnionDictionary } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { externalRoutes } from "../../externalRoutes";
@@ -56,7 +55,7 @@ interface IDispatchProps {
 
 export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
 
-const statusTextMap: UnionDictionary<TRequestStatus, React.ReactNode> = {
+const statusTextMap: Record<TRequestStatus, React.ReactNode> = {
   Accepted: <FormattedMessage id="settings.kyc-status-widget.status.accepted" />,
   Rejected: (
     <FormattedHTMLMessage
@@ -83,7 +82,7 @@ const statusTextMap: UnionDictionary<TRequestStatus, React.ReactNode> = {
   Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
 };
 
-const outsourcedStatusTextMap: UnionDictionary<TRequestOutsourcedStatus, React.ReactNode> = {
+const outsourcedStatusTextMap: Record<TRequestOutsourcedStatus, React.ReactNode> = {
   review_pending: (
     <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />
   ),
@@ -249,14 +248,14 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </WarningAlert>
         </div>
       ) : (
-        <div className={cn(styles.panelBody, "d-flex flex-wrap align-content-around")}>
+        <section className={cn(styles.section)}>
           <p className={cn(styles.text, "pt-2")}>
             {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
           </p>
           <Col xs={12} className="d-flex justify-content-center">
             <ActionButton {...props} />
           </Col>
-        </div>
+        </section>
       )}
     </Panel>
   );

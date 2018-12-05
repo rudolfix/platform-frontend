@@ -15,6 +15,7 @@ export const CHANGE_EMAIL_PERMISSION = "change-email";
 export const SUBMIT_ETO_PERMISSION = "submit-eto-listing";
 export const UPLOAD_IMMUTABLE_DOCUMENT = "upload-issuer-immutable-document";
 export const DO_BOOK_BUILDING = "do-bookbuilding";
+export const SIGN_TOS = "sign-tos";
 
 /**
  *  Constants for JWT tokens
@@ -57,3 +58,4 @@ export const MIN_EXISTING_COMPANY_SHARES = 1;
 export const MIN_NEW_SHARES_TO_ISSUE = 1;
 export const NEW_SHARES_TO_ISSUE_IN_WHITELIST = 1;
 export const NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS = 1;
+export const BOOKBUILDING_WATCHER_DELAY = 6000;

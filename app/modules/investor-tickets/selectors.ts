@@ -1,7 +1,11 @@
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import BigNumber from "bignumber.js";
+
+import { Q18 } from "../../config/constants";
+import { getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../store";
-import { selectPublicEtos } from "../public-etos/selectors";
+import { selectPublicEtoById, selectPublicEtos } from "../public-etos/selectors";
 import { EETOStateOnChain } from "../public-etos/types";
+import { isOnChain } from "../public-etos/utils";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import { ICalculatedContribution, TETOWithInvestorTicket } from "./types";
 
@@ -33,8 +37,8 @@ export const selectEtoWithInvestorTickets = (
 
   if (etos) {
     return etos
-      .filter(eto => eto.state === EtoState.ON_CHAIN)
-      .filter(eto => eto.contract!.timedState !== EETOStateOnChain.Setup)
+      .filter(isOnChain)
+      .filter(eto => eto.contract.timedState !== EETOStateOnChain.Setup)
       .filter(eto => selectHasInvestorTicket(state, eto.etoId))
       .map(eto => ({
         ...eto,
@@ -96,14 +100,28 @@ export const selectEquityTokenCountByEtoId = (etoId: string, state: IAppState) =
   return contrib && contrib.equityTokenInt.toString();
 };
 
-export const selectEtoTicketSizesById = (etoId: string, state: IAppState) => {
+export const selectCalculatedEtoTicketSizesUlpsById = (etoId: string, state: IAppState) => {
+  const eto = selectPublicEtoById(state, etoId);
   const contrib = selectCalculatedContribution(etoId, state);
-  return (
-    contrib && {
-      minTicketEurUlps: contrib.minTicketEurUlps,
-      maxTicketEurUlps: contrib.maxTicketEurUlps,
+  const investorTicket = selectInvestorTicket(state, etoId);
+
+  let min = (contrib && contrib.minTicketEurUlps) || (eto && Q18.mul(eto.minTicketEur || 0));
+  let max =
+    (contrib && contrib.maxTicketEurUlps) ||
+    (eto && eto.maxTicketEur && Q18.mul(eto.maxTicketEur || 0));
+
+  if (min && max) {
+    if (eto && investorTicket) {
+      const { tokenPrice } = getShareAndTokenPrice(eto);
+      min = BigNumber.max(min.sub(investorTicket.equivEurUlps), Q18.mul(tokenPrice.toString()));
+      max = BigNumber.max(max.sub(investorTicket.equivEurUlps), 0);
     }
-  );
+
+    return {
+      minTicketEurUlps: min,
+      maxTicketEurUlps: max,
+    };
+  }
 };
 
 export const selectNeuRewardUlpsByEtoId = (etoId: string, state: IAppState) => {

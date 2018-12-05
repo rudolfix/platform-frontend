@@ -10,11 +10,13 @@ import { Button } from "../shared/buttons";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";
+import { getMessageTranslation } from "../translatedMessages/messages";
+import { TMessage } from "../translatedMessages/utils";
 
 import * as styles from "./WalletMessageSigner.module.scss";
 
 interface IStateProps {
-  errorMsg?: string;
+  errorMsg?: TMessage;
   isLightWallet: boolean;
 }
 
@@ -40,7 +42,9 @@ export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = (
       {errorMsg ? (
         <Row className="justify-content-center">
           <Col>
-            <WarningAlert className="my-4 text-center">{errorMsg}</WarningAlert>
+            <WarningAlert className="my-4 text-center">
+              {getMessageTranslation(errorMsg)}
+            </WarningAlert>
           </Col>
         </Row>
       ) : (
@@ -61,7 +65,7 @@ MessageSignerComponent.displayName = "MessageSignerComponent";
 export const WalletMessageSigner = compose(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: state => ({
-      errorMsg: state.walletSelector.messageSigningError,
+      errorMsg: state.walletSelector.messageSigningError as TMessage,
       isLightWallet: selectIsLightWallet(state.web3),
     }),
     dispatchToProps: (dispatch, ownProps) => ({

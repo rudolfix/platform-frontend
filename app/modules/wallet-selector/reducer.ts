@@ -1,8 +1,10 @@
+import { TMessage } from "../../components/translatedMessages/utils";
 import { AppReducer } from "../../store";
+import { DeepReadonly } from "../../types";
 
 export interface IWalletSelectorState {
   isMessageSigning: boolean;
-  messageSigningError?: string;
+  messageSigningError?: DeepReadonly<TMessage>;
 }
 
 const walletSelectorInitialState: IWalletSelectorState = {

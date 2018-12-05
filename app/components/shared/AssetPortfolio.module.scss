@@ -16,8 +16,8 @@
 }
 
 .your-neumark {
-  background-color: $color-graphite-light;
-  color: $color-white;
+  background-color: $neu-slate-grey;
+  color: $neu-white-two;
   display: flex;
   flex-direction: column;
   align-content: center;
@@ -28,7 +28,7 @@
   .title {
     @include font-label;
 
-    color: $color-white;
+    color: $neu-white-two;
   }
 }
 
@@ -39,7 +39,7 @@
 
   align-items: flex-end;
   justify-content: center;
-  background-color: $color-white;
+  background-color: $neu-white-two;
   z-index: 1;
   box-shadow: $shadow-bottom-black;
   position: relative;
@@ -55,7 +55,7 @@
     position: absolute;
     top: 0;
     right: -5px;
-    background-color: $color-white;
+    background-color: $neu-white-two;
   }
 
   .eur {
@@ -74,7 +74,7 @@
 }
 
 .red {
-  color: $color-red;
+  color: $neu-red;
 }
 
 .green {

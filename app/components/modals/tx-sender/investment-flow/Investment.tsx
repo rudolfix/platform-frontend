@@ -1,13 +1,14 @@
 import { BigNumber } from "bignumber.js";
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { withHandlers, withProps } from "recompose";
 import { compose } from "redux";
 import { createNumberMask } from "text-mask-addons";
 
-import { Q18 } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
 import {
   EInvestmentCurrency,
@@ -24,8 +25,9 @@ import {
   selectIsReadyToInvest,
 } from "../../../../modules/investment-flow/selectors";
 import {
+  selectCalculatedEtoTicketSizesUlpsById,
   selectEquityTokenCountByEtoId,
-  selectEtoTicketSizesById,
+  selectHasInvestorTicket,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-tickets/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
@@ -35,7 +37,7 @@ import {
   selectEurPriceEther,
 } from "../../../../modules/shared/tokenPrice/selectors";
 import { EValidationState } from "../../../../modules/tx/sender/reducer";
-import { selectTxGasCostEth } from "../../../../modules/tx/sender/selectors";
+import { selectTxGasCostEthUlps } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
@@ -57,6 +59,7 @@ import {
   getInvestmentTypeMessages,
 } from "./utils";
 
+import { appRoutes } from "../../../appRoutes";
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
@@ -73,6 +76,7 @@ interface IStateProps {
   neuReward?: string;
   readyToInvest: boolean;
   showTokens: boolean;
+  hasPreviouslyInvested?: boolean;
   etoTicketSizes?: {
     minTicketEurUlps: BigNumber;
     maxTicketEurUlps: BigNumber;
@@ -96,6 +100,7 @@ interface IWithProps {
   maxTicketEur: string;
   totalCostEth: string;
   totalCostEur: string;
+  isBankTransfer: boolean;
 }
 
 interface IHandlersProps {
@@ -129,6 +134,8 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
   totalCostEth,
   totalCostEur,
   wallets,
+  isBankTransfer,
+  hasPreviouslyInvested,
 }) => (
   <>
     <Container className={styles.container} fluid>
@@ -176,7 +183,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
               "investment-flow.min-ticket-size",
             )} ${minTicketEur} €`}
             value={formatVaryingDecimals(euroValue)}
-            className="form-control"
+            className={cn("form-control", styles.investInput)}
             renderInput={props => (
               <MaskedInput
                 {...props}
@@ -203,7 +210,12 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
               "investment-flow.min-ticket-size",
             )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
             value={formatVaryingDecimals(ethValue)}
-            className="form-control"
+            className={cn(
+              "form-control",
+              styles.investInput,
+              isBankTransfer && styles.disabledInput,
+            )}
+            disabled={isBankTransfer}
             renderInput={props => (
               <MaskedInput
                 {...props}
@@ -238,12 +250,21 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
       <Container className={styles.container} fluid>
         <Row>
           <Col>
+            <p className="mb-0">
+              <FormattedMessage id="investment-flow.you-will-receive" />
+            </p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <FormGroup>
               <Label>
                 <FormattedMessage id="investment-flow.equity-tokens" />
               </Label>
               <InfoAlert>
-                {(showTokens && equityTokenCount && formatThousands(equityTokenCount.toString())) ||
+                {(showTokens &&
+                  equityTokenCount &&
+                  `${formatThousands(equityTokenCount.toString())} ${eto.equityTokenSymbol}`) ||
                   "\xA0" /* non breaking space*/}
               </InfoAlert>
             </FormGroup>
@@ -255,25 +276,41 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
                 <FormattedMessage id="investment-flow.estimated-neu-tokens" />
               </Label>
               <InfoAlert>
-                {(showTokens && neuReward && formatEurTsd(neuReward)) || "\xA0"}
+                {(showTokens && neuReward && `${formatEurTsd(neuReward)} NEU`) || "\xA0"}
               </InfoAlert>
             </FormGroup>
           </Col>
         </Row>
+        {hasPreviouslyInvested && (
+          <Row>
+            <Col>
+              <p className="mb-0 mt-0">
+                <FormattedMessage id="investment-flow.you-already-invested" />
+                <br />
+                <Link to={appRoutes.portfolio}>
+                  <FormattedMessage id="investment-flow.see-your-portfolio-for-details" />
+                </Link>
+              </p>
+            </Col>
+          </Row>
+        )}
       </Container>
     </section>
     <Container className={styles.container} fluid>
       <Row>
         <Col className={styles.summary}>
-          <div>
-            + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
-            <span className={styles.orange} data-test-id="invest-modal-gas-cost">
-              {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
-            </span>
-          </div>
+          {gasCostEth &&
+            gasCostEth !== "0" && (
+              <div>
+                + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
+                <span className={styles.orange} data-test-id="invest-modal-gas-cost">
+                  {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
+                </span>
+              </div>
+            )}
           <div>
             <FormattedMessage id="investment-flow.total" />:{" "}
-            <span className={styles.orange}>
+            <span className={styles.orange} data-test-id="invest-modal-total-cost">
               {formatEurTsd(totalCostEur)} € ≈ ETH {formatEthTsd(totalCostEth)}
             </span>
           </div>
@@ -308,14 +345,15 @@ export const InvestmentSelection: React.SFC = compose<any>(
         euroValue: eur,
         ethValue: selectInvestmentEthValueUlps(state),
         errorState: selectInvestmentErrorState(state),
-        gasCostEth: selectTxGasCostEth(state),
+        gasCostEth: selectTxGasCostEthUlps(state),
         investmentType: selectInvestmentType(state),
         wallets: createWallets(state),
         neuReward: selectNeuRewardUlpsByEtoId(etoId, state),
         equityTokenCount: selectEquityTokenCountByEtoId(etoId, state),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
-        etoTicketSizes: selectEtoTicketSizesById(etoId, state),
+        etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(etoId, state),
+        hasPreviouslyInvested: selectHasInvestorTicket(state, etoId),
       };
     },
     dispatchToProps: dispatch => ({
@@ -332,7 +370,6 @@ export const InvestmentSelection: React.SFC = compose<any>(
   }),
   withProps<IWithProps, IStateProps>(
     ({
-      eto,
       ethValue,
       etoTicketSizes,
       investmentType,
@@ -342,17 +379,12 @@ export const InvestmentSelection: React.SFC = compose<any>(
       eurPriceEther,
     }) => {
       const isBankTransfer = investmentType === EInvestmentType.BankTransfer;
-      const gasCostEther = isBankTransfer ? "0" : gasCostEth;
+      const gasCostEther = isBankTransfer || !ethValue ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEther, etherPriceEur]);
-      const minTicketEur =
-        (etoTicketSizes && etoTicketSizes.minTicketEurUlps.div(Q18).toFixed()) ||
-        (eto.minTicketEur && eto.minTicketEur.toString()) ||
-        "0";
-      const maxTicketEur =
-        (etoTicketSizes && etoTicketSizes.maxTicketEurUlps.div(Q18).toFixed()) ||
-        (eto.maxTicketEur && eto.maxTicketEur.toString()) ||
-        "0";
+      const minTicketEur = formatEur(etoTicketSizes && etoTicketSizes.minTicketEurUlps) || "0";
+      const maxTicketEur = formatEur(etoTicketSizes && etoTicketSizes.maxTicketEurUlps) || "0";
       return {
+        isBankTransfer,
         minTicketEur,
         maxTicketEur,
         minTicketEth: multiplyBigNumbers([minTicketEur, eurPriceEther]),

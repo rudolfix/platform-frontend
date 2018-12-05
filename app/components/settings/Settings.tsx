@@ -100,13 +100,13 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
 export const Settings = compose<React.SFC>(
   onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
   appConnect<IStateProps>({
-    stateToProps: s => ({
-      isLightWallet: selectIsLightWallet(s.web3),
-      userType: selectUserType(s.auth),
-      kycRequestStatus: selectKycRequestStatus(s),
-      kycRequestType: selectKycRequestType(s.kyc),
-      isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
-      isLockedWalletConnected: selectLockedWalletConnected(s),
+    stateToProps: state => ({
+      isLightWallet: selectIsLightWallet(state.web3),
+      userType: selectUserType(state),
+      kycRequestStatus: selectKycRequestStatus(state.kyc),
+      kycRequestType: selectKycRequestType(state.kyc),
+      isIcbmWalletConnected: selectIcbmWalletConnected(state.wallet),
+      isLockedWalletConnected: selectLockedWalletConnected(state),
     }),
   }),
   onEnterAction({

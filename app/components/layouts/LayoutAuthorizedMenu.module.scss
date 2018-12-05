@@ -18,8 +18,8 @@ $lg-width: px-to-rem(140px);
     width: $lg-width;
   }
 
-  background-color: $color-blue-dark;
-  border-top: 2px solid $color-blue-dark;
+  background-color: $neu-charcoal-grey;
+  border-top: 2px solid $neu-charcoal-grey;
   display: flex;
   flex-shrink: 0;
   position: relative;
@@ -30,7 +30,7 @@ $lg-width: px-to-rem(140px);
     flex-direction: column;
   }
 
-  color: $color-white;
+  color: $neu-white-two;
   display: flex;
   top: 20px;
   position: sticky;
@@ -63,11 +63,11 @@ $lg-width: px-to-rem(140px);
     text-decoration: none;
 
     .icon {
-      color: $color-brand;
+      color: $neu-piss-yellow;
     }
 
     .disabled-item {
-      color: $color-white;
+      color: $neu-white-two;
     }
 
     &:hover,

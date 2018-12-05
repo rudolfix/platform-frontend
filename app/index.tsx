@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import "./config/yupLocales";
+import "./components/translatedMessages/yupLocales";
 import "./styles/bootstrap.scss";
 
 import createHistory from "history/createBrowserHistory";

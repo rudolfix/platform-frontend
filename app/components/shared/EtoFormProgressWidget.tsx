@@ -2,7 +2,6 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import { ButtonLink, EButtonLayout } from "./buttons";
 import { ChartCircle, IChartCircleProps } from "./charts/ChartCircle";
 import { createErrorBoundary } from "./errorBoundary/ErrorBoundary";
@@ -11,6 +10,7 @@ import { LoadingIndicator } from "./loading-indicator";
 import { Panel } from "./Panel";
 import { Proportion } from "./Proportion";
 
+import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./EtoFormProgressWidget.module.scss";
 
 interface IProps {

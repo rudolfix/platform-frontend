@@ -4,6 +4,7 @@ import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./access-wallet/actions";
 import { authActions } from "./auth/actions";
 import { bookBuildingFlowActions } from "./bookbuilding-flow/actions";
+import { contractsActions } from "./contracts/actions";
 import { depositModalActions } from "./deposit-eth-modal/actions";
 import { etoDocumentsActions } from "./eto-documents/actions";
 import { etoFlowActions } from "./eto-flow/actions";
@@ -36,6 +37,7 @@ import { web3Actions } from "./web3/actions";
 
 /** You should add new actions also here (with a namespace).*/
 export const actions = {
+  contracts: contractsActions,
   txValidator: txValidatorActions,
   txTransactions: txTransactionsActions,
   profile: profileActions,

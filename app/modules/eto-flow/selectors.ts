@@ -10,6 +10,7 @@ import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectEtoDocumentLoading } from "../eto-documents/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { selectEtoWithCompanyAndContract, selectPublicEto } from "../public-etos/selectors";
+import { EETOStateOnChain } from "../public-etos/types";
 
 export const selectIssuerEtoPreviewCode = (state: IAppState) => state.etoFlow.etoPreviewCode;
 
@@ -146,10 +147,17 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
   return undefined;
 };
 
-/* General Selector */
-
 export const selectShouldEtoDataLoad = (state: IAppState) =>
   selectKycRequestStatus(state.kyc) === "Accepted" && selectIsUserEmailVerified(state.auth);
 
 export const selectIsGeneralEtoLoading = (state: IAppState) =>
   selectIssuerEtoLoading(state) && selectEtoDocumentLoading(state.etoDocuments);
+
+export const selectEtoFlowNewStartDate = (state: IAppState) => state.etoFlow.newStartDate;
+
+export const selectEtoStartDate = (state: IAppState, previewCode: string) => {
+  let date = selectEtoFlowNewStartDate(state);
+  if (date) return date;
+  const eto = selectEtoWithCompanyAndContract(state, previewCode);
+  return eto && eto.contract && eto.contract.startOfStates[EETOStateOnChain.Whitelist];
+};

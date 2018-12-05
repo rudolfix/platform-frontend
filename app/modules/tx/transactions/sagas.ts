@@ -6,6 +6,7 @@ import { onInvestmentTxModalHide } from "../../investment-flow/sagas";
 import { neuTakeLatest } from "../../sagasUtils";
 import { ITxSendParams, txSendSaga } from "../sender/sagas";
 import { ETxSenderType } from "./../interfaces";
+import { etoSetDateGenerator } from "./eto-flow/saga";
 import { investmentFlowGenerator } from "./investment/sagas";
 import { upgradeTransactionFlow } from "./upgrade/sagas";
 import { ethWithdrawFlow } from "./withdraw/sagas";
@@ -54,9 +55,22 @@ export function* investSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
+export function* etoSetDateSaga({ logger }: TGlobalDependencies): any {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.ETO_SET_DATE,
+      transactionFlowGenerator: etoSetDateGenerator,
+    });
+    logger.info("Setting ETO date successful");
+  } catch (e) {
+    logger.info("Setting ETO date cancelled", e);
+  }
+}
+
 export const txTransactionsSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_WITHDRAW_ETH", withdrawSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_UPGRADE", upgradeSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_INVESTMENT", investSaga);
+  yield fork(neuTakeLatest, "TRANSACTIONS_START_ETO_SET_DATE", etoSetDateSaga);
   // Add new transaction types here...
 };

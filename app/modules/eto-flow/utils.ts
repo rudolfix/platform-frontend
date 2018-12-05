@@ -160,3 +160,7 @@ export const downloadFile = (uri: string, filename: string) => {
   link.download = filename;
   link.click();
 };
+
+export const validateEtoStartDate = (date: Date) => {
+  return date;
+};

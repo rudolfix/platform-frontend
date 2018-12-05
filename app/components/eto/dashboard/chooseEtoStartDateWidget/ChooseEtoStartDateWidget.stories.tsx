@@ -3,17 +3,22 @@ import * as React from "react";
 
 import { ChooseEtoStartDateWidgetComponent } from "./ChooseEtoStartDateWidget";
 
+const data = {
+  setEtoDate: () => {},
+  uploadDate: () => {},
+};
+
 storiesOf("ETO-Flow/ChooseEtoStartDateWidget", module)
   .add("default", () => (
     <ChooseEtoStartDateWidgetComponent
-      setEtoDate={() => {}}
+      {...data}
       startDate={new Date("2018-12-24")}
       canChangeDate={true}
     />
   ))
   .add("readonly", () => (
     <ChooseEtoStartDateWidgetComponent
-      setEtoDate={() => {}}
+      {...data}
       startDate={new Date("2018-12-24")}
       canChangeDate={false}
     />

@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { fork, put } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -10,11 +10,12 @@ import {
   TEtoSpecsData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
+import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { loadEtoContact } from "../public-etos/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
-import { selectIssuerCompany, selectIssuerEto } from "./selectors";
+import { selectEtoFlowNewStartDate, selectIssuerCompany, selectIssuerEto } from "./selectors";
 import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
 export function* loadIssuerEto({
@@ -157,10 +158,19 @@ export function* submitEtoData(
   }
 }
 
+function* startSetDateTX(_: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "ETO_FLOW_START_DATE_TX") return;
+  const state: IAppState = yield select();
+  const newDate = selectEtoFlowNewStartDate(state);
+
+  if (!newDate) return;
+}
+
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_ISSUER_ETO", loadIssuerEto);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
   yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
   yield fork(neuTakeLatest, "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS", downloadBookBuildingStats);
+  yield fork(neuTakeLatest, "ETO_FLOW_START_DATE_TX", startSetDateTX);
 }

@@ -242,6 +242,7 @@
     "semver": "^5.4.1",
     "slick-carousel": "^1.8.1",
     "text-mask-addons": "^3.8.0",
+    "tslib": "^1.9.3",
     "tweetnacl": "^1.0.0",
     "tweetnacl-util": "^0.15.0",
     "url-join": "^3.0.0",

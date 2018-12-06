@@ -2,11 +2,11 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
+import { externalRoutes } from "../../../config/externalRoutes";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { externalRoutes } from "../../../config/externalRoutes";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";

@@ -27,6 +27,9 @@ export interface IEtoContractData {
   timedState: EETOStateOnChain;
   totalInvestment: IEtoTotalInvestment;
   startOfStates: TEtoStartOfStates;
+  equityTokenAddress: string;
+  etoTermsAddress: string;
+  etoCommitmentAddress: string;
 }
 
 export type TEtoWithCompanyAndContract = TEtoSpecsData & {

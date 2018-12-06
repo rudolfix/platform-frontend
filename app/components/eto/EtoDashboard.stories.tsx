@@ -34,6 +34,7 @@ const state = {
   isOfferingDocumentSubmitted: true,
   shouldViewSubmissionSection: true,
   previewCode: eto.previewCode,
+  isRetailEto: true,
 };
 
 storiesOf("ETO-Flow/Dashboard/StateView", module)

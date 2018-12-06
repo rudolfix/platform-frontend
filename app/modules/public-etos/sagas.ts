@@ -134,16 +134,25 @@ export function* loadEtoContact(
       timedStateRaw,
       totalInvestmentRaw,
       startOfStatesRaw,
+      equityTokenAddress,
+      etoTermsAddress,
+      etoCommitmentAddress,
     ] = yield all([
       etherTokenContract.balanceOf(etoContract.address),
       euroTokenContract.balanceOf(etoContract.address),
       etoContract.timedState,
       etoContract.totalInvestment(),
       etoContract.startOfStates,
+      etoContract.equityToken,
+      etoContract.etoTerms,
+      etoContract.address,
     ]);
 
     yield put(
       actions.publicEtos.setEtoDataFromContract(eto.previewCode, {
+        equityTokenAddress,
+        etoTermsAddress,
+        etoCommitmentAddress,
         timedState: timedStateRaw.toNumber(),
         totalInvestment: convertToEtoTotalInvestment(
           totalInvestmentRaw,

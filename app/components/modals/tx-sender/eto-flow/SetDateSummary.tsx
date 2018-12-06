@@ -4,8 +4,12 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 import { compose, setDisplayName } from "recompose";
 
+import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
-import { selectNewPreEtoStartDate } from "../../../../modules/eto-flow/selectors";
+import {
+  selectIssuerEtoWithCompanyAndContract,
+  selectNewPreEtoStartDate,
+} from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { EtherscanAddressLink } from "../../../shared/EtherscanLink";
@@ -127,13 +131,21 @@ const SetEtoDateSummary = compose<IProps, {}>(
   appConnect<IStateProps, ITxSummaryDispatchProps>({
     stateToProps: state => {
       const newDate = selectNewPreEtoStartDate(state)!;
+      const eto = selectIssuerEtoWithCompanyAndContract(state)!;
+
+      const ipfsUrl = "https://ipfs.io/";
+      const termsDoc = eto.documents[EEtoDocumentType.SIGNED_TERMSHEET];
+      const equityTokenDoc = eto.documents[EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT];
+      const equityTokenAgreementIPFSLink = equityTokenDoc && ipfsUrl + equityTokenDoc.ipfsHash;
+      const etoCommitmentAgreementIPFSLink = termsDoc && ipfsUrl + termsDoc.ipfsHash;
+
       return {
         newDate,
-        etoTermsAddress: "",
-        equityTokenAddress: "",
-        etoCommitmentAddress: "",
-        equityTokenAgreementIPFSLink: "",
-        etoCommitmentAgreementIPFSLink: "",
+        etoTermsAddress: eto.contract!.etoTermsAddress,
+        equityTokenAddress: eto.contract!.equityTokenAddress,
+        etoCommitmentAddress: eto.contract!.etoCommitmentAddress,
+        equityTokenAgreementIPFSLink,
+        etoCommitmentAgreementIPFSLink,
       };
     },
     dispatchToProps: d => ({

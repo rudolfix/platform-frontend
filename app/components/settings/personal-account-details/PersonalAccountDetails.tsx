@@ -6,6 +6,7 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
+import { externalRoutes } from "../../../config/externalRoutes";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
@@ -108,7 +109,7 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
               <FormattedHTMLMessage
                 tagName="span"
                 id="settings.account-details.explanation"
-                values={{ href: "https://support.neufund.org/support/home" }}
+                values={{ href: `${externalRoutes.neufundSupport}/home` }}
               />
             </div>
           </div>

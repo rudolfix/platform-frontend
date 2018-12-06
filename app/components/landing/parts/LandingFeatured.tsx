@@ -4,7 +4,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 
 import { appRoutes } from "../../appRoutes";
 import { EtoWidgetView } from "../../eto/EtoWidgetView";
-import { externalRoutes } from "../../externalRoutes";
+import { externalRoutes } from "../../../config/externalRoutes";
 import { ButtonLink, ButtonSize, EButtonLayout } from "../../shared/buttons";
 import { ENeonHeaderSize, NeonHeader } from "../shared/NeonHeader";
 

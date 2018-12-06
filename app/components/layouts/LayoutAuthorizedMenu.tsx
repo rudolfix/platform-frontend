@@ -6,6 +6,7 @@ import { match } from "react-router";
 import { NavLink } from "react-router-dom";
 import { compose, withHandlers } from "recompose";
 
+import { externalRoutes } from "../../config/externalRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
@@ -17,7 +18,6 @@ import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { invariant } from "../../utils/invariant";
 import { appRoutes } from "../appRoutes";
-import { externalRoutes } from "../externalRoutes";
 import { IdentityModal } from "../identity/IdentityModal";
 import { Button, EButtonLayout } from "../shared/buttons";
 import { InlineIcon } from "../shared/InlineIcon";

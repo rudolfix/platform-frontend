@@ -13,7 +13,7 @@ import {
   selectPreEtoStartDateFromContract,
 } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/buttons";
+import { ButtonArrowRight } from "../../../shared/buttons";
 import { DatePicker } from "../../../shared/DatePicker";
 import { Panel } from "../../../shared/Panel";
 
@@ -80,13 +80,13 @@ const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
         </FormGroup>
         {canChangeDate && (
           <div className="d-flex justify-content-center">
-            <Button onClick={uploadDate} disabled={!(newDate && isNewDateValid)}>
+            <ButtonArrowRight onClick={uploadDate} disabled={!(newDate && isNewDateValid)}>
               {oldDate ? (
                 <FormattedMessage id="eto.settings.change-eto-start-date" />
               ) : (
                 <FormattedMessage id="eto.settings.set-eto-start-date" />
               )}
-            </Button>
+            </ButtonArrowRight>
           </div>
         )}
       </div>

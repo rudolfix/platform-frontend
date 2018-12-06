@@ -19,7 +19,12 @@ const LoadingIndicator: React.SFC<ILoadingIndicatorProps> = ({
 }) => {
   switch (type) {
     case "pulse":
-      return <div className={cn(className, styles.spinner, { [styles.light]: light })} />;
+      return (
+        <div
+          data-test-id="loading-indicator-pulse"
+          className={cn(className, styles.spinner, { [styles.light]: light })}
+        />
+      );
     case "blocks":
       return (
         <div className={cn(className, styles.blocks)}>

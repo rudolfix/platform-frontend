@@ -3,6 +3,7 @@
     "target": "es2016",
     "module": "commonjs",
     "strict": true,
+    "importHelpers": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "experimentalDecorators": true,

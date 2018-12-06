@@ -57,7 +57,7 @@ function* initApp({ logger }: TGlobalDependencies): any {
     yield put(actions.init.done("appInit"));
   } catch (e) {
     yield put(actions.init.error("appInit", e.message || "Unknown error"));
-    logger.error("App init error", e);
+    logger.fatal("App init error", e);
   }
 }
 

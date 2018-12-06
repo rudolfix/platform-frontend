@@ -73,7 +73,7 @@ const StatusOfEto: React.SFC<IStatusOfEto> = ({ previewCode }) => {
 
 const PoweredByNeufund = () => {
   return (
-    <div className={styles.poweredByNeufund}>
+    <div className={styles.poweredByNeufund} data-test-id="eto-overview-powered-by">
       <div className={styles.powered}>Powered by</div>
       <Link className={styles.neufund} target={"_blank"} to={"https://neufund.org"}>
         NEUFUND
@@ -230,6 +230,7 @@ const EtoOverviewStatusLayout: React.SFC<
               <Link
                 to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}
                 target={previewCode ? "_blank" : ""}
+                data-test-id="eto-overview-status-token"
               >
                 <TokenSymbolWidget
                   brandName={eto.company.brandName}

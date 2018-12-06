@@ -5,13 +5,15 @@ import { injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { appRoutes } from "../../appRoutes";
 import { DashboardLinkWidget } from "../../shared/dashboard-link-widget/DashboardLinkWidget";
 
-export const UploadProspectusWidget = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
+export const UploadInvestmentMemorandum = injectIntlHelpers(({ intl: { formatIntlMessage } }) => {
   return (
     <DashboardLinkWidget
-      title={formatIntlMessage("settings.upload-prospectus.title")}
-      text={<FormattedMessage id="settings.upload-prospectus-please-upload-prospectus" />}
+      title={formatIntlMessage("settings.upload-investment-memorandum.title")}
+      text={
+        <FormattedMessage id="settings.upload-investment-memorandum-please-upload-prospectus" />
+      }
       to={appRoutes.documents}
-      buttonText={<FormattedMessage id="settings.upload-prospectus.button-title" />}
+      buttonText={<FormattedMessage id="settings.upload-investment-button.title" />}
     />
   );
 });

@@ -136,7 +136,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   } else if (!bookBuildingEnabled && bookBuildingStats.investorsCount) {
     return (
       <BookBuildingWidgetLayout
-        headerText={<FormattedMessage id="settings.book-building-widget.book-building-diabled" />}
+        headerText={<FormattedMessage id="settings.book-building-widget.book-building-disabled" />}
         text={<FormattedMessage id="settings.book-building-widget.book-building-disabled-text" />}
         buttonText={
           <FormattedMessage id="settings.book-building-widget.reactivate-book-building" />

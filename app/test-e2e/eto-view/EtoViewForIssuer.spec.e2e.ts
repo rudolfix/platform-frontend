@@ -6,7 +6,7 @@ describe("Eto Issuer View", () => {
   it("should load empty Eto", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
       cy.visit(appRoutes.etoIssuerView);
-      assertEtoView("Neufund - Quintessence (QTT)");
+      assertEtoView("ETO Page");
     });
   });
 });

@@ -534,8 +534,15 @@ const EtoPublicComponentLayout: React.SFC<IProps> = ({ companyData, etoData }) =
   );
 };
 
-const EtoView = withMetaTags<IProps>(({ etoData }) => ({
-  title: `${etoData.company.brandName} - ${etoData.equityTokenName} (${etoData.equityTokenSymbol})`,
-}))(EtoPublicComponentLayout);
+const EtoView = withMetaTags<IProps>(({ etoData }, intl) => {
+  const requiredDataPresent =
+    etoData.company.brandName && etoData.equityTokenName && etoData.equityTokenSymbol;
+
+  return {
+    title: requiredDataPresent
+      ? `${etoData.company.brandName} - ${etoData.equityTokenName} (${etoData.equityTokenSymbol})`
+      : intl.formatIntlMessage("menu.eto-page"),
+  };
+})(EtoPublicComponentLayout);
 
 export { EtoView };

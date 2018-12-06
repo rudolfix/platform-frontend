@@ -1,8 +1,8 @@
 import { tid } from "../../../test/testUtils";
 import { appRoutes } from "../../components/appRoutes";
 import { withParams } from "../../utils/withParams";
-import { createAndLoginNewUser } from "../utils/userHelpers";
 import { etoFixtureAddressByName } from "../utils";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
 describe("Eto Investor View", () => {
@@ -14,12 +14,12 @@ describe("Eto Investor View", () => {
 
   it("should load empty Eto", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView();
+    assertEtoView("Neufund - Quintessence (QTT)");
   });
 
   it("should display correct eto investment terms", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView();
+    assertEtoView("Neufund - Quintessence (QTT)");
 
     // EQUITY section
     cy.get(tid("eto-public-view-pre-money-valuation")).should("contain", "€132 664 672.0464");

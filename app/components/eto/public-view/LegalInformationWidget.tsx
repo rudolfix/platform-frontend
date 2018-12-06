@@ -8,7 +8,7 @@ import { ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
 import { NumberFormat } from "../../shared/NumberFormat";
 import { Panel } from "../../shared/Panel";
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
-import { CHART_COLORS } from "../shared/EtoPublicComponent";
+import { CHART_COLORS } from "../shared/EtoView";
 
 import * as styles from "./LegalInformationWidget.module.scss";
 

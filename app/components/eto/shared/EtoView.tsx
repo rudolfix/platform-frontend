@@ -6,6 +6,7 @@ import { Col, Row } from "reactstrap";
 
 import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
+import { withMetaTags } from "../../../utils/withMetaTags";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
@@ -42,7 +43,7 @@ interface IProps {
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+const EtoPublicComponentLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
   const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
 
   const isTwitterFeedEnabled =
@@ -513,3 +514,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
     </>
   );
 };
+
+const EtoView = withMetaTags<IProps>(({ etoData }) => ({
+  title: `${etoData.company.brandName} - ${etoData.equityTokenName} (${etoData.equityTokenSymbol})`,
+}))(EtoPublicComponentLayout);
+
+export { EtoView };

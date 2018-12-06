@@ -15,6 +15,7 @@ import {
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { withMetaTags } from "../../utils/withMetaTags";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
@@ -114,4 +115,5 @@ export const Settings = compose<React.SFC>(
       dispatch(actions.kyc.kycLoadIndividualData());
     },
   }),
+  withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.settings") })),
 )(SettingsComponent);

@@ -57,6 +57,7 @@ export const CheckYourICBMWalletWidgetComponent: React.SFC<IDispatchProps> = ({
         </>
       }
       className="h-100"
+      data-test-id="models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"
     >
       <p>
         <FormattedMessage id="check-your-icbm-wallet-widget.notice" />

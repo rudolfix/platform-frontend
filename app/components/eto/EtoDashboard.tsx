@@ -19,6 +19,7 @@ import {
 } from "../../modules/eto-flow/selectors";
 import { calculateGeneralEtoData } from "../../modules/eto-flow/utils";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
+import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
@@ -38,6 +39,7 @@ const SUBMIT_PROPOSAL_THRESHOLD = 1;
 interface IStateProps {
   verifiedEmail?: string;
   backupCodesVerified?: boolean;
+  isLightWallet: boolean;
   shouldEtoDataLoad?: boolean;
   requestStatus?: TRequestStatus;
   etoState?: EtoState;
@@ -259,6 +261,7 @@ export const EtoDashboard = compose<React.SFC>(
     stateToProps: s => ({
       verifiedEmail: selectVerifiedUserEmail(s.auth),
       backupCodesVerified: selectBackupCodesVerified(s),
+      isLightWallet: selectIsLightWallet(s.web3),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
       requestStatus: selectKycRequestStatus(s),
       etoState: selectIssuerEtoState(s),

@@ -4,10 +4,14 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
+import { externalRoutes } from "../../../config/externalRoutes";
 import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
-import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
+import { isOnChain } from "../../../modules/public-etos/utils";
+import { withParams } from "../../../utils/withParams";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
+import { ButtonLink } from "../../shared/buttons";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
 import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
@@ -56,6 +60,9 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
       ? (socialChannels.find(c => c.type === "twitter") as any).url
       : "";
 
+  const isInSetupState =
+    isOnChain(etoData) && etoData.contract.timedState === EETOStateOnChain.Setup;
+
   return (
     <>
       <PersonProfileModal />
@@ -77,14 +84,26 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
           }}
           tags={companyData.categories}
         />
-        <EtoOverviewStatus eto={etoData} className="mb-4" publicView={true} />
+        <EtoOverviewStatus eto={etoData} className="mb-3" publicView={true} />
         <Row>
           <Col className="mb-4">
-            <SectionHeader layoutHasDecorator={false} className="mb-4">
-              <FormattedMessage id="eto.public-view.eto-timeline" />
+            <SectionHeader layoutHasDecorator={false} className="mb-3">
+              <div className={styles.headerWithButton}>
+                <FormattedMessage id="eto.public-view.eto-timeline" />
+                {!isInSetupState && (
+                  <ButtonLink
+                    to={withParams(externalRoutes.icoMonitorEto, { etoId: etoData.etoId })}
+                    target="_blank"
+                  >
+                    <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
+                  </ButtonLink>
+                )}
+              </div>
             </SectionHeader>
             <Panel>
-              <EtoTimeline startOfStates={etoData.contract && etoData.contract.startOfStates} />
+              <EtoTimeline
+                startOfStates={isOnChain(etoData) ? etoData.contract.startOfStates : undefined}
+              />
             </Panel>
           </Col>
         </Row>
@@ -102,8 +121,8 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             className="mb-4"
           >
             <SectionHeader layoutHasDecorator={false} className="mb-4">
-              <div className={styles.companyHeader}>
-                <div>{companyData.brandName}</div>
+              <div className={styles.headerWithButton}>
+                {companyData.brandName}
                 {companyData.companyWebsite && (
                   <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
                     {companyData.companyWebsite.split("//")[1] || DEFAULT_PLACEHOLDER}

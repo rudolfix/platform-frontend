@@ -42,10 +42,10 @@
   min-height: 320px;
 }
 
-.company-header {
+.header-with-button {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  align-items: center;
 }
 
 .quote {

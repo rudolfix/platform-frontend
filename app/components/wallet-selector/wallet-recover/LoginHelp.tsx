@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
+import { externalRoutes } from "../../../config/externalRoutes";
 import { ButtonLink } from "../../shared/buttons";
 import { loginWalletRoutes } from "../walletRoutes";
 import { recoverRoutes } from "./recoverRoutes";
@@ -59,7 +60,7 @@ export const LoginHelp: React.SFC<void> = () => (
           <i className="fa fa-lg fa-angle-left mr-1" />
           BACK
         </Link>
-        <a href="https://support.neufund.org/support/home" target="_blank">
+        <a href={`${externalRoutes.neufundSupport}/home`} target="_blank">
           <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />
           <i className="fa fa-lg fa-angle-right ml-1" />
         </a>

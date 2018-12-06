@@ -3,8 +3,8 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
+import { externalRoutes } from "../../../config/externalRoutes";
 import { EUserType } from "../../../lib/api/users/interfaces";
-import { externalRoutes } from "../../externalRoutes";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { KycStatusWidgetComponent } from "./KycStatusWidget";
 

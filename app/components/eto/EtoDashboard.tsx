@@ -6,15 +6,12 @@ import { compose } from "redux";
 import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
-import {
-  selectBackupCodesVerified,
-  selectIsUserEmailVerified,
-  selectVerifiedUserEmail,
-} from "../../modules/auth/selectors";
+import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
 import {
   selectCanEnableBookBuilding,
   selectCombinedEtoCompanyData,
   selectIsOfferingDocumentSubmitted,
+  selectIssuerEtoIsRetail,
   selectIssuerEtoPreviewCode,
   selectIssuerEtoState,
   selectIsTermSheetSubmitted,
@@ -31,6 +28,7 @@ import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingW
 import { ChoosePreEtoDateWidget } from "./dashboard/choosePreEtoDateWidget/ChoosePreEtoDateWidget";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
 import { SubmitProposalWidget } from "./dashboard/submitProposalWidget/SubmitProposalWidget";
+import { UploadInvestmentMemorandum } from "./dashboard/UploadInvestmentMemorandum";
 import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
@@ -48,6 +46,7 @@ interface IStateProps {
   etoFormProgress?: number;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
+  isRetailEto: boolean;
 }
 
 interface IDispatchProps {
@@ -94,6 +93,7 @@ interface IEtoStateRender {
   isOfferingDocumentSubmitted?: boolean;
   canEnableBookbuilding: boolean;
   previewCode?: string;
+  isRetailEto: boolean;
 }
 
 const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
@@ -103,6 +103,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
   isOfferingDocumentSubmitted,
   canEnableBookbuilding,
   previewCode,
+  isRetailEto,
 }) => {
   if (!previewCode) {
     return <LoadingIndicator />;
@@ -142,7 +143,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
           )}
           {!isOfferingDocumentSubmitted && (
             <Col lg={4} xs={12}>
-              <UploadProspectusWidget />
+              {isRetailEto ? <UploadProspectusWidget /> : <UploadInvestmentMemorandum />}
             </Col>
           )}
           <Col xs={12}>
@@ -208,6 +209,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
       shouldEtoDataLoad,
       isOfferingDocumentSubmitted,
       previewCode,
+      isRetailEto,
     } = this.props;
 
     const isVerificationSectionDone = !!(
@@ -241,6 +243,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
               etoState={etoState}
               canEnableBookbuilding={canEnableBookbuilding}
               previewCode={previewCode}
+              isRetailEto={isRetailEto}
             />
           ) : (
             <EtoProgressDashboardSection />
@@ -254,7 +257,6 @@ class EtoDashboardComponent extends React.Component<IProps> {
 export const EtoDashboard = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      isEmailVerified: selectIsUserEmailVerified(s.auth),
       verifiedEmail: selectVerifiedUserEmail(s.auth),
       backupCodesVerified: selectBackupCodesVerified(s),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
@@ -265,6 +267,7 @@ export const EtoDashboard = compose<React.SFC>(
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
       isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),
       etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s)),
+      isRetailEto: selectIssuerEtoIsRetail(s),
     }),
     dispatchToProps: dispatch => ({
       loadFileDataStart: () => dispatch(actions.etoDocuments.loadFileDataStart()),

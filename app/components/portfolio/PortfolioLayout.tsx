@@ -8,12 +8,12 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { Q18 } from "../../config/constants";
+import { externalRoutes } from "../../config/externalRoutes";
 import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
 import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { withParams } from "../../utils/withParams";
 import { getDocumentTitles } from "../documents/Documents";
-import { externalRoutes } from "../externalRoutes";
 import { AssetPortfolio } from "../shared/AssetPortfolio";
 import { Document } from "../shared/Document";
 import { ETOState } from "../shared/ETOState";

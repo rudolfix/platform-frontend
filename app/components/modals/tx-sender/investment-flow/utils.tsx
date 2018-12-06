@@ -3,6 +3,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { MONEY_DECIMALS } from "../../../../config/constants";
+import { externalRoutes } from "../../../../config/externalRoutes";
 import {
   EInvestmentErrorState,
   EInvestmentType,
@@ -18,6 +19,7 @@ import {
 } from "../../../../modules/wallet/selectors";
 import { IAppState } from "../../../../store";
 import { Dictionary } from "../../../../types";
+import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { formatThousands } from "../../../../utils/Number.utils";
 import { WalletSelectionData } from "./InvestmentTypeSelector";
@@ -25,7 +27,6 @@ import { WalletSelectionData } from "./InvestmentTypeSelector";
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
-import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
 
 export function createWallets(state: IAppState): WalletSelectionData[] {
   const w = state.wallet;
@@ -106,7 +107,7 @@ export function getInvestmentTypeMessages(type?: EInvestmentType): React.ReactNo
         <FormattedHTMLMessage
           id="investment-flow.bank-transfer-info-message"
           tagName="p"
-          values={{ href: "https://support.neufund.org/support/home" }}
+          values={{ href: `${externalRoutes.neufundSupport}/home` }}
         />
       );
   }

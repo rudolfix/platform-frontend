@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
+import { externalRoutes } from "../../../config/externalRoutes";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
@@ -108,7 +109,7 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
               <FormattedHTMLMessage
                 tagName="span"
                 id="settings.account-details.explanation"
-                values={{ href: "https://support.neufund.org/support/home" }}
+                values={{ href: `${externalRoutes.neufundSupport}/home` }}
               />
             </div>
           </div>

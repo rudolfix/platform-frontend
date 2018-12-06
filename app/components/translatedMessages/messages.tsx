@@ -1,8 +1,8 @@
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
+import { externalRoutes } from "../../config/externalRoutes";
 import { TTranslatedString } from "../../types";
-import { externalRoutes } from "../externalRoutes";
 import { TMessage } from "./utils";
 
 interface ITranslationValues {

@@ -6,20 +6,23 @@ import { ChooseEtoStartDateWidgetComponent } from "./ChooseEtoStartDateWidget";
 const data = {
   setEtoDate: () => {},
   uploadDate: () => {},
+  minOffsetPeriodInDays: "7",
 };
 
 storiesOf("ETO-Flow/ChooseEtoStartDateWidget", module)
   .add("default", () => (
     <ChooseEtoStartDateWidgetComponent
       {...data}
-      startDate={new Date("2018-12-24")}
+      oldDate={new Date("2018-12-20")}
+      newDate={new Date("2018-12-24")}
       canChangeDate={true}
+      isNewDateValid={false}
     />
   ))
   .add("readonly", () => (
     <ChooseEtoStartDateWidgetComponent
       {...data}
-      startDate={new Date("2018-12-24")}
+      oldDate={new Date("2018-12-24")}
       canChangeDate={false}
     />
   ));

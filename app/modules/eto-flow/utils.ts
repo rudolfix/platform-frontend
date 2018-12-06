@@ -1,4 +1,6 @@
+import BigNumber from "bignumber.js";
 import * as Yup from "yup";
+
 import {
   EtoCompanyInformationType,
   EtoEquityTokenInfoType,
@@ -161,6 +163,8 @@ export const downloadFile = (uri: string, filename: string) => {
   link.click();
 };
 
-export const validateEtoStartDate = (date: Date) => {
-  return date;
+export const isValidEtoStartDate = (startDate: Date, dateToWhitelistMinDurationSec: BigNumber) => {
+  const startTimeSec = startDate.getTime() / 1000;
+  const nowSec = Date.now() / 1000;
+  return dateToWhitelistMinDurationSec.add(nowSec).lessThan(startTimeSec);
 };

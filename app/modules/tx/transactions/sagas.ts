@@ -1,7 +1,7 @@
-import { fork } from "redux-saga/effects";
+import { fork, put } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { TAction } from "../../actions";
+import { actions, TAction } from "../../actions";
 import { onInvestmentTxModalHide } from "../../investment-flow/sagas";
 import { neuTakeLatest } from "../../sagasUtils";
 import { ITxSendParams, txSendSaga } from "../sender/sagas";
@@ -62,6 +62,8 @@ export function* etoSetDateSaga({ logger }: TGlobalDependencies): any {
       transactionFlowGenerator: etoSetDateGenerator,
     });
     logger.info("Setting ETO date successful");
+    // cleanup & refresh eto data
+    put(actions.etoFlow.cleanupStartDate());
   } catch (e) {
     logger.info("Setting ETO date cancelled", e);
   }

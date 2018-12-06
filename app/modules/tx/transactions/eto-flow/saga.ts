@@ -1,12 +1,17 @@
-import { put, select, take } from "redux-saga/effects";
+import { put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
 import { IAppState } from "../../../../store";
 import { actions } from "../../../actions";
-import { selectEtoStartDate, selectIssuerEto } from "../../../eto-flow/selectors";
+import {
+  selectIsNewPreEtoStartDateValid,
+  selectIssuerEto,
+  selectPreEtoStartDate,
+} from "../../../eto-flow/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
+import { neuCall } from "../../../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 
 export function* generateSetStartDateTransaction({
@@ -18,17 +23,14 @@ export function* generateSetStartDateTransaction({
   const gasPriceWithOverhead = selectStandardGasPriceWithOverHead(state);
   const eto = selectIssuerEto(state);
 
-  if (!eto) return;
+  if (!eto || !selectIsNewPreEtoStartDateValid(state)) return;
 
-  const startDate = selectEtoStartDate(state, eto.previewCode);
-
-  if (!startDate) return;
-
+  const startDate = selectPreEtoStartDate(state)!;
   const contract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
   const terms = yield contract.etoTerms;
   const token = yield contract.equityToken;
-  const time = startDate.getTime() / 1000;
-  // we need to strip miliseconds from the timestamp
+  const time = Math.round(startDate.getTime() / 1000);
+  // timestamp needs to be set in seconds
 
   const txData = contract.setStartDateTx(terms, token, time).getData();
 
@@ -51,6 +53,7 @@ export function* generateSetStartDateTransaction({
 }
 
 export function* etoSetDateGenerator(_: TGlobalDependencies): any {
-  yield take("TX_SENDER_ACCEPT_DRAFT");
+  const generatedTxDetails = yield neuCall(generateSetStartDateTransaction);
+  yield put(actions.txSender.setTransactionData(generatedTxDetails));
   yield put(actions.txSender.txSenderContinueToSummary());
 }

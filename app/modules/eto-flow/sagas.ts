@@ -15,7 +15,7 @@ import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { loadEtoContact } from "../public-etos/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
-import { selectEtoFlowNewStartDate, selectIssuerCompany, selectIssuerEto } from "./selectors";
+import { selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto } from "./selectors";
 import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
 export function* loadIssuerEto({
@@ -161,9 +161,15 @@ export function* submitEtoData(
 function* startSetDateTX(_: TGlobalDependencies, action: TAction): any {
   if (action.type !== "ETO_FLOW_START_DATE_TX") return;
   const state: IAppState = yield select();
-  const newDate = selectEtoFlowNewStartDate(state);
+  if (selectIsNewPreEtoStartDateValid(state)) {
+    yield put(actions.txTransactions.startEtoSetDate());
+  }
+}
 
-  if (!newDate) return;
+export function* cleanupSetDateTX(): any {
+  const eto = yield select(selectIssuerEto);
+  yield put(actions.publicEtos.loadEto(eto.etoId));
+  yield put(actions.etoFlow.setNewStartDate());
 }
 
 export function* etoFlowSagas(): any {
@@ -173,4 +179,5 @@ export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
   yield fork(neuTakeLatest, "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS", downloadBookBuildingStats);
   yield fork(neuTakeLatest, "ETO_FLOW_START_DATE_TX", startSetDateTX);
+  yield fork(neuTakeLatest, "ETO_FLOW_CLEANUP_START_DATE_TX", cleanupSetDateTX);
 }

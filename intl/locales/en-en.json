@@ -329,7 +329,7 @@
   "eto.public-view.token-terms.currencies.label": "Currencies",
   "eto.public-view.token-terms.currencies.value": "{eth} and {nEur}",
   "eto.public-view.token-terms.days": "Days",
-  "eto.public-view.token-terms.disabled": "Currently not tradable",
+  "eto.public-view.token-terms.disabled": "Potentially tradable",
   "eto.public-view.token-terms.enabled": "Enabled",
   "eto.public-view.token-terms.existing-shares": "Existing shares",
   "eto.public-view.token-terms.group-title.equity": "Equity",

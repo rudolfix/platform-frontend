@@ -3,5 +3,6 @@ declare namespace Cypress {
   interface Chainable<Subject = any> {
     dropFile: (fixture: string) => void;
     awaitedClick(waitDuration?: number): void;
+    iframe: (selector: string) => Cypress.Chainable;
   }
 }

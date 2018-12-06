@@ -53,7 +53,10 @@ export function* changeBookBuildingStatus(
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      intlWrapper.intl.formatIntlMessage("eto.modal.change-bookbuilding-status"),
+      action.payload.status,
+      action.payload.status
+        ? intlWrapper.intl.formatIntlMessage("eto.modal.confirm-start-bookbuilding-title")
+        : intlWrapper.intl.formatIntlMessage("eto.modal.confirm-stop-bookbuilding-title"),
     );
     yield apiEtoService.changeBookBuildingState(action.payload.status);
   } catch (e) {

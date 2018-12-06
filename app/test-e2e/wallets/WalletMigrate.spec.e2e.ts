@@ -12,6 +12,7 @@ import {
 } from "../utils/index";
 import BigNumber from "bignumber.js";
 import { formatThousands } from "../../utils/Number.utils";
+import { appRoutes } from "../../components/appRoutes";
 
 const NODE_ADDRESS = "https://localhost:9090/node";
 
@@ -20,6 +21,17 @@ const FIXTURE_DIV_CONSTANT = 100000000000000;
 
 const ADDRESS = "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3";
 describe("Wallet Migration Flow", () => {
+  it("It should check icbm migration wallet when user has locked wallet", () => {
+    createAndLoginNewUser({
+      type: "investor",
+      kyc: "individual",
+      seed:
+        "then route cage lyrics arrange car pigeon gas rely canoe turn all weapon pepper lemon festival joy option drama forget tortoise useful canvas viable",
+    }).then(() => {
+      cy.visit(appRoutes.icbmMigration);
+      cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"));
+    });
+  });
   it("It will migrate an ICBM wallet into a new user", () => {
     createAndLoginNewUser({
       type: "investor",

@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
-import { externalRoutes } from "../../externalRoutes";
+import { externalRoutes } from "../../../config/externalRoutes";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 

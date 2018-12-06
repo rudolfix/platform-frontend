@@ -8,11 +8,12 @@ import {
 } from "@sentry/browser";
 import { injectable } from "inversify";
 
+import { EWalletType } from "../../modules/web3/types";
 import { EUserType } from "../api/users/interfaces";
 
 type LogArg = string | object;
 type ErrorArgs = LogArg | Error;
-type TUser = { id: string; type: EUserType };
+type TUser = { id: string; type: EUserType; walletType: EWalletType };
 
 export const resolveLogger = () => {
   if (process.env.NF_SENTRY_DSN) {

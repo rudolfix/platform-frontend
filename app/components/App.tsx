@@ -16,6 +16,7 @@ import { IInversifyProviderContext } from "../utils/InversifyProvider";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { ScrollToTop } from "../utils/ScrollToTop";
 import { AppRouter } from "./AppRouter";
+import { CriticalError } from "./layouts/CriticalError";
 import { GenericModal } from "./modals/GenericModal";
 import { VideoModal } from "./modals/VideoModal";
 import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
@@ -54,11 +55,11 @@ class AppComponent extends React.Component<IStateProps, IState> {
 
   render(): React.ReactNode {
     if (this.props.error) {
-      return <h1>Critical error occurred: {this.props.error}</h1>;
+      return <CriticalError message={this.props.error} />;
     }
 
     if (this.state.renderingError) {
-      return <h1>Critical UI error occurred: {this.state.renderingError.message}</h1>;
+      return <CriticalError message={this.state.renderingError.message} />;
     }
 
     if (this.props.inProgress) {

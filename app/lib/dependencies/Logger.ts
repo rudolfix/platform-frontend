@@ -138,6 +138,9 @@ export class SentryLogger implements ILogger {
   }
 
   fatal(message: string, error: Error, data?: object): void {
+    // tslint:disable-next-line
+    console.error(message, error, data);
+
     withScope(scope => {
       addBreadcrumb({
         message,

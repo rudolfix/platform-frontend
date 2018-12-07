@@ -67,7 +67,7 @@ export const BackupSeed = compose<React.SFC>(
     stateToProps: s => ({
       isUnlocked: selectIsUnlocked(s.web3),
       seed: selectSeed(s.web3),
-      backupCodesVerified: !!selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s),
     }),
     dispatchToProps: dispatch => ({
       verifyBackupPhrase: () => dispatch(actions.walletSelector.lightWalletBackedUp()),

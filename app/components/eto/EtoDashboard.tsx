@@ -39,9 +39,9 @@ import { DashboardSection } from "./shared/DashboardSection";
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
 interface IStateProps {
-  isLightWallet: boolean;
   verifiedEmail?: string;
   backupCodesVerified?: boolean;
+  isLightWallet: boolean;
   shouldEtoDataLoad?: boolean;
   requestStatus?: TRequestStatus;
   etoState?: EtoState;
@@ -208,7 +208,6 @@ class EtoDashboardComponent extends React.Component<IProps> {
       requestStatus,
       etoState,
       canEnableBookbuilding,
-      isLightWallet,
       etoFormProgress,
       isTermSheetSubmitted,
       shouldEtoDataLoad,
@@ -219,7 +218,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
 
     const isVerificationSectionDone = !!(
       verifiedEmail &&
-      (backupCodesVerified || !isLightWallet) &&
+      backupCodesVerified &&
       requestStatus === "Accepted"
     );
     const shouldViewSubmissionSection = !!(
@@ -263,11 +262,11 @@ export const EtoDashboard = compose<React.SFC>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      isLightWallet: selectIsLightWallet(s.web3),
       verifiedEmail: selectVerifiedUserEmail(s.auth),
-      backupCodesVerified: selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s),
+      isLightWallet: selectIsLightWallet(s.web3),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
-      requestStatus: selectKycRequestStatus(s.kyc),
+      requestStatus: selectKycRequestStatus(s),
       etoState: selectIssuerEtoState(s),
       previewCode: selectIssuerEtoPreviewCode(s),
       canEnableBookbuilding: selectCanEnableBookBuilding(s),

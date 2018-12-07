@@ -149,7 +149,7 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
 /* General Selector */
 
 export const selectShouldEtoDataLoad = (state: IAppState) =>
-  selectKycRequestStatus(state.kyc) === "Accepted" && selectIsUserEmailVerified(state.auth);
+  selectKycRequestStatus(state) === "Accepted" && selectIsUserEmailVerified(state.auth);
 
 export const selectIsGeneralEtoLoading = (state: IAppState) =>
   selectIssuerEtoLoading(state) && selectEtoDocumentLoading(state.etoDocuments);

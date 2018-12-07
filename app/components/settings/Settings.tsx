@@ -17,6 +17,8 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ChangeEmail } from "./change-email/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";
@@ -98,12 +100,13 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
 };
 
 export const Settings = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
   appConnect<IStateProps>({
     stateToProps: state => ({
       isLightWallet: selectIsLightWallet(state.web3),
       userType: selectUserType(state),
-      kycRequestStatus: selectKycRequestStatus(state.kyc),
+      kycRequestStatus: selectKycRequestStatus(state),
       kycRequestType: selectKycRequestType(state.kyc),
       isIcbmWalletConnected: selectIcbmWalletConnected(state.wallet),
       isLockedWalletConnected: selectLockedWalletConnected(state),

@@ -19,6 +19,7 @@ import { ErrorMessage } from "./shared/ErrorMessage";
 import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
 import { WatchPendingTxs } from "./shared/WatchPeningTxs";
+import { UpgradeSummary } from "./upgrade-flow/Summary";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
@@ -90,8 +91,10 @@ const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case ETxSenderType.INVEST:
       return <InvestmentSummary />;
+    case ETxSenderType.UPGRADE:
+      return <UpgradeSummary />;
     default:
-      return <WithdrawSummary upgrade={type === ETxSenderType.UPGRADE} />;
+      return <WithdrawSummary />;
   }
 };
 

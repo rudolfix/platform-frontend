@@ -13,6 +13,7 @@ const commonProps = {
   userType: EUserType.INVESTOR,
   onGoToKycHome: () => {},
   onGoToDashboard: () => {},
+  cancelInstantId: () => {},
 };
 
 storiesOf("KYC/StatusWidget", module)

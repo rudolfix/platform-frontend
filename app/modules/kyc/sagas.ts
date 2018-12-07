@@ -252,12 +252,31 @@ function* startIndividualInstantId({
   intlWrapper: {
     intl: { formatIntlMessage },
   },
+  logger,
 }: TGlobalDependencies): Iterator<any> {
   try {
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.startInstantId();
     if (result.body.redirectUrl) window.location.replace(result.body.redirectUrl);
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
-  } catch {
+  } catch (e) {
+    logger.warn("KYC instant id failed to start", e);
+    notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem.submitting"));
+  }
+}
+
+function* cancelIndividualInstantId({
+  apiKycService,
+  notificationCenter,
+  intlWrapper: {
+    intl: { formatIntlMessage },
+  },
+  logger,
+}: TGlobalDependencies): Iterator<any> {
+  try {
+    yield apiKycService.cancelInstantId();
+    yield put(actions.kyc.kycUpdateIndividualRequestState(false, { status: "Draft" }));
+  } catch (e) {
+    logger.warn("KYC instant id failed to stop", e);
     notificationCenter.error(formatIntlMessage("module.kyc.sagas.problem.submitting"));
   }
 }
@@ -672,8 +691,9 @@ export function* kycSagas(): any {
   yield fork(neuTakeEvery, "KYC_SUBMIT_INDIVIDUAL_FORM", submitIndividualData);
   yield fork(neuTakeEvery, "KYC_UPLOAD_INDIVIDUAL_FILE", uploadIndividualFile);
   yield fork(neuTakeEvery, "KYC_LOAD_INDIVIDUAL_FILE_LIST", loadIndividualFiles);
+  // Outsourced
   yield fork(neuTakeEvery, "KYC_START_INSTANT_ID", startIndividualInstantId);
-
+  yield fork(neuTakeEvery, "KYC_CANCEL_INSTANT_ID", cancelIndividualInstantId);
   yield fork(neuTakeEvery, "KYC_LOAD_INDIVIDUAL_REQUEST_STATE", loadIndividualRequest);
   yield fork(neuTakeEvery, "KYC_SUBMIT_INDIVIDUAL_REQUEST", submitIndividualRequest);
 

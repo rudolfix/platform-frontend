@@ -112,6 +112,13 @@ export class KycApi {
     });
   }
 
+  public async cancelInstantId(): Promise<IHttpResponse<void>> {
+    return await this.httpClient.delete<void>({
+      baseUrl: BASE_PATH,
+      url: INSTANT_ID_REQUEST_PATH,
+    });
+  }
+
   /**
    * Business requests
    */

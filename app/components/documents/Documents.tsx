@@ -32,6 +32,8 @@ import { ETOAddDocuments } from "../eto/shared/EtoAddDocument";
 import { EtoFileIpfsModal } from "../eto/shared/EtoFileIpfsModal";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { ClickableDocumentTile, DocumentTile } from "../shared/Document";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../shared/loading-indicator/index";
 import { SectionHeader } from "../shared/SectionHeader";
 import { SingleColDocuments } from "../shared/SingleColDocumentWidget";
@@ -215,6 +217,7 @@ export const DocumentsComponent: React.SFC<IProps> = ({
 };
 
 export const Documents = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   setDisplayName("Documents"),
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({

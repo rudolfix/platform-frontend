@@ -2,9 +2,13 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
+import { compose } from "redux";
 
 import { etoCompaniesCards } from "../../data/etoCompanies";
+import { withContainer } from "../../utils/withContainer";
 import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
 import { EtoCard } from "../shared/EtoCard";
 import { Features } from "./parts/Features";
 import { LandingFeatured } from "./parts/LandingFeatured";
@@ -13,45 +17,48 @@ import { Testimonials } from "./parts/Testimonials";
 
 import * as styles from "./Landing.module.scss";
 
-export const Landing: React.SFC = () => (
-  <LayoutUnauthorized>
-    <div className={cn(styles.landingWrapper, "pure")} data-test-id="landing-page">
-      {process.env.NF_FEATURED_ETO_PREVIEW_CODE ? (
-        <LandingFeatured />
-      ) : (
-        <>
-          <LandingHeader />
-          <Features />
-        </>
-      )}
+export const LandingComponent: React.SFC = () => (
+  <div className={cn(styles.landingWrapper, "pure")} data-test-id="landing-page">
+    {process.env.NF_FEATURED_ETO_PREVIEW_CODE ? (
+      <LandingFeatured />
+    ) : (
+      <>
+        <LandingHeader />
+        <Features />
+      </>
+    )}
 
-      <section className={styles.equityTokenOfferings}>
-        <Container>
-          <Row>
-            <Col>
-              <h2 className={styles.etoCardsHeader}>
-                <FormattedMessage id="platform.landing.meet-tokenizing-companies" />
-              </h2>
+    <section className={styles.equityTokenOfferings}>
+      <Container>
+        <Row>
+          <Col>
+            <h2 className={styles.etoCardsHeader}>
+              <FormattedMessage id="platform.landing.meet-tokenizing-companies" />
+            </h2>
+          </Col>
+        </Row>
+
+        <Row>
+          {etoCompaniesCards.map((e, index) => (
+            <Col
+              xs={12}
+              lg={6}
+              className={styles.equityTokenCol}
+              id={`eto-card-${index}`}
+              key={index}
+            >
+              <EtoCard {...e} />
             </Col>
-          </Row>
+          ))}
+        </Row>
+      </Container>
+    </section>
 
-          <Row>
-            {etoCompaniesCards.map((e, index) => (
-              <Col
-                xs={12}
-                lg={6}
-                className={styles.equityTokenCol}
-                id={`eto-card-${index}`}
-                key={index}
-              >
-                <EtoCard {...e} />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-
-      <Testimonials />
-    </div>
-  </LayoutUnauthorized>
+    <Testimonials />
+  </div>
 );
+
+export const Landing: React.SFC = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
+  withContainer(LayoutUnauthorized),
+)(LandingComponent);

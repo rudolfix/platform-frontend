@@ -213,6 +213,7 @@ const ActionButton = ({
           iconPosition="icon-after"
           svgIcon={arrowRight}
           onClick={cancelInstantId}
+          data-test-id="settings.kyc-status-widget.cancel-external-kyc-button"
         >
           <FormattedMessage id="settings.kyc-status-widget.cancel-external-kyc" />
         </Button>

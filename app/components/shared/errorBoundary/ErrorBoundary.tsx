@@ -15,17 +15,20 @@ class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
     container: PropTypes.object,
   };
 
-  logger: ILogger;
+  logger: ILogger | null;
 
   constructor(props: any, context: IInversifyProviderContext) {
     super(props);
 
     this.state = { hasError: false };
-    this.logger = context.container.get<ILogger>(symbols.logger);
+    // Only get logger if there is context. This is to prevent error in storybook (context is missing in storybook tests).
+    this.logger = context.container ? context.container.get<ILogger>(symbols.logger) : null;
   }
 
   componentDidCatch(error: Error, errorInfo: object): void {
-    this.logger.fatal("A critical error occurred", error, errorInfo);
+    if (this.logger) {
+      this.logger.fatal("A critical error occurred", error, errorInfo);
+    }
     this.setState({ hasError: true });
   }
 

@@ -20,6 +20,8 @@ import { appRoutes } from "../appRoutes";
 import { LayoutRegisterLogin } from "../layouts/LayoutRegisterLogin";
 import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
 import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
@@ -162,6 +164,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = 
 };
 
 export const WalletSelector = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.walletSelector.reset()),
   }),

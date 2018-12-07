@@ -15,6 +15,8 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
@@ -25,6 +27,7 @@ type TStateProps = {
 };
 
 export const EtoIssuerView = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.etoFlow.loadIssuerEto());

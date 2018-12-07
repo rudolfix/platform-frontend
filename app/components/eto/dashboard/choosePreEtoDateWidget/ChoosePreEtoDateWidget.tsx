@@ -7,6 +7,8 @@ import { compose } from "redux";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { DatePicker } from "../../../shared/DatePicker";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { Panel } from "../../../shared/Panel";
 
 import * as styles from "../../etoContentWidget.module.scss";
@@ -33,6 +35,7 @@ const ChoosePreEtoDateWidgetComponent: React.SFC<IDispatchProps & IIntlProps> = 
 };
 
 const ChoosePreEtoDateWidget = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IDispatchProps>({
     dispatchToProps: () => ({
       setEtoDate: () => {},

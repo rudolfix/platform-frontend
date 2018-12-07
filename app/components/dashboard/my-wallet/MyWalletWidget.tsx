@@ -104,7 +104,8 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
             <Row data-test-id="my-wallet-widget-icbm-help-text">
               <Col>
                 <p className={styles.icbmWallet}>
-                  <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />{" "}
+                  <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />
+                  <br />
                   <Link to={appRoutes.profile} className={styles.link}>
                     <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
                   </Link>

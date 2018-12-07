@@ -11,6 +11,9 @@ import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayoutBase } from "../shared/errorBoundary/ErrorBoundaryLayoutBase";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoPublicComponent } from "./shared/EtoPublicComponent";
 
@@ -47,6 +50,11 @@ export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
       dispatch(actions.publicEtos.loadEto(props.etoId));
     },
   }),
+  branch<IStateProps>(
+    props => props.userType === EUserType.INVESTOR,
+    createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+    createErrorBoundary(ErrorBoundaryLayoutBase),
+  ),
   branch<IStateProps>(
     props => props.userType === EUserType.INVESTOR,
     withContainer(LayoutAuthorized),

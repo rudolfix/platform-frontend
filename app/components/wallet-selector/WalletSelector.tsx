@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
 import {
   selectIsLoginRoute,
@@ -131,7 +132,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = 
               ) : (
                 <>
                   <FormattedMessage id="wallet-selector.register.help-link" />{" "}
-                  <a href="https://support.neufund.org/support/home" target="_blank">
+                  <a href={`${externalRoutes.neufundSupport}/home`} target="_blank">
                     <strong>
                       <FormattedMessage id="wallet-selector.help-link.register.label" />
                     </strong>

@@ -29,7 +29,7 @@ import {
   createWatchTxChannel,
   EEventEmitterChannelEvents,
   TEventEmitterChannelEvents,
-  updateTxs,
+  updatePendingTxs,
 } from "../monitor/sagas";
 import { validateGas } from "../validator/sagas";
 import { ETransactionErrorType } from "./reducer";
@@ -118,7 +118,7 @@ export function* txSendProcess(
 
 function* ensureNoPendingTx({ logger }: TGlobalDependencies, type: ETxSenderType): any {
   while (true) {
-    yield neuCall(updateTxs);
+    yield neuCall(updatePendingTxs);
     let txs: TPendingTxs = yield select((s: IAppState) => s.txMonitor.txs);
     if (!txs.pendingTransaction && txs.oooTransactions.length === 0) {
       yield put(actions.txSender.txSenderWatchPendingTxsDone(type));
@@ -177,7 +177,7 @@ function* sendTxSubSaga({ web3Manager, apiUserService }: TGlobalDependencies): a
       transactionType: type,
     };
     yield apiUserService.addPendingTx(txWithMetadata);
-    yield neuCall(updateTxs);
+    yield neuCall(updatePendingTxs);
 
     return txHash;
   } catch (error) {
@@ -260,6 +260,7 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
           yield put(actions.txSender.txSenderReportBlock(result.blockId));
           break;
         case EEventEmitterChannelEvents.TX_MINED:
+          yield neuCall(updatePendingTxs);
           return yield put(actions.txSender.txSenderTxMined());
         // Non terminal errors - Tx Mining should continue
         case EEventEmitterChannelEvents.ERROR:

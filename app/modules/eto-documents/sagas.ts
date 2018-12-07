@@ -122,8 +122,8 @@ function* uploadEtoFile(
     yield neuCall(
       ensurePermissionsArePresent,
       [UPLOAD_IMMUTABLE_DOCUMENT],
-      formatIntlMessage("eto.modal.submit-title"),
-      formatIntlMessage("eto.modal.submit-description"),
+      formatIntlMessage("eto.modal.confirm-upload-document-title"),
+      formatIntlMessage("eto.modal.confirm-upload-document-description"),
     );
 
     const matchingDocument = yield neuCall(getDocumentOfTypePromise, documentType);

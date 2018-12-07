@@ -35,8 +35,19 @@ addDecorator(
   withScreenshot({
     delay: 1000,
     viewport: [
+      // Mobile
       {
-        width: 1280,
+        width: 375,
+        height: 667,
+      },
+      // Tablet
+      {
+        width: 768,
+        height: 800,
+      },
+      // Desktop
+      {
+        width: 1200,
         height: 800,
       },
     ],

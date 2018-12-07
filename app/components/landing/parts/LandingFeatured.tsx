@@ -2,9 +2,9 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
 
+import { externalRoutes } from "../../../config/externalRoutes";
 import { appRoutes } from "../../appRoutes";
 import { EtoWidgetView } from "../../eto/EtoWidgetView";
-import { externalRoutes } from "../../externalRoutes";
 import { ButtonLink, ButtonSize, EButtonLayout } from "../../shared/buttons";
 import { ENeonHeaderSize, NeonHeader } from "../shared/NeonHeader";
 

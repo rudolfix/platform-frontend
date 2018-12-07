@@ -36,7 +36,7 @@ async function cleanPendingTransactionsPromise(
   return apiPendingTx;
 }
 
-export function* updateTxs(): any {
+export function* updatePendingTxs(): any {
   let apiPendingTx = yield neuCall(getPendingTransactionsPromise);
   apiPendingTx = yield neuCall(cleanPendingTransactionsPromise, apiPendingTx);
   yield put(actions.txMonitor.setPendingTxs(apiPendingTx));
@@ -46,7 +46,7 @@ function* txMonitor({ logger }: TGlobalDependencies): any {
   while (true) {
     logger.info("Querying for pending txs...");
     try {
-      yield neuCall(updateTxs);
+      yield neuCall(updatePendingTxs);
     } catch (e) {
       logger.error("Error getting pending txs", e);
     }

@@ -90,14 +90,15 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
             <SectionHeader layoutHasDecorator={false} className="mb-3">
               <div className={styles.headerWithButton}>
                 <FormattedMessage id="eto.public-view.eto-timeline" />
-                {!isInSetupState && (
-                  <ButtonLink
-                    to={withParams(externalRoutes.icoMonitorEto, { etoId: etoData.etoId })}
-                    target="_blank"
-                  >
-                    <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
-                  </ButtonLink>
-                )}
+                {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" &&
+                  !isInSetupState && (
+                    <ButtonLink
+                      to={withParams(externalRoutes.icoMonitorEto, { etoId: etoData.etoId })}
+                      target="_blank"
+                    >
+                      <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
+                    </ButtonLink>
+                  )}
               </div>
             </SectionHeader>
             <Panel>

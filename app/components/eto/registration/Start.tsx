@@ -5,6 +5,8 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { EtoRegistrationPanel } from "./EtoRegistrationPanel";
 
@@ -17,6 +19,7 @@ export const EtoRegisterComponent: React.SFC<IStateProps> = ({ isLoading }) => (
 );
 
 export const EtoRegister = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({ actionCreator: d => d(actions.etoFlow.loadIssuerEto()) }),
   appConnect<IStateProps>({
     stateToProps: s => ({

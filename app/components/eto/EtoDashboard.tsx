@@ -23,6 +23,8 @@ import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/SettingsWidgets";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { EProjecStatusLayout, EProjectStatusSize, ETOState } from "../shared/ETOState";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
@@ -37,9 +39,9 @@ import { DashboardSection } from "./shared/DashboardSection";
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
 interface IStateProps {
-  isLightWallet: boolean;
   verifiedEmail?: string;
   backupCodesVerified?: boolean;
+  isLightWallet: boolean;
   shouldEtoDataLoad?: boolean;
   requestStatus?: TRequestStatus;
   etoState?: EtoState;
@@ -206,7 +208,6 @@ class EtoDashboardComponent extends React.Component<IProps> {
       requestStatus,
       etoState,
       canEnableBookbuilding,
-      isLightWallet,
       etoFormProgress,
       isTermSheetSubmitted,
       shouldEtoDataLoad,
@@ -217,7 +218,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
 
     const isVerificationSectionDone = !!(
       verifiedEmail &&
-      (backupCodesVerified || !isLightWallet) &&
+      backupCodesVerified &&
       requestStatus === "Accepted"
     );
     const shouldViewSubmissionSection = !!(
@@ -258,13 +259,14 @@ class EtoDashboardComponent extends React.Component<IProps> {
 }
 
 const EtoDashboard = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      isLightWallet: selectIsLightWallet(s.web3),
       verifiedEmail: selectVerifiedUserEmail(s.auth),
-      backupCodesVerified: selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s),
+      isLightWallet: selectIsLightWallet(s.web3),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
-      requestStatus: selectKycRequestStatus(s.kyc),
+      requestStatus: selectKycRequestStatus(s),
       etoState: selectIssuerEtoState(s),
       previewCode: selectIssuerEtoPreviewCode(s),
       canEnableBookbuilding: selectCanEnableBookBuilding(s),

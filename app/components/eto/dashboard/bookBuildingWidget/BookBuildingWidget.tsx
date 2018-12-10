@@ -18,6 +18,8 @@ import { onLeaveAction } from "../../../../utils/OnLeaveAction";
 import { ButtonArrowRight } from "../../../shared/buttons";
 import { Document } from "../../../shared/Document";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { Panel } from "../../../shared/Panel";
@@ -169,6 +171,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
 };
 
 export const BookBuildingWidget = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       bookBuildingEnabled: selectIsBookBuilding(state),

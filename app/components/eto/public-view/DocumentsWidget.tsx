@@ -9,7 +9,7 @@ import { ignoredTemplates } from "../../../lib/api/eto/EtoFileUtils";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
-import { getDocumentTitles } from "../../documents/Documents";
+import { getDocumentTitles } from "../../documents/utils";
 import { DocumentLink, DocumentTemplateButton } from "../../shared/DocumentLink";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { Panel } from "../../shared/Panel";

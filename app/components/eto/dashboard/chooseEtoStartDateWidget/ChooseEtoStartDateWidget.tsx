@@ -15,6 +15,8 @@ import {
 import { appConnect } from "../../../../store";
 import { ButtonArrowRight } from "../../../shared/buttons";
 import { DatePicker } from "../../../shared/DatePicker";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
+import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { Panel } from "../../../shared/Panel";
 
 import { selectPlatformTermsConstants } from "../../../../modules/contracts/selectors";
@@ -95,6 +97,7 @@ const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
 };
 
 const ChooseEtoStartDateWidget = compose<React.SFC>(
+  createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const constants = selectPlatformTermsConstants(state);

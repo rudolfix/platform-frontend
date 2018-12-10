@@ -57,12 +57,14 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
               className={styles.amount}
             />
           </div>
-          <div>
-            <FormattedMessage
-              id="shared-component.eto-overview.investors"
-              values={{ totalInvestors }}
-            />
-          </div>
+          {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (
+            <div>
+              <FormattedMessage
+                id="shared-component.eto-overview.investors"
+                values={{ totalInvestors }}
+              />
+            </div>
+          )}
         </div>
         <InvestmentProgress eto={eto} />
       </div>

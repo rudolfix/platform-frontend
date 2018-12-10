@@ -14,6 +14,7 @@ import { Portfolio } from "./portfolio";
 import { SwitchConnected } from "../utils/connectedRouting";
 import { appRoutes } from "./appRoutes";
 import { e2eRoutes } from "./e2eRoutes";
+import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
 import { EtoIssuerView } from "./eto/EtoIssuerView";
 import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoPublicViewByContractId } from "./eto/EtoPublicViewByContractId";
@@ -77,6 +78,8 @@ export const AppRouter: React.SFC = () => (
     {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
       <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
     )}
+    <OnlyAuthorizedRoute path={appRoutes.icbmMigration} investorComponent={MigrationFromLink} />
+
     {/* only issuer routes */}
     <OnlyAuthorizedRoute path={appRoutes.documents} issuerComponent={Documents} />
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />

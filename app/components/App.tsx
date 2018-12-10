@@ -3,6 +3,7 @@ import * as React from "react";
 import { ToastContainer } from "react-toastify";
 import { compose } from "redux";
 
+import { TOAST_COMPONENT_DELAY } from "../config/constants";
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/Logger";
 import { actions } from "../modules/actions";
@@ -73,7 +74,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
         </ScrollToTop>
 
         <AccessWalletModal />
-        <ToastContainer />
+        <ToastContainer autoClose={TOAST_COMPONENT_DELAY} />
         <GenericModal />
         <VideoModal />
       </>

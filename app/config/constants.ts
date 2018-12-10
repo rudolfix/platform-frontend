@@ -59,3 +59,8 @@ export const MIN_NEW_SHARES_TO_ISSUE = 1;
 export const NEW_SHARES_TO_ISSUE_IN_WHITELIST = 1;
 export const NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS = 1;
 export const BOOKBUILDING_WATCHER_DELAY = 6000;
+
+/**
+ * Constants for react components
+ */
+export const TOAST_COMPONENT_DELAY = 4000;

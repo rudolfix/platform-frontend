@@ -1,11 +1,16 @@
+import { find } from "lodash";
 import * as moment from "moment";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 import { compose, setDisplayName } from "recompose";
 
-import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
+import {
+  EEtoDocumentType,
+  immutableDocumentName,
+} from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
+import { selectPlatformTermsConstants } from "../../../../modules/contracts/selectors";
 import {
   selectIssuerEtoWithCompanyAndContract,
   selectNewPreEtoStartDate,
@@ -20,11 +25,12 @@ import { ITxSummaryDispatchProps } from "../TxSender";
 
 interface IStateProps {
   newDate: Date;
+  changableTill: moment.Moment;
   etoTermsAddress: string;
   etoCommitmentAddress: string;
-  etoCommitmentAgreementIPFSLink: string;
+  termsAgreementIPFSLink: string;
   equityTokenAddress: string;
-  equityTokenAgreementIPFSLink: string;
+  offeringAgreementIPFSLink: string;
 }
 
 type IProps = IStateProps & ITxSummaryDispatchProps;
@@ -33,32 +39,58 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
   onAccept,
   etoTermsAddress,
   equityTokenAddress,
-  equityTokenAgreementIPFSLink,
+  offeringAgreementIPFSLink,
   etoCommitmentAddress,
-  etoCommitmentAgreementIPFSLink,
+  termsAgreementIPFSLink,
   newDate,
+  changableTill,
 }) => {
   const date = moment(newDate);
   return (
     <Container>
       <Row>
         <Heading>
-          <FormattedMessage id="eto.settings.set-eto-date-summary.title" />
+          <FormattedMessage id="eto.settings.eto-start-date-summary.dates-title" />
         </Heading>
       </Row>
 
       <Row className="mt-4">
+        <FormattedHTMLMessage
+          tagName="p"
+          id="eto.settings.eto-start-date-summary.dates-description"
+          values={{ timeToChange: changableTill.fromNow(true) }}
+        />
+      </Row>
+
+      <Row className="mt-0">
         <InfoList>
           <InfoRow
-            caption={<FormattedMessage id="eto.settings.eto-start-date-summary.new-start-date" />}
-            value={date.format("dddd, MMM Do, YYYY")}
+            caption={
+              <FormattedMessage id="eto.settings.eto-start-date-summary.time-to-start-date" />
+            }
+            value={date.fromNow(true)}
           />
           <InfoRow
-            caption={
-              <FormattedMessage id="eto.settings.eto-start-date-summary.time-span-to-start-date" />
-            }
-            value={date.fromNow()}
+            caption={<FormattedMessage id="eto.settings.eto-start-date-summary.new-start-date" />}
+            value={date.format("dddd, DD MMMM YYYY")}
           />
+        </InfoList>
+      </Row>
+
+      <Row className="mt-4">
+        <Heading>
+          <FormattedMessage id="eto.settings.eto-start-date-summary.contracts-title" />
+        </Heading>
+      </Row>
+
+      <Row className="mt-4">
+        <p>
+          <FormattedMessage id="eto.settings.eto-start-date-summary.contracts-description" />
+        </p>
+      </Row>
+
+      <Row className="mt-0">
+        <InfoList>
           <InfoRow
             caption={
               <FormattedMessage id="eto.settings.eto-start-date-summary.eto-commitment-contract-address" />
@@ -90,22 +122,18 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
             }
           />
           <InfoRow
-            caption={
-              <FormattedMessage id="eto.settings.eto-start-date-summary.download-equity-token-agreement" />
-            }
+            caption={immutableDocumentName[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]}
             value={
-              <a href={equityTokenAgreementIPFSLink} target="_blank">
-                {equityTokenAgreementIPFSLink}
+              <a href={offeringAgreementIPFSLink} target="_blank">
+                {offeringAgreementIPFSLink}
               </a>
             }
           />
           <InfoRow
-            caption={
-              <FormattedMessage id="eto.settings.eto-start-date-summary.download-eto-commitment-agreement" />
-            }
+            caption={immutableDocumentName[EEtoDocumentType.SIGNED_TERMSHEET]}
             value={
-              <a href={etoCommitmentAgreementIPFSLink} target="_blank">
-                {etoCommitmentAgreementIPFSLink}
+              <a href={termsAgreementIPFSLink} target="_blank">
+                {termsAgreementIPFSLink}
               </a>
             }
           />
@@ -131,21 +159,33 @@ const SetEtoDateSummary = compose<IProps, {}>(
   appConnect<IStateProps, ITxSummaryDispatchProps>({
     stateToProps: state => {
       const newDate = selectNewPreEtoStartDate(state)!;
-      const eto = selectIssuerEtoWithCompanyAndContract(state)!;
+      const constants = selectPlatformTermsConstants(state);
+      const changableTill = moment(newDate).subtract(
+        constants.DATE_TO_WHITELIST_MIN_DURATION,
+        "seconds",
+      );
 
-      const ipfsUrl = "https://ipfs.io/";
-      const termsDoc = eto.documents[EEtoDocumentType.SIGNED_TERMSHEET];
-      const equityTokenDoc = eto.documents[EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT];
-      const equityTokenAgreementIPFSLink = equityTokenDoc && ipfsUrl + equityTokenDoc.ipfsHash;
-      const etoCommitmentAgreementIPFSLink = termsDoc && ipfsUrl + termsDoc.ipfsHash;
+      const eto = selectIssuerEtoWithCompanyAndContract(state)!;
+      const ipfsUrl = "https://ipfs.io/ipfs/";
+      const termsDoc: any = find(eto.documents, [
+        "documentType",
+        EEtoDocumentType.SIGNED_TERMSHEET,
+      ]);
+      const offeringDoc: any = find(eto.documents, [
+        "documentType",
+        EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT,
+      ]);
+      const offeringAgreementIPFSLink = offeringDoc && ipfsUrl + (offeringDoc.ipfsHash as string);
+      const termsAgreementIPFSLink = termsDoc && ipfsUrl + (termsDoc.ipfsHash as string);
 
       return {
         newDate,
         etoTermsAddress: eto.contract!.etoTermsAddress,
         equityTokenAddress: eto.contract!.equityTokenAddress,
         etoCommitmentAddress: eto.contract!.etoCommitmentAddress,
-        equityTokenAgreementIPFSLink,
-        etoCommitmentAgreementIPFSLink,
+        offeringAgreementIPFSLink,
+        termsAgreementIPFSLink,
+        changableTill,
       };
     },
     dispatchToProps: d => ({

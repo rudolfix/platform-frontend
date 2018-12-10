@@ -65,7 +65,12 @@ const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
             <DatePicker
               value={newDate || oldDate}
               onChange={setEtoDate}
-              inputProps={{ disabled: !canChangeDate }}
+              inputProps={
+                {
+                  disabled: !canChangeDate,
+                  "data-test-id": "eto-settings-start-date-input",
+                } as any
+              }
               timeFormat={false}
               utc={true}
             />
@@ -82,7 +87,11 @@ const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
         </FormGroup>
         {canChangeDate && (
           <div className="d-flex justify-content-center">
-            <ButtonArrowRight onClick={uploadDate} disabled={!(newDate && isNewDateValid)}>
+            <ButtonArrowRight
+              onClick={uploadDate}
+              disabled={!(newDate && isNewDateValid)}
+              data-test-id="eto-settings-start-date-confirm"
+            >
               {oldDate ? (
                 <FormattedMessage id="eto.settings.change-eto-start-date" />
               ) : (

@@ -1,11 +1,22 @@
 import { IEtoOfferingProps } from "../components/shared/EtoOfferingCard";
 
+import * as agora from "../assets/img/eto_offers/agora.jpg";
+import * as agora2 from "../assets/img/eto_offers/agora@2x.jpg";
+import * as agorahover from "../assets/img/eto_offers/agorahover@1x.jpg";
+import * as agora2hover from "../assets/img/eto_offers/agorahover@2x.jpg";
+import * as airprofile from "../assets/img/eto_offers/airprofile.jpg";
+import * as airprofile2 from "../assets/img/eto_offers/airprofile@2x.jpg";
+import * as airprofilehover from "../assets/img/eto_offers/airprofilehover@1x.jpg";
+import * as airprofile2hover from "../assets/img/eto_offers/airprofilehover@2x.jpg";
 import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.png";
 import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
 import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
 import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
 import * as brile24hover from "../assets/img/eto_offers/brille_animation.gif";
 import * as brile24 from "../assets/img/eto_offers/brille_card.jpg";
+import * as curf from "../assets/img/eto_offers/curf.jpg";
+import * as curf2 from "../assets/img/eto_offers/curf@2x.jpg";
+import * as curfhover from "../assets/img/eto_offers/curfhover@1x.gif";
 import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
@@ -24,6 +35,10 @@ import * as nextbigthing from "../assets/img/eto_offers/nextbigthing.jpg";
 import * as nextbigthing2 from "../assets/img/eto_offers/nextbigthing@2x.jpg";
 import * as nextbigthinghover from "../assets/img/eto_offers/nextbigthinghover@1x.jpg";
 import * as nextbigthing2hover from "../assets/img/eto_offers/nextbigthinghover@2x.jpg";
+import * as ngrave from "../assets/img/eto_offers/ngrave.jpg";
+import * as ngrave2 from "../assets/img/eto_offers/ngrave@2x.jpg";
+import * as ngravehover from "../assets/img/eto_offers/ngravehover@1x.jpg";
+import * as ngrave2hover from "../assets/img/eto_offers/ngravehover@2x.jpg";
 
 export type EtoData = { data: IEtoOfferingProps };
 
@@ -326,6 +341,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         width: 100,
       },
       teaser: true,
+      hidden: true,
     },
   },
   {
@@ -358,6 +374,7 @@ export const etoCompaniesCards: Array<EtoData> = [
         width: 100,
       },
       teaser: true,
+      hidden: true,
     },
   },
   {
@@ -395,6 +412,178 @@ export const etoCompaniesCards: Array<EtoData> = [
         width: 100,
       },
       teaser: true,
+      hidden: true,
+    },
+  },
+  {
+    data: {
+      roundName: "series a",
+      tags: [
+        {
+          text: "cleantech",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "e-mobility",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      name: "CURF",
+      description:
+        "CURF Technology brings electric mobility on water. Aiming to become the Tesla on water the German-based pioneer has launched its e-jetboard, probably being the most powerful electric jetboard worldwide to serve yacht and watersport lovers.",
+      quote: {
+        text: "",
+        credits: "",
+      },
+      topImage: {
+        srcSet: {
+          "1x": curf,
+          "2x": curf2,
+        },
+        alt: "",
+        height: 50,
+        width: 100,
+      },
+      quoteImage: {
+        srcSet: {
+          "1x": curfhover,
+        },
+        alt: "",
+        height: 270,
+        width: 530,
+      },
+      to: "http://curf.surf",
+    },
+  },
+  {
+    data: {
+      roundName: "series a",
+      tags: [
+        {
+          text: "blockchain",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "exchange",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      name: "AGORA TRADE",
+      description:
+        "Agora Trade is the first ever cross-chain, non-custodial, cryptocurrency exchange based on multisignature timelocked contracts and hashed timelocked contracts, that allows for free make orders.",
+      quote: {
+        text: "",
+        credits: "",
+      },
+      topImage: {
+        srcSet: {
+          "1x": agora,
+          "2x": agora2,
+        },
+        alt: "",
+        height: 50,
+        width: 100,
+      },
+      quoteImage: {
+        srcSet: {
+          "1x": agorahover,
+          "2x": agora2hover,
+        },
+        alt: "",
+        height: 270,
+        width: 530,
+      },
+      to: "https://agora.trade/",
+    },
+  },
+  {
+    data: {
+      roundName: "seed",
+      tags: [
+        {
+          text: "cleantech",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "renewables",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      name: "AIR PROFILE",
+      description:
+        "Based on a new patented technology for detecting precise wind speeds, Air Profile boosts the energy transition all over the world. The device simplifies the wind resource assessment for each and every wind farm project worldwide.",
+      quote: {
+        text: "",
+        credits: "",
+      },
+      topImage: {
+        srcSet: {
+          "1x": airprofile,
+          "2x": airprofile2,
+        },
+        alt: "",
+        height: 50,
+        width: 100,
+      },
+      quoteImage: {
+        srcSet: {
+          "1x": airprofilehover,
+          "2x": airprofile2hover,
+        },
+        alt: "",
+        height: 270,
+        width: 530,
+      },
+      to: "https://www.air-profile.com/",
+    },
+  },
+  {
+    data: {
+      roundName: "seed",
+      tags: [
+        {
+          text: "blockchain",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+        {
+          text: "wallet",
+          layout: "ghost-bold",
+          theme: "white",
+        },
+      ],
+      name: "NGRAVE",
+      description:
+        "Next gen cryptocurrency hardware wallet developed with one sole focus: no compromise on security. Create, manage, and initiate transactions with your Ngrave wallet fully offline without the need to expose it to a physical or network connection.",
+      quote: {
+        text: "",
+        credits: "",
+      },
+      topImage: {
+        srcSet: {
+          "1x": ngrave,
+          "2x": ngrave2,
+        },
+        alt: "",
+        height: 50,
+        width: 100,
+      },
+      quoteImage: {
+        srcSet: {
+          "1x": ngravehover,
+          "2x": ngrave2hover,
+        },
+        alt: "",
+        height: 270,
+        width: 530,
+      },
+      to: "https://www.ngrave.io",
     },
   },
 ];

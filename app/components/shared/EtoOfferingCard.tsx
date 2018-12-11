@@ -31,6 +31,7 @@ export interface IEtoOfferingProps {
   teaser?: boolean;
   bannerWithGif?: boolean;
   replaceSelector?: string;
+  hidden?: boolean;
 }
 
 export interface ISizeProps {
@@ -91,6 +92,7 @@ export class EtoOfferingCardComponent extends React.Component<
               props.teaser && styles.teaser,
               props.isMobile && styles.mobile,
             )}
+            rel="noopener"
           >
             {children}
           </a>

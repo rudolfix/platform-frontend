@@ -143,7 +143,7 @@
     "mini-css-extract-plugin": "^0.4.1",
     "mocha": "^4.1.0",
     "mockdate": "^2.0.2",
-    "node-sass": "^4.9.3",
+    "node-sass": "^4.11.0",
     "nyc": "^12.0.2",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "patch-package": "^6.0.0-9",

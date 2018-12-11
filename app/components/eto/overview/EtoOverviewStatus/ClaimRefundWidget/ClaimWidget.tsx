@@ -24,19 +24,34 @@ const ClaimWidgetLayout: React.SFC<IExternalProps> = ({
     <Message
       title={<FormattedMessage id="shared-component.eto-overview.success" />}
       summary={
-        <FormattedMessage
-          id="shared-component.eto-overview.success.summary"
-          values={{
-            totalAmount: (
-              <Money
-                value={totalEquivEurUlps}
-                currency="eur"
-                currencySymbol={ECurrencySymbol.SYMBOL}
-              />
-            ),
-            totalInvestors,
-          }}
-        />
+        process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" ? (
+          <FormattedMessage
+            id="shared-component.eto-overview.success.summary"
+            values={{
+              totalAmount: (
+                <Money
+                  value={totalEquivEurUlps}
+                  currency="eur"
+                  currencySymbol={ECurrencySymbol.SYMBOL}
+                />
+              ),
+              totalInvestors,
+            }}
+          />
+        ) : (
+          <FormattedMessage
+            id="shared-component.eto-overview.success.summary-no-investors-count"
+            values={{
+              totalAmount: (
+                <Money
+                  value={totalEquivEurUlps}
+                  currency="eur"
+                  currencySymbol={ECurrencySymbol.SYMBOL}
+                />
+              ),
+            }}
+          />
+        )
       }
     />
     {canClaimToken && (

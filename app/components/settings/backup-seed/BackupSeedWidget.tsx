@@ -84,7 +84,7 @@ const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupC
 const BackupSeedWidget = compose<React.SFC<IOwnProps>>(
   appConnect<IStateProps, IOwnProps>({
     stateToProps: s => ({
-      backupCodesVerified: selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s),
     }),
   }),
 )(BackupSeedWidgetComponent);

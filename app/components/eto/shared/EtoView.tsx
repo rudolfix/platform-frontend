@@ -29,9 +29,9 @@ import { Cover } from "../public-view/Cover";
 import { DocumentsWidget } from "../public-view/DocumentsWidget";
 import { EtoInvestmentTermsWidget } from "../public-view/EtoInvestmentTermsWidget";
 import { LegalInformationWidget } from "../public-view/LegalInformationWidget";
-import { areThereIndividuals, selectActiveCarouselTab } from "./EtoPublicComponent.utils";
+import { areThereIndividuals, selectActiveCarouselTab } from "./EtoView.utils";
 
-import * as styles from "./EtoPublicComponent.module.scss";
+import * as styles from "./EtoView.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
@@ -47,7 +47,7 @@ interface IProps {
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-const EtoPublicComponentLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
+const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
   const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
 
   const isTwitterFeedEnabled =
@@ -91,14 +91,15 @@ const EtoPublicComponentLayout: React.SFC<IProps> = ({ companyData, etoData }) =
             <SectionHeader layoutHasDecorator={false} className="mb-3">
               <div className={styles.headerWithButton}>
                 <FormattedMessage id="eto.public-view.eto-timeline" />
-                {!isInSetupState && (
-                  <ButtonLink
-                    to={withParams(externalRoutes.icoMonitorEto, { etoId: etoData.etoId })}
-                    target="_blank"
-                  >
-                    <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
-                  </ButtonLink>
-                )}
+                {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" &&
+                  !isInSetupState && (
+                    <ButtonLink
+                      to={withParams(externalRoutes.icoMonitorEto, { etoId: etoData.etoId })}
+                      target="_blank"
+                    >
+                      <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
+                    </ButtonLink>
+                  )}
               </div>
             </SectionHeader>
             <Panel>
@@ -543,6 +544,6 @@ const EtoView = withMetaTags<IProps>(({ etoData }, intl) => {
       ? `${etoData.company.brandName} - ${etoData.equityTokenName} (${etoData.equityTokenSymbol})`
       : intl.formatIntlMessage("menu.eto-page"),
   };
-})(EtoPublicComponentLayout);
+})(EtoViewLayout);
 
 export { EtoView };

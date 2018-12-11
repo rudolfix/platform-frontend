@@ -3,6 +3,7 @@ import * as React from "react";
 import { ToastContainer } from "react-toastify";
 import { compose } from "redux";
 
+import { TOAST_COMPONENT_DELAY } from "../config/constants";
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/Logger";
 import { actions } from "../modules/actions";
@@ -17,6 +18,7 @@ import { onEnterAction } from "../utils/OnEnterAction";
 import { ScrollToTop } from "../utils/ScrollToTop";
 import { withRootMetaTag } from "../utils/withMetaTags";
 import { AppRouter } from "./AppRouter";
+import { CriticalError } from "./layouts/CriticalError";
 import { GenericModal } from "./modals/GenericModal";
 import { VideoModal } from "./modals/VideoModal";
 import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
@@ -55,11 +57,11 @@ class AppComponent extends React.Component<IStateProps, IState> {
 
   render(): React.ReactNode {
     if (this.props.error) {
-      return <h1>Critical error occurred: {this.props.error}</h1>;
+      return <CriticalError message={this.props.error} />;
     }
 
     if (this.state.renderingError) {
-      return <h1>Critical UI error occurred: {this.state.renderingError.message}</h1>;
+      return <CriticalError message={this.state.renderingError.message} />;
     }
 
     if (this.props.inProgress) {
@@ -73,7 +75,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
         </ScrollToTop>
 
         <AccessWalletModal />
-        <ToastContainer />
+        <ToastContainer autoClose={TOAST_COMPONENT_DELAY} />
         <GenericModal />
         <VideoModal />
       </>

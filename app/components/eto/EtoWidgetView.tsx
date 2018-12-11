@@ -7,6 +7,7 @@ import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selec
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus";
 
@@ -36,6 +37,7 @@ const EtoWidgetComponent: React.SFC<TProps> = ({ eto }) => (
 );
 
 const EtoWidgetView = compose<TProps, IRouterParams>(
+  createErrorBoundary(() => <Col xs={12} />),
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
       eto: selectEtoWithCompanyAndContract(state, props.previewCode),

@@ -3,6 +3,7 @@ import { createSelector } from "reselect";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { selectKycRequestStatus } from "../kyc/selectors";
+import { selectIsLightWallet } from "../web3/selectors";
 import { IAuthState } from "./reducer";
 
 export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
@@ -20,8 +21,8 @@ export const selectUnverifiedUserEmail = (state: IAuthState): string | undefined
 
 export const selectUser = (state: IAuthState): IUser | undefined => state.user;
 
-export const selectBackupCodesVerified = (state: IAuthState): boolean =>
-  !!state.user && !!state.user.backupCodesVerified;
+export const selectBackupCodesVerified = (state: IAppState): boolean =>
+  (!!state.auth.user && !!state.auth.user.backupCodesVerified) || !selectIsLightWallet(state.web3);
 
 export const selectIsUserEmailVerified = (state: IAuthState): boolean =>
   !!state.user && !!state.user.verifiedEmail;
@@ -33,7 +34,7 @@ export const selectDoesEmailExist = (state: IAuthState): boolean =>
   selectIsThereUnverifiedEmail(state) || selectIsUserEmailVerified(state);
 
 export const selectIsUserVerified = (state: IAppState): boolean =>
-  selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state.kyc) === "Accepted";
+  selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state) === "Accepted";
 
 export const selectIsInvestor = (state: IAppState): boolean =>
   selectUserType(state) === EUserType.INVESTOR;

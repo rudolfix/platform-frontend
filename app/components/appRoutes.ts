@@ -1,5 +1,6 @@
 export const appRoutes = {
   verify: "/email-verify",
+  icbmMigration: "/migrate",
 
   root: "/",
 

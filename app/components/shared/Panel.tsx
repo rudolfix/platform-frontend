@@ -2,6 +2,8 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { CommonHtmlProps, TTranslatedString } from "../../types";
+import { PanelBase } from "./PanelBase";
+import { PanelHeader } from "./PanelHeader";
 
 import * as styles from "./Panel.module.scss";
 
@@ -26,18 +28,14 @@ const Panel: React.SFC<IPanelProps> = ({
   const hasHeader = !!(headerText || rightComponent || icon);
 
   return (
-    <div {...props} className={cn(styles.panel, className, { [styles.narrow]: narrow })}>
+    <PanelBase {...props} className={className} narrow={narrow}>
       {hasHeader && (
-        <header className={cn(styles.header, { [styles.hasIcon]: !!(icon || !headerText) })}>
-          {icon && <img src={icon} className={styles.icon} />}
-          {headerText && <div className={styles.left}>{headerText}</div>}
-          {rightComponent && <div className={styles.right}>{rightComponent}</div>}
-        </header>
+        <PanelHeader icon={icon} headerText={headerText} rightComponent={rightComponent} />
       )}
       <div className={cn(styles.content, centerContent ? "justify-content-center" : null)}>
         {children}
       </div>
-    </div>
+    </PanelBase>
   );
 };
 

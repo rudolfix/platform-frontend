@@ -171,7 +171,7 @@ function* setUser({ logger }: TGlobalDependencies, action: TAction): Iterator<an
 
   const user = action.payload.user;
 
-  logger.setUser({ id: user.userId, type: user.type });
+  logger.setUser({ id: user.userId, type: user.type, walletType: user.walletType });
 }
 
 function* logoutWatcher(

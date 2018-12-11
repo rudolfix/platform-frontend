@@ -4,8 +4,8 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import {
   selectLightWalletEmailFromQueryString,
   selectPreviousLightWalletEmail,
-} from "../../../modules/web3/selectors";
-import { appConnect } from "../../../store";
+} from "../../../../modules/web3/selectors";
+import { appConnect } from "../../../../store";
 import { LoginWithEmailLightWallet } from "./LoginWithEmailLightWallet";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 

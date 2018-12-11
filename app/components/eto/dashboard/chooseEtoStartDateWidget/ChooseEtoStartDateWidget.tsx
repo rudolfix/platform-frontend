@@ -77,7 +77,10 @@ const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
           </InputGroup>
           {newDate &&
             !isNewDateValid && (
-              <div className={formStyles.errorLabel}>
+              <div
+                className={formStyles.errorLabel}
+                data-test-id="eto-settings-start-date-error-msg"
+              >
                 <FormattedMessage
                   id="eto.settings.error-message.eto-start-date-too-early"
                   values={{ days: minOffsetPeriodInDays }}

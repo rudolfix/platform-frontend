@@ -69,6 +69,7 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
               <FormattedMessage id="eto.settings.eto-start-date-summary.time-to-start-date" />
             }
             value={date.fromNow(true)}
+            dataTestId="set-eto-date-summary-time-to-eto"
           />
           <InfoRow
             caption={<FormattedMessage id="eto.settings.eto-start-date-summary.new-start-date" />}
@@ -145,7 +146,7 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
           layout={EButtonLayout.PRIMARY}
           type="button"
           onClick={onAccept}
-          data-test-id="invest-modal-summary-confirm-button"
+          data-test-id="set-eto-date-summary-confirm-button"
         >
           <FormattedMessage id="eto.settings.confirm" />
         </Button>
@@ -161,7 +162,7 @@ const SetEtoDateSummary = compose<IProps, {}>(
       const newDate = selectNewPreEtoStartDate(state)!;
       const constants = selectPlatformTermsConstants(state);
       const changableTill = moment(newDate).subtract(
-        constants.DATE_TO_WHITELIST_MIN_DURATION,
+        constants.DATE_TO_WHITELIST_MIN_DURATION.toNumber(),
         "seconds",
       );
 

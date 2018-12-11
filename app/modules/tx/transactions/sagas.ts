@@ -63,7 +63,7 @@ export function* etoSetDateSaga({ logger }: TGlobalDependencies): any {
     });
     logger.info("Setting ETO date successful");
     // cleanup & refresh eto data
-    put(actions.etoFlow.cleanupStartDate());
+    yield put(actions.etoFlow.cleanupStartDate());
   } catch (e) {
     logger.info("Setting ETO date cancelled", e);
   }

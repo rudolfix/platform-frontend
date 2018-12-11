@@ -2,8 +2,8 @@ import * as React from "react";
 
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
-import { LoginLightWallet } from "./LoginLightWallet";
-import { RegisterLightWallet } from "./RegisterLightWallet";
+import { LoginLightWallet } from "./Login/LoginLightWallet";
+import { RegisterLightWallet } from "./Register/RegisterLightWallet";
 
 import * as styles from "./WalletLight.module.scss";
 

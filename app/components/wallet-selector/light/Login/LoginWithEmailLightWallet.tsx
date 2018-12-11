@@ -5,14 +5,14 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
-import { actions } from "../../../modules/actions";
-import { appConnect } from "../../../store";
-import { Button } from "../../shared/buttons";
-import { FormField } from "../../shared/forms";
-import { FormConstantField } from "../../shared/forms/form-field/FormConstantField";
-import { WarningAlert } from "../../shared/WarningAlert";
-import { getMessageTranslation } from "../../translatedMessages/messages";
-import { TMessage } from "../../translatedMessages/utils";
+import { actions } from "../../../../modules/actions";
+import { appConnect } from "../../../../store";
+import { Button } from "../../../shared/buttons";
+import { FormField } from "../../../shared/forms";
+import { FormConstantField } from "../../../shared/forms/form-field/FormConstantField";
+import { WarningAlert } from "../../../shared/WarningAlert";
+import { getMessageTranslation } from "../../../translatedMessages/messages";
+import { TMessage } from "../../../translatedMessages/utils";
 
 const PASSWORD = "password";
 

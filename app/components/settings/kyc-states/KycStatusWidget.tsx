@@ -242,11 +242,11 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </Row>
         </div>
       ) : error ? (
-        <div className={styles.panelBody}>
+        <section className={styles.panelBody}>
           <WarningAlert>
             <FormattedMessage id="settings.kyc-widget.error" />
           </WarningAlert>
-        </div>
+        </section>
       ) : (
         <section className={cn(styles.section)}>
           <p className={cn(styles.text, "pt-2")}>

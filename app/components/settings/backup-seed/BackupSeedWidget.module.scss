@@ -6,3 +6,7 @@
 .text {
   min-height: px-to-rem(108px);
 }
+
+.section {
+  @include section-container;
+}

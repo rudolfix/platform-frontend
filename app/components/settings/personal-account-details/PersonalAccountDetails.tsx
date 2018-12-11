@@ -11,6 +11,7 @@ import { Button, EButtonLayout } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 
+import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as personImage from "../../../assets/img/person@3x.png";
 import * as styles from "./PersonalAccountDetails.module.scss";
 
@@ -113,8 +114,13 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
               />
             </div>
           </div>
-          <div>
-            <Button layout={EButtonLayout.SECONDARY} onClick={this.toggleDataVisibility}>
+          <div className="text-center">
+            <Button
+              iconPosition="icon-after"
+              svgIcon={arrowRight}
+              layout={EButtonLayout.SECONDARY}
+              onClick={this.toggleDataVisibility}
+            >
               {isDataHidden ? (
                 <FormattedMessage id="settings.account-details.button-show" />
               ) : (

@@ -6,6 +6,7 @@ import { FormGroup, InputGroup } from "reactstrap";
 import { compose } from "redux";
 
 import { actions } from "../../../../modules/actions";
+import { selectPlatformTermsConstants } from "../../../../modules/contracts/selectors";
 import {
   selectCanChangePreEtoStartDate,
   selectIsNewPreEtoStartDateValid,
@@ -19,7 +20,6 @@ import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary
 import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { Panel } from "../../../shared/Panel";
 
-import { selectPlatformTermsConstants } from "../../../../modules/contracts/selectors";
 import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
 import * as styles from "../../etoContentWidget.module.scss";
 

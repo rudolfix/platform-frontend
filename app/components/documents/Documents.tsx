@@ -28,13 +28,14 @@ import {
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { withMetaTags } from "../../utils/withMetaTags";
 import { ETOAddDocuments } from "../eto/shared/EtoAddDocument";
 import { EtoFileIpfsModal } from "../eto/shared/EtoFileIpfsModal";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { ClickableDocumentTile, DocumentTile } from "../shared/Document";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
-import { LoadingIndicator } from "../shared/loading-indicator/index";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { SectionHeader } from "../shared/SectionHeader";
 import { SingleColDocuments } from "../shared/SingleColDocumentWidget";
 import { getDocumentTitles } from "./utils";
@@ -78,7 +79,7 @@ export const GeneratedDocuments: React.SFC<{
   );
 };
 
-export const DocumentsComponent: React.SFC<IProps> = ({
+const DocumentsLayout: React.SFC<IProps> = ({
   loadingData,
   etoFilesData,
   generateTemplate,
@@ -188,7 +189,7 @@ export const DocumentsComponent: React.SFC<IProps> = ({
   );
 };
 
-export const Documents = compose<React.SFC>(
+const Documents = compose<React.SFC>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   setDisplayName("Documents"),
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
@@ -212,4 +213,7 @@ export const Documents = compose<React.SFC>(
         dispatch(actions.etoDocuments.downloadDocumentByType(documentType)),
     }),
   }),
-)(DocumentsComponent);
+  withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.documents-page") })),
+)(DocumentsLayout);
+
+export { Documents };

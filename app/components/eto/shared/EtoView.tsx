@@ -8,6 +8,7 @@ import { externalRoutes } from "../../../config/externalRoutes";
 import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { isOnChain } from "../../../modules/public-etos/utils";
+import { withMetaTags } from "../../../utils/withMetaTags";
 import { withParams } from "../../../utils/withParams";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
@@ -28,9 +29,9 @@ import { Cover } from "../public-view/Cover";
 import { DocumentsWidget } from "../public-view/DocumentsWidget";
 import { EtoInvestmentTermsWidget } from "../public-view/EtoInvestmentTermsWidget";
 import { LegalInformationWidget } from "../public-view/LegalInformationWidget";
-import { areThereIndividuals, selectActiveCarouselTab } from "./EtoPublicComponent.utils";
+import { areThereIndividuals, selectActiveCarouselTab } from "./EtoView.utils";
 
-import * as styles from "./EtoPublicComponent.module.scss";
+import * as styles from "./EtoView.module.scss";
 
 const DEFAULT_PLACEHOLDER = "N/A";
 
@@ -46,7 +47,7 @@ interface IProps {
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) => {
+const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
   const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
 
   const isTwitterFeedEnabled =
@@ -533,3 +534,16 @@ export const EtoPublicComponent: React.SFC<IProps> = ({ companyData, etoData }) 
     </>
   );
 };
+
+const EtoView = withMetaTags<IProps>(({ etoData }, intl) => {
+  const requiredDataPresent =
+    etoData.company.brandName && etoData.equityTokenName && etoData.equityTokenSymbol;
+
+  return {
+    title: requiredDataPresent
+      ? `${etoData.company.brandName} - ${etoData.equityTokenName} (${etoData.equityTokenSymbol})`
+      : intl.formatIntlMessage("menu.eto-page"),
+  };
+})(EtoViewLayout);
+
+export { EtoView };

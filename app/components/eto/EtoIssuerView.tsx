@@ -18,7 +18,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../shared/loading-indicator";
-import { EtoPublicComponent } from "./shared/EtoPublicComponent";
+import { EtoView } from "./shared/EtoView";
 
 type TStateProps = {
   companyData?: TCompanyEtoData;
@@ -46,4 +46,4 @@ export const EtoIssuerView = compose<React.SFC>(
     props => !props.companyData || !props.etoData,
     renderComponent(LoadingIndicator),
   ),
-)(EtoPublicComponent);
+)(EtoView);

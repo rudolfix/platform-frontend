@@ -12,6 +12,7 @@ import { appConnect } from "../../../store";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
+import { SetEtoDateSummary } from "./eto-flow/SetDateSummary";
 import { InvestmentSelection } from "./investment-flow/Investment";
 import { InvestmentSuccess } from "./investment-flow/Success";
 import { InvestmentSummary } from "./investment-flow/Summary";
@@ -91,6 +92,8 @@ const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case ETxSenderType.INVEST:
       return <InvestmentSummary />;
+    case ETxSenderType.ETO_SET_DATE:
+      return <SetEtoDateSummary />;
     case ETxSenderType.UPGRADE:
       return <UpgradeSummary />;
     default:

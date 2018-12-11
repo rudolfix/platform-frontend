@@ -7,9 +7,12 @@ import {
 import { TEtoDocumentTemplates } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { IAppState } from "../../store";
 import { selectIsUserEmailVerified } from "../auth/selectors";
+import { selectPlatformTermsConstants } from "../contracts/selectors";
 import { selectEtoDocumentLoading } from "../eto-documents/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { selectEtoWithCompanyAndContract, selectPublicEto } from "../public-etos/selectors";
+import { EETOStateOnChain } from "../public-etos/types";
+import { isValidEtoStartDate } from "./utils";
 
 export const selectIssuerEtoPreviewCode = (state: IAppState) => state.etoFlow.etoPreviewCode;
 
@@ -146,10 +149,33 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
   return undefined;
 };
 
-/* General Selector */
-
 export const selectShouldEtoDataLoad = (state: IAppState) =>
   selectKycRequestStatus(state) === "Accepted" && selectIsUserEmailVerified(state.auth);
 
 export const selectIsGeneralEtoLoading = (state: IAppState) =>
   selectIssuerEtoLoading(state) && selectEtoDocumentLoading(state.etoDocuments);
+
+export const selectNewPreEtoStartDate = (state: IAppState) => state.etoFlow.newStartDate;
+
+export const selectPreEtoStartDateFromContract = (state: IAppState) => {
+  const code = selectIssuerEtoPreviewCode(state);
+  if (code) {
+    const eto = selectEtoWithCompanyAndContract(state, code);
+    return eto && eto.contract && eto.contract.startOfStates[EETOStateOnChain.Whitelist];
+  }
+};
+
+export const selectPreEtoStartDate = (state: IAppState) =>
+  selectNewPreEtoStartDate(state) || selectPreEtoStartDateFromContract(state);
+
+export const selectCanChangePreEtoStartDate = (state: IAppState) => {
+  const constants = selectPlatformTermsConstants(state);
+  const date = selectPreEtoStartDateFromContract(state);
+  return !date || isValidEtoStartDate(date, constants.DATE_TO_WHITELIST_MIN_DURATION);
+};
+
+export const selectIsNewPreEtoStartDateValid = (state: IAppState) => {
+  const constants = selectPlatformTermsConstants(state);
+  const date = selectNewPreEtoStartDate(state);
+  return date && isValidEtoStartDate(date, constants.DATE_TO_WHITELIST_MIN_DURATION);
+};

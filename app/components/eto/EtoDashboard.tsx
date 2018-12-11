@@ -28,7 +28,7 @@ import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoun
 import { EProjecStatusLayout, EProjectStatusSize, ETOState } from "../shared/ETOState";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
-import { ChoosePreEtoDateWidget } from "./dashboard/choosePreEtoDateWidget/ChoosePreEtoDateWidget";
+import { ChooseEtoStartDateWidget } from "./dashboard/chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
 import { SubmitProposalWidget } from "./dashboard/submitProposalWidget/SubmitProposalWidget";
 import { UploadInvestmentMemorandum } from "./dashboard/UploadInvestmentMemorandum";
@@ -100,7 +100,7 @@ interface IEtoStateRender {
   isRetailEto: boolean;
 }
 
-const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
+const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
   etoState,
   shouldViewSubmissionSection,
   isTermSheetSubmitted,
@@ -176,12 +176,12 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
           {canEnableBookbuilding && (
-            <Col lg={8} xs={12}>
+            <Col lg={6} xs={12}>
               <BookBuildingWidget />
             </Col>
           )}
-          <Col lg={4} xs={12}>
-            <ChoosePreEtoDateWidget />
+          <Col lg={6} xs={12}>
+            <ChooseEtoStartDateWidget />
           </Col>
           <Col xs={12}>
             <FormattedHTMLMessage tagName="span" id="eto-dashboard-application-description" />
@@ -240,7 +240,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
           )}
 
           {shouldEtoDataLoad ? (
-            <EtoStateViewRender
+            <EtoDashboardStateViewComponent
               isTermSheetSubmitted={isTermSheetSubmitted}
               isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
               shouldViewSubmissionSection={shouldViewSubmissionSection}
@@ -258,7 +258,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
   }
 }
 
-export const EtoDashboard = compose<React.SFC>(
+const EtoDashboard = compose<React.SFC>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
@@ -280,3 +280,5 @@ export const EtoDashboard = compose<React.SFC>(
     }),
   }),
 )(EtoDashboardComponent);
+
+export { EtoDashboard, EtoDashboardComponent, EtoDashboardStateViewComponent };

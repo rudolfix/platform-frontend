@@ -1,3 +1,5 @@
+import "react-datetime/css/react-datetime.css";
+
 import { Field, FieldProps } from "formik";
 import * as React from "react";
 import * as DateTime from "react-datetime";

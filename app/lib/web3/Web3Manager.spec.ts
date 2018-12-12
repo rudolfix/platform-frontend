@@ -4,7 +4,6 @@ import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../test
 import { globalFakeClock } from "../../../test/setupTestsHooks";
 import { createMock, expectToBeRejected } from "../../../test/testUtils";
 import { web3Actions } from "../../modules/web3/actions";
-import { web3Flows } from "../../modules/web3/flows";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import {
   AsyncIntervalScheduler,
@@ -133,7 +132,7 @@ describe("Web3Manager", () => {
     });
     await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledOnce; // remocking resets counter
-    expect(dispatchMock).to.be.calledWithExactly(web3Flows.personalWalletDisconnected);
+    expect(dispatchMock).to.be.calledWithExactly(web3Actions.personalWalletConnectionLost());
   });
 
   it("should fail on connection timeout", async () => {
@@ -177,6 +176,6 @@ describe("Web3Manager", () => {
 
     expect(ledgerWalletConnectionMock.testConnection).to.be.calledOnce;
     expect(dispatchMock).to.be.calledTwice;
-    expect(dispatchMock).to.be.calledWithExactly(web3Flows.personalWalletDisconnected);
+    expect(dispatchMock).to.be.calledWithExactly(web3Actions.personalWalletConnectionLost());
   });
 });

@@ -38,13 +38,13 @@ export const WalletBrowserComponent: React.SFC<
   IWalletBrowserProps & IWalletBrowserDispatchProps
 > = ({ errorMessage, isLoading, isLoginRoute, approvalRejected, handleReset }) => (
   <div>
-    <h1 className="text-center mb-3" data-test-id="modals.wallet-selector.wallet-browser.title">
+    <h2 className={styles.title} data-test-id="modals.wallet-selector.wallet-browser.title">
       {isLoginRoute ? (
         <FormattedMessage id="wallet-selector.browser.login-prompt" />
       ) : (
         <FormattedMessage id="wallet-selector.browser.register-prompt" />
       )}
-    </h1>
+    </h2>
 
     {isLoading ? (
       <LoadingIndicator />

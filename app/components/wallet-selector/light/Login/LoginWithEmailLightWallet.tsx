@@ -14,6 +14,8 @@ import { WarningAlert } from "../../../shared/WarningAlert";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
 
+import * as styles from "../WalletLight.module.scss";
+
 const PASSWORD = "password";
 
 const emailValidator = Yup.string().email();
@@ -75,7 +77,7 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
 > = props => (
   <>
     <Row>
-      <p className="small mx-auto">
+      <p className={styles.prompt}>
         <FormattedMessage id="wallet-selector.neuwallet.login.prompt" />
       </p>
     </Row>

@@ -453,6 +453,8 @@ export const etoCompaniesCards: Array<EtoData> = [
         alt: "",
         height: 270,
         width: 530,
+        preserveOriginalRatio: true,
+        forceBg: "black",
       },
       to: "http://curf.surf",
     },

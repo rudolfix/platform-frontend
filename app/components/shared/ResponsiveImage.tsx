@@ -13,7 +13,7 @@ export interface ISrcSet {
 
 type TTheme = "light" | "dark" | "transparent";
 
-export interface IResponsiveImage {
+interface IResponsiveImage {
   src?: string;
   srcSet: ISrcSet;
   alt: string;
@@ -22,9 +22,11 @@ export interface IResponsiveImage {
   height?: number;
   className?: string;
   onClick?: () => void;
+  preserveOriginalRatio?: boolean;
+  forceBg?: string;
 }
 
-export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
+const ResponsiveImage: React.SFC<IResponsiveImage> = ({
   alt,
   className,
   src,
@@ -33,6 +35,8 @@ export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
   width,
   theme,
   onClick,
+  preserveOriginalRatio,
+  forceBg,
 }) => {
   const computedSrcSet = `${srcSet["1x"]} 1x,
     ${srcSet["2x"] && (srcSet["2x"] as string) + " 2x"},
@@ -46,7 +50,13 @@ export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
       onClick={onClick}
     >
       {srcSet["1x"] && (
-        <img className={styles.image} src={src || srcSet["1x"]} srcSet={computedSrcSet} alt={alt} />
+        <img
+          className={cn(styles.image, preserveOriginalRatio ? styles.preserveRatio : null)}
+          src={src || srcSet["1x"]}
+          srcSet={computedSrcSet}
+          alt={alt}
+          style={{ backgroundColor: forceBg }}
+        />
       )}
     </Proportion>
   );
@@ -55,3 +65,5 @@ export const ResponsiveImage: React.SFC<IResponsiveImage> = ({
 ResponsiveImage.defaultProps = {
   theme: "dark",
 };
+
+export { ResponsiveImage, IResponsiveImage };

@@ -10,7 +10,7 @@ import { appConnect } from "../../../../../store";
 import { withParams } from "../../../../../utils/withParams";
 import { appRoutes } from "../../../../appRoutes";
 import { Button, ButtonLink } from "../../../../shared/buttons";
-import { Money } from "../../../../shared/Money";
+import { ECurrency, Money } from "../../../../shared/Money";
 import { EtoWidgetContext } from "../../../EtoWidgetView";
 import { InvestmentProgress } from "./InvestmentProgress";
 
@@ -48,12 +48,12 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
           <div>
             <Money
               value={eto.contract!.totalInvestment.etherTokenBalance}
-              currency="eth"
+              currency={ECurrency.ETH}
               className={styles.amount}
             />
             <Money
               value={eto.contract!.totalInvestment.euroTokenBalance}
-              currency="eur_token"
+              currency={ECurrency.EUR_TOKEN}
               className={styles.amount}
             />
           </div>

@@ -13,7 +13,7 @@ import {
 import { EETOStateOnChain } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
 import { onEnterAction } from "../../../../../utils/OnEnterAction";
-import { ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money";
 import { CounterWidget } from "../index";
 import { Message } from "../Message";
 import { CampaigningActivatedInvestorApprovedWidget } from "./CampaigningActivatedInvestorApprovedWidget";
@@ -99,7 +99,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
             <span className={styles.value} data-test-id="eto-bookbuilding-amount-backed">
               <Money
                 value={pledgedAmount}
-                currency="eur"
+                currency={ECurrency.EUR}
                 format={EMoneyFormat.FLOAT}
                 currencySymbol={ECurrencySymbol.SYMBOL}
               />
@@ -155,7 +155,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
                   totalAmount: (
                     <Money
                       value={pledgedAmount}
-                      currency="eur"
+                      currency={ECurrency.EUR}
                       currencySymbol={ECurrencySymbol.SYMBOL}
                       format={EMoneyFormat.FLOAT}
                     />

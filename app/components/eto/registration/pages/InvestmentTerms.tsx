@@ -23,7 +23,7 @@ import { FormField } from "../../../shared/forms";
 import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
 import { NumberTransformingField } from "../../../shared/forms/form-field/NumberTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
+import { ECurrency, EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
 import {
   convert,
   convertFractionToPercentage,
@@ -203,7 +203,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 prefix="€"
                 placeholder="read only"
                 name="minNumberOfTokens"
-                value={getFormattedMoney(minInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
+                value={getFormattedMoney(minInvestmentAmount, ECurrency.EUR, EMoneyFormat.FLOAT)}
                 readOnly={true}
               />
             </Col>
@@ -213,7 +213,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
                 prefix="€"
                 placeholder="read only"
                 name="totalInvestment"
-                value={getFormattedMoney(maxInvestmentAmount, "eur", EMoneyFormat.FLOAT)}
+                value={getFormattedMoney(maxInvestmentAmount, ECurrency.EUR, EMoneyFormat.FLOAT)}
                 readOnly={true}
               />
             </Col>

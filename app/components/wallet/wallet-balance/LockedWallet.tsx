@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { AccountBalance } from "../../shared/AccountBalance";
 import { HorizontalLine } from "../../shared/HorizontalLine";
+import { ECurrency } from "../../shared/Money";
 import { IPanelProps } from "../../shared/Panel";
 import { isWalletNotEmpty } from "./utils";
 import { IWalletValues, WalletBalanceContainer } from "./WalletBalance";
@@ -29,8 +30,8 @@ export const LockedWallet: React.SFC<ILockedWallet> = ({ data, className, header
         {isWalletNotEmpty(data.neuroEuroAmount) && (
           <AccountBalance
             icon={neuroIcon}
-            currency="eur_token"
-            currencyTotal="eur"
+            currency={ECurrency.EUR_TOKEN}
+            currencyTotal={ECurrency.EUR}
             largeNumber={data.neuroAmount}
             value={data.neuroEuroAmount}
             dataTestId="lockedEuroWallet"
@@ -41,8 +42,8 @@ export const LockedWallet: React.SFC<ILockedWallet> = ({ data, className, header
         {isWalletNotEmpty(data.ethAmount) && (
           <AccountBalance
             icon={ethIcon}
-            currency="eth"
-            currencyTotal="eur"
+            currency={ECurrency.ETH}
+            currencyTotal={ECurrency.EUR}
             largeNumber={data.ethAmount}
             value={data.ethEuroAmount}
             dataTestId="lockedEtherWallet"

@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { DocumentTemplateButton } from "../../shared/DocumentLink";
 import { HighlightedField } from "../../shared/HighlightedField";
-import { Money } from "../../shared/Money";
+import { ECurrency, Money } from "../../shared/Money";
 import { SectionHeader } from "../../shared/SectionHeader";
 
 import * as iconEth from "../../../assets/img/eth_icon.svg";
@@ -74,13 +74,13 @@ export const BalanceModal: React.SFC<IBalanceModal> = ({
       <HighlightedField
         label={<FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />}
         dataTestId="profile.modal.icbm-wallet-balance.neu-balance"
-        value={<Money currency="neu" value={neumarksDue} />}
+        value={<Money currency={ECurrency.NEU} value={neumarksDue} />}
         icon={iconNeu}
       />
       <HighlightedField
         label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
         dataTestId="profile.modal.icbm-wallet-balance.eth-balance"
-        value={<Money value={etherBalance} currency="eth" />}
+        value={<Money value={etherBalance} currency={ECurrency.ETH} />}
         icon={iconEth}
       />
       <BalanceFooter

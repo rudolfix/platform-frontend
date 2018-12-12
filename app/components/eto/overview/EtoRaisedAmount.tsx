@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { Money } from "../../shared/Money";
+import { ECurrency, Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
@@ -50,27 +50,35 @@ export const EtoRaisedAmount: React.SFC<IProps> = ({
             <div className={styles.overviewMoney}>
               <div className={stylesCommon.header}>
                 <FormattedMessage id="eto.overview.raised-amount.total" />{" "}
-                <Money theme="t-green" value={"1234567" + "0".repeat(16)} currency="eur" />
+                <Money
+                  theme="t-green"
+                  value={"1234567" + "0".repeat(16)}
+                  currency={ECurrency.EUR}
+                />
               </div>
               <MoneySuiteWidget
-                currency="eur_token"
+                currency={ECurrency.EUR_TOKEN}
                 largeNumber={"1234567" + "0".repeat(16)}
                 value={"1234567" + "0".repeat(16)}
-                currencyTotal="eur"
+                currencyTotal={ECurrency.EUR}
                 icon={moneyIcon}
               />
               <MoneySuiteWidget
-                currency="eth"
+                currency={ECurrency.ETH}
                 largeNumber={"1234567" + "0".repeat(16)}
                 value={"1234567" + "0".repeat(16)}
-                currencyTotal="eur"
+                currencyTotal={ECurrency.EUR}
                 icon={ethIcon}
               />
             </div>
 
             <div className={styles.overviewProgress}>
               <PercentageIndicatorBar percent={76} />
-              <Money className={styles.total} value={"1234567" + "0".repeat(14)} currency="eur" />
+              <Money
+                className={styles.total}
+                value={"1234567" + "0".repeat(14)}
+                currency={ECurrency.EUR}
+              />
             </div>
           </div>
           <HorizontalLine className="my-3" />

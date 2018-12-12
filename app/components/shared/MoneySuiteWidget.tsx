@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { TDataTestId } from "../../types";
 import { makeTid } from "../../utils/tidUtils";
-import { Money, TCurrency } from "./Money";
+import { ECurrency, Money } from "./Money";
 
 import * as styles from "./MoneySuiteWidget.module.scss";
 
@@ -12,8 +12,8 @@ export type TSize = "large";
 
 export interface IMoneySuiteWidgetProps {
   icon: string;
-  currency: TCurrency;
-  currencyTotal: TCurrency;
+  currency: ECurrency;
+  currencyTotal: ECurrency;
   largeNumber: string;
   value: string;
   percentage?: string;

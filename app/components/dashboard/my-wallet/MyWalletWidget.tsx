@@ -20,7 +20,7 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { appRoutes } from "../../appRoutes";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/loading-indicator";
-import { ECurrencySymbol, Money } from "../../shared/Money";
+import { ECurrency, ECurrencySymbol, Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
 import { Tooltip } from "../../shared/Tooltip";
@@ -64,21 +64,21 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
         <Row>
           <Col className={styles.moneySuiteWrapper} xs={12} sm={6} lg={12}>
             <MoneySuiteWidget
-              currency="eur_token"
+              currency={ECurrency.EUR_TOKEN}
               largeNumber={euroTokenAmount}
               icon={moneyIcon}
               value={euroTokenAmount}
-              currencyTotal="eur"
+              currencyTotal={ECurrency.EUR}
               data-test-id="my-wallet-widget-eur-token"
             />
           </Col>
           <Col className={styles.moneySuiteWrapper} xs={12} sm={6} lg={12}>
             <MoneySuiteWidget
-              currency="eth"
+              currency={ECurrency.ETH}
               largeNumber={ethAmount}
               icon={ethIcon}
               value={ethEuroAmount}
-              currencyTotal="eur"
+              currencyTotal={ECurrency.EUR}
               data-test-id="my-wallet-widget-eth-token"
             />
           </Col>
@@ -91,7 +91,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
               </span>
               <Money
                 value={totalAmount}
-                currency="eur"
+                currency={ECurrency.EUR}
                 currencySymbol={ECurrencySymbol.NONE}
                 className={cn(styles.money, "pl-1 pl-sm-2 m-0")}
               />

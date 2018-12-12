@@ -1,29 +1,29 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ECurrencySymbol, EMoneyFormat, Money } from "./Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "./Money";
 
 const value = "1234567" + "0".repeat(18);
 
 storiesOf("Money", module)
   .add("default (with currency code)", () => (
     <>
-      <Money currency="eur" value={value} />
+      <Money currency={ECurrency.EUR} value={value} />
       <br />
-      <Money currency="neu" value={value} />
+      <Money currency={ECurrency.NEU} value={value} />
       <br />
-      <Money currency="eur_token" value={value} />
+      <Money currency={ECurrency.EUR_TOKEN} value={value} />
       <br />
-      <Money currency="eth" value={value} />
+      <Money currency={ECurrency.ETH} value={value} />
     </>
   ))
   .add("with currency symbol", () => (
     <>
-      <Money currency="eur" value={value} currencySymbol={ECurrencySymbol.SYMBOL} />
+      <Money currency={ECurrency.EUR} value={value} currencySymbol={ECurrencySymbol.SYMBOL} />
       <br />
       <Money
         value={100}
-        currency="eur"
+        currency={ECurrency.EUR}
         format={EMoneyFormat.FLOAT}
         currencySymbol={ECurrencySymbol.SYMBOL}
       />
@@ -31,20 +31,20 @@ storiesOf("Money", module)
   ))
   .add("transfer", () => (
     <>
-      <Money currency="eur" value={value} transfer="income" />
+      <Money currency={ECurrency.EUR} value={value} transfer="income" />
       <br />
-      <Money currency="eur" value={value} transfer="outcome" />
+      <Money currency={ECurrency.EUR} value={value} transfer="outcome" />
     </>
   ))
   .add("no currency symbol", () => (
-    <Money currency="eur" value={value} currencySymbol={ECurrencySymbol.NONE} />
+    <Money currency={ECurrency.EUR} value={value} currencySymbol={ECurrencySymbol.NONE} />
   ))
   .add("themed", () => (
     <>
       <p>t-green</p>
-      <Money currency="eur" value={value} theme="t-green" />
+      <Money currency={ECurrency.EUR} value={value} theme="t-green" />
       <br />
       <p>t-orange</p>
-      <Money currency="eth" value="20000000000000000" theme="t-orange" />
+      <Money currency={ECurrency.ETH} value="20000000000000000" theme="t-orange" />
     </>
   ));

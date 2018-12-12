@@ -4,7 +4,7 @@ import { Container } from "reactstrap";
 
 import { testCompany, testEto } from "../../../../test/fixtures";
 import { withStore } from "../../../utils/storeDecorator";
-import { EtoPublicComponent } from "./EtoPublicComponent";
+import { EtoView } from "./EtoView";
 
 const testStore = {
   publicEtos: {
@@ -24,6 +24,6 @@ storiesOf("ETO/EtoOverview", module)
   .addDecorator(withStore(testStore as any))
   .add("default", () => (
     <Container>
-      <EtoPublicComponent etoData={testEto as any} companyData={testCompany as any} />
+      <EtoView etoData={testEto as any} companyData={testCompany as any} />
     </Container>
   ));

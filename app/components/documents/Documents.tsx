@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import { EtoState, EtoStateToCamelcase } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState, EtoStateToCamelcase } from "../../lib/api/eto/EtoApi.interfaces";
 import {
   EEtoDocumentType,
   IEtoDocument,
@@ -48,7 +48,7 @@ interface IStateProps {
   etoFilesData: IEtoFiles;
   loadingData: boolean;
   etoFileLoading: boolean;
-  etoState?: EtoState;
+  etoState?: EEtoState;
   etoTemplates: TEtoDocumentTemplates;
   etoDocuments: TEtoDocumentTemplates;
   documentTitles: TDocumentTitles;

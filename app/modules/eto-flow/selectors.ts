@@ -1,5 +1,5 @@
 import {
-  EtoState,
+  EEtoState,
   TCompanyEtoData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
@@ -70,7 +70,7 @@ export const selectCanEnableBookBuilding = (state: IAppState): boolean => {
   return false;
 };
 
-export const selectIssuerEtoState = (state: IAppState): EtoState | undefined => {
+export const selectIssuerEtoState = (state: IAppState): EEtoState | undefined => {
   const eto = selectIssuerEto(state);
 
   if (eto) {

@@ -1,7 +1,10 @@
-import { createStore, Store } from "redux";
 import { BigNumber } from "bignumber.js";
+import { createStore, Store } from "redux";
 
 import { IConfig } from "../app/config/getConfig";
+import { EEtoState, TCompanyEtoData } from "../app/lib/api/eto/EtoApi.interfaces";
+import { EEtoDocumentType } from "../app/lib/api/eto/EtoFileApi.interfaces";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../app/modules/public-etos/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
 
 export const dummyConfig: IConfig = {
@@ -22,7 +25,27 @@ export function createDummyStore(): Store<any> {
 export const dummyEthereumAddress = "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359" as EthereumAddress;
 export const dummyEthereumAddressWithChecksum = "0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359" as EthereumAddressWithChecksum;
 
-export const testCompany = {
+export const testCompany: TCompanyEtoData = {
+  businessModel: undefined,
+  companyBanner: undefined,
+  companyMission: undefined,
+  companyStage: undefined,
+  customerGroup: undefined,
+  inspiration: undefined,
+  keyBenefitsForInvestors: undefined,
+  keyCompetitors: undefined,
+  keyQuoteInvestor: undefined,
+  marketTraction: undefined,
+  marketingApproach: undefined,
+  problemSolved: undefined,
+  riskBusinessModelDescription: undefined,
+  riskLiquidityDescription: undefined,
+  riskMaxDescription: undefined,
+  riskThirdPartyDescription: undefined,
+  riskThirdPartySharesFinancing: undefined,
+  roadmap: undefined,
+  targetMarketAndIndustry: undefined,
+  useOfCapital: undefined,
   advisors: {
     members: [
       {
@@ -32,6 +55,7 @@ export const testCompany = {
           "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/9859a896-513d-42bd-a17b-2b020b7e5c1f.jpg",
         name: "André Eggert",
         role: "Legal Architect",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -56,6 +80,7 @@ export const testCompany = {
         image: "",
         name: "",
         role: "",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -75,7 +100,6 @@ export const testCompany = {
   },
   brandName: "Neufund",
   categories: ["Technology", "Blockchain", "Fintech"],
-  city: "Berlin",
   companyDescription:
     "Blockchain based equity fundraising platform, ecosystem of smart contracts operating on the Ethereum blockchain. The Company’s key expertise lies in legal-tech and reg-tech. Neufund is a Blockchain protocol for securities’ tokenization and issuance.",
   companyId: "0xC8f867Cf4Ed30b4fF0Aa4c4c8c6b684397B219B0",
@@ -108,9 +132,8 @@ export const testCompany = {
   disableTwitterFeed: true,
   companyWebsite: "https://neufund.org",
   country: "DE",
-  etos: [],
   foundingDate: "2016-08-18",
-  jurisdiction: "DE",
+  //jurisdiction: "DE",
   keyAlliances: {
     members: [
       {
@@ -118,6 +141,7 @@ export const testCompany = {
         image: "",
         name: "",
         role: "",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -142,6 +166,7 @@ export const testCompany = {
         image: "",
         name: "",
         role: "",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -180,6 +205,7 @@ export const testCompany = {
           "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/7c1886da-75cb-47cd-a870-bd3b0cd2f28e.jpg",
         name: "Frank Thelen",
         role: "CEO at Freigeist Capital",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -231,6 +257,7 @@ export const testCompany = {
           "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/3405980f-3bcd-48d6-aeb7-ae9cc272b984.jpg",
         name: "Malta Stock Exchange",
         role: "",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -254,7 +281,7 @@ export const testCompany = {
   riskNoLoansExist: true,
   riskNoThirdPartyDependency: true,
   riskNotRegulatedBusiness: true,
-  schemaVersion: 1,
+  // schemaVersion: 1,
   sellingProposition:
     "Neufund’s Equity Token Offering (ETO) is a novel way of fundraising, which allows any kind of company (blockchain-based or not) to issue equity tokens on a Blockchain, in a public or private placement. An ETO is a hybrid investment model combining advantages of an IPO, an ICO, and a VC round. Typically it is accompanied by a campaign or a roadshow which informs investors about the offering. Thus, an ETO is an ideal way to build a clients’ ecosystem around the company or a product.",
   shareholders: [
@@ -366,6 +393,7 @@ export const testCompany = {
           "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/c520447a-90d8-490f-af27-16625f380b07.jpg",
         name: "Marcin Rudolf",
         role: "CTO & Co-Founder",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -387,6 +415,7 @@ export const testCompany = {
           "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/64f2b86f-1daf-45c3-9168-b0271a6d19c0.jpg",
         name: "Agnieszka Sarnecka",
         role: "VP Ventures",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -510,6 +539,7 @@ export const testCompany = {
           "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/301abd44-1775-4991-b616-536069408fe1.jpg",
         name: "Piotr Panorski",
         role: "VP Trading",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -571,6 +601,7 @@ export const testCompany = {
           "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/8fea024d-97e0-4878-bcbf-3d6538aac924.jpg",
         name: "Ula Lachowicz",
         role: "VP Marketing",
+        website: "",
         socialChannels: [
           {
             type: "medium",
@@ -647,26 +678,29 @@ export const testCompany = {
     },
   ],
   vatNumber: "18.08.2016",
-  zipCode: "12345",
+  //zipCode: "12345",
 };
 
-export const testEto = {
+export const testEto: TEtoWithCompanyAndContract = {
+  additionalTerms: undefined,
+  authorizedCapitalShares: undefined,
+  newSharesToIssueInFixedSlots: undefined,
   allowRetailInvestors: true,
   canEnableBookbuilding: false,
-  claimDurationDays: 10,
+  // claimDurationDays: 10,
   companyId: "0xC8f867Cf4Ed30b4fF0Aa4c4c8c6b684397B219B0",
   currencies: ["eth", "eur_t"],
   discountScheme: "40%",
   documents: {
     qmWKa6ZVZjZu3X2CtJnSnthUwWMeAcyfv9IZDnoawmULeT: {
-      documentType: "approved_investor_offering_document",
+      documentType: "approved_investor_offering_document" as EEtoDocumentType,
       form: "document",
       ipfsHash: "QmWKa6zVZjZu3x2CtJnSNTHUwWMeAcyfv9iZDnoawmULeT",
       mimeType: "application/pdf",
       name: "./dev_fixtures/eto_fixtures/ETOInPublicState/investor_offering_document.pdf",
     },
     qmc4RZuxqKkvRahSuhs6QaeRq2VoqDiMXbiHwhZTfwXUdK: {
-      documentType: "signed_termsheet",
+      documentType: "signed_termsheet" as EEtoDocumentType,
       form: "document",
       ipfsHash: "Qmc4rZUXQKkvRahSUHS6qaeRq2voqDiMXbiHwhZTfwXUdK",
       mimeType: "application/pdf",
@@ -674,24 +708,22 @@ export const testEto = {
     },
   },
   enableTransferOnSuccess: false,
-  equityTokenContractAddress: "0xbAb1B125ba8b4A3161b7543a4cAA38De7f9c9b2D",
-  equityTokenControllerContractAddress: "0xd36F021bEb5d404b65a639330331E7C39a037C02",
+  // equityTokenControllerContractAddress: "0xd36F021bEb5d404b65a639330331E7C39a037C02",
   equityTokenImage:
     "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/a03810cf-7e99-4264-8a94-24303dce4e3b.png",
   equityTokenName: "Quintessence",
-  equityTokenPrecision: 0,
+  // equityTokenPrecision: 0,
   equityTokenSymbol: "QTT",
   equityTokensPerShare: 10000,
   etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc",
-  etoTermsContractAddress: "0x948f07847e19E7dBb98DdfFdCA4b2eDF71f3E3B5",
   existingCompanyShares: 40976,
   fixedSlotsMaximumDiscountFraction: 0.5,
-  generalVotingDurationDays: 10,
+  // generalVotingDurationDays: 10,
   generalVotingRule: "positive",
-  hasDragAlongRights: true,
-  hasFoundersVesting: true,
-  hasGeneralInformationRights: true,
-  hasTagAlongRights: true,
+  // hasDragAlongRights: true,
+  // hasFoundersVesting: true,
+  // hasGeneralInformationRights: true,
+  // hasTagAlongRights: true,
   isBookbuilding: false,
   liquidationPreferenceMultiplier: 0.5,
   maxPledges: 500,
@@ -707,76 +739,81 @@ export const testEto = {
   prospectusLanguage: "de",
   publicDiscountFraction: 0,
   publicDurationDays: 14,
-  restrictedActVotingDurationDays: 14,
-  schemaVersion: 1,
+  // restrictedActVotingDurationDays: 14,
+  // schemaVersion: 1,
   shareNominalValueEur: 1,
   signingDurationDays: 14,
   startDate: "2018-11-16T05:03:56+00:00",
-  state: "on_chain",
-  tagAlongVotingRule: "negative",
+  state: "on_chain" as EEtoState,
+  // tagAlongVotingRule: "negative",
   templates: {
     companyTokenHolderAgreement: {
-      documentType: "company_token_holder_agreement",
+      documentType: "company_token_holder_agreement" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmPKDB129q8AxxtTiX5eh9MPF6K1da5sHfqMv1a788BbuM",
-      language: "en",
+      // language: "en",
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "company_token_holder_agreement",
     },
     investmentAndShareholderAgreementTemplate: {
-      documentType: "investment_and_shareholder_agreement_template",
+      documentType: "investment_and_shareholder_agreement_template" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmUktiTT9ap8UuMUMZNmgrz7fabHMkrosycuTPUtX3rydQ",
-      language: "en",
+      // language: "en",
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "investment_and_shareholder_agreement_template",
     },
     prospectusTemplate: {
-      documentType: "prospectus_template",
+      documentType: "prospectus_template" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmQYWyx6WWwCYqBnJ74ruogTTHfKoscQRHU5eJFKDD22mT",
-      language: "de",
+      // language: "de",
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "prospectus_template_de",
     },
     reservationAndAcquisitionAgreement: {
-      documentType: "reservation_and_acquisition_agreement",
+      documentType: "reservation_and_acquisition_agreement" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmekA9D4pa5Tsmd2krzUFFREGAduDDkbpNyoin4wX7aaob",
-      language: "en",
+      // language: "en",
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "reservation_and_acquisition_agreement",
     },
     termsheetTemplate: {
-      documentType: "termsheet_template",
+      documentType: "termsheet_template" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmRLwyTw4ux84KnYvhejTsUggi2SeewGqASuh3DrURtyot",
-      language: "en",
+      // language: "en",
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "termsheet_template",
     },
   },
-  tokenholdersQuorum: 0.5,
-  votingFinalizationDurationDays: 7,
-  votingMajorityFraction: 0.5,
+  // tokenholdersQuorum: 0.5,
+  // votingFinalizationDurationDays: 7,
+  // votingMajorityFraction: 0.5,
   whitelistDiscountFraction: 0.3,
   whitelistDurationDays: 7,
   company: testCompany,
   contract: {
     timedState: 3,
     totalInvestment: {
-      totalEquivEurUlps: "3.240447910281246044e+24",
-      totalTokensInt: "10010705",
+      totalEquivEurUlps: new BigNumber("3.240447910281246044e+24"),
+      totalTokensInt: new BigNumber("10010705"),
       totalInvestors: new BigNumber("3"),
-      euroTokenBalance: "3.2374649e+24",
-      etherTokenBalance: "5432420000000000000",
+      euroTokenBalance: new BigNumber("3.2374649e+24"),
+      etherTokenBalance: new BigNumber("5432420000000000000"),
     },
     startOfStates: {
-      "1": new Date("2018-11-16T05:03:56.000Z"),
-      "2": new Date("2018-11-23T05:03:56.000Z"),
-      "3": new Date("2018-12-07T05:03:56.000Z"),
-      "4": new Date("2018-12-21T05:03:56.000Z"),
-      "5": new Date("2018-12-31T05:03:56.000Z"),
+      [EETOStateOnChain.Setup]: undefined,
+      [EETOStateOnChain.Whitelist]: new Date("2018-11-16T05:03:56.000Z"),
+      [EETOStateOnChain.Public]: new Date("2018-11-23T05:03:56.000Z"),
+      [EETOStateOnChain.Signing]: new Date("2018-12-07T05:03:56.000Z"),
+      [EETOStateOnChain.Claim]: new Date("2018-12-21T05:03:56.000Z"),
+      [EETOStateOnChain.Payout]: new Date("2018-12-31T05:03:56.000Z"),
+      [EETOStateOnChain.Refund]: undefined,
     },
+    etoCommitmentAddress: "0x234234234234",
+    equityTokenAddress: "0xbAb1B125ba8b4A3161b7543a4cAA38De7f9c9b2D",
+    etoTermsAddress: "0x948f07847e19E7dBb98DdfFdCA4b2eDF71f3E3B5",
   },
 };

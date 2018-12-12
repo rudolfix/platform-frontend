@@ -5,7 +5,7 @@ import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants"
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
-  EtoState,
+  EEtoState,
   TCompanyEtoData,
   TEtoSpecsData,
   TPartialEtoSpecData,
@@ -29,7 +29,7 @@ export function* loadIssuerEto({
     const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getMyEto();
     const eto = etoResponse.body;
 
-    if (eto.state === EtoState.ON_CHAIN) {
+    if (eto.state === EEtoState.ON_CHAIN) {
       yield neuCall(loadEtoContact, eto);
     }
 
@@ -115,7 +115,7 @@ export function* saveEtoData(
       ...currentCompanyData,
       ...action.payload.data.companyData,
     });
-    if (currentEtoData.state === EtoState.PREVIEW)
+    if (currentEtoData.state === EEtoState.PREVIEW)
       yield apiEtoService.putMyEto(
         stripEtoDataOptionalFields({
           //TODO this is already being done on form save. Need to synchronize with convert() method

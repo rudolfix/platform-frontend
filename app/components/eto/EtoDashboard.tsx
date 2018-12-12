@@ -3,7 +3,7 @@ import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
@@ -44,7 +44,7 @@ interface IStateProps {
   isLightWallet: boolean;
   shouldEtoDataLoad?: boolean;
   requestStatus?: TRequestStatus;
-  etoState?: EtoState;
+  etoState?: EEtoState;
   previewCode?: string;
   canEnableBookbuilding: boolean;
   etoFormProgress?: number;
@@ -91,7 +91,7 @@ const EtoProgressDashboardSection: React.SFC = () => (
 );
 
 interface IEtoStateRender {
-  etoState?: EtoState;
+  etoState?: EEtoState;
   shouldViewSubmissionSection?: boolean;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
@@ -120,7 +120,7 @@ const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
     />
   );
   switch (etoState) {
-    case EtoState.PREVIEW:
+    case EEtoState.PREVIEW:
       return (
         <>
           {shouldViewSubmissionSection && (
@@ -129,14 +129,14 @@ const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
           <EtoProgressDashboardSection />
         </>
       );
-    case EtoState.PENDING:
+    case EEtoState.PENDING:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
           <ETOFormsProgressSection />
         </>
       );
-    case EtoState.LISTED:
+    case EEtoState.LISTED:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
@@ -156,7 +156,7 @@ const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
           <ETOFormsProgressSection />
         </>
       );
-    case EtoState.PROSPECTUS_APPROVED:
+    case EEtoState.PROSPECTUS_APPROVED:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
@@ -171,7 +171,7 @@ const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
           <ETOFormsProgressSection />
         </>
       );
-    case EtoState.ON_CHAIN:
+    case EEtoState.ON_CHAIN:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />

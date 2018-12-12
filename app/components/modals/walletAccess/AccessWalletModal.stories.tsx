@@ -2,12 +2,12 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { EWalletType } from "../../../modules/web3/types";
+import { withModalBody } from "../../../utils/storybookHelpers";
 import {
   BrowserWalletErrorMessage,
   MismatchedWalletAddressErrorMessage,
 } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
-import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessWalletContainerComponent } from "./AccessWalletModal";
 
 const props = {
@@ -20,11 +20,7 @@ const props = {
 };
 
 storiesOf("AccessWalletModal", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
-      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody())
   .add("lightwallet", () => <AccessWalletContainerComponent {...props} />)
   .add("lightwallet-unlocked", () => (
     <AccessWalletContainerComponent {...props} isUnlocked={true} />

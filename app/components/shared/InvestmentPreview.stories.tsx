@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ModalComponentBody } from "../modals/ModalComponentBody";
+import { withModalBody } from "../../utils/storybookHelpers";
 import { InvestmentPreview } from "./InvestmentPreview";
 
 const defaultProps = {
@@ -25,11 +25,7 @@ const defaultProps = {
 };
 
 storiesOf("InvestmentPreview", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
-      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody())
   .add("ETO didn't start", () => <InvestmentPreview {...defaultProps} />)
   .add("ETO ends in 1 day", () => <InvestmentPreview {...defaultProps} hasStarted={true} />)
   .add("ETO ends in more day", () => (

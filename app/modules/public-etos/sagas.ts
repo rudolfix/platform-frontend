@@ -7,7 +7,7 @@ import { all, fork, put, race, select } from "redux-saga/effects";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
-  EtoState,
+  EEtoState,
   TCompanyEtoData,
   TEtoSpecsData,
   TPublicEtoData,
@@ -50,7 +50,7 @@ export function* loadEtoPreview(
     const company = companyResponse.body;
 
     // Load contract data if eto is already on blockchain
-    if (eto.state === EtoState.ON_CHAIN) {
+    if (eto.state === EEtoState.ON_CHAIN) {
       // load investor tickets
       const userType: EUserType | undefined = yield select((state: IAppState) =>
         selectUserType(state),
@@ -89,7 +89,7 @@ export function* loadEto(
     const company = companyResponse.body;
 
     // Load contract data if eto is already on blockchain
-    if (eto.state === EtoState.ON_CHAIN) {
+    if (eto.state === EEtoState.ON_CHAIN) {
       // load investor tickets
       const userType: EUserType | undefined = yield select((state: IAppState) =>
         selectUserType(state),
@@ -115,8 +115,8 @@ export function* loadEtoContact(
   { contractsService, logger }: TGlobalDependencies,
   eto: TPublicEtoData,
 ): any {
-  if (eto.state !== EtoState.ON_CHAIN) {
-    logger.error("Invalid eto state", new InvalidETOStateError(eto.state, EtoState.ON_CHAIN), {
+  if (eto.state !== EEtoState.ON_CHAIN) {
+    logger.error("Invalid eto state", new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN), {
       etoId: eto.etoId,
     });
     return;
@@ -229,7 +229,7 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
     default: delay(etoNormalPoolingDelay),
   };
 
-  if (eto.state === EtoState.ON_CHAIN) {
+  if (eto.state === EEtoState.ON_CHAIN) {
     if ([EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(eto.contract!.timedState)) {
       strategies.inProgress = delay(etoInProgressPoolingDelay);
     }
@@ -267,7 +267,7 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
     yield all(
       order
         .map(id => etosByPreviewCode[id])
-        .filter(eto => eto.state === EtoState.ON_CHAIN)
+        .filter(eto => eto.state === EEtoState.ON_CHAIN)
         .map(eto => neuCall(loadEtoContact, eto)),
     );
 

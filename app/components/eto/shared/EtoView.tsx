@@ -546,4 +546,4 @@ const EtoView = withMetaTags<IProps>(({ etoData }, intl) => {
   };
 })(EtoViewLayout);
 
-export { EtoView };
+export { EtoView, EtoViewLayout };

@@ -2,7 +2,7 @@ import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EtoState, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { promisify } from "../../lib/contracts/typechain-runtime";
@@ -21,7 +21,7 @@ export function* loadInvestorTickets({ logger }: TGlobalDependencies, action: TA
     yield all(
       map(
         eto => put(actions.investorEtoTicket.loadEtoInvestorTicket(eto)),
-        filter(eto => eto.state === EtoState.ON_CHAIN, action.payload.etos),
+        filter(eto => eto.state === EEtoState.ON_CHAIN, action.payload.etos),
       ),
     );
 
@@ -37,7 +37,7 @@ export function* loadInvestorTicket(
 ): any {
   if (action.type !== "INVESTOR_TICKET_LOAD") return;
 
-  if (action.payload.eto.state !== EtoState.ON_CHAIN) {
+  if (action.payload.eto.state !== EEtoState.ON_CHAIN) {
     throw new Error("Should be called only when eto is on chain");
   }
 
@@ -65,7 +65,7 @@ export function* loadComputedContributionFromContract(
   amountEuroUlps?: string,
   isICBM = false,
 ): any {
-  if (eto.state !== EtoState.ON_CHAIN) return;
+  if (eto.state !== EEtoState.ON_CHAIN) return;
 
   const state: IAppState = yield select();
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);

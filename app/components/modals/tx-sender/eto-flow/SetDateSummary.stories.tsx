@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { ModalComponentBody } from "../../ModalComponentBody";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 import { SetEtoDateSummaryComponent } from "./SetDateSummary";
 
 const date = moment(new Date()).add(10, "days");
@@ -20,9 +20,5 @@ const data = {
 };
 
 storiesOf("ETO-Flow/SetStartDateSummary", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
-      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody())
   .add("default", () => <SetEtoDateSummaryComponent {...data} />);

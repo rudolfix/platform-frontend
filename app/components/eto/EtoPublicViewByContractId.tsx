@@ -1,4 +1,3 @@
-import * as React from "react";
 import { branch, compose, renderComponent } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -34,10 +33,6 @@ type TProps = {
   eto: TEtoWithCompanyAndContract;
 };
 
-const EtoPublicViewByContractIdLayout: React.SFC<TProps> = ({ eto }) => (
-  <EtoView companyData={eto.company} etoData={eto} />
-);
-
 export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
@@ -61,4 +56,4 @@ export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
     withContainer(LayoutBase),
   ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
-)(EtoPublicViewByContractIdLayout);
+)(EtoView);

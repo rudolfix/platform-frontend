@@ -1,4 +1,3 @@
-import { delay } from "bluebird";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
 import { Container } from "inversify";
@@ -7,7 +6,7 @@ import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware from "redux-saga";
+import createSagaMiddleware, { delay } from "redux-saga";
 import { SinonSpy } from "sinon";
 
 import {

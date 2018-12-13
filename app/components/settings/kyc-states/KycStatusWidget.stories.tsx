@@ -37,6 +37,7 @@ storiesOf("KYC/StatusWidget", module)
       userType={EUserType.INVESTOR}
       requestStatus="Outsourced"
       requestOutsourcedStatus="started"
+      externalKycUrl={"https://neufund.org"}
     />
   ))
   .add("outsourced-aborted", () => (

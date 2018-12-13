@@ -1,5 +1,4 @@
-import { delay } from "bluebird";
-import { Effect, effects } from "redux-saga";
+import { delay, Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
 import { GenericError } from "../../components/translatedMessages/messages";
@@ -136,7 +135,7 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
 
       if (e instanceof SignerError || error.messageType === GenericError.GENERIC_ERROR) throw e;
 
-      yield delay(500); //TODO replace it with redux-saga delay
+      yield delay(500);
     }
   }
 }

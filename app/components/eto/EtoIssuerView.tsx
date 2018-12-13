@@ -1,15 +1,7 @@
-import * as React from "react";
-import { branch, renderComponent } from "recompose";
-import { compose } from "redux";
+import { branch, compose, renderComponent } from "recompose";
 
-import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces";
-import { IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectEtoDocumentData } from "../../modules/eto-documents/selectors";
-import {
-  selectIssuerCompany,
-  selectIssuerEtoWithCompanyAndContract,
-} from "../../modules/eto-flow/selectors";
+import { selectIssuerEtoWithCompanyAndContract } from "../../modules/eto-flow/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -20,30 +12,24 @@ import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoun
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoView } from "./shared/EtoView";
 
-type TStateProps = {
-  companyData?: TCompanyEtoData;
-  etoData?: TEtoWithCompanyAndContract;
-  etoFilesData: IEtoFiles;
+type TProps = {
+  eto: TEtoWithCompanyAndContract;
 };
 
-export const EtoIssuerView = compose<React.SFC>(
+type TStateProps = Partial<TProps>;
+
+export const EtoIssuerView = compose<TProps, {}>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.etoFlow.loadIssuerEto());
-      dispatch(actions.etoDocuments.loadFileDataStart());
     },
   }),
   appConnect<TStateProps>({
     stateToProps: state => ({
-      companyData: selectIssuerCompany(state),
-      etoData: selectIssuerEtoWithCompanyAndContract(state),
-      etoFilesData: selectEtoDocumentData(state.etoDocuments),
+      eto: selectIssuerEtoWithCompanyAndContract(state),
     }),
   }),
   withContainer(LayoutAuthorized),
-  branch<TStateProps>(
-    props => !props.companyData || !props.etoData,
-    renderComponent(LoadingIndicator),
-  ),
+  branch<TStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
 )(EtoView);

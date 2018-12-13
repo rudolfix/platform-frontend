@@ -11,6 +11,7 @@ import {
 } from "../../../test/integrationTestUtils";
 import { globalFakeClock } from "../../../test/setupTestsHooks";
 import { createMock, tid } from "../../../test/testUtils";
+import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../config/constants";
 import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/SignatureAuthApi";
 import { getDummyUser } from "../../lib/api/users/fixtures";
@@ -38,7 +39,6 @@ import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons";
 import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";
 import { createMessage } from "../translatedMessages/utils";
-import { BROWSER_WALLET_RECONNECT_INTERVAL } from "./browser/WalletBrowser";
 import { LEDGER_RECONNECT_INTERVAL } from "./ledger/WalletLedgerInitComponent";
 import { walletRegisterRoutes } from "./walletRoutes";
 import { WalletSelector } from "./WalletSelector";

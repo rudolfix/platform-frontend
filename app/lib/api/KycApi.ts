@@ -191,7 +191,6 @@ export class KycApi {
   }
 
   // beneficial owners
-  // @TODO
   public async getBeneficialOwners(): Promise<IHttpResponse<IKycBeneficialOwner[]>> {
     return await this.httpClient.get<IKycBeneficialOwner[]>({
       baseUrl: BASE_PATH,

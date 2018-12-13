@@ -21,7 +21,7 @@ import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryP
 import { Panel } from "../../../shared/Panel";
 
 import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
-import * as styles from "../../etoContentWidget.module.scss";
+import * as styles from "../../EtoContentWidget.module.scss";
 
 interface IStateProps {
   oldDate?: Date;

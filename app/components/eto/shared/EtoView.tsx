@@ -5,7 +5,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { isOnChain } from "../../../modules/public-etos/utils";
 import { withMetaTags } from "../../../utils/withMetaTags";
@@ -39,16 +38,52 @@ export const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#39465
 export const DEFAULT_CHART_COLOR = "#c4c5c6";
 
 interface IProps {
-  companyData: TCompanyEtoData;
-  etoData: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContract;
 }
 
 // TODO: There are lots of castings right now in this file, cause formerly the types of IProps was "any"
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
-  const { socialChannels, companyVideo, disableTwitterFeed, companySlideshare } = companyData;
+const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
+  const {
+    advisors,
+    companyDescription,
+    keyQuoteInvestor,
+    socialChannels,
+    companyVideo,
+    categories,
+    disableTwitterFeed,
+    companySlideshare,
+    brandName,
+    companyOneliner,
+    companyLogo,
+    companyWebsite,
+    companyBanner,
+    team,
+    boardMembers,
+    keyAlliances,
+    keyCustomers,
+    partners,
+    notableInvestors,
+    keyBenefitsForInvestors,
+    targetMarketAndIndustry,
+    roadmap,
+    marketingApproach,
+    useOfCapitalList,
+    inspiration,
+    companyMission,
+    marketTraction,
+    problemSolved,
+    productVision,
+    customerGroup,
+    sellingProposition,
+    keyCompetitors,
+    companyNews,
+    marketingLinks,
+    businessModel,
+    useOfCapital,
+  } = eto.company;
 
   const isTwitterFeedEnabled =
     some(socialChannels, (channel: any) => channel.type === "twitter" && channel.url.length) &&
@@ -61,31 +96,30 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
       ? (socialChannels.find(c => c.type === "twitter") as any).url
       : "";
 
-  const isInSetupState =
-    isOnChain(etoData) && etoData.contract.timedState === EETOStateOnChain.Setup;
+  const isInSetupState = isOnChain(eto) && eto.contract.timedState === EETOStateOnChain.Setup;
 
   return (
     <>
       <PersonProfileModal />
       <article data-test-id="eto.public-view">
         <Cover
-          companyName={companyData.brandName}
-          companyOneliner={companyData.companyOneliner}
+          companyName={brandName}
+          companyOneliner={companyOneliner}
           companyLogo={{
-            alt: companyData.brandName,
+            alt: brandName,
             srcSet: {
-              "1x": companyData.companyLogo as string,
+              "1x": companyLogo as string,
             },
           }}
           companyBanner={{
-            alt: companyData.brandName,
+            alt: brandName,
             srcSet: {
-              "1x": companyData.companyBanner as string,
+              "1x": companyBanner as string,
             },
           }}
-          tags={companyData.categories}
+          tags={categories}
         />
-        <EtoOverviewStatus eto={etoData} className="mb-3" publicView={true} />
+        <EtoOverviewStatus eto={eto} className="mb-3" publicView={true} />
         <Row>
           <Col className="mb-4">
             <SectionHeader layoutHasDecorator={false} className="mb-3">
@@ -94,7 +128,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                 {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" &&
                   !isInSetupState && (
                     <ButtonLink
-                      to={withParams(externalRoutes.icoMonitorEto, { etoId: etoData.etoId })}
+                      to={withParams(externalRoutes.icoMonitorEto, { etoId: eto.etoId })}
                       target="_blank"
                     >
                       <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
@@ -104,7 +138,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
             </SectionHeader>
             <Panel>
               <EtoTimeline
-                startOfStates={isOnChain(etoData) ? etoData.contract.startOfStates : undefined}
+                startOfStates={isOnChain(eto) ? eto.contract.startOfStates : undefined}
               />
             </Panel>
           </Col>
@@ -124,23 +158,19 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
           >
             <SectionHeader layoutHasDecorator={false} className="mb-4">
               <div className={styles.headerWithButton}>
-                {companyData.brandName}
-                {companyData.companyWebsite && (
-                  <a href={normalizedUrl(companyData.companyWebsite)} target="_blank">
-                    {companyData.companyWebsite.split("//")[1] || DEFAULT_PLACEHOLDER}
+                {brandName}
+                {companyWebsite && (
+                  <a href={normalizedUrl(companyWebsite)} target="_blank">
+                    {companyWebsite.split("//")[1] || DEFAULT_PLACEHOLDER}
                   </a>
                 )}
               </div>
             </SectionHeader>
 
-            {(companyData.companyDescription || companyData.keyQuoteInvestor) && (
+            {(companyDescription || keyQuoteInvestor) && (
               <Panel className="mb-4">
-                {companyData.companyDescription && (
-                  <p className="mb-4">{companyData.companyDescription}</p>
-                )}
-                {companyData.keyQuoteInvestor && (
-                  <p className={cn(styles.quote, "mb-4")}>{companyData.keyQuoteInvestor}</p>
-                )}
+                {companyDescription && <p className="mb-4">{companyDescription}</p>}
+                {keyQuoteInvestor && <p className={cn(styles.quote, "mb-4")}>{keyQuoteInvestor}</p>}
               </Panel>
             )}
 
@@ -148,26 +178,19 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
               <FormattedMessage id="eto.public-view.legal-information.title" />
             </SectionHeader>
 
-            <LegalInformationWidget companyData={companyData} />
+            <LegalInformationWidget companyData={eto.company} />
           </Col>
           {(isYouTubeVideoAvailable || isSlideShareAvailable) && (
             <Col xs={12} md={4} className="mb-4 flex-column d-flex">
               <Tabs className="mb-4" layoutSize="large" layoutOrnament={false}>
                 {isYouTubeVideoAvailable && (
                   <TabContent tab="video">
-                    <Video
-                      youTubeUrl={companyData.companyVideo && companyData.companyVideo.url}
-                      hasModal
-                    />
+                    <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
                   </TabContent>
                 )}
                 {isSlideShareAvailable && (
                   <TabContent tab="pitch deck">
-                    <Slides
-                      slideShareUrl={
-                        companyData.companySlideshare && companyData.companySlideshare.url
-                      }
-                    />
+                    <Slides slideShareUrl={companySlideshare && companySlideshare.url} />
                   </TabContent>
                 )}
               </Tabs>
@@ -177,9 +200,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                     "mt-4",
                 )}
               >
-                <SocialProfilesList
-                  profiles={(companyData.socialChannels as IEtoSocialProfile[]) || []}
-                />
+                <SocialProfilesList profiles={(socialChannels as IEtoSocialProfile[]) || []} />
               </div>
               {isTwitterFeedEnabled && (
                 <>
@@ -190,7 +211,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                     narrow
                     className={cn(styles.twitterPanel, "align-self-stretch", "flex-grow-1")}
                   >
-                    <TwitterTimelineEmbed url={twitterUrl} userName={companyData.brandName} />
+                    <TwitterTimelineEmbed url={twitterUrl} userName={brandName} />
                   </Panel>
                 </>
               )}
@@ -203,10 +224,10 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
               <FormattedMessage id="eto.public-view.token-terms.title" />
             </SectionHeader>
 
-            <EtoInvestmentTermsWidget etoData={etoData} />
+            <EtoInvestmentTermsWidget etoData={eto} />
           </Col>
         </Row>
-        {areThereIndividuals(companyData.team) && (
+        {areThereIndividuals(team) && (
           <Row>
             <Col className="mb-4">
               <SectionHeader layoutHasDecorator={false} className="mb-4">
@@ -214,7 +235,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
               </SectionHeader>
               <Panel>
                 <PeopleSwiperWidget
-                  people={(companyData.team && (companyData.team.members as IPerson[])) || []}
+                  people={(team && (team.members as IPerson[])) || []}
                   navigation={{
                     nextEl: "people-swiper-team-next",
                     prevEl: "people-swiper-team-prev",
@@ -224,12 +245,12 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
             </Col>
           </Row>
         )}
-        {(areThereIndividuals(companyData.advisors) ||
-          areThereIndividuals(companyData.notableInvestors) ||
-          areThereIndividuals(companyData.partners) ||
-          areThereIndividuals(companyData.keyCustomers) ||
-          areThereIndividuals(companyData.keyAlliances) ||
-          areThereIndividuals(companyData.boardMembers)) && (
+        {(areThereIndividuals(advisors) ||
+          areThereIndividuals(notableInvestors) ||
+          areThereIndividuals(partners) ||
+          areThereIndividuals(keyCustomers) ||
+          areThereIndividuals(keyAlliances) ||
+          areThereIndividuals(boardMembers)) && (
           <Row>
             <Col className="mb-4">
               <Tabs
@@ -237,19 +258,19 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                 layoutSize="large"
                 layoutOrnament={false}
                 selectedIndex={selectActiveCarouselTab([
-                  companyData.advisors,
-                  companyData.notableInvestors,
-                  companyData.partners,
-                  companyData.keyCustomers,
-                  companyData.boardMembers,
-                  companyData.keyAlliances,
+                  advisors,
+                  notableInvestors,
+                  partners,
+                  keyCustomers,
+                  boardMembers,
+                  keyAlliances,
                 ])}
               >
-                {areThereIndividuals(companyData.advisors) && (
+                {areThereIndividuals(advisors) && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
                     <Panel>
                       <PeopleSwiperWidget
-                        people={companyData.advisors.members as IPerson[]}
+                        people={advisors.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-advisors-next",
                           prevEl: "people-swiper-advisors-prev",
@@ -259,13 +280,13 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                     </Panel>
                   </TabContent>
                 )}
-                {areThereIndividuals(companyData.notableInvestors) && (
+                {areThereIndividuals(notableInvestors) && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        people={companyData.notableInvestors.members as IPerson[]}
+                        people={notableInvestors.members as IPerson[]}
                         navigation={{
                           nextEl: "people-swiper-investors-next",
                           prevEl: "people-swiper-investors-prev",
@@ -275,7 +296,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                     </Panel>
                   </TabContent>
                 )}
-                {areThereIndividuals(companyData.partners) && (
+                {areThereIndividuals(partners) && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
                     <Panel>
                       <PeopleSwiperWidget
@@ -283,13 +304,13 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
                         }}
-                        people={companyData.partners.members as IPerson[]}
+                        people={partners.members as IPerson[]}
                         layout="vertical"
                       />
                     </Panel>
                   </TabContent>
                 )}
-                {areThereIndividuals(companyData.keyCustomers) && (
+                {areThereIndividuals(keyCustomers) && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}
                   >
@@ -299,13 +320,13 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                           nextEl: "people-swiper-partners-next",
                           prevEl: "people-swiper-partners-prev",
                         }}
-                        people={companyData.keyCustomers.members as IPerson[]}
+                        people={keyCustomers.members as IPerson[]}
                         layout="vertical"
                       />
                     </Panel>
                   </TabContent>
                 )}
-                {areThereIndividuals(companyData.boardMembers) && (
+                {areThereIndividuals(boardMembers) && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.board-members" />}
                   >
@@ -315,13 +336,13 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                           nextEl: "people-swiper-board-members-next",
                           prevEl: "people-swiper-board-members-prev",
                         }}
-                        people={companyData.boardMembers.members as IPerson[]}
+                        people={boardMembers.members as IPerson[]}
                         layout="vertical"
                       />
                     </Panel>
                   </TabContent>
                 )}
-                {areThereIndividuals(companyData.keyAlliances) && (
+                {areThereIndividuals(keyAlliances) && (
                   <TabContent
                     tab={<FormattedMessage id="eto.public-view.carousel.tab.key-alliances" />}
                   >
@@ -331,7 +352,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                           nextEl: "people-swiper-board-members-next",
                           prevEl: "people-swiper-board-members-prev",
                         }}
-                        people={companyData.keyAlliances.members as IPerson[]}
+                        people={keyAlliances.members as IPerson[]}
                         layout="vertical"
                       />
                     </Panel>
@@ -343,107 +364,106 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
         )}
         <Row>
           <Col sm={12} md={8} className="mb-4">
-            {(companyData.inspiration ||
-              companyData.companyMission ||
-              companyData.customerGroup ||
-              companyData.productVision ||
-              companyData.problemSolved ||
-              companyData.marketTraction ||
-              companyData.keyCompetitors ||
-              companyData.sellingProposition ||
-              companyData.useOfCapitalList ||
-              companyData.marketingApproach ||
-              companyData.roadmap ||
-              companyData.targetMarketAndIndustry ||
-              companyData.keyBenefitsForInvestors) && (
+            {(inspiration ||
+              companyMission ||
+              customerGroup ||
+              productVision ||
+              problemSolved ||
+              marketTraction ||
+              keyCompetitors ||
+              sellingProposition ||
+              useOfCapitalList ||
+              marketingApproach ||
+              roadmap ||
+              targetMarketAndIndustry ||
+              keyBenefitsForInvestors) && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.public-view.product-vision.title" />
                 </SectionHeader>
                 <Panel>
                   <Accordion>
-                    {companyData.inspiration && (
+                    {inspiration && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.inspiration" />}
                       >
-                        <p>{companyData.inspiration}</p>
+                        <p>{inspiration}</p>
                       </AccordionElement>
                     )}
-                    {companyData.companyMission && (
+                    {companyMission && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.company-mission" />}
                       >
-                        <p>{companyData.companyMission}</p>
+                        <p>{companyMission}</p>
                       </AccordionElement>
                     )}
-                    {companyData.productVision && (
+                    {productVision && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.product-vision" />}
                       >
-                        <p>{companyData.productVision}</p>
+                        <p>{productVision}</p>
                       </AccordionElement>
                     )}
-                    {companyData.problemSolved && (
+                    {problemSolved && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
                       >
-                        <p>{companyData.problemSolved}</p>
+                        <p>{problemSolved}</p>
                       </AccordionElement>
                     )}
-                    {companyData.customerGroup && (
+                    {customerGroup && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
                       >
-                        <p>{companyData.customerGroup}</p>
+                        <p>{customerGroup}</p>
                       </AccordionElement>
                     )}
-                    {companyData.targetMarketAndIndustry && (
+                    {targetMarketAndIndustry && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.target-segment" />}
                       >
-                        <p>{companyData.targetMarketAndIndustry}</p>
+                        <p>{targetMarketAndIndustry}</p>
                       </AccordionElement>
                     )}
-                    {companyData.keyCompetitors && (
+                    {keyCompetitors && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
                       >
-                        <p>{companyData.keyCompetitors}</p>
+                        <p>{keyCompetitors}</p>
                       </AccordionElement>
                     )}
-                    {companyData.sellingProposition && (
+                    {sellingProposition && (
                       <AccordionElement
                         title={
                           <FormattedMessage id="eto.form.product-vision.selling-proposition" />
                         }
                       >
-                        <p>{companyData.sellingProposition}</p>
+                        <p>{sellingProposition}</p>
                       </AccordionElement>
                     )}
-                    {companyData.keyBenefitsForInvestors && (
+                    {keyBenefitsForInvestors && (
                       <AccordionElement
                         title={
                           <FormattedMessage id="eto.form.product-vision.key-benefits-for-investors" />
                         }
                       >
-                        <p>{companyData.keyBenefitsForInvestors}</p>
+                        <p>{keyBenefitsForInvestors}</p>
                       </AccordionElement>
                     )}
 
-                    {((companyData.useOfCapitalList &&
-                      companyData.useOfCapitalList.some((e: any) => e.percent > 0)) ||
-                      companyData.useOfCapital) && (
+                    {((useOfCapitalList && useOfCapitalList.some((e: any) => e.percent > 0)) ||
+                      useOfCapital) && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}
                       >
                         <Row>
-                          {companyData.useOfCapital && (
+                          {useOfCapital && (
                             <Col>
-                              <p>{companyData.useOfCapital}</p>
+                              <p>{useOfCapital}</p>
                             </Col>
                           )}
 
-                          {companyData.useOfCapitalList && (
+                          {useOfCapitalList && (
                             <Col md={12} lg={6}>
                               <ChartDoughnut
                                 className="pr-5 pb-4"
@@ -451,15 +471,13 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                                 data={{
                                   datasets: [
                                     {
-                                      data: companyData.useOfCapitalList.map(
-                                        d => d && d.percent,
-                                      ) as number[],
-                                      backgroundColor: companyData.useOfCapitalList.map(
+                                      data: useOfCapitalList.map(d => d && d.percent) as number[],
+                                      backgroundColor: useOfCapitalList.map(
                                         (_, i: number) => CHART_COLORS[i],
                                       ),
                                     },
                                   ],
-                                  labels: (companyData.useOfCapitalList || []).map(
+                                  labels: (useOfCapitalList || []).map(
                                     d => d && d.description,
                                   ) as string[],
                                 }}
@@ -469,32 +487,32 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
                         </Row>
                       </AccordionElement>
                     )}
-                    {companyData.marketTraction && (
+                    {marketTraction && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.market-traction" />}
                       >
-                        <p>{companyData.marketTraction}</p>
+                        <p>{marketTraction}</p>
                       </AccordionElement>
                     )}
-                    {companyData.roadmap && (
+                    {roadmap && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.roadmap" />}
                       >
-                        <p>{companyData.roadmap}</p>
+                        <p>{roadmap}</p>
                       </AccordionElement>
                     )}
-                    {companyData.businessModel && (
+                    {businessModel && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.business-model" />}
                       >
-                        <p>{companyData.businessModel}</p>
+                        <p>{businessModel}</p>
                       </AccordionElement>
                     )}
-                    {companyData.marketingApproach && (
+                    {marketingApproach && (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
                       >
-                        <p>{companyData.marketingApproach}</p>
+                        <p>{marketingApproach}</p>
                       </AccordionElement>
                     )}
                   </Accordion>
@@ -503,7 +521,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
             )}
           </Col>
           <Col sm={12} md={4}>
-            {companyData.marketingLinks && (
+            {marketingLinks && (
               <>
                 <SectionHeader layoutHasDecorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.documents.title" />
@@ -511,21 +529,21 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
 
                 <DocumentsWidget
                   className="mb-4"
-                  companyMarketingLinks={companyData.marketingLinks}
-                  etoTemplates={etoData.templates}
-                  etoDocuments={etoData.documents}
-                  isRetailEto={etoData.allowRetailInvestors}
+                  companyMarketingLinks={marketingLinks}
+                  etoTemplates={eto.templates}
+                  etoDocuments={eto.documents}
+                  isRetailEto={eto.allowRetailInvestors}
                 />
               </>
             )}
 
-            {companyData.companyNews &&
-              !!companyData.companyNews[0].url && (
+            {companyNews &&
+              !!companyNews[0].url && (
                 <>
                   <SectionHeader layoutHasDecorator={false} className="mb-4">
                     <FormattedMessage id="eto.form.media-links.title" />
                   </SectionHeader>
-                  <MediaLinksWidget links={[...companyData.companyNews].reverse() as ILink[]} />
+                  <MediaLinksWidget links={[...companyNews].reverse() as ILink[]} />
                 </>
               )}
           </Col>
@@ -535,13 +553,12 @@ const EtoViewLayout: React.SFC<IProps> = ({ companyData, etoData }) => {
   );
 };
 
-const EtoView = withMetaTags<IProps>(({ etoData }, intl) => {
-  const requiredDataPresent =
-    etoData.company.brandName && etoData.equityTokenName && etoData.equityTokenSymbol;
+const EtoView = withMetaTags<IProps>(({ eto }, intl) => {
+  const requiredDataPresent = eto.company.brandName && eto.equityTokenName && eto.equityTokenSymbol;
 
   return {
     title: requiredDataPresent
-      ? `${etoData.company.brandName} - ${etoData.equityTokenName} (${etoData.equityTokenSymbol})`
+      ? `${eto.company.brandName} - ${eto.equityTokenName} (${eto.equityTokenSymbol})`
       : intl.formatIntlMessage("menu.eto-page"),
   };
 })(EtoViewLayout);

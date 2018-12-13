@@ -1,5 +1,5 @@
 export * from "./form-field/FormCategoryDistribution";
-export * from "./form-field/FormCheckbox";
+export * from "./form-field/FormFieldBoolean";
 export * from "./form-field/FormError";
 export * from "./form-field/FormField";
 export * from "./form-field/FormFieldDate";

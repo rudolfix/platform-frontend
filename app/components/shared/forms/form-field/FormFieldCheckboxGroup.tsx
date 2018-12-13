@@ -3,7 +3,7 @@ import { includes } from "lodash";
 import * as React from "react";
 import { compose } from "recompose";
 
-import { CheckboxLayout } from "./FormCheckbox";
+import { CheckboxLayout } from "./FormFieldBoolean";
 import { IFormField, withFormField } from "./utils";
 
 interface IFormFieldCheckboxGroupProps {

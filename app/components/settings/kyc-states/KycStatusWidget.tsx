@@ -23,7 +23,7 @@ import {
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
-import { Button, EButtonLayout } from "../../shared/buttons";
+import { Button, ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -192,22 +192,25 @@ const ActionButton = ({
   }
 
   if (
+    externalKycUrl &&
     requestStatus === "Outsourced" &&
     (requestOutsourcedStatus === "canceled" ||
       requestOutsourcedStatus === "aborted" ||
       requestOutsourcedStatus === "started")
   ) {
     return (
-      // TODO: Style anchor as button
-      <a href={externalKycUrl}>
-        <Button layout={EButtonLayout.SECONDARY} iconPosition="icon-after" svgIcon={arrowRight}>
-          <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
-        </Button>
-      </a>
+      <ButtonLink
+        to={externalKycUrl}
+        layout={EButtonLayout.SECONDARY}
+        iconPosition="icon-after"
+        svgIcon={arrowRight}
+      >
+        <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
+      </ButtonLink>
     );
   }
 
-  return <div />;
+  return null;
 };
 
 export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props => {

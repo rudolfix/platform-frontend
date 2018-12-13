@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces";
-import { ModalComponentBody } from "../../ModalComponentBody";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 import { BankTransferDetailsComponent } from "./BankTransferDetails";
 import { BankTransferSummaryComponent } from "./BankTransferSummary";
 
@@ -37,10 +37,6 @@ const summaryData = {
 };
 
 storiesOf("Investment/Bank Transfer", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
-      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody())
   .add("Details", () => <BankTransferDetailsComponent {...detailsData} />)
   .add("Summary", () => <BankTransferSummaryComponent {...summaryData} />);

@@ -142,8 +142,8 @@ const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) 
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
     </p>
-    <Col xs={12} className="d-flex justify-content-center" data-test-id="email-verified">
-      <p>
+    <Col xs={12} className="d-flex justify-content-center p-2" data-test-id="email-verified">
+      <p className="m-0">
         <strong>
           <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
         </strong>
@@ -182,6 +182,8 @@ const UnVerifiedUser: React.SFC<{
       <Col className="pr-0">
         <Button
           layout={EButtonLayout.SECONDARY}
+          iconPosition="icon-after"
+          svgIcon={arrowRight}
           onClick={cancelEmail}
           data-test-id="verify-email-widget.change-email.button"
         >

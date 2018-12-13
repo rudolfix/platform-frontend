@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
@@ -30,16 +30,16 @@ interface IStateProps {
 }
 
 export const statusToName: Record<
-  EtoState | EETOStateOnChain,
+  EEtoState | EETOStateOnChain,
   React.ReactElement<FormattedMessage>
 > = {
-  [EtoState.PREVIEW]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
-  [EtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
-  [EtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
-  [EtoState.PROSPECTUS_APPROVED]: (
+  [EEtoState.PREVIEW]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
+  [EEtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
+  [EEtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
+  [EEtoState.PROSPECTUS_APPROVED]: (
     <FormattedMessage id="shared-component.eto-overview.status-prospectus-approved" />
   ),
-  [EtoState.ON_CHAIN]: <FormattedMessage id="shared-component.eto-overview.status-on-chain" />,
+  [EEtoState.ON_CHAIN]: <FormattedMessage id="shared-component.eto-overview.status-on-chain" />,
   // on chain state mappings
   [EETOStateOnChain.Setup]: <FormattedMessage id="eto.status.onchain.setup" />,
   [EETOStateOnChain.Whitelist]: <FormattedMessage id="eto.status.onchain.whitelist" />,
@@ -50,9 +50,9 @@ export const statusToName: Record<
   [EETOStateOnChain.Refund]: <FormattedMessage id="eto.status.onchain.refund" />,
 };
 
-const stateToClassName: Partial<Record<EtoState | EETOStateOnChain, string>> = {
-  [EtoState.PENDING]: styles.pending,
-  [EtoState.LISTED]: styles.listed,
+const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain, string>> = {
+  [EEtoState.PENDING]: styles.pending,
+  [EEtoState.LISTED]: styles.listed,
   [EETOStateOnChain.Refund]: styles.refund,
 };
 

@@ -17,7 +17,7 @@ import { getDocumentTitles } from "../documents/utils";
 import { AssetPortfolio } from "../shared/AssetPortfolio";
 import { Document } from "../shared/Document";
 import { ETOState } from "../shared/ETOState";
-import { ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
 import { NewTable, NewTableRow } from "../shared/NewTable";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ClaimedDividends } from "../wallet/claimed-dividends/ClaimedDividends";
@@ -67,8 +67,8 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
           <Col className="mb-4">
             <AssetPortfolio
               icon={neuIcon}
-              currency="neu"
-              currencyTotal="eur"
+              currency={ECurrency.NEU}
+              currencyTotal={ECurrency.EUR}
               largeNumber="1000000000000"
               value="10000000000000"
               theme="light"
@@ -142,13 +142,13 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                   <>{investorTicket.equityTokenInt.toString()}</>
                   <Money
                     value={investorTicket.equivEurUlps.toString()}
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     currencySymbol={ECurrencySymbol.NONE}
                   />
                   <>{getNeuReward(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}</>
                   <Money
                     value={investorTicket.rewardNmkUlps.toString()}
-                    currency="neu"
+                    currency={ECurrency.NEU}
                     currencySymbol={ECurrencySymbol.NONE}
                   />
                   <>
@@ -203,16 +203,20 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                 <img src={neuIcon} alt="" className={cn("mr-2", styles.token)} />
                 <span>{"NEU"}</span>
               </>
-              <Money value={myNeuBalance} currency="neu" currencySymbol={ECurrencySymbol.NONE} />
+              <Money
+                value={myNeuBalance}
+                currency={ECurrency.NEU}
+                currencySymbol={ECurrencySymbol.NONE}
+              />
               <Money
                 value={myNeuBalanceEuroAmount}
-                currency="eur"
+                currency={ECurrency.EUR}
                 currencySymbol={ECurrencySymbol.NONE}
               />
               <Money
                 value={neuPrice}
                 format={EMoneyFormat.FLOAT}
-                currency="eur"
+                currency={ECurrency.EUR}
                 currencySymbol={ECurrencySymbol.NONE}
               />
               <>{"-"}</>
@@ -236,13 +240,13 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                   <>{investorTicket.equityTokenInt.toString()}</>
                   <Money
                     value={investorTicket.equivEurUlps.toString()}
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     currencySymbol={ECurrencySymbol.NONE}
                   />
                   <>{getNeuReward(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}</>
                   <Money
                     value={investorTicket.rewardNmkUlps.toString()}
-                    currency="neu"
+                    currency={ECurrency.NEU}
                     currencySymbol={ECurrencySymbol.NONE}
                   />
                   <>

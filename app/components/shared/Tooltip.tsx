@@ -17,31 +17,34 @@ interface IProps {
 
 let tooltipCount = 0;
 
-export const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({
+const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({
   content,
   className,
   isOpen,
   alignLeft,
   targetId,
-}) => {
-  const tooltipId = targetId || `tooltip-${tooltipCount++}`;
-  return (
-    <span className={cn(className, styles.tooltipWrapper)} onClick={e => e.preventDefault()}>
-      <span
-        key={tooltipId} // add specific key to recreate dom, when tooltipId changed dynamically
-        className={styles.tooltip}
-        id={tooltipId}
-      >
-        <InlineIcon svgIcon={icon} />
-      </span>
-      <CustomTooltip
-        key={`${tooltipId}-container`} // add specific key to recreate dom, when tooltipId changed dynamically
-        isOpen={isOpen}
-        target={tooltipId}
-        className={cn(alignLeft && styles.alignLeft)}
-      >
-        {content}
-      </CustomTooltip>
+}) => (
+  <span className={cn(className, styles.tooltipWrapper)} onClick={e => e.preventDefault()}>
+    <span
+      key={targetId} // add specific key to recreate dom, when tooltipId changed dynamically
+      className={styles.tooltip}
+      id={targetId}
+    >
+      <InlineIcon svgIcon={icon} />
     </span>
-  );
+    <CustomTooltip
+      key={`${targetId}-container`} // add specific key to recreate dom, when tooltipId changed dynamically
+      isOpen={isOpen}
+      target={targetId!}
+      className={cn(alignLeft && styles.alignLeft)}
+    >
+      {content}
+    </CustomTooltip>
+  </span>
+);
+
+Tooltip.defaultProps = {
+  targetId: `tooltip-${tooltipCount++}`,
 };
+
+export { Tooltip };

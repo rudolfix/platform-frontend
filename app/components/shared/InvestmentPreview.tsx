@@ -3,7 +3,7 @@ import { FormattedPlural } from "react-intl";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { Button, ButtonLink, EButtonLayout } from "./buttons";
-import { Money } from "./Money";
+import { ECurrency, Money } from "./Money";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag";
 
@@ -129,7 +129,11 @@ export const InvestmentPreview: React.SFC<IProps> = ({
                 </div>
                 <PercentageIndicatorBar percent={25} className="my-2" />
                 <strong>
-                  <Money currency="eur_token" value="123456000000000000000000" theme="t-green" />
+                  <Money
+                    currency={ECurrency.EUR_TOKEN}
+                    value="123456000000000000000000"
+                    theme="t-green"
+                  />
                 </strong>
               </div>
             </>

@@ -13,6 +13,7 @@ export enum ETxSenderType {
   WITHDRAW = "WITHDRAW",
   INVEST = "INVEST",
   UPGRADE = "UPGRADE",
+  ETO_SET_DATE = "ETO_SET_DATE",
 }
 
 export enum ETokenType {

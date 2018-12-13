@@ -14,7 +14,12 @@ enum ECurrencySymbol {
   NONE = "none",
 }
 
-type TCurrency = "neu" | "eur" | "eur_token" | "eth";
+enum ECurrency {
+  NEU = "neu",
+  EUR = "eur",
+  EUR_TOKEN = "eur_t",
+  ETH = "eth",
+}
 
 enum EMoneyFormat {
   WEI = "wei",
@@ -26,7 +31,7 @@ type TMoneyTransfer = "income" | "outcome";
 type TTheme = "t-green" | "t-orange";
 
 interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
-  currency: TCurrency;
+  currency: ECurrency;
   value?: React.ReactElement<any> | string | BigNumber | number | null;
   format?: EMoneyFormat;
   currencySymbol?: ECurrencySymbol;
@@ -37,35 +42,35 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 type IProps = IOwnProps;
 
-const selectDecimalPlaces = (currency: TCurrency): number => {
+const selectDecimalPlaces = (currency: ECurrency): number => {
   switch (currency) {
-    case "eth":
+    case ECurrency.ETH:
       return 4;
-    case "neu":
+    case ECurrency.NEU:
       return 4;
-    case "eur":
+    case ECurrency.EUR:
       return 2;
-    case "eur_token":
+    case ECurrency.EUR_TOKEN:
       return 2;
   }
 };
 
-const selectCurrencyCode = (currency: TCurrency): string => {
+const selectCurrencyCode = (currency: ECurrency): string => {
   switch (currency) {
-    case "eth":
+    case ECurrency.ETH:
       return "ETH";
-    case "neu":
+    case ECurrency.NEU:
       return "NEU";
-    case "eur":
+    case ECurrency.EUR:
       return "EUR";
-    case "eur_token":
+    case ECurrency.EUR_TOKEN:
       return "nEUR";
   }
 };
 
-const selectCurrencySymbol = (currency: TCurrency): string => {
+const selectCurrencySymbol = (currency: ECurrency): string => {
   switch (currency) {
-    case "eur":
+    case ECurrency.EUR:
       return "€";
     default:
       throw new Error("Only EUR can be displayed as a symbol");
@@ -85,7 +90,7 @@ function getFormatDecimals(format: EMoneyFormat): number {
 
 export function getFormattedMoney(
   value: string | number | BigNumber,
-  currency: TCurrency,
+  currency: ECurrency,
   format: EMoneyFormat,
 ): string {
   return formatMoney(value, getFormatDecimals(format), selectDecimalPlaces(currency));
@@ -140,6 +145,6 @@ export {
   selectDecimalPlaces,
   TMoneyTransfer,
   EMoneyFormat,
-  TCurrency,
+  ECurrency,
   ECurrencySymbol,
 };

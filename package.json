@@ -84,6 +84,7 @@
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
     "@types/react-dropzone": "^4.2.0",
+    "@types/react-helmet": "^5.0.7",
     "@types/react-intl": "^2.3.7",
     "@types/react-redux": "5.0.20",
     "@types/react-router": "^4.0.30",
@@ -143,7 +144,7 @@
     "mini-css-extract-plugin": "^0.4.1",
     "mocha": "^4.1.0",
     "mockdate": "^2.0.2",
-    "node-sass": "^4.9.3",
+    "node-sass": "^4.11.0",
     "nyc": "^12.0.2",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "patch-package": "^6.0.0-9",
@@ -181,7 +182,6 @@
     "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
-    "webpack-hot-middleware": "^2.22.3",
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
@@ -218,6 +218,7 @@
     "react-datetime": "^2.15.0",
     "react-dom": "16.3.2",
     "react-dropzone": "^4.2.8",
+    "react-helmet": "^5.2.0",
     "react-id-swiper": "^1.6.6",
     "react-intl": "^2.4.0",
     "react-intl-phraseapp": "^0.2.4",

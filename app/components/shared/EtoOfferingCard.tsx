@@ -31,6 +31,7 @@ export interface IEtoOfferingProps {
   teaser?: boolean;
   bannerWithGif?: boolean;
   replaceSelector?: string;
+  hidden?: boolean;
 }
 
 export interface ISizeProps {
@@ -91,6 +92,7 @@ export class EtoOfferingCardComponent extends React.Component<
               props.teaser && styles.teaser,
               props.isMobile && styles.mobile,
             )}
+            rel="noopener"
           >
             {children}
           </a>
@@ -125,6 +127,8 @@ export class EtoOfferingCardComponent extends React.Component<
                   alt={props.badge.alt}
                   width={props.badge.width}
                   height={props.badge.height}
+                  preserveOriginalRatio={props.topImage.preserveOriginalRatio}
+                  forceBg={props.topImage.forceBg}
                 />
               </div>
             )}
@@ -136,6 +140,8 @@ export class EtoOfferingCardComponent extends React.Component<
                 alt={props.topImage.alt}
                 width={props.topImage.width}
                 height={props.topImage.height}
+                preserveOriginalRatio={props.topImage.preserveOriginalRatio}
+                forceBg={props.topImage.forceBg}
               />
             )}
             {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
@@ -168,6 +174,7 @@ export class EtoOfferingCardComponent extends React.Component<
                   <i className="fa fa-arrow-right" />
                 </a>
               )}
+
               {props.quoteImage && (
                 <div className={styles.imageWrapper}>
                   <ResponsiveImage
@@ -177,6 +184,8 @@ export class EtoOfferingCardComponent extends React.Component<
                     alt={props.quoteImage.alt}
                     width={props.quoteImage.width}
                     height={props.quoteImage.height}
+                    preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
+                    forceBg={props.quoteImage.forceBg}
                   />
                   <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
                 </div>
@@ -200,6 +209,8 @@ export class EtoOfferingCardComponent extends React.Component<
                   alt={props.quoteImage.alt}
                   height={props.quoteImage.height}
                   width={props.quoteImage.width}
+                  preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
+                  forceBg={props.quoteImage.forceBg}
                 />
               )}
               {!props.teaser && (

@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { Overwrite } from "../../types";
 import {
   EETOStateOnChain,
@@ -59,5 +59,5 @@ export function isOnChain(
   TEtoWithCompanyAndContract,
   { contract: Exclude<TEtoWithCompanyAndContract["contract"], undefined> }
 > {
-  return eto.state === EtoState.ON_CHAIN && eto.contract !== undefined;
+  return eto.state === EEtoState.ON_CHAIN && eto.contract !== undefined;
 }

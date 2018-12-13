@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Button } from "../../../../shared/buttons";
-import { ECurrencySymbol, Money } from "../../../../shared/Money";
+import { ECurrency, ECurrencySymbol, Money } from "../../../../shared/Money";
 import { Message } from "../Message";
 import { withCanClaimToken } from "./withCanClaimToken";
 
@@ -31,7 +31,7 @@ const ClaimWidgetLayout: React.SFC<IExternalProps> = ({
               totalAmount: (
                 <Money
                   value={totalEquivEurUlps}
-                  currency="eur"
+                  currency={ECurrency.EUR}
                   currencySymbol={ECurrencySymbol.SYMBOL}
                 />
               ),
@@ -45,7 +45,7 @@ const ClaimWidgetLayout: React.SFC<IExternalProps> = ({
               totalAmount: (
                 <Money
                   value={totalEquivEurUlps}
-                  currency="eur"
+                  currency={ECurrency.EUR}
                   currencySymbol={ECurrencySymbol.SYMBOL}
                 />
               ),

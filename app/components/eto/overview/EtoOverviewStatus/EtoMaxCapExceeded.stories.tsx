@@ -12,13 +12,9 @@ import { EtoMaxCapExceededComponent } from "./EtoMaxCapExceeded";
 // tslint:disable-next-line:no-object-literal-type-assertion
 const eto = {
   etoId: "0x123434562134asdf2412341234adf12341234",
-  companyId: "asdf",
-  previewCode: "1234",
   preMoneyValuationEur: 10000,
   existingCompanyShares: 10,
   equityTokensPerShare: 10,
-  publicDiscountFraction: 0.2,
-  whitelistDiscountFraction: 0.3,
   maxPledges: 500,
   maxTicketEur: 10000000,
   minTicketEur: 100,

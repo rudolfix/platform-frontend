@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { Money } from "../../shared/Money";
+import { ECurrency, Money } from "../../shared/Money";
 import { NavigationButton } from "../../shared/Navigation";
 import * as styles from "./WalletLedgerChooserTableAdvanced.module.scss";
 
@@ -32,10 +32,10 @@ export class AccountRow extends React.Component<IAccountRow> {
         </td>
         <td className={cn(styles.balance, styles.pseudoBorderLeft)}>
           <div data-test-id="account-balance-eth" className={styles.eth}>
-            <Money value={this.props.ledgerAccount.balanceETH} currency="eth" />
+            <Money value={this.props.ledgerAccount.balanceETH} currency={ECurrency.ETH} />
           </div>
           <div data-test-id="account-balance-neu" className={styles.neu}>
-            <Money value={this.props.ledgerAccount.balanceNEU} currency="neu" />
+            <Money value={this.props.ledgerAccount.balanceNEU} currency={ECurrency.NEU} />
           </div>
         </td>
         <td className={styles.select}>

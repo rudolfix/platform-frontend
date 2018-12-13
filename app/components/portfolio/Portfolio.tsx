@@ -9,6 +9,7 @@ import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors"
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
+import { withMetaTags } from "../../utils/withMetaTags";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
@@ -40,4 +41,5 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
     (props: TStateProps) => !props.myAssets && !props.pendingAssets,
     renderComponent(LoadingIndicator),
   ),
+  withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.portfolio") })),
 )(PortfolioLayout);

@@ -1,11 +1,11 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces";
 import { ETOFormsProgressSectionComponent } from "./ETOFormsProgressSection";
 
 const data = {
-  etoStatus: EtoState.LISTED,
+  etoStatus: EEtoState.LISTED,
   loadingData: false,
   shouldEtoDataLoad: false,
   companyInformationProgress: 100,

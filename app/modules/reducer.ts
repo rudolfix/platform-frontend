@@ -1,6 +1,7 @@
 import { accessWalletReducer } from "./access-wallet/reducer";
 import { authReducer } from "./auth/reducer";
 import { bookBuildingFlowReducer } from "./bookbuilding-flow/reducer";
+import { contractsReducer } from "./contracts/reducer";
 import { depositEthModalReducer } from "./deposit-eth-modal/reducer";
 import { etoDocumentReducer } from "./eto-documents/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
@@ -31,6 +32,7 @@ import { web3Reducer } from "./web3/reducer";
 
 // add new app reducers here. They must be AppReducer<T> type
 export const appReducers = {
+  contracts: contractsReducer,
   ledgerWizardState: ledgerWizardReducer,
   verifyEmailWidgetState: verifyEmailWidgetReducer,
   browserWalletWizardState: browserWalletWizardReducer,

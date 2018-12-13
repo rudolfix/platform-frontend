@@ -198,7 +198,7 @@ export type TCompanyEtoData = TEtoCompanyBase &
  *  only deals with "/etos/me"
  */
 
-export enum EtoState {
+export enum EEtoState {
   PREVIEW = "preview",
   PENDING = "pending",
   LISTED = "listed",
@@ -306,7 +306,7 @@ interface IAdditionalEtoType {
   etoId: string;
   companyId: string;
   previewCode: string;
-  state: EtoState;
+  state: EEtoState;
   isBookbuilding: boolean;
   templates: TEtoDocumentTemplates;
   startDate: string;

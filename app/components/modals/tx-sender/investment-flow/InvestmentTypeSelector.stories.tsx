@@ -8,7 +8,7 @@ import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSel
 import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
 import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
-import { ModalComponentBody } from "../../ModalComponentBody";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 
 export const wallets: WalletSelectionData[] = [
   {
@@ -43,11 +43,7 @@ export const wallets: WalletSelectionData[] = [
 const onSelect = (v: any) => console.log(v);
 
 storiesOf("Investment/InvestmentTypeSelector", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
-      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody())
   .add("default", () => (
     <Container>
       <InvestmentTypeSelector

@@ -11,7 +11,7 @@ import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
-import { Money } from "../../../shared/Money";
+import { ECurrency, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
@@ -38,12 +38,12 @@ export const UpgradeSummaryComponent: React.SFC<TSummaryComponentProps> = ({
 
           <InfoRow
             caption={<FormattedMessage id="upgrade-flow.value" />}
-            value={<Money currency="eth" value={txData.value!} />}
+            value={<Money currency={ECurrency.ETH} value={txData.value!} />}
           />
 
           <InfoRow
             caption={<FormattedMessage id="upgrade-flow.transaction-cost" />}
-            value={<Money currency="eth" value={txCost} />}
+            value={<Money currency={ECurrency.ETH} value={txCost} />}
           />
         </InfoList>
       </Col>

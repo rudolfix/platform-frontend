@@ -38,9 +38,9 @@ const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupC
       data-test-id="profile.backup-seed-widget"
     >
       {backupCodesVerified ? (
-        <div
+        <section
           data-test-id="backup-seed-verified-section"
-          className={cn(styles.content, "d-flex flex-wrap align-content-around")}
+          className={cn(styles.section, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>
             <FormattedMessage id="settings.backup-seed-widget.backed-up-seed" />
@@ -55,11 +55,11 @@ const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupC
               <FormattedMessage id="settings.backup-seed-widget.view-again" />
             </ButtonLink>
           </Col>
-        </div>
+        </section>
       ) : (
-        <div
+        <section
           data-test-id="backup-seed-unverified-section"
-          className={cn(styles.content, "d-flex flex-wrap align-content-around")}
+          className={cn(styles.section, "d-flex flex-wrap align-content-around")}
         >
           <p className={cn(styles.text, "pt-2")}>
             <FormattedMessage id="settings.backup-seed-widget.write-down-recovery-phrase" />
@@ -75,7 +75,7 @@ const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupC
               <FormattedMessage id="settings.backup-seed-widget.backup-phrase" />
             </ButtonLink>
           </Col>
-        </div>
+        </section>
       )}
     </Panel>
   );

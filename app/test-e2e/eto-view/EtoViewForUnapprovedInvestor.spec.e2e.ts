@@ -12,7 +12,7 @@ describe("Eto Investor View", () => {
 
   it("should show investment notification when kyc is not done", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView();
+    assertEtoView("Neufund - Quintessence (QTT)");
 
     cy.get(tid("eto-overview-settings-update-required-to-invest")).should("exist");
   });

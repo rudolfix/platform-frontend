@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 
-import { EtoState } from "../../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces";
 import { etoFormIsReadonly } from "../../../lib/api/eto/EtoApiUtils";
 import {
   selectIsGeneralEtoLoading,
@@ -33,7 +33,7 @@ interface IEtoRegisteredRoutes {
 }
 
 export interface IStateProps {
-  etoStatus?: EtoState;
+  etoStatus?: EEtoState;
   loadingData: boolean;
   shouldEtoDataLoad: boolean;
   companyInformationProgress: number;

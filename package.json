@@ -4,10 +4,6 @@
   "repository": "git@github.com:Neufund/platform-frontend.git",
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
-  "browserslist": [
-    "> 1%",
-    "not IE 11"
-  ],
   "scripts": {
     "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
@@ -51,13 +47,11 @@
     "storybook:screenshots": "storybook-chrome-screenshot --debug --inject-files ./.storybook/disable-animations.js -p 9001 -c .storybook --browser-timeout 999999 -s ./app/assets"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-rc.1",
-    "@babel/core": "^7.0.0-rc.1",
-    "@babel/plugin-proposal-decorators": "^7.0.0-rc.1",
-    "@babel/plugin-proposal-optional-catch-binding": "^7.0.0-rc.1",
-    "@babel/preset-react": "^7.0.0-rc.1",
-    "@babel/preset-typescript": "^7.0.0-rc.1",
-    "@babel/register": "^7.0.0-rc.1",
+    "@babel/cli": "^7.2.0",
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-decorators": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
     "@cypress/webpack-preprocessor": "2.0.1",
     "@storybook/addon-a11y": "^4.0.9",
     "@storybook/addon-actions": "^4.0.9",
@@ -108,10 +102,7 @@
     "@types/url-join": "^0.8.2",
     "@types/yup": "^0.26.0",
     "autoprefixer": "^9.1.1",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-loader": "^7.1.5",
     "babel-plugin-react-intl-krzkaczor": "^2.4.1",
-    "babel-runtime": "^6.26.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-dom": "^1.8.1",

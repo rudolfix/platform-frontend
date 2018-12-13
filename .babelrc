@@ -7,7 +7,6 @@
       }
     ],
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
-    "@babel/plugin-proposal-optional-catch-binding"
   ],
   "presets": ["@babel/preset-typescript", "@babel/react"]
 }

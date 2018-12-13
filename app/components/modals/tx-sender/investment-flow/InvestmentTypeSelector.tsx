@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, FormGroup } from "reactstrap";
 
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
-import { Money } from "../../../shared/Money";
+import { ECurrency, Money } from "../../../shared/Money";
 
 import * as styles from "./InvestmentTypeSelector.module.scss";
 
@@ -51,9 +51,9 @@ const WalletBalanceValues: React.SFC<WalletSelectionData> = wallet => {
     case EInvestmentType.InvestmentWallet:
       return (
         <>
-          <Money currency="eth" value={wallet.balanceEth} />
+          <Money currency={ECurrency.ETH} value={wallet.balanceEth} />
           <div className={styles.balanceEur}>
-            = <Money currency="eur" value={wallet.balanceEur} />
+            = <Money currency={ECurrency.EUR} value={wallet.balanceEur} />
           </div>
         </>
       );
@@ -61,9 +61,9 @@ const WalletBalanceValues: React.SFC<WalletSelectionData> = wallet => {
     case EInvestmentType.ICBMnEuro:
       return (
         <>
-          <Money currency="eur_token" value={wallet.balanceNEuro} />
+          <Money currency={ECurrency.EUR_TOKEN} value={wallet.balanceNEuro} />
           <div className={styles.balanceEur}>
-            = <Money currency="eur" value={wallet.balanceEur} />
+            = <Money currency={ECurrency.EUR} value={wallet.balanceEur} />
           </div>
         </>
       );
@@ -95,7 +95,7 @@ export class InvestmentTypeSelector extends React.Component<IProps> {
                   />
                   <div className={styles.box}>
                     <div className={styles.icon}>
-                      <img src={wallet.icon} />
+                      <img src={wallet.icon} alt="" />
                     </div>
                     <div className={styles.label}>{wallet.name}</div>
                     <WalletBalance {...wallet} />

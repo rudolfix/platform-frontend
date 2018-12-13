@@ -3,6 +3,7 @@ import * as React from "react";
 import { ToastContainer } from "react-toastify";
 import { compose } from "redux";
 
+import { TOAST_COMPONENT_DELAY } from "../config/constants";
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/Logger";
 import { actions } from "../modules/actions";
@@ -15,6 +16,7 @@ import { appConnect } from "../store";
 import { IInversifyProviderContext } from "../utils/InversifyProvider";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { ScrollToTop } from "../utils/ScrollToTop";
+import { withRootMetaTag } from "../utils/withMetaTags";
 import { AppRouter } from "./AppRouter";
 import { CriticalError } from "./layouts/CriticalError";
 import { GenericModal } from "./modals/GenericModal";
@@ -73,7 +75,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
         </ScrollToTop>
 
         <AccessWalletModal />
-        <ToastContainer />
+        <ToastContainer autoClose={TOAST_COMPONENT_DELAY} />
         <GenericModal />
         <VideoModal />
       </>
@@ -82,6 +84,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
 }
 
 export const App = compose<React.ComponentClass>(
+  withRootMetaTag(),
   onEnterAction({
     actionCreator: d => d(actions.init.start("appInit")),
   }),

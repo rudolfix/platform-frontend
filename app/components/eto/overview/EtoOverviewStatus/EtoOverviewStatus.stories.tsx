@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
-import BigNumber from "bignumber.js";
 import * as React from "react";
 
 import { EtoOverviewStatusLayout } from ".";
+import { testEto } from "../../../../../test/fixtures";
 import {
   EETOStateOnChain,
   TEtoWithCompanyAndContract,
@@ -10,11 +10,8 @@ import {
 import { withStore } from "../../../../utils/storeDecorator";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 
-// tslint:disable-next-line:no-object-literal-type-assertion
-const eto = {
-  etoId: "0x123434562134asdf2412341234adf12341234",
-  companyId: "asdf",
-  previewCode: "1234",
+const eto: TEtoWithCompanyAndContract = {
+  ...testEto,
   preMoneyValuationEur: 10000,
   existingCompanyShares: 10,
   equityTokensPerShare: 10,
@@ -22,12 +19,12 @@ const eto = {
   whitelistDiscountFraction: 0.3,
   equityTokenName: "TokenName",
   equityTokenSymbol: "TKN",
-  company: { brandName: "BrandName" },
+  company: { ...testEto.company, brandName: "BrandName" },
   contract: {
+    ...testEto.contract!,
     timedState: EETOStateOnChain.Whitelist,
-    totalInvestment: { totalInvestors: new BigNumber("123"), totalTokensInt: new BigNumber("234") },
   },
-} as TEtoWithCompanyAndContract;
+};
 
 storiesOf("ETO/EtoOverviewStatus", module)
   .addDecorator(

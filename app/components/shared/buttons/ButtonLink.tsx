@@ -6,6 +6,7 @@ import { compose, mapProps, setDisplayName } from "recompose";
 import { routingActions } from "../../../modules/routing/actions";
 import { appConnect } from "../../../store";
 import { Omit } from "../../../types";
+import { isExternalUrl } from "../../../utils/StringUtils";
 import { Button, IButtonProps, IGeneralButton } from "./Button";
 
 type TButtonLinkToProps = {
@@ -57,7 +58,7 @@ const ButtonLink = compose<
     }),
     dispatchToProps: (dispatch, { target, to }) => ({
       navigate: () => {
-        if (target && to && typeof to === "string") {
+        if (typeof to === "string" && (target || isExternalUrl(to))) {
           return dispatch(routingActions.openInNewWindow(to, target));
         }
 

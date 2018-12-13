@@ -21,10 +21,10 @@ import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
-import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { Panel } from "../../../shared/Panel";
 
-import * as styles from "../../etoContentWidget.module.scss";
+import * as styles from "../../EtoContentWidget.module.scss";
 
 interface IDispatchProps {
   startBookBuilding: (etoId: string) => void;
@@ -63,7 +63,7 @@ const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBook
       <span className={styles.value}>
         <Money
           value={bookBuildingStats.pledgedAmount}
-          currency="eur"
+          currency={ECurrency.EUR}
           format={EMoneyFormat.FLOAT}
           currencySymbol={ECurrencySymbol.SYMBOL}
         />

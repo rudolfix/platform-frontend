@@ -20,11 +20,10 @@ import {
   selectWidgetError,
   selectWidgetLoading,
 } from "../../../modules/kyc/selectors";
-import { selectIsLightWallet } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
-import { Button, EButtonLayout } from "../../shared/buttons";
+import { Button, ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -195,19 +194,22 @@ const ActionButton = ({
   }
 
   if (
+    externalKycUrl &&
     requestStatus === "Outsourced" &&
     (requestOutsourcedStatus === "canceled" ||
       requestOutsourcedStatus === "aborted" ||
       requestOutsourcedStatus === "started")
   ) {
     return (
-      // TODO: Style anchor as button
       <>
-        <a href={externalKycUrl}>
-          <Button layout={EButtonLayout.SECONDARY} iconPosition="icon-after" svgIcon={arrowRight}>
-            <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
-          </Button>
-        </a>
+        <ButtonLink
+          to={externalKycUrl}
+          layout={EButtonLayout.SECONDARY}
+          iconPosition="icon-after"
+          svgIcon={arrowRight}
+        >
+          <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
+        </ButtonLink>
         <Button
           layout={EButtonLayout.SECONDARY}
           iconPosition="icon-after"
@@ -221,7 +223,7 @@ const ActionButton = ({
     );
   }
 
-  return <div />;
+  return null;
 };
 
 export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props => {
@@ -256,11 +258,11 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
           </Row>
         </div>
       ) : error ? (
-        <div className={styles.panelBody}>
+        <section className={styles.panelBody}>
           <WarningAlert>
             <FormattedMessage id="settings.kyc-widget.error" />
           </WarningAlert>
-        </div>
+        </section>
       ) : (
         <section className={cn(styles.section)}>
           <p className={cn(styles.text, "pt-2")}>
@@ -277,15 +279,15 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
 
 export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
-    stateToProps: s => ({
-      isUserEmailVerified: selectIsUserEmailVerified(s.auth),
-      userType: selectUserType(s)!,
-      backupCodesVerified: selectBackupCodesVerified(s.auth) || !selectIsLightWallet(s.web3),
-      requestStatus: selectKycRequestStatus(s.kyc),
-      requestOutsourcedStatus: selectKycRequestOutsourcedStatus(s.kyc),
-      externalKycUrl: selectExternalKycUrl(s.kyc),
-      isLoading: selectWidgetLoading(s.kyc),
-      error: selectWidgetError(s.kyc),
+    stateToProps: state => ({
+      isUserEmailVerified: selectIsUserEmailVerified(state.auth),
+      userType: selectUserType(state)!,
+      backupCodesVerified: selectBackupCodesVerified(state),
+      requestStatus: selectKycRequestStatus(state),
+      requestOutsourcedStatus: selectKycRequestOutsourcedStatus(state.kyc),
+      externalKycUrl: selectExternalKycUrl(state.kyc),
+      isLoading: selectWidgetLoading(state.kyc),
+      error: selectWidgetError(state.kyc),
     }),
     dispatchToProps: dispatch => ({
       onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),

@@ -48,7 +48,7 @@ function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): any {
       selectKycRequestType(s.kyc),
     );
     const status: TRequestStatus | undefined = yield select((s: IAppState) =>
-      selectKycRequestStatus(s.kyc),
+      selectKycRequestStatus(s),
     );
 
     if (status === "Accepted" || status === "Rejected" || status === "Ignored") {

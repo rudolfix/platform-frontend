@@ -1,4 +1,3 @@
-import * as React from "react";
 import { branch, compose, renderComponent } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -15,7 +14,7 @@ import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { ErrorBoundaryLayoutBase } from "../shared/errorBoundary/ErrorBoundaryLayoutBase";
 import { LoadingIndicator } from "../shared/loading-indicator";
-import { EtoPublicComponent } from "./shared/EtoPublicComponent";
+import { EtoView } from "./shared/EtoView";
 
 interface IStateProps {
   eto?: TEtoWithCompanyAndContract;
@@ -33,10 +32,6 @@ interface IDispatchProps {
 type TProps = {
   eto: TEtoWithCompanyAndContract;
 };
-
-const EtoPublicViewByContractIdLayout: React.SFC<TProps> = ({ eto }) => (
-  <EtoPublicComponent companyData={eto.company} etoData={eto} />
-);
 
 export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
@@ -61,4 +56,4 @@ export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
     withContainer(LayoutBase),
   ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
-)(EtoPublicViewByContractIdLayout);
+)(EtoView);

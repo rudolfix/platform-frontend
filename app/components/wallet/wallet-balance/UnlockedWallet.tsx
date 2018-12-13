@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { AccountAddress } from "../../shared/AccountAddress";
 import { AccountBalance } from "../../shared/AccountBalance";
 import { HorizontalLine } from "../../shared/HorizontalLine";
+import { ECurrency } from "../../shared/Money";
 import { IPanelProps } from "../../shared/Panel";
 import { IWalletValues, WalletBalanceContainer } from "./WalletBalance";
 
@@ -44,8 +45,8 @@ export const UnlockedWallet: React.SFC<IUnlockedWallet> = ({
         </h4>
         <AccountBalance
           icon={neuroIcon}
-          currency="eur_token"
-          currencyTotal="eur"
+          currency={ECurrency.EUR_TOKEN}
+          currencyTotal={ECurrency.EUR}
           largeNumber={data.neuroAmount}
           value={data.neuroEuroAmount}
           withdrawDisabled={
@@ -53,7 +54,7 @@ export const UnlockedWallet: React.SFC<IUnlockedWallet> = ({
           }
           transferDisabled={process.env.NEURO_WITHDRAW_ENABLED !== "1"}
           dataTestId="unlockedEuroWallet"
-          //TODO: add nEuro withdraw
+          // TODO: add nEuro withdraw
           // TODO: add on depositClick when euro token flow exists
         />
 
@@ -61,8 +62,8 @@ export const UnlockedWallet: React.SFC<IUnlockedWallet> = ({
 
         <AccountBalance
           icon={ethIcon}
-          currency="eth"
-          currencyTotal="eur"
+          currency={ECurrency.ETH}
+          currencyTotal={ECurrency.EUR}
           largeNumber={data.ethAmount}
           value={data.ethEuroAmount}
           onWithdrawClick={withdrawEth}

@@ -7,13 +7,18 @@ import {
 import { IAppState } from "../../store";
 import { IKycState } from "./reducer";
 
-export const selectKycRequestStatus = (state: IKycState): TRequestStatus | undefined => {
-  const userKycType = selectKycRequestType(state);
+export const selectKycRequestStatus = (state: IAppState): TRequestStatus | undefined => {
+  const userKycType = selectKycRequestType(state.kyc);
   switch (userKycType) {
     case "business":
-      return state.businessRequestState!.status;
+      return state.kyc.businessRequestState!.status === "Accepted" && !selectIsClaimsVerified(state)
+        ? "Pending"
+        : state.kyc.businessRequestState!.status;
     case "individual":
-      return state.individualRequestState!.status;
+      return state.kyc.individualRequestState!.status === "Accepted" &&
+        !selectIsClaimsVerified(state)
+        ? "Pending"
+        : state.kyc.individualRequestState!.status;
     default:
       return "Draft";
   }

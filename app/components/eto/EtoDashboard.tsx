@@ -3,7 +3,7 @@ import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
@@ -28,7 +28,7 @@ import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoun
 import { EProjecStatusLayout, EProjectStatusSize, ETOState } from "../shared/ETOState";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
-import { ChoosePreEtoDateWidget } from "./dashboard/choosePreEtoDateWidget/ChoosePreEtoDateWidget";
+import { ChooseEtoStartDateWidget } from "./dashboard/chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
 import { SubmitProposalWidget } from "./dashboard/submitProposalWidget/SubmitProposalWidget";
 import { UploadInvestmentMemorandum } from "./dashboard/UploadInvestmentMemorandum";
@@ -39,12 +39,12 @@ import { DashboardSection } from "./shared/DashboardSection";
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
 interface IStateProps {
-  isLightWallet: boolean;
   verifiedEmail?: string;
   backupCodesVerified?: boolean;
+  isLightWallet: boolean;
   shouldEtoDataLoad?: boolean;
   requestStatus?: TRequestStatus;
-  etoState?: EtoState;
+  etoState?: EEtoState;
   previewCode?: string;
   canEnableBookbuilding: boolean;
   etoFormProgress?: number;
@@ -91,7 +91,7 @@ const EtoProgressDashboardSection: React.SFC = () => (
 );
 
 interface IEtoStateRender {
-  etoState?: EtoState;
+  etoState?: EEtoState;
   shouldViewSubmissionSection?: boolean;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
@@ -100,7 +100,7 @@ interface IEtoStateRender {
   isRetailEto: boolean;
 }
 
-const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
+const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
   etoState,
   shouldViewSubmissionSection,
   isTermSheetSubmitted,
@@ -120,7 +120,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
     />
   );
   switch (etoState) {
-    case EtoState.PREVIEW:
+    case EEtoState.PREVIEW:
       return (
         <>
           {shouldViewSubmissionSection && (
@@ -129,14 +129,14 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
           <EtoProgressDashboardSection />
         </>
       );
-    case EtoState.PENDING:
+    case EEtoState.PENDING:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
           <ETOFormsProgressSection />
         </>
       );
-    case EtoState.LISTED:
+    case EEtoState.LISTED:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
@@ -156,7 +156,7 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
           <ETOFormsProgressSection />
         </>
       );
-    case EtoState.PROSPECTUS_APPROVED:
+    case EEtoState.PROSPECTUS_APPROVED:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
@@ -171,17 +171,17 @@ const EtoStateViewRender: React.SFC<IEtoStateRender> = ({
           <ETOFormsProgressSection />
         </>
       );
-    case EtoState.ON_CHAIN:
+    case EEtoState.ON_CHAIN:
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
           {canEnableBookbuilding && (
-            <Col lg={8} xs={12}>
+            <Col lg={6} xs={12}>
               <BookBuildingWidget />
             </Col>
           )}
-          <Col lg={4} xs={12}>
-            <ChoosePreEtoDateWidget />
+          <Col lg={6} xs={12}>
+            <ChooseEtoStartDateWidget />
           </Col>
           <Col xs={12}>
             <FormattedHTMLMessage tagName="span" id="eto-dashboard-application-description" />
@@ -208,7 +208,6 @@ class EtoDashboardComponent extends React.Component<IProps> {
       requestStatus,
       etoState,
       canEnableBookbuilding,
-      isLightWallet,
       etoFormProgress,
       isTermSheetSubmitted,
       shouldEtoDataLoad,
@@ -219,7 +218,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
 
     const isVerificationSectionDone = !!(
       verifiedEmail &&
-      (backupCodesVerified || !isLightWallet) &&
+      backupCodesVerified &&
       requestStatus === "Accepted"
     );
     const shouldViewSubmissionSection = !!(
@@ -241,7 +240,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
           )}
 
           {shouldEtoDataLoad ? (
-            <EtoStateViewRender
+            <EtoDashboardStateViewComponent
               isTermSheetSubmitted={isTermSheetSubmitted}
               isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
               shouldViewSubmissionSection={shouldViewSubmissionSection}
@@ -259,15 +258,15 @@ class EtoDashboardComponent extends React.Component<IProps> {
   }
 }
 
-export const EtoDashboard = compose<React.SFC>(
+const EtoDashboard = compose<React.SFC>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      isLightWallet: selectIsLightWallet(s.web3),
       verifiedEmail: selectVerifiedUserEmail(s.auth),
-      backupCodesVerified: selectBackupCodesVerified(s.auth),
+      backupCodesVerified: selectBackupCodesVerified(s),
+      isLightWallet: selectIsLightWallet(s.web3),
       shouldEtoDataLoad: selectShouldEtoDataLoad(s),
-      requestStatus: selectKycRequestStatus(s.kyc),
+      requestStatus: selectKycRequestStatus(s),
       etoState: selectIssuerEtoState(s),
       previewCode: selectIssuerEtoPreviewCode(s),
       canEnableBookbuilding: selectCanEnableBookBuilding(s),
@@ -281,3 +280,5 @@ export const EtoDashboard = compose<React.SFC>(
     }),
   }),
 )(EtoDashboardComponent);
+
+export { EtoDashboard, EtoDashboardComponent, EtoDashboardStateViewComponent };

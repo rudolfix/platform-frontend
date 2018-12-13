@@ -40,3 +40,10 @@
   margin-right: -$authorized-layout-horizontal-padding-sm;
   width: calc(100% + 2 * #{$authorized-layout-horizontal-padding-sm});
 }
+
+@mixin section-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}

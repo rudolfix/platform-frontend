@@ -1,8 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ModalComponentBody } from "../../modals/ModalComponentBody";
-
+import { withModalBody } from "../../../utils/storybookHelpers";
 import { IcbmWalletBalanceComponentInner } from "./IcbmWalletBalanceModal";
 
 export const dummyEthereumAddress = "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359";
@@ -23,11 +22,7 @@ const walletMigrationMockData = [
 ];
 
 storiesOf("ICBMWalletModalComponant", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
-      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody())
   .add("Missing Verifications", () => (
     <IcbmWalletBalanceComponentInner
       isOpen={true}

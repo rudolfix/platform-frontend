@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { ModalComponentBody } from "../ModalComponentBody";
+import { withModalBody } from "../../../utils/storybookHelpers";
 import { AcceptTosModalInner } from "./AcceptTosModal";
 
 const props = {
@@ -11,9 +11,5 @@ const props = {
 };
 
 storiesOf("AcceptTosModal", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "37.5rem" }}>
-      <ModalComponentBody>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody())
   .add("Accept Tos", () => <AcceptTosModalInner {...props} />);

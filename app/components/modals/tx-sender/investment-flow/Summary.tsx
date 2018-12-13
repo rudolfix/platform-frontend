@@ -66,7 +66,7 @@ const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
   const icbmMsg = (
     <>
       {neuMsg}
-      <img className={styles.infoIcon} id="tooltip-target-neu" src={info} />
+      <img className={styles.infoIcon} id="tooltip-target-neu" src={info} alt="" />
       <CustomTooltip target="tooltip-target-neu">
         <FormattedMessage id="investment-flow.message.no-icbm-neu-reward" />
       </CustomTooltip>
@@ -92,12 +92,12 @@ const InvestmentSummaryComponent: React.SFC<IProps> = ({
   const equityTokensValue = (
     <span>
       {/* TODO: Change to actual custom token icon */}
-      <img src={tokenIcon} /> {formatThousands(equityTokens)}
+      <img src={tokenIcon} alt="" /> {formatThousands(equityTokens)}
     </span>
   );
   const estimatedRewardValue = (
     <span>
-      <img src={neuIcon} /> {formatEurTsd(estimatedReward)} NEU
+      <img src={neuIcon} alt="" /> {formatEurTsd(estimatedReward)} NEU
     </span>
   );
   const investment = `€ ${formatEurTsd(investmentEur)} ≈ ${formatEthTsd(investmentEth)} ETH`;

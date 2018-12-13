@@ -13,7 +13,7 @@ import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormCheckbox, FormTextArea } from "../../../shared/forms";
+import { FormFieldBoolean, FormTextArea } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 import * as styles from "../Shared.module.scss";
@@ -42,7 +42,7 @@ const EtoRegistrationRiskAssessmentComponent = (props: IProps) => {
         />
 
         <div className="form-group">
-          <FormCheckbox
+          <FormFieldBoolean
             name="riskNoThirdPartyDependency"
             label={<FormattedMessage id="eto.form.risk-assessment.no-third-parties" />}
             disabled={true}
@@ -80,7 +80,7 @@ const EtoRegistrationRiskAssessmentComponent = (props: IProps) => {
         />
 
         <div className="form-group">
-          <FormCheckbox
+          <FormFieldBoolean
             name="riskNotRegulatedBusiness"
             label={<FormattedMessage id="eto.form.risk-assessment.no-regulation" />}
             disabled={true}
@@ -88,7 +88,7 @@ const EtoRegistrationRiskAssessmentComponent = (props: IProps) => {
         </div>
 
         <div className="form-group">
-          <FormCheckbox
+          <FormFieldBoolean
             name="riskNoLoansExist"
             label={<FormattedMessage id="eto.form.risk-assessment.no-loans" />}
             disabled={true}

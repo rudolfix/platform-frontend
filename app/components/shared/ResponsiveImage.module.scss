@@ -24,3 +24,7 @@
   display: block;
   font-style: italic;
 }
+
+.preserve-ratio {
+  object-fit: contain;
+}

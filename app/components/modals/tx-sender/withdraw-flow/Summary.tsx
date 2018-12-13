@@ -10,7 +10,7 @@ import {
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { Heading } from "../../../shared/modals/Heading";
-import { Money } from "../../../shared/Money";
+import { ECurrency, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
@@ -36,12 +36,12 @@ export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
 
           <InfoRow
             caption={<FormattedMessage id="withdraw-flow.value" />}
-            value={<Money currency="eth" value={txData.value!} />}
+            value={<Money currency={ECurrency.ETH} value={txData.value!} />}
           />
 
           <InfoRow
             caption={<FormattedMessage id="withdraw-flow.transaction-cost" />}
-            value={<Money currency="eth" value={txCost} />}
+            value={<Money currency={ECurrency.ETH} value={txCost} />}
           />
         </InfoList>
       </Col>

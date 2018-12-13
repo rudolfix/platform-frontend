@@ -93,7 +93,6 @@ const FormRangeBase: React.SFC<IProps & TFormikConnect> = ({
   const max = props.max !== undefined ? props.max : findMax(schema);
 
   return (
-    // TODO: add here form label + form validation if needed
     <Field
       name={name}
       render={({ field }: FieldProps) => {

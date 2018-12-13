@@ -14,9 +14,9 @@ import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
-  FormCheckbox,
   FormError,
   FormField,
+  FormFieldBoolean,
   FormRadioButton,
   FormTextArea,
 } from "../../../shared/forms";
@@ -92,7 +92,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         </div>
 
         <div className="form-group">
-          <FormCheckbox
+          <FormFieldBoolean
             disabled={readonly}
             name="notUnderCrowdfundingRegulations"
             label={<FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding" />}

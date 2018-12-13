@@ -1,6 +1,4 @@
-import * as React from "react";
-import { branch, renderComponent } from "recompose";
-import { compose } from "redux";
+import { branch, compose, renderComponent } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
@@ -13,7 +11,7 @@ import { withContainer } from "../../utils/withContainer";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/loading-indicator";
-import { EtoPublicComponent } from "./shared/EtoPublicComponent";
+import { EtoView } from "./shared/EtoView";
 
 interface IStateProps {
   eto?: TEtoWithCompanyAndContract;
@@ -28,11 +26,7 @@ type TProps = {
   eto: TEtoWithCompanyAndContract;
 };
 
-const EtoPublicViewLayout: React.SFC<TProps> = ({ eto }) => (
-  <EtoPublicComponent companyData={eto.company} etoData={eto} />
-);
-
-export const EtoPublicView = compose<React.SFC<IRouterParams>>(
+export const EtoPublicView = compose<TProps, IRouterParams>(
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state),
@@ -50,4 +44,4 @@ export const EtoPublicView = compose<React.SFC<IRouterParams>>(
     withContainer(LayoutBase),
   ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
-)(EtoPublicViewLayout);
+)(EtoView);

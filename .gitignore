@@ -15,6 +15,7 @@ cypress/screenshots
 __screenshots__
 e2e/platform-backend
 .reg
+storybook-static
 
 # IDE's ignores
 .vscode

@@ -26,7 +26,7 @@ import { formatFlexiPrecision } from "../../../../utils/Number.utils";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { ETOState } from "../../../shared/ETOState";
-import { ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { NumberFormat } from "../../../shared/NumberFormat";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
@@ -282,7 +282,7 @@ const EtoOverviewStatusLayout: React.SFC<
                 <span className={styles.value}>
                   <Money
                     value={eto.preMoneyValuationEur}
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />
@@ -311,7 +311,7 @@ const EtoOverviewStatusLayout: React.SFC<
                 <span className={styles.value}>
                   <Money
                     value={formatFlexiPrecision(tokenPrice, 8)}
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />

@@ -8,18 +8,14 @@ import {
 } from "../../../../modules/investment-flow/reducer";
 import { EValidationState } from "../../../../modules/tx/sender/reducer";
 import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
-import { ModalComponentBody } from "../../ModalComponentBody";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 import { InvestmentSelectionComponent } from "./Investment";
 import { wallets } from "./InvestmentTypeSelector.stories";
 
 const Investment = injectIntlHelpers(InvestmentSelectionComponent);
 
 storiesOf("Investment/Form", module)
-  .addDecorator(story => (
-    <div style={{ maxWidth: "47.5rem" }}>
-      <ModalComponentBody onClose={() => {}}>{story()}</ModalComponentBody>
-    </div>
-  ))
+  .addDecorator(withModalBody("47.5rem"))
   .add("default with error", () => (
     <Container>
       <Investment

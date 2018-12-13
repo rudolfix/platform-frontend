@@ -7,7 +7,7 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
-import { RegisterWalletComponent } from "../light/RegisterLightWallet";
+import { RegisterWalletComponent } from "../light/Register/RegisterLightWallet";
 import { WalletMessageSigner } from "../WalletMessageSigner";
 import { recoverRoutes } from "./recoverRoutes";
 import { WalletLightSeedRecoveryComponent } from "./SeedRecovery";

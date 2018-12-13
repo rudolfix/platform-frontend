@@ -39,7 +39,7 @@ export const LandingComponent: React.SFC = () => (
         </Row>
 
         <Row>
-          {etoCompaniesCards.map((e, index) => (
+          {etoCompaniesCards.filter(e => !e.data.hidden).map((e, index) => (
             <Col
               xs={12}
               lg={6}

@@ -5,6 +5,7 @@ export interface IEtoFlowState {
   loading: boolean;
   saving: boolean;
   bookbuildingStats: TBookbuildingStatsType[];
+  newStartDate?: Date;
 }
 
 export enum EEtoFormTypes {

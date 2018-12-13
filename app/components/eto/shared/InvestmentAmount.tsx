@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { TPartialEtoSpecData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { getInvestmentAmount } from "../../../lib/api/eto/EtoUtils";
-import { ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
 import { ToHumanReadableForm } from "../../shared/ToHumanReadableForm";
 
 type TExternalProps = {
@@ -22,7 +22,7 @@ const InvestmentAmount: React.SFC<TExternalProps> = ({ etoData }) => {
     <Money
       format={EMoneyFormat.FLOAT}
       currencySymbol={ECurrencySymbol.SYMBOL}
-      currency="eur"
+      currency={ECurrency.EUR}
       value={value}
     />
   );

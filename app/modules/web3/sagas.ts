@@ -12,9 +12,11 @@ import { selectWalletType } from "./selectors";
 import { EWalletType } from "./types";
 
 let lockWalletTask: Task | undefined;
+
 export function* autoLockLightWallet({ web3Manager, logger }: TGlobalDependencies): Iterator<any> {
   logger.info(`Resetting light wallet password in ${LIGHT_WALLET_PASSWORD_CACHE_TIME} ms`);
   yield call(delay, LIGHT_WALLET_PASSWORD_CACHE_TIME);
+
   if (web3Manager.personalWallet) {
     logger.info("Resetting light wallet password now");
     yield put(actions.web3.walletLocked());

@@ -703,6 +703,7 @@
   "settings.change-email-component.header": "CHANGE MY EMAIL ADDRESS",
   "settings.change-email-component.text": "From now on we will send emails to the new address provided by you",
   "settings.choose-pre-eto-date.book-building-will-stop": "The whitelisting phase will stop automatically 2 weeks before your chosen presale date",
+  "settings.kyc-status-widget.cancel-external-kyc": "Cancel Outsourced Process",
   "settings.kyc-status-widget.continue-external-kyc": "Continue Verification Process",
   "settings.kyc-status-widget.start-kyc-process": "Verify my identity",
   "settings.kyc-status-widget.status.accepted": "Your identity is verified on the Ethereum blockchain. You may now invest in opportunities, sign legal agreements, claim dividends and other proceeds and vote on shareholder resolutions.",

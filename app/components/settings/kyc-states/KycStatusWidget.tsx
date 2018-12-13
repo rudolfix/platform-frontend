@@ -51,6 +51,7 @@ interface IOwnProps {
 interface IDispatchProps {
   onGoToKycHome: () => void;
   onGoToDashboard: () => void;
+  cancelInstantId: () => void;
 }
 
 export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
@@ -148,6 +149,7 @@ const ActionButton = ({
   userType,
   onGoToDashboard,
   backupCodesVerified,
+  cancelInstantId,
 }: IKycStatusWidgetProps) => {
   if (requestStatus === "Accepted" && userType === EUserType.INVESTOR) {
     return (
@@ -199,14 +201,25 @@ const ActionButton = ({
       requestOutsourcedStatus === "started")
   ) {
     return (
-      <ButtonLink
-        to={externalKycUrl}
-        layout={EButtonLayout.SECONDARY}
-        iconPosition="icon-after"
-        svgIcon={arrowRight}
-      >
-        <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
-      </ButtonLink>
+      <>
+        <ButtonLink
+          to={externalKycUrl}
+          layout={EButtonLayout.SECONDARY}
+          iconPosition="icon-after"
+          svgIcon={arrowRight}
+        >
+          <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
+        </ButtonLink>
+        <Button
+          layout={EButtonLayout.SECONDARY}
+          iconPosition="icon-after"
+          svgIcon={arrowRight}
+          onClick={cancelInstantId}
+          data-test-id="settings.kyc-status-widget.cancel-external-kyc-button"
+        >
+          <FormattedMessage id="settings.kyc-status-widget.cancel-external-kyc" />
+        </Button>
+      </>
     );
   }
 
@@ -279,6 +292,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
     dispatchToProps: dispatch => ({
       onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),
       onGoToDashboard: () => dispatch(actions.routing.goToDashboard()),
+      cancelInstantId: () => dispatch(actions.kyc.kycCancelInstantId()),
     }),
   }),
   // note: initial data for this view are loaded as part of app init process

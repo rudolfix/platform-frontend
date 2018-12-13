@@ -8,19 +8,19 @@ import { EUserType } from "../../../lib/api/users/interfaces";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { KycStatusWidgetComponent } from "./KycStatusWidget";
 
+const defaultProps = {
+  onGoToKycHome: () => {},
+  onGoToDashboard: () => {},
+  cancelInstantId: () => {},
+  step: 1,
+  userType: EUserType.INVESTOR,
+  isUserEmailVerified: true,
+  backupCodesVerified: true,
+};
 describe("<KycStatusWidgetComponent />", () => {
   it("should render verified section", () => {
     const component = shallow(
-      <KycStatusWidgetComponent
-        step={1}
-        onGoToKycHome={() => {}}
-        onGoToDashboard={() => {}}
-        requestStatus="Accepted"
-        isUserEmailVerified={true}
-        backupCodesVerified={true}
-        isLoading={false}
-        userType={EUserType.INVESTOR}
-      />,
+      <KycStatusWidgetComponent {...defaultProps} requestStatus="Accepted" isLoading={false} />,
     );
 
     expect(component.contains(<FormattedMessage id="settings.kyc-status-widget.status.accepted" />))
@@ -29,16 +29,7 @@ describe("<KycStatusWidgetComponent />", () => {
 
   it("should render unverified section", () => {
     const component = shallow(
-      <KycStatusWidgetComponent
-        step={1}
-        onGoToKycHome={() => {}}
-        onGoToDashboard={() => {}}
-        requestStatus="Draft"
-        isUserEmailVerified={true}
-        backupCodesVerified={true}
-        isLoading={false}
-        userType={EUserType.INVESTOR}
-      />,
+      <KycStatusWidgetComponent {...defaultProps} requestStatus="Draft" isLoading={false} />,
     );
 
     expect(
@@ -53,17 +44,7 @@ describe("<KycStatusWidgetComponent />", () => {
   });
 
   it("should render loading indicator", () => {
-    const component = shallow(
-      <KycStatusWidgetComponent
-        step={1}
-        onGoToKycHome={() => {}}
-        onGoToDashboard={() => {}}
-        isUserEmailVerified={true}
-        backupCodesVerified={true}
-        isLoading={true}
-        userType={EUserType.INVESTOR}
-      />,
-    );
+    const component = shallow(<KycStatusWidgetComponent {...defaultProps} isLoading={true} />);
     expect(component.find(LoadingIndicator)).to.have.length(1);
   });
 });

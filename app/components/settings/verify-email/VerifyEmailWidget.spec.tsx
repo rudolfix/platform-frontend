@@ -4,12 +4,18 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { createMount } from "../../../../test/createMount";
-import { waitUntilDoesntThrow, wrapWithIntl } from "../../../../test/integrationTestUtils";
+import {
+  setupFakeClock,
+  waitUntilDoesntThrow,
+  wrapWithIntl,
+} from "../../../../test/integrationTestUtils";
 import { tid } from "../../../../test/testUtils";
 import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
 import { VerifyEmailWidgetComponent } from "./VerifyEmailWidget";
 
 describe("<VerifyEmailWidgetComponent />", () => {
+  const clock = setupFakeClock();
+
   it("should render verified section", () => {
     const verifyEmailWidget = shallow(
       <VerifyEmailWidgetComponent
@@ -146,9 +152,13 @@ describe("<VerifyEmailWidgetComponent />", () => {
 
       verifyEmailWidget.find("form").simulate("submit");
 
-      await waitUntilDoesntThrow(() => {
-        expect(addNewEmailSpy).to.be.calledOnce;
-      }, "Form callback should be called");
+      await waitUntilDoesntThrow(
+        clock.fakeClock,
+        () => {
+          expect(addNewEmailSpy).to.be.calledOnce;
+        },
+        "Form callback should be called",
+      );
     });
 
     it("should not be possible to submit with invalid email", async () => {
@@ -178,15 +188,19 @@ describe("<VerifyEmailWidgetComponent />", () => {
           },
         });
 
-      await waitUntilDoesntThrow(() => {
-        verifyEmailWidget.update();
-        expect(
-          verifyEmailWidget
-            .find(tid("verify-email-widget-form-submit"))
-            .first()
-            .prop("disabled"),
-        ).to.be.true;
-      }, "Form submit should be disabled!");
+      await waitUntilDoesntThrow(
+        clock.fakeClock,
+        () => {
+          verifyEmailWidget.update();
+          expect(
+            verifyEmailWidget
+              .find(tid("verify-email-widget-form-submit"))
+              .first()
+              .prop("disabled"),
+          ).to.be.true;
+        },
+        "Form submit should be disabled!",
+      );
     });
   });
 });

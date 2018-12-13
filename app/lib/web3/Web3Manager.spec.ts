@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { spy } from "sinon";
 import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
-import { globalFakeClock } from "../../../test/setupTestsHooks";
+import { setupFakeClock } from "../../../test/integrationTestUtils";
 import { createMock, expectToBeRejected } from "../../../test/testUtils";
 import { web3Actions } from "../../modules/web3/actions";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
@@ -21,6 +21,8 @@ import {
 
 describe("Web3Manager", () => {
   const expectedNetworkId = dummyNetworkId;
+
+  const clock = setupFakeClock();
 
   it("should plug personal wallet when connection works", async () => {
     const expectedDerivationPath = "44'/60'/0'/1";
@@ -124,13 +126,13 @@ describe("Web3Manager", () => {
 
     expect(ledgerWalletMock.testConnection).to.be.calledOnce;
 
-    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    await clock.fakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledTwice;
 
     ledgerWalletMock.reMock({
       testConnection: async () => false,
     });
-    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    await clock.fakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledOnce; // remocking resets counter
     expect(dispatchMock).to.be.calledWithExactly(web3Actions.personalWalletConnectionLost());
   });
@@ -159,7 +161,7 @@ describe("Web3Manager", () => {
 
     expect(ledgerWalletConnectionMock.testConnection).to.be.calledOnce;
 
-    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    await clock.fakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletConnectionMock.testConnection).to.be.calledTwice;
 
     // make personal wallet timeout
@@ -170,9 +172,9 @@ describe("Web3Manager", () => {
       },
     });
     // run testConnection again
-    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    await clock.fakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     // wait until timeout
-    await globalFakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
+    await clock.fakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
 
     expect(ledgerWalletConnectionMock.testConnection).to.be.calledOnce;
     expect(dispatchMock).to.be.calledTwice;

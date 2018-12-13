@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { delay } from "redux-saga";
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import { spy } from "sinon";
 
 import { createMock } from "../../../test/testUtils";
@@ -77,7 +77,6 @@ describe("Web3 sagas", () => {
     });
 
     it("should send notification if it's browser wallet", () => {
-      const dummyDispatch = spy();
       const state: Partial<IAppState> = {
         web3: {
           connected: false,
@@ -104,7 +103,6 @@ describe("Web3 sagas", () => {
     });
 
     it("should not send notification if it's light wallet", () => {
-      const dummyDispatch = spy();
       const state: Partial<IAppState> = {
         web3: {
           connected: false,
@@ -123,7 +121,7 @@ describe("Web3 sagas", () => {
       saga.next();
       saga.next();
       saga.next();
-      saga.next();
+      expect(saga.next().value).to.deep.eq(select());
       expect(saga.next(state).done).to.be.true;
 
       expect(dummyNotificationCenter.error).not.to.be.calledOnce;

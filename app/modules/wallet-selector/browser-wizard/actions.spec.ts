@@ -1,4 +1,6 @@
 import { expect } from "chai";
+import { expectSaga, testSaga } from "redux-saga-test-plan";
+import { call, select } from "redux-saga/effects";
 import { spy } from "sinon";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
@@ -16,7 +18,7 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType } from "../../web3/types";
-import { walletFlows } from "../flows";
+import { tryConnectingWithBrowserWallet } from "./sagas";
 
 // tslint:disable: no-object-literal-type-assertion
 const getStateMock: () => IAppState = () =>
@@ -29,6 +31,23 @@ const getStateMock: () => IAppState = () =>
 
 describe("Wallet selector > Browser wizard > actions", () => {
   describe("tryConnectingWithBrowserWallet action", () => {
+    it("works", async () => {
+      function someApi() {
+        return { foo: "bar" };
+      }
+
+      function* saga() {
+        const data = yield call(someApi);
+        return data;
+      }
+
+      const res = await expectSaga(saga)
+        .provide([[call(someApi), { hello: "world" }]])
+        .returns({ hello: "world" })
+        .run();
+
+      console.log(res);
+    });
     it("should plug wallet on successful connection", async () => {
       const expectedNetworkId = dummyNetworkId;
       const dummyMetadata: IBrowserWalletMetadata = {
@@ -37,7 +56,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
         walletSubType: EWalletSubType.METAMASK,
       };
 
-      const dispatchMock = spy();
       const browserWalletMock = createMock(BrowserWallet, {
         getMetadata: () => dummyMetadata,
       });
@@ -49,15 +67,20 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await walletFlows.tryConnectingWithBrowserWallet(
-        dispatchMock,
-        browserWalletConnectorMock,
-        web3ManagerMock,
-        noopLogger,
-        getStateMock,
-      );
+      const res = await expectSaga(tryConnectingWithBrowserWallet, {
+        browserWalletConnector: browserWalletConnectorMock,
+        web3Manager: web3ManagerMock,
+        logger: noopLogger,
+      })
+        .withState(getStateMock())
+        // .put(actions.walletSelector.connected())
+        .run()
+        .then(res => {
+          console.log(res);
+        });
+
+      console.log(res);
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
 
     it("should dispatch error action on error", async () => {

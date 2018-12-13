@@ -154,6 +154,7 @@
     "raw-loader": "^0.5.1",
     "react-hot-loader": "^4.3.4",
     "redux-mock-store": "^1.5.3",
+    "redux-saga-test-plan": "^3.7.0",
     "reg-simple-keygen-plugin": "^0.7.16",
     "reg-suit": "^0.7.17",
     "sass-lint": "^1.12.1",

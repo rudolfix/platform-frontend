@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { walletFlows } from "../../../modules/wallet-selector/flows";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { withActionWatcher } from "../../../utils/withActionWatcher";

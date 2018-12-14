@@ -476,7 +476,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       ],
       name: "AGORA TRADE",
       description:
-        "Agora.Trade sets a new security and usability standard for cryptocurrency exchanges. Its decentralized nature gives control over assets back to users. The goal is to establish Agora.Trade as the most visited, cross-chain, non-custodial cryptocurrency exchange with the highest liquidity.",
+        "Agora.Trade sets a new security and usability standard for cryptocurrency exchanges. Its decentralized nature gives control over assets back to users. The goal is to establish Agora.Trade as the highest exchange volume.",
       quote: {
         text: "",
         credits: "",

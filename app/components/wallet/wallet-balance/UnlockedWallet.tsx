@@ -54,7 +54,7 @@ export const UnlockedWallet: React.SFC<IUnlockedWallet> = ({
           }
           transferDisabled={process.env.NEURO_WITHDRAW_ENABLED !== "1"}
           dataTestId="unlockedEuroWallet"
-          //TODO: add nEuro withdraw
+          // TODO: add nEuro withdraw
           // TODO: add on depositClick when euro token flow exists
         />
 

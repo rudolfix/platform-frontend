@@ -96,7 +96,7 @@ function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecD
   // formik will pass empty strings into numeric fields that are optional, see
   // https://github.com/jaredpalmer/formik/pull/827
   // todo: we should probably enumerate Yup schema and clean up all optional numbers
-  //todo: we strip these things on form save now, need to move it there -- at
+  // todo: we strip these things on form save now, need to move it there -- at
   if (!data.maxTicketEur) {
     data.maxTicketEur = undefined;
   }

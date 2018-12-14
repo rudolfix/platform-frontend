@@ -64,3 +64,5 @@ export const BOOKBUILDING_WATCHER_DELAY = 6000;
  * Constants for react components
  */
 export const TOAST_COMPONENT_DELAY = 4000;
+
+export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;

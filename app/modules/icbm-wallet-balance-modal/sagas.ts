@@ -1,6 +1,6 @@
 import { BigNumber } from "bignumber.js";
-import { delay } from "bluebird";
 import { toChecksumAddress } from "ethereumjs-util";
+import { delay } from "redux-saga";
 import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";

@@ -1,6 +1,4 @@
-import * as React from "react";
-import { branch, renderComponent } from "recompose";
-import { compose } from "redux";
+import { branch, compose, renderComponent } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
@@ -28,11 +26,7 @@ type TProps = {
   eto: TEtoWithCompanyAndContract;
 };
 
-const EtoPublicViewLayout: React.SFC<TProps> = ({ eto }) => (
-  <EtoView companyData={eto.company} etoData={eto} />
-);
-
-export const EtoPublicView = compose<React.SFC<IRouterParams>>(
+export const EtoPublicView = compose<TProps, IRouterParams>(
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state),
@@ -50,4 +44,4 @@ export const EtoPublicView = compose<React.SFC<IRouterParams>>(
     withContainer(LayoutBase),
   ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
-)(EtoPublicViewLayout);
+)(EtoView);

@@ -112,6 +112,13 @@ export class KycApi {
     });
   }
 
+  public async cancelInstantId(): Promise<IHttpResponse<void>> {
+    return await this.httpClient.delete<void>({
+      baseUrl: BASE_PATH,
+      url: INSTANT_ID_REQUEST_PATH,
+    });
+  }
+
   /**
    * Business requests
    */
@@ -191,7 +198,6 @@ export class KycApi {
   }
 
   // beneficial owners
-  // @TODO
   public async getBeneficialOwners(): Promise<IHttpResponse<IKycBeneficialOwner[]>> {
     return await this.httpClient.get<IKycBeneficialOwner[]>({
       baseUrl: BASE_PATH,

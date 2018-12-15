@@ -13,7 +13,7 @@ export interface IPersonProfileModal {
   role: string;
   description: string | React.ReactNode;
   socialChannels: IEtoSocialProfile[];
-  website: string;
+  website?: string;
 }
 
 const initialState: IPersonProfileModalState = {

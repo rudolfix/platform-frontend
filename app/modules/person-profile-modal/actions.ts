@@ -9,7 +9,7 @@ export const personProfileModalActions = {
     description: TTranslatedString,
     image: string,
     socialChannels: IEtoSocialProfile[],
-    website: string,
+    website?: string,
   ) =>
     createAction("PERSON_PROFILE_MODAL_SHOW", {
       name,

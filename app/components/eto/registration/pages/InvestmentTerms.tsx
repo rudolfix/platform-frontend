@@ -20,8 +20,8 @@ import { TTranslatedString } from "../../../../types";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
-import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
-import { NumberTransformingField } from "../../../shared/forms/form-field/NumberTransformingField";
+import { FormFieldRaw } from "../../../shared/forms/fields/FormFieldRaw";
+import { NumberTransformingField } from "../../../shared/forms/fields/NumberTransformingField";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { ECurrency, EMoneyFormat, getFormattedMoney } from "../../../shared/Money";
 import {

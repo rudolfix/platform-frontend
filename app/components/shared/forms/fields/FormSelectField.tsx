@@ -4,9 +4,10 @@ import { map, mapValues } from "lodash";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
-import { FormLabel } from "./FormLabel";
+import { FormFieldLabel } from "./FormFieldLabel";
 import { isFieldRequired, isNonValid, isValid } from "./utils";
 
+import { FormFieldError } from "./FormFieldError";
 import * as styles from "./FormStyles.module.scss";
 
 export const NONE_KEY = "";
@@ -76,7 +77,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
 
           return (
             <FormGroup>
-              {label && <FormLabel name={name}>{label}</FormLabel>}
+              {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
               <div className={cn(styles.customSelect, disabled && styles.disabled)}>
                 <Field
                   name={name}
@@ -99,11 +100,7 @@ export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps
               {extraMessage ? (
                 <div className={styles.noteLabel}>{extraMessage}</div>
               ) : (
-                <>
-                  {isNonValid(touched, errors, name) && (
-                    <div className={styles.errorLabel}>{errors[name]}</div>
-                  )}
-                </>
+                <FormFieldError name={name} />
               )}
             </FormGroup>
           );

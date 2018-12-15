@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import { Field, FieldProps } from "formik";
 import * as React from "react";
 
-import { FormError } from "./FormError";
+import { FormFieldError } from "./FormFieldError";
 
 import * as styles from "./FormFieldBoolean.module.scss";
 
@@ -103,7 +103,7 @@ class FormFieldBoolean extends React.Component<IProps> {
                 onChange={() => form.setFieldValue(name, !form.values[name])}
                 disabled={disabled}
               />
-              <FormError name={name} className="text-left" />
+              <FormFieldError name={name} className="text-left" />
             </>
           );
         }}

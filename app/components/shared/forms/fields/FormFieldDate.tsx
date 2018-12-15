@@ -5,8 +5,8 @@ import { FormGroup, Input } from "reactstrap";
 import { TTranslatedString } from "../../../../types";
 import { isValid } from "./utils";
 
-import { FormError } from "./FormError";
 import * as styles from "./FormFieldDate.module.scss";
+import { FormFieldError } from "./FormFieldError";
 
 interface IProps {
   disabled?: boolean;
@@ -141,7 +141,7 @@ export class FormFieldDate extends React.Component<IProps> {
                   />
                 </div>
               </div>
-              <FormError name={name} />
+              <FormFieldError name={name} />
             </FormGroup>
           );
         }}

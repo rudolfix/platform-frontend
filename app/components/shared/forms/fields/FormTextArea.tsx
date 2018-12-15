@@ -3,9 +3,9 @@ import * as React from "react";
 import { FormGroup, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
-import { FormError } from "./FormError";
-import { FormLabel } from "./FormLabel";
-import { computedValue, countedCharacters } from "./utils";
+import { FormFieldError } from "./FormFieldError";
+import { FormFieldLabel } from "./FormFieldLabel";
+import { getComputedValue, withCountedCharacters } from "./utils";
 
 interface IFieldGroup {
   disabled?: boolean;
@@ -31,7 +31,7 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
 
     return (
       <FormGroup>
-        {label && <FormLabel name={name}>{label}</FormLabel>}
+        {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
         <Field
           name={name}
           render={({ field }: FieldProps) => {
@@ -48,14 +48,14 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
                   <textarea
                     {...field}
                     disabled={disabled}
-                    value={computedValue(value, charactersLimit)}
+                    value={getComputedValue(value, charactersLimit)}
                     placeholder={placeholder}
                     className={className}
                   />
                   {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
                 </InputGroup>
-                <FormError name={name} />
-                {charactersLimit && countedCharacters(value, charactersLimit)}
+                <FormFieldError name={name} />
+                {charactersLimit && withCountedCharacters(value, charactersLimit)}
               </>
             );
           }}

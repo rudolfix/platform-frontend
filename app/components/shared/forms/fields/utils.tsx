@@ -5,7 +5,7 @@ import { FormGroup, InputProps } from "reactstrap";
 
 import { Dictionary } from "../../../../types";
 import { getFieldSchema, isRequired } from "../../../../utils/yupUtils";
-import { FormLabel } from "./FormLabel";
+import { FormFieldLabel } from "./FormFieldLabel";
 
 export interface IFormField {
   name: string;
@@ -16,7 +16,7 @@ export const withFormField = (
   Component: React.ComponentType<any>,
 ): React.SFC<Dictionary<any> & IFormField> => ({ label, name, ...inputProps }) => (
   <FormGroup>
-    {label && <FormLabel name={name}>{label}</FormLabel>}
+    {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
     <Component name={name} {...inputProps} />
   </FormGroup>
 );
@@ -49,7 +49,7 @@ export const isNonValid = (
   return !(valid === undefined || valid === true);
 };
 
-export const computedValue = (val: InputProps["value"] = "", limit: number | undefined) => {
+export const getComputedValue = (val: InputProps["value"] = "", limit: number | undefined) => {
   if (typeof val === "number" || Array.isArray(val) || !limit) {
     return val;
   }
@@ -57,7 +57,7 @@ export const computedValue = (val: InputProps["value"] = "", limit: number | und
   return limit && val.length > limit ? val.slice(0, limit - 1) : val;
 };
 
-export const countedCharacters = (val: InputProps["value"] = "", limit: number) => {
+export const withCountedCharacters = (val: InputProps["value"] = "", limit: number) => {
   if (typeof val !== "string") {
     throw new Error("Only strings are supported for character counters");
   }

@@ -5,10 +5,11 @@ import { FormGroup, Input } from "reactstrap";
 
 import { CommonHtmlProps, InputType, TTranslatedString } from "../../../../types";
 import { Avatar } from "../../Avatar";
-import { FormLabel } from "./FormLabel";
+import { FormFieldLabel } from "./FormFieldLabel";
 import { isNonValid } from "./utils";
 
 import * as styles from "./FormFieldColorful.module.scss";
+import { FormFieldError } from "./FormFieldError";
 
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -32,7 +33,7 @@ export class FormFieldColorful extends React.Component<FieldGroupProps> {
 
           return (
             <FormGroup>
-              {label && <FormLabel name={name}>{label}</FormLabel>}
+              {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
               <Field
                 name={name}
                 render={({ field }: FieldProps) => {
@@ -62,9 +63,7 @@ export class FormFieldColorful extends React.Component<FieldGroupProps> {
                           </div>
                         )}
                       </div>
-                      {isNonValid(touched, errors, name) && (
-                        <div className={styles.errorLabel}>{errors[name]}</div>
-                      )}
+                      <FormFieldError name={name} />
                     </>
                   );
                 }}

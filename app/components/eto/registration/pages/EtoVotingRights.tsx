@@ -15,8 +15,8 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
-import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
-import { FormToggle } from "../../../shared/forms/form-field/FormToggle";
+import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
+import { FormToggle } from "../../../shared/forms/fields/FormToggle";
 import { applyDefaults, convert, parseStringToFloat } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
@@ -78,9 +78,9 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
       />
 
       <div className="form-group">
-        <FormLabel name="generalVotingRule">
+        <FormFieldLabel name="generalVotingRule">
           <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
-        </FormLabel>
+        </FormFieldLabel>
         <FormToggle
           name="generalVotingRule"
           trueValue="positive"

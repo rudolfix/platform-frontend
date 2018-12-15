@@ -14,23 +14,23 @@ import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
-  FormError,
   FormField,
   FormFieldBoolean,
+  FormFieldError,
   FormRadioButton,
   FormTextArea,
 } from "../../../shared/forms";
 import {
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
-} from "../../../shared/forms/form-field/FormFieldCheckboxGroup";
-import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
-import { FormRange } from "../../../shared/forms/form-field/FormRange";
+} from "../../../shared/forms/fields/FormFieldCheckboxGroup";
+import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
+import { FormRange } from "../../../shared/forms/fields/FormRange";
 import { convert, parseStringToInteger } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
-import * as formStyles from "../../../shared/forms/form-field/FormStyles.module.scss";
+import * as formStyles from "../../../shared/forms/fields/FormStyles.module.scss";
 import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {
@@ -70,9 +70,9 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
     >
       <Section>
         <div className="form-group">
-          <FormLabel name="allowRetailInvestors">
+          <FormFieldLabel name="allowRetailInvestors">
             <FormattedMessage id="eto.form.section.eto-terms.allow-retail-label" />
-          </FormLabel>
+          </FormFieldLabel>
           <div>
             <FormRadioButton
               disabled={readonly}
@@ -139,22 +139,22 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         </Row>
 
         <div className="form-group">
-          <FormLabel name="prospectusLanguage">
+          <FormFieldLabel name="prospectusLanguage">
             <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
-          </FormLabel>
+          </FormFieldLabel>
           <div>
             <FormRadioButton name="prospectusLanguage" label="DE" value="de" disabled={readonly} />
           </div>
           <div>
             <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
           </div>
-          <FormError name="prospectusLanguage" className={formStyles.errorLabelAlignLeft} />
+          <FormFieldError name="prospectusLanguage" className={formStyles.errorLabelAlignLeft} />
         </div>
 
         <div className="form-group">
-          <FormLabel name="whitelistDurationDays">
+          <FormFieldLabel name="whitelistDurationDays">
             <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
-          </FormLabel>
+          </FormFieldLabel>
           <FormRange
             disabled={readonly}
             name="whitelistDurationDays"
@@ -168,9 +168,9 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         </div>
 
         <div className="form-group">
-          <FormLabel name="publicDurationDays">
+          <FormFieldLabel name="publicDurationDays">
             <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
-          </FormLabel>
+          </FormFieldLabel>
           <FormRange
             disabled={readonly}
             name="publicDurationDays"
@@ -179,9 +179,9 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         </div>
 
         <div className="form-group">
-          <FormLabel name="signingDurationDays">
+          <FormFieldLabel name="signingDurationDays">
             <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
-          </FormLabel>
+          </FormFieldLabel>
           <FormRange
             disabled={readonly}
             name="signingDurationDays"
@@ -190,9 +190,9 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
         </div>
 
         <div className="form-group">
-          <FormLabel name="enableTransferOnSuccess">
+          <FormFieldLabel name="enableTransferOnSuccess">
             <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
-          </FormLabel>
+          </FormFieldLabel>
           <div>
             <FormRadioButton
               disabled={readonly}
@@ -209,7 +209,10 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
               value={false}
             />
           </div>
-          <FormError name="enableTransferOnSuccess" className={formStyles.errorLabelAlignLeft} />
+          <FormFieldError
+            name="enableTransferOnSuccess"
+            className={formStyles.errorLabelAlignLeft}
+          />
         </div>
 
         <FormTextArea

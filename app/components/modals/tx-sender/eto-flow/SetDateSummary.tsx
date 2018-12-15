@@ -58,7 +58,7 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
         <FormattedHTMLMessage
           tagName="p"
           id="eto.settings.eto-start-date-summary.dates-description"
-          values={{ timeToChange: changableTill.fromNow(true) }}
+          values={{ timeToChange: changableTill.from(moment().startOf("day"), true) }}
         />
       </Row>
 
@@ -68,7 +68,7 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
             caption={
               <FormattedMessage id="eto.settings.eto-start-date-summary.time-to-start-date" />
             }
-            value={date.fromNow(true)}
+            value={date.from(moment().startOf("day"), true)}
             dataTestId="set-eto-date-summary-time-to-eto"
           />
           <InfoRow

@@ -12,7 +12,6 @@ declare module "web3-eth-accounts";
 declare module "ledger-wallet-provider";
 declare module "eth-lightwallet";
 
-declare module "bitcore-mnemonic";
 declare module "eth-sig-util";
 declare module "tweetnacl";
 

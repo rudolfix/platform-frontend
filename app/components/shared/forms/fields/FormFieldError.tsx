@@ -11,6 +11,7 @@ import * as styles from "./FormFieldError.module.scss";
 export interface IFormErrorExternalProps {
   name?: string;
   message: TTranslatedString;
+  alignLeft?: boolean;
 }
 
 export interface IProps {
@@ -18,22 +19,30 @@ export interface IProps {
   defaultMessage?: TTranslatedString;
   ignoreTouched?: boolean;
   className?: string;
+  alignLeft?: boolean;
 }
 
 const FormError: React.SFC<IFormErrorExternalProps & CommonHtmlProps> = ({
   message,
   name,
   className,
+  alignLeft,
 }) => (
   <div
     data-test-id={name && `form.${name}.error-message`}
-    className={cn(styles.errorLabel, className)}
+    className={cn(styles.errorLabel, { [styles.errorLabelAlignLeft]: alignLeft }, className)}
   >
     {message}
   </div>
 );
 
-const FormFieldError: React.SFC<IProps> = ({ name, defaultMessage, ignoreTouched, className }) => (
+const FormFieldError: React.SFC<IProps> = ({
+  name,
+  defaultMessage,
+  ignoreTouched,
+  className,
+  alignLeft,
+}) => (
   <FormikConsumer>
     {({ touched, errors, submitCount }) => {
       const touchedSubmitCountIncluded = {
@@ -46,6 +55,7 @@ const FormFieldError: React.SFC<IProps> = ({ name, defaultMessage, ignoreTouched
             name={name}
             message={getIn(errors, name) || defaultMessage}
             className={className}
+            alignLeft={alignLeft}
           />
         )
       );

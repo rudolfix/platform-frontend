@@ -1,12 +1,6 @@
 .form-label {
   @include font-label;
 
-  @include media-breakpoint-down (md) {
-    display: flex;
-    flex-direction: column;
-  }
-
   color: $neu-greyish-brown;
-  display: inline-flex;
   margin-bottom: px-to-rem(8px);
 }

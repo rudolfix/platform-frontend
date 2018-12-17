@@ -89,9 +89,9 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
           data-test-id="light-wallet-login-with-email-email-field"
           errorMessage={
             emailValidator.isValidSync(props.email) ? (
-              <FormattedMessage id="wallet-selector.neuwallet.email-error" />
-            ) : (
               undefined
+            ) : (
+              <FormattedMessage id="wallet-selector.neuwallet.email-error" />
             )
           }
         />

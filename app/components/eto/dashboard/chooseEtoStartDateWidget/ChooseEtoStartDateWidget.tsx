@@ -18,9 +18,9 @@ import { ButtonArrowRight } from "../../../shared/buttons";
 import { DatePicker } from "../../../shared/DatePicker";
 import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
+import { FormError } from "../../../shared/forms";
 import { Panel } from "../../../shared/Panel";
 
-import * as formStyles from "../../../shared/forms/fields/FormStyles.module.scss";
 import * as styles from "../../EtoContentWidget.module.scss";
 
 interface IStateProps {
@@ -77,15 +77,15 @@ const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
           </InputGroup>
           {newDate &&
             !isNewDateValid && (
-              <div
-                className={formStyles.errorLabel}
-                data-test-id="eto-settings-start-date-error-msg"
-              >
-                <FormattedMessage
-                  id="eto.settings.error-message.eto-start-date-too-early"
-                  values={{ days: minOffsetPeriodInDays }}
-                />
-              </div>
+              <FormError
+                name="etoStartDate"
+                message={
+                  <FormattedMessage
+                    id="eto.settings.error-message.eto-start-date-too-early"
+                    values={{ days: minOffsetPeriodInDays }}
+                  />
+                }
+              />
             )}
         </FormGroup>
         {canChangeDate && (

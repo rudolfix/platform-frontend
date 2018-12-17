@@ -54,7 +54,7 @@ describe("Eto start date setup", () => {
         .type(falseDate.format("MM/DD/YYYY"))
         .get(tid("eto-settings-start-date-confirm"))
         .should("be.disabled")
-        .get(tid("eto-settings-start-date-error-msg"));
+        .get(tid("form.etoStartDate.error-message"));
     });
   });
 });

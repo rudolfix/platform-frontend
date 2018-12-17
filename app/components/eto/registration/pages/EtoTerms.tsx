@@ -30,7 +30,6 @@ import { convert, parseStringToInteger } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
-import * as formStyles from "../../../shared/forms/fields/FormStyles.module.scss";
 import * as styles from "../Shared.module.scss";
 
 interface IExternalProps {
@@ -148,7 +147,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
           <div>
             <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
           </div>
-          <FormFieldError name="prospectusLanguage" className={formStyles.errorLabelAlignLeft} />
+          <FormFieldError alignLeft name="prospectusLanguage" />
         </div>
 
         <div className="form-group">
@@ -209,10 +208,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
               value={false}
             />
           </div>
-          <FormFieldError
-            name="enableTransferOnSuccess"
-            className={formStyles.errorLabelAlignLeft}
-          />
+          <FormFieldError name="enableTransferOnSuccess" alignLeft />
         </div>
 
         <FormTextArea

@@ -1,12 +1,10 @@
 import { expect } from "chai";
 import { delay } from "redux-saga";
-import { call, put, select } from "redux-saga/effects";
-import { spy } from "sinon";
+import { call } from "redux-saga/effects";
 
 import { expectSaga } from "redux-saga-test-plan";
 import { createMock } from "../../../test/testUtils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
-import { TGlobalDependencies } from "../../di/setupBindings";
 import { noopLogger } from "../../lib/dependencies/Logger";
 import { NotificationCenter } from "../../lib/dependencies/NotificationCenter";
 import { Web3Manager } from "../../lib/web3/Web3Manager";

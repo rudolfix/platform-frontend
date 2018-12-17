@@ -2,7 +2,6 @@ import { delay, Task } from "redux-saga";
 import { call, cancel, fork, put, select } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { symbols } from "../../di/symbols";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
 import { IAppState } from "../../store";

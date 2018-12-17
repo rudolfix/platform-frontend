@@ -1,4 +1,4 @@
-import { put, select } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -8,6 +8,7 @@ import {
 } from "../../../lib/web3/BrowserWallet";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
+import { neuTakeEvery } from "../../sagasUtils";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 
 export function* tryConnectingWithBrowserWallet({
@@ -24,7 +25,6 @@ export function* tryConnectingWithBrowserWallet({
 
       yield web3Manager.plugPersonalWallet(browserWallet);
       yield put(actions.walletSelector.connected());
-      yield console.log();
     } catch (e) {
       if (e instanceof BrowserWalletAccountApprovalRejectedError) {
         yield put(actions.walletSelector.browserWalletAccountApprovalRejectedError());
@@ -37,4 +37,8 @@ export function* tryConnectingWithBrowserWallet({
       }
     }
   }
+}
+
+export function* browserWalletSagas(): Iterator<any> {
+  yield fork(neuTakeEvery, "BROWSER_WALLET_TRY_CONNECTING", tryConnectingWithBrowserWallet);
 }

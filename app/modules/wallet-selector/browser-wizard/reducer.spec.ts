@@ -11,7 +11,7 @@ describe("Wallet selector > Browser wizard > reducer", () => {
 
     const actualState = browserWalletWizardReducer(
       undefined,
-      actions.walletSelector.setBrowserWalletConnectionError(expectedErrorMsg),
+      actions.walletSelector.browserWalletConnectionError(expectedErrorMsg),
     );
 
     expect(actualState).to.be.deep.eq({
@@ -24,7 +24,7 @@ describe("Wallet selector > Browser wizard > reducer", () => {
   it("should act on BROWSER_WALLET_APPROVAL_REJECTED action", () => {
     const state = browserWalletWizardReducer(
       undefined,
-      actions.walletSelector.setBrowserWalletAccountApprovalRejectedError(),
+      actions.walletSelector.browserWalletAccountApprovalRejectedError(),
     );
 
     expect(state).to.be.deep.eq({
@@ -41,7 +41,7 @@ describe("Wallet selector > Browser wizard > reducer", () => {
 
     const state = browserWalletWizardReducer(
       initialState,
-      actions.walletSelector.setBrowserWalletResetApprovalRequest(),
+      actions.walletSelector.browserWalletResetApprovalRequest(),
     );
 
     expect(state).to.be.deep.eq({

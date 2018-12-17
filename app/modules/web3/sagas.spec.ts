@@ -20,7 +20,7 @@ import {
 } from "./fixtures";
 import { autoLockLightWallet, personalWalletConnectionLost } from "./sagas";
 
-describe.only("Web3 sagas", () => {
+describe("Web3 sagas", () => {
   describe("light wallet password", () => {
     it("should reset password after timeout", async () => {
       const personalWalletMock = {

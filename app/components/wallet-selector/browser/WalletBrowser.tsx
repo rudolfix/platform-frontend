@@ -18,6 +18,7 @@ import { TMessage } from "../../translatedMessages/utils";
 
 import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
+import { actions } from "../../../modules/actions";
 import * as styles from "./WalletBrowser.module.scss";
 
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000; //TODO move it to config constants
@@ -114,11 +115,11 @@ export const WalletBrowser = compose<React.SFC>(
       approvalRejected: state.browserWalletWizardState.approvalRejected,
     }),
     dispatchToProps: dispatch => ({
-      handleReset: () => dispatch(walletFlows.resetApprovalRequestBrowserWalletWizard),
+      handleReset: () => dispatch(actions.walletSelector.browserWalletResetApprovalRequest()),
     }),
   }),
   withActionWatcher({
-    actionCreator: dispatch => dispatch(walletFlows.tryConnectingWithBrowserWallet),
+    actionCreator: dispatch => dispatch(actions.walletSelector.tryConnectingWithBrowserWallet()),
     interval: BROWSER_WALLET_RECONNECT_INTERVAL,
   }),
 )(WalletBrowserComponent);

@@ -235,7 +235,10 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
     }
 
     const nextStateDelay: number = yield neuCall(calculateNextStateDelay, previewCode);
-    if (nextStateDelay) {
+    // Do not schedule update if it's later than normal pooling
+    // otherwise it's possible to overflow max timeout limit
+    // see https://stackoverflow.com/questions/3468607/why-does-settimeout-break-for-large-millisecond-delay-values
+    if (nextStateDelay && nextStateDelay < etoNormalPoolingDelay) {
       strategies.nextState = delay(nextStateDelay);
     }
   }

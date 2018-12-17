@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Money, TCurrency } from "./Money";
+import { ECurrency, Money } from "./Money";
 import { MoneySuiteWidget, TSize, TTheme } from "./MoneySuiteWidget";
 
 import * as styles from "./AssetPortfolio.module.scss";
@@ -10,8 +10,8 @@ import { NewTable, NewTableRow } from "./NewTable";
 
 interface IProps {
   icon: string;
-  currency: TCurrency;
-  currencyTotal: TCurrency;
+  currency: ECurrency;
+  currencyTotal: ECurrency;
   largeNumber: string;
   value: string;
   moneyValue: string;
@@ -41,14 +41,14 @@ export const AssetPortfolio: React.SFC<IProps> = props => {
       </div>
       <div className={styles.listing}>
         <div className={styles.eur}>
-          <Money value={props.moneyValue} currency="eur" />
+          <Money value={props.moneyValue} currency={ECurrency.EUR} />
           <span className={cn(props.moneyChange < 0 ? styles.red : styles.green, "ml-2")}>
             ({props.moneyChange}
             %)
           </span>
         </div>
         <div className={styles.className}>
-          <Money value={props.tokenValue} currency="eth" />
+          <Money value={props.tokenValue} currency={ECurrency.ETH} />
           <span className={cn(props.tokenChange < 0 ? styles.red : styles.green, "ml-2")}>
             ({props.tokenChange}
             %)

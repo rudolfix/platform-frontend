@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { AccountBalance } from "../../shared/AccountBalance";
 import { HorizontalLine } from "../../shared/HorizontalLine";
+import { ECurrency } from "../../shared/Money";
 import { IPanelProps } from "../../shared/Panel";
 import { isWalletNotEmpty } from "./utils";
 import { IWalletValues, WalletBalanceContainer } from "./WalletBalance";
@@ -43,8 +44,8 @@ export const IcbmWallet: React.SFC<IIcbmWallet> = ({
         {isWalletNotEmpty(data.neuroAmount) && (
           <AccountBalance
             icon={neuroIcon}
-            currency="eur_token"
-            currencyTotal="eur"
+            currency={ECurrency.EUR_TOKEN}
+            currencyTotal={ECurrency.EUR}
             largeNumber={data.neuroAmount}
             value={data.neuroEuroAmount}
             onUpgradeClick={onUpgradeEuroClick}
@@ -57,8 +58,8 @@ export const IcbmWallet: React.SFC<IIcbmWallet> = ({
         {isWalletNotEmpty(data.ethAmount) && (
           <AccountBalance
             icon={ethIcon}
-            currency="eth"
-            currencyTotal="eur"
+            currency={ECurrency.ETH}
+            currencyTotal={ECurrency.EUR}
             largeNumber={data.ethAmount}
             value={data.ethEuroAmount}
             onUpgradeClick={onUpgradeEtherClick}

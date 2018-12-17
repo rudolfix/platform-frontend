@@ -1,11 +1,11 @@
 import * as cn from "classnames";
 import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
-import { get } from "lodash";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
-import { FormLabel } from "./FormLabel";
+import { FormFieldError } from "./FormFieldError";
+import { FormFieldLabel } from "./FormFieldLabel";
 import { isNonValid, isValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
@@ -68,7 +68,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
 
           return (
             <FormGroup className={styles.keyValueField}>
-              {label && <FormLabel name={name}>{label}</FormLabel>}
+              {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
               <Field
                 name={name}
                 validate={customValidation}
@@ -102,9 +102,7 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
                   </InputGroup>
                 )}
               />
-              {isNonValid(touched, errors, name) && (
-                <div className={styles.errorLabel}>{get(errors, name)}</div>
-              )}
+              <FormFieldError name={name} />
             </FormGroup>
           );
         }}

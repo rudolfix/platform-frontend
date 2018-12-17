@@ -20,10 +20,10 @@ const testStore = {
   },
 };
 
-storiesOf("ETO/EtoOverview", module)
+storiesOf("ETO/EtoView", module)
   .addDecorator(withStore(testStore as any))
   .add("default", () => (
     <Container>
-      <EtoView etoData={testEto as any} companyData={testCompany as any} />
+      <EtoView eto={testEto} />
     </Container>
   ));

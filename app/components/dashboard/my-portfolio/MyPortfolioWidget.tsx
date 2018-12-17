@@ -41,7 +41,7 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
   return (
     <div className={styles.contentWrapper}>
       <div className={styles.main}>
-        <h3>
+        <h3 className={styles.welcome}>
           <FormattedMessage id="dashboard.my-portfolio-widget.welcome" />
         </h3>
         <p>

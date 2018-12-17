@@ -10,7 +10,5 @@
 .error {
   @include font-default;
 
-  color: $neu-bright-orange;
-  text-align: right;
   border-top: 1px solid $neu-bright-orange;
 }

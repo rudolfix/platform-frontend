@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../config/constants";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { withActionWatcher } from "../../../utils/withActionWatcher";
@@ -21,8 +22,6 @@ import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
 import { actions } from "../../../modules/actions";
 import * as styles from "./WalletBrowser.module.scss";
 
-export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000; //TODO move it to config constants
-
 interface IWalletBrowserProps {
   errorMessage?: TMessage;
   isLoading: boolean;
@@ -38,13 +37,13 @@ export const WalletBrowserComponent: React.SFC<
   IWalletBrowserProps & IWalletBrowserDispatchProps
 > = ({ errorMessage, isLoading, isLoginRoute, approvalRejected, handleReset }) => (
   <div>
-    <h1 className="text-center mb-3" data-test-id="modals.wallet-selector.wallet-browser.title">
+    <h2 className={styles.title} data-test-id="modals.wallet-selector.wallet-browser.title">
       {isLoginRoute ? (
         <FormattedMessage id="wallet-selector.browser.login-prompt" />
       ) : (
         <FormattedMessage id="wallet-selector.browser.register-prompt" />
       )}
-    </h1>
+    </h2>
 
     {isLoading ? (
       <LoadingIndicator />

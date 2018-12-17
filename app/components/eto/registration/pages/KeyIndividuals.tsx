@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import { connect, FieldArray, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -16,8 +17,7 @@ import { TFormikConnect, TTranslatedString } from "../../../../types";
 import { getFieldSchema, isRequired } from "../../../../utils/yupUtils";
 import { Button, ButtonIcon, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
-import { FormLabelRaw } from "../../../shared/forms/form-field/FormLabel";
-import { FormSingleFileUpload } from "../../../shared/forms/form-field/FormSingleFileUpload";
+import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
@@ -102,10 +102,12 @@ const Individual: React.SFC<IIndividual> = ({
         data-test-id={`${group}.image`}
       />
       <FormField className="mt-4" name={`${group}.website`} placeholder="website" />
-      <FormLabelRaw className="mt-4 mb-2">
-        <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
-      </FormLabelRaw>
-      <SocialProfilesEditor profiles={SOCIAL_PROFILES_PERSON} name={`${group}.socialChannels`} />
+      <fieldset>
+        <legend className={cn(localStyles.individualSocialChannelsLegend, "mt-4 mb-2")}>
+          <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
+        </legend>
+        <SocialProfilesEditor profiles={SOCIAL_PROFILES_PERSON} name={`${group}.socialChannels`} />
+      </fieldset>
     </FormHighlightGroup>
   );
 };

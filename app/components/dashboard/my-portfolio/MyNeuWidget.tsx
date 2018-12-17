@@ -5,6 +5,7 @@ import { Col, Row } from "reactstrap";
 
 import { externalRoutes } from "../../../config/externalRoutes";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
+import { ECurrency } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
@@ -26,11 +27,11 @@ export const MyNeuWidget: React.SFC<IProps> = props => {
         <Col md={12}>
           <div className={cn(styles.neu)}>
             <MoneySuiteWidget
-              currency="neu"
+              currency={ECurrency.NEU}
               largeNumber={props.balanceNeu}
               icon={icon}
               value={props.balanceEur}
-              currencyTotal="eur"
+              currencyTotal={ECurrency.EUR}
               data-test-id="my-neu-widget-neumark-balance"
               size="large"
             />

@@ -11,6 +11,7 @@ import {
 import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { actions } from "../../../../../modules/actions";
 import { appConnect } from "../../../../../store";
+import { ECurrency } from "../../../../shared/Money";
 import {
   CampaigningActivatedInvestorApprovedWidgetLayout,
   CampaigningFormState,
@@ -119,7 +120,7 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
       const newPledge: IPledge = {
         amountEur,
         consentToRevealEmail,
-        currency: "eur_t",
+        currency: ECurrency.EUR_TOKEN,
       };
 
       savePledge(newPledge);

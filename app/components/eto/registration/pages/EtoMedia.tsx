@@ -11,7 +11,7 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormCheckbox, FormField } from "../../../shared/forms";
+import { FormField, FormFieldBoolean } from "../../../shared/forms";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { Tooltip } from "../../../shared/Tooltip";
@@ -54,7 +54,7 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
       <div className="mb-2 mt-3 font-weight-bold">
         <FormattedMessage id="eto.form.eto-media.social-channels" />
       </div>
-      <FormCheckbox
+      <FormFieldBoolean
         name="disableTwitterFeed"
         label={<FormattedMessage id="eto.form.eto-media.enable-twitter-feed" />}
       />

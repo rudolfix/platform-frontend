@@ -7,3 +7,7 @@
 .add-button {
   padding-top: 0 !important; // sass-lint:disable-line no-important
 }
+
+.individual-social-channels-legend {
+  @include font-label;
+}

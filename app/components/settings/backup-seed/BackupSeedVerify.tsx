@@ -1,4 +1,3 @@
-import * as Mnemonic from "bitcore-mnemonic";
 import * as cn from "classnames";
 import { range } from "lodash";
 import * as React from "react";
@@ -11,6 +10,7 @@ import { Button, EButtonLayout } from "../../shared/buttons";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
+import { englishMnemonics } from "../../../utils/englishMnemonics";
 import * as styles from "./BackupSeedVerify.module.scss";
 
 /* tslint:disable: no-submodule-imports */
@@ -21,7 +21,7 @@ import "react-virtualized/styles.css";
 
 const WORDS_TO_VERIFY = 4;
 
-const wordsOptions = Mnemonic.Words.ENGLISH.map((word: string) => ({ value: word, label: word }));
+const wordsOptions = englishMnemonics.map((word: string) => ({ value: word, label: word }));
 
 interface IBackupSeedVerifyProps {
   onNext: () => void;

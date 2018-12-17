@@ -9,10 +9,12 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
-import { FormConstantField } from "../../../shared/forms/form-field/FormConstantField";
+import { FormConstantField } from "../../../shared/forms/fields/FormConstantField";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
+
+import * as styles from "../WalletLight.module.scss";
 
 const PASSWORD = "password";
 
@@ -75,7 +77,7 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
 > = props => (
   <>
     <Row>
-      <p className="small mx-auto">
+      <p className={styles.prompt}>
         <FormattedMessage id="wallet-selector.neuwallet.login.prompt" />
       </p>
     </Row>
@@ -85,8 +87,13 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
           value={props.email}
           className="mb-2"
           data-test-id="light-wallet-login-with-email-email-field"
-          valid={emailValidator.isValidSync(props.email)}
-          errorMessage={<FormattedMessage id="wallet-selector.neuwallet.email-error" />}
+          errorMessage={
+            emailValidator.isValidSync(props.email) ? (
+              undefined
+            ) : (
+              <FormattedMessage id="wallet-selector.neuwallet.email-error" />
+            )
+          }
         />
         <LoginEnhancedLightWalletForm {...props} />
         {props.errorMsg && (

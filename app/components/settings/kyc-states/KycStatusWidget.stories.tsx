@@ -13,6 +13,7 @@ const commonProps = {
   userType: EUserType.INVESTOR,
   onGoToKycHome: () => {},
   onGoToDashboard: () => {},
+  cancelInstantId: () => {},
 };
 
 storiesOf("KYC/StatusWidget", module)
@@ -37,6 +38,7 @@ storiesOf("KYC/StatusWidget", module)
       userType={EUserType.INVESTOR}
       requestStatus="Outsourced"
       requestOutsourcedStatus="started"
+      externalKycUrl={"https://neufund.org"}
     />
   ))
   .add("outsourced-aborted", () => (

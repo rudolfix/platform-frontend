@@ -5,7 +5,7 @@ import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { CustomTooltip } from "../../CustomTooltip";
-import { FormLabel } from "./FormLabel";
+import { FormFieldLabel } from "./FormFieldLabel";
 import { isNonValid } from "./utils";
 
 import * as icon from "../../../../assets/img/notifications/warning.svg";
@@ -55,7 +55,7 @@ export class FormFieldImportant extends React.Component<FieldGroupProps> {
       <FormikConsumer>
         {({ touched, errors }) => (
           <>
-            {label && <FormLabel name={name}>{label}</FormLabel>}
+            {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
             <Field
               name={name}
               validate={validate}

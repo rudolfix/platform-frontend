@@ -5,6 +5,7 @@ import { Row } from "reactstrap";
 import { recoverRoutes } from "../../wallet-recover/recoverRoutes";
 
 import * as mailLink from "../../../../assets/img/mail_link.svg";
+import * as styles from "../WalletLight.module.scss";
 
 export const MissingEmailLightWallet: React.SFC<{}> = () => {
   return (
@@ -12,9 +13,9 @@ export const MissingEmailLightWallet: React.SFC<{}> = () => {
       <Row className="justify-content-center mt-5 mb-5">
         <img src={mailLink} className="text-center" />
       </Row>
-      <p className="text-center font-weight-bold" data-test-id="neuwallet-missing-email">
+      <p className={styles.missingEmail} data-test-id="neuwallet-missing-email">
         <FormattedHTMLMessage
-          tagName="div"
+          tagName="span"
           id="wallet-selector.neuwallet.login-instructions"
           values={{ url: recoverRoutes.help }}
         />

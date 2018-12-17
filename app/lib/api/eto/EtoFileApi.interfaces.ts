@@ -32,7 +32,12 @@ export enum EEtoDocumentType {
   SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT = "signed_investment_and_shareholder_agreement",
 }
 
-type TEtoFormType = "document" | "template";
+export type TEtoFormType = "document" | "template";
+
+export enum EEtoDocumentLanguage {
+  EN = "en",
+  DE = "de",
+}
 
 export interface IEtoDocument {
   documentType: EEtoDocumentType;
@@ -41,6 +46,7 @@ export interface IEtoDocument {
   mimeType: string;
   name: string;
   placeholders?: { [key: string]: string };
+  language?: EEtoDocumentLanguage;
 }
 
 type TComplextFileInfo = "canDeleteInStates" | "canUploadInStates";

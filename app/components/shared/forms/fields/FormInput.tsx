@@ -3,9 +3,9 @@ import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
-import { CommonHtmlProps, InputType } from "../../../../types";
-import { FormError } from "./FormError";
-import { computedValue, countedCharacters, isNonValid, isValid } from "./utils";
+import { CommonHtmlProps, InputType, TTranslatedString } from "../../../../types";
+import { FormFieldError } from "./FormFieldError";
+import { getComputedValue, isNonValid, isValid, withCountedCharacters } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -17,11 +17,11 @@ export enum InputSize {
 export interface IFormInputExternalProps {
   min?: string;
   max?: string;
-  placeholder?: string | React.ReactNode;
-  errorMsg?: string | React.ReactNode;
+  placeholder?: TTranslatedString;
+  errorMsg?: TTranslatedString;
   type?: InputType;
-  prefix?: string | React.ReactNode;
-  suffix?: string | React.ReactNode;
+  prefix?: TTranslatedString;
+  suffix?: TTranslatedString;
   addonStyle?: string;
   maxLength?: number;
   charactersLimit?: number;
@@ -34,7 +34,7 @@ export interface IFormInputExternalProps {
 export type FormInputProps = IFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
 
 const transform = (value: string, charactersLimit?: number) => {
-  return value !== undefined ? computedValue(value, charactersLimit) : "";
+  return value !== undefined ? getComputedValue(value, charactersLimit) : "";
 };
 
 const transformBack = (value: number | string) => {
@@ -48,7 +48,7 @@ const transformBack = (value: number | string) => {
 };
 
 /**
- * Formik connected form input without FormGroup and FormLabel.
+ * Formik connected form input without FormGroup and FormFieldLabel.
  */
 export class FormInput extends React.Component<FormInputProps> {
   static defaultProps = {
@@ -77,10 +77,8 @@ export class FormInput extends React.Component<FormInputProps> {
     return (
       <FormikConsumer>
         {({ touched, errors, setFieldTouched, setFieldValue }) => {
-          //This is done due to the difference between reactstrap and @typings/reactstrap
-          const inputExtraProps = {
-            invalid: isNonValid(touched, errors, name, ignoreTouched),
-          } as any;
+          const invalid = isNonValid(touched, errors, name, ignoreTouched);
+
           return (
             <Field
               name={name}
@@ -93,22 +91,15 @@ export class FormInput extends React.Component<FormInputProps> {
                       {prefix && (
                         <InputGroupAddon
                           addonType="prepend"
-                          className={cn(
-                            styles.addon,
-                            addonStyle,
-                            isValid(touched, errors, name) && "is-invalid",
-                          )}
+                          className={cn(styles.addon, addonStyle, { "is-invalid": invalid })}
                         >
                           {prefix}
                         </InputGroupAddon>
                       )}
                       <Input
+                        id={name}
                         maxLength={maxLength}
-                        className={cn(
-                          className,
-                          styles.inputField,
-                          isValid(touched, errors, name) && "is-invalid",
-                        )}
+                        className={cn(className, styles.inputField, { "is-invalid": invalid })}
                         {...field}
                         onChange={e => {
                           setFieldTouched(name);
@@ -131,27 +122,24 @@ export class FormInput extends React.Component<FormInputProps> {
                         valid={isValid(touched, errors, name)}
                         placeholder={placeholder}
                         disabled={disabled}
-                        {...inputExtraProps}
+                        invalid={invalid}
                         {...props}
                       />
                       {suffix && (
                         <InputGroupAddon
                           addonType="append"
-                          className={cn(
-                            styles.addon,
-                            isValid(touched, errors, name) && "is-invalid",
-                          )}
+                          className={cn(styles.addon, { "is-invalid": invalid })}
                         >
                           {suffix}
                         </InputGroupAddon>
                       )}
                     </InputGroup>
-                    <FormError
+                    <FormFieldError
                       name={name}
                       defaultMessage={errorMsg}
                       ignoreTouched={ignoreTouched}
                     />
-                    {charactersLimit && <div>{countedCharacters(val, charactersLimit)}</div>}
+                    {charactersLimit && <div>{withCountedCharacters(val, charactersLimit)}</div>}
                   </div>
                 );
               }}

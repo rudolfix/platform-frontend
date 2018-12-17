@@ -1,17 +1,18 @@
 import * as React from "react";
 import { Col, Row } from "reactstrap";
+
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { Money, TMoneyTransfer } from "../../shared/Money";
+import { ECurrency, Money, TMoneyTransfer } from "../../shared/Money";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
 import { TableHeader } from "../../shared/table/TableHeader";
 import { TableRow } from "../../shared/table/TableRow";
-import * as styles from "./TransactionList.module.scss";
 
 import * as LinkOutIcon from "../../../assets/img/inline_icons/link_out.svg";
 import * as AddIcon from "../../../assets/img/inline_icons/plus.svg";
+import * as styles from "./TransactionList.module.scss";
 
 export enum TransactionType {
   Withdraw = "withdraw",
@@ -103,7 +104,7 @@ export const TransactionList: React.SFC<ITransactionList> = ({
                   {type}
                 </TableCell>
                 <TableCell decorate mobileDescription="Amount">
-                  <Money currency="eur_token" value={amount} transfer={transfer} />
+                  <Money currency={ECurrency.EUR_TOKEN} value={amount} transfer={transfer} />
                 </TableCell>
                 <TableCell decorate mobileDescription="From/To">
                   {fromTo}

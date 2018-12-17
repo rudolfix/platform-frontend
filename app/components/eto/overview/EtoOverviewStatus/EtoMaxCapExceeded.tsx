@@ -11,7 +11,7 @@ import {
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
-import { EMoneyFormat, Money } from "../../../shared/Money";
+import { ECurrency, EMoneyFormat, Money } from "../../../shared/Money";
 import { CounterWidget } from "./CounterWidget";
 import { InvestmentProgress } from "./InvestmentWidget/InvestmentProgress";
 import { Message } from "./Message";
@@ -60,7 +60,7 @@ const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps & IWith
         <div>
           <Money
             value={divideBigNumbers(eto.contract!.totalInvestment.totalEquivEurUlps, etherPriceEur)}
-            currency="eth"
+            currency={ECurrency.ETH}
           />
         </div>
         <div>
@@ -74,7 +74,7 @@ const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps & IWith
         <div>
           <Money
             value={eto.contract!.totalInvestment.totalTokensInt.toNumber()}
-            currency="eur_token"
+            currency={ECurrency.EUR_TOKEN}
             format={EMoneyFormat.FLOAT}
           />
         </div>

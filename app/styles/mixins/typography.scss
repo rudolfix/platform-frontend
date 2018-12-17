@@ -48,6 +48,12 @@
   letter-spacing: px-to-rem(-.3px);
 }
 
+@mixin font-headline-condensed {
+  font-family: $headings-font-family;
+  font-size: .875rem;
+  letter-spacing: -.00125rem;
+}
+
 // Quote
 
 @mixin blockquote {

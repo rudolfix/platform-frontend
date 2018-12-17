@@ -13,10 +13,10 @@ interface IDispatchProps {
 }
 
 interface IOwnProps {
-  children: React.ReactNode;
   documentType: EEtoDocumentType;
   disabled?: boolean;
 }
+//todo dropzone should accept all files dropped, not only the first one, see #2243
 export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = ({
   onDropFile,
   children,

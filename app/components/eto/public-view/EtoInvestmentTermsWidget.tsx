@@ -8,7 +8,13 @@ import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
 import { TDataTestId, TTranslatedString } from "../../../types";
 import { DocumentTemplateButton } from "../../shared/DocumentLink";
-import { ECurrencySymbol, EMoneyFormat, Money, selectCurrencyCode } from "../../shared/Money";
+import {
+  ECurrency,
+  ECurrencySymbol,
+  EMoneyFormat,
+  Money,
+  selectCurrencyCode,
+} from "../../shared/Money";
 import { NumberFormat } from "../../shared/NumberFormat";
 import { Panel } from "../../shared/Panel";
 import { Percentage } from "../../shared/Percentage";
@@ -62,7 +68,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 value={
                   <Money
                     value={etoData.preMoneyValuationEur}
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />
@@ -109,7 +115,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
               value={
                 <Money
                   value={computedNewSharePrice}
-                  currency="eur"
+                  currency={ECurrency.EUR}
                   format={EMoneyFormat.FLOAT}
                   currencySymbol={ECurrencySymbol.SYMBOL}
                 />
@@ -152,7 +158,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 value={
                   <Money
                     value={computedNewSharePrice / etoData.equityTokensPerShare}
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />
@@ -179,7 +185,7 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 label={<FormattedMessage id="eto.public-view.token-terms.ticket-size" />}
                 value={
                   <Money
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                     value={
                       <>
@@ -203,8 +209,8 @@ const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps>
                 <FormattedMessage
                   id="eto.public-view.token-terms.currencies.value"
                   values={{
-                    eth: selectCurrencyCode("eth"),
-                    nEur: selectCurrencyCode("eur_token"),
+                    eth: selectCurrencyCode(ECurrency.ETH),
+                    nEur: selectCurrencyCode(ECurrency.EUR_TOKEN),
                   }}
                 />
               }

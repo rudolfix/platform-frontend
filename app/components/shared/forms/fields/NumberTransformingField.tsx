@@ -1,14 +1,14 @@
 import * as cn from "classnames";
 import { FastField, FieldAttributes, FieldProps, FormikConsumer } from "formik";
-import { get } from "lodash";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType } from "../../../../types";
 import { convertToPrecision } from "../../../eto/utils";
-import { FormLabel } from "./FormLabel";
+import { FormFieldLabel } from "./FormFieldLabel";
 import { isNonValid, isValid } from "./utils";
 
+import { FormFieldError } from "./FormFieldError";
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
@@ -49,7 +49,7 @@ export const NumberTransformingField = ({
       } as any;
       return (
         <FormGroup className={styles.keyValueField}>
-          {label && <FormLabel name={name}>{label}</FormLabel>}
+          {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
           <FastField
             name={name}
             validate={customValidation}
@@ -88,9 +88,7 @@ export const NumberTransformingField = ({
               </InputGroup>
             )}
           />
-          {isNonValid(touched, errors, name) && (
-            <div className={styles.errorLabel}>{get(errors, name)}</div>
-          )}
+          <FormFieldError name={name} />
         </FormGroup>
       );
     }}

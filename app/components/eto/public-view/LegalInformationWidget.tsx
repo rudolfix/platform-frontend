@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 
 import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
-import { ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../shared/Money";
 import { NumberFormat } from "../../shared/NumberFormat";
 import { Panel } from "../../shared/Panel";
 import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
@@ -117,7 +117,7 @@ export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
                 <span className={styles.value}>
                   <Money
                     value={companyData.lastFundingSizeEur}
-                    currency="eur"
+                    currency={ECurrency.EUR}
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />

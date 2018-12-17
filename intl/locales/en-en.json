@@ -795,6 +795,7 @@
   "shared-component.eto-overview.error.max-pledge": "The amount is above the maximum whitelist commitment size of {maxPledge}",
   "shared-component.eto-overview.error.min-pledge": "The amount is below the minimum whitelist commitment size of {minPledge}",
   "shared-component.eto-overview.invest-now": "Invest now",
+  "shared-component.eto-overview.invest.ends-in": "Ends {endsIn}",
   "shared-component.eto-overview.invest.max-amount": "Hard Cap",
   "shared-component.eto-overview.invest.min-amount": "Soft Cap",
   "shared-component.eto-overview.investment-memorandum": "Investment memorandum",

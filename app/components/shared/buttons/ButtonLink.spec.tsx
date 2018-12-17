@@ -72,4 +72,44 @@ describe("<ButtonLink />", () => {
     expect(button.prop("disabled")).to.be.true;
     expect(button.prop("layout")).to.equal(EButtonLayout.INLINE);
   });
+
+  it("should open external url in new tab", () => {
+    const { node, store } = withMockStore({
+      router: {
+        location: {
+          pathname: "/register",
+        },
+      },
+    })(<ButtonLink to={"https://neufund.org"} />);
+
+    const button = mount(node);
+
+    button.simulate("click");
+
+    expect(store.getActions()).to.have.lengthOf(1);
+    expect(store.getActions()).to.deep.include({
+      type: "@@router/OPEN_IN_NEW_WINDOW",
+      payload: { path: "https://neufund.org", target: "_blank" },
+    });
+  });
+
+  it("should open url in new tab when target is provided", () => {
+    const { node, store } = withMockStore({
+      router: {
+        location: {
+          pathname: "/register",
+        },
+      },
+    })(<ButtonLink to={"/register"} target="_blank" />);
+
+    const button = mount(node);
+
+    button.simulate("click");
+
+    expect(store.getActions()).to.have.lengthOf(1);
+    expect(store.getActions()).to.deep.include({
+      type: "@@router/OPEN_IN_NEW_WINDOW",
+      payload: { path: "/register", target: "_blank" },
+    });
+  });
 });

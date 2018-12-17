@@ -15,7 +15,7 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
-import { FormSingleFileUpload } from "../../../shared/forms/form-field/FormSingleFileUpload";
+import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";

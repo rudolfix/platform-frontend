@@ -15,8 +15,8 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
-import { FormLabel } from "../../../shared/forms/form-field/FormLabel";
-import { FormSingleFileUpload } from "../../../shared/forms/form-field/FormSingleFileUpload";
+import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
+import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 import * as styles from "../Shared.module.scss";
@@ -57,9 +57,9 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
         disabled={readonly}
       />
       <div className="form-group">
-        <FormLabel name="equityTokenImage">
+        <FormFieldLabel name="equityTokenImage">
           <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
-        </FormLabel>
+        </FormFieldLabel>
         <FormSingleFileUpload
           label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
           name="equityTokenImage"

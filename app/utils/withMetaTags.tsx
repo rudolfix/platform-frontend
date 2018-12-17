@@ -7,10 +7,10 @@ type TMetaTags = {
   title: string;
 };
 
-const withMetaTags = <T extends any>(getMetaTags: (props: T, intl: IIntlHelpers) => TMetaTags) => (
+const withMetaTags = <T extends {}>(getMetaTags: (props: T, intl: IIntlHelpers) => TMetaTags) => (
   Wrapper: React.ComponentType<T>,
 ) =>
-  injectIntlHelpers(({ intl, ...props }: IIntlProps & any) => {
+  injectIntlHelpers<T>(({ intl, ...props }: IIntlProps & any) => {
     const { title } = getMetaTags(props, intl);
 
     return (

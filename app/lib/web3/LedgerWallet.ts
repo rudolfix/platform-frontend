@@ -5,8 +5,8 @@ import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
-import { delay } from "bluebird";
 import { inject, injectable } from "inversify";
+import { delay } from "redux-saga";
 import { symbols } from "../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import { EthereumAddress, EthereumNetworkId } from "../../types";

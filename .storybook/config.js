@@ -5,6 +5,7 @@ import { setIntlConfig, withIntl } from "storybook-addon-intl";
 import StoryRouter from "storybook-react-router";
 import { initScreenshot, withScreenshot } from "storybook-chrome-screenshot/lib";
 import { checkA11y } from "@storybook/addon-a11y";
+import { configureViewport, INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 
 // Load the locale data for all your defined locales
 import { addLocaleData } from "react-intl";
@@ -63,5 +64,37 @@ const req = require.context("../app/components/", true, /stories\.tsx$/);
 function loadStories() {
   req.keys().forEach(req);
 }
+
+const newViewports = {
+  768: {
+    name: "768px wide",
+    styles: {
+      width: "768px",
+      height: "800px",
+    },
+  },
+  992: {
+    name: "992px wide",
+    styles: {
+      width: "990px",
+      height: "800px",
+    },
+  },
+  1200: {
+    name: "1200px wide",
+    styles: {
+      width: "1200px",
+      height: "800px",
+    },
+  },
+};
+
+configureViewport({
+  viewports: {
+    ...INITIAL_VIEWPORTS,
+    ...newViewports,
+  },
+  defaultViewport: "responsive",
+});
 
 configure(loadStories, module);

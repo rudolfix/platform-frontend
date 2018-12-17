@@ -2,8 +2,14 @@ import { BigNumber } from "bignumber.js";
 import { createStore, Store } from "redux";
 
 import { IConfig } from "../app/config/getConfig";
+import {
+  EEtoDocumentType,
+  IEtoFiles,
+  EEtoDocumentLanguage,
+  TEtoDocumentTemplates,
+  TEtoFormType,
+} from "../app/lib/api/eto/EtoFileApi.interfaces";
 import { EEtoState, TCompanyEtoData } from "../app/lib/api/eto/EtoApi.interfaces";
-import { EEtoDocumentType } from "../app/lib/api/eto/EtoFileApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../app/modules/public-etos/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
 
@@ -681,49 +687,45 @@ export const testCompany: TCompanyEtoData = {
   //zipCode: "12345",
 };
 
+export const etoDocuments: TEtoDocumentTemplates = {
+  qmWKa6ZVZjZu3X2CtJnSnthUwWMeAcyfv9IZDnoawmULeT: {
+    documentType: EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT,
+    form: "document" as TEtoFormType,
+    ipfsHash: "QmWKa6zVZjZu3x2CtJnSNTHUwWMeAcyfv9iZDnoawmULeT",
+    mimeType: "application/pdf",
+    language: EEtoDocumentLanguage.EN,
+    name: "./dev_fixtures/eto_fixtures/ETOInPublicState/investor_offering_document.pdf",
+  },
+  qmc4RZuxqKkvRahSuhs6QaeRq2VoqDiMXbiHwhZTfwXUdK: {
+    documentType: EEtoDocumentType.SIGNED_TERMSHEET,
+    form: "document" as TEtoFormType,
+    ipfsHash: "Qmc4rZUXQKkvRahSUHS6qaeRq2voqDiMXbiHwhZTfwXUdK",
+    mimeType: "application/pdf",
+    language: EEtoDocumentLanguage.EN,
+    name: "./dev_fixtures/eto_fixtures/ETOInPublicState/signed_termsheet.pdf",
+  },
+};
+
 export const testEto: TEtoWithCompanyAndContract = {
   additionalTerms: undefined,
   authorizedCapitalShares: undefined,
   newSharesToIssueInFixedSlots: undefined,
   allowRetailInvestors: true,
   canEnableBookbuilding: false,
-  // claimDurationDays: 10,
   companyId: "0xC8f867Cf4Ed30b4fF0Aa4c4c8c6b684397B219B0",
   currencies: ["eth", "eur_t"],
   discountScheme: "40%",
-  documents: {
-    qmWKa6ZVZjZu3X2CtJnSnthUwWMeAcyfv9IZDnoawmULeT: {
-      documentType: "approved_investor_offering_document" as EEtoDocumentType,
-      form: "document",
-      ipfsHash: "QmWKa6zVZjZu3x2CtJnSNTHUwWMeAcyfv9iZDnoawmULeT",
-      mimeType: "application/pdf",
-      name: "./dev_fixtures/eto_fixtures/ETOInPublicState/investor_offering_document.pdf",
-    },
-    qmc4RZuxqKkvRahSuhs6QaeRq2VoqDiMXbiHwhZTfwXUdK: {
-      documentType: "signed_termsheet" as EEtoDocumentType,
-      form: "document",
-      ipfsHash: "Qmc4rZUXQKkvRahSUHS6qaeRq2voqDiMXbiHwhZTfwXUdK",
-      mimeType: "application/pdf",
-      name: "./dev_fixtures/eto_fixtures/ETOInPublicState/signed_termsheet.pdf",
-    },
-  },
+  documents: etoDocuments,
   enableTransferOnSuccess: false,
-  // equityTokenControllerContractAddress: "0xd36F021bEb5d404b65a639330331E7C39a037C02",
   equityTokenImage:
     "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/a03810cf-7e99-4264-8a94-24303dce4e3b.png",
   equityTokenName: "Quintessence",
-  // equityTokenPrecision: 0,
   equityTokenSymbol: "QTT",
   equityTokensPerShare: 10000,
   etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc",
   existingCompanyShares: 40976,
   fixedSlotsMaximumDiscountFraction: 0.5,
-  // generalVotingDurationDays: 10,
   generalVotingRule: "positive",
-  // hasDragAlongRights: true,
-  // hasFoundersVesting: true,
-  // hasGeneralInformationRights: true,
-  // hasTagAlongRights: true,
   isBookbuilding: false,
   liquidationPreferenceMultiplier: 0.5,
   maxPledges: 500,
@@ -739,19 +741,16 @@ export const testEto: TEtoWithCompanyAndContract = {
   prospectusLanguage: "de",
   publicDiscountFraction: 0,
   publicDurationDays: 14,
-  // restrictedActVotingDurationDays: 14,
-  // schemaVersion: 1,
   shareNominalValueEur: 1,
   signingDurationDays: 14,
   startDate: "2018-11-16T05:03:56+00:00",
   state: "on_chain" as EEtoState,
-  // tagAlongVotingRule: "negative",
   templates: {
     companyTokenHolderAgreement: {
       documentType: "company_token_holder_agreement" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmPKDB129q8AxxtTiX5eh9MPF6K1da5sHfqMv1a788BbuM",
-      // language: "en",
+      language: EEtoDocumentLanguage.EN,
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "company_token_holder_agreement",
     },
@@ -759,7 +758,7 @@ export const testEto: TEtoWithCompanyAndContract = {
       documentType: "investment_and_shareholder_agreement_template" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmUktiTT9ap8UuMUMZNmgrz7fabHMkrosycuTPUtX3rydQ",
-      // language: "en",
+      language: EEtoDocumentLanguage.EN,
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "investment_and_shareholder_agreement_template",
     },
@@ -767,7 +766,7 @@ export const testEto: TEtoWithCompanyAndContract = {
       documentType: "prospectus_template" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmQYWyx6WWwCYqBnJ74ruogTTHfKoscQRHU5eJFKDD22mT",
-      // language: "de",
+      language: EEtoDocumentLanguage.DE,
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "prospectus_template_de",
     },
@@ -775,7 +774,7 @@ export const testEto: TEtoWithCompanyAndContract = {
       documentType: "reservation_and_acquisition_agreement" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmekA9D4pa5Tsmd2krzUFFREGAduDDkbpNyoin4wX7aaob",
-      // language: "en",
+      language: EEtoDocumentLanguage.EN,
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "reservation_and_acquisition_agreement",
     },
@@ -783,14 +782,12 @@ export const testEto: TEtoWithCompanyAndContract = {
       documentType: "termsheet_template" as EEtoDocumentType,
       form: "template",
       ipfsHash: "QmRLwyTw4ux84KnYvhejTsUggi2SeewGqASuh3DrURtyot",
-      // language: "en",
+      language: EEtoDocumentLanguage.EN,
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "termsheet_template",
     },
   },
-  // tokenholdersQuorum: 0.5,
-  // votingFinalizationDurationDays: 7,
-  // votingMajorityFraction: 0.5,
+
   whitelistDiscountFraction: 0.3,
   whitelistDurationDays: 7,
   company: testCompany,
@@ -815,5 +812,131 @@ export const testEto: TEtoWithCompanyAndContract = {
     etoCommitmentAddress: "0x234234234234",
     equityTokenAddress: "0xbAb1B125ba8b4A3161b7543a4cAA38De7f9c9b2D",
     etoTermsAddress: "0x948f07847e19E7dBb98DdfFdCA4b2eDF71f3E3B5",
+  },
+};
+
+export const etoFilesData: IEtoFiles = {
+  allTemplates: {
+    companyTokenHolderAgreement: {
+      documentType: EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
+      form: "template" as TEtoFormType,
+      ipfsHash: "QmVEJvxmo4M5ugvfSQfKzejW8cvXsWe8261MpGChov7DQt",
+      language: EEtoDocumentLanguage.EN,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      name: "company_token_holder_agreement",
+    },
+    investmentAndShareholderAgreementTemplate: {
+      documentType: EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_TEMPLATE,
+      form: "template" as TEtoFormType,
+      ipfsHash: "QmYEGp8hoYnBptD2UUAuDrsx2jMRkf8Evgc3d5J5ZK9xQY",
+      language: EEtoDocumentLanguage.EN,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      name: "investment_and_shareholder_agreement_template",
+    },
+    investmentMemorandumTemplate: {
+      documentType: EEtoDocumentType.INVESTMENT_MEMORANDUM_TEMPLATE,
+      form: "template" as TEtoFormType,
+      ipfsHash: "QmUx5R5BsbwWAymRqN7QcZDSCZU7Sqvv1rDB4dYjVt8BRu",
+      language: EEtoDocumentLanguage.EN,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      name: "investment_memorandum_template",
+    },
+    pamphletTemplate: {
+      documentType: EEtoDocumentType.PAMPHLET_TEMPLATE,
+      form: "template" as TEtoFormType,
+      ipfsHash: "QmUbU1jFuJdpArXuPPPQBde2vg3p6LPy6CPK3e3Rw5ACoC",
+      language: EEtoDocumentLanguage.DE,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      name: "pamphlet_template_de",
+    },
+    prospectusTemplate: {
+      documentType: EEtoDocumentType.PROSPECTUS_TEMPLATE,
+      form: "template" as TEtoFormType,
+      ipfsHash: "QmQYWyx6WWwCYqBnJ74ruogTTHfKoscQRHU5eJFKDD22mT",
+      language: EEtoDocumentLanguage.DE,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      name: "prospectus_template_de",
+    },
+    reservationAndAcquisitionAgreement: {
+      documentType: EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
+      form: "template" as TEtoFormType,
+      ipfsHash: "QmYNq3z1gLhooZpXhYvBUf9b99H4NAFS6NRTpYaHqdYAV5",
+      language: EEtoDocumentLanguage.EN,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      name: "reservation_and_acquisition_agreement",
+    },
+    termsheetTemplate: {
+      documentType: EEtoDocumentType.TERMSHEET_TEMPLATE,
+      form: "template" as TEtoFormType,
+      ipfsHash: "QmRLwyTw4ux84KnYvhejTsUggi2SeewGqASuh3DrURtyot",
+      language: EEtoDocumentLanguage.EN,
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      name: "termsheet_template",
+    },
+  },
+  stateInfo: {
+    canDeleteInStates: {
+      listed: [EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT],
+      onChain: [EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT],
+      pending: [EEtoDocumentType.SIGNED_TERMSHEET],
+      preview: [EEtoDocumentType.SIGNED_TERMSHEET],
+      prospectusApproved: [],
+    },
+    canUploadInStates: {
+      listed: [EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT],
+      onChain: [EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT],
+      pending: [EEtoDocumentType.SIGNED_TERMSHEET],
+      preview: [EEtoDocumentType.SIGNED_TERMSHEET],
+      prospectusApproved: [],
+    },
+    uploadableDocuments: [
+      "signed_termsheet",
+      "approved_investor_offering_document",
+      "investment_and_shareholder_agreement",
+    ] as EEtoDocumentType[],
+    requiredTemplates: [],
+  },
+};
+
+export const etoTemplates: TEtoDocumentTemplates = {
+  companyTokenHolderAgreement: {
+    documentType: EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
+    form: "template" as TEtoFormType,
+    ipfsHash: "QmbKpkoqJsdf7yqh7bA4RXBS7hDMCFQPigeMuMQNude8cN",
+    language: EEtoDocumentLanguage.EN,
+    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    name: "company_token_holder_agreement",
+  },
+  investmentAndShareholderAgreementTemplate: {
+    documentType: EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_TEMPLATE,
+    form: "template" as TEtoFormType,
+    ipfsHash: "QmRTdEqegYu3eh4qbzQsS16idRaNsdiSn4uGbbjERWWNKV",
+    language: EEtoDocumentLanguage.EN,
+    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    name: "investment_and_shareholder_agreement_template",
+  },
+  prospectusTemplate: {
+    documentType: EEtoDocumentType.PROSPECTUS_TEMPLATE,
+    form: "template",
+    ipfsHash: "QmQYWyx6WWwCYqBnJ74ruogTTHfKoscQRHU5eJFKDD22mT",
+    language: EEtoDocumentLanguage.DE,
+    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    name: "prospectus_template_de",
+  },
+  reservationAndAcquisitionAgreement: {
+    documentType: EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
+    form: "template" as TEtoFormType,
+    ipfsHash: "QmU33GZ1dhrW8u7qeZZfjTPBBnmYsF1ZqhoQRhSqhXqVBq",
+    language: EEtoDocumentLanguage.EN,
+    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    name: "reservation_and_acquisition_agreement",
+  },
+  termsheetTemplate: {
+    documentType: EEtoDocumentType.TERMSHEET_TEMPLATE,
+    form: "template" as TEtoFormType,
+    ipfsHash: "QmRLwyTw4ux84KnYvhejTsUggi2SeewGqASuh3DrURtyot",
+    language: EEtoDocumentLanguage.EN,
+    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    name: "termsheet_template",
   },
 };

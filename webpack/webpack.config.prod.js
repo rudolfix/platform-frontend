@@ -1,4 +1,4 @@
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -18,9 +18,9 @@ module.exports = merge(configCommon, {
     },
     runtimeChunk: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         parallel: true,
-        uglifyOptions: {
+        terserOptions: {
           ecma: 6,
         },
       }),
@@ -56,7 +56,6 @@ module.exports = merge(configCommon, {
                   modules: true,
                   localIdentName: "[name]__[local]___[hash:base64:5]",
                   camelCase: "dashesOnly",
-                  minimize: true,
                 },
               },
               {

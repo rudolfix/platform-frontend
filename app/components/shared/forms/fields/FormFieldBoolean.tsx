@@ -2,8 +2,9 @@ import * as cn from "classnames";
 import { Field, FieldProps } from "formik";
 import * as React from "react";
 
-import * as styles from "./FormCheckbox.module.scss";
-import { FormError } from "./FormError";
+import { FormFieldError } from "./FormFieldError";
+
+import * as styles from "./FormFieldBoolean.module.scss";
 
 interface IProps {
   inputId?: string;
@@ -84,9 +85,8 @@ const RadioButtonLayout: React.SFC<IProps & IInternalProps> = ({
  * Conditional checkbox.
  * Use when there is a need to represent true/false value (checked === true).
  * If array of values is needed use FormFieldCheckboxGroup
- * @todo Rename to FormFieldConditional (or something better) as FormCheckbox can be misleading with FormFieldCheckbox
  */
-class FormCheckbox extends React.Component<IProps> {
+class FormFieldBoolean extends React.Component<IProps> {
   render(): React.ReactNode {
     const { name, checked, disabled } = this.props;
 
@@ -103,7 +103,7 @@ class FormCheckbox extends React.Component<IProps> {
                 onChange={() => form.setFieldValue(name, !form.values[name])}
                 disabled={disabled}
               />
-              <FormError name={name} className="text-left" />
+              <FormFieldError name={name} className="text-left" />
             </>
           );
         }}
@@ -137,4 +137,4 @@ class FormRadioButton extends React.Component<IProps> {
   }
 }
 
-export { RadioButtonLayout, FormRadioButton, FormCheckbox, CheckboxLayout };
+export { RadioButtonLayout, FormRadioButton, FormFieldBoolean, CheckboxLayout };

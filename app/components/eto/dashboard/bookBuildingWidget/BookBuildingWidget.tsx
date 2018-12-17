@@ -24,7 +24,7 @@ import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money";
 import { Panel } from "../../../shared/Panel";
 
-import * as styles from "../../etoContentWidget.module.scss";
+import * as styles from "../../EtoContentWidget.module.scss";
 
 interface IDispatchProps {
   startBookBuilding: (etoId: string) => void;

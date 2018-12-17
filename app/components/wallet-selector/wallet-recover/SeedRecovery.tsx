@@ -2,7 +2,6 @@ import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 
-import * as Mnemonic from "bitcore-mnemonic";
 import { range } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -10,13 +9,14 @@ import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
 import { TElementRef } from "../../../types";
+import { englishMnemonics } from "../../../utils/englishMnemonics";
 import { Button } from "../../shared/buttons";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 
 export const SEED_LENGTH = 24;
 const WORDS_PER_VIEW = 4;
 
-const wordsOptions = Mnemonic.Words.ENGLISH.map((word: string) => ({ value: word, label: word }));
+const wordsOptions = englishMnemonics.map((word: string) => ({ value: word, label: word }));
 
 interface ISeedRecoveryProps {
   startingStep: number;

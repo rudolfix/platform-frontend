@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
+import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../config/constants";
 import { walletFlows } from "../../../modules/wallet-selector/flows";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
@@ -20,8 +21,6 @@ import { TMessage } from "../../translatedMessages/utils";
 import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
 import * as styles from "./WalletBrowser.module.scss";
-
-export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000; //TODO move it to config constants
 
 interface IWalletBrowserProps {
   errorMessage?: TMessage;

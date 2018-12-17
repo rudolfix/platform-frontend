@@ -1,10 +1,15 @@
-import { delay, Task } from "redux-saga";
-import { call, cancel, fork, put, select } from "redux-saga/effects";
+import { delay, END, eventChannel, Task } from "redux-saga";
+import { call, cancel, fork, put, select, take } from "redux-saga/effects";
 
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
+import {
+  ILightWalletMetadata,
+  TWalletMetadata,
+} from "../../lib/persistence/WalletMetadataObjectStorage";
 import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
+import { EWeb3ManagerEvents } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
@@ -98,6 +103,43 @@ export function* personalWalletConnectionLost({
 
   if (message) {
     notificationCenter.error(message);
+  }
+}
+
+interface IChannelTypes {
+  type: EWeb3ManagerEvents;
+  payload?: { isUnlocked: boolean; metaData: TWalletMetadata };
+}
+
+export function* initWeb3ManagerEvents({ web3Manager }: TGlobalDependencies): any {
+  const channel = eventChannel<IChannelTypes>(emit => {
+    web3Manager.on(EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, payload =>
+      emit({ type: EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, payload }),
+    );
+
+    web3Manager.on(EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST, () =>
+      emit({
+        type: EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST,
+      }),
+    );
+
+    return () => {
+      web3Manager.removeAllListeners();
+    };
+  });
+
+  while (true) {
+    const event: IChannelTypes | END = yield take(channel);
+    switch (event.type) {
+      case EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED:
+        yield put(
+          actions.web3.newPersonalWalletPlugged(event.payload!.metaData, event.payload!.isUnlocked),
+        );
+        break;
+      case EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST:
+        yield put(actions.web3.personalWalletConnectionLost());
+        break;
+    }
   }
 }
 

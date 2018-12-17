@@ -165,7 +165,7 @@ export async function waitForPredicate(predicate: () => boolean, errorMsg: strin
 }
 
 export async function waitUntilDoesntThrow(
-  fakeClock: LolexClockAsync<any>,
+  globalFakeClock: LolexClockAsync<any>,
   fn: () => any,
   errorMsg: string,
 ): Promise<void> {
@@ -178,7 +178,7 @@ export async function waitUntilDoesntThrow(
       break;
     } catch (e) {
       delay(1);
-      await fakeClock.tickAsync(1);
+      await globalFakeClock.tickAsync(1);
       lastError = e;
     }
   }

@@ -6,6 +6,7 @@ import { promiseTimeout } from "./promiseTimeout";
 
 describe("promiseTimeout", () => {
   const clock = setupFakeClock();
+
   it("should return promise value if resolved within time frame", async () => {
     const expectedReturnValue = 2;
     const fastPromise = async () => {

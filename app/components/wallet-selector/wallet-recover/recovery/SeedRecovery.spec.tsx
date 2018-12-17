@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { tid } from "../../../../test/testUtils";
+import { tid } from "../../../../../test/testUtils";
 import { SEED_LENGTH, WalletLightSeedRecoveryComponent } from "./SeedRecovery";
 
 const defaultProps = () => ({

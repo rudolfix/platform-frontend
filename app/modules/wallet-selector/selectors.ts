@@ -1,6 +1,7 @@
 import { RouterState } from "react-router-redux";
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
+import { IAppState } from "../../store";
 
 export const selectUrlUserType = (router: RouterState): EUserType =>
   router.location && router.location.pathname.includes("eto")
@@ -25,3 +26,6 @@ export const selectOppositeRootPath = (state: RouterState): string => {
     return selectIsLoginRoute(state) ? appRoutes.registerEto : appRoutes.loginEto;
   }
 };
+
+export const selectIsMessageSigning = (state: IAppState): boolean =>
+  !!state.walletSelector.isMessageSigning;

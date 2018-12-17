@@ -9,7 +9,7 @@ import {
   tid,
   acceptTOS,
 } from "../utils";
-import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/recoverRoutes";
+import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 
 describe("Wallet recover", () => {
   const words = [

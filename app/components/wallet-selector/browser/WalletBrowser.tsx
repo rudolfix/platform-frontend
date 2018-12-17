@@ -5,6 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../../config/constants";
+import { actions } from "../../../modules/actions";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { withActionWatcher } from "../../../utils/withActionWatcher";
@@ -19,7 +20,6 @@ import { TMessage } from "../../translatedMessages/utils";
 
 import * as browserIcon from "../../../assets/img/wallet_selector/browser_icon.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
-import { actions } from "../../../modules/actions";
 import * as styles from "./WalletBrowser.module.scss";
 
 interface IWalletBrowserProps {

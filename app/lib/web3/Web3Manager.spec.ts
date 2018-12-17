@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+
 import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import { setupFakeClock } from "../../../test/integrationTestUtils";
 import { createMock, expectToBeRejected } from "../../../test/testUtils";

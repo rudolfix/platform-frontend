@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
+import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { withActionWatcher } from "../../../utils/withActionWatcher";
@@ -19,7 +20,6 @@ import * as imgStep3 from "../../../assets/img/wallet_selector/ledger_login_step
 import * as imgStep4 from "../../../assets/img/wallet_selector/ledger_login_step_4.svg";
 import * as imgStep5 from "../../../assets/img/wallet_selector/ledger_login_step_5.svg";
 import * as imgStep6 from "../../../assets/img/wallet_selector/ledger_login_step_6.svg";
-import { actions } from "../../../modules/actions";
 import * as styles from "./WalletLedgerInitComponent.module.scss";
 
 export const LEDGER_RECONNECT_INTERVAL = 2000;

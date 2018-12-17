@@ -77,7 +77,7 @@ export class Web3Manager {
     this.web3ConnectionWatcher.start();
   }
 
-  public async unplugPersonalWallet(): Promise<void> {
+  public unplugPersonalWallet(): void {
     this.web3ConnectionWatcher.stop();
     this.personalWallet = undefined;
   }

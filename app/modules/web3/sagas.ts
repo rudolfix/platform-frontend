@@ -1,5 +1,6 @@
 import { delay, Task } from "redux-saga";
 import { call, cancel, fork, put, select } from "redux-saga/effects";
+
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -106,7 +107,6 @@ export const web3Sagas = function*(): Iterator<any> {
     ["NEW_PERSONAL_WALLET_PLUGGED", "WEB3_WALLET_UNLOCKED"],
     autoLockLightWalletWatcher,
   );
-  yield fork(neuTakeEvery, ["PERSONAL_WALLET_DISCONNECTED", "WEB3_WALLET_LOCKED"], cancelLocking);
   yield fork(neuTakeEvery, ["PERSONAL_WALLET_DISCONNECTED", "WEB3_WALLET_LOCKED"], cancelLocking);
   yield fork(neuTakeEvery, "PERSONAL_WALLET_CONNECTION_LOST", personalWalletConnectionLost);
 };

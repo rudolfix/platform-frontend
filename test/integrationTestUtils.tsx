@@ -7,7 +7,7 @@ import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware, { delay } from "redux-saga";
+import createSagaMiddleware, { delay, SagaMiddleware } from "redux-saga";
 import { SinonSpy } from "sinon";
 
 import {
@@ -56,6 +56,7 @@ interface ICreateIntegrationTestsSetupOutput {
   container: Container;
   dispatchSpy: SinonSpy;
   history: History;
+  sagaMiddleware: SagaMiddleware<{ container: Container; deps: TGlobalDependencies }>;
 }
 
 export const setupFakeClock = () => {
@@ -130,6 +131,7 @@ export function createIntegrationTestsSetup(
     container,
     dispatchSpy: spyMiddleware.dispatchSpy,
     history,
+    sagaMiddleware,
   };
 }
 

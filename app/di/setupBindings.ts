@@ -193,7 +193,6 @@ export function customizerContainerWithMiddlewareApi(
   container: Container,
   { dispatch, getState }: MiddlewareAPI<any>,
 ): Container {
-  container.bind(symbols.appDispatch).toConstantValue(dispatch);
   container.bind(symbols.getState).toConstantValue(() => getState());
   container.bind(symbols.navigateTo).toConstantValue((path: string) => dispatch(push(path)));
 

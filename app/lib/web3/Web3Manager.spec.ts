@@ -21,14 +21,15 @@ import {
   Web3Manager,
 } from "./Web3Manager";
 
-describe.only("Web3Manager", () => {
+describe("Web3Manager", () => {
   const expectedNetworkId = dummyNetworkId;
 
   const clock = setupFakeClock();
 
   it("should plug personal wallet when connection works", async () => {
     const expectedDerivationPath = "44'/60'/0'/1";
-    const listenerMock = spy();
+    const pluggedListener = spy();
+    const disconnectListener = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
       ethereumAddress: dummyEthereumAddress,
       testConnection: async () => true,
@@ -53,27 +54,27 @@ describe.only("Web3Manager", () => {
       asyncIntervalSchedulerFactoryMock,
     );
     web3Manager.networkId = expectedNetworkId;
+    web3Manager.on(EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, pluggedListener);
+    web3Manager.on(EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST, disconnectListener);
 
     await web3Manager.plugPersonalWallet(ledgerWalletMock);
 
     expect(web3Manager.personalWallet).to.be.eq(ledgerWalletMock);
     expect(ledgerWalletMock.testConnection).to.be.calledWithExactly(expectedNetworkId);
-    expect(listenerMock).to.be.calledWithExactly(
-      web3Actions.newPersonalWalletPlugged(
-        {
-          address: dummyEthereumAddress,
-          walletType: EWalletType.LEDGER,
-          walletSubType: EWalletSubType.UNKNOWN,
-          derivationPath: expectedDerivationPath,
-        },
-        true,
-      ),
-    );
+    expect(pluggedListener).to.be.calledWithExactly({
+      metaData: {
+        address: dummyEthereumAddress,
+        walletType: EWalletType.LEDGER,
+        walletSubType: EWalletSubType.UNKNOWN,
+        derivationPath: expectedDerivationPath,
+      },
+      isUnlocked: true,
+    });
+    expect(disconnectListener).to.not.be.called;
     expect(asyncIntervalSchedulerMock.start).to.be.calledOnce;
   });
 
   it("should throw when plugging not connected wallet", async () => {
-    const listenerMock = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
       testConnection: async () => false,
       getMetadata: () =>
@@ -103,7 +104,7 @@ describe.only("Web3Manager", () => {
   });
 
   it("should watch connection status", async () => {
-    const listenerMock = spy();
+    const disconnectListener = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
       testConnection: async () => true,
       getMetadata: () =>
@@ -120,6 +121,7 @@ describe.only("Web3Manager", () => {
       asyncIntervalSchedulerFactory,
     );
     web3Manager.networkId = expectedNetworkId;
+    web3Manager.on(EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST, disconnectListener);
 
     await web3Manager.plugPersonalWallet(ledgerWalletMock);
 
@@ -133,7 +135,7 @@ describe.only("Web3Manager", () => {
     });
     await clock.fakeClock.tickAsync(WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL);
     expect(ledgerWalletMock.testConnection).to.be.calledOnce; // remocking resets counter
-    expect(listenerMock).to.be.calledWithExactly(web3Actions.personalWalletConnectionLost());
+    expect(disconnectListener).to.be.calledWithExactly();
   });
 
   it("should fail on connection timeout", async () => {

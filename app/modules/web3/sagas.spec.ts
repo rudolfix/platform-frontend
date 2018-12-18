@@ -3,11 +3,12 @@ import { delay } from "redux-saga";
 import { expectSaga } from "redux-saga-test-plan";
 import { call } from "redux-saga/effects";
 
+import { EventEmitter } from "events";
 import { createMock } from "../../../test/testUtils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { noopLogger } from "../../lib/dependencies/Logger";
 import { NotificationCenter } from "../../lib/dependencies/NotificationCenter";
-import { Web3Manager } from "../../lib/web3/Web3Manager";
+import { EWeb3ManagerEvents, Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { dummyIntl } from "../../utils/injectIntlHelpers.fixtures";
 import { actions } from "../actions";
@@ -16,7 +17,7 @@ import {
   getDummyLedgerWalletMetadata,
   getDummyLightWalletMetadata,
 } from "./fixtures";
-import { autoLockLightWallet, personalWalletConnectionLost } from "./sagas";
+import { autoLockLightWallet, initWeb3ManagerEvents, personalWalletConnectionLost } from "./sagas";
 
 describe("Web3 sagas", () => {
   describe("light wallet password", () => {
@@ -109,6 +110,31 @@ describe("Web3 sagas", () => {
         .run();
 
       expect(dummyNotificationCenter.error).not.to.be.called;
+    });
+  });
+
+  describe("web3Manager events connection", () => {
+    it("connects to event from web3Manager", () => {
+      const web3ManagerMock = new EventEmitter();
+      const eventPayload = {
+        metaData: "foo",
+        isUnlocked: true,
+      };
+      const promise = expectSaga(initWeb3ManagerEvents, {
+        web3Manager: web3ManagerMock,
+      })
+        .put(
+          actions.web3.newPersonalWalletPlugged(
+            eventPayload.metaData as any,
+            eventPayload.isUnlocked,
+          ),
+        )
+        .put(actions.web3.personalWalletConnectionLost())
+        .run();
+
+      web3ManagerMock.emit(EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST);
+      web3ManagerMock.emit(EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, eventPayload);
+      return promise;
     });
   });
 });

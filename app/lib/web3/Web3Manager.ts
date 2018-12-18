@@ -1,12 +1,10 @@
 import { BigNumber } from "bignumber.js";
-import { inject, injectable } from "inversify";
+import { decorate, inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
 import { EventEmitter } from "events";
 import { symbols } from "../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../modules/tx/utils";
-import { web3Actions } from "../../modules/web3/actions";
-import { AppDispatch } from "../../store";
 import { EthereumNetworkId } from "../../types";
 import {
   AsyncIntervalScheduler,
@@ -35,6 +33,13 @@ export enum EWeb3ManagerEvents {
   NEW_PERSONAL_WALLET_PLUGGED = "web3_manager_new_personal_wallet_plugged",
   PERSONAL_WALLET_CONNECTION_LOST = "web3_manager_personal_wallet_connection_lost",
 }
+
+try {
+  // this throws if applied multiple times, which happens in tests
+  // that is why the try block is necessary
+  decorate(injectable(), EventEmitter);
+  // this decorate is necessary for injectable class inheritance
+} catch {}
 
 // singleton holding all web3 instances
 @injectable()

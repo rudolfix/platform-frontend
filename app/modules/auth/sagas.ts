@@ -1,8 +1,13 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
-import { SignInUserErrorMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import {
+  SignInUserErrorMessage,
+  getMessageTranslation,
+  PermissionsCheckerMessages,
+  TranslatedMessageType
+} from "../../components/translatedMessages/messages";
+import {createMessage, TMessage} from "../../components/translatedMessages/utils";
 import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
@@ -261,10 +266,11 @@ function* handleAcceptCurrentAgreement({
 }: TGlobalDependencies): Iterator<any> {
   const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
   yield neuCall(
-    ensurePermissionsArePresent,
+    ensurePermissionsArePresent, //TODO
     [SIGN_TOS],
-    formatIntlMessage("settings.modal.accept-tos.permission.title"),
-    formatIntlMessage("settings.modal.accept-tos.permission.text"),
+    createMessage(PermissionsCheckerMessages.TOS_ACCEPT_PERMISSION_TITLE),    // formatIntlMessage("settings.modal.accept-tos.permission.title"),
+    createMessage(PermissionsCheckerMessages.TOS_ACCEPT_PERMISSION_TEXT)     // formatIntlMessage("settings.modal.accept-tos.permission.text"),
+
   );
   try {
     const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
@@ -358,8 +364,8 @@ export function* obtainJWT(
 export function* ensurePermissionsArePresent(
   { jwtStorage, logger }: TGlobalDependencies,
   permissions: Array<string> = [],
-  title: string,
-  message: string,
+  title: TMessage,
+  message: TMessage,
 ): Iterator<any> {
   // check wether all permissions are present and still valid
   const jwt = jwtStorage.get();

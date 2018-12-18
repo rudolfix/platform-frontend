@@ -2,7 +2,7 @@ import { TMessage } from "../../components/translatedMessages/utils";
 import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const accessWalletActions = {
-  showAccessWalletModal: (title: string, message: string) =>
+  showAccessWalletModal: (title: TMessage, message: TMessage) =>
     createAction("SHOW_ACCESS_WALLET_MODAL", { title, message }),
   hideAccessWalletModal: () => createSimpleAction("HIDE_ACCESS_WALLET_MODAL"),
   signingError: (errorMessage: TMessage) =>

@@ -1,22 +1,19 @@
-import { effects } from "redux-saga";
-import { fork, put, select } from "redux-saga/effects";
+import {effects} from "redux-saga";
+import {fork, put, select} from "redux-saga/effects";
 
-import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
-import { TGlobalDependencies } from "../../di/setupBindings";
-import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import {
-  EEtoState,
-  TCompanyEtoData,
-  TEtoSpecsData,
-  TPartialEtoSpecData,
-} from "../../lib/api/eto/EtoApi.interfaces";
-import { IAppState } from "../../store";
-import { actions, TAction } from "../actions";
-import { ensurePermissionsArePresent } from "../auth/sagas";
-import { loadEtoContact } from "../public-etos/sagas";
-import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
-import { selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto } from "./selectors";
-import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
+import {DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION} from "../../config/constants";
+import {TGlobalDependencies} from "../../di/setupBindings";
+import {IHttpResponse} from "../../lib/api/client/IHttpClient";
+import {EEtoState, TCompanyEtoData, TEtoSpecsData, TPartialEtoSpecData,} from "../../lib/api/eto/EtoApi.interfaces";
+import {IAppState} from "../../store";
+import {actions, TAction} from "../actions";
+import {ensurePermissionsArePresent} from "../auth/sagas";
+import {loadEtoContact} from "../public-etos/sagas";
+import {neuCall, neuTakeEvery, neuTakeLatest} from "../sagasUtils";
+import {selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto} from "./selectors";
+import {bookBuildingStatsToCsvString, createCsvDataUri, downloadFile} from "./utils";
+import {createMessage} from "../../components/translatedMessages/utils";
+import {EtoDocuments} from "../../components/translatedMessages/messages";
 
 export function* loadIssuerEto({
   apiEtoService,
@@ -46,23 +43,24 @@ export function* loadIssuerEto({
 }
 
 export function* changeBookBuildingStatus(
-  { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES") return;
   try {
+    const message = action.payload.status
+      ? createMessage(EtoDocuments.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING) //"eto.modal.confirm-start-bookbuilding-title"
+      : createMessage(EtoDocuments.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING); //"eto.modal.confirm-stop-bookbuilding-title"
+
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      action.payload.status,
-      action.payload.status
-        ? intlWrapper.intl.formatIntlMessage("eto.modal.confirm-start-bookbuilding-title")
-        : intlWrapper.intl.formatIntlMessage("eto.modal.confirm-stop-bookbuilding-title"),
+      message
     );
     yield apiEtoService.changeBookBuildingState(action.payload.status);
   } catch (e) {
     logger.error("Failed to change book-building status", e);
-    notificationCenter.error("Failed to send ETO data");
+    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
   } finally {
     yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
@@ -70,7 +68,7 @@ export function* changeBookBuildingStatus(
 }
 
 export function* downloadBookBuildingStats(
-  { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS") return;
@@ -83,11 +81,7 @@ export function* downloadBookBuildingStats(
 
     yield downloadFile(createCsvDataUri(dataAsString), "whitelisted_investors.csv");
   } catch (e) {
-    notificationCenter.error(
-      intlWrapper.intl.formatIntlMessage(
-        "eto.overview.error-notification.failed-to-bookbuilding-stats",
-      ),
-    );
+    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_GET_BOOKBUILDING_STATS));
     logger.error(`Failed to load bookbuilding stats pledge`, e);
   }
 }
@@ -130,7 +124,7 @@ export function* saveEtoData(
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error("Failed to send ETO data", e);
-    notificationCenter.error("Failed to send ETO data");
+    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
     yield put(actions.etoFlow.loadDataStop());
   }
 }
@@ -139,10 +133,7 @@ export function* submitEtoData(
   {
     apiEtoService,
     notificationCenter,
-    logger,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
+    logger
   }: TGlobalDependencies,
   action: TAction,
 ): any {
@@ -151,8 +142,8 @@ export function* submitEtoData(
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_ETO_PERMISSION],
-      formatIntlMessage("eto.modal.submit-title"),
-      formatIntlMessage("eto.modal.submit-description"),
+      createMessage(EtoDocuments.ETO_DOCUMENTS_SUBMIT_ETO_TITLE), //eto.modal.submit-title
+      createMessage(EtoDocuments.ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION), //eto.modal.submit-description
     );
     yield apiEtoService.submitCompanyAndEto();
     notificationCenter.info("ETO Successfully submitted");
@@ -160,7 +151,7 @@ export function* submitEtoData(
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error("Failed to Submit ETO data", e);
-    notificationCenter.error("Failed to send ETO data");
+    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
   }
 }
 

@@ -14,6 +14,8 @@ import { ensurePermissionsArePresent } from "../auth/sagas";
 import { downloadLink } from "../immutable-file/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import {createMessage} from "../../components/translatedMessages/utils";
+import {EtoDocuments} from "../../components/translatedMessages/messages";
 
 export function* generateDocumentFromTemplate(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
@@ -46,7 +48,7 @@ export function* generateDocumentFromTemplate(
     yield neuCall(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
-    notificationCenter.error("Failed to download file from IPFS");
+    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_IPFS_FILE)); //"Failed to download file from IPFS"
   }
 }
 
@@ -102,7 +104,7 @@ export function* downloadDocumentByType(
     yield neuCall(downloadLink, downloadedDocument, matchingDocument.name, "");
   } catch (e) {
     logger.error("Download document by type failed", e);
-    notificationCenter.error("Failed to download file");
+    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_FILE)); //"Failed to download file"
   }
 }
 
@@ -124,8 +126,8 @@ export function* loadEtoFileData({
   } catch (e) {
     logger.error("Load ETO data failed", e);
     notificationCenter.error(
-      "Could not access ETO files data. Make sure you have completed KYC and email verification process.",
-    );
+      createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA)
+    ); //"Could not access ETO files data. Make sure you have completed KYC and email verification process."
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -146,9 +148,6 @@ function* uploadEtoFile(
     apiEtoFileService,
     notificationCenter,
     logger,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -160,8 +159,8 @@ function* uploadEtoFile(
     yield neuCall(
       ensurePermissionsArePresent,
       [UPLOAD_IMMUTABLE_DOCUMENT],
-      formatIntlMessage("eto.modal.confirm-upload-document-title"),
-      formatIntlMessage("eto.modal.confirm-upload-document-description"),
+      createMessage(EtoDocuments.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE), //"eto.modal.confirm-upload-document-title"
+      createMessage(EtoDocuments.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION), //"eto.modal.confirm-upload-document-description"
     );
 
     const matchingDocument = yield neuCall(getDocumentOfTypePromise, documentType);
@@ -169,13 +168,13 @@ function* uploadEtoFile(
       yield apiEtoFileService.deleteSpecificEtoDocument(matchingDocument.ipfsHash);
 
     yield apiEtoFileService.uploadEtoDocument(file, documentType);
-    notificationCenter.info(formatIntlMessage("eto.modal.file-uploaded"));
+    notificationCenter.info(createMessage(EtoDocuments.ETO_DOCUMENTS_FILE_UPLOADED)); //"eto.modal.file-uploaded"
   } catch (e) {
     if (e instanceof FileAlreadyExists) {
-      notificationCenter.error(formatIntlMessage("eto.modal.file-already-exists"));
+      notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FILE_EXISTS)); //"eto.modal.file-already-exists"
     } else {
       logger.error("Failed to send ETO data", e);
-      notificationCenter.error(formatIntlMessage("eto.modal.file-upload-failed"));
+      notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FILE_UPLOAD_FAILED)) //"eto.modal.file-upload-failed"
     }
   } finally {
     yield put(actions.etoDocuments.loadFileDataStart());

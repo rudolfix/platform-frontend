@@ -17,7 +17,11 @@ export type TranslatedMessageType =
   | LightWalletErrorMessage
   | SignerErrorMessage
   | MismatchedWalletAddressErrorMessage
-  | BackupRecovery;
+  | BackupRecovery
+  | PermissionsCheckerMessages
+  | BookbuildingFlow
+  | EtoDocuments
+  | KycFlow
 
 export enum GenericError {
   GENERIC_ERROR = "genericError",
@@ -68,6 +72,55 @@ export enum MismatchedWalletAddressErrorMessage {
 export enum BackupRecovery {
   BACKUP_SUCCESS_TITLE = "backupSuccessTitle",
   BACKUP_SUCCESS_DESCRIPTION = "backupSuccessDescription",
+}
+
+export enum PermissionsCheckerMessages {
+  TOS_FILENAME = "tosFilename", //"settings.modal.accept-tos.filename",
+  TOS_ACCEPT_PERMISSION_TITLE = "tosAcceptPermissionTitle", //"settings.modal.accept-tos.permission.title",
+  TOS_ACCEPT_PERMISSION_TEXT = "tosAcceptPermissionText", //  "settings.modal.accept-tos.permission.text"
+}
+
+export enum BookbuildingFlow {
+  PLEDGE_FLOW_CONFIRM_PLEDGE = "pledgeFlowConfirmPledge",//"eto.overview.permission-modal.confirm-pledge",
+  PLEDGE_FLOW_PLEDGE_DESCRIPTION = "pledgeFlowPledgeDescription",//"eto.overview.permission-modal.confirm-pledge-description"
+  PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE = "pledgeFlowFailedToSavePledge", //,"eto.overview.error-notification.failed-to-save-pledge"
+  PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL = "pledgeFlowConfirmPledgeRemoval", // eto.overview.permission-modal.confirm-pledge-removal
+  PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION = "pledgeFlowConfirmPledgeRemovalDescription", // eto.overview.permission-modal.confirm-pledge-description-removal
+  PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED = "pledgeFlowPledgeRemovalFailed", // eto.overview.error-notification.failed-to-delete-pledge
+  PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS = "pledgeFlowFailedToGetBookbuildingStats", // eto.overview.error-notification.failed-to-bookbuilding-stats
+  PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE = "pledgeFlowFailedToLoadPledge", // eto.overview.error-notification.failed-to-load-pledge
+}
+
+export enum EtoDocuments {
+  ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE = "etoDocumentsConfirmUploadDocumentTitle", // "eto.modal.confirm-upload-document-title",
+  ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION = "etoDocumentsConfirmUploadDocumentDescription",  //"eto.modal.confirm-upload-document-description",
+  ETO_DOCUMENTS_FILE_UPLOADED = "etoDocumentsFileUploaded", //"eto.modal.file-uploaded",
+  ETO_DOCUMENTS_FILE_EXISTS = "etoDocumentsFileExists", //"eto.modal.file-already-exists",
+  ETO_DOCUMENTS_FILE_UPLOAD_FAILED = "etoDocumentsFileUploadFailed", //"eto.modal.file-upload-failed"
+  ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_IPFS_FILE = "",//"Failed to download file from IPFS"
+  ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_FILE = "",//""Failed to download file""
+  ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA = "",//""Could not access ETO files data. Make sure you have completed KYC and email verification process."
+  ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING = "",//"eto.modal.confirm-start-bookbuilding-title
+  ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING = "",//"eto.modal.confirm-stop-bookbuilding-title
+  ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA = "",//Failed to send ETO data
+  ETO_DOCUMENTS_FAILED_TO_GET_BOOKBUILDING_STATS = "pledgeFlowFailedToGetBookbuildingStats", //"eto.overview.error-notification.failed-to-bookbuilding-stats"
+  ETO_DOCUMENTS_SUBMIT_ETO_TITLE = "etoDocumentsSubmitEtoTitle", //eto.modal.submit-title
+  ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION = "etoDocumentsSubmitEtoDescription", //eto.modal.submit-description
+}
+
+export enum KycFlow {
+  KYC_PROBLEM_SAVING_DATA = "",//module.kyc.sagas.problem-saving-data
+  KYC_PROBLEM_SENDING_DATA = "",//"module.kyc.sagas.problem-sending-data"
+  KYC_UPLOAD_SUCCESSFUL = "",//"module.kyc.sagas.successfully-uploaded"
+  KYC_UPLOAD_FAILED = "",//"module.kyc.sagas.problem-uploading"
+  KYC_SUBMIT_FAILED = "",//module.kyc.sagas.problem.submitting
+  KYC_SUBMIT_TITLE = "",//kyc.modal.submit-title
+  KYC_SUBMIT_DESCRIPTION = "",//kyc.modal.submit-description
+  KYC_VERIFICATION_TITLE = "",//kyc.modal.verification.title
+  KYC_VERIFICATION_DESCRIPTION = "",//kyc.modal.verification.description
+  KYC_SETTINGS_BUTTON = "",//kyc.modal.verification.settings-button
+  KYC_ERROR = "",//module.kyc.sagas.error
+  KYC_BENEFICIAL_OWNERS = "",//module.kyc.sagas.beneficial-owners
 }
 
 export const getMessageTranslation = ({

@@ -1,6 +1,4 @@
 import { Container } from "inversify";
-import { push } from "react-router-redux";
-import { MiddlewareAPI } from "redux";
 import { IConfig } from "../config/getConfig";
 import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";
 import { BinaryHttpClient } from "../lib/api/client/BinaryHttpClient";
@@ -17,7 +15,6 @@ import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
 import { LedgerWalletConnector } from "../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../lib/web3/LightWallet";
 import { Web3Manager } from "../lib/web3/Web3Manager";
-import { IAppState } from "../store";
 import {
   AsyncIntervalSchedulerFactory,
   AsyncIntervalSchedulerFactoryType,
@@ -40,9 +37,6 @@ import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { ContractsService } from "../lib/web3/ContractsService";
 import { IEthereumNetworkConfig } from "../lib/web3/types";
 import { symbols } from "./symbols";
-
-export type NavigateTo = (path: string) => void;
-export type GetState = () => IAppState;
 
 export function setupBindings(config: IConfig): Container {
   const container = new Container();
@@ -189,16 +183,6 @@ export function setupBindings(config: IConfig): Container {
   return container;
 }
 
-export function customizerContainerWithMiddlewareApi(
-  container: Container,
-  { dispatch, getState }: MiddlewareAPI<any>,
-): Container {
-  container.bind(symbols.getState).toConstantValue(() => getState());
-  container.bind(symbols.navigateTo).toConstantValue((path: string) => dispatch(push(path)));
-
-  return container;
-}
-
 /**
  * We use plain object for injecting deps into sagas
  */
@@ -207,8 +191,6 @@ export const createGlobalDependencies = (container: Container) => ({
   logger: container.get<ILogger>(symbols.logger),
   notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
 
-  // TODO this should be replace by sagas yield select in the future
-  getState: container.get<GetState>(symbols.getState),
   cryptoRandomString: container.get<CryptoRandomString>(symbols.cryptoRandomString),
   detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
 

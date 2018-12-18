@@ -4,7 +4,6 @@ import { spy } from "sinon";
 import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import { setupFakeClock } from "../../../test/integrationTestUtils";
 import { createMock, expectToBeRejected } from "../../../test/testUtils";
-import { web3Actions } from "../../modules/web3/actions";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import {
   AsyncIntervalScheduler,

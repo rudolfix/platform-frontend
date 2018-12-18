@@ -4,14 +4,12 @@ import { call, cancel, fork, put, select, take } from "redux-saga/effects";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
-import {
-  ILightWalletMetadata,
-  TWalletMetadata,
-} from "../../lib/persistence/WalletMetadataObjectStorage";
+import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/LightWallet";
 import { EWeb3ManagerEvents } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
+import { selectUserType } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectWalletType } from "./selectors";
 import { EWalletType } from "./types";
@@ -72,7 +70,8 @@ export function* loadPreviousWallet(
   forcedUserType?: EUserType,
 ): Iterator<any> {
   //forcedUserType can still pass as undefined
-  const storageData = walletStorage.get(forcedUserType);
+  const userType: EUserType = yield select(selectUserType);
+  const storageData = walletStorage.get(forcedUserType || userType);
   if (storageData) {
     yield put(actions.web3.loadPreviousWallet(storageData));
   }

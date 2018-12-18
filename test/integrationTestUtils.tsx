@@ -12,7 +12,6 @@ import { SinonSpy } from "sinon";
 
 import {
   createGlobalDependencies,
-  customizerContainerWithMiddlewareApi,
   setupBindings,
   TGlobalDependencies,
 } from "../app/di/setupBindings";
@@ -115,9 +114,6 @@ export function createIntegrationTestsSetup(
   const middleware = applyMiddleware(
     spyMiddleware.middleware,
     routerMiddleware(history),
-    createInjectMiddleware(container, (container, middlewareApi) => {
-      customizerContainerWithMiddlewareApi(container, middlewareApi);
-    }),
     sagaMiddleware,
   );
 

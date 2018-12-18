@@ -85,7 +85,7 @@ export function* generateDocumentFromTemplateByEtoId(
     yield neuCall(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
-    notificationCenter.error("Failed to download file from IPFS");
+    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_IPFS_FILE)); //"Failed to download file from IPFS"
   }
 }
 

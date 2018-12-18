@@ -1,5 +1,5 @@
-import { effects } from "redux-saga";
-import { fork, put, select } from "redux-saga/effects";
+import {effects} from "redux-saga";
+import {fork, put, select} from "redux-saga/effects";
 
 import { EtoDocumentsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";

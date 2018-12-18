@@ -1,5 +1,5 @@
-import { delay } from "redux-saga";
-import { cancel, fork, put, select, take } from "redux-saga/effects";
+import {delay} from "redux-saga";
+import {cancel, fork, put, select, take} from "redux-saga/effects";
 
 import { KycFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -17,22 +17,24 @@ import {
   TRequestOutsourcedStatus,
   TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
-import { IUser } from "../../lib/api/users/interfaces";
-import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
-import { IAppAction, IAppState } from "../../store";
-import { actions, TAction } from "../actions";
-import { ensurePermissionsArePresent } from "../auth/sagas";
-import { selectUser } from "../auth/selectors";
-import { displayErrorModalSaga } from "../generic-modal/sagas";
-import { selectIsSmartContractInitDone } from "../init/selectors";
-import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
+import {IUser} from "../../lib/api/users/interfaces";
+import {IdentityRegistry} from "../../lib/contracts/IdentityRegistry";
+import {IAppAction, IAppState} from "../../store";
+import {actions, TAction} from "../actions";
+import {ensurePermissionsArePresent} from "../auth/sagas";
+import {selectUser} from "../auth/selectors";
+import {displayErrorModalSaga} from "../generic-modal/sagas";
+import {selectIsSmartContractInitDone} from "../init/selectors";
+import {neuCall, neuTakeEvery, neuTakeOnly} from "../sagasUtils";
 import {
   selectCombinedBeneficialOwnerOwnership,
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
   selectKycRequestType,
 } from "./selectors";
-import { deserializeClaims } from "./utils";
+import {deserializeClaims} from "./utils";
+import {createMessage} from "../../components/translatedMessages/utils";
+import {KycFlow} from "../../components/translatedMessages/messages";
 
 function* loadClientData(): any {
   yield put(actions.kyc.kycLoadIndividualData());

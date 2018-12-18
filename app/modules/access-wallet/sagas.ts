@@ -26,6 +26,7 @@ import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
 import { EWalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
+import {TMessage} from "../../components/translatedMessages/utils";
 
 export function* ensureWalletConnection({
   web3Manager,

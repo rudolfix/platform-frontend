@@ -1,4 +1,4 @@
-import { appRoutes } from "../../appRoutes";
+import { appRoutes } from "../../../appRoutes";
 
 const parentRoutePath = appRoutes.restore;
 

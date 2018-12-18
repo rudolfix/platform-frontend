@@ -8,10 +8,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import Select from "react-virtualized-select";
 import { Col, Row } from "reactstrap";
 
-import { TElementRef } from "../../../types";
-import { englishMnemonics } from "../../../utils/englishMnemonics";
-import { Button } from "../../shared/buttons";
-import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
+import { TElementRef } from "../../../../types";
+import { englishMnemonics } from "../../../../utils/englishMnemonics";
+import { Button } from "../../../shared/buttons";
+import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
 
 export const SEED_LENGTH = 24;
 const WORDS_PER_VIEW = 4;

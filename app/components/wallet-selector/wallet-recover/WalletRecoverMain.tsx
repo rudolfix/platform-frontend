@@ -7,7 +7,7 @@ import { LayoutRegisterLogin } from "../../layouts/LayoutRegisterLogin";
 import { LayoutUnauthorized } from "../../layouts/LayoutUnauthorized";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutUnauthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
-import { RecoverRouter } from "./RecoverRouter";
+import { RecoverRouter } from "./router/RecoverRouter";
 
 export const WalletRecoverMainComponent: React.SFC = () => (
   <LayoutRegisterLogin>

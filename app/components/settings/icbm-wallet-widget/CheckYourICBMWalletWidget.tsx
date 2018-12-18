@@ -62,7 +62,10 @@ export const CheckYourICBMWalletWidgetComponent: React.SFC<IDispatchProps> = ({
       <p>
         <FormattedMessage id="check-your-icbm-wallet-widget.notice" />
       </p>
-      <Formik initialValues={{ address: "" }} onSubmit={values => loadICBMWallet(values.address)}>
+      <Formik<{ address: string }>
+        initialValues={{ address: "" }}
+        onSubmit={values => loadICBMWallet(values.address)}
+      >
         <Form className={styles.section}>
           <FormContent />
         </Form>

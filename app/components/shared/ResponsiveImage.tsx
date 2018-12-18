@@ -39,8 +39,8 @@ const ResponsiveImage: React.SFC<IResponsiveImage> = ({
   forceBg,
 }) => {
   const computedSrcSet = `${srcSet["1x"]} 1x,
-    ${srcSet["2x"] && (srcSet["2x"] as string) + " 2x"},
-    ${srcSet["3x"] && (srcSet["3x"] as string) + " 3x"}`;
+    ${srcSet["2x"] && srcSet["2x"] + " 2x"},
+    ${srcSet["3x"] && srcSet["3x"] + " 3x"}`;
 
   return (
     <Proportion

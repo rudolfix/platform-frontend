@@ -37,6 +37,8 @@ const LoadingIndicator: React.SFC<ILoadingIndicatorProps> = ({
       );
     case "hexagon":
       return <LoadingIndicatorHexagon />;
+    default:
+      throw new Error(`Invalid loading indicator type "${type}"`);
   }
 };
 

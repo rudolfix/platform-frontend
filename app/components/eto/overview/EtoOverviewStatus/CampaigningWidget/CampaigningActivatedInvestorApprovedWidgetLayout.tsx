@@ -80,7 +80,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
           </div>
         </div>
       ) : (
-        <Formik
+        <Formik<{ amount: number | "" }>
           initialValues={{ amount: pledgedAmount }}
           onSubmit={({ amount }) => backNow(amount as number)}
           validationSchema={generateCampaigningValidation(minPledge, maxPledge)}

@@ -34,7 +34,7 @@ import {
 } from "./selectors";
 import {deserializeClaims} from "./utils";
 import {createMessage} from "../../components/translatedMessages/utils";
-import {KycFlow} from "../../components/translatedMessages/messages";
+import {KycFlowMessage} from "../../components/translatedMessages/messages";
 
 function* loadClientData(): any {
   yield put(actions.kyc.kycLoadIndividualData());

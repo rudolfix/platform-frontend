@@ -2,7 +2,7 @@ import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
 import {
-  BackupRecovery,
+  BackupRecoveryMessage,
   GenericError,
   getMessageTranslation,
   SignInUserErrorMessage,
@@ -264,8 +264,8 @@ export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Iterat
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
     yield neuCall(
       displayInfoModalSaga,
-      getMessageTranslation(createMessage(BackupRecovery.BACKUP_SUCCESS_TITLE)),
-      getMessageTranslation(createMessage(BackupRecovery.BACKUP_SUCCESS_DESCRIPTION)),
+      getMessageTranslation(createMessage(BackupRecoveryMessage.BACKUP_SUCCESS_TITLE)),
+      getMessageTranslation(createMessage(BackupRecoveryMessage.BACKUP_SUCCESS_DESCRIPTION)),
     );
     yield loadUser();
     yield effects.put(actions.routing.goToProfile());

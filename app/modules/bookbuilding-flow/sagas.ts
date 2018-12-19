@@ -18,7 +18,7 @@ import {
   WATCH_BOOKBUILDING_FLOW_STATS,
 } from "./actions";
 import {createMessage} from "../../components/translatedMessages/utils";
-import {BookbuildingFlow} from "../../components/translatedMessages/messages";
+import {BookbuildingFlowMessage} from "../../components/translatedMessages/messages";
 
 export function* saveMyPledge(
   { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
@@ -30,8 +30,8 @@ export function* saveMyPledge(
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      createMessage(BookbuildingFlow.PLEDGE_FLOW_CONFIRM_PLEDGE), //"eto.overview.permission-modal.confirm-pledge"
-      createMessage(BookbuildingFlow.PLEDGE_FLOW_PLEDGE_DESCRIPTION), //"eto.overview.permission-modal.confirm-pledge-description"
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE), //"eto.overview.permission-modal.confirm-pledge"
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_DESCRIPTION), //"eto.overview.permission-modal.confirm-pledge-description"
     );
 
     const etoId = action.payload.etoId;
@@ -46,7 +46,7 @@ export function* saveMyPledge(
     yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
-      createMessage(BookbuildingFlow.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE) //"eto.overview.error-notification.failed-to-save-pledge"
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE) //"eto.overview.error-notification.failed-to-save-pledge"
     );
     logger.error(`Failed to save pledge`, e);
   }
@@ -62,8 +62,8 @@ export function* deleteMyPledge(
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      createMessage(BookbuildingFlow.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL), //"eto.overview.permission-modal.confirm-pledge-removal"
-      createMessage(BookbuildingFlow.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION), //"eto.overview.permission-modal.confirm-pledge-description-removal"
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL), //"eto.overview.permission-modal.confirm-pledge-removal"
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION), //"eto.overview.permission-modal.confirm-pledge-description-removal"
     );
 
     const etoId = action.payload.etoId;
@@ -74,7 +74,7 @@ export function* deleteMyPledge(
     yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
-      createMessage(BookbuildingFlow.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED) //"eto.overview.error-notification.failed-to-delete-pledge"),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED) //"eto.overview.error-notification.failed-to-delete-pledge"),
     );
     logger.error(`Failed to delete pledge`, e);
   }
@@ -105,7 +105,7 @@ export function* loadBookBuildingStats(
     yield put(actions.bookBuilding.setBookBuildingStats(etoId, statsResponse.body));
   } catch (e) {
     notificationCenter.error(
-      createMessage(BookbuildingFlow.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS)
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS)
     );
 
     logger.error(`Failed to load bookbuilding stats pledge`, e);
@@ -125,7 +125,7 @@ export function* loadMyPledge(
     yield put(actions.bookBuilding.setPledge(etoId, pledgeResponse.body));
   } catch (e) {
     if (!(e instanceof EtoPledgeNotFound)) {
-      notificationCenter.error(createMessage(BookbuildingFlow.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE)); //"eto.overview.error-notification.failed-to-load-pledge"
+      notificationCenter.error(createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE)); //"eto.overview.error-notification.failed-to-load-pledge"
       logger.error("Failed to load pledge", e);
     }
   }

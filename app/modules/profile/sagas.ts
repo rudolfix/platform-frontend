@@ -1,25 +1,23 @@
-import { effects } from "redux-saga";
-import { call, fork, put, select } from "redux-saga/effects";
+import {effects} from "redux-saga";
+import {call, fork, put, select} from "redux-saga/effects";
 
-import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
-import { TGlobalDependencies } from "../../di/setupBindings";
-import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
-import { IAppState } from "../../store";
-import { accessWalletAndRunEffect } from "../access-wallet/sagas";
-import { actions, TAction } from "../actions";
-import { MessageSignCancelledError } from "../auth/errors";
-import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
-import { selectDoesEmailExist, selectUser } from "../auth/selectors";
-import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { selectLightWalletSalt, selectPreviousLightWalletSalt } from "../web3/selectors";
+import {CHANGE_EMAIL_PERMISSION} from "../../config/constants";
+import {TGlobalDependencies} from "../../di/setupBindings";
+import {EmailAlreadyExists} from "../../lib/api/users/UsersApi";
+import {IAppState} from "../../store";
+import {accessWalletAndRunEffect} from "../access-wallet/sagas";
+import {actions, TAction} from "../actions";
+import {MessageSignCancelledError} from "../auth/errors";
+import {ensurePermissionsArePresent, loadUser, updateUser} from "../auth/sagas";
+import {selectDoesEmailExist, selectUser} from "../auth/selectors";
+import {neuCall, neuTakeEvery} from "../sagasUtils";
+import {selectLightWalletSalt, selectPreviousLightWalletSalt} from "../web3/selectors";
+import {createMessage} from "../../components/translatedMessages/utils";
+import {ProfileMessage} from "../../components/translatedMessages/messages";
 
 export function* addNewEmail(
-  {
-    notificationCenter,
+  { notificationCenter,
     logger,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
   }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
@@ -33,8 +31,8 @@ export function* addNewEmail(
   const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
 
   const emailModalTitle = isEmailAvailable
-    ? formatIntlMessage("modules.settings.sagas.add-new-email.update-title")
-    : formatIntlMessage("modules.settings.sagas.add-new-email.add-title");
+    ? createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE) //("modules.settings.sagas.add-new-email.update-title"
+    : createMessage(ProfileMessage.PROFILE_ADD_EMAIL_TITLE); //"modules.settings.sagas.add-new-email.add-title"
 
   try {
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
@@ -42,20 +40,16 @@ export function* addNewEmail(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
       emailModalTitle,
-      formatIntlMessage("modules.settings.sagas.add-new-email.confirm-description"),
+      createMessage(ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM), //"modules.settings.sagas.add-new-email.confirm-description"
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
-    notificationCenter.info(
-      formatIntlMessage("modules.settings.sagas.add-new-email.new-email-added"),
-    );
+    notificationCenter.info(createMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED));
   } catch (e) {
     if (e instanceof EmailAlreadyExists)
-      notificationCenter.error(
-        formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
-      );
+      notificationCenter.error(createMessage(ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS));
     else {
       logger.error("Failed to Add new email", e);
-      notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
+      notificationCenter.error(createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR));
     }
   } finally {
     yield loadUser();
@@ -64,11 +58,7 @@ export function* addNewEmail(
 }
 
 export function* resendEmail(
-  {
-    notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
+  { notificationCenter,
     logger,
   }: TGlobalDependencies,
   action: TAction,
@@ -87,21 +77,18 @@ export function* resendEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      formatIntlMessage("modules.settings.sagas.resend-email.confirmation"),
-      formatIntlMessage("modules.settings.sagas.resend-email.confirmation-description"),
+      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE), //"modules.settings.sagas.resend-email.confirmation"
+      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION), //"modules.settings.sagas.resend-email.confirmation-description"
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
-    notificationCenter.info(formatIntlMessage("modules.settings.sagas.resend-email.sent"));
+    notificationCenter.info(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT)); //modules.settings.sagas.resend-email.sent
   } catch (e) {
     logger.error("Failed to resend email", e);
-    notificationCenter.error(formatIntlMessage("modules.settings.sagas.resend-email.failed"));
+    notificationCenter.error(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED));
   }
 }
 
 export function* loadSeedOrReturnToSettings({
-  intlWrapper: {
-    intl: { formatIntlMessage },
-  },
   logger,
 }: TGlobalDependencies): Iterator<any> {
   // unlock wallet
@@ -110,12 +97,8 @@ export function* loadSeedOrReturnToSettings({
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
-      formatIntlMessage(
-        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-title",
-      ),
-      formatIntlMessage(
-        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description",
-      ),
+      createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_TITLE),
+      createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION)
     );
   } catch (error) {
     if (error instanceof MessageSignCancelledError) {

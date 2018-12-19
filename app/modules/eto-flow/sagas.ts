@@ -13,7 +13,7 @@ import {neuCall, neuTakeEvery, neuTakeLatest} from "../sagasUtils";
 import {selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto} from "./selectors";
 import {bookBuildingStatsToCsvString, createCsvDataUri, downloadFile} from "./utils";
 import {createMessage} from "../../components/translatedMessages/utils";
-import {EtoDocuments} from "../../components/translatedMessages/messages";
+import {EtoDocumentsMessage} from "../../components/translatedMessages/messages";
 
 export function* loadIssuerEto({
   apiEtoService,
@@ -35,9 +35,7 @@ export function* loadIssuerEto({
     yield put(actions.etoFlow.setIssuerEtoPreviewCode(eto.previewCode));
   } catch (e) {
     logger.error("Failed to load Issuer ETO", e);
-    notificationCenter.error(
-      "Could not access ETO data. Make sure you have completed KYC and email verification process.",
-    );
+    notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA));
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -49,8 +47,8 @@ export function* changeBookBuildingStatus(
   if (action.type !== "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES") return;
   try {
     const message = action.payload.status
-      ? createMessage(EtoDocuments.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING) //"eto.modal.confirm-start-bookbuilding-title"
-      : createMessage(EtoDocuments.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING); //"eto.modal.confirm-stop-bookbuilding-title"
+      ? createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING) //"eto.modal.confirm-start-bookbuilding-title"
+      : createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING); //"eto.modal.confirm-stop-bookbuilding-title"
 
     yield neuCall(
       ensurePermissionsArePresent,
@@ -60,7 +58,7 @@ export function* changeBookBuildingStatus(
     yield apiEtoService.changeBookBuildingState(action.payload.status);
   } catch (e) {
     logger.error("Failed to change book-building status", e);
-    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
+    notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
   } finally {
     yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
@@ -81,7 +79,7 @@ export function* downloadBookBuildingStats(
 
     yield downloadFile(createCsvDataUri(dataAsString), "whitelisted_investors.csv");
   } catch (e) {
-    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_GET_BOOKBUILDING_STATS));
+    notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_GET_BOOKBUILDING_STATS));
     logger.error(`Failed to load bookbuilding stats pledge`, e);
   }
 }
@@ -124,7 +122,7 @@ export function* saveEtoData(
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error("Failed to send ETO data", e);
-    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
+    notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
     yield put(actions.etoFlow.loadDataStop());
   }
 }
@@ -142,16 +140,16 @@ export function* submitEtoData(
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_ETO_PERMISSION],
-      createMessage(EtoDocuments.ETO_DOCUMENTS_SUBMIT_ETO_TITLE), //eto.modal.submit-title
-      createMessage(EtoDocuments.ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION), //eto.modal.submit-description
+      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_TITLE), //eto.modal.submit-title
+      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION), //eto.modal.submit-description
     );
     yield apiEtoService.submitCompanyAndEto();
-    notificationCenter.info("ETO Successfully submitted");
+    notificationCenter.info(createMessage(EtoDocumentsMessage.ETO_SUBMIT_SUCCESS));
     yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error("Failed to Submit ETO data", e);
-    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
+    notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA)); //"Failed to send ETO data"
   }
 }
 

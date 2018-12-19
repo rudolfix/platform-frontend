@@ -1,32 +1,23 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
-import {
-  SignInUserErrorMessage,
-  getMessageTranslation,
-  PermissionsCheckerMessages,
-  TranslatedMessageType
-} from "../../components/translatedMessages/messages";
+import {AuthMessage, SignInUserErrorMessage, ToSMessage} from "../../components/translatedMessages/messages";
 import {createMessage, TMessage} from "../../components/translatedMessages/utils";
-import { SIGN_TOS } from "../../config/constants";
-import { TGlobalDependencies } from "../../di/setupBindings";
-import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
-import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
-import {
-  SignerRejectConfirmationError,
-  SignerTimeoutError,
-  SignerUnknownError,
-} from "../../lib/web3/Web3Manager";
-import { IAppState } from "../../store";
-import { hasValidPermissions } from "../../utils/JWTUtils";
-import { accessWalletAndRunEffect } from "../access-wallet/sagas";
-import { actions, TAction } from "../actions";
-import { selectIsSmartContractInitDone } from "../init/selectors";
-import { loadKycRequestData } from "../kyc/sagas";
-import { selectRedirectURLFromQueryString } from "../routing/selectors";
-import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeOnly } from "../sagasUtils";
-import { selectUrlUserType } from "../wallet-selector/selectors";
-import { loadPreviousWallet } from "../web3/sagas";
+import {SIGN_TOS} from "../../config/constants";
+import {TGlobalDependencies} from "../../di/setupBindings";
+import {EUserType, IUser, IUserInput, IVerifyEmailUser} from "../../lib/api/users/interfaces";
+import {EmailAlreadyExists, UserNotExisting} from "../../lib/api/users/UsersApi";
+import {SignerRejectConfirmationError, SignerTimeoutError, SignerUnknownError,} from "../../lib/web3/Web3Manager";
+import {IAppState} from "../../store";
+import {hasValidPermissions} from "../../utils/JWTUtils";
+import {accessWalletAndRunEffect} from "../access-wallet/sagas";
+import {actions, TAction} from "../actions";
+import {selectIsSmartContractInitDone} from "../init/selectors";
+import {loadKycRequestData} from "../kyc/sagas";
+import {selectRedirectURLFromQueryString} from "../routing/selectors";
+import {neuCall, neuTakeEvery, neuTakeLatest, neuTakeOnly} from "../sagasUtils";
+import {selectUrlUserType} from "../wallet-selector/selectors";
+import {loadPreviousWallet} from "../web3/sagas";
 import {
   selectActivationCodeFromQueryString,
   selectEmailFromQueryString,
@@ -93,36 +84,25 @@ export async function loadOrCreateUserPromise(
 export async function verifyUserEmailPromise(
   {
     apiUserService,
-    notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
+    notificationCenter
   }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
   verifiedEmail: string,
 ): Promise<void> {
   if (urlEmail === verifiedEmail) {
-    notificationCenter.info(
-      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-already-verified"),
-    );
+    notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED));
     return;
   }
   if (!userCode) return;
   try {
     await apiUserService.verifyUserEmail(userCode);
-    notificationCenter.info(
-      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-verified"),
-    );
+    notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_VERIFIED));
   } catch (e) {
     if (e instanceof EmailAlreadyExists)
-      notificationCenter.error(
-        formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
-      );
+      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS),);
     else
-      notificationCenter.error(
-        formatIntlMessage("modules.auth.sagas.verify-user-email-promise.failed-email-verify"),
-      );
+      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED),);
   }
 }
 
@@ -260,34 +240,27 @@ function* handleAcceptCurrentAgreement({
   apiUserService,
   logger,
   notificationCenter,
-  intlWrapper: {
-    intl: { formatIntlMessage },
-  },
 }: TGlobalDependencies): Iterator<any> {
   const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
   yield neuCall(
     ensurePermissionsArePresent, //TODO
     [SIGN_TOS],
-    createMessage(PermissionsCheckerMessages.TOS_ACCEPT_PERMISSION_TITLE),    // formatIntlMessage("settings.modal.accept-tos.permission.title"),
-    createMessage(PermissionsCheckerMessages.TOS_ACCEPT_PERMISSION_TEXT)     // formatIntlMessage("settings.modal.accept-tos.permission.text"),
+    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TITLE),    // formatIntlMessage("settings.modal.accept-tos.permission.title"),
+    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT)     // formatIntlMessage("settings.modal.accept-tos.permission.text"),
 
   );
   try {
     const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
     yield effects.put(actions.auth.setUser(user));
   } catch (e) {
-    notificationCenter.error("There was a problem with accepting Terms and Conditions");
+    notificationCenter.error(createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR)); //"There was a problem with accepting Terms and Conditions"
     logger.error("Could not accept Terms and Conditions", e);
   }
 }
 
-function* handleDownloadCurrentAgreement({
-  intlWrapper: {
-    intl: { formatIntlMessage },
-  },
-}: TGlobalDependencies): Iterator<any> {
+function* handleDownloadCurrentAgreement(_: TGlobalDependencies): Iterator<any> {
   const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
-  const fileName = formatIntlMessage("settings.modal.accept-tos.filename");
+  const fileName = createMessage(AuthMessage.AUTH_TOC_FILENAME);
   yield effects.put(
     actions.immutableStorage.downloadImmutableFile(
       {

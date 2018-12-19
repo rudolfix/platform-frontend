@@ -1,18 +1,20 @@
-import { BigNumber } from "bignumber.js";
-import { toChecksumAddress } from "ethereumjs-util";
-import { delay } from "redux-saga";
-import { fork, put, select } from "redux-saga/effects";
+import {BigNumber} from "bignumber.js";
+import {toChecksumAddress} from "ethereumjs-util";
+import {delay} from "redux-saga";
+import {fork, put, select} from "redux-saga/effects";
 
-import { TGlobalDependencies } from "../../di/setupBindings";
-import { actions, TAction } from "../actions";
-import { downloadLink } from "../immutable-file/sagas";
-import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
-import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
-import { loadWalletDataAsync } from "../wallet/sagas";
-import { selectLockedWalletConnected } from "../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import { IWalletMigrationData } from "./reducer";
-import { selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress } from "./selectors";
+import {TGlobalDependencies} from "../../di/setupBindings";
+import {actions, TAction} from "../actions";
+import {downloadLink} from "../immutable-file/utils";
+import {neuCall, neuTakeEvery, neuTakeUntil} from "../sagasUtils";
+import {ILockedWallet, IWalletStateData} from "../wallet/reducer";
+import {loadWalletDataAsync} from "../wallet/sagas";
+import {selectLockedWalletConnected} from "../wallet/selectors";
+import {selectEthereumAddressWithChecksum} from "../web3/selectors";
+import {IWalletMigrationData} from "./reducer";
+import {selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress} from "./selectors";
+import {createMessage} from "../../components/translatedMessages/utils";
+import {IcbmWalletMessage} from "../../components/translatedMessages/messages";
 
 const BLOCK_MINING_TIME_DELAY = 12000;
 class IcbmWalletError extends Error {}
@@ -78,7 +80,7 @@ function* loadIcbmWalletMigrationTransactionSaga({
     yield put(actions.icbmWalletBalanceModal.loadIcbmMigrationData(walletMigrationData));
   } catch (e) {
     logger.error("Error: ", e);
-    return notificationCenter.error("Error while running migration tool");
+    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL)); //"Error while running migration tool"
   }
 }
 
@@ -109,12 +111,10 @@ function* loadIcbmWalletMigrationSaga(
     logger.error("Load ICBM migration wallet", e);
     // todo: all texts to text resources
     if (e instanceof NoIcbmWalletError)
-      return notificationCenter.error(
-        "We were unable to find an ICBM wallet for the entered address.",
-      );
-    if (e instanceof SameUserError) return notificationCenter.error("This is your current address");
+      return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS)); //We were unable to find an ICBM wallet for the entered address.
+    if (e instanceof SameUserError) return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME));//"This is your current address"
     // Default Error
-    return notificationCenter.error("Error while loading ICBM Wallet data");
+    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA)); //"Error while loading ICBM Wallet data"
   }
 }
 
@@ -159,9 +159,6 @@ function* downloadICBMWalletAgreement(
     apiImmutableStorage,
     logger,
     notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
   }: TGlobalDependencies,
   action: TAction,
 ): any {
@@ -180,12 +177,12 @@ function* downloadICBMWalletAgreement(
     yield neuCall(
       downloadLink,
       generatedDocument,
-      formatIntlMessage("wallet.icbm.reservation-agreement"),
+      createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT), //wallet.icbm.reservation-agreement
       ".pdf",
     );
   } catch (e) {
     logger.error("Failed to download ICBM wallet agreement", e);
-    notificationCenter.error("Failed to download ICBM Wallet Agreement");
+    notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_FAILED_TO_DOWNLOAD_AGREEMENT)); //"Failed to download ICBM Wallet Agreement"
   }
 }
 

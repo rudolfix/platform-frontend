@@ -32,7 +32,7 @@ import {
 } from "./selectors";
 import {deserializeClaims} from "./utils";
 import {createMessage} from "../../components/translatedMessages/utils";
-import {KycFlow} from "../../components/translatedMessages/messages";
+import {KycFlowMessage} from "../../components/translatedMessages/messages";
 
 function* loadClientData(): any {
   yield put(actions.kyc.kycLoadIndividualData());
@@ -151,7 +151,7 @@ function* submitIndividualData(
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
     yield put(actions.routing.goToKYCIndividualDocumentVerification());
   } catch {
-    notificationCenter.error(createMessage(KycFlow.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
   }
 }
 
@@ -168,10 +168,10 @@ function* uploadIndividualFile(
     yield put(actions.kyc.kycUpdateIndividualDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadIndividualDocument(file);
     yield put(actions.kyc.kycUpdateIndividualDocument(false, result.body));
-    notificationCenter.info(createMessage(KycFlow.KYC_UPLOAD_SUCCESSFUL)); //"module.kyc.sagas.successfully-uploaded"
+    notificationCenter.info(createMessage(KycFlowMessage.KYC_UPLOAD_SUCCESSFUL)); //"module.kyc.sagas.successfully-uploaded"
   } catch {
     yield put(actions.kyc.kycUpdateIndividualDocument(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
   }
 }
 
@@ -218,24 +218,24 @@ function* submitIndividualRequest(
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],
-      createMessage(KycFlow.KYC_SUBMIT_TITLE), //kyc.modal.submit-title
-      createMessage(KycFlow.KYC_SUBMIT_DESCRIPTION), //kyc.modal.submit-description
+      createMessage(KycFlowMessage.KYC_SUBMIT_TITLE), //kyc.modal.submit-title
+      createMessage(KycFlowMessage.KYC_SUBMIT_DESCRIPTION), //kyc.modal.submit-description
     );
     yield put(actions.kyc.kycUpdateIndividualRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitIndividualRequest();
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
     yield put(
       actions.genericModal.showGenericModal(
-        createMessage(KycFlow.KYC_VERIFICATION_TITLE), //kyc.modal.verification.title
-        createMessage(KycFlow.KYC_VERIFICATION_DESCRIPTION), //kyc.modal.verification.description
+        createMessage(KycFlowMessage.KYC_VERIFICATION_TITLE), //kyc.modal.verification.title
+        createMessage(KycFlowMessage.KYC_VERIFICATION_DESCRIPTION), //kyc.modal.verification.description
         undefined,
-        createMessage(KycFlow.KYC_SETTINGS_BUTTON), //kyc.modal.verification.settings-button
+        createMessage(KycFlowMessage.KYC_SETTINGS_BUTTON), //kyc.modal.verification.settings-button
         actions.routing.goToProfile(),
       ),
     );
   } catch {
     yield put(actions.kyc.kycUpdateIndividualRequestState(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
   }
 }
 
@@ -250,7 +250,7 @@ function* startIndividualInstantId({
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch (e) {
     logger.warn("KYC instant id failed to start", e);
-    notificationCenter.error(createMessage(KycFlow.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
   }
 }
 
@@ -264,7 +264,7 @@ function* cancelIndividualInstantId({
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, { status: "Draft" }));
   } catch (e) {
     logger.warn("KYC instant id failed to stop", e);
-    notificationCenter.error(createMessage(KycFlow.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
   }
 }
 
@@ -305,7 +305,7 @@ function* submitLegalRepresentative(
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
   }
 }
 
@@ -326,7 +326,7 @@ function* uploadLegalRepresentativeFile(
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
   }
 }
 
@@ -368,7 +368,7 @@ function* setBusinessType(
     yield put(actions.routing.goToKYCBusinessData());
   } catch (_e) {
     yield put(actions.kyc.kycUpdateBusinessData(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
   }
 }
 
@@ -400,7 +400,7 @@ function* submitBusinessData(
     yield put(actions.kyc.kycUpdateBusinessData(false, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBusinessData(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
   }
 }
 
@@ -417,10 +417,10 @@ function* uploadBusinessFile(
     yield put(actions.kyc.kycUpdateBusinessDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadBusinessDocument(file);
     yield put(actions.kyc.kycUpdateBusinessDocument(false, result.body));
-    notificationCenter.info(createMessage(KycFlow.KYC_UPLOAD_SUCCESSFUL)); //"module.kyc.sagas.successfully-uploaded"
+    notificationCenter.info(createMessage(KycFlowMessage.KYC_UPLOAD_SUCCESSFUL)); //"module.kyc.sagas.successfully-uploaded"
   } catch {
     yield put(actions.kyc.kycUpdateBusinessDocument(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
   }
 }
 
@@ -467,7 +467,7 @@ function* createBeneficialOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
   }
 }
 
@@ -487,7 +487,7 @@ function* submitBeneficialOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, result.body.id, result.body));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_PROBLEM_SAVING_DATA)); //module.kyc.sagas.problem-saving-data
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SAVING_DATA)); //module.kyc.sagas.problem-saving-data
   }
 }
 
@@ -505,7 +505,7 @@ function* deleteBeneficalOwner(
     yield put(actions.kyc.kycUpdateBeneficialOwner(false, action.payload.id, undefined));
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwner(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA)); //"module.kyc.sagas.problem-sending-data
   }
 }
 
@@ -525,10 +525,10 @@ function* uploadBeneficialOwnerFile(
       file,
     );
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false, result.body));
-    notificationCenter.info(createMessage(KycFlow.KYC_UPLOAD_SUCCESSFUL)); //"module.kyc.sagas.successfully-uploaded"
+    notificationCenter.info(createMessage(KycFlowMessage.KYC_UPLOAD_SUCCESSFUL)); //"module.kyc.sagas.successfully-uploaded"
   } catch {
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocument(boid, false));
-    notificationCenter.error(createMessage(KycFlow.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_UPLOAD_FAILED)); //"module.kyc.sagas.problem-uploading"
   }
 }
 
@@ -581,8 +581,8 @@ function* submitBusinessRequest(
     if (ownerShip > 100) {
       yield neuCall(
         displayErrorModalSaga,
-        createMessage(KycFlow.KYC_ERROR), //module.kyc.sagas.error
-        createMessage(KycFlow.KYC_BENEFICIAL_OWNERS), //module.kyc.sagas.beneficial-owners
+        createMessage(KycFlowMessage.KYC_ERROR), //module.kyc.sagas.error
+        createMessage(KycFlowMessage.KYC_BENEFICIAL_OWNERS), //module.kyc.sagas.beneficial-owners
       );
       return;
     }
@@ -590,8 +590,8 @@ function* submitBusinessRequest(
     yield neuCall(
       ensurePermissionsArePresent,
       [SUBMIT_KYC_PERMISSION],
-      createMessage(KycFlow.KYC_SUBMIT_TITLE), //kyc.modal.submit-title
-      createMessage(KycFlow.KYC_SUBMIT_DESCRIPTION), //kyc.modal.submit-description
+      createMessage(KycFlowMessage.KYC_SUBMIT_TITLE), //kyc.modal.submit-title
+      createMessage(KycFlowMessage.KYC_SUBMIT_DESCRIPTION), //kyc.modal.submit-description
      );
 
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
@@ -599,16 +599,16 @@ function* submitBusinessRequest(
     yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
     yield put(
       actions.genericModal.showGenericModal(
-        createMessage(KycFlow.KYC_VERIFICATION_TITLE), //kyc.modal.verification.title
-        createMessage(KycFlow.KYC_VERIFICATION_DESCRIPTION), //kyc.modal.verification.description
+        createMessage(KycFlowMessage.KYC_VERIFICATION_TITLE), //kyc.modal.verification.title
+        createMessage(KycFlowMessage.KYC_VERIFICATION_DESCRIPTION), //kyc.modal.verification.description
         undefined,
-        createMessage(KycFlow.KYC_SETTINGS_BUTTON), //kyc.modal.verification.settings-button
+        createMessage(KycFlowMessage.KYC_SETTINGS_BUTTON), //kyc.modal.verification.settings-button
         actions.routing.goToProfile(),
       ),
     );
   } catch {
     yield put(actions.kyc.kycUpdateBusinessRequestState(false));
-    notificationCenter.error(createMessage(KycFlow.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
   }
 }
 

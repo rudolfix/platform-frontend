@@ -4,6 +4,8 @@ import { IHttpResponse } from "../../../lib/api/client/IHttpClient";
 import { TFileDescription } from "../../../lib/api/FileStorage.interfaces";
 import { TAction } from "../../actions";
 import { neuTakeEvery } from "../../sagasUtils";
+import {createMessage} from "../../../components/translatedMessages/utils";
+import {FileUploadMessage} from "../../../components/translatedMessages/messages";
 
 function* singleFileUpload(
   { fileStorageApi, notificationCenter, logger }: TGlobalDependencies,
@@ -21,7 +23,7 @@ function* singleFileUpload(
     onDone(undefined, fileData.body.url);
   } catch (e) {
     logger.error("Error while uploading single file", e);
-    notificationCenter.error("Error occurred while uploading a file.");
+    notificationCenter.error(createMessage(FileUploadMessage.FILE_UPLOAD_ERROR));
     onDone(e, undefined);
   }
 }

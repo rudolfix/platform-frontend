@@ -1,9 +1,12 @@
-import { fork } from "redux-saga/effects";
-import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IHttpResponse } from "../../../lib/api/client/IHttpClient";
-import { TFileDescription } from "../../../lib/api/FileStorage.interfaces";
-import { TAction } from "../../actions";
-import { neuTakeEvery } from "../../sagasUtils";
+import {fork} from "redux-saga/effects";
+
+import {TGlobalDependencies} from "../../../di/setupBindings";
+import {IHttpResponse} from "../../../lib/api/client/IHttpClient";
+import {TFileDescription} from "../../../lib/api/FileStorage.interfaces";
+import {TAction} from "../../actions";
+import {neuTakeEvery} from "../../sagasUtils";
+import {createMessage} from "../../../components/translatedMessages/utils";
+import {RemoteFileMessage} from "../../../components/translatedMessages/messages";
 
 function* getRemoteFile(
   { fileStorageApi, notificationCenter, logger }: TGlobalDependencies,
@@ -18,7 +21,7 @@ function* getRemoteFile(
     onDone(undefined, fileData.body);
   } catch (e) {
     logger.error("get remote file error", e);
-    notificationCenter.error("Error occurred getting remote file details");
+    notificationCenter.error(createMessage(RemoteFileMessage.GET_FILES_DETAILS_ERROR));
     onDone(e, undefined);
   }
 }

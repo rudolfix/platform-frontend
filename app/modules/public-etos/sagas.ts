@@ -31,6 +31,8 @@ import {
 } from "./selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate } from "./utils";
+import {createMessage} from "../../components/translatedMessages/utils";
+import {PublicEtosMessage} from "../../components/translatedMessages/messages";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
@@ -65,7 +67,7 @@ export function* loadEtoPreview(
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
 
-    notificationCenter.error("Could not load ETO preview. Is the preview link correct?");
+    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO_PREVIEW));
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -102,7 +104,7 @@ export function* loadEto(
   } catch (e) {
     logger.error("Could not load eto by id", e);
 
-    notificationCenter.error("Could not load ETO. Is the link correct?");
+    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO));
 
     yield put(actions.routing.goToDashboard());
   }
@@ -297,7 +299,7 @@ function* download(document: IEtoDocument): any {
           mimeType: document.mimeType,
           asPdf: true,
         },
-        immutableDocumentName[document.documentType],
+        immutableDocumentName[document.documentType], //FIXME
       ),
     );
   }

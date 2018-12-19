@@ -1,12 +1,12 @@
 import { injectable } from "inversify";
-import { toast } from "react-toastify";
+import { showErrorToast, showInfoToast } from "../../components/shared/Toast";
 
 @injectable()
 export class NotificationCenter {
   public error(message: string): void {
-    toast.error(message);
+    showErrorToast(message);
   }
   public info(message: string): void {
-    toast.info(message);
+    showInfoToast(message);
   }
 }

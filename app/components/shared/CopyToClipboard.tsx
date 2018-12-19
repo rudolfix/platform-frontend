@@ -1,10 +1,10 @@
+import * as cn from "classnames";
 import * as React from "react";
-import { toast } from "react-toastify";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ButtonIcon } from "./buttons";
+import { showInfoToast } from "./Toast";
 
-import * as cn from "classnames";
-import { FormattedMessage } from "react-intl-phraseapp";
 import * as clipboardIcon from "../../assets/img/inline_icons/icon-clipboard.svg";
 import * as styles from "./CopyToClipboard.module.scss";
 
@@ -23,7 +23,7 @@ class CopyToClipboard extends React.Component<IProps> {
     this.inputNode.select();
     document.execCommand("copy");
 
-    toast.info(
+    showInfoToast(
       this.props.message || <FormattedMessage id="shared-component.copy-to-clipboard.copied" />,
     );
   };

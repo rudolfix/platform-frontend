@@ -1,9 +1,7 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { ToastContainer } from "react-toastify";
 import { compose } from "redux";
 
-import { TOAST_COMPONENT_DELAY } from "../config/constants";
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/Logger";
 import { actions } from "../modules/actions";
@@ -23,6 +21,7 @@ import { GenericModal } from "./modals/GenericModal";
 import { VideoModal } from "./modals/VideoModal";
 import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
 import { LoadingIndicator } from "./shared/loading-indicator";
+import { ToastContainer } from "./shared/Toast";
 
 interface IState {
   renderingError: Error | null;
@@ -75,7 +74,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
         </ScrollToTop>
 
         <AccessWalletModal />
-        <ToastContainer autoClose={TOAST_COMPONENT_DELAY} />
+        <ToastContainer />
         <GenericModal />
         <VideoModal />
       </>

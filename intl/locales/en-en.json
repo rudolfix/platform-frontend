@@ -62,6 +62,7 @@
   "error-message.signer.generic-error": "Sorry, an error occurred",
   "error-message.signer.signer-rejected-confirmation": "Confirmation has been rejected",
   "error-message.signer.timeout": "Oops! Looks like the request timed out. Please try again.",
+  "eto-bookbuilding-widget.button-disabled": "Whitelisting is not available at this point.",
   "eto-bookbuilding-widget.download-bookbuilding-stats": "Download as CSV",
   "eto-dashboard-application-description": "Here you can create your ETO application. The information provided will be visible on your ETO profile page as well as setting the smart contract terms of your offering.<br/><br/>You don’t have to fill out your application in one go. You can save the process and return later to make additions or edits. After submitting your application you can still update media links and marketing information.",
   "eto-landing.register.buttonText": "Fundraise with an equity token",

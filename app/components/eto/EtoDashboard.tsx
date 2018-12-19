@@ -175,11 +175,9 @@ const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
-          {canEnableBookbuilding && (
-            <Col lg={6} xs={12}>
-              <BookBuildingWidget />
-            </Col>
-          )}
+          <Col lg={6} xs={12}>
+            <BookBuildingWidget />
+          </Col>
           <Col lg={6} xs={12}>
             <ChooseEtoStartDateWidget />
           </Col>

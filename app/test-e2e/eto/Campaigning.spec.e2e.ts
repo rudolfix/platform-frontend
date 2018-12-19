@@ -1,14 +1,16 @@
 import { appRoutes } from "../../components/appRoutes";
-import { extractNumber } from "../../utils/StringUtils";
+import { formatThousands } from "../../utils/Number.utils";
 import { withParams } from "../../utils/withParams";
 import { ISSUER_SETUP } from "../constants";
-import { etoFixtureAddressByName } from "../utils";
-import { assertRegister, confirmAccessModal } from "../utils";
+import { assertRegister, confirmAccessModal, etoFixtureAddressByName } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, logout, makeAuthenticatedCall } from "../utils/userHelpers";
 
-describe("Eto campaining state", () => {
+const PLEDGE_AMOUNT = "1000";
+const CHANGED_AMOUNT = "1500";
+
+describe("Eto campaigning state", () => {
   it("should show Register button when not logged in", () => {
     const ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
 
@@ -51,6 +53,7 @@ describe("Eto campaining state", () => {
           is_bookbuilding: false,
         }),
       }).then(() => {
+        let remainingSlots: number;
         cy.visit(appRoutes.dashboard);
 
         cy.get(tid("eto-flow-start-bookbuilding")).awaitedClick();
@@ -70,8 +73,12 @@ describe("Eto campaining state", () => {
 
           cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
 
+          cy.get(tid("eto-bookbuilding-remaining-slots")).then(
+            $element => (remainingSlots = Number($element.text())),
+          );
+
           fillForm({
-            amount: "1000",
+            amount: PLEDGE_AMOUNT,
             consentToRevealEmail: {
               type: "radio",
               value: "true",
@@ -81,9 +88,16 @@ describe("Eto campaining state", () => {
 
           confirmAccessModal();
 
-          // TODO: add propper assertion, that works with retries
-          cy.get(tid("eto-bookbuilding-amount-backed"));
-          cy.get(tid("eto-bookbuilding-remaining-slots"));
+          cy.get(tid("campaigning-your-commitment")).then($element => {
+            cy.wrap($element).contains(`€${formatThousands(PLEDGE_AMOUNT)}`);
+          });
+          cy.get(tid("eto-bookbuilding-remaining-slots")).then($element => {
+            const slots = Number($element.text());
+            const expectedSlots = remainingSlots - 1;
+
+            assert.equal(slots, expectedSlots, `Expect remaining slots to equal ${expectedSlots}`);
+            remainingSlots = slots;
+          });
 
           // give it a chance to settle before logging out
           cy.wait(5000);
@@ -101,14 +115,24 @@ describe("Eto campaining state", () => {
 
             cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
             fillForm({
-              amount: "1500",
+              amount: CHANGED_AMOUNT,
               "eto-bookbuilding-back-now": { type: "submit" },
             });
 
             confirmAccessModal();
 
-            cy.get(tid("eto-bookbuilding-amount-backed"));
-            cy.get(tid("eto-bookbuilding-remaining-slots"));
+            cy.get(tid("campaigning-your-commitment")).then($element => {
+              cy.wrap($element).contains(`€${formatThousands(CHANGED_AMOUNT)}`);
+            });
+            cy.get(tid("eto-bookbuilding-remaining-slots")).then($element => {
+              const expectedSlots = remainingSlots - 1;
+
+              assert.equal(
+                Number($element.text()),
+                expectedSlots,
+                `Expect remaining slots to equal ${expectedSlots}`,
+              );
+            });
           });
         });
       });

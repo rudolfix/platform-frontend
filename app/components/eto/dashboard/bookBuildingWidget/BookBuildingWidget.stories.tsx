@@ -10,9 +10,13 @@ const data = {
   bookBuildingEnabled: false,
   bookBuildingStats: { investorsCount: 0, pledgedAmount: 0 },
   maxPledges: 500,
+  canEnableBookbuilding: true,
 };
 
 storiesOf("BookBuildingWidget", module)
+  .add("bookbuilding disabled", () => {
+    return <BookBuildingWidgetComponent {...data} canEnableBookbuilding={false} />;
+  })
   .add("whitelisting not started", () => {
     return <BookBuildingWidgetComponent {...data} />;
   })

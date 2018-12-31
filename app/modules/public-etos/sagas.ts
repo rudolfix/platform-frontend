@@ -19,7 +19,7 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
-import { actions, TAction } from "../actions";
+import { actions, TAction, TActionFromCreator } from "../actions";
 import { selectUserType } from "../auth/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
@@ -73,10 +73,8 @@ export function* loadEtoPreview(
 
 export function* loadEto(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
+  action: TActionFromCreator<typeof actions.publicEtos.loadEto>,
 ): any {
-  if (action.type !== "PUBLIC_ETOS_LOAD_ETO") return;
-
   try {
     const etoId = action.payload.etoId;
 
@@ -167,9 +165,10 @@ export function* loadEtoContact(
   }
 }
 
-function* watchEtoSetAction(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "PUBLIC_ETOS_SET_PUBLIC_ETO") return;
-
+function* watchEtoSetAction(
+  _: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.publicEtos.setPublicEto>,
+): any {
   const previewCode = action.payload.eto.previewCode;
 
   yield neuFork(watchEto, previewCode);
@@ -321,10 +320,10 @@ function* downloadTemplateByType(_: TGlobalDependencies, action: TAction): any {
 
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO_PREVIEW", loadEtoPreview);
-  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETO", loadEto);
-  yield fork(neuTakeEvery, "PUBLIC_ETOS_LOAD_ETOS", loadEtos);
+  yield fork(neuTakeEvery, actions.publicEtos.loadEto, loadEto);
+  yield fork(neuTakeEvery, actions.publicEtos.loadEtos, loadEtos);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_DOWNLOAD_DOCUMENT", downloadDocument);
   yield fork(neuTakeEvery, "PUBLIC_ETOS_DOWNLOAD_TEMPLATE_BY_TYPE", downloadTemplateByType);
-  yield fork(neuTakeUntil, "PUBLIC_ETOS_SET_PUBLIC_ETO", LOCATION_CHANGE, watchEtoSetAction);
+  yield fork(neuTakeUntil, actions.publicEtos.setPublicEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, "PUBLIC_ETOS_SET_PUBLIC_ETOS", LOCATION_CHANGE, watchEtosSetAction);
 }

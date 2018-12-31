@@ -1,6 +1,7 @@
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { actions } from "../actions";
 import { IEtoContractData } from "./types";
 
 export interface IPublicEtoState {
@@ -36,7 +37,7 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
           ...action.payload.companies,
         },
       };
-    case "PUBLIC_ETOS_SET_PUBLIC_ETO":
+    case actions.publicEtos.setPublicEto.getType():
       return {
         ...state,
         publicEtos: {

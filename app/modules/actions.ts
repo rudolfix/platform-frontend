@@ -82,3 +82,16 @@ type TActionCreatorsUnionType = TDictionaryValues<TAllActions>;
 
 export type TAction = ReturnType<TActionCreatorsUnionType> | LocationChangeAction;
 export type TActionType = TAction["type"];
+
+type ExtractActionTypeFromCreator<T extends (...args: any[]) => any> = T extends (
+  ...args: any[]
+) => { type: infer P }
+  ? P
+  : never;
+export type TActionFromCreator<T extends (...args: any[]) => any> = Extract<
+  TAction,
+  { type: ExtractActionTypeFromCreator<T> }
+>;
+
+type ExtractPayload<T extends TAction> = T extends { payload: infer P } ? P : never;
+export type TActionPayload<T extends TActionType> = ExtractPayload<Extract<TAction, { type: T }>>;

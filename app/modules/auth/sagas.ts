@@ -243,10 +243,10 @@ function* handleAcceptCurrentAgreement({
 }: TGlobalDependencies): Iterator<any> {
   const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
   yield neuCall(
-    ensurePermissionsArePresent, //TODO
+    ensurePermissionsArePresent,
     [SIGN_TOS],
-    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TITLE),    // formatIntlMessage("settings.modal.accept-tos.permission.title"),
-    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT)     // formatIntlMessage("settings.modal.accept-tos.permission.text"),
+    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TITLE),
+    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT)
 
   );
   try {

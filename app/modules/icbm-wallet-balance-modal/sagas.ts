@@ -14,7 +14,11 @@ import {selectEthereumAddressWithChecksum} from "../web3/selectors";
 import {IWalletMigrationData} from "./reducer";
 import {selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress} from "./selectors";
 import {createMessage} from "../../components/translatedMessages/utils";
-import {IcbmWalletMessage} from "../../components/translatedMessages/messages";
+import {
+  getMessageTranslation,
+  IcbmWalletMessage,
+  translationToString
+} from "../../components/translatedMessages/messages";
 
 const BLOCK_MINING_TIME_DELAY = 12000;
 class IcbmWalletError extends Error {}
@@ -177,7 +181,9 @@ function* downloadICBMWalletAgreement(
     yield neuCall(
       downloadLink,
       generatedDocument,
-      createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT), //wallet.icbm.reservation-agreement
+      translationToString(getMessageTranslation(
+        createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT) )//wallet.icbm.reservation-agreement
+      ),
       ".pdf",
     );
   } catch (e) {

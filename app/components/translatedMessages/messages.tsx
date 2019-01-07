@@ -4,6 +4,11 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { externalRoutes } from "../../config/externalRoutes";
 import { TTranslatedString } from "../../types";
 import { TMessage } from "./utils";
+import {IntlWrapper} from "../../lib/intl/IntlWrapper";
+import injectIntl = ReactIntl.injectIntl;
+import InjectedIntlProps = ReactIntl.InjectedIntlProps;
+import * as PropTypes from "prop-types";
+import {IIntlProps, injectIntlHelpers} from "../../utils/injectIntlHelpers";
 
 interface ITranslationValues {
   [SignInUserErrorMessages: string]: string;
@@ -179,7 +184,33 @@ export enum ProfileMessage {
   PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION = "profileAccessRecoveryPhraseDescription",
 }
 
-export const getMessageTranslation = ({
+// class CurrentLocale extends React.Component<InjectedIntlProps> {
+//   static contextTypes = {intl: PropTypes.object}
+//   intl = this.props.intl.formatMessage;
+//
+//   render() {
+//     return false;
+//   }
+// }
+//
+// injectIntl(CurrentLocale);
+//
+// function formatMessage(...args:any) {
+//   const intl = new CurrentLocale();
+//   return intl().formatMessage(...args);
+// }
+
+// interface IFormattedMessage {
+//   ...TTranslatedString,
+//   _id: string
+// }
+
+const translationToString = (comp: any): React.ComponentType => {
+  return injectIntlHelpers(({intl}) => (<>{intl.formatIntlMessage(comp._id)}</>));
+
+};
+
+const getMessageTranslation = ({
   messageType,
   messageData,
 }: TMessage): TTranslatedString => {
@@ -403,3 +434,5 @@ export const getMessageTranslation = ({
     
   }
 };
+
+export { getMessageTranslation, translationToString }

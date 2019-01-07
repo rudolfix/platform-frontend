@@ -57,9 +57,9 @@ export function* investSaga({ logger }: TGlobalDependencies): any {
 }
 
 export function* userClaimSaga({ logger }: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "TRANSACTIONS_START_CLAIM") return;
+  const etoId = action.payload;
   try {
-    if (action.type !== "TRANSACTIONS_START_CLAIM") return;
-    const etoId = action;
     yield txSendSaga({
       type: ETxSenderType.USER_CLAIM,
       transactionFlowGenerator: startClaimGenerator,
@@ -68,6 +68,8 @@ export function* userClaimSaga({ logger }: TGlobalDependencies, action: TAction)
     logger.info("User claim successful");
   } catch (e) {
     logger.info("User claim cancelled", e);
+  } finally {
+    yield put(actions.publicEtos.loadEto(etoId));
   }
 }
 

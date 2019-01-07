@@ -2,6 +2,7 @@ import { addHexPrefix } from "ethereumjs-util";
 import { put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
+import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
@@ -15,11 +16,11 @@ export function* generateGetClaimTransaction(
   const userAddress = yield select(selectEthereumAddressWithChecksum);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
-  // TODO Add correct contract call
-  const txInput = yield contractsService.getETOCommitmentContract(etoId);
+  const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
+  const txInput = etoContract.claimTx().getData();
 
   const txInitialDetails = {
-    to: contractsService.neumark.address,
+    to: etoContract.address,
     from: userAddress,
     data: txInput,
     value: "0",

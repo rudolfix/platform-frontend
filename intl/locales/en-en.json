@@ -650,6 +650,7 @@
   "platform.landing.meet-tokenizing-companies": "Meet other companies tokenizing their shares soon",
   "portfolio.section.asset-portfolio.title": "Asset portfolio",
   "portfolio.section.my-proceeds.title": "My proceeds",
+  "portfolio.section.reserved-assets.claim-tokens": "Claim",
   "portfolio.section.reserved-assets.description": "These are assets which you have invested in, but which have not yet been settled.",
   "portfolio.section.reserved-assets.table.header.balance": "Balance",
   "portfolio.section.reserved-assets.table.header.documents": "Documents",

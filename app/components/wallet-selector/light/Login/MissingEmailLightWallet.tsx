@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { Row } from "reactstrap";
 
-import { recoverRoutes } from "../../wallet-recover/recoverRoutes";
+import { recoverRoutes } from "../../wallet-recover/router/recoverRoutes";
 
 import * as mailLink from "../../../../assets/img/mail_link.svg";
 import * as styles from "../WalletLight.module.scss";

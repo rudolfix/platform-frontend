@@ -111,7 +111,7 @@ describe("web3 > selectors", () => {
         },
       };
 
-      const result: any = { ...selectActivationCodeFromQueryString(state) };
+      const result: any = selectActivationCodeFromQueryString(state);
 
       expect(result.verificationCode === code).to.be.true;
     });
@@ -129,7 +129,7 @@ describe("web3 > selectors", () => {
         ...previousConnectedWallet,
       };
 
-      const result: any = { ...selectLightWalletFromQueryString(state) };
+      const result: any = selectLightWalletFromQueryString(state);
 
       expect(result.email).to.be.eq(email);
 

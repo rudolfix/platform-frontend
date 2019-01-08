@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
-import { SwitchConnected } from "../../../utils/connectedRouting";
-import { LoginHelp } from "./LoginHelp";
+import { SwitchConnected } from "../../../../utils/connectedRouting";
+import { LoginHelp } from "../help/LoginHelp";
+import { RecoverWallet } from "../recovery/RecoverWallet";
+import { RecoverySuccess } from "../success/RecoverySuccess";
 import { recoverRoutes } from "./recoverRoutes";
-import { RecoverWallet } from "./RecoverWallet";
-import { RecoverySuccess } from "./RecoverySuccess";
 
 export const RecoverRouter: React.SFC = () => {
   return (

@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { EUserType } from "../../../lib/api/users/interfaces";
-import { actions } from "../../../modules/actions";
-import { selectUrlUserType } from "../../../modules/wallet-selector/selectors";
-import { appConnect } from "../../../store";
-import { Button } from "../../shared/buttons";
-import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
-import { recoverRoutes } from "./recoverRoutes";
+import { EUserType } from "../../../../lib/api/users/interfaces";
+import { actions } from "../../../../modules/actions";
+import { selectUrlUserType } from "../../../../modules/wallet-selector/selectors";
+import { appConnect } from "../../../../store";
+import { Button } from "../../../shared/buttons";
+import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
+import { recoverRoutes } from "../router/recoverRoutes";
 
 import * as styles from "./RecoverySuccess.module.scss";
 

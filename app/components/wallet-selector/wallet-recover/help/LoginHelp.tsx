@@ -3,10 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { externalRoutes } from "../../../config/externalRoutes";
-import { ButtonLink } from "../../shared/buttons";
-import { loginWalletRoutes } from "../walletRoutes";
-import { recoverRoutes } from "./recoverRoutes";
+import { externalRoutes } from "../../../../config/externalRoutes";
+import { ButtonLink } from "../../../shared/buttons";
+import { loginWalletRoutes } from "../../walletRoutes";
+import { recoverRoutes } from "../router/recoverRoutes";
 
 export const LoginHelp: React.SFC<void> = () => (
   <div>

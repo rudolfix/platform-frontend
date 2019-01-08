@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { Button, ButtonSize, ButtonWidth } from "../../../../shared/buttons";
 import { CheckboxLayout, FormInput, InputSize } from "../../../../shared/forms";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money";
 import { Tooltip } from "../../../../shared/Tooltip";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -62,11 +63,15 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
       </div>
       {formState === CampaigningFormState.VIEW ? (
         <div className={styles.group}>
-          <div className={styles.label}>
+          <div className={styles.label} data-test-id="campaigning-your-commitment">
             <FormattedMessage id="eto-overview.campaigning.your-commitment" />
             <br />
-            {"€ "}
-            {pledgedAmount}
+            <Money
+              value={pledgedAmount}
+              currency={ECurrency.EUR}
+              format={EMoneyFormat.FLOAT}
+              currencySymbol={ECurrencySymbol.SYMBOL}
+            />
           </div>
           <div className={styles.value}>
             <button onClick={changePledge} className={styles.changePledge}>
@@ -80,7 +85,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
           </div>
         </div>
       ) : (
-        <Formik
+        <Formik<{ amount: number | "" }>
           initialValues={{ amount: pledgedAmount }}
           onSubmit={({ amount }) => backNow(amount as number)}
           validationSchema={generateCampaigningValidation(minPledge, maxPledge)}

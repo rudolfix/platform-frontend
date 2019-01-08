@@ -17,7 +17,6 @@ import {createMessage} from "../../components/translatedMessages/utils";
 import {
   getMessageTranslation,
   IcbmWalletMessage,
-  translationToString
 } from "../../components/translatedMessages/messages";
 
 const BLOCK_MINING_TIME_DELAY = 12000;
@@ -84,7 +83,7 @@ function* loadIcbmWalletMigrationTransactionSaga({
     yield put(actions.icbmWalletBalanceModal.loadIcbmMigrationData(walletMigrationData));
   } catch (e) {
     logger.error("Error: ", e);
-    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL)); //"Error while running migration tool"
+    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL));
   }
 }
 
@@ -115,10 +114,10 @@ function* loadIcbmWalletMigrationSaga(
     logger.error("Load ICBM migration wallet", e);
     // todo: all texts to text resources
     if (e instanceof NoIcbmWalletError)
-      return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS)); //We were unable to find an ICBM wallet for the entered address.
-    if (e instanceof SameUserError) return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME));//"This is your current address"
+      return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS));
+    if (e instanceof SameUserError) return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME));
     // Default Error
-    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA)); //"Error while loading ICBM Wallet data"
+    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA));
   }
 }
 
@@ -181,14 +180,12 @@ function* downloadICBMWalletAgreement(
     yield neuCall(
       downloadLink,
       generatedDocument,
-      translationToString(getMessageTranslation(
-        createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT) )//wallet.icbm.reservation-agreement
-      ),
+      getMessageTranslation(createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT) ),
       ".pdf",
     );
   } catch (e) {
     logger.error("Failed to download ICBM wallet agreement", e);
-    notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_FAILED_TO_DOWNLOAD_AGREEMENT)); //"Failed to download ICBM Wallet Agreement"
+    notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_FAILED_TO_DOWNLOAD_AGREEMENT));
   }
 }
 

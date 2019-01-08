@@ -4,11 +4,12 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { externalRoutes } from "../../config/externalRoutes";
 import { TTranslatedString } from "../../types";
 import { TMessage } from "./utils";
-import {IntlWrapper} from "../../lib/intl/IntlWrapper";
 import injectIntl = ReactIntl.injectIntl;
-import InjectedIntlProps = ReactIntl.InjectedIntlProps;
 import * as PropTypes from "prop-types";
-import {IIntlProps, injectIntlHelpers} from "../../utils/injectIntlHelpers";
+import {IInversifyProviderContext} from "../../utils/InversifyProvider";
+import {ILogger} from "../../lib/dependencies/Logger";
+import {symbols} from "../../di/symbols";
+import {IntlWrapper} from "../../lib/intl/IntlWrapper";
 
 interface ITranslationValues {
   [SignInUserErrorMessages: string]: string;
@@ -183,32 +184,6 @@ export enum ProfileMessage {
   PROFILE_ACCESS_RECOVERY_PHRASE_TITLE = "profileAccessRecoveryPhraseTitle",
   PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION = "profileAccessRecoveryPhraseDescription",
 }
-
-// class CurrentLocale extends React.Component<InjectedIntlProps> {
-//   static contextTypes = {intl: PropTypes.object}
-//   intl = this.props.intl.formatMessage;
-//
-//   render() {
-//     return false;
-//   }
-// }
-//
-// injectIntl(CurrentLocale);
-//
-// function formatMessage(...args:any) {
-//   const intl = new CurrentLocale();
-//   return intl().formatMessage(...args);
-// }
-
-// interface IFormattedMessage {
-//   ...TTranslatedString,
-//   _id: string
-// }
-
-const translationToString = (comp: any): React.ComponentType => {
-  return injectIntlHelpers(({intl}) => (<>{intl.formatIntlMessage(comp._id)}</>));
-
-};
 
 const getMessageTranslation = ({
   messageType,
@@ -395,7 +370,9 @@ const getMessageTranslation = ({
           return <FormattedMessage id="settings.modal.accept-tos.filename" />;
 
     case IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT:
-        return <FormattedMessage id="wallet.icbm.reservation-agreement" />;
+      //TODO We need a plain string here, but FormattedMessage doesn't work outside of components now.
+      // Need to figure out how to do this.
+        return "Amended ICBM Reservation Agreement"; //<FormattedMessage id="wallet.icbm.reservation-agreement" />;
     case IcbmWalletMessage.ICBM_FAILED_TO_DOWNLOAD_AGREEMENT:
         return <FormattedMessage id="wallet.icbm.failed-to-download-reservation-agreement" />;
     case IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS:
@@ -435,4 +412,4 @@ const getMessageTranslation = ({
   }
 };
 
-export { getMessageTranslation, translationToString }
+export { getMessageTranslation }

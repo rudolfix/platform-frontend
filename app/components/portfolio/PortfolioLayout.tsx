@@ -9,7 +9,7 @@ import { Col, Row } from "reactstrap";
 import { externalRoutes } from "../../config/externalRoutes";
 import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
-import { getNeuReward } from '../../modules/investor-tickets/utils';
+import { getNeuReward } from "../../modules/investor-tickets/utils";
 import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { withParams } from "../../utils/withParams";
 import { getDocumentTitles } from "../documents/utils";

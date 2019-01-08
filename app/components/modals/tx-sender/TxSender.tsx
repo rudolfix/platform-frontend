@@ -5,6 +5,7 @@ import { Modal } from "reactstrap";
 
 import { ITxData } from "../../../lib/web3/types";
 import { actions } from "../../../modules/actions";
+import { TETOWithInvestorTicket } from "../../../modules/investor-tickets/types";
 import { ETxSenderType } from "../../../modules/tx/interfaces";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
@@ -21,6 +22,7 @@ import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
 import { WatchPendingTxs } from "./shared/WatchPeningTxs";
 import { UpgradeSummary } from "./upgrade-flow/Summary";
+import { UserClaimSummary } from "./user-claim/Summary";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
@@ -66,6 +68,8 @@ export interface ITxInitDispatchProps {
 export interface ITxSummaryStateProps {
   txData: Partial<ITxData>;
   txCost: string;
+  etoData?: TETOWithInvestorTicket;
+  additionalData?: {};
 }
 
 export interface ITxSummaryDispatchProps {
@@ -97,7 +101,7 @@ const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
     case ETxSenderType.UPGRADE:
       return <UpgradeSummary />;
     case ETxSenderType.USER_CLAIM:
-      return <WithdrawSummary />;
+      return <UserClaimSummary />;
     default:
       return <WithdrawSummary />;
   }

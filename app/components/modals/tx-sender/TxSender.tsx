@@ -96,6 +96,8 @@ const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
       return <SetEtoDateSummary />;
     case ETxSenderType.UPGRADE:
       return <UpgradeSummary />;
+    case ETxSenderType.USER_CLAIM:
+      return <WithdrawSummary />;
     default:
       return <WithdrawSummary />;
   }

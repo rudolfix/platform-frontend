@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
+    "target": "es2016",
     "strict": true,
     "noImplicitAny": false,
     "importHelpers": true,
-    "target": "es2015",
     "moduleResolution": "Node",
     "types": ["cypress"],
     "jsx": "react"

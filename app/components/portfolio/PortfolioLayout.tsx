@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import { map } from "lodash/fp";
 import * as React from "react";
@@ -7,10 +6,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { Q18 } from "../../config/constants";
 import { externalRoutes } from "../../config/externalRoutes";
 import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
+import { getNeuReward } from '../../modules/investor-tickets/utils';
 import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { withParams } from "../../utils/withParams";
 import { getDocumentTitles } from "../documents/utils";
@@ -34,15 +33,6 @@ export type TPortfolioLayoutProps = {
   neuPrice: string;
   walletAddress: string;
   isRetailEto: boolean;
-};
-
-const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): string => {
-  if (equivEurUlps.isZero()) {
-    return "0";
-  }
-
-  const equityToken = Q18.mul(equityTokenInt);
-  return equivEurUlps.div(equityToken).toFixed(8);
 };
 
 const transactions: any[] = []; // TODO: Connect source of data

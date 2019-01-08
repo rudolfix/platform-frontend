@@ -1,9 +1,12 @@
 import { expect } from "chai";
-import { globalFakeClock } from "../../test/setupTestsHooks";
+
+import { setupFakeClock } from "../../test/integrationTestUtils";
 import { delay } from "./delay";
 import { promiseTimeout } from "./promiseTimeout";
 
 describe("promiseTimeout", () => {
+  const clock = setupFakeClock();
+
   it("should return promise value if resolved within time frame", async () => {
     const expectedReturnValue = 2;
     const fastPromise = async () => {
@@ -17,10 +20,10 @@ describe("promiseTimeout", () => {
       timeout: 1000,
     });
 
-    globalFakeClock.tick(500);
+    clock.fakeClock.tick(500);
     const actualReturnValue = await actualReturnValuePromise;
     // this shouldn't do anything
-    globalFakeClock.tick(500);
+    clock.fakeClock.tick(500);
 
     expect(actualReturnValue).to.be.eq(expectedReturnValue);
   });
@@ -38,10 +41,10 @@ describe("promiseTimeout", () => {
       timeout: 500,
     });
 
-    globalFakeClock.tick(500);
+    clock.fakeClock.tick(500);
     const actualReturnValue = await actualReturnValuePromise;
     // this shouldn't do anything
-    globalFakeClock.tick(500);
+    clock.fakeClock.tick(500);
 
     expect(actualReturnValue).to.be.eq(expectedReturnValue);
   });

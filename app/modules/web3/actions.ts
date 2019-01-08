@@ -3,6 +3,7 @@ import { createAction, createSimpleAction } from "../actionsUtils";
 
 export const web3Actions = {
   personalWalletDisconnected: () => createSimpleAction("PERSONAL_WALLET_DISCONNECTED"),
+  personalWalletConnectionLost: () => createSimpleAction("PERSONAL_WALLET_CONNECTION_LOST"),
 
   newPersonalWalletPlugged: (walletMetadata: TWalletMetadata, isUnlocked: boolean) =>
     createAction("NEW_PERSONAL_WALLET_PLUGGED", { walletMetadata, isUnlocked }),

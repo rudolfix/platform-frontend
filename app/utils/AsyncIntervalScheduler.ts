@@ -1,4 +1,5 @@
 import { interfaces } from "inversify";
+
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/Logger";
 import { isPromise } from "./isPromise";

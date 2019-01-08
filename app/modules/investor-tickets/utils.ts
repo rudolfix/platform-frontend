@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-import { Q18 } from '../../config/constants';
+import { Q18 } from "../../config/constants";
 import { ICalculatedContribution, IInvestorTicket } from "./types";
 
 export const convertToCalculatedContribution = ([

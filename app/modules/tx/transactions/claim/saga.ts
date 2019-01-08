@@ -38,7 +38,12 @@ export function* generateGetClaimTransaction(
 }
 
 export function* startClaimGenerator(_: TGlobalDependencies, etoId: string): any {
-  const generatedTxDetails = yield neuCall(generateGetClaimTransaction, etoId);
+  const generatedTxDetails: ITxData = yield neuCall(generateGetClaimTransaction, etoId);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
-  yield put(actions.txSender.txSenderContinueToSummary(generatedTxDetails));
+  yield put(
+    actions.txSender.txSenderContinueToSummary({
+      txData: generatedTxDetails,
+      additionalData: etoId,
+    }),
+  );
 }

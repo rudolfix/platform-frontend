@@ -106,7 +106,7 @@ export function* loadSeedOrReturnToSettings({
 }: TGlobalDependencies): Iterator<any> {
   // unlock wallet
   try {
-    const signEffect = put(actions.web3.fetchSeedFromWallet());
+    const signEffect = put(actions.web3.fetchWalletPrivateDataFromWallet());
     return yield call(
       accessWalletAndRunEffect,
       signEffect,

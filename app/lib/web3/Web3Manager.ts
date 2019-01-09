@@ -5,7 +5,6 @@ import * as Web3 from "web3";
 import { symbols } from "../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../modules/tx/utils";
 import { web3Actions } from "../../modules/web3/actions";
-import { web3Flows } from "../../modules/web3/flows";
 import { AppDispatch } from "../../store";
 import { EthereumNetworkId } from "../../types";
 import {
@@ -78,10 +77,9 @@ export class Web3Manager {
     this.web3ConnectionWatcher.start();
   }
 
-  public async unplugPersonalWallet(): Promise<void> {
+  public unplugPersonalWallet(): void {
     this.web3ConnectionWatcher.stop();
     this.personalWallet = undefined;
-    this.dispatch(web3Actions.personalWalletDisconnected());
   }
 
   public async sign(message: string): Promise<string> {
@@ -137,8 +135,7 @@ export class Web3Manager {
 
   private onWeb3ConnectionLost = () => {
     this.logger.info("Web3 connection lost");
-    this.dispatch(web3Flows.personalWalletDisconnected);
-
+    this.dispatch(web3Actions.personalWalletConnectionLost());
     this.web3ConnectionWatcher.stop();
   };
 }

@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import * as sinon from "sinon";
 
+import { setupFakeClock } from "../../../../test/integrationTestUtils";
 import { IAppState } from "../../../store";
 import { DeepPartial } from "../../../types";
 import * as publicEtoSelectors from "../../public-etos/selectors";
@@ -18,6 +19,8 @@ function createStateWithAddress(address: string, reference: string): IAppState {
 }
 
 describe("investment-flow > selectors", () => {
+  setupFakeClock();
+
   describe("selectBankTransferReferenceCode", () => {
     beforeEach(() => {
       sinon.stub(publicEtoSelectors, "selectEtoOnChainStateById").returns(undefined);

@@ -42,9 +42,8 @@ export interface IGeneralButton {
   onClick?: (event: any) => void;
 }
 
-interface IButtonIcon extends IGeneralButton {
+interface IButtonIcon extends IGeneralButton, CommonHtmlProps {
   svgIcon: string;
-  className?: string;
 }
 
 export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
@@ -58,6 +57,7 @@ export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
   width?: ButtonWidth;
   isLoading?: boolean;
   isActive?: boolean;
+  innerClassName?: string;
   textPosition?: ButtonTextPosition;
 }
 
@@ -76,11 +76,12 @@ const Button: React.ComponentType<
   (
     {
       children,
+      className,
       layout,
       theme,
       disabled,
       svgIcon,
-      className,
+      innerClassName,
       iconPosition,
       size,
       width,
@@ -96,6 +97,7 @@ const Button: React.ComponentType<
       ref={ref}
       className={cn(
         styles.button,
+        className,
         layout,
         iconPosition,
         {
@@ -109,7 +111,7 @@ const Button: React.ComponentType<
       type={type}
       {...props}
     >
-      <div className={cn(styles.content, className, textPosition)} tabIndex={-1}>
+      <div className={cn(styles.content, innerClassName, textPosition)} tabIndex={-1}>
         {isLoading ? (
           <LoadingIndicator light />
         ) : (

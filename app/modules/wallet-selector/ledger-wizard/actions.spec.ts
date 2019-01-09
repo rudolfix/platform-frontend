@@ -1,5 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
+import { expectSaga } from "redux-saga-test-plan";
 import { spy } from "sinon";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
@@ -16,20 +17,27 @@ import {
   LedgerWalletConnector,
 } from "../../../lib/web3/LedgerWallet";
 import { Web3Adapter } from "../../../lib/web3/Web3Adapter";
-import { WalletNotConnectedError, Web3Manager } from "../../../lib/web3/Web3Manager";
+import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
 import { Dictionary } from "../../../types";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType } from "../../web3/types";
-import { ledgerWizardFlows } from "./flows";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
+import {
+  finishSettingUpLedgerConnector,
+  goToNextPageAndLoadData,
+  goToPreviousPageAndLoadData,
+  loadLedgerAccounts,
+  setDerivationPathPrefix,
+  tryEstablishingConnectionWithLedger,
+  verifyIfLedgerStillConnected,
+} from "./sagas";
 
 describe("Wallet selector > Ledger wizard > actions", () => {
   describe("tryEstablishingConnectionWithLedger", () => {
     it("should try establishing connection", async () => {
       const expectedNetworkId = dummyNetworkId;
 
-      const mockDispatch = spy();
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         connect: async () => {},
       });
@@ -37,22 +45,19 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         networkId: expectedNetworkId,
       });
 
-      await ledgerWizardFlows.tryEstablishingConnectionWithLedger(
-        mockDispatch,
-        ledgerWalletConnectorMock,
-        web3ManagerMock,
-      );
+      await expectSaga(tryEstablishingConnectionWithLedger, {
+        ledgerWalletConnector: ledgerWalletConnectorMock,
+        web3Manager: web3ManagerMock,
+      })
+        .put(actions.walletSelector.ledgerConnectionEstablished())
+        .run();
 
-      expect(mockDispatch).to.be.calledWithExactly(
-        actions.walletSelector.ledgerConnectionEstablished(),
-      );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
 
     it("should send error action on error", async () => {
       const expectedNetworkId = dummyNetworkId;
 
-      const mockDispatch = spy();
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         connect: async () => {
           throw new LedgerNotAvailableError();
@@ -62,17 +67,17 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         networkId: expectedNetworkId,
       });
 
-      await ledgerWizardFlows.tryEstablishingConnectionWithLedger(
-        mockDispatch,
-        ledgerWalletConnectorMock,
-        web3ManagerMock,
-      );
+      await expectSaga(tryEstablishingConnectionWithLedger, {
+        ledgerWalletConnector: ledgerWalletConnectorMock,
+        web3Manager: web3ManagerMock,
+      })
+        .put(
+          actions.walletSelector.ledgerConnectionEstablishedError(
+            createMessage(LedgerErrorMessage.GENERIC_ERROR),
+          ),
+        )
+        .run();
 
-      expect(mockDispatch).to.be.calledWithExactly(
-        actions.walletSelector.ledgerConnectionEstablishedError(
-          createMessage(LedgerErrorMessage.GENERIC_ERROR),
-        ),
-      );
       expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
     });
   });
@@ -105,8 +110,6 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         "0xab2245c": 150,
       };
 
-      const dispatchMock = spy();
-      const getStateMock = spy(() => dummyState);
       const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
         getMultipleAccountsFromDerivationPrefix: spy(() => expectedAccounts),
       });
@@ -124,13 +127,40 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         }),
       });
 
-      await ledgerWizardFlows.loadLedgerAccounts(
-        dispatchMock,
-        getStateMock,
-        ledgerWalletConnectorMock,
-        web3ManagerMock,
-        contractsMock,
-      );
+      await expectSaga(loadLedgerAccounts, {
+        ledgerWalletConnector: ledgerWalletConnectorMock,
+        web3Manager: web3ManagerMock,
+        contractsService: contractsMock,
+      })
+        .withState(dummyState)
+        .put(
+          actions.walletSelector.setLedgerAccounts(
+            [
+              {
+                address: expectedAccounts["44'/60'/0'/1"],
+                balanceETH: expectedAccountsToBalancesETH[
+                  expectedAccounts["44'/60'/0'/1"]
+                ].toString(),
+                balanceNEU: expectedAccountsToBalancesNEU[
+                  expectedAccounts["44'/60'/0'/1"]
+                ].toString(),
+                derivationPath: "44'/60'/0'/1",
+              },
+              {
+                address: expectedAccounts["44'/60'/0'/2"],
+                balanceETH: expectedAccountsToBalancesETH[
+                  expectedAccounts["44'/60'/0'/2"]
+                ].toString(),
+                balanceNEU: expectedAccountsToBalancesNEU[
+                  expectedAccounts["44'/60'/0'/2"]
+                ].toString(),
+                derivationPath: "44'/60'/0'/2",
+              },
+            ],
+            DEFAULT_DERIVATION_PATH_PREFIX,
+          ),
+        )
+        .run();
 
       expect(
         ledgerWalletConnectorMock.getMultipleAccountsFromDerivationPrefix,
@@ -139,61 +169,24 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         dummyState.ledgerWizardState!.index,
         dummyState.ledgerWizardState!.numberOfAccountsPerPage,
       );
-      expect(dispatchMock).to.be.calledWithExactly(
-        actions.walletSelector.setLedgerAccounts(
-          [
-            {
-              address: expectedAccounts["44'/60'/0'/1"],
-              balanceETH: expectedAccountsToBalancesETH[
-                expectedAccounts["44'/60'/0'/1"]
-              ].toString(),
-              balanceNEU: expectedAccountsToBalancesNEU[
-                expectedAccounts["44'/60'/0'/1"]
-              ].toString(),
-              derivationPath: "44'/60'/0'/1",
-            },
-            {
-              address: expectedAccounts["44'/60'/0'/2"],
-              balanceETH: expectedAccountsToBalancesETH[
-                expectedAccounts["44'/60'/0'/2"]
-              ].toString(),
-              balanceNEU: expectedAccountsToBalancesNEU[
-                expectedAccounts["44'/60'/0'/2"]
-              ].toString(),
-              derivationPath: "44'/60'/0'/2",
-            },
-          ],
-          DEFAULT_DERIVATION_PATH_PREFIX,
-        ),
-      );
     });
   });
 
   describe("goToNextPageAndLoadDataAction", () => {
-    it("should work", async () => {
-      const mockDispatch = spy();
-
-      ledgerWizardFlows.goToNextPageAndLoadData(mockDispatch);
-
-      expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWith(
-        actions.walletSelector.ledgerWizardAccountsListNextPage(),
-      );
-      expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
+    it("should work", () => {
+      return expectSaga(goToNextPageAndLoadData)
+        .put(actions.walletSelector.ledgerWizardAccountsListNextPage())
+        .put(actions.walletSelector.ledgerLoadAccounts())
+        .run();
     });
   });
 
-  describe("goToPreviousPageAndLoadDataAction", async () => {
+  describe("goToPreviousPageAndLoadDataAction", () => {
     it("should work", () => {
-      const mockDispatch = spy();
-
-      ledgerWizardFlows.goToPreviousPageAndLoadData(mockDispatch);
-
-      expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWith(
-        actions.walletSelector.ledgerWizardAccountsListPreviousPage(),
-      );
-      expect(mockDispatch).to.be.calledWith(ledgerWizardFlows.loadLedgerAccounts);
+      return expectSaga(goToPreviousPageAndLoadData)
+        .put(actions.walletSelector.ledgerWizardAccountsListPreviousPage())
+        .put(actions.walletSelector.ledgerLoadAccounts())
+        .run();
     });
   });
 
@@ -212,29 +205,28 @@ describe("Wallet selector > Ledger wizard > actions", () => {
       },
     };
 
-    it("should do not fire when there is no change in derivationPathPrefix", async () => {
-      const mockDispatch = spy();
-      const getStateMock = spy(() => dummyState);
-
-      await ledgerWizardFlows.setDerivationPathPrefix(DEFAULT_DERIVATION_PATH_PREFIX)(
-        mockDispatch,
-        getStateMock,
-      );
-
-      expect(mockDispatch).have.not.been.called;
+    it("should do not fire when there is no change in derivationPathPrefix", () => {
+      return expectSaga(
+        setDerivationPathPrefix,
+        null,
+        actions.walletSelector.ledgerSetDerivationPathPrefix(DEFAULT_DERIVATION_PATH_PREFIX),
+      )
+        .withState(dummyState)
+        .not.put(actions.walletSelector.ledgerLoadAccounts())
+        .not.put(actions.walletSelector.setLedgerWizardDerivationPathPrefix(newDP))
+        .run();
     });
 
-    it("should fire when there is change in derivationPathPrefix", async () => {
-      const mockDispatch = spy();
-      const getStateMock = spy(() => dummyState);
-
-      await ledgerWizardFlows.setDerivationPathPrefix(newDP)(mockDispatch, getStateMock);
-
-      expect(mockDispatch).to.be.calledTwice;
-      expect(mockDispatch).to.be.calledWithExactly(
-        actions.walletSelector.setLedgerWizardDerivationPathPrefix(newDP),
-      );
-      expect(mockDispatch).to.be.calledWithExactly(ledgerWizardFlows.loadLedgerAccounts);
+    it("should fire when there is change in derivationPathPrefix", () => {
+      return expectSaga(
+        setDerivationPathPrefix,
+        null,
+        actions.walletSelector.ledgerSetDerivationPathPrefix(newDP),
+      )
+        .withState(dummyState)
+        .put(actions.walletSelector.ledgerLoadAccounts())
+        .put(actions.walletSelector.setLedgerWizardDerivationPathPrefix(newDP))
+        .run();
     });
   });
 
@@ -248,7 +240,6 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         walletSubType: EWalletSubType.UNKNOWN,
       };
 
-      const dispatchMock = spy();
       const ledgerWalletMock = createMock(LedgerWallet, {
         getMetadata: (): ILedgerWalletMetadata => dummyMetadata,
       });
@@ -259,110 +250,55 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await ledgerWizardFlows.finishSettingUpLedgerConnector(expectedDerivationPath)(
-        dispatchMock,
-        ledgerWalletConnectorMock,
-        web3ManagerMock,
-      );
-
-      expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
-        expectedDerivationPath,
-      );
-      expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
-    });
-
-    it("should work when ledger wallet is connected and user TYPE should be ISSUER", async () => {
-      const expectedDerivationPath = "44'/60'/0'/2";
-      const dummyMetadata: ILedgerWalletMetadata = {
-        address: dummyEthereumAddress,
-        derivationPath: expectedDerivationPath,
-        walletType: EWalletType.LEDGER,
-        walletSubType: EWalletSubType.UNKNOWN,
-      };
-
-      const dispatchMock = spy();
-      const ledgerWalletMock = createMock(LedgerWallet, {
-        getMetadata: (): ILedgerWalletMetadata => dummyMetadata,
-      });
-      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-        finishConnecting: async () => ledgerWalletMock,
-      });
-      const web3ManagerMock = createMock(Web3Manager, {
-        plugPersonalWallet: async () => {},
-      });
-
-      await ledgerWizardFlows.finishSettingUpLedgerConnector(expectedDerivationPath)(
-        dispatchMock,
-        ledgerWalletConnectorMock,
-        web3ManagerMock,
-      );
-
-      expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
-        expectedDerivationPath,
-      );
-      expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
-    });
-  });
-
-  it("should not navigate when ledger wallet is not connected", async () => {
-    // @todo exact behaviour should be specified
-    const expectedDerivationPath = "44'/60'/0'/2";
-
-    const navigateToMock = spy();
-    const ledgerWalletMock = createMock(LedgerWallet, {});
-    const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-      finishConnecting: async () => ledgerWalletMock,
-    });
-    const web3ManagerMock = createMock(Web3Manager, {
-      plugPersonalWallet: async () => {
-        throw new WalletNotConnectedError(ledgerWalletMock);
-      },
-    });
-
-    await ledgerWizardFlows
-      .finishSettingUpLedgerConnector(expectedDerivationPath)(
-        navigateToMock,
-        ledgerWalletConnectorMock,
-        web3ManagerMock,
+      await expectSaga(
+        finishSettingUpLedgerConnector,
+        {
+          ledgerWalletConnector: ledgerWalletConnectorMock,
+          web3Manager: web3ManagerMock,
+        },
+        actions.walletSelector.ledgerFinishSettingUpLedgerConnector(expectedDerivationPath),
       )
-      .catch(() => {});
+        .put(actions.walletSelector.connected())
+        .run();
 
-    expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
-      expectedDerivationPath,
-    );
-    expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-    expect(navigateToMock).not.be.called;
-  });
-});
-
-describe("verifyIfLedgerStillConnected", () => {
-  it("should do nothing if ledger is connected", async () => {
-    const dispatchMock = spy();
-    const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-      testConnection: async () => true,
+      expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
+        expectedDerivationPath,
+      );
+      expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
     });
-
-    await ledgerWizardFlows.verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
-
-    expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
-    expect(dispatchMock).to.not.be.called;
   });
 
-  it("should issue error action if ledger is not connected", async () => {
-    const dispatchMock = spy();
-    const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-      testConnection: async () => false,
+  describe("verifyIfLedgerStillConnected", () => {
+    const errorAction = actions.walletSelector.ledgerConnectionEstablishedError(
+      createMessage(LedgerErrorMessage.GENERIC_ERROR),
+    );
+
+    it("should do nothing if ledger is connected", async () => {
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
+        testConnection: async () => true,
+      });
+
+      await expectSaga(verifyIfLedgerStillConnected, {
+        ledgerWalletConnector: ledgerWalletConnectorMock,
+      })
+        .not.put(errorAction)
+        .run();
+
+      expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
     });
 
-    await ledgerWizardFlows.verifyIfLedgerStillConnected(dispatchMock, ledgerWalletConnectorMock);
+    it("should issue error action if ledger is not connected", async () => {
+      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
+        testConnection: async () => false,
+      });
 
-    expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
-    expect(dispatchMock).to.be.calledWithExactly(
-      actions.walletSelector.ledgerConnectionEstablishedError(
-        createMessage(LedgerErrorMessage.GENERIC_ERROR),
-      ),
-    );
+      await expectSaga(verifyIfLedgerStillConnected, {
+        ledgerWalletConnector: ledgerWalletConnectorMock,
+      })
+        .put(errorAction)
+        .run();
+
+      expect(ledgerWalletConnectorMock.testConnection).to.be.calledOnce;
+    });
   });
 });

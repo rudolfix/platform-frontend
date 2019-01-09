@@ -25,7 +25,7 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
   action,
 ): DeepReadonly<IPublicEtoState> => {
   switch (action.type) {
-    case "PUBLIC_ETOS_SET_PUBLIC_ETOS":
+    case actions.publicEtos.setPublicEtos.getType():
       return {
         ...state,
         publicEtos: {
@@ -49,12 +49,12 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
           [action.payload.company.companyId]: action.payload.company,
         },
       };
-    case "PUBLIC_ETOS_SET_DISPLAY_ORDER":
+    case actions.publicEtos.setEtosDisplayOrder.getType():
       return {
         ...state,
         displayOrder: action.payload.order,
       };
-    case "PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT":
+    case actions.publicEtos.setEtoDataFromContract.getType():
       return {
         ...state,
         contracts: {

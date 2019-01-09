@@ -73,9 +73,7 @@ const getWithdrawFormSchema = (maxEther: string) =>
           (
             <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.value-higher-than-balance" />
           ) as any,
-          (value: string) => {
-            return doesUserHaveEnoughEther(value, maxEther);
-          },
+          (value: string) => doesUserHaveEnoughEther(value, maxEther),
         ),
     ),
   }).toYup();
@@ -87,7 +85,7 @@ const WithdrawComponent: React.SFC<TProps & IIntlProps> = ({
   validationState,
   intl,
 }) => (
-  <div>
+  <section>
     <SpinningEthereum />
 
     <h3 className={styles.title}>
@@ -100,64 +98,61 @@ const WithdrawComponent: React.SFC<TProps & IIntlProps> = ({
       initialValues={{ value: "", to: "" }}
       onSubmit={onAccept}
     >
-      {({ isValid, values, isValidating, setFieldValue }) => {
-        return (
-          <Form>
-            <Container>
-              <Row>
-                <Col xs={12} className="mb-3">
-                  <FormField
-                    name="to"
-                    label={<FormattedMessage id="modal.sent-eth.to-address" />}
-                    placeholder="0x0"
-                    ignoreTouched={true}
-                    data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.to-address"
-                    onChange={(e: any) => {
-                      setFieldValue("to", e.target.value);
-                      onValidateHandler(values.value, e.target.value);
-                    }}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12} className="mb-3">
-                  <FormField
-                    name="value"
-                    type="number"
-                    label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
-                    placeholder={intl.formatIntlMessage("modal.sent-eth.eth-amount-placeholder")}
-                    data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
-                    ignoreTouched={true}
-                    onChange={(e: any) => {
-                      setFieldValue("value", e.target.value);
-                      onValidateHandler(e.target.value, values.to);
-                    }}
-                  />
-                  {/* @SEE https://github.com/jaredpalmer/formik/issues/288 */}
-                  {validationState !== EValidationState.VALIDATION_OK &&
-                    isValid &&
-                    !isValidating && <ValidationErrorMessage type={validationState} />}
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12} className="mt-3 text-center">
-                  <Button
-                    type="submit"
-                    disabled={
-                      !isValid || isValidating || validationState !== EValidationState.VALIDATION_OK
-                    }
-                    data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"
-                  >
-                    <FormattedMessage id="modal.sent-eth.button" />
-                  </Button>
-                </Col>
-              </Row>
-            </Container>
-          </Form>
-        );
-      }}
+      {({ isValid, values, isValidating, setFieldValue }) => (
+        <Form>
+          <Container>
+            <Row>
+              <Col xs={12} className="mb-3">
+                <FormField
+                  name="to"
+                  label={<FormattedMessage id="modal.sent-eth.to-address" />}
+                  placeholder="0x0"
+                  ignoreTouched={true}
+                  data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.to-address"
+                  onChange={(e: any) => {
+                    setFieldValue("to", e.target.value);
+                    onValidateHandler(values.value, e.target.value);
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} className="mb-3">
+                <FormField
+                  name="value"
+                  label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
+                  placeholder={intl.formatIntlMessage("modal.sent-eth.eth-amount-placeholder")}
+                  data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
+                  ignoreTouched={true}
+                  onChange={(e: any) => {
+                    setFieldValue("value", e.target.value);
+                    onValidateHandler(e.target.value, values.to);
+                  }}
+                />
+                {/* @SEE https://github.com/jaredpalmer/formik/issues/288 */}
+                {validationState !== EValidationState.VALIDATION_OK &&
+                  isValid &&
+                  !isValidating && <ValidationErrorMessage type={validationState} />}
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} className="mt-3 text-center">
+                <Button
+                  type="submit"
+                  disabled={
+                    !isValid || isValidating || validationState !== EValidationState.VALIDATION_OK
+                  }
+                  data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"
+                >
+                  <FormattedMessage id="modal.sent-eth.button" />
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </Form>
+      )}
     </Formik>
-  </div>
+  </section>
 );
 
 const Withdraw = compose<TProps & IIntlProps, {}>(

@@ -6,6 +6,10 @@
 [![Project dependencies Status](https://david-dm.org/Neufund/platform-frontend/status.svg)](https://david-dm.org/Neufund/platform-frontend)
 [![Project devDependencies Status](https://david-dm.org/Neufund/platform-frontend/dev-status.svg)](https://david-dm.org/Neufund/platform-frontend?type=dev)
 
+### Useful links:
+
+**Storybook** (latest `master`): https://neufund.github.io/platform-frontend/
+
 ## Running project
 
 ### Prerequisites

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { externalRoutes } from "../../config/externalRoutes";
-import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
 import { getNeuReward } from "../../modules/investor-tickets/utils";
 import { EETOStateOnChain } from "../../modules/public-etos/types";
@@ -258,7 +258,7 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                                 mimeType: document.mimeType,
                                 asPdf: true,
                               },
-                              document.name,
+                              immutableDocumentName[document.documentType],
                             )
                           }
                         >

@@ -19,7 +19,7 @@ import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
 
 import * as iconDownload from "../../../../assets/img/inline_icons/download.svg";
-import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoDocument, immutableDocumentName } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { ImmutableFileId } from "../../../../lib/api/ImmutableStorage.interfaces";
 import { getDocumentTitles } from "../../../documents/utils";
 import { ButtonIcon } from "../../../shared/buttons/Button";
@@ -92,7 +92,7 @@ export const UserClaimSummaryComponent: React.SFC<TSummaryComponentProps> = ({
                             mimeType: document.mimeType,
                             asPdf: true,
                           },
-                          document.name,
+                          immutableDocumentName[document.documentType],
                         )
                       }
                     />

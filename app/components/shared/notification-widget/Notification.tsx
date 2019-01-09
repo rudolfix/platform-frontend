@@ -67,7 +67,7 @@ const NotificationComponent: React.SFC<INotificationProps> = ({
         layout={EButtonLayout.INLINE}
         theme={"white"}
         data-test-id="notification-close"
-        className={styles.link}
+        innerClassName={styles.link}
         onClick={onClick}
       >
         {actionLinkText}

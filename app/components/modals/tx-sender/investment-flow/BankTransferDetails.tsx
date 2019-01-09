@@ -168,7 +168,7 @@ const BankTransferDetailsComponent = injectIntlHelpers(
                   <Button
                     layout={EButtonLayout.PRIMARY}
                     type="button"
-                    className={styles.nonPrintable}
+                    innerClassName={styles.nonPrintable}
                     data-test-id="invest-modal-bank-transfer-print-button"
                   >
                     <FormattedMessage id="investment-flow.bank-transfer.print" />

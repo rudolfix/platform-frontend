@@ -7,3 +7,13 @@
   font-size: $smaller-font-size;
   font-weight: $font-weight-bold;
 }
+
+.description {
+  font-size: $smaller-font-size;
+}
+
+.section {
+  margin-bottom: px-to-rem(20px);
+  margin-top: px-to-rem(20px);
+  font-size: $smaller-font-size;
+}

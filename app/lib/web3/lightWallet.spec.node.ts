@@ -9,6 +9,7 @@ describe("LightWallet > cryptography", () => {
   const customSalt = "salt";
   const expectedSeed =
     "author foster awkward faint script unique letter tag meadow garment elite drip";
+  const expectedPrivKey = "f75adef587eeb81c12541f1a9f1ea93cf8ac433ca1d83df18d057fa2a870b293";
 
   describe("Lightwallet Operations", () => {
     describe("Create LightWallet", () => {
@@ -38,6 +39,26 @@ describe("LightWallet > cryptography", () => {
           "salt",
         );
         expect(deserializedInstance).to.deep.include(JSON.parse(walletInstance));
+      });
+
+      it("should return correct private key", async () => {
+        const walletInstance = (await lightWalletUtils.createLightWalletVault({
+          password,
+          hdPathString,
+          recoverSeed: expectedSeed,
+          customSalt,
+        })).walletInstance;
+        const deserializedInstance = await lightWalletUtils.deserializeLightWalletVault(
+          walletInstance,
+          customSalt,
+        );
+
+        const fetchedSeed = deserializedInstance.exportPrivateKey(
+          deserializedInstance.addresses[0],
+          await LightWalletUtil.getWalletKey(deserializedInstance, password),
+        );
+
+        expect(fetchedSeed).to.equal(expectedPrivKey);
       });
 
       it("should return correct seed", async () => {

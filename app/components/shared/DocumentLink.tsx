@@ -49,7 +49,7 @@ const DocumentTemplateButton: React.SFC<IDocumentTemplateButtonProps> = ({
     <Button
       layout={EButtonLayout.INLINE}
       onClick={onClick}
-      className={className || styles.documentButton}
+      innerClassName={styles.documentButton}
       textPosition={ButtonTextPosition.LEFT}
     >
       {altIcon || <Document extension="pdf" />}

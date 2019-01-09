@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react";
+import BigNumber from "bignumber.js";
 import * as React from "react";
 import { Container } from "reactstrap";
 
@@ -19,6 +20,22 @@ storiesOf("User Claim Summary", module).add("default", () => (
       txData={txData}
       txCost={"123456"}
       onAccept={() => {}}
+      etoData={
+        {
+          investorTicket: {
+            equityTokenInt: new BigNumber(100),
+            amountEth: new BigNumber(1),
+            amountEurUlps: new BigNumber(40),
+            equivEurUlps: new BigNumber(1),
+            rewardNmkUlps: new BigNumber(1),
+            sharesInt: new BigNumber(1),
+            tokenPrice: new BigNumber(1),
+            neuRate: new BigNumber(1),
+            claimedOrRefunded: true,
+            usedLockedAccount: true,
+          },
+        } as any
+      }
       downloadDocument={() => {}}
     />
   </Container>

@@ -23,7 +23,10 @@ const PortfolioAssetActionComponent: React.SFC<TExternalProps & IDispatchProps> 
     case EETOStateOnChain.Claim:
     case EETOStateOnChain.Payout:
       return (
-        <ButtonArrowRight onClick={() => onClaim(etoId)}>
+        <ButtonArrowRight
+          onClick={() => onClaim(etoId)}
+          data-test-id={"modals.portfolio.portfolio-asset-action.claim-" + etoId}
+        >
           <FormattedMessage id="portfolio.section.reserved-assets.claim-tokens" />
         </ButtonArrowRight>
       );

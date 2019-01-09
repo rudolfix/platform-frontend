@@ -13,7 +13,7 @@ const txData: ITxData = {
   from: "0x8e75544b848f0a32a1ab119e3916ec7138f3bed2",
 };
 
-storiesOf("Upgrade Summary", module).add("default", () => (
+storiesOf("User Claim Summary", module).add("default", () => (
   <Container>
     <UserClaimSummaryComponent
       txData={txData}

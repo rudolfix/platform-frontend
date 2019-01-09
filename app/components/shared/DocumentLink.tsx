@@ -43,7 +43,6 @@ const DocumentTemplateButton: React.SFC<IDocumentTemplateButtonProps> = ({
   onClick,
   title,
   altIcon,
-  className,
 }) => {
   return (
     <Button

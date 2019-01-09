@@ -74,6 +74,7 @@ export const UserClaimSummaryComponent: React.SFC<TSummaryComponentProps> = ({
             {map(
               (document: IEtoDocument) => (
                 <InfoRow
+                  key={document.ipfsHash}
                   caption={
                     <DocumentTemplateLabel
                       onClick={() => {}}

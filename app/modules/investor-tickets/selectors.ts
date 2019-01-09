@@ -75,7 +75,7 @@ export const selectMyInvestorTicketByEtoId = (
   const etos = selectEtoWithInvestorTickets(state);
   if (etos) {
     // Should only return one
-    return etos.filter(eto => !eto.investorTicket.claimedOrRefunded && eto.etoId === etoId)[0];
+    return etos.filter(eto => eto.etoId === etoId)[0];
   }
 
   return undefined;

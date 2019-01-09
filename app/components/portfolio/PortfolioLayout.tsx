@@ -246,6 +246,7 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                     {map((document: IEtoDocument) => {
                       return (
                         <Button
+                          key={document.ipfsHash}
                           className={styles.documentLink}
                           layout={EButtonLayout.INLINE}
                           onClick={() =>

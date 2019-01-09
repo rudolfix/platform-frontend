@@ -14,7 +14,7 @@ import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { withParams } from "../../utils/withParams";
 import { getDocumentTitles } from "../documents/utils";
 import { AssetPortfolio } from "../shared/AssetPortfolio";
-import { Document } from "../shared/Document";
+import { Button, EButtonLayout } from "../shared/buttons";
 import { ETOState } from "../shared/ETOState";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
 import { NewTable, NewTableRow } from "../shared/NewTable";
@@ -23,6 +23,7 @@ import { ClaimedDividends } from "../wallet/claimed-dividends/ClaimedDividends";
 import { PortfolioAssetAction } from "./PorfolioAssetAction";
 
 import * as neuIcon from "../../assets/img/neu_icon.svg";
+import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import * as styles from "./PortfolioLayout.module.scss";
 
 export type TPortfolioLayoutProps = {
@@ -33,6 +34,7 @@ export type TPortfolioLayoutProps = {
   neuPrice: string;
   walletAddress: string;
   isRetailEto: boolean;
+  downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void;
 };
 
 const transactions: any[] = []; // TODO: Connect source of data
@@ -45,6 +47,7 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
   neuPrice,
   walletAddress,
   isRetailEto,
+  downloadDocument,
 }) => (
   <section className={styles.portfolio}>
     {process.env.NF_ASSETS_PORTFOLIO_COMPONENT_VISIBLE === "1" && (
@@ -240,17 +243,26 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                     currencySymbol={ECurrencySymbol.NONE}
                   />
                   <>
-                    {map(
-                      (document: IEtoDocument) => (
-                        <span key={document.ipfsHash} className={styles.documentLink}>
-                          <Document extension="pdf" />
-                          <a href={document.name} download>
-                            {getDocumentTitles(isRetailEto)[document.documentType]}
-                          </a>
-                        </span>
-                      ),
-                      documents,
-                    )}
+                    {map((document: IEtoDocument) => {
+                      return (
+                        <Button
+                          className={styles.documentLink}
+                          layout={EButtonLayout.INLINE}
+                          onClick={() =>
+                            downloadDocument(
+                              {
+                                ipfsHash: document.ipfsHash,
+                                mimeType: document.mimeType,
+                                asPdf: true,
+                              },
+                              document.name,
+                            )
+                          }
+                        >
+                          {getDocumentTitles(isRetailEto)[document.documentType]}
+                        </Button>
+                      );
+                    }, documents)}
                   </>
                 </NewTableRow>
               );

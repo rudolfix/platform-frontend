@@ -3,6 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
+import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { ITxData } from "../../../lib/web3/types";
 import { actions } from "../../../modules/actions";
 import { TETOWithInvestorTicket } from "../../../modules/investor-tickets/types";
@@ -75,7 +76,8 @@ export interface ITxSummaryStateProps {
 export interface ITxSummaryDispatchProps {
   onAccept: () => any;
   onChange?: () => any;
-  downloadICBMAgreement?: () => any;
+  downloadICBMAgreement?: () => void;
+  downloadDocument?: (immutableFileId: ImmutableFileId, fileName: string) => void;
 }
 export type TSummaryComponentProps = ITXSummaryExternalProps &
   ITxSummaryStateProps &

@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import { branch, compose, renderComponent } from "recompose";
 
+import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../modules/actions";
 import { selectMyAssets, selectMyPendingAssets } from "../../modules/investor-tickets/selectors";
 import { selectNeuPriceEur } from "../../modules/shared/tokenPrice/selectors";
@@ -23,7 +24,10 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.publicEtos.loadEtos()),
   }),
-  appConnect<TStateProps>({
+  appConnect<
+    TStateProps,
+    { downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void }
+  >({
     stateToProps: state => {
       const neuPrice = selectNeuPriceEur(state);
       return {
@@ -35,6 +39,11 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
         walletAddress: selectEthereumAddressWithChecksum(state),
       };
     },
+    dispatchToProps: dispatch => ({
+      downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => {
+        dispatch(actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName));
+      },
+    }),
   }),
   withContainer(LayoutAuthorized),
   branch(

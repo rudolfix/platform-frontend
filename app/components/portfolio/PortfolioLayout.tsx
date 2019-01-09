@@ -24,6 +24,7 @@ import { PortfolioAssetAction } from "./PorfolioAssetAction";
 
 import * as neuIcon from "../../assets/img/neu_icon.svg";
 import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
+import { ButtonTextPosition } from "../shared/buttons/Button";
 import * as styles from "./PortfolioLayout.module.scss";
 
 export type TPortfolioLayoutProps = {
@@ -249,6 +250,7 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                           key={document.ipfsHash}
                           className={styles.documentLink}
                           layout={EButtonLayout.INLINE}
+                          textPosition={ButtonTextPosition.LEFT}
                           onClick={() =>
                             downloadDocument(
                               {

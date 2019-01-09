@@ -41,7 +41,9 @@ export const UserClaimSummaryComponent: React.SFC<TSummaryComponentProps> = ({
           </Heading>
         </Col>
       </Row>
-
+      <div>
+        <FormattedMessage id="user-claim-flow.summary.explanation" />
+      </div>
       <Row className="mb-2">
         <Col>
           <InfoList>

@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { TTranslatedString } from "../../types";
@@ -34,19 +35,21 @@ const DocumentLink: React.SFC<IDocumentLinkProps> = ({ url, name, altIcon }) => 
 export interface IDocumentTemplateButtonProps {
   title: string | React.ReactNode;
   altIcon?: React.ReactNode;
-  onClick: () => void;
+  className?: string;
+  onClick?: () => void;
 }
 
 const DocumentTemplateButton: React.SFC<IDocumentTemplateButtonProps> = ({
   onClick,
   title,
   altIcon,
+  className,
 }) => {
   return (
     <Button
       layout={EButtonLayout.INLINE}
       onClick={onClick}
-      className={styles.documentButton}
+      className={className || styles.documentButton}
       textPosition={ButtonTextPosition.LEFT}
     >
       {altIcon || <Document extension="pdf" />}
@@ -54,5 +57,23 @@ const DocumentTemplateButton: React.SFC<IDocumentTemplateButtonProps> = ({
     </Button>
   );
 };
+export interface IDocumentTemplateButtonProps {
+  title: string | React.ReactNode;
+  altIcon?: React.ReactNode;
+  className?: string;
+}
 
-export { DocumentLink, DocumentTemplateButton };
+const DocumentTemplateLabel: React.SFC<IDocumentTemplateButtonProps> = ({
+  title,
+  altIcon,
+  className,
+}) => {
+  return (
+    <div className={cn(styles.documentButton, className)}>
+      {altIcon || <Document extension="pdf" />}
+      {title}
+    </div>
+  );
+};
+
+export { DocumentLink, DocumentTemplateButton, DocumentTemplateLabel };

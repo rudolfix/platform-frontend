@@ -11,7 +11,7 @@ import {
   selectTxSummaryData,
 } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
-import { DocumentTemplateButton } from "../../../shared/DocumentLink";
+import { DocumentTemplateLabel } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { ECurrency, ECurrencySymbol, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
@@ -75,7 +75,7 @@ export const UserClaimSummaryComponent: React.SFC<TSummaryComponentProps> = ({
               (document: IEtoDocument) => (
                 <InfoRow
                   caption={
-                    <DocumentTemplateButton
+                    <DocumentTemplateLabel
                       onClick={() => {}}
                       title={getDocumentTitles(false)[document.documentType]}
                     />

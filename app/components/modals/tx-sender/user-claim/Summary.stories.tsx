@@ -19,7 +19,7 @@ storiesOf("Upgrade Summary", module).add("default", () => (
       txData={txData}
       txCost={"123456"}
       onAccept={() => {}}
-      downloadICBMAgreement={() => {}}
+      downloadDocument={() => {}}
     />
   </Container>
 ));

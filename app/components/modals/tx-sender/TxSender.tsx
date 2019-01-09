@@ -23,6 +23,7 @@ import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
 import { WatchPendingTxs } from "./shared/WatchPeningTxs";
 import { UpgradeSummary } from "./upgrade-flow/Summary";
+import { UserClaimSuccess } from "./user-claim/Success";
 import { UserClaimSummary } from "./user-claim/Summary";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
@@ -116,6 +117,8 @@ const SuccessComponent: React.SFC<{ type?: ETxSenderType; txHash?: string }> = (
   switch (type) {
     case ETxSenderType.INVEST:
       return <InvestmentSuccess txHash={txHash!} />;
+    case ETxSenderType.USER_CLAIM:
+      return <UserClaimSuccess />;
     default:
       return <WithdrawSuccess txHash={txHash!} />;
   }

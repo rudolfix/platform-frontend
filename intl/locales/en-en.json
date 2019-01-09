@@ -891,6 +891,8 @@
   "upgrade-flow.value": "AMOUNT SENT",
   "user-claim-flow.balance": "BALANCE",
   "user-claim-flow.estimated-reward": "ESTIMATED NEU REWARD",
+  "user-claim-flow.success.congrats": "Congratulations! You have successfully claimed your {token} Equity Tokens, which you'll find in the 'My Assets' section of your Portfolio",
+  "user-claim-flow.success.view-portfolio": "View Portfolio",
   "user-claim-flow.token-name": "TOKEN",
   "wallet-selector.browser.approval-rejected": "You need to approve access to you wallet in order to use our platform",
   "wallet-selector.browser.approval-resend": "Resend request",

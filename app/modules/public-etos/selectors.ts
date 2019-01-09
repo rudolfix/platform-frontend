@@ -14,6 +14,16 @@ const selectEtoPreviewCode = (state: IAppState, etoId: string) => {
   return undefined;
 };
 
+export const selectEtoTokenName = (state: IAppState, etoId: string) => {
+  const eto = find(eto => eto!.etoId === etoId, state.publicEtos.publicEtos);
+
+  if (eto) {
+    return eto.equityTokenName;
+  }
+
+  return undefined;
+};
+
 export const selectPublicEto = (state: IAppState, previewCode: string) =>
   state.publicEtos.publicEtos[previewCode];
 

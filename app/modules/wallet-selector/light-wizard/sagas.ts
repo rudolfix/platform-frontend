@@ -46,7 +46,27 @@ import {
 import { EWalletSubType, EWalletType } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
-import { DEFAULT_HD_PATH, getVaultKey } from "./flows";
+
+//Vault nonce should be exactly 24 chars
+const VAULT_MSG = "pleaseallowmetointroducemyselfim";
+const GENERATED_KEY_SIZE = 56;
+export const DEFAULT_HD_PATH = "m/44'/60'/0'";
+
+export async function getVaultKey(
+  lightWalletUtil: LightWalletUtil,
+  salt: string,
+  password: string,
+): Promise<string> {
+  const walletKey = await lightWalletUtil.getWalletKeyFromSaltAndPassword(
+    password,
+    salt,
+    GENERATED_KEY_SIZE,
+  );
+  return lightWalletUtil.encryptString({
+    string: VAULT_MSG,
+    pwDerivedKey: walletKey,
+  });
+}
 
 export async function retrieveMetadataFromVaultAPI(
   { lightWalletUtil, vaultApi }: TGlobalDependencies,

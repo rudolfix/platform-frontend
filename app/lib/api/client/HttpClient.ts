@@ -1,13 +1,11 @@
 /**
  * Handel's general requests
- *
- *
  */
 
 import { injectable } from "inversify";
-import { compact } from "lodash";
-import * as queryString from "query-string";
-import * as urlJoin from "url-join";
+// top-level import is not working correctly for unit tests
+import * as urlJoin from "proper-url-join/lib";
+
 import { Dictionary } from "../../../types";
 import { invariant } from "../../../utils/invariant";
 import { toSnakeCase } from "../../../utils/transformObjectKeys";
@@ -120,40 +118,48 @@ export abstract class HttpClient implements IHttpClient {
   }
 
   public async get<T>(config: IHttpGetRequest): Promise<IHttpResponse<T>> {
-    const qs = config.queryParams ? "?" + queryString.stringify(config.queryParams) : null;
-    // we need to remove falsy values because urlJoin is retarded and ads trailing slashes otherwise
-    const urlParts = compact([config.baseUrl, config.url, qs]);
-    const fullUrl = urlJoin(...urlParts);
-    // Normal utility call
+    const fullUrl = urlJoin(config.baseUrl, config.url, {
+      query: config.queryParams,
+      // preserve trailing slash
+      trailingSlash: config.url.endsWith("/"),
+    });
+
     return this.makeFetchRequest<T>(fullUrl, "GET", config);
   }
 
   public post<T>(config: IHttpPostRequest): Promise<IHttpResponse<T>> {
-    const qs = config.queryParams ? "?" + queryString.stringify(config.queryParams) : null;
-    // we need to remove falsy values because urlJoin is retarded and ads trailing slashes otherwise
-    const urlParts = compact([config.baseUrl, config.url, qs]);
-    const fullUrl = urlJoin(...urlParts);
+    const fullUrl = urlJoin(config.baseUrl, config.url, {
+      query: config.queryParams,
+      // preserve trailing slash
+      trailingSlash: config.url.endsWith("/"),
+    });
 
     return this.makeFetchRequest<T>(fullUrl, "POST", config);
   }
 
   public put<T>(config: IHttpPutRequest): Promise<IHttpResponse<T>> {
-    const urlParts = compact([config.baseUrl, config.url]);
-    const fullUrl = urlJoin(...urlParts);
+    const fullUrl = urlJoin(config.baseUrl, config.url, {
+      // preserve trailing slash
+      trailingSlash: config.url.endsWith("/"),
+    });
 
     return this.makeFetchRequest<T>(fullUrl, "PUT", config);
   }
 
   public patch<T>(config: IHttpPatchRequest): Promise<IHttpResponse<T>> {
-    const urlParts = compact([config.baseUrl, config.url]);
-    const fullUrl = urlJoin(...urlParts);
+    const fullUrl = urlJoin(config.baseUrl, config.url, {
+      // preserve trailing slash
+      trailingSlash: config.url.endsWith("/"),
+    });
 
     return this.makeFetchRequest<T>(fullUrl, "PATCH", config);
   }
 
   public delete(config: IHttpDeleteRequest): Promise<IHttpResponse<any>> {
-    const urlParts = compact([config.baseUrl, config.url]);
-    const fullUrl = urlJoin(...urlParts);
+    const fullUrl = urlJoin(config.baseUrl, config.url, {
+      // preserve trailing slash
+      trailingSlash: config.url.endsWith("/"),
+    });
 
     return this.makeFetchRequest<any>(fullUrl, "DELETE", { ...config, expectsNoResponse: true });
   }

@@ -91,9 +91,23 @@ jobs:
       - run: yarn prepare
 
       - run: yarn storybook:screenshots
-      # Re-enable storybook:screenshots
       - run: (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} && ./.circleci/vis-reg-run.sh)
       - run: yarn danger ci
+
+  deploy-storybook:
+    docker:
+      - image: krzkaczor/neufund-platform-base
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
+      - run: yarn prepare
+
+      - run: yarn deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
 
 workflows:
   version: 2
@@ -139,3 +153,9 @@ workflows:
            - install
 
 
+  deploy-storybook:
+    jobs:
+      - deploy-storybook:
+          filters:
+            branches:
+              only: master

@@ -182,6 +182,7 @@ function* logoutWatcher(
   const { userType } = action.payload;
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
+  yield effects.put(actions.web3.personalWalletDisconnected());
   if (userType === EUserType.INVESTOR || !userType) {
     yield effects.put(actions.routing.goHome());
   } else {

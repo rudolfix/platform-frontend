@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { spy } from "sinon";
+import { expectSaga } from "redux-saga-test-plan";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
@@ -16,7 +16,7 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType } from "../../web3/types";
-import { walletFlows } from "../flows";
+import { tryConnectingWithBrowserWallet } from "./sagas";
 
 // tslint:disable: no-object-literal-type-assertion
 const getStateMock: () => IAppState = () =>
@@ -37,7 +37,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
         walletSubType: EWalletSubType.METAMASK,
       };
 
-      const dispatchMock = spy();
       const browserWalletMock = createMock(BrowserWallet, {
         getMetadata: () => dummyMetadata,
       });
@@ -49,21 +48,21 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await walletFlows.tryConnectingWithBrowserWallet(
-        dispatchMock,
-        browserWalletConnectorMock,
-        web3ManagerMock,
-        noopLogger,
-        getStateMock,
-      );
+      await expectSaga(tryConnectingWithBrowserWallet, {
+        browserWalletConnector: browserWalletConnectorMock,
+        web3Manager: web3ManagerMock,
+        logger: noopLogger,
+      })
+        .withState(getStateMock())
+        .put(actions.walletSelector.connected())
+        .run();
+
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(dispatchMock).to.be.calledWithExactly(actions.walletSelector.connected());
     });
 
     it("should dispatch error action on error", async () => {
       const expectedNetworkId = dummyNetworkId;
 
-      const dispatchMock = spy();
       const browserWalletConnectorMock = createMock(BrowserWalletConnector, {
         connect: async () => {
           throw new BrowserWalletLockedError();
@@ -74,20 +73,20 @@ describe("Wallet selector > Browser wizard > actions", () => {
         plugPersonalWallet: async () => {},
       });
 
-      await walletFlows.tryConnectingWithBrowserWallet(
-        dispatchMock,
-        browserWalletConnectorMock,
-        web3ManagerMock,
-        noopLogger,
-        getStateMock,
-      );
+      await expectSaga(tryConnectingWithBrowserWallet, {
+        browserWalletConnector: browserWalletConnectorMock,
+        web3Manager: web3ManagerMock,
+        logger: noopLogger,
+      })
+        .withState(getStateMock())
+        .put(
+          actions.walletSelector.browserWalletConnectionError(
+            createMessage(BrowserWalletErrorMessage.WALLET_IS_LOCKED),
+          ),
+        )
+        .run();
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);
-      expect(dispatchMock).to.be.calledWithExactly(
-        actions.walletSelector.browserWalletConnectionError(
-          createMessage(BrowserWalletErrorMessage.WALLET_IS_LOCKED),
-        ),
-      );
     });
   });
 });

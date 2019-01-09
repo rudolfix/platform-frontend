@@ -1,9 +1,11 @@
+import { isString } from "lodash";
 import * as queryString from "query-string";
 import { RouterState } from "react-router-redux";
 import { createSelector } from "reselect";
+
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
+import { IAppState } from "../../store";
 import { EthereumAddress } from "../../types";
-import { IAppState } from "./../../store";
 import { IConnectedWeb3State, IWeb3State } from "./reducer";
 import { EWalletSubType, EWalletType } from "./types";
 import { makeEthereumAddressChecksummed } from "./utils";
@@ -93,6 +95,24 @@ export const selectPreviousLightWalletSalt = (state: IWeb3State): string | undef
 export const selectPreviousConnectedWallet = (state: IWeb3State): TWalletMetadata | undefined =>
   (!state.connected && state.previousConnectedWallet) || undefined;
 
+const getEmailFromQueryString = (query: string) => {
+  const { email } = queryString.parse(query);
+
+  return isString(email) ? email : undefined;
+};
+
+const getSaltFromQueryString = (query: string) => {
+  const { salt } = queryString.parse(query);
+
+  return isString(salt) ? salt : undefined;
+};
+
+const getCodeFromQueryString = (query: string) => {
+  const { code } = queryString.parse(query);
+
+  return isString(code) ? code : undefined;
+};
+
 export const selectLightWalletFromQueryString = (
   state: RouterState,
 ): { email: string; salt: string } | undefined => {
@@ -100,10 +120,14 @@ export const selectLightWalletFromQueryString = (
     return undefined;
   }
 
-  const params = queryString.parse(state.location.search);
-  const redirect = params.redirect;
-  const email = params.email || (redirect && queryString.parse(redirect).email);
-  const salt = params.salt || (redirect && queryString.parse(redirect).salt);
+  const { redirect } = queryString.parse(state.location.search);
+
+  const email =
+    getEmailFromQueryString(state.location.search) ||
+    (isString(redirect) ? getEmailFromQueryString(redirect) : undefined);
+  const salt =
+    getSaltFromQueryString(state.location.search) ||
+    (isString(redirect) ? getSaltFromQueryString(redirect) : undefined);
 
   if (!email || !salt) {
     return undefined;
@@ -118,9 +142,14 @@ export const selectLightWalletFromQueryString = (
 export const selectActivationCodeFromQueryString = (
   state: RouterState,
 ): { verificationCode: string } | undefined => {
-  const params = queryString.parse(state.location!.search);
-  const redirect = params.redirect;
-  const verificationCode = params.code || (redirect && queryString.parse(redirect).code);
+  if (!state.location) {
+    return undefined;
+  }
+
+  const { redirect } = queryString.parse(state.location.search);
+  const verificationCode =
+    getCodeFromQueryString(state.location.search) ||
+    (isString(redirect) ? getCodeFromQueryString(redirect) : undefined);
 
   if (!verificationCode) {
     return undefined;
@@ -141,6 +170,6 @@ export const selectEmailFromQueryString = (state: RouterState): string | undefin
   if (!state.location) {
     return undefined;
   }
-  const params = queryString.parse(state.location.search);
-  return params.email;
+
+  return getEmailFromQueryString(state.location.search);
 };

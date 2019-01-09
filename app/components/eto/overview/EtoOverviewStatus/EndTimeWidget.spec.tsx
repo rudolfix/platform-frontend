@@ -10,9 +10,14 @@ import { EndTimeWidget } from "./EndTimeWidget";
 const TIMESTAMP = new Date().getTime();
 
 describe("<EndTimeWidget />", () => {
+  let clock: sinon.SinonFakeTimers;
   beforeEach(() => {
     // stop passing time to avoid false negatives;
-    sinon.useFakeTimers(TIMESTAMP);
+    clock = sinon.useFakeTimers(TIMESTAMP);
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it("should render text for few days", () => {

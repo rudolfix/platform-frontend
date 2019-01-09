@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import * as React from "react";
 import { spy } from "sinon";
+
 import { createMount } from "../../test/createMount";
-import { wrapWithProviders } from "../../test/integrationTestUtils";
-import { globalFakeClock } from "../../test/setupTestsHooks";
+import { setupFakeClock, wrapWithProviders } from "../../test/integrationTestUtils";
 import { delay } from "./delay";
 import { withActionWatcher } from "./withActionWatcher";
 
 describe("withActionWatcher", () => {
   const SomeComponent = () => <h1>SOME COMPONENT</h1>;
+  const clock = setupFakeClock();
 
   it("should render child component", () => {
     const WatchComponent = withActionWatcher({
@@ -43,9 +44,9 @@ describe("withActionWatcher", () => {
     createMount(wrapWithProviders(WatchComponent));
 
     expect(actionCreator).to.be.calledOnce;
-    globalFakeClock.tick(1000);
+    clock.fakeClock.tick(1000);
     expect(actionCreator).to.be.calledTwice;
-    globalFakeClock.tick(1000);
+    clock.fakeClock.tick(1000);
     expect(actionCreator).to.be.calledThrice;
   });
 
@@ -61,11 +62,11 @@ describe("withActionWatcher", () => {
     createMount(wrapWithProviders(WatchComponent));
 
     expect(asyncActionCreator).to.be.calledOnce;
-    await globalFakeClock.tickAsync(1000);
+    await clock.fakeClock.tickAsync(1000);
     expect(asyncActionCreator).to.be.calledTwice;
 
     // still called just twice
-    await globalFakeClock.tickAsync(1500);
+    await clock.fakeClock.tickAsync(1500);
     expect(asyncActionCreator).to.be.calledTwice;
   });
 
@@ -80,7 +81,7 @@ describe("withActionWatcher", () => {
 
     expect(actionCreator).to.be.calledOnce;
     mountComponent.unmount();
-    globalFakeClock.tick(1000);
+    clock.fakeClock.tick(1000);
     expect(actionCreator).to.be.calledOnce;
   });
 });

@@ -2,7 +2,6 @@ import * as React from "react";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
-import { ledgerWizardFlows } from "../../../modules/wallet-selector/ledger-wizard/flows";
 import {
   ILedgerAccount,
   selectHasPreviousPage,
@@ -29,24 +28,27 @@ export const WalletLedgerChooser = compose<React.SFC>(
       onDerivationPathPrefixError: () =>
         dispatch(actions.walletSelector.ledgerWizardDerivationPathPrefixError()),
       onDerivationPathPrefixChange: (derivationPathPrefix: string) => {
-        dispatch(ledgerWizardFlows.setDerivationPathPrefix(derivationPathPrefix));
+        dispatch(actions.walletSelector.ledgerSetDerivationPathPrefix(derivationPathPrefix));
       },
       handleAddressChosen: (account: ILedgerAccount) => {
-        dispatch(ledgerWizardFlows.finishSettingUpLedgerConnector(account.derivationPath));
+        dispatch(
+          actions.walletSelector.ledgerFinishSettingUpLedgerConnector(account.derivationPath),
+        );
       },
-      showNextAddresses: () => dispatch(ledgerWizardFlows.goToNextPageAndLoadData),
-      showPrevAddresses: () => dispatch(ledgerWizardFlows.goToPreviousPageAndLoadData),
+      showNextAddresses: () => dispatch(actions.walletSelector.ledgerGoToNextPageAndLoadData()),
+      showPrevAddresses: () => dispatch(actions.walletSelector.ledgerGoToPreviousPageAndLoadData()),
       handleAdvanced: () => {
         dispatch(actions.walletSelector.toggleLedgerAccountsAdvanced());
-        dispatch(ledgerWizardFlows.loadLedgerAccounts);
+        dispatch(actions.walletSelector.ledgerLoadAccounts());
       },
     }),
   }),
   onEnterAction({
-    actionCreator: dispatch => dispatch(ledgerWizardFlows.loadLedgerAccounts),
+    actionCreator: dispatch => dispatch(actions.walletSelector.ledgerLoadAccounts()),
   }),
   withActionWatcher({
-    actionCreator: dispatch => dispatch(ledgerWizardFlows.verifyIfLedgerStillConnected),
+    actionCreator: dispatch =>
+      dispatch(actions.walletSelector.ledgerVerifyIfLedgerStillConnected()),
     interval: 1000,
   }),
 )(WalletLedgerChooserComponent);

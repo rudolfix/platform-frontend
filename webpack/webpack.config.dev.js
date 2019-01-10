@@ -30,7 +30,6 @@ module.exports = merge(configCommon, {
     },
     proxy: generateProxyConfig("http://localhost", "http://localhost:8545"),
   },
-  entry: ["react-hot-loader/patch"],
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({ tsconfig: "tsconfig.dev.json" }),
@@ -110,6 +109,7 @@ module.exports = merge(configCommon, {
           {
             test: /\.(tsx?)$/,
             use: [
+              "react-hot-loader/webpack",
               {
                 loader: "ts-loader",
                 options: {

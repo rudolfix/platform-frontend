@@ -1,4 +1,5 @@
 import { find } from "lodash/fp";
+
 import { IAppState } from "../../store";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 

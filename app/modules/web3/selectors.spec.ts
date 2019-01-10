@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { RouterState } from "react-router-redux";
+import { RouterState } from "connected-react-router";
 import { dummyEthereumAddress } from "../../../test/fixtures";
 import {
   getDummyBrowserWalletMetadata,
@@ -109,6 +109,7 @@ describe("web3 > selectors", () => {
           hash: "",
           search: encodeURI(`?redirect=/&code=${code}`),
         },
+        action: "POP",
       };
 
       const result: any = selectActivationCodeFromQueryString(state);

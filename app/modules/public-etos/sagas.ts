@@ -1,6 +1,6 @@
+import { LOCATION_CHANGE } from "connected-react-router";
 import { camelCase } from "lodash";
 import { compose, keyBy, map, omit } from "lodash/fp";
-import { LOCATION_CHANGE } from "react-router-redux";
 import { delay } from "redux-saga";
 import { all, fork, put, race, select } from "redux-saga/effects";
 

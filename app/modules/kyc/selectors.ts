@@ -1,10 +1,12 @@
 import { createSelector } from "reselect";
+
 import {
   TKycRequestType,
   TRequestOutsourcedStatus,
   TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
+import { DeepReadonly } from "../../types";
 import { IKycState } from "./reducer";
 
 export const selectKycRequestStatus = (state: IAppState): TRequestStatus | undefined => {
@@ -25,7 +27,7 @@ export const selectKycRequestStatus = (state: IAppState): TRequestStatus | undef
 };
 
 export const selectKycRequestOutsourcedStatus = (
-  state: IKycState,
+  state: DeepReadonly<IKycState>,
 ): TRequestOutsourcedStatus | undefined => {
   const requestState =
     state.individualRequestState && state.individualRequestState.status === "Draft"
@@ -35,7 +37,7 @@ export const selectKycRequestOutsourcedStatus = (
   return undefined;
 };
 
-export const selectExternalKycUrl = (state: IKycState): string | undefined => {
+export const selectExternalKycUrl = (state: DeepReadonly<IKycState>): string | undefined => {
   const requestState =
     state.individualRequestState && state.individualRequestState.status === "Draft"
       ? state.businessRequestState
@@ -44,7 +46,9 @@ export const selectExternalKycUrl = (state: IKycState): string | undefined => {
   return undefined;
 };
 
-export const selectPendingKycRequestType = (state: IKycState): TKycRequestType | undefined => {
+export const selectPendingKycRequestType = (
+  state: DeepReadonly<IKycState>,
+): TKycRequestType | undefined => {
   if (state.individualRequestState && state.individualRequestState.status === "Pending")
     return "individual";
   if (state.businessRequestState && state.businessRequestState.status === "Pending")
@@ -52,7 +56,9 @@ export const selectPendingKycRequestType = (state: IKycState): TKycRequestType |
   return undefined;
 };
 
-export const selectKycRequestType = (state: IKycState): TKycRequestType | undefined => {
+export const selectKycRequestType = (
+  state: DeepReadonly<IKycState>,
+): TKycRequestType | undefined => {
   if (state.individualRequestState && state.individualRequestState.status !== "Draft")
     return "individual";
   if (state.businessRequestState && state.businessRequestState.status !== "Draft")
@@ -60,13 +66,13 @@ export const selectKycRequestType = (state: IKycState): TKycRequestType | undefi
   return undefined;
 };
 
-export const selectKycOutSourcedURL = (state: IKycState): string => {
+export const selectKycOutSourcedURL = (state: DeepReadonly<IKycState>): string => {
   if (state.individualRequestState && state.individualRequestState.redirectUrl)
     return state.individualRequestState.redirectUrl;
   return "";
 };
 
-export const selectCombinedBeneficialOwnerOwnership = (state: IKycState): number => {
+export const selectCombinedBeneficialOwnerOwnership = (state: DeepReadonly<IKycState>): number => {
   if (state.beneficialOwners.length === 0) return 0;
   return state.beneficialOwners.reduce(
     (all, owner) => all + (owner.ownership ? owner.ownership : 0),
@@ -74,23 +80,23 @@ export const selectCombinedBeneficialOwnerOwnership = (state: IKycState): number
   );
 };
 
-export const selectWidgetLoading = (state: IKycState): boolean =>
+export const selectWidgetLoading = (state: DeepReadonly<IKycState>): boolean =>
   !!state.individualRequestStateLoading || !!state.businessRequestStateLoading;
 
-export const selectWidgetError = (state: IKycState): string | undefined =>
+export const selectWidgetError = (state: DeepReadonly<IKycState>): string | undefined =>
   state.individualRequestError || state.businessRequestError;
 
-export const selectIndividualClientName = (state: IKycState) => {
+export const selectIndividualClientName = (state: DeepReadonly<IKycState>) => {
   const data = state.individualData;
   if (data) {
     return [data.firstName, data.lastName].filter(Boolean).join(" ");
   }
 };
 
-export const selectClientName = (state: IKycState) =>
+export const selectClientName = (state: DeepReadonly<IKycState>) =>
   (state.businessData && state.businessData.name) || selectIndividualClientName(state);
 
-export const selectClientCountry = (state: IKycState) =>
+export const selectClientCountry = (state: DeepReadonly<IKycState>) =>
   (state.businessData && state.businessData.country) ||
   (state.individualData && state.individualData.country);
 

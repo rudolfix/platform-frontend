@@ -1,4 +1,4 @@
-import { LocationChangeAction } from "react-router-redux";
+import { LocationChangeAction } from "connected-react-router";
 
 import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./access-wallet/actions";

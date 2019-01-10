@@ -15,17 +15,12 @@ export class FileStorageApi {
     const data = new FormData();
     data.append("file", file);
 
-    const response = await this.httpClient.post<TFileDescription>({
+    return await this.httpClient.post<TFileDescription>({
       baseUrl: BASE_PATH,
       url: DOCUMENTS_PATH + `?type=${type}`,
       formData: data,
       responseSchema: FileDescriptionValidator,
     });
-
-    // TMP FIX for backend returning broken urls. See: https://github.com/Neufund/platform-backend/issues/578
-    response.body.url = response.body.url.replace("neufund.io//", "neufund.io/");
-
-    return response;
   }
 
   /**

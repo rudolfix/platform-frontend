@@ -52,11 +52,18 @@ describe("investment-flow > selectors", () => {
     });
 
     it("adds a gas stipend appendix", () => {
-      const state = createStateWithAddress(
+      let state = createStateWithAddress(
         "0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3",
         "88888888888",
       );
-      state.investmentFlow.bankTransferGasStipend = true;
+
+      state = {
+        ...state,
+        investmentFlow: {
+          ...state.investmentFlow,
+          bankTransferGasStipend: true,
+        },
+      };
 
       const code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(
@@ -65,7 +72,7 @@ describe("investment-flow > selectors", () => {
     });
 
     it("adds a whitelist appendix if eto state is Whitelist", () => {
-      const state = createStateWithAddress(
+      let state = createStateWithAddress(
         "0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3",
         "ddddddddddd",
       );
@@ -88,7 +95,13 @@ describe("investment-flow > selectors", () => {
         "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3 REF DDDDDDDDDDD WL",
       );
 
-      state.investmentFlow.bankTransferGasStipend = true;
+      state = {
+        ...state,
+        investmentFlow: {
+          ...state.investmentFlow,
+          bankTransferGasStipend: true,
+        },
+      };
 
       code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(

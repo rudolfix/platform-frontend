@@ -70,7 +70,7 @@ export function getInputErrorMessage(
   tokenName: string,
   maxTicketEur: string,
   minTicketEur: string,
-): React.ReactElement<FormattedMessage> | undefined {
+): React.ReactElement<FormattedMessage.Props> | undefined {
   switch (type) {
     case EInvestmentErrorState.ExceedsTokenAmount:
       return (

@@ -1,13 +1,14 @@
 import * as cn from "classnames";
-import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import { map, mapValues } from "lodash";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
+import { Dictionary, TDataTestId, TTranslatedString } from "../../../../types";
+import { FormFieldError } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
 import { isFieldRequired, isNonValid, isValid } from "./utils";
 
-import { FormFieldError } from "./FormFieldError";
 import * as styles from "./FormStyles.module.scss";
 
 export const NONE_KEY = "";
@@ -35,34 +36,46 @@ export const unboolify = <T extends {}>(values: T): T => {
 };
 
 interface IOwnProps {
-  extraMessage?: string | React.ReactNode;
-  "data-test-id"?: string;
+  extraMessage?: TTranslatedString;
 }
 interface IFieldGroup {
-  label?: string | React.ReactNode;
-  values?: {
-    [key: string]: string | React.ReactNode;
-  };
+  name: string;
+  disabled?: boolean;
+  label?: TTranslatedString;
+  values?: Dictionary<TTranslatedString>;
   customOptions?: React.ReactNode[];
-  disabledValues?: {
-    [key: string]: boolean;
-  };
+  disabledValues?: Dictionary<boolean>;
 }
-type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
-export class FormSelectField extends React.Component<FieldGroupProps & IOwnProps> {
+export class FormSelectField extends React.Component<IFieldGroup & IOwnProps & TDataTestId> {
   renderOptions = () =>
     this.props.customOptions
       ? this.props.customOptions
-      : map(this.props.values, (value, key) => (
-          <option
-            key={key}
-            value={key}
-            disabled={this.props.disabledValues && this.props.disabledValues[key]}
-          >
-            {value}
-          </option>
-        ));
+      : map(this.props.values, (value, key) => {
+          if (typeof value === "string") {
+            return (
+              <option
+                key={key}
+                value={key}
+                disabled={this.props.disabledValues && this.props.disabledValues[key]}
+              >
+                {value}
+              </option>
+            );
+          } else {
+            // If it's an intl 'FormattedMessage' clone it with function as a child
+            // otherwise React will render '[Object object]' as on 'option' value
+            // see https://github.com/facebook/react/issues/13586
+            return React.cloneElement(value, { key }, (message: string) => (
+              <option
+                value={key}
+                disabled={this.props.disabledValues && this.props.disabledValues[key]}
+              >
+                {message}
+              </option>
+            ));
+          }
+        });
 
   render(): React.ReactNode {
     const { label, name, extraMessage, "data-test-id": dataTestId, disabled } = this.props;

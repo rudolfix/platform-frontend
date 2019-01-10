@@ -1,24 +1,22 @@
-import * as PropTypes from "prop-types";
+import { Container } from "inversify";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 
-import { Container } from "inversify";
 import * as languageEn from "../../intl/locales/en-en.json";
 import { symbols } from "../di/symbols";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
 import { IIntlProps, injectIntlHelpers } from "./injectIntlHelpers";
+import { ContainerContext } from "./InversifyProvider";
 
 const IntlContainerInjector = injectIntlHelpers<{}>(
   class extends React.Component<IIntlProps> {
-    static contextTypes = {
-      container: PropTypes.object,
-    };
+    static contextType = ContainerContext;
     static displayName = "IntlContainerInjector";
 
-    private container: Container = this.context.container;
+    context!: Container;
 
     componentWillMount(): void {
-      this.container.get<IntlWrapper>(symbols.intlWrapper).intl = this.props.intl;
+      this.context.get<IntlWrapper>(symbols.intlWrapper).intl = this.props.intl;
     }
 
     render(): React.ReactNode {

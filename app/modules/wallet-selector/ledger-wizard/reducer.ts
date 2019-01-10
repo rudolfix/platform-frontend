@@ -108,6 +108,6 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
   return state;
 };
 
-export function selectHasPreviousPage(state: ILedgerWizardState): boolean {
+export function selectHasPreviousPage(state: DeepReadonly<ILedgerWizardState>): boolean {
   return state.index > 0;
 }

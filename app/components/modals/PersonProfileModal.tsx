@@ -8,6 +8,7 @@ import {
   selectPersonProfileModalObj,
 } from "../../modules/person-profile-modal/reducer";
 import { appConnect } from "../../store";
+import { DeepReadonly } from "../../types";
 import { SlidePerson } from "../shared/SlidePerson";
 import { ModalComponentBody } from "./ModalComponentBody";
 
@@ -15,7 +16,7 @@ import * as styles from "./PersonProfileModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
-  personProfileModalObj?: IPersonProfileModal;
+  personProfileModalObj?: DeepReadonly<IPersonProfileModal>;
 }
 
 interface IDispatchProps {

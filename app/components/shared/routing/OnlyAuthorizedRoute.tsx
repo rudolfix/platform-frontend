@@ -1,9 +1,9 @@
+import { RouterState } from "connected-react-router";
+import { LocationDescriptor } from "history";
 import * as queryString from "query-string";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
-import { LocationDescriptor } from "history";
-import { RouterState } from "react-router-redux";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { selectIsAuthorized, selectUserType } from "../../../modules/auth/selectors";
 import { selectWalletTypeFromQueryString } from "../../../modules/routing/selectors";
@@ -61,8 +61,7 @@ class OnlyAuthorizedRouteComponent extends React.Component<TProps, IState> {
     return {
       pathname: this.selectRouteBasedOnWalletType(walletType),
       search: queryString.stringify({
-        redirect:
-          this.props.routerState.location!.pathname + this.props.routerState.location!.search,
+        redirect: this.props.routerState.location.pathname + this.props.routerState.location.search,
       }),
     };
   }

@@ -8,7 +8,7 @@ import * as styles from "./UploadedFiles.module.scss";
 import * as confirmIcon from "../../assets/img/notifications/Success_small.svg";
 
 interface IProps {
-  files: IKycFileInfo[];
+  files: ReadonlyArray<IKycFileInfo>;
 }
 
 export const UploadedFiles: React.SFC<IProps> = ({ files }) => (

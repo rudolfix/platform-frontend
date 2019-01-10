@@ -26,7 +26,7 @@ import {
   selectIssuerEtoTemplates,
 } from "../../modules/eto-flow/selectors";
 import { appConnect } from "../../store";
-import { TTranslatedString } from "../../types";
+import { DeepReadonly, TTranslatedString } from "../../types";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withMetaTags } from "../../utils/withMetaTags";
 import { ETOAddDocuments } from "../eto/shared/EtoAddDocument";
@@ -46,7 +46,7 @@ import * as styles from "./Documents.module.scss";
 type IProps = IStateProps & IDispatchProps;
 
 interface IStateProps {
-  etoFilesData: IEtoFiles;
+  etoFilesData: DeepReadonly<IEtoFiles>;
   loadingData: boolean;
   etoFileLoading: boolean;
   etoState?: EEtoState;

@@ -1,6 +1,7 @@
+import { connectRouter, LocationChangeAction, RouterState } from "connected-react-router";
+import { History } from "history";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
-import { LocationChangeAction, routerReducer, RouterState } from "react-router-redux";
-import { combineReducers } from "redux";
+import { combineReducers, Reducer } from "redux";
 
 import { TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
@@ -16,43 +17,48 @@ export type ActionPayload<T extends IAppAction> = T["payload"];
 
 export type AppDispatch = (a: AppActionTypes | FunctionWithDeps) => void;
 
-export type AppReducer<S> = (
-  state: DeepReadonly<S> | undefined,
-  action: AppActionTypes,
-) => DeepReadonly<S>;
-
-type TRouterActions = LocationChangeAction;
+export type AppReducer<S> = Reducer<DeepReadonly<S>>;
 
 // add new external actions here
-export type AppActionTypes = TAction | TRouterActions;
-
-// add all custom reducers here
-const allReducers = {
-  ...appReducers,
-  router: routerReducer,
-};
+export type AppActionTypes = DeepReadonly<TAction | LocationChangeAction>;
 
 // base on reducers we can infer type of app state
-type TReducersMap<T> = { [P in keyof T]: AppReducer<T[P]> };
-type TReducersMapToReturnTypes<T> = T extends TReducersMap<infer U> ? U : never;
+type TReducersMapToReturnTypes<T extends Record<string, (...args: any[]) => any>> = {
+  [P in keyof T]: ReturnType<T[P]>
+};
+
 export type IAppState = TReducersMapToReturnTypes<typeof appReducers> & {
   router: RouterState;
 };
 
-export const rootReducer = combineReducers<IAppState>(allReducers);
+const generateAppReducer = (history: History) =>
+  combineReducers<IAppState>({
+    ...appReducers,
+    router: connectRouter(history),
+  });
 
 // All states that should remain even after logout
-const staticValues = (state: IAppState): any => ({
-  router: state.router,
-  init: { ...initInitialState, smartcontractsInit: state.init.smartcontractsInit },
-});
-
-export const reducers = (state: IAppState, action: TAction) => {
-  switch (action.type) {
-    case "AUTH_LOGOUT":
-      return rootReducer(staticValues(state), action);
+const staticValues = (state: IAppState | undefined): Partial<IAppState> | undefined => {
+  if (state) {
+    return {
+      router: state.router,
+      init: { ...initInitialState, smartcontractsInit: state.init.smartcontractsInit },
+    };
   }
-  return rootReducer(state, action);
+
+  return undefined;
+};
+
+export const generateRootReducer = (history: History) => {
+  const appReducer = generateAppReducer(history);
+
+  return (state: IAppState | undefined, action: TAction) => {
+    switch (action.type) {
+      case "AUTH_LOGOUT":
+        return appReducer(staticValues(state) as IAppState, action);
+    }
+    return appReducer(state, action);
+  };
 };
 
 /**

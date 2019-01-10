@@ -1,6 +1,6 @@
+import { RouterState } from "connected-react-router";
 import { isString } from "lodash";
 import * as queryString from "query-string";
-import { RouterState } from "react-router-redux";
 import { createSelector } from "reselect";
 
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";

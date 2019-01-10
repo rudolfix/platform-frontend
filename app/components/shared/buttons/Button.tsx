@@ -70,9 +70,9 @@ const buttonThemeClassNames: Record<TButtonTheme, string> = {
   neon: styles.buttonNeon,
 };
 
-const Button: React.ComponentType<
-  IButtonProps & React.ClassAttributes<HTMLButtonElement>
-> = React.forwardRef(
+const Button: React.ForwardRefExoticComponent<
+  { children?: React.ReactNode } & IButtonProps & React.RefAttributes<HTMLButtonElement>
+> = React.forwardRef<HTMLButtonElement, IButtonProps>(
   (
     {
       children,

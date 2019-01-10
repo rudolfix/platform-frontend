@@ -36,7 +36,7 @@ interface IStateProps {
   ethAddress?: string;
   neumarksDue: string;
   isLoading: boolean;
-  walletMigrationData?: IWalletMigrationData[];
+  walletMigrationData?: ReadonlyArray<IWalletMigrationData>;
   isVerificationFullyDone: boolean;
   lockedWalletConnected: boolean;
   currentMigrationStep: TWalletMigrationSteps;

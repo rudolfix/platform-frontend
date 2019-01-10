@@ -1,10 +1,9 @@
 import { throttle } from "lodash";
 import * as React from "react";
-import { ReactNode } from "react-redux";
 
 interface IProps {
   condition: (y: number) => boolean;
-  children: (visible: boolean) => ReactNode;
+  children: (visible: boolean) => React.ReactNode;
   onHide?: () => any;
 }
 

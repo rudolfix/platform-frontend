@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../modules/actions";
 import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
-import { Button, ButtonArrowRight, EButtonLayout } from "../shared/buttons";
+import { Button, EButtonLayout } from "../shared/buttons";
 
 type TExternalProps = {
   state: EETOStateOnChain;
@@ -23,12 +23,13 @@ const PortfolioAssetActionComponent: React.SFC<TExternalProps & IDispatchProps> 
     case EETOStateOnChain.Claim:
     case EETOStateOnChain.Payout:
       return (
-        <ButtonArrowRight
+        <Button
           onClick={() => onClaim(etoId)}
+          layout={EButtonLayout.SECONDARY}
           data-test-id={"modals.portfolio.portfolio-asset-action.claim-" + etoId}
         >
           <FormattedMessage id="portfolio.section.reserved-assets.claim-tokens" />
-        </ButtonArrowRight>
+        </Button>
       );
     // case ETOStateOnChain.Refund:
     //   return (

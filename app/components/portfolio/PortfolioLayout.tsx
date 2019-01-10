@@ -157,7 +157,9 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                       <ETOState previewCode={previewCode} />
                     )}
                   </>
-                  <PortfolioAssetAction state={timedState} etoId={etoId} />
+                  <div className="d-flex justify-content-center">
+                    <PortfolioAssetAction state={timedState} etoId={etoId} />
+                  </div>
                 </NewTableRow>
               );
             },

@@ -4,15 +4,19 @@ import * as React from "react";
 import { EWalletType } from "../../../modules/web3/types";
 import { withModalBody } from "../../../utils/storybookHelpers";
 import {
-  BrowserWalletErrorMessage, getMessageTranslation,
-  MismatchedWalletAddressErrorMessage, ProfileMessage,
+  BrowserWalletErrorMessage,
+  getMessageTranslation,
+  MismatchedWalletAddressErrorMessage,
+  ProfileMessage,
 } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
 import { AccessWalletContainerComponent } from "./AccessWalletModal";
 
 const props = {
   title: getMessageTranslation(createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_TITLE)),
-  message: getMessageTranslation(createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION)),
+  message: getMessageTranslation(
+    createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION),
+  ),
   errorMsg: undefined,
   isUnlocked: false,
   onAccept: () => {},
@@ -31,7 +35,9 @@ storiesOf("AccessWalletModal", module)
   .add("metamask with error", () => {
     const data = {
       ...props,
-      errorMessage: getMessageTranslation(createMessage(BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK)),
+      errorMessage: getMessageTranslation(
+        createMessage(BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK),
+      ),
     };
     return <AccessWalletContainerComponent {...data} walletType={EWalletType.BROWSER} />;
   })
@@ -41,10 +47,12 @@ storiesOf("AccessWalletModal", module)
   .add("ledger with error", () => {
     const testData = {
       ...props,
-      errorMessage: getMessageTranslation(createMessage(MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS, {
-        actualAddress: "12345",
-        desiredAddress: "56789",
-      })),
+      errorMessage: getMessageTranslation(
+        createMessage(MismatchedWalletAddressErrorMessage.MISMATCHED_WALLET_ADDRESS, {
+          actualAddress: "12345",
+          desiredAddress: "56789",
+        }),
+      ),
     };
     return <AccessWalletContainerComponent {...testData} walletType={EWalletType.LEDGER} />;
   });

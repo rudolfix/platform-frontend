@@ -1,23 +1,20 @@
-import {BigNumber} from "bignumber.js";
-import {toChecksumAddress} from "ethereumjs-util";
-import {delay} from "redux-saga";
-import {fork, put, select} from "redux-saga/effects";
+import { BigNumber } from "bignumber.js";
+import { toChecksumAddress } from "ethereumjs-util";
+import { delay } from "redux-saga";
+import { call, fork, put, select } from "redux-saga/effects";
 
-import {TGlobalDependencies} from "../../di/setupBindings";
-import {actions, TAction} from "../actions";
-import {downloadLink} from "../immutable-file/utils";
-import {neuCall, neuTakeEvery, neuTakeUntil} from "../sagasUtils";
-import {ILockedWallet, IWalletStateData} from "../wallet/reducer";
-import {loadWalletDataAsync} from "../wallet/sagas";
-import {selectLockedWalletConnected} from "../wallet/selectors";
-import {selectEthereumAddressWithChecksum} from "../web3/selectors";
-import {IWalletMigrationData} from "./reducer";
-import {selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress} from "./selectors";
-import {createMessage} from "../../components/translatedMessages/utils";
-import {
-  getMessageTranslation,
-  IcbmWalletMessage,
-} from "../../components/translatedMessages/messages";
+import { IcbmWalletMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
+import { TGlobalDependencies } from "../../di/setupBindings";
+import { actions, TAction } from "../actions";
+import { downloadLink } from "../immutable-file/utils";
+import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
+import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
+import { loadWalletDataAsync } from "../wallet/sagas";
+import { selectLockedWalletConnected } from "../wallet/selectors";
+import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { IWalletMigrationData } from "./reducer";
+import { selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress } from "./selectors";
 
 const BLOCK_MINING_TIME_DELAY = 12000;
 class IcbmWalletError extends Error {}
@@ -83,7 +80,9 @@ function* loadIcbmWalletMigrationTransactionSaga({
     yield put(actions.icbmWalletBalanceModal.loadIcbmMigrationData(walletMigrationData));
   } catch (e) {
     logger.error("Error: ", e);
-    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL));
+    return notificationCenter.error(
+      createMessage(IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL),
+    );
   }
 }
 
@@ -115,9 +114,14 @@ function* loadIcbmWalletMigrationSaga(
     // todo: all texts to text resources
     if (e instanceof NoIcbmWalletError)
       return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS));
-    if (e instanceof SameUserError) return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME));
+    if (e instanceof SameUserError)
+      return notificationCenter.error(
+        createMessage(IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME),
+      );
     // Default Error
-    return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA));
+    return notificationCenter.error(
+      createMessage(IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA),
+    );
   }
 }
 
@@ -157,12 +161,7 @@ function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDep
 }
 
 function* downloadICBMWalletAgreement(
-  {
-    contractsService,
-    apiImmutableStorage,
-    logger,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { contractsService, apiImmutableStorage, logger, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "ICBM_WALLET_BALANCE_MODAL_DOWNLOAD_AGREEMENT") return;
@@ -177,10 +176,10 @@ function* downloadICBMWalletAgreement(
       asPdf: true,
     });
 
-    yield neuCall(
+    yield call(
       downloadLink,
       generatedDocument,
-      getMessageTranslation(createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT) ),
+      createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT),
       ".pdf",
     );
   } catch (e) {

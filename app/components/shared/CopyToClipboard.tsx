@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { TTranslatedString } from "../../types";
 import { ButtonIcon } from "./buttons";
 import { showInfoToast } from "./Toast";
 
@@ -10,7 +11,7 @@ import * as styles from "./CopyToClipboard.module.scss";
 
 interface IProps {
   value: string | React.ReactNode;
-  message?: string | React.ReactNode;
+  message?: TTranslatedString;
   className?: string;
   "data-test-id"?: string;
 }

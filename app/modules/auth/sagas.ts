@@ -1,23 +1,31 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
-import {AuthMessage, SignInUserErrorMessage, ToSMessage} from "../../components/translatedMessages/messages";
-import {createMessage, TMessage} from "../../components/translatedMessages/utils";
-import {SIGN_TOS} from "../../config/constants";
-import {TGlobalDependencies} from "../../di/setupBindings";
-import {EUserType, IUser, IUserInput, IVerifyEmailUser} from "../../lib/api/users/interfaces";
-import {EmailAlreadyExists, UserNotExisting} from "../../lib/api/users/UsersApi";
-import {SignerRejectConfirmationError, SignerTimeoutError, SignerUnknownError,} from "../../lib/web3/Web3Manager";
-import {IAppState} from "../../store";
-import {hasValidPermissions} from "../../utils/JWTUtils";
-import {accessWalletAndRunEffect} from "../access-wallet/sagas";
-import {actions, TAction} from "../actions";
-import {selectIsSmartContractInitDone} from "../init/selectors";
-import {loadKycRequestData} from "../kyc/sagas";
-import {selectRedirectURLFromQueryString} from "../routing/selectors";
-import {neuCall, neuTakeEvery, neuTakeLatest, neuTakeOnly} from "../sagasUtils";
-import {selectUrlUserType} from "../wallet-selector/selectors";
-import {loadPreviousWallet} from "../web3/sagas";
+import {
+  AuthMessage,
+  SignInUserErrorMessage,
+  ToSMessage,
+} from "../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../components/translatedMessages/utils";
+import { SIGN_TOS } from "../../config/constants";
+import { TGlobalDependencies } from "../../di/setupBindings";
+import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
+import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
+import {
+  SignerRejectConfirmationError,
+  SignerTimeoutError,
+  SignerUnknownError,
+} from "../../lib/web3/Web3Manager";
+import { IAppState } from "../../store";
+import { hasValidPermissions } from "../../utils/JWTUtils";
+import { accessWalletAndRunEffect } from "../access-wallet/sagas";
+import { actions, TAction } from "../actions";
+import { selectIsSmartContractInitDone } from "../init/selectors";
+import { loadKycRequestData } from "../kyc/sagas";
+import { selectRedirectURLFromQueryString } from "../routing/selectors";
+import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeOnly } from "../sagasUtils";
+import { selectUrlUserType } from "../wallet-selector/selectors";
+import { loadPreviousWallet } from "../web3/sagas";
 import {
   selectActivationCodeFromQueryString,
   selectEmailFromQueryString,
@@ -82,10 +90,7 @@ export async function loadOrCreateUserPromise(
 }
 
 export async function verifyUserEmailPromise(
-  {
-    apiUserService,
-    notificationCenter
-  }: TGlobalDependencies,
+  { apiUserService, notificationCenter }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
   verifiedEmail: string,
@@ -100,9 +105,8 @@ export async function verifyUserEmailPromise(
     notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_VERIFIED));
   } catch (e) {
     if (e instanceof EmailAlreadyExists)
-      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS),);
-    else
-      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED),);
+      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS));
+    else notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED));
   }
 }
 
@@ -246,8 +250,7 @@ function* handleAcceptCurrentAgreement({
     ensurePermissionsArePresent,
     [SIGN_TOS],
     createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TITLE),
-    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT)
-
+    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT),
   );
   try {
     const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);

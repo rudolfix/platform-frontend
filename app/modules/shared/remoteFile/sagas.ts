@@ -1,12 +1,12 @@
-import {fork} from "redux-saga/effects";
+import { fork } from "redux-saga/effects";
 
-import {TGlobalDependencies} from "../../../di/setupBindings";
-import {IHttpResponse} from "../../../lib/api/client/IHttpClient";
-import {TFileDescription} from "../../../lib/api/FileStorage.interfaces";
-import {TAction} from "../../actions";
-import {neuTakeEvery} from "../../sagasUtils";
-import {createMessage} from "../../../components/translatedMessages/utils";
-import {RemoteFileMessage} from "../../../components/translatedMessages/messages";
+import { RemoteFileMessage } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
+import { TGlobalDependencies } from "../../../di/setupBindings";
+import { IHttpResponse } from "../../../lib/api/client/IHttpClient";
+import { TFileDescription } from "../../../lib/api/FileStorage.interfaces";
+import { TAction } from "../../actions";
+import { neuTakeEvery } from "../../sagasUtils";
 
 function* getRemoteFile(
   { fileStorageApi, notificationCenter, logger }: TGlobalDependencies,

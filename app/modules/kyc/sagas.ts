@@ -1,9 +1,11 @@
-import {delay} from "redux-saga";
-import {cancel, fork, put, select, take} from "redux-saga/effects";
+import { delay } from "redux-saga";
+import { cancel, fork, put, select, take } from "redux-saga/effects";
 
-import {SUBMIT_KYC_PERMISSION} from "../../config/constants";
-import {TGlobalDependencies} from "../../di/setupBindings";
-import {IHttpResponse} from "../../lib/api/client/IHttpClient";
+import { KycFlowMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
+import { SUBMIT_KYC_PERMISSION } from "../../config/constants";
+import { TGlobalDependencies } from "../../di/setupBindings";
+import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   IKycBeneficialOwner,
   IKycBusinessData,
@@ -15,24 +17,22 @@ import {
   TRequestOutsourcedStatus,
   TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
-import {IUser} from "../../lib/api/users/interfaces";
-import {IdentityRegistry} from "../../lib/contracts/IdentityRegistry";
-import {IAppAction, IAppState} from "../../store";
-import {actions, TAction} from "../actions";
-import {ensurePermissionsArePresent} from "../auth/sagas";
-import {selectUser} from "../auth/selectors";
-import {displayErrorModalSaga} from "../generic-modal/sagas";
-import {selectIsSmartContractInitDone} from "../init/selectors";
-import {neuCall, neuTakeEvery, neuTakeOnly} from "../sagasUtils";
+import { IUser } from "../../lib/api/users/interfaces";
+import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
+import { IAppAction, IAppState } from "../../store";
+import { actions, TAction } from "../actions";
+import { ensurePermissionsArePresent } from "../auth/sagas";
+import { selectUser } from "../auth/selectors";
+import { displayErrorModalSaga } from "../generic-modal/sagas";
+import { selectIsSmartContractInitDone } from "../init/selectors";
+import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import {
   selectCombinedBeneficialOwnerOwnership,
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
   selectKycRequestType,
 } from "./selectors";
-import {deserializeClaims} from "./utils";
-import {createMessage} from "../../components/translatedMessages/utils";
-import {KycFlowMessage} from "../../components/translatedMessages/messages";
+import { deserializeClaims } from "./utils";
 
 function* loadClientData(): any {
   yield put(actions.kyc.kycLoadIndividualData());
@@ -137,10 +137,7 @@ function* loadIndividualData(
 }
 
 function* submitIndividualData(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_FORM") return;
@@ -156,10 +153,7 @@ function* submitIndividualData(
 }
 
 function* uploadIndividualFile(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_INDIVIDUAL_FILE") return;
@@ -207,10 +201,7 @@ function* loadIndividualRequest(
 }
 
 function* submitIndividualRequest(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_INDIVIDUAL_REQUEST") return;
@@ -290,10 +281,7 @@ function* loadLegalRepresentative(
 }
 
 function* submitLegalRepresentative(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_LEGAL_REPRESENTATIVE") return;
@@ -310,10 +298,7 @@ function* submitLegalRepresentative(
 }
 
 function* uploadLegalRepresentativeFile(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_LEGAL_REPRESENTATIVE_FILE") return;
@@ -348,10 +333,7 @@ function* loadLegalRepresentativeFiles(
 
 // business data
 function* setBusinessType(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SET_BUSINESS_TYPE") return;
@@ -385,10 +367,7 @@ function* loadBusinessData({ apiKycService }: TGlobalDependencies, action: TActi
 }
 
 function* submitBusinessData(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_DATA") return;
@@ -405,10 +384,7 @@ function* submitBusinessData(
 }
 
 function* uploadBusinessFile(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_BUSINESS_FILE") return;
@@ -454,10 +430,7 @@ function* loadBeneficialOwners(
 }
 
 function* createBeneficialOwner(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_ADD_BENEFICIAL_OWNER") return;
@@ -472,10 +445,7 @@ function* createBeneficialOwner(
 }
 
 function* submitBeneficialOwner(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BENEFICIAL_OWNER") return;
@@ -492,10 +462,7 @@ function* submitBeneficialOwner(
 }
 
 function* deleteBeneficalOwner(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_DELETE_BENEFICIAL_OWNER") return;
@@ -510,10 +477,7 @@ function* deleteBeneficalOwner(
 }
 
 function* uploadBeneficialOwnerFile(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_UPLOAD_BENEFICIAL_OWNER_FILE") return;
@@ -568,10 +532,7 @@ function* loadBusinessRequest(
 }
 
 function* submitBusinessRequest(
-  {
-    apiKycService,
-    notificationCenter,
-  }: TGlobalDependencies,
+  { apiKycService, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "KYC_SUBMIT_BUSINESS_REQUEST") return;
@@ -592,7 +553,7 @@ function* submitBusinessRequest(
       [SUBMIT_KYC_PERMISSION],
       createMessage(KycFlowMessage.KYC_SUBMIT_TITLE), //kyc.modal.submit-title
       createMessage(KycFlowMessage.KYC_SUBMIT_DESCRIPTION), //kyc.modal.submit-description
-     );
+    );
 
     yield put(actions.kyc.kycUpdateBusinessRequestState(true));
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitBusinessRequest();

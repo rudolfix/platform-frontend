@@ -73,18 +73,22 @@ export const AccessWalletContainerComponent: React.SFC<IStateProps & IDispatchPr
         </div>
       </div>
     )}
-    {errorMessage && (
-      <p className={cn("mt-3", styles.error)}>{errorMessage}</p>
-    )}
+    {errorMessage && <p className={cn("mt-3", styles.error)}>{errorMessage}</p>}
   </div>
 );
 
 export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IExternalProps>({
   stateToProps: (s, external) => ({
     isOpen: s.accessWallet.isModalOpen,
-    errorMessage: s.accessWallet.errorMessage ? getMessageTranslation(s.accessWallet.errorMessage as TMessage) : undefined,
-    title: external.title ? external.title : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalTitle as TMessage),
-    message: external.message ? external.message : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalMessage as TMessage),
+    errorMessage: s.accessWallet.errorMessage
+      ? getMessageTranslation(s.accessWallet.errorMessage as TMessage)
+      : undefined,
+    title: external.title
+      ? external.title
+      : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalTitle as TMessage),
+    message: external.message
+      ? external.message
+      : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalMessage as TMessage),
     walletType: selectWalletType(s.web3),
     isUnlocked: selectIsUnlocked(s.web3),
   }),

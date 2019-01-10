@@ -1,5 +1,5 @@
 import { findKey } from "lodash/fp";
-import { fork, put, select } from "redux-saga/effects";
+import { call, fork, put, select } from "redux-saga/effects";
 
 import { ETHEREUM_ZERO_ADDRESS, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -45,7 +45,7 @@ export function* generateDocumentFromTemplate(
       },
       asPdf: false,
     });
-    yield neuCall(downloadLink, generatedDocument, document.name, ".doc");
+    yield call(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
     notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE));
@@ -101,10 +101,12 @@ export function* downloadDocumentByType(
       mimeType: matchingDocument.mimeType,
       asPdf: true,
     });
-    yield neuCall(downloadLink, downloadedDocument, matchingDocument.name, "");
+    yield call(downloadLink, downloadedDocument, matchingDocument.name, "");
   } catch (e) {
     logger.error("Download document by type failed", e);
-    notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_FILE));
+    notificationCenter.error(
+      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_FILE),
+    );
   }
 }
 
@@ -126,7 +128,7 @@ export function* loadEtoFileData({
   } catch (e) {
     logger.error("Load ETO data failed", e);
     notificationCenter.error(
-      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA)
+      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA),
     ); //"Could not access ETO files data. Make sure you have completed KYC and email verification process."
     yield put(actions.routing.goToDashboard());
   }
@@ -144,11 +146,7 @@ async function getDocumentOfTypePromise(
 }
 
 function* uploadEtoFile(
-  {
-    apiEtoFileService,
-    notificationCenter,
-    logger,
-  }: TGlobalDependencies,
+  { apiEtoFileService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "ETO_DOCUMENTS_UPLOAD_DOCUMENT_START") return;
@@ -174,7 +172,7 @@ function* uploadEtoFile(
       notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_EXISTS)); //"eto.modal.file-already-exists"
     } else {
       logger.error("Failed to send ETO data", e);
-      notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED)) //"eto.modal.file-upload-failed"
+      notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED)); //"eto.modal.file-upload-failed"
     }
   } finally {
     yield put(actions.etoDocuments.loadFileDataStart());

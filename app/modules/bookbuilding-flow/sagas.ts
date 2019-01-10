@@ -1,14 +1,16 @@
-import {fork, put} from "redux-saga/effects";
+import { fork, put } from "redux-saga/effects";
 
-import {BOOKBUILDING_WATCHER_DELAY, DO_BOOK_BUILDING} from "../../config/constants";
-import {TGlobalDependencies} from "../../di/setupBindings";
-import {IHttpResponse} from "../../lib/api/client/IHttpClient";
-import {EtoPledgeNotFound} from "../../lib/api/eto/EtoPledgeApi";
-import {IPledge} from "../../lib/api/eto/EtoPledgeApi.interfaces";
-import {delay} from "../../utils/delay";
-import {actions, TAction} from "../actions";
-import {ensurePermissionsArePresent} from "../auth/sagas";
-import {neuCall, neuTakeEvery, neuTakeUntil} from "../sagasUtils";
+import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
+import { BOOKBUILDING_WATCHER_DELAY, DO_BOOK_BUILDING } from "../../config/constants";
+import { TGlobalDependencies } from "../../di/setupBindings";
+import { IHttpResponse } from "../../lib/api/client/IHttpClient";
+import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
+import { IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces";
+import { delay } from "../../utils/delay";
+import { actions, TAction } from "../actions";
+import { ensurePermissionsArePresent } from "../auth/sagas";
+import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import {
   DELETE_PLEDGE,
   LOAD_BOOKBUILDING_FLOW_STATS,
@@ -17,8 +19,6 @@ import {
   UNWATCH_BOOKBUILDING_FLOW_STATS,
   WATCH_BOOKBUILDING_FLOW_STATS,
 } from "./actions";
-import {createMessage} from "../../components/translatedMessages/utils";
-import {BookbuildingFlowMessage} from "../../components/translatedMessages/messages";
 
 export function* saveMyPledge(
   { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
@@ -46,7 +46,7 @@ export function* saveMyPledge(
     yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
-      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE) //"eto.overview.error-notification.failed-to-save-pledge"
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE), //"eto.overview.error-notification.failed-to-save-pledge"
     );
     logger.error(`Failed to save pledge`, e);
   }
@@ -74,7 +74,7 @@ export function* deleteMyPledge(
     yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
-      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED) //"eto.overview.error-notification.failed-to-delete-pledge"),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED), //"eto.overview.error-notification.failed-to-delete-pledge"),
     );
     logger.error(`Failed to delete pledge`, e);
   }
@@ -105,7 +105,7 @@ export function* loadBookBuildingStats(
     yield put(actions.bookBuilding.setBookBuildingStats(etoId, statsResponse.body));
   } catch (e) {
     notificationCenter.error(
-      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS)
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
     );
 
     logger.error(`Failed to load bookbuilding stats pledge`, e);
@@ -125,7 +125,9 @@ export function* loadMyPledge(
     yield put(actions.bookBuilding.setPledge(etoId, pledgeResponse.body));
   } catch (e) {
     if (!(e instanceof EtoPledgeNotFound)) {
-      notificationCenter.error(createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE)); //"eto.overview.error-notification.failed-to-load-pledge"
+      notificationCenter.error(
+        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE),
+      ); //"eto.overview.error-notification.failed-to-load-pledge"
       logger.error("Failed to load pledge", e);
     }
   }

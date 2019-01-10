@@ -1,24 +1,22 @@
-import {effects} from "redux-saga";
-import {call, fork, put, select} from "redux-saga/effects";
+import { effects } from "redux-saga";
+import { call, fork, put, select } from "redux-saga/effects";
 
-import {CHANGE_EMAIL_PERMISSION} from "../../config/constants";
-import {TGlobalDependencies} from "../../di/setupBindings";
-import {EmailAlreadyExists} from "../../lib/api/users/UsersApi";
-import {IAppState} from "../../store";
-import {accessWalletAndRunEffect} from "../access-wallet/sagas";
-import {actions, TAction} from "../actions";
-import {MessageSignCancelledError} from "../auth/errors";
-import {ensurePermissionsArePresent, loadUser, updateUser} from "../auth/sagas";
-import {selectDoesEmailExist, selectUser} from "../auth/selectors";
-import {neuCall, neuTakeEvery} from "../sagasUtils";
-import {selectLightWalletSalt, selectPreviousLightWalletSalt} from "../web3/selectors";
-import {createMessage} from "../../components/translatedMessages/utils";
-import {ProfileMessage} from "../../components/translatedMessages/messages";
+import { ProfileMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
+import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
+import { TGlobalDependencies } from "../../di/setupBindings";
+import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
+import { IAppState } from "../../store";
+import { accessWalletAndRunEffect } from "../access-wallet/sagas";
+import { actions, TAction } from "../actions";
+import { MessageSignCancelledError } from "../auth/errors";
+import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
+import { selectDoesEmailExist, selectUser } from "../auth/selectors";
+import { neuCall, neuTakeEvery } from "../sagasUtils";
+import { selectLightWalletSalt, selectPreviousLightWalletSalt } from "../web3/selectors";
 
 export function* addNewEmail(
-  { notificationCenter,
-    logger,
-  }: TGlobalDependencies,
+  { notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "PROFILE_ADD_NEW_EMAIL") return;
@@ -58,9 +56,7 @@ export function* addNewEmail(
 }
 
 export function* resendEmail(
-  { notificationCenter,
-    logger,
-  }: TGlobalDependencies,
+  { notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "PROFILE_RESEND_EMAIL") return;
@@ -84,13 +80,13 @@ export function* resendEmail(
     notificationCenter.info(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT)); //modules.settings.sagas.resend-email.sent
   } catch (e) {
     logger.error("Failed to resend email", e);
-    notificationCenter.error(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED));
+    notificationCenter.error(
+      createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED),
+    );
   }
 }
 
-export function* loadSeedOrReturnToSettings({
-  logger,
-}: TGlobalDependencies): Iterator<any> {
+export function* loadSeedOrReturnToSettings({ logger }: TGlobalDependencies): Iterator<any> {
   // unlock wallet
   try {
     const signEffect = put(actions.web3.fetchWalletPrivateDataFromWallet());
@@ -98,7 +94,7 @@ export function* loadSeedOrReturnToSettings({
       accessWalletAndRunEffect,
       signEffect,
       createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_TITLE),
-      createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION)
+      createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION),
     );
   } catch (error) {
     if (error instanceof MessageSignCancelledError) {

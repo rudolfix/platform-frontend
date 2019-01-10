@@ -4,12 +4,6 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { externalRoutes } from "../../config/externalRoutes";
 import { TTranslatedString } from "../../types";
 import { TMessage } from "./utils";
-import injectIntl = ReactIntl.injectIntl;
-import * as PropTypes from "prop-types";
-import {IInversifyProviderContext} from "../../utils/InversifyProvider";
-import {ILogger} from "../../lib/dependencies/Logger";
-import {symbols} from "../../di/symbols";
-import {IntlWrapper} from "../../lib/intl/IntlWrapper";
 
 interface ITranslationValues {
   [SignInUserErrorMessages: string]: string;
@@ -35,6 +29,7 @@ export type TranslatedMessageType =
   | PublicEtosMessage
   | FileUploadMessage
   | RemoteFileMessage
+  | Web3Message;
 
 export enum GenericError {
   GENERIC_ERROR = "genericError",
@@ -117,12 +112,12 @@ export enum EtoDocumentsMessage {
   ETO_DOCUMENTS_FAILED_TO_GET_BOOKBUILDING_STATS = "pledgeFlowFailedToGetBookbuildingStats",
   ETO_DOCUMENTS_SUBMIT_ETO_TITLE = "etoDocumentsSubmitEtoTitle",
   ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION = "etoDocumentsSubmitEtoDescription",
-  ETO_SUBMIT_SUCCESS = "etoSubmitSuccess"
+  ETO_SUBMIT_SUCCESS = "etoSubmitSuccess",
 }
 
 export enum PublicEtosMessage {
   COULD_NOT_LOAD_ETO_PREVIEW = "couldNotLoadEtoPreview",
-  COULD_NOT_LOAD_ETO = "couldNotLoadEto"
+  COULD_NOT_LOAD_ETO = "couldNotLoadEto",
 }
 
 export enum IpfsMessage {
@@ -130,11 +125,11 @@ export enum IpfsMessage {
 }
 
 export enum FileUploadMessage {
-  FILE_UPLOAD_ERROR
+  FILE_UPLOAD_ERROR,
 }
 
 export enum RemoteFileMessage {
-  GET_FILES_DETAILS_ERROR = "GET_FILES_DETAILS_ERROR"
+  GET_FILES_DETAILS_ERROR = "GET_FILES_DETAILS_ERROR",
 }
 
 export enum KycFlowMessage {
@@ -158,7 +153,7 @@ export enum AuthMessage {
   AUTH_EMAIL_ALREADY_EXISTS = "authEmailAlreadyExists",
   AUTH_EMAIL_VERIFICATION_FAILED = "authEmailVerificationFailed",
   AUTH_TOC_ACCEPT_ERROR = "authTocAcceptError",
-  AUTH_TOC_FILENAME = "authTocFilename"
+  AUTH_TOC_FILENAME = "authTocFilename",
 }
 
 export enum IcbmWalletMessage {
@@ -167,7 +162,7 @@ export enum IcbmWalletMessage {
   ICBM_COULD_NOT_FIND_ADDRESS = "icbmCouldNotFindAdress",
   ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME = "icbmWalletAndIcbmAdressesAreTheSame",
   ICBM_COULD_NOT_LOAD_WALLET_DATA = "icbmCouldNotLoadWalletData",
-  ICBM_ERROR_RUNNING_MIGRATION_TOOL = "icmbErrorRunningMigrationTool"
+  ICBM_ERROR_RUNNING_MIGRATION_TOOL = "icmbErrorRunningMigrationTool",
 }
 
 export enum ProfileMessage {
@@ -185,10 +180,12 @@ export enum ProfileMessage {
   PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION = "profileAccessRecoveryPhraseDescription",
 }
 
-const getMessageTranslation = ({
-  messageType,
-  messageData,
-}: TMessage): TTranslatedString => {
+export enum Web3Message {
+  WEB3_ERROR_BROWSER = "web3ErrorBrowser", //"modules.web3.flows.web3-error.browser"
+  WEB3_ERROR_LEDGER = "web3ErrorLedger", //"modules.web3.flows.web3-error.ledger"
+}
+
+const getMessageTranslation = ({ messageType, messageData }: TMessage): TTranslatedString => {
   switch (messageType) {
     case BackupRecoveryMessage.BACKUP_SUCCESS_TITLE:
       return <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.backup-recovery" />;
@@ -280,136 +277,150 @@ const getMessageTranslation = ({
     case BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL:
       return <FormattedMessage id="eto.overview.permission-modal.confirm-pledge-removal" />;
     case BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION:
-        return <FormattedMessage id="eto.overview.permission-modal.confirm-pledge-description-removal" />;
+      return (
+        <FormattedMessage id="eto.overview.permission-modal.confirm-pledge-description-removal" />
+      );
     case BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED:
-        return <FormattedMessage id="eto.overview.error-notification.failed-to-delete-pledge" />;
+      return <FormattedMessage id="eto.overview.error-notification.failed-to-delete-pledge" />;
     case BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS:
-        return <FormattedMessage id="eto.overview.error-notification.failed-to-bookbuilding-stats" />;
+      return <FormattedMessage id="eto.overview.error-notification.failed-to-bookbuilding-stats" />;
     case BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE:
-        return <FormattedMessage id="eto.overview.error-notification.failed-to-load-pledge" />;
+      return <FormattedMessage id="eto.overview.error-notification.failed-to-load-pledge" />;
 
     case EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE:
-        return <FormattedMessage id="eto.modal.confirm-upload-document-title" />;
+      return <FormattedMessage id="eto.modal.confirm-upload-document-title" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION:
-        return <FormattedMessage id="eto.modal.confirm-upload-document-description" />;
+      return <FormattedMessage id="eto.modal.confirm-upload-document-description" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOADED:
-        return <FormattedMessage id="eto.modal.file-uploaded" />;
+      return <FormattedMessage id="eto.modal.file-uploaded" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_FILE_EXISTS:
-        return <FormattedMessage id="eto.modal.file-already-exists" />;
+      return <FormattedMessage id="eto.modal.file-already-exists" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED:
-        return <FormattedMessage id="eto.modal.file-upload-failed" />;
-    case EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_FILE :
-        return <FormattedMessage id="eto.modal.file-download-failed" />;
+      return <FormattedMessage id="eto.modal.file-upload-failed" />;
+    case EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_FILE:
+      return <FormattedMessage id="eto.modal.file-download-failed" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA:
-        return<FormattedMessage id="eto.modal.could-not-access-eto-files"/>;
-    case EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING :
-        return <FormattedMessage id="eto.modal.confirm-start-bookbuilding-title" />;
-    case EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING :
-        return <FormattedMessage id="eto.modal.confirm-stop-bookbuilding-title" />;
-    case EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA :
-        return <FormattedMessage id="eto.modal.failed-to-send-eto-data" />;
+      return <FormattedMessage id="eto.modal.could-not-access-eto-files" />;
+    case EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING:
+      return <FormattedMessage id="eto.modal.confirm-start-bookbuilding-title" />;
+    case EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING:
+      return <FormattedMessage id="eto.modal.confirm-stop-bookbuilding-title" />;
+    case EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA:
+      return <FormattedMessage id="eto.modal.failed-to-send-eto-data" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_GET_BOOKBUILDING_STATS:
-        return <FormattedMessage id="eto.overview.error-notification.failed-to-bookbuilding-stats" />;
+      return <FormattedMessage id="eto.overview.error-notification.failed-to-bookbuilding-stats" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_TITLE:
-        return <FormattedMessage id="eto.modal.submit-title" />;
+      return <FormattedMessage id="eto.modal.submit-title" />;
     case EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION:
-        return <FormattedMessage id="eto.modal.submit-description" />;
+      return <FormattedMessage id="eto.modal.submit-description" />;
     case EtoDocumentsMessage.ETO_SUBMIT_SUCCESS:
-      return <FormattedMessage id="eto.submit-success"/>;
+      return <FormattedMessage id="eto.submit-success" />;
 
     case PublicEtosMessage.COULD_NOT_LOAD_ETO_PREVIEW:
-      return <FormattedMessage id="eto.public-view.could-not-load-eto-preview"/>;
+      return <FormattedMessage id="eto.public-view.could-not-load-eto-preview" />;
     case PublicEtosMessage.COULD_NOT_LOAD_ETO:
-      return <FormattedMessage id="eto.public-view.could-not-load-eto"/>;
+      return <FormattedMessage id="eto.public-view.could-not-load-eto" />;
 
-    case IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE :
-        return <FormattedMessage id="ipfs-failed-to-download-file" />;
+    case IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE:
+      return <FormattedMessage id="ipfs-failed-to-download-file" />;
 
     case FileUploadMessage.FILE_UPLOAD_ERROR:
-      return <FormattedMessage id="form.single-file-upload-error"/>;
+      return <FormattedMessage id="form.single-file-upload-error" />;
 
     case RemoteFileMessage.GET_FILES_DETAILS_ERROR:
-      return <FormattedMessage id="remote.file.details-error"/>;
+      return <FormattedMessage id="remote.file.details-error" />;
 
-    case KycFlowMessage.KYC_PROBLEM_SAVING_DATA :
-        return <FormattedMessage id="module.kyc.sagas.problem-saving-data" />;
-    case KycFlowMessage.KYC_PROBLEM_SENDING_DATA :
-        return <FormattedMessage id="module.kyc.sagas.problem-sending-data" />;
-    case KycFlowMessage.KYC_UPLOAD_SUCCESSFUL :
-        return <FormattedMessage id="module.kyc.sagas.successfully-uploaded" />;
-    case KycFlowMessage.KYC_UPLOAD_FAILED :
-        return <FormattedMessage id="module.kyc.sagas.problem-uploading" />;
-    case KycFlowMessage.KYC_SUBMIT_FAILED :
-        return <FormattedMessage id="module.kyc.sagas.problem.submitting" />;
-    case KycFlowMessage.KYC_SUBMIT_TITLE :
-        return <FormattedMessage id="kyc.modal.submit-title" />;
-    case KycFlowMessage.KYC_SUBMIT_DESCRIPTION :
-        return <FormattedMessage id="kyc.modal.submit-description" />;
-    case KycFlowMessage.KYC_VERIFICATION_TITLE :
-        return <FormattedMessage id="kyc.modal.verification.title" />;
-    case KycFlowMessage.KYC_VERIFICATION_DESCRIPTION :
-        return <FormattedMessage id="kyc.modal.verification.description" />;
-    case KycFlowMessage.KYC_SETTINGS_BUTTON :
-        return <FormattedMessage id="kyc.modal.verification.settings-button" />;
-    case KycFlowMessage.KYC_ERROR :
-        return <FormattedMessage id="module.kyc.sagas.error" />;
-    case KycFlowMessage.KYC_BENEFICIAL_OWNERS :
-        return <FormattedMessage id="module.kyc.sagas.beneficial-owners" />;
+    case KycFlowMessage.KYC_PROBLEM_SAVING_DATA:
+      return <FormattedMessage id="module.kyc.sagas.problem-saving-data" />;
+    case KycFlowMessage.KYC_PROBLEM_SENDING_DATA:
+      return <FormattedMessage id="module.kyc.sagas.problem-sending-data" />;
+    case KycFlowMessage.KYC_UPLOAD_SUCCESSFUL:
+      return <FormattedMessage id="module.kyc.sagas.successfully-uploaded" />;
+    case KycFlowMessage.KYC_UPLOAD_FAILED:
+      return <FormattedMessage id="module.kyc.sagas.problem-uploading" />;
+    case KycFlowMessage.KYC_SUBMIT_FAILED:
+      return <FormattedMessage id="module.kyc.sagas.problem.submitting" />;
+    case KycFlowMessage.KYC_SUBMIT_TITLE:
+      return <FormattedMessage id="kyc.modal.submit-title" />;
+    case KycFlowMessage.KYC_SUBMIT_DESCRIPTION:
+      return <FormattedMessage id="kyc.modal.submit-description" />;
+    case KycFlowMessage.KYC_VERIFICATION_TITLE:
+      return <FormattedMessage id="kyc.modal.verification.title" />;
+    case KycFlowMessage.KYC_VERIFICATION_DESCRIPTION:
+      return <FormattedMessage id="kyc.modal.verification.description" />;
+    case KycFlowMessage.KYC_SETTINGS_BUTTON:
+      return <FormattedMessage id="kyc.modal.verification.settings-button" />;
+    case KycFlowMessage.KYC_ERROR:
+      return <FormattedMessage id="module.kyc.sagas.error" />;
+    case KycFlowMessage.KYC_BENEFICIAL_OWNERS:
+      return <FormattedMessage id="module.kyc.sagas.beneficial-owners" />;
 
     case AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED:
-        return <FormattedMessage id="modules.auth.sagas.verify-user-email-promise.email-already-verified" />;
+      return (
+        <FormattedMessage id="modules.auth.sagas.verify-user-email-promise.email-already-verified" />
+      );
     case AuthMessage.AUTH_EMAIL_VERIFIED:
-        return <FormattedMessage id="modules.auth.sagas.verify-user-email-promise.email-verified" />;
+      return <FormattedMessage id="modules.auth.sagas.verify-user-email-promise.email-verified" />;
     case AuthMessage.AUTH_EMAIL_ALREADY_EXISTS:
-        return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists" />;
+      return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists" />;
     case AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED:
-        return <FormattedMessage id="modules.auth.sagas.verify-user-email-promise.failed-email-verify" />;
+      return (
+        <FormattedMessage id="modules.auth.sagas.verify-user-email-promise.failed-email-verify" />
+      );
     case AuthMessage.AUTH_TOC_ACCEPT_ERROR:
-        return <FormattedMessage id="settings.modal.accept-tos.failure" />;
+      return <FormattedMessage id="settings.modal.accept-tos.failure" />;
     case AuthMessage.AUTH_TOC_FILENAME:
-          return <FormattedMessage id="settings.modal.accept-tos.filename" />;
+      return <FormattedMessage id="settings.modal.accept-tos.filename" />;
 
     case IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT:
       //TODO We need a plain string here, but FormattedMessage doesn't work outside of components now.
       // Need to figure out how to do this.
-        return "Amended ICBM Reservation Agreement"; //<FormattedMessage id="wallet.icbm.reservation-agreement" />;
+      return "Amended ICBM Reservation Agreement"; //<FormattedMessage id="wallet.icbm.reservation-agreement" />;
     case IcbmWalletMessage.ICBM_FAILED_TO_DOWNLOAD_AGREEMENT:
-        return <FormattedMessage id="wallet.icbm.failed-to-download-reservation-agreement" />;
+      return <FormattedMessage id="wallet.icbm.failed-to-download-reservation-agreement" />;
     case IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS:
-        return <FormattedMessage id="wallet.icbm.wallet-not-found" />;
+      return <FormattedMessage id="wallet.icbm.wallet-not-found" />;
     case IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME:
-        return <FormattedMessage id="wallet.icbm.wallet-and-icbm-addresses-are-the-same" />;
+      return <FormattedMessage id="wallet.icbm.wallet-and-icbm-addresses-are-the-same" />;
     case IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA:
-        return <FormattedMessage id="wallet.icbm.error-loading-icbm-wallet-data" />;
-  case IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL:
-        return <FormattedMessage id="wallet.icbm.error-running-migration-tool" />;
+      return <FormattedMessage id="wallet.icbm.error-loading-icbm-wallet-data" />;
+    case IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL:
+      return <FormattedMessage id="wallet.icbm.error-running-migration-tool" />;
 
     case ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE:
-        return <FormattedMessage id="modules.settings.sagas.add-new-email.update-title" />;
+      return <FormattedMessage id="modules.settings.sagas.add-new-email.update-title" />;
     case ProfileMessage.PROFILE_ADD_EMAIL_TITLE:
-        return <FormattedMessage id="modules.settings.sagas.add-new-email.add-title" />;
+      return <FormattedMessage id="modules.settings.sagas.add-new-email.add-title" />;
     case ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM:
-        return <FormattedMessage id="modules.settings.sagas.add-new-email.confirm-description" />;
+      return <FormattedMessage id="modules.settings.sagas.add-new-email.confirm-description" />;
     case ProfileMessage.PROFILE_NEW_EMAIL_ADDED:
-        return <FormattedMessage id="modules.settings.sagas.add-new-email.new-email-added" />;
+      return <FormattedMessage id="modules.settings.sagas.add-new-email.new-email-added" />;
     case ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS:
-        return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists" />;
+      return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists" />;
     case ProfileMessage.PROFILE_ADD_EMAIL_ERROR:
-        return <FormattedMessage id="modules.settings.sagas.add-new-email.error" />;
+      return <FormattedMessage id="modules.settings.sagas.add-new-email.error" />;
     case ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE:
-        return <FormattedMessage id="modules.settings.sagas.resend-email.confirmation" />;
+      return <FormattedMessage id="modules.settings.sagas.resend-email.confirmation" />;
     case ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION:
-        return <FormattedMessage id="modules.settings.sagas.resend-email.confirmation-description" />;
+      return <FormattedMessage id="modules.settings.sagas.resend-email.confirmation-description" />;
     case ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT:
-        return <FormattedMessage id="modules.settings.sagas.resend-email.sent" />;
+      return <FormattedMessage id="modules.settings.sagas.resend-email.sent" />;
     case ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED:
-        return <FormattedMessage id="modules.settings.sagas.resend-email.failed" />;
+      return <FormattedMessage id="modules.settings.sagas.resend-email.failed" />;
     case ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_TITLE:
-        return <FormattedMessage id="modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-title" />;
+      return (
+        <FormattedMessage id="modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-title" />
+      );
     case ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION:
-        return <FormattedMessage id="modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description" />;
-    
+      return (
+        <FormattedMessage id="modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description" />
+      );
+
+    case Web3Message.WEB3_ERROR_BROWSER:
+      return <FormattedMessage id="modules.web3.flows.web3-error.browser" />;
+    case Web3Message.WEB3_ERROR_LEDGER:
+      return <FormattedMessage id="modules.web3.flows.web3-error.ledger" />;
   }
 };
 
-export { getMessageTranslation }
+export { getMessageTranslation };

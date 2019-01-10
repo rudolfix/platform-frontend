@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
 import { showErrorToast, showInfoToast } from "../../components/shared/Toast";
 
-import {TMessage} from "../../components/translatedMessages/utils";
-import {getMessageTranslation} from "../../components/translatedMessages/messages";
+import { getMessageTranslation } from "../../components/translatedMessages/messages";
+import { TMessage } from "../../components/translatedMessages/utils";
 
 @injectable()
 export class NotificationCenter {

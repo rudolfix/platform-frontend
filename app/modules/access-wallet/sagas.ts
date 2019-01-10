@@ -1,7 +1,8 @@
 import { delay, Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
-import {GenericError, TranslatedMessageType} from "../../components/translatedMessages/messages";
+import { GenericError } from "../../components/translatedMessages/messages";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
 import {
@@ -25,7 +26,6 @@ import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
 import { EWalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
-import {TMessage} from "../../components/translatedMessages/utils";
 
 export function* ensureWalletConnection({
   web3Manager,
